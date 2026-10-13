@@ -255,6 +255,7 @@ try
         RemainingRetainedProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         InitializationDeferredProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         DependentPointerProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
+        DependentConstantPayloadProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         UnevaluatedProjection.Verify(unit,Path.GetFileName(input),Check);
         NavigationFamilies.Verify(unit,Path.GetFileName(input),Check);
         var functionCount=0;var operationCount=0;var executableBodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();

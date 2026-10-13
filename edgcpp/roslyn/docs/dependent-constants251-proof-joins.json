@@ -1,0 +1,72 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "accepted_unique_paths": 2,
+  "fresh_assertions": 94,
+  "self_assertions": 73,
+  "joins": [
+    {
+      "owner": "a_constant",
+      "member": "variant.template_param.variant.template_ref.con",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentConstantPayloadProjection.cs:16",
+      "identity": "Source template_ref value1486\u2192childValue1483/type411 and native1052\u21921049/type409; exact dependent component owns child occurrence with same value/type and active tpck_unknown_function payload."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.template_param.variant.template_ref.arg_list",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentConstantPayloadProjection.cs:21",
+      "identity": "Source arguments1484/1485 and native1050/1051 preserve canonical tak_type int then tak_nontype integer3 at ordinals0,1 under the same template_ref value."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.template_param.variant.destructor.type",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentConstantPayloadProjection.cs:25",
+      "identity": "Source destructor value1682\u2192placeholder1281 and native1249\u2192858; exact T parameter of dependent_destroy, separate from concrete Destroyable destructor selection."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.template_param.variant.bound",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentConstantPayloadProjection.cs:33",
+      "identity": "Source integer-pack658\u2192bound value657/type369 and native535\u2192534/type365; actual child occurrence is distinct from IntegerPackHost N placeholder while sharing the retained parameter value."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.designator.variant.subscript",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentConstantPayloadProjection.cs:59",
+      "identity": "Source distinct occurrences1889/2019 share designator value1895; native1413/1532 share1421. Each actual singleton row at0 retains bound tpck_param value/type equal to the occurrence component."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.aggregate.field_or_base",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentConstantPayloadProjection.cs:41",
+      "identity": "Native aggregate710\u2192contextual base665 and718\u2192field638, flags/discriminators exact; both distinct occurrences are elements0/1 of aggregate706. Template default694 reaches706 through actual BackingExpression700\u2192Temporary.Initialization705.Constant706 metadata route."
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1503,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 25,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "pending": "a_constant.variant.dynamic_init.field_or_base",
+  "ready_hash_checks": 12
+}

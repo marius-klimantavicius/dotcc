@@ -1,0 +1,55 @@
+{
+  "inventory": "/tmp/roslyn-managed-ready-dependent-constants251.json",
+  "count": 12,
+  "all_match": true,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentConstantPayloadProjection.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Values.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dependent-constants251-evidence.tsv",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-build.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-fresh2-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-self.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-generator.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-literal.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/source/dependent_constant_payloads.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/native/dependent_constant_payloads.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/all-profile-results-final.json",
+      "matches": true
+    }
+  ]
+}

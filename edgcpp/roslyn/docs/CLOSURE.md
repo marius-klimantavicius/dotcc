@@ -1,44 +1,44 @@
 # Remaining phase 3–4 closure
 
-The dependent-pointer checkpoint keeps the accepted `4bb94` contract unchanged:
-251 tables and 39,145 stable kind IDs. Four fresh native/source objects pass 99
+The dependent-constant checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Two fresh native/source objects pass 94
 reader assertions; self-checks pass 73. Build, generator, literal-field and
 whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned stock
 inputs, the pinned tool and 26 canonical backend files; new strict builds: zero.
-The final v2 gate is authoritative; the intermediate v1 binary is excluded. No full
-211-object refresh or performance rerun is claimed.
+The corrected final v2 reader gate is authoritative. Earlier overwritten probe
+outputs are excluded from the two accepted paths. No full 211-object refresh or
+performance rerun is claimed.
 
-Field coverage is now **1,497 verified / 31 required pending**, plus two explicit
+Field coverage is now **1,503 verified / 25 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
 or disposition. Kind-family proof and optional source fields remain distinct from
 required owner-payload and active-branch evidence.
 
-Two compact ordinary GNU inputs activate eight fields: original nested class,
-dependent bit-width constants, typeref proxy, dependent conversion type and wrapped
-member-pointer constant, nested capture source/indirect fields, and destructor
-type. The named type properties expose only their stored pointers. Original nested
-class is not inferred as lexical parent; proxy descriptors have no fabricated
-symbol. Constant occurrence, shared value and retained type remain distinct.
+One compact ordinary GNU input activates six fields: dependent template-reference
+constant and ordered arguments, destructor type, integer-pack bound, designator
+subscript and optimized-empty aggregate field/base associations. Occurrences,
+shared values and retained types remain distinct. Both designator spellings retain
+one actual subscript; no second range endpoint is reconstructed.
 
-The source indirect capture and source-closure link share the same actual outer
-field in one case, with a separate destination field. Native lowering removes the
-capture list. DestructorType targets the normalized NamedDestructor record; the
-written DestructorAlias is a distinct typeref whose underlying type is that record.
-The proof preserves this normalization without claiming alias-descriptor retention.
+The lowered empty aggregate is reached through the default constant's actual
+BackingExpression temporary, Initialization and Constant. Its ordered base and
+field occurrences retain distinct exact targets. These associations do not occur
+on the directly lowered default constant's components. InitializedField and
+InitializedBaseSubobject expose only occurrence-owned stored links.
 
-Original name argument lists remain empty after one bounded overload variation,
-although actual template-id argument counts 2 and 1 are recorded. This required
-branch stays pending for exact producer/retention follow-up. No arguments are
-recovered from selected instances or source spelling, and no universal inactivity
-is claimed. Eight positive rows and this explicit limit are in
-managed/dependent-pointers251-evidence.tsv and dependent-pointers251-proof-joins.json.
+The dynamic-init empty-target arm remains required pending after one bounded
+variant. Its retained metadata default expression and initialization are present,
+but the target flags/links do not activate. This observation is neither a global
+consumption exclusion nor an inferred association. Six positive rows and that
+limit are recorded in managed/dependent-constants251-evidence.tsv and the native
+activation proof. Original name argument lists also remain explicitly pending.
 
-Next native work combines dependent constant variants and optimized-empty
-initializer links using the existing profiles; incompatible snippets cannot hold
-positive cases. Reflection/token producers and small pragma/asm/list/base arms
-remain bounded queues. No confirmed missing serialization adapter or factory is
-open. Full phases 3–4/M0–M5 continue; EDG remains the semantic authority and
-optional source positions remain nonblocking.
+Next native and reader work covers semantic reflection annotations, token
+sequences and interpolation links using existing profiles. Difficult retention
+cases cannot hold accepted positives. Small pragma/asm/list/base arms remain
+bounded queues. No confirmed missing serialization adapter or factory is open.
+Full phases 3–4/M0–M5 continue; EDG remains the semantic authority and optional
+source positions remain nonblocking.
 
 ## Current implementation and integration
 
@@ -65,7 +65,7 @@ optional source positions remain nonblocking.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 1497 verified and 31 mapped pending-validation fields at this boundary,
+There are 1503 verified and 25 mapped pending-validation fields at this boundary,
 plus two explicit selected-stock input/retention limitations.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.

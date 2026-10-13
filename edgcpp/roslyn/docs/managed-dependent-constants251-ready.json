@@ -1,0 +1,102 @@
+{
+  "checkpoint": "dependent constant and retained empty target identities251",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentConstantPayloadProjection.cs",
+      "sha256": "bf94e08a47e8496f4ac8f01f6140787bcb3c006d2e39d9ea50db13153f7bc2ba",
+      "bytes": 7539
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "764b4c4ff349990518bb78167294aa1b7ed507f0471f0a8ebbafdef55944d21a",
+      "bytes": 78514
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Values.cs",
+      "sha256": "726b886a35b11db4be740ee9a7f7ccc671137b7b4e642a0dac547159a186a6c2",
+      "bytes": 7726
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dependent-constants251-evidence.tsv",
+      "sha256": "54fb50ea642799e900795d7993e4d83da6aa5b38a29bf0199647b2ad5b0da144",
+      "bytes": 6192
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-build.log",
+      "sha256": "87271bf8d85e4b45fc36f6cb0fe32b7672ea1565cd5f4f155a34b0d801debeb3",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-fresh2-v2.log",
+      "sha256": "31c176bd1094789e5786bdde9c860bbe77810c002cc06369a391e8ce404c8761",
+      "bytes": 606
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-self.log",
+      "sha256": "a8fa4f8d70d18b88087c55277e5f75bebee4325368f04917fbbe8d5520fd0dc7",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-constants251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/source/dependent_constant_payloads.roslynobj",
+      "sha256": "81cef9c696b5a5d46a4d40fdf40a010a9910cec28450ddc43bb0aba7112fa8e9",
+      "bytes": 818176
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/native/dependent_constant_payloads.roslynobj",
+      "sha256": "de172a7524b36d608e05f84246aec9390bde7a5a493b0c2cdee56920edc8619a",
+      "bytes": 831488
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/all-profile-results-final.json",
+    "sha256": "3dfaa6b38db2d671f87895230cc803ff5ed9101c8cd00090ae182a212aa72acb",
+    "bytes": 1617
+  },
+  "checks": {
+    "build": "0 warnings/errors",
+    "fresh": "PASS94/2 unique",
+    "self": "PASS73",
+    "generator": "249 table bindings/1941 properties; --check passes",
+    "literal_writes": "passes",
+    "whitespace": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentConstantPayloadProjection.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Values.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dependent-constants251-evidence.tsv",
+        "clean": true
+      }
+    ]
+  },
+  "proof": "6 positive field rows plus1 observed-pending dynamic-init empty target row; singleton generic designator bound and occurrence/value separation explicit",
+  "api_change": "Two exact occurrence-level nullable conveniences Constant.InitializedField and InitializedBaseSubobject",
+  "scope": "2 unique compatible snapshots; no extra existing/full211/scale/native build or schema mutation",
+  "route": "TemplateDefaultConstant694.BackingExpression700\u2192Temporary.Initialization705.Constant706 metadata; base710/field718 are elements0/1 of706, not direct root694 children",
+  "unaccepted_log": "fresh2-v1 failed the incorrect direct-component reachability expectation; only v2 accepted",
+  "running_commands": [],
+  "state": "owned files held for coordinator checkpoint; no independent commit"
+}

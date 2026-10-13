@@ -60,6 +60,7 @@ CASES = {
     'initialization_deferred': ['--c++20', '--g++', '--gnu_version', '130000'],
     'dependent_payloads': ['--c++20', '--g++', '--gnu_version', '130000', '--bit_precise_integers'],
     'retained_name_forms': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'dependent_constant_payloads': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

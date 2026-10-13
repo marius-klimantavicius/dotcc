@@ -1,0 +1,88 @@
+{
+  "checkpoint_base": "2abdb20d66208261a39f0149a6caad97b4ad327d",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "969e639aa79a23975b448203cd8d34005ab0423c7eed49c2b0bc3c7307854b0f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dependent_constant_payloads.cpp",
+      "sha256": "47529ff54c8b757ea372993bf0ce3c92ca37cbcff733f60d19cee44c103765ff"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "62ad7567a8690b00dd4bb43f43d48072d39c83915141858abf13a4dde19dacc8"
+    }
+  ],
+  "candidate_owned_paths": 2,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 2,
+  "unique_objects": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/all-profile-results-final.json",
+      "sha256": "3dfaa6b38db2d671f87895230cc803ff5ed9101c8cd00090ae182a212aa72acb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/build-results-final.json",
+      "sha256": "477e427eb8c7f43d9185dddd30965778007d01a0554cb2311aeb3dc5e081ffee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/validation-summary-final.json",
+      "sha256": "65559fd2fbee7f3856bf135f7a1836aad6fca3307732152fcf8f4c28a0cbab05"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/gate-final.log",
+      "sha256": "46eb3fbe6a67dfa490bfa47d078617d49723afd678f9e278647fb0a4e4177d05"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/activation-proof.json",
+      "sha256": "bd137d77e355ee9deba9ffac20cf4a0dea234e44c2f42bf3b53766a74fab1469"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/activation-proof.py",
+      "sha256": "83858edeb844676cb8b5cc18e0a25a7dced208c4d10246b6455e94a5cbf9e652"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/field-evidence.tsv",
+      "sha256": "edc9018c88061ef456626d0e32793877df2d3b21bddd8aced7046328a622262b"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-dependent-constant-empty-evidence251.tsv",
+  "public_gate": "Managed final two-object gate underway; authoritative result follows separately.",
+  "selected_fields": 7,
+  "positive_fields": 6,
+  "pending_fields": 1,
+  "input_count": 1,
+  "designator_normal_use_variant_count": 1,
+  "dynamic_typed_default_variant_count": 1,
+  "initial_recipe_archive": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/initial-recipe",
+  "actual_positives": [
+    "actual template-ref child occurrence and two ordered explicit arguments",
+    "dependent destructor exact placeholder type",
+    "integer-pack bound and separate concrete pack0/1/2",
+    "generic designator one-bound list with distinct occurrences sharing exact value",
+    "native aggregate empty base/field through retained default backing metadata recipe"
+  ],
+  "legitimate_absences": [
+    "native surviving generic ck_dynamic_init empty flag0 with inactive field/base union; typed metadata default remains retained",
+    "source DO_IL_LOWERING0 guarded empty flagNULL/association absent",
+    "no inferred range Last element beyond actual list"
+  ],
+  "hold": true
+}

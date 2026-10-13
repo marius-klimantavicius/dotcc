@@ -1499,3 +1499,53 @@ copied with the exact eight-positive/one-pending scope. Backend/config/schema
 bytes are unchanged; only direct reader properties, ordinary fixtures and proof
 checks are added. Restart, unrelated and unaccepted name-reference experiment
 files are excluded. No new existing-object or broad profile campaign.
+
+
+### Accepted dependent constant and optimized-empty aggregate links
+
+The dependent-constant checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Two fresh native/source objects pass 94
+reader assertions; self-checks pass 73. Build, generator, literal-field and
+whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned stock
+inputs, the pinned tool and 26 canonical backend files; new strict builds: zero.
+The corrected final v2 reader gate is authoritative. Earlier overwritten probe
+outputs are excluded from the two accepted paths. No full 211-object refresh or
+performance rerun is claimed.
+
+Field coverage is now **1,503 verified / 25 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Kind-family proof and optional source fields remain distinct from
+required owner-payload and active-branch evidence.
+
+One compact ordinary GNU input activates six fields: dependent template-reference
+constant and ordered arguments, destructor type, integer-pack bound, designator
+subscript and optimized-empty aggregate field/base associations. Occurrences,
+shared values and retained types remain distinct. Both designator spellings retain
+one actual subscript; no second range endpoint is reconstructed.
+
+The lowered empty aggregate is reached through the default constant's actual
+BackingExpression temporary, Initialization and Constant. Its ordered base and
+field occurrences retain distinct exact targets. These associations do not occur
+on the directly lowered default constant's components. InitializedField and
+InitializedBaseSubobject expose only occurrence-owned stored links.
+
+The dynamic-init empty-target arm remains required pending after one bounded
+variant. Its retained metadata default expression and initialization are present,
+but the target flags/links do not activate. This observation is neither a global
+consumption exclusion nor an inferred association. Six positive rows and that
+limit are recorded in managed/dependent-constants251-evidence.tsv and the native
+activation proof. Original name argument lists also remain explicitly pending.
+
+Next native and reader work covers semantic reflection annotations, token
+sequences and interpolation links using existing profiles. Difficult retention
+cases cannot hold accepted positives. Small pragma/asm/list/base arms remain
+bounded queues. No confirmed missing serialization adapter or factory is open.
+Full phases 3–4/M0–M5 continue; EDG remains the semantic authority and optional
+source positions remain nonblocking.
+
+Inventories: managed-dependent-constants251-ready.json and
+native-dependent-constant-empty251-ready.json. All 12 managed and 12 native
+frozen file/evidence hashes match. The final validation, stage, activation and
+build summaries are copied with the six-positive/one-pending scope. Backend,
+configuration and schema bytes are unchanged. Restart, unrelated and unaccepted
+experimental inputs are excluded from this checkpoint.

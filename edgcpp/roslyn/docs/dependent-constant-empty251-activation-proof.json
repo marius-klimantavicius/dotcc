@@ -1,0 +1,645 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "validation_instances": 2,
+  "unique_objects": 2,
+  "selected_fields": 7,
+  "positive_fields": 6,
+  "pending_fields": 1,
+  "backend_changes": false,
+  "configuration_changes": false,
+  "new_strict_builds": 0,
+  "designator_normal_use_variant_count": 1,
+  "dynamic_typed_default_variant_count": 1,
+  "profiles": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/source/dependent_constant_payloads.roslynobj",
+      "sha256": "81cef9c696b5a5d46a4d40fdf40a010a9910cec28450ddc43bb0aba7112fa8e9",
+      "dependent_payload_occurrences": [
+        {
+          "id": 648,
+          "value_id": 658,
+          "dependent_kind": "tpck_integer_pack",
+          "type_id": null,
+          "constant_value_id": 657,
+          "constant_type_id": 369,
+          "ordinal": 0,
+          "constant_id": 650,
+          "child_value": 657,
+          "child_type": 369,
+          "expression_id": null,
+          "representation_role_id": null
+        },
+        {
+          "id": 1479,
+          "value_id": 1486,
+          "dependent_kind": "tpck_template_ref",
+          "type_id": null,
+          "constant_value_id": 1483,
+          "constant_type_id": 411,
+          "ordinal": 0,
+          "constant_id": 1481,
+          "child_value": 1483,
+          "child_type": 411,
+          "expression_id": 1476,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 1679,
+          "value_id": 1682,
+          "dependent_kind": "tpck_destructor",
+          "type_id": 1281,
+          "constant_value_id": null,
+          "constant_type_id": null,
+          "ordinal": null,
+          "constant_id": null,
+          "child_value": null,
+          "child_type": null,
+          "expression_id": 1675,
+          "representation_role_id": 7002
+        }
+      ],
+      "template_reference_child_kinds": [
+        {
+          "id": 1486,
+          "constant_value_id": 1483,
+          "child_kind": "tpck_unknown_function"
+        }
+      ],
+      "template_reference_arguments": [
+        {
+          "owner_id": 1486,
+          "ordinal": 0,
+          "argument_id": 1484,
+          "kind": "tak_type",
+          "type_id": 369,
+          "constant_id": null,
+          "integer_value": null
+        },
+        {
+          "owner_id": 1486,
+          "ordinal": 1,
+          "argument_id": 1485,
+          "kind": "tak_nontype",
+          "type_id": null,
+          "constant_id": 1273,
+          "integer_value": "3"
+        }
+      ],
+      "dependent_destructor_parameter": [
+        {
+          "id": 1682,
+          "type_id": 1281,
+          "parameter_id": 1693,
+          "placeholder_type_id": 1281
+        }
+      ],
+      "integer_pack_bound_parameter": [
+        {
+          "id": 658,
+          "constant_value_id": 657,
+          "parameter_id": 672,
+          "placeholder_constant_id": 653,
+          "placeholder_value": 657,
+          "bound_occurrence": 650
+        }
+      ],
+      "actual_pack_elements": [
+        {
+          "owner_id": 614,
+          "ordinal": 0,
+          "argument_id": 615,
+          "constant_id": 598,
+          "integer_value": null
+        },
+        {
+          "owner_id": 646,
+          "ordinal": 0,
+          "argument_id": 647,
+          "constant_id": 648,
+          "integer_value": null
+        },
+        {
+          "owner_id": 722,
+          "ordinal": 0,
+          "argument_id": 723,
+          "constant_id": 724,
+          "integer_value": "0"
+        },
+        {
+          "owner_id": 722,
+          "ordinal": 1,
+          "argument_id": 727,
+          "constant_id": 728,
+          "integer_value": "1"
+        },
+        {
+          "owner_id": 722,
+          "ordinal": 2,
+          "argument_id": 731,
+          "constant_id": 732,
+          "integer_value": "2"
+        }
+      ],
+      "generic_designator_occurrences": [
+        {
+          "id": 1889,
+          "value_id": 1895,
+          "is_generic": 1,
+          "index_value": null,
+          "ordinal": 0,
+          "constant_id": 1893,
+          "subscript_value": 657,
+          "subscript_type": 369,
+          "normalized_subscript_value": 657,
+          "normalized_subscript_type": 369
+        },
+        {
+          "id": 2019,
+          "value_id": 1895,
+          "is_generic": 1,
+          "index_value": null,
+          "ordinal": 0,
+          "constant_id": 2023,
+          "subscript_value": 657,
+          "subscript_type": 369,
+          "normalized_subscript_value": 657,
+          "normalized_subscript_type": 369
+        }
+      ],
+      "generic_designator_metadata_roots": [
+        {
+          "id": 1889,
+          "parent_constant": 1885,
+          "initialization_id": 1884,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 2019,
+          "parent_constant": 2015,
+          "initialization_id": 2014,
+          "representation_role_id": 7002
+        }
+      ],
+      "concrete_designator_controls": [
+        {
+          "id": 2382,
+          "index_value": "2"
+        },
+        {
+          "id": 2436,
+          "index_value": "1"
+        }
+      ],
+      "template_default_backing_recipe": [
+        {
+          "parameter_id": 930,
+          "default_argument_id": 982,
+          "constant_id": 937,
+          "backing_expression_id": 949,
+          "initialization_id": 954,
+          "recipe_constant": 955,
+          "representation_role_id": 7002
+        }
+      ],
+      "empty_aggregate_members": [],
+      "dynamic_initializer_occurrences": [
+        {
+          "id": 2146,
+          "type_id": 1024,
+          "value_id": 2160,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2148
+        },
+        {
+          "id": 2161,
+          "type_id": 1093,
+          "value_id": 2174,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2163
+        },
+        {
+          "id": 2175,
+          "type_id": 369,
+          "value_id": 2182,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2177
+        },
+        {
+          "id": 2269,
+          "type_id": 1024,
+          "value_id": 2279,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 1,
+          "is_generic_initializer": 0,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2272
+        },
+        {
+          "id": 2280,
+          "type_id": 1093,
+          "value_id": 2285,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 0,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2283
+        },
+        {
+          "id": 2286,
+          "type_id": 369,
+          "value_id": 2291,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 0,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2289
+        },
+        {
+          "id": 2482,
+          "type_id": 1024,
+          "value_id": 2499,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2484
+        },
+        {
+          "id": 2500,
+          "type_id": 1093,
+          "value_id": 2516,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2502
+        },
+        {
+          "id": 2552,
+          "type_id": 1024,
+          "value_id": 2558,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2554
+        },
+        {
+          "id": 2559,
+          "type_id": 1093,
+          "value_id": 2565,
+          "initializes_empty_object": null,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2561
+        }
+      ],
+      "typed_default_metadata_routes": [
+        {
+          "parameter_id": 2475,
+          "default_expression_id": 2476,
+          "initialization_id": 2477,
+          "constant_id": 2478,
+          "representation_role_id": 7002
+        },
+        {
+          "parameter_id": 2547,
+          "default_expression_id": 2548,
+          "initialization_id": 2549,
+          "constant_id": 2550,
+          "representation_role_id": 7002
+        }
+      ],
+      "selected_capabilities": {
+        "DO_IL_LOWERING": {
+          "value": "0",
+          "enabled": false
+        },
+        "PROTOTYPE_INSTANTIATIONS_IN_IL": {
+          "value": "1",
+          "enabled": true
+        }
+      }
+    },
+    "native": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/native/dependent_constant_payloads.roslynobj",
+      "sha256": "de172a7524b36d608e05f84246aec9390bde7a5a493b0c2cdee56920edc8619a",
+      "dependent_payload_occurrences": [
+        {
+          "id": 525,
+          "value_id": 535,
+          "dependent_kind": "tpck_integer_pack",
+          "type_id": null,
+          "constant_value_id": 534,
+          "constant_type_id": 365,
+          "ordinal": 0,
+          "constant_id": 527,
+          "child_value": 534,
+          "child_type": 365,
+          "expression_id": null,
+          "representation_role_id": null
+        },
+        {
+          "id": 1045,
+          "value_id": 1052,
+          "dependent_kind": "tpck_template_ref",
+          "type_id": null,
+          "constant_value_id": 1049,
+          "constant_type_id": 409,
+          "ordinal": 0,
+          "constant_id": 1047,
+          "child_value": 1049,
+          "child_type": 409,
+          "expression_id": 1042,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 1246,
+          "value_id": 1249,
+          "dependent_kind": "tpck_destructor",
+          "type_id": 858,
+          "constant_value_id": null,
+          "constant_type_id": null,
+          "ordinal": null,
+          "constant_id": null,
+          "child_value": null,
+          "child_type": null,
+          "expression_id": 1242,
+          "representation_role_id": 7002
+        }
+      ],
+      "template_reference_child_kinds": [
+        {
+          "id": 1052,
+          "constant_value_id": 1049,
+          "child_kind": "tpck_unknown_function"
+        }
+      ],
+      "template_reference_arguments": [
+        {
+          "owner_id": 1052,
+          "ordinal": 0,
+          "argument_id": 1050,
+          "kind": "tak_type",
+          "type_id": 365,
+          "constant_id": null,
+          "integer_value": null
+        },
+        {
+          "owner_id": 1052,
+          "ordinal": 1,
+          "argument_id": 1051,
+          "kind": "tak_nontype",
+          "type_id": null,
+          "constant_id": 846,
+          "integer_value": "3"
+        }
+      ],
+      "dependent_destructor_parameter": [
+        {
+          "id": 1249,
+          "type_id": 858,
+          "parameter_id": 1258,
+          "placeholder_type_id": 858
+        }
+      ],
+      "integer_pack_bound_parameter": [
+        {
+          "id": 535,
+          "constant_value_id": 534,
+          "parameter_id": 548,
+          "placeholder_constant_id": 530,
+          "placeholder_value": 534,
+          "bound_occurrence": 527
+        }
+      ],
+      "actual_pack_elements": [
+        {
+          "owner_id": 492,
+          "ordinal": 0,
+          "argument_id": 493,
+          "constant_id": 476,
+          "integer_value": null
+        },
+        {
+          "owner_id": 523,
+          "ordinal": 0,
+          "argument_id": 524,
+          "constant_id": 525,
+          "integer_value": null
+        },
+        {
+          "owner_id": 570,
+          "ordinal": 0,
+          "argument_id": 571,
+          "constant_id": 572,
+          "integer_value": "0"
+        },
+        {
+          "owner_id": 570,
+          "ordinal": 1,
+          "argument_id": 575,
+          "constant_id": 576,
+          "integer_value": "1"
+        },
+        {
+          "owner_id": 570,
+          "ordinal": 2,
+          "argument_id": 579,
+          "constant_id": 580,
+          "integer_value": "2"
+        }
+      ],
+      "generic_designator_occurrences": [
+        {
+          "id": 1413,
+          "value_id": 1421,
+          "is_generic": 1,
+          "index_value": null,
+          "ordinal": 0,
+          "constant_id": 1417,
+          "subscript_value": 534,
+          "subscript_type": 365,
+          "normalized_subscript_value": 534,
+          "normalized_subscript_type": 365
+        },
+        {
+          "id": 1532,
+          "value_id": 1421,
+          "is_generic": 1,
+          "index_value": null,
+          "ordinal": 0,
+          "constant_id": 1536,
+          "subscript_value": 534,
+          "subscript_type": 365,
+          "normalized_subscript_value": 534,
+          "normalized_subscript_type": 365
+        }
+      ],
+      "generic_designator_metadata_roots": [
+        {
+          "id": 1413,
+          "parent_constant": 1409,
+          "initialization_id": 1408,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 1532,
+          "parent_constant": 1528,
+          "initialization_id": 1527,
+          "representation_role_id": 7002
+        }
+      ],
+      "concrete_designator_controls": [],
+      "template_default_backing_recipe": [
+        {
+          "parameter_id": 687,
+          "default_argument_id": 736,
+          "constant_id": 694,
+          "backing_expression_id": 700,
+          "initialization_id": 705,
+          "recipe_constant": 706,
+          "representation_role_id": 7002
+        }
+      ],
+      "empty_aggregate_members": [
+        {
+          "id": 710,
+          "type_id": 599,
+          "value_id": 714,
+          "initializes_empty_object": 1,
+          "constant_for_base_class": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": 665,
+          "aggregate_occurrence": 706,
+          "ordinal": 0,
+          "field_type": null,
+          "containing_record": null,
+          "is_optimized_empty_class": null,
+          "base_type_id": 599,
+          "most_derived_type_id": 625,
+          "is_optimized_empty_base": 1
+        },
+        {
+          "id": 718,
+          "type_id": 612,
+          "value_id": 722,
+          "initializes_empty_object": 1,
+          "constant_for_base_class": 0,
+          "initialized_field_id": 638,
+          "initialized_base_subobject_id": null,
+          "aggregate_occurrence": 706,
+          "ordinal": 1,
+          "field_type": 612,
+          "containing_record": 625,
+          "is_optimized_empty_class": 1,
+          "base_type_id": null,
+          "most_derived_type_id": null,
+          "is_optimized_empty_base": null
+        }
+      ],
+      "dynamic_initializer_occurrences": [
+        {
+          "id": 1652,
+          "type_id": 756,
+          "value_id": 1674,
+          "initializes_empty_object": 0,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 1654
+        },
+        {
+          "id": 1675,
+          "type_id": 769,
+          "value_id": 1688,
+          "initializes_empty_object": 0,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 1677
+        },
+        {
+          "id": 1689,
+          "type_id": 365,
+          "value_id": 1696,
+          "initializes_empty_object": 0,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 1691
+        },
+        {
+          "id": 2031,
+          "type_id": 756,
+          "value_id": 2048,
+          "initializes_empty_object": 0,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2033
+        },
+        {
+          "id": 2049,
+          "type_id": 769,
+          "value_id": 2065,
+          "initializes_empty_object": 0,
+          "constant_for_base_class": 0,
+          "is_generic_initializer": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 2051
+        }
+      ],
+      "typed_default_metadata_routes": [
+        {
+          "parameter_id": 2024,
+          "default_expression_id": 2025,
+          "initialization_id": 2026,
+          "constant_id": 2027,
+          "representation_role_id": 7002
+        }
+      ],
+      "selected_capabilities": {
+        "DO_IL_LOWERING": {
+          "value": "1",
+          "enabled": true
+        },
+        "PROTOTYPE_INSTANTIATIONS_IN_IL": {
+          "value": "1",
+          "enabled": true
+        }
+      }
+    }
+  },
+  "retention_notes": {
+    "designator": "Initial unused templates had NULL body scope/root, so no designators. One normal-use variant instantiated both templates and retained actual generic designator/subscript occurrences without diagnostic. Both generic occurrences share one interned value and a one-bound list; occurrence Components preserve distinct bound constants. No Last entry reconstructed.",
+    "dynamic_initializer": "One typed function-template default-parameter variant retained native metadata default expression2025/DI2026/aggregate2027 and dynamic children2031/2049. All surviving native dynamic constants are is_generic_initializer1, initializes_empty_object0; field/base union is inactive. Source DO_IL_LOWERING0 has nullable unknown flag and absent associations. Exact generic producer decl_inits.c1090-1166 appends components with NULL field/base links. No global consumed/inactive claim; ordinary lowering consumers remain separate source proof.",
+    "empty_aggregate": "Native template default694 is lowered to its own ordinary aggregate form; its backing metadata expression700 retains temporary DI705/aggregate706 with exact optimized base710/base665 and field718/field638. No synthesis from the shortened ordinary value.",
+    "variants": "One designator normal-use variant and one typed dynamic default variant; one input, two final native/source outputs. Initial outputs archived. No extra C probe, backend/profile/schema/core changes or helper calls."
+  }
+}
