@@ -1,0 +1,50 @@
+[
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/template_parameter_defaults.cpp",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/parameter_attributes_microsoft.cpp",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/all-profile-results-final.json",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/build-results-final.json",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/backend-hashes-final.json",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/stage-verification-final.json",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/validation-summary-final.json",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/gate-final.log",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/activation-proof.json",
+    "matches": true
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/field-evidence.tsv",
+    "matches": true
+  }
+]

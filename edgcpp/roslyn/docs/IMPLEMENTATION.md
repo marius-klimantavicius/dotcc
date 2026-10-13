@@ -1296,3 +1296,52 @@ recipes include parameter/default-lambda, selected partial/default template argu
 dependent constants/types, empty objects, captures/foreach, names, master/deferred and
 reflection/injection tokens. Recipes are uncompiled until native lane validation, never
 assumed evidence. Full phases3–4/M0–M5 remains active. No optional source campaign.
+
+
+### Accepted declaration/default identities
+
+The bounded declaration/default checkpoint keeps the accepted `4bb94` contract
+unchanged: 251 tables and 39,145 stable kind IDs. Seven existing objects pass 454
+reader assertions and four fresh native/source objects pass 99 (11 distinct
+paths). Self-checks pass 73; build, generator, literal-field and whitespace checks
+pass. All 14 unchanged compiler stages retain 316 pinned stock inputs, the pinned
+stock tool and 26 canonical backend files; new strict builds: zero. This is not a
+full 211-object refresh or a performance rerun.
+
+Field coverage is now **1,476 verified / 52 required pending**, with two explicit
+selected-stock module-partition input limitations. All 2,000 rows have an explicit
+mapping or disposition. The 89 captured optional source fields, 15 optional limits
+and 79 inactive stock-generator fields remain separate. Kind-family dispatch and
+getter evidence does not establish every owner payload or runtime alternative.
+
+Actual variable-template primary pointer arguments and selected-partial integer
+arguments remain distinct. Template-template defaults point to the real DefaultBox
+descriptor, independently from the placeholder. Default-lambda entities retain
+ordered parameter membership and the exact routine parent; the source default
+expression is metadata and the lowered native expression is legitimately absent.
+Parameter attributes and native Microsoft in/out targets preserve recognized source
+versus suppressed native kinds. The explicit-instantiation visibility attribute
+belongs to its source directive; native source sequences are disabled.
+
+Existing objects additionally prove exact designated source-entry and pragma
+backpointers, written enum/type defaults, nested-requirement metadata, applied UUID
+record identity, overriding/overridden routine identities and statement attribute
+ownership. Independent Microsoft target masks, overriding-subobject pointers and
+unactivated constant field/base/designator branches remain pending.
+
+Next native work activates the remaining source expression/initialization arms from
+expression7-recipes.json using the existing profiles. Next managed work proves a
+small set of existing list/target identities, then accepts the fresh expression
+objects. Master/deferred, dependent constants/types, empty objects, captures/foreach,
+names and reflection/token producers remain bounded queues. No confirmed missing
+adapter or factory is open. Full phases 3–4/M0–M5 continue; positions remain optional,
+and EDG retained facts remain the sole semantic authority.
+
+Evidence: managed/declaration-links251-evidence.tsv (18 positive rows, three
+explicit pending observations), declaration-links251-proof-joins.json,
+managed-declaration-links251-ready.json, native-template-parameter-defaults251-ready.json,
+template-parameter-defaults251-activation-proof.json and the copied validation/stage
+summaries. Coordinator checks all 21 managed file/log/object/manifest hashes and
+all 12 native candidate/evidence hashes. Restart and unrelated files stay excluded.
+The previous list/control/module milestone remains separate history. No schema,
+backend or configuration bytes change in this checkpoint.

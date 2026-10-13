@@ -1,0 +1,16 @@
+{
+  "field": "a_pragma.source_sequence_entry",
+  "scope": "Existing final-five corpus only; no new input/build or source-coordinate effort",
+  "observed": "/tmp/roslyn-root-pragma-source-entry-observed.json",
+  "counts": "13 actual nonnull links across4 source fixtures: source_order1, pragma_scope_gnu4, pragma_scope_upc4, pragma_scope_microsoft4",
+  "stock": [
+    "pragma.c875\u2013882 GENERATE_SOURCE_SEQUENCE_LISTS update_source_sequence_list transfers actual pending entry then clears FE copy",
+    "src_seq.c973\u2013975 writes actual pragma->source_sequence_entry=new_ssep",
+    "src_seq.c1422\u20131426 explicitly clears association when sequence removed; absence legitimate"
+  ],
+  "writer": "roslyn_source_sequences.h194\u2013209 reads actual pointer under GENERATE_SOURCE_SEQUENCE_LISTS and writes pragma.source_entry_id",
+  "API": "PragmaDirective.SourceEntry / SourceEntry.Target / Tag / SourceSequenceOwners",
+  "existing_test_gap": "PragmaScopeProjection sweeps and scope owner checks; Program481 STDC payload. Neither exact reciprocal SourceEntry identity asserted. A tiny check on already-selected source_order can close this field without new compiler work.",
+  "actual_example": "source/source_order pragma1247 pk_stdc ->source_entry1248 ->target1247/tagiek_pragma; scope_source_entry(owner225,ordinal1,entry1248)",
+  "assertion_hint": "actual STDC pragma SourceEntry.Target==samepragma, Tag.Name==iek_pragma and GlobalScope.SourceSequence contains that exact entry at retained sequence position. No source file/line/column guesses."
+}

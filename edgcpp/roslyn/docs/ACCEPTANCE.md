@@ -1,35 +1,41 @@
 # Remaining acceptance work
 
-Current bounded list/control and module checkpoint keeps the accepted4bb94
-251-table/39,145-kind contract unchanged. Seven existing objects pass543 and
-three fresh source objects pass84 (10 distinct paths); self73/build0/whitespace
-checks pass. All14 unchanged compiled stages retain316 pinned stock inputs/tool
-and26 canonical backend files; new strict builds0. No full211/scale rerun is claimed.
-The final-five211/PASS4437 and later12-path1048/101 gates remain separate history.
+The bounded declaration/default checkpoint keeps the accepted `4bb94` contract
+unchanged: 251 tables and 39,145 stable kind IDs. Seven existing objects pass 454
+reader assertions and four fresh native/source objects pass 99 (11 distinct
+paths). Self-checks pass 73; build, generator, literal-field and whitespace checks
+pass. All 14 unchanged compiler stages retain 316 pinned stock inputs, the pinned
+stock tool and 26 canonical backend files; new strict builds: zero. This is not a
+full 211-object refresh or a performance rerun.
 
-Field proof is1458 verified/70 required pending, with2 mapped_stock_input_unavailable
-partition slots. All2000 rows have explicit mapping/disposition;89 optional captured
-source fields/15 optional limits and79 stock-generator inactive fields remain.
-All kind labels have exact writer/getter/reserved/unobserved dispositions; this is
-not every-owner payload or every-enum runtime activation proof.
+Field coverage is now **1,476 verified / 52 required pending**, with two explicit
+selected-stock module-partition input limitations. All 2,000 rows have an explicit
+mapping or disposition. The 89 captured optional source fields, 15 optional limits
+and 79 inactive stock-generator fields remain separate. Kind-family dispatch and
+getter evidence does not establish every owner payload or runtime alternative.
 
-Actual loop initializer/increment, scope VLA/label/vcall ordering, native SEH
-body/filter/cleanup, catch/typeinfo and native named-attribute arguments now pass
-exact identities/edges. Clobber/catch list checks are explicitly singleton only;
-for-init scope remains unactivated. Header-unit name/resolved header versus IFC
-path and import-owned marker attribute are genuine positives. Selected stock IFC
-partition production succeeds but import fails on bare-primary/full-partition name
-mismatch; the producer has no retained current-module root. Preserve partition
-schema/API adapter and describe unavailable selected-stock input validation, not
-universal inactivity or a verified positive. No core/IFC/skip-import workaround.
+Actual variable-template primary pointer arguments and selected-partial integer
+arguments remain distinct. Template-template defaults point to the real DefaultBox
+descriptor, independently from the placeholder. Default-lambda entities retain
+ordered parameter membership and the exact routine parent; the source default
+expression is metadata and the lowered native expression is legitimately absent.
+Parameter attributes and native Microsoft in/out targets preserve recognized source
+versus suppressed native kinds. The explicit-instantiation visibility attribute
+belongs to its source directive; native source sequences are disabled.
 
-Next native bounded batch activates variable-template selected partial/default
-arguments and parameter/default-lambda metadata with existing profiles. Next managed
-batch proves existing template/type/base/attribute target relationships. Remaining
-master/deferred, dependent constants/types, capture/foreach, name and reflection/token
-recipes are explicit uncompiled queues. No confirmed missing adapter/factory is open;
-70 required positive/identity obligations and final release proof remain. Source
-positions stay optional. Full phases3–4/M0–M5 stays active without an approval pause.
+Existing objects additionally prove exact designated source-entry and pragma
+backpointers, written enum/type defaults, nested-requirement metadata, applied UUID
+record identity, overriding/overridden routine identities and statement attribute
+ownership. Independent Microsoft target masks, overriding-subobject pointers and
+unactivated constant field/base/designator branches remain pending.
+
+Next native work activates the remaining source expression/initialization arms from
+expression7-recipes.json using the existing profiles. Next managed work proves a
+small set of existing list/target identities, then accepts the fresh expression
+objects. Master/deferred, dependent constants/types, empty objects, captures/foreach,
+names and reflection/token producers remain bounded queues. No confirmed missing
+adapter or factory is open. Full phases 3–4/M0–M5 continue; positions remain optional,
+and EDG retained facts remain the sole semantic authority.
 
 ## Historical milestone evidence
 

@@ -1,0 +1,137 @@
+[
+  {
+    "profile": "native",
+    "fixture": "template_parameter_defaults",
+    "tables": 251,
+    "foreign_key_errors": 0,
+    "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "default_entities": [
+      {
+        "owner_id": 521,
+        "ordinal": 0,
+        "entity_id": 494,
+        "default_expression_id": null,
+        "lambda_parent_entity_id": 514,
+        "is_lambda": 1,
+        "defined_in_variable_initializer": 0,
+        "defined_in_field_initializer": 0
+      }
+    ],
+    "parameter_attributes": [
+      {
+        "owner_id": 906,
+        "ordinal": 0,
+        "attribute_id": 907,
+        "name": "maybe_unused",
+        "kind": "ak_maybe_unused"
+      }
+    ],
+    "parameter_ms_attributes": []
+  },
+  {
+    "profile": "native",
+    "fixture": "parameter_attributes_microsoft",
+    "tables": 251,
+    "foreign_key_errors": 0,
+    "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "default_entities": [],
+    "parameter_attributes": [],
+    "parameter_ms_attributes": [
+      {
+        "owner_id": 441,
+        "ordinal": 0,
+        "attribute_id": 442,
+        "name": "in",
+        "kind": "msak_unrecognized",
+        "target_id": 441
+      },
+      {
+        "owner_id": 446,
+        "ordinal": 0,
+        "attribute_id": 447,
+        "name": "out",
+        "kind": "msak_unrecognized",
+        "target_id": 446
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "fixture": "template_parameter_defaults",
+    "tables": 251,
+    "foreign_key_errors": 0,
+    "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "default_entities": [
+      {
+        "owner_id": 678,
+        "ordinal": 0,
+        "entity_id": 579,
+        "default_expression_id": 679,
+        "lambda_parent_entity_id": 674,
+        "is_lambda": 1,
+        "defined_in_variable_initializer": 0,
+        "defined_in_field_initializer": 0
+      }
+    ],
+    "parameter_attributes": [
+      {
+        "owner_id": 1170,
+        "ordinal": 0,
+        "attribute_id": 1171,
+        "name": "maybe_unused",
+        "kind": "ak_maybe_unused"
+      },
+      {
+        "owner_id": 1188,
+        "ordinal": 0,
+        "attribute_id": 1189,
+        "name": "maybe_unused",
+        "kind": "ak_maybe_unused"
+      }
+    ],
+    "parameter_ms_attributes": []
+  },
+  {
+    "profile": "source",
+    "fixture": "parameter_attributes_microsoft",
+    "tables": 251,
+    "foreign_key_errors": 0,
+    "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "default_entities": [],
+    "parameter_attributes": [],
+    "parameter_ms_attributes": [
+      {
+        "owner_id": 443,
+        "ordinal": 0,
+        "attribute_id": 444,
+        "name": "in",
+        "kind": "msak_misc",
+        "target_id": 443
+      },
+      {
+        "owner_id": 448,
+        "ordinal": 0,
+        "attribute_id": 449,
+        "name": "out",
+        "kind": "msak_misc",
+        "target_id": 448
+      },
+      {
+        "owner_id": 460,
+        "ordinal": 0,
+        "attribute_id": 461,
+        "name": "in",
+        "kind": "msak_misc",
+        "target_id": 460
+      },
+      {
+        "owner_id": 462,
+        "ordinal": 0,
+        "attribute_id": 463,
+        "name": "out",
+        "kind": "msak_misc",
+        "target_id": 462
+      }
+    ]
+  }
+]

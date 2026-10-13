@@ -1,0 +1,81 @@
+{
+  "checkpoint_base": "346d2075a225e3576136658eceebf5f3768fa861",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "a29d41ccbc8abbe2f64689838d7d74da7b5042fb82d208fc46a95164b903ab03"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/template_parameter_defaults.cpp",
+      "sha256": "abfa7d0c49d276f1a2ef87d5b31ac7636d2dea9a146c2c39aa27bb8700b5d631"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/parameter_attributes_microsoft.cpp",
+      "sha256": "46366965862a8173f39916a40c39bde463a68f5a311edd7ff96c9ff7a771ec0c"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "7b3e9b475dbcfae9b9edf96b5a1ed4c335953e8261be09fa5eb845f159ad9fc2"
+    }
+  ],
+  "candidate_owned_paths": 3,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/all-profile-results-final.json",
+      "sha256": "af683cbeb6ea9fbe62ea505a5856d4661472ca4d99b5b8965dee4f41f80c8b53"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/build-results-final.json",
+      "sha256": "477e427eb8c7f43d9185dddd30965778007d01a0554cb2311aeb3dc5e081ffee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/validation-summary-final.json",
+      "sha256": "dc4edbb9d6fa9f3624ce2d7a30fd19ff5c24207348ec9c6c5883c305727f7258"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/activation-proof.json",
+      "sha256": "36a2f67522e552e6b68b6544176dc8f1e48ac6c2f4fcaaee4de2ef1c354feec1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/field-evidence.tsv",
+      "sha256": "800379cdb346a35aefedc909275f9920ae310dbce74bfece5039c2f39893c8a9"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-template-parameter-defaults-evidence251.tsv",
+  "public_gate": "managed pending",
+  "actual_positives": [
+    "variable primary/selected partial actual type arguments/initializer/address identity",
+    "template-template declaration default actual pointer distinct from placeholder",
+    "default lambda ordered entities and actual routine parent",
+    "declaration-only maybe_unused ParameterType ownership",
+    "source Microsoft in/out actual ParameterType targets/owners",
+    "source explicit-instantiation directive visibility attribute and literal"
+  ],
+  "legitimate_alternatives": [
+    "native default recipe expression cleared; entity/parent retained",
+    "native Microsoft processing suppression retains unrecognized attrs",
+    "native source-sequence guard disabled, no directive"
+  ]
+}

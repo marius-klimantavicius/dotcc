@@ -1,0 +1,61 @@
+{
+  "scope": "Read-only reuse expression39-review29 plus current211 and pinned producer reads; recipes uncompiled",
+  "observed": "/tmp/roslyn-root-expression7-observed.json",
+  "existing_positive": [
+    {
+      "field": "an_expr_node.variant.nested_req.constraint",
+      "fixture": "native/source template_edges",
+      "stock": "expr.c43437\u201343460 stores scan_concept_expression result; roslyn_expressions_extra.h226\u2013229 direct metadata ref",
+      "actual": "native node1104 wraps1107;source1022 wraps1025; target enk_operation role7002, semantic_reference role6014 ordinal0 exact same target",
+      "public_gap": "Program441 checks nested kind only, not actual constraint link. Assert second requirement WrappedExpression equals metadata0 target, actual constraint tree represents sizeof(T)>0 and metadata role. No source location/reevaluation needed."
+    }
+  ],
+  "recipes": [
+    {
+      "field": "a_dynamic_init.variant.bitwise_copy.source",
+      "stock": [
+        "expr.c38914\u201339037 record_init_for_array_struct_binding stores real source for nonclass array bitwise copy",
+        "overload.c23017\u201323060 temporary array copy alternative; do not confuse dik_expression class copies"
+      ],
+      "code": "int array_binding_copy(int (&values)[2]) { auto [left, right] = values; return left + right; }\n",
+      "profile": "source C++20 existing",
+      "check": "actual dik_bitwise_copy source references values expression and actual evaluation child; may be nested under array initialization descriptor; never fill implied/null source"
+    },
+    {
+      "field": "an_expr_node.variant.sizeof_pack.variant.expr",
+      "stock": "expr.c14595\u201314636 chooses parameter/variable/constant/field expression arm and wraps sizeofpack in template constant",
+      "code": "template<class... Types> constexpr unsigned long expression_pack_size(Types... values) { return sizeof...(values); }\nunsigned long use_expression_pack_size() { return expression_pack_size(1, 2L); }\n",
+      "profile": "source C++20",
+      "check": "actual sizeof_pack WrappedExpression is retained values pack operand, PackType/PackTemplate absent; metadata"
+    },
+    {
+      "field": "an_expr_node.variant.braced_init_list",
+      "stock": "exprutil.c16366\u201316392 explicit prototype-only argument-list conversion, ordered expressions",
+      "code": "template<class T> int dependent_braced_call(T& object) { return object.accept({1, 2}); }\nstruct BracedPair { int first, second; };\nstruct BracedAcceptor { int accept(BracedPair); };\nint use_braced_call(BracedAcceptor& object) { return dependent_braced_call(object); }\n",
+      "profile": "source C++20",
+      "check": "actual prototype enk_braced_init_list ordered operands1/2 metadata; resolved initializer is distinct"
+    },
+    {
+      "field": "an_expr_node.variant.template_name",
+      "stock": [
+        "expr.c57800\u201357840 compiler-generated template operand for alias CTAD deducibility",
+        "templates.c45825\u201345838 alias/templatetemplate guide constraint creation",
+        "expr.c16030\u201316065 direct bak_template scan;16680\u201316707 __edg_is_deducible builtin"
+      ],
+      "code": "template<class T> struct DeducibleBox { DeducibleBox(T); };\ntemplate<class T> using DeducibleAlias = DeducibleBox<T>;\nDeducibleAlias deduced_alias(1);\n",
+      "fallback": "template<class T> constexpr bool retained_deducibility = __edg_is_deducible(DeducibleAlias, T);\n",
+      "profile": "source C++20 existing; fallback only stock runtime builtin support, no frontend-helper/backend invocation",
+      "check": "actual enk_template_name Template exactly retained descriptor; concept_id.Template is a different union and not proof"
+    },
+    {
+      "fields": [
+        "an_expr_node.variant.pack_index.expr",
+        "an_expr_node.variant.pack_index.index_expr"
+      ],
+      "stock": "expr.c44304\u201344327 retains actual pack/index operands for prototype, not already resolved pack element",
+      "code": "template<int Index, class... Types> auto select_pack_value(Types... values) { return values...[Index]; }\nint use_pack_value() { return select_pack_value<1>(2, 3); }\n",
+      "profile": "source C++26 existing compiler supports feature; no new profile",
+      "check": "actual WrappedExpression values pack and PackIndex Index constant expression as separate canonical metadata0/1 links; actual instantiation chosen value remains EDG decision"
+    }
+  ]
+}

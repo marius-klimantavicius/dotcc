@@ -1,0 +1,100 @@
+[
+  {
+    "profile": "native",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-native.log"
+  },
+  {
+    "profile": "source",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-source.log"
+  },
+  {
+    "profile": "cfront",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-cfront.log"
+  },
+  {
+    "profile": "exported",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-exported.log"
+  },
+  {
+    "profile": "sun",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-sun.log"
+  },
+  {
+    "profile": "usl21",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-usl21.log"
+  },
+  {
+    "profile": "usl30",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-usl30.log"
+  },
+  {
+    "profile": "host-long-double",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-host-long-double.log"
+  },
+  {
+    "profile": "host-double",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-host-double.log"
+  },
+  {
+    "profile": "softfloat",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-softfloat.log"
+  },
+  {
+    "profile": "instantiation",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-instantiation.log"
+  },
+  {
+    "profile": "tableless",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-tableless.log"
+  },
+  {
+    "profile": "extern-inline",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-extern-inline.log"
+  },
+  {
+    "profile": "separate-init",
+    "exit_code": 0,
+    "new_strict_build": false,
+    "provenance": "Existing exact accepted final-five strict compiler; no backend changes",
+    "previous_build_log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-separate-init.log"
+  }
+]

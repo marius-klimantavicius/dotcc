@@ -1,0 +1,271 @@
+{
+  "native": {
+    "variables": [
+      {
+        "id": 713,
+        "instance_id": 718,
+        "constant_initializer_id": 716,
+        "template_id": 697,
+        "initializer": "29",
+        "arguments": [
+          {
+            "role_id": 26001,
+            "ordinal": 0,
+            "argument_id": 719,
+            "type_id": 720
+          },
+          {
+            "role_id": 26002,
+            "ordinal": 0,
+            "argument_id": 722,
+            "type_id": 438
+          }
+        ],
+        "executed_address_reference_ids": [
+          861
+        ]
+      },
+      {
+        "id": 723,
+        "instance_id": 728,
+        "constant_initializer_id": 726,
+        "template_id": 644,
+        "initializer": "11",
+        "arguments": [
+          {
+            "role_id": 26001,
+            "ordinal": 0,
+            "argument_id": 729,
+            "type_id": 438
+          }
+        ],
+        "executed_address_reference_ids": [
+          897
+        ]
+      }
+    ],
+    "default_template": {
+      "id": 398,
+      "template_id": 391,
+      "placeholder_template_id": 401,
+      "default_argument_id": 419,
+      "kind_id": 109003,
+      "default_template_id": 345,
+      "concrete_uses": [
+        {
+          "id": 488,
+          "result_id": 483,
+          "argument_id": 489
+        }
+      ]
+    },
+    "default_lambda": {
+      "id": 521,
+      "default_expression_id": null,
+      "ordinal": 0,
+      "entity_id": 494,
+      "lambda_parent_entity_id": 514,
+      "defined_in_variable_initializer": 0,
+      "defined_in_field_initializer": 0,
+      "parent_signature_membership": [
+        {
+          "owner_id": 516,
+          "ordinal": 1,
+          "parameter_type_id": 521,
+          "role_id": 6033,
+          "base_subobject_id": null
+        }
+      ]
+    },
+    "ordinary_parameter_attributes": [
+      {
+        "parameter_id": 906,
+        "attribute_id": 907,
+        "name": "maybe_unused"
+      }
+    ],
+    "instantiation_attributes": [],
+    "Microsoft_parameter_attributes": [
+      {
+        "id": 442,
+        "name": "in",
+        "kind": "msak_unrecognized",
+        "target_tag_kind_id": 316004,
+        "target_id": 441,
+        "owner_id": 441,
+        "ordinal": 0
+      },
+      {
+        "id": 447,
+        "name": "out",
+        "kind": "msak_unrecognized",
+        "target_tag_kind_id": 316004,
+        "target_id": 446,
+        "owner_id": 446,
+        "ordinal": 0
+      }
+    ],
+    "Microsoft_capabilities": {
+      "RECOGNIZE_MICROSOFT_ATTRIBUTES": "1",
+      "SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING": "1",
+      "cppcli_enabled": "0",
+      "cppcx_enabled": "0"
+    }
+  },
+  "source": {
+    "variables": [
+      {
+        "id": 949,
+        "instance_id": 954,
+        "constant_initializer_id": 952,
+        "template_id": 932,
+        "initializer": "29",
+        "arguments": [
+          {
+            "role_id": 26001,
+            "ordinal": 0,
+            "argument_id": 955,
+            "type_id": 956
+          },
+          {
+            "role_id": 26002,
+            "ordinal": 0,
+            "argument_id": 958,
+            "type_id": 462
+          }
+        ],
+        "executed_address_reference_ids": [
+          1116
+        ]
+      },
+      {
+        "id": 959,
+        "instance_id": 964,
+        "constant_initializer_id": 962,
+        "template_id": 878,
+        "initializer": "11",
+        "arguments": [
+          {
+            "role_id": 26001,
+            "ordinal": 0,
+            "argument_id": 965,
+            "type_id": 462
+          }
+        ],
+        "executed_address_reference_ids": [
+          1158
+        ]
+      }
+    ],
+    "default_template": {
+      "id": 422,
+      "template_id": 414,
+      "placeholder_template_id": 425,
+      "default_argument_id": 443,
+      "kind_id": 109003,
+      "default_template_id": 365,
+      "concrete_uses": [
+        {
+          "id": 559,
+          "result_id": 532,
+          "argument_id": 560
+        }
+      ]
+    },
+    "default_lambda": {
+      "id": 678,
+      "default_expression_id": 679,
+      "ordinal": 0,
+      "entity_id": 579,
+      "lambda_parent_entity_id": 674,
+      "defined_in_variable_initializer": 0,
+      "defined_in_field_initializer": 0,
+      "parent_signature_membership": [
+        {
+          "owner_id": 676,
+          "ordinal": 0,
+          "parameter_type_id": 678,
+          "role_id": 6033,
+          "base_subobject_id": null
+        }
+      ]
+    },
+    "ordinary_parameter_attributes": [
+      {
+        "parameter_id": 1170,
+        "attribute_id": 1171,
+        "name": "maybe_unused"
+      },
+      {
+        "parameter_id": 1188,
+        "attribute_id": 1189,
+        "name": "maybe_unused"
+      }
+    ],
+    "instantiation_attributes": [
+      {
+        "id": 1279,
+        "target_id": 792,
+        "attribute_id": 1282,
+        "name": "visibility",
+        "argument_id": 810,
+        "constant_id": 811,
+        "value_id": 813,
+        "string_units": [
+          100,
+          101,
+          102,
+          97,
+          117,
+          108,
+          116,
+          0
+        ]
+      }
+    ],
+    "Microsoft_parameter_attributes": [
+      {
+        "id": 444,
+        "name": "in",
+        "kind": "msak_misc",
+        "target_tag_kind_id": 316004,
+        "target_id": 443,
+        "owner_id": 443,
+        "ordinal": 0
+      },
+      {
+        "id": 449,
+        "name": "out",
+        "kind": "msak_misc",
+        "target_tag_kind_id": 316004,
+        "target_id": 448,
+        "owner_id": 448,
+        "ordinal": 0
+      },
+      {
+        "id": 461,
+        "name": "in",
+        "kind": "msak_misc",
+        "target_tag_kind_id": 316004,
+        "target_id": 460,
+        "owner_id": 460,
+        "ordinal": 0
+      },
+      {
+        "id": 463,
+        "name": "out",
+        "kind": "msak_misc",
+        "target_tag_kind_id": 316004,
+        "target_id": 462,
+        "owner_id": 462,
+        "ordinal": 0
+      }
+    ],
+    "Microsoft_capabilities": {
+      "RECOGNIZE_MICROSOFT_ATTRIBUTES": "1",
+      "SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING": "0",
+      "cppcli_enabled": "0",
+      "cppcx_enabled": "0"
+    }
+  }
+}

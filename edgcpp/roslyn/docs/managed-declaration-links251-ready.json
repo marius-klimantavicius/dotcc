@@ -1,0 +1,141 @@
+{
+  "checkpoint": "declaration-template-attribute identities251",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DeclarationLinkIdentityProjection.cs",
+      "sha256": "23fc081cccbcb304c55ebda49338e0bc23c7eaf1026398f75e0ae496d535d960",
+      "bytes": 12741
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "9d9a4d64a16be1ae4c33fdfb687bed98e49a8ca49cf56903104f41d0497f0268",
+      "bytes": 78071
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/declaration-links251-evidence.tsv",
+      "sha256": "11b0bfec2c7ef9982acb1933abe5efab668a457f13d67f064f0969dc5a0df8c1",
+      "bytes": 14633
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-build.log",
+      "sha256": "61b92663087ff42d0c2cd915fbe129365eb4faea2145f8ce23abe69f1423b86e",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-existing7-v1.log",
+      "sha256": "5a41b9b6f35a80bc283b1cf5865ff0c282fe40a8bc393bac93f560ef5934665a",
+      "bytes": 273231
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-fresh4-v2.log",
+      "sha256": "9a3c168d594d428cafd17814227cc0c4ec2a515ad8be785bda507758901bdebe",
+      "bytes": 1090
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-self.log",
+      "sha256": "49be4229005d180eef8091da9af9f69e981c4ac98a7dfe0c19d8253740496fcb",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_order.roslynobj",
+      "sha256": "d41d98d49c8de822761e93aad0336be478edea7056980c3719deaa235953a1d8",
+      "bytes": 709632
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/retained.roslynobj",
+      "sha256": "1f0a3c325ac7d7889f2f6768afb765fa18a2f72ef108f789d65539d8d05f7d4f",
+      "bytes": 1033216
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/types.roslynobj",
+      "sha256": "96a6bfae2c98afad9a32096d6e7871d49706a01e391b5f7a84cb1a665f1e4cf5",
+      "bytes": 675840
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/template_edges.roslynobj",
+      "sha256": "62c927cf56a8757ea3bd6b2d0dd481b4b117f75c40e36bf9563ef5c2c7662758",
+      "bytes": 788480
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/native_attributes.roslynobj",
+      "sha256": "175101c3efc9275726944d4eb528b2094e26bdefa83e0060c3d4ee104c41525a",
+      "bytes": 653312
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/layout.roslynobj",
+      "sha256": "6e306022c0dcdf9e1b4faf80a2654f578b0b02c508b7a0871fa271e128a2da18",
+      "bytes": 1081344
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/source/scoped_assume.roslynobj",
+      "sha256": "2f4c9892cb68ab2db5b6ce0077fb018cf2ae32fd1c3d9a8b2c73154286f27be7",
+      "bytes": 647168
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/native/template_parameter_defaults.roslynobj",
+      "sha256": "374ac8c7991c5e05cb49af1d1d084d3a1b2f2b8eb9cfebe4191c121d6e8b7df3",
+      "bytes": 713728
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/native/parameter_attributes_microsoft.roslynobj",
+      "sha256": "d69e1f86a822b366f5e5b5e8e36ee542d77c51a4d9fa12c1f9f541542048d2dd",
+      "bytes": 648192
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/source/template_parameter_defaults.roslynobj",
+      "sha256": "52c15fc73743316e14c2939121604a8b8f32071f7a57e002e3e25799506866c6",
+      "bytes": 708608
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/source/parameter_attributes_microsoft.roslynobj",
+      "sha256": "7114a9e8858f3ff4d1b0c4fbe4459ecce66dc6eb77b2cf34b7dad2b041a4c6a2",
+      "bytes": 649216
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/all-profile-results-final.json",
+    "sha256": "af683cbeb6ea9fbe62ea505a5856d4661472ca4d99b5b8965dee4f41f80c8b53",
+    "bytes": 3442
+  },
+  "checks": {
+    "build": "0 warnings/errors",
+    "existing": "PASS454/7 unique",
+    "fresh": "PASS99/4 unique",
+    "self": "PASS73",
+    "generator": "249 table bindings/1941 properties; --check passes",
+    "literal_writes": "passes",
+    "whitespace": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DeclarationLinkIdentityProjection.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/declaration-links251-evidence.tsv",
+        "clean": true
+      }
+    ]
+  },
+  "proof": "18 positive field rows plus3 observed-pending rows; no target-mask or overriding-subobject closure",
+  "scope": "11 unique compatible snapshots; no full211/scale/native build or schema mutation",
+  "running_commands": [],
+  "state": "owned files held for coordinator checkpoint; no independent commit"
+}

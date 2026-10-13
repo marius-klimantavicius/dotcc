@@ -1,0 +1,90 @@
+{
+  "count": 21,
+  "all_match": true,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DeclarationLinkIdentityProjection.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/declaration-links251-evidence.tsv",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-build.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-existing7-v1.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-fresh4-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-self.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-generator.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-declaration-links251-literal.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_order.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/retained.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/types.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/template_edges.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/native_attributes.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/layout.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/source/scoped_assume.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/native/template_parameter_defaults.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/native/parameter_attributes_microsoft.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/source/template_parameter_defaults.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/source/parameter_attributes_microsoft.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/template-parameter-defaults/all-profile-results-final.json",
+      "matches": true
+    }
+  ]
+}

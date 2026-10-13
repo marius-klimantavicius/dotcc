@@ -1,0 +1,173 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "accepted_unique_paths": 11,
+  "existing_assertions": 454,
+  "fresh_assertions": 99,
+  "self_assertions": 73,
+  "joins": [
+    {
+      "owner": "a_source_correspondence",
+      "member": "source_sequence_entry",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:20",
+      "identity": "repeated correspondence442 designates actual entry1154\u2192routine440/primaryDeclaration441; secondary entry1269\u2192declaration1270 remains distinct. Direct pointer is not chosen by lowest ID or sequence order."
+    },
+    {
+      "owner": "a_pragma",
+      "member": "source_sequence_entry",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:20",
+      "identity": "Pragma1247\u2192entry1248 has iek_pragma and reciprocal target; actual sole scope sequence contains the same canonical entry."
+    },
+    {
+      "owner": "a_template_parameter",
+      "member": "variant.type.default_arg_type",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:33",
+      "identity": "Promise991\u2192defaultArgument998\u2192voidType330; placeholderType994 is distinct and has parameter991 in DeclaredParameters."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "base_type",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:40",
+      "identity": "Status420 written base427 is canonical unsigned-short arithmetic type with16bits; Colour357 has no written explicit base."
+    },
+    {
+      "owner": "a_variable_template_info",
+      "member": "template_arg_list",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:47",
+      "identity": "folded_sum1147\u2192instance1184\u2192primaryMarker1185 has ordered actual integer pack elements1,2,3. Fresh concrete selected instance primary pointer-to-int remains distinct from deduced partial int."
+    },
+    {
+      "owner": "a_variable_template_info",
+      "member": "partial_spec_template_arg_list",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:82",
+      "identity": "Selected source949\u2192instance954: primary955\u2192pointer956, partial958\u2192int462; pointer pointee is same int462. Primary-only959\u2192instance964 has actual empty selected-partial list."
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.nested_req.constraint",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:47",
+      "identity": "Nested requirement1022 wraps exact expression1025 via metadata6014/ordinal0 reference; target role7002 and no structural child edge."
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "has_associated_attribute",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:57",
+      "identity": "UUID554 applies to record377 NativeUuid; record377, TypeSymbol382 and primaryDeclaration383 share correspondence378. Actual owner list is scope259, separate from application target."
+    },
+    {
+      "owner": "an_ms_attribute",
+      "member": "entity",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:57",
+      "identity": "UUID554.Target is exact canonical RecordType377, whose symbol and primary declaration share correspondence378."
+    },
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "overriding_function",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:65",
+      "identity": "LayoutDiamond.copy1724 owns override ordinal0; contextual root1721 reverse Overrides retains same owner and overridden routine."
+    },
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "primary_function",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:65",
+      "identity": "Actual overriding routine1724 points to LayoutRoot.copy649, distinct from contextual root subobject1721."
+    },
+    {
+      "owner": "a_statement",
+      "member": "attributes",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:75",
+      "identity": "Actual empty statement384 owns Assume attribute389; reverse owner is same statement, independent from scoped argument wrapper411."
+    },
+    {
+      "owner": "a_template_parameter",
+      "member": "variant.templ.default_arg_template",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:82",
+      "identity": "Container placeholders401/native and425/source differ from default tak_template descriptors345/native and365/source DefaultBox."
+    },
+    {
+      "owner": "a_param_type",
+      "member": "entities_defined_in_default_arg",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:82",
+      "identity": "Native521\u2192closure494/parentinvoke514 and source678\u2192closure579/parentinvoke674; actual parent signature contains descriptor, canonical owner ordinal0. Source defaultExpression679 metadata; native NULL legitimate."
+    },
+    {
+      "owner": "a_class_type_supplement",
+      "member": "lambda_parent.routine",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:82",
+      "identity": "Default closure494/native and579/source point to exact invoke routines514/native and674/source; closure is actual default-entity entry of that member signature."
+    },
+    {
+      "owner": "a_param_type",
+      "member": "attributes",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:82",
+      "identity": "parameter_attributes canonical formal has actual ak_maybe_unused attribute with reverse owner containing the same descriptor."
+    },
+    {
+      "owner": "a_param_type",
+      "member": "ms_attributes",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:111",
+      "identity": "Signature formals value/result retain ordered in/out application names; all4 source descriptors including copies have msak_misc,2 lowered descriptors retain msak_unrecognized; each Target is exact owning ParameterType."
+    },
+    {
+      "owner": "an_instantiation_directive",
+      "member": "attributes",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DeclarationLinkIdentityProjection.cs:82",
+      "identity": "Source directive1279\u2192AttributedInstantiation792 owns ak_visibility1282; reverse Owner is directive and DeclaredType equals actual target. Native directive list is genuinely empty."
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1476,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 52,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "not_promoted": [
+    "ms_attribute independent target bitset",
+    "override OverridingSubobject",
+    "constant initialized-field/base and dependent designator arms"
+  ],
+  "ready_hash_checks": 21
+}
