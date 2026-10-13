@@ -1,0 +1,80 @@
+{
+  "owners": [
+    "a_name_qualifier",
+    "a_template_param_coordinate"
+  ],
+  "pending_at_review": 5,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stockil_def2531-2565,4479-4539. Exactbackendnames/types/constants/templates; ExecutionMetadataProjection78-85,ScalarFamilies32,ExecutionProjection108+constant_occurrences,SemanticProjectiontemplate. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-qualifiercoordinate5-observed29.json",
+  "summary": {
+    "ready_evidence_join": 5
+  },
+  "rows": [
+    {
+      "owner": "a_name_qualifier",
+      "member": "qualifier",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2541",
+      "disposition": "mapped_pending_validation",
+      "destination": "name_qualifier.target_id;backend/roslyn_names.h",
+      "api_property": "NameQualifierDetails.Target",
+      "fixture": "266 read-only name-reference/qualifier union audit; no new exports or tests",
+      "reason": "Read exact is_class union: class arm may be typedef/cv-qualified typeref/template argument or MS enum, not only RecordType; namespace arm retains actual alias identity.",
+      "review_status": "ready_evidence_join",
+      "review": "19actualqualifiers:10namespace/9class targets allnonnull. ExecutionMetadataProjection83-85 checks Namespace Nested/NameReferenceScope chain and RecordType NameRecord selectedfield qualifier; latestConstantRelations additionally exactmember-pointer owneridentity. Stock classarm can be typedef/cvtypedef/templateargument/MSenum, not restricted torecord; currentwriter dispatches anyCppType."
+    },
+    {
+      "owner": "a_name_qualifier",
+      "member": "previous_qualifier",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2549",
+      "disposition": "mapped_pending_validation",
+      "destination": "name_qualifier.previous_qualifier_id;backend/roslyn_names.h",
+      "api_property": "NameQualifierDetails.PreviousQualifier",
+      "fixture": "266 read-only name-reference/qualifier union audit; no new exports or tests",
+      "reason": "Actual semantic parent chain, unlike next cache chain. NULL is first/topmost qualifier.",
+      "review_status": "ready_evidence_join",
+      "review": "2nonNULL previouslinks among19. Existing qualifiedtemplatecall check names exact Nested\u2192NameReferenceScope; writer recursivelyfollows previous_qualifier (semanticchain), ignores next (frontendcache). No reconstruction fromtarget parents."
+    },
+    {
+      "owner": "a_name_qualifier",
+      "member": "name",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2554",
+      "disposition": "mapped_pending_validation",
+      "destination": "name_qualifier.name_id;backend/roslyn_names.h",
+      "api_property": "NameQualifierDetails.Name",
+      "fixture": "266 read-only name-reference/qualifier union audit; no new exports or tests",
+      "reason": "Exact written qualifier identifier can differ from target name after template substitution; retain separate interned text.",
+      "review_status": "ready_evidence_join",
+      "review": "19actualname atoms. ExecutionMetadataProjection78-79 and ScalarFamilies32 read qualifier.Name directscalar. Stockil_def2554 says spelling can differfrom targetname aftertemplatesubstitution, so keep independent internedtext; do notcollapse basedon target."
+    },
+    {
+      "owner": "a_template_param_coordinate",
+      "member": "position",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4530",
+      "disposition": "mapped_pending_validation",
+      "destination": "dependent_type.parameter_number;dependent_value;template_definition;backend/roslyn_types.h:123;roslyn_constants.h:113;roslyn_templates.h:219\u2013220",
+      "api_property": "DependentType.Details;TemplateDescriptor.Details;DependentValueDetails",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "One-based list coordinate and actual nesting depth preserved in each applicable type/constant/template descriptor. Coordinates are metadata, never a substitute for exact TemplateParameter symbol identity.",
+      "review_status": "ready_evidence_join",
+      "review": "Coordinatepayloads353dependenttypes+79dependentvalues+32template-template descriptors. Directscalar position copiesin types123/constants113/templates219. ScalarFamilies dependent_type, ExecutionProjection constant_occurrences valuepayload sweep, SemanticProjection template_definition sweep exercise all3 projections. Preserveactual0/1/2/3 values; not a global parameterID."
+    },
+    {
+      "owner": "a_template_param_coordinate",
+      "member": "depth",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4535",
+      "disposition": "mapped_pending_validation",
+      "destination": "dependent_type.parameter_depth;dependent_value;template_definition;backend/roslyn_types.h:123;roslyn_constants.h:113;roslyn_templates.h:219\u2013220",
+      "api_property": "DependentType.Details;TemplateDescriptor.Details;DependentValueDetails",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "One-based list coordinate and actual nesting depth preserved in each applicable type/constant/template descriptor. Coordinates are metadata, never a substitute for exact TemplateParameter symbol identity.",
+      "review_status": "ready_evidence_join",
+      "review": "Same3projections353/79/32. Dependenttypes depths include0/1/2/3,-1(auto),-2(classplaceholder); stockil_def4479-4502 explicitlyspecial <=0 incl-3 dependentBitInt. Directsignedscalar copy; publicfamilysweeps same asposition. Do notrejectnegative or inferparameter identity fromnumericcoordinates; exact TemplateParameter associations separate."
+    }
+  ]
+}

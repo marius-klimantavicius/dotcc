@@ -121,6 +121,8 @@ public class TypeReference : CppType
     internal TypeReference(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public TypeReferenceDetails Reference => Object.Detail("type_reference", Id, r => new TypeReferenceDetails(Object, r));
     public CppType UnderlyingType => Reference.UnderlyingType;
+    public ExpressionOperation? DecltypeExpression => Reference.DecltypeExpression;
+    public IReadOnlyList<LocalExpressionReferenceDetails> ContextualExpressions => Object.List("SELECT * FROM local_expression_reference WHERE referrer_id=$owner ORDER BY owner_id,ordinal",Id,r=>new LocalExpressionReferenceDetails(Object,r));
     public override TemplateInstantiation? Instantiation => Reference.Instance;
     public IReadOnlyList<TemplateArgument> OriginalTemplateArguments => Object.List("SELECT a.* FROM typeref_original_template_argument r JOIN template_argument a ON a.id=r.argument_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Argument(r.Long("id")),"template_argument");
 }
@@ -147,6 +149,8 @@ public sealed class DependentType : CppType
 {
     internal DependentType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public DependentTypeDetails Dependency => Object.Detail("dependent_type", Id, r => new DependentTypeDetails(Object, r));
+    public ExpressionOperation? Constraint => Dependency.Constraint;
+    public CppType? ProxyClass => Dependency.ProxyClass;
 }
 
 public sealed partial class RecordLayout : SemanticEntity

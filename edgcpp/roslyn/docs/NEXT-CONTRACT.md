@@ -1,3 +1,28 @@
+# Accepted declaration/template identities; next required proof closure
+
+Current e49f251 schema is unchanged. Five fresh retained-branch objects pass97
+and nine existing paths pass518; self73, clean build, generator249/1946, literal
+and diff checks pass. All14 existing stage/tool pins are unchanged/reverified.
+Coverage1365 verified/169 required pending,89 captured optional-source and15
+explicit optional limits; all2000 field rows are mapped or dispositioned.
+
+Named StaticAssertion.Condition/Message, TypeReference.DecltypeExpression and
+DependentType.Constraint/ProxyClass now navigate exact retained facts. Actual
+local_scope_ref origin and public parent/routine identity pass. Affiliated enum,
+MS based-pointer, field closure, header requires-clause, static message and
+ordinary array-reference branches have genuine positives. Selected dependent
+array expressions are constant-owned lerk_tpl_param_expr references; do not
+claim global unavailability or positive lerk_dep_array_bound activation.
+
+Next managed work is bounded routine/EH/initialization pointer identities and
+nested exception-type scalar reads from existing objects. Next native work is
+missing retained constant/dependent branches, using small genuine probes and
+existing profiles. No optional provenance campaign or core mutation. The five
+unused optional/unknown/frontend slots remain separate final contract cleanup.
+Full phases3–4/M0–M5 remains open; this milestone does not require approval.
+
+---
+
 # Accepted pragma/scope and relation proofs; next required branches
 
 Current e49f251 schema remains unchanged. Five fresh pragma/scope objects and

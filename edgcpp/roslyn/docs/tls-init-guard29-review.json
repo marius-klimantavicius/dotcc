@@ -1,0 +1,120 @@
+{
+  "field": "an_il_header.thread_local_dynamic_init_routines",
+  "guard": "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS && !USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES",
+  "recommendation": "inactive_upstream_configuration",
+  "profiles": {
+    "separate-init": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/separate-init/separate_initialization.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "1",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "0"
+      },
+      "thread_routines": 0
+    },
+    "native": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/basic.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "tableless": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/tableless/m0.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "extern-inline": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/objects.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "instantiation": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/instantiation/instantiation_flags.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "cfront": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "exported": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/basic.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "sun": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/sun/profile_sun.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "usl21": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/usl21/profile_usl.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "usl30": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/usl30/profile_usl.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "host-long-double": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/host-long-double/profile_numeric.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "host-double": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/host-double/profile_numeric.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    },
+    "softfloat": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/softfloat/profile_numeric.roslynobj",
+      "capabilities": {
+        "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": "0",
+        "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "1"
+      },
+      "thread_routines": 0
+    }
+  },
+  "review": "All14 currentgenuineprofile manifests make conjunctionfalse. separate-init is1/1;source0/0;remaining12profiles0/1. Stockil_def19085-19104 matchesguard. targ_def591-634 documents lazy TLS wrappers/guards, IA64 and Cgenerator configurations requirelazyTRUE; separate-init.cmakedef explicitly1. Do not add nonlazy OS-supported initprofile onlyforcoverage, and do not fabricate startup-list routines from lazywrapper facts. Currentwrapped/lazy executable initialization remainsrequired/captured. Sourceprofile falsefirstguard says nothing about runtimeTLSabsence."
+}

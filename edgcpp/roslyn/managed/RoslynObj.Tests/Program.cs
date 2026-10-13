@@ -243,6 +243,8 @@ try
         ConstantRelationsProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",obj.Manifest.CaptureProfile,Check);
         StatementRelationsProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",obj.Manifest.CaptureProfile,Check);
         PragmaScopeProjection.Verify(unit,Path.GetFileName(input),Check);
+        DeclarationTemplateProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        RetainedBranchesProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         UnevaluatedProjection.Verify(unit,Path.GetFileName(input),Check);
         NavigationFamilies.Verify(unit,Path.GetFileName(input),Check);
         var functionCount=0;var operationCount=0;var executableBodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();

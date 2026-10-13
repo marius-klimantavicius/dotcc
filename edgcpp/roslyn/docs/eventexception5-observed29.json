@@ -1,0 +1,127 @@
+{
+  "event": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+      "rows": [
+        [
+          1791,
+          0,
+          1713
+        ]
+      ]
+    }
+  ],
+  "spec": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/reflection.roslynobj",
+      "rows": [
+        [
+          688
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/reflection.roslynobj",
+      "rows": [
+        [
+          690
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/reflection.roslynobj",
+      "rows": [
+        [
+          690
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/reflection.roslynobj",
+      "rows": [
+        [
+          819
+        ]
+      ]
+    }
+  ],
+  "annotation": [],
+  "throw_type": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines_exception.roslynobj",
+      "rows": [
+        [
+          827,
+          0,
+          431,
+          0,
+          0
+        ],
+        [
+          827,
+          1,
+          387,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines_exception.roslynobj",
+      "rows": [
+        [
+          840,
+          0,
+          462,
+          0,
+          0
+        ],
+        [
+          840,
+          1,
+          424,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines_exception.roslynobj",
+      "rows": [
+        [
+          840,
+          0,
+          462,
+          0,
+          0
+        ],
+        [
+          840,
+          1,
+          424,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines_exception.roslynobj",
+      "rows": [
+        [
+          789,
+          0,
+          320,
+          0,
+          0
+        ],
+        [
+          789,
+          1,
+          282,
+          0,
+          0
+        ]
+      ]
+    }
+  ]
+}

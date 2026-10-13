@@ -1,0 +1,52 @@
+{
+  "owners": [
+    "a_tagged_pointer",
+    "an_il_entity_list_entry"
+  ],
+  "pending_at_review": 3,
+  "authority": "Stockil_def2038-2064;roslyn_entities dispatch; current reflection/common/initializer/statement/class acceptedpublictests. Rootreadonly.",
+  "summary": {
+    "ready_evidence_join": 3
+  },
+  "rows": [
+    {
+      "owner": "a_tagged_pointer",
+      "member": "kind",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2043",
+      "disposition": "mapped_pending_validation",
+      "destination": "typed resolved entity FK/actual entity.kind_id;reflection_value.kind_id;backend/roslyn_entities.h:roslyn_entity",
+      "api_property": "SemanticEntity.Kind and typed owner target navigation",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Stock il_def2038\u20132049 discriminator selects exact canonical entity adapter; raw pointer never persisted. Reflection additionally retains literal EDG kind. Owner-specific tagged fields preserve typed targets and their active-kind descriptors; this utility record has no independent semantic identity.",
+      "review_status": "ready_evidence_join",
+      "review": "Stockil_def2038-2049 selects exacttarget pointertype; roslyn_entities8+ switches and failsunsupportedkind. Existing SemanticProjection reflection36 cases and ExecutionMetadata qualifiedtargets/sourceentries prove actualtyped dispatch. LiteralEDGkind separatelyretained whereowner needsit (ReflectionValue.EntityKind,SourceEntry.Tag,InstantiationDirective.Details.TargetTagKind). Correct staleAPIcitation: SemanticEntity has NO Kind property. No independenttaggedcell identity or rawpointer."
+    },
+    {
+      "owner": "a_tagged_pointer",
+      "member": "ptr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2046",
+      "disposition": "mapped_pending_validation",
+      "destination": "typed resolved entity FK/actual entity.kind_id;reflection_value.kind_id;backend/roslyn_entities.h:roslyn_entity",
+      "api_property": "SemanticEntity.Kind and typed owner target navigation",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Stock il_def2038\u20132049 discriminator selects exact canonical entity adapter; raw pointer never persisted. Reflection additionally retains literal EDG kind. Owner-specific tagged fields preserve typed targets and their active-kind descriptors; this utility record has no independent semantic identity.",
+      "review_status": "ready_evidence_join",
+      "review": "Exactcanonical targetadapter selectedbyEDGkind, pointer onlyused forprocessidentitymap. Reflections verifyactual arithmetic/record/variable/routine/template/field entities and reflectedinstantiatedparameter==actualtype. Nullpointer remainsnull; no lookup byname,offsetorparse. Owner-specific unioncoverage remains separatelytracked."
+    },
+    {
+      "owner": "an_il_entity_list_entry",
+      "member": "entity",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2061",
+      "disposition": "mapped_pending_validation",
+      "destination": "typed ordered owner relation entity FK/ordinal;backend/roslyn_variables.h:117\u2013120;roslyn_parameters.h:87;roslyn_layout.h:206;roslyn_execution.h:231",
+      "api_property": "VariableSymbol.EntitiesDefinedInInitializer;RecordType.Friends;ParameterType.EntitiesDefinedInDefault;DeclarationStatementOperation.Entities",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Stock il_def2052\u20132064 is a list of tagged IL pointers. Actual exact targets and order retained per owning list; linked cell has no source/symbol identity and no additional execution semantics.",
+      "review_status": "ready_evidence_join",
+      "review": "Genericordered taggedentity cell emittedintoownerrelation. Existing variable initializer closure tests, ClassRelations friends and StatementRelations declarationvariable test prove realtarget identities/listordering. Cell has no semanticidentity and listmembership alone creates no executionedge. This utilityclosure does not close unactivatedowner arms (e.g. param entities_defined_in_default_arg or declarationnonvariable variants)."
+    }
+  ]
+}

@@ -1,0 +1,638 @@
+[
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+    "instances": [
+      [
+        440,
+        469,
+        470
+      ],
+      [
+        660,
+        669,
+        470
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+    "instances": [
+      [
+        1728,
+        1763,
+        1764
+      ]
+    ],
+    "arguments": [
+      [
+        1728,
+        1763,
+        "primary",
+        0,
+        1778
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/source_attributes.roslynobj",
+    "instances": [
+      [
+        342,
+        364,
+        365
+      ],
+      [
+        443,
+        448,
+        365
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/variable_initializers.roslynobj",
+    "instances": [
+      [
+        768,
+        788,
+        789
+      ],
+      [
+        827,
+        864,
+        789
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/variables.roslynobj",
+    "instances": [
+      [
+        1047,
+        1092,
+        1093
+      ],
+      [
+        1108,
+        1125,
+        1093
+      ]
+    ],
+    "arguments": [
+      [
+        1047,
+        1092,
+        "primary",
+        0,
+        1107
+      ],
+      [
+        1108,
+        1125,
+        "primary",
+        0,
+        1126
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/common.roslynobj",
+    "instances": [
+      [
+        394,
+        423,
+        424
+      ],
+      [
+        616,
+        625,
+        424
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/constant_occurrences.roslynobj",
+    "instances": [
+      [
+        1687,
+        1722,
+        1723
+      ]
+    ],
+    "arguments": [
+      [
+        1687,
+        1722,
+        "primary",
+        0,
+        1737
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/source_attributes.roslynobj",
+    "instances": [
+      [
+        344,
+        366,
+        367
+      ],
+      [
+        445,
+        450,
+        367
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/variable_initializers.roslynobj",
+    "instances": [
+      [
+        725,
+        745,
+        746
+      ],
+      [
+        784,
+        821,
+        746
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/variables.roslynobj",
+    "instances": [
+      [
+        1049,
+        1094,
+        1095
+      ],
+      [
+        1110,
+        1127,
+        1095
+      ]
+    ],
+    "arguments": [
+      [
+        1049,
+        1094,
+        "primary",
+        0,
+        1109
+      ],
+      [
+        1110,
+        1127,
+        "primary",
+        0,
+        1128
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/instantiation/instantiation_flags.roslynobj",
+    "instances": [
+      [
+        243,
+        264,
+        265
+      ],
+      [
+        373,
+        381,
+        265
+      ],
+      [
+        401,
+        406,
+        265
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/common.roslynobj",
+    "instances": [
+      [
+        397,
+        426,
+        427
+      ],
+      [
+        619,
+        628,
+        427
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/constant_occurrences.roslynobj",
+    "instances": [
+      [
+        1687,
+        1722,
+        1723
+      ]
+    ],
+    "arguments": [
+      [
+        1687,
+        1722,
+        "primary",
+        0,
+        1737
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/source_attributes.roslynobj",
+    "instances": [
+      [
+        344,
+        366,
+        367
+      ],
+      [
+        445,
+        450,
+        367
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "instances": [
+      [
+        312,
+        331,
+        332
+      ],
+      [
+        387,
+        404,
+        405
+      ],
+      [
+        948,
+        984,
+        985
+      ],
+      [
+        1003,
+        1137,
+        1138
+      ],
+      [
+        1222,
+        1260,
+        985
+      ],
+      [
+        1287,
+        1292,
+        405
+      ]
+    ],
+    "arguments": [
+      [
+        948,
+        984,
+        "primary",
+        0,
+        1001
+      ],
+      [
+        1003,
+        1137,
+        "primary",
+        0,
+        1152
+      ],
+      [
+        1222,
+        1260,
+        "primary",
+        0,
+        1261
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/templates.roslynobj",
+    "instances": [
+      [
+        610,
+        650,
+        651
+      ],
+      [
+        666,
+        677,
+        651
+      ]
+    ],
+    "arguments": [
+      [
+        610,
+        650,
+        "primary",
+        0,
+        665
+      ],
+      [
+        666,
+        677,
+        "primary",
+        0,
+        678
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variable_initializers.roslynobj",
+    "instances": [
+      [
+        725,
+        745,
+        746
+      ],
+      [
+        784,
+        821,
+        746
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variable_semantics.roslynobj",
+    "instances": [],
+    "arguments": [],
+    "discriminated_payloads": [
+      [
+        555,
+        294,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variables.roslynobj",
+    "instances": [
+      [
+        1049,
+        1094,
+        1095
+      ],
+      [
+        1110,
+        1127,
+        1095
+      ]
+    ],
+    "arguments": [
+      [
+        1049,
+        1094,
+        "primary",
+        0,
+        1109
+      ],
+      [
+        1110,
+        1127,
+        "primary",
+        0,
+        1128
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/separate-init/named_register.roslynobj",
+    "instances": [],
+    "arguments": [],
+    "discriminated_payloads": [
+      [
+        74,
+        null,
+        2,
+        null
+      ]
+    ]
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+    "instances": [
+      [
+        654,
+        693,
+        694
+      ],
+      [
+        764,
+        769,
+        694
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constant_occurrences.roslynobj",
+    "instances": [
+      [
+        1742,
+        1777,
+        1778
+      ]
+    ],
+    "arguments": [
+      [
+        1742,
+        1777,
+        "primary",
+        0,
+        1793
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_attributes.roslynobj",
+    "instances": [
+      [
+        364,
+        387,
+        388
+      ],
+      [
+        433,
+        438,
+        388
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/template_edges.roslynobj",
+    "instances": [
+      [
+        313,
+        333,
+        334
+      ],
+      [
+        391,
+        409,
+        410
+      ],
+      [
+        657,
+        662,
+        410
+      ],
+      [
+        857,
+        895,
+        896
+      ],
+      [
+        915,
+        1055,
+        1056
+      ],
+      [
+        1147,
+        1184,
+        896
+      ]
+    ],
+    "arguments": [
+      [
+        857,
+        895,
+        "primary",
+        0,
+        913
+      ],
+      [
+        915,
+        1055,
+        "primary",
+        0,
+        1071
+      ],
+      [
+        1147,
+        1184,
+        "primary",
+        0,
+        1185
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variable_initializers.roslynobj",
+    "instances": [
+      [
+        971,
+        992,
+        993
+      ],
+      [
+        1122,
+        1131,
+        993
+      ]
+    ],
+    "arguments": [],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variable_semantics.roslynobj",
+    "instances": [],
+    "arguments": [],
+    "discriminated_payloads": [
+      [
+        525,
+        266,
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variables.roslynobj",
+    "instances": [
+      [
+        1026,
+        1071,
+        1072
+      ],
+      [
+        1088,
+        1105,
+        1072
+      ]
+    ],
+    "arguments": [
+      [
+        1026,
+        1071,
+        "primary",
+        0,
+        1087
+      ],
+      [
+        1088,
+        1105,
+        "primary",
+        0,
+        1106
+      ]
+    ],
+    "discriminated_payloads": []
+  },
+  {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/tableless/variable_semantics.roslynobj",
+    "instances": [],
+    "arguments": [],
+    "discriminated_payloads": [
+      [
+        594,
+        298,
+        null,
+        null
+      ]
+    ]
+  }
+]

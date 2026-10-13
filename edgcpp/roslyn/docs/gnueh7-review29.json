@@ -1,0 +1,109 @@
+{
+  "owners": [
+    "a_const_eval_reattempt_state",
+    "a_gnu_routine_supplement",
+    "an_eh_prologue_supplement"
+  ],
+  "pending_at_review": 7,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stockil_def13285-13350,14815-14831,14892-14905; native routines/expression_extra/gen_be exact writers; RoutineProjection13 and TablelessEhProjection; rootreadonly.",
+  "observations": "/tmp/roslyn-root-gnueh7-observed29.json",
+  "summary": {
+    "existing_positive_needs_public_identity": 3,
+    "missing_positive_branch": 3,
+    "ready_evidence_join": 1
+  },
+  "rows": [
+    {
+      "owner": "a_gnu_routine_supplement",
+      "member": "resolver_var",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED || REDEFINE_EXTNAME_PRAGMA_ENABLED && LOWER_IFUNC",
+      "source": "src/il_def.h:13300",
+      "disposition": "mapped_pending_validation",
+      "destination": "gnu_routine_supplement.resolver_variable_id;backend/roslyn_routines.h:14\u201328",
+      "api_property": "GnuRoutineSupplement.Details.ResolverVariable",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Exact GNU supplementary retained metadata; resolver_var guarded GNU_IFUNC_ALLOWED, resolver_required guarded GNU_FUNCTION_MULTIVERSIONING && USE_X86_FUNCTION_MULTIVERSIONING. No ifunc or multiversion callable target inference.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "4 actual resolver vars in cfront/exported/extern-inline/native routines;0source under LOWER_IFUNC=0. Stockil_def13300 cache variable is not resolverfunction itself. Need canonical public Variable identity against EDG-created storage; source non-lowered ifunc must not infer cachedstorage."
+    },
+    {
+      "owner": "a_gnu_routine_supplement",
+      "member": "asm_name",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED || REDEFINE_EXTNAME_PRAGMA_ENABLED",
+      "source": "src/il_def.h:13324",
+      "disposition": "mapped_pending_validation",
+      "destination": "gnu_routine_supplement.assembly_name_id;backend/roslyn_routines.h:14\u201328",
+      "api_property": "GnuRoutineSupplement.Details.AssemblyName",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Exact GNU supplementary retained metadata; resolver_var guarded GNU_IFUNC_ALLOWED, resolver_required guarded GNU_FUNCTION_MULTIVERSIONING && USE_X86_FUNCTION_MULTIVERSIONING. No ifunc or multiversion callable target inference.",
+      "review_status": "missing_positive_branch",
+      "review": "50 supplements,0assembly_name_id. Variable assembly-name fixture exercises anotherowner, not routine. Exact retained string atom remains nullable; add bounded routine asm name activation if retained."
+    },
+    {
+      "owner": "a_gnu_routine_supplement",
+      "member": "mv_resolver_required",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED || REDEFINE_EXTNAME_PRAGMA_ENABLED && GNU_FUNCTION_MULTIVERSIONING && USE_X86_FUNCTION_MULTIVERSIONING",
+      "source": "src/il_def.h:13342",
+      "disposition": "mapped_pending_validation",
+      "destination": "gnu_routine_supplement.resolver_required;backend/roslyn_routines.h:14\u201328",
+      "api_property": "GnuRoutineSupplement.Details.ResolverRequired",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Exact GNU supplementary retained metadata; resolver_var guarded GNU_IFUNC_ALLOWED, resolver_required guarded GNU_FUNCTION_MULTIVERSIONING && USE_X86_FUNCTION_MULTIVERSIONING. No ifunc or multiversion callable target inference.",
+      "review_status": "ready_evidence_join",
+      "review": "50 supplements all resolver_required0 (nonnull; schema nullable no default). Direct active guarded field copy under GNU_FUNCTION_MULTIVERSIONING&&USE_X86_FUNCTION_MULTIVERSIONING, RoutineProjection13 scalar sweep. True/false is EDG fact; model must not decide resolver necessity from version count."
+    },
+    {
+      "owner": "an_eh_prologue_supplement",
+      "member": "region_table",
+      "guard": "!defined(IL_DEF_H) && DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING && GENERATE_EH_TABLES",
+      "source": "src/il_def.h:14825",
+      "disposition": "mapped_pending_validation",
+      "destination": "function_eh.region_table_id;backend/roslyn_gen_be.c:267",
+      "api_property": "FunctionEhDetails.RegionTable",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Exact routine/table variables retained under DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING; table pointers further GENERATE_EH_TABLES. Authoritative typed cleanup projections preserve table rows; no private destructible descriptor access.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "176 actual functionEH descriptors,148regiontable refs. Writer direct p->region_table plus eh_table_projection relation. Existing tableless tests verify legitimateNULL only; positive exact Variable identity test notfound. Actual tablevariable survives lowering; do not require freed construction records or reconstruct table from invented semantics."
+    },
+    {
+      "owner": "an_eh_prologue_supplement",
+      "member": "array_table",
+      "guard": "!defined(IL_DEF_H) && DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING && GENERATE_EH_TABLES",
+      "source": "src/il_def.h:14825",
+      "disposition": "mapped_pending_validation",
+      "destination": "function_eh.array_table_id;backend/roslyn_gen_be.c:267",
+      "api_property": "FunctionEhDetails.ArrayTable",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Exact routine/table variables retained under DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING; table pointers further GENERATE_EH_TABLES. Authoritative typed cleanup projections preserve table rows; no private destructible descriptor access.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "176EH,47arraytable refs. Preserve exact p->array_table via public FunctionEhDetails.ArrayTable and variable-owned projection. Existing cleanup-array payload checks do not prove table variable navigation. Tableless selected guard means absent, not empty synthesized variable."
+    },
+    {
+      "owner": "a_const_eval_reattempt_state",
+      "member": "default_arg",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:14896",
+      "disposition": "mapped_pending_validation",
+      "destination": "dependent_expression.reattempt_default_argument;backend/roslyn_expressions_extra.h",
+      "api_property": "DependentExpressionDetails.ReattemptDefaultArgument",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "34 dependentexpression records,0 reattempt_default_argument nonNULL. Writer sets only enk_const_eval_deferred arm. Need real retained deferred-evaluation node; otherdependent kinds or NULL property reads do not activate. This is metadata from EDG, no constant reevaluation."
+    },
+    {
+      "owner": "a_const_eval_reattempt_state",
+      "member": "default_mem_init",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:14900",
+      "disposition": "mapped_pending_validation",
+      "destination": "dependent_expression.reattempt_default_member_initializer;backend/roslyn_expressions_extra.h",
+      "api_property": "DependentExpressionDetails.ReattemptDefaultMemberInitializer",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "34 dependentexpression records,0 reattempt_default_member_initializer nonNULL. Same missing enk_const_eval_deferred arm. Stockil_def14894-14905 flags describe future transform contexts; export exactflags without triggering transform or treating deferred expression as executed."
+    }
+  ]
+}

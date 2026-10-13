@@ -1,0 +1,2286 @@
+{
+  "requires_clause": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+      "rows": [
+        [
+          1562,
+          1563
+        ],
+        [
+          1610,
+          1611
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines.roslynobj",
+      "rows": [
+        [
+          1714,
+          1715
+        ],
+        [
+          1763,
+          1764
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/routines.roslynobj",
+      "rows": [
+        [
+          1714,
+          1715
+        ],
+        [
+          1763,
+          1764
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines.roslynobj",
+      "rows": [
+        [
+          1714,
+          1715
+        ],
+        [
+          1763,
+          1764
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "rows": [
+        [
+          1762,
+          1763
+        ],
+        [
+          1812,
+          1813
+        ]
+      ]
+    }
+  ],
+  "header_constraint": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+      "rows": [
+        [
+          482,
+          null,
+          0
+        ],
+        [
+          505,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+      "rows": [
+        [
+          738,
+          null,
+          0
+        ],
+        [
+          825,
+          null,
+          0
+        ],
+        [
+          857,
+          null,
+          0
+        ],
+        [
+          1770,
+          null,
+          0
+        ],
+        [
+          2037,
+          null,
+          0
+        ],
+        [
+          2188,
+          null,
+          0
+        ],
+        [
+          2283,
+          null,
+          0
+        ],
+        [
+          2327,
+          null,
+          0
+        ],
+        [
+          2361,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj",
+      "rows": [
+        [
+          1075,
+          null,
+          0
+        ],
+        [
+          1166,
+          null,
+          0
+        ],
+        [
+          1288,
+          null,
+          0
+        ],
+        [
+          1407,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout.roslynobj",
+      "rows": [
+        [
+          2175,
+          null,
+          0
+        ],
+        [
+          2226,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/m0.roslynobj",
+      "rows": [
+        [
+          1079,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/name_references.roslynobj",
+      "rows": [
+        [
+          460,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/near_far.roslynobj",
+      "rows": [
+        [
+          294,
+          null,
+          0
+        ],
+        [
+          309,
+          null,
+          0
+        ],
+        [
+          340,
+          null,
+          0
+        ],
+        [
+          357,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/reflection.roslynobj",
+      "rows": [
+        [
+          394,
+          null,
+          0
+        ],
+        [
+          793,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+      "rows": [
+        [
+          1455,
+          null,
+          0
+        ],
+        [
+          1638,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines_exception.roslynobj",
+      "rows": [
+        [
+          518,
+          null,
+          0
+        ],
+        [
+          699,
+          null,
+          0
+        ],
+        [
+          716,
+          null,
+          0
+        ],
+        [
+          738,
+          null,
+          0
+        ],
+        [
+          1000,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/source_attributes.roslynobj",
+      "rows": [
+        [
+          376,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/variable_initializers.roslynobj",
+      "rows": [
+        [
+          801,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/variables.roslynobj",
+      "rows": [
+        [
+          383,
+          null,
+          0
+        ],
+        [
+          573,
+          null,
+          0
+        ],
+        [
+          616,
+          null,
+          0
+        ],
+        [
+          668,
+          null,
+          0
+        ],
+        [
+          1099,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/vector_arm.roslynobj",
+      "rows": [
+        [
+          766,
+          null,
+          0
+        ],
+        [
+          792,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/vector_riscv.roslynobj",
+      "rows": [
+        [
+          3223,
+          null,
+          0
+        ],
+        [
+          3249,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/vector_values.roslynobj",
+      "rows": [
+        [
+          351,
+          null,
+          0
+        ],
+        [
+          381,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/common.roslynobj",
+      "rows": [
+        [
+          436,
+          null,
+          0
+        ],
+        [
+          459,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/constant_occurrences.roslynobj",
+      "rows": [
+        [
+          772,
+          null,
+          0
+        ],
+        [
+          859,
+          null,
+          0
+        ],
+        [
+          891,
+          null,
+          0
+        ],
+        [
+          1729,
+          null,
+          0
+        ],
+        [
+          2008,
+          null,
+          0
+        ],
+        [
+          2159,
+          null,
+          0
+        ],
+        [
+          2254,
+          null,
+          0
+        ],
+        [
+          2298,
+          null,
+          0
+        ],
+        [
+          2332,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/execution_cpp.roslynobj",
+      "rows": [
+        [
+          1103,
+          null,
+          0
+        ],
+        [
+          1195,
+          null,
+          0
+        ],
+        [
+          1317,
+          null,
+          0
+        ],
+        [
+          1436,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/exported.roslynobj",
+      "rows": [
+        [
+          132,
+          null,
+          0
+        ],
+        [
+          224,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/layout.roslynobj",
+      "rows": [
+        [
+          2560,
+          null,
+          0
+        ],
+        [
+          2611,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/m0.roslynobj",
+      "rows": [
+        [
+          1291,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/name_references.roslynobj",
+      "rows": [
+        [
+          462,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/near_far.roslynobj",
+      "rows": [
+        [
+          296,
+          null,
+          0
+        ],
+        [
+          311,
+          null,
+          0
+        ],
+        [
+          342,
+          null,
+          0
+        ],
+        [
+          359,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/reflection.roslynobj",
+      "rows": [
+        [
+          396,
+          null,
+          0
+        ],
+        [
+          795,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines.roslynobj",
+      "rows": [
+        [
+          1607,
+          null,
+          0
+        ],
+        [
+          1791,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines_exception.roslynobj",
+      "rows": [
+        [
+          528,
+          null,
+          0
+        ],
+        [
+          712,
+          null,
+          0
+        ],
+        [
+          729,
+          null,
+          0
+        ],
+        [
+          751,
+          null,
+          0
+        ],
+        [
+          1013,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/source_attributes.roslynobj",
+      "rows": [
+        [
+          378,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/variable_initializers.roslynobj",
+      "rows": [
+        [
+          758,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/variables.roslynobj",
+      "rows": [
+        [
+          385,
+          null,
+          0
+        ],
+        [
+          575,
+          null,
+          0
+        ],
+        [
+          618,
+          null,
+          0
+        ],
+        [
+          670,
+          null,
+          0
+        ],
+        [
+          1101,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/vector_arm.roslynobj",
+      "rows": [
+        [
+          768,
+          null,
+          0
+        ],
+        [
+          794,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/vector_riscv.roslynobj",
+      "rows": [
+        [
+          3225,
+          null,
+          0
+        ],
+        [
+          3251,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/vector_values.roslynobj",
+      "rows": [
+        [
+          353,
+          null,
+          0
+        ],
+        [
+          383,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/routines.roslynobj",
+      "rows": [
+        [
+          1607,
+          null,
+          0
+        ],
+        [
+          1791,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/instantiation/instantiation_flags.roslynobj",
+      "rows": [
+        [
+          277,
+          null,
+          0
+        ],
+        [
+          300,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/common.roslynobj",
+      "rows": [
+        [
+          439,
+          null,
+          0
+        ],
+        [
+          462,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/constant_occurrences.roslynobj",
+      "rows": [
+        [
+          772,
+          null,
+          0
+        ],
+        [
+          859,
+          null,
+          0
+        ],
+        [
+          891,
+          null,
+          0
+        ],
+        [
+          1729,
+          null,
+          0
+        ],
+        [
+          2008,
+          null,
+          0
+        ],
+        [
+          2159,
+          null,
+          0
+        ],
+        [
+          2254,
+          null,
+          0
+        ],
+        [
+          2298,
+          null,
+          0
+        ],
+        [
+          2332,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/execution_cpp.roslynobj",
+      "rows": [
+        [
+          1103,
+          null,
+          0
+        ],
+        [
+          1195,
+          null,
+          0
+        ],
+        [
+          1317,
+          null,
+          0
+        ],
+        [
+          1436,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/layout.roslynobj",
+      "rows": [
+        [
+          2560,
+          null,
+          0
+        ],
+        [
+          2611,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/m0.roslynobj",
+      "rows": [
+        [
+          1294,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/name_references.roslynobj",
+      "rows": [
+        [
+          462,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/native_dependent_foreach.roslynobj",
+      "rows": [
+        [
+          294,
+          null,
+          0
+        ],
+        [
+          309,
+          null,
+          0
+        ],
+        [
+          340,
+          null,
+          0
+        ],
+        [
+          357,
+          null,
+          0
+        ],
+        [
+          534,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/near_far.roslynobj",
+      "rows": [
+        [
+          296,
+          null,
+          0
+        ],
+        [
+          311,
+          null,
+          0
+        ],
+        [
+          342,
+          null,
+          0
+        ],
+        [
+          359,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/reflection.roslynobj",
+      "rows": [
+        [
+          396,
+          null,
+          0
+        ],
+        [
+          795,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj",
+      "rows": [
+        [
+          1026,
+          null,
+          0
+        ],
+        [
+          1440,
+          null,
+          0
+        ],
+        [
+          1501,
+          null,
+          0
+        ],
+        [
+          1767,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines.roslynobj",
+      "rows": [
+        [
+          1607,
+          null,
+          0
+        ],
+        [
+          1791,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines_exception.roslynobj",
+      "rows": [
+        [
+          528,
+          null,
+          0
+        ],
+        [
+          712,
+          null,
+          0
+        ],
+        [
+          729,
+          null,
+          0
+        ],
+        [
+          751,
+          null,
+          0
+        ],
+        [
+          1013,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/scale.roslynobj",
+      "rows": [
+        [
+          31521,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/source_attributes.roslynobj",
+      "rows": [
+        [
+          378,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+      "rows": [
+        [
+          250,
+          null,
+          0
+        ],
+        [
+          343,
+          null,
+          0
+        ],
+        [
+          416,
+          null,
+          0
+        ],
+        [
+          465,
+          null,
+          0
+        ],
+        [
+          479,
+          null,
+          0
+        ],
+        [
+          564,
+          null,
+          0
+        ],
+        [
+          779,
+          null,
+          0
+        ],
+        [
+          991,
+          null,
+          0
+        ],
+        [
+          1031,
+          null,
+          0
+        ],
+        [
+          1077,
+          null,
+          0
+        ],
+        [
+          1144,
+          null,
+          0
+        ],
+        [
+          1460,
+          null,
+          0
+        ],
+        [
+          1534,
+          null,
+          0
+        ],
+        [
+          1588,
+          null,
+          0
+        ],
+        [
+          1673,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/templates.roslynobj",
+      "rows": [
+        [
+          330,
+          null,
+          0
+        ],
+        [
+          397,
+          null,
+          0
+        ],
+        [
+          657,
+          null,
+          0
+        ],
+        [
+          824,
+          null,
+          0
+        ],
+        [
+          894,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/type_edges.roslynobj",
+      "rows": [
+        [
+          858,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/unevaluated_clang.roslynobj",
+      "rows": [
+        [
+          346,
+          null,
+          0
+        ],
+        [
+          361,
+          null,
+          0
+        ],
+        [
+          392,
+          null,
+          0
+        ],
+        [
+          409,
+          null,
+          0
+        ],
+        [
+          434,
+          null,
+          0
+        ],
+        [
+          464,
+          null,
+          0
+        ],
+        [
+          778,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/unevaluated_microsoft.roslynobj",
+      "rows": [
+        [
+          294,
+          null,
+          0
+        ],
+        [
+          309,
+          null,
+          0
+        ],
+        [
+          340,
+          null,
+          0
+        ],
+        [
+          357,
+          null,
+          0
+        ],
+        [
+          642,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variable_initializers.roslynobj",
+      "rows": [
+        [
+          758,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variables.roslynobj",
+      "rows": [
+        [
+          385,
+          null,
+          0
+        ],
+        [
+          575,
+          null,
+          0
+        ],
+        [
+          618,
+          null,
+          0
+        ],
+        [
+          670,
+          null,
+          0
+        ],
+        [
+          1101,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/vector_arm.roslynobj",
+      "rows": [
+        [
+          768,
+          null,
+          0
+        ],
+        [
+          794,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/vector_riscv.roslynobj",
+      "rows": [
+        [
+          3225,
+          null,
+          0
+        ],
+        [
+          3251,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/vector_values.roslynobj",
+      "rows": [
+        [
+          353,
+          null,
+          0
+        ],
+        [
+          383,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+      "rows": [
+        [
+          705,
+          null,
+          0
+        ],
+        [
+          729,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common_microsoft.roslynobj",
+      "rows": [
+        [
+          292,
+          null,
+          0
+        ],
+        [
+          307,
+          null,
+          0
+        ],
+        [
+          338,
+          null,
+          0
+        ],
+        [
+          355,
+          null,
+          0
+        ],
+        [
+          493,
+          null,
+          0
+        ],
+        [
+          659,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constant_occurrences.roslynobj",
+      "rows": [
+        [
+          765,
+          null,
+          0
+        ],
+        [
+          857,
+          null,
+          0
+        ],
+        [
+          890,
+          null,
+          0
+        ],
+        [
+          1785,
+          null,
+          0
+        ],
+        [
+          2092,
+          null,
+          0
+        ],
+        [
+          2249,
+          null,
+          0
+        ],
+        [
+          2351,
+          null,
+          0
+        ],
+        [
+          2396,
+          null,
+          0
+        ],
+        [
+          2434,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/execution_cpp.roslynobj",
+      "rows": [
+        [
+          1063,
+          null,
+          0
+        ],
+        [
+          1162,
+          null,
+          0
+        ],
+        [
+          1302,
+          null,
+          0
+        ],
+        [
+          1437,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout.roslynobj",
+      "rows": [
+        [
+          1239,
+          null,
+          0
+        ],
+        [
+          1293,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+      "rows": [
+        [
+          817,
+          null,
+          0
+        ],
+        [
+          832,
+          null,
+          0
+        ],
+        [
+          863,
+          null,
+          0
+        ],
+        [
+          880,
+          null,
+          0
+        ],
+        [
+          1268,
+          null,
+          0
+        ],
+        [
+          1322,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/m0.roslynobj",
+      "rows": [
+        [
+          655,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/name_references.roslynobj",
+      "rows": [
+        [
+          548,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_attributes.roslynobj",
+      "rows": [
+        [
+          292,
+          null,
+          0
+        ],
+        [
+          307,
+          null,
+          0
+        ],
+        [
+          338,
+          null,
+          0
+        ],
+        [
+          355,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_dependent_foreach.roslynobj",
+      "rows": [
+        [
+          292,
+          null,
+          0
+        ],
+        [
+          307,
+          null,
+          0
+        ],
+        [
+          338,
+          null,
+          0
+        ],
+        [
+          355,
+          null,
+          0
+        ],
+        [
+          550,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj",
+      "rows": [
+        [
+          292,
+          null,
+          0
+        ],
+        [
+          307,
+          null,
+          0
+        ],
+        [
+          338,
+          null,
+          0
+        ],
+        [
+          355,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/near_far.roslynobj",
+      "rows": [
+        [
+          294,
+          null,
+          0
+        ],
+        [
+          309,
+          null,
+          0
+        ],
+        [
+          340,
+          null,
+          0
+        ],
+        [
+          357,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/reflection.roslynobj",
+      "rows": [
+        [
+          442,
+          null,
+          0
+        ],
+        [
+          915,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/retained.roslynobj",
+      "rows": [
+        [
+          613,
+          null,
+          0
+        ],
+        [
+          990,
+          null,
+          0
+        ],
+        [
+          1017,
+          null,
+          0
+        ],
+        [
+          3696,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "rows": [
+        [
+          1580,
+          null,
+          0
+        ],
+        [
+          1841,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines_exception.roslynobj",
+      "rows": [
+        [
+          386,
+          null,
+          0
+        ],
+        [
+          630,
+          null,
+          0
+        ],
+        [
+          648,
+          null,
+          0
+        ],
+        [
+          685,
+          null,
+          0
+        ],
+        [
+          983,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines_microsoft.roslynobj",
+      "rows": [
+        [
+          292,
+          null,
+          0
+        ],
+        [
+          307,
+          null,
+          0
+        ],
+        [
+          338,
+          null,
+          0
+        ],
+        [
+          355,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_attributes.roslynobj",
+      "rows": [
+        [
+          400,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj",
+      "rows": [
+        [
+          931,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_statements.roslynobj",
+      "rows": [
+        [
+          884,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/template_edges.roslynobj",
+      "rows": [
+        [
+          249,
+          null,
+          0
+        ],
+        [
+          346,
+          null,
+          0
+        ],
+        [
+          422,
+          null,
+          0
+        ],
+        [
+          516,
+          null,
+          0
+        ],
+        [
+          530,
+          null,
+          0
+        ],
+        [
+          618,
+          null,
+          0
+        ],
+        [
+          903,
+          null,
+          0
+        ],
+        [
+          944,
+          null,
+          0
+        ],
+        [
+          993,
+          null,
+          0
+        ],
+        [
+          1063,
+          null,
+          0
+        ],
+        [
+          1482,
+          null,
+          0
+        ],
+        [
+          1581,
+          null,
+          0
+        ],
+        [
+          1664,
+          null,
+          0
+        ],
+        [
+          1725,
+          null,
+          0
+        ],
+        [
+          1820,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/type_edges.roslynobj",
+      "rows": [
+        [
+          743,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/unevaluated_clang.roslynobj",
+      "rows": [
+        [
+          366,
+          null,
+          0
+        ],
+        [
+          381,
+          null,
+          0
+        ],
+        [
+          412,
+          null,
+          0
+        ],
+        [
+          429,
+          null,
+          0
+        ],
+        [
+          454,
+          null,
+          0
+        ],
+        [
+          484,
+          null,
+          0
+        ],
+        [
+          811,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/unevaluated_microsoft.roslynobj",
+      "rows": [
+        [
+          292,
+          null,
+          0
+        ],
+        [
+          307,
+          null,
+          0
+        ],
+        [
+          338,
+          null,
+          0
+        ],
+        [
+          355,
+          null,
+          0
+        ],
+        [
+          653,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variable_initializers.roslynobj",
+      "rows": [
+        [
+          1007,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variables.roslynobj",
+      "rows": [
+        [
+          590,
+          null,
+          0
+        ],
+        [
+          1079,
+          null,
+          0
+        ],
+        [
+          1171,
+          null,
+          0
+        ],
+        [
+          1204,
+          null,
+          0
+        ],
+        [
+          1356,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_arm.roslynobj",
+      "rows": [
+        [
+          797,
+          null,
+          0
+        ],
+        [
+          823,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_riscv.roslynobj",
+      "rows": [
+        [
+          3223,
+          null,
+          0
+        ],
+        [
+          3249,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_values.roslynobj",
+      "rows": [
+        [
+          373,
+          null,
+          0
+        ],
+        [
+          403,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/tableless/m0.roslynobj",
+      "rows": [
+        [
+          1229,
+          null,
+          0
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/tableless/retained.roslynobj",
+      "rows": [
+        [
+          982,
+          null,
+          0
+        ],
+        [
+          1396,
+          null,
+          0
+        ],
+        [
+          1457,
+          null,
+          0
+        ],
+        [
+          1723,
+          null,
+          0
+        ]
+      ]
+    }
+  ],
+  "static_assert": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "rows": [
+        [
+          3658,
+          3659,
+          null
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj",
+      "rows": [
+        [
+          758,
+          759,
+          null
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variables.roslynobj",
+      "rows": [
+        [
+          2176,
+          2177,
+          null
+        ]
+      ]
+    }
+  ],
+  "using_target": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+      "rows": [
+        [
+          616,
+          579
+        ],
+        [
+          1185,
+          426
+        ],
+        [
+          2362,
+          2349
+        ],
+        [
+          2410,
+          2375
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+      "rows": [
+        [
+          3802,
+          1302
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/common.roslynobj",
+      "rows": [
+        [
+          572,
+          535
+        ],
+        [
+          1039,
+          380
+        ],
+        [
+          2234,
+          2221
+        ],
+        [
+          2282,
+          2247
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines.roslynobj",
+      "rows": [
+        [
+          3721,
+          1454
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/routines.roslynobj",
+      "rows": [
+        [
+          3721,
+          1454
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/common.roslynobj",
+      "rows": [
+        [
+          575,
+          538
+        ],
+        [
+          1042,
+          383
+        ],
+        [
+          2237,
+          2224
+        ],
+        [
+          2285,
+          2250
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines.roslynobj",
+      "rows": [
+        [
+          3721,
+          1454
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/type_edges.roslynobj",
+      "rows": [
+        [
+          1433,
+          943
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+      "rows": [
+        [
+          634,
+          578
+        ],
+        [
+          635,
+          408
+        ],
+        [
+          1286,
+          1287
+        ],
+        [
+          1510,
+          1413
+        ],
+        [
+          1576,
+          1350
+        ],
+        [
+          2130,
+          1287
+        ],
+        [
+          2133,
+          1350
+        ],
+        [
+          2134,
+          1321
+        ],
+        [
+          2137,
+          1324
+        ],
+        [
+          2138,
+          1296
+        ],
+        [
+          2171,
+          2154
+        ],
+        [
+          2231,
+          800
+        ],
+        [
+          2385,
+          2242
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "rows": [
+        [
+          1245,
+          1201
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/type_edges.roslynobj",
+      "rows": [
+        [
+          1186,
+          1102
+        ]
+      ]
+    }
+  ],
+  "using_attributes": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+      "rows": [
+        [
+          2362,
+          0,
+          2365
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/common.roslynobj",
+      "rows": [
+        [
+          2234,
+          0,
+          2237
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/common.roslynobj",
+      "rows": [
+        [
+          2237,
+          0,
+          2240
+        ]
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+      "rows": [
+        [
+          2171,
+          0,
+          2174
+        ]
+      ]
+    }
+  ],
+  "instantiation": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj",
+      "rows": [
+        [
+          1352,
+          316012,
+          945,
+          1353
+        ],
+        [
+          1367,
+          316012,
+          953,
+          1368
+        ]
+      ]
+    }
+  ],
+  "instantiation_attributes": [],
+  "generic_constraints": []
+}

@@ -1,9 +1,16 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after pragma/scope and retained-relation acceptance: five fresh
-objects plus bounded existing gates (27 ordinary validation instances/25 unique
-paths), Workspace82 including self73. Existing14 compiled profiles/pins remain
-unchanged and reverified; no new strict build or scale campaign was needed.
+Active on 2026-10-13 after retained declaration/template acceptance: five fresh
+objects pass97 reader assertions; nine existing paths pass518; self73 and clean
+build/generator/literal/diff checks pass. These are14 distinct bounded paths.
+All14 previously compiled stages/pins remain unchanged and reverified, with no
+new strict build, full187 rerun or scale campaign. Source/native positives now
+cover affiliated C enums, MS based pointers, initializer-defined closure fields,
+template-header requires clauses, nonterse static assertions and ordinary array
+local-expression references. Dependent constants retain their actual contextual
+expressions; the array-specific dependent-bound arm remains unactivated.
+The previous pragma/scope gate (five fresh objects and27 ordinary instances/
+25 distinct paths, Workspace82 including self73) remains separate history.
 The metadata-root/empty-enum acceptance (14 strict profiles,
 25 refreshed unique paths/PASS1039 plus10 existing paths/PASS278,self73). The
 accepted29 cleanup/e49f boundary (187 unique paths,PASS3871) remains a separate
@@ -41,7 +48,7 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are1324 verified and213 mapped pending-validation fields at this boundary.
+There are1365 verified and169 mapped pending-validation fields at this boundary.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence, with31 additional required
 rows closed by the bounded new public tests. Promoted-local class ownership is

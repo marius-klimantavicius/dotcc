@@ -1079,3 +1079,30 @@ synthetic declaration flags, consumed promoted-type staging and unavailable
 original text queries are distinguished from retained execution/type semantics.
 Phase3–4/M0–M5 remains active. Next work is bounded missing branch activation and
 exact existing declaration/template/routine/EH public identities.
+
+
+### Accepted retained declaration and template branches
+
+Five fresh retained-six251 objects pass97 public assertions and nine existing
+objects pass518, with14 distinct paths total. Self73, build0 warnings/errors,
+generator249 bindings/1946 properties, literal and whitespace checks pass. The
+14 unchanged compiled stages retain316 Git-pinned stock inputs and26 canonical
+backend files/tool pins. No new compiler build, full187 rerun or scale test is
+claimed. Native/managed ready inventories are /tmp/roslyn-native-ready-retained-six251.json
+and /tmp/roslyn-managed-ready-declaration-template251.json; root independent proof
+is /tmp/roslyn-root-retained-six-independent.json.
+
+Named StaticAssertion and direct decltype/proxy/constraint properties expose
+actual EDG facts. Genuine C affiliation, Microsoft based pointer, closure field,
+template header requires-clause, nonterse assertion and ordinary array local
+reference identities pass. Actual correspondence-to-local_scope_ref origin is
+confirmed by read-only pointer traces and matching public scope/routine identity.
+The dependent array probe preserves Constant-owned lerk_tpl_param_expr links;
+array-specific lerk_dep_array_bound remains pending, with no inferred recovery
+or global unavailable claim. Thirty-one positive worksheet rows include21 new
+closures and10 previously verified facts.
+
+Current proof1365verified/169required pending,89captured optional-source/15limits;
+all2000 rows explicit. Remaining work is actual branch activation, exact existing
+public identity proof and documented stock/user limitations, plus five queued
+unsupported minimal-contract slots. EDG stays the sole semantic authority.

@@ -1,0 +1,83 @@
+{
+  "owners": [
+    "a_data_member_spec",
+    "an_event_interface",
+    "an_exception_specification_type"
+  ],
+  "pending_at_review": 5,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stockil_def7102-7123,8724-8735,18756-18777. Writers layout211/attributes77-83/type_support8. PublicLayoutProjection50,SemanticProjection63-64,RoutineProjection dynamicthrowlist. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-eventexception5-observed29.json",
+  "summary": {
+    "existing_positive_needs_public_scalar": 2,
+    "ready_evidence_join": 2,
+    "missing_positive_branch": 1
+  },
+  "rows": [
+    {
+      "owner": "an_exception_specification_type",
+      "member": "redundant",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7110",
+      "disposition": "mapped_pending_validation",
+      "destination": "exception_specification_type.is_redundant;backend/roslyn_type_support.h",
+      "api_property": "ExceptionSpecificationTypeDetails",
+      "fixture": "Existing genuine243 types/retained/template_edges/cleanup_semantics and upcoming258 family acceptance",
+      "reason": "Actual ordered retained dynamic exception type list; pack descriptor is frontend allocation and never read. Optional source coordinate is not a completion gate.",
+      "review_status": "existing_positive_needs_public_scalar",
+      "review": "8 actual throwtype rows allis_redundant0, directwriter type_support8 copieseachfield. Existing RoutineProjection dynamictypes tests orderedType list; parent ExceptionSpecification scalar sweep doesnotread nested ExceptionSpecificationTypeDetails.IsRedundant. Add bounded scalarread onexistingroutines_exception; no need force duplicate-throw input for unconditionalbool copy."
+    },
+    {
+      "owner": "an_exception_specification_type",
+      "member": "is_pack_expansion",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7114",
+      "disposition": "mapped_pending_validation",
+      "destination": "exception_specification_type.is_pack_expansion;backend/roslyn_type_support.h",
+      "api_property": "ExceptionSpecificationTypeDetails",
+      "fixture": "Existing genuine243 types/retained/template_edges/cleanup_semantics and upcoming258 family acceptance",
+      "reason": "Actual ordered retained dynamic exception type list; pack descriptor is frontend allocation and never read. Optional source coordinate is not a completion gate.",
+      "review_status": "existing_positive_needs_public_scalar",
+      "review": "8actual throwtype rows all0; directwriter copies retained flag independently of Type. Existing orderedTypes navigation leaves nestedrow flag unread. Bounded scalarread sufficient for unconditionalcopy; do not infer pack from dependenttype or expandpack backend-side."
+    },
+    {
+      "owner": "an_event_interface",
+      "member": "next",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:8727",
+      "disposition": "mapped_pending_validation",
+      "destination": "record_event_interface(owner_id,ordinal);backend/roslyn_layout.h:211",
+      "api_property": "RecordType.EventInterfaces",
+      "fixture": "source/writer/getter mapping only; reuse existing layout/virtual/native-MS family proof when matched",
+      "reason": "Exact native Microsoft interface list order under MICROSOFT_EXTENSIONS_ALLOWED.",
+      "review_status": "ready_evidence_join",
+      "review": "1 actual source/layout_microsoft event interface row ordinal0. Existing LayoutProjection50 verifies exactlyoneactual interface association; writer follows retainedlinkedlist intoordinals and public Record.EventInterfaces ordersbyordinal. Singleton positive only; no claim multievent sourcefixture tested. NativeMS __event __interface retained, notexcludedCLI."
+    },
+    {
+      "owner": "an_event_interface",
+      "member": "interface_type",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:8729",
+      "disposition": "mapped_pending_validation",
+      "destination": "record_event_interface.target_id;backend/roslyn_layout.h:211",
+      "api_property": "RecordType.EventInterfaces[].Target",
+      "fixture": "source/writer/getter mapping only; reuse existing layout/virtual/native-MS family proof when matched",
+      "reason": "Actual interface type pointer; no inferred event hierarchy.",
+      "review_status": "ready_evidence_join",
+      "review": "LayoutNativeEventSource.EventInterfaces.Single().Target.Name==LayoutNativeEvents in LayoutProjection50; exact retained stock interface_type\u2192record_event_interface.target_id, no synthetic bridge/interface reconstruction. ActualsourceMicrosoft output only, loweringscanconsume relationship."
+    },
+    {
+      "owner": "a_data_member_spec",
+      "member": "annotations",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18774",
+      "disposition": "mapped_pending_validation",
+      "destination": "owner_attribute(actual descriptor,ordinal,attribute_id)",
+      "api_property": "DataMemberSpecification.Annotations",
+      "fixture": "actual unannotated prospective member reports empty list; annotated arm activation pending",
+      "reason": "243 genuine module evidence: always. Status: mapped-awaiting-positive. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "missing_positive_branch",
+      "review": "This is C++ reflection std::meta::data_member_spec (stockil_def18756-18777), NOT Microsoftnative annotation descriptor.4specs all0owner_attribute rows. Existing SemanticProjection64 asserts actual emptyAnnotations only. Need real ak_annotation list on retained prospective member if reachable; no defaultlayout/name/attribute synthesis."
+    }
+  ]
+}

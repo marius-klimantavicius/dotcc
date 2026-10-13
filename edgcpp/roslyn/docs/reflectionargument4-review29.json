@@ -1,0 +1,68 @@
+{
+  "owners": [
+    "a_reflection_value",
+    "a_template_arg"
+  ],
+  "pending_at_review": 4,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stockil_def4709-4718/7776-7814;templates2949-2968,13624-13634,13827-13858. Exactbackend/constants/templates, public SemanticProjection56-65 and Program422. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-reflectionargument4-observed29.json",
+  "summary": {
+    "ready_evidence_join": 3,
+    "excluded_frontend_only_candidate": 1
+  },
+  "rows": [
+    {
+      "owner": "a_reflection_value",
+      "member": "entity",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4711",
+      "disposition": "mapped_pending_validation",
+      "destination": "reflection_value.entity_id/kind_id;backend/roslyn_constants.h:140",
+      "api_property": "ReflectionValue.Details.Entity/Kind",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Exact retained tagged entity or nearest enclosing local scope numeric metadata, respectively. Tagged dispatch preserves actual canonical target; no scope-number-based owning routine inference.",
+      "review_status": "ready_evidence_join",
+      "review": "36 actual reflectionvalue taggedentityrefs across4reflection profiles. SemanticProjection56-65 checks arithmetic/record/object/routine/template/field actualidentities including instantiatedparameter equalreflectedtype. Direct EDGtaggeddispatch, no name-based semantics."
+    },
+    {
+      "owner": "a_reflection_value",
+      "member": "local_scope_number",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4714",
+      "disposition": "mapped_pending_validation",
+      "destination": "reflection_value.local_scope_number;backend/roslyn_constants.h:140",
+      "api_property": "ReflectionValue.Details.LocalScopeNumber",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Exact retained tagged entity or nearest enclosing local scope numeric metadata, respectively. Tagged dispatch preserves actual canonical target; no scope-number-based owning routine inference.",
+      "review_status": "ready_evidence_join",
+      "review": "36 actual local_scope_number scalar values all0, serialized directly from EDG unsignedquantity intoexactdecimal; SemanticProjection65 reads nonNULL values. Scope number is EDG regionalcontext metadata, not entityID; do not infer owningroutine/scope identity from0. Nonzero branch not needed for unconditionally copiedscalar."
+    },
+    {
+      "owner": "a_template_arg",
+      "member": "variant.integer_value",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7788",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_argument.deduced_array_bound; backend/roslyn_templates.h",
+      "api_property": "TemplateArgumentDetails.deduced_array_bound",
+      "fixture": "templates_extended_pending",
+      "reason": "Direct kind-guarded retained argument mapping implemented; corresponding fixture remains required.",
+      "review_status": "excluded_frontend_only_candidate",
+      "review": "818arguments0unknownarraybound flags/0deduced_array_bound payload. Stockil_def7789 says only during typededuction, converted to normalconstant at end. templates2949-2968 makes integralconstant and clearsflag after deducing type (auto uses EDG size_t);13624-13634 equivalent conversion whenmatching knownconstant.13827-13858 creates temporaryunknown onlyuntil typeknown. Candidate retire requiredpositive probe as consumed typededuction bookkeeping; retain actual constant argument. Existing guardedwriter safe but column may be unnecessary finalcontract; do not force compiler to expose intermediate state or rederive conversion."
+    },
+    {
+      "owner": "a_template_arg",
+      "member": "variant.templ.ptr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7798",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_argument.template_id; backend/roslyn_templates.h",
+      "api_property": "TemplateArgumentDetails.template_id",
+      "fixture": "templates_extended_pending",
+      "reason": "Direct kind-guarded retained argument mapping implemented; corresponding fixture remains required.",
+      "review_status": "ready_evidence_join",
+      "review": "49 actual template pointers among818arguments. Program422 exact rebound.Type.Instantiation.Arguments[0].Template.Name ParameterBase reads actual template-templateargument. Writer reads thisunion onlytak_template; substituted_param_template is frontendonly and notfollowed."
+    }
+  ]
+}

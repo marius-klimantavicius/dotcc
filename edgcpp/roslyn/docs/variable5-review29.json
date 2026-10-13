@@ -1,0 +1,82 @@
+{
+  "owners": [
+    "a_variable",
+    "a_variable_template_info"
+  ],
+  "pending_at_review": 5,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stockil_def11179-11208,11285-11305,11365-11376. Exactroslyn_variables19,85-96, template_instance roles; SemanticActivationProjection21/26/28, Programshared_value,ProfileProjection statictemplatevars. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-variable5-observed29.json",
+  "summary": {
+    "existing_positive_needs_public_identity": 1,
+    "missing_positive_branch": 1,
+    "ready_evidence_join": 3
+  },
+  "rows": [
+    {
+      "owner": "a_variable_template_info",
+      "member": "template_arg_list",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11184",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_instance_argument role.primary;backend/roslyn_variables.h:19;roslyn_templates.h:roslyn_instance",
+      "api_property": "TemplateInstantiation.Arguments",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Stock il_def11179\u201311208 three distinct retained pointers: original primary actuals, selected partial arguments and associated template. Static class data-member arguments may be absent. Uses canonical descriptor identities, not name lookup or alias-original role.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "20primary argumentrelations for53variable instances; no selectedpartial. Existing shared_value test onlyTemplate/value, genericNavigationFamilies reads arguments but no variable-specific exactprimary argumentassert found. Need bounded existingvariables/templates identity; preserve staticclassmember emptylist, notderivedfrom enclosingclass."
+    },
+    {
+      "owner": "a_variable_template_info",
+      "member": "partial_spec_template_arg_list",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11194",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_instance_argument role.selected_partial;backend/roslyn_variables.h:19;roslyn_templates.h:roslyn_instance",
+      "api_property": "TemplateInstantiation.SelectedPartialArguments",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Stock il_def11179\u201311208 three distinct retained pointers: original primary actuals, selected partial arguments and associated template. Static class data-member arguments may be absent. Uses canonical descriptor identities, not name lookup or alias-original role.",
+      "review_status": "missing_positive_branch",
+      "review": "0 selected_partial relations forvariable instances (otherowner partialargsnotproof). Need actualretainedvariablepartial specialization. Writer uses distinct selected_partial role, doesnotmisclassify primary/alias-original lists. Stockil_def11194 describes selectedpartial parameterlist andNULL forprimary/staticmembers."
+    },
+    {
+      "owner": "a_variable_template_info",
+      "member": "assoc_template",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11204",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_instance.template_id;backend/roslyn_variables.h:19;roslyn_templates.h:roslyn_instance",
+      "api_property": "TemplateInstantiation.Template",
+      "fixture": "stock active-union/guard and exact native/public mapping267; positive reconciliation pending",
+      "reason": "Stock il_def11179\u201311208 three distinct retained pointers: original primary actuals, selected partial arguments and associated template. Static class data-member arguments may be absent. Uses canonical descriptor identities, not name lookup or alias-original role.",
+      "review_status": "ready_evidence_join",
+      "review": "53variable instances actualtemplate links. Program shared_value checks Template.Name plus exact value42; ProfileProjection suppressed/required staticmembers retain instance while argumentlist empty. Direct p->template_info->assoc_template\u2192roslyn_instance. No template lookup or canonicalcollapse."
+    },
+    {
+      "owner": "a_variable",
+      "member": "asm_name_is_valid",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED || REDEFINE_EXTNAME_PRAGMA_ENABLED",
+      "source": "src/il_def.h:11366",
+      "disposition": "mapped_pending_validation",
+      "destination": "variable_symbol.assembly_name_id",
+      "api_property": "VariableSymbol.AssemblyName",
+      "fixture": "variables.cpp; closure260 current profiles",
+      "reason": "Actual retained discriminator selects name union; named-register discriminator has priority. No register/name spelling inference. backend/roslyn_variables.h:91; src/il_def.h:11288\u201311303; active guard: GNU_EXTENSIONS_ALLOWED || REDEFINE_EXTNAME_PRAGMA_ENABLED; !has_named_register_storage_class; asm_name_is_valid",
+      "review_status": "ready_evidence_join",
+      "review": "3 actual assemblynamepayloads. Conditionalwriter variables85-96 uses asm_name_is_valid toselect exact asm_name_or_reg.name, not GNUregisterarm. SemanticActivationProjection26 checks variable_assembly_name.AssemblyName roslyn_assembly_variable. Selector encodedthroughactivepayload rather than separately persistedbool; preserves suppliedname, no parsing or guessedregister."
+    },
+    {
+      "owner": "a_variable",
+      "member": "has_named_register_storage_class",
+      "guard": "!defined(IL_DEF_H) && NAMED_REGISTERS_ALLOWED",
+      "source": "src/il_def.h:11371",
+      "disposition": "mapped_pending_validation",
+      "destination": "variable_symbol.named_register_number",
+      "api_property": "VariableSymbol.NamedRegisterNumber",
+      "fixture": "variables.cpp; closure260 current profiles",
+      "reason": "Actual retained discriminator selects numeric named-register union before asm-name/register-kind branches. backend/roslyn_variables.h:87; src/il_def.h:11294\u201311303; active guard: NAMED_REGISTERS_ALLOWED; has_named_register_storage_class",
+      "review_status": "ready_evidence_join",
+      "review": "1actual configuredEmbeddedC namedregister payload. SemanticActivationProjection21 asserts NamedRegisterNumber2 and absent GNURegisterKind with actualNAMED_REGISTERS_ALLOWED/INCLUDE_EDG_TEST_NAMED_REGISTERS capabilities. Writer givesid-arm precedence under stockflag. Distinct GNU anr_a case28 hasno namednumber. This is EmbeddedC TR18037 storage, notMS/GNU name inference."
+    }
+  ]
+}

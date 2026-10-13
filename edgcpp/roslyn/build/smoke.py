@@ -46,13 +46,16 @@ CASES = {
     'pragma_scope_gnu': ['--c++20', '--g++', '--gnu_version', '130000'],
     'pragma_scope_upc': ['--c99', '--upc'],
     'pragma_scope_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--parse_templates', '--no_defer_parse_function_templates'],
+    'retained_branches_c': ['--c11', '--gcc', '--gnu_version', '130000'],
+    'retained_branches_cpp': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'retained_branches_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],
     'layout_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
     'routines_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
 }
-SOURCE_ONLY = {'layout_microsoft', 'routines_microsoft', 'common_microsoft', 'pragma_scope_microsoft'}
+SOURCE_ONLY = {'layout_microsoft', 'routines_microsoft', 'common_microsoft', 'pragma_scope_microsoft', 'retained_branches_microsoft'}
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', choices=('native', 'source', 'cfront', 'exported'), default='native')
@@ -74,6 +77,7 @@ for name in selected:
     fixture = ('layout.cpp' if name == 'layout_microsoft' else 'upc_values.c' if name in ('upc_dynamic', 'upc_static')
                else 'execution.c' if name == 'execution_c' else 'execution.cpp' if name == 'execution_cpp'
                else 'unevaluated.cpp' if name in ('unevaluated_microsoft', 'unevaluated_clang')
+               else 'retained_branches.c' if name == 'retained_branches_c' else 'retained_branches.cpp' if name == 'retained_branches_cpp'
                else name + ('.c' if name in ('layout_c', 'constant_aggregates', 'constant_embed', 'common_labels', 'upc_affinity', 'pragma_scope_upc') else '.cpp'))
     source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / fixture if name in ('reflection', 'source_attributes', 'routines', 'routines_exception', 'routines_microsoft', 'execution_c', 'execution_cpp')
               else ROOT / 'tests/fixtures' / fixture)

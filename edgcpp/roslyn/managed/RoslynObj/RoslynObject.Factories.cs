@@ -35,6 +35,7 @@ public sealed partial class RoslynObject
     internal Declaration Declaration(long id) => Cached("declaration",id,r=>new Declaration(this,id,r));
     internal Scope Scope(long id) => Cached("scope",id,r=>new Scope(this,id,r));
     internal Constant Constant(long id) => Cached("constant",id,r=>new Constant(this,id,r));
+    internal StaticAssertion StaticAssertion(long id) => Cached("static_assertion",id,r=>new StaticAssertion(this,id,r));
     internal NameReference NameReference(long id) => Cached("name_reference",id,r=>new NameReference(this,id,r));
     internal NameQualifier NameQualifier(long id) => Cached("name_qualifier",id,r=>new NameQualifier(this,id,r));
     internal Initialization Initialization(long id) => Cached("initialization",id,r=>new Initialization(this,id,r));
@@ -291,7 +292,7 @@ public sealed partial class RoslynObject
             "switch_descriptor"=>SwitchDescriptor(id), "switch_case_entry"=>SwitchCase(id),
             "coroutine"=>new SemanticRecord<CoroutineDetails>(this,id,Detail("coroutine",id,r=>new CoroutineDetails(this,r))),
             "function_eh"=>new SemanticRecord<FunctionEhDetails>(this,id,Detail("function_eh",id,r=>new FunctionEhDetails(this,r))),
-            "static_assertion"=>new SemanticRecord<StaticAssertionDetails>(this,id,Detail("static_assertion",id,r=>new StaticAssertionDetails(this,r))),
+            "static_assertion"=>StaticAssertion(id),
             "name_qualifier"=>NameQualifier(id),
             "orphan_scope"=>new SemanticRecord<OrphanScopeDetails>(this,id,Detail("orphan_scope",id,r=>new OrphanScopeDetails(this,r))),
             "token_sequence"=>TokenSequence(id),
