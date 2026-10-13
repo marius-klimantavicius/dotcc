@@ -1,0 +1,64 @@
+{
+  "field": "an_expr_node.variant.type_operand.name_reference",
+  "disposition_recommendation": "inactive_stock_generator for fresh outputs of pinned stock EDG; retain existing direct backend/API mapping",
+  "authority": "/tmp/roslynobj-edg-upstream-20261012 pin89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "initialization": "il_alloc.c3635-3637 set_expr_node_kind(enk_type_operand) clears type and name_reference; clear_expr_node3756 invokes setter and alloc_expr_node3794 invokes clear_expr_node.",
+  "allocation_sites": {
+    "expr.c": [
+      15811,
+      16022,
+      16967,
+      17191,
+      17727,
+      19993,
+      20092,
+      20454,
+      43334,
+      57828,
+      58345,
+      58351
+    ]
+  },
+  "allocation_findings": "All twelve direct allocation sites fill represented type and sometimes positions/compiler-generated flag; none seeds the name reference. Whole pinned src C/header search finds no explicit conversion assignment into enk_type_operand; generic setter clears this arm.",
+  "copy_paths": [
+    {
+      "source": "il.c23214-23256",
+      "meaning": "copy_node preserves original kind and copies whole original node; it cannot seed a non-NULL field from current stock NULL originals."
+    },
+    {
+      "source": "il.c23383-23403",
+      "meaning": "copy_expression treats enk_type_operand as leaf after copy_node, with nothing additional to copy."
+    },
+    {
+      "source": "il.c21138-21146",
+      "meaning": "substitution copies node and updates represented type only."
+    }
+  ],
+  "access_and_union_audit": [
+    {
+      "source": "il.h4358-4364",
+      "meaning": "name_ref_for_node is a conditional pointer-value getter including type arm; all seven call sites (plus the macro definition) are getters in lower_name/cp_gen_be, not assignments to the pointer slot."
+    },
+    {
+      "source": "exprutil.c6101-6170",
+      "meaning": "make_node_from_operand installs saved name references only on routine/variable/constant/field or selected operation cases, not type operand."
+    },
+    {
+      "source": "walk_entry.h1971-1973;il_display.c5110-5113",
+      "meaning": "Walker/display can consume existing field, but do not produce a non-NULL payload."
+    }
+  ],
+  "literal_member_references": [
+    "il_alloc.c3637 NULL write",
+    "il.h4363 getter",
+    "walk_entry.h1972 walker",
+    "il_display.c5112 condition and5113 display"
+  ],
+  "backend_api": "roslyn_execution.h151 faithfully maps this arm to shared reference_expression.name_reference_id; TypeOperandOperation.Reference.NameReference remains nullable. Shared column has live variable/routine/field/constant uses, so no schema removal justified by this arm.",
+  "scope_limits": [
+    "Conservative selected-stock-generator disposition, not a universal EDG promise or unsupported C++ semantic construct.",
+    "External IL from another producer/version or future EDG may supply it; current direct mapping remains capable of retaining it.",
+    "No source-text/name inference, no core change, no synthetic/corruption test or new exports."
+  ],
+  "recipe": "No positive source recipe justified: no non-NULL producer found after allocator/copy/getter/union audit. Existing genuine type-operand presence plus nullable public projection can support the documented boundary; do not promote as positive pointer proof."
+}

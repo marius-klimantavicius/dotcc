@@ -1,0 +1,552 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "selected_fields": 7,
+  "positive_fields": 7,
+  "variant_count": 0,
+  "backend_changes": false,
+  "configuration_changes": false,
+  "new_strict_builds": 0,
+  "profiles": {
+    "source": {
+      "gnu_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/source/control_assembly.roslynobj",
+      "gnu_sha256": "8b2de0532bd2e5237ef5665e268a532910b78561a6efae69ee9a2b7e898b5791",
+      "actual_loops": [
+        {
+          "id": 547,
+          "body_id": 570,
+          "initialization_id": 592,
+          "condition_id": 552,
+          "increment_id": 603,
+          "init_scope_id": 514,
+          "affinity_id": null,
+          "statement_kind": "stmk_for",
+          "representation_role_id": 7003
+        },
+        {
+          "id": 617,
+          "body_id": 636,
+          "initialization_id": null,
+          "condition_id": 622,
+          "increment_id": null,
+          "init_scope_id": null,
+          "affinity_id": null,
+          "statement_kind": "stmk_while",
+          "representation_role_id": 7003
+        },
+        {
+          "id": 655,
+          "body_id": 674,
+          "initialization_id": null,
+          "condition_id": 660,
+          "increment_id": null,
+          "init_scope_id": null,
+          "affinity_id": null,
+          "statement_kind": "stmk_end_test_while",
+          "representation_role_id": 7003
+        }
+      ],
+      "source_for_scope_members": [
+        {
+          "loop_id": 547,
+          "init_scope_id": 514,
+          "member_id": 515,
+          "name": "index"
+        }
+      ],
+      "actual_for_parent_block": [
+        {
+          "loop_id": 547,
+          "block_statement": 497,
+          "descriptor_id": 503,
+          "scope_id": null
+        }
+      ],
+      "opaque_assembly_function": [
+        {
+          "id": 760,
+          "entry_id": null,
+          "text": "\n  nop\n",
+          "routine_id": 745,
+          "statement_kind": "stmk_asm_func_body",
+          "representation_role_id": 7003
+        }
+      ],
+      "routine_assembly_name": [
+        {
+          "routine_id": 457,
+          "gnu_supplement_id": 480,
+          "current_name": "named_routine",
+          "assembly_name": "alternate_routine"
+        }
+      ],
+      "file_scope_asm_storage": [
+        {
+          "owner_id": 251,
+          "ordinal": 27,
+          "member_id": 809,
+          "asm_string_id": 810
+        },
+        {
+          "owner_id": 251,
+          "ordinal": 28,
+          "member_id": 823,
+          "asm_string_id": 824
+        }
+      ],
+      "file_scope_asm_string_units": [
+        {
+          "asm_id": 809,
+          "units": [
+            {
+              "ordinal": 0,
+              "unit": 102
+            },
+            {
+              "ordinal": 1,
+              "unit": 105
+            },
+            {
+              "ordinal": 2,
+              "unit": 114
+            },
+            {
+              "ordinal": 3,
+              "unit": 115
+            },
+            {
+              "ordinal": 4,
+              "unit": 116
+            },
+            {
+              "ordinal": 5,
+              "unit": 95
+            },
+            {
+              "ordinal": 6,
+              "unit": 115
+            },
+            {
+              "ordinal": 7,
+              "unit": 99
+            },
+            {
+              "ordinal": 8,
+              "unit": 111
+            },
+            {
+              "ordinal": 9,
+              "unit": 112
+            },
+            {
+              "ordinal": 10,
+              "unit": 101
+            },
+            {
+              "ordinal": 11,
+              "unit": 95
+            },
+            {
+              "ordinal": 12,
+              "unit": 97
+            },
+            {
+              "ordinal": 13,
+              "unit": 115
+            },
+            {
+              "ordinal": 14,
+              "unit": 109
+            },
+            {
+              "ordinal": 15,
+              "unit": 0
+            }
+          ]
+        },
+        {
+          "asm_id": 823,
+          "units": [
+            {
+              "ordinal": 0,
+              "unit": 115
+            },
+            {
+              "ordinal": 1,
+              "unit": 101
+            },
+            {
+              "ordinal": 2,
+              "unit": 99
+            },
+            {
+              "ordinal": 3,
+              "unit": 111
+            },
+            {
+              "ordinal": 4,
+              "unit": 110
+            },
+            {
+              "ordinal": 5,
+              "unit": 100
+            },
+            {
+              "ordinal": 6,
+              "unit": 95
+            },
+            {
+              "ordinal": 7,
+              "unit": 115
+            },
+            {
+              "ordinal": 8,
+              "unit": 99
+            },
+            {
+              "ordinal": 9,
+              "unit": 111
+            },
+            {
+              "ordinal": 10,
+              "unit": 112
+            },
+            {
+              "ordinal": 11,
+              "unit": 101
+            },
+            {
+              "ordinal": 12,
+              "unit": 95
+            },
+            {
+              "ordinal": 13,
+              "unit": 97
+            },
+            {
+              "ordinal": 14,
+              "unit": 115
+            },
+            {
+              "ordinal": 15,
+              "unit": 109
+            },
+            {
+              "ordinal": 16,
+              "unit": 0
+            }
+          ]
+        }
+      ],
+      "microsoft_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/source/control_microsoft.roslynobj",
+      "microsoft_sha256": "80f0519b6990e7d918a619b988f2442412da72b91ec77ba94b5fd3fc825171a6",
+      "previous_field_foreach": [
+        {
+          "id": 552,
+          "body_id": 557,
+          "collection_id": null,
+          "pattern_kind_id": 115005,
+          "iterator_id": null,
+          "test_id": 607,
+          "increment_id": 612,
+          "uses_previous_declaration_iterator": 1,
+          "previous_field_id": 582,
+          "assignment_id": 594,
+          "collection_reference_id": 498,
+          "temporary_variable_id": 542,
+          "end_variable_id": 526,
+          "scope_id": 497,
+          "iterator_scope_id": 549,
+          "record_type_id": 427,
+          "field_name": "current"
+        }
+      ],
+      "actual_attribute_block_chain": [
+        {
+          "id": 904,
+          "attribute_kind": "msak_uuid",
+          "next_in_block_id": 906,
+          "target_id": 377,
+          "target_kind": "iek_type"
+        },
+        {
+          "id": 906,
+          "attribute_kind": "msak_no_injected_text",
+          "next_in_block_id": null,
+          "target_id": 377,
+          "target_kind": "iek_type"
+        }
+      ],
+      "actual_attribute_processing_capabilities": {
+        "RECOGNIZE_MICROSOFT_ATTRIBUTES": {
+          "value": "1",
+          "enabled": true
+        },
+        "SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING": {
+          "value": "0",
+          "enabled": false
+        }
+      }
+    },
+    "native": {
+      "gnu_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/native/control_assembly.roslynobj",
+      "gnu_sha256": "27e42c9816fcb4195f8966ad573e56a48fa47ff7cd7a35f46d612ccac4bb42bd",
+      "actual_loops": [
+        {
+          "id": 510,
+          "body_id": 539,
+          "initialization_id": null,
+          "condition_id": 515,
+          "increment_id": 558,
+          "init_scope_id": null,
+          "affinity_id": null,
+          "statement_kind": "stmk_for",
+          "representation_role_id": 7001
+        },
+        {
+          "id": 584,
+          "body_id": 603,
+          "initialization_id": null,
+          "condition_id": 589,
+          "increment_id": null,
+          "init_scope_id": null,
+          "affinity_id": null,
+          "statement_kind": "stmk_while",
+          "representation_role_id": 7001
+        },
+        {
+          "id": 617,
+          "body_id": 636,
+          "initialization_id": null,
+          "condition_id": 622,
+          "increment_id": null,
+          "init_scope_id": null,
+          "affinity_id": null,
+          "statement_kind": "stmk_end_test_while",
+          "representation_role_id": 7001
+        }
+      ],
+      "source_for_scope_members": [],
+      "actual_for_parent_block": [
+        {
+          "loop_id": 510,
+          "block_statement": 500,
+          "descriptor_id": 501,
+          "scope_id": 481
+        }
+      ],
+      "opaque_assembly_function": [
+        {
+          "id": 691,
+          "entry_id": null,
+          "text": "\n  nop\n",
+          "routine_id": 677,
+          "statement_kind": "stmk_asm_func_body",
+          "representation_role_id": 7001
+        }
+      ],
+      "routine_assembly_name": [
+        {
+          "routine_id": 433,
+          "gnu_supplement_id": 450,
+          "current_name": "_Z13named_routinei",
+          "assembly_name": "alternate_routine"
+        }
+      ],
+      "file_scope_asm_storage": [
+        {
+          "owner_id": 253,
+          "ordinal": 32,
+          "member_id": 767,
+          "asm_string_id": 768
+        },
+        {
+          "owner_id": 253,
+          "ordinal": 33,
+          "member_id": 780,
+          "asm_string_id": 781
+        }
+      ],
+      "file_scope_asm_string_units": [
+        {
+          "asm_id": 767,
+          "units": [
+            {
+              "ordinal": 0,
+              "unit": 102
+            },
+            {
+              "ordinal": 1,
+              "unit": 105
+            },
+            {
+              "ordinal": 2,
+              "unit": 114
+            },
+            {
+              "ordinal": 3,
+              "unit": 115
+            },
+            {
+              "ordinal": 4,
+              "unit": 116
+            },
+            {
+              "ordinal": 5,
+              "unit": 95
+            },
+            {
+              "ordinal": 6,
+              "unit": 115
+            },
+            {
+              "ordinal": 7,
+              "unit": 99
+            },
+            {
+              "ordinal": 8,
+              "unit": 111
+            },
+            {
+              "ordinal": 9,
+              "unit": 112
+            },
+            {
+              "ordinal": 10,
+              "unit": 101
+            },
+            {
+              "ordinal": 11,
+              "unit": 95
+            },
+            {
+              "ordinal": 12,
+              "unit": 97
+            },
+            {
+              "ordinal": 13,
+              "unit": 115
+            },
+            {
+              "ordinal": 14,
+              "unit": 109
+            },
+            {
+              "ordinal": 15,
+              "unit": 0
+            }
+          ]
+        },
+        {
+          "asm_id": 780,
+          "units": [
+            {
+              "ordinal": 0,
+              "unit": 115
+            },
+            {
+              "ordinal": 1,
+              "unit": 101
+            },
+            {
+              "ordinal": 2,
+              "unit": 99
+            },
+            {
+              "ordinal": 3,
+              "unit": 111
+            },
+            {
+              "ordinal": 4,
+              "unit": 110
+            },
+            {
+              "ordinal": 5,
+              "unit": 100
+            },
+            {
+              "ordinal": 6,
+              "unit": 95
+            },
+            {
+              "ordinal": 7,
+              "unit": 115
+            },
+            {
+              "ordinal": 8,
+              "unit": 99
+            },
+            {
+              "ordinal": 9,
+              "unit": 111
+            },
+            {
+              "ordinal": 10,
+              "unit": 112
+            },
+            {
+              "ordinal": 11,
+              "unit": 101
+            },
+            {
+              "ordinal": 12,
+              "unit": 95
+            },
+            {
+              "ordinal": 13,
+              "unit": 97
+            },
+            {
+              "ordinal": 14,
+              "unit": 115
+            },
+            {
+              "ordinal": 15,
+              "unit": 109
+            },
+            {
+              "ordinal": 16,
+              "unit": 0
+            }
+          ]
+        }
+      ],
+      "microsoft_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/native/control_microsoft.roslynobj",
+      "microsoft_sha256": "2b09c9b145c784520160baaba22e85280d25f1473b2a925e2bcb4772ab30243b",
+      "previous_field_foreach": [],
+      "actual_attribute_block_chain": [
+        {
+          "id": 882,
+          "attribute_kind": "msak_uuid",
+          "next_in_block_id": 884,
+          "target_id": 379,
+          "target_kind": "iek_type"
+        },
+        {
+          "id": 884,
+          "attribute_kind": "msak_no_injected_text",
+          "next_in_block_id": null,
+          "target_id": 379,
+          "target_kind": "iek_type"
+        }
+      ],
+      "actual_attribute_processing_capabilities": {
+        "RECOGNIZE_MICROSOFT_ATTRIBUTES": {
+          "value": "1",
+          "enabled": true
+        },
+        "SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING": {
+          "value": "1",
+          "enabled": true
+        }
+      }
+    }
+  },
+  "notes": {
+    "loop_scope": "Source records exact for-init scope membership; native loop field NULL after lowering and actual parent BlockDescriptor.Scope remains the alternate retained association. API must not fill loop.InitScope from that parent.",
+    "asm": "Asm function is an opaque statement body with text; two file-scope asm entries are distinct ordered scope storage members, not an execution sequence inferred from next. No instruction interpretation.",
+    "foreach": "Previous field is exact current FieldSymbol under active uses_prev_decl_iterator arm; variable arm NULL. Native foreach descriptor absent after ordinary lowering; do not synthesize it from the lowered body.",
+    "attributes": "UUID and no_injected_text are dedicated native handlers, so both profiles actually retain recognized kinds despite differing suppression capability. No artificial kind difference or source-adjacency reconstruction."
+  }
+}

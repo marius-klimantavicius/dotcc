@@ -1,0 +1,95 @@
+{
+  "checkpoint_base": "60a9e69a4f6d9670870ebb12921bd819bde752dc",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "7f5dab10acca5b42776ab29dd7a91cfe9d7502de1052327d5bd303a1efe14421"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/control_assembly.cpp",
+      "sha256": "2623b89147b54fa610f3963a0ee6123c91106816763deaa9e5a0e359354cefe2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/control_microsoft.cpp",
+      "sha256": "4331786e062ab44a7bc850724be9101c6382269e9003414705675fb34468a121"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "506bfda4121270aa7ff5facdc159f04c152cc920952243f4bd157a05ca31a279"
+    }
+  ],
+  "candidate_owned_paths": 3,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "input_count": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/all-profile-results-final.json",
+      "sha256": "6d9b480986e07077a5672027121146fd55bb83f41e24b3d4d9416a08c5c15ad8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/build-results-final.json",
+      "sha256": "c0e4c5349570f16fae39c4a6fb00324e5802b9957ec6165d4b42fee20a498f1e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/backend-hashes-start.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/backend-hashes-final.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/validation-summary-final.json",
+      "sha256": "0a5a8d8317335fadaf80457a48e3a9c2a75282b46f566500f3656dba255146f6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/activation-proof.json",
+      "sha256": "0a5202a3dd4df59fc39c9dd9b7b4ab43aba4261f3195c9b67aad47c6a9a92dbb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/activation-proof.py",
+      "sha256": "9e8beb612251d683c89b20f36016a22edb7f3349ded58db61b9fe70cb22a82c9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/field-evidence.tsv",
+      "sha256": "8e070f9448d095aecedc5ae2ad3b9273a5e83036f671a93218805b8bed309976"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-control-asm-evidence251.tsv",
+  "public_gate": "Managed final4 PASS113/self73/build/generator/literal/whitespace; /tmp/roslyn-managed-ready-control-asm251.json held.",
+  "selected_fields": 7,
+  "positive_fields": 7,
+  "variant_count": 0,
+  "actual_positives": [
+    "source for-init scope exact declared index member",
+    "ordinary while/do body pointers match structural body",
+    "opaque asm-function real routine body/text",
+    "source native-MS previous foreach field/current declared symbol",
+    "GNU routine exact supplied assembly-name",
+    "two canonical file-scope asm members and exact retained string bytes/storage order",
+    "actual bracket-group next link uuid/no_injected_text same target type"
+  ],
+  "legitimate_alternatives": [
+    "native for scope fieldNULL and foreach descriptor0 after lowering, authoritative lowered blocks/bodies retained",
+    "actual supported MS attribute kinds recognized in both profiles, no forced suppression difference",
+    "asm storage list order carries no invented execution relation"
+  ],
+  "hold": true
+}

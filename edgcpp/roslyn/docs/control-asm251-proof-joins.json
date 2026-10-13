@@ -1,0 +1,57 @@
+{
+  "positive_fields": 7,
+  "managed_final": "PASS113/four unique/self73",
+  "joins": [
+    {
+      "owner": "a_for_loop",
+      "member": "for_init_scope",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:26"
+    },
+    {
+      "owner": "a_statement",
+      "member": "variant.loop_statement",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:21"
+    },
+    {
+      "owner": "a_statement",
+      "member": "variant.asm_func_body",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:42"
+    },
+    {
+      "owner": "a_for_each_loop",
+      "member": "iterator.prev_decl.field",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:61"
+    },
+    {
+      "owner": "a_gnu_routine_supplement",
+      "member": "asm_name",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:38"
+    },
+    {
+      "owner": "an_asm_entry",
+      "member": "next",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:45"
+    },
+    {
+      "owner": "an_ms_attribute",
+      "member": "next_in_block",
+      "test_anchor": "RoslynObj.Tests/ControlAssemblyProjection.cs:66"
+    }
+  ],
+  "separate_source_disposition": "one selected-stock type-operand name field; nullable writer/API retained",
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1518,
+    "inactive_stock_generator": 80,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 9,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "native14_stage_gates": "all14 unchanged316 stock/26 canonical/tool pass; new builds0"
+}

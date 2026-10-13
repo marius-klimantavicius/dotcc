@@ -64,6 +64,8 @@ CASES = {
     'reflection_payloads': ['--c++26', '--g++', '--set_flag', 'reflection', '--set_flag', 'injection'],
     'retained_tokens': ['--c++26', '--g++', '--set_flag', 'reflection', '--set_flag', 'injection', '--no_defer_parse_function_templates'],
     'original_enum_templates': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'control_assembly': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'control_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

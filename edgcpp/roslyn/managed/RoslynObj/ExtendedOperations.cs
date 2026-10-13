@@ -47,6 +47,8 @@ public sealed class ForEachOperation : StatementOperation
     public Scope? IteratorScope => ForEach.IteratorScope;
     public ExpressionOperation? Assignment => ForEach.Assignment;
     public bool UsesPreviousDeclarationIterator => ForEach.UsesPreviousDeclarationIterator;
+    /// <summary>The recorded field reused as the iterator, when the previous-declaration field arm is retained.</summary>
+    public FieldSymbol? PreviousField => ForEach.PreviousField;
 }
 
 public sealed class MicrosoftTryOperation : StatementOperation

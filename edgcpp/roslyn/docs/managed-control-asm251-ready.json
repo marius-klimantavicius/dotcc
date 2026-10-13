@@ -1,0 +1,132 @@
+{
+  "ready": "HOLD",
+  "created_utc": "2026-10-13T22:55:40.561529+00:00",
+  "checkpoint_base": "60a9e69a4f6d9670870ebb12921bd819bde752dc",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "scope": "Seven exact loop/asm/previous-field/Microsoft-block identities, four native/source objects; direct nullable ForEachOperation.PreviousField convenience, no backend/schema/config change.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ExtendedOperations.cs",
+      "sha256": "904873d254f27514f6599b8021e32a8a7775b8486e0e592308b06a76114679b7",
+      "bytes": 15062
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "72b5bb81ac405754ea45578c6d36e90c7b5ed280862c4ffc3cec341b51c38272",
+      "bytes": 78849
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/ControlAssemblyProjection.cs",
+      "sha256": "a873b3f95b00b94c0e72921eb83243a35b28272e11702f41bb322eceed32a3c6",
+      "bytes": 7524
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/control-asm251-evidence.tsv",
+      "sha256": "e2bc249d97c4d465046abe7754a84be8c6c55792a04a46db0057704668b87ab1",
+      "bytes": 6446
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-control-asm251-build.log",
+      "sha256": "dd0f8d75df8d4baeddb60d77d555caff13991a6ece319ca7e4b8199c1aa412e9",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-control-asm251-fresh4-v1.log",
+      "sha256": "2b9fa0931e8390c060c7b00dac274be06f58e6283743ccadd0f37c55ddd7dd1b",
+      "bytes": 980
+    },
+    {
+      "path": "/tmp/roslynobj-managed-control-asm251-self.log",
+      "sha256": "8247ca17acd8f1f807a461dce6ae1c92ffcf25345f3010434ffa957d044d131d",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-control-asm251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-control-asm251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-control-asm251-whitespace.log",
+      "sha256": "796179c5bbc1feef0daaf55fc2e771bac691d2fd8bde7bf4b705fe6068dfee3a",
+      "bytes": 284
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/all-profile-results-final.json",
+    "sha256": "6d9b480986e07077a5672027121146fd55bb83f41e24b3d4d9416a08c5c15ad8",
+    "bytes": 3041
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/source/control_assembly.roslynobj",
+      "sha256": "8b2de0532bd2e5237ef5665e268a532910b78561a6efae69ee9a2b7e898b5791",
+      "bytes": 665600,
+      "profile": "source",
+      "fixture": "control_assembly",
+      "entities": 832,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/source/control_microsoft.roslynobj",
+      "sha256": "80f0519b6990e7d918a619b988f2442412da72b91ec77ba94b5fd3fc825171a6",
+      "bytes": 672768,
+      "profile": "source",
+      "fixture": "control_microsoft",
+      "entities": 915,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/native/control_assembly.roslynobj",
+      "sha256": "27e42c9816fcb4195f8966ad573e56a48fa47ff7cd7a35f46d612ccac4bb42bd",
+      "bytes": 665600,
+      "profile": "native",
+      "fixture": "control_assembly",
+      "entities": 788,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/control-asm/native/control_microsoft.roslynobj",
+      "sha256": "2b09c9b145c784520160baaba22e85280d25f1473b2a925e2bcb4772ab30243b",
+      "bytes": 673792,
+      "profile": "native",
+      "fixture": "control_microsoft",
+      "entities": 886,
+      "fk_errors": 0,
+      "page_size": 1024
+    }
+  ],
+  "checks": {
+    "fresh_assertions": 113,
+    "fresh_unique_paths": 4,
+    "self_assertions": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "literal": "PASS",
+    "whitespace": "PASS"
+  },
+  "evidence_rows": {
+    "positive": 7,
+    "pending": 0
+  },
+  "limits": [
+    "Native loop initializer scope NULL and removed foreach descriptors are preserved",
+    "Scope asm-entry storage order is not execution order",
+    "Opaque asm text preserved without instruction parsing",
+    "Actual Microsoft handlers recognize both kinds; no forced suppression expectation"
+  ],
+  "native_gate": "Unchanged14-stage/core/canonical/publication gates owned by native; independent ready inventory follows."
+}

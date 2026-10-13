@@ -1652,3 +1652,52 @@ All 13 managed and 13 native frozen hashes match. Final validation, stage and
 activation summaries retain the two-positive first-attempt scope. Only one direct
 reader convenience is added; backend/config/schema bytes are unchanged. Restart,
 unrelated and unaccepted exploratory files are excluded.
+
+
+### Accepted control, assembly and native Microsoft links
+
+The control/asm/MS checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four final GNU/MS native/source objects
+pass 113 reader assertions; self-checks pass 73. Build, generator, literal-field
+and whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned
+stock inputs, the pinned tool and 26 canonical backend files; new builds: zero.
+All seven active branches succeed first attempt. No full 211-object refresh or
+performance rerun is claimed.
+
+Field coverage is now **1,518 verified / 9 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Kind-family proof and optional source fields remain distinct from
+required owner-payload and active-branch evidence.
+
+Seven exact branches close: the source for-init scope and evaluated initialization,
+ordinary while/do body edges, opaque asm-function body, previous-field foreach
+iterator, GNU routine assembly name, ordered plural scope asm entries and the
+Microsoft physical attribute-block chain. Actual body/call/assignment identities
+and representation roles are separate from metadata scope and storage lists.
+Native lowering clears the for-init scope and foreach descriptor; neither is
+recovered. Both profiles retain the observed recognized uuid/no_injected_text
+kinds. Physical block links, scope-list ownership and application targets remain
+distinct. ForEachOperation.PreviousField exposes its exact nullable recorded link.
+
+One separately reviewed field, type_operand.name_reference, has no nonnull
+producer in fresh selected pinned stock output. The allocator clears it; twelve
+actual allocation sites fill type/positions only; getter, walker and display paths
+only consume it, and copy/substitution preserve the original kind/null. It is
+classified inactive_stock_generator (80 such rows), with the direct writer and
+nullable API retained. This is neither payload removal nor a claim about every
+EDG/foreign IL input. No manufactured positive or extra probe is added.
+
+Next native and reader work targets four contextual base/override relationships,
+the exact associated pragma target/presence pair and orphaned local namespace
+aliases. The queued namespace recipe follows the actual file-memory alias list;
+storage ScopeNumber does not become a guessed lexical owner or execution edge.
+The dynamic-init empty-target and selected dependent-array local-bound links
+remain explicit positive/retention questions. No confirmed serialization adapter
+or factory gap is open. Full phases 3–4/M0–M5 continue; EDG remains the sole
+semantic authority and optional source positions remain nonblocking.
+
+Inventories: managed-control-asm251-ready.json and native-control-asm251-ready.json.
+All 15 managed and 14 native frozen hashes match. Final validation, stage and
+activation summaries record seven positive first-attempt fields. Only one direct
+reader convenience is added; backend/config/schema bytes are unchanged. Restart
+and unrelated work remain excluded.

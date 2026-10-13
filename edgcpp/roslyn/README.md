@@ -12,10 +12,10 @@ Phases 3–4 are approved and in progress. The current251-table format passes
 4,437 reader assertions across211 distinct objects and14 strict pinned profiles.
 Full M0–M5 acceptance is tracked in [the implementation ledger](docs/IMPLEMENTATION.md),
 [remaining acceptance](docs/ACCEPTANCE.md), and [compatibility profiles](docs/PROFILES.md).
-There are 1,511 verified field rows and 17 required proof rows still open, with two
+There are 1,518 verified field rows and 9 required proof rows still open, with two
 explicit selected-stock module-input limitations; table or
 kind presence alone does not establish complete semantic-family coverage. The latest
-bounded original-name/member-enum gate passes 100 assertions on two fresh objects;
+bounded control/asm/MS gate passes 113 assertions on four fresh objects;
 the format remains unchanged.
 
 The build uses a clean EDG 7.0 checkout pinned at

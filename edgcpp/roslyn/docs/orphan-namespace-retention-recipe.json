@@ -1,0 +1,16 @@
+{
+  "field": "a_scope_orphaned_list_header.orphaned_namespaces",
+  "status": "active retained namespace-alias list; bounded uncompiled recipe",
+  "authority": "/tmp/roslynobj-edg-upstream-20261012",
+  "source": [
+    "src/il_def.h:16973-16979 explicitly describes namespace alias list, always allocated in file memory",
+    "src/il_alloc.c:4575-4588 alloc_namespace always uses file-scope memory even for local alias",
+    "src/decls.c:16144-16164 permits namespace aliases in function/block scopes",
+    "src/il.c:5078-5112 r_add_scope_orphaned_il_lists copies actual scope.namespaces into header",
+    "src/il.c:31140-31165 removes unneeded aliases only according to actual keep_in_il"
+  ],
+  "candidate_source": "namespace RetainedNamespace { int value = 5; }\nint retained_local_alias() {\n  namespace LocalAlias = RetainedNamespace;\n  return LocalAlias::value;\n}\n",
+  "candidate_profiles": "Existing source/native GNU C++20; no compile configuration changes. Source name-form/source-sequence retention may retain alias needed flags; native lowering absence must be recorded honestly.",
+  "expected_evidence": "Actual orphan-header namespace list references canonical LocalAlias descriptor with its recorded Target namespace and associated Routine. Preserve storage ScopeNumber as numeric context; do not infer lexical scope or execution from orphan membership. Exact pointer/list availability must be observed before promotion.",
+  "scope": "Coordinator read-only stock review and one queued recipe, not compiled/exported or a coverage promotion; outside current control/asm/MS batch."
+}

@@ -1,43 +1,44 @@
 # Remaining acceptance work
 
-The original-name/member-enum checkpoint keeps the accepted `4bb94` contract
-unchanged: 251 tables and 39,145 stable kind IDs. Two final native/source objects
-pass 100 reader assertions; self-checks pass 73. Build, generator, literal-field
+The control/asm/MS checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four final GNU/MS native/source objects
+pass 113 reader assertions; self-checks pass 73. Build, generator, literal-field
 and whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned
 stock inputs, the pinned tool and 26 canonical backend files; new builds: zero.
-Both branches activate on the first ordinary input, without a variation. No full
-211-object refresh or performance rerun is claimed.
+All seven active branches succeed first attempt. No full 211-object refresh or
+performance rerun is claimed.
 
-Field coverage is now **1,511 verified / 17 required pending**, plus two explicit
+Field coverage is now **1,518 verified / 9 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
 or disposition. Kind-family proof and optional source fields remain distinct from
 required owner-payload and active-branch evidence.
 
-The source name reference retains ordered original LocalInt and integer7 argument
-descriptors. They differ from the selected int/7 arguments of the same actual
-function instance: the type is a retained typedef, and the separate constant
-occurrences share their interned value. The lexically identical prime call records
-an empty original list. Native name forms are absent under its actual recording
-policy. No arguments are substituted from the selected instance or spelling.
+Seven exact branches close: the source for-init scope and evaluated initialization,
+ordinary while/do body edges, opaque asm-function body, previous-field foreach
+iterator, GNU routine assembly name, ordered plural scope asm entries and the
+Microsoft physical attribute-block chain. Actual body/call/assignment identities
+and representation roles are separate from metadata scope and storage lists.
+Native lowering clears the for-init scope and foreach descriptor; neither is
+recovered. Both profiles retain the observed recognized uuid/no_injected_text
+kinds. Physical block links, scope-list ownership and application targets remain
+distinct. ForEachOperation.PreviousField exposes its exact nullable recorded link.
 
-Prototype and concrete enum descriptors link to the same own templk_member_enum
-entry, its actual enum pattern, canonical/definition and symbol links. That entry
-is distinct from the enclosing EnumHost class template. EnumSymbol.Template
-exposes the exact nullable recorded pointer, with no enclosing-template fallback.
-Existing NameReference.OriginalTemplateArguments retains ordinary ordered access.
+One separately reviewed field, type_operand.name_reference, has no nonnull
+producer in fresh selected pinned stock output. The allocator clears it; twelve
+actual allocation sites fill type/positions only; getter, walker and display paths
+only consume it, and copy/substitution preserve the original kind/null. It is
+classified inactive_stock_generator (80 such rows), with the direct writer and
+nullable API retained. This is neither payload removal nor a claim about every
+EDG/foreign IL input. No manufactured positive or extra probe is added.
 
-Both exact producer/retention questions are now closed through genuine public
-identity evidence. The earlier read-only recipe reports remain historical source
-reviews; the final two-row evidence and activation proof record actual outcomes.
-
-Next native and reader work combines bounded control/asm/MS branches: actual
-for-init scope and while/do body links, opaque asm-function body, previous-field
-foreach iterator, GNU routine assembly name and retained asm/MS block chains.
-Contextual base/override and targeted pragma/list arms follow. Dynamic-init empty
-targets and selected dependent-array/name/orphan links retain explicit positive
-obligations. No confirmed missing serialization adapter or factory is open.
-Full phases 3–4/M0–M5 continue; EDG remains the sole semantic authority and optional
-source positions remain nonblocking.
+Next native and reader work targets four contextual base/override relationships,
+the exact associated pragma target/presence pair and orphaned local namespace
+aliases. The queued namespace recipe follows the actual file-memory alias list;
+storage ScopeNumber does not become a guessed lexical owner or execution edge.
+The dynamic-init empty-target and selected dependent-array local-bound links
+remain explicit positive/retention questions. No confirmed serialization adapter
+or factory gap is open. Full phases 3–4/M0–M5 continue; EDG remains the sole
+semantic authority and optional source positions remain nonblocking.
 
 ## Historical milestone evidence
 
