@@ -58,6 +58,7 @@ models = {
     'vla_dimension':('VlaDimension','VlaDimension'),
     'subobject_path':('SubobjectPath','SubobjectPath'),
     'source_correspondence':('SourceCorrespondence','Correspondence'),
+    'name_reference':('NameReference','NameReference'), 'name_qualifier':('NameQualifier','NameQualifier'),
     'using_declaration':('UsingDeclaration','Using'),
     'gnu_routine_supplement':('GnuRoutineSupplement','GnuRoutineSupplement'),
     'block_descriptor':('BlockDescriptor','BlockDescriptor'), 'try_descriptor':('TryDescriptor','TryDescriptor'),
@@ -92,7 +93,7 @@ booleans.update({'assignment_to_this_done','never_throws','never_inline','declar
     'copied_from_secondary_trans_unit','same_name_as_external_entity_in_secondary_trans_unit',
     'member_of_unknown_base','qualified_unknown_base_member','member_of_unknown_super',
     'microsoft_identifier_used','marked_as_gnu_extension','externalized','maybe_unused',
-    'named_in_strong_using','address_taken','locally_declared'})
+    'named_in_strong_using','address_taken','locally_declared','parameter_used_as_lvalue'})
 numeric_text = {'scope_number','local_scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','first_line','logical_line','physical_line',

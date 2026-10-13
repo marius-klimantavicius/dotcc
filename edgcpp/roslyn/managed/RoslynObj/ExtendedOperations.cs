@@ -66,6 +66,7 @@ public sealed class LabelOperation : StatementOperation
     internal LabelOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public LabelStatementDetails LabelStatement => Object.Detail("label_statement",Id,r=>new LabelStatementDetails(Object,r));
     public LabelSymbol Label => LabelStatement.Label;
+    public Lifetime? Lifetime => Label.Lifetime;
     public StatementOperation? Statement => LabelStatement.Statement;
 }
 
@@ -152,7 +153,6 @@ public sealed class StatementExpressionOperation : ExpressionOperation
     internal StatementExpressionOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public StatementExpressionDetails StatementExpression => Object.Detail("statement_expression",Id,r=>new StatementExpressionDetails(Object,r));
     public StatementOperation Statement => StatementExpression.Statement;
-    public ExpressionOperation? Result => StatementExpression.Result;
 }
 
 public sealed class ReuseOperation : ExpressionOperation
@@ -180,7 +180,6 @@ public sealed class BuiltinOperation : ExpressionOperation
     public BuiltinExpressionDetails Builtin => Object.Detail("builtin_expression",Id,r=>new BuiltinExpressionDetails(Object,r));
     public SemanticKind BuiltinKind => Builtin.Kind;
     public ExpressionOperation? SelectedExpression => Builtin.SelectedExpression;
-    public Constant? ResultConstant => Builtin.ResultConstant;
 }
 
 public sealed class ParameterReferenceOperation : ExpressionOperation
@@ -201,9 +200,7 @@ public sealed class DependentOperation : ExpressionOperation
     public ExpressionOperation? WrappedExpression => Dependency.WrappedExpression;
     public TemplateDescriptor? Template => Dependency.Template;
     public Initialization? Initialization => Dependency.Initialization;
-    public Scope? ParameterScope => Dependency.ParameterScope;
     public bool? NoexceptRequired => Dependency.NoexceptRequired;
-    public bool IsDependent => Dependency.IsDependent;
     public ExpressionOperation? PackIndex => Dependency.PackIndex;
     public CppType? PackType => Dependency.PackType;
     public TemplateDescriptor? PackTemplate => Dependency.PackTemplate;
@@ -231,6 +228,7 @@ public sealed class TypeOperandOperation : ExpressionOperation
     internal TypeOperandOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ReferenceExpressionDetails Reference => Object.Detail("reference_expression",Id,r=>new ReferenceExpressionDetails(Object,r));
     public CppType? OperandType => Reference.Target as CppType;
+    public NameReference? NameReference => Reference.NameReference;
     public bool IsDefault => OperandType is null;
 }
 

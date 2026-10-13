@@ -22,7 +22,7 @@ internal static class ConstantReferences
             var uses=paged.TranslationUnit.SemanticModel.GetReferences(target);
             check(uses.Count>=2&&uses.ToArray().Length==uses.Count&&uses.All(r=>r.ReferencedSymbol==target),"Literal-target reference UNIONs must enumerate all actual uses through multiple keyset pages.");
             var operations=unit.Entities.OfType<ConstantOperation>().Where(o=>o.Constant.Value is ConstantValue<MemberPointerValueDetails> {Payload.Member:Symbol}).ToArray();
-            check(operations.Length==2&&operations.All(o=>unit.SemanticModel.GetSymbol(o)==((ConstantValue<MemberPointerValueDetails>)o.Constant.Value).Payload.Member),"Genuine member-pointer constant operations must resolve the exact retained member symbol.");
+            check(operations.Count(o=>o.RepresentationRole.Name=="source_semantic")==2&&operations.All(o=>unit.SemanticModel.GetSymbol(o)==((ConstantValue<MemberPointerValueDetails>)o.Constant.Value).Payload.Member),"The two executable member-pointer uses and every captured metadata operation must resolve their exact retained member symbols.");
         }
         if(fixture=="label_difference.roslynobj")
         {

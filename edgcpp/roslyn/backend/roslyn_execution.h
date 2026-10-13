@@ -122,7 +122,7 @@ static Rid roslyn_expr(an_expr_node_ptr p,int role) {
  an_expr_node_ptr arguments=callee?callee->next:nullptr;if(member||member_pointer){receiver=roslyn_expr(arguments,role);arguments=arguments?arguments->next:nullptr;}
  int n=0;for(an_expr_node_ptr a=arguments;a;a=a->next){const char *argrole=roslyn_parameter_role(signature,formal,selected);Rid aid=roslyn_expr(a,role);
  if(std::strcmp(argrole,"this_parameter")==0)receiver=aid;if(std::strcmp(argrole,"return_parameter")==0)returned=aid;
- DB.put("call_argument",{{"owner_id",id},{"ordinal",n++},{"expression_id",aid},{"role_id",K("role",argrole)}});if(formal)formal=formal->next;}
+ DB.put("call_argument",{{"owner_id",id},{"ordinal",n++},{"expression_id",aid},{"parameter_type_id",R(roslyn_parameter_type(formal))},{"role_id",K("role",argrole)}});if(formal)formal=formal->next;}
  DB.put("call_expression",{{"id",id},{"callee_id",R(roslyn_expr(callee,role))},{"target_routine_id",R(target)},{"function_type_id",R(roslyn_type(signature))},{"receiver_id",R(receiver)},{"return_slot_id",R(returned)},{"source_target_routine_id",R(!DO_IL_LOWERING?target:0)},{"source_dispatch_kind_id",R(!DO_IL_LOWERING?K("source_dispatch_kind",member_pointer?"member_pointer":member&&o.is_virtual_call?"virtual":"non_virtual"):0)},{"call_kind_id",K("call_kind",member_pointer?"member_pointer":member?"member":target?"direct":"indirect")}});
  roslyn_fact(id,"source_target",DO_IL_LOWERING?"lost":target?"available":"not_applicable",DO_IL_LOWERING?"Stock lowering rewrites calls; a current callee is not a retained source-selected target.":target?nullptr:"The source call uses an indirect or member-pointer target.");
  roslyn_fact(id,"source_dispatch",DO_IL_LOWERING?"lost":"available",DO_IL_LOWERING?"Stock lowering rewrites member and virtual dispatch; the current call form is retained separately.":nullptr);
@@ -135,7 +135,7 @@ static Rid roslyn_expr(an_expr_node_ptr p,int role) {
  case enk_object_lifetime:{auto &l=p->variant.object_lifetime;Rid ex=roslyn_expr(l.expr,role);DB.put("lifetime_expression",{{"id",id},{"expression_id",R(ex)},{"lifetime_id",R(roslyn_lifetime(l.ptr))}});roslyn_child(id,"body",0,ex);break;}
  case enk_temp_init:roslyn_vla_children(id,p->type,role);DB.put("temporary_expression",{{"id",id},{"initialization_id",roslyn_init(p->variant.init.dynamic_init,role)},{"source_type_id",R(roslyn_type(p->variant.init.source.type))}});roslyn_child(id,"initialization",0,roslyn_init(p->variant.init.dynamic_init,role));break;
  case enk_statement:{Rid body=roslyn_statement(p->variant.statement,role);DB.put("statement_expression",{{"id",id},{"statement_id",body}});roslyn_child(id,"body",0,body);break;}
- case enk_reuse_value:DB.put("reuse_expression",{{"id",id},{"initialization_id",roslyn_init(p->variant.reused_value_init,role)}});break;
+ case enk_reuse_value:DB.put("reuse_expression",{{"id",id},{"initialization_id",roslyn_init(p->variant.reused_value_init,7002)}});break;
  case enk_builtin_operation:DB.put("builtin_expression",{{"id",id},{"kind_id",roslyn_kind_builtin(p->variant.builtin_operation.kind)}});roslyn_expr_operands(id,p->variant.builtin_operation.operands,role);break;
  case enk_type_operand:DB.put("reference_expression",{{"id",id},{"target_id",R(roslyn_type(p->variant.type_operand.type))},{"reference_kind_id",K("reference_kind","type")},{"name_reference_id",R(roslyn_name_reference(p->variant.type_operand.name_reference))}});break;
 #if VLA_DEALLOCATIONS_IN_IL
@@ -177,7 +177,11 @@ static Rid roslyn_statement(a_statement_ptr p,int role) {
 #if DO_IL_LOWERING
  lowering_generated=RoslynSqlValue(static_cast<int>(p->lowering_generated));boilerplate=RoslynSqlValue(static_cast<int>(p->is_lowering_boilerplate));
 #endif
- Rid expression=roslyn_expr(p->expr,role);DB.put("statement",{{"id",id},{"kind_id",kind},{"expression_id",R(expression)},{"parent_id",R(roslyn_statement(p->parent,role))},{"is_guard",static_cast<int>(p->is_initialization_guard)},{"lowering_generated",lowering_generated},{"has_associated_pragma",static_cast<int>(p->has_associated_pragma)},{"is_lowering_boilerplate",boilerplate},{"is_fallthrough_statement",static_cast<int>(p->is_fallthrough_statement)},{"is_likely",static_cast<int>(p->is_likely)},{"is_unlikely",static_cast<int>(p->is_unlikely)}});roslyn_child(id,"operand",0,expression);
+ Rid source_entry=0;
+#if GENERATE_SOURCE_SEQUENCE_LISTS
+ source_entry=roslyn_source_entry(p->source_sequence_entry);
+#endif
+ Rid expression=roslyn_expr(p->expr,role);DB.put("statement",{{"id",id},{"kind_id",kind},{"expression_id",R(expression)},{"parent_id",R(roslyn_statement(p->parent,role))},{"is_guard",static_cast<int>(p->is_initialization_guard)},{"lowering_generated",lowering_generated},{"has_associated_pragma",static_cast<int>(p->has_associated_pragma)},{"is_lowering_boilerplate",boilerplate},{"is_fallthrough_statement",static_cast<int>(p->is_fallthrough_statement)},{"is_likely",static_cast<int>(p->is_likely)},{"is_unlikely",static_cast<int>(p->is_unlikely)},{"source_sequence_entry_id",R(source_entry)}});roslyn_child(id,"operand",0,expression);
  switch(p->kind){
  case stmk_expr:case stmk_empty:case stmk_coroutine_return:break;
 #if GNU_EXTENSIONS_ALLOWED
@@ -204,7 +208,11 @@ static Rid roslyn_statement(a_statement_ptr p,int role) {
  case stmk_upc_notify:case stmk_upc_wait:case stmk_upc_barrier:case stmk_upc_fence:break;
  case stmk_upc_forall:
 #endif
- case stmk_for:{auto &s=p->variant.for_loop;Rid body=roslyn_statement(s.statement,role),init=s.extra_info?roslyn_statement(s.extra_info->initialization,role):0,inc=s.extra_info?roslyn_expr(s.extra_info->increment,role):0;DB.put("loop_statement",{{"id",id},{"body_id",R(body)},{"initialization_id",R(init)},{"condition_id",R(expression)},{"increment_id",R(inc)},{"init_scope_id",R(s.extra_info?roslyn_scope(s.extra_info->for_init_scope):0)}});roslyn_child(id,"initialization",0,init);roslyn_child(id,"body",0,body);roslyn_child(id,"increment",0,inc);break;}
+ case stmk_for:{auto &s=p->variant.for_loop;Rid body=roslyn_statement(s.statement,role),init=s.extra_info?roslyn_statement(s.extra_info->initialization,role):0,inc=s.extra_info?roslyn_expr(s.extra_info->increment,role):0,affinity=0;
+#if UPC_EXTENSIONS_ALLOWED
+ affinity=s.extra_info?roslyn_expr(s.extra_info->affinity,role):0;
+#endif
+ DB.put("loop_statement",{{"id",id},{"body_id",R(body)},{"initialization_id",R(init)},{"condition_id",R(expression)},{"increment_id",R(inc)},{"affinity_id",R(affinity)},{"init_scope_id",R(s.extra_info?roslyn_scope(s.extra_info->for_init_scope):0)}});roslyn_child(id,"initialization",0,init);roslyn_child(id,"body",0,body);roslyn_child(id,"increment",0,inc);roslyn_child(id,"affinity",0,affinity);break;}
  case stmk_return:case stmk_goto:{Rid init=p->kind==stmk_return?roslyn_init(p->variant.return_dynamic_init,role):0;Rid label=p->kind==stmk_goto?roslyn_label(p->variant.label.ptr):0;DB.put("jump_statement",{{"id",id},{"kind_id",K("jump_kind",p->kind==stmk_return?"return":p->variant.label.ptr->break_label?"break":p->variant.label.ptr->continue_label?"continue":"goto")},{"value_id",R(expression)},{"label_id",R(label)},{"initialization_id",R(init)},{"common_lifetime_id",R(p->kind==stmk_goto?roslyn_lifetime(p->variant.label.lifetime):0)}});roslyn_child(id,"initialization",0,init);break;}
  case stmk_label:DB.put("label_statement",{{"id",id},{"label_id",roslyn_label(p->variant.label.ptr)}});break;
  case stmk_switch:{auto &s=p->variant.switch_stmt;Rid body=roslyn_statement(s.body_statement,role);DB.put("switch_statement",{{"id",id},{"body_id",R(body)},{"selector_id",R(expression)},{"descriptor_id",roslyn_switch_descriptor(s.extra_info,role)}});roslyn_child(id,"body",0,body);break;}

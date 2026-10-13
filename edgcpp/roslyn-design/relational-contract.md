@@ -427,8 +427,16 @@ is not controlled by a size-saving toggle.
 Use prepared statements and one transaction per output, a temporary sibling file,
 and atomic publication after close. Failure leaves no partially published new
 object and preserves any existing destination. SQLite errors are exporter errors;
-they do not question EDG semantics. Foreign keys are enabled by the writer;
-deferral permits identity-first cyclic graph insertion. Use `STRICT` tables with
+they do not question EDG semantics. Foreign keys are enabled for the normal writer;
+deferral permits identity-first cyclic graph insertion. A measured bulk-load
+candidate may disable incremental FK enforcement only in the private unpublished
+temporary database. Declared foreign keys, STRICT, UNIQUE and CHECK constraints
+remain unchanged. The complete foreign_key_check must succeed before marking the
+artifact complete or committing; re-enable FK enforcement outside the transaction
+and verify its state before publication. Any gate error discards the temporary
+output and preserves an existing destination. This explicit private-construction
+exception was approved for backend performance measurement on 2026-10-13; it is
+not permission to publish unresolved references or weaken final integrity. Use `STRICT` tables with
 a documented minimum SQLite version. Ordinary integer-primary-key entity tables
 use rowid storage; benchmark `WITHOUT ROWID` for composite-key ordered relations.
 

@@ -1,4 +1,36 @@
-# Active common metadata batch (266 tables)
+# Accepted bounded variable and execution batch (267 tables)
+
+Verified266 committed as `dec4f0a86c3889b96ed11378eacc5d505a1fdddf`:146 genuine
+objects/PASS1915,self73,four strict compilers and independent core/canonical gates.
+Final267 acceptance:158 genuine objects/PASS1963,self73, clean reader build and
+four strict pinned compiler stages. Contract remains267 tables /39,145 kinds.
+Both workers continue into the next performance/profile and coverage batch.
+
+- Native owns seven nullable variable facts under their exact automatic-instantiation,
+  inline-variable and minimal-inlining guards, plus ordered retained
+  variable_initializer_entity metadata. The source list specifically retains
+  static-data-member initializer closure types; it adds no synthetic execution.
+  Canonical field contract: schema/variable-field-contract.tsv.
+- Managed owns exact nullable Statement.SourceSequenceEntry (guarded retained
+  designated pointer, not first reverse target), UPC forall affinity written to
+  its existing FK and evaluated child role, ordinary NameReference/NameQualifier
+  navigation and OriginalTemplateArguments. Remove phantom Statement constexpr
+  and NameReference builtin columns; no stock fields produce them.
+- Native owns the generated-header timestamp build fix and serialized Sun/USL/
+  alternate-host profile work. Existing raw/mapped fields reconcile alongside
+  implementation with exact writer/property/family evidence; no table-only proof.
+- M5 canonical scale remains about30.28s/8.879MB. The private bulk-load candidate
+  measures0.59s with equal logical rows, complete FK gates and enforcement restored
+  before publication. Adopt through a refreshed contract/reader gate, then compare
+  removal of the seven writer-only indexes for size and reader behavior.
+
+Source locations stay optional; this designated occurrence identity requires only
+one actual pointer and no reconstruction. Full phases3–4/M0–M5 continue through
+CLOSURE.md rather than stopping at this checkpoint.
+
+---
+
+# Accepted common metadata batch (266 tables)
 
 The accepted 263 checkpoint is committed as `a409df1be08efeee4f8ebf952a53bb5298306c91`.
 The current frozen contract contains **266 tables and 39,145 append-only kinds**;

@@ -67,6 +67,11 @@ unique. The type descriptor stays separate.
 Template headers, parameter placeholders and defaults navigate through typed
 objects. Function signatures and requires-expression parameters share canonical
 `ParameterType` descriptors, including retained declared types and default facts.
+`CallArgument.Parameter` follows the actual current formal descriptor; variadic
+trailing arguments have none. Implicit source receivers remain separate, while
+an explicit-object parameter is an ordinary argument with its recorded descriptor.
+Variables expose their ordered `EntitiesDefinedInInitializer`, including actual
+closure types defined by static-member initializers.
 `FunctionSymbol.Signature` follows the current callable routine type, including
 hidden ABI parameters. `DefinitionType` is the optional retained written type;
 the reader does not recover an original signature from lowered parameters.
@@ -95,6 +100,9 @@ expose exact qualifier/target/set links and captured lexical owners. Lowering ca
 remove written using forms. Microsoft proxy types keep their descriptor metadata
 and namespace/type associations without an invented type declaration or concrete
 placeholder layout.
+`NameReference` and `NameQualifier` expose actual qualifiers, special forms and
+retained original template arguments. An empty original list stays empty even
+when the name records an explicit argument count; instance arguments are separate.
 
 `RecordType.BasesInPostorder` and `BasesInPreorder` preserve the available EDG
 orders. Base derivations and overrides retain contextual subobject identities;
@@ -126,6 +134,10 @@ only a nonnull sorted-list head. Source VLA expressions expose their actual
 `VlaDimensions`; executable traversal follows retained evaluated dimensions
 without reevaluating dimensions established by typedef or size statements.
 Conversions project the actual operator, operand type and result type.
+UPC loops expose their evaluated `Affinity` through the same structural graph.
+Statements expose their designated `SourceSequenceEntry` when retained. Named
+initialization and statement-expression result statements have their own visitor
+hooks; result values follow the actual statement expression or initialization.
 
 Lambda initializations and lambda expressions share one `LambdaDefinition` with
 its actual capture list. Assembly operations similarly delegate to their captured
@@ -208,8 +220,8 @@ From the repository root:
 python3 edgcpp/roslyn/managed/tools/generate_bindings.py --check
 dotnet build edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj
 dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
-  edgcpp/artifacts/roslynobj/common266/smoke-native/basic.roslynobj \
-  edgcpp/artifacts/roslynobj/common266/smoke-native/m0.roslynobj
+  edgcpp/artifacts/roslynobj/semantic267/smoke-native/basic.roslynobj \
+  edgcpp/artifacts/roslynobj/semantic267/smoke-native/m0.roslynobj
 ```
 
 Without object paths, the console test project runs the valid shared-schema

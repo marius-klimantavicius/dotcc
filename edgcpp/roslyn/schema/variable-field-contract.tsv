@@ -1,0 +1,9 @@
+source_field	guard	column_or_relation	shape	source	meaning
+a_variable.can_be_instantiated	AUTOMATIC_TEMPLATE_INSTANTIATION	can_be_instantiated	INTEGER nullable	src/il_def.h:11454	Retained eligibility for link-time automatic instantiation; direct flag only.
+a_variable.do_not_instantiate	AUTOMATIC_TEMPLATE_INSTANTIATION	do_not_instantiate	INTEGER nullable	src/il_def.h:11464	Retained automatic-instantiation suppression policy; distinct explicit directive flag remains.
+a_variable.instance_required	AUTOMATIC_TEMPLATE_INSTANTIATION	instance_required	INTEGER nullable	src/il_def.h:11474	Definition required in this or another unit; preserve stock requirement without linking.
+a_variable.param_used_as_lvalue	MINIMAL_INLINING	parameter_used_as_lvalue	INTEGER nullable	src/il_def.h:11495	Actual observed lvalue use in lowered routine or handler.
+a_variable.inline_instance_required	INSTANTIATE_INLINE_VARIABLES	inline_instance_required	INTEGER nullable	src/il_def.h:11551	Actual complete-program inline-variable definition requirement.
+a_variable.is_temp_for_unmodified_inlined_param	DO_IL_LOWERING && MINIMAL_INLINING	is_temp_for_unmodified_inlined_parameter	INTEGER nullable	src/il_def.h:11583	Actual temporary remapping provenance, distinct compiler_generated.
+a_variable.is_temp_for_constructor_this_inlined_param	DO_IL_LOWERING && MINIMAL_INLINING	is_temp_for_constructor_this_inlined_parameter	INTEGER nullable	src/il_def.h:11587	Actual constructor receiver remapping provenance.
+a_variable.entities_defined_in_initializer	always	variable_initializer_entity(owner_id,ordinal,entity_id)	ordered relation variable_symbol→entity	src/il_def.h:11760	Actual retained entity list, currently closure types; not inferred from initializer expressions.

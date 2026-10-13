@@ -13,6 +13,7 @@ public sealed class Constant : SemanticEntity
     public ConstantDetails Details { get; }
     public CppType? Type => Details.Type;
     public CppType? OriginalType => Details.OrigType;
+    public NameReference? NameReference => Details.NameReference;
     public override string? Name => base.Name;
     public SemanticEntity? ContainingEntity => SourceCorrespondence?.ContainingEntity;
     public IReadOnlyList<Symbol> DeclarationSymbols => declarationSymbols.Value;

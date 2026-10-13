@@ -150,6 +150,14 @@ public sealed class VariableSymbol : Symbol
     public string? AssemblyName => Details.AssemblyName;
     public SemanticKind? RegisterKind => Details.RegisterKind;
     public long? NamedRegisterNumber => Details.NamedRegisterNumber;
+    public bool? CanBeInstantiated => Details.CanBeInstantiated;
+    public bool? DoNotInstantiate => Details.DoNotInstantiate;
+    public bool? InstanceRequired => Details.InstanceRequired;
+    public bool? InlineInstanceRequired => Details.InlineInstanceRequired;
+    public bool? ParameterUsedAsLvalue => Details.ParameterUsedAsLvalue;
+    public bool? IsTempForUnmodifiedInlinedParameter => Details.IsTempForUnmodifiedInlinedParameter;
+    public bool? IsTempForConstructorThisInlinedParameter => Details.IsTempForConstructorThisInlinedParameter;
+    public IReadOnlyList<SemanticEntity> EntitiesDefinedInInitializer => Object.List("SELECT e.* FROM variable_initializer_entity r JOIN entity e ON e.id=r.entity_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Entity(r.Long("id")),"entity");
     public IReadOnlyList<VariableBindingDetails> Bindings => Object.List("SELECT * FROM variable_binding WHERE owner_id=$owner ORDER BY ordinal", Id, r => new VariableBindingDetails(Object, r));
     public EhTableProjectionDetails? ExceptionTable => Object.Store.Query("SELECT * FROM eh_table_projection WHERE owner_id=$owner", Id).FirstOrDefault() is { } row ? new(Object, row) : null;
 }

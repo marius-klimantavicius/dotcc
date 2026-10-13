@@ -1,5 +1,20 @@
 namespace RoslynObj;
 
+public sealed class InitializationStatementOperation : StatementOperation
+{
+    internal InitializationStatementOperation(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
+    public InitializationStatementDetails InitializationStatement => Object.Detail("initialization_statement",Id,r=>new InitializationStatementDetails(Object,r));
+    public Initialization Initialization => InitializationStatement.Initialization;
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitInitializationStatement(this);
+}
+
+public sealed class StatementExpressionResultOperation : StatementOperation
+{
+    internal StatementExpressionResultOperation(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
+    public Initialization? Initialization => Object.Store.Get("initialization_statement",Id) is {} row ? new InitializationStatementDetails(Object,row).Initialization : null;
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitStatementExpressionResult(this);
+}
+
 public sealed class BlockOperation : StatementOperation
 {
     public override void Accept(SemanticVisitor visitor) => visitor.VisitBlock(this);
@@ -7,7 +22,7 @@ public sealed class BlockOperation : StatementOperation
     public BlockStatementDetails Block => Object.Detail("block_statement",Id,r=>new BlockStatementDetails(Object,r));
     public BlockDescriptor? Descriptor => Block.Descriptor;
     public Scope? Scope => Descriptor?.Scope;
-    public new Lifetime? Lifetime => Descriptor?.Lifetime;
+    public Lifetime? Lifetime => Descriptor?.Lifetime;
     public IReadOnlyList<StatementOperation> Statements => Object.List("SELECT s.* FROM block_item b JOIN statement s ON s.id=b.statement_id WHERE b.owner_id=$owner ORDER BY b.ordinal",Id,r=>Object.Statement(r.Long("id")),"statement");
 }
 
@@ -19,7 +34,7 @@ public sealed class ConditionalOperation : StatementOperation
     public ExpressionOperation? Condition => Conditional.Condition;
     public StatementOperation? Then => Conditional.Then;
     public StatementOperation? Else => Conditional.Else;
-    public StatementOperation? Initialization => Conditional.Initialization;
+    public StatementOperation? Initialization => (Condition as ConditionOperation)?.Initialization;
 }
 
 public sealed class LoopOperation : StatementOperation
@@ -31,6 +46,7 @@ public sealed class LoopOperation : StatementOperation
     public ExpressionOperation? Condition => Loop.Condition;
     public StatementOperation? Initialization => Loop.Initialization;
     public ExpressionOperation? Increment => Loop.Increment;
+    public ExpressionOperation? Affinity => Loop.Affinity;
 }
 
 public sealed class JumpOperation : StatementOperation
@@ -142,8 +158,8 @@ public sealed class AllocationOperation : ExpressionOperation
     public AllocationExpressionDetails Allocation => Object.Detail("allocation_expression",Id,r=>new AllocationExpressionDetails(Object,r));
     public FunctionSymbol? Allocator => Allocation.Allocator;
     public FunctionSymbol? Deallocator => Allocation.Deallocator;
-    public FunctionSymbol? Constructor => Allocation.Constructor ?? Initialization?.Constructor;
-    public FunctionSymbol? Destructor => Allocation.Destructor ?? Initialization?.Destructor;
+    public FunctionSymbol? Constructor => Initialization?.Constructor;
+    public FunctionSymbol? Destructor => Initialization?.Destructor;
     public Initialization? Initialization => Allocation.Initialization;
     public Initialization? ExceptionFreeing => Allocation.ExceptionFreeing;
     public CppType? AllocatedType => Allocation.AllocatedType;

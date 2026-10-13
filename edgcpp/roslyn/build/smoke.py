@@ -15,6 +15,7 @@ CASES = {
     'm0': ['--c++20'],
     'cleanup_semantics': ['--c++20', '--gnu_version', '130000'],
     'variables': ['--c++20', '--gnu_version', '130000'],
+    'variable_initializers': ['--c++20', '--g++', '--gnu_version', '130000'],
     'reflection': ['--c++26', '--g++', '--set_flag', 'reflection'],
     'source_attributes': ['--c++20', '--gnu_version', '130000'],
     'layout': ['--c++20', '--gnu_version', '130000'],
@@ -26,6 +27,8 @@ CASES = {
     'constant_embed': ['--c23', '--gnu_version', '130000'],
     'upc_dynamic': ['--c99', '--upc'],
     'upc_static': ['--c99', '--upc', '--upc_threads', '4'],
+    'upc_affinity': ['--c99', '--upc'],
+    'name_references': ['--c++20'],
     'vector_values': ['--c++20', '--g++', '--gnu_version', '150000'],
     'vector_arm': ['--c++20', '--g++', '--gnu_version', '150000', '--target', 'linux_aarch64'],
     'vector_riscv': ['--c++20', '--g++', '--gnu_version', '150000', '--target', 'linux_riscv64'],
@@ -59,7 +62,7 @@ for name in selected:
     destination = output / (name + '.roslynobj')
     fixture = ('layout.cpp' if name == 'layout_microsoft' else 'upc_values.c' if name in ('upc_dynamic', 'upc_static')
                else 'execution.c' if name == 'execution_c' else 'execution.cpp' if name == 'execution_cpp'
-               else name + ('.c' if name in ('layout_c', 'constant_aggregates', 'constant_embed', 'common_labels') else '.cpp'))
+               else name + ('.c' if name in ('layout_c', 'constant_aggregates', 'constant_embed', 'common_labels', 'upc_affinity') else '.cpp'))
     source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / fixture if name in ('reflection', 'source_attributes', 'routines', 'routines_exception', 'routines_microsoft', 'execution_c', 'execution_cpp')
               else ROOT / 'tests/fixtures' / fixture)
     command = ['python3', str(ROOT / 'build/roslyn-cpfe.py'), *CASES[name],

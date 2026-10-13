@@ -216,3 +216,17 @@ changed. The owned build wrapper may restore a saved generated-header mtime only
 when a successful configure produces byte-identical content. Changed content and
 changed Ninja compiler commands still invalidate correctly. Verify genuine no-op
 and backend-only builds after the266 checkpoint; never edit pinned stock CMake.
+
+
+### Measured private bulk-load candidate (post266)
+
+The relational contract explicitly permits a private-construction exception for
+measurement: temporary unpublished DB only, declared FKs/STRICT/UNIQUE/CHECK
+unchanged, mandatory complete FK check before complete/commit, FK re-enabled and
+verified outside transaction before atomic publication, discard on any failure.
+Compare genuine identical logical output, elapsed time/RSS/size and reader bounds;
+remove writer-only indexes only if measurements justify it. This is a changed
+construction policy documented before adoption, not a claim the old FK-enabled
+writer policy was unchanged. Corruption campaigns and core modifications remain
+excluded. Partial nonnull indexes are another measured candidate, especially
+spelling-position6000nonnull/35091 rows; verify actual FK bytecode uses them.

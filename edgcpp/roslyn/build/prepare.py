@@ -12,7 +12,7 @@ def copy_if_changed(source, destination):
 p = argparse.ArgumentParser()
 p.add_argument('--upstream', type=pathlib.Path, default=pathlib.Path('/tmp/roslynobj-edg-upstream-20261012'))
 p.add_argument('--stage', type=pathlib.Path, default=ROOT.parents[0] / 'artifacts/roslynobj/upstream')
-p.add_argument('--profile', choices=('native','source','cfront','exported'), default='native')
+p.add_argument('--profile', choices=('native','source','cfront','exported','sun','usl21','usl30','softfloat','host-long-double','host-double'), default='native')
 a = p.parse_args()
 actual = subprocess.check_output(['git', '-C', str(a.upstream), 'rev-parse', 'HEAD'], text=True).strip()
 if actual != PIN:
@@ -48,13 +48,15 @@ for name in ('cpfe-cp', 'cdisp', 'cpprtlib'):
     write_if_changed(config / (name + '.cmakedef'),f'import <linux-gcc-release/{name}>\n')
 profile_text=(ROOT / 'build/profiles/cpfe.cmakedef').read_text()
 if a.profile != 'native':
+    if a.profile in ('usl21','usl30'):
+        profile_text+='\n'+(ROOT / 'build/profiles/cfront.cmakedef').read_text()
     profile_text+='\n'+(ROOT / 'build/profiles' / (a.profile + '.cmakedef')).read_text()
 write_if_changed(config / 'cpfe.cmakedef',profile_text)
 for f in (ROOT / 'backend').iterdir():
     if f.is_file(): copy_if_changed(f, a.stage / 'src' / f.name)
 cmake = a.stage / 'src/cmake/cpfe/CMakeLists.txt'
 original = subprocess.check_output(['git','-C',str(a.upstream),'show',PIN+':src/cmake/cpfe/CMakeLists.txt'], text=True)
-capture_id={'native':2001,'source':2002,'cfront':2003,'exported':2004}[a.profile]
+capture_id={'native':2001,'source':2002,'cfront':2003,'exported':2004,'sun':2001,'usl21':2003,'usl30':2003,'softfloat':2001,'host-long-double':2001,'host-double':2001}[a.profile]
 write_if_changed(cmake,original + '''\n# Independent roslynobj backend; stock source semantics remain unchanged.
 find_package(SQLite3 3.37 REQUIRED)
 set_source_files_properties(${PROJECT_SOURCE_DIR}/roslyn_gen_be.c PROPERTIES LANGUAGE CXX)
@@ -64,7 +66,7 @@ target_include_directories(roslyn-cpfe PRIVATE ${PROJECT_SOURCE_DIR})
 target_link_libraries(roslyn-cpfe PRIVATE SQLite::SQLite3)
 target_compile_options(roslyn-cpfe PRIVATE -Wno-error=shadow)
 add_softfloat_to_target(roslyn-cpfe)
-'''+f'\ntarget_compile_definitions(roslyn-cpfe PRIVATE ROSLYN_CAPTURE_PROFILE_ID={capture_id})\n')
+'''+f'\ntarget_compile_definitions(roslyn-cpfe PRIVATE ROSLYN_CAPTURE_PROFILE_ID={capture_id} ROSLYN_BUILD_PROFILE_NAME="{a.profile}")\n')
 # Verify every materialized stock input copied above, including build scripts,
 # configuration files and support utilities.  No extension-based allowlist can
 # silently omit a .cpp, .def, .inc or a new stock build input.

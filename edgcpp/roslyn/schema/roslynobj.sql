@@ -447,7 +447,14 @@ CREATE TABLE variable_symbol (
   elf_visibility_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
   declared_storage_class_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
   declared_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
-  embeds_source_entries INTEGER NOT NULL DEFAULT 0
+  embeds_source_entries INTEGER NOT NULL DEFAULT 0,
+  can_be_instantiated INTEGER,
+  do_not_instantiate INTEGER,
+  instance_required INTEGER,
+  parameter_used_as_lvalue INTEGER,
+  inline_instance_required INTEGER,
+  is_temp_for_unmodified_inlined_parameter INTEGER,
+  is_temp_for_constructor_this_inlined_parameter INTEGER
 ) STRICT;
 
 CREATE TABLE variable_binding (
@@ -1182,15 +1189,14 @@ CREATE TABLE statement (
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   parent_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
-  lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
   is_guard INTEGER NOT NULL DEFAULT 0,
-  is_declared_constexpr INTEGER NOT NULL DEFAULT 0,
   lowering_generated INTEGER,
   has_associated_pragma INTEGER NOT NULL DEFAULT 0,
   is_lowering_boilerplate INTEGER,
   is_fallthrough_statement INTEGER NOT NULL DEFAULT 0,
   is_likely INTEGER NOT NULL DEFAULT 0,
-  is_unlikely INTEGER NOT NULL DEFAULT 0
+  is_unlikely INTEGER NOT NULL DEFAULT 0,
+  source_sequence_entry_id INTEGER REFERENCES source_entry(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE expression_operand (
@@ -1243,7 +1249,7 @@ CREATE TABLE call_argument (
   owner_id INTEGER REFERENCES call_expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   ordinal INTEGER NOT NULL,
   expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  parameter_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  parameter_type_id INTEGER REFERENCES parameter_type(id) DEFERRABLE INITIALLY DEFERRED,
   role_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
@@ -1259,7 +1265,6 @@ CREATE TABLE reference_expression (
 CREATE TABLE name_reference (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
-  builtin_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
   property_id INTEGER REFERENCES field_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   destructor_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   qualifier_id INTEGER REFERENCES name_qualifier(id) DEFERRABLE INITIALLY DEFERRED,
@@ -1338,7 +1343,6 @@ CREATE TABLE if_statement (
   then_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
   else_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
   condition_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  initialization_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
   selection_known INTEGER,
   selected_then INTEGER
 ) STRICT;
@@ -1535,8 +1539,7 @@ CREATE TABLE lifetime_expression (
 
 CREATE TABLE statement_expression (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  statement_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  result_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED
+  statement_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
 ) STRICT;
 
 CREATE TABLE reuse_expression (
@@ -1547,8 +1550,7 @@ CREATE TABLE reuse_expression (
 CREATE TABLE builtin_expression (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  selected_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  result_constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED
+  selected_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE parameter_reference_expression (
@@ -1564,9 +1566,7 @@ CREATE TABLE dependent_expression (
   wrapped_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   template_id INTEGER REFERENCES template_definition(id) DEFERRABLE INITIALLY DEFERRED,
   initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
-  parameter_scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
   noexcept_required INTEGER,
-  is_dependent INTEGER NOT NULL DEFAULT 1,
   pack_index_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   pack_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   pack_template_id INTEGER REFERENCES template_definition(id) DEFERRABLE INITIALLY DEFERRED,
@@ -1616,8 +1616,6 @@ CREATE TABLE allocation_expression (
   allocated_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   allocator_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   deallocator_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  constructor_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  destructor_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
   array_count_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   size_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
@@ -2367,7 +2365,6 @@ CREATE TABLE lowered_eh_operation (
   region_id INTEGER REFERENCES cleanup_region(id) DEFERRABLE INITIALLY DEFERRED,
   state_number TEXT,
   routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  object_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   handler_id INTEGER REFERENCES handler(id) DEFERRABLE INITIALLY DEFERRED,
   try_block_id INTEGER REFERENCES try_descriptor(id) DEFERRABLE INITIALLY DEFERRED,
   try_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
@@ -3152,6 +3149,13 @@ CREATE TABLE expression_vla_dimension (
   owner_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   ordinal INTEGER NOT NULL,
   dimension_id INTEGER REFERENCES vla_dimension(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE variable_initializer_entity (
+  owner_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 INSERT INTO kind VALUES(1001,'entity','translation_unit');

@@ -46,12 +46,25 @@ static Rid roslyn_variable(a_variable_ptr p) {
  VARIABLE_FLAG("initializer_in_class",initializer_in_class);VARIABLE_FLAG("constant_valued_recorded",constant_valued);
  VARIABLE_FLAG("is_immutable",is_immutable);VARIABLE_FLAG("extends_lifetime",extends_lifetime);
  VARIABLE_FLAG("is_template_parameter_object",is_template_param_object);VARIABLE_FLAG("is_in_class_specialization",is_in_class_specialization);
+#if AUTOMATIC_TEMPLATE_INSTANTIATION
+ VARIABLE_FLAG("can_be_instantiated",can_be_instantiated);VARIABLE_FLAG("do_not_instantiate",do_not_instantiate);VARIABLE_FLAG("instance_required",instance_required);
+#endif
+#if INSTANTIATE_INLINE_VARIABLES
+ VARIABLE_FLAG("inline_instance_required",inline_instance_required);
+#endif
+#if MINIMAL_INLINING
+ VARIABLE_FLAG("parameter_used_as_lvalue",param_used_as_lvalue);
+#endif
 #if DO_IL_LOWERING
  VARIABLE_FLAG("initialization_rewritten_as_assignment",initialization_rewritten_as_assignment);
  VARIABLE_FLAG("promoted_local_static_initialization",promoted_local_static_init);VARIABLE_FLAG("promoted_local_static",promoted_local_static);
  VARIABLE_FLAG("is_optional_vtable",is_optional_vtable);VARIABLE_FLAG("vtable_defined",vtable_defined);VARIABLE_FLAG("lowering_generated",lowering_generated);
  fields.push_back({"comdat_group_id",R(DB.atom(p->comdat_group))});
  fields.push_back({"vla_element_count_variable_id",R(roslyn_variable(p->vla_element_count_variable))});
+#if MINIMAL_INLINING
+ VARIABLE_FLAG("is_temp_for_unmodified_inlined_parameter",is_temp_for_unmodified_inlined_param);
+ VARIABLE_FLAG("is_temp_for_constructor_this_inlined_parameter",is_temp_for_constructor_this_inlined_param);
+#endif
 #endif
 #if GNU_EXTENSIONS_ALLOWED
  fields.push_back({"cleanup_routine_id",R(roslyn_routine(p->cleanup_routine))});
@@ -101,6 +114,8 @@ static Rid roslyn_variable(a_variable_ptr p) {
 #if DECL_MODIFIERS_IN_USE
  roslyn_decl_modifiers(id,p->decl_modifiers);
 #endif
+ int initializer_ordinal=0;for(an_il_entity_list_entry_ptr entry=p->entities_defined_in_initializer;entry;entry=entry->next)
+  DB.put("variable_initializer_entity",{{"owner_id",id},{"ordinal",initializer_ordinal++},{"entity_id",roslyn_entity(entry->entity)}});
  if(p->is_struct_binding_container){int ordinal=0;for(an_il_entity_list_entry_ptr b=p->variant.bindings;b;b=b->next){
   if(b->entity.kind!=iek_variable){DB.fail("Structured binding list contains a non-variable entry");break;}
   DB.put("variable_binding",{{"owner_id",id},{"ordinal",ordinal++},{"variable_id",roslyn_variable(reinterpret_cast<a_variable_ptr>(b->entity.ptr))}});

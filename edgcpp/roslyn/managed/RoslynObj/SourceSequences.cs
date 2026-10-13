@@ -71,7 +71,7 @@ public sealed class MicrosoftIfExists : SemanticEntity
     internal MicrosoftIfExists(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public MicrosoftIfExistsDetails Details { get; }
     public SemanticEntity? Target => Details.Target;
-    public NameReferenceDetails? NameReference => Details.NameReference;
+    public NameReference? NameReference => Details.NameReference;
     public SourcePosition? Position => Details.Position;
     public bool? IsIfExists => Details.IsIfExists;
     public bool IsThis => Details.IsThis;

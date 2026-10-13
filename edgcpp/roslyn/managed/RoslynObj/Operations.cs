@@ -91,7 +91,7 @@ public sealed class CallArgument
     internal CallArgument(RoslynObject owner, Row row) => Details = new(owner,row);
     public CallArgumentDetails Details { get; }
     public ExpressionOperation Value => Details.Expression;
-    public VariableSymbol? Parameter => Details.Parameter;
+    public ParameterType? Parameter => Details.ParameterType;
     public SemanticKind? Role => Details.Role;
     public long Ordinal => Details.Ordinal;
 }
@@ -114,6 +114,7 @@ public sealed class ConstantOperation : ExpressionOperation
     public override void Accept(SemanticVisitor visitor) => visitor.VisitConstant(this);
     internal ConstantOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public Constant Constant => Object.Constant(Object.Store.Required("constant_expression",Id).Long("constant_id"));
+    public NameReference? NameReference => Object.Detail("constant_expression",Id,r=>new ConstantExpressionDetails(Object,r)).NameReference;
 }
 
 public sealed class ReferenceOperation : ExpressionOperation
@@ -122,6 +123,7 @@ public sealed class ReferenceOperation : ExpressionOperation
     internal ReferenceOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public ReferenceExpressionDetails Reference => Object.Detail("reference_expression",Id,r=>new ReferenceExpressionDetails(Object,r));
     public SemanticEntity? Target => Reference.Target;
+    public NameReference? NameReference => Reference.NameReference;
 }
 
 public class LoweredEhOperation : ExpressionOperation
@@ -145,7 +147,7 @@ public class StatementOperation : Operation
     internal StatementOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public StatementDetails Details => Object.Detail("statement",Id,r=>new StatementDetails(Object,r));
     public ExpressionOperation? Expression => Details.Expression;
-    public Lifetime? Lifetime => Details.Lifetime;
+    public SourceEntry? SourceSequenceEntry => Details.SourceSequenceEntry;
     public override void Accept(SemanticVisitor visitor) => visitor.VisitStatement(this);
 }
 
@@ -187,9 +189,9 @@ public sealed class FunctionBody
           UNION SELECT 1,id FROM lifetime_root WHERE id IS NOT NULL
           UNION SELECT 0,c.child_id FROM structural_child c JOIN reachable r ON r.id=c.owner_id WHERE r.category=0
           UNION SELECT 0,h.parameter_initialization_id FROM handler h JOIN try_handler th ON th.handler_id=h.id JOIN try_statement s ON s.descriptor_id=th.owner_id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND h.parameter_initialization_id IS NOT NULL
-          UNION SELECT 1,s.lifetime_id FROM statement s JOIN reachable r ON r.id=s.id WHERE r.category=0 AND s.lifetime_id IS NOT NULL
           UNION SELECT 1,b.lifetime_id FROM block_descriptor b JOIN block_statement s ON s.descriptor_id=b.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND b.lifetime_id IS NOT NULL
           UNION SELECT 1,t.lifetime_id FROM try_descriptor t JOIN try_statement s ON s.descriptor_id=t.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND t.lifetime_id IS NOT NULL
+          UNION SELECT 1,l.lifetime_id FROM label_symbol l JOIN label_statement s ON s.label_id=l.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND l.lifetime_id IS NOT NULL
           UNION SELECT 1,i.lifetime_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.lifetime_id IS NOT NULL
           UNION SELECT 1,i.init_expression_lifetime_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.init_expression_lifetime_id IS NOT NULL
           UNION SELECT 1,i.overlapping_lifetime_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.overlapping_lifetime_id IS NOT NULL

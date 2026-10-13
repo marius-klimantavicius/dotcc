@@ -672,7 +672,7 @@ M5 item; it is not declared closed by this checkpoint. Reader cold32,002 command
 before commit. Next actual gaps/profiles remain separated in CLOSURE.md.
 
 
-### Accepted266 common metadata milestone (commit pending)
+### Accepted266 common metadata milestone (`dec4f0a86`)
 
 Final exact snapshot:146 genuine objects PASS1915; self/WITHOUT ROWID PASS73;
 archived genuine263 rejects at Open; clean build0 warnings/errors;264 generated
@@ -696,3 +696,65 @@ open. Next bounded variable/UPC/designated statement-source-entry gaps, removal 
 phantom fields, build-wrapper timestamp correction and configured native host/
 Sun/USL profiles continue immediately after commit. CLOSURE.md remains the full
 completion checklist; phases3–4 are not yet complete.
+
+
+## Active267 bounded variable and execution release
+
+Milestone266 committed as `dec4f0a86c3889b96ed11378eacc5d505a1fdddf` (67 owned
+paths); unrelated index byte-identical. Frozen267 tables /39,145 unchanged kinds
+adds7 guarded nullable variable facts, ordered initializer-defined entities and
+exact Statement.SourceSequenceEntry. Removes phantom Statement constexpr and
+NameReference builtin columns. UPC affinity uses the existing payload/role.
+Both implementers continue disjoint variable/build/profile and execution/API
+work; final field proof and residual M5 work remain active. See NEXT-CONTRACT.md.
+
+
+267 native strict and real build-wrapper verification pass: changed owned header
+rebuilds backend/link only in13.519s, byte-identical generated-config mtime stays
+unchanged, subsequent no-op build0.841s/Ninja no work. Five genuine native pilots
+pass FK0: variable initializer entity list4closure types, UPC affinity1descriptor,
+name-reference calls5arguments/4exact formal descriptors/one null varargs tail.
+Source compiler/public positives are next; configured profile and M5 work remain
+serialized native tasks.
+
+
+267 reader builds clean, self73 and native five pilots PASS113. Source basic/m0/
+initializer/UPC public checks pass; ordinary name-reference positive activation
+requires source-only DEFAULT_RECORD_FORM_OF_NAME_REFERENCE1, explicitly lexical
+wrapper creation0. Runtime capability records C mode disabling this stock option.
+No primary original-source or coordinate recovery is added. The amendment has
+exact current call ParameterType mapping and audited phantom-column removals;
+ordinary typed init/result statement visitors and label lifetime projections use
+existing recorded payloads. Final profiles/genuine matrix/M5 remain in progress.
+
+Read-only expression34/statement26/routine-type6 mappings reconcile existing
+adapters without verification promotion. All substantive new gaps remain assigned
+and no ledger reconciliation holds the serialized compiler lane.
+
+
+## Accepted267 bounded execution milestone
+
+Final exact snapshot:158 genuine objects PASS1963; self/WITHOUT ROWID PASS73;
+archived genuine266 rejects at Open; clean build0 warnings/errors;265 generated
+detail facades /2089 properties;144 native literal-write admission checks.
+All four strict compilers and316 pinned inputs plus26 canonical backend files
+per stage independently verified. All objects have267 tables,1KiB pages, zero FK
+failures and no semantic BLOB/REAL storage. Required framed contract digest:
+`c07b7fef31a8063ed6cdb013b3d57ab67039e32d865e27431fe8050c7f41ae84`.
+
+Accepted behavior includes exact call-formal descriptor mapping, initializer-defined
+entity reachability, UPC affinity execution, designated statement source entries,
+typed name/init/result/label navigation and removal of audited unwritten fields.
+Source-only name-form recording preserves legitimate empty original-argument lists.
+Seven inactive guarded variable flags remain nullable and await positive profile
+activation. The generated-header rebuild fix passes backend-only and no-op builds.
+
+Coverage remains613 verified /732 mapped pending validation /114 planned /248 raw
+pending. Mapping reconciliations are conservative; full phases3–4 are still open.
+The private FK bulk-load candidate is measured, not yet canonical: scale median
+30.28s to0.59s with identical logical rows/IDs across six pairs, excluding artifact
+identity and stock __TIME__, same8,879,104 bytes. Candidate publication performs
+complete FK checks before commit and restores enforcement before publication.
+Next work adopts and validates that policy, measures removal of writer-only indexes,
+finishes configured Sun/USL/host numeric profiles and reconciles remaining exact
+field/kind evidence. Six profile drafts are outside this checkpoint.

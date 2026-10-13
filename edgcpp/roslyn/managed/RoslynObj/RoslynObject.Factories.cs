@@ -35,6 +35,8 @@ public sealed partial class RoslynObject
     internal Declaration Declaration(long id) => Cached("declaration",id,r=>new Declaration(this,id,r));
     internal Scope Scope(long id) => Cached("scope",id,r=>new Scope(this,id,r));
     internal Constant Constant(long id) => Cached("constant",id,r=>new Constant(this,id,r));
+    internal NameReference NameReference(long id) => Cached("name_reference",id,r=>new NameReference(this,id,r));
+    internal NameQualifier NameQualifier(long id) => Cached("name_qualifier",id,r=>new NameQualifier(this,id,r));
     internal Initialization Initialization(long id) => Cached("initialization",id,r=>new Initialization(this,id,r));
     internal Lifetime Lifetime(long id) => Cached("lifetime",id,r=>new Lifetime(this,id,r));
     internal TemplateDescriptor Template(long id) => Cached("template_definition",id,r=>new TemplateDescriptor(this,id,r));
@@ -153,7 +155,9 @@ public sealed partial class RoslynObject
         "stmk_coroutine"=>new CoroutineOperation(this,id,row),
         "stmk_set_vla_size" or "stmk_vla_decl"=>new VlaStatementOperation(this,id,row),
         "stmk_decl"=>new DeclarationOperation(this,id,row),
-        "stmk_expr" or "stmk_empty" or "stmk_coroutine_return" or "stmk_init" or "stmk_upc_notify" or "stmk_upc_wait" or "stmk_upc_barrier" or "stmk_upc_fence" or "stmk_stmt_expr_result"=>new StatementOperation(this,id,row),
+        "stmk_init"=>new InitializationStatementOperation(this,id,row),
+        "stmk_stmt_expr_result"=>new StatementExpressionResultOperation(this,id,row),
+        "stmk_expr" or "stmk_empty" or "stmk_coroutine_return" or "stmk_upc_notify" or "stmk_upc_wait" or "stmk_upc_barrier" or "stmk_upc_fence"=>new StatementOperation(this,id,row),
         _=>throw new IncompatibleObjectException("The required statement kind is unsupported.")
     };
 
@@ -284,7 +288,7 @@ public sealed partial class RoslynObject
             "local_static_initialization"=>LocalStaticInitialization(id),
             "constructor_initializer"=>ConstructorInitializer(id),
             "subobject_path"=>SubobjectPath(id),
-            "name_reference"=>new SemanticRecord<NameReferenceDetails>(this,id,Detail("name_reference",id,r=>new NameReferenceDetails(this,r))),
+            "name_reference"=>NameReference(id),
             "exception_specification"=>ExceptionSpecification(id),
             "virtual_table"=>new SemanticRecord<VirtualTableDetails>(this,id,Detail("virtual_table",id,r=>new VirtualTableDetails(this,r))),
             "vla_dimension"=>VlaDimension(id),
@@ -292,7 +296,7 @@ public sealed partial class RoslynObject
             "coroutine"=>new SemanticRecord<CoroutineDetails>(this,id,Detail("coroutine",id,r=>new CoroutineDetails(this,r))),
             "function_eh"=>new SemanticRecord<FunctionEhDetails>(this,id,Detail("function_eh",id,r=>new FunctionEhDetails(this,r))),
             "static_assertion"=>new SemanticRecord<StaticAssertionDetails>(this,id,Detail("static_assertion",id,r=>new StaticAssertionDetails(this,r))),
-            "name_qualifier"=>new SemanticRecord<NameQualifierDetails>(this,id,Detail("name_qualifier",id,r=>new NameQualifierDetails(this,r))),
+            "name_qualifier"=>NameQualifier(id),
             "orphan_scope"=>new SemanticRecord<OrphanScopeDetails>(this,id,Detail("orphan_scope",id,r=>new OrphanScopeDetails(this,r))),
             "token_sequence"=>TokenSequence(id),
             "parameter_type"=>ParameterType(id),

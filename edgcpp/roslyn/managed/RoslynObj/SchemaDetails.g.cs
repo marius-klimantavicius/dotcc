@@ -495,7 +495,15 @@ public sealed class VariableSymbolDetails : SemanticDetail
     public SemanticKind? DeclaredStorageClass => Object.Link(Data.OptionalLong("declared_storage_class_id"), value => Object.Kind(value));
     public CppType? DeclaredType => Object.Link(Data.OptionalLong("declared_type_id"), value => Object.Type(value));
     public bool EmbedsSourceEntries => Data.Bool("embeds_source_entries");
+    public bool? CanBeInstantiated => Data.OptionalBool("can_be_instantiated");
+    public bool? DoNotInstantiate => Data.OptionalBool("do_not_instantiate");
+    public bool? InstanceRequired => Data.OptionalBool("instance_required");
+    public bool? ParameterUsedAsLvalue => Data.OptionalBool("parameter_used_as_lvalue");
+    public bool? InlineInstanceRequired => Data.OptionalBool("inline_instance_required");
+    public bool? IsTempForUnmodifiedInlinedParameter => Data.OptionalBool("is_temp_for_unmodified_inlined_parameter");
+    public bool? IsTempForConstructorThisInlinedParameter => Data.OptionalBool("is_temp_for_constructor_this_inlined_parameter");
     public IReadOnlyList<VariableBindingDetails> VariableBindingRows => Object.List("SELECT * FROM variable_binding WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new VariableBindingDetails(Object, r));
+    public IReadOnlyList<VariableInitializerEntityDetails> VariableInitializerEntityRows => Object.List("SELECT * FROM variable_initializer_entity WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new VariableInitializerEntityDetails(Object, r));
 }
 
 public sealed class VariableBindingDetails : SemanticDetail
@@ -1032,7 +1040,7 @@ public sealed class TypeReferenceDetails : SemanticDetail
     public bool IsGlobalQualifiedName => Data.Bool("is_global_qualified_name");
     public bool IsIntrinsicMember => Data.Bool("is_intrinsic_member");
     public bool ExplicitMemoryAttributeMadeImplicit => Data.Bool("explicit_memory_attribute_made_implicit");
-    public NameQualifierDetails? NameQualifier => Object.Link(Data.OptionalLong("name_qualifier_id"), value => Object.Detail("name_qualifier", value, r => new NameQualifierDetails(Object, r)));
+    public NameQualifier? NameQualifier => Object.Link(Data.OptionalLong("name_qualifier_id"), value => Object.NameQualifier(value));
     public CppType? ProxyClass => Object.Link(Data.OptionalLong("proxy_class_id"), value => Object.Type(value));
     public CppType? OperatorTypeArgument => Object.Link(Data.OptionalLong("operator_type_argument_id"), value => Object.Type(value));
     public long? MinimumTemplateArguments => Data.OptionalLong("minimum_template_arguments");
@@ -1300,15 +1308,14 @@ public sealed class StatementDetails : SemanticDetail
     public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
     public ExpressionOperation? Expression => Object.Link(Data.OptionalLong("expression_id"), value => Object.Expression(value));
     public StatementOperation? Parent => Object.Link(Data.OptionalLong("parent_id"), value => Object.Statement(value));
-    public Lifetime? Lifetime => Object.Link(Data.OptionalLong("lifetime_id"), value => Object.Lifetime(value));
     public bool IsGuard => Data.Bool("is_guard");
-    public bool IsDeclaredConstexpr => Data.Bool("is_declared_constexpr");
     public bool? LoweringGenerated => Data.OptionalBool("lowering_generated");
     public bool HasAssociatedPragma => Data.Bool("has_associated_pragma");
     public bool? IsLoweringBoilerplate => Data.OptionalBool("is_lowering_boilerplate");
     public bool IsFallthroughStatement => Data.Bool("is_fallthrough_statement");
     public bool IsLikely => Data.Bool("is_likely");
     public bool IsUnlikely => Data.Bool("is_unlikely");
+    public SourceEntry? SourceSequenceEntry => Object.Link(Data.OptionalLong("source_sequence_entry_id"), value => Object.SourceEntry(value));
 }
 
 public sealed class ExpressionOperandDetails : SemanticDetail
@@ -1367,7 +1374,7 @@ public sealed class CallArgumentDetails : SemanticDetail
     public CallExpressionDetails Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Detail("call_expression", value, r => new CallExpressionDetails(Object, r)))!;
     public long Ordinal => Data.Long("ordinal");
     public ExpressionOperation Expression => Object.Link(Data.OptionalLong("expression_id"), value => Object.Expression(value))!;
-    public VariableSymbol? Parameter => Object.Link(Data.OptionalLong("parameter_id"), value => Object.Variable(value));
+    public ParameterType? ParameterType => Object.Link(Data.OptionalLong("parameter_type_id"), value => Object.ParameterType(value));
     public SemanticKind? Role => Object.Link(Data.OptionalLong("role_id"), value => Object.Kind(value));
 }
 
@@ -1376,7 +1383,7 @@ public sealed class ReferenceExpressionDetails : SemanticDetail
     internal ReferenceExpressionDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticEntity? Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Entity(value));
     public SemanticKind ReferenceKind => Object.Kind(Data.Long("reference_kind_id"));
-    public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
+    public NameReference? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.NameReference(value));
     public BaseSubobject? Subobject => Object.Link(Data.OptionalLong("subobject_id"), value => Object.Subobject(value));
 }
 
@@ -1384,10 +1391,9 @@ public sealed class NameReferenceDetails : SemanticDetail
 {
     internal NameReferenceDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticKind? Kind => Object.Link(Data.OptionalLong("kind_id"), value => Object.Kind(value));
-    public SemanticKind? BuiltinKind => Object.Link(Data.OptionalLong("builtin_kind_id"), value => Object.Kind(value));
     public FieldSymbol? Property => Object.Link(Data.OptionalLong("property_id"), value => Object.Field(value));
     public CppType? DestructorType => Object.Link(Data.OptionalLong("destructor_type_id"), value => Object.Type(value));
-    public NameQualifierDetails? Qualifier => Object.Link(Data.OptionalLong("qualifier_id"), value => Object.Detail("name_qualifier", value, r => new NameQualifierDetails(Object, r)));
+    public NameQualifier? Qualifier => Object.Link(Data.OptionalLong("qualifier_id"), value => Object.NameQualifier(value));
     public BigInteger? NumTemplateArguments => Number(Data.OptionalText("num_template_arguments"));
     public bool IsGlobalQualifiedName => Data.Bool("is_global_qualified_name");
     public bool IsTemplateId => Data.Bool("is_template_id");
@@ -1401,7 +1407,7 @@ public sealed class NameReferenceDetails : SemanticDetail
 public sealed class NameQualifierDetails : SemanticDetail
 {
     internal NameQualifierDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public NameQualifierDetails? PreviousQualifier => Object.Link(Data.OptionalLong("previous_qualifier_id"), value => Object.Detail("name_qualifier", value, r => new NameQualifierDetails(Object, r)));
+    public NameQualifier? PreviousQualifier => Object.Link(Data.OptionalLong("previous_qualifier_id"), value => Object.NameQualifier(value));
     public SemanticEntity? Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Entity(value));
     public string? Name => Object.Text(Data.OptionalLong("name_id"));
     public bool IsClass => Data.Bool("is_class");
@@ -1410,7 +1416,7 @@ public sealed class NameQualifierDetails : SemanticDetail
 public sealed class OriginalTemplateArgumentDetails : SemanticDetail
 {
     internal OriginalTemplateArgumentDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public NameReferenceDetails Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)))!;
+    public NameReference Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.NameReference(value))!;
     public long Ordinal => Data.Long("ordinal");
     public TemplateArgument Argument => Object.Link(Data.OptionalLong("argument_id"), value => Object.Argument(value))!;
 }
@@ -1419,7 +1425,7 @@ public sealed class ConstantExpressionDetails : SemanticDetail
 {
     internal ConstantExpressionDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public Constant Constant => Object.Link(Data.OptionalLong("constant_id"), value => Object.Constant(value))!;
-    public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
+    public NameReference? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.NameReference(value));
 }
 
 public sealed class BlockDescriptorDetails : SemanticDetail
@@ -1476,7 +1482,6 @@ public sealed class IfStatementDetails : SemanticDetail
     public StatementOperation? Then => Object.Link(Data.OptionalLong("then_id"), value => Object.Statement(value));
     public StatementOperation? Else => Object.Link(Data.OptionalLong("else_id"), value => Object.Statement(value));
     public ExpressionOperation? Condition => Object.Link(Data.OptionalLong("condition_id"), value => Object.Expression(value));
-    public StatementOperation? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Statement(value));
     public bool? SelectionKnown => Data.OptionalBool("selection_known");
     public bool? SelectedThen => Data.OptionalBool("selected_then");
 }
@@ -1702,7 +1707,6 @@ public sealed class StatementExpressionDetails : SemanticDetail
 {
     internal StatementExpressionDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public StatementOperation Statement => Object.Link(Data.OptionalLong("statement_id"), value => Object.Statement(value))!;
-    public ExpressionOperation? Result => Object.Link(Data.OptionalLong("result_id"), value => Object.Expression(value));
 }
 
 public sealed class ReuseExpressionDetails : SemanticDetail
@@ -1716,7 +1720,6 @@ public sealed class BuiltinExpressionDetails : SemanticDetail
     internal BuiltinExpressionDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
     public ExpressionOperation? SelectedExpression => Object.Link(Data.OptionalLong("selected_expression_id"), value => Object.Expression(value));
-    public Constant? ResultConstant => Object.Link(Data.OptionalLong("result_constant_id"), value => Object.Constant(value));
 }
 
 public sealed class ParameterReferenceExpressionDetails : SemanticDetail
@@ -1734,9 +1737,7 @@ public sealed class DependentExpressionDetails : SemanticDetail
     public ExpressionOperation? WrappedExpression => Object.Link(Data.OptionalLong("wrapped_expression_id"), value => Object.Expression(value));
     public TemplateDescriptor? Template => Object.Link(Data.OptionalLong("template_id"), value => Object.Template(value));
     public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
-    public Scope? ParameterScope => Object.Link(Data.OptionalLong("parameter_scope_id"), value => Object.Scope(value));
     public bool? NoexceptRequired => Data.OptionalBool("noexcept_required");
-    public bool IsDependent => Data.Bool("is_dependent");
     public ExpressionOperation? PackIndex => Object.Link(Data.OptionalLong("pack_index_id"), value => Object.Expression(value));
     public CppType? PackType => Object.Link(Data.OptionalLong("pack_type_id"), value => Object.Type(value));
     public TemplateDescriptor? PackTemplate => Object.Link(Data.OptionalLong("pack_template_id"), value => Object.Template(value));
@@ -1795,8 +1796,6 @@ public sealed class AllocationExpressionDetails : SemanticDetail
     public CppType? AllocatedType => Object.Link(Data.OptionalLong("allocated_type_id"), value => Object.Type(value));
     public FunctionSymbol? Allocator => Object.Link(Data.OptionalLong("allocator_id"), value => Object.Function(value));
     public FunctionSymbol? Deallocator => Object.Link(Data.OptionalLong("deallocator_id"), value => Object.Function(value));
-    public FunctionSymbol? Constructor => Object.Link(Data.OptionalLong("constructor_id"), value => Object.Function(value));
-    public FunctionSymbol? Destructor => Object.Link(Data.OptionalLong("destructor_id"), value => Object.Function(value));
     public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
     public ExpressionOperation? ArrayCount => Object.Link(Data.OptionalLong("array_count_id"), value => Object.Expression(value));
     public ExpressionOperation? SizeExpression => Object.Link(Data.OptionalLong("size_expression_id"), value => Object.Expression(value));
@@ -2083,7 +2082,7 @@ public sealed class ConstantDetails : SemanticDetail
     public ConstantValue Value => Object.Link(Data.OptionalLong("value_id"), value => Object.Value(value))!;
     public SourceInfo? SourceOrigin => Object.Link(Data.OptionalLong("source_origin_id"), value => Object.Source(value));
     public ExpressionOperation? BackingExpression => Object.Link(Data.OptionalLong("backing_expression_id"), value => Object.Expression(value));
-    public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
+    public NameReference? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.NameReference(value));
     public SemanticKind? CharacterKind => Object.Link(Data.OptionalLong("character_kind_id"), value => Object.Kind(value));
     public bool IsPackExpansion => Data.Bool("is_pack_expansion");
     public bool? IsLiteral => Data.OptionalBool("is_literal");
@@ -2636,7 +2635,6 @@ public sealed class LoweredEhOperationDetails : SemanticDetail
     public CleanupRegion? Region => Object.Link(Data.OptionalLong("region_id"), value => Object.Region(value));
     public BigInteger? StateNumber => Number(Data.OptionalText("state_number"));
     public FunctionSymbol? Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value));
-    public CppType? ObjectType => Object.Link(Data.OptionalLong("object_type_id"), value => Object.Type(value));
     public ExceptionHandler? Handler => Object.Link(Data.OptionalLong("handler_id"), value => Object.Handler(value));
     public TryDescriptor? TryBlock => Object.Link(Data.OptionalLong("try_block_id"), value => Object.TryDescriptor(value));
     public ExpressionOperation? TryExpression => Object.Link(Data.OptionalLong("try_expression_id"), value => Object.Expression(value));
@@ -3032,7 +3030,7 @@ public sealed class SecondaryDeclarationDetails : SemanticDetail
     internal SecondaryDeclarationDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticKind EntityTagKind => Object.Kind(Data.Long("entity_tag_kind_id"));
     public CppType? DeclaredType => Object.Link(Data.OptionalLong("declared_type_id"), value => Object.Type(value));
-    public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
+    public NameReference? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.NameReference(value));
     public SemanticKind DeclaredStorageClass => Object.Kind(Data.Long("declared_storage_class_id"));
     public bool AutonomousTagDeclaration => Data.Bool("autonomous_tag_declaration");
     public bool EmbedsSourceEntries => Data.Bool("embeds_source_entries");
@@ -3102,7 +3100,7 @@ public sealed class MicrosoftIfExistsDetails : SemanticDetail
     internal MicrosoftIfExistsDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticKind TargetTagKind => Object.Kind(Data.Long("target_tag_kind_id"));
     public SemanticEntity? Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Entity(value));
-    public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
+    public NameReference? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.NameReference(value));
     public SourcePosition? Position => Object.Link(Data.OptionalLong("position_id"), value => Object.Position(value));
     public bool? IsIfExists => Data.OptionalBool("is_if_exists");
     public bool IsThis => Data.Bool("is_this");
@@ -3523,5 +3521,13 @@ public sealed class ExpressionVlaDimensionDetails : SemanticDetail
     public ExpressionOperation Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Expression(value))!;
     public long Ordinal => Data.Long("ordinal");
     public VlaDimension Dimension => Object.Link(Data.OptionalLong("dimension_id"), value => Object.VlaDimension(value))!;
+}
+
+public sealed class VariableInitializerEntityDetails : SemanticDetail
+{
+    internal VariableInitializerEntityDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public VariableSymbol Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Variable(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public SemanticEntity Entity => Object.Link(Data.OptionalLong("entity_id"), value => Object.Entity(value))!;
 }
 

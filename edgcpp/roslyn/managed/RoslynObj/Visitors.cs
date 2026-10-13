@@ -10,6 +10,8 @@ public abstract partial class SemanticVisitor
     public virtual void VisitLoweredEh(LoweredEhOperation operation) => VisitOperation(operation);
     public virtual void VisitCleanupState(CleanupStateOperation operation) => VisitLoweredEh(operation);
     public virtual void VisitBlock(BlockOperation operation) => VisitStatement(operation);
+    public virtual void VisitInitializationStatement(InitializationStatementOperation operation) => VisitStatement(operation);
+    public virtual void VisitStatementExpressionResult(StatementExpressionResultOperation operation) => VisitStatement(operation);
     public virtual void VisitConditional(ConditionalOperation operation) => VisitStatement(operation);
     public virtual void VisitLoop(LoopOperation operation) => VisitStatement(operation);
     public virtual void VisitJump(JumpOperation operation) => VisitStatement(operation);

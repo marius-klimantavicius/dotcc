@@ -1,32 +1,36 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after verified checkpoint `a409df1be` (263 tables).
-The266 common migration is the current implementation boundary; this checklist
+Active on 2026-10-13 after accepted267 validation (158 objects/PASS1963,self73).
+The267 bounded variable/execution batch is complete; this checklist
 separates missing work from existing adapters awaiting evidence. Full M0–M5 stays
 open. C++/CLI and C++/CX are excluded by the user. Native Microsoft extensions
 remain required. Optional source positions never block semantic acceptance.
 
 ## Current implementation and integration
 
-- Finish the266 common migration across all12 actual source-correspondence owner
+- The266 common migration is accepted across all12 actual source-correspondence owner
   families: namespace, constant, type, variable, field, routine, asm, label,
   template parameter, template, macro and scoped expression. Verify canonical
   identity, copied-wrapper distinction, exact fabricated-name suppression,
   primary/secondary declaration authority and shared attribute owner navigation.
-- Complete public namespace/using/label/scope properties and positive cases for
+- The266 public namespace/using/label/scope positives cover
   actual qualifier unions, lexical owners, exact child-list order and native
   Microsoft flags. Proxy descriptors retain links without invented declarations.
-- Integrate exact constant-target GetSymbol/GetReferences through genuine output.
-  Targeted reader assertions already pass; full refreshed matrix remains required.
+- Exact constant-target GetSymbol/GetReferences is accepted in final146/PASS1915.
+  Further folded-away source uses remain unavailable without inference.
+- Accepted267 guarded variable mappings, initializer-defined entity reachability,
+  UPC affinity execution, exact designated Statement.SourceEntry, named reference
+  navigation and removal of phantom fields. Positive activation of inactive guards
+  remains pending; profile/M5 work stays serialized.
 - Resolve remaining active union/field gaps family by family from the worksheet.
-  A planned mapping is not proof of a writer. Current planned114 and raw314 rows
+  A planned mapping is not proof of a writer. Current planned114 and raw248 rows
   include fields already implemented but not reconciled; audit before proposing
   new payloads. Prioritize execution, variables/routines, class/base/field layout,
   dependent/template identity and lifetime/EH semantics over optional locations.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are613 verified and667 mapped pending-validation fields at this boundary.
+There are613 verified and732 mapped pending-validation fields at this boundary.
 Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
 close unconditional scalars, including false values. Active union alternatives,
 conditional availability, identity, order and executable obligations need real
@@ -73,8 +77,10 @@ supported EDG representations, never fabricated bytes or semantic reconstruction
   Existing243/263 evidence already passes these reader behaviors; repeat only
   when new changes affect them, then record the final boundary.
 - Measure narrow hot reverse-FK indexes where parent insertion scans populated
-  relations. Avoid blanket indexes. Investigate the repeat77-stock-object rebuild
-  on no-op reconfiguration as a separate build-only issue.
+  relations. Avoid blanket indexes. The generated-header timestamp correction is
+  verified: backend/link-only rebuild and subsequent Ninja no-work. The private
+  FK-load candidate reduces scale median30.28s to0.59s with identical logical rows;
+  canonical adoption and writer-only index size/reader comparison remain next.
 - Retain measured1KiB page default and WITHOUT ROWID composite relations. The243
   packaging comparison already covers24 successful runs; reopen only if new
   schema or measured workload warrants it, not as an unperformed baseline gate.

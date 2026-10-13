@@ -263,7 +263,7 @@ is_objectless_member_reference INTEGER NOT NULL DEFAULT 0
 is_gnu_extension INTEGER NOT NULL DEFAULT 0
 type_definition_needed INTEGER NOT NULL DEFAULT 0
 boolean_not_normalized INTEGER NOT NULL DEFAULT 0''')
-entity('statement', 'kind_id @kind NOT NULL\nexpression_id @expression\nparent_id @statement\nlifetime_id @lifetime\nis_guard INTEGER NOT NULL DEFAULT 0\nis_declared_constexpr INTEGER NOT NULL DEFAULT 0\nlowering_generated INTEGER NOT NULL DEFAULT 0\nhas_associated_pragma INTEGER NOT NULL DEFAULT 0\nis_lowering_boilerplate INTEGER NOT NULL DEFAULT 0\nis_fallthrough_statement INTEGER NOT NULL DEFAULT 0\nis_likely INTEGER NOT NULL DEFAULT 0\nis_unlikely INTEGER NOT NULL DEFAULT 0')
+entity('statement', 'kind_id @kind NOT NULL\nexpression_id @expression\nparent_id @statement\nis_guard INTEGER NOT NULL DEFAULT 0\nlowering_generated INTEGER NOT NULL DEFAULT 0\nhas_associated_pragma INTEGER NOT NULL DEFAULT 0\nis_lowering_boilerplate INTEGER NOT NULL DEFAULT 0\nis_fallthrough_statement INTEGER NOT NULL DEFAULT 0\nis_likely INTEGER NOT NULL DEFAULT 0\nis_unlikely INTEGER NOT NULL DEFAULT 0')
 relation('expression_operand', 'owner_id @expression NOT NULL\nrole_id @kind NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression NOT NULL', 'owner_id, role_id, ordinal')
 entity('operator_expression', '''operator_kind_id @kind NOT NULL
 operation_type_kind_id @kind
@@ -288,10 +288,9 @@ qualified_function_name INTEGER NOT NULL DEFAULT 0
 retained_virtual_call INTEGER NOT NULL DEFAULT 0
 rewritten_property_kind_id @kind''')
 entity('call_expression', 'callee_id @expression NOT NULL\ntarget_routine_id @routine_symbol\nsource_target_routine_id @routine_symbol\nreceiver_id @expression\nfunction_type_id @type\ncall_kind_id @kind NOT NULL\nsource_dispatch_kind_id @kind\nreturn_slot_id @expression')
-relation('call_argument', 'owner_id @call_expression NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression NOT NULL\nparameter_id @variable_symbol\nrole_id @kind')
+relation('call_argument', 'owner_id @call_expression NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression NOT NULL\nparameter_type_id @parameter_type\nrole_id @kind')
 entity('reference_expression', 'target_id @entity\nreference_kind_id @kind NOT NULL\nname_reference_id @name_reference\nsubobject_id @base_subobject')
 entity('name_reference', '''kind_id @kind
-builtin_kind_id @kind
 property_id @field_symbol
 destructor_type_id @type
 qualifier_id @name_qualifier
@@ -311,7 +310,7 @@ entity('declaration_statement', 'has_static_or_thread_variable INTEGER NOT NULL 
 relation('declaration_statement_entity', 'owner_id @declaration_statement NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
 entity('initialization_statement', 'initialization_id @initialization NOT NULL')
 relation('block_item', 'owner_id @block_statement NOT NULL\nordinal INTEGER NOT NULL\nstatement_id @statement NOT NULL')
-entity('if_statement', 'then_id @statement\nelse_id @statement\ncondition_id @expression\ninitialization_id @statement\nselection_known INTEGER\nselected_then INTEGER')
+entity('if_statement', 'then_id @statement\nelse_id @statement\ncondition_id @expression\nselection_known INTEGER\nselected_then INTEGER')
 entity('loop_statement', 'body_id @statement\ninitialization_id @statement\ncondition_id @expression\nincrement_id @expression\ninit_scope_id @scope\ntest_position_id @source_position\naffinity_id @expression')
 entity('range_for', 'body_id @statement\nrange_variable_id @variable_symbol\nbegin_variable_id @variable_symbol\nend_variable_id @variable_symbol\niterator_variable_id @variable_symbol\ncomparison_id @expression\nincrement_id @expression\ninitialization_id @statement\nscope_id @scope\niterator_scope_id @scope\nuse_await INTEGER NOT NULL DEFAULT 0')
 entity('for_each_statement', 'body_id @statement\ncollection_id @expression\npattern_kind_id @kind NOT NULL\niterator_id @variable_symbol\ninitialization_id @expression\ntest_id @expression\nincrement_id @expression\nuses_previous_declaration_iterator INTEGER NOT NULL DEFAULT 0\nprevious_field_id @field_symbol\nassignment_id @expression\ncollection_reference_id @variable_symbol\ntemporary_variable_id @variable_symbol\nend_variable_id @variable_symbol\nscope_id @scope\niterator_scope_id @scope')
@@ -334,11 +333,11 @@ entity('type_query_expression', 'query_kind_id @kind NOT NULL\noperand_type_id @
 entity('temporary_expression', 'initialization_id @initialization\ntemporary_id @temporary\nsource_type_id @type')
 entity('condition_expression', 'expression_id @expression\ninitialization_id @statement\ndynamic_initialization_id @initialization\nscope_id @scope\nvariable_id @variable_symbol')
 entity('lifetime_expression', 'expression_id @expression NOT NULL\nlifetime_id @lifetime')
-entity('statement_expression', 'statement_id @statement NOT NULL\nresult_id @expression')
+entity('statement_expression', 'statement_id @statement NOT NULL')
 entity('reuse_expression', 'initialization_id @initialization NOT NULL')
-entity('builtin_expression', 'kind_id @kind NOT NULL\nselected_expression_id @expression\nresult_constant_id @constant')
+entity('builtin_expression', 'kind_id @kind NOT NULL\nselected_expression_id @expression')
 entity('parameter_reference_expression', 'parameter_number INTEGER NOT NULL\nparameter_depth INTEGER NOT NULL\nis_this INTEGER NOT NULL DEFAULT 0')
-entity('dependent_expression', 'kind_id @kind NOT NULL\nwrapped_expression_id @expression\ntemplate_id @template_definition\ninitialization_id @initialization\nparameter_scope_id @scope\nnoexcept_required INTEGER\nis_dependent INTEGER NOT NULL DEFAULT 1\npack_index_id @expression\npack_type_id @type\npack_template_id @template_definition\nfold_operator_id @kind\nfold_left_associative INTEGER\ntoken_sequence_id @token_sequence\nreattempt_default_argument INTEGER\nreattempt_default_member_initializer INTEGER')
+entity('dependent_expression', 'kind_id @kind NOT NULL\nwrapped_expression_id @expression\ntemplate_id @template_definition\ninitialization_id @initialization\nnoexcept_required INTEGER\npack_index_id @expression\npack_type_id @type\npack_template_id @template_definition\nfold_operator_id @kind\nfold_left_associative INTEGER\ntoken_sequence_id @token_sequence\nreattempt_default_argument INTEGER\nreattempt_default_member_initializer INTEGER')
 relation('requirement_parameter', 'owner_id @dependent_expression NOT NULL\nordinal INTEGER NOT NULL\nparameter_type_id @parameter_type NOT NULL')
 relation('expression_template_argument', 'owner_id @expression NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
 entity('token_sequence', '')
@@ -347,8 +346,6 @@ relation('dependent_requirement', 'owner_id @dependent_expression NOT NULL\nordi
 entity('allocation_expression', '''allocated_type_id @type
 allocator_id @routine_symbol
 deallocator_id @routine_symbol
-constructor_id @routine_symbol
-destructor_id @routine_symbol
 initialization_id @initialization
 array_count_id @expression
 size_expression_id @expression
@@ -598,7 +595,7 @@ entity('cleanup_storage_location', 'kind_id @kind NOT NULL\nvariable_id @variabl
 entity('cleanup_array', 'function_eh_id @function_eh NOT NULL\nordinal INTEGER NOT NULL\nhandle_constant_id @constant NOT NULL\nelement_size TEXT NOT NULL\nelement_count TEXT NOT NULL\nis_nonarray_size INTEGER NOT NULL DEFAULT 0')
 entity('cleanup_condition', 'storage_id @cleanup_storage_location NOT NULL\nkind_id @kind NOT NULL\ncomparison_value TEXT')
 entity('cleanup_abi_detail', 'vtt_location_id @cleanup_storage_location\nis_delegating INTEGER\nvla_count_location_id @cleanup_storage_location')
-entity('lowered_eh_operation', 'kind_id @kind NOT NULL\nfunction_eh_id @function_eh\nregion_id @cleanup_region\nstate_number TEXT\nroutine_id @routine_symbol\nobject_type_id @type\nhandler_id @handler\ntry_block_id @try_descriptor\ntry_expression_id @expression\ncatch_expression_id @expression\ninitialization_id @initialization')
+entity('lowered_eh_operation', 'kind_id @kind NOT NULL\nfunction_eh_id @function_eh\nregion_id @cleanup_region\nstate_number TEXT\nroutine_id @routine_symbol\nhandler_id @handler\ntry_block_id @try_descriptor\ntry_expression_id @expression\ncatch_expression_id @expression\ninitialization_id @initialization')
 entity('cleanup_state_operation', 'region_id @cleanup_region\nstate_number TEXT NOT NULL\nis_unreachable INTEGER NOT NULL DEFAULT 0')
 relation('eh_handler_region', 'owner_id @handler NOT NULL\nordinal INTEGER NOT NULL\nregion_id @cleanup_region NOT NULL\nend_region_id @cleanup_region')
 entity('template_definition', '''kind_id @kind NOT NULL
@@ -1374,6 +1371,17 @@ for index, definition in enumerate(tables):
         definition = definition.replace('lowering_generated INTEGER NOT NULL DEFAULT 0', 'lowering_generated INTEGER')
         definition = definition.replace('is_lowering_boilerplate INTEGER NOT NULL DEFAULT 0', 'is_lowering_boilerplate INTEGER')
     tables[index] = definition
+
+# Guarded variable emission/remapping facts and exact retained occurrence links.
+append_columns('variable_symbol', '''can_be_instantiated INTEGER
+do_not_instantiate INTEGER
+instance_required INTEGER
+parameter_used_as_lvalue INTEGER
+inline_instance_required INTEGER
+is_temp_for_unmodified_inlined_parameter INTEGER
+is_temp_for_constructor_this_inlined_parameter INTEGER''')
+relation('variable_initializer_entity', 'owner_id @variable_symbol NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
+append_columns('statement', 'source_sequence_entry_id @source_entry')
 
 custom = {
  'entity': 'translation_unit name scope symbol namespace routine variable field label enum alias using type declaration expression statement initialization lifetime temporary base_subobject template template_parameter template_argument template_instance template_specialization source_file include_occurrence source_mapping source_position source_range source_origin macro_definition macro_invocation source_attachment attribute subobject_path name_reference exception_specification virtual_table record_layout vla_dimension coroutine function_eh cleanup_region cleanup_action cleanup_storage cleanup_array cleanup_condition cleanup_abi',
