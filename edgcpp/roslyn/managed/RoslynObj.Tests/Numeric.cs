@@ -23,13 +23,19 @@ internal static class Numeric
             {
                 var variable=unit.Variables.Single(v=>v.Name==item.Item1);
                 var (real,imaginary)=Parts(variable.ConstantInitializer!.Value);
-                check(Match(real,item.Item2,item.Item3,item.Item4)&&Match(imaginary,item.Item5,item.Item6,item.Item7),"Actual complex real/imaginary components must preserve their distinct exact significands, exponents and signs across stock lowering.");
+                var binary64Long=item.Item1=="complex_long_double"&&real.Details.RepresentationKind?.Name=="binary64";
+                check(binary64Long ? Match(real,BigInteger.One<<52,-55,false)&&Match(imaginary,new BigInteger(3)<<51,-53,true) : Match(real,item.Item2,item.Item3,item.Item4)&&Match(imaginary,item.Item5,item.Item6,item.Item7),"Actual complex real/imaginary components must preserve their distinct exact significands, exponents and signs across stock lowering.");
                 if(source)check(variable.Type.Kind.Name=="tk_complex"&&variable.ConstantInitializer.Value.Kind.Name=="ck_complex","An unlowered complex occurrence must retain its actual type and value subtype.");
+                if(variable.ConstantInitializer.Value is ComplexValue complex)check(complex.Real==real&&complex.Imaginary==imaginary&&complex.Details.RealValue==real&&complex.Payload.ImaginaryValue==imaginary,"Ordinary complex component properties must return the canonical retained floating values.");
             }
             if(filename=="nonreal_float.roslynobj")
             {
                 var imaginary=new[]{("imaginary_float",BigInteger.Parse("8388608"),-24L,false),("imaginary_double",BigInteger.Parse("4503599627370496"),-54L,true),("imaginary_long_double",BigInteger.Parse("13835058055282163712"),-64L,false)};
-                check(imaginary.All(item=>Match((FloatingValue)unit.Variables.Single(v=>v.Name==item.Item1).ConstantInitializer!.Value,item.Item2,item.Item3,item.Item4)),"C99 imaginary values must preserve exact scalar contents and signs independently from complex component cache entries.");
+                check(imaginary.All(item=>
+                {
+                    var value=(FloatingValue)unit.Variables.Single(v=>v.Name==item.Item1).ConstantInitializer!.Value;
+                    return item.Item1=="imaginary_long_double"&&value.Details.RepresentationKind?.Name=="binary64" ? Match(value,new BigInteger(3)<<51,-53,false) : Match(value,item.Item2,item.Item3,item.Item4);
+                }),"C99 imaginary values must preserve exact scalar contents and signs independently from complex component cache entries.");
                 if(source)check(imaginary.All(item=>unit.Variables.Single(v=>v.Name==item.Item1).Type.Kind.Name=="tk_imaginary"),"Unlowered imaginary occurrences must retain their actual imaginary type descriptors.");
             }
         }
@@ -58,7 +64,7 @@ internal static class Numeric
 
     private static (FloatingValue Real,FloatingValue Imaginary) Parts(ConstantValue value)
     {
-        if(value is ConstantValue<ComplexValueDetails> complex)return ((FloatingValue)complex.Payload.RealValue!,(FloatingValue)complex.Payload.ImaginaryValue);
+        if(value is ComplexValue complex)return (complex.Real!,complex.Imaginary);
         var elements=((AggregateValue)value).Elements;
         if(elements.Count==1&&elements[0].Value is AggregateValue nested)elements=nested.Elements;
         return ((FloatingValue)elements[0].Value,(FloatingValue)elements[1].Value);

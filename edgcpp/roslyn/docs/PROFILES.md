@@ -145,3 +145,15 @@ navigation, plural attribute owners, nullable fabricated-name projection and
 removing the generated constructor's inferred using owner. Seven measured indexes
 reduce writer87.933→30.381s, with residual M5 optimization open. Further configured
 native profiles and field/kind closure remain required, as CLOSURE.md records.
+
+
+Current accepted performance267 boundary:10 strict profiles/176 genuine objects,
+full reader PASS2092/self73 and18 additional profile pilots PASS196. Sun native
+linker-scope modifiers, actual mutually-exclusive USL2.1/3.0, host-long-double,
+stock-win64 host-double and official SoftFloat are genuine configurations. USL
+export support is disabled by stock signature compatibility; host-double disables
+fixed-point because long_Accum requires greater exact precision, not via an
+imprecision override. Primary/other profiles retain those capabilities. Remaining
+automatic-instantiation/minimal-inlining/inline-variable positive guards are
+assigned in build/activation267-plan.tsv. CLI/CX and optional location recovery
+remain outside scope; all stock source inputs are pinned and unchanged.

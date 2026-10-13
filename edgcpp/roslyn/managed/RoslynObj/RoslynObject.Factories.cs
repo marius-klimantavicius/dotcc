@@ -190,7 +190,7 @@ public sealed partial class RoslynObject
         "ck_integer"=>new IntegerValue(this,id,r), "ck_float" or "ck_imaginary"=>new FloatingValue(this,id,r),
         "ck_string"=>new StringValue(this,id,r), "ck_aggregate"=>new AggregateValue(this,id,r),
         "ck_fixed_point"=>new ConstantValue<FixedPointValueDetails>(this,id,r,"fixed_point_value",v=>new(this,v)),
-        "ck_complex"=>new ConstantValue<ComplexValueDetails>(this,id,r,"complex_value",v=>new(this,v)),
+        "ck_complex"=>new ComplexValue(this,id,r),
         "ck_address"=>new AddressValue(this,id,r),
         "ck_stack_offset"=>new ConstantValue<StackOffsetValueDetails>(this,id,r,"stack_offset_value",v=>new(this,v)),
         "ck_ptr_to_member"=>new ConstantValue<MemberPointerValueDetails>(this,id,r,"member_pointer_value",v=>new(this,v)),

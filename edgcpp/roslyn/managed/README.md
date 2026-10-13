@@ -143,6 +143,11 @@ Lambda initializations and lambda expressions share one `LambdaDefinition` with
 its actual capture list. Assembly operations similarly delegate to their captured
 `AssemblyDefinition`; module/import objects retain ordered translation-unit imports.
 
+`ComplexValue.Real` and `Imaginary` navigate the canonical floating components.
+The real component remains null when the retained value has none. Each component
+keeps exact target significand, exponent, sign and special-value facts regardless
+of the producer's host floating storage.
+
 `Scope.SourceSequence` exposes the retained physical source-entry list.
 `Scope.SourceEntries` follows sublist entries at their actual splice point;
 `SourceSublists` is the separate storage index. Source-sequence owners and a
@@ -220,8 +225,8 @@ From the repository root:
 python3 edgcpp/roslyn/managed/tools/generate_bindings.py --check
 dotnet build edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj
 dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
-  edgcpp/artifacts/roslynobj/semantic267/smoke-native/basic.roslynobj \
-  edgcpp/artifacts/roslynobj/semantic267/smoke-native/m0.roslynobj
+  edgcpp/artifacts/roslynobj/performance267/smoke-native/basic.roslynobj \
+  edgcpp/artifacts/roslynobj/performance267/smoke-native/m0.roslynobj
 ```
 
 Without object paths, the console test project runs the valid shared-schema

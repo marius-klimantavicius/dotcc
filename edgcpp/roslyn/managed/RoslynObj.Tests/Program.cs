@@ -220,6 +220,7 @@ try
         var sw=Stopwatch.StartNew();
         using var obj=RoslynObject.Open(input);
         var unit=obj.TranslationUnit;
+        ProfileProjection.Verify(unit,Path.GetFileName(input),Check);
         Numeric.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         ConstantReferences.Verify(unit,input,obj.Manifest.CaptureProfile=="source_semantic",Check);
         CommonProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
@@ -295,7 +296,8 @@ try
             var zero=((FloatingValue)variables["negative_zero"].ConstantInitializer!.Value).Value;
             Check(zero.IsZero&&zero.IsNegative,"The real long-double negative zero must retain its sign.");
             var finite=((FloatingValue)variables["finite"].ConstantInitializer!.Value).Value;
-            Check(finite.Radix==2&&finite.Significand==(BigInteger.One<<63)+8&&finite.Exponent==-49,"The real extended float must preserve exact significand/exponent.");
+            var binary64=((FloatingValue)variables["finite"].ConstantInitializer!.Value).Details.RepresentationKind?.Name=="binary64";
+            Check(finite.Radix==2&&(binary64 ? finite.Significand==(BigInteger.One<<52)&&finite.Exponent==-38 : finite.Significand==(BigInteger.One<<63)+8&&finite.Exponent==-49),"The real long-double literal must preserve its configured target significand/exponent and rounding.");
             Check(((FloatingValue)variables["infinity"].ConstantInitializer!.Value).Value.Class==FloatingPointClass.Infinity,"The real infinity must retain its classification.");
             var nan=((FloatingValue)variables["nan_value"].ConstantInitializer!.Value).Value;
             Check(nan.Class==FloatingPointClass.NaN&&nan.NaNPayload==801&&nan.IsQuietNaN==true,"The real NaN must retain its payload and quiet state.");

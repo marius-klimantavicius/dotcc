@@ -230,3 +230,15 @@ construction policy documented before adoption, not a claim the old FK-enabled
 writer policy was unchanged. Corruption campaigns and core modifications remain
 excluded. Partial nonnull indexes are another measured candidate, especially
 spelling-position6000nonnull/35091 rows; verify actual FK bytecode uses them.
+
+
+Performance267 release after semantic checkpoint d2cdd575e: adopt the reviewed
+private FK construction exception and measure removal of exactly seven writer
+origin/position reverse indexes. Mandatory full checks and verified FK restoration
+precede publication. Fingerprint034cf58664b43af97cf491ab271620b693d96fb64d6ca09e7504927b01101671.
+Old-index candidate public pilots PASS124 and bounded scale2.144s cold/1.577s warm
+show no reader limitation; new index-free artifacts still require acceptance.
+Queued narrow semantic cleanup: allocation_expression.size_expression_id has no
+producer or retained source field (il_def14731–38 size argument explicitly excluded);
+use actual allocated type, element count and current args, never fabricate a size
+expression. It stays outside the frozen performance-only shape.

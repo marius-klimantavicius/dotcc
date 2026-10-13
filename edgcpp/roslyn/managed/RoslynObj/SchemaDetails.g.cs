@@ -267,7 +267,7 @@ public sealed class RoutineSymbolDetails : SemanticDetail
     public bool? IsSealed => Data.OptionalBool("is_sealed");
     public bool? IsNewMember => Data.OptionalBool("is_new_member");
     public bool? IsInterfaceSlot => Data.OptionalBool("is_interface_slot");
-    public long? DefinitionCannotBeGenerated => Data.OptionalLong("definition_cannot_be_generated");
+    public bool? DefinitionCannotBeGenerated => Data.OptionalBool("definition_cannot_be_generated");
     public bool CovariantReturnVirtualOverride => Data.Bool("covariant_return_virtual_override");
     public bool IsDeclaredConstexpr => Data.Bool("is_declared_constexpr");
     public bool IsConstexprIntrinsic => Data.Bool("is_constexpr_intrinsic");

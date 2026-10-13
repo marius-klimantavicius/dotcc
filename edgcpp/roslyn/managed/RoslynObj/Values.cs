@@ -69,6 +69,15 @@ public sealed class FloatingValue : ConstantValue
         Details.Negative,checked((int)Details.Radix),Details.Significand??BigInteger.Zero,Details.Exponent??0,Details.NanPayload,Details.NanQuiet);
 }
 
+/// <summary>The exact retained floating components of a complex value.</summary>
+public sealed class ComplexValue : ConstantValue<ComplexValueDetails>
+{
+    internal ComplexValue(RoslynObject owner,long id,Row row) : base(owner,id,row,"complex_value",r=>new(owner,r)) { }
+    public ComplexValueDetails Details => Payload;
+    public FloatingValue? Real => (FloatingValue?)Details.RealValue;
+    public FloatingValue Imaginary => (FloatingValue)Details.ImaginaryValue;
+}
+
 public sealed class StringValue : ConstantValue
 {
     internal StringValue(RoslynObject owner,long id,Row row) : base(owner,id,row) { }

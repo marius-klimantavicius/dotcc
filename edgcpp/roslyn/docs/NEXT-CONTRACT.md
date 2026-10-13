@@ -1,3 +1,28 @@
+# Accepted performance267 construction and storage contract
+
+Semantic267 committed as `d2cdd575e541e37880a6219175b765e6542fbfa5`:158 genuine
+objects/PASS1963,self73. The next contract keeps all267 tables and39,145 kinds,
+removing only seven origin/position reverse indexes used for incremental writer
+FK scans. Navigation indexes remain. Framed SQL/catalog fingerprint:
+`034cf58664b43af97cf491ab271620b693d96fb64d6ca09e7504927b01101671`.
+
+Native adopts the reviewed private bulk loader: all declared constraints remain,
+complete FK checks precede completeness/commit, enforcement is restored and
+verified outside the transaction before atomic publication. Six genuine paired
+outputs match scalar rows/IDs except artifact identity and stock __TIME__. The
+canonical index-free result passes176 genuine objects/PASS2092,self73, ten
+strict pinned stages and18 positive configured-profile pilots/PASS196. Controlled
+scale median0.56s/7.586MB; final bounded reader2.627s cold/2.119s warm.
+
+Next bounded semantic migration removes20 reviewed unproduced columns and the
+unreachable temporary table, preserving authoritative initialization/field/ABI/
+count relations and append-only kind IDs. Native proceeds with stock-valid
+automatic-instantiation/minimal-inlining overlays for seven inactive variable
+facts. Remaining exact ledger/kind closure continues without approval hold.
+
+
+---
+
 # Accepted bounded variable and execution batch (267 tables)
 
 Verified266 committed as `dec4f0a86c3889b96ed11378eacc5d505a1fdddf`:146 genuine

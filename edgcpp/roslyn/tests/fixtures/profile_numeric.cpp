@@ -1,0 +1,10 @@
+constexpr float host_float = 1.25f;
+constexpr double host_double = -3.5;
+constexpr long double host_long_double = 0x1.4p+0L;
+constexpr float host_float_negative_zero = -0.0f;
+constexpr double host_double_negative_zero = -0.0;
+constexpr long double host_long_double_negative_zero = -0.0L;
+const double host_infinity = __builtin_inf();
+const double host_nan = __builtin_nan("0x321");
+constexpr _Float16 host_narrow = 0x1.004p0f16;
+constexpr _Float16 host_narrow_negative_zero = -0.0f16;

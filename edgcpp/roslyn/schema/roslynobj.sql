@@ -4940,10 +4940,3 @@ CREATE INDEX source_correspondence_auxiliary_name ON source_correspondence(unman
 CREATE INDEX correspondence_entities ON entity_source_correspondence(source_correspondence_id);
 CREATE INDEX source_correspondence_parent ON source_correspondence(parent_scope_id);
 CREATE INDEX source_correspondence_routine ON source_correspondence(enclosing_routine_id);
-CREATE INDEX source_correspondence_origin ON source_correspondence(source_origin_id);
-CREATE INDEX constant_origin ON constant(source_origin_id);
-CREATE INDEX semantic_node_origin ON semantic_node(source_origin_id);
-CREATE INDEX source_origin_position ON source_origin(position_id);
-CREATE INDEX source_position_spelling ON source_position(spelling_position_id);
-CREATE INDEX source_range_start ON source_range(start_id);
-CREATE INDEX source_range_end ON source_range(end_id);

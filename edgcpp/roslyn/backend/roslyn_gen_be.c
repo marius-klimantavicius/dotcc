@@ -320,7 +320,8 @@ static void roslyn_back_end() {
  if(sqlite3_open_v2(temporary.c_str(),&store.connection,SQLITE_OPEN_READWRITE,nullptr)!=SQLITE_OK)store.fail(sqlite3_errmsg(store.connection));
  const char *page_size=std::getenv("ROSLYNOBJ_SQLITE_PAGE_SIZE");if(!page_size)page_size="1024";
  if(std::strcmp(page_size,"1024")&&std::strcmp(page_size,"2048")&&std::strcmp(page_size,"4096")&&std::strcmp(page_size,"8192"))store.fail("ROSLYNOBJ_SQLITE_PAGE_SIZE must be 1024, 2048, 4096, or 8192");else store.exec((std::string("PRAGMA page_size=")+page_size).c_str());
- store.exec("PRAGMA foreign_keys=ON; PRAGMA journal_mode=DELETE; BEGIN IMMEDIATE;");store.exec(roslynobj_schema_sql);
+ store.exec("PRAGMA foreign_keys=OFF; PRAGMA journal_mode=DELETE; BEGIN IMMEDIATE;");store.exec(roslynobj_schema_sql);
+ int bulk_fk_state=-1;if(sqlite3_db_config(store.connection,SQLITE_DBCONFIG_ENABLE_FKEY,-1,&bulk_fk_state)!=SQLITE_OK||bulk_fk_state!=0)store.fail("Private bulk-load foreign key state is not OFF");
  roslyn_unit=DB.fresh("translation_unit");
  roslyn_fact(roslyn_unit,"macro_tree",MACRO_INVOCATION_TREE_IN_IL?"available":"disabled",MACRO_INVOCATION_TREE_IN_IL?nullptr:"MACRO_INVOCATION_TREE_IN_IL is disabled in this resolved build.");
  roslyn_fact(roslyn_unit,"macro_arguments",RECORD_MACRO_ARGS?"available":"disabled",RECORD_MACRO_ARGS?nullptr:"RECORD_MACRO_ARGS is disabled in this resolved build.");
@@ -335,9 +336,9 @@ static void roslyn_back_end() {
 #ifdef ROSLYN_BUILD_PROFILE_NAME
  roslyn_capability("roslyn_build_profile",ROSLYN_BUILD_PROFILE_NAME,true);
 #endif
- CAP(SUN_EXTENSIONS_ALLOWED);CAP(USE_DOUBLE_FOR_HOST_FP_VALUE);CAP(USE_LONG_DOUBLE_FOR_HOST_FP_VALUE);CAP(FLOAT128_ENABLING_POSSIBLE);CAP(FLOAT80_ENABLING_POSSIBLE);CAP(FP_HAS_LONG_DOUBLE);CAP(targ_ldbl_mant_dig);
+ CAP(SUN_EXTENSIONS_ALLOWED);CAP(FIXED_POINT_ALLOWED);CAP(USE_DOUBLE_FOR_HOST_FP_VALUE);CAP(USE_LONG_DOUBLE_FOR_HOST_FP_VALUE);CAP(FLOAT128_ENABLING_POSSIBLE);CAP(FLOAT80_ENABLING_POSSIBLE);CAP(FP_HAS_LONG_DOUBLE);CAP(targ_ldbl_mant_dig);
 #if SUN_EXTENSIONS_ALLOWED
- CAP(sun_mode);
+ CAP(sun_mode);CAP(sun_linker_scope_allowed);
 #endif
  CAP(RECORD_BIT_FIELD_CONTAINER_OFFSETS_IN_IL);CAP(TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_win64);CAP(TARG_MICROSOFT_BIT_FIELD_ALLOCATION_win64);CAP(targ_microsoft_bit_field_allocation);
  CAP(il_header.plain_chars_are_signed);CAP(il_header.pcc_compatibility_mode);CAP(il_header.enum_type_is_integral);CAP(il_header.default_max_member_alignment);CAP(il_header.UCN_identifiers_used);CAP(il_header.vla_used);CAP(il_header.any_templates_seen);CAP(il_header.prototype_instantiations_in_il);CAP(il_header.il_has_all_prototype_instantiations);CAP(il_header.il_has_C_semantics);CAP(il_header.target_configuration_index);
@@ -350,16 +351,18 @@ static void roslyn_back_end() {
 #if UPC_EXTENSIONS_ALLOWED
  CAP(il_header.default_upc_strict_access);CAP(upc_num_threads);CAP(upc_dynamic_threads());
 #endif
- CAP(AUTOMATIC_TEMPLATE_INSTANTIATION);CAP(INSTANTIATE_INLINE_VARIABLES);CAP(DEFAULT_RECORD_FORM_OF_NAME_REFERENCE);CAP(CREATE_LEXICAL_TYPEREFS);CAP(record_form_of_name_reference);
+ CAP(AUTOMATIC_TEMPLATE_INSTANTIATION);CAP(INSTANTIATE_INLINE_VARIABLES);CAP(DEFAULT_RECORD_FORM_OF_NAME_REFERENCE);CAP(CREATE_LEXICAL_TYPEREFS);CAP(record_form_of_name_reference);CAP(cfront_2_1_mode);CAP(cfront_3_0_mode);
  CAP(NEED_NAME_MANGLING);CAP(DO_IL_LOWERING);CAP(DO_FULL_PORTABLE_EH_LOWERING);CAP(GENERATE_EH_TABLES);CAP(DO_UNORDERED_EH_PROCESSING);CAP(KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED);CAP(BACK_END_IS_C_GEN_BE);CAP(BACK_END_IS_CP_GEN_BE);CAP(BACK_END_SHOULD_BE_CALLED);CAP(DOING_SOURCE_ANALYSIS);CAP(IL_SHOULD_BE_WRITTEN_TO_FILE);CAP(IA64_ABI);CAP(CFRONT_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_2_1_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_3_0_OBJECT_CODE_COMPATIBILITY);CAP(ASSIGNMENT_TO_THIS_ALLOWED);CAP(NEW_CAN_BE_FOLDED_INTO_CTOR);CAP(HANDLE_VIRTUAL_BASES_IN_COMPLETE_CTOR_DTORS);CAP(TIE_DEFAULT_GNU_ABI_VERSION_TO_GNU_VERSION);CAP(target_configuration_index);CAP(MINIMAL_INLINING);CAP(MAINTAIN_NEEDED_FLAGS);CAP(DEFAULT_REMOVE_UNNEEDED_ENTITIES);CAP(PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE);CAP(LOWER_VARIABLE_LENGTH_ARRAYS);CAP(LOWER_CLASS_RVALUE_ADJUST);CAP(LOWER_COMPLEX);CAP(LOWER_FIXED_POINT);CAP(LOWER_IFUNC);CAP(LOWER_LVALUE_RETURNING_OPERATIONS);CAP(LOWER_MICROSOFT_NONCONSTANT_AGGREGATE);CAP(LOWER_DESIGNATED_INITIALIZERS);CAP(GENERATE_SOURCE_SEQUENCE_LISTS);CAP(MAINTAIN_CLASS_MEMBER_LIST);CAP(RECORD_BACKING_EXPRS_WITH_IL_LOWERING);CAP(ONE_INSTANTIATION_PER_OBJECT);CAP(EXTRA_SOURCE_POSITIONS_IN_IL);CAP(RECORD_MACROS_IN_IL);CAP(FULLY_RESOLVED_MACRO_POSITIONS);CAP(RECORD_MACRO_INVOCATIONS);CAP(MACRO_INVOCATION_TREE_IN_IL);CAP(RECORD_MACRO_ARGS);CAP(COMPILE_MULTIPLE_TRANSLATION_UNITS);CAP(COROUTINE_ENABLING_POSSIBLE);CAP(REFLECTION_ENABLING_POSSIBLE);CAP(reflection_enabled);CAP(PROTOTYPE_INSTANTIATIONS_IN_IL);CAP(ALL_TEMPLATE_INFO_IN_IL);CAP(prototype_instantiations_in_il);CAP(all_template_info_in_il);CAP(HOST_FP_VALUE_IS_128BIT);CAP(USE_SOFTFLOAT);CAP(USE_FLOAT128_FOR_HOST_FP_VALUE);CAP(HOST_HAS_FLOAT16_TYPE);CAP(exceptions_enabled);CAP(gpp_mode);CAP(gcc_mode);CAP(clang_mode);CAP(gnu_version);CAP(microsoft_mode);CAP(microsoft_version);CAP(RECORD_UNRECOGNIZED_ATTRIBUTES);CAP(record_unrecognized_attributes);CAP(RECOGNIZE_MICROSOFT_ATTRIBUTES);CAP(SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING);CAP(cppcli_enabled);CAP(cppcx_enabled);CAP(targ_microsoft_ptr_to_member_sizing);CAP(CPPCLI_ENABLING_POSSIBLE);CAP(CPPCX_ENABLING_POSSIBLE);CAP(READ_CPPCLI_PORTABLE_ASSEMBLIES);CAP(EXPORT_ENABLING_POSSIBLE);CAP(export_template_allowed);CAP(DEFAULT_EXPORT_TEMPLATE_ALLOWED);
 #undef CAP
  const char *count_text=std::getenv("ROSLYNOBJ_ARGUMENT_COUNT");if(count_text){long count=std::strtol(count_text,nullptr,10);for(long i=0;i<count;++i){std::string key="ROSLYNOBJ_ARGUMENT_"+Q(i);const char *argument=std::getenv(key.c_str());if(argument)DB.put("invocation_argument",{{"ordinal",static_cast<sqlite3_int64>(i)},{"text_id",DB.atom(argument)}});}}
  if(!DO_IL_LOWERING)roslyn_capability("source_semantic_graph_v1","1",true,true);
  roslyn_capability("normalized_semantic_graph_v1","1",true,true);roslyn_capability("normalized_semantic_schema_v1",roslynobj_schema_contract_sha256,true,true);roslyn_capability("exact_target_values_v1","1",true,true);if(!roslyn_function_eh.empty())roslyn_capability("edg_partial_eh_v1","1",true,true);
+ roslyn_reconcile_using_scopes();store.check_foreign_keys();
  unsigned char random[16];sqlite3_randomness(16,random);std::string artifact;static const char hex[]="0123456789abcdef";for(unsigned char b:random){artifact+=hex[b>>4];artifact+=hex[b&15];}
  DB.put("object_header",{{"id",1},{"format_major",1},{"format_minor",0},{"artifact_id",artifact},{"producer_id",DB.atom("roslyn_gen_be")},{"revision_id",DB.atom("89e67e07c7f6d0fc38622f9778d8e79f40deaa0f")},{"edg_version_id",DB.atom(il_header.compiler_version)},{"capture_profile_id",ROSLYN_CAPTURE_PROFILE_ID},{"target_profile_id",1},{"main_source_file_id",source},{"translation_unit_id",roslyn_unit},{"complete",1}});
- roslyn_reconcile_using_scopes();store.check_foreign_keys();
+ store.check_foreign_keys();
  if(!store.failed)store.exec("COMMIT;");else store.exec("ROLLBACK;");
+ if(!store.failed){store.exec("PRAGMA foreign_keys=ON;");int published_fk_state=-1;if(sqlite3_db_config(store.connection,SQLITE_DBCONFIG_ENABLE_FKEY,-1,&published_fk_state)!=SQLITE_OK||published_fk_state!=1)store.fail("Publication foreign key state is not ON");}
  store.close();roslyn_db=nullptr;
  if(store.failed){std::remove(temporary.c_str());std::fprintf(stderr,"roslynobj export error: %s\n",store.failure.c_str());std::exit(EXIT_FAILURE);}
  /* Validate the wrapper acknowledgement before the irreversible publication.

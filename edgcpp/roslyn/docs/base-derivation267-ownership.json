@@ -1,0 +1,14 @@
+{
+  "question": "Can a_base_class_derivation descriptor itself have different a_base_class owners, requiring plural owner relation?",
+  "conclusion": "Pinned stock producer and descriptor contract support singular base owner; no evidence of shared derivation wrapper across distinct base descriptors. Shared step paths are explicitly supported and are not shared wrapper ownership.",
+  "authority": [
+    "il_def.h:7914\u20137988 defines each descriptor as unique/alternative derivation of associated base, with terminal path step identifying that base. Path may start at intervening virtual base; do not expand omitted prefixes into new paths.",
+    "class_decl.c:8890\u20138943 update_base_class_derivation is the sole stock callsite of alloc_base_class_derivation: always fresh wrapper plus terminal make_derivation_step(base_class); assigns/appends only on that base_class. Earlier path steps may be shared.",
+    "class_decl.c:9150\u20139210 copied indirect base handling creates fresh base and calls update_base_class_derivation; reencountered virtual base gets fresh alternative on same actual base descriptor, not wrapper reused under another base.",
+    "il_alloc.c:1237\u20131255 allocator initializes unique wrapper links/path;1534 base starts with NULL derivation.",
+    "walk_entry.h:3256\u20133285 explicitly traverses shared step prefixes backward from path_tail;3323 remaps base-owned derivation list. Wrapper/terminal base pointers remain graph identities during remapping."
+  ],
+  "search": "Read-only pinned src *.c/*.h search found only constructor assignments base_class->derivation=new_bcdp plus allocator NULL initialization, no direct cross-base derivation assignment or derivation wrapper copy helper.",
+  "backend": "roslyn_layout.h:83 claims wrapper identity and records singular base_subobject_id; for every fresh wrapper walks actual path through path_tail and retains ordinal/preferred/direct/access. This matches stock ownership contract. No schema expansion or new fixture needed based on shared-path speculation.",
+  "validation_limit": "Source/adapter ownership audit, not a new positive fixture or corruption verification. Existing genuine inheritance fixtures retain separate evidence obligations."
+}

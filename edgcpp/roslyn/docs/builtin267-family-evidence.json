@@ -1,0 +1,84 @@
+{
+  "scope": "edg_builtin_function discriminator family only; builtin operations and actual execution/type payloads retain their own coverage",
+  "source_pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "source_sha256": "98d1eb804d03e80734b2aa4ba0a46ed2222bc697297a2880dd0ed58024c82088",
+  "source_enum_names": 36979,
+  "generated_switch_cases": 36979,
+  "catalog_names": 36979,
+  "missing_or_extra": [],
+  "stable_id_mismatches": [],
+  "internal_enum_preprocessor_directives": 0,
+  "real_discriminants": 36977,
+  "sentinels": {
+    "bfk_none": "0 means ordinary routine: wrapper returns0, nullable builtin_kind_id remains NULL",
+    "bfk_last": "upper boundary, equals bufk_first; wrapper delegates >=bfk_last to user-builtin family, never real builtin identity"
+  },
+  "writer": "build/generate.py:8\u201314 checks pinned source blob;28 parses builtin_kinds;34\u201345 generates exhaustive switch. backend/roslyn_gen_be.c:131\u2013135 selects builtin/user-builtin family;roslyn_routines.h:383\u2013384 only BUILTIN_FUNCTIONS_ENABLED and sfk_none;roslyn_store.h:53\u201373 materializes referenced kind/disposition sparsely.",
+  "reader": "FunctionSymbol.BuiltinKind -> RoutineSymbolDetails.BuiltinKind -> Object.Kind shared embedded catalog. FunctionSymbol.Kind remains entity kind routine; it is not builtin discriminator. RoutineProjection.cs:11 +SemanticProjection.cs:113\u2013129 invokes typed scalar getters including BuiltinKind in genuine routines fixtures. Program.cs:244 traverses actual call targets/argument types.",
+  "runtime_evidence": "performance267 final158 PASS1963; /tmp/roslynobj-managed-perf267-final158.log:349 onward includes BuiltinKind sweep. Independent read-only SQLite sweep observes5 builtin kinds in11 object-kind occurrences across158 objects. Inf/nan are retained METADATA backing calls (0/1 actual arguments); CPU kinds are declarations, not observed calls.",
+  "observed_kinds": [
+    "bfk_cpu_init",
+    "bfk_cpu_is",
+    "bfk_cpu_supports",
+    "bfk_inf",
+    "bfk_nan"
+  ],
+  "representatives": [
+    {
+      "routine_id": 493,
+      "builtin": "bfk_inf",
+      "result_type_id": 464,
+      "parameters": 0,
+      "current_calls": 1,
+      "source_calls": 0,
+      "profile": "native",
+      "fixture": "exact",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/performance267/native/exact.roslynobj"
+    },
+    {
+      "routine_id": 532,
+      "builtin": "bfk_nan",
+      "result_type_id": 464,
+      "parameters": 1,
+      "current_calls": 1,
+      "source_calls": 0,
+      "profile": "native",
+      "fixture": "exact",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/performance267/native/exact.roslynobj"
+    },
+    {
+      "routine_id": 3146,
+      "builtin": "bfk_cpu_init",
+      "result_type_id": 580,
+      "parameters": 0,
+      "current_calls": 0,
+      "source_calls": 0,
+      "profile": "native",
+      "fixture": "routines",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/performance267/smoke-native/routines.roslynobj"
+    },
+    {
+      "routine_id": 3151,
+      "builtin": "bfk_cpu_is",
+      "result_type_id": 580,
+      "parameters": 1,
+      "current_calls": 0,
+      "source_calls": 0,
+      "profile": "native",
+      "fixture": "routines",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/performance267/smoke-native/routines.roslynobj"
+    },
+    {
+      "routine_id": 3157,
+      "builtin": "bfk_cpu_supports",
+      "result_type_id": 580,
+      "parameters": 1,
+      "current_calls": 0,
+      "source_calls": 0,
+      "profile": "native",
+      "fixture": "routines",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/performance267/smoke-native/routines.roslynobj"
+    }
+  ],
+  "limitation": "Does not claim every builtin syntax, target registration or optional build guard activated; shared dispatcher and reader identity mapping are complete. No need for36977 duplicate per-builtin projection probes."
+}

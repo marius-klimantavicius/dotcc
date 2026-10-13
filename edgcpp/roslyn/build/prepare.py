@@ -63,7 +63,7 @@ set_source_files_properties(${PROJECT_SOURCE_DIR}/roslyn_gen_be.c PROPERTIES LAN
 add_executable(roslyn-cpfe ${ALL_C_FILES} ${PROJECT_SOURCE_DIR}/roslyn_gen_be.c ${TXT_FILES})
 add_dependencies(roslyn-cpfe error-info)
 target_include_directories(roslyn-cpfe PRIVATE ${PROJECT_SOURCE_DIR})
-target_link_libraries(roslyn-cpfe PRIVATE SQLite::SQLite3)
+target_link_libraries(roslyn-cpfe SQLite::SQLite3)
 target_compile_options(roslyn-cpfe PRIVATE -Wno-error=shadow)
 add_softfloat_to_target(roslyn-cpfe)
 '''+f'\ntarget_compile_definitions(roslyn-cpfe PRIVATE ROSLYN_CAPTURE_PROFILE_ID={capture_id} ROSLYN_BUILD_PROFILE_NAME="{a.profile}")\n')

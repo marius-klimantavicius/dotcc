@@ -1471,10 +1471,9 @@ sql_parts.append('CREATE INDEX constant_component_target ON constant_component(c
 sql_parts.append('CREATE INDEX reference_expression_target ON reference_expression(target_id);\n')
 sql_parts.append('CREATE INDEX enumerator_constant ON enumerator(constant_id);\nCREATE INDEX enumerator_symbol ON enumerator(symbol_id);\n')
 sql_parts.append('CREATE INDEX source_correspondence_current_name ON source_correspondence(current_name_id);\nCREATE INDEX source_correspondence_auxiliary_name ON source_correspondence(unmangled_name_or_mangled_encoding_id);\nCREATE INDEX correspondence_entities ON entity_source_correspondence(source_correspondence_id);\nCREATE INDEX source_correspondence_parent ON source_correspondence(parent_scope_id);\nCREATE INDEX source_correspondence_routine ON source_correspondence(enclosing_routine_id);\n')
-# Measured large-TU deferred-FK parent inserts scan these populated children.
-# Keep this set narrow: scale266/scale-reverse-fk-evidence.json records plans
-# and cardinalities; empty or small referencing tables are intentionally omitted.
-sql_parts.append('CREATE INDEX source_correspondence_origin ON source_correspondence(source_origin_id);\nCREATE INDEX constant_origin ON constant(source_origin_id);\nCREATE INDEX semantic_node_origin ON semantic_node(source_origin_id);\nCREATE INDEX source_origin_position ON source_origin(position_id);\nCREATE INDEX source_position_spelling ON source_position(spelling_position_id);\nCREATE INDEX source_range_start ON source_range(start_id);\nCREATE INDEX source_range_end ON source_range(end_id);\n')
+# Private bulk construction validates the complete FK graph before publication.
+# The seven origin/position reverse indexes used only for incremental FK loading
+# are omitted; genuine query/navigation indexes above remain independently useful.
 sql=''.join(sql_parts)
 # Execute actual DDL before publication; this tests storage syntax only.
 connection=sqlite3.connect(':memory:')

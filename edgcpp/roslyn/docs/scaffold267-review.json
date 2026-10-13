@@ -1,0 +1,131 @@
+{
+  "decision": "All20 removals supported; genuine NULL sweeps corroborate, but absence of producer and stock active-member authority are the basis.",
+  "columns": [
+    {
+      "field": "allocation_expression.size_expression_id",
+      "decision": "remove_unproduced_column",
+      "reason": "No retained allocation size-expression member; actual array count and initialization are separately recorded.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "override_relation.adjustment",
+      "decision": "remove_unproduced_column",
+      "reason": "Actual overriding descriptor records base_class rather than a scalar delta; keep OverridingSubobject.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "override_relation.return_adjustment",
+      "decision": "remove_unproduced_column",
+      "reason": "Actual overriding descriptor records return_adjustment_base_class rather than a scalar delta; keep ReturnAdjustmentSubobject.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "reflection_value.owner_routine_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Reflection union records entity and local_scope_number; no routine pointer derives from that scalar.",
+      "review": "Exact a_reflection_value definition is il_def.h:4710\u20134720 (tagged entity + nearest local scope number); do not turn scope number into guessed routine pointer."
+    },
+    {
+      "field": "label_statement.statement_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Statement variant holds exact label pointer; neighboring statement is not an authoritative labeled-body relation. Keep LabelOperation.Label and LabelSymbol.Target.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "temporary_expression.temporary_id",
+      "decision": "remove_unproduced_column",
+      "reason": "enk_temp_init stores a_dynamic_init pointer and source type; no separate a_temp entry pointer is exported from this occurrence. Initialization is authoritative.",
+      "review": "Stock il_def15388\u201315415 dynamic_init is always authoritative even dik_none. Existing Initialization.Target preserves any actual variable. No independent a_temp occurrence to reconstruct."
+    },
+    {
+      "field": "coroutine.body_id",
+      "decision": "remove_unproduced_column",
+      "reason": "a_coroutine_descr has no body statement pointer; owning routine body and actual structural roots already retain execution.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "coroutine.allocation_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Descriptor retains new_routine, not an allocation expression pointer; preserve Allocator.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "coroutine.deallocation_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Descriptor retains delete_routine, not a deallocation expression pointer; preserve Deallocator.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "coroutine_operation.protocol_call_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Await union retains the ready/resume/suspend expression list, exported as its three exact relationships. No single generic protocol-call pointer.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "vla_dimension.count_variable_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Actual optional dimension_variable is already stored once; no second count-variable pointer.",
+      "review": "Stock il_def11149\u201311158 total_number_of_elements is explicitly FRONTEND ONLY under LOWER_VARIABLE_LENGTH_ARRAYS; do not repurpose this removed field. Backend-readable alternate dimension_variable already retained."
+    },
+    {
+      "field": "vla_dimension.evaluation_statement_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Actual has_size_statement is a boolean; no retained size-statement pointer on this descriptor. Do not infer by reverse traversal.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "exception_specification.noexcept_expression_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Active is_noexcept union owns an actual Constant, already recorded as NoexceptArgument; no separate expression pointer.",
+      "review": "Stock il_def7184\u20137194 actual payload is Constant (possibly dependent even for nondependent routine); NoexceptArgument remains authority, with its optional backing expression if retained."
+    },
+    {
+      "field": "function_eh.epilogue_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Retained EH epilogues are expression occurrences and may be plural; existing normalized operation relation exposes them. No single function supplement epilogue pointer.",
+      "review": "roslyn_gen_be.c:267 exports prologue/tables, roslyn_execution.h:164\u2013167 exports actual epilogue occurrences; FunctionExceptionHandling.Epilogues already queries actual plural operation relation."
+    },
+    {
+      "field": "jump_statement.source_lifetime_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Actual goto common-lifetime pointer is already recorded as CommonLifetime. No independent source-lifetime pointer is written.",
+      "review": "Stock il_def16722\u201316736 provides common lifetime for goto; source lifetime is not an extra retained pointer. Existing CommonLifetime preserved."
+    },
+    {
+      "field": "attribute.string_argument_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Attribute canonical descriptor owns ordered actual argument identities; typed payload belongs to AttributeArgument. No singleton shortcut is written.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "attribute.integer_argument",
+      "decision": "remove_unproduced_column",
+      "reason": "Attribute canonical descriptor owns ordered actual argument identities; typed payload belongs to AttributeArgument. No singleton shortcut is written.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "attribute.type_argument_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Attribute canonical descriptor owns ordered actual argument identities; typed payload belongs to AttributeArgument. No singleton shortcut is written.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "attribute.expression_argument_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Attribute canonical descriptor owns ordered actual argument identities; typed payload belongs to AttributeArgument. No singleton shortcut is written.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    },
+    {
+      "field": "attribute.entity_argument_id",
+      "decision": "remove_unproduced_column",
+      "reason": "Attribute canonical descriptor owns ordered actual argument identities; typed payload belongs to AttributeArgument. No singleton shortcut is written.",
+      "review": "Reviewed current table-specific native writer and referenced pinned active union; existing authoritative relationships remain."
+    }
+  ],
+  "additional_same_batch_cleanup": {
+    "table": "temporary",
+    "decision": "drop_unproduced_unreachable_table_and_facade",
+    "evidence": "No native DB.put/fresh/claim producer, sole inbound schema FK temporary_expression.temporary_id is being removed; only generated details/generic entity factory and TemporaryOperation.Temporary expose it. Preserve Initialization/Variable/Lifetime relations and append-only catalog IDs."
+  },
+  "limitations": "No core EDG change, synthetic reconstruction, or corruption tests. Performance267 checkpoint remains separate from grouped next schema migration."
+}

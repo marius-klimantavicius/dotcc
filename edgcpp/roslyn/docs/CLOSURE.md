@@ -1,6 +1,6 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after accepted267 validation (158 objects/PASS1963,self73).
+Active on 2026-10-13 after accepted performance267 (176 objects/PASS2092,self73).
 The267 bounded variable/execution batch is complete; this checklist
 separates missing work from existing adapters awaiting evidence. Full M0–M5 stays
 open. C++/CLI and C++/CX are excluded by the user. Native Microsoft extensions
@@ -23,15 +23,17 @@ remain required. Optional source positions never block semantic acceptance.
   navigation and removal of phantom fields. Positive activation of inactive guards
   remains pending; profile/M5 work stays serialized.
 - Resolve remaining active union/field gaps family by family from the worksheet.
-  A planned mapping is not proof of a writer. Current planned114 and raw248 rows
+  A planned mapping is not proof of a writer. Current planned39 and raw64 rows
   include fields already implemented but not reconciled; audit before proposing
   new payloads. Prioritize execution, variables/routines, class/base/field layout,
   dependent/template identity and lifetime/EH semantics over optional locations.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are613 verified and732 mapped pending-validation fields at this boundary.
-Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
+There are655 verified and881 mapped pending-validation fields at this boundary.
+18 additional already-captured coordinate fields are mapped_optional_source,
+with12 explicit omitted optional-source fields; these do not require new location
+probes or block semantic completion. Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
 close unconditional scalars, including false values. Active union alternatives,
 conditional availability, identity, order and executable obligations need real
 positive activation. Column existence or default values alone are insufficient.
@@ -49,25 +51,30 @@ positive activation. Column existence or default values alone are insufficient.
   secondary266-mappings.tsv21 rows, pragma266-mappings.tsv27 rows including one
   existing exclusion, module266-mappings.tsv18 rows. Reconcile genuine positive
   cases and public projections; do not reimplement them or expand coordinates.
-- Complete exact kind dispatch/payload disposition and sparse used-kind proof.
+- Builtin family36,977 actual discriminants has exhaustive shared discriminator
+  adapter and typed family projection evidence; two sentinels are separately
+  bounded, registration/runtime availability remains profile-dependent. Complete
+  remaining2,166 kind dispatch/payload dispositions and sparse used-kind proof.
   Registered builtins sharing a complete adapter may use family-level genuine
   fixtures plus exhaustive dispatch evidence; thousands of duplicate probes are
   unnecessary. Unknown required semantics must never silently become optional.
 
 ## Remaining configured native profiles
 
-The four current profiles already validate lowered native, source-semantic native
+The ten current profiles validate lowered native, source-semantic native
 Microsoft, cfront-like/assignment-to-this and exported templates. Genuine263
 probes cover compiled UPC dynamic/static threads, near/far, ARM scalable/modal
 and RISC-V fractional/tuple/boolean types. These do not require new build flags.
 
-Remaining guarded configurations include Sun extensions; actual mutually-exclusive
-USL cfront2.1/3.0 compatibility where supported by pinned stock configuration;
-alternate host double/long-double numeric storage; and SoftFloat using its real
-external dependency. Distinguish stock configuration limitations from missing
-adapters. Do not call the existing cfront-like profile USL compatibility. Numeric
-profiles need exact ordinary finite/subnormal/zero/infinity/NaN evidence through
-supported EDG representations, never fabricated bytes or semantic reconstruction.
+Sun, actual mutually-exclusive USL2.1/3.0, alternate host double/long-double and
+official SoftFloat now have strict builds and genuine positive ordinary API
+evidence. Stock USL signature/export restrictions and host-double fixed-point
+precision restriction are explicit; wider primary/other profiles retain them.
+
+Remaining guarded configurations are automatic template instantiation, minimal
+inlining and inline-variable instantiation, assigned through the stock-valid
+build/activation267-plan.tsv. Seven retained variable facts are currently nullable
+with disabled guards and must not be claimed positively activated yet.
 
 ## Remaining M5 and release evidence
 
@@ -80,7 +87,8 @@ supported EDG representations, never fabricated bytes or semantic reconstruction
   relations. Avoid blanket indexes. The generated-header timestamp correction is
   verified: backend/link-only rebuild and subsequent Ninja no-work. The private
   FK-load candidate reduces scale median30.28s to0.59s with identical logical rows;
-  canonical adoption and writer-only index size/reader comparison remain next.
+  canonical index-free adoption passes176 public acceptance; controlled scale
+  median0.56s/7.586MB and final bounded reader sample2.627s cold/2.119s warm.
 - Retain measured1KiB page default and WITHOUT ROWID composite relations. The243
   packaging comparison already covers24 successful runs; reopen only if new
   schema or measured workload warrants it, not as an unperformed baseline gate.

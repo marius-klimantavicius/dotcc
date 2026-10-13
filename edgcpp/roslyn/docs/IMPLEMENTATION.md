@@ -758,3 +758,56 @@ complete FK checks before commit and restores enforcement before publication.
 Next work adopts and validates that policy, measures removal of writer-only indexes,
 finishes configured Sun/USL/host numeric profiles and reconciles remaining exact
 field/kind evidence. Six profile drafts are outside this checkpoint.
+
+
+After semantic267 commit d2cdd575e, conservative routine/type/override and storage
+reconciliation maps existing producers without new verified claims. Current field
+counts616 verified /818 mapped pending validation /43 planned /219 raw pending.
+Storage bookkeeping dispositions preserve actual macro invocation records and
+contextual local expression/scope associations; no raw pointer/tree/block data.
+
+Canonical index-free bulk candidate measured0.56s/7,585,792 bytes versus
+old-index bulk0.60s/8,879,104 (-14.57% bytes). All267 scalar rows/IDs equal across
+six cases excluding the intentionally changed contract digest, artifact identity
+and stock __TIME__. Full public reader/overlay acceptance is still pending.
+Evidence: performance267/{summary,results,logical-equality}.json.
+
+
+## Accepted performance267 and configured native profiles
+
+Final exact snapshot:176 genuine objects PASS2092, self/WITHOUT ROWID PASS73,
+clean reader build and generator265 facades/2089 properties. Genuine prior267
+rejects at Open under the new index-only framed fingerprint
+`034cf58664b43af97cf491ab271620b693d96fb64d6ca09e7504927b01101671`.
+Ten strict compiler profiles each independently match316 pinned Git inputs and26
+canonical backend files. All176 objects independently pass267 tables,1KiB pages,
+FK0, complete typed expression links and no semantic BLOB/REAL.
+
+Private bulk construction now uses the documented policy: complete FK checks
+before completeness/commit and enforcement restored/verified before publication.
+The seven writer-only origin/position reverse indexes are removed. Controlled
+scale median30.28s→0.56s,8,879,104→7,585,792 bytes; six logical pairs preserve
+all scalar rows/IDs except intentional contract digest, artifact identity and
+stock __TIME__. Final exact snapshot scale0.76s/43,980KiB/7,586,816bytes,98,815
+entities/7,023 operations. Final reader cold2.627s/warm2.119s,111/112MB RSS with
+bounded4096 rows/128 pages. Publication-error checks preserve destination and
+remove private temporary files; no corruption fixtures were introduced.
+
+Sun, actual USL2.1/3.0, host-long-double, host-double and official SoftFloat3e
+profiles pass18 genuine pilots and196 ordinary API assertions. Stock limits stay
+explicit: USL exported-template gates disabled to preserve actual USL signatures;
+host-double fixed-point disabled because exact long_Accum exceeds double
+precision. Other profiles retain full fixed-point coverage. SoftFloat dependency
+pinned a0c6494cdc11865811dec815d5c0049fba9d82a8; no core EDG source edits.
+Typed ComplexValue exposes canonical floating components.
+
+Field ledger now655 verified /881 mapped pending validation /39 planned /64 raw.
+18 directly captured coordinate mappings and12 optional source omissions remain
+outside mandatory semantic gates. Builtin36,977 real discriminants and629 token/
+opname/register/constraint entries have exhaustive shared mapping/family evidence
+with sentinels/aliases separated and runtime registration limits explicit. No
+operator/expression payload is promoted by scalar catalog proof. Full phases3–4
+still require remaining exact field/union/identity evidence and actual gap closure.
+Next bounded batch removes20 audited unproduced scaffolds plus unreachable
+temporary table; native activates seven currently-inactive retained variable facts
+through stock-valid instantiation/inlining overlays. Continue without approval hold.
