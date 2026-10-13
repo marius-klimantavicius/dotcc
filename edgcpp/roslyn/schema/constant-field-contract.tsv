@@ -1,0 +1,48 @@
+source_field	guard	table	columns	contract
+a_constant.non_arithmetic	always	constant	non_arithmetic	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.null_pointer_constant_ruled_out	always	constant	null_pointer_constant_ruled_out	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.nullptr_keyword	always	constant	nullptr_keyword	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.explicit_braces_on_aggregate	always	constant	explicit_braces_on_aggregate	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.explicit_parentheses_on_aggregate	always	constant	explicit_parentheses_on_aggregate	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.from_undefined_preproc_id	always	constant	from_undefined_preproc_id	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.uses_designated_initializers	always	constant	uses_designated_initializers	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.is_named_constant_definition	always	constant	is_named_constant_definition	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.partial_aggr_value	always	constant	partial_aggr_value	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.is_partially_initialized	always	constant	is_partially_initialized	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.implicit_aggr_element	always	constant	implicit_aggr_element	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.is_compound_literal	always	constant	is_compound_literal	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.is_result_of_constexpr_call	always	constant	is_result_of_constexpr_call	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.is_generic_initializer	always	constant	is_generic_initializer	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.constant_for_base_class	always	constant	constant_for_base_class	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.constant_for_base_class_from_constexpr_folding	always	constant	constant_for_base_class_from_constexpr_folding	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.folded_statement_expression	always	constant	folded_statement_expression	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.formed_from_promoted_storage	always	constant	formed_from_promoted_storage	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.local_expr_ref	always	constant	local_expr_ref	direct occurrence INTEGER flag, never part of shared value content key
+a_constant.null_keyword	GNU_EXTENSIONS_ALLOWED	constant	null_keyword	nullable INTEGER outside compiled guard; active false explicitly captured; occurrence-level
+a_constant.native_nullptr_keyword	MICROSOFT_EXTENSIONS_ALLOWED	constant	native_nullptr_keyword	nullable INTEGER outside compiled guard; active false explicitly captured; occurrence-level
+a_constant.ptr_to_mem_constant_construct	MICROSOFT_EXTENSIONS_ALLOWED	constant	ptr_to_mem_constant_construct	nullable INTEGER outside compiled guard; active false explicitly captured; occurrence-level
+a_constant.flexible_array_initializer	MICROSOFT_EXTENSIONS_ALLOWED || GNU_EXTENSIONS_ALLOWED	constant	flexible_array_initializer	nullable INTEGER outside compiled guard; active false explicitly captured; occurrence-level
+a_constant.initializes_empty_object	DO_IL_LOWERING	constant	initializes_empty_object	nullable INTEGER outside compiled guard; active false explicitly captured; occurrence-level
+a_constant.is_implicit_initialization	DO_IL_LOWERING	constant	is_implicit_initialization	nullable INTEGER outside compiled guard; active false explicitly captured; occurrence-level
+a_constant.variant.string.literal_kind	kind==ck_string	constant	literal_encoding_prefix_id/is_raw_string/is_string_literal/is_function_name_literal	SCLK_NOT_A_LITERAL ->nullable prefix and flags; otherwise literal_encoding_prefix + individual RAW/STRING/FUNCTION bits, no raw mask
+a_constant.variant.string.func_name_tok	kind==ck_string	constant	contains_function_name_token	direct source occurrence flag; may differ from currently computed string content
+a_constant.variant.string.embed_expansion	kind==ck_string	constant	is_embed_expansion	semantic occurrence flag changes bytes interpretation to unsigned, preserve target bytes unchanged
+a_constant.variant.string.sequence_number	DO_IL_LOWERING && ASSIGN_STRING_LITERAL_SEQUENCE_NUMBERS && kind==ck_string	constant	string_sequence_number	nullable TEXT exact numeric;0 no-special-processing sentinel; storage/name association, not shared byte payload
+a_constant.variant.string.embed_directive	PRESERVE_EMBED_DIRECTIVE_WHEN_OPTIMIZED && kind==ck_string && embed_expansion	constant	embed_directive_id	optional exact text_atom; only cheap retained text, no reconstructed directive
+a_constant.variant.aggregate.has_dynamic_init_component	kind==ck_aggregate	constant	has_dynamic_init_component	nullable direct occurrence flag
+a_constant.variant.aggregate.added_const_for_template_param	kind==ck_aggregate	constant	added_const_for_template_param	nullable direct occurrence flag
+a_constant.variant.aggregate/dynamic_init.field_or_base	DO_IL_LOWERING && initializes_empty_object && (kind==ck_aggregate || kind==ck_dynamic_init)	constant	initialized_field_id/initialized_base_subobject_id	active union base iff constant_for_base_class elsefield; retain only actual surviving pointer, no field/order/offset inference
+a_constant.variant.integer_value	UPC_EXTENSIONS_ALLOWED && kind==ck_upc_threads	upc_threads_value	id/multiplier_id	new typed constant_value subtype storing canonical decimal multiplier of symbolic THREADS; never plain integer value
+a_constant ck_upc_mythread	UPC_EXTENSIONS_ALLOWED	constant_value	kind_id	payloadless symbolic MYTHREAD exact new value kind; do not evaluate to numeric thread id
+a_constant.expr/local_expr_ref	always	constant/local_expression_reference	backing_expression_id plus existing plural contexts	unlowered expression metadata; direct expr canonical, locally stored expressions from precollected exact referrer+kind and scope context; no arbitrary first context or semantic recomputation
+a_constant.variant.template_param.local_expr_ref	PROTOTYPE_INSTANTIATIONS_IN_IL && kind==ck_template_param	constant	template_local_expr_ref	direct context flag, plural local references retained existing typed relation
+a_constant.variant.designator + next occurrence	kind==ck_designator	existing constant_component	owner/role/ordinal	project following occurrence from actual preserved ordered aggregate component list; no duplicate FK; additional root only if independent retained producer requires it
+integer_value	all	unchanged	id/value_id	already only pure canonical mathematical integer content; width/sign interpretation remains Constant.Type
+a_constant.rescan_info	front-end only	excluded	-	documented frontend semantic rescan record
+a_constant.variant.template_param.do_not_rescan/unknown_function.symbol	front-end only	excluded	-	rescan bookkeeping and frontend symbol pointer; safe conversion type/opname/special-function fields retained
+a_constant.has_been_prelowered/part_of_constexpr_master_expr	documented compiler-work/master-copy state	excluded	-	no retained execution semantic; master copies never incorporated directly into real IL
+a_constant.is_literal_field/elide_aggregate_braces	CLI or C-generator-only	excluded	-	CLI excluded by user; separate C backend disabled
+a_constant.next/aggregate.last_constant	ordered reachability plumbing	existing ordered constant_component	owner/role/ordinal	retain actual ordered occurrences, never raw pointer payload/list tail identity
+a_constant.vptr_has_been_lowered	DO_IL_LOWERING	constant	vptr_has_been_lowered	direct nullable occurrence flag: actual aggregate vptr insertion state, not merely scheduling
+a_type.size	UPC_EXTENSIONS_ALLOWED && is_underlying_threads_dimensioned_array_type(p)	type	size_kind_id plus existing size	store actual stock coefficient once; total Size absent/symbolic, ThreadsSizeMultiplier projects scalar; aliases/outer arrays follow safe stock helper, pointers stay concrete
+a_type.variant.array.number_of_elements/is_threads_dimension	UPC_EXTENSIONS_ALLOWED && upc_dynamic_threads() && kind==tk_array && is_threads_dimension	array_type	bound_kind_id=upc_threads plus existing bound	store exact THREADS coefficient once; Bound absent, ThreadsMultiplier projects scalar; static --upc_threads4 gives ordinary numeric bound

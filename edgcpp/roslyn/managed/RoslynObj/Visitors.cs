@@ -14,6 +14,7 @@ public abstract partial class SemanticVisitor
     public virtual void VisitLoop(LoopOperation operation) => VisitStatement(operation);
     public virtual void VisitJump(JumpOperation operation) => VisitStatement(operation);
     public virtual void VisitSwitch(SwitchOperation operation) => VisitStatement(operation);
+    public virtual void VisitSwitchCase(SwitchCaseOperation operation) => VisitStatement(operation);
     public virtual void VisitTry(TryOperation operation) => VisitStatement(operation);
     public virtual void VisitAssembly(AssemblyOperation operation) => VisitStatement(operation);
     public virtual void VisitThrow(ThrowOperation operation) => VisitOperation(operation);

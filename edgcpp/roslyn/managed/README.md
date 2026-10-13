@@ -80,7 +80,12 @@ orders. Base derivations and overrides retain contextual subobject identities;
 they do not imply a unique parent. Layouts expose effective and nonvirtual sizes,
 ordered fields, declared bit-field widths and stored widths separately. Optional
 ABI indices and Microsoft container offsets stay null when their build does not
-retain them. All layout quantities use exact target values.
+retain them. All layout quantities use exact target values. `CppType.Size` and `Alignment`
+are nullable when the captured availability fact does not establish a concrete
+quantity. `EffectiveSize` and `EffectiveAlignment` expose the raw retained stock
+helper quantities. Dynamic UPC arrays keep their THREADS coefficient in
+`ThreadsSizeMultiplier` and `ArrayType.ThreadsMultiplier`; ordinary size and
+bound are absent. An incomplete array bound remains distinct from explicit zero.
 Every retained template has a `TemplateDescriptor`. A true template declaration
 has a separate `TemplateSymbol` whose `Descriptor` preserves that relationship.
 Template-template placeholders instead point to their actual parameter symbols.
@@ -93,6 +98,14 @@ from ordered owner associations. `Attribute.Owners` and
 `AttributeArgument.OwningAttributes` retain sharing; an attribute's optional
 `Owner` is available only for a unique association. Groups retain their own
 identity and expose their captured members.
+Switches navigate canonical `SwitchDescriptor` and `SwitchCaseEntry` identities.
+`Cases` preserves the captured declaration order and `SortedCases` the separate
+retained numeric order; the reader does not sort them. `HasSortedCases` records
+only a nonnull sorted-list head. Source VLA expressions expose their actual
+`VlaDimensions`; executable traversal follows retained evaluated dimensions
+without reevaluating dimensions established by typedef or size statements.
+Conversions project the actual operator, operand type and result type.
+
 Lambda initializations and lambda expressions share one `LambdaDefinition` with
 its actual capture list. Assembly operations similarly delegate to their captured
 `AssemblyDefinition`; module/import objects retain ordered translation-unit imports.
@@ -117,7 +130,11 @@ retain class, sign, radix, significand, exponent and supplied NaN facts; they ar
 never converted through SQLite REAL or host double. `StringValue.StorageUnits`
 preserves the declared storage units and length. `UnitKind` distinguishes target
 bytes from target characters. `TargetBytes` is empty for character-unit values;
-`CodeUnits` aliases the stored units without implying Unicode decoding.
+`CodeUnits` and `Length` are compatibility aliases for stored units and their
+count, without implying Unicode decoding. `ByteLength` and `StorageUnitBits`
+make target-byte storage explicit. `AddressValue.ByteOffset` is a signed target
+byte offset; `SubobjectPath.ElementOffset` is a signed array element count.
+`SubobjectPath.Steps` follows the recorded canonical chain.
 `TargetProfile.PointerBits` is a bit width; alignment and layout quantities use
 target addressable units.
 
@@ -158,6 +175,10 @@ Opening checks the supported schema version, complete header, stable kind catalo
 and required representation capabilities. The reader fails on incompatible
 required kinds instead of returning an opaque unknown operation. Informational
 EDG configuration and sparse availability records are accessible separately.
+During development, a required `normalized_semantic_schema_v1` capability carries
+the generated schema fingerprint. Opening rejects missing or mismatched
+fingerprints before publishing a model, including older development objects with
+the same numeric format version. This gate is not a final public-format promise.
 
 From the repository root:
 
@@ -165,8 +186,8 @@ From the repository root:
 python3 edgcpp/roslyn/managed/tools/generate_bindings.py --check
 dotnet build edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj
 dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
-  edgcpp/artifacts/roslynobj/basic.roslynobj \
-  edgcpp/artifacts/roslynobj/m0.roslynobj
+  edgcpp/artifacts/roslynobj/constant263/native/basic.roslynobj \
+  edgcpp/artifacts/roslynobj/constant263/native/m0.roslynobj
 ```
 
 Without object paths, the console test project runs the valid shared-schema

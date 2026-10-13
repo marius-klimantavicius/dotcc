@@ -51,6 +51,7 @@ public class ExpressionOperation : Operation
     public SemanticKind ValueCategory => Details.ValueCategory;
     public IReadOnlyList<ExpressionOperation> Operands => Object.List("SELECT e.* FROM expression_operand r JOIN expression e ON e.id=r.expression_id WHERE r.owner_id=$owner ORDER BY r.role_id,r.ordinal", Id, r => Object.Expression(r.Long("id")), "expression");
     public IReadOnlyList<ExpressionOperandDetails> OperandRelations => Object.List("SELECT * FROM expression_operand WHERE owner_id=$owner ORDER BY role_id,ordinal", Id, r => new ExpressionOperandDetails(Object, r));
+    public IReadOnlyList<VlaDimension> VlaDimensions => Object.List("SELECT d.* FROM expression_vla_dimension r JOIN vla_dimension d ON d.id=r.dimension_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.VlaDimension(r.Long("id")),"vla_dimension");
     public override void Accept(SemanticVisitor visitor) => visitor.VisitOperation(this);
 }
 
@@ -97,12 +98,15 @@ public sealed class CallArgument
 
 public sealed class ConversionOperation : OperatorOperation
 {
+    internal static bool IsConversionKind(string kind) => kind is "eok_cast" or "eok_lvalue_cast" or "eok_ref_cast"
+        or "eok_lvalue_adjust" or "eok_class_rvalue_adjust" or "eok_base_class_cast" or "eok_derived_class_cast"
+        or "eok_pm_base_class_cast" or "eok_pm_derived_class_cast" or "eok_dynamic_cast" or "eok_ref_dynamic_cast"
+        or "eok_bool_cast" or "eok_array_to_pointer";
     public override void Accept(SemanticVisitor visitor) => visitor.VisitConversion(this);
     internal ConversionOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
-    public ConversionExpressionDetails Conversion => Object.Detail("conversion_expression", Id, r => new ConversionExpressionDetails(Object,r));
-    public ExpressionOperation Operand => Conversion.Operand;
-    public CppType TargetType => Conversion.TargetType;
-    public FunctionSymbol? ConversionMethod => Conversion.Routine;
+    public ExpressionOperation Operand => Operands[0];
+    public CppType SourceType => Operand.Type;
+    public CppType TargetType => Type;
 }
 
 public sealed class ConstantOperation : ExpressionOperation

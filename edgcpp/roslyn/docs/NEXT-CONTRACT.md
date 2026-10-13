@@ -1,4 +1,62 @@
-# Next semantic contract batch
+# Active constant and execution batch (263 tables)
+
+Frozen after verified checkpoint `8d9c4bd88` on 2026-10-13: **263 typed tables,
+39,144 append-only kinds**. Eleven new IDs were appended; all 39,133 checkpoint
+mappings remain unchanged. DDL executes successfully and native static catalog
+admission passes. This is a contract release, not native/reader acceptance.
+
+The canonical field proposals are `schema/constant-field-contract.tsv` (constant
+occurrences, symbolic UPC quantities and exact guarded variants) and
+`schema/execution-field-contract.tsv` (235 expression/statement/auxiliary rows).
+The native worker owns constants/types and the serialized compiler lane. The
+managed worker owns `backend/roslyn_execution.h`, `roslyn_expressions_extra.h`
+and reader/API checks. Main backend extraction preserves the existing include
+position; shared init/lifetime/EH/role policies remain native-owned.
+
+- Constant occurrence flags and literal prefix/raw/function/embed semantics stay
+  outside shared exact values. `upc_threads_value` stores an exact multiplier of
+  symbolic THREADS; MYTHREAD is payloadless symbolic, never an ordinary integer.
+- `type.size` retains the single EDG helper quantity. `size_kind_id` distinguishes
+  a recorded quantity from a dynamic THREADS coefficient. Existing `fact.size`
+  is the authority for total-size availability; public Size is nullable and
+  EffectiveSize preserves the recorded quantity. ThreadsSizeMultiplier projects
+  that scalar only for the symbolic kind. Array Bound is absent for
+  `bound_kind.upc_threads`, while ThreadsMultiplier projects the existing bound.
+  The safe stock predicate covers outer arrays and aliases, not pointer sizes.
+  Dynamic/static `--upc_threads 4` genuine probes must distinguish symbolic bounds
+  from concrete bound8/size32 without inventing allocated per-thread sizes.
+- Switch statement owns body/selector, canonical SwitchDescriptor owns exact
+  default entry and separate source/sorted ordered lists. SwitchCaseEntry has
+  actual statement/value/fallthrough payload; case statement preserves its exact
+  enclosing switch pointer. `has_sorted_cases` retains list presence without
+  independently sorting. HasSortedCases means actual pointer presence only; null
+  also occurs for empty/default-only switches, so does not establish dependency.
+- Contextual ordered `expression_vla_dimension` replaces an unwritten singleton.
+  Source sizeof/cast/compound-literal dimensions evaluate only at the actual EDG
+  expression sites: stop at typedef boundaries, skip prior size statements and
+  follow copied original dimensions. Ordinary unevaluated operands stay metadata.
+- Remove the never-produced `conversion_expression` payload; ConversionOperation
+  projects the actual cast operator and operand/types. Conversion calls remain
+  calls. Add two retained common expression flags and make lowering-only common
+  flags nullable where guards are absent.
+
+The previously unwritten `constant.is_literal` flag is nullable recorded unknown;
+no literal classification is inferred from backing-expression absence. Generated
+`schema/contract.sha256`, native `roslynobj_schema_contract_sha256` and managed
+`SchemaContractFingerprint` identify the exact development DDL. Writer records
+required `normalized_semantic_schema_v1` with that digest; reader checks presence,
+required/enabled state and exact value before exposing objects. Genuine older
+checkpoint objects exercise explicit incompatibility without malformed data. This
+is development-contract admission, not a frozen public version/migration promise.
+
+Next acceptance requires strict native compile, genuine union/identity/order/VLA/
+UPC positive activation, ordinary typed public properties, scalar producer sweeps
+and direct pinned-core/staged-canonical gates. Source locations stay optional.
+No phase is complete while remaining configured native families are open.
+
+---
+
+# Semantic contract history and active batch
 
 This contract was frozen after verified checkpoint `b7f52f778`: 243 tables and
 39,067 append-only stable kinds. Both workers implement it with disjoint ownership.

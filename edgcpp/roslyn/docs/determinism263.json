@@ -1,0 +1,270 @@
+{
+  "method": "Existing genuine final263 duplicate fixture/profile/runtime arguments. Read-only SQLite. Sorted full scalar rows retain all IDs; only object_header.artifact_id excluded and exact output-path text atom replaced if present. No graph relabeling, source-location exclusions, builds or new exports.",
+  "pairs": [
+    {
+      "profile": "native",
+      "fixture": "basic",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/native/basic.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-native/basic.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "8705968cf60c63589e807a4f22db9f67608c0ab878c97beb1e9d5dc413fd8b59",
+      "second_digest": "a83c354cf4c8b5db1ce8d7ba5b04a08cab32adfdde994e4a760c980cfe528e45",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:06:05\"",
+          "second": "#define __TIME__ \"13:07:20\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "native",
+      "fixture": "m0",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/native/m0.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-native/m0.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "79d0592f1a62be7b77f1c849d81448ddee946a2b33bcb1b2b3c459d654b52bec",
+      "second_digest": "d0c3c6be04547ba69a586977f6e74dd6878b1702536b3d1f1b437c877253bc75",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:06:05\"",
+          "second": "#define __TIME__ \"13:07:20\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "native",
+      "fixture": "cleanup_semantics",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/native/cleanup_semantics.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-native/cleanup_semantics.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "cd8cb5ea75a67bd91297fb6b81f37079d7200fa8fbef6793624fdbc7ce3cb598",
+      "second_digest": "b9befd28ab202e646ed3b19e8ae75e94272eab88b0c89e29a78ca8fc883818e5",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:07:19\"",
+          "second": "#define __TIME__ \"13:07:21\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "native",
+      "fixture": "variables",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/native/variables.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-native/variables.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "16e9d7b99fb960253dea7129ded2922f2a68cb04cb786013a10b7e68a2495ef0",
+      "second_digest": "5f81130c9875a01900215baa6df17171b7ec6854ab6393674dfa55b6e4e3678f",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:07:20\"",
+          "second": "#define __TIME__ \"13:07:21\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "native",
+      "fixture": "source_attributes",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/native/source_attributes.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-native/source_attributes.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "c4c75205fe36a77e5365cc335f726f6a28ea220eda16e6c3e613bb6c7ba71bbf",
+      "second_digest": "799f80bf68da8d18338285a06a4334593251492bfb847134bc4373a0d165abea",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:07:20\"",
+          "second": "#define __TIME__ \"13:07:22\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "source",
+      "fixture": "cleanup_semantics",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/source/cleanup_semantics.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-source/cleanup_semantics.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "ac69c7433bb46a708677d6adbde98a502066494aad062adceb8a01f071c6cd8c",
+      "second_digest": "f2e0ed09630d54211c3a4128edc213943d4b50c7b728eb340c59bef4790d912c",
+      "text_atom_differences": [
+        {
+          "id": 11,
+          "first": "#define __TIME__ \"13:07:29\"",
+          "second": "#define __TIME__ \"13:07:30\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "source",
+      "fixture": "variables",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/source/variables.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-source/variables.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "39966917d0376d30554f256081865dbbf43673994931bd19b54336e838662ea4",
+      "second_digest": "4709ace128f6b61d9723d42ff83fcb7064b28e8fa3d8a8e67dfe0746731525ff",
+      "text_atom_differences": [
+        {
+          "id": 11,
+          "first": "#define __TIME__ \"13:07:29\"",
+          "second": "#define __TIME__ \"13:07:30\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "source",
+      "fixture": "source_attributes",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/source/source_attributes.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-source/source_attributes.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "3fe7e81149a7647c46c799b4adc882dc118f1b662d8883cc1eedf311b8e3a0ac",
+      "second_digest": "c03e32f945bc0bd1d7ffc02a534ec37e2f769020c7c10fabc6f2d1f2f1bc0bc1",
+      "text_atom_differences": [
+        {
+          "id": 11,
+          "first": "#define __TIME__ \"13:07:30\"",
+          "second": "#define __TIME__ \"13:07:31\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "cfront",
+      "fixture": "basic",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/cfront/basic.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-cfront/basic.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "da32d7b8bc0e8cd8cfb0fa8c40e54a46e5cfff622e08b694d3d8b90c9d54bee5",
+      "second_digest": "d76153b7b9bde21435eea7715345c568442325b3f382c03e041fa59981c10da6",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:07:35\"",
+          "second": "#define __TIME__ \"13:07:36\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "cfront",
+      "fixture": "m0",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/cfront/m0.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-cfront/m0.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "728e7ef0d361355cce9fcac8f0f0d1078db6afa7592fc67fcac2f464da3ab269",
+      "second_digest": "f8e1e985033c1242964a50d3bb7fa06a10a3baf057da45a60fb16ad8785e52cc",
+      "text_atom_differences": [
+        {
+          "id": 12,
+          "first": "#define __TIME__ \"13:07:35\"",
+          "second": "#define __TIME__ \"13:07:36\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    },
+    {
+      "profile": "exported",
+      "fixture": "basic",
+      "first": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/exported/basic.roslynobj",
+      "second": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/constant263/smoke-exported/basic.roslynobj",
+      "same_runtime_argv_except_output": true,
+      "schema_equal": true,
+      "table_count": 263,
+      "row_counts_equal": true,
+      "differing_tables": [
+        "text_atom"
+      ],
+      "normalized_table_hashes_equal": false,
+      "first_digest": "d6d44e47de4cf6c3304af1cf6f4d97c81b99d6305a395c8c54d724797630793c",
+      "second_digest": "7cec69cec432163ad04330970de31ef922b36c5417a8e9650cb65670cf6b9109",
+      "text_atom_differences": [
+        {
+          "id": 14,
+          "first": "#define __TIME__ \"13:07:41\"",
+          "second": "#define __TIME__ \"13:07:42\""
+        }
+      ],
+      "only_observed_difference_is_edg_predefined_clock": true
+    }
+  ],
+  "interpretation": "Strict normalized equality fails in all 11 pairs solely because retained EDG predefined __TIME__ macro text changes with compilation time. All other rows and IDs across all 263 tables are identical after artifact ID exclusion. EDG fe_init.c1905\u20131916 reads time()/ctime(); macro.c10869\u201310907 defines the builtin from that value and marks it non-redefinable. This is expected different input metadata, not evidence of backend graph nondeterminism. No extra exports or source-location work is needed for this bounded check; later deterministic-output contract should explicitly account for volatile EDG predefined macros rather than alter or suppress their values."
+}

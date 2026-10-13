@@ -5,6 +5,11 @@ using System.Numerics;
 using System.Reflection;
 
 if(args.FirstOrDefault()=="--benchmark") { Benchmark.Run(args.Skip(1));return; }
+if(args.FirstOrDefault()=="--reject-incompatible")
+{
+    try { using var incompatible=RoslynObject.Open(args[1]);throw new Exception("An archived incompatible development contract was admitted."); }
+    catch(IncompatibleObjectException error) { Console.WriteLine("PASS:archived contract rejected: "+error.Message);return; }
+}
 var withoutRowidFixtures=args.FirstOrDefault()=="--without-rowid-fixtures";
 if(withoutRowidFixtures)args=args.Skip(1).ToArray();
 
@@ -34,7 +39,18 @@ string Fixture(string name,int extraVariables=0,int extraOperations=0,string? ad
             return key.Success&&key.Groups[1].Value.Contains(',') ? match.Value.Replace(") STRICT;",") WITHOUT ROWID, STRICT;") : match.Value;
         },System.Text.RegularExpressions.RegexOptions.Singleline);
     command.CommandText=schema;command.ExecuteNonQuery();
+    foreach(var id in new long[]{1037050,5015,5016})
+    {
+        var kind=RoslynObject.CatalogKind(id);
+        command.CommandText="INSERT OR IGNORE INTO kind(id,family,name) VALUES($id,$family,$kind)";
+        command.Parameters.AddWithValue("$id",id);command.Parameters.AddWithValue("$family",kind.Family);command.Parameters.AddWithValue("$kind",kind.Name);
+        command.ExecuteNonQuery();command.Parameters.Clear();
+    }
     command.CommandText=Resource("basic").Replace("fixture-artifact",Guid.NewGuid().ToString());command.ExecuteNonQuery();
+    command.CommandText="INSERT INTO text_atom(value) VALUES($name),($digest)";
+    command.Parameters.AddWithValue("$name","normalized_semantic_schema_v1");
+    command.Parameters.AddWithValue("$digest",RoslynObject.SchemaContractFingerprint);command.ExecuteNonQuery();
+    command.CommandText="INSERT INTO build_capability(name_id,state_id,value_id,required,enabled) SELECT n.id,k.id,v.id,1,1 FROM text_atom n,text_atom v,kind k WHERE n.value=$name AND v.value=$digest AND k.family='availability' AND k.name='available'";command.ExecuteNonQuery();command.Parameters.Clear();
     for(var i=0;i<extraVariables;i++)
     {
         var id=1000+i;
@@ -205,6 +221,7 @@ try
         SemanticProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         RoutineProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         LayoutProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
+        ExecutionProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         var functionCount=0;var operationCount=0;var bodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
         foreach(var function in unit.Functions)
         {
@@ -371,7 +388,7 @@ try
         {
             var populated=unit.Variables.Single(v=>v.Name=="populated_pack").Type.Instantiation!;
             var pack=populated.Arguments.Single();
-            Check(pack.IsPack&&pack.Elements.Select(a=>a.Type!.Size).SequenceEqual(new BigInteger[]{4,8,1}),"A real type argument pack must expose ordered retained element types.");
+            Check(pack.IsPack&&pack.Elements.Select(a=>a.Type!.Size).SequenceEqual(new BigInteger?[]{4,8,1}),"A real type argument pack must expose ordered retained element types.");
             Check(unit.Variables.Single(v=>v.Name=="empty_pack").Type.Instantiation!.Arguments.Single().Elements.Count==0,"A real empty argument pack must remain an empty pack rather than an absent argument.");
             var selected=unit.Variables.Single(v=>v.Name=="selected_pointer").Type.Instantiation!;
             Check(selected.ArgumentMappings.Select(a=>a.Role.Name).SequenceEqual(new[]{"primary","selected_partial"})&&selected.ArgumentMappings[0].Argument.Type is PointerType&&selected.ArgumentMappings[1].Argument.Type?.Kind.Name=="tk_integer","Selected partial arguments must preserve their own map alongside the primary arguments.");

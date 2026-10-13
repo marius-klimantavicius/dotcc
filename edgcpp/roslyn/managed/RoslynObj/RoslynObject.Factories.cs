@@ -23,7 +23,7 @@ public sealed partial class RoslynObject
             or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
             or "line_directive" or "source_entry" or "source_sublist" or "source_end_construct" or "instantiation_directive"
             or "linkage_specification" or "microsoft_if_exists" or "record_declaration" or "pragma"
-            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression" or "requires_clause" or "gnu_routine_supplement"=>kind,
+            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression" or "requires_clause" or "gnu_routine_supplement" or "switch_descriptor" or "switch_case_entry"=>kind,
         _=>throw new IncompatibleObjectException("A required entity kind is unsupported.")
     };
     internal TranslationUnit Unit(long id) => Cached("translation_unit",id,r=>new TranslationUnit(this,id,r));
@@ -65,6 +65,10 @@ public sealed partial class RoslynObject
     internal ExceptionSpecification ExceptionSpecification(long id) => Cached("exception_specification",id,r=>new ExceptionSpecification(this,id,r));
     internal RequiresClause RequiresClause(long id) => Cached("requires_clause",id,r=>new RequiresClause(this,id,r));
     internal GnuRoutineSupplement GnuRoutineSupplement(long id) => Cached("gnu_routine_supplement",id,r=>new GnuRoutineSupplement(this,id,r));
+    internal SwitchDescriptor SwitchDescriptor(long id) => Cached("switch_descriptor",id,r=>new SwitchDescriptor(this,id,r));
+    internal SwitchCaseEntry SwitchCase(long id) => Cached("switch_case_entry",id,r=>new SwitchCaseEntry(this,id,r));
+    internal VlaDimension VlaDimension(long id) => Cached("vla_dimension",id,r=>new VlaDimension(this,id,r));
+    internal SubobjectPath SubobjectPath(long id) => Cached("subobject_path",id,r=>new SubobjectPath(this,id,r));
     internal Attribute Attribute(long id) => Cached("attribute",id,r=>new Attribute(this,id,r));
     internal AttributeArgument AttributeArgument(long id) => Cached("attribute_argument",id,r=>new AttributeArgument(this,id,r));
     internal AttributeGroup AttributeGroup(long id) => Cached("attribute_group",id,r=>new AttributeGroup(this,id,r));
@@ -103,7 +107,9 @@ public sealed partial class RoslynObject
 
     internal CppType Type(long id) => Cached<CppType>("type",id,r=>Kind(r.Long("kind_id")).Name switch
     {
-        "tk_integer" or "tk_enum" or "tk_float" or "tk_fixed_point" or "tk_imaginary" or "tk_complex" or "tk_mfp8" or "tk_float8e4m3" or "tk_float8e5m2" => new ArithmeticType(this,id,r),
+        "tk_integer" or "tk_enum" or "tk_float" or "tk_fixed_point" or "tk_imaginary" or "tk_complex" => new ArithmeticType(this,id,r),
+        "tk_mfp8" or "tk_float8e4m3" or "tk_float8e5m2"=>new StorageFloatingType(this,id,r),
+        "tk_scalable_vector_count"=>new ScalableVectorCountType(this,id,r),
         "tk_pointer"=>new PointerType(this,id,r), "tk_array"=>new ArrayType(this,id,r),
         "tk_routine"=>new RoutineType(this,id,r),
         "tk_class" or "tk_struct" or "tk_union"=>Store.Get("record_type",id)?.OptionalLong("instance_id") is {} instance
@@ -111,7 +117,7 @@ public sealed partial class RoslynObject
                 ? new ConstructedType(this,id,r) : new RecordType(this,id,r),
         "tk_typeref"=>Store.Get("qualified_type",id) is not null ? new QualifiedType(this,id,r) : new TypeReference(this,id,r),
         "tk_ptr_to_member"=>new MemberPointerType(this,id,r),
-        "tk_vector" or "tk_scalable_vector" or "tk_scalable_vector_count" or "tk_riscv_vector"=>new VectorType(this,id,r),
+        "tk_vector" or "tk_scalable_vector" or "tk_riscv_vector"=>new VectorType(this,id,r),
         "tk_template_param"=>new DependentType(this,id,r),
         "tk_void" or "tk_nullptr" or "tk_reflection"=>new CppType(this,id,r),
         _=>throw new IncompatibleObjectException("The required type kind is unsupported.")
@@ -136,7 +142,7 @@ public sealed partial class RoslynObject
         "stmk_if" or "stmk_constexpr_if" or "stmk_if_consteval" or "stmk_if_not_consteval"=>new ConditionalOperation(this,id,row),
         "stmk_while" or "stmk_end_test_while" or "stmk_for" or "stmk_upc_forall"=>new LoopOperation(this,id,row),
         "stmk_goto" or "stmk_return" or "stmk_assigned_goto"=>new JumpOperation(this,id,row),
-        "stmk_switch"=>new SwitchOperation(this,id,row), "stmk_try_block"=>new TryOperation(this,id,row),
+        "stmk_switch"=>new SwitchOperation(this,id,row), "stmk_switch_case"=>new SwitchCaseOperation(this,id,row), "stmk_try_block"=>new TryOperation(this,id,row),
         "stmk_asm" or "stmk_asm_func_body"=>new AssemblyOperation(this,id,row),
         "stmk_range_based_for"=>new RangeForOperation(this,id,row),
         "stmk_for_each"=>new ForEachOperation(this,id,row),
@@ -145,14 +151,14 @@ public sealed partial class RoslynObject
         "stmk_coroutine"=>new CoroutineOperation(this,id,row),
         "stmk_set_vla_size" or "stmk_vla_decl"=>new VlaStatementOperation(this,id,row),
         "stmk_decl"=>new DeclarationOperation(this,id,row),
-        "stmk_expr" or "stmk_empty" or "stmk_coroutine_return" or "stmk_switch_case" or "stmk_init" or "stmk_upc_notify" or "stmk_upc_wait" or "stmk_upc_barrier" or "stmk_upc_fence" or "stmk_stmt_expr_result"=>new StatementOperation(this,id,row),
+        "stmk_expr" or "stmk_empty" or "stmk_coroutine_return" or "stmk_init" or "stmk_upc_notify" or "stmk_upc_wait" or "stmk_upc_barrier" or "stmk_upc_fence" or "stmk_stmt_expr_result"=>new StatementOperation(this,id,row),
         _=>throw new IncompatibleObjectException("The required statement kind is unsupported.")
     };
 
     private ExpressionOperation CreateExpression(long id,Row row) => Kind(row.Long("kind_id")).Name switch
     {
         "enk_operation"=>Store.Get("call_expression",id) is not null ? new CallOperation(this,id,row)
-            : Store.Get("conversion_expression",id) is not null ? new ConversionOperation(this,id,row) : new OperatorOperation(this,id,row),
+            : ConversionOperation.IsConversionKind(Kind(Store.Required("operator_expression",id).Long("operator_kind_id")).Name) ? new ConversionOperation(this,id,row) : new OperatorOperation(this,id,row),
         "enk_constant"=>new ConstantOperation(this,id,row),
         "enk_variable" or "enk_routine" or "enk_field"=>new ReferenceOperation(this,id,row),
         "enk_throw"=>new ThrowOperation(this,id,row), "enk_await" or "enk_yield"=>new AwaitOperation(this,id,row),
@@ -179,7 +185,7 @@ public sealed partial class RoslynObject
         "ck_string"=>new StringValue(this,id,r), "ck_aggregate"=>new AggregateValue(this,id,r),
         "ck_fixed_point"=>new ConstantValue<FixedPointValueDetails>(this,id,r,"fixed_point_value",v=>new(this,v)),
         "ck_complex"=>new ConstantValue<ComplexValueDetails>(this,id,r,"complex_value",v=>new(this,v)),
-        "ck_address"=>new ConstantValue<AddressValueDetails>(this,id,r,"address_value",v=>new(this,v)),
+        "ck_address"=>new AddressValue(this,id,r),
         "ck_stack_offset"=>new ConstantValue<StackOffsetValueDetails>(this,id,r,"stack_offset_value",v=>new(this,v)),
         "ck_ptr_to_member"=>new ConstantValue<MemberPointerValueDetails>(this,id,r,"member_pointer_value",v=>new(this,v)),
         "ck_label_difference"=>new LabelDifferenceValue(this,id,r),
@@ -188,7 +194,8 @@ public sealed partial class RoslynObject
         "ck_dynamic_init"=>new ConstantValue<DynamicInitializationValueDetails>(this,id,r,"dynamic_initialization_value",v=>new(this,v)),
         "ck_template_param"=>new ConstantValue<DependentValueDetails>(this,id,r,"dependent_value",v=>new(this,v)),
         "ck_reflection"=>new ReflectionValue(this,id,r),
-        "ck_void" or "ck_upc_threads" or "ck_upc_mythread"=>new ConstantValue(this,id,r),
+        "ck_upc_threads"=>new UpcThreadsValue(this,id,r),
+        "ck_void" or "ck_upc_mythread"=>new ConstantValue(this,id,r),
         _=>throw new IncompatibleObjectException("The required constant kind is unsupported.")
     });
 
@@ -273,11 +280,12 @@ public sealed partial class RoslynObject
             "try_descriptor"=>TryDescriptor(id),
             "local_static_initialization"=>LocalStaticInitialization(id),
             "constructor_initializer"=>ConstructorInitializer(id),
-            "subobject_path"=>new SemanticRecord<SubobjectPathDetails>(this,id,Detail("subobject_path",id,r=>new SubobjectPathDetails(this,r))),
+            "subobject_path"=>SubobjectPath(id),
             "name_reference"=>new SemanticRecord<NameReferenceDetails>(this,id,Detail("name_reference",id,r=>new NameReferenceDetails(this,r))),
             "exception_specification"=>ExceptionSpecification(id),
             "virtual_table"=>new SemanticRecord<VirtualTableDetails>(this,id,Detail("virtual_table",id,r=>new VirtualTableDetails(this,r))),
-            "vla_dimension"=>new SemanticRecord<VlaDimensionDetails>(this,id,Detail("vla_dimension",id,r=>new VlaDimensionDetails(this,r))),
+            "vla_dimension"=>VlaDimension(id),
+            "switch_descriptor"=>SwitchDescriptor(id), "switch_case_entry"=>SwitchCase(id),
             "coroutine"=>new SemanticRecord<CoroutineDetails>(this,id,Detail("coroutine",id,r=>new CoroutineDetails(this,r))),
             "function_eh"=>new SemanticRecord<FunctionEhDetails>(this,id,Detail("function_eh",id,r=>new FunctionEhDetails(this,r))),
             "static_assertion"=>new SemanticRecord<StaticAssertionDetails>(this,id,Detail("static_assertion",id,r=>new StaticAssertionDetails(this,r))),

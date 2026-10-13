@@ -65,6 +65,7 @@ public sealed class TemplateInstantiation : SemanticEntity
     public bool IsSpecialized => Details.IsSpecialized;
     public TemplateSpecialization? SelectedSpecialization => Details.SelectedSpecialization;
     public IReadOnlyList<TemplateArgument> Arguments => Object.List("SELECT a.* FROM template_instance_argument r JOIN template_argument a ON a.id=r.argument_id JOIN kind k ON k.id=r.role_id WHERE r.owner_id=$owner AND k.name IN ('primary','primary_template') ORDER BY r.ordinal", Id, r => Object.Argument(r.Long("id")), "template_argument");
+    public IReadOnlyList<TemplateArgument> SelectedPartialArguments => Object.List("SELECT a.* FROM template_instance_argument r JOIN template_argument a ON a.id=r.argument_id JOIN kind k ON k.id=r.role_id WHERE r.owner_id=$owner AND k.name IN ('selected_partial','selected_partial_specialization') ORDER BY r.ordinal",Id,r=>Object.Argument(r.Long("id")),"template_argument");
     public IReadOnlyList<TemplateInstanceArgumentDetails> ArgumentMappings => Object.List("SELECT * FROM template_instance_argument WHERE owner_id=$owner ORDER BY role_id,ordinal", Id, r => new TemplateInstanceArgumentDetails(Object, r));
     public IReadOnlyList<CppType> TypeArguments => Object.List("SELECT t.* FROM template_instance_argument r JOIN template_argument a ON a.id=r.argument_id JOIN type t ON t.id=a.type_id JOIN kind k ON k.id=r.role_id WHERE r.owner_id=$owner AND k.name IN ('primary','primary_template') ORDER BY r.ordinal", Id, r => Object.Type(r.Long("id")), "type");
 }

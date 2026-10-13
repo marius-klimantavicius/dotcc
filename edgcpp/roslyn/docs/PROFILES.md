@@ -115,3 +115,13 @@ profiles retain their own actual ABI decisions.
 The258 milestone passes93 genuine paths /1028 reader assertions and explicit
 1KiB writer pages. This extends tested family coverage; maximum-native guard
 activation and full per-field/union closure remain open.
+
+263 milestone acceptance adds137 genuine objects /1795 reader assertions across
+all four current profiles. Dynamic/static UPC, native16 near/far, GNU fixed
+vectors, ARM scalable/vector-count/storage-floating and RISC-V fractional/tuple/
+boolean vectors now have actual positive reader evidence. Source VLA expression
+sites and ordinary unevaluated expressions are distinguished; default/source/
+numeric switch cases preserve canonical identities and recorded orders. This
+closes these activated families, not whole-profile field completeness. Sun,
+actual USL2.1/3.0, alternate host numeric/SoftFloat and remaining active field
+branches still require their planned evidence or authoritative limitations.

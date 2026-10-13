@@ -4,6 +4,13 @@ struct RoslynVlaContext { a_scope_ptr scope; a_vla_dimension_ptr dimension; };
 static std::map<std::pair<const void*,int>,std::vector<RoslynLocalExpression>> roslyn_local_expressions;
 static std::map<a_type_ptr,std::vector<RoslynVlaContext>> roslyn_vla_contexts;
 static std::set<a_scope_ptr> roslyn_collected_scopes;
+/* A descriptor stored outside a function has no chosen function context.
+   Its scalar convenience link exists only when all retained occurrences
+   identify the same expression. Scope-specific links remain in the graph. */
+static an_expr_node_ptr roslyn_unique_local_expression(const void *referrer,a_local_expr_node_ref_kind kind) {
+ auto found=roslyn_local_expressions.find({referrer,static_cast<int>(kind)});if(found==roslyn_local_expressions.end())return nullptr;
+ an_expr_node_ptr result=nullptr;for(const auto &reference:found->second){if(result&&result!=reference.entry->expr)return nullptr;result=reference.entry->expr;}return result;
+}
 static an_expr_node_ptr roslyn_local_expression(const void *referrer,a_local_expr_node_ref_kind kind) {
  auto found=roslyn_local_expressions.find({referrer,static_cast<int>(kind)});if(found==roslyn_local_expressions.end())return nullptr;
  an_expr_node_ptr result=nullptr;for(const auto &reference:found->second){if(roslyn_current_routine&&roslyn_scope_routine(reference.scope)!=roslyn_current_routine)continue;if(result&&result!=reference.entry->expr)return nullptr;result=reference.entry->expr;}return result;

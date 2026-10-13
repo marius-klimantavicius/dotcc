@@ -54,6 +54,9 @@ models = {
     'data_member_spec':('DataMemberSpecification','DataMemberSpecification'),
     'requires_clause':('RequiresClause','RequiresClause'),
     'exception_specification':('ExceptionSpecification','ExceptionSpecification'),
+    'switch_descriptor':('SwitchDescriptor','SwitchDescriptor'), 'switch_case_entry':('SwitchCaseEntry','SwitchCase'),
+    'vla_dimension':('VlaDimension','VlaDimension'),
+    'subobject_path':('SubobjectPath','SubobjectPath'),
     'gnu_routine_supplement':('GnuRoutineSupplement','GnuRoutineSupplement'),
     'block_descriptor':('BlockDescriptor','BlockDescriptor'), 'try_descriptor':('TryDescriptor','TryDescriptor'),
     'local_static_initialization':('LocalStaticInitialization','LocalStaticInitialization'),
@@ -79,7 +82,10 @@ booleans.update({'assignment_to_this_done','never_throws','never_inline','declar
     'value_returned_by_cctor','value_returned_as_parameter','return_value_parameter_follows_this',
     'assoc_routine_is_ctor','assoc_routine_is_dtor','assoc_routine_is_lambda_body',
     'routine_name_linkage_is_explicit','does_not_return','had_been_implicitly_const','has_this_param',
-    'complete_subobject'})
+    'complete_subobject','reachable_by_fall_through','lowering_generated',
+    'null_keyword','native_nullptr_keyword','ptr_to_mem_constant_construct','flexible_array_initializer',
+    'initializes_empty_object','contains_function_name_token','added_const_for_template_param',
+    'template_local_expr_ref','vptr_has_been_lowered'})
 numeric_text = {'scope_number','local_scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','first_line','logical_line','physical_line',
@@ -88,8 +94,8 @@ numeric_text.update({'virtual_function_number','this_adjustment','vcall_index','
     'vbase_index','initialization_priority','constructor_priority','destructor_priority',
     'virtual_function_table_index','construction_table_index','construction_subarray_index',
     'virtual_base_offset_index','highest_virtual_function_number','next_negative_virtual_table_index',
-    'first_vcall_offset_index','vtable_index'})
-numeric_atom = {('integer_value','value_id'),('floating_value','significand_id'),
+    'first_vcall_offset_index','vtable_index','string_sequence_number'})
+numeric_atom = {('integer_value','value_id'),('upc_threads_value','multiplier_id'),('floating_value','significand_id'),
     ('floating_value','nan_payload_id'),('fixed_point_value','scaled_integer_id')}
 lines = ['// Generated from schema/roslynobj.sql by managed/tools/generate_bindings.py. Do not edit.',
     '#nullable enable', 'using System.Numerics;', 'namespace RoslynObj;', '']

@@ -4,6 +4,14 @@
 is saved in local historical pause notes, with both worker notes. Both implementation
 lanes are active; full approved M0–M5 work remains required.
 
+**Current verified boundary: 263 tables / 39,144 stable kinds; final137 PASS1795,
+self/WITHOUT ROWID PASS73, build zero warnings/errors, all four strict compilers,
+316 direct Git-pinned inputs and 25 canonical backend files per stage.** The
+coordinator is recording this significant milestone commit, then both workers
+continue the reviewed common metadata contract. Full M0–M5 remains in progress;
+current field counts are 567 verified /550 mapped pending validation /136 mapped
+pending implementation /493 raw pending, with exact exclusions separate.
+
 The user approved phases 3–4 on 2026-10-12, including complete M0–M5 delivery.
 The accepted profile prioritizes stock EDG lowering and documents lost original
 source queries. This ledger records evidence and outstanding work; a schema or
@@ -21,7 +29,7 @@ The coordinator (GPT-6.1-Sol, high) owns the shared schema, stable catalog, cove
 matrix, integration, compiler scheduling and commits. The native implementer
 (GPT-6.1-Sol, xhigh) owns backend/build/native fixtures; the managed implementer
 (GPT-6.1-Sol, xhigh) owns managed projects/tests. The primary agent owns user
-communication and independent review. Workers never commit independently. After the initial reader checkpoint, the managed implementer also owns `backend/roslyn_templates.h` and `backend/roslyn_expressions_extra.h`; the native implementer integrates and serializes compiler builds.
+communication and independent review. Workers never commit independently. After the initial reader checkpoint, the managed implementer also owns `backend/roslyn_templates.h` and `backend/roslyn_expressions_extra.h`; the native implementer integrates and serializes compiler builds. After `8d9c4bd88`, the managed implementer also owns extracted `backend/roslyn_execution.h`; shared initializer/lifetime/EH policies stay native-owned.
 
 ## Source and environment
 
@@ -43,7 +51,7 @@ communication and independent review. Workers never commit independently. After 
 | M1 | In progress | Generated STRICT DDL, authoritative explicit stable IDs, exact scalar/unit contract and valid managed fixture exist. Full field coverage worksheet inventories 1,993 declarations, including plain structs and multi-declarators. Complete field/property mapping and all configured scalar/EH forms remain required. |
 | M2 | In progress | Verified native→reader checkpoint: selected add call, initialization execution containment, ordinary symbols/types/control flow, source positions and current signatures. Broader complete-family field audit remains required. |
 | M3 | In progress | Real C++ fixture exports 8 physical regions /6 actions /32 EH operations /8 lifetimes; reader navigates all actions. Observable destructor array fixture now produces count3/element-size4. Template/class/ABI and remaining cleanup adjunct completeness remain open. |
-| M4 | Pending | Exhaustive active adapters and all planned compatibility profiles with valid upstream inputs. |
+| M4 | In progress | Exhaustive active adapters and all planned compatibility profiles with valid upstream inputs. |
 | M5 | In progress | Bounded managed page/row caches, sequential keyset paging and batched children tested. Full large-TU measurements, independent-object packaging and determinism remain required. |
 
 ## Verified initial checkpoint
@@ -552,3 +560,48 @@ statements in a disjoint header, including genuine source VLA evaluation sites.
 Common namespace/using/label/scope and remaining template/type/profile fields,
 final public format compatibility and M5 measured throughput/storage closure
 remain required. Optional source locations do not block these semantic gates.
+
+## Active post-258 constant and execution release
+
+Verified milestone `8d9c4bd8886d375dc13eed409aa62de4c95c0aa2` committed 51 owned
+files after PASS1028 over 93 genuine snapshots, self PASS73, all four strict
+builds, unchanged 316 pinned stock inputs per stage and byte-exact canonical
+backend copies. Unrelated index/workspace changes were preserved.
+
+The next contract is frozen at 263 tables/39,144 kinds; all 39,133 prior mappings
+are preserved and eleven IDs appended. Both implementers are released on disjoint
+constant/type and expression/statement/VLA modules. See NEXT-CONTRACT.md and the
+two canonical schema field-contract TSVs. Generation/DDL admission is verified;
+new adapters/API/positive semantic coverage remain pending. Full M0–M5 stays active.
+
+The 263 development contract now generates an exact schema SHA256 for a required
+writer/reader capability. Admission must reject a genuine older checkpoint shape
+before ordinary lazy navigation; malformed/corruption campaigns remain excluded.
+The unwritten baseline constant.is_literal is nullable unknown, not default false.
+
+The following final 263 acceptance replaces the earlier in-progress native and
+reader status reports. Exact checkpoint evidence is recorded below.
+
+### Accepted 263 constant/execution milestone (commit pending)
+
+Final exact bytes pass **1795 public reader assertions / 137 genuine objects**,
+self/WITHOUT ROWID fixtures PASS73, build zero warnings/errors, 261 generated
+detail facades / 2048 properties and 144 native literal-write admission checks.
+A genuine archived 258 object is rejected at Open by the required development
+contract, before semantic navigation. The new-family subset passes245 over40
+paths; source temporary source-type identity positive passed before the final
+137 rerun. Conditional payloads without activation remain pending.
+
+Field proof join closes170 source-to-writer-to-SQL-to-getter rows from specific
+public/scalar evidence. Current worksheet: **567 verified,550 mapped pending
+validation,136 mapped pending implementation,493 raw pending**, with exact
+exclusions separate. Scalar mapping closure permits false direct recorded flags
+only with compiled write/guard evidence plus real family sweeps; active union,
+identity, ordering and availability require the listed positive cases.
+
+Fresh large object:86,609 entities /7023 operations /6,532,096 bytes. Reader cold
+28,273 commands /197,597 rows /1819.92ms /113.7MB RSS; warm28,274 /197,598 /1292.93ms
+/115.8MB. Row/page caches stay at4096/128 bounds. This demonstrates current bounds;
+remaining M5 writer indices/host profiles/complete field and kind closure remain
+required. Native stock77 recompilation on reconfigure is tracked for a later
+build-only fix rather than changing this verified boundary.

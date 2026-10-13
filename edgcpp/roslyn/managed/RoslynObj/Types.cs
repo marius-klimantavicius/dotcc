@@ -4,18 +4,26 @@ namespace RoslynObj;
 public class CppType : SemanticEntity
 {
     private readonly Lazy<IReadOnlyList<Symbol>> declarationSymbols;
+    private readonly Lazy<Row?> sizeAvailability;
+    private readonly Lazy<Row?> alignmentAvailability;
     internal CppType(RoslynObject owner, long id, Row row) : base(owner, id)
     {
         Details = new(owner,row);
+        sizeAvailability = new(()=>Object.Store.Fact(Id,5015));
+        alignmentAvailability = new(()=>Object.Store.Fact(Id,5016));
         declarationSymbols = new(() => Object.List("SELECT s.* FROM symbol s WHERE s.id=(SELECT symbol_id FROM type WHERE id=$owner) OR s.id IN (SELECT id FROM template_parameter WHERE placeholder_type_id=$owner) ORDER BY s.id",Id,r=>Object.Symbol(r.Long("id")),"symbol"));
     }
     public TypeDetails Details { get; }
     public SemanticKind Kind => Details.Kind;
     public string? Name => Object.Name(Object.Store.Required("type", Id).OptionalLong("name_id"));
-    public BigInteger Size => Details.Size;
-    public BigInteger Alignment => Details.Alignment;
-    public BigInteger DescriptorSize => Details.DescriptorSize ?? Size;
-    public BigInteger DescriptorAlignment => Details.DescriptorAlignment ?? Alignment;
+    public BigInteger? Size => sizeAvailability.Value is {} fact&&Object.Kind(fact.Long("state_id")).Name=="available"?EffectiveSize:null;
+    /// <summary>The retained stock helper quantity; it may be a THREADS coefficient or a placeholder when size is unavailable.</summary>
+    public BigInteger EffectiveSize => Details.Size;
+    public BigInteger? ThreadsSizeMultiplier => Details.SizeKind.Name=="upc_threads"?EffectiveSize:null;
+    public BigInteger? Alignment => alignmentAvailability.Value is {} fact&&Object.Kind(fact.Long("state_id")).Name=="available"?EffectiveAlignment:null;
+    public BigInteger EffectiveAlignment => Details.Alignment;
+    public BigInteger DescriptorSize => Details.DescriptorSize ?? EffectiveSize;
+    public BigInteger DescriptorAlignment => Details.DescriptorAlignment ?? EffectiveAlignment;
     public bool IsIncomplete => Details.Incomplete;
     public bool? DescriptorIsIncomplete => Details.DescriptorIncomplete;
     public bool IsDependent => Details.IsDependent;
@@ -48,6 +56,18 @@ public sealed class ArithmeticType : CppType
     public ArithmeticTypeDetails Arithmetic => Object.Detail("arithmetic_type", Id, r => new ArithmeticTypeDetails(Object, r));
 }
 
+/// <summary>A retained floating storage format with no EDG arithmetic subtype payload.</summary>
+public sealed class StorageFloatingType : CppType
+{
+    internal StorageFloatingType(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
+}
+
+/// <summary>The opaque target scalable-vector count type; it has no vector element payload.</summary>
+public sealed class ScalableVectorCountType : CppType
+{
+    internal ScalableVectorCountType(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
+}
+
 public sealed class QualifiedType : TypeReference
 {
     internal QualifiedType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
@@ -71,7 +91,9 @@ public sealed class ArrayType : CppType
     internal ArrayType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public ArrayTypeDetails Array => Object.Detail("array_type", Id, r => new ArrayTypeDetails(Object, r));
     public CppType ElementType => Array.ElementType;
-    public BigInteger? Bound => Array.Bound;
+    public BigInteger? Bound => Array.BoundKind.Name is "constant" or "zero"?Array.Bound:null;
+    public BigInteger? ThreadsMultiplier => Array.BoundKind.Name=="upc_threads"?Array.Bound:null;
+    public VlaDimension? VlaDimension => Array.VlaDimension;
     public Operation? BoundExpression => Array.BoundExpression;
 }
 
@@ -106,6 +128,7 @@ public class TypeReference : CppType
     public TypeReferenceDetails Reference => Object.Detail("type_reference", Id, r => new TypeReferenceDetails(Object, r));
     public CppType UnderlyingType => Reference.UnderlyingType;
     public override TemplateInstantiation? Instantiation => Reference.Instance;
+    public IReadOnlyList<TemplateArgument> OriginalTemplateArguments => Object.List("SELECT a.* FROM typeref_original_template_argument r JOIN template_argument a ON a.id=r.argument_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Argument(r.Long("id")),"template_argument");
 }
 
 public sealed class VectorType : CppType
@@ -131,8 +154,8 @@ public sealed partial class RecordLayout : SemanticEntity
     internal RecordLayout(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public RecordLayoutDetails Details { get; }
     public CppType Type => Details.Type;
-    public BigInteger Size => Type.Size;
-    public BigInteger Alignment => Type.Alignment;
+    public BigInteger? Size => Type.Size;
+    public BigInteger? Alignment => Type.Alignment;
     public IReadOnlyList<FieldLayout> Fields => Object.List("SELECT * FROM field_layout WHERE owner_id=$owner ORDER BY ordinal", Id, r => new FieldLayout(Object, r));
 }
 

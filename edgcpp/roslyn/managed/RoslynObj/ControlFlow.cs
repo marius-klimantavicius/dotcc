@@ -51,7 +51,10 @@ public sealed class SwitchOperation : StatementOperation
     public SwitchStatementDetails Switch => Object.Detail("switch_statement",Id,r=>new SwitchStatementDetails(Object,r));
     public ExpressionOperation? Selector => Switch.Selector;
     public StatementOperation? Body => Switch.Body;
-    public IReadOnlyList<SwitchCaseDetails> Cases => Object.List("SELECT * FROM switch_case WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new SwitchCaseDetails(Object,r));
+    public SwitchDescriptor Descriptor => Switch.Descriptor;
+    public IReadOnlyList<SwitchCaseEntry> Cases => Descriptor.Cases;
+    public IReadOnlyList<SwitchCaseEntry> SortedCases => Descriptor.SortedCases;
+    public SwitchCaseEntry? DefaultCase => Descriptor.DefaultCase;
 }
 
 public sealed class TryOperation : StatementOperation
@@ -118,6 +121,7 @@ public sealed class ThrowOperation : ExpressionOperation
     public Initialization? Initialization => Throw.Initialization;
     public FunctionSymbol? Destructor => Throw.Destructor;
     public bool IsRethrow => Throw.IsRethrow;
+    public IReadOnlyList<BaseSubobject> AccessibleBases => Object.List("SELECT b.* FROM throw_accessible_base a JOIN base_subobject b ON b.id=a.subobject_id WHERE a.owner_id=$owner ORDER BY a.ordinal",Id,r=>Object.Subobject(r.Long("id")),"base_subobject");
 }
 
 public sealed class AwaitOperation : ExpressionOperation

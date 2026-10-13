@@ -20,6 +20,7 @@ public sealed class Constant : SemanticEntity
     public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_constant_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
     public ConstantValue Value => Details.Value;
     public Operation? BackingExpression => Details.BackingExpression;
+    public IReadOnlyList<LocalExpressionReferenceDetails> ContextualExpressions => Object.List("SELECT * FROM local_expression_reference WHERE referrer_id=$owner ORDER BY owner_id,ordinal",Id,r=>new LocalExpressionReferenceDetails(Object,r));
     public SourceInfo? Source => Details.SourceOrigin;
     public VariableSymbol? AssociatedStorageVariable => Details.AssociatedStorageVariable;
     public IReadOnlyList<ConstantComponentDetails> Components => Object.List("SELECT * FROM constant_component WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new ConstantComponentDetails(Object,r));
@@ -71,11 +72,15 @@ public sealed class StringValue : ConstantValue
 {
     internal StringValue(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
     public StringValueDetails Details => Object.Detail("string_value",Id,r=>new StringValueDetails(Object,r));
+    /// <summary>Count of stored units; native target-byte values include the terminator and do not count Unicode characters.</summary>
     public BigInteger Length => Details.Length;
+    public BigInteger? ByteLength => UnitKind.Name=="target_bytes"?Details.Length:null;
+    public long StorageUnitBits => Details.ElementBits;
     public long ElementBits => Details.ElementBits;
     public SemanticKind Encoding => Details.Encoding;
     public string? Text => Details.Text;
     public SemanticKind UnitKind => Details.UnitKind;
+    /// <summary>Compatibility alias for StorageUnits; native values contain target bytes, not decoded wide code points.</summary>
     public IReadOnlyList<uint> CodeUnits => StorageUnits;
     public IReadOnlyList<byte> TargetBytes => UnitKind.Name == "target_bytes" ? new ProjectedList<uint,byte>(StorageUnits,unit=>checked((byte)unit)) : [];
     public IReadOnlyList<uint> StorageUnits

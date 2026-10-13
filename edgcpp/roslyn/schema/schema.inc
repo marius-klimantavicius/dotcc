@@ -1,3 +1,4 @@
+static const char roslynobj_schema_contract_sha256[] = "7e481acee7f9e418289ec6cd023e3294239128009a0132660765dfd6876e2f5a";
 static const char roslynobj_schema_sql[] = R"roslynsql(-- RoslynObj 1.0: normalized scalar and typed relationship contract.
 -- SQLite 3.37+ required. Exact target quantities use canonical decimal TEXT.
 -- Extension kind catalogs are persisted only when referenced.
@@ -588,7 +589,8 @@ CREATE TABLE type (
   has_gnu_abi_tag_attribute INTEGER NOT NULL DEFAULT 0,
   in_gnu_abi_tag_namespace INTEGER NOT NULL DEFAULT 0,
   use_cfront_transitional_nested_type_name_mangling INTEGER NOT NULL DEFAULT 0,
-  typeinfo_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED
+  typeinfo_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  size_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
 ) STRICT;
 
 CREATE TABLE arithmetic_type (
@@ -1155,7 +1157,9 @@ CREATE TABLE expression (
   is_objectless_member_reference INTEGER NOT NULL DEFAULT 0,
   is_gnu_extension INTEGER NOT NULL DEFAULT 0,
   type_definition_needed INTEGER NOT NULL DEFAULT 0,
-  boolean_not_normalized INTEGER NOT NULL DEFAULT 0
+  boolean_not_normalized INTEGER,
+  is_type_constraint INTEGER NOT NULL DEFAULT 0,
+  was_lvalue_temp_initializer INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 
 CREATE TABLE statement (
@@ -1166,9 +1170,9 @@ CREATE TABLE statement (
   lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
   is_guard INTEGER NOT NULL DEFAULT 0,
   is_declared_constexpr INTEGER NOT NULL DEFAULT 0,
-  lowering_generated INTEGER NOT NULL DEFAULT 0,
+  lowering_generated INTEGER,
   has_associated_pragma INTEGER NOT NULL DEFAULT 0,
-  is_lowering_boilerplate INTEGER NOT NULL DEFAULT 0,
+  is_lowering_boilerplate INTEGER,
   is_fallthrough_statement INTEGER NOT NULL DEFAULT 0,
   is_likely INTEGER NOT NULL DEFAULT 0,
   is_unlikely INTEGER NOT NULL DEFAULT 0
@@ -1274,16 +1278,6 @@ CREATE TABLE constant_expression (
   name_reference_id INTEGER REFERENCES name_reference(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
-CREATE TABLE conversion_expression (
-  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  operand_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  source_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
-  target_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  base_path_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED
-) STRICT;
-
 CREATE TABLE block_descriptor (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
@@ -1383,19 +1377,43 @@ CREATE TABLE switch_statement (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   body_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
   selector_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  default_label_id INTEGER REFERENCES label_symbol(id) DEFERRABLE INITIALLY DEFERRED
+  descriptor_id INTEGER REFERENCES switch_descriptor(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
 ) STRICT;
 
-CREATE TABLE switch_case (
-  owner_id INTEGER REFERENCES switch_statement(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  ordinal INTEGER NOT NULL,
+CREATE TABLE switch_descriptor (
+  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
+  default_case_id INTEGER REFERENCES switch_case_entry(id) DEFERRABLE INITIALLY DEFERRED,
+  has_sorted_cases INTEGER NOT NULL
+) STRICT;
+
+CREATE TABLE switch_case_entry (
+  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   statement_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
-  label_id INTEGER REFERENCES label_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   low_constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
   high_constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
-  is_default INTEGER NOT NULL DEFAULT 0,
+  reachable_by_fall_through INTEGER NOT NULL,
+  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED
+) STRICT;
+
+CREATE TABLE switch_descriptor_case (
+  owner_id INTEGER REFERENCES switch_descriptor(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  case_id INTEGER REFERENCES switch_case_entry(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
+
+CREATE TABLE switch_descriptor_sorted_case (
+  owner_id INTEGER REFERENCES switch_descriptor(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  case_id INTEGER REFERENCES switch_case_entry(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE switch_case_statement (
+  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
+  entry_id INTEGER REFERENCES switch_case_entry(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  switch_statement_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
+) STRICT;
 
 CREATE TABLE jump_statement (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
@@ -1475,8 +1493,7 @@ CREATE TABLE type_query_expression (
   operand_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   operand_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   is_dynamic INTEGER NOT NULL DEFAULT 0,
-  is_standard_alignof INTEGER NOT NULL DEFAULT 0,
-  vla_dimension_id INTEGER REFERENCES vla_dimension(id) DEFERRABLE INITIALLY DEFERRED
+  is_standard_alignof INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 
 CREATE TABLE temporary_expression (
@@ -1849,13 +1866,52 @@ CREATE TABLE constant (
   name_reference_id INTEGER REFERENCES name_reference(id) DEFERRABLE INITIALLY DEFERRED,
   character_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
   is_pack_expansion INTEGER NOT NULL DEFAULT 0,
-  is_literal INTEGER NOT NULL DEFAULT 0,
+  is_literal INTEGER,
   implicit_cast INTEGER NOT NULL DEFAULT 0,
   explicit_cast_applied INTEGER NOT NULL DEFAULT 0,
   is_reinterpret_cast INTEGER NOT NULL DEFAULT 0,
   is_reinterpret_like_cast INTEGER NOT NULL DEFAULT 0,
   is_simple_zero INTEGER NOT NULL DEFAULT 0,
-  associated_storage_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED
+  associated_storage_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  non_arithmetic INTEGER NOT NULL DEFAULT 0,
+  null_pointer_constant_ruled_out INTEGER NOT NULL DEFAULT 0,
+  nullptr_keyword INTEGER NOT NULL DEFAULT 0,
+  explicit_braces_on_aggregate INTEGER NOT NULL DEFAULT 0,
+  explicit_parentheses_on_aggregate INTEGER NOT NULL DEFAULT 0,
+  from_undefined_preproc_id INTEGER NOT NULL DEFAULT 0,
+  uses_designated_initializers INTEGER NOT NULL DEFAULT 0,
+  is_named_constant_definition INTEGER NOT NULL DEFAULT 0,
+  partial_aggr_value INTEGER NOT NULL DEFAULT 0,
+  is_partially_initialized INTEGER NOT NULL DEFAULT 0,
+  implicit_aggr_element INTEGER NOT NULL DEFAULT 0,
+  is_compound_literal INTEGER NOT NULL DEFAULT 0,
+  is_result_of_constexpr_call INTEGER NOT NULL DEFAULT 0,
+  is_generic_initializer INTEGER NOT NULL DEFAULT 0,
+  constant_for_base_class INTEGER NOT NULL DEFAULT 0,
+  constant_for_base_class_from_constexpr_folding INTEGER NOT NULL DEFAULT 0,
+  folded_statement_expression INTEGER NOT NULL DEFAULT 0,
+  formed_from_promoted_storage INTEGER NOT NULL DEFAULT 0,
+  local_expr_ref INTEGER NOT NULL DEFAULT 0,
+  null_keyword INTEGER,
+  native_nullptr_keyword INTEGER,
+  ptr_to_mem_constant_construct INTEGER,
+  flexible_array_initializer INTEGER,
+  initializes_empty_object INTEGER,
+  is_implicit_initialization INTEGER,
+  literal_encoding_prefix_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  is_raw_string INTEGER,
+  is_string_literal INTEGER,
+  is_function_name_literal INTEGER,
+  contains_function_name_token INTEGER,
+  is_embed_expansion INTEGER,
+  string_sequence_number TEXT,
+  embed_directive_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
+  has_dynamic_init_component INTEGER,
+  added_const_for_template_param INTEGER,
+  initialized_field_id INTEGER REFERENCES field_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  initialized_base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  template_local_expr_ref INTEGER,
+  vptr_has_been_lowered INTEGER
 ) STRICT;
 
 CREATE TABLE constant_value (
@@ -3032,6 +3088,18 @@ CREATE TABLE record_vcall_offset (
   base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
   vtable_index TEXT NOT NULL,
   is_primary INTEGER NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE upc_threads_value (
+  id INTEGER PRIMARY KEY REFERENCES constant_value(id) DEFERRABLE INITIALLY DEFERRED,
+  multiplier_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
+) STRICT;
+
+CREATE TABLE expression_vla_dimension (
+  owner_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  dimension_id INTEGER REFERENCES vla_dimension(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 INSERT INTO kind VALUES(1001,'entity','translation_unit');

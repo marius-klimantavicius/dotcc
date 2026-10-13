@@ -21,6 +21,17 @@ CASES = {
     'layout_c': ['--c99', '--gnu_version', '130000'],
     'routines': ['--c++20', '--g++', '--gnu_version', '130000'],
     'routines_exception': ['--c++14', '--gnu_version', '130000'],
+    'constant_occurrences': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'constant_aggregates': ['--c99', '--gnu_version', '130000'],
+    'constant_embed': ['--c23', '--gnu_version', '130000'],
+    'upc_dynamic': ['--c99', '--upc'],
+    'upc_static': ['--c99', '--upc', '--upc_threads', '4'],
+    'vector_values': ['--c++20', '--g++', '--gnu_version', '150000'],
+    'vector_arm': ['--c++20', '--g++', '--gnu_version', '150000', '--target', 'linux_aarch64'],
+    'vector_riscv': ['--c++20', '--g++', '--gnu_version', '150000', '--target', 'linux_riscv64'],
+    'near_far': ['--c++20', '--microsoft_16'],
+    'execution_c': ['--c11', '--gcc', '--gnu_version', '130000'],
+    'execution_cpp': ['--c++20', '--g++', '--gnu_version', '130000'],
     'layout_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
     'routines_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
 }
@@ -43,8 +54,11 @@ if args.profile != 'source' and any(name in SOURCE_ONLY for name in selected):
     parser.error('Microsoft layout cases require the source profile configured for Microsoft ABI')
 for name in selected:
     destination = output / (name + '.roslynobj')
-    source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / (name + '.cpp') if name in ('reflection', 'source_attributes', 'routines', 'routines_exception', 'routines_microsoft')
-              else ROOT / 'tests/fixtures' / ('layout.cpp' if name == 'layout_microsoft' else name + ('.c' if name == 'layout_c' else '.cpp')))
+    fixture = ('layout.cpp' if name == 'layout_microsoft' else 'upc_values.c' if name in ('upc_dynamic', 'upc_static')
+               else 'execution.c' if name == 'execution_c' else 'execution.cpp' if name == 'execution_cpp'
+               else name + ('.c' if name in ('layout_c', 'constant_aggregates', 'constant_embed') else '.cpp'))
+    source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / fixture if name in ('reflection', 'source_attributes', 'routines', 'routines_exception', 'routines_microsoft', 'execution_c', 'execution_cpp')
+              else ROOT / 'tests/fixtures' / fixture)
     command = ['python3', str(ROOT / 'build/roslyn-cpfe.py'), *CASES[name],
                str(source), '-o', str(destination)]
     start = time.monotonic()

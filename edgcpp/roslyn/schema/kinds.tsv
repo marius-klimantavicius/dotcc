@@ -39132,3 +39132,14 @@ id	family	name
 1037043	entity	requires_clause
 1037044	entity	gnu_routine_supplement
 1037045	fact	body
+1037046	entity	switch_descriptor
+1037047	entity	switch_case_entry
+1037048	role	dimension
+1037049	bound_kind	upc_threads
+1037050	size_kind	recorded_quantity
+1037051	size_kind	upc_threads
+1037052	literal_encoding_prefix	ordinary
+1037053	literal_encoding_prefix	utf8
+1037054	literal_encoding_prefix	utf16
+1037055	literal_encoding_prefix	utf32
+1037056	literal_encoding_prefix	wide

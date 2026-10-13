@@ -3,6 +3,7 @@
 from pathlib import Path
 import re
 import sqlite3
+import hashlib
 
 HERE = Path(__file__).resolve().parent
 DESIGN = HERE.parent.parent / 'roslyn-design' / 'semantic-inventory.md'
@@ -304,7 +305,6 @@ used_in_primary_declarator INTEGER NOT NULL DEFAULT 0''')
 entity('name_qualifier', 'previous_qualifier_id @name_qualifier\ntarget_id @entity\nname_id @text_atom\nis_class INTEGER NOT NULL DEFAULT 0')
 relation('original_template_argument', 'owner_id @name_reference NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
 entity('constant_expression', 'constant_id @constant NOT NULL\nname_reference_id @name_reference')
-entity('conversion_expression', 'operand_id @expression NOT NULL\nsource_type_id @type\ntarget_type_id @type NOT NULL\nkind_id @kind NOT NULL\nroutine_id @routine_symbol\nbase_path_id @entity')
 entity('block_descriptor', 'scope_id @scope\nlifetime_id @lifetime\nfinal_position_id @source_position\nend_reachable INTEGER NOT NULL DEFAULT 0\nis_statement_expression INTEGER NOT NULL DEFAULT 0\nimplicit_scope_not_allowed INTEGER NOT NULL DEFAULT 0\nupc_access_method_id @kind')
 entity('block_statement', 'descriptor_id @block_descriptor')
 entity('declaration_statement', 'has_static_or_thread_variable INTEGER NOT NULL DEFAULT 0')
@@ -315,8 +315,12 @@ entity('if_statement', 'then_id @statement\nelse_id @statement\ncondition_id @ex
 entity('loop_statement', 'body_id @statement\ninitialization_id @statement\ncondition_id @expression\nincrement_id @expression\ninit_scope_id @scope\ntest_position_id @source_position\naffinity_id @expression')
 entity('range_for', 'body_id @statement\nrange_variable_id @variable_symbol\nbegin_variable_id @variable_symbol\nend_variable_id @variable_symbol\niterator_variable_id @variable_symbol\ncomparison_id @expression\nincrement_id @expression\ninitialization_id @statement\nscope_id @scope\niterator_scope_id @scope\nuse_await INTEGER NOT NULL DEFAULT 0')
 entity('for_each_statement', 'body_id @statement\ncollection_id @expression\npattern_kind_id @kind NOT NULL\niterator_id @variable_symbol\ninitialization_id @expression\ntest_id @expression\nincrement_id @expression\nuses_previous_declaration_iterator INTEGER NOT NULL DEFAULT 0\nprevious_field_id @field_symbol\nassignment_id @expression\ncollection_reference_id @variable_symbol\ntemporary_variable_id @variable_symbol\nend_variable_id @variable_symbol\nscope_id @scope\niterator_scope_id @scope')
-entity('switch_statement', 'body_id @statement\nselector_id @expression\ndefault_label_id @label_symbol')
-relation('switch_case', 'owner_id @switch_statement NOT NULL\nordinal INTEGER NOT NULL\nstatement_id @statement\nlabel_id @label_symbol\nlow_constant_id @constant\nhigh_constant_id @constant\nis_default INTEGER NOT NULL DEFAULT 0')
+entity('switch_statement', 'body_id @statement\nselector_id @expression\ndescriptor_id @switch_descriptor NOT NULL')
+entity('switch_descriptor', 'default_case_id @switch_case_entry\nhas_sorted_cases INTEGER NOT NULL')
+entity('switch_case_entry', 'statement_id @statement\nlow_constant_id @constant\nhigh_constant_id @constant\nreachable_by_fall_through INTEGER NOT NULL\nsource_origin_id @source_origin')
+relation('switch_descriptor_case', 'owner_id @switch_descriptor NOT NULL\nordinal INTEGER NOT NULL\ncase_id @switch_case_entry NOT NULL')
+relation('switch_descriptor_sorted_case', 'owner_id @switch_descriptor NOT NULL\nordinal INTEGER NOT NULL\ncase_id @switch_case_entry NOT NULL')
+entity('switch_case_statement', 'entry_id @switch_case_entry NOT NULL\nswitch_statement_id @statement NOT NULL')
 entity('jump_statement', 'kind_id @kind NOT NULL\nvalue_id @expression\nlabel_id @label_symbol\ninitialization_id @initialization\nsource_lifetime_id @lifetime\ncommon_lifetime_id @lifetime')
 entity('label_statement', 'label_id @label_symbol NOT NULL\nstatement_id @statement')
 entity('try_descriptor', 'body_id @statement NOT NULL\nis_function_try INTEGER NOT NULL DEFAULT 0\nlifetime_id @lifetime\nfinally_statement_id @statement')
@@ -326,7 +330,7 @@ entity('handler', 'body_id @statement NOT NULL\ncaught_type_id @type\nparameter_
 entity('microsoft_try_statement', 'body_id @statement NOT NULL\nfilter_id @expression\nhandler_id @statement\nfinally_id @statement\nexcept_or_finally_position_id @source_position\nis_finally INTEGER NOT NULL DEFAULT 0')
 entity('throw_expression', 'operand_id @expression\nthrown_type_id @type\ninitialization_id @initialization\ndestructor_id @routine_symbol\nis_rethrow INTEGER NOT NULL DEFAULT 0')
 relation('throw_accessible_base', 'owner_id @throw_expression NOT NULL\nordinal INTEGER NOT NULL\nsubobject_id @base_subobject NOT NULL')
-entity('type_query_expression', 'query_kind_id @kind NOT NULL\noperand_type_id @type\noperand_expression_id @expression\nis_dynamic INTEGER NOT NULL DEFAULT 0\nis_standard_alignof INTEGER NOT NULL DEFAULT 0\nvla_dimension_id @vla_dimension')
+entity('type_query_expression', 'query_kind_id @kind NOT NULL\noperand_type_id @type\noperand_expression_id @expression\nis_dynamic INTEGER NOT NULL DEFAULT 0\nis_standard_alignof INTEGER NOT NULL DEFAULT 0')
 entity('temporary_expression', 'initialization_id @initialization\ntemporary_id @temporary\nsource_type_id @type')
 entity('condition_expression', 'expression_id @expression\ninitialization_id @statement\ndynamic_initialization_id @initialization\nscope_id @scope\nvariable_id @variable_symbol')
 entity('lifetime_expression', 'expression_id @expression NOT NULL\nlifetime_id @lifetime')
@@ -1265,6 +1269,61 @@ for index, definition in enumerate(tables):
         definition = definition.replace('offset TEXT NOT NULL', 'offset TEXT')
     tables[index] = definition
 
+
+# Reviewed constant occurrence and contextual execution contract (post-258).
+append_columns('constant', '''non_arithmetic INTEGER NOT NULL DEFAULT 0
+null_pointer_constant_ruled_out INTEGER NOT NULL DEFAULT 0
+nullptr_keyword INTEGER NOT NULL DEFAULT 0
+explicit_braces_on_aggregate INTEGER NOT NULL DEFAULT 0
+explicit_parentheses_on_aggregate INTEGER NOT NULL DEFAULT 0
+from_undefined_preproc_id INTEGER NOT NULL DEFAULT 0
+uses_designated_initializers INTEGER NOT NULL DEFAULT 0
+is_named_constant_definition INTEGER NOT NULL DEFAULT 0
+partial_aggr_value INTEGER NOT NULL DEFAULT 0
+is_partially_initialized INTEGER NOT NULL DEFAULT 0
+implicit_aggr_element INTEGER NOT NULL DEFAULT 0
+is_compound_literal INTEGER NOT NULL DEFAULT 0
+is_result_of_constexpr_call INTEGER NOT NULL DEFAULT 0
+is_generic_initializer INTEGER NOT NULL DEFAULT 0
+constant_for_base_class INTEGER NOT NULL DEFAULT 0
+constant_for_base_class_from_constexpr_folding INTEGER NOT NULL DEFAULT 0
+folded_statement_expression INTEGER NOT NULL DEFAULT 0
+formed_from_promoted_storage INTEGER NOT NULL DEFAULT 0
+local_expr_ref INTEGER NOT NULL DEFAULT 0
+null_keyword INTEGER
+native_nullptr_keyword INTEGER
+ptr_to_mem_constant_construct INTEGER
+flexible_array_initializer INTEGER
+initializes_empty_object INTEGER
+is_implicit_initialization INTEGER
+literal_encoding_prefix_id @kind
+is_raw_string INTEGER
+is_string_literal INTEGER
+is_function_name_literal INTEGER
+contains_function_name_token INTEGER
+is_embed_expansion INTEGER
+string_sequence_number TEXT
+embed_directive_id @text_atom
+has_dynamic_init_component INTEGER
+added_const_for_template_param INTEGER
+initialized_field_id @field_symbol
+initialized_base_subobject_id @base_subobject
+template_local_expr_ref INTEGER
+vptr_has_been_lowered INTEGER''')
+value_table('upc_threads_value', 'multiplier_id @text_atom NOT NULL')
+append_columns('type', 'size_kind_id @kind NOT NULL')
+append_columns('expression', 'is_type_constraint INTEGER NOT NULL DEFAULT 0\nwas_lvalue_temp_initializer INTEGER NOT NULL DEFAULT 0')
+relation('expression_vla_dimension', 'owner_id @expression NOT NULL\nordinal INTEGER NOT NULL\ndimension_id @vla_dimension NOT NULL')
+for index, definition in enumerate(tables):
+    if definition.startswith('CREATE TABLE expression ('):
+        definition = definition.replace('boolean_not_normalized INTEGER NOT NULL DEFAULT 0', 'boolean_not_normalized INTEGER')
+    if definition.startswith('CREATE TABLE constant ('):
+        definition = definition.replace('is_literal INTEGER NOT NULL DEFAULT 0', 'is_literal INTEGER')
+    if definition.startswith('CREATE TABLE statement ('):
+        definition = definition.replace('lowering_generated INTEGER NOT NULL DEFAULT 0', 'lowering_generated INTEGER')
+        definition = definition.replace('is_lowering_boilerplate INTEGER NOT NULL DEFAULT 0', 'is_lowering_boilerplate INTEGER')
+    tables[index] = definition
+
 custom = {
  'entity': 'translation_unit name scope symbol namespace routine variable field label enum alias using type declaration expression statement initialization lifetime temporary base_subobject template template_parameter template_argument template_instance template_specialization source_file include_occurrence source_mapping source_position source_range source_origin macro_definition macro_invocation source_attachment attribute subobject_path name_reference exception_specification virtual_table record_layout vla_dimension coroutine function_eh cleanup_region cleanup_action cleanup_storage cleanup_array cleanup_condition cleanup_abi',
  'capture_profile': 'native_lowered source_semantic cfront_lowered exported_templates_lowered',
@@ -1359,5 +1418,8 @@ connection=sqlite3.connect(':memory:')
 connection.executescript(sql)
 connection.close()
 (HERE/'roslynobj.sql').write_text(sql)
-(HERE/'schema.inc').write_text('static const char roslynobj_schema_sql[] = R"roslynsql('+sql+')roslynsql";\n')
+fingerprint = hashlib.sha256(sql.encode()).hexdigest()
+(HERE/'contract.sha256').write_text(fingerprint+'\n')
+(HERE/'schema.inc').write_text('static const char roslynobj_schema_contract_sha256[] = "'+fingerprint+'";\nstatic const char roslynobj_schema_sql[] = R"roslynsql('+sql+')roslynsql";\n')
+(HERE.parent/'managed/RoslynObj/SchemaContract.g.cs').write_text('// Generated by schema/generate.py; exact development contract admission.\nnamespace RoslynObj;\npublic sealed partial class RoslynObject\n{\n    internal const string SchemaContractFingerprint = "'+fingerprint+'";\n}\n')
 print(f'{len(tables)} tables, {len(rows)} stable kinds')

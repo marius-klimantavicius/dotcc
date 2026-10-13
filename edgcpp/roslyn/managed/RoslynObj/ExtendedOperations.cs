@@ -99,7 +99,7 @@ public sealed class VlaStatementOperation : StatementOperation
     public VlaOperationDetails Vla => Object.Detail("vla_operation",Id,r=>new VlaOperationDetails(Object,r));
     public VariableSymbol? Variable => Vla.Variable;
     public override CppType? Type => Vla.Type;
-    public VlaDimensionDetails? Dimension => Vla.Dimension;
+    public VlaDimension? Dimension => Vla.Dimension;
 }
 
 public sealed class TemporaryOperation : ExpressionOperation
@@ -143,7 +143,7 @@ public sealed class TypeQueryOperation : ExpressionOperation
     public ExpressionOperation? Operand => Query.OperandExpression;
     public bool IsDynamic => Query.IsDynamic;
     public bool IsStandardAlignof => Query.IsStandardAlignof;
-    public VlaDimensionDetails? VlaDimension => Query.VlaDimension;
+    public IReadOnlyList<VlaDimension> EvaluatedDimensions => VlaDimensions;
 }
 
 public sealed class StatementExpressionOperation : ExpressionOperation
@@ -170,7 +170,7 @@ public sealed class VlaExpressionOperation : ExpressionOperation
     public VlaOperationDetails Vla => Object.Detail("vla_operation",Id,r=>new VlaOperationDetails(Object,r));
     public VariableSymbol? Variable => Vla.Variable;
     public CppType? VlaType => Vla.Type;
-    public VlaDimensionDetails? Dimension => Vla.Dimension;
+    public VlaDimension? Dimension => Vla.Dimension;
 }
 
 public sealed class BuiltinOperation : ExpressionOperation

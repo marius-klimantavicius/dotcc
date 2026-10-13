@@ -59,6 +59,10 @@ static Rid roslyn_constant(a_constant_ptr p) {
  switch(p->kind){
  case ck_void:break;
  case ck_integer:content.add("integer_value",{{"value_id",DB.atom(decimal_str_for_integer_constant(p).as_temp_characters())}});break;
+#if UPC_EXTENSIONS_ALLOWED
+ case ck_upc_threads:content.add("upc_threads_value",{{"multiplier_id",DB.atom(decimal_str_for_integer_constant(p).as_temp_characters())}});break;
+ case ck_upc_mythread:break;
+#endif
  case ck_float:
 #if C99_IL_EXTENSIONS_SUPPORTED
  case ck_imaginary:
@@ -97,7 +101,11 @@ static Rid roslyn_constant(a_constant_ptr p) {
  case ck_template_param:{auto &t=p->variant.template_param;Rid expression=0,type=0,child_value=0,child_type=0;RoslynSqlValue number,depth;int opname=0,special=0;bool standard_alignof=false,unqualified=false;
  switch(t.kind){
  case tpck_param:number=static_cast<sqlite3_int64>(t.variant.coordinates.position);depth=static_cast<sqlite3_int64>(t.variant.coordinates.depth);break;
- case tpck_expression:expression=roslyn_expr(expr_node_from_tpck_expression(p),7002);break;
+ case tpck_expression:{an_expr_node_ptr expr=t.variant.expr;
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+ if(!expr&&t.local_expr_ref)expr=roslyn_unique_local_expression(p,lerk_tpl_param_expr);
+#endif
+ expression=roslyn_expr(expr,7002);break;}
  case tpck_member:break;
  case tpck_unknown_function:type=roslyn_type(t.variant.unknown_function.conversion_type);opname=roslyn_kind_edg_opname(t.variant.unknown_function.opname_kind);
 #if MICROSOFT_EXTENSIONS_ALLOWED
@@ -106,7 +114,11 @@ static Rid roslyn_constant(a_constant_ptr p) {
  break;
  case tpck_address:case tpck_dependent_constant:{auto c=t.variant.constant;roslyn_constant_component(id,"dependent",0,c);child_value=roslyn_value_of(c);child_type=roslyn_type(c->type);break;}
  case tpck_concat_string_literals:{int n=0;for(a_constant_ptr c=t.variant.string_literal_list;c;c=c->next){roslyn_constant_component(id,"dependent",n,c);content.add("dependent_constant_element",{{"ordinal",n++},{"value_id",roslyn_value_of(c)},{"type_id",R(roslyn_type(c->type))}},"owner_id");}break;}
- case tpck_sizeof:case tpck_datasizeof:case tpck_alignof:case tpck_uuidof:case tpck_typeid:case tpck_noexcept:type=roslyn_type(t.variant.templ_sizeof.type);expression=roslyn_expr(generic_sizeof_arg_expr(p),7002);standard_alignof=t.variant.templ_sizeof.is_std_alignof;break;
+ case tpck_sizeof:case tpck_datasizeof:case tpck_alignof:case tpck_uuidof:case tpck_typeid:case tpck_noexcept:{type=roslyn_type(t.variant.templ_sizeof.type);an_expr_node_ptr expr=t.variant.templ_sizeof.expr;
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+ if(!expr&&t.local_expr_ref)expr=roslyn_unique_local_expression(p,lerk_generic_sizeof);
+#endif
+ expression=roslyn_expr(expr,7002);standard_alignof=t.variant.templ_sizeof.is_std_alignof;break;}
  case tpck_template_ref:{auto c=t.variant.template_ref.con;roslyn_constant_component(id,"dependent",0,c);child_value=roslyn_value_of(c);child_type=roslyn_type(c->type);int n=0;for(a_template_arg_ptr a=t.variant.template_ref.arg_list;a;a=a->next)content.add("dependent_template_argument",{{"ordinal",n++},{"argument_id",roslyn_argument(a)}},"owner_id");break;}
  case tpck_destructor:type=roslyn_type(t.variant.destructor.type);unqualified=t.variant.destructor.unqualified;break;
  case tpck_integer_pack:{auto c=t.variant.bound;roslyn_constant_component(id,"dependent",0,c);child_value=roslyn_value_of(c);child_type=roslyn_type(c->type);break;}
@@ -123,14 +135,63 @@ static Rid roslyn_constant(a_constant_ptr p) {
 #if DO_IL_LOWERING && !BACK_END_IS_C_GEN_BE && !IL_SHOULD_BE_WRITTEN_TO_FILE
  storage=roslyn_variable(p->assoc_var);
 #endif
- DB.put("constant",{{"id",id},{"type_id",R(roslyn_type(p->type))},{"orig_type_id",R(roslyn_type(p->orig_type))},{"value_id",value},
+ std::vector<std::pair<const char*,RoslynSqlValue>> facts={{"id",id},{"type_id",R(roslyn_type(p->type))},{"orig_type_id",R(roslyn_type(p->orig_type))},{"value_id",value},
   {"associated_storage_variable_id",R(storage)},
   {"name_id",R(p->source_corresp.name?roslyn_name(p->source_corresp):0)},{"containing_entity_id",R(roslyn_owner(p->source_corresp))},{"source_origin_id",R(roslyn_origin(p->source_corresp.decl_position,&p->end_position))},
-  {"backing_expression_id",R(roslyn_expr(p->local_expr_ref?expr_node_from_constant(p):p->expr,7002))},
+  {"backing_expression_id",R(roslyn_expr(p->expr?p->expr:p->local_expr_ref?roslyn_unique_local_expression(p,lerk_constant_expr):nullptr,7002))},
   {"name_reference_id",R(p->kind==ck_ptr_to_member?roslyn_name_reference(p->variant.ptr_to_member.name_reference):0)},
   {"character_kind_id",roslyn_kind_edg_character(static_cast<a_character_kind>(p->character_kind))},
   {"implicit_cast",static_cast<int>(p->implicit_cast)},{"explicit_cast_applied",static_cast<int>(p->explicit_cast_applied)},
   {"is_reinterpret_cast",static_cast<int>(p->is_reinterpret_cast)},{"is_reinterpret_like_cast",static_cast<int>(p->is_reinterpret_like_cast)},
-  {"is_simple_zero",static_cast<int>(p->is_simple_zero)},{"is_pack_expansion",static_cast<int>(p->is_pack_expansion)}});
+  {"is_simple_zero",static_cast<int>(p->is_simple_zero)},{"is_pack_expansion",static_cast<int>(p->is_pack_expansion)}};
+#define CONSTANT_FLAG(field) facts.push_back({#field,static_cast<int>(p->field)})
+ CONSTANT_FLAG(non_arithmetic);CONSTANT_FLAG(null_pointer_constant_ruled_out);CONSTANT_FLAG(nullptr_keyword);
+ CONSTANT_FLAG(explicit_braces_on_aggregate);CONSTANT_FLAG(explicit_parentheses_on_aggregate);CONSTANT_FLAG(from_undefined_preproc_id);
+ CONSTANT_FLAG(uses_designated_initializers);CONSTANT_FLAG(is_named_constant_definition);CONSTANT_FLAG(partial_aggr_value);
+ CONSTANT_FLAG(is_partially_initialized);CONSTANT_FLAG(implicit_aggr_element);CONSTANT_FLAG(is_compound_literal);
+ CONSTANT_FLAG(is_result_of_constexpr_call);CONSTANT_FLAG(is_generic_initializer);CONSTANT_FLAG(constant_for_base_class);
+ CONSTANT_FLAG(constant_for_base_class_from_constexpr_folding);CONSTANT_FLAG(folded_statement_expression);
+ CONSTANT_FLAG(formed_from_promoted_storage);CONSTANT_FLAG(local_expr_ref);
+#if GNU_EXTENSIONS_ALLOWED
+ CONSTANT_FLAG(null_keyword);
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED
+ CONSTANT_FLAG(native_nullptr_keyword);CONSTANT_FLAG(ptr_to_mem_constant_construct);
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED || GNU_EXTENSIONS_ALLOWED
+ CONSTANT_FLAG(flexible_array_initializer);
+#endif
+#if DO_IL_LOWERING
+ CONSTANT_FLAG(initializes_empty_object);CONSTANT_FLAG(is_implicit_initialization);CONSTANT_FLAG(vptr_has_been_lowered);
+ if(p->initializes_empty_object&&(p->kind==ck_aggregate||p->kind==ck_dynamic_init)){
+  const auto &member=p->kind==ck_aggregate?p->variant.aggregate.field_or_base:p->variant.dynamic_init.field_or_base;
+  facts.push_back({p->constant_for_base_class?"initialized_base_subobject_id":"initialized_field_id",R(p->constant_for_base_class?roslyn_base(member.base):roslyn_field(member.field))});
+ }
+#endif
+#undef CONSTANT_FLAG
+ if(p->kind==ck_string){const auto &s=p->variant.string;
+  if(s.literal_kind!=SCLK_NOT_A_LITERAL){const char *prefix=nullptr;switch(literal_encoding_prefix(s.literal_kind)){
+   case SCLK_ORDINARY_LITERAL:prefix="ordinary";break;case SCLK_UTF8_LITERAL:prefix="utf8";break;
+   case SCLK_CHAR16_T_LITERAL:prefix="utf16";break;case SCLK_CHAR32_T_LITERAL:prefix="utf32";break;
+   case SCLK_WIDE_LITERAL:prefix="wide";break;default:DB.fail("Unknown retained literal encoding prefix");break;
+  }
+  if(prefix)facts.push_back({"literal_encoding_prefix_id",K("literal_encoding_prefix",prefix)});
+  facts.push_back({"is_raw_string",static_cast<int>((s.literal_kind&SCLK_RAW_STRING_LITERAL)!=0)});
+  facts.push_back({"is_string_literal",static_cast<int>((s.literal_kind&SCLK_STRING_LITERAL)!=0)});
+  facts.push_back({"is_function_name_literal",static_cast<int>((s.literal_kind&SCLK_FUNCTION_NAME)!=0)});
+  }
+  facts.push_back({"contains_function_name_token",static_cast<int>(s.func_name_tok)});facts.push_back({"is_embed_expansion",static_cast<int>(s.embed_expansion)});
+#if DO_IL_LOWERING && ASSIGN_STRING_LITERAL_SEQUENCE_NUMBERS
+  facts.push_back({"string_sequence_number",Q(s.sequence_number)});
+#endif
+#if PRESERVE_EMBED_DIRECTIVE_WHEN_OPTIMIZED
+  if(s.embed_expansion)facts.push_back({"embed_directive_id",R(DB.atom(s.embed_directive))});
+#endif
+ }
+ if(p->kind==ck_aggregate){facts.push_back({"has_dynamic_init_component",static_cast<int>(p->variant.aggregate.has_dynamic_init_component)});facts.push_back({"added_const_for_template_param",static_cast<int>(p->variant.aggregate.added_const_for_template_param)});}
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+ if(p->kind==ck_template_param)facts.push_back({"template_local_expr_ref",static_cast<int>(p->variant.template_param.local_expr_ref)});
+#endif
+ DB.put_fields("constant",facts);
  roslyn_attributes(id,p->source_corresp.attributes);return id;
 }

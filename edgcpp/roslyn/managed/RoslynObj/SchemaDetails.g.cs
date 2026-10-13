@@ -648,6 +648,7 @@ public sealed class TypeDetails : SemanticDetail
     public bool InGnuAbiTagNamespace => Data.Bool("in_gnu_abi_tag_namespace");
     public bool UseCfrontTransitionalNestedTypeNameMangling => Data.Bool("use_cfront_transitional_nested_type_name_mangling");
     public VariableSymbol? TypeinfoVariable => Object.Link(Data.OptionalLong("typeinfo_variable_id"), value => Object.Variable(value));
+    public SemanticKind SizeKind => Object.Kind(Data.Long("size_kind_id"));
     public IReadOnlyList<DirectBaseDetails> DirectBaseRows => Object.List("SELECT * FROM direct_base WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new DirectBaseDetails(Object, r));
     public IReadOnlyList<VirtualMemberDetails> VirtualMemberRows => Object.List("SELECT * FROM virtual_member WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new VirtualMemberDetails(Object, r));
     public IReadOnlyList<LoweredTypeRelationshipDetails> LoweredTypeRelationshipRows => Object.List("SELECT * FROM lowered_type_relationship WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new LoweredTypeRelationshipDetails(Object, r));
@@ -732,7 +733,7 @@ public sealed class ArrayTypeDetails : SemanticDetail
     public SemanticKind BoundKind => Object.Kind(Data.Long("bound_kind_id"));
     public BigInteger? Bound => Number(Data.OptionalText("bound"));
     public ExpressionOperation? BoundExpression => Object.Link(Data.OptionalLong("bound_expression_id"), value => Object.Expression(value));
-    public VlaDimensionDetails? VlaDimension => Object.Link(Data.OptionalLong("vla_dimension_id"), value => Object.Detail("vla_dimension", value, r => new VlaDimensionDetails(Object, r)));
+    public VlaDimension? VlaDimension => Object.Link(Data.OptionalLong("vla_dimension_id"), value => Object.VlaDimension(value));
     public bool BoundIsZero => Data.Bool("bound_is_zero");
     public bool IsTemplateDependent => Data.Bool("is_template_dependent");
     public bool IsVariable => Data.Bool("is_variable");
@@ -1268,9 +1269,12 @@ public sealed class ExpressionDetails : SemanticDetail
     public bool IsObjectlessMemberReference => Data.Bool("is_objectless_member_reference");
     public bool IsGnuExtension => Data.Bool("is_gnu_extension");
     public bool TypeDefinitionNeeded => Data.Bool("type_definition_needed");
-    public bool BooleanNotNormalized => Data.Bool("boolean_not_normalized");
+    public bool? BooleanNotNormalized => Data.OptionalBool("boolean_not_normalized");
+    public bool IsTypeConstraint => Data.Bool("is_type_constraint");
+    public bool WasLvalueTempInitializer => Data.Bool("was_lvalue_temp_initializer");
     public IReadOnlyList<ExpressionOperandDetails> ExpressionOperandRows => Object.List("SELECT * FROM expression_operand WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new ExpressionOperandDetails(Object, r));
     public IReadOnlyList<ExpressionTemplateArgumentDetails> ExpressionTemplateArgumentRows => Object.List("SELECT * FROM expression_template_argument WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new ExpressionTemplateArgumentDetails(Object, r));
+    public IReadOnlyList<ExpressionVlaDimensionDetails> ExpressionVlaDimensionRows => Object.List("SELECT * FROM expression_vla_dimension WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new ExpressionVlaDimensionDetails(Object, r));
 }
 
 public sealed class StatementDetails : SemanticDetail
@@ -1282,9 +1286,9 @@ public sealed class StatementDetails : SemanticDetail
     public Lifetime? Lifetime => Object.Link(Data.OptionalLong("lifetime_id"), value => Object.Lifetime(value));
     public bool IsGuard => Data.Bool("is_guard");
     public bool IsDeclaredConstexpr => Data.Bool("is_declared_constexpr");
-    public bool LoweringGenerated => Data.Bool("lowering_generated");
+    public bool? LoweringGenerated => Data.OptionalBool("lowering_generated");
     public bool HasAssociatedPragma => Data.Bool("has_associated_pragma");
-    public bool IsLoweringBoilerplate => Data.Bool("is_lowering_boilerplate");
+    public bool? IsLoweringBoilerplate => Data.OptionalBool("is_lowering_boilerplate");
     public bool IsFallthroughStatement => Data.Bool("is_fallthrough_statement");
     public bool IsLikely => Data.Bool("is_likely");
     public bool IsUnlikely => Data.Bool("is_unlikely");
@@ -1401,17 +1405,6 @@ public sealed class ConstantExpressionDetails : SemanticDetail
     public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
 }
 
-public sealed class ConversionExpressionDetails : SemanticDetail
-{
-    internal ConversionExpressionDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public ExpressionOperation Operand => Object.Link(Data.OptionalLong("operand_id"), value => Object.Expression(value))!;
-    public CppType? SourceType => Object.Link(Data.OptionalLong("source_type_id"), value => Object.Type(value));
-    public CppType TargetType => Object.Link(Data.OptionalLong("target_type_id"), value => Object.Type(value))!;
-    public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
-    public FunctionSymbol? Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value));
-    public SemanticEntity? BasePath => Object.Link(Data.OptionalLong("base_path_id"), value => Object.Entity(value));
-}
-
 public sealed class BlockDescriptorDetails : SemanticDetail
 {
     internal BlockDescriptorDetails(RoslynObject owner, Row row) : base(owner, row) { }
@@ -1524,20 +1517,49 @@ public sealed class SwitchStatementDetails : SemanticDetail
     internal SwitchStatementDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public StatementOperation? Body => Object.Link(Data.OptionalLong("body_id"), value => Object.Statement(value));
     public ExpressionOperation? Selector => Object.Link(Data.OptionalLong("selector_id"), value => Object.Expression(value));
-    public LabelSymbol? DefaultLabel => Object.Link(Data.OptionalLong("default_label_id"), value => Object.Label(value));
-    public IReadOnlyList<SwitchCaseDetails> SwitchCaseRows => Object.List("SELECT * FROM switch_case WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new SwitchCaseDetails(Object, r));
+    public SwitchDescriptor Descriptor => Object.Link(Data.OptionalLong("descriptor_id"), value => Object.SwitchDescriptor(value))!;
 }
 
-public sealed class SwitchCaseDetails : SemanticDetail
+public sealed class SwitchDescriptorDetails : SemanticDetail
 {
-    internal SwitchCaseDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public SwitchStatementDetails Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Detail("switch_statement", value, r => new SwitchStatementDetails(Object, r)))!;
-    public long Ordinal => Data.Long("ordinal");
+    internal SwitchDescriptorDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public SwitchCaseEntry? DefaultCase => Object.Link(Data.OptionalLong("default_case_id"), value => Object.SwitchCase(value));
+    public bool HasSortedCases => Data.Bool("has_sorted_cases");
+    public IReadOnlyList<SwitchDescriptorCaseDetails> SwitchDescriptorCaseRows => Object.List("SELECT * FROM switch_descriptor_case WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new SwitchDescriptorCaseDetails(Object, r));
+    public IReadOnlyList<SwitchDescriptorSortedCaseDetails> SwitchDescriptorSortedCaseRows => Object.List("SELECT * FROM switch_descriptor_sorted_case WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new SwitchDescriptorSortedCaseDetails(Object, r));
+}
+
+public sealed class SwitchCaseEntryDetails : SemanticDetail
+{
+    internal SwitchCaseEntryDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public StatementOperation? Statement => Object.Link(Data.OptionalLong("statement_id"), value => Object.Statement(value));
-    public LabelSymbol? Label => Object.Link(Data.OptionalLong("label_id"), value => Object.Label(value));
     public Constant? LowConstant => Object.Link(Data.OptionalLong("low_constant_id"), value => Object.Constant(value));
     public Constant? HighConstant => Object.Link(Data.OptionalLong("high_constant_id"), value => Object.Constant(value));
-    public bool IsDefault => Data.Bool("is_default");
+    public bool ReachableByFallThrough => Data.Bool("reachable_by_fall_through");
+    public SourceInfo? SourceOrigin => Object.Link(Data.OptionalLong("source_origin_id"), value => Object.Source(value));
+}
+
+public sealed class SwitchDescriptorCaseDetails : SemanticDetail
+{
+    internal SwitchDescriptorCaseDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public SwitchDescriptor Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.SwitchDescriptor(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public SwitchCaseEntry Case => Object.Link(Data.OptionalLong("case_id"), value => Object.SwitchCase(value))!;
+}
+
+public sealed class SwitchDescriptorSortedCaseDetails : SemanticDetail
+{
+    internal SwitchDescriptorSortedCaseDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public SwitchDescriptor Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.SwitchDescriptor(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public SwitchCaseEntry Case => Object.Link(Data.OptionalLong("case_id"), value => Object.SwitchCase(value))!;
+}
+
+public sealed class SwitchCaseStatementDetails : SemanticDetail
+{
+    internal SwitchCaseStatementDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public SwitchCaseEntry Entry => Object.Link(Data.OptionalLong("entry_id"), value => Object.SwitchCase(value))!;
+    public StatementOperation SwitchStatement => Object.Link(Data.OptionalLong("switch_statement_id"), value => Object.Statement(value))!;
 }
 
 public sealed class JumpStatementDetails : SemanticDetail
@@ -1632,7 +1654,6 @@ public sealed class TypeQueryExpressionDetails : SemanticDetail
     public ExpressionOperation? OperandExpression => Object.Link(Data.OptionalLong("operand_expression_id"), value => Object.Expression(value));
     public bool IsDynamic => Data.Bool("is_dynamic");
     public bool IsStandardAlignof => Data.Bool("is_standard_alignof");
-    public VlaDimensionDetails? VlaDimension => Object.Link(Data.OptionalLong("vla_dimension_id"), value => Object.Detail("vla_dimension", value, r => new VlaDimensionDetails(Object, r)));
 }
 
 public sealed class TemporaryExpressionDetails : SemanticDetail
@@ -1891,7 +1912,7 @@ public sealed class VlaDimensionDetails : SemanticDetail
     internal VlaDimensionDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public CppType? Type => Object.Link(Data.OptionalLong("type_id"), value => Object.Type(value));
     public ExpressionOperation? Expression => Object.Link(Data.OptionalLong("expression_id"), value => Object.Expression(value));
-    public VlaDimensionDetails? OriginalDimension => Object.Link(Data.OptionalLong("original_dimension_id"), value => Object.Detail("vla_dimension", value, r => new VlaDimensionDetails(Object, r)));
+    public VlaDimension? OriginalDimension => Object.Link(Data.OptionalLong("original_dimension_id"), value => Object.VlaDimension(value));
     public VariableSymbol? DimensionVariable => Object.Link(Data.OptionalLong("dimension_variable_id"), value => Object.Variable(value));
     public VariableSymbol? CountVariable => Object.Link(Data.OptionalLong("count_variable_id"), value => Object.Variable(value));
     public StatementOperation? EvaluationStatement => Object.Link(Data.OptionalLong("evaluation_statement_id"), value => Object.Statement(value));
@@ -1905,7 +1926,7 @@ public sealed class VlaOperationDetails : SemanticDetail
     internal VlaOperationDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public VariableSymbol? Variable => Object.Link(Data.OptionalLong("variable_id"), value => Object.Variable(value));
     public CppType? Type => Object.Link(Data.OptionalLong("type_id"), value => Object.Type(value));
-    public VlaDimensionDetails? Dimension => Object.Link(Data.OptionalLong("dimension_id"), value => Object.Detail("vla_dimension", value, r => new VlaDimensionDetails(Object, r)));
+    public VlaDimension? Dimension => Object.Link(Data.OptionalLong("dimension_id"), value => Object.VlaDimension(value));
     public bool IsTypedefDeclaration => Data.Bool("is_typedef_declaration");
 }
 
@@ -2051,13 +2072,52 @@ public sealed class ConstantDetails : SemanticDetail
     public NameReferenceDetails? NameReference => Object.Link(Data.OptionalLong("name_reference_id"), value => Object.Detail("name_reference", value, r => new NameReferenceDetails(Object, r)));
     public SemanticKind? CharacterKind => Object.Link(Data.OptionalLong("character_kind_id"), value => Object.Kind(value));
     public bool IsPackExpansion => Data.Bool("is_pack_expansion");
-    public bool IsLiteral => Data.Bool("is_literal");
+    public bool? IsLiteral => Data.OptionalBool("is_literal");
     public bool ImplicitCast => Data.Bool("implicit_cast");
     public bool ExplicitCastApplied => Data.Bool("explicit_cast_applied");
     public bool IsReinterpretCast => Data.Bool("is_reinterpret_cast");
     public bool IsReinterpretLikeCast => Data.Bool("is_reinterpret_like_cast");
     public bool IsSimpleZero => Data.Bool("is_simple_zero");
     public VariableSymbol? AssociatedStorageVariable => Object.Link(Data.OptionalLong("associated_storage_variable_id"), value => Object.Variable(value));
+    public bool NonArithmetic => Data.Bool("non_arithmetic");
+    public bool NullPointerConstantRuledOut => Data.Bool("null_pointer_constant_ruled_out");
+    public bool NullptrKeyword => Data.Bool("nullptr_keyword");
+    public bool ExplicitBracesOnAggregate => Data.Bool("explicit_braces_on_aggregate");
+    public bool ExplicitParenthesesOnAggregate => Data.Bool("explicit_parentheses_on_aggregate");
+    public bool FromUndefinedPreprocId => Data.Bool("from_undefined_preproc_id");
+    public bool UsesDesignatedInitializers => Data.Bool("uses_designated_initializers");
+    public bool IsNamedConstantDefinition => Data.Bool("is_named_constant_definition");
+    public bool PartialAggrValue => Data.Bool("partial_aggr_value");
+    public bool IsPartiallyInitialized => Data.Bool("is_partially_initialized");
+    public bool ImplicitAggrElement => Data.Bool("implicit_aggr_element");
+    public bool IsCompoundLiteral => Data.Bool("is_compound_literal");
+    public bool IsResultOfConstexprCall => Data.Bool("is_result_of_constexpr_call");
+    public bool IsGenericInitializer => Data.Bool("is_generic_initializer");
+    public bool ConstantForBaseClass => Data.Bool("constant_for_base_class");
+    public bool ConstantForBaseClassFromConstexprFolding => Data.Bool("constant_for_base_class_from_constexpr_folding");
+    public bool FoldedStatementExpression => Data.Bool("folded_statement_expression");
+    public bool FormedFromPromotedStorage => Data.Bool("formed_from_promoted_storage");
+    public bool LocalExprRef => Data.Bool("local_expr_ref");
+    public bool? NullKeyword => Data.OptionalBool("null_keyword");
+    public bool? NativeNullptrKeyword => Data.OptionalBool("native_nullptr_keyword");
+    public bool? PtrToMemConstantConstruct => Data.OptionalBool("ptr_to_mem_constant_construct");
+    public bool? FlexibleArrayInitializer => Data.OptionalBool("flexible_array_initializer");
+    public bool? InitializesEmptyObject => Data.OptionalBool("initializes_empty_object");
+    public bool? IsImplicitInitialization => Data.OptionalBool("is_implicit_initialization");
+    public SemanticKind? LiteralEncodingPrefix => Object.Link(Data.OptionalLong("literal_encoding_prefix_id"), value => Object.Kind(value));
+    public bool? IsRawString => Data.OptionalBool("is_raw_string");
+    public bool? IsStringLiteral => Data.OptionalBool("is_string_literal");
+    public bool? IsFunctionNameLiteral => Data.OptionalBool("is_function_name_literal");
+    public bool? ContainsFunctionNameToken => Data.OptionalBool("contains_function_name_token");
+    public bool? IsEmbedExpansion => Data.OptionalBool("is_embed_expansion");
+    public BigInteger? StringSequenceNumber => Number(Data.OptionalText("string_sequence_number"));
+    public string? EmbedDirective => Object.Text(Data.OptionalLong("embed_directive_id"));
+    public bool? HasDynamicInitComponent => Data.OptionalBool("has_dynamic_init_component");
+    public bool? AddedConstForTemplateParam => Data.OptionalBool("added_const_for_template_param");
+    public FieldSymbol? InitializedField => Object.Link(Data.OptionalLong("initialized_field_id"), value => Object.Field(value));
+    public BaseSubobject? InitializedBaseSubobject => Object.Link(Data.OptionalLong("initialized_base_subobject_id"), value => Object.Subobject(value));
+    public bool? TemplateLocalExprRef => Data.OptionalBool("template_local_expr_ref");
+    public bool? VptrHasBeenLowered => Data.OptionalBool("vptr_has_been_lowered");
     public IReadOnlyList<ConstantComponentDetails> ConstantComponentRows => Object.List("SELECT * FROM constant_component WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new ConstantComponentDetails(Object, r));
 }
 
@@ -2285,7 +2345,7 @@ public sealed class SubobjectPathDetails : SemanticDetail
     public FieldSymbol? Field => Object.Link(Data.OptionalLong("field_id"), value => Object.Field(value));
     public BaseSubobject? BaseSubobject => Object.Link(Data.OptionalLong("base_subobject_id"), value => Object.Subobject(value));
     public BigInteger? ElementOffset => Number(Data.OptionalText("element_offset"));
-    public SubobjectPathDetails? Next => Object.Link(Data.OptionalLong("next_id"), value => Object.Detail("subobject_path", value, r => new SubobjectPathDetails(Object, r)));
+    public SubobjectPath? Next => Object.Link(Data.OptionalLong("next_id"), value => Object.SubobjectPath(value));
     public bool IsConverted => Data.Bool("is_converted");
 }
 
@@ -2338,7 +2398,7 @@ public sealed class InitializationDetails : SemanticDetail
     public bool IsBraced => Data.Bool("is_braced");
     public bool IsCompoundLiteral => Data.Bool("is_compound_literal");
     public VariableSymbol? GuardVariable => Object.Link(Data.OptionalLong("guard_variable_id"), value => Object.Variable(value));
-    public VlaDimensionDetails? VlaDimension => Object.Link(Data.OptionalLong("vla_dimension_id"), value => Object.Detail("vla_dimension", value, r => new VlaDimensionDetails(Object, r)));
+    public VlaDimension? VlaDimension => Object.Link(Data.OptionalLong("vla_dimension_id"), value => Object.VlaDimension(value));
     public bool IsFreeingOfExceptionObject => Data.Bool("is_freeing_of_exception_object");
     public IReadOnlyList<InitializationOperandDetails> InitializationOperandRows => Object.List("SELECT * FROM initialization_operand WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new InitializationOperandDetails(Object, r));
     public IReadOnlyList<ConstructionDependencyDetails> ConstructionDependencyRows => Object.List("SELECT * FROM construction_dependency WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new ConstructionDependencyDetails(Object, r));
@@ -3392,5 +3452,19 @@ public sealed class RecordVcallOffsetDetails : SemanticDetail
     public BaseSubobject? BaseSubobject => Object.Link(Data.OptionalLong("base_subobject_id"), value => Object.Subobject(value));
     public BigInteger VtableIndex => RequiredNumber(Data.OptionalText("vtable_index"));
     public bool IsPrimary => Data.Bool("is_primary");
+}
+
+public sealed class UpcThreadsValueDetails : SemanticDetail
+{
+    internal UpcThreadsValueDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public BigInteger Multiplier => RequiredNumber(Object.Text(Data.OptionalLong("multiplier_id")));
+}
+
+public sealed class ExpressionVlaDimensionDetails : SemanticDetail
+{
+    internal ExpressionVlaDimensionDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public ExpressionOperation Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Expression(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public VlaDimension Dimension => Object.Link(Data.OptionalLong("dimension_id"), value => Object.VlaDimension(value))!;
 }
 

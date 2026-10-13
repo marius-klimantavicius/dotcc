@@ -59,6 +59,17 @@ internal sealed class SnapshotStore : IDisposable
 
     internal Row? GetByOwner(string table,long owner) => GetUnique(table,owner,"owner_id");
 
+    internal Row? Fact(long owner,long fact)
+    {
+        lock(sync)
+        {
+            EnsureActive();var key=($"fact_availability:{fact}",owner);
+            if(rows.TryGet(key,out var value))return value;
+            var result=Query($"SELECT * FROM fact_availability WHERE owner_id=$owner AND fact_id={fact}",owner);
+            value=result.FirstOrDefault();rows.Set(key,value);return value;
+        }
+    }
+
     private Row? GetUnique(string table,long id,string keyColumn)
     {
         lock (sync)
@@ -209,7 +220,7 @@ internal sealed class SnapshotStore : IDisposable
             }
             var operations=nodes.Where(r=>RoslynObject.CatalogKind(r.Long("kind_id")).Name=="enk_operation").Select(r=>r.Long("id")).ToArray();
             _=PrimeRows("call_expression",operations,token);
-            _=PrimeRows("conversion_expression",operations,token);
+            _=PrimeRows("operator_expression",operations,token);
             var exceptionOperations=nodes.Where(r=>RoslynObject.CatalogKind(r.Long("kind_id")).Name=="enk_lowered_eh_construct").Select(r=>r.Long("id")).ToArray();
             _=PrimeRows("cleanup_state_operation",exceptionOperations,token);
             return;
@@ -228,6 +239,7 @@ internal sealed class SnapshotStore : IDisposable
             _=PrimeRows(companion,ids,token);
         }
         if(table=="template_symbol")_ = PrimeRows("template_definition",page.Select(r=>r.Long("descriptor_id")).Distinct().ToArray(),token);
+        if(table=="type"){PrimeFacts(ids,5015,token);PrimeFacts(ids,5016,token);}
         if(table is "source_entry" or "record_declaration")
         {
             var targets=PrimeRows("entity",page.Select(r=>r.OptionalLong("target_id")).OfType<long>().Distinct().ToArray(),token);
@@ -255,6 +267,19 @@ internal sealed class SnapshotStore : IDisposable
                 found.AddRange(result);
             }
         return found.ToArray();
+    }
+
+    private void PrimeFacts(long[] owners,long fact,CancellationToken token)
+    {
+        var pending=owners.Where(id=>!rows.TryGet(($"fact_availability:{fact}",id),out _)).ToArray();
+        foreach(var batch in pending.Chunk(900))
+        {
+            var placeholders=string.Join(',',batch.Select((_,i)=>$"$key{i}"));
+            var result=QueryParameters($"SELECT * FROM fact_availability WHERE fact_id={fact} AND owner_id IN ({placeholders})",0,token,batch.Select(id=>(object?)id).ToArray());
+            var present=result.Select(row=>row.Long("owner_id")).ToHashSet();
+            foreach(var id in batch)if(!present.Contains(id))rows.Set(($"fact_availability:{fact}",id),null);
+            foreach(var row in result)rows.Set(($"fact_availability:{fact}",row.Long("owner_id")),row);
+        }
     }
 
     internal long Scalar(string sql, long owner = 0)

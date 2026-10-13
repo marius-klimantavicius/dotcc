@@ -39,13 +39,13 @@ INSERT INTO build_capability(name_id,state_id,value_id,required,enabled)
 INSERT INTO name(id,spelling_id,category_id) SELECT id,spelling,
  (SELECT id FROM kind WHERE family='name_category' AND name='named')
  FROM (SELECT 5 id,5 spelling UNION ALL SELECT 8,6 UNION ALL SELECT 21,7 UNION ALL SELECT 41,9 UNION ALL SELECT 43,10 UNION ALL SELECT 94,16);
-INSERT INTO type(id,kind_id,name_id,size,alignment,incomplete) VALUES
- (3,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),NULL,'16','16',0),
- (4,(SELECT id FROM kind WHERE family='type' AND name='tk_routine'),NULL,'0','1',0),
- (40,(SELECT id FROM kind WHERE family='type' AND name='tk_struct'),41,'16','16',0),
- (102,(SELECT id FROM kind WHERE family='type' AND name='tk_float'),NULL,'8','8',0),
- (105,(SELECT id FROM kind WHERE family='type' AND name='tk_array'),NULL,'6','2',0),
- (106,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),NULL,'2','2',0);
+INSERT INTO type(id,kind_id,name_id,size,alignment,incomplete,size_kind_id) VALUES
+ (3,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),NULL,'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (4,(SELECT id FROM kind WHERE family='type' AND name='tk_routine'),NULL,'0','1',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (40,(SELECT id FROM kind WHERE family='type' AND name='tk_struct'),41,'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (102,(SELECT id FROM kind WHERE family='type' AND name='tk_float'),NULL,'8','8',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (105,(SELECT id FROM kind WHERE family='type' AND name='tk_array'),NULL,'6','2',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (106,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),NULL,'2','2',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity'));
 INSERT INTO arithmetic_type(id,arithmetic_kind_id,bits,signed,precision,radix) VALUES
  (3,(SELECT id FROM kind WHERE family='arithmetic_kind' AND name='unsigned_integer'),128,0,128,2),
  (102,(SELECT id FROM kind WHERE family='arithmetic_kind' AND name='floating'),64,1,53,2),
@@ -117,7 +117,7 @@ INSERT INTO function_eh(id,routine_id,prologue_id,initial_state,null_state)
 INSERT INTO cleanup_region(id,function_eh_id,ordinal,condition_id) VALUES(51,50,0,55);
 INSERT INTO cleanup_storage_location(id,kind_id,variable_id,offset)
  VALUES(53,(SELECT id FROM kind WHERE family='storage_location_kind' AND name='direct_variable'),7,'0');
-INSERT INTO type(id,kind_id,size,alignment,incomplete) VALUES(84,(SELECT id FROM kind WHERE family='type' AND name='tk_pointer'),'8','8',0);
+INSERT INTO type(id,kind_id,size,alignment,incomplete,size_kind_id) VALUES(84,(SELECT id FROM kind WHERE family='type' AND name='tk_pointer'),'8','8',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity'));
 INSERT INTO pointer_type(id,pointee_type_id) VALUES(84,3);
 INSERT INTO constant_value(id,kind_id) VALUES(83,(SELECT id FROM kind WHERE family='constant' AND name='ck_address'));
 INSERT INTO address_value(id,base_kind_id,base_entity_id,offset) VALUES(83,(SELECT id FROM kind WHERE family='address_base' AND name='abk_variable'),7,'0');
@@ -156,3 +156,7 @@ INSERT INTO template_instance(id,result_id,template_id,state_id)
 INSERT INTO template_instance_argument VALUES(92,(SELECT id FROM kind WHERE family='template_argument_role' AND name='primary'),0,91);
 INSERT INTO template_parameter(id,template_id,ordinal,depth,kind_id)
  VALUES(93,90,0,0,(SELECT id FROM kind WHERE family='template_parameter' AND name='tpk_type'));
+INSERT INTO fact_availability(owner_id,fact_id,state_id)
+ SELECT t.id,f.id,a.id FROM type t,kind f,kind a
+ WHERE f.family='fact' AND f.name IN('size','alignment') AND a.family='availability'
+ AND a.name=CASE WHEN t.kind_id=(SELECT id FROM kind WHERE family='type' AND name='tk_routine') THEN 'not_applicable' ELSE 'available' END;
