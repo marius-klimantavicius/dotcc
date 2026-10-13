@@ -62,7 +62,8 @@ internal static class RoutineProjection
             if(!source)
             {
                 var alternate=unit.Functions.Where(f=>f.PrimaryEntry is not null).ToArray();
-                check(alternate.Length>0&&alternate.All(f=>f.PrimaryEntry!=f&&f.PrimaryEntry!.ContainingType==f.ContainingType&&f.PrimaryEntry.SpecialFunctionKind==f.SpecialFunctionKind)&&alternate.Any(f=>f.ContainingType?.Name=="RoutineValue"&&f.SpecialFunctionKind?.Name=="sfk_constructor"),"Actual alternate constructor/destructor entries must navigate their distinct retained primary entry of the same class and special-function kind without reconstructing a wrapper hierarchy.");
+                check(alternate.All(f=>f.PrimaryEntry!=f&&f.PrimaryEntry!.ContainingType==f.ContainingType&&f.PrimaryEntry.SpecialFunctionKind==f.SpecialFunctionKind),"Actual alternate constructor/destructor entries must navigate their distinct retained primary entry of the same class and special-function kind without reconstructing a wrapper hierarchy.");
+                check(unit.Capabilities.Any(c=>c.Name=="IA64_ABI"&&c.Enabled==true)?alternate.Any(f=>f.ContainingType?.Name=="RoutineValue"&&f.SpecialFunctionKind?.Name=="sfk_constructor"):alternate.Length==0,"Primary-entry links must retain a positive constructor under the actual Itanium ABI guard and remain absent when that field is not compiled.");
             }
             if(profile is "native_lowered" or "exported_templates_lowered")check(unit.Functions.Any(f=>f.OverridingFunctionForWrapper is {Name:"clone"}&&f.ReturnAdjustment is not null),"An Itanium ABI wrapper must retain its guarded exact return adjustment metadata.");
             if(profile=="cfront_lowered")check(unit.Functions.All(f=>f.ReturnAdjustment is null),"Cfront routines must preserve unknown adjustment metadata when the Itanium-only fields are not present.");

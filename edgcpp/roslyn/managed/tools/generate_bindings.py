@@ -97,7 +97,7 @@ booleans.update({'vla_treated_as_zero_length_array','class_subobject_with_tail_p
     'member_of_unknown_base','qualified_unknown_base_member','member_of_unknown_super',
     'microsoft_identifier_used','marked_as_gnu_extension','externalized','maybe_unused',
     'named_in_strong_using','address_taken','locally_declared','parameter_used_as_lvalue'})
-numeric_text = {'scope_number','local_scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
+numeric_text = {'scope_number','local_scope_number','num_template_arguments','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','first_line','logical_line','physical_line',
     'integer_argument','integer_value','pointer_alignment','shared_block_size','number_of_constraints'}

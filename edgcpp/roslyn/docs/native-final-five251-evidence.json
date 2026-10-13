@@ -1,0 +1,101 @@
+{
+  "checkpoint_base": "448f4c1e0f1cf063b13d160b1eb83cfd09e632c3",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five",
+  "validation_instances": 211,
+  "unique_objects": 211,
+  "strict_builds": 14,
+  "profiles": [
+    "native",
+    "source",
+    "cfront",
+    "exported",
+    "sun",
+    "usl21",
+    "usl30",
+    "host-long-double",
+    "host-double",
+    "softfloat",
+    "instantiation",
+    "tableless",
+    "extern-inline",
+    "separate-init"
+  ],
+  "pinned_inputs_per_stage": 316,
+  "canonical_backend_files_per_stage": 26,
+  "compiler_export_gate_commands_running": false,
+  "native_tracked_candidate_paths": [],
+  "restart_note_untracked": true,
+  "native_owned_note": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+    "sha256": "92ab11bfc71fb1b31ef9eeefe7cd1edec84495a83525e3a1688bd1139e09f7fc"
+  },
+  "workspace_status_native_scope": "?? edgcpp/roslyn/tests/fixtures/name_reference_overloads.cpp\n",
+  "coordinator_owned_changes": [
+    "schema final-five removals/generated fingerprint/backend schema",
+    "templates unknown-bound union rejection guard"
+  ],
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/accepted-refresh-plan.json",
+      "sha256": "87a0d879c0bfb1e07d68c0777124ff5d29ac7ad3f7d384cc463e27606db8c337"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/all-profile-results-final.json",
+      "sha256": "3fe26107528a44615b988e5f171f01da2dbe4a231c9635275b4d313322e73509"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/build-results-final.json",
+      "sha256": "a5f37d47a4b541d2adb94d679454b744a57f4f72b987e66a3eb193b95d68bbdf"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/backend-hashes-start.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/validation-summary-final.json",
+      "sha256": "fe0ec833c0292d44bf86e77fbfcbf7ac29cbb4553feeb3e53469c4c97ab0bcb2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/gate-final.log",
+      "sha256": "4d044fda323943d894f2f67d2b85d41c6197e615497f089672c68b970d7bd6f4"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/scale-result.json",
+      "sha256": "f3af06dfc12f47538ba6a398bbdc8ea95c996d219b80a5eeb53fbe17d19673e2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/scale-comparison.json",
+      "sha256": "3c31a97c124d3cf518c24520296c877c30ec2ff65a1ca581d515facb4366b6ff"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/refresh-final.log",
+      "sha256": "4e5dd815e17b85cc80f406bd643178725efec78228f0233e908fe9e7a782489d"
+    }
+  ],
+  "scale": {
+    "old_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/scale.roslynobj",
+    "new_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/scale.roslynobj",
+    "old_bytes": 7488512,
+    "new_bytes": 7487488,
+    "byte_reduction": 1024,
+    "old_entities": 98697,
+    "new_entities": 98697,
+    "old_execution_operations": 7023,
+    "new_execution_operations": 7023,
+    "new_wall_seconds": 0.57,
+    "new_max_rss_kib": 44220,
+    "note": "One fresh producer measurement. Existing archived object supplies size/cardinality comparison; no contemporaneous repeated old-writer benchmark."
+  },
+  "early_public_gate": "PASS2610/124 distinct native-source paths; final full cohort and scale pending",
+  "read_only_comparison": "/tmp/roslyn-root-final-five8-common-columns.json",
+  "no_new_probes_before_acceptance": true
+}

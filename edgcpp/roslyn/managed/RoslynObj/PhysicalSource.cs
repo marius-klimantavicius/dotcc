@@ -7,8 +7,6 @@ public sealed class IncludeOccurrence : SemanticEntity
     public IncludeOccurrenceDetails Details { get; }
     public SourceFile File => Details.File;
     public IncludeOccurrence? Parent => Details.Parent;
-    /// <summary>The pinned EDG source-file descriptor has no include directive position; this is null.</summary>
-    public SourcePosition? Position => Details.Position;
     public string? DisplayName => Details.DisplayName;
     public string? NameAsWritten => Details.NameAsWritten;
     public long Ordinal => Details.Ordinal;

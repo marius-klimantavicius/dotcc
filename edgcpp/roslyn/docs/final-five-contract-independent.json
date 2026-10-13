@@ -1,0 +1,23 @@
+{
+  "same_tables": true,
+  "removed": {
+    "cleanup_action": [
+      "is_unordered"
+    ],
+    "include_occurrence": [
+      "position_id"
+    ],
+    "parameter_type": [
+      "source_origin_id"
+    ],
+    "template_argument": [
+      "deduced_array_bound"
+    ],
+    "vector_type": [
+      "element_count"
+    ]
+  },
+  "changed_surviving_column_metadata": [],
+  "same_kind_rows": true,
+  "same_indexes": true
+}

@@ -1,0 +1,739 @@
+{
+  "corpus": "closure251-phantom29",
+  "distinct_objects": 187,
+  "rows": [
+    {
+      "id": 6001,
+      "family": "role",
+      "name": "operand",
+      "count": 39068,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 22017,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        },
+        {
+          "table": "expression_operand",
+          "column": "role_id",
+          "count": 17051,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6002,
+      "family": "role",
+      "name": "callee",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6003,
+      "family": "role",
+      "name": "argument",
+      "count": 109,
+      "observations": [
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 9,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/name_references.roslynobj"
+        },
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 55,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj"
+        },
+        {
+          "table": "initialization_operand",
+          "column": "role_id",
+          "count": 45,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6004,
+      "family": "role",
+      "name": "receiver",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6005,
+      "family": "role",
+      "name": "return_slot",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6006,
+      "family": "role",
+      "name": "condition",
+      "count": 5,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 5,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6007,
+      "family": "role",
+      "name": "then",
+      "count": 253,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 253,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6008,
+      "family": "role",
+      "name": "else",
+      "count": 83,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 83,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6009,
+      "family": "role",
+      "name": "body",
+      "count": 99,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 99,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6010,
+      "family": "role",
+      "name": "initialization",
+      "count": 710,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 502,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        },
+        {
+          "table": "semantic_reference",
+          "column": "role_id",
+          "count": 208,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6011,
+      "family": "role",
+      "name": "increment",
+      "count": 7,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 7,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/upc_affinity.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6012,
+      "family": "role",
+      "name": "statement",
+      "count": 6489,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 6489,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6013,
+      "family": "role",
+      "name": "result",
+      "count": 14,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 14,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_c.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6014,
+      "family": "role",
+      "name": "metadata",
+      "count": 62,
+      "observations": [
+        {
+          "table": "semantic_reference",
+          "column": "role_id",
+          "count": 62,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6015,
+      "family": "role",
+      "name": "backing_expression",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6016,
+      "family": "role",
+      "name": "primary_template",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6017,
+      "family": "role",
+      "name": "selected_partial_specialization",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6018,
+      "family": "role",
+      "name": "type_operand",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6019,
+      "family": "role",
+      "name": "ready",
+      "count": 36,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 36,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6020,
+      "family": "role",
+      "name": "suspend",
+      "count": 36,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 36,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6021,
+      "family": "role",
+      "name": "resume",
+      "count": 36,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 36,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6022,
+      "family": "role",
+      "name": "yield",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6023,
+      "family": "role",
+      "name": "return_value",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6024,
+      "family": "role",
+      "name": "affinity",
+      "count": 4,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/upc_affinity.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6025,
+      "family": "role",
+      "name": "cleanup",
+      "count": 160,
+      "observations": [
+        {
+          "table": "eh_table_projection",
+          "column": "kind_id",
+          "count": 148,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 9,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj"
+        },
+        {
+          "table": "semantic_reference",
+          "column": "role_id",
+          "count": 3,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/retained.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6026,
+      "family": "role",
+      "name": "normal",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6027,
+      "family": "role",
+      "name": "execution",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6028,
+      "family": "role",
+      "name": "source_parameter",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6029,
+      "family": "role",
+      "name": "this_parameter",
+      "count": 3115,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 632,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 1675,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 808,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6030,
+      "family": "role",
+      "name": "return_parameter",
+      "count": 18,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 7,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 7,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6031,
+      "family": "role",
+      "name": "vtt_parameter",
+      "count": 188,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 51,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 72,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 65,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6032,
+      "family": "role",
+      "name": "abi_parameter",
+      "count": 777,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 65,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 456,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 256,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6033,
+      "family": "role",
+      "name": "ordinary_parameter",
+      "count": 9238,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 1686,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 5880,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 1672,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6034,
+      "family": "role",
+      "name": "member",
+      "count": 311,
+      "observations": [
+        {
+          "table": "semantic_reference",
+          "column": "role_id",
+          "count": 296,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        },
+        {
+          "table": "designator_value",
+          "column": "kind_id",
+          "count": 7,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_aggregates.roslynobj"
+        },
+        {
+          "table": "subobject_path",
+          "column": "kind_id",
+          "count": 8,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6035,
+      "family": "role",
+      "name": "base",
+      "count": 5,
+      "observations": [
+        {
+          "table": "subobject_path",
+          "column": "kind_id",
+          "count": 5,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6036,
+      "family": "role",
+      "name": "element",
+      "count": 58,
+      "observations": [
+        {
+          "table": "eh_table_projection",
+          "column": "kind_id",
+          "count": 47,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "subobject_path",
+          "column": "kind_id",
+          "count": 8,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj"
+        },
+        {
+          "table": "designator_value",
+          "column": "kind_id",
+          "count": 3,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constant_aggregates.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6037,
+      "family": "role",
+      "name": "constructor",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6038,
+      "family": "role",
+      "name": "destructor",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6039,
+      "family": "role",
+      "name": "allocator",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6040,
+      "family": "role",
+      "name": "deallocator",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6041,
+      "family": "role",
+      "name": "constraint",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 16001,
+      "family": "reference_kind",
+      "name": "variable",
+      "count": 5376,
+      "observations": [
+        {
+          "table": "reference_expression",
+          "column": "reference_kind_id",
+          "count": 5376,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 16002,
+      "family": "reference_kind",
+      "name": "routine",
+      "count": 2482,
+      "observations": [
+        {
+          "table": "reference_expression",
+          "column": "reference_kind_id",
+          "count": 2482,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 16003,
+      "family": "reference_kind",
+      "name": "field",
+      "count": 1037,
+      "observations": [
+        {
+          "table": "reference_expression",
+          "column": "reference_kind_id",
+          "count": 1037,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 16004,
+      "family": "reference_kind",
+      "name": "label",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 16005,
+      "family": "reference_kind",
+      "name": "constant",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 16006,
+      "family": "reference_kind",
+      "name": "type",
+      "count": 11,
+      "observations": [
+        {
+          "table": "reference_expression",
+          "column": "reference_kind_id",
+          "count": 11,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout_c.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 16007,
+      "family": "reference_kind",
+      "name": "builtin",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 16008,
+      "family": "reference_kind",
+      "name": "property",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 16009,
+      "family": "reference_kind",
+      "name": "destructor",
+      "count": 0,
+      "observations": []
+    },
+    {
+      "id": 6042,
+      "family": "role",
+      "name": "virtual_base_parameter",
+      "count": 36,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 9,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 18,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 9,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 6043,
+      "family": "role",
+      "name": "destructor_control_parameter",
+      "count": 91,
+      "observations": [
+        {
+          "table": "routine_parameter",
+          "column": "role_id",
+          "count": 26,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "routine_type_parameter",
+          "column": "role_id",
+          "count": 27,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        },
+        {
+          "table": "call_argument",
+          "column": "role_id",
+          "count": 38,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+        }
+      ]
+    },
+    {
+      "id": 1037048,
+      "family": "role",
+      "name": "dimension",
+      "count": 2,
+      "observations": [
+        {
+          "table": "structural_child",
+          "column": "role_id",
+          "count": 2,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/execution_c.roslynobj"
+        }
+      ]
+    }
+  ],
+  "caveat": "Runtime tag occurrence only; payload field and identity/order proof remain separate obligations."
+}

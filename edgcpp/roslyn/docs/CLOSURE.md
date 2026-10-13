@@ -1,30 +1,39 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after scoped availability/derivation/orphan/prototype/UUID
-acceptance: eight existing objects pass499 and four fresh objects pass95; self73,
-clean build/generator/literal/diff checks pass. These are12 distinct bounded
-paths. All14 unchanged stages/pins retain316 pristine inputs/26 canonical files;
-no new strict build/full187/scale campaign is claimed. Per-owner availability
-state/reason, orphan list quantities/identities, inclusive derivation tails and
-reverse order, C prototype scope sharing and actual class/enum UUID storage pass.
-The prior routine/constant gate (existing8/PASS350,fresh4/PASS92,self73) remains
-separate accepted history. Array-specific dependent-bound activation is pending.
-The preceding retained-six gate (fresh5/PASS97,existing9/PASS518,self73) is a
-separate bounded checkpoint. Array-specific dependent-bound activation remains
-pending; its constant-owned alternative stays positively verified.
-The previous pragma/scope gate (five fresh objects and27 ordinary instances/
-25 distinct paths, Workspace82 including self73) remains separate history.
-The metadata-root/empty-enum acceptance (14 strict profiles,
-25 refreshed unique paths/PASS1039 plus10 existing paths/PASS278,self73). The
-accepted29 cleanup/e49f boundary (187 unique paths,PASS3871) remains a separate
-historical baseline; no full187 rerun or new scale campaign is claimed.
-Accepted251 cleanup/evaluation-role batch passes2621 on175 unique paths
-(186 validation entries),self73. Prior182/PASS2462 and bounded47/PASS919
-remain historical evidence with their stated compiler/snapshot boundaries.
-The267 bounded variable/execution batch is complete; this checklist
-separates missing work from existing adapters awaiting evidence. Full M0–M5 stays
-open. C++/CLI and C++/CX are excluded by the user. Native Microsoft extensions
-remain required. Optional source positions never block semantic acceptance.
+Active on 2026-10-13 at the final five-column format boundary. Current contract
+is `4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`:
+251 tables and 39,145 unchanged stable kind IDs. All 14 strict profiles pass
+316 Git-pinned stock inputs, the stock tool pin and 26 canonical backend files.
+All 211 validation instances are distinct paths and pass complete-header,
+FK, 1 KiB page, semantic-storage and expression-type checks. The final managed
+211-path navigation gate passes4437 assertions; build0 warnings/errors, self73,
+archived-e49f rejection, generator249/1941, literal/diff and bounded scale checks
+pass. Early124/PASS2610 is explicitly intermediate history.
+
+Exactly five unsupported/optional/frontend slots are removed together with their
+unused generated projections. CleanupAction.IsUnordered remains nullable unknown;
+Initialization.IsUnordered is a separate retained fact. An unexpected retained
+unknown-bound non-type deduction argument fails export explicitly before union
+access, rather than dropping its integer payload or inventing a Constant.
+Every surviving column definition, index and kind row is unchanged. Eight matching
+old/new snapshots have identical surviving semantic rows; their sole nonidentity
+variation is EDG's predefined __TIME__ text. Older e49f objects are deliberately
+rejected by the new reader. This is a development contract checkpoint, not a
+migration or public version-freeze promise.
+
+Required field proof remains 1409 verified and 122 mapped pending validation.
+All 2,000 rows have a mapping or explicit disposition; no raw/planned adapter rows
+remain. The remaining work is exact public identity/ordering proof, absent retained
+branch examples and stock/profile disposition review. No confirmed new missing
+native dispatch or API implementation is open in the reviewed queue. Scoped
+availability, workspace/artifact identity, private bulk loading, bounded reader
+caches and packaging are implemented and have genuine acceptance. Full M0–M5
+stays open until required semantic proof and final release documentation close.
+C++/CLI/CX and semantic linking are excluded. Source locations are optional.
+
+Older bounded milestones and the 187-path e49f baseline remain historical evidence;
+the new 211-path cohort includes their recent metadata, declaration, constant and
+prototype/UUID probes. Do not relabel old assertions as current executions.
 
 ## Current implementation and integration
 
@@ -58,8 +67,7 @@ All active adapters reviewed so far exist; residual rows are exact public identi
 proofs, absent retained branch examples or stock/profile disposition review.
 Scoped availability rows and reader query now have bounded actual owner/state/
 reason public acceptance; no availability framework implementation remains. Five unused optional/
-unknown/frontend slots have reviewed removals; the separate regenerated-format
-batch is next at the held compiler/reader boundary. The following USL throw,
+unknown/frontend slots are removed in the current regenerated-format batch. The following USL throw,
 scoped attribute and module metadata probes will use that new contract. No confirmed new native adapter gap is open. Promoted-local class ownership is
 consumed transient staging, not an unavailable required semantic reconstruction.
 All 2,000 field rows now have an explicit mapping or disposition; mapping alone
@@ -131,8 +139,12 @@ table-based execution-storage parity.
   relations. Avoid blanket indexes. The generated-header timestamp correction is
   verified: backend/link-only rebuild and subsequent Ninja no-work. The private
   FK-load candidate reduces scale median30.28s to0.59s with identical logical rows;
-  canonical adoption passes182 public acceptance. Current251 scale is0.60s,
-  7,512,064bytes and45,564KiB RSS; bounded reader cold2.699s/warm2.019s.
+  canonical adoption passes182 public acceptance. Current final-five scale exports in one measured0.57s/44,220KiB RSS,
+  7,487,488bytes/98,697entities/7,023operations. The matching archived e49f
+  object is7,488,512bytes with equal cardinalities (1KiB reduction); this is not
+  a contemporaneous repeated old/new timing benchmark. Reader cold2.208s/
+  warm1.572s respects4096rows/128pages. Historical251 scale0.60s/7,512,064bytes
+  used a different retained input boundary.
   Prior controlled median0.56s/7.586MB remains the before/after evidence.
 - Retain measured1KiB page default and WITHOUT ROWID composite relations. The243
   packaging comparison already covers24 successful runs; reopen only if new

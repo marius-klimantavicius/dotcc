@@ -82,7 +82,6 @@ public class SignatureParameter
     public long Ordinal => Details.Ordinal;
     public virtual SemanticKind Role => Details.Role;
     public ExpressionOperation? DefaultExpression => Descriptor.DefaultExpression;
-    public SourceInfo? Source => Descriptor.Source;
     public BaseSubobject? BaseSubobject => Details.BaseSubobject;
 }
 
@@ -105,7 +104,6 @@ public sealed class ParameterType : SemanticEntity
     public CppType? DeclaredType => Details.DeclaredType;
     public override string? Name => Details.Name;
     public long ParameterNumber => Details.ParameterNumber;
-    public SourceInfo? Source => Details.SourceOrigin;
     public ExpressionOperation? DefaultExpression => Details.DefaultExpression;
     public bool IsPack => Details.IsParameterPack;
     public bool IsPackElement => Details.IsPackElement;

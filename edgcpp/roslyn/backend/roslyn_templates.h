@@ -224,6 +224,10 @@ static Rid roslyn_template(a_template_ptr p) {
 }
 
 static Rid roslyn_argument(a_template_arg_ptr p) {
+  if(p && p->kind==tak_nontype && p->is_array_bound_of_unknown_type) {
+    DB.fail("Unsupported retained template array-bound deduction record: its frontend integer payload has no object-format representation.");
+    return 0;
+  }
   bool fresh;Rid id=DB.claim(p,"template_argument",fresh);if(!fresh)return id;
   Rid type=0,constant=0,templ=0;
   switch(p->kind) {
@@ -244,9 +248,7 @@ static Rid roslyn_argument(a_template_arg_ptr p) {
     {"is_injected_name",static_cast<int>(p->type_is_injected_class_name)},
     {"is_provisional",static_cast<int>(p->is_provisional_value)},
     {"is_error",static_cast<int>(p->is_error)},
-    {"is_unknown_array_bound",static_cast<int>(p->is_array_bound_of_unknown_type)},
-    {"deduced_array_bound",p->kind==tak_nontype && p->is_array_bound_of_unknown_type
-        ? RoslynSqlValue(Q(p->variant.integer_value)) : RoslynSqlValue()}});
+    {"is_unknown_array_bound",static_cast<int>(p->is_array_bound_of_unknown_type)}});
   if(p->kind==tak_start_of_pack_expansion) {
     int ordinal=0;
     for(a_template_arg_ptr element=p->next;element && element->is_pack_element;element=element->next)

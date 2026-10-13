@@ -1,0 +1,27 @@
+{
+  "old_contract": "e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa",
+  "new_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "tables": 251,
+  "stable_catalog_sha256": "2fa863d7f2fa540af174622a69bb45a80836882eda7c2e19f4c95960a8864142",
+  "exact_removed_columns": {
+    "cleanup_action": [
+      "is_unordered"
+    ],
+    "include_occurrence": [
+      "position_id"
+    ],
+    "parameter_type": [
+      "source_origin_id"
+    ],
+    "template_argument": [
+      "deduced_array_bound"
+    ],
+    "vector_type": [
+      "element_count"
+    ]
+  },
+  "all_surviving_column_types_nullability_defaults_keys_unchanged": true,
+  "all_kind_rows_and_indexes_unchanged": true,
+  "template_argument_policy": "Unexpected retained tak_nontype unknown-bound integer record fails export without invoking helpers or discarding payload.",
+  "publication_policy_unchanged": true
+}

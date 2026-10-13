@@ -1375,6 +1375,20 @@ assert sum(map(len, owner_table_phantom_columns.values())) == 29
 for table_name, columns in owner_table_phantom_columns.items():
     retired_columns.setdefault(table_name, set()).update(columns)
 
+# Final minimal contract: four never-produced slots and one frontend-only
+# deduction intermediate. Retained vector/parameter/include/EH facts stay in
+# their actual columns; unknown cleanup ordering is a nullable reader policy.
+final_minimal_columns = {
+    'vector_type': {'element_count'},
+    'parameter_type': {'source_origin_id'},
+    'include_occurrence': {'position_id'},
+    'cleanup_action': {'is_unordered'},
+    'template_argument': {'deduced_array_bound'},
+}
+assert sum(map(len, final_minimal_columns.values())) == 5
+for table_name, columns in final_minimal_columns.items():
+    retired_columns.setdefault(table_name, set()).update(columns)
+
 kept_tables = []
 removed_column_count = 0
 for definition in tables:
@@ -1390,7 +1404,7 @@ for definition in tables:
         removed_column_count += count
     kept_tables.append(definition)
 assert len(tables) - len(kept_tables) == 9
-assert removed_column_count == 47
+assert removed_column_count == 52
 tables = kept_tables
 
 custom = {

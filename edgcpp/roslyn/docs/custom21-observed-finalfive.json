@@ -1,0 +1,236 @@
+{
+  "distinct_objects": 211,
+  "rows": [
+    {
+      "id": "17001",
+      "family": "jump_kind",
+      "name": "return",
+      "observations": [
+        {
+          "table": "jump_statement",
+          "column": "kind_id",
+          "count": 2666,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        }
+      ],
+      "count": 2666
+    },
+    {
+      "id": "17002",
+      "family": "jump_kind",
+      "name": "goto",
+      "observations": [
+        {
+          "table": "jump_statement",
+          "column": "kind_id",
+          "count": 24,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/retained.roslynobj"
+        }
+      ],
+      "count": 24
+    },
+    {
+      "id": "17003",
+      "family": "jump_kind",
+      "name": "break",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "17004",
+      "family": "jump_kind",
+      "name": "continue",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "17005",
+      "family": "jump_kind",
+      "name": "leave",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "17006",
+      "family": "jump_kind",
+      "name": "assigned_goto",
+      "observations": [
+        {
+          "table": "jump_statement",
+          "column": "kind_id",
+          "count": 8,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/label_difference.roslynobj"
+        }
+      ],
+      "count": 8
+    },
+    {
+      "id": "20001",
+      "family": "condition_kind",
+      "name": "constructed",
+      "observations": [
+        {
+          "table": "cleanup_condition",
+          "column": "kind_id",
+          "count": 75,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/m0.roslynobj"
+        }
+      ],
+      "count": 75
+    },
+    {
+      "id": "20002",
+      "family": "condition_kind",
+      "name": "nonzero",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "20003",
+      "family": "condition_kind",
+      "name": "state",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "22001",
+      "family": "range_endpoint",
+      "name": "inclusive",
+      "observations": [
+        {
+          "table": "source_range",
+          "column": "endpoint_kind_id",
+          "count": 35516,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        }
+      ],
+      "count": 35516
+    },
+    {
+      "id": "22002",
+      "family": "range_endpoint",
+      "name": "last_character",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "22003",
+      "family": "range_endpoint",
+      "name": "hypothetical",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "28001",
+      "family": "asm_operand_kind",
+      "name": "input",
+      "observations": [
+        {
+          "table": "asm_operand",
+          "column": "kind_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/source_statements.roslynobj"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "id": "28002",
+      "family": "asm_operand_kind",
+      "name": "output",
+      "observations": [
+        {
+          "table": "asm_operand",
+          "column": "kind_id",
+          "count": 2,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/source_statements.roslynobj"
+        }
+      ],
+      "count": 2
+    },
+    {
+      "id": "28003",
+      "family": "asm_operand_kind",
+      "name": "inout",
+      "observations": [
+        {
+          "table": "asm_operand",
+          "column": "kind_id",
+          "count": 5,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/gnu_asm_modify.roslynobj"
+        }
+      ],
+      "count": 5
+    },
+    {
+      "id": "50001",
+      "family": "constant_component_role",
+      "name": "element",
+      "observations": [
+        {
+          "table": "constant_component",
+          "column": "role_id",
+          "count": 5772,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/m0.roslynobj"
+        }
+      ],
+      "count": 5772
+    },
+    {
+      "id": "50002",
+      "family": "constant_component_role",
+      "name": "repeated",
+      "observations": [
+        {
+          "table": "constant_component",
+          "column": "role_id",
+          "count": 18,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/constant_occurrences.roslynobj"
+        }
+      ],
+      "count": 18
+    },
+    {
+      "id": "50003",
+      "family": "constant_component_role",
+      "name": "dependent",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "50004",
+      "family": "constant_component_role",
+      "name": "designator",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "50005",
+      "family": "constant_component_role",
+      "name": "from",
+      "observations": [
+        {
+          "table": "constant_component",
+          "column": "role_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/label_difference.roslynobj"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "id": "50006",
+      "family": "constant_component_role",
+      "name": "to",
+      "observations": [
+        {
+          "table": "constant_component",
+          "column": "role_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/label_difference.roslynobj"
+        }
+      ],
+      "count": 4
+    }
+  ]
+}

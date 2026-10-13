@@ -1,0 +1,25 @@
+{
+  "scope": "Floating format/class discrimination only; exact numeric value/targettype/payload field evidence remains separate.",
+  "native": "roslyn_float_parts mirrors active internal EDG storage; target arithmetic type/floatkind retained independently. Unsupported active representations call DB.fail before floating payload publication.",
+  "actual_format_names": [
+    "binary128",
+    "binary16",
+    "binary32",
+    "binary64",
+    "binary80"
+  ],
+  "reserved_names": [
+    "bfloat16",
+    "ibm_double_double"
+  ],
+  "bfloat16_policy": "EDG internal std_bfloat16 constant is stored as binary32; no fabricated 16-bit target pattern or decoder metadata. Actual std_bfloat16 target type stays captured.",
+  "class_names": [
+    "finite",
+    "zero",
+    "infinity",
+    "nan"
+  ],
+  "public_zero_policy": "Public FloatingPointClass uses finite+IsZero; raw Details.Class retains exact zero discriminator. NegativeZero remains sign plus zero significand.",
+  "public_getters": "FloatingValue.Details.Class/RepresentationKind; FloatingValue.Value exact sign/significand/exponent/radix/NaN payload; Numeric and Program real-format assertions, float payload scalar sweeps.",
+  "profiles": "Fourteen accepted current guards, including wider primary and alternate hostdouble/hostlongdouble/official SoftFloat with exact precision restrictions."
+}

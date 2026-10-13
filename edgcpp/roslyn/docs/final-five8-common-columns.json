@@ -1,0 +1,250 @@
+[
+  {
+    "profile": "native",
+    "fixture": "dependent_constants",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 465,
+        "new_rows": 465,
+        "old_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"21:43:51\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"22:43:48\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "native",
+    "fixture": "constant_storage",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 250,
+        "new_rows": 250,
+        "old_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"21:45:04\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"22:43:48\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "native",
+    "fixture": "prototype_scope",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 257,
+        "new_rows": 257,
+        "old_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"22:05:24\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"22:43:48\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "native",
+    "fixture": "uuid_storage",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 474,
+        "new_rows": 474,
+        "old_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"22:05:24\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              12,
+              "#define __TIME__ \"22:43:48\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "fixture": "dependent_constants",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 441,
+        "new_rows": 441,
+        "old_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"21:43:50\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"22:44:05\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "fixture": "constant_storage",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 249,
+        "new_rows": 249,
+        "old_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"21:45:28\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"22:44:05\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "fixture": "prototype_scope",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 257,
+        "new_rows": 257,
+        "old_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"22:05:24\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"22:44:05\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "fixture": "uuid_storage",
+    "tables": 251,
+    "fk_errors": 0,
+    "differing_tables": [
+      {
+        "table": "text_atom",
+        "old_rows": 438,
+        "new_rows": 438,
+        "old_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"22:05:24\""
+            ],
+            1
+          ]
+        ],
+        "new_only": [
+          [
+            [
+              11,
+              "#define __TIME__ \"22:44:05\""
+            ],
+            1
+          ]
+        ]
+      }
+    ]
+  }
+]

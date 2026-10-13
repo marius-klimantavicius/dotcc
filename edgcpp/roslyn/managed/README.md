@@ -248,8 +248,8 @@ From the repository root:
 python3 edgcpp/roslyn/managed/tools/generate_bindings.py --check
 dotnet build edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj
 dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
-  edgcpp/artifacts/roslynobj/closure251-phantom29/native/basic.roslynobj \
-  edgcpp/artifacts/roslynobj/closure251-phantom29/native/m0.roslynobj
+  edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj \
+  edgcpp/artifacts/roslynobj/closure251-final-five/native/m0.roslynobj
 ```
 
 Without object paths, the console test project runs the valid shared-schema

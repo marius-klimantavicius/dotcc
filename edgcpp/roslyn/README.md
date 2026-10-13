@@ -8,12 +8,12 @@ translation units or depend on Microsoft.CodeAnalysis.
 The user excluded C++/CLI and C++/CX support from the revised task. Native
 Microsoft C++ extensions remain in scope.
 
-Phases 3–4 are approved and in progress. The accepted251 baseline passes3871 assertions across187
-unique paths and14 strict profiles; complete M0–M5 acceptance is tracked in
-[the implementation ledger](docs/IMPLEMENTATION.md),
-[remaining acceptance](docs/ACCEPTANCE.md), and
-[compatibility profiles](docs/PROFILES.md). Table or kind presence alone does not
-mean that its full semantic family is complete.
+Phases 3–4 are approved and in progress. The current251-table format passes
+4,437 reader assertions across211 distinct objects and14 strict pinned profiles.
+Full M0–M5 acceptance is tracked in [the implementation ledger](docs/IMPLEMENTATION.md),
+[remaining acceptance](docs/ACCEPTANCE.md), and [compatibility profiles](docs/PROFILES.md).
+There are1409 verified field rows and122 required proof rows still open; table or
+kind presence alone does not establish complete semantic-family coverage.
 
 The build uses a clean EDG 7.0 checkout pinned at
 `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. The default materialized checkout is
@@ -42,7 +42,7 @@ recipes, source positions and macro associations. See
 [the managed usage guide](managed/README.md). Optional retained relationships are
 null or empty. The captured profile documents lowering losses such as unavailable
 original virtual-call targets. Scoped availability rows distinguish retained, dependent, disabled and lost
-facts on their actual owners; the final reader proof checklist remains open.
+facts on their actual owners and have genuine public acceptance. Remaining owner-field proof is tracked separately.
 Lost source associations are not reconstructed.
 
 The shared contract lives in `schema/generate.py` and the authoritative append-only

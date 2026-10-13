@@ -1,0 +1,525 @@
+{
+  "scope": "53 custom dictionary identifiers only; payload obligations remain in the field ledger",
+  "observations": "/tmp/roslyn-root-reference-role53-observed29.json",
+  "role": {
+    "actual_writer_and_observed": [
+      "abi_parameter",
+      "affinity",
+      "argument",
+      "base",
+      "body",
+      "cleanup",
+      "condition",
+      "destructor_control_parameter",
+      "dimension",
+      "element",
+      "else",
+      "increment",
+      "initialization",
+      "member",
+      "metadata",
+      "operand",
+      "ordinary_parameter",
+      "ready",
+      "result",
+      "resume",
+      "return_parameter",
+      "statement",
+      "suspend",
+      "then",
+      "this_parameter",
+      "virtual_base_parameter",
+      "vtt_parameter"
+    ],
+    "reserved_without_current_writer": [
+      "allocator",
+      "backing_expression",
+      "callee",
+      "constraint",
+      "constructor",
+      "deallocator",
+      "destructor",
+      "execution",
+      "normal",
+      "primary_template",
+      "receiver",
+      "return_slot",
+      "return_value",
+      "selected_partial_specialization",
+      "source_parameter",
+      "type_operand",
+      "yield"
+    ],
+    "writer_call_sites": [
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_gen_be.c",
+        "line": 201,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_gen_be.c",
+        "line": 216,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_gen_be.c",
+        "line": 216,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_gen_be.c",
+        "line": 218,
+        "role": "argument"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 42,
+        "role": "dimension"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 49,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 49,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 66,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 66,
+        "role": "result"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 66,
+        "role": "cleanup"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 66,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 66,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 146,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 147,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 148,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 160,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 160,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 161,
+        "role": "condition"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 161,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 161,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 168,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 168,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 186,
+        "role": "then"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 186,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 205,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 214,
+        "role": "argument"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 220,
+        "role": "then"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 220,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 221,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 221,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 221,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 221,
+        "role": "condition"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 221,
+        "role": "increment"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 222,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 224,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 225,
+        "role": "statement"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 226,
+        "role": "then"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 226,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 227,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 236,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 236,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 236,
+        "role": "increment"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 236,
+        "role": "affinity"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 237,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 239,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 247,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 247,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 247,
+        "role": "condition"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 247,
+        "role": "increment"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 247,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 250,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 250,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 251,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 251,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 251,
+        "role": "member"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 251,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 252,
+        "role": "body"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 252,
+        "role": "else"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 252,
+        "role": "condition"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 253,
+        "role": "member"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_execution.h",
+        "line": 255,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 83,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 113,
+        "role": "argument"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 116,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 116,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 117,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 117,
+        "role": "cleanup"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 131,
+        "role": "argument"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 133,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 143,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 144,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 145,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 152,
+        "role": "result"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 161,
+        "role": "result"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 171,
+        "role": "operand"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 171,
+        "role": "ready"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 172,
+        "role": "suspend"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 172,
+        "role": "resume"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 181,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 195,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 195,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 229,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 237,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_expressions_extra.h",
+        "line": 244,
+        "role": "metadata"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_common.h",
+        "line": 116,
+        "role": "initialization"
+      },
+      {
+        "file": "edgcpp/roslyn/backend/roslyn_common.h",
+        "line": 116,
+        "role": "operand"
+      }
+    ],
+    "other_writer_sites": [
+      "roslyn_execution.h:49 expression_operand;134-136 call_argument",
+      "roslyn_parameters.h:10-36 retained ABI parameter role helper",
+      "roslyn_routines.h:145 routine_type_parameter;440 routine_parameter",
+      "roslyn_gen_be.c:218 initialization_operand;270-271 eh_table_projection",
+      "roslyn_constants.h:50 subobject_path;139 designator_value"
+    ]
+  },
+  "reference_kind": {
+    "actual_writer_and_observed": [
+      "variable",
+      "routine",
+      "field",
+      "type"
+    ],
+    "reserved_without_current_writer": [
+      "label",
+      "constant",
+      "builtin",
+      "property",
+      "destructor"
+    ],
+    "writer": "roslyn_execution.h:143-151 exact enk arms",
+    "caveat": "Reserved custom reference tags do not mean these C++ semantics are unsupported; actual constant/property/builtin/etc representations use their respective typed tables."
+  },
+  "public_getter_evidence": [
+    "Operations.cs:13 ChildRelations and15 References expose exact retained relation kinds",
+    "Program.cs:276/280/308/417 selected call,variable,field,type target identities;294/296 lowered receiver;312-313 Cfront control/base roles and typed targets",
+    "ExecutionMetadataProjection.cs:37 asm argument canonical expression;61 ordered foreach initialization;67 UPC affinity selected call",
+    "ExecutionProjection.cs:78 designator arms;89 subobject detail sweep;102-103 field/element/base typed paths",
+    "UnevaluatedProjection.cs:14 actual metadata references versus evaluated children",
+    "RoutineEhInitializationProjection.cs constructor argument edges",
+    "NavigationFamilies.cs and ExecutionProjection.cs accepted typed getter sweeps"
+  ],
+  "limits": [
+    "Kinds with identical names in other families are unrelated (representation_role.execution, template_argument_role.primary, constant_component_role.element).",
+    "Dictionary kind_disposition rows excluded from occurrence counts.",
+    "Current producer coverage and typed getter reachability do not independently prove every payload, ordering, identity or execution classification.",
+    "Parameter roles interpret retained EDG lowered signature discriminants; no independent overload/ABI synthesis."
+  ]
+}

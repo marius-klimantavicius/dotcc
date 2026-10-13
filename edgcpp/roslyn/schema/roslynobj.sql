@@ -758,7 +758,6 @@ CREATE TABLE parameter_type (
   type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   declared_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   name_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
-  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
   parameter_number INTEGER NOT NULL,
   default_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   has_name_conflict INTEGER NOT NULL DEFAULT 0,
@@ -936,7 +935,6 @@ CREATE TABLE type_reference (
 CREATE TABLE vector_type (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   element_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  element_count TEXT,
   vector_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   size_constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
   is_boolean INTEGER NOT NULL DEFAULT 0,
@@ -2149,7 +2147,6 @@ CREATE TABLE cleanup_action (
   is_array INTEGER NOT NULL DEFAULT 0,
   is_indirect INTEGER NOT NULL DEFAULT 0,
   is_conditional INTEGER NOT NULL DEFAULT 0,
-  is_unordered INTEGER,
   is_base_subobject INTEGER NOT NULL DEFAULT 0,
   is_vla INTEGER NOT NULL DEFAULT 0,
   is_deallocation INTEGER NOT NULL DEFAULT 0,
@@ -2291,8 +2288,7 @@ CREATE TABLE template_argument (
   is_injected_name INTEGER NOT NULL DEFAULT 0,
   is_provisional INTEGER NOT NULL DEFAULT 0,
   is_error INTEGER NOT NULL DEFAULT 0,
-  is_unknown_array_bound INTEGER NOT NULL DEFAULT 0,
-  deduced_array_bound TEXT
+  is_unknown_array_bound INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 
 CREATE TABLE template_argument_pack_element (
@@ -2341,7 +2337,6 @@ CREATE TABLE include_occurrence (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   file_id INTEGER REFERENCES source_file(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   parent_id INTEGER REFERENCES include_occurrence(id) DEFERRABLE INITIALLY DEFERRED,
-  position_id INTEGER REFERENCES source_position(id) DEFERRABLE INITIALLY DEFERRED,
   ordinal INTEGER NOT NULL,
   display_name_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
   name_as_written_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,

@@ -1180,3 +1180,46 @@ Next is reviewed five-column cleanup at this held boundary, followed by genuine
 current-contract refresh/admission. Unknown non-type deduction payloads cannot
 be silently discarded. USL throw/scoped attribute/module probes follow the new
 contract; no user approval or completion pause applies.
+
+
+### Accepted final five-column development format
+
+Current251 tables/39,145 unchanged stable kinds use framed fingerprint
+`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+Exactly vector.element_count, parameter.source_origin, include.position,
+cleanup_action.is_unordered and transient template deduced_array_bound are removed.
+This retires our unsupported/optional/intermediate slots, not EDG semantic facts.
+CleanupAction.IsUnordered remains bool? null; Initialization.IsUnordered stays exact.
+Unexpected retained unknown-bound non-type arguments fail publication clearly before
+union access. No constant creation, frontend recovery or surrogate source facts.
+
+Fourteen strict builds pass316 stock inputs/tool pins and26 canonical backend bytes.
+The unified current-format cohort has211 validation instances/211 distinct paths,
+including all recent bounded probes, with FK0/1KiB/complete/no structured BLOB-or-REAL
+and complete expression types. Reader PASS4437/self73/build0 warnings/errors,
+generator249 facades/1941 properties, literal/diff and genuine archived-e49f Open
+rejection pass. Earlier124/PASS2610 and failed profile-assumption runs are intermediate;
+final assertions use actual IA64_ABI/RECORD_MACRO_ARGS values and exact stored links.
+
+Scale new98,697entities/7,023operations/7,487,488bytes versus matching archived
+98,697/7,023/7,488,512 (1KiB smaller). One current export0.57s/44,220KiB RSS;
+reader cold2.208s/warm1.572s preserves4096row/128page bounds. No contemporaneous
+repeated old/new writer benchmark is claimed. Existing packaging/concurrency/disposal
+and private FK-load checks remain accepted. Root independently verifies exact five
+schema removals, unchanged survivors and eight matching old/new object row multisets;
+only EDG __TIME__ metadata differs after artifact/contract normalization.
+
+Evidence: native-final-five251-evidence.json, final-five-frozen-contract.json,
+final-five-contract-independent.json, final-five8-common-columns.json and
+final-five-acceptance-review.json. Managed final211-v3 and ready inventory are
+recorded with this checkpoint. All source/core inputs remain pristine and unrelated
+worktree/index changes are preserved; restart artifacts are excluded.
+
+Field proof remains1409verified/122required pending. Custom scalar/float/reference/
+role labels now distinguish active observed, active unobserved and reserved vocabulary;
+no tag observation promotes owner payload fields. All2000 fields mapped/dispositioned.
+No reviewed current adapter/factory implementation gap is open, but genuine branch
+activation and exact public identities remain mandatory. Next native USL throw and
+scoped-attribute probes precede module IFC metadata; managed checks existing
+expression/EH/asm/capture links. Semantic authority remains EDG. Full phases3–4/M0–M5
+continue without an approval pause or public version freeze.

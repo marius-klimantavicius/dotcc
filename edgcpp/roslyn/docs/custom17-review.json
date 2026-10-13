@@ -1,0 +1,64 @@
+{
+  "scope": "17 custom kind identifiers; optional source origin metadata remains nonblocking",
+  "observations": "/tmp/roslyn-root-custom17-observed-finalfive.json",
+  "families": {
+    "source_origin_kind": {
+      "producer_observed": [
+        "ordinary",
+        "predefined",
+        "command_line",
+        "unknown",
+        "macro"
+      ],
+      "producer_unobserved_optional": [
+        "preinclude"
+      ],
+      "reserved_no_writer": [
+        "synthesized"
+      ],
+      "writer": "roslyn_source.h:23-27 explicit retained macro context or sequence/column sentinel; source_file ordinary; macro_definition gen_be.c:307-308 explicit predefined/command_line bits",
+      "public": "SourceInfo.Details.Kind, SourcePosition.Details.OriginKind, SourceFile.Details.OriginKind, MacroDefinition details Kind; accepted provenance/navigation sweeps. No manufactured synthesized classification or preinclude recovery campaign."
+    },
+    "literal_encoding_prefix": {
+      "producer_observed": [
+        "ordinary",
+        "utf8",
+        "utf16",
+        "utf32",
+        "wide"
+      ],
+      "reserved_no_writer": [],
+      "writer": "roslyn_constants.h:182-190 stock literal_encoding_prefix helper maps exact SCLK flags on string occurrence; interned values remain independent",
+      "public": "ExecutionProjection.cs:92/94 genuine all-five prefix assertions; raw/ordinary/utf8 shared value yet distinct occurrence facts."
+    },
+    "source_dispatch_kind": {
+      "producer_observed": [
+        "non_virtual",
+        "virtual",
+        "member_pointer"
+      ],
+      "reserved_no_writer": [],
+      "writer": "roslyn_execution.h:137 only !DO_IL_LOWERING; direct retained member-pointer/operator virtual bits, not inversion of lowered virtual table lookup",
+      "public": "CallOperation.SourceDispatchKind Operations.cs:84, typed Call details; Program.cs:575 exact nonvirtual selected member call; ExecutionProjection family getter sweep. Virtual/member_pointer corpus counts6/1 establish activation but do not replace any pending exact call identity proof."
+    },
+    "size_kind": {
+      "producer_observed": [
+        "recorded_quantity",
+        "upc_threads"
+      ],
+      "reserved_no_writer": [],
+      "writer": "roslyn_types.h:22-28 stock is_underlying_threads_dimensioned_array_type and size_of_type/alignment_of_type, no independently computed C++ layout",
+      "public": "CppType.Size/EffectiveSize/ThreadsSizeMultiplier and ExecutionProjection.cs:64 actual dynamic THREADS coefficient8 versus fixed size32/bound8, no runtime size assertion for dynamic coefficient."
+    }
+  },
+  "summary": {
+    "actual_observed": 15,
+    "active_unobserved_optional": 1,
+    "reserved_without_writer": 1
+  },
+  "limits": [
+    "All211 objects queried; dictionary kind_disposition excluded.",
+    "No source provenance work requested; preinclude marker is optional and its missing activation does not block phases.",
+    "No field ledger payload/identity proof promoted from tag presence; no adapter/API change diagnosed."
+  ]
+}

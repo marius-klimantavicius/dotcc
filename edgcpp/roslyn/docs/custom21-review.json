@@ -1,0 +1,77 @@
+{
+  "scope": "21 custom dictionary identifiers; no owner-field promotion from tag presence",
+  "observations": "/tmp/roslyn-root-custom21-observed-finalfive.json",
+  "families": {
+    "jump_kind": {
+      "producer_observed": [
+        "return",
+        "goto",
+        "assigned_goto"
+      ],
+      "producer_not_observed": [
+        "break",
+        "continue"
+      ],
+      "reserved_no_writer": [
+        "leave"
+      ],
+      "evidence": "roslyn_execution.h:209,237; break/continue copied from retained target label discriminants, not guessed from CFG. JumpOperation.JumpKind/Target/CommonLifetime in ControlFlow.cs:54-63. Program.cs:568+ actual assigned goto; ExecutionProjection typed navigation sweep.",
+      "action": "Keep break/continue explicit unobserved active writer alternatives; actual stmk fields/labels retain separate obligations."
+    },
+    "condition_kind": {
+      "producer_observed": [
+        "constructed"
+      ],
+      "reserved_no_writer": [
+        "nonzero",
+        "state"
+      ],
+      "evidence": "roslyn_gen_be.c:252 stock EH supplement flags/shape decode into cleanup condition and exact storage; CleanupCondition.Kind/Storage Lifetimes.cs:111-116; real EH family sweeps. Program self check114 alone is not genuine native proof."
+    },
+    "asm_operand_kind": {
+      "producer_observed": [
+        "input",
+        "output",
+        "inout"
+      ],
+      "reserved_no_writer": [],
+      "evidence": "roslyn_execution.h:80-91: raw profile only recorded input/output bit; structured aom_input/aom_modify/other exact mapping. ExecutionMetadataProjection.cs:43-49 actual +r/inout/aom_modify and =r/output/r/input targets/modifiers."
+    },
+    "range_endpoint": {
+      "producer_observed": [
+        "inclusive"
+      ],
+      "reserved_no_writer": [
+        "last_character",
+        "hypothetical"
+      ],
+      "evidence": "roslyn_source.h:89/93;source_sequences.h:22;templates.h:204 write inclusive directly. SourceRange.EndpointKind Provenance.cs:33-39. Position attributes remain independently available; no reconstruction or optional-source activation campaign."
+    },
+    "constant_component_role": {
+      "producer_observed": [
+        "element",
+        "repeated",
+        "from",
+        "to"
+      ],
+      "producer_not_observed": [
+        "dependent",
+        "designator"
+      ],
+      "reserved_no_writer": [],
+      "evidence": "roslyn_values.h:33 helper; roslyn_constants.h:106 from/to,108 element,109 repeated,125/126/132/134 dependent,138 generic designator. Constant.Components and generated row.Role/Constant preserve exact occurrence identities; ConstantRelationsProjection.cs:27 element order, ExecutionProjection genuine constant family sweeps; ConstantReferences.cs:34 exact two-label targets.",
+      "action": "dependent/designator writer alternatives exist but this211 cohort has zero such component-role rows. Keep activation explicit rather than concluding unsupported semantics or using value-family dictionary presence."
+    }
+  },
+  "summary": {
+    "actual_observed": 12,
+    "active_not_observed": 4,
+    "reserved_without_writer": 5
+  },
+  "limits": [
+    "Occurrence counts exclude dictionary kind_disposition rows.",
+    "custom labels are distinct from stock expression/statement kinds and role family labels with same names.",
+    "No native code/API change diagnosed; no new fixtures proposed here.",
+    "Existing public getter reachability is separate from exact active payload/identity/ordering proof."
+  ]
+}

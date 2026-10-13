@@ -1,22 +1,35 @@
 # Remaining acceptance work
 
-Current bounded checkpoint:251tables/e49f,existing8/PASS499 plusfresh4/PASS95,
-12distinctpaths,self73,cleanbuild/gen/literal/diff. All14 unchanged compiled stages
-andpins verified; no new strictbuild/full187/scale run. Field proof1409verified/
-122requiredpending,89captured optional-source/15limits. Scoped availability state/
-reason acceptance passes; finalfive regenerated-contract cleanup and retained
-branch/public identity proof remain. All older evidence is explicitly historical.
+Current final-five format checkpoint:251 tables/39,145 stable kinds,
+`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+All14 strict stages pass316 pinned stock inputs, stock tool and26 canonical backend
+checks. All211 validation instances are211 distinct paths and pass native gates;
+reader PASS4437/self73, clean build/generator249/1941/literal/diff and genuine
+archived-e49f Open rejection pass. Scale exports0.57s/44,220KiB and reads
+cold2.208s/warm1.572s at4096rows/128pages. Matching archived scale cardinalities
+agree, new7,487,488bytes is1KiB smaller; no repeated old/new timing claim.
+
+Five minimal-column removals leave surviving column definitions/indexes/kind rows
+unchanged. Root's eight-file common-column comparison finds only stock __TIME__
+metadata variation after artifact identity/contract normalization. Unsupported
+unexpected deduction records fail export explicitly; actual retained constants,
+initializers, lifetimes, sizes, declared types and source fields remain exact.
+
+Field proof1409verified/122required pending,89captured optional-source/15limits.
+All raw/planned rows are resolved. Scoped availability and workspace identity have
+genuine tests. Remaining work is exact existing public identities, missing retained
+branch examples and documented stock dispositions; phases3–4/M0–M5 remain open.
 
 ## Historical milestone evidence
 
-Current accepted29 boundary:251tables/e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa,
+Historical accepted29 boundary:251tables/e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa,
 14 strict pinned profiles,198 validation instances/187 unique paths,
 readerPASS3871,self73;1066 verified/488 required field proofs pending.
 Older milestones below are history; see CLOSURE for explicit remaining work.
 
 Latest bounded GNU-asm/header proof:13 strict pinned profiles, two new +r
 objects, PASS479/nine genuine paths and WORself73. Contract remains251.
-Current accepted boundary251:175 distinct files /186 validation instances,
+Historical accepted boundary251:175 distinct files /186 validation instances,
 PASS2621 reader assertions,self73,12 strict pristine-pinned profiles.
 Contract `c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`;
 Bounded follow-up:13 strict profiles/four new distinct objects, constructor128,

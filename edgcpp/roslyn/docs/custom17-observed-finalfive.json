@@ -1,0 +1,271 @@
+{
+  "distinct_objects": 211,
+  "rows": [
+    {
+      "id": "21001",
+      "family": "source_origin_kind",
+      "name": "ordinary",
+      "observations": [
+        {
+          "table": "source_file",
+          "column": "origin_kind_id",
+          "count": 220,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        },
+        {
+          "table": "source_position",
+          "column": "origin_kind_id",
+          "count": 62841,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        },
+        {
+          "table": "source_origin",
+          "column": "kind_id",
+          "count": 30486,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        },
+        {
+          "table": "macro_definition",
+          "column": "kind_id",
+          "count": 29,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        }
+      ],
+      "count": 93576
+    },
+    {
+      "id": "21002",
+      "family": "source_origin_kind",
+      "name": "predefined",
+      "observations": [
+        {
+          "table": "macro_definition",
+          "column": "kind_id",
+          "count": 20222,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        },
+        {
+          "table": "source_position",
+          "column": "origin_kind_id",
+          "count": 5,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/upc_static.roslynobj"
+        }
+      ],
+      "count": 20227
+    },
+    {
+      "id": "21003",
+      "family": "source_origin_kind",
+      "name": "command_line",
+      "observations": [
+        {
+          "table": "source_position",
+          "column": "origin_kind_id",
+          "count": 1,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/provenance.roslynobj"
+        },
+        {
+          "table": "source_origin",
+          "column": "kind_id",
+          "count": 1,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/provenance.roslynobj"
+        },
+        {
+          "table": "macro_definition",
+          "column": "kind_id",
+          "count": 1,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/provenance.roslynobj"
+        }
+      ],
+      "count": 3
+    },
+    {
+      "id": "21004",
+      "family": "source_origin_kind",
+      "name": "unknown",
+      "observations": [
+        {
+          "table": "source_position",
+          "column": "origin_kind_id",
+          "count": 2,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/provenance.roslynobj"
+        }
+      ],
+      "count": 2
+    },
+    {
+      "id": "21005",
+      "family": "source_origin_kind",
+      "name": "synthesized",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "21006",
+      "family": "source_origin_kind",
+      "name": "macro",
+      "observations": [
+        {
+          "table": "source_position",
+          "column": "origin_kind_id",
+          "count": 6120,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        },
+        {
+          "table": "source_origin",
+          "column": "kind_id",
+          "count": 4115,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        }
+      ],
+      "count": 10235
+    },
+    {
+      "id": "51001",
+      "family": "source_dispatch_kind",
+      "name": "non_virtual",
+      "observations": [
+        {
+          "table": "call_expression",
+          "column": "source_dispatch_kind_id",
+          "count": 193,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_order.roslynobj"
+        }
+      ],
+      "count": 193
+    },
+    {
+      "id": "51002",
+      "family": "source_dispatch_kind",
+      "name": "virtual",
+      "observations": [
+        {
+          "table": "call_expression",
+          "column": "source_dispatch_kind_id",
+          "count": 6,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/m0.roslynobj"
+        }
+      ],
+      "count": 6
+    },
+    {
+      "id": "51003",
+      "family": "source_dispatch_kind",
+      "name": "member_pointer",
+      "observations": [
+        {
+          "table": "call_expression",
+          "column": "source_dispatch_kind_id",
+          "count": 1,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/member_pointers.roslynobj"
+        }
+      ],
+      "count": 1
+    },
+    {
+      "id": "21007",
+      "family": "source_origin_kind",
+      "name": "preinclude",
+      "observations": [],
+      "count": 0
+    },
+    {
+      "id": "1037050",
+      "family": "size_kind",
+      "name": "recorded_quantity",
+      "observations": [
+        {
+          "table": "type",
+          "column": "size_kind_id",
+          "count": 22201,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/basic.roslynobj"
+        }
+      ],
+      "count": 22201
+    },
+    {
+      "id": "1037051",
+      "family": "size_kind",
+      "name": "upc_threads",
+      "observations": [
+        {
+          "table": "type",
+          "column": "size_kind_id",
+          "count": 12,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/upc_dynamic.roslynobj"
+        }
+      ],
+      "count": 12
+    },
+    {
+      "id": "1037052",
+      "family": "literal_encoding_prefix",
+      "name": "ordinary",
+      "observations": [
+        {
+          "table": "constant",
+          "column": "literal_encoding_prefix_id",
+          "count": 115,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/exact.roslynobj"
+        }
+      ],
+      "count": 115
+    },
+    {
+      "id": "1037053",
+      "family": "literal_encoding_prefix",
+      "name": "utf8",
+      "observations": [
+        {
+          "table": "constant",
+          "column": "literal_encoding_prefix_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/constant_occurrences.roslynobj"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "id": "1037054",
+      "family": "literal_encoding_prefix",
+      "name": "utf16",
+      "observations": [
+        {
+          "table": "constant",
+          "column": "literal_encoding_prefix_id",
+          "count": 8,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/exact.roslynobj"
+        }
+      ],
+      "count": 8
+    },
+    {
+      "id": "1037055",
+      "family": "literal_encoding_prefix",
+      "name": "utf32",
+      "observations": [
+        {
+          "table": "constant",
+          "column": "literal_encoding_prefix_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/constant_occurrences.roslynobj"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "id": "1037056",
+      "family": "literal_encoding_prefix",
+      "name": "wide",
+      "observations": [
+        {
+          "table": "constant",
+          "column": "literal_encoding_prefix_id",
+          "count": 4,
+          "example": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/constant_occurrences.roslynobj"
+        }
+      ],
+      "count": 4
+    }
+  ]
+}

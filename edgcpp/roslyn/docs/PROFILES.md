@@ -182,3 +182,11 @@ flags have real positives; three inlining-only flags are incompatible with user
 partial-EH scope because pristine inline.c35–44 requires full portable EH.
 Tableless uses metadata initialization pointers and null numeric states, never
 inferred cleanup tables/storage. Source positions stay optional.
+
+
+Current final-five development format passes14 strict stages/211 distinct objects.
+All stages retain316 Git-pinned stock inputs/tool and26 canonical backend files;
+all objects pass4bb94e5f contract/FK0/1KiB and public PASS4437/self73. Source-only
+name-form retention, actual partial/tableless EH, named test registers and separate-init
+lazy TLS configuration remain unchanged. Earlier paragraphs describe their historical
+acceptance boundaries. No new profile or core change was required for these removals.

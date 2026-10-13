@@ -819,7 +819,6 @@ public sealed class ParameterTypeDetails : SemanticDetail
     public CppType Type => Object.Link(Data.OptionalLong("type_id"), value => Object.Type(value))!;
     public CppType? DeclaredType => Object.Link(Data.OptionalLong("declared_type_id"), value => Object.Type(value));
     public string? Name => Object.Text(Data.OptionalLong("name_id"));
-    public SourceInfo? SourceOrigin => Object.Link(Data.OptionalLong("source_origin_id"), value => Object.Source(value));
     public long ParameterNumber => Data.Long("parameter_number");
     public ExpressionOperation? DefaultExpression => Object.Link(Data.OptionalLong("default_expression_id"), value => Object.Expression(value));
     public bool HasNameConflict => Data.Bool("has_name_conflict");
@@ -1011,7 +1010,6 @@ public sealed class VectorTypeDetails : SemanticDetail
 {
     internal VectorTypeDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public CppType ElementType => Object.Link(Data.OptionalLong("element_type_id"), value => Object.Type(value))!;
-    public BigInteger? ElementCount => Number(Data.OptionalText("element_count"));
     public SemanticKind VectorKind => Object.Kind(Data.Long("vector_kind_id"));
     public Constant? SizeConstant => Object.Link(Data.OptionalLong("size_constant_id"), value => Object.Constant(value));
     public bool IsBoolean => Data.Bool("is_boolean");
@@ -2388,7 +2386,6 @@ public sealed class CleanupActionDetails : SemanticDetail
     public bool IsArray => Data.Bool("is_array");
     public bool IsIndirect => Data.Bool("is_indirect");
     public bool IsConditional => Data.Bool("is_conditional");
-    public bool? IsUnordered => Data.OptionalBool("is_unordered");
     public bool IsBaseSubobject => Data.Bool("is_base_subobject");
     public bool IsVla => Data.Bool("is_vla");
     public bool IsDeallocation => Data.Bool("is_deallocation");
@@ -2553,7 +2550,6 @@ public sealed class TemplateArgumentDetails : SemanticDetail
     public bool IsProvisional => Data.Bool("is_provisional");
     public bool IsError => Data.Bool("is_error");
     public bool IsUnknownArrayBound => Data.Bool("is_unknown_array_bound");
-    public BigInteger? DeducedArrayBound => Number(Data.OptionalText("deduced_array_bound"));
     public IReadOnlyList<TemplateArgumentPackElementDetails> TemplateArgumentPackElementRows => Object.List("SELECT * FROM template_argument_pack_element WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new TemplateArgumentPackElementDetails(Object, r));
 }
 
@@ -2610,7 +2606,6 @@ public sealed class IncludeOccurrenceDetails : SemanticDetail
     internal IncludeOccurrenceDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SourceFile File => Object.Link(Data.OptionalLong("file_id"), value => Object.File(value))!;
     public IncludeOccurrence? Parent => Object.Link(Data.OptionalLong("parent_id"), value => Object.Include(value));
-    public SourcePosition? Position => Object.Link(Data.OptionalLong("position_id"), value => Object.Position(value));
     public long Ordinal => Data.Long("ordinal");
     public string? DisplayName => Object.Text(Data.OptionalLong("display_name_id"));
     public string? NameAsWritten => Object.Text(Data.OptionalLong("name_as_written_id"));

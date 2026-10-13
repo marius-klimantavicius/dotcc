@@ -110,7 +110,7 @@ try
         Check(state.Region==region&&state.StateNumber==0,"Cleanup states must resolve normalized regions.");
         Check(body.ExceptionHandling.Details!.NullState==BigInteger.Parse("18446744073709551615"),"Unsigned EH sentinel must remain exact beyond long.");
         var action=region.Actions.Single();
-        Check(action.TargetMethod==external&&action.Array!.ElementCount==-1&&action.Storage!.Variable!.Name=="x","Exceptional cleanup must preserve storage, routine and dynamic counts.");
+        Check(action.TargetMethod==external&&action.Array!.ElementCount==-1&&action.Storage!.Variable!.Name=="x"&&action.IsUnordered is null,"Exceptional cleanup must preserve storage, routine, dynamic counts and explicitly unknown table ordering.");
         Check(action.AbiDetail!.IsDelegating==true&&action.AbiDetail.DelegationArgumentLocation==action.Storage&&region.Condition!.Storage==action.Storage,"Typed EH supplements must navigate the recorded delegation argument location without decoding flags.");
         Check(body.Lifetimes.Count==1&&unit.Declarations.Count==0&&external.Body is null,"Optional retained collections and body absence must be ordinary values.");
         var invocation=unit.Macros.Invocations.Single();
@@ -492,7 +492,6 @@ try
             var angled=includes.Single(i=>i.NameAsWritten=="angled.hpp");var quoted=includes.Single(i=>i.NameAsWritten=="quoted.hpp");
             Check(angled.UsesAngleBrackets&&!angled.IsSystem&&!quoted.UsesAngleBrackets&&quoted.IsSystem,"Include token spelling and system-directory provenance must remain separate captured facts.");
             Check(includes.Single(i=>Path.GetFileName(i.File.Path)=="provenance_macros.hpp") is {IsPreinclude:true,IsMacrosOnly:true}&&includes.Single(i=>Path.GetFileName(i.File.Path)=="provenance_preinclude.hpp") is {IsPreinclude:true,IsMacrosOnly:false}&&!unit.Variables.Any(v=>v.Name=="macros_only_declaration_must_be_ignored"),"Preinclude and macros-only descriptors must preserve their distinct flags and the actual retained declarations.");
-            Check(includes.All(i=>i.Position is null),"The pinned source-file descriptors must not fabricate include-directive token positions from sequence bounds.");
             var zero=unit.Macros.Definitions.Where(m=>m.Position?.Sequence==0).ToArray();
             Check(zero.Length>0&&zero.All(m=>m.Position!.File is null&&m.Position.Mapping is null&&m.Position.LogicalLine is null&&m.Position.PhysicalLine is null),"Actual sequence-zero macro origins must remain unknown rather than acquiring an arbitrary physical source association.");
         }

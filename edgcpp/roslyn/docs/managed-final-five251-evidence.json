@@ -1,0 +1,160 @@
+{
+  "status": "ready-held",
+  "contract_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "owned_files": [
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj/Symbols.cs",
+      "sha256": "4b7ce06bdfa294829e55d8d9e731897c866c88f853d417ca7a26e55f0e7dc53c"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj/PhysicalSource.cs",
+      "sha256": "9ed293732a7009a8382c9a16f2789d48b7ccf6f118d45231618951c0de87021b"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+      "sha256": "2f16a3331de0509b66fd3cd74593fc764045dba34c2ee2af5fcdcfa5214c2532"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/tools/generate_bindings.py",
+      "sha256": "013157988bfd7a2414e9fe223c907682de93c174135a3ede3e71177a6ea31ef0"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj/SchemaDetails.g.cs",
+      "sha256": "0e6b1fa00f97425b9bb9414eb04bb05c02deede4a21c750cb3c53c89e2e26580"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/field-bindings.tsv",
+      "sha256": "665e5d6b33a3b0ab1a4268e19cd76995d3ce674db05bb069a7c7cd22d43e9471"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "ddba5a9c4d02f6c30dd56c539090fe08d1ea90da34692091547a0918de3192f3"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/RoutineProjection.cs",
+      "sha256": "0023f527873bb99b3dff575d27ad5fdc89486f83ee99ea3bd1049c45d81ba1f2"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/AvailabilityOrphanDerivationProjection.cs",
+      "sha256": "94354479c8533c5dc546fe1e2311d23fb4ede2a045724d279d2c8245375c5fb9"
+    }
+  ],
+  "parent_owned_contract": {
+    "path": "edgcpp/roslyn/managed/RoslynObj/SchemaContract.g.cs",
+    "sha256": "7e2a6d6353b4866be619b95ee28437c44995c6485e8b4c7d0d15e0a6eccb10d2"
+  },
+  "tests": {
+    "final_assertions": 4437,
+    "validation_instances": 211,
+    "unique_paths": 211,
+    "early_native_source_assertions": 2610,
+    "early_paths": 124,
+    "focused_profile_assertions": 208,
+    "focused_profile_paths": 3,
+    "self": 73,
+    "without_rowid_self": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generated_table_bindings": 249,
+    "generated_typed_properties": 1941,
+    "generator_drift": "pass",
+    "literal_writer_audit": "pass",
+    "owned_diff_check": "pass",
+    "archived_genuine_e49f_admission": "rejected at Open"
+  },
+  "scale": {
+    "path": "edgcpp/artifacts/roslynobj/closure251-final-five/native/scale.roslynobj",
+    "sha256": "dd61271f143a1b6fc9a0a0d440a08bc175a702cc28978a6eb2462bb88eb4331e",
+    "entities": 98697,
+    "operations": 7023,
+    "cold_ms": 2208.4,
+    "warm_ms": 1572.46,
+    "cached_rows": 4096,
+    "row_bound": 4096,
+    "cached_pages": 128,
+    "page_bound": 128,
+    "bytes": 7487488
+  },
+  "gates": [
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-build-v3.log",
+      "sha256": "2d6e7ed9e1c6221241d28034bcf2708f323d025b1b672c2c4d96d7a28dd136e0"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-self-v3.log",
+      "sha256": "1ea23f51f75c13107de377d76afec7ddd38b51faab56df0a525736b067a2a912"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-reject-e49f.log",
+      "sha256": "8678f0cfc5e30714ba19a589e052dc9ba95e927dcca5d2a6ab3598c829b11029"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-wor-self.log",
+      "sha256": "c498bc0842d7e05f57be98658ed728f4da41f6ec5712f660b4d2321581167e0f"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-early124.log",
+      "sha256": "a53aacb263c8325cedab95ff27631105fdea5fd239ec6caca48a7c5258ad17d6"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-final211-v3.log",
+      "sha256": "7d10ac4bd401be458be9b3bd3140a9b50275ed9bd0bea6c00b81bbf08eafd9ff"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-routine-profiles.log",
+      "sha256": "322abc047ba9fbc7f70da3c53e35c0221488483b4ab48486376799dedbddd9ff"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-finalfive251-scale.log",
+      "sha256": "7320d5832377cd2aa0a70f9735d9a0c8bc4339feb2d3b41453ef645a8db753e3"
+    }
+  ],
+  "manifest_and_object_hashes": "/tmp/roslynobj-managed-finalfive251-final211-paths.json",
+  "binding_delta": "/tmp/roslynobj-managed-finalfive251-binding-delta.json",
+  "archived_object": "/tmp/roslynobj-finalfive-e49f-basic.roslynobj",
+  "migration": [
+    {
+      "slot": "vector_type.element_count",
+      "action": "Generated count removed; actual ElementType/SizeConstant/current type quantities remain."
+    },
+    {
+      "slot": "parameter_type.source_origin_id",
+      "action": "ParameterType.Source and SignatureParameter.Source removed; actual Parameter.Symbol.Source remains separate."
+    },
+    {
+      "slot": "include_occurrence.position_id",
+      "action": "Unsupported IncludeOccurrence.Position removed; no synthesized replacement."
+    },
+    {
+      "slot": "cleanup_action.is_unordered",
+      "action": "Generated getter removed; ordinary CleanupAction.IsUnordered remains bool? null with exact unknown policy, separate from Initialization.IsUnordered."
+    },
+    {
+      "slot": "template_argument.deduced_array_bound",
+      "action": "Generated numeric getter/obsolete generator classification removed; coordinator exact unsupported native guard retained."
+    }
+  ],
+  "profile_test_corrections": [
+    {
+      "source_guard": "DO_IL_LOWERING && IA64_ABI",
+      "file": "managed/RoslynObj.Tests/RoutineProjection.cs",
+      "proof": "Every recorded primary-entry target identity remains asserted; enabled Itanium guard requires positive constructor; inactive Cfront guard requires absent links."
+    },
+    {
+      "source_guard": "RECORD_MACRO_ARGS",
+      "file": "managed/RoslynObj.Tests/AvailabilityOrphanDerivationProjection.cs",
+      "proof": "Macro arguments availability state/reason follows recorded guard; exported disabled exact reason positive, native/source/Cfront/extern-inline available. Specialized tokens/trivia remain not-retained."
+    }
+  ],
+  "commands_running": [],
+  "uncommitted_status": "Nine owned paths held; no independent commit. Other dirty/index paths are outside ownership.",
+  "next": "Coordinator checkpoint; remaining semantic pending families are separate next assignment."
+}

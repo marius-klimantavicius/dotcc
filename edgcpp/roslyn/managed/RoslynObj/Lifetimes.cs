@@ -74,7 +74,8 @@ public sealed class CleanupAction : SemanticEntity
     public CleanupStorageLocation? Storage => Details.Storage;
     public CleanupArray? Array => Details.Array;
     public CleanupAbiDetail? AbiDetail => Details.AbiDetail;
-    public bool? IsUnordered => Details.IsUnordered;
+    /// <summary>Unknown: the retained cleanup table has no unordered flag. Initialization.IsUnordered is a separate recipe fact.</summary>
+    public bool? IsUnordered => null;
 }
 
 public sealed class CleanupStorageLocation : SemanticEntity

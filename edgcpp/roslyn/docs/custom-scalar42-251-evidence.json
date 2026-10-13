@@ -1,0 +1,87 @@
+{
+  "scope": "Shared scalar discriminator mapping/getter family only. Reserved vocabulary is distinguished from actual writer arms; no branch-specific field or execution inference.",
+  "families": {
+    "capture_profile": {
+      "actual_writer_tags": [
+        "cfront_lowered",
+        "exported_templates_lowered",
+        "native_lowered",
+        "source_semantic"
+      ],
+      "source_and_public_proof": "roslyn_gen_be.c ROSLYN_CAPTURE_PROFILE_ID and object_header.capture_profile_id; RoslynObject.Open.cs40 catalog name; accepted profiles native/source/cfront/exported"
+    },
+    "representation_role": {
+      "actual_writer_tags": [
+        "execution",
+        "metadata",
+        "source_semantic"
+      ],
+      "source_and_public_proof": "roslyn_gen_be.c default role7001/7002/7003; Store.promote_execution; actual type/body/VLA/unevaluated containment tests"
+    },
+    "bound_kind": {
+      "actual_writer_tags": [
+        "constant",
+        "dependent",
+        "incomplete",
+        "upc_threads",
+        "variable",
+        "zero"
+      ],
+      "source_and_public_proof": "roslyn_types.h75 exact ordered retained array discriminants; ArrayType.Array.BoundKind; ScalarFamilies array_type and ExecutionProjection UPC/zero/incomplete/VLA tests"
+    },
+    "vector_kind": {
+      "actual_writer_tags": [
+        "fixed",
+        "riscv",
+        "scalable"
+      ],
+      "source_and_public_proof": "roslyn_types.h124-126 exact active vector arms; VectorType.Vector.VectorKind; accepted vector_arm/vector_riscv/type scalar sweeps"
+    },
+    "body_state": {
+      "actual_writer_tags": [
+        "declaration_only",
+        "definition",
+        "dependent",
+        "discarded"
+      ],
+      "source_and_public_proof": "roslyn_routines.h177 retains prototype/root/defined distinctions; FunctionSymbol.BodyState; RoutineProjection and new scoped availability proof"
+    },
+    "storage_duration": {
+      "actual_writer_tags": [
+        "automatic",
+        "parameter",
+        "static",
+        "thread"
+      ],
+      "source_and_public_proof": "roslyn_variables.h26 actual parameter/TLS/currentstorage facts; VariableSymbol.Details.StorageDuration; SemanticActivationProjection/source variable and scalar sweeps"
+    },
+    "arithmetic_kind": {
+      "actual_writer_tags": [
+        "boolean",
+        "complex",
+        "fixed_point",
+        "floating",
+        "imaginary",
+        "signed_integer",
+        "unsigned_integer"
+      ],
+      "source_and_public_proof": "roslyn_types.h58-62 exact type arms and read-only signedness; ArithmeticType.Arithmetic.ArithmeticKind; accepted numeric/type family getter sweeps"
+    },
+    "string_encoding": {
+      "actual_writer_tags": [
+        "target_code_units"
+      ],
+      "source_and_public_proof": "roslyn_constants.h87 preserves target-order bytes without Unicode inference; StringValue.Details.Encoding; Numeric/ConstantRelations direct typed string family sweeps"
+    },
+    "string_unit_kind": {
+      "actual_writer_tags": [
+        "target_bytes"
+      ],
+      "source_and_public_proof": "roslyn_constants.h87 exact target8bit units; StringValue.TargetBytes/StorageUnits/ByteLength; actual narrow/wide raw-byte assertions"
+    }
+  },
+  "accepted_readers": "Final187 PASS3871; later bound/type/vector/constant and GetAvailability bounded checkpoints pass with exact same custom tag semantics. Current contract field deletions do not change these tags or catalog IDs.",
+  "stable_id_policy": "All39145 IDs retained; no actual schema/kinds.tsv change.",
+  "reviewed_rows": 42,
+  "runtime_every_case_claim": false
+}

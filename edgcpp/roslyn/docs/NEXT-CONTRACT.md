@@ -1,27 +1,32 @@
-# Accepted prototype/UUID and availability; final five-column format cleanup
+# Final five-column format gate; next bounded semantic proof
 
-Current e49f251 passes existing8/PASS499,fresh4/PASS95,self73,build0warnings/errors,
-generator249/1946,literal/diff. All14 unchanged stages/pins verified; no new strict
-build/full187/scale run. Field proof1409verified/122pending,89captured optional
-source/15limits. Scoped availability owner/state/reason acceptance is complete.
-Native C prototype scope and class/enum UUID storage are actual retained IL.
+Current format is251 tables/39,145 stable kinds, framed SQL/catalog fingerprint
+`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+The final-five producer/reader cleanup is implemented. All14 strict/pinned stages
+and211 distinct current-format objects pass native publication gates. Final managed
+211 navigation passes4437 after exact IA64/macro-profile assertion corrections;
+self73, clean generation/build and genuine archived-e49f admission rejection pass.
+Early124/PASS2610 is intermediate evidence. Five generated properties are removed (249bindings/1941
+properties), with no changed survivor property types. Field proof1409/122 remains.
 
-Next freeze/remove exactly final-five-slot-contract.tsv fields at this held
-boundary. Keep251 tables and append-only39,145 kind IDs. Regenerate framed
-SQL+catalog digest, producer/reader bindings and explicit compatibility evidence;
-reject genuine archived e49f objects at admission. CleanupAction.IsUnordered
-remains explicit nullable unknown. A retained transient non-type unknown-bound
-argument must fail export clearly, never silently lose its integer payload.
-Refresh all current valid-profile inputs including new metadata-root/pragma/
-retained/constant-dependent/prototype-UUID fixtures, not only archived187 baseline.
-Native owns the serialized14 strict build/export lane; managed owns typed API/
-generator/regression checks. No core, private metadata, corruption or migration.
+After this checkpoint, native takes two bounded recipes in existing profiles:
+USL21/30 accessible throw-base lists and C++23 scoped [[assume]] attribute arguments.
+Then stage the reviewed stock IFC-backed module partition/header/import-attribute
+recipes. Managed takes a bounded existing expression/EH/asm/capture identity batch,
+separate from new retained-branch activation. Root reviews exact stock retention
+and unused custom discriminator labels. No schema mutation is planned for these
+semantic batches; missing payloads must be concrete before adding a field.
 
-Once accepted, next native semantic probes are existing-USL accessible throw-base
-lists and actual scoped [[assume]] attribute expressions, followed by minimal
-stock IFC-backed module partition/header/import-attribute metadata. Next managed
-proof is existing expression/EH/asm/capture exact relationships. No optional
-source position campaign or independent C++ semantic reconstruction.
+Later native recipes are shared master/init-expression lifetime and legitimate
+const-evaluation deferred default argument/member initializer wrappers. Current
+zero rows do not establish global unavailability. Readers use EDG-folded results,
+never re-evaluate defaults or recover frontend caches.
+
+The final-five archived/current comparison, exact minimal-column policy and
+private-publication gates remain explicit. The next release freeze follows semantic
+closure; there is no old-development compatibility or migration promise. Preserve
+partial EH, actual lifetimes and EDG scheduling. No core, position campaign,
+semantic inference, corruption tests or cross-object linking.
 
 ---
 
