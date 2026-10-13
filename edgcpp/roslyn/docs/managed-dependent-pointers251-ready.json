@@ -1,0 +1,111 @@
+{
+  "checkpoint": "dependent type/constant/capture/name pointers251",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentPointerProjection.cs",
+      "sha256": "5632b7c595a8d6b48232fe3fab20b77068e4eb8e7f969b9c1d968d5654c7a919",
+      "bytes": 8203
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "c98d572ed2688b9eeabb66dec75ab8bfaa40289979d37508216eeb2737b5b22a",
+      "bytes": 78399
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Types.cs",
+      "sha256": "0273a3759c45bcf304afca228cadc27dd7a33fcaa0dee264581d7abc19af7650",
+      "bytes": 13505
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dependent-pointers251-evidence.tsv",
+      "sha256": "923921e3b74ef3c3fafd268465a59efababa536ef622aa1c9c79f8152f6bb242",
+      "bytes": 7281
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-build.log",
+      "sha256": "3e0a45c0068ad7c9f6afd8d4c9587e0c1ed984d769af279435faccbc36ec3575",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-fresh4-v2.log",
+      "sha256": "72d1ba067291ca2c9501d1be881e26b7fd02b9aac87e0ef93539307fd55eed3c",
+      "bytes": 1009
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-self.log",
+      "sha256": "19d65bd05a982b5cb31d8938d7e22b3d55c6de911c472ae152f6a8718355ad6d",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/dependent_payloads.roslynobj",
+      "sha256": "e52dcd75e37f4b459a96fc13bf78a50f385d9afdd933104a71a5a651acd9de40",
+      "bytes": 795648
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/dependent_payloads.roslynobj",
+      "sha256": "2b9ed781d5eb59e8dd4ceb3af4ab5e62cd6b148b2f5d71fabbd4016030575c44",
+      "bytes": 814080
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/retained_name_forms.roslynobj",
+      "sha256": "b7c4dbf0d9ea07a8c91fb7601860dfac0190f3173ea57bcda61ebabe8dcb3c54",
+      "bytes": 672768
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/retained_name_forms.roslynobj",
+      "sha256": "9adac9bd5111a90553f97907ad3db225beac00814a73d9fcd83c33db31d4a450",
+      "bytes": 671744
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/all-profile-results-final.json",
+    "sha256": "2ce7437de3c5abb8086552ae07ebeeb36159a10ba70701339cc683ff80fa7602",
+    "bytes": 3085
+  },
+  "checks": {
+    "build": "0 warnings/errors",
+    "fresh": "PASS99/4 unique",
+    "self": "PASS73",
+    "generator": "249 table bindings/1941 properties; --check passes",
+    "literal_writes": "passes",
+    "whitespace": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentPointerProjection.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Types.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dependent-pointers251-evidence.tsv",
+        "clean": true
+      }
+    ]
+  },
+  "proof": "8 positive field rows plus1 observed-pending original name argument-list row; resolved destructor class remains distinct from written alias; source capture fields remain distinct from destinations",
+  "api_change": "Three exact nullable type conveniences: OriginalNestedType, BitWidthConstant, TypeReference.ProxyClass; no fallback/duplicated stored facts",
+  "scope": "4 unique compatible snapshots; no additional existing-object/full211/scale/native build or schema mutation",
+  "unaccepted_log": "fresh4-v1 ran the previous binary after a compile failure and is excluded from evidence; only v2 has this helper",
+  "running_commands": [],
+  "state": "owned files held for coordinator checkpoint; no independent commit"
+}

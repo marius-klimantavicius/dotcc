@@ -1,0 +1,439 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "selected_fields": 9,
+  "positive_fields": 8,
+  "backend_changes": false,
+  "configuration_changes": false,
+  "new_strict_builds": 0,
+  "name_variant_count": 1,
+  "profiles": {
+    "source": {
+      "dependent_payloads_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/dependent_payloads.roslynobj",
+      "dependent_payloads_sha256": "e52dcd75e37f4b459a96fc13bf78a50f385d9afdd933104a71a5a651acd9de40",
+      "original_nested_types": [
+        {
+          "id": 423,
+          "parent_type_id": 364,
+          "parameter_kind": "tptk_member",
+          "instance_id": 377,
+          "is_prototype_instantiation": 1
+        }
+      ],
+      "dependent_bit_widths": [
+        {
+          "id": 547,
+          "parameter_depth": -3,
+          "parameter_kind": "tptk_bit_precise_int",
+          "bit_width_constant_id": 549,
+          "is_unsigned_bit_precise_integer": 0,
+          "value_id": 533,
+          "type_id": 471,
+          "constant_kind": "ck_template_param",
+          "expression_id": null,
+          "representation_role_id": null
+        },
+        {
+          "id": 565,
+          "parameter_depth": -3,
+          "parameter_kind": "tptk_bit_precise_int",
+          "bit_width_constant_id": 567,
+          "is_unsigned_bit_precise_integer": 1,
+          "value_id": 587,
+          "type_id": 471,
+          "constant_kind": "ck_template_param",
+          "expression_id": 571,
+          "representation_role_id": 7002
+        }
+      ],
+      "concrete_precision_controls": [
+        {
+          "id": 637,
+          "precision": 9,
+          "signed": 1
+        },
+        {
+          "id": 643,
+          "precision": 10,
+          "signed": 0
+        }
+      ],
+      "typeref_proxies": [
+        {
+          "id": 659,
+          "proxy_class_id": 701,
+          "proxy_of_type_id": 659,
+          "is_proxy_class": 1,
+          "symbol_id": null
+        }
+      ],
+      "unknown_conversion_constants": [
+        {
+          "id": 1326,
+          "type_id": 673,
+          "value_id": 1329,
+          "conversion_type_id": 471,
+          "dependent_kind": "tpck_unknown_function",
+          "conversion_integer_kind": "ik_int",
+          "expression_id": 1322,
+          "representation_role_id": 7002
+        }
+      ],
+      "wrapped_member_constants": [
+        {
+          "owner_id": 1004,
+          "wrapper_value": 1020,
+          "kind_id": 113015,
+          "ordinal": 0,
+          "constant_id": 1006,
+          "child_value": 1019,
+          "child_type": 1002,
+          "constant_value_id": 1019,
+          "constant_type_id": 1002,
+          "member_id": 1008,
+          "containing_type_id": 955,
+          "is_function_ptr": 0,
+          "expression_id": 997,
+          "representation_role_id": 7002
+        }
+      ],
+      "nested_capture_fields": [
+        {
+          "owner_id": 1805,
+          "ordinal": 0,
+          "field_id": 1764,
+          "indirect_capture_field_id": 1800,
+          "source_closure_field_id": 1800,
+          "is_init_capture": 0,
+          "is_indirect_init_capture": 1,
+          "closure_type_id": 1659,
+          "destination_record": 1659,
+          "source_record": 1568
+        },
+        {
+          "owner_id": 1852,
+          "ordinal": 0,
+          "field_id": 1800,
+          "indirect_capture_field_id": null,
+          "source_closure_field_id": null,
+          "is_init_capture": 1,
+          "is_indirect_init_capture": 0,
+          "closure_type_id": 1568,
+          "destination_record": 1568,
+          "source_record": null
+        },
+        {
+          "owner_id": 2133,
+          "ordinal": 0,
+          "field_id": 2091,
+          "indirect_capture_field_id": null,
+          "source_closure_field_id": 2126,
+          "is_init_capture": 0,
+          "is_indirect_init_capture": 0,
+          "closure_type_id": 1987,
+          "destination_record": 1987,
+          "source_record": 1896
+        },
+        {
+          "owner_id": 2176,
+          "ordinal": 0,
+          "field_id": 2126,
+          "indirect_capture_field_id": null,
+          "source_closure_field_id": null,
+          "is_init_capture": 0,
+          "is_indirect_init_capture": 0,
+          "closure_type_id": 1896,
+          "destination_record": 1896,
+          "source_record": null
+        }
+      ],
+      "capture_active_arm_counts": {
+        "indirect_init_capture_field": 1,
+        "source_closure_field": 2,
+        "capture_rows": 4
+      },
+      "retained_name_forms_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/retained_name_forms.roslynobj",
+      "retained_name_forms_sha256": "b7c4dbf0d9ea07a8c91fb7601860dfac0190f3173ea57bcda61ebabe8dcb3c54",
+      "actual_name_references": [
+        {
+          "expression_id": 553,
+          "target_id": 365,
+          "name_reference_id": 560,
+          "destructor_type_id": 352,
+          "num_template_arguments": "-1",
+          "is_template_id": 0,
+          "representation_role_id": 7003,
+          "destructor_target_typeref_underlying_type": null,
+          "routine_containing_type": 352
+        },
+        {
+          "expression_id": 561,
+          "target_id": 565,
+          "name_reference_id": 581,
+          "destructor_type_id": null,
+          "num_template_arguments": "-1",
+          "is_template_id": 0,
+          "representation_role_id": 7003,
+          "destructor_target_typeref_underlying_type": null,
+          "routine_containing_type": null
+        },
+        {
+          "expression_id": 782,
+          "target_id": 790,
+          "name_reference_id": 817,
+          "destructor_type_id": null,
+          "num_template_arguments": "2",
+          "is_template_id": 1,
+          "representation_role_id": 7003,
+          "destructor_target_typeref_underlying_type": null,
+          "routine_containing_type": null
+        },
+        {
+          "expression_id": 831,
+          "target_id": 839,
+          "name_reference_id": 859,
+          "destructor_type_id": null,
+          "num_template_arguments": "1",
+          "is_template_id": 1,
+          "representation_role_id": 7003,
+          "destructor_target_typeref_underlying_type": null,
+          "routine_containing_type": null
+        }
+      ],
+      "original_template_arguments": [],
+      "concrete_selected_instance_arguments": [
+        {
+          "id": 805,
+          "result_id": 790,
+          "template_id": 640,
+          "ordinal": 0,
+          "type_id": 590,
+          "constant_id": null,
+          "integer_value": null
+        },
+        {
+          "id": 805,
+          "result_id": 790,
+          "template_id": 640,
+          "ordinal": 1,
+          "type_id": null,
+          "constant_id": 808,
+          "integer_value": "9"
+        },
+        {
+          "id": 849,
+          "result_id": 839,
+          "template_id": 640,
+          "ordinal": 0,
+          "type_id": 590,
+          "constant_id": null,
+          "integer_value": null
+        },
+        {
+          "id": 849,
+          "result_id": 839,
+          "template_id": 640,
+          "ordinal": 1,
+          "type_id": null,
+          "constant_id": 657,
+          "integer_value": "7"
+        }
+      ],
+      "written_destructor_alias": [
+        {
+          "id": 397,
+          "underlying_type_id": 352,
+          "name": "DestructorAlias"
+        }
+      ],
+      "name_retention_capabilities": {
+        "CREATE_LEXICAL_TYPEREFS": {
+          "value": "0",
+          "enabled": false
+        },
+        "DEFAULT_RECORD_FORM_OF_NAME_REFERENCE": {
+          "value": "1",
+          "enabled": true
+        },
+        "record_form_of_name_reference": {
+          "value": "1",
+          "enabled": true
+        }
+      }
+    },
+    "native": {
+      "dependent_payloads_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/dependent_payloads.roslynobj",
+      "dependent_payloads_sha256": "2b9ed781d5eb59e8dd4ceb3af4ab5e62cd6b148b2f5d71fabbd4016030575c44",
+      "original_nested_types": [
+        {
+          "id": 398,
+          "parent_type_id": 344,
+          "parameter_kind": "tptk_member",
+          "instance_id": 356,
+          "is_prototype_instantiation": 1
+        }
+      ],
+      "dependent_bit_widths": [
+        {
+          "id": 472,
+          "parameter_depth": -3,
+          "parameter_kind": "tptk_bit_precise_int",
+          "bit_width_constant_id": 474,
+          "is_unsigned_bit_precise_integer": 0,
+          "value_id": 458,
+          "type_id": 420,
+          "constant_kind": "ck_template_param",
+          "expression_id": null,
+          "representation_role_id": null
+        },
+        {
+          "id": 488,
+          "parameter_depth": -3,
+          "parameter_kind": "tptk_bit_precise_int",
+          "bit_width_constant_id": 490,
+          "is_unsigned_bit_precise_integer": 1,
+          "value_id": 510,
+          "type_id": 420,
+          "constant_kind": "ck_template_param",
+          "expression_id": 494,
+          "representation_role_id": 7002
+        }
+      ],
+      "concrete_precision_controls": [
+        {
+          "id": 536,
+          "precision": 9,
+          "signed": 1
+        },
+        {
+          "id": 541,
+          "precision": 10,
+          "signed": 0
+        }
+      ],
+      "typeref_proxies": [
+        {
+          "id": 556,
+          "proxy_class_id": 597,
+          "proxy_of_type_id": 556,
+          "is_proxy_class": 1,
+          "symbol_id": null
+        }
+      ],
+      "unknown_conversion_constants": [
+        {
+          "id": 1456,
+          "type_id": 569,
+          "value_id": 1459,
+          "conversion_type_id": 420,
+          "dependent_kind": "tpck_unknown_function",
+          "conversion_integer_kind": "ik_int",
+          "expression_id": 1452,
+          "representation_role_id": 7002
+        }
+      ],
+      "wrapped_member_constants": [
+        {
+          "owner_id": 775,
+          "wrapper_value": 790,
+          "kind_id": 113015,
+          "ordinal": 0,
+          "constant_id": 777,
+          "child_value": 789,
+          "child_type": 773,
+          "constant_value_id": 789,
+          "constant_type_id": 773,
+          "member_id": 779,
+          "containing_type_id": 729,
+          "is_function_ptr": 0,
+          "expression_id": 768,
+          "representation_role_id": 7002
+        }
+      ],
+      "nested_capture_fields": [],
+      "capture_active_arm_counts": {
+        "indirect_init_capture_field": 0,
+        "source_closure_field": 0,
+        "capture_rows": 0
+      },
+      "retained_name_forms_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/retained_name_forms.roslynobj",
+      "retained_name_forms_sha256": "9adac9bd5111a90553f97907ad3db225beac00814a73d9fcd83c33db31d4a450",
+      "actual_name_references": [],
+      "original_template_arguments": [],
+      "concrete_selected_instance_arguments": [
+        {
+          "id": 734,
+          "result_id": 719,
+          "template_id": 575,
+          "ordinal": 0,
+          "type_id": 535,
+          "constant_id": null,
+          "integer_value": null
+        },
+        {
+          "id": 734,
+          "result_id": 719,
+          "template_id": 575,
+          "ordinal": 1,
+          "type_id": null,
+          "constant_id": 737,
+          "integer_value": "9"
+        },
+        {
+          "id": 774,
+          "result_id": 764,
+          "template_id": 575,
+          "ordinal": 0,
+          "type_id": 535,
+          "constant_id": null,
+          "integer_value": null
+        },
+        {
+          "id": 774,
+          "result_id": 764,
+          "template_id": 575,
+          "ordinal": 1,
+          "type_id": null,
+          "constant_id": 591,
+          "integer_value": "7"
+        }
+      ],
+      "name_retention_capabilities": {
+        "CREATE_LEXICAL_TYPEREFS": {
+          "value": "0",
+          "enabled": false
+        },
+        "DEFAULT_RECORD_FORM_OF_NAME_REFERENCE": {
+          "value": "0",
+          "enabled": false
+        },
+        "record_form_of_name_reference": {
+          "value": "0",
+          "enabled": false
+        }
+      }
+    }
+  },
+  "original_argument_retention": {
+    "status": "pending_selected_retention",
+    "initial_recipe": "Second template had only <T>; zero original argument rows.",
+    "one_allowed_variant": "Both overloads now have <T,int Number=7>, so explicit arguments can identify more than one function template before call selection; zero original argument rows still.",
+    "actual_source_names": {
+      "explicit_two_name": 817,
+      "explicit_one_name": 859,
+      "explicit_counts": [
+        2,
+        1
+      ]
+    },
+    "producer_sites": [
+      "src/lexical.c:24278-24303",
+      "src/expr.c:8817-8877",
+      "src/exprutil.c:24715-24786"
+    ],
+    "backend_write": "backend/roslyn_names.h:25-26 traverses only actual p->orig_template_arg_list",
+    "limit": "No source reconstruction or selected-instance fallback; no universal inactive/consumed claim. Further exact retention tracing remains pending.",
+    "initial_archive": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/initial-name-recipe"
+  }
+}

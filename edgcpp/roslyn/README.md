@@ -12,11 +12,11 @@ Phases 3–4 are approved and in progress. The current251-table format passes
 4,437 reader assertions across211 distinct objects and14 strict pinned profiles.
 Full M0–M5 acceptance is tracked in [the implementation ledger](docs/IMPLEMENTATION.md),
 [remaining acceptance](docs/ACCEPTANCE.md), and [compatibility profiles](docs/PROFILES.md).
-There are 1,489 verified field rows and 39 required proof rows still open, with two
+There are 1,497 verified field rows and 31 required proof rows still open, with two
 explicit selected-stock module-input limitations; table or
 kind presence alone does not establish complete semantic-family coverage. The latest
-bounded initializer/deferred gate passes 113 assertions on one existing object
-and 90 on two fresh objects; the format remains unchanged.
+bounded dependent-pointer gate passes 99 assertions on four fresh objects;
+the format remains unchanged.
 
 The build uses a clean EDG 7.0 checkout pinned at
 `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. The default materialized checkout is

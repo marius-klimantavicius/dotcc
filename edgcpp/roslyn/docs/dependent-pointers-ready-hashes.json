@@ -1,0 +1,63 @@
+{
+  "inventory": "/tmp/roslyn-managed-ready-dependent-pointers251.json",
+  "count": 14,
+  "all_match": true,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentPointerProjection.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Types.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dependent-pointers251-evidence.tsv",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-build.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-fresh4-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-self.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-generator.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dependent-pointers251-literal.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/dependent_payloads.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/dependent_payloads.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/retained_name_forms.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/retained_name_forms.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/all-profile-results-final.json",
+      "matches": true
+    }
+  ]
+}

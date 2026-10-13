@@ -1,0 +1,48 @@
+{
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "profiles": 14,
+  "digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "objects_checked": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/dependent_payloads.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 2214
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/dependent_payloads.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 2154
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/source/retained_name_forms.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 872
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/native/retained_name_forms.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 844
+    }
+  ]
+}

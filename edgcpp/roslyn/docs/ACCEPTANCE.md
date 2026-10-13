@@ -1,44 +1,44 @@
 # Remaining acceptance work
 
-The initializer/deferred checkpoint keeps the accepted `4bb94` contract unchanged:
-251 tables and 39,145 stable kind IDs. One existing object passes 113 reader
-assertions and two fresh native/source objects pass 90 (three distinct paths).
-Self-checks pass 73; build, generator, literal-field and whitespace checks pass.
-All 14 unchanged compiler stages retain 316 pinned stock inputs, the pinned tool
-and 26 canonical backend files; new strict builds: zero. No full 211-object refresh
-or performance rerun is claimed.
+The dependent-pointer checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four fresh native/source objects pass 99
+reader assertions; self-checks pass 73. Build, generator, literal-field and
+whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned stock
+inputs, the pinned tool and 26 canonical backend files; new strict builds: zero.
+The final v2 gate is authoritative; the intermediate v1 binary is excluded. No full
+211-object refresh or performance rerun is claimed.
 
-Field coverage is now **1,489 verified / 39 required pending**, plus two explicit
+Field coverage is now **1,497 verified / 31 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
-or disposition. Optional source fields and known inactive configurations remain
-separate from required semantic proof. Kind-family adapter/getter validation is
-not every owner payload or runtime alternative.
+or disposition. Kind-family proof and optional source fields remain distinct from
+required owner-payload and active-branch evidence.
 
-The source initializer retains a full-expression temporary lifetime distinct from
-the initialized object's lifetime, with exact binding and destructor recipes.
-Two actual conditional construction recipes share one master with its recorded
-single cleanup. The master association adds no evaluated child; separately active
-master execution retains its actual role. Native lowering clears these source
-links while retaining a metadata marker, which does not reconstruct the links.
+Two compact ordinary GNU inputs activate eight fields: original nested class,
+dependent bit-width constants, typeref proxy, dependent conversion type and wrapped
+member-pointer constant, nested capture source/indirect fields, and destructor
+type. The named type properties expose only their stored pointers. Original nested
+class is not inferred as lexical parent; proxy descriptors have no fabricated
+symbol. Constant occurrence, shared value and retained type remain distinct.
 
-A direct-body __builtin_LINE recipe folded without deferred wrappers. One bounded
-variant places it in the consteval function's default argument; source and native
-then retain genuine metadata wrappers and both flag patterns (false,true) and
-(true,true). The flags remain independent nullable properties. Actual use of the
-default argument is EDG-folded integer 13; the reader performs no evaluation or
-coordinate recovery. An existing object also proves the exact singleton
-statement declaration-entity payload, without claiming every tagged target.
+The source indirect capture and source-closure link share the same actual outer
+field in one case, with a separate destination field. Native lowering removes the
+capture list. DestructorType targets the normalized NamedDestructor record; the
+written DestructorAlias is a distinct typeref whose underlying type is that record.
+The proof preserves this normalization without claiming alias-descriptor retention.
 
-The five proofs are in managed/init-deferred251-evidence.tsv and
-init-deferred251-proof-joins.json. Final reader and native inventories record the
-completed, frozen acceptance boundary.
+Original name argument lists remain empty after one bounded overload variation,
+although actual template-id argument counts 2 and 1 are recorded. This required
+branch stays pending for exact producer/retention follow-up. No arguments are
+recovered from selected instances or source spelling, and no universal inactivity
+is claimed. Eight positive rows and this explicit limit are in
+managed/dependent-pointers251-evidence.tsv and dependent-pointers251-proof-joins.json.
 
-Next native work combines compatible dependent type, name, constant and capture
-recipes in a compact existing-profile batch. The reader accepts only actual
-retained pointers and documented lowering alternatives. Empty-object links,
-reflection/token producers and small pragma/asm/list arms remain bounded queues.
-No confirmed missing serialization adapter or factory is open. Full phases 3–4/
-M0–M5 continue; EDG remains the sole semantic authority and positions stay optional.
+Next native work combines dependent constant variants and optimized-empty
+initializer links using the existing profiles; incompatible snippets cannot hold
+positive cases. Reflection/token producers and small pragma/asm/list/base arms
+remain bounded queues. No confirmed missing serialization adapter or factory is
+open. Full phases 3–4/M0–M5 continue; EDG remains the semantic authority and
+optional source positions remain nonblocking.
 
 ## Historical milestone evidence
 

@@ -1448,3 +1448,54 @@ schema or backend changes. Restart/unrelated paths are excluded from commit.
 The copied native readiness inventory was assembled before the final reader self
 inventory and retains that timing note. The final managed inventory independently
 records PASS73 and all completed reader gates; no gate remains pending here.
+
+
+### Accepted dependent type, constant, capture and destructor links
+
+The dependent-pointer checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four fresh native/source objects pass 99
+reader assertions; self-checks pass 73. Build, generator, literal-field and
+whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned stock
+inputs, the pinned tool and 26 canonical backend files; new strict builds: zero.
+The final v2 gate is authoritative; the intermediate v1 binary is excluded. No full
+211-object refresh or performance rerun is claimed.
+
+Field coverage is now **1,497 verified / 31 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Kind-family proof and optional source fields remain distinct from
+required owner-payload and active-branch evidence.
+
+Two compact ordinary GNU inputs activate eight fields: original nested class,
+dependent bit-width constants, typeref proxy, dependent conversion type and wrapped
+member-pointer constant, nested capture source/indirect fields, and destructor
+type. The named type properties expose only their stored pointers. Original nested
+class is not inferred as lexical parent; proxy descriptors have no fabricated
+symbol. Constant occurrence, shared value and retained type remain distinct.
+
+The source indirect capture and source-closure link share the same actual outer
+field in one case, with a separate destination field. Native lowering removes the
+capture list. DestructorType targets the normalized NamedDestructor record; the
+written DestructorAlias is a distinct typeref whose underlying type is that record.
+The proof preserves this normalization without claiming alias-descriptor retention.
+
+Original name argument lists remain empty after one bounded overload variation,
+although actual template-id argument counts 2 and 1 are recorded. This required
+branch stays pending for exact producer/retention follow-up. No arguments are
+recovered from selected instances or source spelling, and no universal inactivity
+is claimed. Eight positive rows and this explicit limit are in
+managed/dependent-pointers251-evidence.tsv and dependent-pointers251-proof-joins.json.
+
+Next native work combines dependent constant variants and optimized-empty
+initializer links using the existing profiles; incompatible snippets cannot hold
+positive cases. Reflection/token producers and small pragma/asm/list/base arms
+remain bounded queues. No confirmed missing serialization adapter or factory is
+open. Full phases 3–4/M0–M5 continue; EDG remains the semantic authority and
+optional source positions remain nonblocking.
+
+Inventories: managed-dependent-pointers251-ready.json and native-dependent-names251-ready.json.
+All 14 managed and 13 native frozen path hashes match; independent hash reviews
+are included. Final native validation/stage summaries and activation-proof are
+copied with the exact eight-positive/one-pending scope. Backend/config/schema
+bytes are unchanged; only direct reader properties, ordinary fixtures and proof
+checks are added. Restart, unrelated and unaccepted name-reference experiment
+files are excluded. No new existing-object or broad profile campaign.

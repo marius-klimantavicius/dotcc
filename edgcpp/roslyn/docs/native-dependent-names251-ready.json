@@ -1,0 +1,89 @@
+{
+  "checkpoint_base": "bb1fdac1cdf866f8e5bfa7d61244518e7038eae1",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "49c054c43996655ca0bd8c7984c35844d99f364b1747af866821b4df9e747b1a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dependent_payloads.cpp",
+      "sha256": "7b26d925547a13aa0ae3417d0feac9c2ff9393bcf86947a95b17119b23b46ac0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/retained_name_forms.cpp",
+      "sha256": "50534db4c8dfabfee0a922f9cd2bdaece0ff11d8dd0de7181b384e1df52d4d78"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "ae3fb64e80c46537899f207b1a6b02afbb7086f3e4103854907824b8eb99c04c"
+    }
+  ],
+  "candidate_owned_paths": 3,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/all-profile-results-final.json",
+      "sha256": "2ce7437de3c5abb8086552ae07ebeeb36159a10ba70701339cc683ff80fa7602"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/build-results-final.json",
+      "sha256": "477e427eb8c7f43d9185dddd30965778007d01a0554cb2311aeb3dc5e081ffee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/validation-summary-final.json",
+      "sha256": "d71408aafbf9ec9c6858b4ef8398d1645a616dab4b18d25671156cb423b5620e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/activation-proof.json",
+      "sha256": "949bc714a98b9c454b8e8cd7c859bb044ee9fa33756a379224a4b39b0987cfbd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/activation-proof.py",
+      "sha256": "36d2372a8b28d01bd3117f3ecfbaf7a0a1fc735df0ecb4452c8e4b39d5fa96fb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/field-evidence.tsv",
+      "sha256": "10c91d1b72b92397ea3ede2654f1e88856096f44cb847bfdbf61586b902ae81d"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-dependent-names-evidence251.tsv",
+  "public_gate": "Managed final four-object test underway; authoritative result follows separately.",
+  "selected_fields": 9,
+  "positive_fields": 8,
+  "pending_fields": 1,
+  "narrow_variant_count": 1,
+  "initial_recipe_archive": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dependent-names/initial-name-recipe",
+  "actual_positives": [
+    "dependent original nested type and bitwidth constants in both profiles",
+    "exact reciprocal typeref proxy without fabricated Symbol",
+    "unknown conversion int and dependent member-pointer value/component in both profiles",
+    "source completed nested init capture indirect/source fields and ordinary nested control",
+    "source resolved destructor class plus separately retained typedef alias"
+  ],
+  "legitimate_absences": [
+    "native captured lambda descriptor lists and name references cleared after lowering/runtime name recording0",
+    "source original-template-argument lists absent after one allowed same-header overload variant; pending exact selected retention, no fallback"
+  ],
+  "hold": true
+}

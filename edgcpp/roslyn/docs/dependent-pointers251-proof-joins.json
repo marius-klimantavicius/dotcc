@@ -1,0 +1,88 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "accepted_unique_paths": 4,
+  "fresh_assertions": 99,
+  "self_assertions": 73,
+  "joins": [
+    {
+      "owner": "a_template_param_type_supplement",
+      "member": "orig_nested_type",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:18",
+      "identity": "Source dependentNested423\u2192originalNested364; native398\u2192344. Original is actual Nested prototype class in NestedHolder prototype; parent nested field retains current dependent placeholder, distinct from original class pointer."
+    },
+    {
+      "owner": "a_template_param_type_supplement",
+      "member": "constraint.bit_width_constant",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:24",
+      "identity": "Source signed547\u2192occurrence549 and unsigned565\u2192567; native472\u2192474 and488\u2192490. Signed width occurrence is distinct from Width placeholder but shares exact tpck_param value; unsigned retains metadata eok_add Width-value then integer1."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "proxy_class",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:30",
+      "identity": "Source Result659\u2192proxy701 and native556\u2192597; actual proxy flag, reciprocal ProxyOfType to same typeref, no fabricated DeclarationSymbol."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.template_param.variant.unknown_function.conversion_type",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:35",
+      "identity": "Source unknown-function value1329\u2192intType471 and native1459\u2192420; canonical type equals actual Convertible conversion routine return descriptor."
+    },
+    {
+      "owner": "a_constant",
+      "member": "variant.template_param.variant.constant",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:41",
+      "identity": "Source wrapperOccurrence1004/value1020\u2192child1006/memberPointerValue1019/type1002; native775/value790\u2192777/value789/type773. Exact canonical MemberPattern.field target and member type are retained separately from occurrence/type/value identities."
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "captured.init_capture_field",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:56",
+      "identity": "Inner capture(owner1805,ordinal0) has indirect/source field1800 from outer init capture; current destination1764 belongs inner closure1659 and differs from outer field1800/closure1568. Variable NULL and IsIndirectInitCapture true preserved."
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "capture_info.source_closure_field",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:56",
+      "identity": "Indirect capture1805 points source1800 distinct destination1764. Ordinary capture2133 source2126 belongs outer closure1896, destination2091 belongs inner1987, and both outer/inner variable pointers equal actual seed parameter1900."
+    },
+    {
+      "owner": "a_name_reference",
+      "member": "variant.destructor_type",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/DependentPointerProjection.cs:73",
+      "identity": "Name560\u2192resolved NamedDestructor record352; written DestructorAlias typeref397 has UnderlyingType352 and remains a distinct descriptor."
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1497,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 31,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "pending": "a_name_reference.orig_template_arg_list",
+  "ready_hash_checks": 14
+}
