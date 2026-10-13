@@ -1,0 +1,32 @@
+{
+  "lifetime": {
+    "count": 6,
+    "exact_names_ids_internal_guards": true,
+    "aliases": []
+  },
+  "constructor_init": {
+    "count": 4,
+    "exact_names_ids_internal_guards": true,
+    "aliases": []
+  },
+  "initializer": {
+    "count": 6,
+    "exact_names_ids_internal_guards": true,
+    "aliases": []
+  },
+  "for_each_pattern": {
+    "count": 5,
+    "exact_names_ids_internal_guards": true,
+    "aliases": []
+  },
+  "template_argument": {
+    "count": 4,
+    "exact_names_ids_internal_guards": true,
+    "aliases": []
+  },
+  "template_parameter": {
+    "count": 4,
+    "exact_names_ids_internal_guards": true,
+    "aliases": []
+  }
+}

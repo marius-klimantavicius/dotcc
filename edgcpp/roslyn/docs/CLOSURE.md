@@ -1,6 +1,6 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after accepted260 and bounded exact-pack/scalar commit01c0364d3.
+Active on 2026-10-13 after accepted251 commit eea0003 and its bounded extern-inline/native dependent foreach follow-up.
 Accepted251 cleanup/evaluation-role batch passes2621 on175 unique paths
 (186 validation entries),self73. Prior182/PASS2462 and bounded47/PASS919
 remain historical evidence with their stated compiler/snapshot boundaries.
@@ -34,7 +34,7 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 866 verified and 724 mapped pending-validation fields at this boundary.
+There are 908 verified and 681 mapped pending-validation fields at this boundary.
 All 2,000 field rows now have an explicit mapping or disposition; mapping alone
 is not acceptance. Accepted bounded type/layout/init and template/parameter/attribute scalar
 proof joins pass919 across47 existing paths. Next direct Boolean proofs cover
@@ -42,7 +42,7 @@ constant/lambda/common expressions; non-scalar identities/unions stay distinct.
 The251 empty-scaffold cleanup and exact unevaluated-operand role correction
 are accepted across12 current compilers. Remaining work is bounded direct
 flag/projection and representative union/identity/quantity evidence closure;
-extern-inline configuration is under stock-only audit. No optional-location
+extern-inline configuration and raw positive flags are accepted in the13th strict profile. No optional-location
 work is added.
 51 additional already-captured optional-source fields are mapped_optional_source,
 with12 explicit omitted optional-source fields; these do not require new location
@@ -74,7 +74,7 @@ positive activation. Column existence or default values alone are insufficient.
 
 ## Remaining configured native profiles
 
-The twelve current profiles validate lowered native, source-semantic native
+The thirteen current profiles validate lowered native, source-semantic native
 Microsoft, cfront-like/assignment-to-this and exported templates. Genuine263
 probes cover compiled UPC dynamic/static threads, near/far, ARM scalable/modal
 and RISC-V fractional/tuple/boolean types. These do not require new build flags.
@@ -86,7 +86,7 @@ precision restriction are explicit; wider primary/other profiles retain them.
 
 Automatic/inline-variable instantiation now has a stock-valid profile with four
 actual positive guarded flags; accepted260 API and snapshot evidence passes182/PASS2462.
-Three minimal-inlining-only flags are inactive_upstream_configuration: pristine
+Three variable flags and the routine inlinable flag are inactive_upstream_configuration: pristine
 inline.c35–44 unconditionally requires full portable EH lowering, which the user
 forbids. Disabling runtime exceptions cannot bypass the guard. No core workaround
 or imprecision option is used. The stock-valid tableless partial-EH profile is accepted for exact cleanup-start
@@ -104,8 +104,8 @@ table-based execution-storage parity.
   relations. Avoid blanket indexes. The generated-header timestamp correction is
   verified: backend/link-only rebuild and subsequent Ninja no-work. The private
   FK-load candidate reduces scale median30.28s to0.59s with identical logical rows;
-  canonical adoption passes182 public acceptance. Current260 scale is0.58s,
-  7,573,504bytes and45,548KiB RSS; bounded reader cold2.160s/warm1.596s.
+  canonical adoption passes182 public acceptance. Current251 scale is0.60s,
+  7,512,064bytes and45,564KiB RSS; bounded reader cold2.699s/warm2.019s.
   Prior controlled median0.56s/7.586MB remains the before/after evidence.
 - Retain measured1KiB page default and WITHOUT ROWID composite relations. The243
   packaging comparison already covers24 successful runs; reopen only if new
@@ -129,3 +129,32 @@ The historical accepted260 gate ran182 validation instances over171 distinct
 paths (11 repeated publication/runner entries). Final251 evidence reports both
 counts. Direct row/field counts in earlier scalar handoffs may include repeated
 validation; they prove observed values/guards, not distinct-artifact cardinality.
+
+
+## Accepted extern-inline and native dependent foreach follow-up
+
+The251 contract and39,145 stable kind IDs are unchanged. All13 strict profiles
+pass316 pristine-input and26 canonical-backend checks. Four new distinct objects
+(extern-inline objects/routines and dependent foreach native/source) pass251tables,
+1KiB pages and FK0. This supplements the accepted175 distinct baseline paths;
+it is not a fresh full175-object run. Evidence is closure251/followup and the
+extern-inline/foreach subdirectories.
+
+Public checks pass constructor128/2 existing paths, extern-inline114/2 new paths,
+foreach116/3 including resolved-native contrast, and WORself73; build/generator/
+literal checks pass. The extern-inline requirement is an exact recorded EDG flag,
+including17 true noninline routines, not an IsInline or body-availability inference.
+Native Microsoft dependent sfepk_none retains common fields and nullable deferred
+operations without reading inactive STL/array union members or inventing a loop.
+
+Direct scalar proof closes42 additional fields:908 verified and681 required
+mapped-pending-validation, with51 captured optional-source mappings and12 omitted
+optional-source fields. Routine.inlinable joins the explicit stock configuration
+exclusion because minimal inlining requires forbidden full portable EH lowering.
+Union identities, quantities, order and executable obligations still require
+representative proof. Full phases3–4 continue.
+
+Next: fix the generated aom_modify switch omission (numeric enumerator trailing
+whitespace), verify genuine GNU read-write asm, then remove the grouped owner-table
+phantoms after exact stock/producer/API review. The ten constant/value candidates
+have source-backed alternatives; no reconstruction or optional-position campaign.

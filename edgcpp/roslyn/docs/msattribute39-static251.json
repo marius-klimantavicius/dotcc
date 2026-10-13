@@ -1,0 +1,71 @@
+{
+  "edg_ms_attribute": {
+    "count": 9,
+    "exact_names_ids_guards": true,
+    "guards": [
+      "#if INCLUDE_EDG_TEST_ATTRIBUTES",
+      "#endif"
+    ],
+    "aliases": []
+  },
+  "edg_ms_attribute_argument": {
+    "count": 7,
+    "exact_names_ids_guards": true,
+    "guards": [],
+    "aliases": []
+  },
+  "edg_ms_attribute_target": {
+    "count": 23,
+    "exact_stock_mask_bits_and_writer_order": true,
+    "values": {
+      "msat_invalid": 0,
+      "msat_none": 1,
+      "msat_assembly": 2,
+      "msat_module": 4,
+      "msat_class": 8,
+      "msat_struct": 16,
+      "msat_union": 32,
+      "msat_enum": 64,
+      "msat_constructor": 128,
+      "msat_method": 256,
+      "msat_property": 512,
+      "msat_field": 1024,
+      "msat_event": 2048,
+      "msat_interface": 4096,
+      "msat_parameter": 8192,
+      "msat_delegate": 16384,
+      "msat_returnvalue": 32768,
+      "msat_genericparameter": 65536,
+      "msat_typedef": 131072,
+      "msat_variable": 262144,
+      "msat_routine": 524288,
+      "msat_interfaceimpl": 1048576,
+      "msat_any": 2097151
+    },
+    "writer_bit_names": [
+      "msat_none",
+      "msat_assembly",
+      "msat_module",
+      "msat_class",
+      "msat_struct",
+      "msat_union",
+      "msat_enum",
+      "msat_constructor",
+      "msat_method",
+      "msat_property",
+      "msat_field",
+      "msat_event",
+      "msat_interface",
+      "msat_parameter",
+      "msat_delegate",
+      "msat_returnvalue",
+      "msat_genericparameter",
+      "msat_typedef",
+      "msat_variable",
+      "msat_routine",
+      "msat_interfaceimpl"
+    ],
+    "zero_mask": "msat_invalid",
+    "composite_mask": "msat_any"
+  }
+}

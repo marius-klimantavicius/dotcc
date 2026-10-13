@@ -1,0 +1,30 @@
+{
+  "rows": 39,
+  "counts": {
+    "explicit_lowered_eh_variant_adapter": 9,
+    "shared_payloadless_lowered_eh_adapter": 3,
+    "shared_exact_scalar_adapter": 18,
+    "alias_to_edg_builtin_function_bfk_is_constant_evaluated": 1,
+    "sentinel_not_semantic_instance": 2,
+    "error_only_kind": 1,
+    "confirmed_generator_gap_pending_fix": 1,
+    "explicit_module_variant_adapter": 4
+  },
+  "distinct_snapshot_files": 175,
+  "observed_kinds": {
+    "lowered_eh": 12,
+    "edg_builtin_user_function": 1,
+    "rewritten_property": 1,
+    "edg_module": 1,
+    "edg_module_file": 1,
+    "edg_asm_modifier": 2
+  },
+  "confirmed_gaps": [
+    "aom_modify omitted from generated mapper due to numeric assignment trailing whitespace"
+  ],
+  "limits": [
+    "This is scalar/discriminator/stock union audit, not a claim of positive fixture coverage for every kind.",
+    "No core, backend, schema or repository edits by root; no compiler/test lane used.",
+    "Current13-stage foreach boundary should remain fixed; coordinator schedules generator fix and real asm probe."
+  ]
+}

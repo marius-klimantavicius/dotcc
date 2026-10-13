@@ -233,14 +233,14 @@ try
         ScalarFamilies.Verify(unit,Path.GetFileName(input),Check);
         UnevaluatedProjection.Verify(unit,Path.GetFileName(input),Check);
         NavigationFamilies.Verify(unit,Path.GetFileName(input),Check);
-        var functionCount=0;var operationCount=0;var bodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
+        var functionCount=0;var operationCount=0;var executableBodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
         foreach(var function in unit.Functions)
         {
             _=function.Name;_=function.ReturnType.Kind;
             foreach(var parameter in function.Parameters) _=parameter.Type.Kind;
             functionCount++;
             if(function.Body is not {} body)continue;
-            bodyCount++;
+            if(body.Root.RepresentationRole.Name!="metadata")executableBodyCount++;
             foreach(var operation in body.DescendantOperations())
             {
                 operationCount++;
@@ -250,7 +250,7 @@ try
             foreach(var region in body.ExceptionHandling.CleanupRegions)
                 foreach(var action in region.Actions) { cleanupActions++;_=action.Kind;_=action.TargetMethod?.Name;_=action.Storage?.Offset; }
         }
-        Check(unit.Entities.Count>0&&(bodyCount==0||operationCount>0),"A real EDG object must expose captured entities and every present executable body; declaration-only objects may have no bodies.");
+        Check(unit.Entities.Count>0&&(executableBodyCount==0||operationCount>0),"A real EDG object must expose captured entities and present executable bodies; metadata-only prototypes do not supply executable operations.");
         if(Path.GetFileName(input)=="basic.roslynobj")
         {
             Check(targets.Contains("add"),"The real basic initializer must expose its EDG-selected add call in executable containment.");

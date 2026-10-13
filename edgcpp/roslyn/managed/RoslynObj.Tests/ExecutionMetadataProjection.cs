@@ -4,6 +4,14 @@ internal static class ExecutionMetadataProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
+        if(fixture=="native_dependent_foreach.roslynobj")
+        {
+            var loop=unit.Entities.OfType<ForEachOperation>().Single();
+            check(loop.PatternKind.Name=="sfepk_none"&&loop.RepresentationRole.Name=="metadata"&&loop.Body is not null&&loop.Iterator is {Name:"value"}&&loop.CollectionReference is not null&&loop.Scope is not null&&loop.IteratorScope is not null,"The actual unresolved native foreach prototype must retain its common body, iterator, collection reference and scopes as metadata.");
+            check(loop.Collection is null&&loop.EndVariable is null&&loop.Test is null&&loop.Increment is null&&!loop.ChildRelations.Any(c=>c.Role.Name is "condition" or "increment"),"The inactive STL/array union must remain absent for sfepk_none without a synthesized collection expression or end/test/increment.");
+            check(loop.Children.Contains(loop.Body!)&&loop.IteratorScope!.Members.Contains(loop.Iterator!),"The unresolved foreach must preserve its actual body edge and iterator-scope variable membership.");
+            check(!unit.Functions.Single(f=>f.Name=="native_dependent_foreach"&&f.Body is not null).Body!.DescendantOperations().Any(),"The retained dependent foreach prototype must not enter executable function traversal.");
+        }
         if(fixture=="upc_affinity.roslynobj")
         {
             var body=unit.Functions.Single(f=>f.Name=="upc_affinity_loop").Body!;

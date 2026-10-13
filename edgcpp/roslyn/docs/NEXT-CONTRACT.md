@@ -1,3 +1,21 @@
+# Next bounded asm discriminator and owner-table cleanup
+
+Current251 and its13-profile extern-inline/native dependent foreach follow-up are
+accepted; see IMPLEMENTATION and CLOSURE for exact snapshot/test boundaries.
+
+The generator must trim numeric enum assignments before alias classification so
+stock aom_modify=0x03 receives its existing319004 catalog ID. Verify a genuine GNU
+read-write asm operand through native export and the ordinary typed reader; no
+new IDs, schema change or inferred modifier semantics.
+
+Then remove grouped proven unwritten owner-table fields, with exact source-backed
+alternatives and public projections retained. Root ten constant/value column
+review is available at /tmp/roslyn-root-constant-columns251-review.json. Native
+compiler lane remains serialized. Remaining required field validation stays open;
+optional coordinates do not become gates.
+
+---
+
 # Frozen final producer cleanup and evaluation-role contract (251 tables)
 
 Accepted bounded260 delta committed `01c0364d391a2b5984d7a6cf889eefe6e0292c7b`:

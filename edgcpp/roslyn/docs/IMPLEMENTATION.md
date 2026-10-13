@@ -913,3 +913,32 @@ Scale0.60s/45,564KiB/7,512,064bytes,98,815entities/7,023operations. Reader
 cold2698.73ms/warm2018.55ms,111.4/112.4MB RSS, bounded4096rows/128pages.
 No core patches, semantic reconstruction, portable full-EH lowering, linking
 or translator were introduced. Full phases3–4 remain active.
+
+
+## Accepted extern-inline and native dependent foreach follow-up
+
+The251 contract and39,145 stable kind IDs are unchanged. All13 strict profiles
+pass316 pristine-input and26 canonical-backend checks. Four new distinct objects
+(extern-inline objects/routines and dependent foreach native/source) pass251tables,
+1KiB pages and FK0. This supplements the accepted175 distinct baseline paths;
+it is not a fresh full175-object run. Evidence is closure251/followup and the
+extern-inline/foreach subdirectories.
+
+Public checks pass constructor128/2 existing paths, extern-inline114/2 new paths,
+foreach116/3 including resolved-native contrast, and WORself73; build/generator/
+literal checks pass. The extern-inline requirement is an exact recorded EDG flag,
+including17 true noninline routines, not an IsInline or body-availability inference.
+Native Microsoft dependent sfepk_none retains common fields and nullable deferred
+operations without reading inactive STL/array union members or inventing a loop.
+
+Direct scalar proof closes42 additional fields:908 verified and681 required
+mapped-pending-validation, with51 captured optional-source mappings and12 omitted
+optional-source fields. Routine.inlinable joins the explicit stock configuration
+exclusion because minimal inlining requires forbidden full portable EH lowering.
+Union identities, quantities, order and executable obligations still require
+representative proof. Full phases3–4 continue.
+
+Next: fix the generated aom_modify switch omission (numeric enumerator trailing
+whitespace), verify genuine GNU read-write asm, then remove the grouped owner-table
+phantoms after exact stock/producer/API review. The ten constant/value candidates
+have source-backed alternatives; no reconstruction or optional-position campaign.

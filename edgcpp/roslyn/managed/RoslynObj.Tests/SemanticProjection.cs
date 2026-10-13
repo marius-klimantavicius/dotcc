@@ -7,6 +7,8 @@ internal static class SemanticProjection
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
         var ehTables=unit.Capabilities.Any(c=>c.Name=="GENERATE_EH_TABLES"&&c.Enabled==true);
+        if(source&&fixture is ("cleanup_semantics.roslynobj" or "source_statements.roslynobj"))
+            Sweep(unit.Entities.OfType<ConstructorInitializer>().Select(i=>i.Details),"constructor_initializer",check);
         if(fixture is "templates.roslynobj" or "template_edges.roslynobj" or "retained.roslynobj" or "routines.roslynobj")
         {
             Sweep(unit.TemplateDescriptors.Select(t=>t.Details),"template_definition",check);

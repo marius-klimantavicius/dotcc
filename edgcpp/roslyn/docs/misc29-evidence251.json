@@ -1,0 +1,24 @@
+{
+  "rows": 29,
+  "counts": {
+    "shared_descriptor_scalar_or_variant_adapter": 25,
+    "dependent_native_foreach_adapter_fix_pending": 1,
+    "excluded_user_scope": 2,
+    "excluded_error_placeholder": 1
+  },
+  "distinct_snapshot_files": 175,
+  "observed_kinds": {
+    "lifetime": 5,
+    "constructor_init": 3,
+    "initializer": 6,
+    "for_each_pattern": 1,
+    "template_argument": 4,
+    "template_parameter": 3
+  },
+  "confirmed_source_gap": "sfepk_none valid dependent native Microsoft for-each is incorrectly rejected; actual positive export and fix assigned via coordinator.",
+  "limits": [
+    "Do not globally mark none/empty/pack-boundary values sentinel.",
+    "Catalog/getter proof distinct from positive semantic field/role proof.",
+    "No core modifications/builds/new fixtures/root repo edits."
+  ]
+}

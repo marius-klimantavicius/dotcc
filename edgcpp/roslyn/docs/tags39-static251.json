@@ -1,0 +1,52 @@
+{
+  "lowered_eh": {
+    "count": 12,
+    "exact_stock_names_and_emitted_ids": true,
+    "omitted_mapping_names": [],
+    "internal_guards_match": true,
+    "guards": [
+      "#if !GENERATE_EH_TABLES",
+      "#endif"
+    ]
+  },
+  "edg_builtin_user_function": {
+    "count": 10,
+    "exact_stock_names_and_emitted_ids": true,
+    "omitted_mapping_names": [
+      "bufk_first",
+      "bufk_is_constant_evaluated"
+    ],
+    "internal_guards_match": true,
+    "guards": []
+  },
+  "rewritten_property": {
+    "count": 6,
+    "exact_stock_names_and_emitted_ids": true,
+    "omitted_mapping_names": [],
+    "internal_guards_match": true,
+    "guards": []
+  },
+  "edg_module": {
+    "count": 4,
+    "exact_stock_names_and_emitted_ids": true,
+    "omitted_mapping_names": [],
+    "internal_guards_match": true,
+    "guards": []
+  },
+  "edg_module_file": {
+    "count": 3,
+    "exact_stock_names_and_emitted_ids": true,
+    "omitted_mapping_names": [],
+    "internal_guards_match": true,
+    "guards": []
+  },
+  "edg_asm_modifier": {
+    "count": 4,
+    "exact_stock_names_and_emitted_ids": true,
+    "omitted_mapping_names": [
+      "aom_modify"
+    ],
+    "internal_guards_match": true,
+    "guards": []
+  }
+}

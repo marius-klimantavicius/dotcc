@@ -1,0 +1,26 @@
+{
+  "rows": 39,
+  "counts": {
+    "frontend_descriptor_initialization_only": 1,
+    "shared_native_ms_attribute_scalar_adapter": 6,
+    "excluded_user_scope": 1,
+    "sentinel_not_semantic_instance": 1,
+    "invalid_retained_argument_kind": 1,
+    "explicit_native_attribute_argument_variant_adapter": 6,
+    "zero_mask_no_relation_rows": 1,
+    "normalized_target_bit_adapter": 21,
+    "composite_mask_normalized_to_21_bits": 1
+  },
+  "distinct_snapshot_files": 175,
+  "observed_kinds": {
+    "edg_ms_attribute": 2,
+    "edg_ms_attribute_argument": 6,
+    "edg_ms_attribute_target": 1
+  },
+  "limits": [
+    "No alias masquerades as bit: msat_any composite and msat_invalid zero are separate representations.",
+    "Native bracket UUID/COM/IDL attributes stay in scope; actual custom CLI/CX union excluded.",
+    "Shared scalar/getter audit does not prove every individual attribute-specific behavior; EDG effect fields remain authoritative.",
+    "No new fixture/build/core or repository edits by root."
+  ]
+}

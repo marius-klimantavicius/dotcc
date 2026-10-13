@@ -12,7 +12,7 @@ def copy_if_changed(source, destination):
 p = argparse.ArgumentParser()
 p.add_argument('--upstream', type=pathlib.Path, default=pathlib.Path('/tmp/roslynobj-edg-upstream-20261012'))
 p.add_argument('--stage', type=pathlib.Path, default=ROOT.parents[0] / 'artifacts/roslynobj/upstream')
-p.add_argument('--profile', choices=('native','source','cfront','exported','sun','usl21','usl30','softfloat','host-long-double','host-double','instantiation','tableless'), default='native')
+p.add_argument('--profile', choices=('native','source','cfront','exported','sun','usl21','usl30','softfloat','host-long-double','host-double','instantiation','extern-inline','tableless'), default='native')
 a = p.parse_args()
 actual = subprocess.check_output(['git', '-C', str(a.upstream), 'rev-parse', 'HEAD'], text=True).strip()
 if actual != PIN:
@@ -56,7 +56,7 @@ for f in (ROOT / 'backend').iterdir():
     if f.is_file(): copy_if_changed(f, a.stage / 'src' / f.name)
 cmake = a.stage / 'src/cmake/cpfe/CMakeLists.txt'
 original = subprocess.check_output(['git','-C',str(a.upstream),'show',PIN+':src/cmake/cpfe/CMakeLists.txt'], text=True)
-capture_id={'native':2001,'source':2002,'cfront':2003,'exported':2004,'sun':2001,'usl21':2003,'usl30':2003,'softfloat':2001,'host-long-double':2001,'host-double':2001,'instantiation':2001,'tableless':2001}[a.profile]
+capture_id={'native':2001,'source':2002,'cfront':2003,'exported':2004,'sun':2001,'usl21':2003,'usl30':2003,'softfloat':2001,'host-long-double':2001,'host-double':2001,'instantiation':2001,'extern-inline':2001,'tableless':2001}[a.profile]
 write_if_changed(cmake,original + '''\n# Independent roslynobj backend; stock source semantics remain unchanged.
 find_package(SQLite3 3.37 REQUIRED)
 set_source_files_properties(${PROJECT_SOURCE_DIR}/roslyn_gen_be.c PROPERTIES LANGUAGE CXX)

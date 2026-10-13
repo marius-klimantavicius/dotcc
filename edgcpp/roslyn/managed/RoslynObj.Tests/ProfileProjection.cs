@@ -5,6 +5,12 @@ internal static class ProfileProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,Action<bool,string> check)
     {
+        if(unit.Capabilities.Any(c=>c.Name=="roslyn_build_profile"&&c.Value=="extern-inline"))
+        {
+            check(unit.Capabilities.Any(c=>c.Name=="INSTANTIATE_EXTERN_INLINE"&&c.Enabled==true)&&unit.Capabilities.Any(c=>c.Name=="instantiate_extern_inline"&&c.Enabled==true),"The extern-inline profile must retain both its active compile gate and actual runtime mode.");
+            check(unit.Functions.Any(f=>f.Details.InlineInstanceRequired==true)&&unit.Functions.Any(f=>f.Details.InlineInstanceRequired==false)&&unit.Functions.All(f=>f.Details.InlineInstanceRequired is not null),"Actual extern-inline routines must preserve positive and negative required-instance flags under the enabled stock guard.");
+            check(unit.Capabilities.Any(c=>c.Name=="DO_FULL_PORTABLE_EH_LOWERING"&&c.Enabled==false)&&unit.Functions.Any(f=>f.Body?.ExceptionHandling.CleanupRegions.Count>0),"Extern-inline instantiation must retain actual partial EH cleanup regions without enabling full portable EH lowering.");
+        }
         bool Enabled(string name)=>unit.Capabilities.Single(c=>c.Name==name).Enabled==true;
         if(fixture=="instantiation_flags.roslynobj")
         {
