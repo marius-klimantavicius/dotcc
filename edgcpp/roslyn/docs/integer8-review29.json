@@ -1,0 +1,118 @@
+{
+  "owner": "an_integer_type_supplement",
+  "pending_at_review": 8,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stock il_def.h9500-9586; roslyn_gen_be.c164-192 and roslyn_types.h58; ScalarFamilies/Program bit_precise. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-integer8-observed29.json",
+  "summary": {
+    "ready_evidence_join": 4,
+    "missing_positive_branch": 3,
+    "existing_positive_needs_public_assertion_join": 1
+  },
+  "rows": [
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "enumerator_list_seen",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9504",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.enumerator_list_seen;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.EnumeratorListSeen",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "ready_evidence_join",
+      "review": "146 directflags,131false15true; ScalarFamilies EnumSymbol.Details sweep on realtypes covers flag. Builtin emptyalign_val_t contributes false without enumscope. Not same as enum incomplete."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "enumerator_list_complete",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9507",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.enumerator_list_complete;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.EnumeratorListComplete",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "ready_evidence_join",
+      "review": "146 directflags,131false15true. ScalarFamilies enum sweep. Fixed underlying type may make type complete before listclosed or opaqueenum; do not recompute from Type.IsIncomplete."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "has_nodiscard_attribute",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9516",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.has_nodiscard;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.HasNodiscard",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "ready_evidence_join",
+      "review": "146 directfalse flags under actual supplement, scalar enum sweep. No nodiscardtrue positive claim but direct unconditional boolean copy verified."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "uuid_string",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:9546",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.uuid_string_id;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.UuidString",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "missing_positive_branch",
+      "review": "0 retained enumUUID strings across187. Native Microsoft enum __declspec(uuid) is in scope; classUUID/native bracketUUID tests do not activate integer supplement."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "uuid_variable",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED && DO_IL_LOWERING",
+      "source": "src/il_def.h:9555",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.uuid_variable_id;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.UuidVariable",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "missing_positive_branch",
+      "review": "0 enumGUID variable pointers. Stock native-lowered UUID branch separate from source string and classGUIDstorage; do not create GUIDdata from text."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "base_type",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9564",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.explicit_underlying_type_id;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.ExplicitUnderlyingType",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "134 explicit-underlying pointers. Program Status.UnderlyingType tests effective intrinsic result, not ExplicitUnderlyingType relation; add exact enum written-base descriptor identity separately. Alias spelling may distinguish effective from written type; no primitive matching."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "bit_width",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9573",
+      "disposition": "mapped_pending_validation",
+      "destination": "arithmetic_type.precision;backend/roslyn_types.h",
+      "api_property": "ArithmeticTypeDetails.Precision",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Only read when is_bit_precise_kind(int_kind), supplement nonnull; no inactive union interpretation.",
+      "review_status": "ready_evidence_join",
+      "review": "Program bit_precise actual9-bit signed stored16bits and129-bit unsigned stored136bits explicitly tests Precision distinct from Bits and exact constants. Backend accesses bit_width only actual bitprecise kind."
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "assoc_template",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9581",
+      "disposition": "mapped_pending_validation",
+      "destination": "enum_symbol.template_id;backend/roslyn_gen_be.c:roslyn_type_declaration",
+      "api_property": "EnumSymbolDetails.Template",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Enum supplement only; UUID lowering variable guarded DO_IL_LOWERING; source base position optional.",
+      "review_status": "missing_positive_branch",
+      "review": "0 enum template descriptors. Stock applies member opaque enums of class templates, not general class/template alias relationships. Need actual retained member-enum link if produced; no inference from enclosingclass."
+    }
+  ]
+}

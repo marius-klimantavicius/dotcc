@@ -1,0 +1,52 @@
+{
+  "cohort": "05d745e94/187 distinct paths/PASS3871",
+  "authority": "pristine il_def.h3709,4640-4657,5748-5764; backend/roslyn_constants.h51-54,82 and roslyn_types.h60",
+  "joined": [
+    {
+      "owner": "a_fixed_point_type_descr",
+      "member": "precision",
+      "proof": "Numeric.cs8 direct ArithmeticType.Arithmetic scalar sweep includes EdgFixedPrecision; source fixed_point actual short/default/long types and exact scaled15/7/31 value fixtures, no name/type reconstruction."
+    },
+    {
+      "owner": "a_fixed_point_type_descr",
+      "member": "is_unsigned",
+      "proof": "Numeric.cs18 actual unsigned_fraction Arithmetic.Signed false and exact direct inverse writer; separate from value sign."
+    },
+    {
+      "owner": "a_fixed_point_type_descr",
+      "member": "is_fract_type",
+      "proof": "Numeric.cs8 direct arithmetic scalar sweep includes IsFractType on source fixed_point native descriptors, exact flag copied; scaling/value proof remains independently asserted."
+    },
+    {
+      "owner": "a_fixed_point_type_descr",
+      "member": "saturating",
+      "proof": "Numeric.cs18 named saturated_accumulator actual Arithmetic.IsSaturating true; exact fixed-point descriptor flag not derived from value."
+    },
+    {
+      "owner": "an_internal_complex_value",
+      "member": "real",
+      "proof": "Numeric.cs25-31 exact float/double/long-double real sign/significand/exponent, canonical ComplexValue.Real/Details.RealValue reference; stock/cache original format verified separately."
+    },
+    {
+      "owner": "an_internal_complex_value",
+      "member": "imag",
+      "proof": "Numeric.cs25-31 distinct actual imaginary sign/significand/exponent, canonical ComplexValue.Imaginary/Payload.ImaginaryValue reference; target host numeric profiles preserved."
+    },
+    {
+      "owner": "a_subobject_path",
+      "member": "next",
+      "proof": "ExecutionProjection.cs102 actual address Steps chain contains distinct field and offset nodes through retained Next; canonical typed chain, no ID order or reconstructed byte offset."
+    },
+    {
+      "owner": "a_subobject_path",
+      "member": "variant.field",
+      "proof": "ExecutionProjection.cs102 actual constant_element_address path retains Field.Name elements from constant_aggregate base."
+    },
+    {
+      "owner": "a_subobject_path",
+      "member": "variant.base_class",
+      "proof": "ExecutionProjection.cs103 actual constant_base_address path retains BaseSubobject.BaseType ConstantBase; separate byte and element units."
+    }
+  ],
+  "limits": "Exact fixed-point flags and target floating components; field/base/element path units separate; no current lowered-class or Unicode inference; no new tests/exports"
+}

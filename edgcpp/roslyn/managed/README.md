@@ -53,6 +53,11 @@ is generated from the shared schema and records each scalar/foreign-key property
 Internal SQLite identities are unnecessary for navigation. Entity equality uses
 artifact identity plus captured entity identity; `RoslynWorkspace` opens many
 objects without linking or merging them.
+Reopening or copying an immutable file preserves its artifact identity and entity
+equality. Independent compilations retain different identities even when names
+match. Each workspace object owns its own lifetime; disposing one leaves the
+others usable, and disposing the workspace closes all owners. Detached entity
+handles keep their identity after disposal, while database-backed navigation throws.
 
 `SemanticModel.GetReferences(symbol)` returns captured reference uses and selected
 call targets, with their owner nodes and optional source origins. Literal pointer,

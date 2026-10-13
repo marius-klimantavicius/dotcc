@@ -1,0 +1,49 @@
+{
+  "paths": 187,
+  "counts": {
+    "routine_type": 6024,
+    "associated_routine_id": 3739,
+    "ref_qualifier_id": 6024,
+    "lint_varargs_count": 6024,
+    "argument_pragma_id": 6024,
+    "calling_convention_id": 6024,
+    "format_argument": 6024,
+    "first_format_substitution_argument": 6024,
+    "sentinel_position": 6024,
+    "this_type_id": 2326,
+    "prototype_scope_id": 0,
+    "exception_specification_id": 2544,
+    "parameters": 8135
+  },
+  "values": {
+    "ref_qualifier_id": {
+      "rqk_default": 6018,
+      "rqk_lvalue": 6
+    },
+    "lint_varargs_count": {
+      "-1": 6024
+    },
+    "argument_pragma_id": {
+      "pk_none": 6024
+    },
+    "calling_convention_id": {
+      "cc_default": 6021,
+      "cc_cdecl": 1,
+      "cc_stdcall": 2
+    },
+    "format_argument": {
+      "0": 6024
+    },
+    "first_format_substitution_argument": {
+      "0": 6024
+    },
+    "sentinel_position": {
+      "0": 6024
+    }
+  },
+  "examples": {
+    "associated_routine_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "exception_specification_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "this_type_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj"
+  }
+}

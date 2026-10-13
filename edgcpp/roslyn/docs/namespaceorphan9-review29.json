@@ -1,0 +1,134 @@
+{
+  "owners": [
+    "a_namespace",
+    "a_scope_orphaned_list_header"
+  ],
+  "pending_at_review": 9,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stock il_def3722-3776,16944-16986; roslyn_common.h,roslyn_entities.h60-69; CommonProjection/ScopeRelationsProjection. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-namespaceorphan9-observed29.json",
+  "summary": {
+    "ready_evidence_join": 4,
+    "existing_positive_needs_public_assertion_join": 4,
+    "missing_positive_branch": 1
+  },
+  "rows": [
+    {
+      "owner": "a_namespace",
+      "member": "source_corresp",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3722",
+      "disposition": "mapped_pending_validation",
+      "destination": "entity_source_correspondence.source_correspondence_id",
+      "api_property": "NamespaceSymbol.SourceCorrespondence",
+      "fixture": "root direct writer/source/property review267; existing common266 family proof to reconcile",
+      "reason": "Existing backend/roslyn_common.h:131 ->50\u201358 actual canonical shared descriptor. Mapping only; already-accepted common-family tests are not automatically proof of each positive flag.",
+      "review_status": "ready_evidence_join",
+      "review": "271 exact correspondence links. CommonProjection real namespace source name/current/fabricated and reverse Entities identity assertions; actual canonical common descriptor, no recreated symbol metadata."
+    },
+    {
+      "owner": "a_namespace",
+      "member": "next",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3726",
+      "disposition": "mapped_pending_validation",
+      "destination": "scope_member.ordinal/member_id",
+      "api_property": "Scope.Members",
+      "fixture": "root direct writer/source/property review267; existing common266 family proof to reconcile",
+      "reason": "Existing backend/roslyn_common.h:102 traverses actual namespace chain, preserving list order. Mapping only; already-accepted common-family tests are not automatically proof of each positive flag.",
+      "review_status": "ready_evidence_join",
+      "review": "271 actual namespace scope memberships. ScopeRelationsProjection validates canonical owner/member identities and grouped-list order, logs namespace family. Stored order per namespace list not reconstructed global sourceorder."
+    },
+    {
+      "owner": "a_namespace",
+      "member": "variant.assoc_scope",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3772",
+      "disposition": "mapped_pending_validation",
+      "destination": "namespace_symbol.scope_id",
+      "api_property": "NamespaceSymbol.Scope",
+      "fixture": "root direct writer/source/property review267; existing common266 family proof to reconcile",
+      "reason": "Existing backend/roslyn_common.h:132 reads active union only when !is_namespace_alias. Mapping only; already-accepted common-family tests are not automatically proof of each positive flag.",
+      "review_status": "ready_evidence_join",
+      "review": "262 scopes. ScopeRelationsProjection nonalias namespaces Scope.AssociatedEntity==namespace explicit actual identity; aliasNULL stays distinct."
+    },
+    {
+      "owner": "a_namespace",
+      "member": "variant.assoc_namespace",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3776",
+      "disposition": "mapped_pending_validation",
+      "destination": "namespace_symbol.alias_target_id",
+      "api_property": "NamespaceSymbol.AliasTarget",
+      "fixture": "root direct writer/source/property review267; existing common266 family proof to reconcile",
+      "reason": "Existing backend/roslyn_common.h:132 reads active union only when is_namespace_alias; keeps immediate alias target even if it is another alias. Mapping only; already-accepted common-family tests are not automatically proof of each positive flag.",
+      "review_status": "ready_evidence_join",
+      "review": "9 alias targets. CommonProjection CommonAlias\u2192CommonRoot and CommonAliasAgain\u2192CommonAlias preserves alias-to-alias exact descriptor, no collapse."
+    },
+    {
+      "owner": "a_scope_orphaned_list_header",
+      "member": "assoc_routine",
+      "guard": "!defined(IL_DEF_H) && SCOPE_ORPHANED_LIST_PROCESSING_NEEDED",
+      "source": "src/il_def.h:16962",
+      "disposition": "mapped_pending_validation",
+      "destination": "orphan_scope.routine_id;backend/roslyn_entities.h:58\u201364",
+      "api_property": "OrphanScopeDetails.Routine",
+      "fixture": "exact stock source and current producer audit267; activation not promoted",
+      "reason": "Existing canonical orphan header and typed lists preserve retained file-scope local entities after function-region processing. Routine/scope number are literal metadata, not invented lexical scopes. Positive activation remains pending.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "190 actual routine links, navigation sweep sees them. Need one genuine orphan record Routine identity against retained member EnclosingRoutine/context, not assumption allvars sharecurrent lexicalscope. Header reattaches file-region entries after routine-region ownership changes, not executionowner."
+    },
+    {
+      "owner": "a_scope_orphaned_list_header",
+      "member": "scope_number",
+      "guard": "!defined(IL_DEF_H) && SCOPE_ORPHANED_LIST_PROCESSING_NEEDED",
+      "source": "src/il_def.h:16964",
+      "disposition": "mapped_pending_validation",
+      "destination": "orphan_scope.scope_number;backend/roslyn_entities.h:58\u201364",
+      "api_property": "OrphanScopeDetails.ScopeNumber",
+      "fixture": "exact stock source and current producer audit267; activation not promoted",
+      "reason": "Existing canonical orphan header and typed lists preserve retained file-scope local entities after function-region processing. Routine/scope number are literal metadata, not invented lexical scopes. Positive activation remains pending.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "190 scalar numbers; no located scalar:OrphanScopeDetails coverage in accepted log. Add ordinary read of exact ScopeNumber alongside actual orphan fixture identity; never treat memory-scope number as entityID/source position or resolve guessed scope."
+    },
+    {
+      "owner": "a_scope_orphaned_list_header",
+      "member": "orphaned_types",
+      "guard": "!defined(IL_DEF_H) && SCOPE_ORPHANED_LIST_PROCESSING_NEEDED",
+      "source": "src/il_def.h:16967",
+      "disposition": "mapped_pending_validation",
+      "destination": "orphan_scope_member.entity_id/kind_id/ordinal;backend/roslyn_entities.h:58\u201364",
+      "api_property": "OrphanScopeDetails.OrphanScopeMemberRows[].Entity",
+      "fixture": "exact stock source and current producer audit267; activation not promoted",
+      "reason": "Existing canonical orphan header and typed lists preserve retained file-scope local entities after function-region processing. Routine/scope number are literal metadata, not invented lexical scopes. Positive activation remains pending.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "17 actual type members. Existing SemanticProjection only checks source_sublist variant. Need exact retained type membership/order and public descriptor identity; orphan bucket not namespace/classscope."
+    },
+    {
+      "owner": "a_scope_orphaned_list_header",
+      "member": "orphaned_variables",
+      "guard": "!defined(IL_DEF_H) && SCOPE_ORPHANED_LIST_PROCESSING_NEEDED",
+      "source": "src/il_def.h:16970",
+      "disposition": "mapped_pending_validation",
+      "destination": "orphan_scope_member.entity_id/kind_id/ordinal;backend/roslyn_entities.h:58\u201364",
+      "api_property": "OrphanScopeDetails.OrphanScopeMemberRows[].Entity",
+      "fixture": "exact stock source and current producer audit267; activation not promoted",
+      "reason": "Existing canonical orphan header and typed lists preserve retained file-scope local entities after function-region processing. Routine/scope number are literal metadata, not invented lexical scopes. Positive activation remains pending.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "248 actual variable members. Stock16970 describes local static variables; add expected actual retained local static identities/order in orphan bucket. Do not schedule their initializers from membership alone."
+    },
+    {
+      "owner": "a_scope_orphaned_list_header",
+      "member": "orphaned_namespaces",
+      "guard": "!defined(IL_DEF_H) && SCOPE_ORPHANED_LIST_PROCESSING_NEEDED",
+      "source": "src/il_def.h:16975",
+      "disposition": "mapped_pending_validation",
+      "destination": "orphan_scope_member.entity_id/kind_id/ordinal;backend/roslyn_entities.h:58\u201364",
+      "api_property": "OrphanScopeDetails.OrphanScopeMemberRows[].Entity",
+      "fixture": "exact stock source and current producer audit267; activation not promoted",
+      "reason": "Existing canonical orphan header and typed lists preserve retained file-scope local entities after function-region processing. Routine/scope number are literal metadata, not invented lexical scopes. Positive activation remains pending.",
+      "review_status": "missing_positive_branch",
+      "review": "0 namespace members across190headers. Stock means local namespace aliases; regular file namespace_members271 does not prove orphan list. No guessed lexicalparent."
+    }
+  ]
+}

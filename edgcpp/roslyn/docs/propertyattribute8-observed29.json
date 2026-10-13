@@ -1,0 +1,29 @@
+{
+  "paths": 187,
+  "counts": {
+    "attribute_argument.id": 133,
+    "attribute_argument.token_text_id": 21,
+    "attribute_argument.token_kind_id": 21,
+    "attribute_argument.scoped_expression_id": 0,
+    "field_property.id": 1,
+    "field_property.get_name_id": 1,
+    "field_property.put_name_id": 1,
+    "local_expr_ref_true": 0
+  },
+  "kinds": {
+    "aak_constant": 93,
+    "aak_empty": 11,
+    "aak_raw_token": 17,
+    "aak_expression": 4,
+    "aak_type": 4,
+    "aak_token": 4
+  },
+  "examples": {
+    "attribute_argument.id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+    "attribute_argument.token_text_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+    "attribute_argument.token_kind_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+    "field_property.id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj",
+    "field_property.get_name_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj",
+    "field_property.put_name_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj"
+  }
+}

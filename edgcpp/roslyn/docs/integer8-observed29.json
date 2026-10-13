@@ -1,0 +1,33 @@
+{
+  "paths": 187,
+  "columns": {
+    "id": 146,
+    "enumerator_list_seen": 146,
+    "enumerator_list_complete": 146,
+    "has_nodiscard": 146,
+    "uuid_string_id": 0,
+    "uuid_variable_id": 0,
+    "explicit_underlying_type_id": 134,
+    "template_id": 0
+  },
+  "values": {
+    "enumerator_list_seen": {
+      "0": 131,
+      "1": 15
+    },
+    "enumerator_list_complete": {
+      "0": 131,
+      "1": 15
+    },
+    "has_nodiscard": {
+      "0": 146
+    }
+  },
+  "examples": {
+    "id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "enumerator_list_seen": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "enumerator_list_complete": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "has_nodiscard": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "explicit_underlying_type_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj"
+  }
+}

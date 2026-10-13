@@ -1,0 +1,55 @@
+{
+  "native": {
+    "resolved_macros": [
+      "#define GENERATE_SOURCE_SEQUENCE_LISTS 0",
+      "#define DO_IL_LOWERING 1",
+      "#define IDENT_DIRECTIVE_AND_PRAGMA TRUE",
+      "#define UPC_EXTENSIONS_ALLOWED 1",
+      "#define BACK_END_IS_CP_GEN_BE 0",
+      "#define MICROSOFT_EXTENSIONS_ALLOWED 1",
+      "#define GNU_VISIBILITY_ATTRIBUTE_ALLOWED 1",
+      "#define GENERATE_MICROSOFT_IF_EXISTS_ENTRIES FALSE",
+      "#define GNU_EXTENSIONS_ALLOWED 1",
+      "#define ALL_TEMPLATE_INFO_IN_IL FALSE",
+      "#define TRUE (0==0)",
+      "#define FALSE (0!=0)",
+      "#define PROTOTYPE_INSTANTIATIONS_IN_IL TRUE"
+    ],
+    "object_runtime_and_compile_capabilities": {
+      "ALL_TEMPLATE_INFO_IN_IL": "0",
+      "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+      "all_template_info_in_il": "1",
+      "prototype_instantiations_in_il": "1",
+      "microsoft_mode": "0",
+      "microsoft_version": "1926",
+      "GENERATE_SOURCE_SEQUENCE_LISTS": "0"
+    }
+  },
+  "source": {
+    "resolved_macros": [
+      "#define GENERATE_SOURCE_SEQUENCE_LISTS 1",
+      "#define DO_IL_LOWERING 0",
+      "#define IDENT_DIRECTIVE_AND_PRAGMA TRUE",
+      "#define UPC_EXTENSIONS_ALLOWED 1",
+      "#define BACK_END_IS_CP_GEN_BE 0",
+      "#define MICROSOFT_EXTENSIONS_ALLOWED 1",
+      "#define GNU_VISIBILITY_ATTRIBUTE_ALLOWED 1",
+      "#define GENERATE_MICROSOFT_IF_EXISTS_ENTRIES FALSE",
+      "#define GNU_EXTENSIONS_ALLOWED 1",
+      "#define ALL_TEMPLATE_INFO_IN_IL FALSE",
+      "#define TRUE (0==0)",
+      "#define FALSE (0!=0)",
+      "#define PROTOTYPE_INSTANTIATIONS_IN_IL TRUE"
+    ],
+    "object_runtime_and_compile_capabilities": {
+      "ALL_TEMPLATE_INFO_IN_IL": "0",
+      "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+      "all_template_info_in_il": "0",
+      "prototype_instantiations_in_il": "1",
+      "microsoft_mode": "1",
+      "microsoft_version": "1930",
+      "GENERATE_SOURCE_SEQUENCE_LISTS": "1"
+    }
+  },
+  "authority": "pristine host_envir.h1730-1766,735-745; actual native/source Ninja preprocessing argv recorded in root251/pragma-scope/guard-proof-native-source.json"
+}

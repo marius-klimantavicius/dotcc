@@ -1,0 +1,13 @@
+{
+  "finding": "Stock frontend applies include_alias semantics, but does not populate retained pragma.variant.include_alias filename fields; preserve NULL and classify unavailable original/preprocessing-query metadata.",
+  "source_evidence": [
+    "il_def.h7060-7073 declares retained long_file_name raw header token and short_file_name converted filename pointers.",
+    "Whole pristine src/*.[ch] search for variant.include_alias finds only il_alloc.c4471-4472 assigning bothNULL. No stock writer populates these retained fields; no backend consumer in C or C++ generator accesses them.",
+    "preproc.c3107-3187 microsoft_include_alias_pragma marks its pending pragma parameter ARG_UNUSED, scans names, and calls create_include_alias_entry(long_name,short_name). It does not write the retained pragma union.",
+    "preproc.c177-215 stores/updates names in frontend include_alias_hash_table entries; alloc_include_alias uses alloc_fe_of_type at132. This is frontend state, not backend semantic IL.",
+    "preproc.c219-250 check_for_include_alias consults that frontend map; preproc.c1440 uses result to choose included file, macro.c5532 uses result for include-existence testing. The frontend's resulting translation unit remains authoritative.",
+    "roslyn_source_sequences.h238-240 copies only actual retained pointers into scalar atoms; current genuine pragma_scope_microsoft positively retains pk_include_alias with bothpointersNULL. No backend omission indicated."
+  ],
+  "disposition": "Document two filename queries unavailable in stock retained IL; keep actual pragma kind and nullable API fields. No additional positive-pointer campaign, core fix, preprocessor-table access, source parsing, path guessing or alias reconstruction. Do not imply include_alias language/preprocessing semantics are unsupported: EDG has already applied them.",
+  "review": "Root read-only source audit, no compilation or repository edits."
+}

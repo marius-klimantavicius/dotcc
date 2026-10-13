@@ -1,0 +1,24 @@
+{
+  "paths": 187,
+  "counts": {
+    "orphan_scope": 190,
+    "orphan_routine": 190,
+    "namespace": 271,
+    "namespace_scope": 262,
+    "namespace_alias": 9,
+    "namespace_members": 271
+  },
+  "orphan_members": {
+    "variable": 248,
+    "type": 17,
+    "source_sublist": 8
+  },
+  "examples": {
+    "namespace": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "namespace_scope": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "namespace_members": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "orphan_scope": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "orphan_routine": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "namespace_alias": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj"
+  }
+}

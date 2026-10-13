@@ -1,0 +1,149 @@
+{
+  "owners": [
+    "a_source_correspondence",
+    "a_template"
+  ],
+  "pending_at_review": 10,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Pristine il_def3305-3418,17347-17439; host_envir1921-1927; roslyn_common.h2-37,roslyn_local_expressions.h46,roslyn_templates.h166-225. Rootreadonly, no scope inference.",
+  "observations": "/tmp/roslyn-root-corresptemplate10-observed29.json",
+  "summary": {
+    "existing_positive_needs_public_assertion_join": 5,
+    "missing_positive_branch": 1,
+    "needs_retained_indirection_origin_proof": 1,
+    "ready_evidence_join": 2,
+    "optional_source_disposition_review": 1
+  },
+  "rows": [
+    {
+      "owner": "a_source_correspondence",
+      "member": "enclosing_routine",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3311",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_correspondence.enclosing_routine_id @routine_symbol; backend/roslyn_common.h:6",
+      "api_property": "266 canonical common reader migration pending",
+      "fixture": "common.cpp;common_labels.c;common_microsoft.cpp;basic.cpp;m0.cpp;source_order.cpp;source_attributes.cpp;macros.cpp;retained.cpp;template_edges.cpp; 266 public activation pending",
+      "reason": "Independent exact enclosing routine, including local-class members; do not replace with containing entity. Direct compiled266 writer mapping; not verification from schema/default presence.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "3156 pointers. Need exact local symbol.SourceCorrespondence.EnclosingRoutine identity; this is retained routine association even when current promoted parent changes. No scope/name inference."
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "has_associated_pragma",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3386",
+      "disposition": "mapped_pending_validation",
+      "destination": "pragma.entity_id;entity_source_correspondence; backend/roslyn_common.h:123",
+      "api_property": "266 canonical common reader migration pending",
+      "fixture": "common.cpp;common_labels.c;common_microsoft.cpp;basic.cpp;m0.cpp;source_order.cpp;source_attributes.cpp;macros.cpp;retained.cpp;template_edges.cpp; 266 public activation pending",
+      "reason": "Project actual retained target association where captured; do not call FE find_assoc_pragma. Direct compiled266 writer mapping; not verification from schema/default presence.",
+      "review_status": "missing_positive_branch",
+      "review": "0 targeted pragmas across187; new current pragma5 are scope pragmas and do not necessarily activate target association. Raw presence flag normalized to actual pragma.target_id relationship, worksheet pragma.entity_id stale. No missing target reconstructed from pragma text."
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "parent_via_local_scope_ref",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:3399",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_correspondence.parent_scope_id @scope via retained local scope ref; backend/roslyn_common.h:6;backend/roslyn_local_expressions.h:24",
+      "api_property": "266 canonical common reader migration pending",
+      "fixture": "common.cpp;common_labels.c;common_microsoft.cpp;basic.cpp;m0.cpp;source_order.cpp;source_attributes.cpp;macros.cpp;retained.cpp;template_edges.cpp; 266 public activation pending",
+      "reason": "Storage indirection normalized to exact effective parent, no second semantic boolean. Direct compiled266 writer mapping; not verification from schema/default presence.",
+      "review_status": "needs_retained_indirection_origin_proof",
+      "review": "18448 normalized parents do not distinguish direct pointer vsactual a_local_scope_ref path. Writer precollects scope_refs referrer.ptr\u2192scope, then uses actual c.parent_scope or thatmap. Need bounded origin evidence (existing prior raw probe ifavailable), plus exact public ParentScope identity; no inferred enclosing-body scope. Associated a_local_scope_ref rows same obligation."
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "has_associated_attribute",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:3410",
+      "disposition": "mapped_pending_validation",
+      "destination": "microsoft_attribute.owner_id;entity_source_correspondence; backend/roslyn_common.h:123",
+      "api_property": "266 canonical common reader migration pending",
+      "fixture": "common.cpp;common_labels.c;common_microsoft.cpp;basic.cpp;m0.cpp;source_order.cpp;source_attributes.cpp;macros.cpp;retained.cpp;template_edges.cpp; 266 public activation pending",
+      "reason": "Project actual native Microsoft target association; no CLI custom attributes. Direct compiled266 writer mapping; not verification from schema/default presence.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "1 native UUID attribute target. Raw flag normalized to ms_attribute.target_id (worksheet microsoft_attribute.owner_id stale). Scope/parameter owner_ms_attribute lists and target application are distinct. Need exact Attribute.Target sharedcorrespondence relation; SemanticEntity.MicrosoftAttributes currently actual owner list, not reverse applied attributes. If API needs reverse query, add explicitly named applied list preserving existing ownership, no schema/core."
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "source_sequence_entry",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:3585",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_correspondence.source_sequence_entry_id @source_entry; backend/roslyn_common.h:28",
+      "api_property": "266 canonical common reader migration pending",
+      "fixture": "common.cpp;common_labels.c;common_microsoft.cpp;basic.cpp;m0.cpp;source_order.cpp;source_attributes.cpp;macros.cpp;retained.cpp;template_edges.cpp; 266 public activation pending",
+      "reason": "Exact pointer identifies EDG primary/definition occurrence; not minimum ID/first matching declaration. Direct compiled266 writer mapping; not verification from schema/default presence.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "1062 actual designated source entries. Need exact SourceCorrespondence.SourceSequenceEntry pointer, not arbitrary first declaration occurrence or reverse SourceEntries list. Optional captured source ordering, no coordinates."
+    },
+    {
+      "owner": "a_template",
+      "member": "source_corresp",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17289",
+      "disposition": "mapped_pending_validation",
+      "destination": "symbol.name_id/source_origin_id/containing_entity_id; backend/roslyn_templates.h:roslyn_symbol",
+      "api_property": "TemplateSymbol.Name/Source",
+      "fixture": "schema198 template common-Symbol integration pending",
+      "reason": "Direct retained EDG field; valid native export/FK and managed template navigation assertions pass.",
+      "review_status": "ready_evidence_join",
+      "review": "385 descriptor correspondences; canonical common mapping and CommonProjection reverse Entities/SourceCorrespondence proof plus Program template placeholder/symbol associations. Worksheet old symbol.name_id/source_origin_id must now name entity_source_correspondence and SourceCorrespondence, no duplicate metadata."
+    },
+    {
+      "owner": "a_template",
+      "member": "coordinates",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17347",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_definition.parameter_number/parameter_depth; backend/roslyn_templates.h",
+      "api_property": "TemplateDefinitionDetails.parameter_number/parameter_depth",
+      "fixture": "profiles_pending",
+      "reason": "Direct retained guarded field adapter exists; nonzero/profile-specific fixture evidence still required.",
+      "review_status": "ready_evidence_join",
+      "review": "32 actual template-template placeholder coordinate pairs; otherkind columnsNULL. SemanticProjection template_definition scalar sweep reads ParameterNumber/Depth, writer only accesses coordinates when templk_template_template_param. No invented coordinate onordinarytemplate."
+    },
+    {
+      "owner": "a_template",
+      "member": "prototype_instantiation.constraint",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17406",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_definition.constraint_id; backend/roslyn_templates.h",
+      "api_property": "TemplateDefinitionDetails.constraint_id",
+      "fixture": "profiles_pending",
+      "reason": "Direct retained guarded field adapter exists; nonzero/profile-specific fixture evidence still required.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "8 actual concept-definition boolean expression pointers. Need TemplateDescriptor.Constraint exact metadata node and Pattern identity for templk_concept; concept-id usage argument or parameter constraint is different owner."
+    },
+    {
+      "owner": "a_template",
+      "member": "prototype_template",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17423",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_definition.prototype_template_id; backend/roslyn_templates.h",
+      "api_property": "TemplateDefinitionDetails.prototype_template_id",
+      "fixture": "profiles_pending",
+      "reason": "Direct retained guarded field adapter exists; nonzero/profile-specific fixture evidence still required.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "4 actual links. Need instantiated member-template descriptor.PrototypeTemplate exact original membertemplate from prototypeclass; different from CanonicalTemplate and DefinitionTemplate, no declaringtypename inference."
+    },
+    {
+      "owner": "a_template",
+      "member": "text",
+      "guard": "!defined(IL_DEF_H) && RECORD_TEMPLATE_STRINGS",
+      "source": "src/il_def.h:17430",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_definition.definition_text_id; backend/roslyn_templates.h",
+      "api_property": "TemplateDefinitionDetails.definition_text_id",
+      "fixture": "profiles_pending",
+      "reason": "Direct retained guarded field adapter exists; nonzero/profile-specific fixture evidence still required.",
+      "review_status": "optional_source_disposition_review",
+      "review": "0 retained template texts. Stock host_envir1921-1927 defaults RECORD_TEMPLATE_STRINGS false unless C++generator; writer copies only existing text when enabled. Optional rawtemplate text, no profile/reconstruction campaign. Stock il_def17430 generated genericlambda templates may start at declarator/body, so do not promise universal leadingtemplatekeyword."
+    }
+  ]
+}

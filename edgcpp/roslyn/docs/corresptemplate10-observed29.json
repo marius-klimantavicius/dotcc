@@ -1,0 +1,29 @@
+{
+  "paths": 187,
+  "counts": {
+    "source_correspondence.id": 62533,
+    "source_correspondence.enclosing_routine_id": 3156,
+    "source_correspondence.parent_scope_id": 18448,
+    "source_correspondence.source_sequence_entry_id": 1062,
+    "template_definition.id": 385,
+    "template_definition.constraint_id": 8,
+    "template_definition.prototype_template_id": 4,
+    "template_definition.definition_text_id": 0,
+    "template_definition.parameter_number": 32,
+    "template_definition.parameter_depth": 32,
+    "targeted_pragmas": 0,
+    "targeted_ms_attributes": 1
+  },
+  "values": {},
+  "examples": {
+    "source_correspondence.id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "source_correspondence.enclosing_routine_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "source_correspondence.parent_scope_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "template_definition.id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+    "template_definition.constraint_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj",
+    "template_definition.parameter_number": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/near_far.roslynobj",
+    "template_definition.parameter_depth": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/near_far.roslynobj",
+    "template_definition.prototype_template_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines_exception.roslynobj",
+    "source_correspondence.source_sequence_entry_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/basic.roslynobj"
+  }
+}

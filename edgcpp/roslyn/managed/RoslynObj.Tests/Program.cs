@@ -215,6 +215,11 @@ try
         Check(widePrefetch.Statistics.CachedRows<=1048576&&widePrefetch.Statistics.CachedPages<=2048,"Wide prefetch must preserve the explicitly selected row and page bounds.");
         Check(widePrefetch.Statistics.MaximumBatchSize==900,"A wide page with generous valid cache budgets must exercise the child prefetch limit of 900 keys per query.");
     }
+    if(args.FirstOrDefault()=="--workspace")
+    {
+        if(args.Length!=3)throw new ArgumentException("Workspace acceptance requires two genuine basic artifacts.");
+        WorkspaceProjection.Verify(args[1],args[2],root,Check);args=[];
+    }
     foreach(var input in args)
     {
         var sw=Stopwatch.StartNew();
@@ -234,6 +239,10 @@ try
         ExecutionMetadataProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         ScalarFamilies.Verify(unit,Path.GetFileName(input),Check);
         RetainedTypeProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        ClassRelationsProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
+        ConstantRelationsProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",obj.Manifest.CaptureProfile,Check);
+        StatementRelationsProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",obj.Manifest.CaptureProfile,Check);
+        PragmaScopeProjection.Verify(unit,Path.GetFileName(input),Check);
         UnevaluatedProjection.Verify(unit,Path.GetFileName(input),Check);
         NavigationFamilies.Verify(unit,Path.GetFileName(input),Check);
         var functionCount=0;var operationCount=0;var executableBodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();

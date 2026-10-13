@@ -1,0 +1,120 @@
+{
+  "owners": [
+    "a_property_or_event_descr",
+    "an_attribute_arg"
+  ],
+  "pending_at_review": 8,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stock il_def2770-2834,8477-8524; roslyn_attributes.h14-39,roslyn_layout.h40; Program native_microsoft/SemanticProjection arg scalar sweeps. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-propertyattribute8-observed29.json",
+  "summary": {
+    "ready_evidence_join": 6,
+    "missing_positive_branch": 2
+  },
+  "rows": [
+    {
+      "owner": "an_attribute_arg",
+      "member": "token_kind",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2778",
+      "disposition": "mapped_pending_validation",
+      "destination": "attribute_argument.token_text_id/token_kind_id",
+      "api_property": "AttributeArgument.TokenText / TokenKind",
+      "fixture": "final243 genuine family counts include token/raw_token; public scalar sweep",
+      "reason": "243 genuine module evidence: aak_token or aak_raw_token. Status: mapped-awaiting-positive-navigation. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "ready_evidence_join",
+      "review": "21 actual token kinds on4aak_token/17aak_raw_token;133totalargs. SemanticProjection attribute_argument scalar sweep reads TokenKind/TokenText for genuine attribute families. Writer accesses tokenkind only token/rawtokenarms, otherarmsNULL rather than tok_last interpreted as semantics."
+    },
+    {
+      "owner": "an_attribute_arg",
+      "member": "local_expr_ref",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2788",
+      "disposition": "mapped_pending_validation",
+      "destination": "attribute_argument.is_local_expression_reference/scoped_expression_id",
+      "api_property": "AttributeArgument.IsLocalExpressionReference / ScopedExpression",
+      "fixture": "stock expr_node_from_attribute_arg accesses exact expression; no positive retained fixture yet",
+      "reason": "243 genuine module evidence: aak_expression and local_expr_ref. Status: mapped-awaiting-positive. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "missing_positive_branch",
+      "review": "0true flags and0scopedexpressionrefs.4 ordinary expression args do not activate function-region indirection. False scalar read proven, true-arm relationship unproven."
+    },
+    {
+      "owner": "an_attribute_arg",
+      "member": "variant.token",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2811",
+      "disposition": "mapped_pending_validation",
+      "destination": "attribute_argument.token_text_id/token_kind_id",
+      "api_property": "AttributeArgument.TokenText / TokenKind",
+      "fixture": "final243 genuine family counts include token/raw_token; public scalar sweep",
+      "reason": "243 genuine module evidence: aak_token or aak_raw_token. Status: mapped-awaiting-positive-navigation. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "ready_evidence_join",
+      "review": "21 exact text atoms with4token/17rawtoken active cases. Scalar attribute_argument sweep and direct pointer-to-atom writer; this is EDG retained token text, not backend tokenization. Arguments preserve source tokens without inventing whitespace."
+    },
+    {
+      "owner": "an_attribute_arg",
+      "member": "variant.sexpr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2828",
+      "disposition": "mapped_pending_validation",
+      "destination": "attribute_argument.is_local_expression_reference/scoped_expression_id",
+      "api_property": "AttributeArgument.IsLocalExpressionReference / ScopedExpression",
+      "fixture": "stock expr_node_from_attribute_arg accesses exact expression; no positive retained fixture yet",
+      "reason": "243 genuine module evidence: aak_expression and local_expr_ref. Status: mapped-awaiting-positive. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "missing_positive_branch",
+      "review": "0scoped expression descriptors associated withargs. Stock expr_node_from_attribute_arg handles direct/local expression; backend uses it and retains actual scopedref onlylocalflagtrue. Do not use frontend rawsymbol/token cache or guesslocalowner."
+    },
+    {
+      "owner": "a_property_or_event_descr",
+      "member": "kind",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:8477",
+      "disposition": "mapped_pending_validation",
+      "destination": "field_property presence identifies pek_declspec_property",
+      "api_property": "FieldSymbol.Property exact native declspec metadata",
+      "fixture": "native_microsoft pending activated descriptor assertions",
+      "reason": "Mixed native/managed descriptor: pek_declspec_property remains required native Microsoft C++; exact active union fields captured without CLI accessor pointers.",
+      "review_status": "ready_evidence_join",
+      "review": "1 genuine native declspec property. NativeProperty fixture tests actual Field.Property; table existence denotes pek_declspec_property only; CLI property/event alternatives excluded and notsilently reinterpreted."
+    },
+    {
+      "owner": "a_property_or_event_descr",
+      "member": "variant.field",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:8504",
+      "disposition": "mapped_pending_validation",
+      "destination": "field_property.id FK field_symbol",
+      "api_property": "FieldSymbol.Property exact native declspec metadata",
+      "fixture": "native_microsoft pending activated descriptor assertions",
+      "reason": "Mixed native/managed descriptor: pek_declspec_property remains required native Microsoft C++; exact active union fields captured without CLI accessor pointers.",
+      "review_status": "ready_evidence_join",
+      "review": "1 actual field_property owner. Program native_microsoft follows exact NativeProperty.Fields.property.Property getter; NameReference separate2accessor links pending their ownproof. Under native kindfield union, no staticCLIvariable."
+    },
+    {
+      "owner": "a_property_or_event_descr",
+      "member": "get_routine.name",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:8514",
+      "disposition": "mapped_pending_validation",
+      "destination": "field_property.get_name_id",
+      "api_property": "FieldSymbol.Property exact native declspec metadata",
+      "fixture": "native_microsoft pending activated descriptor assertions",
+      "reason": "Mixed native/managed descriptor: pek_declspec_property remains required native Microsoft C++; exact active union fields captured without CLI accessor pointers.",
+      "review_status": "ready_evidence_join",
+      "review": "1 exact get atom, Program native_microsoft GetName get assertion. This is written accessor spelling, not resolved method; selected operation already carries EDG routine target."
+    },
+    {
+      "owner": "a_property_or_event_descr",
+      "member": "set_routine.name",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:8524",
+      "disposition": "mapped_pending_validation",
+      "destination": "field_property.put_name_id",
+      "api_property": "FieldSymbol.Property exact native declspec metadata",
+      "fixture": "native_microsoft pending activated descriptor assertions",
+      "reason": "Mixed native/managed descriptor: pek_declspec_property remains required native Microsoft C++; exact active union fields captured without CLI accessor pointers.",
+      "review_status": "ready_evidence_join",
+      "review": "1 exact put atom, Program native_microsoft PutName set assertion. Absent accessor remainsNULL, no matching byname to choose overload."
+    }
+  ]
+}

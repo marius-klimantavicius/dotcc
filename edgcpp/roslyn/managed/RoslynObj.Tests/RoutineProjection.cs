@@ -38,6 +38,7 @@ internal static class RoutineProjection
             var pure=Function("routine_pure");
             check(pure.IsPureFunction==true&&!pure.IsPureVirtual&&unit.Functions.Any(f=>f.Name=="pure"&&f.IsPureVirtual&&f.IsPureFunction!=true),"GNU pure-function attributes must remain distinct from C++ pure virtual members.");
             var qualified=unit.Functions.Single(f=>f.Name=="qualified"&&f.ContainingType?.Name=="RoutineDerived");
+            check(qualified.Signature.AssociatedRoutine==qualified&&qualified.Signature.ThisClass==qualified.ContainingType,"The actual member signature must retain its selected routine and current this-class descriptor identities without deriving them from its body or parameter scope.");
             check(qualified.Signature.ObjectQualifiers.IsConst&&!qualified.Signature.ObjectQualifiers.IsRestrict&&qualified.Signature.ThisQualifiers.IsRestrict&&qualified.Signature.HasThisParameter,"Member cv-qualification and pointer restrict qualification must navigate their separate retained qualifier sets.");
             var result=Function("routine_class_result");
             check(result.Signature.ReturnsValueViaCopyConstructor&&result.Signature.ReturnsValueAsParameter==(source?null:true),"Class-result calling conventions must distinguish the copy-constructor fact from the current lowered return-slot parameter.");

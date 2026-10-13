@@ -1,3 +1,23 @@
+# Accepted pragma/scope and relation proofs; next required branches
+
+Current e49f251 schema remains unchanged. Five fresh pragma/scope objects and
+bounded existing family gates pass27 ordinary instances/25 unique paths:
+Class217,Constant349,Statement349,Pragma109. Workspace82 includes self73; clean
+build/generator/literal/diff checks pass. The14 existing compiled stages and stock
+pins were reverified; no new strict build/full187/scale campaign is claimed.
+Coverage1324 verified/213 required pending,89 captured optional-source and15
+explicit optional limits. Variable-only declaration lists remain partially proven.
+
+Next native batch targets selected missing type/template/initialization branches
+using minimal genuine source, preserving all current profiles and partial EH.
+Next managed batch targets declaration/template and routine/EH exact identities
+from existing objects, named StaticAssertion navigation, and existing local-scope
+origin identity. No deprecated SSI/if_exists source generation, source recovery,
+core patch or lookup/effect reanalysis. Four queued unsupported slots remain a
+separate final minimal-contract cleanup.
+
+---
+
 # Accepted metadata-root and next bounded semantic proof closure
 
 Accepted29 cleanup/e49f format passes14strict/187paths/PASS3871/self73.

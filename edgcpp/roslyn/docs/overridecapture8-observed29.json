@@ -1,0 +1,75 @@
+{
+  "paths": 187,
+  "counts": {
+    "override_relation.owner_id": 89,
+    "override_relation.ordinal": 89,
+    "override_relation.overridden_id": 89,
+    "override_relation.subobject_id": 89,
+    "override_relation.overriding_subobject_id": 0,
+    "override_relation.return_adjustment_subobject_id": 10,
+    "override_relation.base_ordinal": 89,
+    "lambda_capture.owner_id": 10,
+    "lambda_capture.ordinal": 10,
+    "lambda_capture.kind_id": 10,
+    "lambda_capture.variable_id": 4,
+    "lambda_capture.field_id": 10,
+    "lambda_capture.initialization_id": 6,
+    "lambda_capture.source_closure_field_id": 0,
+    "lambda_capture.indirect_capture_field_id": 0,
+    "lambda_capture.source_origin_id": 10,
+    "lambda_capture.is_pack": 10,
+    "lambda_capture.is_init_capture": 10,
+    "lambda_capture.is_indirect_init_capture": 10,
+    "lambda_capture.is_parameter_reference": 10,
+    "lambda_capture.capture_by_reference": 10,
+    "lambda_capture.is_implicit": 10,
+    "lambda_capture.is_pack_element": 10,
+    "lambda_capture.direct_initialization": 10,
+    "lambda_capture.parenthesized_initialization": 10,
+    "lambda_capture.const_capture": 10
+  },
+  "examples": {
+    "override_relation.owner_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "override_relation.ordinal": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "override_relation.overridden_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "override_relation.subobject_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "override_relation.base_ordinal": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "override_relation.return_adjustment_subobject_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout.roslynobj",
+    "lambda_capture.owner_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.ordinal": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.kind_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.field_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.initialization_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.source_origin_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.is_pack": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.is_init_capture": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.is_indirect_init_capture": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.is_parameter_reference": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.capture_by_reference": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.is_implicit": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.is_pack_element": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.direct_initialization": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.parenthesized_initialization": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.const_capture": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/template_edges.roslynobj",
+    "lambda_capture.variable_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/retained.roslynobj"
+  },
+  "values": {
+    "edg_fixed_precision_id": {
+      "fpp_default": 4,
+      "fpp_long": 2,
+      "fpp_short": 1
+    },
+    "signed": {
+      "0": 2,
+      "1": 5
+    },
+    "is_fract_type": {
+      "0": 3,
+      "1": 4
+    },
+    "is_saturating": {
+      "0": 6,
+      "1": 1
+    }
+  }
+}

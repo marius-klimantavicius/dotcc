@@ -1,0 +1,24 @@
+{
+  "source": "managed/RoslynObj/RoslynWorkspace.cs;RoslynObject.Foundation.cs;SemanticModel.cs",
+  "artifacts": [
+    "edgcpp/artifacts/roslynobj/root251/metadata-root/native/basic.roslynobj",
+    "edgcpp/artifacts/roslynobj/root251/metadata-root/source/basic.roslynobj"
+  ],
+  "public_test": "RoslynObj.Tests/WorkspaceProjection.cs",
+  "checks": [
+    "4 independent owners for same path twice/copied immutable artifact/separate compilation; no collection dedup",
+    "copied/reopened ArtifactIdentity matches, independent compilation differs",
+    "same captured entity equality/hash within process, distinct objects remain; same names independent unequal",
+    "translation-unit identity same-copy vs independent; HashSet preserves2 distinct identities",
+    "same-artifact SemanticModel query accepted exact entity identities",
+    "all5 entity-taking SemanticModel APIs reject independent artifact with ArgumentException",
+    "disposing owner0 rejects lazy reads, retained equality/hash preserved",
+    "owners1/2/3 continue normal body navigation after owner0 disposal",
+    "idempotent workspace disposal closes lazy reads on all owners; detached collections and handles retain identities"
+  ],
+  "log": "/tmp/roslynobj-managed-relations251-workspace-v2.log",
+  "assertions": 82,
+  "self_assertions_included": 73,
+  "identity_assertions": 9,
+  "limits": "No linking, semantic name equivalence, corruption inputs, resource-failure instrumentation or cross-process hash promise."
+}

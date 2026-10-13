@@ -1050,3 +1050,32 @@ identities. The class promoted-local list is consumed staging; actual promoted
 types remain retained. M5 exact development admission policy is documented;
 workspace positive identity/disposal tests and further semantic proof remain
 next required work. No completion claim or user approval hold applies.
+
+
+### Accepted pragma/scope, retained relations and workspace identity
+
+Five fresh native/source objects in root251/pragma-scope activate UPC access and
+coherence, GNU ident/common text and visibility, Microsoft comment/conformance,
+actual NRVO variable and file-scope assembly membership. Include-alias kind is
+retained but the stock filename pointers are never populated; actual preprocessing
+uses private maps and its resolved code remains authoritative. Original alias
+names are unavailable, with no map access or source-text reconstruction. Microsoft
+if_exists source wrappers are compile-inactive under the exact stock guard; no
+new source-generation profile is introduced.
+
+Managed gates pass Class217/8,Constant349/7,Statement349/7,Pragma109/5, comprising
+27 ordinary validation instances/25 distinct paths. Workspace82 includes self73
+and nine direct identity/disposal checks on two genuine independent artifacts
+plus reopens/copies. Build0warnings/errors, generator/literal/diff and separate
+self73 pass. Native5 fresh e49f251 objects pass FK0/1KiB/complete/no semantic
+BLOB-or-REAL; all14 unchanged compiled stages have reverified316 Git-pinned
+inputs/26 canonical backend files/tool pins. No new strict build, full187 run or
+scale/packaging campaign is claimed.
+
+Field proof1324verified/213required pending,89captured optional-source/15limits;
+all2000rows remain explicitly mapped/dispositioned. The declaration-list type and
+routine alternatives remain pending even though variables pass. Source SSI
+synthetic declaration flags, consumed promoted-type staging and unavailable
+original text queries are distinguished from retained execution/type semantics.
+Phase3–4/M0–M5 remains active. Next work is bounded missing branch activation and
+exact existing declaration/template/routine/EH public identities.

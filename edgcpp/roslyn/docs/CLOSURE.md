@@ -1,6 +1,10 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after metadata-root/empty-enum acceptance (14 strict profiles,
+Active on 2026-10-13 after pragma/scope and retained-relation acceptance: five fresh
+objects plus bounded existing gates (27 ordinary validation instances/25 unique
+paths), Workspace82 including self73. Existing14 compiled profiles/pins remain
+unchanged and reverified; no new strict build or scale campaign was needed.
+The metadata-root/empty-enum acceptance (14 strict profiles,
 25 refreshed unique paths/PASS1039 plus10 existing paths/PASS278,self73). The
 accepted29 cleanup/e49f boundary (187 unique paths,PASS3871) remains a separate
 historical baseline; no full187 rerun or new scale campaign is claimed.
@@ -37,7 +41,7 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are1195 verified and358 mapped pending-validation fields at this boundary.
+There are1324 verified and213 mapped pending-validation fields at this boundary.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence, with31 additional required
 rows closed by the bounded new public tests. Promoted-local class ownership is
@@ -51,8 +55,8 @@ are accepted across12 current compilers. Remaining work is bounded direct
 flag/projection and representative union/identity/quantity evidence closure;
 extern-inline configuration and raw positive flags are accepted in the13th strict profile. No optional-location
 work is added.
-85 already-captured optional-source fields are mapped_optional_source,
-with12 explicit omitted optional-source fields; these do not require new location
+89 already-captured optional-source fields are mapped_optional_source,
+with15 explicit optional-source limitations; these do not require new location
 probes or block semantic completion. Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
 close unconditional scalars, including false values. Active union alternatives,
 conditional availability, identity, order and executable obligations need real
@@ -128,8 +132,10 @@ table-based execution-storage parity.
   future contracts require explicit admission and genuine tests, additive supported
   minors only, and a major change for incompatible semantics. No migration or
   forward-compatibility promise is made. Direct workspace/artifact identity tests
-  remain queued using existing genuine artifacts; earlier multi-TU narrative does
-  not substitute for those public tests.
+  now pass nine genuine checks (Workspace82 including self73): repeated and copied
+  artifact identity, separate compilation identity, cross-artifact query rejection
+  and independent/workspace disposal. The earlier unsupported multi-TU narrative
+  is superseded by managed/workspace251-evidence.json.
 - Reconcile full field/kind coverage and documentation with direct writer/getter/
   fixture evidence. Take significant verified milestone commits while work
   continues; do not hold workers for exhaustive ledger cleanup.

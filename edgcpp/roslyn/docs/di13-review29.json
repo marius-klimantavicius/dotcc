@@ -1,0 +1,24 @@
+{
+  "owner": "a_dynamic_init",
+  "authority": "pristine il_def.h3999-4040,4247-4348,4375-4384; backend/roslyn_gen_be.c205-220",
+  "observed_cohort": "05d745e94/198 instances187 distinct paths",
+  "ready_evidence_join": {
+    "variable": "SemanticProjection.cs111 selects actual local-array Initialization.Target variable locals; SemanticActivationProjection source scope initializer target identities preserve thread/priority variables.",
+    "destructor": "SemanticProjection.cs123 actual cleanup projection exposes CleanupBase destruction through Initialization.Destructor; retained delete/freeing actions need not be C++ destructors.",
+    "lifetime": "SemanticProjection.cs142 actual handler parameter initialization lifetime equals its canonical Initialization.Lifetime; source cleanup handler1659 has nonNULL lifetime1658.",
+    "kind": "SemanticProjection.cs50 genuine InitializationDetails scalar sweep includes Kind; all9 native DI kind discriminants observed across accepted187, payload arms remain separately tracked.",
+    "variant.constant.ptr": "LayoutProjection.cs36 actual default initializer dik_constant retains canonical IntegerValue7 as metadata; latest accepted PASS278 exact owner/constant assertion.",
+    "variant.constant.lambda": "Program source retained checks exactly3 lambda initialization links and canonical lambda capture owners; exact dik_lambda union under writer guard.",
+    "variant.expression": "ExecutionMetadataProjection source metadata probe verifies actual scheduled DI.Expression selected header_side_effect call and source_semantic role; accepted PASS1039.",
+    "variant.constructor.ptr": "Program.cs540-541 actual condition/throw/handler construction selects InitializationValue constructor; SemanticActivationProjection.cs48 exact delegating ConstructorDelegation target."
+  },
+  "existing_positive_needs_expected_public_assertion": {
+    "variant.constructor.args": "45 actual initialization_operand entries; test canonical ordered expression list vs evaluated structural children, implied destination/copy source omitted by stock contract",
+    "lifetime_of_overlapping_temps": "2 actual links; exact related temporary lifetime and Body.Lifetimes reachability, do not promote cleanup recipes or infer ownership"
+  },
+  "missing_positive_branches": {
+    "init_expr_lifetime": "0 pointers; distinct initializer-expression lifetime from object destruction Lifetime, no fallback",
+    "variant.bitwise_copy.source": "0 pointers among6 actual bitwise-copy recipes; stock explicitly permits implied source from ctor/catch context; never invent source",
+    "master_entry": "0 pointers; metadata/shared result navigation, not additional evaluated child"
+  }
+}

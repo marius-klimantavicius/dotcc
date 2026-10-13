@@ -1,0 +1,61 @@
+{
+  "paths": 187,
+  "counts": {
+    "dependent_type.id": 353,
+    "dependent_type.proxy_class_id": 4,
+    "dependent_type.parent_type_id": 0,
+    "dependent_type.parameter_number": 353,
+    "dependent_type.parameter_depth": 353,
+    "dependent_type.constraint_id": 6,
+    "dependent_type.bit_width_constant_id": 0,
+    "exception_specification.id": 2487,
+    "exception_specification.kind_id": 2487,
+    "exception_specification.throw_any": 2487,
+    "exception_specification.compiler_generated": 2487,
+    "exception_specification.from_attribute": 2487,
+    "default_entities": 0,
+    "attributes": 0,
+    "ms_attributes": 0,
+    "parameter_const": 1178,
+    "parameter_volatile": 0
+  },
+  "values": {
+    "exception_specification.throw_any": {
+      "0": 2463,
+      "1": 24
+    },
+    "exception_specification.compiler_generated": {
+      "1": 2384,
+      "0": 103
+    },
+    "exception_specification.from_attribute": {
+      "0": 2487
+    },
+    "dependent_type.parameter_number": {
+      "1": 256,
+      "0": 30,
+      "2": 67
+    },
+    "dependent_type.parameter_depth": {
+      "1": 229,
+      "0": 61,
+      "-1": 44,
+      "3": 10,
+      "2": 8,
+      "-2": 1
+    }
+  },
+  "examples": {
+    "exception_specification.id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "exception_specification.kind_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "exception_specification.throw_any": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "exception_specification.compiler_generated": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "exception_specification.from_attribute": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "parameter_const": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+    "dependent_type.id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+    "dependent_type.parameter_number": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+    "dependent_type.parameter_depth": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+    "dependent_type.constraint_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj",
+    "dependent_type.proxy_class_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj"
+  }
+}

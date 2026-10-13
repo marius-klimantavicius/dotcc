@@ -1,0 +1,131 @@
+{
+  "owner": "a_typeref_type_supplement",
+  "pending_at_review": 9,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stock il_def.h9406-9498; roslyn_types.h83-116; Program templates and ExecutionProjection alias tests. Rootreadonly no compile/test/edit.",
+  "observations": "/tmp/roslyn-root-typeref9-observed29.json",
+  "summary": {
+    "ready_evidence_join": 5,
+    "missing_positive_branch": 3,
+    "existing_positive_needs_public_assertion_join": 1
+  },
+  "rows": [
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "template_arg_list",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9423",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.instance_id;template_instance;backend/roslyn_types.h",
+      "api_property": "TemplateInstantiation.Arguments",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Exact alias-template relation created by roslyn_instance; original argument list retained separately from simplified argument list.",
+      "review_status": "ready_evidence_join",
+      "review": "43 actual alias-instance links. Program templates Alias.TypeArguments actualinteger and underlying Holder plus ExecutionProjection original-vs-primary argument separation. No independent substitution."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "orig_template_arg_list",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9430",
+      "disposition": "mapped_pending_validation",
+      "destination": "typeref_original_template_argument(owner_id,ordinal,argument_id);backend/roslyn_types.h:112",
+      "api_property": "TypeReference.OriginalTemplateArguments",
+      "fixture": "source/writer/typed-property mapping only; existing genuine family coverage to reconcile",
+      "reason": "Exact alias-template original argument list before nonreal typeref removal, separate from selected/partial specialization arguments.",
+      "review_status": "ready_evidence_join",
+      "review": "101 actual ordered original alias arguments. ExecutionProjection95-96 verifies original vs primary vs absent selected-partial lists on3aliases. Stock9431 means before nonreal typeref removal, used for substitution failure, not necessarily source token spelling."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "name_qualifier",
+      "guard": "!defined(IL_DEF_H) && DEFAULT_RECORD_FORM_OF_NAME_REFERENCE",
+      "source": "src/il_def.h:9441",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.name_qualifier_id;backend/roslyn_types.h",
+      "api_property": "TypeReferenceDetails.NameQualifier",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Exact retained native IL field; implementation reviewed only, positive scalar activation remains required.",
+      "review_status": "missing_positive_branch",
+      "review": "0 actual links in4752typerefs; name-reference qualifiers elsewhere do not activate typeref-owned qualifier. Global qualifier legitimatelyNULL with separateflag. Need bounded actual trk_name_qualifier only if retained; no name parsing."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "assoc_template",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9449",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.instance_id;template_instance;backend/roslyn_types.h",
+      "api_property": "TemplateInstantiation.OriginalDefinition",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Exact alias-template relation created by roslyn_instance; original argument list retained separately from simplified argument list.",
+      "review_status": "ready_evidence_join",
+      "review": "43 actual alias descriptor links via canonical template_instance. Program Alias.Template exactname and own instance arguments vs underlying Holder template; no inferred alias identity."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "expr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9454",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.decltype_expression_id;local_expression_reference;backend/roslyn_types.h",
+      "api_property": "TypeReferenceDetails.DecltypeExpression;LocalExpressionReferenceDetails",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Stock decltype_arg(il_to_str.c2212\u20132245) reads supplement expr or retained enclosing-routine/local-scope reference. Contextual references retained separately; NULL convenience is allowed.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "15 actual decltype expression links, alltrk_is_decltype. Need TypeReference.DecltypeExpression exact metadata expression identity and contextual local-expression relation where present. Writer uses stock decltype_arg helper exactly as il_def9454 instructs; no recomputation of typeof/deduced-auto. No actual latter alternatives claimed."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "upc_block_size",
+      "guard": "!defined(IL_DEF_H) && UPC_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:9468",
+      "disposition": "mapped_pending_validation",
+      "destination": "qualified_type.shared_block_size;backend/roslyn_types.h",
+      "api_property": "QualifiedTypeDetails.SharedBlockSize",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Signed stock block-size quantity preserves NONE=-1, INDEFINITE=0 and BLOCK=-2 without inventing effective block size.",
+      "review_status": "ready_evidence_join",
+      "review": "4752 direct scalar values:4744(-1),8(1). ScalarFamilies qualified_type sweep reads SharedBlockSize on genuine type fixtures. Stock NONE=-1,INDEFINITE=0,BLOCK=-2; preserve codes, not invented byte size. No0/-2positive claimed."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "proxy_class",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9472",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.proxy_class_id;backend/roslyn_types.h",
+      "api_property": "TypeReferenceDetails.ProxyClass",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Exact retained native IL field; implementation reviewed only, positive scalar activation remains required.",
+      "review_status": "missing_positive_branch",
+      "review": "0 typeref proxy links. Existing namespace/template-parameter proxy tests target different owners; cannot prove dependent decltype or its typedef proxy arm."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "operator_type_arg",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9481",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.operator_type_argument_id;backend/roslyn_types.h",
+      "api_property": "TypeReferenceDetails.OperatorTypeArgument",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Exact retained native IL field; implementation reviewed only, positive scalar activation remains required.",
+      "review_status": "missing_positive_branch",
+      "review": "0 retained type operand pointers. Must not derive from result or underlying type; stock says originally written operator argument type."
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "min_template_arguments",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:9484",
+      "disposition": "mapped_pending_validation",
+      "destination": "type_reference.minimum_template_arguments;backend/roslyn_types.h",
+      "api_property": "TypeReferenceDetails.MinimumTemplateArguments",
+      "fixture": "263 type-family read-only audit; no new fixture run",
+      "reason": "Exact retained native IL field; implementation reviewed only, positive scalar activation remains required.",
+      "review_status": "ready_evidence_join",
+      "review": "4752 direct signed values all-1. ScalarFamilies type_reference sweep reads MinimumTemplateArguments. -1 includes non-template types and aliases with allarguments explicitly supplied; do not infer number of defaults or argumentcount from it."
+    }
+  ]
+}

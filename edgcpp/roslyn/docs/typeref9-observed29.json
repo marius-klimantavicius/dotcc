@@ -1,0 +1,31 @@
+{
+  "paths": 187,
+  "counts": {
+    "id": 4752,
+    "instance_id": 43,
+    "name_qualifier_id": 0,
+    "decltype_expression_id": 15,
+    "proxy_class_id": 0,
+    "operator_type_argument_id": 0,
+    "minimum_template_arguments": 4752,
+    "original_arguments": 101
+  },
+  "values": {
+    "minimum_template_arguments": {
+      "-1": 4752
+    },
+    "shared_block_size": {
+      "-1": 4744,
+      "1": 8
+    },
+    "expression_kinds": {
+      "trk_is_decltype": 15
+    }
+  },
+  "examples": {
+    "id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "minimum_template_arguments": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+    "instance_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+    "decltype_expression_id": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/reflection.roslynobj"
+  }
+}

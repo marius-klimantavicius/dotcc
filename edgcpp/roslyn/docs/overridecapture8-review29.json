@@ -1,0 +1,121 @@
+{
+  "owners": [
+    "an_overriding_virtual_function",
+    "a_lambda_capture"
+  ],
+  "pending_at_review": 8,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stock il_def7848-7874,18025-18087; roslyn_layout.h84,roslyn_expressions_extra.h40-63. Fixedpoint4 left coordinator to avoid duplicate join.",
+  "observations": "/tmp/roslyn-root-fixedoverridecapture12-observed29.json",
+  "summary": {
+    "ready_evidence_join": 1,
+    "existing_positive_needs_public_assertion_join": 4,
+    "missing_positive_branch": 3
+  },
+  "rows": [
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "next",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7858",
+      "disposition": "mapped_pending_validation",
+      "destination": "override_relation(owner_id,ordinal,base_ordinal);backend/roslyn_layout.h:84",
+      "api_property": "BaseSubobject.Overrides;FunctionSymbol.Overrides",
+      "fixture": "source/writer/getter mapping only; reuse existing layout/virtual/native-MS family proof when matched",
+      "reason": "Retained linked-list order stored per contextual base in base_ordinal; routine ordinal is separate. No linked pointer needed.",
+      "review_status": "ready_evidence_join",
+      "review": "89actual rows. LayoutProjection39 verifies actual base override-list order byBaseOrdinal; backend preserves stock linked-list order independently from per-routine aggregation Ordinal. Do not use aggregate ordinal as ABI slot."
+    },
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "overriding_function",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7861",
+      "disposition": "mapped_pending_validation",
+      "destination": "override_relation.owner_id",
+      "api_property": "FunctionSymbol.Overrides[].Owner",
+      "fixture": "root retained source/writer/property audit267; positive activation pending",
+      "reason": "Existing backend/roslyn_layout.h:84 iterates actual non-pack-expansion base override list. Owner is actual overriding routine; relation also retains contextual primary base subobject. Mapping only; no positive-activation or verified promotion.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "89 exact owner routines. Need Function.Overrides entries Owner==function and base-list rows same canonical owner; no signature/name matching to choose override."
+    },
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "primary_function",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7864",
+      "disposition": "mapped_pending_validation",
+      "destination": "override_relation.overridden_id",
+      "api_property": "FunctionSymbol.Overrides[].Overridden",
+      "fixture": "root retained source/writer/property audit267; positive activation pending",
+      "reason": "Existing backend/roslyn_layout.h:84 iterates actual non-pack-expansion base override list. Actual overridden primary virtual routine, not selected call-site declaration. Mapping only; no positive-activation or verified promotion.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "89 exact overridden routines. Existing Layout test uses Name copy; add canonical base declared virtual method identity. Primary here means overridden declaration, distinct constructor PrimaryEntry."
+    },
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "base_class",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7867",
+      "disposition": "mapped_pending_validation",
+      "destination": "override_relation.overriding_subobject_id",
+      "api_property": "FunctionSymbol.Overrides[].OverridingSubobject",
+      "fixture": "root retained source/writer/property audit267; positive activation pending",
+      "reason": "Existing backend/roslyn_layout.h:84 iterates actual non-pack-expansion base override list. Actual overriding member base entry; NULL means member of current derived class, not unknown. Mapping only; no positive-activation or verified promotion.",
+      "review_status": "missing_positive_branch",
+      "review": "0 overriding_subobject pointers. All existing overriding routines belong current derivedclass, validNULL. Need inherited/intermediate overrider genuine case; return-adjustment subobject10 is differentfield and cannot prove this arm."
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "captured.variable",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18037",
+      "disposition": "mapped_pending_validation",
+      "destination": "lambda_capture.variable_id;backend/roslyn_expressions_extra.h",
+      "api_property": "LambdaCaptureDetails.Variable",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "4 actual variable pointers. Existing source lambdas tests flags/owner, not precise original captured variable identity. Applies noninit/nonindirectinit only; may remain original variable when intermediary source_closure_field supplies access."
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "captured.init_capture_field",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18047",
+      "disposition": "mapped_pending_validation",
+      "destination": "lambda_capture.indirect_capture_field_id;backend/roslyn_expressions_extra.h",
+      "api_property": "LambdaCaptureDetails.IndirectCaptureField",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "0 indirect-init field pointers; existing6 direct init recipes distinct active union. Do not substitute closurefield or initializer target."
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "capture_info.source_closure_field",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18056",
+      "disposition": "mapped_pending_validation",
+      "destination": "lambda_capture.source_closure_field_id;backend/roslyn_expressions_extra.h",
+      "api_property": "LambdaCaptureDetails.SourceClosureField",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "0 intermediary source closure fields; stock field only noninit and !field_pending. Pending source_capture and init_capture_dps frontend-only, must not follow/guess."
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "closure_field",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18079",
+      "disposition": "mapped_pending_validation",
+      "destination": "lambda_capture.field_id;backend/roslyn_expressions_extra.h",
+      "api_property": "LambdaCaptureDetails.Field",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "existing_positive_needs_public_assertion_join",
+      "review": "10 actual current closure field pointers. Need exact captured Field identity within Owner.ClosureType.Fields distinct from original Variable and any outer source field. NULL legitimate until actually used, no invented field."
+    }
+  ]
+}
