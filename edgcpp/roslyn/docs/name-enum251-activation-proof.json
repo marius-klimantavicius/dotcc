@@ -1,0 +1,316 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "validation_instances": 2,
+  "unique_objects": 2,
+  "positive_fields": 2,
+  "variant_count": 0,
+  "backend_changes": false,
+  "configuration_changes": false,
+  "new_strict_builds": 0,
+  "profiles": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/source/original_enum_templates.roslynobj",
+      "sha256": "53c5f83fe2ac2c08f5a1b1129b26452b74c1beb578f6c018a7599e3f4ab053ea",
+      "actual_call_references": [
+        {
+          "id": 755,
+          "target_id": 763,
+          "name_reference_id": 790,
+          "is_template_id": 1,
+          "num_template_arguments": "2",
+          "instance_id": 778,
+          "representation_role_id": 7003
+        },
+        {
+          "id": 879,
+          "target_id": 763,
+          "name_reference_id": 883,
+          "is_template_id": 1,
+          "num_template_arguments": "2",
+          "instance_id": 778,
+          "representation_role_id": 7003
+        }
+      ],
+      "selected_instance_arguments": [
+        {
+          "owner_id": 778,
+          "ordinal": 0,
+          "argument_id": 779,
+          "type_id": 483,
+          "constant_id": null,
+          "value_id": null,
+          "integer_value": null
+        },
+        {
+          "owner_id": 778,
+          "ordinal": 1,
+          "argument_id": 780,
+          "type_id": null,
+          "constant_id": 781,
+          "value_id": 774,
+          "integer_value": "7"
+        }
+      ],
+      "original_name_arguments": [
+        {
+          "owner_id": 883,
+          "ordinal": 0,
+          "argument_id": 884,
+          "type_id": 843,
+          "underlying_type_id": 483,
+          "constant_id": null,
+          "value_id": null,
+          "integer_value": null
+        },
+        {
+          "owner_id": 883,
+          "ordinal": 1,
+          "argument_id": 885,
+          "type_id": null,
+          "underlying_type_id": null,
+          "constant_id": 886,
+          "value_id": 774,
+          "integer_value": "7"
+        }
+      ],
+      "actual_local_alias": [
+        {
+          "id": 843,
+          "underlying_type_id": 483,
+          "name": "LocalInt",
+          "parent_scope_id": 845
+        }
+      ],
+      "actual_enum_templates": [
+        {
+          "id": 369,
+          "type_id": 364,
+          "is_template_enum": 1,
+          "is_prototype_instantiation": 1,
+          "template_id": 375,
+          "template_kind": "templk_member_enum",
+          "pattern_id": 364,
+          "canonical_template_id": 375,
+          "definition_template_id": 375,
+          "prototype_template_id": null,
+          "symbol_id": 376,
+          "descriptor_id": 375
+        },
+        {
+          "id": 471,
+          "type_id": 469,
+          "is_template_enum": 1,
+          "is_prototype_instantiation": 0,
+          "template_id": 375,
+          "template_kind": "templk_member_enum",
+          "pattern_id": 364,
+          "canonical_template_id": 375,
+          "definition_template_id": 375,
+          "prototype_template_id": null,
+          "symbol_id": 376,
+          "descriptor_id": 375
+        }
+      ],
+      "enclosing_class_template": [
+        {
+          "id": 434,
+          "pattern_id": 352,
+          "template_kind": "templk_class",
+          "name": "EnumHost"
+        }
+      ],
+      "actual_enumerator_values": [
+        {
+          "owner_id": 369,
+          "ordinal": 0,
+          "symbol_id": 420,
+          "name": "First",
+          "constant_id": 395,
+          "constant_kind": "ck_template_param",
+          "integer_value": null
+        },
+        {
+          "owner_id": 369,
+          "ordinal": 1,
+          "symbol_id": 426,
+          "name": "Sized",
+          "constant_id": 398,
+          "constant_kind": "ck_template_param",
+          "integer_value": null
+        },
+        {
+          "owner_id": 471,
+          "ordinal": 0,
+          "symbol_id": 485,
+          "name": "First",
+          "constant_id": 474,
+          "constant_kind": "ck_integer",
+          "integer_value": "1"
+        },
+        {
+          "owner_id": 471,
+          "ordinal": 1,
+          "symbol_id": 487,
+          "name": "Sized",
+          "constant_id": 477,
+          "constant_kind": "ck_integer",
+          "integer_value": "4"
+        }
+      ],
+      "actual_name_retention_capabilities": {
+        "CREATE_LEXICAL_TYPEREFS": {
+          "value": "0",
+          "enabled": false
+        },
+        "DEFAULT_RECORD_FORM_OF_NAME_REFERENCE": {
+          "value": "1",
+          "enabled": true
+        },
+        "record_form_of_name_reference": {
+          "value": "1",
+          "enabled": true
+        }
+      }
+    },
+    "native": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/native/original_enum_templates.roslynobj",
+      "sha256": "ac245d8546834a8be743a506be9c4c348ee3a7fde9cdc031b45db88f96dd339d",
+      "actual_call_references": [
+        {
+          "id": 685,
+          "target_id": 693,
+          "name_reference_id": null,
+          "is_template_id": null,
+          "num_template_arguments": null,
+          "instance_id": 708,
+          "representation_role_id": 7001
+        },
+        {
+          "id": 784,
+          "target_id": 693,
+          "name_reference_id": null,
+          "is_template_id": null,
+          "num_template_arguments": null,
+          "instance_id": 708,
+          "representation_role_id": 7001
+        }
+      ],
+      "selected_instance_arguments": [
+        {
+          "owner_id": 708,
+          "ordinal": 0,
+          "argument_id": 709,
+          "type_id": 453,
+          "constant_id": null,
+          "value_id": null,
+          "integer_value": null
+        },
+        {
+          "owner_id": 708,
+          "ordinal": 1,
+          "argument_id": 710,
+          "type_id": null,
+          "constant_id": 711,
+          "value_id": 704,
+          "integer_value": "7"
+        }
+      ],
+      "original_name_arguments": [],
+      "actual_enum_templates": [
+        {
+          "id": 348,
+          "type_id": 344,
+          "is_template_enum": 1,
+          "is_prototype_instantiation": 1,
+          "template_id": 354,
+          "template_kind": "templk_member_enum",
+          "pattern_id": 344,
+          "canonical_template_id": 354,
+          "definition_template_id": 354,
+          "prototype_template_id": null,
+          "symbol_id": 355,
+          "descriptor_id": 354
+        },
+        {
+          "id": 440,
+          "type_id": 438,
+          "is_template_enum": 1,
+          "is_prototype_instantiation": 0,
+          "template_id": 354,
+          "template_kind": "templk_member_enum",
+          "pattern_id": 344,
+          "canonical_template_id": 354,
+          "definition_template_id": 354,
+          "prototype_template_id": null,
+          "symbol_id": 355,
+          "descriptor_id": 354
+        }
+      ],
+      "enclosing_class_template": [
+        {
+          "id": 410,
+          "pattern_id": 332,
+          "template_kind": "templk_class",
+          "name": "EnumHost"
+        }
+      ],
+      "actual_enumerator_values": [
+        {
+          "owner_id": 348,
+          "ordinal": 0,
+          "symbol_id": 396,
+          "name": "First",
+          "constant_id": 373,
+          "constant_kind": "ck_template_param",
+          "integer_value": null
+        },
+        {
+          "owner_id": 348,
+          "ordinal": 1,
+          "symbol_id": 402,
+          "name": "Sized",
+          "constant_id": 376,
+          "constant_kind": "ck_template_param",
+          "integer_value": null
+        },
+        {
+          "owner_id": 440,
+          "ordinal": 0,
+          "symbol_id": 462,
+          "name": "_ZN8EnumHostIiE5State5FirstE",
+          "constant_id": 443,
+          "constant_kind": "ck_integer",
+          "integer_value": "1"
+        },
+        {
+          "owner_id": 440,
+          "ordinal": 1,
+          "symbol_id": 464,
+          "name": "_ZN8EnumHostIiE5State5SizedE",
+          "constant_id": 456,
+          "constant_kind": "ck_integer",
+          "integer_value": "4"
+        }
+      ],
+      "actual_name_retention_capabilities": {
+        "CREATE_LEXICAL_TYPEREFS": {
+          "value": "0",
+          "enabled": false
+        },
+        "DEFAULT_RECORD_FORM_OF_NAME_REFERENCE": {
+          "value": "0",
+          "enabled": false
+        },
+        "record_form_of_name_reference": {
+          "value": "0",
+          "enabled": false
+        }
+      }
+    }
+  },
+  "retention_notes": {
+    "original_name": "Prime int/7 call and local LocalInt/7 call share one actual selected instance. Only source alias form retains its distinct original type argument and original constant occurrence; no argument reconstruction from the selected instance. Earlier same-lexical-arguments zero is explained by pinned find_template_function lexical deduplication, not a global inactive field.",
+    "member_enum": "Actual prototype and concrete enums share the own member-enum descriptor, distinct from the EnumHost class descriptor. Canonical/definition links are self; prototype-template pointer stays legitimately NULL. Sized concrete value4 is retained frontend output, not evaluated by exporter/reader.",
+    "scope": "One input, two first-attempt accepted native/source exports. No config/backend/schema/core changes, helpers, syntax variants, new builds or broad refresh."
+  }
+}

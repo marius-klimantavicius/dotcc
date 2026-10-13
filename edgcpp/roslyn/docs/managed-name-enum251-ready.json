@@ -1,0 +1,111 @@
+{
+  "ready": "HOLD",
+  "created_utc": "2026-10-13T22:43:35.930605+00:00",
+  "checkpoint_base": "0436c021f1aec0afb12d8982fdfea44872576257",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "scope": "Two exact retained original-name-list/member-enum-template fields; direct nullable EnumSymbol.Template convenience; no schema/backend/profile changes.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Symbols.cs",
+      "sha256": "5d111fe1c0af65525feae5e879111ebd00f60d9f79583fa33586ed2bd07e74ac",
+      "bytes": 23510
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "822f183e90adcf7a7ac23bd7ecb644ed53f55e024ff7c3b1c6c1f5d445376f9e",
+      "bytes": 78724
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/OriginalEnumTemplateProjection.cs",
+      "sha256": "5be663fadd594736e02df3de55fb3d9ead62bae12b418f6a6a5225a80e5d0e91",
+      "bytes": 6168
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/name-enum251-evidence.tsv",
+      "sha256": "76d9eb25a8ca10452a27538c7b254b368baca797e214a77703f9551da61240f5",
+      "bytes": 2745
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-name-enum251-build.log",
+      "sha256": "5d618036d512d8ef62361cd6425a6d98ba451e10083e233f850c86b9f768168a",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-name-enum251-fresh2-v1.log",
+      "sha256": "d15f2666de4a21b8e2a1e0821ebc96831676fe50dcea71f83c276660e05a5879",
+      "bytes": 564
+    },
+    {
+      "path": "/tmp/roslynobj-managed-name-enum251-self.log",
+      "sha256": "c7405b22d473f902bb6affc445267ee87e2094ca11f7c9b45cfac390958f84f1",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-name-enum251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-name-enum251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-name-enum251-whitespace.log",
+      "sha256": "c3c31091c5f575633a81fadd5266e05d49513072fa73a689e49b0fe213bed176",
+      "bytes": 276
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/all-profile-results-final.json",
+    "sha256": "f162b3a2b1e087e8ca6d41865ccffa2d9ad7d3e84b14a911788dd84fd3004a39",
+    "bytes": 1522
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/source/original_enum_templates.roslynobj",
+      "sha256": "53c5f83fe2ac2c08f5a1b1129b26452b74c1beb578f6c018a7599e3f4ab053ea",
+      "bytes": 673792,
+      "profile": "source",
+      "fixture": "original_enum_templates",
+      "entities": 920,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/native/original_enum_templates.roslynobj",
+      "sha256": "ac245d8546834a8be743a506be9c4c348ee3a7fde9cdc031b45db88f96dd339d",
+      "bytes": 672768,
+      "profile": "native",
+      "fixture": "original_enum_templates",
+      "entities": 863,
+      "fk_errors": 0,
+      "page_size": 1024
+    }
+  ],
+  "checks": {
+    "fresh_assertions": 100,
+    "fresh_unique_paths": 2,
+    "self_assertions": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "literal": "PASS",
+    "whitespace": "PASS"
+  },
+  "evidence_rows": {
+    "positive": 2,
+    "pending": 0
+  },
+  "limits": [
+    "Original list positive source-only under actual recording; native missing name forms remain absent",
+    "lexically identical prime call has empty recorded original list",
+    "enum prototype-template pointer remains actual NULL; own member-enum template distinct from enclosing class",
+    "Native 14 unchanged-stage gates independently owned and reported separately"
+  ]
+}

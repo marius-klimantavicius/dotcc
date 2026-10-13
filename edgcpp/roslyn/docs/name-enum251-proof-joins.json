@@ -1,0 +1,33 @@
+{
+  "positive_fields": 2,
+  "managed_final": "PASS100/two unique/self73",
+  "joins": [
+    {
+      "owner": "a_name_reference",
+      "member": "orig_template_arg_list",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/OriginalEnumTemplateProjection.cs:12"
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "assoc_template",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/OriginalEnumTemplateProjection.cs:35"
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1511,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 17,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "native14_stage_gates": "all14 unchanged stages each316 stock inputs/26 canonical backend/stock tool pass; new builds0"
+}

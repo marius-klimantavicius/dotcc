@@ -256,6 +256,8 @@ public sealed class EnumSymbol : TypeSymbol
     public CppType? UnderlyingType => Details.UnderlyingType;
     public CppType? ExplicitUnderlyingType => Details.ExplicitUnderlyingType;
     public bool HasExplicitBase => Details.HasExplicitBase;
+    /// <summary>The recorded member-enum template descriptor, when retained.</summary>
+    public TemplateDescriptor? Template => Details.Template;
     public VariableSymbol? UuidVariable => Details.UuidVariable;
     public string? Uuid => Details.UuidString;
     /// <summary>Exact retained enum scope associations; this reverse relation has no source order.</summary>

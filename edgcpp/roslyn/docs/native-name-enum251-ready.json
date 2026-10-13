@@ -1,0 +1,85 @@
+{
+  "checkpoint_base": "0436c021f1aec0afb12d8982fdfea44872576257",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "52459a30f57cd45a31ac777807f5e07527d2915a43d4d951b8f370d1d62e223a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/original_enum_templates.cpp",
+      "sha256": "8f51296168458581393c10ef6e309252391550201f2321f42f513a853b3552f8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "d30ed16587f0a24470ffcc89b1e6a0d1ebc5fe50e33c7fa5f6b2e6b6ed33bf32"
+    }
+  ],
+  "candidate_owned_paths": 2,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 2,
+  "unique_objects": 2,
+  "input_count": 1,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/all-profile-results-final.json",
+      "sha256": "f162b3a2b1e087e8ca6d41865ccffa2d9ad7d3e84b14a911788dd84fd3004a39"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/build-results-final.json",
+      "sha256": "c0e4c5349570f16fae39c4a6fb00324e5802b9957ec6165d4b42fee20a498f1e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/backend-hashes-start.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/backend-hashes-final.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/validation-summary-final.json",
+      "sha256": "044917fbcf3f16003f6f4818fc7607325db581bf14e177bf3848b4817473789f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/gate-final.log",
+      "sha256": "46eb3fbe6a67dfa490bfa47d078617d49723afd678f9e278647fb0a4e4177d05"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/activation-proof.json",
+      "sha256": "adbe2c5891254b9826f7190d3c6ad45a7df3f6cfdaef7065db9c7b7ae1adcea4"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/activation-proof.py",
+      "sha256": "a64d731bb14b8dc08802ccbc4f6319ea5d167f15c82620f62b970e3cd32bbaa1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/name-enum/field-evidence.tsv",
+      "sha256": "4e4447042177bf3c89c709b46d0b0c0c757999e12501b877cb19d2f04bcbd651"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-name-enum-evidence251.tsv",
+  "public_gate": "Managed fixed2 PASS100/self73/build/generator/literal/whitespace; /tmp/roslyn-managed-ready-name-enum251.json held.",
+  "selected_fields": 2,
+  "positive_fields": 2,
+  "variant_count": 0,
+  "actual_positives": [
+    "source original LocalInt/7 arguments distinct from canonical selected int/7 for same routine/instance",
+    "source/native actual own templk_member_enum descriptor/pattern/canonical/definition/symbol distinct enclosing class"
+  ],
+  "legitimate_absences": [
+    "native name forms absent with runtime recording0",
+    "member-enum Prototype template pointer NULL, not inferred"
+  ],
+  "hold": true
+}

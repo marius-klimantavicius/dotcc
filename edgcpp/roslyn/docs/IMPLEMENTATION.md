@@ -1604,3 +1604,51 @@ Native inventory: native-reflection-token251-ready.json; all 16 linked
 file/evidence/header hashes match. Historical 211 unique paths contain zero
 token-sequence kinds in the bounded impact scan; this is not a reader rerun.
 All 14 actual strict builds and final pin/stock-tool/backend gates pass.
+
+
+### Accepted original template-name arguments and own member-enum templates
+
+The original-name/member-enum checkpoint keeps the accepted `4bb94` contract
+unchanged: 251 tables and 39,145 stable kind IDs. Two final native/source objects
+pass 100 reader assertions; self-checks pass 73. Build, generator, literal-field
+and whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned
+stock inputs, the pinned tool and 26 canonical backend files; new builds: zero.
+Both branches activate on the first ordinary input, without a variation. No full
+211-object refresh or performance rerun is claimed.
+
+Field coverage is now **1,511 verified / 17 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Kind-family proof and optional source fields remain distinct from
+required owner-payload and active-branch evidence.
+
+The source name reference retains ordered original LocalInt and integer7 argument
+descriptors. They differ from the selected int/7 arguments of the same actual
+function instance: the type is a retained typedef, and the separate constant
+occurrences share their interned value. The lexically identical prime call records
+an empty original list. Native name forms are absent under its actual recording
+policy. No arguments are substituted from the selected instance or spelling.
+
+Prototype and concrete enum descriptors link to the same own templk_member_enum
+entry, its actual enum pattern, canonical/definition and symbol links. That entry
+is distinct from the enclosing EnumHost class template. EnumSymbol.Template
+exposes the exact nullable recorded pointer, with no enclosing-template fallback.
+Existing NameReference.OriginalTemplateArguments retains ordinary ordered access.
+
+Both exact producer/retention questions are now closed through genuine public
+identity evidence. The earlier read-only recipe reports remain historical source
+reviews; the final two-row evidence and activation proof record actual outcomes.
+
+Next native and reader work combines bounded control/asm/MS branches: actual
+for-init scope and while/do body links, opaque asm-function body, previous-field
+foreach iterator, GNU routine assembly name and retained asm/MS block chains.
+Contextual base/override and targeted pragma/list arms follow. Dynamic-init empty
+targets and selected dependent-array/name/orphan links retain explicit positive
+obligations. No confirmed missing serialization adapter or factory is open.
+Full phases 3–4/M0–M5 continue; EDG remains the sole semantic authority and optional
+source positions remain nonblocking.
+
+Inventories: managed-name-enum251-ready.json and native-name-enum251-ready.json.
+All 13 managed and 13 native frozen hashes match. Final validation, stage and
+activation summaries retain the two-positive first-attempt scope. Only one direct
+reader convenience is added; backend/config/schema bytes are unchanged. Restart,
+unrelated and unaccepted exploratory files are excluded.

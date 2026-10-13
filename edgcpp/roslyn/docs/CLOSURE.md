@@ -1,46 +1,43 @@
 # Remaining phase 3–4 closure
 
-The reflection/token checkpoint keeps the accepted `4bb94` contract unchanged:
-251 tables and 39,145 stable kind IDs. Four final native/source objects pass 115
-reader assertions; self-checks pass 73. Build, generator, literal-field and
-whitespace checks pass. All 14 existing profile builds pass after synchronizing
-the one-line backend fix. Each stage retains 316 pinned stock inputs, the pinned
-tool and 26 canonical backend files. Failed probes and the early three-object
-reader gate are excluded from final counts. No full 211-object refresh or scale
-rerun is claimed.
+The original-name/member-enum checkpoint keeps the accepted `4bb94` contract
+unchanged: 251 tables and 39,145 stable kind IDs. Two final native/source objects
+pass 100 reader assertions; self-checks pass 73. Build, generator, literal-field
+and whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned
+stock inputs, the pinned tool and 26 canonical backend files; new builds: zero.
+Both branches activate on the first ordinary input, without a variation. No full
+211-object refresh or performance rerun is claimed.
 
-Field coverage is now **1,509 verified / 19 required pending**, plus two explicit
+Field coverage is now **1,511 verified / 17 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
 or disposition. Kind-family proof and optional source fields remain distinct from
 required owner-payload and active-branch evidence.
 
-Two compact ordinary C++26 inputs activate six fields. The prospective reflected
-member retains two ordered ak_annotation attributes with exact int constants 17
-and 23, canonical owners, argument links and value reflections. The retained token
-prototype owns eight typed kinds and independent spellings in actual order. Its
-N interpolation remains a separate ordered metadata expression referencing the
-actual parameter value/type; no evaluated structural child or function traversal
-is created. Existing typed properties suffice; no API or schema expansion.
+The source name reference retains ordered original LocalInt and integer7 argument
+descriptors. They differ from the selected int/7 arguments of the same actual
+function instance: the type is a retained typedef, and the separate constant
+occurrences share their interned value. The lexically identical prime call records
+an empty original list. Native name forms are absent under its actual recording
+policy. No arguments are substituted from the selected instance or spelling.
 
-The combined probe reached an invalid optional expression-range endpoint during
-stock sequence lookup. One prototype-only variant retained source tokens, but the
-native counterpart repeated the optional-range assertion. For enk_token_sequence
-only, the backend now retains its recorded point and omits its optional expression
-range. Every other kind is unchanged. This is an explicit backend availability
-policy, not a claim that EDG universally omits token ranges. No endpoint repair,
-threshold, token-cache read, source recovery or core change is involved.
+Prototype and concrete enum descriptors link to the same own templk_member_enum
+entry, its actual enum pattern, canonical/definition and symbol links. That entry
+is distinct from the enclosing EnumHost class template. EnumSymbol.Template
+exposes the exact nullable recorded pointer, with no enclosing-template fallback.
+Existing NameReference.OriginalTemplateArguments retains ordinary ordered access.
 
-The final four-object proof closes all six fields. Constant-evaluated private
-frontend token caches are never inspected or reconstructed. The original name
-argument-list and enum-template reviews identify exact producer contexts and
-single uncompiled recipes; neither review promotes a field or infers a pointer.
+Both exact producer/retention questions are now closed through genuine public
+identity evidence. The earlier read-only recipe reports remain historical source
+reviews; the final two-row evidence and activation proof record actual outcomes.
 
-Next native and reader work combines those two retained template/name cases,
-then bounded control/asm/MS, contextual base/override and targeted pragma/list
-arms. Dynamic-init empty-target and selected dependent-array/name/orphan links
-retain explicit positive-evidence obligations. No confirmed missing serialization
-adapter or factory is open. Full phases 3–4/M0–M5 continue; EDG remains the sole
-semantic authority and optional source positions remain nonblocking.
+Next native and reader work combines bounded control/asm/MS branches: actual
+for-init scope and while/do body links, opaque asm-function body, previous-field
+foreach iterator, GNU routine assembly name and retained asm/MS block chains.
+Contextual base/override and targeted pragma/list arms follow. Dynamic-init empty
+targets and selected dependent-array/name/orphan links retain explicit positive
+obligations. No confirmed missing serialization adapter or factory is open.
+Full phases 3–4/M0–M5 continue; EDG remains the sole semantic authority and optional
+source positions remain nonblocking.
 
 ## Current implementation and integration
 
@@ -67,7 +64,7 @@ semantic authority and optional source positions remain nonblocking.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 1509 verified and 19 mapped pending-validation fields at this boundary,
+There are 1511 verified and 17 mapped pending-validation fields at this boundary,
 plus two explicit selected-stock input/retention limitations.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.
