@@ -1,0 +1,24 @@
+{
+  "rows": 163,
+  "counts": {
+    "shared_attribute_descriptor_scalar_adapter": 149,
+    "upstream_error_test_attribute": 1,
+    "sentinel_not_semantic_instance": 4,
+    "frontend_attribute_query_family_adapter": 1,
+    "explicit_attribute_argument_variant_adapter": 6,
+    "not_recorded_attribute_search_mode": 2
+  },
+  "distinct_snapshot_files": 175,
+  "validation_instances": 186,
+  "observed_kinds": {
+    "edg_attribute": 28,
+    "edg_attribute_family": 4,
+    "edg_attribute_argument": 6,
+    "edg_attribute_location": 5
+  },
+  "limits": [
+    "Discriminator/family adapter proof does not establish every application-specific attribute effect; EDG resolved fields remain authority.",
+    "Native Microsoft attributes are not blanket CLI-excluded; per-attribute frontend registration controls applicability.",
+    "Syntactic location is exact enum scalar, no source-coordinate recovery or new fixtures."
+  ]
+}

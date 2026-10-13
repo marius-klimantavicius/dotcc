@@ -2,5 +2,5 @@
 namespace RoslynObj;
 public sealed partial class RoslynObject
 {
-    internal const string SchemaContractFingerprint = "83418408ba791622839f1c44fadcdaf71de682726d7d08949c85bbd150191e0f";
+    internal const string SchemaContractFingerprint = "c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71";
 }

@@ -1,0 +1,19 @@
+{
+  "rows": 58,
+  "snapshot_validation_entries": 182,
+  "distinct_snapshot_files": 171,
+  "counts": {
+    "explicit_kind_dispatch_adapter": 53,
+    "excluded_error_placeholder": 2,
+    "sentinel_not_semantic_instance": 1,
+    "operation_type_scalar_adapter": 1,
+    "enum_alias_canonicalized": 1
+  },
+  "missing_active_dispatch": [],
+  "limits": [
+    "Static top-level dispatch/factory coverage, not all runtime payload fields proven.",
+    "No CLI-only top-level kinds in these families; tk_nullptr also supports native standard nullptr.",
+    "tk_unknown has genuine operator scalar usage, not globally excluded.",
+    "Existing schema260 files inspected read-only; no generated fixtures or compiler runs."
+  ]
+}

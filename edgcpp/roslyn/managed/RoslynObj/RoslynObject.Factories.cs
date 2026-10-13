@@ -16,8 +16,8 @@ public sealed partial class RoslynObject
             or "type" or "declaration" or "scope" or "initialization" or "lifetime" or "template_argument"
             or "template_instance" or "source_file" or "source_position" or "source_range" or "source_origin"
             or "macro_definition" or "macro_invocation" or "record_layout" or "cleanup_region" or "cleanup_action"
-            or "cleanup_array" or "name" or "base_derivation" or "base_subobject"
-            or "template_parameter" or "template_specialization" or "include_occurrence" or "source_attachment"
+            or "cleanup_array" or "base_derivation" or "base_subobject"
+            or "template_parameter" or "template_specialization" or "include_occurrence"
             or "attribute" or "attribute_argument" or "attribute_group" or "data_member_spec" or "block_descriptor" or "try_descriptor" or "local_static_initialization" or "constructor_initializer" or "subobject_path" or "name_reference" or "exception_specification"
             or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion" or "template_symbol"
             or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
@@ -253,7 +253,6 @@ public sealed partial class RoslynObject
             "cleanup_array"=>Array(id),
             "cleanup_condition"=>Condition(id),
             "cleanup_abi"=>AbiDetail(id),
-            "name"=>new SemanticRecord<NameDetails>(this,id,Detail("name",id,r=>new NameDetails(this,r))),
             "symbol"=>new Symbol(this,id),
             "enum"=>Enum(id),
             "enumerator_symbol"=>Enumerator(id),
@@ -277,7 +276,6 @@ public sealed partial class RoslynObject
             "ms_attribute"=>MicrosoftAttribute(id),
             "ms_attribute_argument"=>MicrosoftAttributeArgument(id),
             "scoped_expression"=>ScopedExpression(id),
-            "source_attachment"=>new SemanticRecord<SourceAttachmentDetails>(this,id,Detail("source_attachment",id,r=>new SourceAttachmentDetails(this,r))),
             "attribute"=>Attribute(id),
             "attribute_argument"=>AttributeArgument(id),
             "attribute_group"=>AttributeGroup(id),

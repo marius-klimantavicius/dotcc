@@ -14,6 +14,9 @@ internal static class SemanticProjection
             Sweep(unit.Entities.OfType<TemplateParameter>().Select(p=>p.Details),"template_parameter",check);
             Sweep(unit.Entities.OfType<TemplateArgument>().Select(a=>a.Details),"template_argument",check);
             Sweep(unit.Entities.OfType<ParameterType>().Select(p=>p.Details),"parameter_type",check);
+            Sweep(unit.Entities.OfType<LambdaDefinition>().Select(l=>l.Details),"lambda_definition",check);
+            Sweep(unit.Entities.OfType<LambdaDefinition>().SelectMany(l=>l.Captures),"lambda_capture",check);
+            Sweep(unit.Entities.OfType<ExpressionOperation>().Select(e=>e.NodeDetails).OfType<SemanticNodeDetails>(),"semantic_node_expression",check);
         }
         if(fixture is "objects.roslynobj" or "native_microsoft.roslynobj")
         {

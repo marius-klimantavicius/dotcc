@@ -1,0 +1,53 @@
+{
+  "rows": 117,
+  "exact_source_catalog_ids": true,
+  "internal_guards": [],
+  "aliases": [],
+  "runtime_lowering_cases": [
+    "bok_offsetof",
+    "bok_builtin_shuffle",
+    "bok_builtin_shufflevector",
+    "bok_builtin_convertvector",
+    "bok_builtin_complex",
+    "bok_builtin_addressof",
+    "bok_builtin_bit_cast",
+    "bok_is_corresponding_member",
+    "bok_builtin_is_corresponding_member",
+    "bok_is_pointer_interconvertible_with_class",
+    "bok_builtin_is_pointer_interconvertible_with_class"
+  ],
+  "distinct_snapshot_files": 175,
+  "observed_opcode_kinds": 2,
+  "observed_roles": {
+    "103001": {
+      "roles": {
+        "metadata": 4
+      },
+      "objects": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout_c.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout_c.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout_c.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_c.roslynobj"
+      ]
+    },
+    "103015": {
+      "roles": {
+        "metadata": 3
+      },
+      "objects": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj"
+      ]
+    }
+  },
+  "confirmed_role_bug": null,
+  "limits": [
+    "Only bok_is_class and bok_offsetof observed, both metadata; this is not runtime activation proof of all builtins.",
+    "No inference that all builtin operands are unevaluated; offsetof permits dynamic subscripts and vector/conversion/address builtins can execute.",
+    "EDG folds nondependent traits; dependent prototype and constant-backing metadata stays separate from lowered execution.",
+    "Builtin-operation117 is separate from builtin-function36979 family and eok_operator123.",
+    "CLI/CX translator support excluded; native queries on ordinary types are not excluded solely from opcode spelling.",
+    "No new fixtures/builds/core edits or corruption tests."
+  ]
+}

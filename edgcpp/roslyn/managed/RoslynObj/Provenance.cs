@@ -7,8 +7,6 @@ public sealed class SourceInfo : SemanticEntity
     public SourceOriginDetails Details { get; }
     public SourcePosition? Position => Details.Position;
     public SourceRange? Range => Details.Range;
-    public SourceRange? SpellingRange => Details.SpellingRange;
-    public SourceRange? ExpansionRange => Details.ExpansionRange;
     public MacroInvocation? MacroExpansion => Position?.MacroExpansion;
 }
 
@@ -48,7 +46,6 @@ public sealed class SourceFile : SemanticEntity
     public override string Name => IncludeOccurrences.FirstOrDefault()?.DisplayName ?? Path;
     public string Path => Details.Path;
     public IReadOnlyList<IncludeOccurrence> IncludeOccurrences => Object.List("SELECT * FROM include_occurrence WHERE file_id=$owner ORDER BY ordinal,id",Id,r=>Object.Include(r.Long("id")),"include_occurrence");
-    public IReadOnlyList<SourceAttachmentDetails> Attachments => Object.List("SELECT * FROM source_attachment WHERE file_id=$owner ORDER BY id",Id,r=>new SourceAttachmentDetails(Object,r),"source_attachment");
 }
 
 public sealed class MacroDefinition : SemanticEntity

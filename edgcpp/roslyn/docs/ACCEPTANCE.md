@@ -1,5 +1,13 @@
 # Remaining acceptance work
 
+Current accepted boundary251:175 distinct files /186 validation instances,
+PASS2621 reader assertions,self73,12 strict pristine-pinned profiles.
+Contract `c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`;
+all older status paragraphs below are milestone history. Remaining required
+field/kind proof and stock-valid extern-inline activation are tracked in
+[CLOSURE.md](CLOSURE.md); optional source positions do not block completion.
+
+
 The initial exporter→reader checkpoint is verified. Phases 3–4 remain in
 progress until all M0–M5 gates and field/kind coverage rows are satisfied.
 The semantic items below remain required; source locations follow the user's

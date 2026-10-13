@@ -35,6 +35,8 @@ CASES = {
     'near_far': ['--c++20', '--microsoft_16'],
     'execution_c': ['--c11', '--gcc', '--gnu_version', '130000'],
     'execution_cpp': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'unevaluated_microsoft': ['--c++20', '--microsoft', '--microsoft_version', '1930'],
+    'unevaluated_clang': ['--c++20', '--clang', '--clang_version', '190000'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],
@@ -62,6 +64,7 @@ for name in selected:
     destination = output / (name + '.roslynobj')
     fixture = ('layout.cpp' if name == 'layout_microsoft' else 'upc_values.c' if name in ('upc_dynamic', 'upc_static')
                else 'execution.c' if name == 'execution_c' else 'execution.cpp' if name == 'execution_cpp'
+               else 'unevaluated.cpp' if name in ('unevaluated_microsoft', 'unevaluated_clang')
                else name + ('.c' if name in ('layout_c', 'constant_aggregates', 'constant_embed', 'common_labels', 'upc_affinity') else '.cpp'))
     source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / fixture if name in ('reflection', 'source_attributes', 'routines', 'routines_exception', 'routines_microsoft', 'execution_c', 'execution_cpp')
               else ROOT / 'tests/fixtures' / fixture)

@@ -1,5 +1,4 @@
 {
-  "objects": 182,
   "source_literal_family_references": [
     "abi",
     "arithmetic_kind",
@@ -882,5 +881,8 @@
       "target_profile.abi_id": 4
     }
   },
-  "method": "All actual FK-to-kind columns in every current accepted object, excluding kind_disposition catalog admission bookkeeping. Native source excludes generated catalog/schema. Lack of literal family reference is not by itself a semantic exclusion."
+  "method": "All actual FK-to-kind columns in every current accepted object, excluding kind_disposition catalog admission bookkeeping. Native source excludes generated catalog/schema. Lack of literal family reference is not by itself a semantic exclusion.",
+  "validation_instances": 182,
+  "distinct_paths": 171,
+  "count_note": "Actual FK counts aggregate the182 validation entries, including11 repeated paths. Counts establish occurrence/guard evidence; they are not182 distinct artifact counts."
 }

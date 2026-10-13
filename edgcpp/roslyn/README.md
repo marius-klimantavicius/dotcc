@@ -8,8 +8,8 @@ translation units or depend on Microsoft.CodeAnalysis.
 The user excluded C++/CLI and C++/CX support from the revised task. Native
 Microsoft C++ extensions remain in scope.
 
-Phases 3–4 are approved and in progress. The verified exporter-to-reader checkpoint
-is `ef479e0f8`; complete M0–M5 acceptance is tracked in
+Phases 3–4 are approved and in progress. The accepted251 exporter-to-reader boundary passes2621 assertions across175
+unique paths and12 strict profiles; complete M0–M5 acceptance is tracked in
 [the implementation ledger](docs/IMPLEMENTATION.md),
 [remaining acceptance](docs/ACCEPTANCE.md), and
 [compatibility profiles](docs/PROFILES.md). Table or kind presence alone does not

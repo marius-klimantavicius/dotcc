@@ -137,5 +137,5 @@ public sealed class GenericConstraintClause : SemanticEntity
     public CppType ParameterType => Details.ParameterType;
     public SourcePosition? TypePosition => Details.TypePosition;
     public SourcePosition? WherePosition => Details.WherePosition;
-    public new IReadOnlyList<TemplateGenericConstraintDetails> Constraints => Object.List("SELECT * FROM template_generic_constraint WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new TemplateGenericConstraintDetails(Object,r));
+    public IReadOnlyList<TemplateGenericConstraintDetails> Constraints => Object.List("SELECT * FROM template_generic_constraint WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new TemplateGenericConstraintDetails(Object,r));
 }

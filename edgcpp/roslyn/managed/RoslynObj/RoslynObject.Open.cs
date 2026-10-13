@@ -57,7 +57,6 @@ public sealed partial class RoslynObject
     internal SemanticKind? OptionalKind(long? id) => id is null ? null : Kind(id.Value);
     internal T? Link<T>(long? id, Func<long, T> resolve) where T : class => id is null ? null : resolve(id.Value);
     internal T Detail<T>(string table, long id, Func<Row, T> create) where T : SemanticDetail => create(Store.Required(table, id));
-    internal string? Name(long? id) => id is null ? null : Text(Store.Required("name", id.Value).OptionalLong("spelling_id"));
     internal static BigInteger Number(string value) => BigInteger.Parse(value, CultureInfo.InvariantCulture);
 
     private static IReadOnlyDictionary<long, SemanticKind> ReadCatalog()

@@ -1,0 +1,22 @@
+{
+  "rows": 57,
+  "counts": {
+    "shared_scalar_or_bitset_adapter": 49,
+    "enum_alias_canonicalized": 5,
+    "sentinel_not_semantic_instance": 2,
+    "invalid_search_result_not_bitset_member": 1
+  },
+  "distinct_snapshot_files": 171,
+  "snapshot_entries": 182,
+  "observed_kinds": {
+    "edg_anonymous_union": 2,
+    "edg_inheritance": 2,
+    "edg_decl_modifier": 4,
+    "edg_multiversion_arch": 2
+  },
+  "limits": [
+    "No individual payload/owner-identity proof claimed by scalar adapter audit.",
+    "No new fixtures, compiler runs, corruption tests, or core edits.",
+    "Native Microsoft declarations and inheritance remain in scope; no CLI-only exclusions in these families."
+  ]
+}

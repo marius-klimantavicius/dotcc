@@ -28,8 +28,6 @@ public class CppType : SemanticEntity
     public bool? DescriptorIsIncomplete => Details.DescriptorIncomplete;
     public bool IsDependent => Details.IsDependent;
     public SourceInfo? Source => SourceCorrespondence?.Source;
-    public CppType? CanonicalType => Details.CanonicalType;
-    public CppType? DeclaredType => Details.DeclaredType;
     public IReadOnlyList<Symbol> DeclarationSymbols => declarationSymbols.Value;
     public Symbol? DeclarationSymbol => DeclarationSymbols.Count==1 ? DeclarationSymbols[0] : null;
     public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_type_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
@@ -43,9 +41,6 @@ public class CppType : SemanticEntity
     public RecordLayout? Layout => Object.Store.Query("SELECT id FROM record_layout WHERE type_id=$owner", Id).FirstOrDefault() is { } row ? Object.Layout(row.Long("id")) : null;
     public IReadOnlyList<DirectBaseDetails> Bases => Object.List("SELECT * FROM direct_base WHERE owner_id=$owner ORDER BY ordinal", Id, r => new DirectBaseDetails(Object, r));
     public IReadOnlyList<BaseSubobject> BaseSubobjects => Object.List("SELECT * FROM base_subobject WHERE most_derived_type_id=$owner ORDER BY id", Id, r => Object.Subobject(r.Long("id")), "base_subobject");
-    public IReadOnlyList<LoweredTypeRelationshipDetails> LoweringRelationships => Object.List("SELECT * FROM lowered_type_relationship WHERE owner_id=$owner ORDER BY ordinal", Id, r => new LoweredTypeRelationshipDetails(Object, r));
-    public CppType? OriginalType => LoweringRelationships.FirstOrDefault(r => r.Kind.Name == "retained_original")?.Target;
-    public CppType? LoweringOrigin => LoweringRelationships.FirstOrDefault(r => r.Kind.Name == "declared")?.Target;
     public override string ToString() => Name ?? Kind.Name;
 }
 

@@ -1,5 +1,13 @@
 # Compatibility profile evidence
 
+Current accepted boundary251:175 distinct files /186 validation instances,
+PASS2621 reader assertions,self73,12 strict pristine-pinned profiles.
+Contract `c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`;
+all older status paragraphs below are milestone history. Remaining required
+field/kind proof and stock-valid extern-inline activation are tracked in
+[CLOSURE.md](CLOSURE.md); optional source positions do not block completion.
+
+
 The pinned EDG revision is `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`.
 These profiles retain the approved scope; a pending probe is required work.
 Compile configuration, resolved values, runtime options and input prerequisites

@@ -1321,6 +1321,48 @@ is_temp_for_constructor_this_inlined_parameter INTEGER''')
 relation('variable_initializer_entity', 'owner_id @variable_symbol NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
 append_columns('statement', 'source_sequence_entry_id @source_entry')
 
+# Final producer audit: remove legacy empty projections, retaining all actual
+# declared/original types, typed constraints and current cleanup relationships.
+# IDs in kinds.tsv remain reserved; a removed scaffold is never reconstructed.
+retired_tables = {
+    'name', 'qualified_name_part', 'declaration_sequence',
+    'lowered_type_relationship', 'lifetime_transition', 'eh_handler_region',
+    'constraint_metadata', 'synthesized_origin', 'source_attachment',
+}
+retired_columns = {
+    'target_profile': {'description_id'},
+    'declaration': {'implicit'},
+    'routine_symbol': {'runtime_kind_id'},
+    'variable_symbol': {'parameter_type_ordinal'},
+    'type': {'canonical_type_id', 'declared_type_id'},
+    'type_reference': {'typedef_symbol_id'},
+    'vector_type': {'scalable_count_type_id'},
+    'semantic_node': {'synthesis_kind_id'},
+    'loop_statement': {'test_position_id'},
+    'constant': {'is_literal'},
+    'member_pointer_value': {'adjustment'},
+    'initialization': {'condition_variable_id', 'is_elided', 'guard_variable_id'},
+    'source_file': {'verified_digest_id'},
+    'source_origin': {'spelling_range_id', 'expansion_range_id'},
+}
+kept_tables = []
+removed_column_count = 0
+for definition in tables:
+    table_name = re.match(r'CREATE TABLE (\w+) ', definition).group(1)
+    if table_name in retired_tables:
+        continue
+    for column in retired_columns.get(table_name, set()):
+        pattern = r'^  '+column+r' [^\n]+,\n'
+        definition, count = re.subn(pattern, '', definition, flags=re.M)
+        if not count:
+            definition, count = re.subn(r',\n  '+column+r' [^\n]+(?=\n\))', '', definition)
+        assert count == 1, (table_name, column, count)
+        removed_column_count += count
+    kept_tables.append(definition)
+assert len(tables) - len(kept_tables) == 9
+assert removed_column_count == 18
+tables = kept_tables
+
 custom = {
  'entity': 'translation_unit name scope symbol namespace routine variable field label enum alias using type declaration expression statement initialization lifetime temporary base_subobject template template_parameter template_argument template_instance template_specialization source_file include_occurrence source_mapping source_position source_range source_origin macro_definition macro_invocation source_attachment attribute subobject_path name_reference exception_specification virtual_table record_layout vla_dimension coroutine function_eh cleanup_region cleanup_action cleanup_storage cleanup_array cleanup_condition cleanup_abi',
  'capture_profile': 'native_lowered source_semantic cfront_lowered exported_templates_lowered',

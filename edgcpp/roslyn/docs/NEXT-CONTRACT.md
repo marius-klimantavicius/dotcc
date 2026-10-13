@@ -1,3 +1,34 @@
+# Frozen final producer cleanup and evaluation-role contract (251 tables)
+
+Accepted bounded260 delta committed `01c0364d391a2b5984d7a6cf889eefe6e0292c7b`:
+PASS919/47 existing paths, WORself73, native/source strict plus refreshed exact
+pack-bit and orphan-list positives. Other ten binaries remain prior260 pending
+this full refresh. Field ledger849verified/768pending, no raw/planned fields.
+
+Current251 removes nine empty tables and18 no-writer columns described in
+final-unproduced-relations260-review.json and independently checked in
+final-scaffolds-expanded260-review.json. Keep actual constant/base/constructor
+original types, parameter/variable/routine/declaration declared types, record
+subobject partners, typed constraints and real initializer/handler/cleanup links.
+Stable39,145kind IDs remain reserved and unchanged. Fingerprint:
+`c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`.
+
+Managed owns reader regeneration/phantom facade removal and exact unevaluated
+operand roles for stock eok_assume/eok_noexcept and bfk_assume/constant_p/
+classify_type calls. Operand/argument navigation remains; only documented
+unevaluated operands stay metadata and are excluded from execution containment.
+No generic pure/const-function inference or C++ resolution is added. Native
+owns serialized12-profile strict refresh and genuine existing/new small role
+fixtures after managed compile-ready header handoff. Full182 baseline refresh
+will replace affected same-contract old pack snapshots with current251 output.
+
+Direct scalar proof and pending union/identity/ordering/quantity reconciliation
+continue in disjoint lanes. New schema expansion is closed except confirmed
+required semantic defects. No source-location reconstruction, core edits,
+full portable throw/setjmp lowering, linking or translator is authorized here.
+
+---
+
 # Accepted scaffold and tableless partial-EH contract (260 tables)
 
 Accepted performance267 committed `f657bba2781e535b3538a08cf2e467a8dce98ff2`:176

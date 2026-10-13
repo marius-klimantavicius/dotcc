@@ -1,0 +1,20 @@
+{
+  "address_base": {
+    "count": 11,
+    "exact_names_ids_guards": true,
+    "guards": [
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif"
+    ]
+  },
+  "template_constant": {
+    "count": 16,
+    "exact_names_ids_guards": true,
+    "guards": []
+  },
+  "template_type": {
+    "count": 4,
+    "exact_names_ids_guards": true,
+    "guards": []
+  }
+}

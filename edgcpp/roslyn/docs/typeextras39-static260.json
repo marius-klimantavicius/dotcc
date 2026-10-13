@@ -1,0 +1,12 @@
+{
+  "edg_typeref": {
+    "count": 33,
+    "exact_names_ids_guards": true,
+    "aliases": []
+  },
+  "edg_vector_kind": {
+    "count": 6,
+    "exact_names_ids_guards": true,
+    "aliases": []
+  }
+}

@@ -815,10 +815,10 @@ through stock-valid instantiation/inlining overlays. Continue without approval h
 
 ## Accepted260 scaffold and tableless partial-EH milestone
 
-Final182 genuine objects PASS2462/self73; clean reader258 detail facades/2028
+Final182 genuine validation entries (171 distinct paths) PASS2462/self73; clean reader258 detail facades/2028
 properties, generator/literal checks and genuine prior267 rejection. Independent
 12-stage proof compares316 stock Git inputs and26 canonical backend files per
-stage; all182 objects have260 tables,1KiB pages,FK0, complete expression type
+stage; all182 validation entries have260 tables,1KiB pages,FK0, complete expression type
 links and no semantic BLOB/REAL. Contract:
 `83418408ba791622839f1c44fadcdaf71de682726d7d08949c85bbd150191e0f`.
 
@@ -883,3 +883,33 @@ only the reviewed fields; active union/quantity/identity evidence remains open.
 Nine zero-producer tables plus18 no-writer columns are queued for grouped cleanup
 (final-unproduced-relations260-review.json), preserving populated alternatives
 and stable kind IDs. Full phases3–4 continue immediately.
+
+
+## Accepted251 producer cleanup and exact operand roles
+
+Current contract251tables/39,145stable kinds:
+`c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`.
+All12 strict stages match316 pristine Git inputs and26 canonical backend files
+with exact stock tool pins. Publication validates186 instances over175 distinct
+paths; all251tables/FK0/1KiB/complete/type links/no semantic BLOB-or-REAL pass.
+
+Managed PASS2621 on175 paths, WORself73, clean249facades/1975properties,
+generator/literal checks and actual prior260 admission rejection. Four genuine
+Microsoft/Clang native/source role probes pass105: documented assume/noexcept
+operands and builtin assume/constant_p arguments are metadata, retain typed
+operand/callee/argument navigation, and ordinary control evaluates once.
+classify_type is fully frontend-folded here; its retained arm remains unactivated.
+
+Nine empty relations and18 no-writer columns are removed, preserving all populated
+original/declared types, constraints, partners, initializer/handler and cleanup
+links. Bounded public navigation has1934 property observations over existing
+small families, with explicit depth/fixture limits. This is not automatic union,
+quantity or ordering proof. Field coverage866verified/724pending
+plus51 captured optional-source mappings and12 omitted optional positions;
+zero raw/planned fields. Existing Boolean/getter and conditional positive
+reconciliation continues immediately after this milestone.
+
+Scale0.60s/45,564KiB/7,512,064bytes,98,815entities/7,023operations. Reader
+cold2698.73ms/warm2018.55ms,111.4/112.4MB RSS, bounded4096rows/128pages.
+No core patches, semantic reconstruction, portable full-EH lowering, linking
+or translator were introduced. Full phases3–4 remain active.

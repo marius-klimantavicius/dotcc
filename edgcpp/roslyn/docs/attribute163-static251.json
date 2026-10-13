@@ -1,0 +1,55 @@
+{
+  "edg_attribute": {
+    "count": 123,
+    "exact_names_ids_guards": true,
+    "guards": [
+      "#if GNU_EXTENSIONS_ALLOWED || MICROSOFT_EXTENSIONS_ALLOWED",
+      "#if GNU_NAKED_ATTRIBUTE_ALLOWED || MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#endif",
+      "#if GNU_EXTENSIONS_ALLOWED",
+      "#if GNU_X86_ATTRIBUTES_ALLOWED",
+      "#endif",
+      "#if GNU_VECTOR_TYPES_ALLOWED",
+      "#endif",
+      "#if GNU_X86_ATTRIBUTES_ALLOWED",
+      "#endif",
+      "#if GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED",
+      "#endif",
+      "#if GNU_X86_ATTRIBUTES_ALLOWED",
+      "#endif",
+      "#if THREAD_LOCAL_STORAGE_SPECIFIER_ALLOWED",
+      "#endif",
+      "#if GNU_VECTOR_TYPES_ALLOWED",
+      "#endif",
+      "#if GNU_VISIBILITY_ATTRIBUTE_ALLOWED",
+      "#endif",
+      "#endif",
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#if THREAD_LOCAL_STORAGE_SPECIFIER_ALLOWED",
+      "#endif",
+      "#endif",
+      "#if INCLUDE_EDG_TEST_ATTRIBUTES",
+      "#endif"
+    ],
+    "aliases": []
+  },
+  "edg_attribute_family": {
+    "count": 7,
+    "exact_names_ids_guards": true,
+    "guards": [],
+    "aliases": []
+  },
+  "edg_attribute_argument": {
+    "count": 7,
+    "exact_names_ids_guards": true,
+    "guards": [],
+    "aliases": []
+  },
+  "edg_attribute_location": {
+    "count": 26,
+    "exact_names_ids_guards": true,
+    "guards": [],
+    "aliases": []
+  }
+}

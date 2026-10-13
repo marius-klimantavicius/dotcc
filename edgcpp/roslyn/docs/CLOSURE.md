@@ -1,6 +1,9 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after accepted260 (182 objects/PASS2462,self73).
+Active on 2026-10-13 after accepted260 and bounded exact-pack/scalar commit01c0364d3.
+Accepted251 cleanup/evaluation-role batch passes2621 on175 unique paths
+(186 validation entries),self73. Prior182/PASS2462 and bounded47/PASS919
+remain historical evidence with their stated compiler/snapshot boundaries.
 The267 bounded variable/execution batch is complete; this checklist
 separates missing work from existing adapters awaiting evidence. Full M0–M5 stays
 open. C++/CLI and C++/CX are excluded by the user. Native Microsoft extensions
@@ -31,12 +34,17 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 849 verified and 768 mapped pending-validation fields at this boundary.
+There are 866 verified and 724 mapped pending-validation fields at this boundary.
 All 2,000 field rows now have an explicit mapping or disposition; mapping alone
 is not acceptance. Accepted bounded type/layout/init and template/parameter/attribute scalar
 proof joins pass919 across47 existing paths. Next direct Boolean proofs cover
 constant/lambda/common expressions; non-scalar identities/unions stay distinct.
-24 additional already-captured coordinate fields are mapped_optional_source,
+The251 empty-scaffold cleanup and exact unevaluated-operand role correction
+are accepted across12 current compilers. Remaining work is bounded direct
+flag/projection and representative union/identity/quantity evidence closure;
+extern-inline configuration is under stock-only audit. No optional-location
+work is added.
+51 additional already-captured optional-source fields are mapped_optional_source,
 with12 explicit omitted optional-source fields; these do not require new location
 probes or block semantic completion. Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
 close unconditional scalars, including false values. Active union alternatives,
@@ -116,3 +124,8 @@ The worksheet and REVIEW.md remain the field-sized work queue. Positions/ranges,
 original token/trivia recovery, suppressed hidden names and lowered original-source
 queries have documented availability limits; they are not executable semantic
 reconstruction tasks. No translator or cross-TU linker is in these phases.
+
+The historical accepted260 gate ran182 validation instances over171 distinct
+paths (11 repeated publication/runner entries). Final251 evidence reports both
+counts. Direct row/field counts in earlier scalar handoffs may include repeated
+validation; they prove observed values/guards, not distinct-artifact cardinality.

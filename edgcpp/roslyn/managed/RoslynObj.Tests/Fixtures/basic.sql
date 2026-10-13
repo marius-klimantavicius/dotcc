@@ -7,13 +7,13 @@ INSERT INTO text_atom VALUES
  (18,'exact_target_values_v1'),(19,'edg_partial_eh_v1'),(20,'1'),(21,'0');
 INSERT INTO entity(id,kind_id) SELECT value, k.id FROM
  (SELECT 1 value,'translation_unit' name UNION ALL SELECT 2,'scope' UNION ALL SELECT 3,'type'
-  UNION ALL SELECT 4,'type' UNION ALL SELECT 5,'name' UNION ALL SELECT 6,'routine'
-  UNION ALL SELECT 7,'variable' UNION ALL SELECT 8,'name' UNION ALL SELECT 9,'scope'
+  UNION ALL SELECT 4,'type' UNION ALL SELECT 6,'routine'
+  UNION ALL SELECT 7,'variable' UNION ALL SELECT 9,'scope'
   UNION ALL SELECT 10,'statement' UNION ALL SELECT 11,'expression' UNION ALL SELECT 12,'expression'
   UNION ALL SELECT 13,'expression' UNION ALL SELECT 14,'statement' UNION ALL SELECT 15,'statement'
-  UNION ALL SELECT 20,'routine' UNION ALL SELECT 21,'name' UNION ALL SELECT 30,'constant'
-  UNION ALL SELECT 31,'constant_value' UNION ALL SELECT 40,'type' UNION ALL SELECT 41,'name'
-  UNION ALL SELECT 42,'field' UNION ALL SELECT 43,'name' UNION ALL SELECT 44,'record_layout'
+  UNION ALL SELECT 20,'routine' UNION ALL SELECT 30,'constant'
+  UNION ALL SELECT 31,'constant_value' UNION ALL SELECT 40,'type'
+  UNION ALL SELECT 42,'field' UNION ALL SELECT 44,'record_layout'
   UNION ALL SELECT 50,'function_eh' UNION ALL SELECT 51,'cleanup_region' UNION ALL SELECT 52,'cleanup_action'
   UNION ALL SELECT 53,'cleanup_storage' UNION ALL SELECT 54,'cleanup_array' UNION ALL SELECT 55,'cleanup_condition'
   UNION ALL SELECT 56,'cleanup_abi' UNION ALL SELECT 60,'expression' UNION ALL SELECT 61,'statement'
@@ -21,7 +21,7 @@ INSERT INTO entity(id,kind_id) SELECT value, k.id FROM
   UNION ALL SELECT 73,'source_origin' UNION ALL SELECT 74,'source_file' UNION ALL SELECT 80,'lifetime'
   UNION ALL SELECT 81,'block_descriptor' UNION ALL SELECT 82,'constant' UNION ALL SELECT 83,'constant_value' UNION ALL SELECT 84,'type'
   UNION ALL SELECT 90,'template' UNION ALL SELECT 91,'template_argument' UNION ALL SELECT 92,'template_instance'
-  UNION ALL SELECT 93,'template_parameter' UNION ALL SELECT 94,'name' UNION ALL SELECT 95,'template_symbol' UNION ALL SELECT 96,'include_occurrence'
+  UNION ALL SELECT 93,'template_parameter' UNION ALL SELECT 95,'template_symbol' UNION ALL SELECT 96,'include_occurrence'
   UNION ALL SELECT 100,'constant_value' UNION ALL SELECT 101,'constant' UNION ALL SELECT 102,'type'
   UNION ALL SELECT 105,'type' UNION ALL SELECT 106,'type' UNION ALL SELECT 103,'constant_value' UNION ALL SELECT 104,'constant'
   UNION ALL SELECT 150,'expression' UNION ALL SELECT 170,'parameter_type') a JOIN kind k ON k.family='entity' AND k.name=a.name;
@@ -36,9 +36,6 @@ INSERT INTO object_header VALUES(1,1,0,'fixture-artifact',1,2,3,
 INSERT INTO build_capability(name_id,state_id,value_id,required,enabled)
  SELECT name_id,(SELECT id FROM kind WHERE family='availability' AND name='available'),20,1,1
  FROM (SELECT 17 name_id UNION ALL SELECT 18 UNION ALL SELECT 19);
-INSERT INTO name(id,spelling_id,category_id) SELECT id,spelling,
- (SELECT id FROM kind WHERE family='name_category' AND name='named')
- FROM (SELECT 5 id,5 spelling UNION ALL SELECT 8,6 UNION ALL SELECT 21,7 UNION ALL SELECT 41,9 UNION ALL SELECT 43,10 UNION ALL SELECT 94,16);
 INSERT INTO type(id,kind_id,size,alignment,incomplete,size_kind_id) VALUES
  (3,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
  (4,(SELECT id FROM kind WHERE family='type' AND name='tk_routine'),'0','1',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),

@@ -1,0 +1,15 @@
+{
+  "rows": 39,
+  "counts": {
+    "shared_descriptor_scalar_adapter": 38,
+    "sentinel_not_semantic_instance": 1
+  },
+  "distinct_snapshot_files": 171,
+  "observed_kinds": {
+    "edg_typeref": 5,
+    "edg_vector_kind": 4
+  },
+  "limits": [
+    "Shared scalar adapter only, no all-payload proof or new fixtures."
+  ]
+}

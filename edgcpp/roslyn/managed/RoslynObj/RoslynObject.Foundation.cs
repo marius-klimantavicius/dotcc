@@ -57,8 +57,6 @@ public abstract class SemanticEntity : IEquatable<SemanticEntity>
     public virtual IReadOnlyList<SemanticKind> DeclarationModifiers => Object.List("SELECT * FROM owner_decl_modifier WHERE owner_id=$owner ORDER BY kind_id",Id,r=>Object.Kind(r.Long("kind_id")));
     public virtual IReadOnlyList<Attribute> Attributes => Object.List("SELECT a.* FROM owner_attribute r JOIN attribute a ON a.id=r.attribute_id WHERE r.owner_id=COALESCE((SELECT source_correspondence_id FROM entity_source_correspondence WHERE owner_id=$owner),$owner) ORDER BY r.ordinal",Id,r=>Object.Attribute(r.Long("id")),"attribute");
     public IReadOnlyList<MicrosoftAttribute> MicrosoftAttributes => Object.List("SELECT a.* FROM owner_ms_attribute r JOIN ms_attribute a ON a.id=r.attribute_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.MicrosoftAttribute(r.Long("id")),"ms_attribute");
-    public IReadOnlyList<SynthesizedOriginDetails> SynthesizedOrigins => Object.List("SELECT * FROM synthesized_origin WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new SynthesizedOriginDetails(Object,r));
-    public IReadOnlyList<ConstraintMetadataDetails> Constraints => Object.List("SELECT * FROM constraint_metadata WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new ConstraintMetadataDetails(Object,r));
     public T? As<T>() where T : SemanticEntity => this as T;
     public bool Equals(SemanticEntity? other) => other is not null && Id == other.Id && artifact == other.artifact;
     public override bool Equals(object? obj) => obj is SemanticEntity other && Equals(other);

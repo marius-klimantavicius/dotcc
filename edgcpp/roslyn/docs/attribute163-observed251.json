@@ -1,0 +1,563 @@
+{
+  "301008": {
+    "rows": 16,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj"
+    ]
+  },
+  "301016": {
+    "rows": 9,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj"
+    ]
+  },
+  "301018": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj"
+    ]
+  },
+  "301019": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj"
+    ]
+  },
+  "301066": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj"
+    ]
+  },
+  "301080": {
+    "rows": 10,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "302002": {
+    "rows": 40,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj"
+    ]
+  },
+  "302003": {
+    "rows": 127,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/vector_values.roslynobj"
+    ]
+  },
+  "303004": {
+    "rows": 84,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/tableless/retained.roslynobj"
+    ]
+  },
+  "304002": {
+    "rows": 89,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/native_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj"
+    ]
+  },
+  "304011": {
+    "rows": 19,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "304016": {
+    "rows": 6,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj"
+    ]
+  },
+  "301020": {
+    "rows": 9,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/constant_occurrences.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj"
+    ]
+  },
+  "301004": {
+    "rows": 16,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/tableless/retained.roslynobj"
+    ]
+  },
+  "301063": {
+    "rows": 16,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj"
+    ]
+  },
+  "302005": {
+    "rows": 12,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/tableless/retained.roslynobj"
+    ]
+  },
+  "304003": {
+    "rows": 20,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_c.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/retained.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/tableless/retained.roslynobj"
+    ]
+  },
+  "301028": {
+    "rows": 5,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301030": {
+    "rows": 5,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301031": {
+    "rows": 8,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "301032": {
+    "rows": 10,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "301041": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301042": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301050": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301052": {
+    "rows": 5,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301067": {
+    "rows": 8,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301071": {
+    "rows": 8,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "303001": {
+    "rows": 9,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/native_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "303002": {
+    "rows": 15,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/routines.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/native_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/routines.roslynobj"
+    ]
+  },
+  "301055": {
+    "rows": 5,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj"
+    ]
+  },
+  "303005": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj"
+    ]
+  },
+  "303006": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/source_attributes.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_attributes.roslynobj"
+    ]
+  },
+  "304007": {
+    "rows": 47,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/types.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/vector_values.roslynobj"
+    ]
+  },
+  "301037": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "301075": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "301078": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "303003": {
+    "rows": 4,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/variables.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/variables.roslynobj"
+    ]
+  },
+  "301072": {
+    "rows": 10,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/vector_values.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/vector_values.roslynobj"
+    ]
+  },
+  "301070": {
+    "rows": 1,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/attributes.roslynobj"
+    ]
+  },
+  "301056": {
+    "rows": 2,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/type_edges.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/type_edges.roslynobj"
+    ]
+  },
+  "301105": {
+    "rows": 1,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj"
+    ]
+  },
+  "302004": {
+    "rows": 2,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/layout_microsoft.roslynobj",
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/native_microsoft.roslynobj"
+    ]
+  },
+  "301099": {
+    "rows": 1,
+    "objects": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/native_microsoft.roslynobj"
+    ]
+  }
+}

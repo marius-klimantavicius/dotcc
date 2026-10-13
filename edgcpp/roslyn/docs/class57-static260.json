@@ -1,0 +1,107 @@
+{
+  "edg_anonymous_union": {
+    "count": 3,
+    "exact_names_ids_values_internal_guards": true,
+    "guards": [],
+    "values": {
+      "auk_none": 0,
+      "auk_variable": 1,
+      "auk_field": 2
+    },
+    "aliases": {}
+  },
+  "edg_inheritance": {
+    "count": 6,
+    "exact_names_ids_values_internal_guards": true,
+    "guards": [],
+    "values": {
+      "ihk_none": 0,
+      "ihk_single": 1,
+      "ihk_multiple": 2,
+      "ihk_virtual": 3,
+      "ihk_incomplete": 4,
+      "ihk_last": 4
+    },
+    "aliases": {
+      "ihk_last": "ihk_incomplete"
+    }
+  },
+  "edg_decl_modifier": {
+    "count": 14,
+    "exact_names_ids_values_internal_guards": true,
+    "guards": [
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if MICROSOFT_EXTENSIONS_ALLOWED || THREAD_LOCAL_STORAGE_SPECIFIER_ALLOWED",
+      "#endif",
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if SUN_EXTENSIONS_ALLOWED",
+      "#endif"
+    ],
+    "values": {
+      "dmt_dllimport": 0,
+      "dmt_dllexport": 1,
+      "dmt_thread": 2,
+      "dmt_microsoft_inline": 3,
+      "dmt_forceinline": 4,
+      "dmt_selectany": 5,
+      "dmt_novtable": 6,
+      "dmt_noalias": 7,
+      "dmt_restrict": 8,
+      "dmt_safebuffers": 9,
+      "dmt_global_link_scope": 10,
+      "dmt_symbolic_link_scope": 11,
+      "dmt_hidden_link_scope": 12,
+      "dmt_last": 13
+    },
+    "aliases": {}
+  },
+  "edg_multiversion_arch": {
+    "count": 34,
+    "exact_names_ids_values_internal_guards": true,
+    "guards": [],
+    "values": {
+      "mvak_invalid": -1,
+      "mvak_unknown": 0,
+      "mvak_lowest_cpu": 1,
+      "mvak_cpu_bdver1": 1,
+      "mvak_cpu_bdver2": 2,
+      "mvak_cpu_corei7": 3,
+      "mvak_cpu_amdfam10h": 4,
+      "mvak_cpu_core2": 5,
+      "mvak_cpu_atom": 6,
+      "mvak_highest_cpu": 6,
+      "mvak_default_target": 7,
+      "mvak_lowest_isa": 8,
+      "mvak_isa_mmx": 8,
+      "mvak_isa_sse": 9,
+      "mvak_isa_sse2": 10,
+      "mvak_isa_sse3": 11,
+      "mvak_isa_ssse3": 12,
+      "mvak_isa_sse4": 13,
+      "mvak_isa_sse4a": 14,
+      "mvak_isa_sse4_1": 15,
+      "mvak_isa_sse4_2": 16,
+      "mvak_isa_popcnt": 17,
+      "mvak_isa_aes": 18,
+      "mvak_isa_pclmul": 19,
+      "mvak_isa_avx": 20,
+      "mvak_isa_bmi": 21,
+      "mvak_isa_fma4": 22,
+      "mvak_isa_xop": 23,
+      "mvak_isa_fma": 24,
+      "mvak_isa_bmi2": 25,
+      "mvak_isa_avx2": 26,
+      "mvak_isa_avx512f": 27,
+      "mvak_highest_isa": 27,
+      "mvak_last": 28
+    },
+    "aliases": {
+      "mvak_lowest_isa": "mvak_isa_mmx",
+      "mvak_highest_isa": "mvak_isa_avx512f",
+      "mvak_highest_cpu": "mvak_cpu_atom",
+      "mvak_lowest_cpu": "mvak_cpu_bdver1"
+    }
+  }
+}

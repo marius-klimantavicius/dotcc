@@ -1,0 +1,69 @@
+{
+  "count": 123,
+  "exact_source_names_ids_guards": true,
+  "internal_guards": [
+    "#if MICROSOFT_EXTENSIONS_ALLOWED",
+    "#endif",
+    "#if C99_IL_EXTENSIONS_SUPPORTED",
+    "#endif",
+    "#if C99_IL_EXTENSIONS_SUPPORTED",
+    "#endif"
+  ],
+  "aliases": [],
+  "observed_objects": 182,
+  "observed_kinds": 49,
+  "counts": {
+    "shared_operator_payload_adapter": 112,
+    "mapped_operand_evaluation_fix_pending": 3,
+    "excluded_user_scope": 6,
+    "excluded_error_placeholder": 1,
+    "sentinel_not_semantic_instance": 1
+  },
+  "call_kinds": [
+    "eok_call",
+    "eok_dot_member_call",
+    "eok_dot_pm_call",
+    "eok_points_to_member_call",
+    "eok_points_to_pm_call"
+  ],
+  "conversion_kinds": [
+    "eok_array_to_pointer",
+    "eok_base_class_cast",
+    "eok_bool_cast",
+    "eok_cast",
+    "eok_class_rvalue_adjust",
+    "eok_derived_class_cast",
+    "eok_dynamic_cast",
+    "eok_lvalue_adjust",
+    "eok_lvalue_cast",
+    "eok_pm_base_class_cast",
+    "eok_pm_derived_class_cast",
+    "eok_ref_cast",
+    "eok_ref_dynamic_cast"
+  ],
+  "backend_sha256_at_audit": "5a114f9f81354962ce30d6e1c0b1f836b974913f86bded4e7641b3d7daaafbb8",
+  "confirmed_execution_role_bug": {
+    "operators": [
+      "eok_assume",
+      "eok_noexcept"
+    ],
+    "builtin_call_targets": [
+      "bfk_assume",
+      "bfk_constant_p",
+      "bfk_classify_type"
+    ],
+    "sources": [
+      "expr.c20324-20328",
+      "lower_il.c16690-16722",
+      "il.c25748-25752",
+      "interpret.c12831-12835",
+      "expr.c5684-5685,5773-5774,5780-5816,5839-5866"
+    ],
+    "fix": "Retain operand/call-argument associations at metadata role; avoid executable child edges and later role promotion for unevaluated arguments; match authoritative builtin discriminator/helper, not name. Managed assigned by coordinator."
+  },
+  "limits": [
+    "All builtin opcode scalar identity proof does not establish operand evaluation policy.",
+    "Short-circuit/conditional operations retain structural potential-execution operands and exact kinds/flags, not unconditional sequencing claims.",
+    "No core modifications, corruption tests, or optional-position work."
+  ]
+}

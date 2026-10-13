@@ -1,0 +1,40 @@
+{
+  "type": {
+    "count": 27,
+    "aliases": {
+      "tk_enum": "tk_integer"
+    },
+    "exact_names_ids_guards": true,
+    "guards": [
+      "#if FIXED_POINT_ALLOWED",
+      "#endif",
+      "#if C99_IL_EXTENSIONS_SUPPORTED",
+      "#endif",
+      "#if GNU_VECTOR_TYPES_ALLOWED",
+      "#endif"
+    ]
+  },
+  "constant": {
+    "count": 21,
+    "aliases": {},
+    "exact_names_ids_guards": true,
+    "guards": [
+      "#if FIXED_POINT_ALLOWED",
+      "#endif",
+      "#if C99_IL_EXTENSIONS_SUPPORTED",
+      "#endif",
+      "#if GNU_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if DO_IL_LOWERING && GENERATE_EH_TABLES && !DO_FULL_PORTABLE_EH_LOWERING",
+      "#endif",
+      "#if UPC_EXTENSIONS_ALLOWED",
+      "#endif"
+    ]
+  },
+  "template": {
+    "count": 10,
+    "aliases": {},
+    "exact_names_ids_guards": true,
+    "guards": []
+  }
+}

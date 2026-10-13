@@ -1,0 +1,30 @@
+{
+  "question": "Can routine.inline_instance_required be activated using unmodified stock EDG under the approved partial EH lowering?",
+  "conclusion": "Static configuration audit supports a separate valid overlay; do not classify this like MINIMAL_INLINING. Compiler/export validation remains native-owned.",
+  "overlay_on_existing_instantiation_profile": {
+    "INSTANTIATE_EXTERN_INLINE": 1,
+    "LOWER_EXTERN_INLINE": 0
+  },
+  "preserved": {
+    "AUTOMATIC_TEMPLATE_INSTANTIATION": 1,
+    "ONE_INSTANTIATION_PER_OBJECT": 0,
+    "DEFAULT_INSTANTIATION_MODE": "tim_used",
+    "DO_IL_LOWERING": 1,
+    "DO_FULL_PORTABLE_EH_LOWERING": 0,
+    "MINIMAL_INLINING": 0,
+    "KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED": 1
+  },
+  "authoritative_sources": {
+    "src/targ_def.h:4639-4683": "Instantiation mechanism controls inline function emission; only guard errors are no automatic template instantiation or simultaneous LOWER_EXTERN_INLINE. IA64 supported explicitly; no full-portable-EH requirement.",
+    "src/templates.c:40203-40229": "set_instance_required records actual flag for all routine entries because inline may be declared later; positive values are not restricted to routines presently marked inline.",
+    "src/templates.c:41225-41304": "inline_function_should_be_emitted uses flag in tim_used/tim_all; local definition decision provided by EDG, not backend reconstructed.",
+    "src/templates.c:41523-41549": "inline wrapup skips consteval and uses stock emission machinery; no prelinker needed for tim_used per-TU observation.",
+    "src/il_def.h:12864-12884": "Resident a_routine bit plus distinct suppress_inline_body. It records program-level need for definition; not itself promise this TU owns a body.",
+    "src/lower_init.c:5630-5632": "Actual bit copied to generated constructor/destructor alternate entries; not a freed private construction record.",
+    "src/lower_il.c:10091-10137,10340-10345": "Disabling LOWER_EXTERN_INLINE bypasses static/COMDAT extern-inline conversion; does not disable general lowering or exception/lifetime lowering.",
+    "src/inline.c:34-45": "Contrasting MINIMAL_INLINING guard explicitly demands full portable EH and remains excluded."
+  },
+  "backend_api": "roslyn_routines.h335 direct guarded bit; FunctionSymbol.Details.InlineInstanceRequired exact nullable getter already present. Preserve actual body/lifetime relations and suppress flags separately.",
+  "test_guidance": "Existing ordinary call/address-referenced inline functions can exercise positive flag; existing body/cleanup fixtures can validate retained partial EH. Keep sidecars under artifact directories, no cross-TU prelink or link policy needed. No positive build result claimed by this source-only audit.",
+  "scope": "No files modified outside /tmp; no EDG/core edits/builds/tests performed by root."
+}

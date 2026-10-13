@@ -1,0 +1,23 @@
+{
+  "rows": 31,
+  "distinct_snapshot_files": 171,
+  "snapshot_entries": 182,
+  "counts": {
+    "explicit_kind_payload_adapter": 23,
+    "excluded_user_scope": 2,
+    "constant_evaluation_only_retained_scalar_adapter": 1,
+    "sentinel_not_semantic_instance": 1,
+    "shared_dependent_type_descriptor_adapter": 4
+  },
+  "observed_kinds": {
+    "address_base": 4,
+    "template_constant": 4,
+    "template_type": 3
+  },
+  "missing_active_dispatch": [],
+  "limits": [
+    "No all-payload-positive coverage claim.",
+    "Frontend constant evaluator-only abk_param_ref is preserved when resident, not a public-source fixture gate.",
+    "No new fixtures/builds/core edits/corruption tests."
+  ]
+}
