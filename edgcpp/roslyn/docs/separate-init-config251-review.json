@@ -1,0 +1,76 @@
+{
+  "source_pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "assessment": "Separate file-scope initialization profile is stock-configurable without changing approved partial EH/lifetime policy. Non-lazy TLS cannot use primary IA64 profile; non-IA64 guards permit it but stock runtime assertion must be resolved by genuine unchanged compiler observation.",
+  "safe_initial_overlay": {
+    "base": "current primary cpfe.cmakedef",
+    "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": 1,
+    "USE_PATCH_INIT_STARTUP": 0,
+    "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": "retain current TRUE",
+    "DO_IL_LOWERING": 1,
+    "DO_FULL_PORTABLE_EH_LOWERING": 0,
+    "GENERATE_EH_TABLES": 1,
+    "KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED": 1,
+    "MINIMAL_INLINING": 0,
+    "ONE_INSTANTIATION_PER_OBJECT": 0
+  },
+  "nonlazy_tls_candidate": {
+    "base": "existing non-IA64 cfront overlay plus primary",
+    "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS": 1,
+    "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES": 0,
+    "IMPLEMENTATION_SUPPORTS_MULTIPLE_THREADS": 1,
+    "USE_PATCH_INIT_STARTUP": 0,
+    "IA64_ABI": 0,
+    "BACK_END_IS_C_GEN_BE": 0,
+    "CHECKING": "unchanged; do not suppress assertions",
+    "EH_and_lifetimes": "same approved partial EH/KEEP1"
+  },
+  "stock_guards": [
+    {
+      "source": "targ_def.h625-639",
+      "fact": "IA64 + lowering + threads requires lazyTLS1; C-generating backend + threads likewise. lazyTLS1 requires threads support."
+    },
+    {
+      "source": "targ_def.h4904-4941",
+      "fact": "Separate routines queues actual per-variable routines in required order; requires DO_IL_LOWERING. Lazy TLS is consolidated regardless of separate flag; lazyTLS0 permits separate per-thread list in this contract."
+    },
+    {
+      "source": "targ_def.h4973-4976",
+      "fact": "USE_PATCH_INIT_STARTUP conflicts with separate-routine configuration."
+    },
+    {
+      "source": "il_def.h19086-19105",
+      "fact": "Exact ordered file-scope and non-lazy thread-local header lists; preserve existing order, not derive/sort."
+    },
+    {
+      "source": "il_def.h11833-11861",
+      "fact": "Variable init_routine union: dynamic_init_routine only non-thread-local under separate flag; thread init/wrapper only lazyTLS. Current variable adapter honors these guards."
+    },
+    {
+      "source": "lower_init.c19215-19247;19320-19345",
+      "fact": "Separate mode calls b_lower_file_scope_dynamic_inits with do_single_init TRUE; non-lazy TLS path explicitly requests per-thread single init."
+    },
+    {
+      "source": "lower_init.c19106-19126",
+      "fact": "Same stock do_single_init block asserts dip_next NULL and !is_effective_thread_local(var) before guarded thread-local enqueue. Do not label non-lazy TLS runtime support proven from preprocessor feasibility alone."
+    },
+    {
+      "source": "basics.h724-727",
+      "fact": "CHECKING defaults TRUE; do not change checking just to bypass stock condition."
+    }
+  ],
+  "existing_adapter": "roslyn_entities.h70-78 captures ordered roots with is_thread_local; roslyn_variables.h99-104 captures exact permitted variable pointers; TranslationUnit.FileScopeInitializationRoutines and VariableSymbol.Details.DynamicInitializationRoutine expose them.",
+  "capture_config_if_activated": [
+    "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS",
+    "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES",
+    "IMPLEMENTATION_SUPPORTS_MULTIPLE_THREADS",
+    "USE_PATCH_INIT_STARTUP",
+    "CHECKING"
+  ],
+  "proposed_ordinary_positive": "int initialize(int); int global_first=initialize(1); int global_second=initialize(2); // inspect two actual routines, order, current bodies, variable links",
+  "proposed_tls_positive": "int initialize(int); thread_local int thread_first=initialize(3); thread_local int thread_second=initialize(4); // only after unchanged stock non-IA64 candidate build; observe success/assertion rather than infer",
+  "limits": [
+    "No EDG core or repo changes, builds, fixture compilations or assertion suppression by root.",
+    "No runtime C# execution or startup synthesis is part of phases3-4; store EDG entry routine order for future translator.",
+    "Stock runtime constraint is an unresolved profile-probe risk, not a claim of incorrect EDG semantics."
+  ]
+}

@@ -1,0 +1,408 @@
+{
+  "fields": 15,
+  "source_pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "reviewed_backend": "backend/roslyn_lifetimes.h32-68;backend/roslyn_common.h111-121",
+  "managed": "LifetimeDescriptors.cs23-60;Lifetimes.cs29-42;SchemaDetails.g.cs3077-3110",
+  "existing_acceptance": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique; /tmp/roslynobj-managed-ctor251-families.log PASS128/2",
+  "rows": [
+    {
+      "owner": "a_local_static_variable_init",
+      "member": "variable",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11079",
+      "disposition": "mapped_pending_validation",
+      "destination": "local_static_initialization.variable_id",
+      "api_property": "LocalStaticInitializationDetails.Variable",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: actual wrapper",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs117-118 source requires nonempty local-static list and exact reverse variable association; native p->variable direct.202actual descriptors and107positive getter reads.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_local_static_variable_init",
+          "member": "variable",
+          "source": "src/il_def.h:11079",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "local_static_initialization.variable_id",
+          "typed_property": "LocalStaticInitializationDetails.Variable",
+          "nonnull_links": "107",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "a_local_static_variable_init",
+      "member": "init_kind",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11083",
+      "disposition": "mapped_pending_validation",
+      "destination": "local_static_initialization.initialization_kind_id",
+      "api_property": "LocalStaticInitializationDetails.InitializationKind",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: actual wrapper discriminant",
+      "review_state": "required_tiny_getter_proof_gap_adapter_exists",
+      "review": "Direct stock enum; actual201static/1dynamic rows. Generic NavigationFamilies intentionally excludes SemanticKind, and no existing local-static scalar sweep found. Tiny getter assertion can accompany already-queued future source fixture; no new native implementation needed.",
+      "existing_navigation_evidence": []
+    },
+    {
+      "owner": "a_local_static_variable_init",
+      "member": "initializer",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11086",
+      "disposition": "mapped_pending_validation",
+      "destination": "local_static_initialization.constant_id;local_static_initialization.initialization_id",
+      "api_property": "LocalStaticInitialization.Constant;LocalStaticInitialization.Initialization",
+      "fixture": "cleanup_semantics.cpp;243 genuine refresh pending",
+      "reason": "Actual init_kind selects the retained static constant versus dynamic initialization union. Projected lowered EH arrays are normalized through their table relations, not copied again. Primary243 compile passed; public activation pending.",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "Stock11083 permits only static/dynamic; native exact active union; projected EH-table variables intentionally represented through decoded table relations. Current constant16rows and dynamic1, genuine nav12Constant/1Initialization links; source cleanup_semantics is dynamic positive; static positives in retained/label_difference/member_pointers/cfrontobjects.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_local_static_variable_init",
+          "member": "initializer",
+          "source": "src/il_def.h:11086",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "local_static_initialization.constant_id",
+          "typed_property": "LocalStaticInitializationDetails.Constant",
+          "nonnull_links": "12",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp;243 genuine refresh pending",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        },
+        {
+          "owner": "a_local_static_variable_init",
+          "member": "initializer",
+          "source": "src/il_def.h:11086",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "local_static_initialization.initialization_id",
+          "typed_property": "LocalStaticInitializationDetails.Initialization",
+          "nonnull_links": "1",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp;243 genuine refresh pending",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "a_local_static_variable_init",
+      "member": "lifetime",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:11090",
+      "disposition": "mapped_pending_validation",
+      "destination": "local_static_initialization.lifetime_id",
+      "api_property": "LocalStaticInitializationDetails.Lifetime",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: own actual lifetime",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "Direct p->lifetime surrounds initialization rollback, optional when unnecessary; source cleanup_semantics has sole retained positive and actual typed lifetime getter. SemanticProjection.cs106 explicitly verifies source lifetime binding to LocalStaticInitialization; no synthetic body lifetime inferred.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_local_static_variable_init",
+          "member": "lifetime",
+          "source": "src/il_def.h:11090",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "local_static_initialization.lifetime_id",
+          "typed_property": "LocalStaticInitializationDetails.Lifetime",
+          "nonnull_links": "1",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "kind",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:16882",
+      "disposition": "mapped_pending_validation",
+      "destination": "constructor_initializer.kind_id",
+      "api_property": "ConstructorInitializerDetails.Kind",
+      "fixture": "cleanup_semantics.cpp;243 source genuine pending",
+      "reason": "Canonical actual constructor initializer direct discriminant/flag capture; primary compile passed, positive source-profile public activation pending.",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "Existing ctor251-families PASS128/2 reads Kind on16actual descriptors; exact exhaustive discriminator mapping. Entire committed175 corpus has field48/directbase32/virtualbase50. Delegation payloadless mapping exists but positive kind occurrence still absent.",
+      "existing_navigation_evidence": []
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "variant.base_class",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:16907",
+      "disposition": "mapped_pending_validation",
+      "destination": "constructor_initializer.base_subobject_id",
+      "api_property": "ConstructorInitializerDetails.BaseSubobject",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: cik_virtual_base_class || cik_direct_base_class",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs126 requires actual CleanupBase virtual-base target and ordered constructor list; same exact union member handles observed direct-base32 and virtual-base50; generated BaseSubobject getter positive50 navigation links.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_constructor_init",
+          "member": "variant.base_class",
+          "source": "src/il_def.h:16907",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "constructor_initializer.base_subobject_id",
+          "typed_property": "ConstructorInitializerDetails.BaseSubobject",
+          "nonnull_links": "50",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "variant.field",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:16911",
+      "disposition": "mapped_pending_validation",
+      "destination": "constructor_initializer.field_id",
+      "api_property": "ConstructorInitializerDetails.Field",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: cik_field",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs126 requires field name members in captured constructor order; destructor reversed order130. Exact variant.field only when cik_field; positive34 typed navigation links.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_constructor_init",
+          "member": "variant.field",
+          "source": "src/il_def.h:16911",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "constructor_initializer.field_id",
+          "typed_property": "ConstructorInitializerDetails.Field",
+          "nonnull_links": "34",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "initializer",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:16915",
+      "disposition": "mapped_pending_validation",
+      "destination": "constructor_initializer.initialization_id",
+      "api_property": "ConstructorInitializerDetails.Initialization",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: metadata; !DO_IL_LOWERING actual owning function body evaluated edge",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs128 requires each actual EffectiveInitialization occur exactly once in source executable containment. roslyn_common.h113-121 adds actual i->initializer and source_expr, while retained recipe starts metadata. Field-default fallback only under EDG use_field_initializer flag.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_constructor_init",
+          "member": "initializer",
+          "source": "src/il_def.h:16915",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "constructor_initializer.initialization_id",
+          "typed_property": "ConstructorInitializerDetails.Initialization",
+          "nonnull_links": "84",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "source_expr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:16921",
+      "disposition": "mapped_pending_validation",
+      "destination": "constructor_initializer.source_expression_id",
+      "api_property": "ConstructorInitializerDetails.SourceExpression",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: metadata; !DO_IL_LOWERING actual owning function body evaluated edge",
+      "review_state": "required_positive_activation_gap_adapter_exists",
+      "review": "Real semantic GNU array-copy operand (not optional source coordinates): stock expr.c56440-56534 produces only gpp_mode, class-element nontrivial-copy lvalue matching array; no positive among130current descriptors. Mapping already present in lifetimes/common. Proposed uncompiled fixture /tmp/roslyn-root-constructor-probe251.cpp.",
+      "existing_navigation_evidence": []
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "orig_type",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:16934",
+      "disposition": "mapped_pending_validation",
+      "destination": "constructor_initializer.original_type_id",
+      "api_property": "ConstructorInitializerDetails.OriginalType",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: public retained field; not typeref orig_type",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "Stock16934 retained source-written base/delegation type, NULL compiler-generated/field cases; direct backend p->orig_type, safe distinct from freed typeref.orig_type. Five positive rows across4cleanup_semantics paths and10positive getter reads.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "a_constructor_init",
+          "member": "orig_type",
+          "source": "src/il_def.h:16934",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "constructor_initializer.original_type_id",
+          "typed_property": "ConstructorInitializerDetails.OriginalType",
+          "nonnull_links": "10",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "an_object_lifetime",
+      "member": "entity",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17702",
+      "disposition": "mapped_pending_validation",
+      "destination": "lifetime.bound_entity_id",
+      "api_property": "LifetimeDetails.BoundEntity",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: actual tagged owner via roslyn_entity; never visitor routine",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs105-110 checks genuine scope/try/local-static/block bindings and legitimate cleared bindings; direct roslyn_entity(tagged pointer), never inferred visiting function.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "an_object_lifetime",
+          "member": "entity",
+          "source": "src/il_def.h:17702",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "lifetime.bound_entity_id",
+          "typed_property": "LifetimeDetails.BoundEntity",
+          "nonnull_links": "238",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "an_object_lifetime",
+      "member": "destructions",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17705",
+      "disposition": "mapped_pending_validation",
+      "destination": "lifetime_cleanup.initialization_id",
+      "api_property": "LifetimeCleanupDetails.Initialization",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: next_in_destruction_list ordered minimal obligations",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs113-114 checks nonempty obligations and actual CleanupBase destructor; native loop follows exact next_in_destruction_list with ordinal; Lifetime.Cleanups orders by ordinal and Initialization.Destructor follows captured recipe.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "an_object_lifetime",
+          "member": "destructions",
+          "source": "src/il_def.h:17705",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "lifetime_cleanup.initialization_id",
+          "typed_property": "LifetimeCleanupDetails.Initialization",
+          "nonnull_links": "434",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "an_object_lifetime",
+      "member": "parent_lifetime",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17713",
+      "disposition": "mapped_pending_validation",
+      "destination": "lifetime.parent_id",
+      "api_property": "LifetimeDetails.Parent",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: resident",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "Direct stock parent pointer and positive Parent getter navigation; il_def17713 explicitly includes predecessor-after-label semantics, not universal lexical ownership. Existing body lifetime test121 prevents file-parent expansion into unrelated functions.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "an_object_lifetime",
+          "member": "parent_lifetime",
+          "source": "src/il_def.h:17713",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "lifetime.parent_id",
+          "typed_property": "LifetimeDetails.Parent",
+          "nonnull_links": "219",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "an_object_lifetime",
+      "member": "parent_destruction_sublist",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17724",
+      "disposition": "mapped_pending_validation",
+      "destination": "lifetime.parent_checkpoint_id",
+      "api_property": "LifetimeDetails.ParentCheckpoint",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: metadata recipe role7002",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs112 explicitly requires a nonnull ParentCheckpoint; backend records exact p->parent_destruction_sublist as metadata recipe, no scheduling inference.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "an_object_lifetime",
+          "member": "parent_destruction_sublist",
+          "source": "src/il_def.h:17724",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "lifetime.parent_checkpoint_id",
+          "typed_property": "LifetimeDetails.ParentCheckpoint",
+          "nonnull_links": "23",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    },
+    {
+      "owner": "an_object_lifetime",
+      "member": "child_lifetime",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17731",
+      "disposition": "mapped_pending_validation",
+      "destination": "lifetime_child.child_id",
+      "api_property": "LifetimeChildDetails.Child",
+      "fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+      "reason": "243 direct native adapter compiled; genuine export/public-property activation pending. Guard/rule: next ordered reverse creation",
+      "review_state": "existing_source_and_positive_api_proof_join",
+      "review": "SemanticProjection.cs112 requires actual nonempty Children; native preserves child_lifetime/next order and managed ORDER BY ordinal. Stock17731-17740 says reverse creation order and possible absent implicit children.",
+      "existing_navigation_evidence": [
+        {
+          "owner": "an_object_lifetime",
+          "member": "child_lifetime",
+          "source": "src/il_def.h:17731",
+          "guard": "!defined(IL_DEF_H)",
+          "destination": "lifetime_child.child_id",
+          "typed_property": "LifetimeChildDetails.Child",
+          "nonnull_links": "99",
+          "collection_items": "0",
+          "existing_ledger_fixture": "cleanup_semantics.cpp; m0.cpp; objects.cpp",
+          "getter_evidence": "/tmp/roslynobj-managed-final251-full.log PASS2621/175unique;final251-navigation.tsv exact typed navigation observations",
+          "status": "nonnull-getter-proof; remains pending exact source/write and representative positive union/order/quantity/identity assertion join"
+        }
+      ]
+    }
+  ],
+  "observations_file": "/tmp/roslyn-root-lifetime-links251-observed.json",
+  "additional_kind_activation_gap": "cik_delegation has no positive among130current descriptors; stock union has no variant member. Proposed source fixture includes delegation alongside GNU explicit array copy.",
+  "limits": [
+    "No source or schema change, no build/test execution by root.",
+    "Existing positive family links and explicit assertions joined with exact writer/getter; not claiming every C++ variation has individual fixture.",
+    "Lifetime Parent is not always lexical enclosing lifetime; child list reverse creation order is preserved without re-scheduling.",
+    "The proposed array/delegation source is stock-backed syntax, not yet compiler-confirmed."
+  ]
+}

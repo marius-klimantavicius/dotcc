@@ -1,0 +1,573 @@
+{
+  "pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "distinct_current251_files": 175,
+  "rows": [
+    {
+      "owner": "an_il_header",
+      "member": "plain_chars_are_signed",
+      "source": "src/il_def.h:18822",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.plain_chars_are_signed",
+      "native_recording": "build_capability.name_id/value_id exact il_header.plain_chars_are_signed;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "1": 171,
+        "0": 4
+      },
+      "enabled": {
+        "1": 171,
+        "0": 4
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "pcc_compatibility_mode",
+      "source": "src/il_def.h:18885",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.pcc_compatibility_mode",
+      "native_recording": "build_capability.name_id/value_id exact il_header.pcc_compatibility_mode;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "enum_type_is_integral",
+      "source": "src/il_def.h:18889",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.enum_type_is_integral",
+      "native_recording": "build_capability.name_id/value_id exact il_header.enum_type_is_integral;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 125,
+        "1": 50
+      },
+      "enabled": {
+        "0": 125,
+        "1": 50
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common_labels.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_aggregates.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_embed.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "default_max_member_alignment",
+      "source": "src/il_def.h:18894",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.default_max_member_alignment",
+      "native_recording": "build_capability.name_id/value_id exact il_header.default_max_member_alignment;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "microsoft_mode",
+      "source": "src/il_def.h:18908",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "capability_name": "microsoft_mode",
+      "native_recording": "build_capability name microsoft_mode",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 164,
+        "1": 11
+      },
+      "enabled": {
+        "0": 164,
+        "1": 11
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/near_far.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/near_far.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/near_far.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "microsoft_version",
+      "source": "src/il_def.h:18920",
+      "guard": "!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED",
+      "capability_name": "microsoft_version",
+      "native_recording": "build_capability name microsoft_version",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "1926": 168,
+        "1930": 7
+      },
+      "enabled": {
+        "1": 175
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "default_upc_strict_access",
+      "source": "src/il_def.h:18928",
+      "guard": "!defined(IL_DEF_H) && UPC_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.default_upc_strict_access",
+      "native_recording": "build_capability.name_id/value_id exact il_header.default_upc_strict_access;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "gcc_mode",
+      "source": "src/il_def.h:18936",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.gcc_mode",
+      "native_recording": "build_capability.name_id/value_id exact il_header.gcc_mode;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 151,
+        "1": 24
+      },
+      "enabled": {
+        "0": 151,
+        "1": 24
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common_labels.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_aggregates.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_embed.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "gpp_mode",
+      "source": "src/il_def.h:18940",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.gpp_mode",
+      "native_recording": "build_capability.name_id/value_id exact il_header.gpp_mode;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 100,
+        "1": 75
+      },
+      "enabled": {
+        "0": 100,
+        "1": 75
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "clang_mode",
+      "source": "src/il_def.h:18944",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.clang_mode",
+      "native_recording": "build_capability.name_id/value_id exact il_header.clang_mode;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 173,
+        "1": 2
+      },
+      "enabled": {
+        "0": 173,
+        "1": 2
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/unevaluated-native/unevaluated_clang.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/unevaluated-source/unevaluated_clang.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "gnu_version",
+      "source": "src/il_def.h:18950",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.gnu_version",
+      "native_recording": "build_capability.name_id/value_id exact il_header.gnu_version;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "80100": 82,
+        "130000": 81,
+        "150000": 12
+      },
+      "enabled": {
+        "1": 175
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "clang_version",
+      "source": "src/il_def.h:18956",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.clang_version",
+      "native_recording": "build_capability.name_id/value_id exact il_header.clang_version;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "90100": 173,
+        "190000": 2
+      },
+      "enabled": {
+        "1": 175
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "short_enums",
+      "source": "src/il_def.h:18960",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.short_enums",
+      "native_recording": "build_capability.name_id/value_id exact il_header.short_enums;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "default_nocommon",
+      "source": "src/il_def.h:18964",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.default_nocommon",
+      "native_recording": "build_capability.name_id/value_id exact il_header.default_nocommon;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "gnu_c89_inlining",
+      "source": "src/il_def.h:18971",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "capability_name": "il_header.gnu_c89_inlining",
+      "native_recording": "build_capability.name_id/value_id exact il_header.gnu_c89_inlining;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "near_and_far_are_enabled",
+      "source": "src/il_def.h:18977",
+      "guard": "!defined(IL_DEF_H) && NEAR_AND_FAR_ALLOWED",
+      "capability_name": "il_header.near_and_far_are_enabled",
+      "native_recording": "build_capability.name_id/value_id exact il_header.near_and_far_are_enabled;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 171,
+        "1": 4
+      },
+      "enabled": {
+        "0": 171,
+        "1": 4
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/near_far.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/near_far.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/near_far.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "far_data_pointers",
+      "source": "src/il_def.h:18982",
+      "guard": "!defined(IL_DEF_H) && NEAR_AND_FAR_ALLOWED",
+      "capability_name": "il_header.far_data_pointers",
+      "native_recording": "build_capability.name_id/value_id exact il_header.far_data_pointers;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "far_code_pointers",
+      "source": "src/il_def.h:18988",
+      "guard": "!defined(IL_DEF_H) && NEAR_AND_FAR_ALLOWED",
+      "capability_name": "il_header.far_code_pointers",
+      "native_recording": "build_capability.name_id/value_id exact il_header.far_code_pointers;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "UCN_identifiers_used",
+      "source": "src/il_def.h:18995",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.UCN_identifiers_used",
+      "native_recording": "build_capability.name_id/value_id exact il_header.UCN_identifiers_used;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 175
+      },
+      "enabled": {
+        "0": 175
+      },
+      "positive_examples": [],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "vla_used",
+      "source": "src/il_def.h:19008",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.vla_used",
+      "native_recording": "build_capability.name_id/value_id exact il_header.vla_used;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 166,
+        "1": 9
+      },
+      "enabled": {
+        "0": 166,
+        "1": 9
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/execution_c.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/cleanup_semantics.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "any_templates_seen",
+      "source": "src/il_def.h:19012",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.any_templates_seen",
+      "native_recording": "build_capability.name_id/value_id exact il_header.any_templates_seen;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "0": 107,
+        "1": 68
+      },
+      "enabled": {
+        "0": 107,
+        "1": 68
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/execution_cpp.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "prototype_instantiations_in_il",
+      "source": "src/il_def.h:19016",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.prototype_instantiations_in_il",
+      "native_recording": "build_capability.name_id/value_id exact il_header.prototype_instantiations_in_il;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "1": 175
+      },
+      "enabled": {
+        "1": 175
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "il_has_all_prototype_instantiations",
+      "source": "src/il_def.h:19022",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.il_has_all_prototype_instantiations",
+      "native_recording": "build_capability.name_id/value_id exact il_header.il_has_all_prototype_instantiations;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "1": 83,
+        "0": 92
+      },
+      "enabled": {
+        "1": 83,
+        "0": 92
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "il_has_C_semantics",
+      "source": "src/il_def.h:19032",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.il_has_C_semantics",
+      "native_recording": "build_capability.name_id/value_id exact il_header.il_has_C_semantics;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "1": 140,
+        "0": 35
+      },
+      "enabled": {
+        "1": 140,
+        "0": 35
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    },
+    {
+      "owner": "an_il_header",
+      "member": "target_configuration_index",
+      "source": "src/il_def.h:19106",
+      "guard": "!defined(IL_DEF_H)",
+      "capability_name": "il_header.target_configuration_index",
+      "native_recording": "build_capability.name_id/value_id exact il_header.target_configuration_index;backend/roslyn_gen_be.c:CAP",
+      "api_property": "TranslationUnit.Capabilities Name/Value/Enabled",
+      "distinct_files_observed": 175,
+      "values": {
+        "-1": 159,
+        "4": 4,
+        "6": 4,
+        "2": 8
+      },
+      "enabled": {
+        "1": 175
+      },
+      "positive_examples": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "status": "verified_direct_guarded_header_capability_typed_family_sweep",
+      "getter_evidence": "/tmp/roslynobj-managed-asm251-public.log PASS479/9 genuine paths;25 retained header CAP typed reads;docs/header251-capability-proof.json"
+    }
+  ]
+}

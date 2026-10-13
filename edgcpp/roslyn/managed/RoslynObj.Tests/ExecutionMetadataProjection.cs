@@ -4,6 +4,28 @@ internal static class ExecutionMetadataProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
+        if(fixture=="gnu_asm_modify.roslynobj"||fixture=="source_statements.roslynobj"&&source)
+        {
+            var assembly=unit.Entities.OfType<AssemblyOperation>().ToArray();
+            check(assembly.Length>0&&assembly.All(a=>a.Definition is {IsGnu:true}),"Actual GNU asm statements must expose their canonical assembly descriptors.");
+            foreach(var statement in assembly)
+            {
+                var operations=unit.Functions.Single(f=>f.Body?.DescendantOperations().Contains(statement)==true).Body!.DescendantOperations().ToArray();
+                check(statement.Operands.All(o=>o.Owner==statement.Definition&&statement.ChildRelations.Single(c=>c.Role.Name=="argument"&&c.Ordinal==o.Ordinal).Child==o.Expression&&operations.Count(n=>n==o.Expression)==1&&o.Expression.RepresentationRole==statement.RepresentationRole),"Each retained asm operand must navigate its canonical owner and the same single evaluated expression edge in the function body.");
+                check(statement.OperandConstraints.All(c=>c.Owner==statement.Definition&&statement.Operands.Any(o=>o.Ordinal==c.OperandOrdinal)),"Structured asm constraints must refer to actual operands of the same canonical assembly descriptor.");
+            }
+            if(fixture=="gnu_asm_modify.roslynobj")
+            {
+                var statement=assembly.Single();var operand=statement.Operands.Single();
+                check(operand.Kind.Name=="inout"&&operand.ModifierKind?.Name=="aom_modify"&&operand.Expression is ReferenceOperation {Target:VariableSymbol {Name:"value"}},"A genuine +r operand must retain its exact read/write modifier and selected parameter expression.");
+                check(statement.OperandConstraints.Single() is {OperandOrdinal:0,Kind.Name:"aoc_reg_integer"},"The +r modifier must remain separate from its actual integer-register constraint.");
+            }
+            else
+            {
+                var operands=assembly.SelectMany(a=>a.Operands).ToArray();
+                check(operands.Count(o=>o.Kind.Name=="output"&&o.ModifierKind?.Name=="aom_output")==1&&operands.Count(o=>o.Kind.Name=="input"&&o.ModifierKind?.Name=="aom_input")==2,"Existing =r and r operands must retain their output and input modifiers independently from the read/write modifier.");
+            }
+        }
         if(fixture=="native_dependent_foreach.roslynobj")
         {
             var loop=unit.Entities.OfType<ForEachOperation>().Single();

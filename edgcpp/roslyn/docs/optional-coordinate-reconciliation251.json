@@ -1,0 +1,174 @@
+{
+  "user_priority": "Source location is nice to have; direct metadata retained, no guesses or new location probes.",
+  "semantic_exceptions_not_reclassified": [
+    "a_template_param_coordinate.position is a template parameter ordinal",
+    "a_routine.cx_limited_range is STDC complex arithmetic policy"
+  ],
+  "rows": [
+    {
+      "owner": "a_src_seq_secondary_decl",
+      "member": "decl_position",
+      "destination": "declaration.source_origin_id;backend/roslyn_source_sequences.h:53-99"
+    },
+    {
+      "owner": "a_src_seq_secondary_decl",
+      "member": "decl_pos_info",
+      "destination": "declaration_positions;declaration_element_position;backend/roslyn_source_sequences.h:53-99"
+    },
+    {
+      "owner": "an_instantiation_directive",
+      "member": "position",
+      "destination": "instantiation_directive.source_origin_id"
+    },
+    {
+      "owner": "an_instantiation_directive",
+      "member": "decl_pos_info",
+      "destination": "declaration_positions + declaration_element_position"
+    },
+    {
+      "owner": "an_attribute_group",
+      "member": "position",
+      "destination": "attribute_group.source_origin_id"
+    },
+    {
+      "owner": "an_attribute_group",
+      "member": "end_position",
+      "destination": "attribute_group.source_origin_id"
+    },
+    {
+      "owner": "an_attribute",
+      "member": "position",
+      "destination": "attribute.source_origin_id"
+    },
+    {
+      "owner": "an_attribute",
+      "member": "end_position",
+      "destination": "attribute.source_origin_id"
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "decl_position",
+      "destination": "source_correspondence.source_origin_id @source_origin; backend/roslyn_common.h:8"
+    },
+    {
+      "owner": "a_source_correspondence",
+      "member": "decl_pos_info",
+      "destination": "source_correspondence.existing declaration_positions; backend/roslyn_common.h:60"
+    },
+    {
+      "owner": "a_using_decl",
+      "member": "position",
+      "destination": "using_declaration.source_origin_id"
+    },
+    {
+      "owner": "a_token_sequence_entry",
+      "member": "position",
+      "destination": "token_sequence_token.source_position_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_constant",
+      "member": "end_position",
+      "destination": "constant.source_origin_id\u2192source_range.end_id"
+    },
+    {
+      "owner": "an_asm_operand",
+      "member": "position",
+      "destination": "asm_operand.source_position_id"
+    },
+    {
+      "owner": "a_pragma",
+      "member": "position",
+      "destination": "pragma.source_origin_id;backend/roslyn_source_sequences.h:191-257"
+    },
+    {
+      "owner": "an_exception_specification_type",
+      "member": "source_position",
+      "destination": "exception_specification_type.source_position_id;backend/roslyn_type_support.h"
+    },
+    {
+      "owner": "an_exception_specification",
+      "member": "source_range",
+      "destination": "exception_specification.source_origin_id;backend/roslyn_type_support.h"
+    },
+    {
+      "owner": "a_typeref_type_supplement",
+      "member": "type_id_range",
+      "destination": "type_reference.type_id_range_id;backend/roslyn_types.h"
+    },
+    {
+      "owner": "an_integer_type_supplement",
+      "member": "base_type_position",
+      "destination": "enum_symbol.base_position_id;backend/roslyn_gen_be.c:roslyn_type_declaration"
+    },
+    {
+      "owner": "a_microsoft_try_supplement",
+      "member": "except_or_finally_position",
+      "destination": "microsoft_try_statement.except_or_finally_position_id;backend/roslyn_execution.h:230"
+    },
+    {
+      "owner": "a_constructor_init",
+      "member": "ctor_init_range",
+      "destination": "constructor_initializer.source_range_id"
+    },
+    {
+      "owner": "a_template",
+      "member": "export_position",
+      "destination": "template_definition.export_position_id; backend/roslyn_templates.h"
+    },
+    {
+      "owner": "a_template",
+      "member": "definition_range",
+      "destination": "template_definition.definition_range_id; backend/roslyn_templates.h"
+    },
+    {
+      "owner": "a_macro",
+      "member": "replacement_text_range",
+      "destination": "macro_definition.replacement_range_id;backend/roslyn_gen_be.c:roslyn_macro"
+    },
+    {
+      "owner": "an_ms_attribute",
+      "member": "position",
+      "destination": "ms_attribute.source_position_id;backend/roslyn_ms_attributes.h"
+    },
+    {
+      "owner": "a_lambda",
+      "member": "start_position",
+      "destination": "lambda_definition.source_origin_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_lambda",
+      "member": "capture_end_position",
+      "destination": "lambda_definition.capture_end_position_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_lambda",
+      "member": "mutable_position",
+      "destination": "lambda_definition.mutable_position_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_lambda",
+      "member": "constexpr_position",
+      "destination": "lambda_definition.constexpr_position_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "position",
+      "destination": "lambda_capture.source_origin_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_lambda_capture",
+      "member": "end_position",
+      "destination": "lambda_capture.source_origin_id;backend/roslyn_expressions_extra.h"
+    },
+    {
+      "owner": "a_module_import_decl",
+      "member": "position",
+      "destination": "module_import.source_position_id;backend/roslyn_modules.h;backend/roslyn_entities.h:48"
+    },
+    {
+      "owner": "a_module_import_decl",
+      "member": "module_name_position",
+      "destination": "module_import.module_name_position_id;backend/roslyn_modules.h;backend/roslyn_entities.h:48"
+    }
+  ]
+}

@@ -36,6 +36,7 @@ for typ,fam in families.items():
   if line.lstrip().startswith('#'):out.append(line)
   else:
    for e,alias in re.findall(r'\b([A-Za-z]+_[A-Za-z_0-9]+)\s*(=\s*[^,\n]+)?',line):
+    alias=alias.strip()
     if e in ('fk_first_extended_type','bufk_first','mvak_lowest_cpu','mvak_highest_cpu','mvak_lowest_isa','mvak_highest_isa'):continue
     if alias and not re.fullmatch(r'=\s*(?:-?[0-9]+|0x[0-9a-fA-F]+)',alias) and e not in ('fk_std_bfloat16','mvak_cpu_bdver1','mvak_isa_mmx'):continue
     if (fam,e) not in lookup:

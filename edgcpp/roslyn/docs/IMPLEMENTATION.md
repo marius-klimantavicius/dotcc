@@ -942,3 +942,33 @@ Next: fix the generated aom_modify switch omission (numeric enumerator trailing
 whitespace), verify genuine GNU read-write asm, then remove the grouped owner-table
 phantoms after exact stock/producer/API review. The ten constant/value candidates
 have source-backed alternatives; no reconstruction or optional-position campaign.
+
+
+## Accepted GNU read-write asm and bounded proof reconciliation
+
+Trim numeric enum assignments before alias classification. The regenerated
+header gains exactly aom_modify -> existing319004; schema/catalog contract remains
+251/c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71.
+All13 strict stages match316 pristine inputs and26 canonical backend files.
+Two new distinct native/source +r objects pass FK0/1KiB/current contract.
+
+Public PASS479 on nine genuine paths verifies actual read-write asm modifier,
+register constraint, canonical owner, exact evaluated operand once, input/output
+contrast and25 raw header capability Name/Value/Enabled projections. WORself73,
+clean build/generator/literal gates pass. This is a bounded supplement to the
+accepted175-path baseline.
+
+Coverage948verified/607required pending-validation;85 directly captured optional
+source metadata rows and12 intentionally omitted optional-source rows. Thirteen
+existing lifetime/constructor/local-static identity/union/list proofs and the
+explicit main/module-import tests are reconciled with exact stock writes. Thirty-
+three remaining coordinate/range rows plus PrimaryInput are correctly optional;
+template parameter ordinal and STDC cx_limited_range remain semantic. No new
+coordinate recovery or inferred facts are introduced.
+
+Next required positives: GNU constructor array-copy source_expr, delegation,
+local-static initialization-kind getter, and guarded separate file-scope init
+routine roots. Primary IA64 requires lazy TLS; non-IA64 nonlazy TLS has an exact
+stock do_single_init assertion to investigate without bypass. Grouped owner-table
+phantom removal preserves populated alternatives and will regenerate admission
+fingerprint before refreshed acceptance. Full phases3–4 remain active.

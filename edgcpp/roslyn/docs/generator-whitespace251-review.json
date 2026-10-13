@@ -1,0 +1,8 @@
+[
+  {
+    "file": "il_def.h",
+    "enum": "an_asm_operand_modifier",
+    "name": "aom_modify",
+    "assignment": "= 0x03  "
+  }
+]

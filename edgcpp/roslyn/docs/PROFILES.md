@@ -1,5 +1,7 @@
 # Compatibility profile evidence
 
+Latest bounded GNU-asm/header proof:13 strict pinned profiles, two new +r
+objects, PASS479/nine genuine paths and WORself73. Contract remains251.
 Current accepted boundary251:175 distinct files /186 validation instances,
 PASS2621 reader assertions,self73,12 strict pristine-pinned profiles.
 Contract `c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`;

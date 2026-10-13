@@ -77828,6 +77828,7 @@ static int roslyn_kind_edg_asm_modifier(an_asm_operand_modifier value) { switch(
 case aom_invalid: return 319001;
 case aom_input: return 319002;
 case aom_output: return 319003;
+case aom_modify: return 319004;
 default: return 0; } }
 #endif
 #if GNU_EXTENSIONS_ALLOWED

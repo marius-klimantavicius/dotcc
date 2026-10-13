@@ -5,6 +5,24 @@ internal static class ProfileProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,Action<bool,string> check)
     {
+        if(fixture is "basic.roslynobj" or "gnu_asm_modify.roslynobj" or "source_statements.roslynobj" or "native_microsoft.roslynobj" or "upc_dynamic.roslynobj" or "upc_static.roslynobj" or "constant_aggregates.roslynobj")
+        {
+            var capabilities=unit.Capabilities.ToDictionary(c=>c.Name);
+            var headerNames=new[]{"plain_chars_are_signed","pcc_compatibility_mode","enum_type_is_integral","default_max_member_alignment","UCN_identifiers_used","vla_used","any_templates_seen","prototype_instantiations_in_il","il_has_all_prototype_instantiations","il_has_C_semantics","target_configuration_index","gcc_mode","gpp_mode","clang_mode","gnu_version","clang_version","short_enums","default_nocommon","gnu_c89_inlining","near_and_far_are_enabled","far_data_pointers","far_code_pointers","default_upc_strict_access"};
+            foreach(var name in headerNames.Select(n=>"il_header."+n).Concat(new[]{"microsoft_mode","microsoft_version"}))
+            {
+                check(capabilities.TryGetValue(name,out var capability)&&BigInteger.TryParse(capability.Value,out var value)&&capability.Enabled==(value!=0),"Each recorded IL-header capability must expose its exact numeric value and matching enabled discriminator through the ordinary typed collection.");
+                Console.WriteLine($"header-capability:{capability!.Name}={capability.Value},enabled={capability.Enabled}");
+            }
+            foreach(var name in new[]{"gcc_mode","gpp_mode","clang_mode","gnu_version","target_configuration_index"})
+                check(capabilities["il_header."+name].Value==capabilities[name].Value,"Header and runtime copies of the same retained mode/version/target fact must agree without inferring values from the dialect label.");
+            if(fixture is "gnu_asm_modify.roslynobj" or "source_statements.roslynobj")
+                check(capabilities["il_header.gpp_mode"] is {Value:"1",Enabled:true}&&capabilities["il_header.gnu_version"].Value=="130000","The actual GNU C++ fixture must retain its recorded mode and selected compiler version.");
+            if(fixture=="native_microsoft.roslynobj")
+                check(capabilities["microsoft_mode"] is {Value:"1",Enabled:true}&&capabilities["microsoft_version"].Value=="1930"&&capabilities["il_header.target_configuration_index"].Value=="2","The actual Microsoft fixture must retain its recorded runtime mode, version and selected target index.");
+            if(fixture is "upc_dynamic.roslynobj" or "upc_static.roslynobj" or "constant_aggregates.roslynobj")
+                check(capabilities["il_header.il_has_C_semantics"] is {Value:"1",Enabled:true},"An actual C-family fixture must preserve the retained C-semantics header fact.");
+        }
         if(unit.Capabilities.Any(c=>c.Name=="roslyn_build_profile"&&c.Value=="extern-inline"))
         {
             check(unit.Capabilities.Any(c=>c.Name=="INSTANTIATE_EXTERN_INLINE"&&c.Enabled==true)&&unit.Capabilities.Any(c=>c.Name=="instantiate_extern_inline"&&c.Enabled==true),"The extern-inline profile must retain both its active compile gate and actual runtime mode.");
