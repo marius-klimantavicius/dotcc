@@ -36,6 +36,11 @@ static Rid roslyn_entity(const a_tagged_pointer &p) {
  case iek_module_import_decl:return roslyn_module_import(reinterpret_cast<a_module_import_decl_ptr>(p.ptr));
  case iek_asm_entry:return roslyn_asm(reinterpret_cast<an_asm_entry_ptr>(p.ptr));
  case iek_vla_dimension:return roslyn_vla_dimension(reinterpret_cast<a_vla_dimension_ptr>(p.ptr));
+ case iek_param_type:return roslyn_parameter_type(reinterpret_cast<a_param_type_ptr>(p.ptr));
+ case iek_scoped_expression:return roslyn_scoped_expression(reinterpret_cast<a_scoped_expression_ptr>(p.ptr));
+#if MICROSOFT_EXTENSIONS_ALLOWED
+ case iek_ms_attribute:return roslyn_ms_attribute(reinterpret_cast<an_ms_attribute_ptr>(p.ptr));
+#endif
  case iek_base_class:return roslyn_base(reinterpret_cast<a_base_class_ptr>(p.ptr));
  default:DB.fail("Tagged semantic entity adapter missing: "+Q(p.kind));return 0;
  }

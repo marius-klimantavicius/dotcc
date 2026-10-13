@@ -20,7 +20,7 @@ INSERT INTO entity(id,kind_id) SELECT value, k.id FROM
   UNION ALL SELECT 70,'macro_definition' UNION ALL SELECT 71,'macro_invocation' UNION ALL SELECT 72,'source_position'
   UNION ALL SELECT 73,'source_origin' UNION ALL SELECT 74,'source_file' UNION ALL SELECT 80,'lifetime'
   UNION ALL SELECT 90,'template' UNION ALL SELECT 91,'template_argument' UNION ALL SELECT 92,'template_instance'
-  UNION ALL SELECT 93,'template_parameter' UNION ALL SELECT 94,'name'
+  UNION ALL SELECT 93,'template_parameter' UNION ALL SELECT 94,'name' UNION ALL SELECT 95,'template_symbol' UNION ALL SELECT 96,'include_occurrence'
   UNION ALL SELECT 100,'constant_value' UNION ALL SELECT 101,'constant' UNION ALL SELECT 102,'type'
   UNION ALL SELECT 105,'type' UNION ALL SELECT 106,'type' UNION ALL SELECT 103,'constant_value' UNION ALL SELECT 104,'constant'
   UNION ALL SELECT 150,'expression' UNION ALL SELECT 170,'parameter_type') a JOIN kind k ON k.family='entity' AND k.name=a.name;
@@ -124,8 +124,9 @@ INSERT INTO cleanup_action(id,region_id,ordinal,kind_id,routine_id,storage_id,ar
 INSERT INTO lowered_eh_operation(id,kind_id,function_eh_id,region_id,state_number)
  VALUES(60,(SELECT id FROM kind WHERE family='lowered_eh' AND name='leck_cleanup_state'),50,51,'0');
 INSERT INTO cleanup_state_operation(id,region_id,state_number) VALUES(60,51,'0');
-INSERT INTO source_file(id,name_id,path_id,origin_kind_id)
- VALUES(74,12,12,(SELECT id FROM kind WHERE family='source_origin_kind' AND name='ordinary'));
+INSERT INTO source_file(id,path_id,origin_kind_id)
+ VALUES(74,12,(SELECT id FROM kind WHERE family='source_origin_kind' AND name='ordinary'));
+INSERT INTO include_occurrence(id,file_id,ordinal,display_name_id,is_top_level) VALUES(96,74,0,12,1);
 INSERT INTO source_position(id,sequence,column,original_sequence,original_column,macro_invocation_id,file_id,logical_line,origin_kind_id)
  VALUES(72,'10',3,'5',7,71,74,'10',(SELECT id FROM kind WHERE family='source_origin_kind' AND name='macro'));
 INSERT INTO source_origin(id,position_id,kind_id)
@@ -136,10 +137,11 @@ INSERT INTO macro_invocation(id,definition_id,position_id,argument_text_id,ordin
 INSERT INTO lifetime(id,kind_id,owner_id,scope_id)
  VALUES(80,(SELECT id FROM kind WHERE family='lifetime' AND name='olk_block'),6,9);
 INSERT INTO symbol(id,kind_id,name_id,type_id)
- VALUES(90,(SELECT id FROM kind WHERE family='entity' AND name='template'),41,40),
+ VALUES(95,(SELECT id FROM kind WHERE family='entity' AND name='template_symbol'),41,40),
        (93,(SELECT id FROM kind WHERE family='entity' AND name='template_parameter'),94,3);
 INSERT INTO template_definition(id,kind_id,pattern_id)
  VALUES(90,(SELECT id FROM kind WHERE family='template' AND name='templk_class'),40);
+INSERT INTO template_symbol(id,descriptor_id) VALUES(95,90);
 INSERT INTO template_argument(id,kind_id,type_id)
  VALUES(91,(SELECT id FROM kind WHERE family='template_argument' AND name='tak_type'),3);
 INSERT INTO template_instance(id,result_id,template_id,state_id)

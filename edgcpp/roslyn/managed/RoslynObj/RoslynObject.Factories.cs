@@ -19,8 +19,11 @@ public sealed partial class RoslynObject
             or "cleanup_array" or "name" or "temporary" or "base_derivation" or "base_subobject"
             or "template_parameter" or "template_specialization" or "include_occurrence" or "source_attachment"
             or "attribute" or "attribute_group" or "subobject_path" or "name_reference" or "exception_specification"
-            or "virtual_table" or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion"
-            or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"=>kind,
+            or "virtual_table" or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion" or "template_symbol"
+            or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
+            or "line_directive" or "source_entry" or "source_sublist" or "source_end_construct" or "instantiation_directive"
+            or "linkage_specification" or "microsoft_if_exists" or "record_declaration" or "pragma"
+            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression"=>kind,
         _=>throw new IncompatibleObjectException("A required entity kind is unsupported.")
     };
     internal TranslationUnit Unit(long id) => Cached("translation_unit",id,r=>new TranslationUnit(this,id,r));
@@ -34,7 +37,8 @@ public sealed partial class RoslynObject
     internal Constant Constant(long id) => Cached("constant",id,r=>new Constant(this,id,r));
     internal Initialization Initialization(long id) => Cached("initialization",id,r=>new Initialization(this,id,r));
     internal Lifetime Lifetime(long id) => Cached("lifetime",id,r=>new Lifetime(this,id,r));
-    internal TemplateSymbol Template(long id) => Cached("template_definition",id,r=>new TemplateSymbol(this,id,r));
+    internal TemplateDescriptor Template(long id) => Cached("template_definition",id,r=>new TemplateDescriptor(this,id,r));
+    internal TemplateSymbol TemplateSymbol(long id) => Cached("template_symbol",id,r=>new TemplateSymbol(this,id,r));
     internal TemplateInstantiation Instance(long id) => Cached("template_instance",id,r=>new TemplateInstantiation(this,id,r));
     internal TemplateHeader Header(long id) => Cached("template_header",id,r=>new TemplateHeader(this,id,r));
     internal TemplateParameter TemplateParameter(long id) => Cached("template_parameter",id,r=>new TemplateParameter(this,id,r));
@@ -44,6 +48,20 @@ public sealed partial class RoslynObject
     internal SourcePosition Position(long id) => Cached("source_position",id,r=>new SourcePosition(this,id,r));
     internal SourceRange Range(long id) => Cached("source_range",id,r=>new SourceRange(this,id,r));
     internal SourceFile File(long id) => Cached("source_file",id,r=>new SourceFile(this,id,r));
+    internal IncludeOccurrence Include(long id) => Cached("include_occurrence",id,r=>new IncludeOccurrence(this,id,r));
+    internal LineDirective LineDirective(long id) => Cached("line_directive",id,r=>new LineDirective(this,id,r));
+    internal SourceMappingSegment Mapping(long id) => Cached("source_mapping_segment",id,r=>new SourceMappingSegment(this,id,r));
+    internal SourceEntry SourceEntry(long id) => Cached("source_entry",id,r=>new SourceEntry(this,id,r));
+    internal SourceSublist SourceSublist(long id) => Cached("source_sublist",id,r=>new SourceSublist(this,id,r));
+    internal RecordDeclaration RecordDeclaration(long id) => Cached("record_declaration",id,r=>new RecordDeclaration(this,id,r));
+    internal SourceEndConstruct SourceEnd(long id) => Cached("source_end_construct",id,r=>new SourceEndConstruct(this,id,r));
+    internal InstantiationDirective InstantiationDirective(long id) => Cached("instantiation_directive",id,r=>new InstantiationDirective(this,id,r));
+    internal LinkageSpecification LinkageSpecification(long id) => Cached("linkage_specification",id,r=>new LinkageSpecification(this,id,r));
+    internal MicrosoftIfExists IfExists(long id) => Cached("microsoft_if_exists",id,r=>new MicrosoftIfExists(this,id,r));
+    internal PragmaDirective Pragma(long id) => Cached("pragma",id,r=>new PragmaDirective(this,id,r));
+    internal MicrosoftAttribute MicrosoftAttribute(long id) => Cached("ms_attribute",id,r=>new MicrosoftAttribute(this,id,r));
+    internal MicrosoftAttributeArgument MicrosoftAttributeArgument(long id) => Cached("ms_attribute_argument",id,r=>new MicrosoftAttributeArgument(this,id,r));
+    internal ScopedExpression ScopedExpression(long id) => Cached("scoped_expression",id,r=>new ScopedExpression(this,id,r));
     internal MacroDefinition MacroDefinition(long id) => Cached("macro_definition",id,r=>new MacroDefinition(this,id,r));
     internal MacroInvocation MacroInvocation(long id) => Cached("macro_invocation",id,r=>new MacroInvocation(this,id,r));
     internal CleanupRegion Region(long id) => Cached("cleanup_region",id,r=>new CleanupRegion(this,id,r));
@@ -87,6 +105,8 @@ public sealed partial class RoslynObject
         "tk_void" or "tk_nullptr" or "tk_reflection"=>new CppType(this,id,r),
         _=>throw new IncompatibleObjectException("The required type kind is unsupported.")
     });
+    internal RecordType RecordType(long id) => Type(id) as RecordType
+        ?? throw new IncompatibleObjectException("The relationship does not identify a record type.");
 
     internal SemanticNode Node(long id) => Cached<SemanticNode>("semantic_node",id,r=>Kind(r.Long("kind_id")).Family switch
     {
@@ -151,7 +171,7 @@ public sealed partial class RoslynObject
         "ck_address"=>new ConstantValue<AddressValueDetails>(this,id,r,"address_value",v=>new(this,v)),
         "ck_stack_offset"=>new ConstantValue<StackOffsetValueDetails>(this,id,r,"stack_offset_value",v=>new(this,v)),
         "ck_ptr_to_member"=>new ConstantValue<MemberPointerValueDetails>(this,id,r,"member_pointer_value",v=>new(this,v)),
-        "ck_label_difference"=>new ConstantValue<LabelDifferenceValueDetails>(this,id,r,"label_difference_value",v=>new(this,v)),
+        "ck_label_difference"=>new LabelDifferenceValue(this,id,r),
         "ck_init_repeat"=>new ConstantValue<RepeatValueDetails>(this,id,r,"repeat_value",v=>new(this,v)),
         "ck_designator"=>new ConstantValue<DesignatorValueDetails>(this,id,r,"designator_value",v=>new(this,v)),
         "ck_dynamic_init"=>new ConstantValue<DynamicInitializationValueDetails>(this,id,r,"dynamic_initialization_value",v=>new(this,v)),
@@ -190,6 +210,7 @@ public sealed partial class RoslynObject
             "initialization"=>Initialization(id),
             "lifetime"=>Lifetime(id),
             "template"=>Template(id),
+            "template_symbol"=>TemplateSymbol(id),
             "template_argument"=>Argument(id),
             "template_instance"=>Instance(id),
             "source_file"=>File(id),
@@ -216,8 +237,20 @@ public sealed partial class RoslynObject
             "base_subobject"=>Subobject(id),
             "template_parameter"=>TemplateParameter(id),
             "template_specialization"=>Specialization(id),
-            "include_occurrence"=>new SemanticRecord<IncludeOccurrenceDetails>(this,id,Detail("include_occurrence",id,r=>new IncludeOccurrenceDetails(this,r))),
-            "source_mapping"=>new SemanticRecord<SourceMappingSegmentDetails>(this,id,Detail("source_mapping_segment",id,r=>new SourceMappingSegmentDetails(this,r))),
+            "include_occurrence"=>Include(id),
+            "line_directive"=>LineDirective(id),
+            "source_mapping"=>Mapping(id),
+            "source_entry"=>SourceEntry(id),
+            "source_sublist"=>SourceSublist(id),
+            "record_declaration"=>RecordDeclaration(id),
+            "source_end_construct"=>SourceEnd(id),
+            "instantiation_directive"=>InstantiationDirective(id),
+            "linkage_specification"=>LinkageSpecification(id),
+            "microsoft_if_exists"=>IfExists(id),
+            "pragma"=>Pragma(id),
+            "ms_attribute"=>MicrosoftAttribute(id),
+            "ms_attribute_argument"=>MicrosoftAttributeArgument(id),
+            "scoped_expression"=>ScopedExpression(id),
             "source_attachment"=>new SemanticRecord<SourceAttachmentDetails>(this,id,Detail("source_attachment",id,r=>new SourceAttachmentDetails(this,r))),
             "attribute"=>new SemanticRecord<AttributeDetails>(this,id,Detail("attribute",id,r=>new AttributeDetails(this,r))),
             "attribute_group"=>new SemanticRecord<AttributeGroupDetails>(this,id,Detail("attribute_group",id,r=>new AttributeGroupDetails(this,r))),

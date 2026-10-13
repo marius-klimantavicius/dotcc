@@ -23,6 +23,20 @@ def table(name, columns, key='id', entity=False):
 
 def entity(name, columns): table(name, columns, entity=True)
 def relation(name, columns, key='owner_id, ordinal'): table(name, columns, key)
+
+def append_columns(name, columns):
+    """Add reviewed fields to an existing typed family without allocating IDs."""
+    table(name, columns)
+    extension = tables.pop().split('\n', 1)[1].rsplit('\n)', 1)[0]
+    extension = extension.split('\n', 1)[1]  # Drop the temporary id column.
+    for index, definition in enumerate(tables):
+        if definition.startswith('CREATE TABLE ' + name + ' ('):
+            existing = set(re.findall(r'^  (\w+) ', definition, re.M))
+            added = set(re.findall(r'^  (\w+) ', extension, re.M))
+            assert not existing & added, (name, existing & added)
+            tables[index] = definition.replace('\n) STRICT;', ',\n' + extension + '\n) STRICT;')
+            return
+    raise ValueError('Unknown typed table ' + name)
 def value_table(name, columns):
     table(name, columns)
     tables[-1] = tables[-1].replace('id INTEGER PRIMARY KEY', 'id INTEGER PRIMARY KEY REFERENCES constant_value(id) DEFERRABLE INITIALLY DEFERRED', 1)
@@ -617,10 +631,34 @@ relation('template_instance_argument', 'owner_id @template_instance NOT NULL\nro
 entity('template_specialization', 'primary_template_id @template_definition NOT NULL\nentity_id @entity NOT NULL\nkind_id @kind NOT NULL\nconstraint_id @expression')
 relation('constraint_metadata', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression\nresult INTEGER\nis_dependent INTEGER NOT NULL DEFAULT 0')
 relation('synthesized_origin', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\ncausing_entity_id @entity NOT NULL')
-entity('source_file', 'path_id @text_atom\nname_id @text_atom NOT NULL\norigin_kind_id @kind NOT NULL\nverified_digest_id @text_atom')
-entity('include_occurrence', 'file_id @source_file NOT NULL\nparent_id @include_occurrence\nposition_id @source_position\nordinal INTEGER NOT NULL\nfirst_sequence TEXT\nlast_sequence TEXT\nis_system INTEGER NOT NULL DEFAULT 0')
-entity('source_mapping_segment', 'first_sequence TEXT NOT NULL\nlast_sequence TEXT NOT NULL\nfile_id @source_file NOT NULL\ninclude_id @include_occurrence\nlogical_line TEXT NOT NULL\nphysical_line TEXT\npresumed_name_id @text_atom')
-entity('source_position', 'sequence TEXT NOT NULL\ncolumn INTEGER NOT NULL\noriginal_sequence TEXT\noriginal_column INTEGER\nmacro_invocation_id @macro_invocation\nfile_id @source_file\nlogical_line TEXT\norigin_kind_id @kind NOT NULL')
+entity('source_file', 'path_id @text_atom NOT NULL\norigin_kind_id @kind NOT NULL\nverified_digest_id @text_atom')
+entity('include_occurrence', '''file_id @source_file NOT NULL
+parent_id @include_occurrence
+position_id @source_position
+ordinal INTEGER NOT NULL
+display_name_id @text_atom
+name_as_written_id @text_atom
+first_sequence TEXT
+last_sequence TEXT
+first_line TEXT
+module_id @module
+is_system INTEGER NOT NULL DEFAULT 0
+uses_angle_brackets INTEGER NOT NULL DEFAULT 0
+is_include_file INTEGER NOT NULL DEFAULT 0
+is_preinclude INTEGER NOT NULL DEFAULT 0
+is_macros_only INTEGER NOT NULL DEFAULT 0
+is_top_level INTEGER NOT NULL DEFAULT 0
+is_top_level_from_pch INTEGER NOT NULL DEFAULT 0
+is_implicit_include INTEGER NOT NULL DEFAULT 0''')
+entity('line_directive', '''presumed_name_id @text_atom NOT NULL
+first_sequence TEXT NOT NULL
+last_sequence TEXT NOT NULL
+first_line TEXT NOT NULL
+include_id @include_occurrence
+parent_id @line_directive''')
+relation('source_descriptor_child', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\nchild_id @entity NOT NULL')
+entity('source_mapping_segment', 'first_sequence TEXT NOT NULL\nlast_sequence TEXT NOT NULL\nfile_id @source_file NOT NULL\ninclude_id @include_occurrence\nline_directive_id @line_directive\nlogical_line TEXT NOT NULL\nphysical_line TEXT\npresumed_name_id @text_atom\nends_at_end_of_source INTEGER NOT NULL DEFAULT 0')
+entity('source_position', 'sequence TEXT NOT NULL\ncolumn INTEGER NOT NULL\noriginal_sequence TEXT\noriginal_column INTEGER\nmacro_invocation_id @macro_invocation\nfile_id @source_file\npresumed_name_id @text_atom\nlogical_line TEXT\nphysical_line TEXT\ninclude_id @include_occurrence\nmapping_segment_id @source_mapping_segment\nspelling_position_id @source_position\nat_end_of_source INTEGER NOT NULL DEFAULT 0\norigin_kind_id @kind NOT NULL')
 entity('source_range', 'start_id @source_position NOT NULL\nend_id @source_position NOT NULL\nendpoint_kind_id @kind NOT NULL')
 entity('source_origin', 'position_id @source_position\nrange_id @source_range\nspelling_range_id @source_range\nexpansion_range_id @source_range\nkind_id @kind NOT NULL')
 entity('macro_definition', 'name_id @text_atom NOT NULL\ntext_id @text_atom NOT NULL\nposition_id @source_position\nreplacement_range_id @source_range\nkind_id @kind NOT NULL\nis_function_like INTEGER NOT NULL DEFAULT 0\nis_predefined INTEGER NOT NULL DEFAULT 0\nis_undef INTEGER NOT NULL DEFAULT 0')
@@ -629,6 +667,206 @@ entity('source_attachment', 'file_id @source_file NOT NULL\nuri_id @text_atom NO
 entity('module', 'kind_id @kind NOT NULL\nresolved_file_id @text_atom\nfile_kind_id @kind NOT NULL\ncontains_unsupported_constructs INTEGER NOT NULL DEFAULT 0\nname_id @text_atom\nresolved_header_id @text_atom\nunit_id @module\nuses_angle_brackets INTEGER NOT NULL DEFAULT 0\nsuppress_macro_export INTEGER NOT NULL DEFAULT 0\nis_internal_partition INTEGER NOT NULL DEFAULT 0')
 entity('module_import', 'module_id @module NOT NULL\nsource_position_id @source_position\nmodule_name_position_id @source_position\nimplementation_unit_importing_self INTEGER NOT NULL DEFAULT 0')
 relation('translation_unit_module_import', 'owner_id @translation_unit NOT NULL\nordinal INTEGER NOT NULL\nimport_id @module_import NOT NULL')
+
+# Retained source occurrences are independent from nominal symbols and execution.
+entity('source_entry', 'tag_kind_id @kind NOT NULL\ntarget_id @entity\ndeclaration_id @declaration')
+relation('scope_source_entry', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\nentry_id @source_entry NOT NULL')
+entity('source_sublist', '')
+relation('source_sublist_entry', 'owner_id @source_sublist NOT NULL\nordinal INTEGER NOT NULL\nentry_id @source_entry NOT NULL')
+relation('scope_source_sublist', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\nsublist_id @source_sublist NOT NULL')
+table('secondary_declaration', '''entity_tag_kind_id @kind NOT NULL
+declared_type_id @type
+name_reference_id @name_reference
+declared_storage_class_id @kind NOT NULL
+autonomous_tag_declaration INTEGER NOT NULL DEFAULT 0
+embeds_source_entries INTEGER NOT NULL DEFAULT 0
+is_friend INTEGER NOT NULL DEFAULT 0
+declared_in_function_prototype INTEGER NOT NULL DEFAULT 0
+specialized_with_new_syntax INTEGER NOT NULL DEFAULT 0
+is_first_declaration INTEGER
+is_partial_instantiation INTEGER
+is_compiler_generated_forward_declaration INTEGER
+is_originally_nonautonomous_definition INTEGER
+is_gnu_extension INTEGER NOT NULL DEFAULT 0
+is_after_first_declarator INTEGER NOT NULL DEFAULT 0
+has_explicit_storage_class INTEGER NOT NULL DEFAULT 0
+is_alias INTEGER NOT NULL DEFAULT 0
+is_event_interface INTEGER''')
+tables[-1] = tables[-1].replace('id INTEGER PRIMARY KEY', 'id INTEGER PRIMARY KEY REFERENCES declaration(id) DEFERRABLE INITIALLY DEFERRED', 1)
+relation('declaration_positions', 'owner_id @entity NOT NULL\nidentifier_range_id @source_range\nspecifiers_range_id @source_range\ndeclarator_range_id @source_range\nenum_value_range_id @source_range\nnamespace_definition_range_id @source_range', 'owner_id')
+relation('declaration_element_position', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\nposition_id @source_position')
+entity('source_end_construct', 'target_tag_kind_id @kind NOT NULL\ntarget_id @entity\nposition_id @source_position')
+entity('instantiation_directive', 'target_tag_kind_id @kind NOT NULL\ntarget_id @entity\ndeclared_type_id @type\nsource_origin_id @source_origin\ndo_not_instantiate INTEGER NOT NULL DEFAULT 0')
+entity('linkage_specification', 'name_string_id @constant NOT NULL\nname_linkage_id @kind NOT NULL\nposition_id @source_position\nend_position_id @source_position')
+entity('microsoft_if_exists', 'target_tag_kind_id @kind NOT NULL\ntarget_id @entity\nname_reference_id @name_reference\nposition_id @source_position\nis_if_exists INTEGER\nis_this INTEGER NOT NULL DEFAULT 0')
+entity('record_declaration', 'record_type_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntag_kind_id @kind NOT NULL\ntarget_id @entity\ndeclaration_id @declaration')
+entity('pragma', 'kind_id @kind NOT NULL\ntarget_tag_kind_id @kind NOT NULL\ntarget_id @entity\nsource_origin_id @source_origin\nsource_entry_id @source_entry\ntext_id @text_atom\nignore_in_back_end INTEGER NOT NULL DEFAULT 0\nis_microsoft_operator INTEGER NOT NULL DEFAULT 0')
+relation('scope_pragma', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\npragma_id @pragma NOT NULL')
+relation('scope_if_exists', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\nif_exists_id @microsoft_if_exists NOT NULL')
+for name, columns in {
+    'pragma_stdc': 'kind_id @kind NOT NULL\nvalue_id @kind NOT NULL',
+    'pragma_upc': 'kind_id @kind NOT NULL\naccess_method_id @kind\ncoherence_operation_id @kind',
+    'pragma_ident': 'string_constant_id @constant NOT NULL',
+    'pragma_comment': 'kind_id @kind NOT NULL\nstring_constant_id @constant',
+    'pragma_conform': 'kind_id @kind NOT NULL\nis_on INTEGER NOT NULL DEFAULT 0\nis_off INTEGER NOT NULL DEFAULT 0\nis_show INTEGER NOT NULL DEFAULT 0\nis_push INTEGER NOT NULL DEFAULT 0\nis_pop INTEGER NOT NULL DEFAULT 0\nidentifier_id @text_atom',
+    'pragma_include_alias': 'long_file_name_id @text_atom\nshort_file_name_id @text_atom',
+    'pragma_gcc': 'kind_id @kind NOT NULL\nvisibility_id @kind',
+}.items():
+    table(name, columns)
+    tables[-1] = tables[-1].replace('id INTEGER PRIMARY KEY', 'id INTEGER PRIMARY KEY REFERENCES pragma(id) DEFERRABLE INITIALLY DEFERRED', 1)
+
+append_columns('symbol', 'is_imported_from_module INTEGER NOT NULL DEFAULT 0')
+append_columns('type', '''descriptor_incomplete INTEGER DEFAULT 0
+used_in_exception_or_rtti INTEGER NOT NULL DEFAULT 0
+declared_in_function_prototype INTEGER NOT NULL DEFAULT 0
+is_tag_redefinition INTEGER NOT NULL DEFAULT 0
+alignment_set_explicitly INTEGER NOT NULL DEFAULT 0
+may_alias INTEGER NOT NULL DEFAULT 0
+has_microsoft_w64_specifier INTEGER NOT NULL DEFAULT 0
+is_microsoft_intrinsic INTEGER NOT NULL DEFAULT 0
+autonomous_primary_tag_declaration INTEGER NOT NULL DEFAULT 0
+is_builtin_va_list INTEGER NOT NULL DEFAULT 0
+is_builtin_va_list_from_cstdarg INTEGER NOT NULL DEFAULT 0
+has_gnu_abi_tag_attribute INTEGER NOT NULL DEFAULT 0
+in_gnu_abi_tag_namespace INTEGER NOT NULL DEFAULT 0
+use_cfront_transitional_nested_type_name_mangling INTEGER NOT NULL DEFAULT 0
+typeinfo_variable_id @variable_symbol''')
+append_columns('enum_symbol', '''explicit_underlying_type_id @type
+has_explicit_base INTEGER NOT NULL DEFAULT 0
+underlying_type_should_use_unsigned INTEGER NOT NULL DEFAULT 0
+is_packed INTEGER NOT NULL DEFAULT 0
+originally_unnamed INTEGER NOT NULL DEFAULT 0
+is_template_enum INTEGER NOT NULL DEFAULT 0
+is_prototype_instantiation INTEGER NOT NULL DEFAULT 0
+is_nonreal INTEGER NOT NULL DEFAULT 0
+is_specialized INTEGER NOT NULL DEFAULT 0
+is_ms_instantiated_nonreal_enum INTEGER NOT NULL DEFAULT 0
+elf_visibility_id @kind
+enumerator_list_seen INTEGER NOT NULL DEFAULT 0
+enumerator_list_complete INTEGER NOT NULL DEFAULT 0
+has_nodiscard INTEGER NOT NULL DEFAULT 0
+base_position_id @source_position
+template_id @template_definition
+uuid_string_id @text_atom
+uuid_variable_id @variable_symbol''')
+append_columns('arithmetic_type', 'explicitly_signed INTEGER NOT NULL DEFAULT 0\naffiliated_enum_type_id @type\nis_fract_type INTEGER NOT NULL DEFAULT 0\nis_saturating INTEGER NOT NULL DEFAULT 0')
+append_columns('qualified_type', 'is_atomic INTEGER NOT NULL DEFAULT 0\nis_nullable INTEGER NOT NULL DEFAULT 0\nis_nonnull INTEGER NOT NULL DEFAULT 0\nis_unaligned INTEGER NOT NULL DEFAULT 0\nis_near INTEGER NOT NULL DEFAULT 0\nis_far INTEGER NOT NULL DEFAULT 0\nis_upc_strict INTEGER NOT NULL DEFAULT 0\nis_upc_relaxed INTEGER NOT NULL DEFAULT 0')
+append_columns('array_type', '''is_template_dependent INTEGER NOT NULL DEFAULT 0
+is_variable INTEGER NOT NULL DEFAULT 0
+is_vla INTEGER NOT NULL DEFAULT 0
+has_vla_dimension INTEGER NOT NULL DEFAULT 0
+is_static INTEGER NOT NULL DEFAULT 0
+is_threads_dimension INTEGER NOT NULL DEFAULT 0
+bound_constant_id @constant
+dependent_bound_constant_id @constant
+is_const INTEGER NOT NULL DEFAULT 0
+is_volatile INTEGER NOT NULL DEFAULT 0
+is_restrict INTEGER NOT NULL DEFAULT 0
+is_atomic INTEGER NOT NULL DEFAULT 0
+is_nullable INTEGER NOT NULL DEFAULT 0
+is_nonnull INTEGER NOT NULL DEFAULT 0
+is_unaligned INTEGER NOT NULL DEFAULT 0
+is_near INTEGER NOT NULL DEFAULT 0
+is_far INTEGER NOT NULL DEFAULT 0
+is_shared INTEGER NOT NULL DEFAULT 0
+is_upc_strict INTEGER NOT NULL DEFAULT 0
+is_upc_relaxed INTEGER NOT NULL DEFAULT 0''')
+append_columns('member_pointer_type', 'original_declaring_type_id @type\nis_ptr32 INTEGER NOT NULL DEFAULT 0\nis_ptr64 INTEGER NOT NULL DEFAULT 0')
+append_columns('dependent_type', 'is_pack INTEGER NOT NULL DEFAULT 0\nis_auto_parameter INTEGER NOT NULL DEFAULT 0\nis_decltype_auto INTEGER NOT NULL DEFAULT 0\noriginally_class_template_parameter INTEGER NOT NULL DEFAULT 0\nis_unsigned_bit_precise_integer INTEGER NOT NULL DEFAULT 0\nproxy_class_id @type')
+append_columns('vector_type', 'edg_vector_kind_id @kind')
+append_columns('type_reference', '''is_predeclared INTEGER NOT NULL DEFAULT 0
+has_variably_modified_type INTEGER NOT NULL DEFAULT 0
+is_lowered_variably_modified_type INTEGER NOT NULL DEFAULT 0
+decltype_expression_not_parenthesized INTEGER NOT NULL DEFAULT 0
+is_dependent_type_operator INTEGER NOT NULL DEFAULT 0
+is_nonreal INTEGER NOT NULL DEFAULT 0
+is_dependent INTEGER NOT NULL DEFAULT 0
+is_prototype_instantiation INTEGER NOT NULL DEFAULT 0
+is_lowered_complex_type INTEGER NOT NULL DEFAULT 0
+embeds_source_entries INTEGER NOT NULL DEFAULT 0
+added_to_record_name INTEGER NOT NULL DEFAULT 0
+has_typename_prefix INTEGER NOT NULL DEFAULT 0
+is_global_qualified_name INTEGER NOT NULL DEFAULT 0
+is_intrinsic_member INTEGER NOT NULL DEFAULT 0
+explicit_memory_attribute_made_implicit INTEGER NOT NULL DEFAULT 0
+name_qualifier_id @name_qualifier
+proxy_class_id @type
+operator_type_argument_id @type
+minimum_template_arguments INTEGER
+type_id_range_id @source_range''')
+relation('typeref_original_template_argument', 'owner_id @type_reference NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
+append_columns('record_type', '''is_final INTEGER NOT NULL DEFAULT 0
+any_const_member INTEGER NOT NULL DEFAULT 0
+any_volatile_member INTEGER NOT NULL DEFAULT 0
+any_mutable_member INTEGER NOT NULL DEFAULT 0
+any_virtual_base_classes INTEGER NOT NULL DEFAULT 0
+any_virtual_functions INTEGER NOT NULL DEFAULT 0
+any_pure_virtual_functions INTEGER NOT NULL DEFAULT 0
+any_virtual_functions_including_bases INTEGER NOT NULL DEFAULT 0
+nested_class_defined_outside_parent INTEGER NOT NULL DEFAULT 0
+originally_unnamed INTEGER NOT NULL DEFAULT 0
+is_nonstandard_anonymous_union INTEGER NOT NULL DEFAULT 0
+is_template_class INTEGER NOT NULL DEFAULT 0
+is_nonreal_class INTEGER NOT NULL DEFAULT 0
+is_ms_instantiated_nonreal_class INTEGER NOT NULL DEFAULT 0
+is_prototype_instantiation INTEGER NOT NULL DEFAULT 0
+is_specialized INTEGER NOT NULL DEFAULT 0
+specialized_with_old_syntax INTEGER NOT NULL DEFAULT 0
+is_in_class_specialization INTEGER NOT NULL DEFAULT 0
+explicitly_instantiated INTEGER NOT NULL DEFAULT 0
+do_not_instantiate INTEGER NOT NULL DEFAULT 0
+is_proxy_class INTEGER NOT NULL DEFAULT 0
+no_proper_data INTEGER NOT NULL DEFAULT 0
+has_zero_init_component INTEGER NOT NULL DEFAULT 0
+has_pointer_component INTEGER NOT NULL DEFAULT 0
+contains_flexible_array_member INTEGER NOT NULL DEFAULT 0
+is_transparent INTEGER NOT NULL DEFAULT 0
+is_packed INTEGER NOT NULL DEFAULT 0
+has_internal_linkage_attribute INTEGER NOT NULL DEFAULT 0
+has_operator_ampersand INTEGER NOT NULL DEFAULT 0
+copy_assignment_declaration_suppressed INTEGER NOT NULL DEFAULT 0
+copy_constructor_declaration_suppressed INTEGER NOT NULL DEFAULT 0
+default_constructor_declaration_suppressed INTEGER NOT NULL DEFAULT 0
+destructor_declaration_suppressed INTEGER NOT NULL DEFAULT 0
+maximum_member_alignment TEXT
+is_interface INTEGER NOT NULL DEFAULT 0
+is_interface_like INTEGER NOT NULL DEFAULT 0
+is_sealed INTEGER NOT NULL DEFAULT 0''')
+entity('ms_attribute', '''kind_id @kind NOT NULL
+name_id @text_atom
+text_id @text_atom
+target_tag_kind_id @kind NOT NULL
+target_id @entity
+source_position_id @source_position
+source_entry_id @source_entry
+next_in_block_id @ms_attribute''')
+entity('ms_attribute_argument', '''kind_id @kind NOT NULL
+parameter_name_id @text_atom
+integer_value TEXT
+boolean_value INTEGER
+enumeration_ordinal INTEGER
+string_constant_id @constant
+other_text_id @text_atom
+uuid_text_id @text_atom''')
+relation('owner_ms_attribute', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\nattribute_id @ms_attribute NOT NULL')
+relation('ms_attribute_argument_link', 'owner_id @ms_attribute NOT NULL\nordinal INTEGER NOT NULL\nargument_id @ms_attribute_argument NOT NULL')
+relation('ms_attribute_target', 'owner_id @ms_attribute NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL')
+entity('scoped_expression', 'expression_id @expression NOT NULL\nsource_origin_id @source_origin')
+relation('local_expression_reference', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\nreferrer_id @entity NOT NULL\nexpression_id @expression NOT NULL')
+append_columns('array_type', 'dependent_bound_expression_id @expression\naddress_space INTEGER\nis_null_unspecified INTEGER NOT NULL DEFAULT 0')
+append_columns('qualified_type', 'is_null_unspecified INTEGER NOT NULL DEFAULT 0')
+append_columns('field_symbol', 'bit_size_constant_id @constant\nbit_width_expression_id @expression\ndeclared_bit_size TEXT')
+entity('template_symbol', 'descriptor_id @template_definition NOT NULL')
+append_columns('template_definition', 'symbol_id @symbol')
+append_columns('initialization', 'is_freeing_of_exception_object INTEGER NOT NULL DEFAULT 0')
+
+# Optional differing raw descriptor state has no default factual value.
+for index, definition in enumerate(tables):
+    definition = definition.replace('descriptor_incomplete INTEGER DEFAULT 0', 'descriptor_incomplete INTEGER')
+    definition = definition.replace('symbol_id INTEGER REFERENCES type_symbol(id)', 'symbol_id INTEGER REFERENCES symbol(id)')
+    if definition.startswith('CREATE TABLE field_layout ('):
+        definition = definition.replace('offset TEXT NOT NULL', 'offset TEXT')
+    tables[index] = definition
 
 custom = {
  'entity': 'translation_unit name scope symbol namespace routine variable field label enum alias using type declaration expression statement initialization lifetime temporary base_subobject template template_parameter template_argument template_instance template_specialization source_file include_occurrence source_mapping source_position source_range source_origin macro_definition macro_invocation source_attachment attribute subobject_path name_reference exception_specification virtual_table record_layout vla_dimension coroutine function_eh cleanup_region cleanup_action cleanup_storage cleanup_array cleanup_condition cleanup_abi',

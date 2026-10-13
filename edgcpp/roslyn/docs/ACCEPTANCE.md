@@ -2,12 +2,21 @@
 
 The initial exporter→reader checkpoint is verified. Phases 3–4 remain in
 progress until all M0–M5 gates and field/kind coverage rows are satisfied.
-The items below are required work, not optional exporter omissions.
+The semantic items below remain required; source locations follow the user's
+2026-10-13 priority update below.
 
 The user subsequently excluded C++/CLI support; C++/CLI and C++/CX implementation
 and metadata/profile gates are outside the revised task. Native Microsoft C++
 extensions remain required. This explicit scope change does not relax other
-remaining acceptance work.
+remaining semantic acceptance work.
+
+The user explicitly made source location nice to have on 2026-10-13. Preserve
+directly retained coordinates cheaply and never guess or reconstruct lowered
+positions. Finish only small already-near-complete source checks; optional location
+completeness and exact coordinate coverage do not block phases 3–4. Executable
+semantics, types, lifetimes, semantic identity/order and ordinary API navigation
+take priority. Temporary compiler construction bookkeeping is excluded; capture
+actual resulting operations, tables and variables rather than recreating it.
 
 ## Native adapters and profiles
 
@@ -37,7 +46,7 @@ remaining acceptance work.
   required; initial CLI publication is POSIX. Explicit CXX language configuration
   for the new backend is implemented and verified by independent compilation.
 
-## Exception and source evidence
+## Exception, identity and optional source evidence
 
 - Query real conditional/unordered/array/partial-array/VLA/VTT/delegating/sized/
   aligned/placement/local-static/exception-object cleanup recipes and transitions.
@@ -48,9 +57,11 @@ remaining acceptance work.
   original-type/signature fields are allowed.
 - Distinguish physical files/includes from presumed `#line` mappings: stock
   source-file entries may represent remaps, and those are not include occurrences.
-- Complete retained source ranges/history/declarations/macros and optional
-  availability facts; token/trivia/paste lineage is not retained stock IL and must
-  remain explicitly unavailable, never reconstructed.
+- Preserve direct source ranges/macros and existing physical/presumed correctness
+  where inexpensive. Exact optional locations and intricate provenance recovery
+  are not acceptance gates. Semantic declaration/member identity and actual
+  execution/source declaration order remain required; no guessed positions.
+  Token/trivia/paste lineage is not retained stock IL and stays unavailable.
 - Named class/enum/typedef symbols must navigate to descriptors; genuine retained
   declaration occurrences project semantic nodes without invented source records.
   Scope discriminants must remain exact rather than defaulting unhandled kinds to

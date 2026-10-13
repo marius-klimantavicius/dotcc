@@ -4,12 +4,20 @@ namespace RoslynObj;
 
 public sealed class Constant : SemanticEntity
 {
-    internal Constant(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
+    private readonly Lazy<IReadOnlyList<Symbol>> declarationSymbols;
+    internal Constant(RoslynObject owner,long id,Row row) : base(owner,id)
+    {
+        Details=new(owner,row);
+        declarationSymbols=new(() => Object.List("SELECT s.* FROM symbol s WHERE s.id IN (SELECT symbol_id FROM enumerator WHERE constant_id=$owner UNION SELECT id FROM template_parameter WHERE placeholder_constant_id=$owner) ORDER BY s.id",Id,r=>Object.Symbol(r.Long("id")),"symbol"));
+    }
     public ConstantDetails Details { get; }
     public CppType? Type => Details.Type;
     public CppType? OriginalType => Details.OrigType;
     public string? Name => Object.Name(Object.Store.Required("constant",Id).OptionalLong("name_id"));
     public SemanticEntity? ContainingEntity => Details.ContainingEntity;
+    public IReadOnlyList<Symbol> DeclarationSymbols => declarationSymbols.Value;
+    public Symbol? DeclarationSymbol => DeclarationSymbols.Count==1 ? DeclarationSymbols[0] : null;
+    public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_constant_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
     public ConstantValue Value => Details.Value;
     public Operation? BackingExpression => Details.BackingExpression;
     public SourceInfo? Source => Details.SourceOrigin;
@@ -86,4 +94,17 @@ public sealed class AggregateValue : ConstantValue
     internal AggregateValue(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
     public AggregateValueDetails Details => Object.Detail("aggregate_value",Id,r=>new AggregateValueDetails(Object,r));
     public IReadOnlyList<AggregateElementDetails> Elements => Object.List("SELECT * FROM aggregate_element WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AggregateElementDetails(Object,r));
+}
+
+public sealed class LabelDifferenceValue : ConstantValue
+{
+    internal LabelDifferenceValue(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
+    public LabelDifferenceValueDetails Details => Object.Detail("label_difference_value",Id,r=>new LabelDifferenceValueDetails(Object,r));
+    public LabelSymbol? LeftLabel => Details.LeftLabel;
+    public LabelSymbol? RightLabel => Details.RightLabel;
+    public LabelSymbol? ToLabel => LeftLabel;
+    public LabelSymbol? FromLabel => RightLabel;
+    public ConstantValue FromValue => Details.FromValue;
+    public ConstantValue ToValue => Details.ToValue;
+    public BigInteger? Offset => Details.Offset;
 }

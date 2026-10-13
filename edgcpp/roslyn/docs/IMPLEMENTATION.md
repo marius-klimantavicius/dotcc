@@ -1,5 +1,9 @@
 # RoslynObj implementation ledger
 
+**Resumed at the user's explicit request on 2026-10-13.** Historical restart state
+is saved in local historical pause notes, with both worker notes. Both implementation
+lanes are active; full approved M0–M5 work remains required.
+
 The user approved phases 3–4 on 2026-10-12, including complete M0–M5 delivery.
 The accepted profile prioritizes stock EDG lowering and documents lost original
 source queries. This ledger records evidence and outstanding work; a schema or
@@ -188,7 +192,9 @@ is included for subsequent full builds. Declaration projections without a Source
 are semantic/generated records and do not claim retained original-source
 occurrences. Exact source-origin/range interning was still pending at this checkpoint.
 
-## Active family integration after the checkpoint
+## Verified native/profile checkpoint
+
+Commit `2939f715e` records the following tested 198-table snapshot.
 
 The current contract contains 198 tables and 38,888 stable kind tags. The reader
 generates 196 detail classes and 1,280 properties. The final checkpoint passes 240 public
@@ -238,3 +244,129 @@ On valid rowid copies at 1/2/4/8 KiB, full managed scale sweeps issue about
 RSS 104–113 MB and caches remain bounded at 4,096 rows/128 pages. Those copies
 measure 5.11/5.33/5.91/7.16 MB. Cold-start JIT and native insertion remain separate
 measurement gates; no universal storage default is inferred from one sample.
+
+
+## Source/type/identity integration in progress
+
+The frozen shared contract now contains 232 normalized tables and 39,060 stable
+append-only kinds. Both workers are integrating this batch; its genuine native
+refresh is pending, so it does not replace the verified checkpoint above. The
+managed 231-table precursor built without warnings/errors and passed 70 self
+assertions on each of rowid and composite WITHOUT ROWID layouts. New field
+mappings cover canonical physical files versus presumed mapping descriptors,
+ordered source/declaration occurrences, native Microsoft attributes, exact
+contextual local expressions, effective enum/type queries and separate template
+descriptors versus canonical declared parameter/template symbols. Actual
+placeholder pointer relations may have plural declaration bindings; no name or
+coordinate deduplication establishes symbol identity.
+
+Controlled native 198-table writer comparisons (three runs per layout) measured
+scale rowid median 3.22 seconds/40,932 KiB RSS/6,012,928 bytes versus composite
+WITHOUT ROWID median 3.21 seconds/41,424 KiB/5,300,224 bytes. Tiny basic measured
+0.11 seconds for either layout and decreased from 1,388,544 to 1,130,496 bytes. Complete
+table counts matched and foreign-key/integrity checks passed. These comparisons
+justify selecting the composite relation policy after current genuine reader
+integration; page-size writer measurement remains separate.
+
+The preparation hash gate now verifies 316 materialized stock source/build
+inputs, including C++ metadata sources and build tooling. A private changed
+stock wrapper is rejected before building. Expanded genuine profile verification
+is pending; no core source changes are authorized.
+
+Actual parameter-flag assertions close retained default arguments, by-value copy
+passing, copy-constructor parameters, explicit-object parameters and expanded
+packs with repeated original parameter numbers and distinct signature ordinals.
+The catalog worksheet now includes every 39,060 explicit kind. REVIEW.md preserves
+remaining concrete lifetime/EH addressing, constructor/local-static roots,
+variable obligations/unions, routine body/eligibility, reflection dispatch,
+attribute plural ownership and complete guarded field/profile closure work.
+
+
+During the 232 integration audit, the field worksheet now records 122 verified
+mappings, 177 implemented mappings awaiting exact activation, 17 required adapter
+gaps, and 1,498 raw pending rows. Current source-file/sequence fields have explicit
+physical/presumed relation mappings; they remain pending genuine refresh evidence.
+Typed list-pointer exclusions preserve actual ordered relations, while numeric
+sequence endpoints remain semantic fields. These counts are work tracking, not
+full-family acceptance.
+
+
+First 232 integration evidence: strict primary compiler build passes. Thirteen
+fresh primary objects pass complete-header/typed-expression/no-BLOB-REAL/FK
+inspection and 161 ordinary reader assertions, including canonical placeholder
+bindings with distinct descriptors and no phantom symbols. Source 232 compilation
+and remaining profile refresh are underway. The genuine fixed-point probe exposed
+stock in-place canonical type lowering; the native adapter now uses audited public
+existing-cache pointer identity and is awaiting fresh probe validation. Complex/
+imaginary original-format identity needs a genuine C99 numeric fixture as well.
+Field coverage advances to 129 verified mappings and 234 implemented mappings
+awaiting exact activation; 14 adapter gaps and 1,434 raw pending rows remain. This
+is progress evidence, not acceptance of full phases 3–4.
+
+
+## Resumed validation on 2026-10-13
+
+Both saved implementation lanes resumed with their previous disjoint ownership.
+The previously uncompiled member-pointer guard now passes primary/source builds
+and genuine native pointer-member probes; source retains six actual forms and
+class/casting associations, while primary stock lowering retains two null
+pointer-member constants and lowered value forms. Original converted class is
+not inferred from the target member's declaring class.
+
+The revised retained concurrency signature-string projection passes 101 assertions.
+Source 232 source_order/provenance passes 82 with actual secondary/member/sublist/
+linkage/STDC order and physical/presumed separation. Stronger exact coordinate and
+physical occurrence assertions remain underway. Fresh stock module interface 261
+and import 278 entities publish with zero FKs. Managed acceptance is pending.
+Cfront 232 refresh runs in the single native lane; exported 232 remains next. The
+existing macro replacement_range adapter is being completed and will be refreshed
+at a stable compiler boundary; no new shared schema change is in progress.
+
+
+User priority update on 2026-10-13: source locations are nice to have. Preserve
+direct available metadata without guessing, but optional coordinate completeness
+and intricate provenance probes are not phase acceptance gates. Executable
+semantics/types/lifetimes/API and actual resulting IL tables/variables take
+priority. Compiler construction bookkeeping stays excluded. Both workers received
+the update; already-near-complete direct source assertions passed 90 and further
+provenance expansion stopped.
+
+
+## Verified 232-table semantic/type checkpoint
+
+The 2026-10-13 stable snapshot passes 421 assertions with a valid composite
+WITHOUT ROWID self fixture plus 44 genuine primary/source/cfront-like/exported
+objects. New exact fixed-point, complex/imaginary and GNU label-difference values
+survive stock lowering; pointer-member queries guard current type kinds and source
+six-form class/casting associations pass. Native Microsoft attributes activate
+all six exact argument variants under the actual recognition/suppression flags.
+Canonical template placeholder/parameter identity, execution versus metadata,
+source-semantic initializer containment, typed visitors and semantic declaration
+order pass ordinary public navigation. Optional direct source metadata remains
+available without reconstruction; it is not a phase completion gate.
+
+All 45 published 232 artifacts (including the separately benchmarked scale object)
+pass complete-header, typed-expression, zero-FK and no semantic BLOB/REAL checks.
+Each of four profiles independently matches 316 stock source/build inputs to the
+pinned Git blobs; all canonical backend files are byte-identical in staged trees.
+The obsolete inactive native source-sequence header was synchronized and strictly
+rebuilt before the snapshot. Ordinary publication failures preserve destinations
+and remove temporary output. The reader builds with zero warnings/errors;
+generated 230 detail classes /1,581 properties and 66 literal field writes match.
+
+Actual concurrent disposal, bounded eviction and valid generous-cache prefetch
+reach the 900-key cap. Eight valid rowid/composite-WITHOUT-ROWID scale copies each
+retain 85,520 entities /7,023 executable operations over cold/warm sweeps, with
+4,096 cached rows /128 pages. Commands 26,550–26,552, fetched rows 191,199–191,201,
+post-initial-JIT time 1.02–1.07 seconds and RSS 109–119MB remain bounded. At 4KiB,
+rowid 7,192,576 bytes versus composite 6,402,048 bytes; warm traversal 1041 versus
+1040ms. Native 198 writer A/B also found no throughput regression. Composite
+policy/page-size default selection and native page-size writer comparisons
+remain open M5 work.
+
+This checkpoint does not complete phases 3–4. NEXT-CONTRACT.md records the next
+canonical attribute/lifetime/initializer and contextual EH schema batch. GNU
+variable cleanup/binding/TLS, routine and reflection closure, maximum native
+profiles and all remaining semantic field/kind rows remain required. Source
+location priorities follow the user's instruction; compiler construction records
+are excluded, actual resulting operations/types/tables/variables are captured.

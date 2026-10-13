@@ -12,10 +12,10 @@ extensions and source-semantic native Microsoft ABI remain required.
 
 | Profile | Required behavior | Current evidence | Remaining validation |
 |---|---|---|---|
-| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Independent compiler; lowering=1, EH tables=1, full lowering=0; eight genuine exports and managed integration | Complete extension/union fields; broader ABI/EH recipes and numeric configurations |
-| source | Source-semantic capture with Microsoft ABI | Configuration explicitly disables lowering and sets Microsoft pointer-to-member sizing | Independent build, actual runtime mode/ABI manifest, unlowered operation/provenance fixtures |
-| cfront | Stock cfront ABI with assignment-to-this and allocation folded into constructors | Dedicated overlay exists; exact parameter roles being implemented | Resolved assignment/new-fold flags, real virtual-base constructor and destructor control-parameter fixtures |
-| exported | Legacy exported-template retention | Overlay enables `EXPORT_ENABLING_POSSIBLE` and default export permission | Independent build/runtime probe, valid export input, retained origins/headers/text according to enabled guards |
+| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Verified 2939 independent compiler and genuine primary fixtures, lowering=1/EH tables=1/full lowering=0; exact float16/float128/bfloat and bit-precise quantities | Complete extension/union fields; contextual array/VTT/unordered EH, remaining host/numeric configurations |
+| source | Source-semantic capture with native Microsoft ABI | Verified 2939 independent source build and GNU/native-MS runtime probes; VLA/statement/member-call/coroutine/source initialization traversal passes | New 232 physical/presumed mapping, declaration order and native MS attributes; all active source semantic fields |
+| cfront | Stock cfront compatibility including assignment-to-this and allocation folded into constructors | Verified 2939 independent cfront-like IA64=0 build and basic/m0/objects; overlay assignment=1/new-fold=1 | Genuine archaic operator activation and USL cfront2.1/3.0 configurations, exact virtual-base/control ABI role assertions |
+| exported | Legacy exported-template retention | Verified 2939 independent build and actual C++03 --export input, two retained export-marked templates; stock runtime prototype/all-template-info flags 1 | All guarded exported template payloads and definition-text availability/profile evidence |
 
 Primary runtime template retention follows `host_envir.c:6895–6900`: both
 `prototype_instantiations_in_il` and `all_template_info_in_il` are true. Lowering
@@ -47,3 +47,18 @@ the cfront 2.1/3.0 compatibility modes (`host_envir.h:820–838`). Likewise a
 Microsoft pointer-to-member sizing option alone is not the complete Microsoft
 ABI configuration. Exact resolved compilation and runtime ABI flags remain
 required evidence before either profile is accepted.
+
+
+The current 232 source/type/identity refresh is in progress and is not yet profile
+acceptance evidence. Maximum native coverage additionally requires resolved guard
+and genuine activation probes for UPC, fixed-point, supported vector/host numeric
+forms, native COM/IDL attributes and C++26 reflection/token/data-member descriptors.
+Current overlays that disable an optional stock feature do not remove that feature
+from the approved native scope. MAINTAIN_CLASS_MEMBER_LIST is separately selectable
+(default 0) and must be activated before accepting ordered class declarations.
+
+
+Source location is optional following the user's 2026-10-13 steering. Preserve
+direct retained metadata and established physical/presumed distinction without
+reconstruction. Profile acceptance prioritizes actual semantic operations/types/
+lifetimes/identity; incomplete optional coordinates do not block it.

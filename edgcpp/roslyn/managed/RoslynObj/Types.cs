@@ -3,7 +3,12 @@ namespace RoslynObj;
 
 public class CppType : SemanticEntity
 {
-    internal CppType(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
+    private readonly Lazy<IReadOnlyList<Symbol>> declarationSymbols;
+    internal CppType(RoslynObject owner, long id, Row row) : base(owner, id)
+    {
+        Details = new(owner,row);
+        declarationSymbols = new(() => Object.List("SELECT s.* FROM symbol s WHERE s.id=(SELECT symbol_id FROM type WHERE id=$owner) OR s.id IN (SELECT id FROM template_parameter WHERE placeholder_type_id=$owner) ORDER BY s.id",Id,r=>Object.Symbol(r.Long("id")),"symbol"));
+    }
     public TypeDetails Details { get; }
     public SemanticKind Kind => Details.Kind;
     public string? Name => Object.Name(Object.Store.Required("type", Id).OptionalLong("name_id"));
@@ -12,18 +17,21 @@ public class CppType : SemanticEntity
     public BigInteger DescriptorSize => Details.DescriptorSize ?? Size;
     public BigInteger DescriptorAlignment => Details.DescriptorAlignment ?? Alignment;
     public bool IsIncomplete => Details.Incomplete;
+    public bool? DescriptorIsIncomplete => Details.DescriptorIncomplete;
     public bool IsDependent => Details.IsDependent;
     public SourceInfo? Source => Details.SourceOrigin;
     public CppType? CanonicalType => Details.CanonicalType;
     public CppType? DeclaredType => Details.DeclaredType;
-    public TypeSymbol? DeclarationSymbol => Details.Symbol;
+    public IReadOnlyList<Symbol> DeclarationSymbols => declarationSymbols.Value;
+    public Symbol? DeclarationSymbol => DeclarationSymbols.Count==1 ? DeclarationSymbols[0] : null;
+    public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_type_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
     public IReadOnlyList<Symbol> Members => Object.List("SELECT s.* FROM symbol s WHERE s.containing_entity_id=$owner OR s.id IN (SELECT id FROM field_symbol WHERE record_type_id=$owner UNION SELECT id FROM routine_symbol WHERE containing_type_id=$owner) ORDER BY s.id", Id, r => Object.Symbol(r.Long("id")), "symbol");
-    public IReadOnlyList<FieldSymbol> Fields => Object.List("SELECT * FROM field_symbol WHERE record_type_id=$owner ORDER BY id", Id, r => Object.Field(r.Long("id")), "field_symbol");
+    public IReadOnlyList<FieldSymbol> Fields => Object.List("SELECT q.* FROM (SELECT f.*,COALESCE(o.ordinal,9223372036854775807) AS field_ordinal FROM field_symbol f LEFT JOIN record_layout l ON l.type_id=f.record_type_id LEFT JOIN field_layout o ON o.owner_id=l.id AND o.field_id=f.id WHERE f.record_type_id=$owner) q ORDER BY q.field_ordinal,q.id", Id, r => Object.Field(r.Long("id")), "field_symbol");
     public IReadOnlyList<FunctionSymbol> Methods => Object.List("SELECT * FROM routine_symbol WHERE containing_type_id=$owner ORDER BY id", Id, r => Object.Function(r.Long("id")), "routine_symbol");
     public virtual TemplateInstantiation? Instantiation => null;
     public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
     public IReadOnlyList<CppType> TypeArguments => Instantiation?.TypeArguments ?? [];
-    public TemplateSymbol? Template => Instantiation?.OriginalDefinition;
+    public TemplateDescriptor? Template => Instantiation?.OriginalDefinition;
     public RecordLayout? Layout => Object.Store.Query("SELECT id FROM record_layout WHERE type_id=$owner", Id).FirstOrDefault() is { } row ? Object.Layout(row.Long("id")) : null;
     public IReadOnlyList<DirectBaseDetails> Bases => Object.List("SELECT * FROM direct_base WHERE owner_id=$owner ORDER BY ordinal", Id, r => new DirectBaseDetails(Object, r));
     public IReadOnlyList<BaseSubobject> BaseSubobjects => Object.List("SELECT * FROM base_subobject WHERE most_derived_type_id=$owner ORDER BY id", Id, r => Object.Subobject(r.Long("id")), "base_subobject");
@@ -82,12 +90,13 @@ public class RecordType : CppType
     public RecordTypeDetails Record => Object.Detail("record_type", Id, r => new RecordTypeDetails(Object, r));
     public CppType? SubobjectPartner => Record.SubobjectPartner;
     public override TemplateInstantiation? Instantiation => Record.Instance;
+    public IReadOnlyList<RecordDeclaration> SourceDeclarations => Object.List("SELECT * FROM record_declaration WHERE record_type_id=$owner ORDER BY ordinal,id",Id,r=>Object.RecordDeclaration(r.Long("id")),"record_declaration");
 }
 
 public sealed class ConstructedType : RecordType
 {
     internal ConstructedType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
-    public TemplateSymbol? OriginalDefinition => Instantiation?.OriginalDefinition;
+    public TemplateDescriptor? OriginalDefinition => Instantiation?.OriginalDefinition;
 
 }
 

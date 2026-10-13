@@ -58,16 +58,37 @@ objects without linking or merging them.
 call targets, with their owner nodes and optional source origins. Declaration
 objects are semantic nodes, so `GetSymbol(declaration)` and `GetType(declaration)`
 follow retained descriptor links without reconstructing C++ lookup. A type's
-`DeclarationSymbol` has its own named identity; the type descriptor stays separate.
+`DeclarationSymbols` exposes the actual declarations associated with a descriptor;
+`DeclarationSymbol` is optional and returns a symbol only when that association is
+unique. The type descriptor stays separate.
 Template headers, parameter placeholders and defaults navigate through typed
 objects. Function signatures and requires-expression parameters share canonical
 `ParameterType` descriptors, including retained declared types and default facts.
-Template definitions and parameters participate in the common `Symbol` hierarchy;
-`TemplateKind` and `ParameterKind` expose their retained subtype classifications.
+Every retained template has a `TemplateDescriptor`. A true template declaration
+has a separate `TemplateSymbol` whose `Descriptor` preserves that relationship.
+Template-template placeholders instead point to their actual parameter symbols.
+Parameters participate in the common `Symbol` hierarchy; `TemplateKind` and
+`ParameterKind` expose their retained subtype classifications. Placeholder
+associations follow exact stored pointers, including multiple retained declarations.
 Named type symbols delegate attributes to their authoritative type descriptor.
 Lambda initializations and lambda expressions share one `LambdaDefinition` with
 its actual capture list. Assembly operations similarly delegate to their captured
 `AssemblyDefinition`; module/import objects retain ordered translation-unit imports.
+
+`Scope.SourceSequence` exposes the retained physical source-entry list.
+`Scope.SourceEntries` follows sublist entries at their actual splice point;
+`SourceSublists` is the separate storage index. Source-sequence owners and a
+declaration's optional lexical scope describe different relationships. Secondary
+declarations retain their own source positions, written types, attributes and
+flags. `RecordType.SourceDeclarations` follows the retained member occurrence
+list, including friends and repeated targets; those positionless occurrences do
+not acquire source positions from the target's primary declaration.
+
+Source files use canonical physical paths. Include occurrences keep their display
+names, import spelling and context flags, while `LineDirective` describes a retained
+line remapping. Positions expose physical and logical lines, presumed names and
+the actual spelling position when retained. Optional source metadata stays null
+or empty when its resolved build configuration does not retain it.
 
 Exact integers, target sizes, offsets and EH states use `BigInteger`. Floats
 retain class, sign, radix, significand, exponent and supplied NaN facts; they are

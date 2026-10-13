@@ -1,4 +1,50 @@
 /* Values and occurrences are separate. Only exact typed value rows are interned. */
+#if FIXED_POINT_ALLOWED
+static a_fixed_point_type_descr roslyn_fixed_point_descriptor(a_type_ptr type) {
+ a_type_ptr effective=skip_typerefs(type);
+ if(effective->kind==tk_fixed_point)return effective->variant.fixed_point;
+ /* Stock lowering changes the cached canonical fixed-point descriptor into
+    a typeref in place.  Existing public cache entries retain its identity;
+    their exact descriptor keys remain valid after frontend wrapup. */
+ if(in_front_end||curr_translation_unit!=nullptr||!is_primary_translation_unit){
+  DB.fail("Fixed-point cache query requires completed primary frontend wrapup");
+  return make_fixed_point_type_descr(fpp_default,FALSE,FALSE,FALSE);
+ }
+ for(int precision=fpp_short;precision<fpp_last;++precision)
+  for(int is_unsigned=0;is_unsigned!=2;++is_unsigned)
+   for(int is_fract=0;is_fract!=2;++is_fract)
+    for(int saturating=0;saturating!=2;++saturating){
+     auto descriptor=make_fixed_point_type_descr(static_cast<a_fixed_point_precision>(precision),is_unsigned,is_fract,saturating);
+     if(!fixed_point_type_used_in_primary_IL(descriptor))continue;
+     a_type_ptr cached=fixed_point_type(descriptor);
+     for(a_type_ptr current=type;current;current=current->kind==tk_typeref?current->variant.typeref.type:nullptr)
+      if(current==cached)return descriptor;
+    }
+ DB.fail("Retained fixed-point constant has no exact canonical descriptor association");
+ return make_fixed_point_type_descr(fpp_default,FALSE,FALSE,FALSE);
+}
+#endif
+static a_float_kind roslyn_constant_float_kind(a_constant_ptr constant) {
+ a_type_ptr effective=skip_typerefs(constant->type);
+ if(effective->kind==tk_float||effective->kind==tk_imaginary||effective->kind==tk_complex)
+  return effective->variant.float_kind;
+#if C99_IL_EXTENSIONS_SUPPORTED && DO_IL_LOWERING
+ if(in_front_end||curr_translation_unit!=nullptr||!is_primary_translation_unit){
+  DB.fail("Complex cache query requires completed primary frontend wrapup");return fk_float;
+ }
+ for(int kind=fk_float;kind<fk_last;++kind){
+  auto float_kind=static_cast<a_float_kind>(kind);a_type_ptr cached=nullptr;
+  if(constant->kind==ck_complex&&complex_type_used_in_primary_IL(float_kind))cached=complex_type(float_kind);
+#if LOWER_COMPLEX
+  if(constant->kind==ck_imaginary&&imaginary_type_used_in_primary_IL(float_kind))cached=imaginary_type(float_kind);
+#endif
+  if(!cached)continue;
+  for(a_type_ptr current=constant->type;current;current=current->kind==tk_typeref?current->variant.typeref.type:nullptr)
+   if(current==cached)return float_kind;
+ }
+#endif
+ DB.fail("Retained floating constant has no exact type-kind association");return fk_float;
+}
 static Rid roslyn_subobject_path(a_subobject_path_ptr p) {
  bool fresh;Rid id=DB.claim(p,"subobject_path",fresh);if(!fresh)return id;
  DB.put("subobject_path",{{"id",id},{"kind_id",K("role",p->is_offset?"element":p->is_base_class?"base":"member")},
@@ -17,12 +63,12 @@ static Rid roslyn_constant(a_constant_ptr p) {
 #if C99_IL_EXTENSIONS_SUPPORTED
  case ck_imaginary:
 #endif
- roslyn_float_content(content,skip_typerefs(p->type)->variant.float_kind,p->variant.float_value);break;
+ roslyn_float_content(content,roslyn_constant_float_kind(p),p->variant.float_value);break;
 #if C99_IL_EXTENSIONS_SUPPORTED
- case ck_complex:{auto c=p->variant.complex_value;auto k=skip_typerefs(p->type)->variant.float_kind;content.add("complex_value",{{"real_value_id",roslyn_float_value(k,c->real)},{"imaginary_value_id",roslyn_float_value(k,c->imag)}});break;}
+ case ck_complex:{auto c=p->variant.complex_value;auto k=roslyn_constant_float_kind(p);content.add("complex_value",{{"real_value_id",roslyn_float_value(k,c->real)},{"imaginary_value_id",roslyn_float_value(k,c->imag)}});break;}
 #endif
 #if FIXED_POINT_ALLOWED
- case ck_fixed_point:{auto d=fxp_descr_for_constant(p);std::string scaled=str_for_integer_value(&p->variant.fixed_point_value,!d->is_unsigned,FALSE,p->type->size).as_temp_characters();content.add("fixed_point_value",{{"scaled_integer_id",DB.atom(scaled)},{"scale",static_cast<int>(targ_fractional_bits_for_fixed_point[d->is_unsigned][d->precision][d->is_fract_type])}});break;}
+ case ck_fixed_point:{auto d=roslyn_fixed_point_descriptor(p->type);std::string scaled=str_for_integer_value(&p->variant.fixed_point_value,!d.is_unsigned,FALSE,targ_sizeof_fixed_point[d.is_unsigned][d.precision][d.is_fract_type]).as_temp_characters();content.add("fixed_point_value",{{"scaled_integer_id",DB.atom(scaled)},{"scale",static_cast<int>(targ_fractional_bits_for_fixed_point[d.is_unsigned][d.precision][d.is_fract_type])}});break;}
 #endif
  case ck_string:{const auto &s=p->variant.string;content.add("string_value",{{"element_bits",8},{"unit_kind_id",K("string_unit_kind","target_bytes")},{"length",Q(s.length)},{"encoding_id",K("string_encoding","target_code_units")}});for(a_targ_size_t i=0;i<s.length;++i)content.add("string_unit",{{"ordinal",static_cast<sqlite3_int64>(i)},{"unit",static_cast<int>(static_cast<unsigned char>(s.value[i]))}},"owner_id");break;}
  case ck_address:{auto &a=p->variant.address;Rid base=0;switch(a.kind){
@@ -41,9 +87,9 @@ static Rid roslyn_constant(a_constant_ptr p) {
 #if DO_IL_LOWERING && GENERATE_EH_TABLES && !DO_FULL_PORTABLE_EH_LOWERING
  case ck_stack_offset:content.add("stack_offset_value",{{"variable_id",roslyn_variable(p->variant.stack_offset.variable)},{"offset",Q(p->variant.stack_offset.offset)}});break;
 #endif
- case ck_ptr_to_member:{auto &m=p->variant.ptr_to_member;Rid member=m.is_function_ptr?roslyn_routine(m.variant.routine):roslyn_field(m.variant.field);auto type=skip_typerefs(p->type);content.add("member_pointer_value",{{"member_id",R(member)},{"containing_type_id",roslyn_type(type->variant.ptr_to_member.class_of_which_a_member)},{"subobject_id",R(roslyn_base(m.casting_base_class))},{"is_function_ptr",static_cast<int>(m.is_function_ptr)},{"cast_to_base",static_cast<int>(m.cast_to_base)},{"is_null",static_cast<int>(member==0)}});break;}
+ case ck_ptr_to_member:{auto &m=p->variant.ptr_to_member;Rid member=m.is_function_ptr?roslyn_routine(m.variant.routine):roslyn_field(m.variant.field);auto type=skip_typerefs(p->type);if(type->kind!=tk_ptr_to_member&&p->orig_type){auto original=skip_typerefs(p->orig_type);if(original->kind==tk_ptr_to_member)type=original;}Rid containing=type->kind==tk_ptr_to_member?roslyn_type(type->variant.ptr_to_member.class_of_which_a_member):0;content.add("member_pointer_value",{{"member_id",R(member)},{"containing_type_id",R(containing)},{"subobject_id",R(roslyn_base(m.casting_base_class))},{"is_function_ptr",static_cast<int>(m.is_function_ptr)},{"cast_to_base",static_cast<int>(m.cast_to_base)},{"is_null",static_cast<int>(member==0)}});break;}
 #if GNU_EXTENSIONS_ALLOWED
- case ck_label_difference:{auto &l=p->variant.label_difference;roslyn_constant_component(id,"from",0,l.from_address);roslyn_constant_component(id,"to",0,l.to_address);content.add("label_difference_value",{{"from_value_id",roslyn_value_of(l.from_address)},{"from_type_id",R(roslyn_type(l.from_address->type))},{"to_value_id",roslyn_value_of(l.to_address)},{"to_type_id",R(roslyn_type(l.to_address->type))},{"left_label_id",R(l.from_address->kind==ck_address&&l.from_address->variant.address.kind==abk_label?roslyn_label(l.from_address->variant.address.variant.label):0)},{"right_label_id",R(l.to_address->kind==ck_address&&l.to_address->variant.address.kind==abk_label?roslyn_label(l.to_address->variant.address.variant.label):0)}});break;}
+ case ck_label_difference:{auto &l=p->variant.label_difference;roslyn_constant_component(id,"from",0,l.from_address);roslyn_constant_component(id,"to",0,l.to_address);content.add("label_difference_value",{{"from_value_id",roslyn_value_of(l.from_address)},{"from_type_id",R(roslyn_type(l.from_address->type))},{"to_value_id",roslyn_value_of(l.to_address)},{"to_type_id",R(roslyn_type(l.to_address->type))},{"left_label_id",R(l.to_address->kind==ck_address&&l.to_address->variant.address.kind==abk_label?roslyn_label(l.to_address->variant.address.variant.label):0)},{"right_label_id",R(l.from_address->kind==ck_address&&l.from_address->variant.address.kind==abk_label?roslyn_label(l.from_address->variant.address.variant.label):0)}});break;}
 #endif
  case ck_aggregate:{content.add("aggregate_value",{{"type_id",roslyn_type(p->type)}});int n=0;for(a_constant_ptr c=p->variant.aggregate.first_constant;c;c=c->next){roslyn_constant_component(id,"element",n,c);content.add("aggregate_element",{{"ordinal",n++},{"value_id",roslyn_value_of(c)},{"type_id",R(roslyn_type(c->type))}},"owner_id");}break;}
  case ck_init_repeat:{auto &r=p->variant.init_repeat;roslyn_constant_component(id,"repeated",0,r.constant);content.add("repeat_value",{{"value_id",roslyn_value_of(r.constant)},{"type_id",R(roslyn_type(r.constant->type))},{"count",Q(r.count)},{"multidimensional_tail_not_repeated",static_cast<int>(r.multidimensional_aggr_tail_not_repeated)}});break;}

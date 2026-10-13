@@ -12,7 +12,8 @@ public sealed class TranslationUnit : SemanticEntity
     public IReadOnlyList<VariableSymbol> Variables => Object.List("SELECT * FROM variable_symbol ORDER BY id", 0, r => Object.Variable(r.Long("id")), "variable_symbol");
     public IReadOnlyList<NamespaceSymbol> Namespaces => Object.List("SELECT * FROM namespace_symbol ORDER BY id", 0, r => Object.Namespace(r.Long("id")), "namespace_symbol");
     public IReadOnlyList<CppType> Types => Object.List("SELECT * FROM type ORDER BY id", 0, r => Object.Type(r.Long("id")), "type");
-    public IReadOnlyList<TemplateSymbol> Templates => Object.List("SELECT * FROM template_definition ORDER BY id", 0, r => Object.Template(r.Long("id")), "template_definition");
+    public IReadOnlyList<TemplateSymbol> Templates => Object.List("SELECT * FROM template_symbol ORDER BY id", 0, r => Object.TemplateSymbol(r.Long("id")), "template_symbol");
+    public IReadOnlyList<TemplateDescriptor> TemplateDescriptors => Object.List("SELECT * FROM template_definition ORDER BY id", 0, r => Object.Template(r.Long("id")), "template_definition");
     public IReadOnlyList<Declaration> Declarations => Object.List("SELECT * FROM declaration ORDER BY id", 0, r => Object.Declaration(r.Long("id")), "declaration");
     public IReadOnlyList<SemanticEntity> Entities => Object.List("SELECT * FROM entity ORDER BY id", 0, r => Object.Entity(r.Long("id")), "entity");
     public IReadOnlyList<Constant> Constants => Object.List("SELECT * FROM constant ORDER BY id",0,r=>Object.Constant(r.Long("id")),"constant");
@@ -20,7 +21,8 @@ public sealed class TranslationUnit : SemanticEntity
     public IReadOnlyList<FileScopeDynamicInitRoutineDetails> FileScopeInitializationRoutines => Object.List("SELECT * FROM file_scope_dynamic_init_routine WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new FileScopeDynamicInitRoutineDetails(Object,r));
     public IReadOnlyList<VirtualTableDetails> VirtualTables => Object.List("SELECT * FROM virtual_table ORDER BY id",0,r=>new VirtualTableDetails(Object,r),"virtual_table");
     public IReadOnlyList<SourceFile> Sources => Object.List("SELECT * FROM source_file ORDER BY id", 0, r => Object.File(r.Long("id")), "source_file");
-    public IReadOnlyList<SourceMappingSegmentDetails> SourceMappings => Object.List("SELECT * FROM source_mapping_segment ORDER BY id", 0, r => new SourceMappingSegmentDetails(Object, r), "source_mapping_segment");
+    public IReadOnlyList<SourceMappingSegment> SourceMappings => Object.List("SELECT * FROM source_mapping_segment ORDER BY id", 0, r => Object.Mapping(r.Long("id")), "source_mapping_segment");
+    public IReadOnlyList<PragmaDirective> Pragmas => Object.List("SELECT * FROM pragma ORDER BY id",0,r=>Object.Pragma(r.Long("id")),"pragma");
     public IReadOnlyList<CppModule> Modules => Object.List("SELECT * FROM module ORDER BY id",0,r=>Object.Module(r.Long("id")),"module");
     public IReadOnlyList<ModuleImport> ModuleImports => Object.List("SELECT m.* FROM translation_unit_module_import r JOIN module_import m ON m.id=r.import_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.ModuleImport(r.Long("id")),"module_import");
     public IReadOnlyList<StaticInitializationDetails> StaticInitializations => Object.List("SELECT * FROM static_initialization WHERE owner_id=$owner ORDER BY ordinal", Id, r => new StaticInitializationDetails(Object, r));
@@ -41,6 +43,7 @@ public class Symbol : SemanticEntity
     public CppType? DeclaredType => SymbolDetails.Type;
     public SourceInfo? Source => SymbolDetails.SourceOrigin;
     public bool IsCompilerGenerated => SymbolDetails.CompilerGenerated;
+    public bool IsImportedFromModule => SymbolDetails.IsImportedFromModule;
     public IReadOnlyList<Declaration> Declarations => Object.List("SELECT * FROM declaration WHERE symbol_id=$owner ORDER BY id", Id, r => Object.Declaration(r.Long("id")), "declaration");
     public override string ToString() => Name ?? Kind.Name;
 }
@@ -56,7 +59,7 @@ public sealed class FunctionSymbol : Symbol
     public IReadOnlyList<Parameter> Parameters => Object.List(ParameterQuery, Id, r => new Parameter(Object, r),"parameter_type");
     public IReadOnlyList<Parameter> SourceParameters => Object.List(ParameterQuery.Replace("ORDER BY t.ordinal", "AND r.is_source_parameter=1 ORDER BY t.ordinal"), Id, r => new Parameter(Object, r),"parameter_type");
     public FunctionBody? Body => Details.BodyRoot is { } root ? new(this, root, Details.BodyScope) : null;
-    public TemplateSymbol? Template => Details.Template;
+    public TemplateDescriptor? Template => Details.Template;
     public TemplateInstantiation? Instantiation => Details.Instance;
     public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
     public IReadOnlyList<CppType> TypeArguments => Instantiation?.TypeArguments ?? [];
@@ -121,7 +124,7 @@ public sealed class VariableSymbol : Symbol
     public Initialization? Initializer => Details.Initializer ?? regionInitializer.Value?.Initialization;
     public SemanticKind InitializationKind => Details.InitializationKind;
     public TemplateInstantiation? Instantiation => Details.Instance;
-    public TemplateSymbol? Template => Instantiation?.OriginalDefinition;
+    public TemplateDescriptor? Template => Instantiation?.OriginalDefinition;
     public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
     public Constant? ConstantInitializer => Details.ConstantInitializer ?? regionInitializer.Value?.Constant;
     public Lifetime? Lifetime => Details.Lifetime;
@@ -162,6 +165,12 @@ public sealed class Scope : SemanticEntity
     public SemanticKind Kind => Details.Kind;
     public IReadOnlyList<SemanticEntity> Members => Object.List("SELECT * FROM scope_member WHERE owner_id=$owner ORDER BY ordinal", Id, r => Object.Entity(r.Long("member_id")));
     public IReadOnlyList<Initialization> DynamicInitializations => Object.List("SELECT i.* FROM scope_initialization r JOIN initialization i ON i.id=r.initialization_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Initialization(r.Long("id")),"initialization");
+    public IReadOnlyList<SourceEntry> SourceSequence => Object.List("SELECT e.* FROM scope_source_entry r JOIN source_entry e ON e.id=r.entry_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.SourceEntry(r.Long("id")),"source_entry");
+    public IEnumerable<SourceEntry> SourceEntries => SourceSequenceTraversal.Flatten(SourceSequence);
+    public IReadOnlyList<SourceSublist> SourceSublists => Object.List("SELECT s.* FROM scope_source_sublist r JOIN source_sublist s ON s.id=r.sublist_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.SourceSublist(r.Long("id")),"source_sublist");
+    public IReadOnlyList<PragmaDirective> Pragmas => Object.List("SELECT p.* FROM scope_pragma r JOIN pragma p ON p.id=r.pragma_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Pragma(r.Long("id")),"pragma");
+    public IReadOnlyList<MicrosoftIfExists> IfExistsEntries => Object.List("SELECT e.* FROM scope_if_exists r JOIN microsoft_if_exists e ON e.id=r.if_exists_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.IfExists(r.Long("id")),"microsoft_if_exists");
+    public IReadOnlyList<LocalExpressionReferenceDetails> LocalExpressionReferences => Object.List("SELECT * FROM local_expression_reference WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new LocalExpressionReferenceDetails(Object,r));
 }
 
 public sealed class Declaration : SemanticNode
@@ -174,6 +183,9 @@ public sealed class Declaration : SemanticNode
     public override SourceInfo? Source => Details.SourceOrigin;
     public override SemanticKind RepresentationRole => Object.Kind(7003);
     public override bool IsCompilerGenerated => Details.CompilerGenerated;
+    public SecondaryDeclarationDetails? Secondary => Object.Store.Get("secondary_declaration",Id) is {} row ? new(Object,row) : null;
+    public DeclarationPositionsDetails? Positions => Object.Store.GetByOwner("declaration_positions",Id) is {} row ? new(Object,row) : null;
+    public IReadOnlyList<DeclarationElementPositionDetails> ElementPositions => Object.List("SELECT * FROM declaration_element_position WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new DeclarationElementPositionDetails(Object,r));
     public override IReadOnlyList<SemanticNode> Children => [];
     public override void Accept(SemanticVisitor visitor) => visitor.VisitDeclaration(this);
 }
@@ -183,6 +195,8 @@ public sealed class EnumSymbol : TypeSymbol
     internal EnumSymbol(RoslynObject owner,long id,Row row) : base(owner,id,row) => Details=new(owner,row);
     public new EnumSymbolDetails Details { get; }
     public CppType? UnderlyingType => Details.UnderlyingType;
+    public CppType? ExplicitUnderlyingType => Details.ExplicitUnderlyingType;
+    public bool HasExplicitBase => Details.HasExplicitBase;
     public IReadOnlyList<EnumeratorDetails> Enumerators => Object.List("SELECT * FROM enumerator WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new EnumeratorDetails(Object,r));
 }
 

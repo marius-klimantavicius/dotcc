@@ -21,9 +21,15 @@ public sealed class SourcePosition : SemanticEntity
     public BigInteger? OriginalSequence => Details.OriginalSequence;
     public long? OriginalColumn => Details.OriginalColumn;
     public SourceFile? File => Details.File;
+    public string? PresumedName => Details.PresumedName;
     public BigInteger? LogicalLine => Details.LogicalLine;
+    public BigInteger? PhysicalLine => Details.PhysicalLine;
+    public IncludeOccurrence? Include => Details.Include;
+    public SourceMappingSegment? Mapping => Details.MappingSegment;
+    public SourcePosition? SpellingPosition => Details.SpellingPosition;
+    public bool AtEndOfSource => Details.AtEndOfSource;
     public MacroInvocation? MacroExpansion => Details.MacroInvocation;
-    public override string ToString() => $"{File?.Name}:{LogicalLine}:{Column}";
+    public override string ToString() => $"{PresumedName ?? File?.Name}:{LogicalLine}:{Column}";
 }
 
 public sealed class SourceRange : SemanticEntity
@@ -39,9 +45,9 @@ public sealed class SourceFile : SemanticEntity
 {
     internal SourceFile(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public SourceFileDetails Details { get; }
-    public string Name => Details.Name;
-    public string? Path => Details.Path;
-    public IReadOnlyList<IncludeOccurrenceDetails> IncludeOccurrences => Object.List("SELECT * FROM include_occurrence WHERE file_id=$owner ORDER BY ordinal,id",Id,r=>new IncludeOccurrenceDetails(Object,r),"include_occurrence");
+    public string Name => IncludeOccurrences.FirstOrDefault()?.DisplayName ?? Path;
+    public string Path => Details.Path;
+    public IReadOnlyList<IncludeOccurrence> IncludeOccurrences => Object.List("SELECT * FROM include_occurrence WHERE file_id=$owner ORDER BY ordinal,id",Id,r=>Object.Include(r.Long("id")),"include_occurrence");
     public IReadOnlyList<SourceAttachmentDetails> Attachments => Object.List("SELECT * FROM source_attachment WHERE file_id=$owner ORDER BY id",Id,r=>new SourceAttachmentDetails(Object,r),"source_attachment");
 }
 
@@ -52,6 +58,7 @@ public sealed class MacroDefinition : SemanticEntity
     public string Name => Details.Name;
     public string Text => Details.Text;
     public SourcePosition? Position => Details.Position;
+    public SourceRange? ReplacementRange => Details.ReplacementRange;
 }
 
 public sealed class MacroInvocation : SemanticEntity
@@ -62,6 +69,7 @@ public sealed class MacroInvocation : SemanticEntity
     public MacroInvocation? Parent => Details.Parent;
     public SourcePosition? Position => Details.Position;
     public string? ArgumentText => Details.ArgumentText;
+    public SourcePosition? EndPosition => Details.EndPosition;
     public IReadOnlyList<MacroInvocation> Children => Object.List("SELECT * FROM macro_invocation WHERE parent_id=$owner ORDER BY ordinal",Id,r=>Object.MacroInvocation(r.Long("id")),"macro_invocation");
 }
 

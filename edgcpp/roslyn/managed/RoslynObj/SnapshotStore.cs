@@ -27,6 +27,7 @@ internal sealed class SnapshotStore : IDisposable
     private readonly BoundedCache<(string Query, long Owner, int Page), Row[]> pages;
     private bool disposed;
     private long commands, rowsRead;
+    private int maximumBatchSize;
 
     internal SnapshotStore(string path, ReadOptions options)
     {
@@ -54,13 +55,17 @@ internal sealed class SnapshotStore : IDisposable
         lock (sync) ObjectDisposedException.ThrowIf(disposed, nameof(RoslynObject));
     }
 
-    internal Row? Get(string table, long id)
+    internal Row? Get(string table, long id) => GetUnique(table,id,"id");
+
+    internal Row? GetByOwner(string table,long owner) => GetUnique(table,owner,"owner_id");
+
+    private Row? GetUnique(string table,long id,string keyColumn)
     {
         lock (sync)
         {
             EnsureActive();
             if (rows.TryGet((table, id), out var value)) return value;
-            var result = Query($"SELECT * FROM {table} WHERE id=$owner", id);
+            var result = Query($"SELECT * FROM {table} WHERE {keyColumn}=$owner", id);
             if (result.Length == 0) { rows.Set((table, id), null); return null; }
             rows.Set((table, id), result[0]);
             return result[0];
@@ -79,6 +84,7 @@ internal sealed class SnapshotStore : IDisposable
         {
             EnsureActive();
             using var command = Create(sql, owner);
+            maximumBatchSize=Math.Max(maximumBatchSize,parameters.Count);
             for (var i = 0; i < parameters.Count; i++)
                 command.Parameters.AddWithValue($"$key{i}", parameters[i] ?? DBNull.Value);
             using var registration = token.Register(command.Cancel);
@@ -143,8 +149,8 @@ internal sealed class SnapshotStore : IDisposable
         // This prevents a block with many leaf operations from issuing one read per edge.
         var pending = nodes.Select(r => r.Long("id")).Distinct()
             .Where(id => !pages.TryGet((ChildrenQuery, id, 0), out _))
-            .Take(Math.Min(options.PageSize, Math.Max(1, Math.Min(options.CachedPageCount / 2 + 1,
-                options.CachedRowCount / options.PageSize)))).ToArray();
+            .Take(Math.Min(900,Math.Min(options.PageSize, Math.Max(1, Math.Min(options.CachedPageCount / 2 + 1,
+                options.CachedRowCount / options.PageSize))))).ToArray();
         if (pending.Length == 0) return;
         var parameters = pending.Select(id => (object?)id).ToArray();
         var placeholders = string.Join(',', pending.Select((_, i) => $"$key{i}"));
@@ -210,7 +216,8 @@ internal sealed class SnapshotStore : IDisposable
         }
         var companions = table switch
         {
-            "routine_symbol" or "variable_symbol" or "field_symbol" or "namespace_symbol" or "label_symbol" or "template_definition" or "template_parameter" => new[] { "entity", "symbol" },
+            "routine_symbol" or "variable_symbol" or "field_symbol" or "namespace_symbol" or "label_symbol" or "template_symbol" or "template_parameter" => new[] { "entity", "symbol" },
+            "template_definition" => new[] { "entity" },
             "type" => new[] { "entity", "record_type", "qualified_type" },
             "symbol" => new[] { "entity" },
             "type_symbol" => new[] { "entity", "symbol", "enum_symbol", "alias_symbol" },
@@ -219,6 +226,13 @@ internal sealed class SnapshotStore : IDisposable
         foreach (var companion in companions)
         {
             _=PrimeRows(companion,ids,token);
+        }
+        if(table=="template_symbol")_ = PrimeRows("template_definition",page.Select(r=>r.Long("descriptor_id")).Distinct().ToArray(),token);
+        if(table is "source_entry" or "record_declaration")
+        {
+            var targets=PrimeRows("entity",page.Select(r=>r.OptionalLong("target_id")).OfType<long>().Distinct().ToArray(),token);
+            PrimeCompanions("entity",targets,token);
+            _=PrimeRows("declaration",page.Select(r=>r.OptionalLong("declaration_id")).OfType<long>().Distinct().ToArray(),token);
         }
     }
 
@@ -284,7 +298,7 @@ internal sealed class SnapshotStore : IDisposable
 
     internal ReaderStatistics Statistics
     {
-        get { lock (sync) return new(commands, rowsRead, rows.Count, pages.Count); }
+        get { lock (sync) return new(commands, rowsRead, rows.Count, pages.Count){MaximumBatchSize=maximumBatchSize}; }
     }
 
     public void Dispose()

@@ -37479,6 +37479,15 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_character","chk_default",313002},
 {"edg_character","chk_last",313007},
 {"edg_character","chk_wchar_t",313003},
+{"edg_element_position","epk_error",330001},
+{"edg_element_position","epk_last",330004},
+{"edg_element_position","epk_noreturn",330003},
+{"edg_element_position","epk_specialization_header",330002},
+{"edg_elf_visibility","evk_default",340005},
+{"edg_elf_visibility","evk_hidden",340002},
+{"edg_elf_visibility","evk_internal",340004},
+{"edg_elf_visibility","evk_protected",340003},
+{"edg_elf_visibility","evk_unspecified",340001},
 {"edg_fixed_precision","fpp_default",202002},
 {"edg_fixed_precision","fpp_last",202004},
 {"edg_fixed_precision","fpp_long",202003},
@@ -37499,6 +37508,15 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_float_kind","fk_std_float16",201012},
 {"edg_float_kind","fk_std_float32",201013},
 {"edg_float_kind","fk_std_float64",201014},
+{"edg_gcc_pragma","gcc_pk_last",339009},
+{"edg_gcc_pragma","gcc_pk_none",339001},
+{"edg_gcc_pragma","gcc_pk_pop_options",339007},
+{"edg_gcc_pragma","gcc_pk_push_options",339006},
+{"edg_gcc_pragma","gcc_pk_reset_options",339008},
+{"edg_gcc_pragma","gcc_pk_system_header",339002},
+{"edg_gcc_pragma","gcc_pk_target",339005},
+{"edg_gcc_pragma","gcc_pk_visibility_pop",339004},
+{"edg_gcc_pragma","gcc_pk_visibility_push",339003},
 {"edg_il_entry","iek_accessible_base_class",316059},
 {"edg_il_entry","iek_asm_entry",316049},
 {"edg_il_entry","iek_asm_operand",316050},
@@ -37630,6 +37648,15 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_integer_kind","ik_unsigned_long",200009},
 {"edg_integer_kind","ik_unsigned_long_long",200011},
 {"edg_integer_kind","ik_unsigned_short",200005},
+{"edg_local_expression_kind","lerk_array_bound",345004},
+{"edg_local_expression_kind","lerk_bit_field_width",345007},
+{"edg_local_expression_kind","lerk_constant_expr",345008},
+{"edg_local_expression_kind","lerk_decltype",345006},
+{"edg_local_expression_kind","lerk_dep_array_bound",345005},
+{"edg_local_expression_kind","lerk_generic_sizeof",345002},
+{"edg_local_expression_kind","lerk_none",345001},
+{"edg_local_expression_kind","lerk_scoped_expr",345009},
+{"edg_local_expression_kind","lerk_tpl_param_expr",345003},
 {"edg_module","mk_header_unit",321002},
 {"edg_module","mk_none",321001},
 {"edg_module","mk_unit",321003},
@@ -37637,6 +37664,52 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_module_file","mfk_edg_ifc",322002},
 {"edg_module_file","mfk_ms_ifc",322003},
 {"edg_module_file","mfk_unknown",322001},
+{"edg_ms_attribute","msak_coclass",342007},
+{"edg_ms_attribute","msak_custom",342005},
+{"edg_ms_attribute","msak_edg_test",342006},
+{"edg_ms_attribute","msak_last",342009},
+{"edg_ms_attribute","msak_misc",342003},
+{"edg_ms_attribute","msak_no_injected_text",342008},
+{"edg_ms_attribute","msak_none",342001},
+{"edg_ms_attribute","msak_unrecognized",342002},
+{"edg_ms_attribute","msak_uuid",342004},
+{"edg_ms_attribute_argument","msaak_boolean",343003},
+{"edg_ms_attribute_argument","msaak_enumeration",343006},
+{"edg_ms_attribute_argument","msaak_integer",343002},
+{"edg_ms_attribute_argument","msaak_none",343001},
+{"edg_ms_attribute_argument","msaak_other",343007},
+{"edg_ms_attribute_argument","msaak_string",343004},
+{"edg_ms_attribute_argument","msaak_uuid",343005},
+{"edg_ms_attribute_target","msat_any",344023},
+{"edg_ms_attribute_target","msat_assembly",344003},
+{"edg_ms_attribute_target","msat_class",344005},
+{"edg_ms_attribute_target","msat_constructor",344009},
+{"edg_ms_attribute_target","msat_delegate",344016},
+{"edg_ms_attribute_target","msat_enum",344008},
+{"edg_ms_attribute_target","msat_event",344013},
+{"edg_ms_attribute_target","msat_field",344012},
+{"edg_ms_attribute_target","msat_genericparameter",344018},
+{"edg_ms_attribute_target","msat_interface",344014},
+{"edg_ms_attribute_target","msat_interfaceimpl",344022},
+{"edg_ms_attribute_target","msat_invalid",344001},
+{"edg_ms_attribute_target","msat_method",344010},
+{"edg_ms_attribute_target","msat_module",344004},
+{"edg_ms_attribute_target","msat_none",344002},
+{"edg_ms_attribute_target","msat_parameter",344015},
+{"edg_ms_attribute_target","msat_property",344011},
+{"edg_ms_attribute_target","msat_returnvalue",344017},
+{"edg_ms_attribute_target","msat_routine",344021},
+{"edg_ms_attribute_target","msat_struct",344006},
+{"edg_ms_attribute_target","msat_typedef",344019},
+{"edg_ms_attribute_target","msat_union",344007},
+{"edg_ms_attribute_target","msat_variable",344020},
+{"edg_ms_pragma_comment","mpct_compiler",337001},
+{"edg_ms_pragma_comment","mpct_exestr",337002},
+{"edg_ms_pragma_comment","mpct_last",337006},
+{"edg_ms_pragma_comment","mpct_lib",337003},
+{"edg_ms_pragma_comment","mpct_linker",337004},
+{"edg_ms_pragma_comment","mpct_user",337005},
+{"edg_ms_pragma_conform","mpck_forScope",338001},
 {"edg_name_linkage","CUSTOM_NAME_LINKAGE_KINDS",305006},
 {"edg_name_linkage","nlk_cplusplus_external",305003},
 {"edg_name_linkage","nlk_external",305004},
@@ -37752,6 +37825,63 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_opname","onk_star",314008},
 {"edg_opname","onk_subscript",314044},
 {"edg_opname","onk_times_assign",314021},
+{"edg_pragma","pk_can_instantiate",331009},
+{"edg_pragma","pk_checking_pragma",331043},
+{"edg_pragma","pk_clang_riscv",331028},
+{"edg_pragma","pk_comment",331053},
+{"edg_pragma","pk_conform",331054},
+{"edg_pragma","pk_db_name",331045},
+{"edg_pragma","pk_db_opt",331044},
+{"edg_pragma","pk_define_type_info",331019},
+{"edg_pragma","pk_diag_default",331034},
+{"edg_pragma","pk_diag_error",331032},
+{"edg_pragma","pk_diag_once",331033},
+{"edg_pragma","pk_diag_remark",331030},
+{"edg_pragma","pk_diag_suppress",331029},
+{"edg_pragma","pk_diag_warning",331031},
+{"edg_pragma","pk_diagnostic",331035},
+{"edg_pragma","pk_disable_ldscope",331024},
+{"edg_pragma","pk_do_not_instantiate",331008},
+{"edg_pragma","pk_enable_ldscope",331023},
+{"edg_pragma","pk_gcc_immediate",331025},
+{"edg_pragma","pk_gcc_next_token",331026},
+{"edg_pragma","pk_gnu_riscv",331027},
+{"edg_pragma","pk_hdrstop",331017},
+{"edg_pragma","pk_ident",331014},
+{"edg_pragma","pk_ident_directive",331013},
+{"edg_pragma","pk_ident_pragma",331012},
+{"edg_pragma","pk_if_exists",331047},
+{"edg_pragma","pk_il_display",331046},
+{"edg_pragma","pk_include_alias",331055},
+{"edg_pragma","pk_inline_template",331010},
+{"edg_pragma","pk_instantiate",331007},
+{"edg_pragma","pk_last",331057},
+{"edg_pragma","pk_lint_argsused",331004},
+{"edg_pragma","pk_lint_notreached",331006},
+{"edg_pragma","pk_lint_varargs_count",331005},
+{"edg_pragma","pk_no_pch",331018},
+{"edg_pragma","pk_none",331001},
+{"edg_pragma","pk_once",331016},
+{"edg_pragma","pk_pack",331011},
+{"edg_pragma","pk_pop_macro",331049},
+{"edg_pragma","pk_printf_args",331002},
+{"edg_pragma","pk_push_macro",331048},
+{"edg_pragma","pk_redefine_extname",331022},
+{"edg_pragma","pk_scanf_args",331003},
+{"edg_pragma","pk_setlocale",331052},
+{"edg_pragma","pk_start_map_region",331050},
+{"edg_pragma","pk_stdc",331020},
+{"edg_pragma","pk_stop_map_region",331051},
+{"edg_pragma","pk_test_bind_next_pass",331042},
+{"edg_pragma","pk_test_immediate",331038},
+{"edg_pragma","pk_test_immediate_pp_text",331040},
+{"edg_pragma","pk_test_immediate_text",331039},
+{"edg_pragma","pk_test_next_decl",331037},
+{"edg_pragma","pk_test_next_statement",331036},
+{"edg_pragma","pk_test_other",331041},
+{"edg_pragma","pk_unrecognized",331056},
+{"edg_pragma","pk_upc",331021},
+{"edg_pragma","pk_weak",331015},
 {"edg_ref_qualifier","rqk_default",317001},
 {"edg_ref_qualifier","rqk_lvalue",317002},
 {"edg_ref_qualifier","rqk_rvalue",317003},
@@ -37800,6 +37930,19 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_special_function","sfk_property_set",300016},
 {"edg_special_function","sfk_static_constructor",300009},
 {"edg_special_function","sfk_udl_operator",300005},
+{"edg_stdc_pragma","stdc_pk_cx_limited_range",332004},
+{"edg_stdc_pragma","stdc_pk_fenv_access",332003},
+{"edg_stdc_pragma","stdc_pk_fp_contract",332002},
+{"edg_stdc_pragma","stdc_pk_fx_accum_overflow",332007},
+{"edg_stdc_pragma","stdc_pk_fx_fract_overflow",332006},
+{"edg_stdc_pragma","stdc_pk_fx_full_precision",332005},
+{"edg_stdc_pragma","stdc_pk_last",332008},
+{"edg_stdc_pragma","stdc_pk_none",332001},
+{"edg_stdc_value","stdc_pv_default",333005},
+{"edg_stdc_value","stdc_pv_none",333001},
+{"edg_stdc_value","stdc_pv_off",333002},
+{"edg_stdc_value","stdc_pv_on",333003},
+{"edg_stdc_value","stdc_pv_sat",333004},
 {"edg_storage_class","sc_asm",306007},
 {"edg_storage_class","sc_auto",306004},
 {"edg_storage_class","sc_extern",306002},
@@ -37841,6 +37984,20 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_typeref","trk_remove_restrict",309028},
 {"edg_typeref","trk_remove_volatile",309029},
 {"edg_typeref","trk_template_arg_list",309031},
+{"edg_upc_access","upc_access_relaxed",335003},
+{"edg_upc_access","upc_access_strict",335002},
+{"edg_upc_access","upc_access_unspecified",335001},
+{"edg_upc_coherence","upc_coherence_stack_noop",336001},
+{"edg_upc_coherence","upc_coherence_stack_restore",336003},
+{"edg_upc_coherence","upc_coherence_stack_save",336002},
+{"edg_upc_pragma","upc_pk_access",334001},
+{"edg_upc_pragma","upc_pk_coherence",334002},
+{"edg_vector_kind","vk_ext",341002},
+{"edg_vector_kind","vk_gnu",341001},
+{"edg_vector_kind","vk_last",341006},
+{"edg_vector_kind","vk_neon",341003},
+{"edg_vector_kind","vk_neon_builtin",341005},
+{"edg_vector_kind","vk_neon_poly",341004},
 {"eh_table_kind","array",47002},
 {"eh_table_kind","region",47001},
 {"entity","alias",1011},
@@ -37869,28 +38026,40 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"entity","handler",1052},
 {"entity","include_occurrence",1027},
 {"entity","initialization",1017},
+{"entity","instantiation_directive",1072},
 {"entity","label",1009},
 {"entity","lambda_definition",1054},
 {"entity","lifetime",1018},
+{"entity","line_directive",1068},
+{"entity","linkage_specification",1073},
 {"entity","macro_definition",1032},
 {"entity","macro_invocation",1033},
+{"entity","microsoft_if_exists",1074},
 {"entity","module",1065},
 {"entity","module_import",1066},
+{"entity","ms_attribute",1077},
+{"entity","ms_attribute_argument",1078},
 {"entity","name",1002},
 {"entity","name_qualifier",1060},
 {"entity","name_reference",1037},
 {"entity","namespace",1005},
 {"entity","orphan_scope",1061},
 {"entity","parameter_type",1063},
+{"entity","pragma",1076},
+{"entity","record_declaration",1075},
 {"entity","record_layout",1040},
 {"entity","routine",1006},
 {"entity","scope",1003},
+{"entity","scoped_expression",1079},
 {"entity","source_attachment",1034},
+{"entity","source_end_construct",1071},
+{"entity","source_entry",1069},
 {"entity","source_file",1026},
 {"entity","source_mapping",1028},
 {"entity","source_origin",1031},
 {"entity","source_position",1029},
 {"entity","source_range",1030},
+{"entity","source_sublist",1070},
 {"entity","statement",1016},
 {"entity","static_assertion",1059},
 {"entity","subobject_path",1036},
@@ -37901,6 +38070,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"entity","template_instance",1024},
 {"entity","template_parameter",1022},
 {"entity","template_specialization",1025},
+{"entity","template_symbol",1080},
 {"entity","temporary",1019},
 {"entity","token_sequence",1062},
 {"entity","translation_unit",1001},
@@ -38277,6 +38447,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"source_origin_kind","macro",21006},
 {"source_origin_kind","ordinary",21001},
 {"source_origin_kind","predefined",21002},
+{"source_origin_kind","preinclude",21007},
 {"source_origin_kind","synthesized",21005},
 {"source_origin_kind","unknown",21004},
 {"special_function_kind","constructor",44002},
@@ -38332,6 +38503,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"storage_duration","thread",31003},
 {"storage_location_kind","direct_variable",19001},
 {"storage_location_kind","indirect_variable",19002},
+{"storage_location_kind","no_object",19005},
 {"storage_location_kind","receiver_relative",19003},
 {"storage_location_kind","static_address",19004},
 {"string_encoding","ascii",11003},
@@ -77662,3 +77834,228 @@ case rprk_comma_discard_first: return 203005;
 case rprk_comma_discard_second: return 203006;
 default: return 0; } }
 #endif
+#if GNU_EXTENSIONS_ALLOWED && GNU_VECTOR_TYPES_ALLOWED
+static int roslyn_kind_edg_vector_kind(a_vector_kind value) { switch(value) {
+case vk_gnu: return 341001;
+case vk_ext: return 341002;
+case vk_neon: return 341003;
+case vk_neon_poly: return 341004;
+case vk_neon_builtin: return 341005;
+case vk_last: return 341006;
+default: return 0; } }
+#endif
+#if GNU_EXTENSIONS_ALLOWED && GNU_VISIBILITY_ATTRIBUTE_ALLOWED
+static int roslyn_kind_edg_elf_visibility(an_ELF_visibility_kind value) { switch(value) {
+case evk_unspecified: return 340001;
+case evk_hidden: return 340002;
+case evk_protected: return 340003;
+case evk_internal: return 340004;
+case evk_default: return 340005;
+default: return 0; } }
+#endif
+static int roslyn_kind_edg_element_position(an_element_position_kind value) { switch(value) {
+case epk_error: return 330001;
+#if EXTRA_SOURCE_POSITIONS_IN_IL
+case epk_specialization_header: return 330002;
+#endif
+case epk_noreturn: return 330003;
+case epk_last: return 330004;
+default: return 0; } }
+static int roslyn_kind_edg_pragma(a_pragma_kind value) { switch(value) {
+case pk_none: return 331001;
+case pk_printf_args: return 331002;
+case pk_scanf_args: return 331003;
+case pk_lint_argsused: return 331004;
+case pk_lint_varargs_count: return 331005;
+case pk_lint_notreached: return 331006;
+case pk_instantiate: return 331007;
+case pk_do_not_instantiate: return 331008;
+case pk_can_instantiate: return 331009;
+case pk_inline_template: return 331010;
+case pk_pack: return 331011;
+#if IDENT_DIRECTIVE_AND_PRAGMA
+case pk_ident_pragma: return 331012;
+case pk_ident_directive: return 331013;
+#endif
+#if PRAGMA_WEAK_ALLOWED
+case pk_weak: return 331015;
+#endif
+case pk_once: return 331016;
+case pk_hdrstop: return 331017;
+case pk_no_pch: return 331018;
+case pk_define_type_info: return 331019;
+case pk_stdc: return 331020;
+#if UPC_EXTENSIONS_ALLOWED
+case pk_upc: return 331021;
+#endif
+#if REDEFINE_EXTNAME_PRAGMA_ENABLED
+case pk_redefine_extname: return 331022;
+#endif
+#if SUN_EXTENSIONS_ALLOWED
+case pk_enable_ldscope: return 331023;
+case pk_disable_ldscope: return 331024;
+#endif
+#if GNU_EXTENSIONS_ALLOWED
+case pk_gcc_immediate: return 331025;
+case pk_gcc_next_token: return 331026;
+#if GNU_VECTOR_TYPES_ALLOWED && BUILTIN_FUNCTIONS_ENABLED
+case pk_gnu_riscv: return 331027;
+case pk_clang_riscv: return 331028;
+#endif
+#endif
+case pk_diag_suppress: return 331029;
+case pk_diag_remark: return 331030;
+case pk_diag_warning: return 331031;
+case pk_diag_error: return 331032;
+case pk_diag_once: return 331033;
+case pk_diag_default: return 331034;
+case pk_diagnostic: return 331035;
+#if INCLUDE_EDG_TEST_PRAGMAS
+case pk_test_next_statement: return 331036;
+case pk_test_next_decl: return 331037;
+case pk_test_immediate: return 331038;
+case pk_test_immediate_text: return 331039;
+case pk_test_immediate_pp_text: return 331040;
+case pk_test_other: return 331041;
+case pk_test_bind_next_pass: return 331042;
+#endif
+#if ADD_CHECKING_PRAGMAS_FOR_INTERNAL_TESTING
+case pk_checking_pragma: return 331043;
+#endif
+#if DEBUG
+case pk_db_opt: return 331044;
+case pk_db_name: return 331045;
+#endif
+#if NEED_IL_DISPLAY
+case pk_il_display: return 331046;
+#endif
+#if GENERATE_MICROSOFT_IF_EXISTS_ENTRIES
+case pk_if_exists: return 331047;
+#endif
+case pk_push_macro: return 331048;
+case pk_pop_macro: return 331049;
+#if MICROSOFT_EXTENSIONS_ALLOWED
+case pk_start_map_region: return 331050;
+case pk_stop_map_region: return 331051;
+#if NATIVE_MULTIBYTE_CHARS_SUPPORTED_WITH_UNICODE
+case pk_setlocale: return 331052;
+#endif
+case pk_comment: return 331053;
+case pk_conform: return 331054;
+case pk_include_alias: return 331055;
+#endif
+#if INCLUDE_UNRECOGNIZED_PRAGMAS_IN_IL
+case pk_unrecognized: return 331056;
+#endif
+case pk_last: return 331057;
+default: return 0; } }
+static int roslyn_kind_edg_stdc_pragma(a_stdc_pragma_kind value) { switch(value) {
+case stdc_pk_none: return 332001;
+case stdc_pk_fp_contract: return 332002;
+case stdc_pk_fenv_access: return 332003;
+case stdc_pk_cx_limited_range: return 332004;
+#if FIXED_POINT_ALLOWED
+case stdc_pk_fx_full_precision: return 332005;
+case stdc_pk_fx_fract_overflow: return 332006;
+case stdc_pk_fx_accum_overflow: return 332007;
+#endif
+case stdc_pk_last: return 332008;
+default: return 0; } }
+static int roslyn_kind_edg_stdc_value(a_stdc_pragma_value value) { switch(value) {
+case stdc_pv_none: return 333001;
+case stdc_pv_off: return 333002;
+case stdc_pv_on: return 333003;
+#if FIXED_POINT_ALLOWED
+case stdc_pv_sat: return 333004;
+#endif
+case stdc_pv_default: return 333005;
+default: return 0; } }
+#if UPC_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_upc_pragma(a_upc_pragma_kind value) { switch(value) {
+case upc_pk_access: return 334001;
+case upc_pk_coherence: return 334002;
+default: return 0; } }
+#endif
+#if UPC_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_upc_access(a_upc_access_method value) { switch(value) {
+case upc_access_unspecified: return 335001;
+case upc_access_strict: return 335002;
+case upc_access_relaxed: return 335003;
+default: return 0; } }
+#endif
+#if UPC_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_upc_coherence(a_upc_coherence_stack_operation value) { switch(value) {
+case upc_coherence_stack_noop: return 336001;
+case upc_coherence_stack_save: return 336002;
+case upc_coherence_stack_restore: return 336003;
+default: return 0; } }
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_ms_pragma_comment(a_microsoft_pragma_comment_type value) { switch(value) {
+case mpct_compiler: return 337001;
+case mpct_exestr: return 337002;
+case mpct_lib: return 337003;
+case mpct_linker: return 337004;
+case mpct_user: return 337005;
+case mpct_last: return 337006;
+default: return 0; } }
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_ms_pragma_conform(a_microsoft_pragma_conform_kind value) { switch(value) {
+case mpck_forScope: return 338001;
+default: return 0; } }
+#endif
+#if GNU_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_gcc_pragma(a_gcc_pragma_kind value) { switch(value) {
+case gcc_pk_none: return 339001;
+case gcc_pk_system_header: return 339002;
+#if GNU_VISIBILITY_ATTRIBUTE_ALLOWED
+case gcc_pk_visibility_push: return 339003;
+case gcc_pk_visibility_pop: return 339004;
+#endif
+case gcc_pk_target: return 339005;
+case gcc_pk_push_options: return 339006;
+case gcc_pk_pop_options: return 339007;
+case gcc_pk_reset_options: return 339008;
+case gcc_pk_last: return 339009;
+default: return 0; } }
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_ms_attribute(an_ms_attribute_kind value) { switch(value) {
+case msak_none: return 342001;
+case msak_unrecognized: return 342002;
+case msak_misc: return 342003;
+case msak_uuid: return 342004;
+case msak_custom: return 342005;
+#if INCLUDE_EDG_TEST_ATTRIBUTES
+case msak_edg_test: return 342006;
+#endif
+case msak_coclass: return 342007;
+case msak_no_injected_text: return 342008;
+case msak_last: return 342009;
+default: return 0; } }
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_ms_attribute_argument(an_ms_attribute_arg_kind value) { switch(value) {
+case msaak_none: return 343001;
+case msaak_integer: return 343002;
+case msaak_boolean: return 343003;
+case msaak_string: return 343004;
+case msaak_uuid: return 343005;
+case msaak_enumeration: return 343006;
+case msaak_other: return 343007;
+default: return 0; } }
+#endif
+static int roslyn_kind_edg_local_expression_kind(a_local_expr_node_ref_kind value) { switch(value) {
+case lerk_none: return 345001;
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+case lerk_generic_sizeof: return 345002;
+case lerk_tpl_param_expr: return 345003;
+#endif
+case lerk_array_bound: return 345004;
+case lerk_dep_array_bound: return 345005;
+case lerk_decltype: return 345006;
+case lerk_bit_field_width: return 345007;
+case lerk_constant_expr: return 345008;
+case lerk_scoped_expr: return 345009;
+default: return 0; } }

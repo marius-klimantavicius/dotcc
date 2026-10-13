@@ -44,6 +44,9 @@ static a_type_ptr roslyn_call_type(an_expr_node_ptr callee) {
 }
 static Rid roslyn_parameter_type(a_param_type_ptr p) {
  bool fresh;Rid id=DB.claim(p,"parameter_type",fresh);if(!fresh)return id;
+#if MICROSOFT_EXTENSIONS_ALLOWED
+ roslyn_ms_attributes(id,p->ms_attributes);
+#endif
  int transparent=0,nonnull=0,cli_array=0,unaligned=0,near_flag=0,far_flag=0,upc_shared=0,upc_strict=0,upc_relaxed=0;
  RoslynSqlValue address_space;
 #if GNU_EXTENSIONS_ALLOWED

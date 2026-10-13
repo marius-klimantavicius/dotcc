@@ -5,6 +5,8 @@ using System.Numerics;
 using System.Reflection;
 
 if(args.FirstOrDefault()=="--benchmark") { Benchmark.Run(args.Skip(1));return; }
+var withoutRowidFixtures=args.FirstOrDefault()=="--without-rowid-fixtures";
+if(withoutRowidFixtures)args=args.Skip(1).ToArray();
 
 var root=Path.Combine(Path.GetTempPath(),"roslynobj-reader-tests-"+Guid.NewGuid().ToString("N"));
 Directory.CreateDirectory(root);
@@ -24,7 +26,14 @@ string Fixture(string name,int extraVariables=0,int extraOperations=0,string? ad
     using var command=db.CreateCommand();
     command.CommandText="PRAGMA foreign_keys=ON";command.ExecuteNonQuery();
     using var transaction=db.BeginTransaction();command.Transaction=transaction;
-    command.CommandText=Resource("schema");command.ExecuteNonQuery();
+    var schema=Resource("schema");
+    if(withoutRowidFixtures)
+        schema=System.Text.RegularExpressions.Regex.Replace(schema,@"CREATE TABLE \w+ \(\n.*?\n\) STRICT;",match =>
+        {
+            var key=System.Text.RegularExpressions.Regex.Match(match.Value,@"PRIMARY KEY \(([^)]+)\)");
+            return key.Success&&key.Groups[1].Value.Contains(',') ? match.Value.Replace(") STRICT;",") WITHOUT ROWID, STRICT;") : match.Value;
+        },System.Text.RegularExpressions.RegexOptions.Singleline);
+    command.CommandText=schema;command.ExecuteNonQuery();
     command.CommandText=Resource("basic").Replace("fixture-artifact",Guid.NewGuid().ToString());command.ExecuteNonQuery();
     for(var i=0;i<extraVariables;i++)
     {
@@ -77,7 +86,7 @@ try
         Check(type.Layout!.Size==16&&type.Layout.Fields.Single().Offset==0,"Layouts must project target quantities.");
         Check(type.TypeArguments.Count==1&&type.OriginalDefinition!.Name=="Widget","Template original and typed arguments must navigate through objects.");
         var template=type.OriginalDefinition!;
-        Check(unit.SemanticModel.FindSymbols("Widget").Contains(template)&&template.Kind.Name=="template"&&template.TemplateKind.Name=="templk_class","Template definitions must participate in the common symbol hierarchy while retaining their template subtype.");
+        Check(unit.SemanticModel.FindSymbols("Widget").Contains(template.DeclarationSymbol!)&&template.DeclarationSymbol!.Kind.Name=="template_symbol"&&template.TemplateKind.Name=="templk_class","Template descriptors must navigate to their separate real symbol while retaining their template subtype.");
         Check(template.Parameters.Single() is {Kind.Name:"template_parameter",ParameterKind.Name:"tpk_type",Name:"T"},"Template parameters must use their named symbol identity alongside the exact parameter kind.");
         var region=body.ExceptionHandling.CleanupRegions.Single();
         Check(region.Ordinal==0&&region.NextRegion is null,"Actual EH region zero must remain distinct from null sentinel.");
@@ -179,11 +188,18 @@ try
         Check(maximal.TranslationUnit.Functions.Single(f=>f.Name=="compute").Body!.DescendantOperations().Count()==2008,"Maximal page size must preserve wide and nested executable traversal.");
         Check(maximal.Statistics.CachedRows<=4096&&maximal.Statistics.CachedPages<=128,"Maximal paging must preserve explicit cache bounds.");
     }
+    using(var widePrefetch=RoslynObject.Open(graphPath,new(){PageSize=1024,CachedPageCount=2048,CachedRowCount=1048576}))
+    {
+        Check(widePrefetch.TranslationUnit.Functions.Single(f=>f.Name=="compute").Body!.DescendantOperations().Count()==2008,"Large valid cache budgets must preserve all children while bounded prefetch splits a wide page.");
+        Check(widePrefetch.Statistics.CachedRows<=1048576&&widePrefetch.Statistics.CachedPages<=2048,"Wide prefetch must preserve the explicitly selected row and page bounds.");
+        Check(widePrefetch.Statistics.MaximumBatchSize==900,"A wide page with generous valid cache budgets must exercise the child prefetch limit of 900 keys per query.");
+    }
     foreach(var input in args)
     {
         var sw=Stopwatch.StartNew();
         using var obj=RoslynObject.Open(input);
         var unit=obj.TranslationUnit;
+        Numeric.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         var functionCount=0;var operationCount=0;var bodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
         foreach(var function in unit.Functions)
         {
@@ -283,17 +299,19 @@ try
             Check(nested.Parent?.Definition.Name=="OUTER"&&nested.Parent.Parent?.Definition.Name=="INC"&&nested.Parent.Parent.Parent is null,"The real macro expansion parent chain must retain every nested invocation.");
             Check(invocations.All(i=>i.ArgumentText=="x"),"The real nested macro invocations must retain canonical argument text.");
             var source=unit.Functions.Single(f=>f.Name=="second").Source!.Position!;
-            Check(source.File?.Name=="logical.cpp"&&source.LogicalLine==200,"The real #line mapping must preserve logical filename and line.");
+            Check(source.PresumedName=="logical.cpp"&&source.LogicalLine==200,"The real #line mapping must preserve presumed filename and logical line separately from the physical file.");
         }
         if(Path.GetFileName(input)=="templates.roslynobj")
         {
             var holder=unit.Templates.Single(t=>t.Name=="Holder");
             var header=holder.Headers.Single();
-            Check(header.Template==holder&&header.Parameters.Select(p=>p.Name).SequenceEqual(new[]{"T","N"}),"Real template headers must preserve owning definitions and parameter order.");
+            Check(header.Template==holder.Descriptor&&header.Parameters.Select(p=>p.Name).SequenceEqual(new[]{"T","N"}),"Real template headers must preserve owning descriptors and parameter order.");
             var typeParameter=header.Parameters[0];var valueParameter=header.Parameters[1];
+            Check(typeParameter.PlaceholderType!.DeclaredParameters.Contains(typeParameter)&&typeParameter.PlaceholderType.DeclarationSymbol==typeParameter,"A type placeholder must resolve to its actual parameter symbol without a second type declaration identity.");
+            Check(valueParameter.PlaceholderConstant!.DeclaredParameters.Contains(valueParameter)&&valueParameter.PlaceholderConstant.DeclarationSymbol==valueParameter,"A non-type placeholder must resolve through the exact constant occurrence rather than its value or coordinates.");
             Check(typeParameter.PlaceholderType is DependentType&&valueParameter.PlaceholderConstant?.Value is ConstantValue<DependentValueDetails>,"Real template parameters must retain their type and value placeholders.");
             Check(((IntegerValue)valueParameter.DefaultArgument!.Constant!.Value).Value==3,"Real non-type template defaults must preserve the exact selected constant.");
-            Check(holder.OriginalDefinition==holder&&holder.Definition==holder&&holder.Pattern is RecordType,"Real canonical and definition links must retain EDG template identity.");
+            Check(holder.OriginalDefinition==holder.Descriptor&&holder.Definition==holder.Descriptor&&holder.Pattern is RecordType,"Real canonical and definition links must retain EDG descriptor identity.");
             var alias=unit.Types.OfType<TypeReference>().Single(t=>t.Name=="Alias"&&t.Instantiation?.IsDependent==false);
             Check(alias.Template?.Name=="Alias"&&alias.TypeArguments.Single().Kind.Name=="tk_integer"&&alias.UnderlyingType.Template?.Name=="Holder","Real alias instances must expose their own arguments and exact underlying class template.");
             var value=unit.Variables.Single(v=>v.Name=="shared_value"&&v.Instantiation?.IsPrototype==false);
@@ -347,6 +365,10 @@ try
             var selected=unit.Variables.Single(v=>v.Name=="selected_pointer").Type.Instantiation!;
             Check(selected.ArgumentMappings.Select(a=>a.Role.Name).SequenceEqual(new[]{"primary","selected_partial"})&&selected.ArgumentMappings[0].Argument.Type is PointerType&&selected.ArgumentMappings[1].Argument.Type?.Kind.Name=="tk_integer","Selected partial arguments must preserve their own map alongside the primary arguments.");
             Check(unit.Variables.Single(v=>v.Name=="rebound").Type.Instantiation!.Arguments[0].Template?.Name=="ParameterBase","A real template-template argument must retain its definition identity.");
+            var templateParameter=unit.Templates.Single(t=>t.Name=="Rebound").Parameters.Single(p=>p.Name=="C");
+            var templatePlaceholder=templateParameter.PlaceholderTemplate!;
+            Check(templatePlaceholder.TemplateKind.Name=="templk_template_template_param"&&templatePlaceholder.DeclaredParameter==templateParameter&&templatePlaceholder.DeclarationSymbols.Single()==templateParameter,"A template-template placeholder must remain a descriptor of its real parameter without a phantom template symbol.");
+            Check(unit.TemplateDescriptors.Where(d=>d.TemplateKind.Name=="templk_template_template_param").All(d=>d.DeclarationSymbols.All(s=>s is TemplateParameter)),"Every retained template-template placeholder association must name actual parameter declarations.");
             var folded=unit.Variables.Single(v=>v.Name=="folded_sum"&&v.Instantiation?.IsPrototype==false);
             Check(folded.Instantiation!.Arguments.Single().Elements.Select(a=>((IntegerValue)a.Constant!.Value).Value).SequenceEqual(new BigInteger[]{1,2,3}),"A real non-type pack must preserve each exact argument in source order.");
             var descriptors=unit.Entities.OfType<DependentOperation>().ToArray();
@@ -356,7 +378,7 @@ try
             Check(compound.Kind.Name=="enk_compound_req"&&compound.NoexceptRequired==true&&compound.WrappedExpression is not null&&requires.Requirements[1].Expression.Kind.Name=="enk_nested_req","Real requires expressions must preserve ordered compound and nested requirements with noexcept facts.");
             Check(descriptors.Any(o=>o.Kind.Name=="enk_concept_id"&&o.Template?.Name=="Addable"&&o.TemplateArguments.Count==1)&&descriptors.Any(o=>o.Kind.Name=="enk_sizeof_pack"&&o.PackType is not null),"Concept arguments and sizeof-pack operands must remain available as typed retained metadata.");
             var concept=unit.Templates.Single(t=>t.Name=="Addable");
-            Check(unit.SemanticModel.FindSymbols("Addable").Contains(concept)&&descriptors.Where(o=>o.Template==concept).All(o=>unit.SemanticModel.GetSymbol(o)==concept)&&unit.SemanticModel.GetReferences(concept).Any(r=>r.Owner is DependentOperation),"Retained concept expressions must resolve and reference the common template symbol identity.");
+            Check(unit.SemanticModel.FindSymbols("Addable").Contains(concept)&&descriptors.Where(o=>o.Template==concept.Descriptor).All(o=>unit.SemanticModel.GetSymbol(o)==concept)&&unit.SemanticModel.GetReferences(concept).Any(r=>r.Owner is DependentOperation),"Retained concept expressions must resolve and reference the separate actual template symbol identity.");
             Check(descriptors.Where(o=>o.Kind.Name=="enk_fold").All(o=>o.FoldOperator?.Name=="tok_plus"&&o.Dependency.FoldLeftAssociative==false),"Fold operators must retain the exact token and associativity.");
             var lambda=unit.Entities.OfType<LambdaOperation>().Single();
             Check(lambda.CallOperator is not null&&lambda.ClosureType is RecordType&&lambda.Captures.Single() is {IsPack:true,IsInitCapture:true,Initialization:not null},"A real retained pack lambda must navigate its closure, callable and initialization capture.");
@@ -364,9 +386,77 @@ try
             var captured=Captured(prototype.Body!.Root).ToArray();
             Check(captured.OfType<InitializationOperation>().Any()&&captured.OfType<ReferenceOperation>().Any()&&captured.All(n=>n.RepresentationRole.Name=="metadata"),"A retained prototype initializer and its actual children must preserve metadata roles throughout the captured graph.");
             Check(!prototype.Body.DescendantOperations().Any(),"Executable traversal must omit a metadata-only template prototype.");
+            var packFunction=unit.Functions.Single(f=>f.Name=="captured_pack"&&f.Instantiation?.IsPrototype==true);
+            var expanded=unit.Functions.Single(f=>f.Name=="captured_pack"&&f.Instantiation?.IsPrototype==false);
+            Check(packFunction.Parameters.Single().Descriptor.IsPack&&expanded.Parameters.Count==3&&expanded.Parameters.All(p=>p.Descriptor.IsPackElement&&p.Descriptor.ParameterNumber==1)&&expanded.Parameters.Select(p=>p.Ordinal).SequenceEqual(new long[]{0,1,2}),"Actual parameter packs must preserve one source parameter number across three distinct expanded signature ordinals.");
+        }
+        if(Path.GetFileName(input)=="source_order.roslynobj")
+        {
+            var entries=unit.GlobalScope.SourceEntries.ToArray();
+            Check(entries.Length>0&&entries.All(e=>e.SourceSequenceOwner==unit.GlobalScope),"A file source sequence must retain its actual owner through ordinary logical enumeration.");
+            var repeated=unit.Functions.Single(f=>f.Name=="repeated");
+            var occurrences=entries.Where(e=>e.DeclaredSymbol==repeated).ToArray();
+            Check(occurrences.Length>=2&&occurrences.Any(e=>e.Declaration?.Secondary is not null),"Repeated source declarations must preserve separate actual secondary occurrences of the same symbol.");
+            var secondary=occurrences.Select(e=>e.Declaration).First(d=>d?.Secondary is not null)!;
+            Check(secondary.Source?.Position is not null&&secondary.Source!=repeated.Source&&secondary.LexicalScope is null,"Secondary source and list ownership must not be substituted with the primary declaration's source or lexical scope.");
+            Check(secondary.Positions?.IdentifierRange is not null&&secondary.Positions.DeclaratorRange is not null,"Real secondary declarations must retain their own identifier and declarator ranges.");
+            var record=unit.Types.OfType<RecordType>().Single(t=>t.Name=="Sequence");
+            var members=record.SourceDeclarations.ToArray();
+            Check(members.Select(m=>m.DeclaredSymbol?.Name).SequenceEqual(new string?[]{"Nested","first","static_value","source_friend","second","Nested","Alias",null,"method"}),"Class occurrence order must include friends and repeated declarations while excluding implicit members.");
+            Check(members[0]!=members[5]&&members[0].Target==members[5].Target&&members.Where(m=>m.Tag.Name!="iek_src_seq_secondary_decl").All(m=>m.Declaration is null),"Positionless member-list nodes must retain distinct identities without assigning the target's primary declaration to each occurrence.");
+            var local=unit.Functions.Single(f=>f.Name=="local_entries").Body!.Scope!;
+            var localEntries=local.SourceEntries.ToArray();
+            string LocalTarget(SourceEntry entry) => entry.DeclaredSymbol?.Name ?? entry.Target switch
+            {
+                StatementOperation statement=>statement.Kind.Name,
+                SourceEndConstruct end=>"end:"+(end.Target switch {CppType type=>type.Name,StatementOperation statement=>statement.Kind.Name,_=>null}),
+                _=>entry.Tag.Name
+            };
+            Check(local.SourceSublists.Count>0&&local.SourceSequence.Any(e=>e.Target is SourceSublist)&&localEntries.Select(LocalTarget).SequenceEqual(new[]{"stmk_block","stmk_decl","external_local","stmk_decl","Local","member","end:Local","stmk_decl","local","stmk_return","end:stmk_block"})&&localEntries.All(e=>e.SourceSequenceOwners.Contains(local)),"Logical source enumeration must preserve exact local target order and owning function scope across real file-region sublist splices.");
+            Check(entries.Select(e=>e.Target).OfType<InstantiationDirective>().Any(d=>d.DoNotInstantiate)&&entries.Select(e=>e.Target).OfType<InstantiationDirective>().Any(d=>!d.DoNotInstantiate),"Explicit and extern template instantiation directives must retain separate typed occurrences.");
+            Check(entries.Select(e=>e.Target).OfType<LinkageSpecification>().Single().NameLinkage.Name=="nlk_external","A real braced linkage specification must preserve its exact linkage kind and string constant.");
+            Check(unit.Pragmas.Any(p=>p.Standard is {Kind.Name:"stdc_pk_fp_contract",Value.Name:"stdc_pv_on"}),"Resident STDC pragma union fields must navigate as exact typed kind and value metadata.");
+        }
+        if(Path.GetFileName(input)=="provenance.roslynobj")
+        {
+            var files=unit.Sources.ToArray();var includes=files.SelectMany(f=>f.IncludeOccurrences).ToArray();
+            var mappings=unit.SourceMappings.ToArray();var remaps=unit.Entities.OfType<LineDirective>().ToArray();
+            Check(files.Length==8&&includes.Length==9&&remaps.Length==2&&mappings.Length==17,"The real source descriptor graph must preserve canonical physical files, repeated occurrences and distinct remap segments.");
+            var repeated=files.Single(f=>Path.GetFileName(f.Path)=="provenance_repeat.hpp");
+            Check(repeated.IncludeOccurrences.Count==2&&repeated.IncludeOccurrences[0]!=repeated.IncludeOccurrences[1]&&repeated.IncludeOccurrences.All(i=>i.File==repeated)&&repeated.IncludeOccurrences.Select(i=>i.Ordinal).SequenceEqual(new long[]{5,6}),"Repeated includes must share one physical source file while retaining distinct occurrences and source ordinals.");
+            var nested=unit.Variables.Single(v=>v.Name=="nested_presumed_line").Source!.Position!;
+            var translation=unit.Variables.Single(v=>v.Name=="remapped_value").Source!.Position!;
+            Check(nested.PresumedName=="presumed_nested.hpp"&&nested.LogicalLine==400&&nested.PhysicalLine==3&&Path.GetFileName(nested.File!.Path)=="provenance_nested.hpp"&&nested.Mapping!.LineDirective!.PresumedName==nested.PresumedName,"A nested remap must preserve its presumed line and name independently from the actual physical source file and line.");
+            Check(translation.PresumedName=="presumed_translation.cpp"&&translation.LogicalLine==900&&translation.PhysicalLine==11&&translation.File==unit.PrimaryInput&&translation.Mapping!.Include==translation.Include,"Translation-unit remaps must retain the actual include and mapping relationship at each source position.");
+            var angled=includes.Single(i=>i.NameAsWritten=="angled.hpp");var quoted=includes.Single(i=>i.NameAsWritten=="quoted.hpp");
+            Check(angled.UsesAngleBrackets&&!angled.IsSystem&&!quoted.UsesAngleBrackets&&quoted.IsSystem,"Include token spelling and system-directory provenance must remain separate captured facts.");
+            Check(includes.Single(i=>Path.GetFileName(i.File.Path)=="provenance_macros.hpp") is {IsPreinclude:true,IsMacrosOnly:true}&&includes.Single(i=>Path.GetFileName(i.File.Path)=="provenance_preinclude.hpp") is {IsPreinclude:true,IsMacrosOnly:false}&&!unit.Variables.Any(v=>v.Name=="macros_only_declaration_must_be_ignored"),"Preinclude and macros-only descriptors must preserve their distinct flags and the actual retained declarations.");
+            Check(includes.All(i=>i.Position is null),"The pinned source-file descriptors must not fabricate include-directive token positions from sequence bounds.");
+            var zero=unit.Macros.Definitions.Where(m=>m.Position?.Sequence==0).ToArray();
+            Check(zero.Length>0&&zero.All(m=>m.Position!.File is null&&m.Position.Mapping is null&&m.Position.LogicalLine is null&&m.Position.PhysicalLine is null),"Actual sequence-zero macro origins must remain unknown rather than acquiring an arbitrary physical source association.");
+        }
+        if(Path.GetFileName(input)=="type_edges.roslynobj")
+        {
+            var alias=unit.Types.OfType<TypeReference>().Single(t=>t.Name=="ForwardAlias");
+            Check(alias.IsIncomplete&&alias.DescriptorIsIncomplete==false&&alias.UnderlyingType.IsIncomplete,"Effective incompleteness must follow retained EDG type semantics while preserving a differing raw descriptor flag.");
+            var pointer=(PointerType)unit.Types.OfType<TypeReference>().Single(t=>t.Name=="ForwardPointer").UnderlyingType;
+            Check(!pointer.IsIncomplete&&pointer.PointeeType.IsIncomplete,"A complete pointer descriptor must retain its incomplete pointed-to record separately.");
+            Check(unit.Types.Single(t=>t.Name=="AliasingInteger").Details.MayAlias,"A real GNU may_alias typedef must retain its actual descriptor flag.");
+            var packed=unit.Types.OfType<RecordType>().Single(t=>t.Name=="PackedRecord");
+            Check(packed.Record.IsPacked&&packed.Record.MaximumMemberAlignment==1&&packed.Layout!.Fields.Select(f=>f.Offset).SequenceEqual(new BigInteger?[]{0,1}),"Packed-record flags and actual target member offsets must remain typed captured quantities.");
+            var small=(EnumSymbol)unit.Types.Single(t=>t.Name=="SmallEnum").DeclarationSymbol!;
+            Check(small.Details.IsPacked&&small.UnderlyingType is ArithmeticType {Arithmetic.Bits:var bits}&&bits==8,"A packed enum must retain both its packed fact and EDG's effective underlying integer descriptor.");
+            var unsigned=(EnumSymbol)unit.Types.Single(t=>t.Name=="UnsignedUnderlying").DeclarationSymbol!;
+            Check(!unsigned.HasExplicitBase&&unsigned.ExplicitUnderlyingType is null&&unsigned.Details.UnderlyingTypeShouldUseUnsigned&&unsigned.UnderlyingType is ArithmeticType {Arithmetic.Signed:false},"Implicit unsigned enum underlying types must remain distinct from an explicitly written base type.");
+            Check(unit.Types.Single(t=>t.Name=="TaggedRecord").Details.InGnuAbiTagNamespace,"The actual ABI-tag namespace association must remain available on its record descriptor.");
+            var exceptionPointer=unit.Types.OfType<PointerType>().Single(t=>t.Details.UsedInExceptionOrRtti&&t.PointeeType.Name=="PolymorphicType");
+            Check(exceptionPointer.PointeeType is RecordType,"The retained exception pointer must navigate its actual pointed-to record in each profile.");
+            if(obj.Manifest.Stage=="lowered")Check(exceptionPointer.PointeeType.Details.TypeinfoVariable is not null,"The lowered profile must retain its actual synthesized record typeinfo variable.");
+            Check(unit.Types.OfType<ArrayType>().Any(t=>t.Array.IsTemplateDependent&&t.Array.DependentBoundConstant is not null),"A dependent array must preserve its actual bound constant in addition to the bound classification.");
         }
         if(Path.GetFileName(input)=="retained.roslynobj")
         {
+            Concurrency.Verify(input,Check);
             var function=unit.Functions.Single(f=>f.Name=="coroutine_protocol");
             var operations=function.Body!.DescendantOperations().ToArray();
             var coroutine=operations.OfType<CoroutineOperation>().Single();
@@ -396,6 +486,8 @@ try
                 Check(unit.Entities.OfType<Initialization>().Count(i=>i.Lambda is not null)==3&&lambdas.All(l=>l.Captures.All(c=>c.Owner==l)),"Source lambda initialization must navigate the canonical definition and capture owner identity.");
                 var parameter=unit.Functions.Single(f=>f.Name=="default_parameter").Parameters.Single();
                 Check(parameter.DefaultExpression is CallOperation {TargetMethod.Name:"default_value",RepresentationRole.Name:"metadata"},"A source parameter default must retain its selected call through the canonical descriptor as metadata.");
+                Check(parameter.Descriptor.Details.HasDefaultArgument&&parameterFunction.Parameters.Single().Descriptor.Details.PassedViaCopyConstructor&&unit.Functions.Where(f=>f.ContainingType?.Name=="CopyParameter").SelectMany(f=>f.Parameters).Any(p=>p.Descriptor.Details.CopyOrMoveConstructorParameter),"Actual source parameters must retain default, by-value copy and copy-constructor parameter flags.");
+                Check(unit.Functions.Single(f=>f.Name=="read"&&f.ContainingType?.Name=="ExplicitObject").Parameters.Single().Descriptor.IsExplicitThis,"An actual explicit-object method must retain its explicit-this signature descriptor flag.");
                 var initializations=unit.Functions.Single(f=>f.Name=="source_initializations").Body!.DescendantOperations().ToArray();
                 var condition=initializations.OfType<ConditionOperation>().Single();var throwing=initializations.OfType<ThrowOperation>().Single();
                 var handler=initializations.OfType<TryOperation>().Single().Handlers.Single();
@@ -440,6 +532,16 @@ try
             Check(tries.Length==2&&tries.Single(t=>t.IsFinally).Finally is not null&&tries.Single(t=>!t.IsFinally) is {Filter:not null,Handler:not null}&&tries.All(t=>t.Try.ExceptOrFinallyPosition is not null),"Native Microsoft try must preserve separate finally/except arms and keyword source positions.");
             Check(unit.Types.Single(t=>t.Name=="NativeProperty").Fields.Single(f=>f.Name=="property").Property is {GetName:"get",PutName:"set"},"Native Microsoft field properties must expose retained accessor spellings without reconstructing lookup.");
             var visitor=new FamilyVisitor();foreach(var node in nodes)node.Accept(visitor);Check(visitor.ForEach>0&&visitor.MicrosoftTry>0,"Native Microsoft operations must dispatch their named visitor hooks.");
+        }
+        if(Path.GetFileName(input)=="native_attributes.roslynobj")
+        {
+            var attributes=unit.Entities.OfType<MicrosoftAttribute>().ToArray();
+            var module=attributes.Single(a=>a.Name=="module");
+            var arguments=module.Arguments.ToDictionary(a=>a.ParameterName!);
+            Check(module.SourceEntry is not null&&module.Arguments.Select(a=>a.ParameterName).SequenceEqual(new[]{"type","name","uuid","version","lcid","control"}),"A native Microsoft module attribute must preserve its retained source entry and ordered named arguments.");
+            Check(arguments["type"].EnumerationOrdinal==0&&arguments["name"].String?.Value is StringValue text&&text.StorageUnits.SequenceEqual("NativeModule".Select(c=>(uint)c).Append(0U)),"Native enumeration and string arguments must retain their exact descriptor ordinal and target storage units.");
+            Check(arguments["uuid"].Uuid=="12345678-1234-1234-1234-123456789abc"&&arguments["version"].OtherText=="(1.2)"&&arguments["lcid"].Integer==1033&&arguments["control"].Boolean==true,"Native UUID, unclassified text, integer and boolean arguments must retain all six actual union payloads.");
+            Check(attributes.Single(a=>a.Name=="uuid").Arguments.Single().Uuid=="23456789-1234-1234-1234-123456789abc"&&unit.Entities.OfType<Scope>().Any(s=>s.MicrosoftAttributes.SequenceEqual(attributes)),"The native attribute owner list must navigate canonical descriptors and preserve the second UUID argument independently.");
         }
         if(Path.GetFileName(input)=="module_interface.roslynobj")
             Check(unit.EntryPoint is null&&unit.ModuleImports.Count==0,"A real module interface may have no entry point or imported module occurrences.");

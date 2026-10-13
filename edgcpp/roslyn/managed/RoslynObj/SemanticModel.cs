@@ -16,9 +16,9 @@ public sealed class SemanticModel
         {
             Declaration declaration=>declaration.Symbol as Symbol,CallOperation call=>call.TargetMethod,
             ReferenceOperation reference=>reference.Target as Symbol,
-            DependentOperation dependent=>dependent.Template,
+            DependentOperation dependent=>dependent.Template?.DeclarationSymbol,
             TypeOperandOperation operand=>operand.OperandType?.DeclarationSymbol,
-            ConstantOperation constant=>owner.Store.Query("SELECT symbol_id FROM enumerator WHERE constant_id=$owner ORDER BY owner_id,ordinal",constant.Constant.Id).FirstOrDefault() is {} row ? owner.Enumerator(row.Long("symbol_id")) : null,
+            ConstantOperation constant=>constant.Constant.DeclarationSymbol,
             _=>null
         };
     }
@@ -34,13 +34,23 @@ public sealed class SemanticModel
         const string query = """
             SELECT id AS owner_id,target_id,reference_kind_id AS role_id,0 AS usage FROM reference_expression WHERE target_id=$owner
             UNION SELECT r.id,t.symbol_id,r.reference_kind_id,0 FROM reference_expression r JOIN type t ON t.id=r.target_id WHERE t.symbol_id=$owner
+            UNION SELECT r.id,p.id,r.reference_kind_id,0 FROM reference_expression r JOIN template_parameter p ON p.placeholder_type_id=r.target_id WHERE p.id=$owner
             UNION SELECT c.id,e.symbol_id,NULL,0 FROM constant_expression c JOIN enumerator e ON e.constant_id=c.constant_id WHERE e.symbol_id=$owner
-            UNION SELECT id,template_id,NULL,0 FROM dependent_expression WHERE template_id=$owner
-            UNION SELECT id,template_id,NULL,3 FROM template_instance WHERE template_id=$owner
+            UNION SELECT c.id,p.id,NULL,0 FROM constant_expression c JOIN template_parameter p ON p.placeholder_constant_id=c.constant_id WHERE p.id=$owner
+            UNION SELECT d.id,s.id,NULL,0 FROM dependent_expression d JOIN template_symbol s ON s.descriptor_id=d.template_id WHERE s.id=$owner
+            UNION SELECT d.id,p.id,NULL,0 FROM dependent_expression d JOIN template_parameter p ON p.placeholder_template_id=d.template_id WHERE p.id=$owner
+            UNION SELECT i.id,s.id,NULL,3 FROM template_instance i JOIN template_symbol s ON s.descriptor_id=i.template_id WHERE s.id=$owner
             UNION SELECT id,target_routine_id,NULL,1 FROM call_expression WHERE target_routine_id=$owner
             UNION SELECT id,source_target_routine_id,NULL,2 FROM call_expression WHERE source_target_routine_id=$owner
             UNION SELECT s.owner_id,t.symbol_id,s.role_id,3 FROM semantic_reference s JOIN type t ON t.id=s.target_id WHERE t.symbol_id=$owner
                 AND NOT EXISTS (SELECT 1 FROM reference_expression r WHERE r.id=s.owner_id AND r.target_id=s.target_id)
+            UNION SELECT s.owner_id,p.id,s.role_id,3 FROM semantic_reference s JOIN template_parameter p ON p.placeholder_type_id=s.target_id OR p.placeholder_constant_id=s.target_id OR p.placeholder_template_id=s.target_id WHERE p.id=$owner
+                AND NOT EXISTS (SELECT 1 FROM reference_expression r WHERE r.id=s.owner_id AND r.target_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM constant_expression c WHERE c.id=s.owner_id AND c.constant_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM dependent_expression d WHERE d.id=s.owner_id AND d.template_id=s.target_id)
+            UNION SELECT s.owner_id,t.id,s.role_id,3 FROM semantic_reference s JOIN template_symbol t ON t.descriptor_id=s.target_id WHERE t.id=$owner
+                AND NOT EXISTS (SELECT 1 FROM dependent_expression d WHERE d.id=s.owner_id AND d.template_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM template_instance i WHERE i.id=s.owner_id AND i.template_id=s.target_id)
             UNION SELECT s.owner_id,s.target_id,s.role_id,3 FROM semantic_reference s WHERE s.target_id=$owner
                 AND NOT EXISTS (SELECT 1 FROM reference_expression r WHERE r.id=s.owner_id AND r.target_id=s.target_id)
                 AND NOT EXISTS (SELECT 1 FROM constant_expression c JOIN enumerator e ON e.constant_id=c.constant_id WHERE c.id=s.owner_id AND e.symbol_id=s.target_id)
@@ -74,7 +84,7 @@ public sealed record SymbolReference(SemanticEntity Owner,Symbol ReferencedSymbo
     public SourceInfo? Source => Owner switch
     {
         SemanticNode node=>node.Source,Symbol symbol=>symbol.Source,
-        CppType type=>type.Source,Constant constant=>constant.Source,
+        CppType type=>type.Source,Constant constant=>constant.Source,TemplateDescriptor template=>template.Source,
         _=>null
     };
 }

@@ -35,6 +35,15 @@ static a_template_ptr roslyn_header_template(a_template_decl_ptr header,
   return nullptr;
 }
 
+static Rid roslyn_template_declared_symbol(a_template_ptr p) {
+  if(!p)return 0;
+  roslyn_template(p);
+  auto parameters=roslyn_parameter_placeholders.find(p);
+  if(parameters!=roslyn_parameter_placeholders.end())
+    return parameters->second.size()==1?*parameters->second.begin():0;
+  return DB.existing(p,"template_symbol");
+}
+
 static Rid roslyn_default_template_argument(a_templ_arg_kind kind,Rid value) {
   if (!value) return 0;
   Rid id=DB.fresh("template_argument");
@@ -46,6 +55,24 @@ static Rid roslyn_default_template_argument(a_templ_arg_kind kind,Rid value) {
 
 static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) {
   bool fresh;Rid id=DB.claim(p,"template_header",fresh);if(!fresh)return id;
+  // A placeholder is a descriptor of its actual parameter declaration.  Register
+  // every exact pointer before scopes/prototypes can encounter those descriptors.
+  std::map<a_template_parameter_ptr,Rid> new_parameters;
+  for(a_template_parameter_ptr parameter=p->param_list;parameter;parameter=parameter->next) {
+    bool parameter_fresh;Rid parameter_id=DB.claim(parameter,"template_parameter",parameter_fresh);
+    if(parameter_fresh) {
+      new_parameters.emplace(parameter,parameter_id);
+      roslyn_prepare_declaration(parameter_id,!parameter->is_abbreviated);
+    }
+    const void *placeholder=nullptr;
+    switch(parameter->kind) {
+      case tpk_type:placeholder=parameter->variant.type.ptr;break;
+      case tpk_nontype:placeholder=parameter->variant.nontype.constant;break;
+      case tpk_template:placeholder=parameter->variant.templ.class_template;break;
+      case tpk_error:break;
+    }
+    roslyn_register_parameter_placeholder(placeholder,parameter_id);
+  }
   a_template_ptr owner=roslyn_header_template(p,context);
   Rid owner_id=roslyn_template(owner);
   Rid parent=roslyn_template_header(p->parent,owner?owner:context);
@@ -97,8 +124,8 @@ static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) 
 #endif
   int ordinal=0;
   for(a_template_parameter_ptr parameter=p->param_list;parameter;parameter=parameter->next,++ordinal) {
-    bool parameter_fresh;Rid parameter_id=DB.claim(parameter,"template_parameter",parameter_fresh);
-    if(!parameter_fresh)continue;
+    auto prepared=new_parameters.find(parameter);if(prepared==new_parameters.end())continue;
+    Rid parameter_id=prepared->second;
     Rid type=0,constant=0,templ=0,default_argument=0,constraint=0,symbol_type=0;
     int depth=0;
     switch(parameter->kind) {
@@ -143,6 +170,11 @@ static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) 
 
 static Rid roslyn_template(a_template_ptr p) {
   bool fresh;Rid id=DB.claim(p,"template",fresh);if(!fresh)return id;
+  Rid declaration_symbol=0;
+  if(p->kind!=templk_none && p->kind!=templk_template_template_param) {
+    bool symbol_fresh;declaration_symbol=DB.claim(p,"template_symbol",symbol_fresh);
+    if(symbol_fresh)roslyn_prepare_declaration(declaration_symbol);
+  }
   // Claim the header before following prototype bodies, whose members can point back.
   roslyn_template_header(p->template_decl,p);
   Rid pattern=0,constraint=0,symbol_type=0;
@@ -160,7 +192,10 @@ static Rid roslyn_template(a_template_ptr p) {
       symbol_type=roslyn_type(p->prototype_instantiation.constraint?p->prototype_instantiation.constraint->type:nullptr);break;
     case templk_none:case templk_template_template_param:break;
   }
-  roslyn_symbol(id,"template",p->source_corresp,symbol_type);
+  if(declaration_symbol) {
+    roslyn_symbol(declaration_symbol,"template_symbol",p->source_corresp,symbol_type);
+    DB.put("template_symbol",{{"id",declaration_symbol},{"descriptor_id",id}});
+  }
   Rid export_position=0,definition_range=0,definition_text=0;
 #if RECORD_TEMPLATE_STRINGS
   definition_text=DB.atom(p->text);
@@ -173,7 +208,12 @@ static Rid roslyn_template(a_template_ptr p) {
       {"end_id",roslyn_position(p->definition_range.end)},{"endpoint_kind_id",K("range_endpoint","inclusive")}});
   }
 #endif
+  Rid unique_symbol=declaration_symbol;
+  auto parameter_bindings=roslyn_parameter_placeholders.find(p);
+  if(parameter_bindings!=roslyn_parameter_placeholders.end())
+    unique_symbol=parameter_bindings->second.size()==1?*parameter_bindings->second.begin():0;
   DB.put("template_definition",{{"id",id},{"kind_id",roslyn_kind_template(p->kind)},
+    {"symbol_id",R(unique_symbol)},
     {"pattern_id",R(pattern)},{"constraint_id",R(constraint)},
     {"canonical_template_id",R(roslyn_template(p->canonical_template))},
     {"definition_template_id",R(roslyn_template(p->definition_template))},

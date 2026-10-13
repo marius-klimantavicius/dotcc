@@ -53,16 +53,32 @@ target_link_libraries(roslyn-cpfe PRIVATE SQLite::SQLite3)
 target_compile_options(roslyn-cpfe PRIVATE -Wno-error=shadow)
 add_softfloat_to_target(roslyn-cpfe)
 '''+f'\ntarget_compile_definitions(roslyn-cpfe PRIVATE ROSLYN_CAPTURE_PROFILE_ID={capture_id})\n')
+# Verify every materialized stock input copied above, including build scripts,
+# configuration files and support utilities.  No extension-based allowlist can
+# silently omit a .cpp, .def, .inc or a new stock build input.
+tracked = subprocess.check_output(['git','-C',str(a.upstream),'ls-tree','-r','-z',PIN,'--','CMakeLists.txt','src','cmake','util'])
+blobs = {}
+for record in tracked.split(b'\0'):
+    if not record: continue
+    description, path = record.split(b'\t',1)
+    mode, kind, digest = description.split(b' ',2)
+    if kind == b'blob': blobs[path.decode()] = digest.decode()
+materialized = [a.upstream / 'CMakeLists.txt']
+for directory in ('src','cmake','util'):
+    materialized.extend(f for f in (a.upstream/directory).rglob('*') if f.is_file())
 core = {}
-for original_input in sorted((a.upstream / 'src').rglob('*')):
-    if original_input.is_file():
-        relative=original_input.relative_to(a.upstream/'src')
-        if relative.as_posix()=='cmake/cpfe/CMakeLists.txt':continue # Explicit isolated backend registration above.
-        f=a.stage/'src'/relative
-        expected_blob = subprocess.check_output(['git','-C',str(a.upstream),'rev-parse',PIN+':src/'+relative.as_posix()],text=True).strip()
-        content=f.read_bytes()
-        blob=hashlib.sha1(b'blob '+str(len(content)).encode()+b'\0'+content).hexdigest()
-        if blob!=expected_blob: raise SystemExit(f'Core source changed: {f}')
-        core[relative.as_posix()]=hashlib.sha256(content).hexdigest()
-(a.stage.parent / 'core-source-hashes.json').write_text(json.dumps({'revision':PIN,'files':core},indent=2)+'\n')
+for original_input in sorted(materialized):
+    relative=original_input.relative_to(a.upstream).as_posix()
+    expected_blob=blobs.get(relative)
+    if expected_blob is None: raise SystemExit(f'Unpinned stock input: {original_input}')
+    original_content=original_input.read_bytes()
+    original_blob=hashlib.sha1(b'blob '+str(len(original_content)).encode()+b'\0'+original_content).hexdigest()
+    if original_blob != expected_blob: raise SystemExit(f'Stock input differs from pin: {original_input}')
+    if relative == 'src/cmake/cpfe/CMakeLists.txt': continue # Exact independent backend registration above.
+    f=a.stage/relative
+    content=f.read_bytes()
+    blob=hashlib.sha1(b'blob '+str(len(content)).encode()+b'\0'+content).hexdigest()
+    if blob!=expected_blob: raise SystemExit(f'Core source changed: {f}')
+    core[relative]=hashlib.sha256(content).hexdigest()
+(a.stage.parent / 'core-source-hashes.json').write_text(json.dumps({'revision':PIN,'files':core,'allowed_stock_overlays':['src/cmake/cpfe/CMakeLists.txt']},indent=2)+'\n')
 print(a.stage)

@@ -21,4 +21,8 @@ public sealed record ReadOptions
 public sealed class IncompatibleObjectException(string message) : IOException(message);
 
 /// <summary>Detached reader counters for measuring bounded database access.</summary>
-public sealed record ReaderStatistics(long Commands, long RowsRead, int CachedRows, int CachedPages);
+public sealed record ReaderStatistics(long Commands, long RowsRead, int CachedRows, int CachedPages)
+{
+    /// <summary>Largest number of keys sent in one batched companion or child-page query.</summary>
+    public int MaximumBatchSize { get; init; }
+}

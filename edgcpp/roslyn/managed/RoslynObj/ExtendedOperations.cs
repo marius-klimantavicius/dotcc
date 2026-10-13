@@ -199,14 +199,14 @@ public sealed class DependentOperation : ExpressionOperation
     internal DependentOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public DependentExpressionDetails Dependency => Object.Detail("dependent_expression",Id,r=>new DependentExpressionDetails(Object,r));
     public ExpressionOperation? WrappedExpression => Dependency.WrappedExpression;
-    public TemplateSymbol? Template => Dependency.Template;
+    public TemplateDescriptor? Template => Dependency.Template;
     public Initialization? Initialization => Dependency.Initialization;
     public Scope? ParameterScope => Dependency.ParameterScope;
     public bool? NoexceptRequired => Dependency.NoexceptRequired;
     public bool IsDependent => Dependency.IsDependent;
     public ExpressionOperation? PackIndex => Dependency.PackIndex;
     public CppType? PackType => Dependency.PackType;
-    public TemplateSymbol? PackTemplate => Dependency.PackTemplate;
+    public TemplateDescriptor? PackTemplate => Dependency.PackTemplate;
     public SemanticKind? FoldOperator => Dependency.FoldOperator;
     public IReadOnlyList<RequirementParameter> Parameters => Object.List("SELECT p.*,r.owner_id,r.ordinal,r.parameter_type_id FROM requirement_parameter r JOIN parameter_type p ON p.id=r.parameter_type_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>new RequirementParameter(Object,r),"parameter_type");
     public IReadOnlyList<TemplateArgument> TemplateArguments => Object.List("SELECT a.* FROM expression_template_argument r JOIN template_argument a ON a.id=r.argument_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Argument(r.Long("id")),"template_argument");

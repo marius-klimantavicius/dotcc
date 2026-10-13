@@ -7,13 +7,14 @@ import sys
 root = Path(__file__).resolve().parents[2]
 sql = (root / 'schema/roslynobj.sql').read_text()
 output = root / 'managed/RoslynObj/SchemaDetails.g.cs'
-blocks = re.findall(r'CREATE TABLE (\w+) \(\n(.*?)\n\) STRICT;', sql, re.S)
+blocks = re.findall(r'CREATE TABLE (\w+) \(\n(.*?)\n\) (?:WITHOUT ROWID, )?STRICT;', sql, re.S)
 
 def pascal(value):
     return ''.join(piece.title() for piece in value.split('_'))
 
 models = {
     'entity':('SemanticEntity','Entity'), 'type':('CppType','Type'),
+    'record_type':('RecordType','RecordType'),
     'symbol':('Symbol','Symbol'), 'routine_symbol':('FunctionSymbol','Function'),
     'variable_symbol':('VariableSymbol','Variable'), 'field_symbol':('FieldSymbol','Field'),
     'namespace_symbol':('NamespaceSymbol','Namespace'), 'label_symbol':('LabelSymbol','Label'),
@@ -22,7 +23,7 @@ models = {
     'declaration':('Declaration','Declaration'), 'scope':('Scope','Scope'),
     'constant':('Constant','Constant'), 'constant_value':('ConstantValue','Value'),
     'initialization':('Initialization','Initialization'), 'lifetime':('Lifetime','Lifetime'),
-    'template_definition':('TemplateSymbol','Template'), 'template_instance':('TemplateInstantiation','Instance'),
+    'template_definition':('TemplateDescriptor','Template'), 'template_symbol':('TemplateSymbol','TemplateSymbol'), 'template_instance':('TemplateInstantiation','Instance'),
     'template_argument':('TemplateArgument','Argument'),
     'template_header':('TemplateHeader','Header'), 'template_parameter':('TemplateParameter','TemplateParameter'),
     'template_generic_constraint_clause':('GenericConstraintClause','GenericClause'),
@@ -38,6 +39,16 @@ models = {
     'lambda_definition':('LambdaDefinition','LambdaDefinition'),
     'asm_entry':('AssemblyDefinition','AssemblyDefinition'),
     'module':('CppModule','Module'), 'module_import':('ModuleImport','ModuleImport'),
+    'include_occurrence':('IncludeOccurrence','Include'), 'line_directive':('LineDirective','LineDirective'),
+    'source_mapping_segment':('SourceMappingSegment','Mapping'),
+    'source_entry':('SourceEntry','SourceEntry'), 'source_sublist':('SourceSublist','SourceSublist'),
+    'record_declaration':('RecordDeclaration','RecordDeclaration'),
+    'source_end_construct':('SourceEndConstruct','SourceEnd'),
+    'instantiation_directive':('InstantiationDirective','InstantiationDirective'),
+    'linkage_specification':('LinkageSpecification','LinkageSpecification'),
+    'microsoft_if_exists':('MicrosoftIfExists','IfExists'), 'pragma':('PragmaDirective','Pragma'),
+    'ms_attribute':('MicrosoftAttribute','MicrosoftAttribute'), 'ms_attribute_argument':('MicrosoftAttributeArgument','MicrosoftAttributeArgument'),
+    'scoped_expression':('ScopedExpression','ScopedExpression'),
     'enum_symbol':('EnumSymbol','Enum'), 'alias_symbol':('AliasSymbol','Alias'),
     'template_specialization':('TemplateSpecialization','Specialization'),
     'base_subobject':('BaseSubobject','Subobject'), 'base_derivation':('BaseDerivation','Derivation')
@@ -47,10 +58,10 @@ booleans = {'compiler_generated','negative','nan_quiet','signed','incomplete','i
     'selection_known','selected_then','one_past_end','frees_storage','frees_array','throw_any',
     'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete',
     'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer','gnu_asm_form','error_descriptor',
-    'contains_unsupported_constructs','implementation_unit_importing_self'}
+    'contains_unsupported_constructs','implementation_unit_importing_self','descriptor_incomplete','boolean_value'}
 numeric_text = {'scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
-    'sequence','original_sequence','first_sequence','last_sequence','logical_line','physical_line',
+    'sequence','original_sequence','first_sequence','last_sequence','first_line','logical_line','physical_line',
     'integer_argument','integer_value','pointer_alignment','shared_block_size','number_of_constraints'}
 numeric_atom = {('integer_value','value_id'),('floating_value','significand_id'),
     ('floating_value','nan_payload_id'),('fixed_point_value','scaled_integer_id')}

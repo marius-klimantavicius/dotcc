@@ -1,0 +1,2 @@
+#define PROVENANCE_MACROS_ONLY 23
+int macros_only_declaration_must_be_ignored;
