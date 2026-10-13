@@ -1,0 +1,120 @@
+{
+  "checkpoint": "initializer lifetime/master/deferred contexts251",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/InitializationDeferredProjection.cs",
+      "sha256": "da250542b20aca410db5327889972376c403c2ff5c66a3edc61b3b3021bea7c2",
+      "bytes": 5715
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "90984ef7acb25e8d17abe6cf1af34b0ec1557dd65b05928dfcecfb8f8f9565c8",
+      "bytes": 78292
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+      "sha256": "55ce31ad77c52895714fada4e35e93a40fd89253d53daaf17d419c35575ff5bb",
+      "bytes": 9310
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ExtendedOperations.cs",
+      "sha256": "78bebd2c3f22c2bb8fcf6737ab8b010d9285d3da1482fd6a565ccab516176c60",
+      "bytes": 14875
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/init-deferred251-evidence.tsv",
+      "sha256": "d7fd137bacaae07636644857b62985c44b7aa539a9efb95efc52fe06821dbc14",
+      "bytes": 4912
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-init-deferred251-build.log",
+      "sha256": "89a0017c89341fdee172bf93a85f2dc61c691093e751b0fc6148cf39e080ef2d",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-init-deferred251-existing1.log",
+      "sha256": "d9af6665fec63c0cd926fbcdbbbd9f8a45cdcc1151ae4042503cd7a52618cd78",
+      "bytes": 3755
+    },
+    {
+      "path": "/tmp/roslynobj-managed-init-deferred251-fresh2-v1.log",
+      "sha256": "37e5ea68b423e4950f4d00c04fa71bc4df97a59beffb5b3fca7376139e5eb537",
+      "bytes": 596
+    },
+    {
+      "path": "/tmp/roslynobj-managed-init-deferred251-self.log",
+      "sha256": "2ec069f2c972db5f3d25f303036bafa0f9fdfba9d4c8d11ee3b88e4bca2c77eb",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-init-deferred251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-init-deferred251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/execution_cpp.roslynobj",
+      "sha256": "2b664bcd6aa23dfcc8bda7b51f97af8d35dfb087d6414e81bed575453464e06a",
+      "bytes": 741376
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/native/initialization_deferred.roslynobj",
+      "sha256": "c4da172f7089c2ef2108558c302478d7e531fc9acaaf39f4f5ff1c52b10b9cc2",
+      "bytes": 735232
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/source/initialization_deferred.roslynobj",
+      "sha256": "1e928b9a6936cc78509e68e74aa56b5cd088536bbb5a1f55f498e45aee616b0b",
+      "bytes": 703488
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/all-profile-results-final.json",
+    "sha256": "e27485dbcff9b635eceb14a05dcc153f74c78bfe33982081d3e0563b5caf8c4d",
+    "bytes": 1801
+  },
+  "checks": {
+    "build": "0 warnings/errors",
+    "existing": "PASS113/1 unique",
+    "fresh": "PASS90/2 unique",
+    "self": "PASS73",
+    "generator": "249 table bindings/1941 properties; --check passes",
+    "literal_writes": "passes",
+    "whitespace": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/InitializationDeferredProjection.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ExtendedOperations.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/init-deferred251-evidence.tsv",
+        "clean": true
+      }
+    ]
+  },
+  "proof": "5 positive field rows: singleton actual declaration payload plus initializer-expression lifetime, shared master, and both retained retry-context flags",
+  "api_change": "Two nullable direct deferred-context flag conveniences; initializer lifetime/master XML clarifies actual semantics; no duplicate execution relationship",
+  "scope": "3 unique compatible snapshots; no full211/scale/native build or schema mutation",
+  "running_commands": [],
+  "state": "owned files held for coordinator checkpoint; no independent commit"
+}

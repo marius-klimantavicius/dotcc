@@ -1,0 +1,75 @@
+{
+  "checkpoint_base": "94061a608eb49894ec04a2b321a1f7a1ddb0d575",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "0c7e87a0dc8c4caf6b63b79b799e32ef75f6fcf0191a813ed3be7a7fbf9d3146"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/initialization_deferred.cpp",
+      "sha256": "b928b2024d9a68a22f526c53d0ebc8af177dd13ec477728de56760b7a4909778"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "b54f214e0eb58188d68609d0971b3b39d55e39274fa49caa67c920ecae03eae7"
+    }
+  ],
+  "candidate_owned_paths": 2,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 2,
+  "unique_objects": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/all-profile-results-final.json",
+      "sha256": "e27485dbcff9b635eceb14a05dcc153f74c78bfe33982081d3e0563b5caf8c4d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/build-results-final.json",
+      "sha256": "477e427eb8c7f43d9185dddd30965778007d01a0554cb2311aeb3dc5e081ffee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/validation-summary-final.json",
+      "sha256": "6b3234a36e08c7c1b06c411fb20e27ea46059450ea945245a4b35fb19ecb3b23"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/gate-final.log",
+      "sha256": "46eb3fbe6a67dfa490bfa47d078617d49723afd678f9e278647fb0a4e4177d05"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/activation-proof.json",
+      "sha256": "eb4ffad05b07c5cb76fee27289ac09a88aafa121a0b10cbeec6d02b9163921d2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/field-evidence.tsv",
+      "sha256": "6a1153f24b1a1cac0ba8be8dc74852b6f6df0d56b6824e8e06b2ccaee2e57628"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-initialization-deferred-evidence251.tsv",
+  "public_gate": "fresh2 PASS90; existing1 PASS113; self/ready pending",
+  "narrow_variant_count": 1,
+  "initial_recipe_archive": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/initial-recipe",
+  "actual_positives": [
+    "source direct initializer temporary lifetime distinct object lifetime",
+    "source two operand recipes share canonical master/destruction",
+    "default context reattempt flags both profiles and canonical metadata calls"
+  ],
+  "legitimate_native_alternatives": [
+    "source lifetime/master links absent; metadata master marker retained",
+    "parameter default expressions cleared; DMI/deferred metadata survives"
+  ]
+}

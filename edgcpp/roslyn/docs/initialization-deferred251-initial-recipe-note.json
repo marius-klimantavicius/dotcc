@@ -1,0 +1,7 @@
+{
+  "fixture_sha256": "3d2d61000e73b5fc802b9d9fc85232abdefb8b1dd85663529dca081924f7e8d6",
+  "deferred_nodes": 0,
+  "source_positive_links": "init860 lifetime859/init-expression861; operand990+995 share master962",
+  "native_alternative": "retained master flag on metadata dik_none931; operand master and init-expression links absent",
+  "next_variant": "Place __builtin_LINE in consteval function default parameter per interpret.c11235 direct-default source example, then call from declaration default and DMI"
+}

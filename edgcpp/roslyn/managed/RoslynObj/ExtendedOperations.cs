@@ -198,6 +198,10 @@ public sealed class DependentOperation : ExpressionOperation
     public TemplateDescriptor? Template => Dependency.Template;
     public Initialization? Initialization => Dependency.Initialization;
     public bool? NoexceptRequired => Dependency.NoexceptRequired;
+    /// <summary>The recorded deferred-evaluation default-argument context flag; null when this state is not recorded.</summary>
+    public bool? ReattemptDefaultArgument => Dependency.ReattemptDefaultArgument;
+    /// <summary>The recorded deferred-evaluation default-member-initializer context flag; it may also be true in a default-argument context.</summary>
+    public bool? ReattemptDefaultMemberInitializer => Dependency.ReattemptDefaultMemberInitializer;
     public ExpressionOperation? PackIndex => Dependency.PackIndex;
     public CppType? PackType => Dependency.PackType;
     public TemplateDescriptor? PackTemplate => Dependency.PackTemplate;

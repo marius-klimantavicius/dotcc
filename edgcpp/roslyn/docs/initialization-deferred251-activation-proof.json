@@ -1,0 +1,282 @@
+{
+  "native": {
+    "initialization_links": [
+      {
+        "id": 939,
+        "lifetime_id": 862,
+        "init_expression_lifetime_id": null,
+        "master_id": null,
+        "destructor_id": 841,
+        "is_class_result_master": 1,
+        "representation_role_id": 7002
+      }
+    ],
+    "deferred_wrappers": [
+      {
+        "id": 441,
+        "wrapped_expression_id": 447,
+        "reattempt_default_argument": 0,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 456,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 447
+          }
+        ]
+      },
+      {
+        "id": 499,
+        "wrapped_expression_id": 506,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 518,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 506
+          }
+        ]
+      },
+      {
+        "id": 522,
+        "wrapped_expression_id": 506,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 518,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 506
+          }
+        ]
+      }
+    ],
+    "actual_parameter_default_owners": [],
+    "actual_field_DMI_owners": [
+      {
+        "field_id": 430,
+        "default_initialization_id": 440,
+        "expression_id": 441,
+        "reattempt_default_argument": 0,
+        "reattempt_default_member_initializer": 1
+      }
+    ],
+    "evaluated_folded_call_arguments": [
+      {
+        "owner_id": 996,
+        "expression_id": 1007,
+        "value": "13",
+        "representation_role_id": 7001
+      }
+    ],
+    "shape_policy": "Only direct resident pointers/flags; no inferred lifetime/master/default evaluation",
+    "initial_recipe": "Direct body builtin folded before deferred wrappers; archived separately"
+  },
+  "source": {
+    "initialization_links": [
+      {
+        "id": 887,
+        "lifetime_id": 886,
+        "init_expression_lifetime_id": 888,
+        "master_id": null,
+        "destructor_id": 452,
+        "is_class_result_master": 0,
+        "representation_role_id": 7003,
+        "actual_initializer_lifetime": {
+          "id": 888,
+          "kind_id": 111005,
+          "parent_id": 886,
+          "bound_entity_id": 887,
+          "parent_checkpoint_id": 887,
+          "has_implicit_child": 0,
+          "has_block_after_label_child": 0
+        }
+      },
+      {
+        "id": 989,
+        "lifetime_id": 1000,
+        "init_expression_lifetime_id": null,
+        "master_id": null,
+        "destructor_id": 521,
+        "is_class_result_master": 1,
+        "representation_role_id": 7003,
+        "actual_cleanup": [
+          {
+            "owner_id": 1000,
+            "ordinal": 0,
+            "initialization_id": 989
+          }
+        ]
+      },
+      {
+        "id": 1017,
+        "lifetime_id": null,
+        "init_expression_lifetime_id": null,
+        "master_id": 989,
+        "destructor_id": null,
+        "is_class_result_master": 0,
+        "representation_role_id": 7003
+      },
+      {
+        "id": 1022,
+        "lifetime_id": null,
+        "init_expression_lifetime_id": null,
+        "master_id": 989,
+        "destructor_id": null,
+        "is_class_result_master": 0,
+        "representation_role_id": 7003
+      }
+    ],
+    "deferred_wrappers": [
+      {
+        "id": 603,
+        "wrapped_expression_id": 609,
+        "reattempt_default_argument": 0,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 618,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 609
+          }
+        ]
+      },
+      {
+        "id": 667,
+        "wrapped_expression_id": 674,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 686,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 674
+          }
+        ]
+      },
+      {
+        "id": 695,
+        "wrapped_expression_id": 696,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 686,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 696
+          }
+        ]
+      },
+      {
+        "id": 700,
+        "wrapped_expression_id": 674,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 686,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 674
+          }
+        ]
+      },
+      {
+        "id": 1032,
+        "wrapped_expression_id": 1038,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 618,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 1038
+          }
+        ]
+      },
+      {
+        "id": 1044,
+        "wrapped_expression_id": 674,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 686,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 674
+          }
+        ]
+      },
+      {
+        "id": 1053,
+        "wrapped_expression_id": 1054,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 618,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 1054
+          }
+        ]
+      },
+      {
+        "id": 1057,
+        "wrapped_expression_id": 1058,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "representation_role_id": 7002,
+        "target_routine_id": 686,
+        "metadata_reference": [
+          {
+            "ordinal": 0,
+            "target_id": 1058
+          }
+        ]
+      }
+    ],
+    "actual_parameter_default_owners": [
+      {
+        "parameter_id": 1031,
+        "default_expression_id": 1032,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1
+      },
+      {
+        "parameter_id": 1052,
+        "default_expression_id": 1053,
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1
+      }
+    ],
+    "actual_field_DMI_owners": [
+      {
+        "field_id": 591,
+        "default_initialization_id": 602,
+        "expression_id": 603,
+        "reattempt_default_argument": 0,
+        "reattempt_default_member_initializer": 1
+      }
+    ],
+    "evaluated_folded_call_arguments": [
+      {
+        "owner_id": 1096,
+        "expression_id": 1107,
+        "value": "13",
+        "representation_role_id": 7003
+      }
+    ],
+    "shape_policy": "Only direct resident pointers/flags; no inferred lifetime/master/default evaluation",
+    "initial_recipe": "Direct body builtin folded before deferred wrappers; archived separately"
+  }
+}

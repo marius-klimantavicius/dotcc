@@ -1,0 +1,119 @@
+[
+  {
+    "profile": "native",
+    "initialization_links": [
+      {
+        "id": 939,
+        "lifetime_id": 862,
+        "init_expression_lifetime_id": null,
+        "master_id": null,
+        "is_class_result_master": 1
+      }
+    ],
+    "deferred_states": [
+      {
+        "reattempt_default_argument": 0,
+        "reattempt_default_member_initializer": 1,
+        "count": 1
+      },
+      {
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "count": 2
+      }
+    ],
+    "deferred_links": [
+      {
+        "id": 441,
+        "wrapped_expression_id": 447
+      },
+      {
+        "id": 499,
+        "wrapped_expression_id": 506
+      },
+      {
+        "id": 522,
+        "wrapped_expression_id": 506
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "initialization_links": [
+      {
+        "id": 887,
+        "lifetime_id": 886,
+        "init_expression_lifetime_id": 888,
+        "master_id": null,
+        "is_class_result_master": 0
+      },
+      {
+        "id": 989,
+        "lifetime_id": 1000,
+        "init_expression_lifetime_id": null,
+        "master_id": null,
+        "is_class_result_master": 1
+      },
+      {
+        "id": 1017,
+        "lifetime_id": null,
+        "init_expression_lifetime_id": null,
+        "master_id": 989,
+        "is_class_result_master": 0
+      },
+      {
+        "id": 1022,
+        "lifetime_id": null,
+        "init_expression_lifetime_id": null,
+        "master_id": 989,
+        "is_class_result_master": 0
+      }
+    ],
+    "deferred_states": [
+      {
+        "reattempt_default_argument": 0,
+        "reattempt_default_member_initializer": 1,
+        "count": 1
+      },
+      {
+        "reattempt_default_argument": 1,
+        "reattempt_default_member_initializer": 1,
+        "count": 7
+      }
+    ],
+    "deferred_links": [
+      {
+        "id": 603,
+        "wrapped_expression_id": 609
+      },
+      {
+        "id": 667,
+        "wrapped_expression_id": 674
+      },
+      {
+        "id": 695,
+        "wrapped_expression_id": 696
+      },
+      {
+        "id": 700,
+        "wrapped_expression_id": 674
+      },
+      {
+        "id": 1032,
+        "wrapped_expression_id": 1038
+      },
+      {
+        "id": 1044,
+        "wrapped_expression_id": 674
+      },
+      {
+        "id": 1053,
+        "wrapped_expression_id": 1054
+      },
+      {
+        "id": 1057,
+        "wrapped_expression_id": 1058
+      }
+    ]
+  }
+]

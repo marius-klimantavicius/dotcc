@@ -15,8 +15,10 @@ public sealed class Initialization : SemanticEntity
     public FunctionSymbol? Constructor => Details.Constructor;
     public FunctionSymbol? Destructor => Details.Destructor;
     public Lifetime? Lifetime => Details.Lifetime;
+    /// <summary>The recorded full-expression temporary lifetime of the initializer, distinct from the initialized object's lifetime.</summary>
     public Lifetime? InitExpressionLifetime => Details.InitExpressionLifetime;
     public Lifetime? OverlappingLifetime => Details.OverlappingLifetime;
+    /// <summary>The retained master recipe shared by optimized class-valued expressions. This association adds no evaluated child edge.</summary>
     public Initialization? Master => Details.Master;
     public Initialization? NextInDestructionList => Details.NextDestruction;
     /// <summary>Whether this is a generated local-static guard cleanup recipe. False in source IL does not describe the runtime guard obligation.</summary>

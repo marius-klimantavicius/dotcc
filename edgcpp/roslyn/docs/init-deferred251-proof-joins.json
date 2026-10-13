@@ -1,0 +1,64 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "accepted_unique_paths": 3,
+  "existing_assertions": 113,
+  "fresh_assertions": 90,
+  "self_assertions": 73,
+  "joins": [
+    {
+      "owner": "a_statement",
+      "member": "variant.decl.entities",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/StatementRelationsProjection.cs:19",
+      "identity": "execution_statement_result actual GNU compound-expression declaration has one canonical local variable named local; public Entities equals retained row entity list and the actual function body local membership."
+    },
+    {
+      "owner": "a_dynamic_init",
+      "member": "init_expr_lifetime",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/InitializationDeferredProjection.cs:19",
+      "identity": "Owner value initializer887 has objectLifetime886 and distinct initializerExpressionLifetime888, boundEntity887. Exact temporary lifetime cleans up Tmp recipe889; object lifetime cleans up Owner initializer887. Both are reachable through actual body lifetime references."
+    },
+    {
+      "owner": "a_dynamic_init",
+      "member": "master_entry",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/InitializationDeferredProjection.cs:29",
+      "identity": "Actual Item construction recipes1017/1022 share master989, is_class_result_master=true and eok_question expression. Neither recipe has an evaluated child to master; master appears once at actual body site and lifetime1000 has sole cleanup initializer989."
+    },
+    {
+      "owner": "a_const_eval_reattempt_state",
+      "member": "default_arg",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/InitializationDeferredProjection.cs:37",
+      "identity": "Actual DMI field default wrapper603/source and441/native has default_arg=false; location_value line default wrapper667/source and499/native has true. Wrappers preserve exact metadata call targets and the used defaulted argument is stock-folded integer13."
+    },
+    {
+      "owner": "a_const_eval_reattempt_state",
+      "member": "default_mem_init",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/InitializationDeferredProjection.cs:37",
+      "identity": "Exact Deferred.value default recipe602/source and440/native points to metadata deferred wrapper603/source and441/native with default_mem_init=true and default_arg=false; wrapped location_value call is canonical618/source and456/native. All actual retained deferred wrappers expose nonNULL flags and metadata call reference0 without evaluated child edges."
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1489,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 39,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "ready_hash_checks": 15
+}

@@ -1,0 +1,51 @@
+{
+  "inventory": "/tmp/roslyn-native-ready-initialization-deferred251.json",
+  "count": 11,
+  "all_match": true,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/initialization_deferred.cpp",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/all-profile-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/build-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/backend-hashes-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/stage-verification-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/validation-summary-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/gate-final.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/activation-proof.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/initialization-deferred/field-evidence.tsv",
+      "matches": true
+    }
+  ]
+}
