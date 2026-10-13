@@ -1,44 +1,46 @@
-# Accepted dependent constants; next reflection/token branches
+# Accepted reflection/token payloads; next retained template/name cases
 
-The dependent-constant checkpoint keeps the accepted `4bb94` contract unchanged:
-251 tables and 39,145 stable kind IDs. Two fresh native/source objects pass 94
+The reflection/token checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four final native/source objects pass 115
 reader assertions; self-checks pass 73. Build, generator, literal-field and
-whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned stock
-inputs, the pinned tool and 26 canonical backend files; new strict builds: zero.
-The corrected final v2 reader gate is authoritative. Earlier overwritten probe
-outputs are excluded from the two accepted paths. No full 211-object refresh or
-performance rerun is claimed.
+whitespace checks pass. All 14 existing profile builds pass after synchronizing
+the one-line backend fix. Each stage retains 316 pinned stock inputs, the pinned
+tool and 26 canonical backend files. Failed probes and the early three-object
+reader gate are excluded from final counts. No full 211-object refresh or scale
+rerun is claimed.
 
-Field coverage is now **1,503 verified / 25 required pending**, plus two explicit
+Field coverage is now **1,509 verified / 19 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
 or disposition. Kind-family proof and optional source fields remain distinct from
 required owner-payload and active-branch evidence.
 
-One compact ordinary GNU input activates six fields: dependent template-reference
-constant and ordered arguments, destructor type, integer-pack bound, designator
-subscript and optimized-empty aggregate field/base associations. Occurrences,
-shared values and retained types remain distinct. Both designator spellings retain
-one actual subscript; no second range endpoint is reconstructed.
+Two compact ordinary C++26 inputs activate six fields. The prospective reflected
+member retains two ordered ak_annotation attributes with exact int constants 17
+and 23, canonical owners, argument links and value reflections. The retained token
+prototype owns eight typed kinds and independent spellings in actual order. Its
+N interpolation remains a separate ordered metadata expression referencing the
+actual parameter value/type; no evaluated structural child or function traversal
+is created. Existing typed properties suffice; no API or schema expansion.
 
-The lowered empty aggregate is reached through the default constant's actual
-BackingExpression temporary, Initialization and Constant. Its ordered base and
-field occurrences retain distinct exact targets. These associations do not occur
-on the directly lowered default constant's components. InitializedField and
-InitializedBaseSubobject expose only occurrence-owned stored links.
+The combined probe reached an invalid optional expression-range endpoint during
+stock sequence lookup. One prototype-only variant retained source tokens, but the
+native counterpart repeated the optional-range assertion. For enk_token_sequence
+only, the backend now retains its recorded point and omits its optional expression
+range. Every other kind is unchanged. This is an explicit backend availability
+policy, not a claim that EDG universally omits token ranges. No endpoint repair,
+threshold, token-cache read, source recovery or core change is involved.
 
-The dynamic-init empty-target arm remains required pending after one bounded
-variant. Its retained metadata default expression and initialization are present,
-but the target flags/links do not activate. This observation is neither a global
-consumption exclusion nor an inferred association. Six positive rows and that
-limit are recorded in managed/dependent-constants251-evidence.tsv and the native
-activation proof. Original name argument lists also remain explicitly pending.
+The final four-object proof closes all six fields. Constant-evaluated private
+frontend token caches are never inspected or reconstructed. The original name
+argument-list and enum-template reviews identify exact producer contexts and
+single uncompiled recipes; neither review promotes a field or infers a pointer.
 
-Next native and reader work covers semantic reflection annotations, token
-sequences and interpolation links using existing profiles. Difficult retention
-cases cannot hold accepted positives. Small pragma/asm/list/base arms remain
-bounded queues. No confirmed missing serialization adapter or factory is open.
-Full phases 3–4/M0–M5 continue; EDG remains the semantic authority and optional
-source positions remain nonblocking.
+Next native and reader work combines those two retained template/name cases,
+then bounded control/asm/MS, contextual base/override and targeted pragma/list
+arms. Dynamic-init empty-target and selected dependent-array/name/orphan links
+retain explicit positive-evidence obligations. No confirmed missing serialization
+adapter or factory is open. Full phases 3–4/M0–M5 continue; EDG remains the sole
+semantic authority and optional source positions remain nonblocking.
 
 # Accepted routine/EH and constant-dependent branches; next bounded closure
 

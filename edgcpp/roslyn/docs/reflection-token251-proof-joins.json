@@ -1,0 +1,58 @@
+{
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "positive_fields": 6,
+  "managed_final": "PASS115/four unique objects/self73",
+  "joins": [
+    {
+      "owner": "a_token_sequence_entry",
+      "member": "token_kind",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/ReflectionPayloadProjection.cs:38"
+    },
+    {
+      "owner": "a_token_sequence_entry",
+      "member": "spelling",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/ReflectionPayloadProjection.cs:39"
+    },
+    {
+      "owner": "a_token_sequence",
+      "member": "tokens",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/ReflectionPayloadProjection.cs:36"
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.token_sequence.interpolations",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/ReflectionPayloadProjection.cs:40"
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.token_sequence.tokens",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/ReflectionPayloadProjection.cs:34"
+    },
+    {
+      "owner": "a_data_member_spec",
+      "member": "annotations",
+      "status": "mapped_verified",
+      "test_anchor": "RoslynObj.Tests/ReflectionPayloadProjection.cs:12"
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1509,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 19,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "native14_stage_gates": "all14 strict builds exit0; each316 pinned stock inputs/26canonical backend/stock tool"
+}

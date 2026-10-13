@@ -1,0 +1,100 @@
+{
+  "checkpoint_base": "adf248632e3971b85b5ab9bf688beff0b1fdf7b9",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "0acd10bd42b8c5fefb9d0bde1935da4616d61f2be9a915c9b5d95a2815feb242"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/reflection_payloads.cpp",
+      "sha256": "79a1d421f9d4b9ee93820b268c0fb31b08e1121ca9c1a9ebfc60b1f4c6462419"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/retained_tokens.cpp",
+      "sha256": "dfce3f83310f7565186017fef5e529c6a982d264fd5055b94f990fb1381bef66"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "da60b2905013899f8fd952a583950525db58bf44ed7ea69ab6b230bf7f88105f"
+    }
+  ],
+  "managed_backend_file": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_execution.h",
+    "sha256": "6662075d00f7b80666ae9e4dcd84c181409ae6a9559056bf1df777e8a5689a28"
+  },
+  "candidate_owned_paths": 3,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": true,
+  "backend_change_owner": "managed; one-kind optional range omission",
+  "configuration_changed": false,
+  "new_strict_builds": 14,
+  "profiles_compiled_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "input_count": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/all-profile-results-final.json",
+      "sha256": "78e61a412e5b13511af8aa06f1d756980b9723bfc81f022e889644d66acd1b54"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/build-results-final.json",
+      "sha256": "c0e4c5349570f16fae39c4a6fb00324e5802b9957ec6165d4b42fee20a498f1e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/backend-hashes-start.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/backend-hashes-final.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/validation-summary-final.json",
+      "sha256": "6bdfee1f3c2bae939e33027d9037595e77ed396a3b2debb62ecca84606bef466"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/activation-proof.json",
+      "sha256": "84ac8a622796c6c957484560f8c9b878d71fff08e55365cfbc2a48b1dcd4a67a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/activation-proof.py",
+      "sha256": "2322d77bd9cc279cb8e9deacb3e2a2a981171a7bad4bc2359a8a8230ec9d738f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/field-evidence.tsv",
+      "sha256": "7405c27ad6300105766bf4b90c9665be09dbf5a2fc1bf943b068074e7fd633b8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/baseline-token-impact.json",
+      "sha256": "7c8e8655861ae17854684aeee29d0540ee7310c0a7e1a5c02955f01e1576da90"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-reflection-token-evidence251.tsv",
+  "public_gate": "Managed fresh4 PASS115, self73, build/generator/literal/whitespace checks pass; /tmp/roslyn-managed-ready-reflection-token251.json held.",
+  "selected_fields": 6,
+  "positive_fields": 6,
+  "pending_fields_in_current_batch": 0,
+  "token_prototype_variant_count": 1,
+  "initial_failed_evidence": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/initial-combined",
+  "failed_attempts_excluded_from_validation_counts": true,
+  "no_evaluated_token_cache_payload_claim": true,
+  "actual_positives": [
+    "native/source eight actual ordered tokens/kinds/spellings",
+    "exact token expression descriptor and separately ordered N interpolation with metadata/no evaluated edge",
+    "canonical ordered member-spec annotation constant identities17/23 equal reflected array targets"
+  ],
+  "baseline_impact": "211 unique historical paths kind-only scan finds token_sequence0; no full rerun/scale needed or claimed.",
+  "hold": true
+}

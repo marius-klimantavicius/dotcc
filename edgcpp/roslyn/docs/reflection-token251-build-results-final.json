@@ -1,0 +1,198 @@
+[
+  {
+    "profile": "native",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "native",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.499,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/native-build-final.log"
+  },
+  {
+    "profile": "source",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "source",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.055,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/source-build-final.log"
+  },
+  {
+    "profile": "cfront",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "cfront",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 14.127,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/cfront-build-final.log"
+  },
+  {
+    "profile": "exported",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "exported",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 14.352,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/exported-build-final.log"
+  },
+  {
+    "profile": "sun",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "sun",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.849,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/sun-build-final.log"
+  },
+  {
+    "profile": "usl21",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "usl21",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.554,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/usl21-build-final.log"
+  },
+  {
+    "profile": "usl30",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "usl30",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.431,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/usl30-build-final.log"
+  },
+  {
+    "profile": "host-long-double",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "host-long-double",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.883,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/host-long-double-build-final.log"
+  },
+  {
+    "profile": "host-double",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "host-double",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.512,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/host-double-build-final.log"
+  },
+  {
+    "profile": "softfloat",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "softfloat",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 14.363,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/softfloat-build-final.log"
+  },
+  {
+    "profile": "instantiation",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "instantiation",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 14.416,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/instantiation-build-final.log"
+  },
+  {
+    "profile": "tableless",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "tableless",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.362,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/tableless-build-final.log"
+  },
+  {
+    "profile": "extern-inline",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "extern-inline",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.544,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/extern-inline-build-final.log"
+  },
+  {
+    "profile": "separate-init",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/build.py",
+      "--profile",
+      "separate-init",
+      "--jobs",
+      "8"
+    ],
+    "exit_code": 0,
+    "seconds": 13.545,
+    "log": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/separate-init-build-final.log"
+  }
+]

@@ -1,0 +1,339 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "selected_fields": 6,
+  "positive_fields": 6,
+  "input_count": 2,
+  "configuration_changes": false,
+  "backend_change": "Managed-owned execution.h omits optional expr_range only for enk_token_sequence; recorded point and payload remain direct.",
+  "profiles": {
+    "native": {
+      "annotation_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/native/reflection_payloads.roslynobj",
+      "annotation_sha256": "5761c80b56b8795ecd0b4cd3cdb3813ad16d48d60add56e803d35ccf95157e3b",
+      "member_specifications": [
+        {
+          "id": 671,
+          "type_id": 598,
+          "name_id": null,
+          "requested_alignment": "0",
+          "bit_width": "0",
+          "no_unique_address": 0
+        }
+      ],
+      "annotation_attributes": [
+        {
+          "owner_id": 671,
+          "ordinal": 0,
+          "attribute_id": 672,
+          "attribute_kind": "ak_annotation",
+          "attribute_family": "af_std",
+          "argument_id": 673,
+          "argument_kind": "aak_constant",
+          "constant_id": 595,
+          "integer_value": "17"
+        },
+        {
+          "owner_id": 671,
+          "ordinal": 1,
+          "attribute_id": 674,
+          "attribute_kind": "ak_annotation",
+          "attribute_family": "af_std",
+          "argument_id": 675,
+          "argument_kind": "aak_constant",
+          "constant_id": 633,
+          "integer_value": "23"
+        }
+      ],
+      "annotation_array_reflections": [
+        {
+          "variable_id": 571,
+          "constant_initializer_id": 587,
+          "ordinal": 0,
+          "reflection_occurrence": 591,
+          "reflected_constant": 595
+        },
+        {
+          "variable_id": 571,
+          "constant_initializer_id": 587,
+          "ordinal": 1,
+          "reflection_occurrence": 629,
+          "reflected_constant": 633
+        }
+      ],
+      "reflected_member_specifications": [
+        {
+          "id": 669,
+          "value_id": 676,
+          "entity_id": 671
+        }
+      ],
+      "token_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/native/retained_tokens.roslynobj",
+      "token_sha256": "5ba267b5eb4316d4f6d02b8bb9998ad8906b78abc2f10ab635ed1600e0b9a4a6",
+      "token_sequence_expressions": [
+        {
+          "expression_id": 508,
+          "token_sequence_id": 511,
+          "representation_role_id": 7002,
+          "position_id": 509,
+          "range_id": null
+        }
+      ],
+      "recorded_tokens": [
+        {
+          "owner_id": 511,
+          "ordinal": 0,
+          "kind_id": 311103,
+          "token_kind": "tok_int",
+          "spelling_id": 318,
+          "spelling": "int"
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 1,
+          "kind_id": 311002,
+          "token_kind": "tok_identifier",
+          "spelling_id": 319,
+          "spelling": "generated_value"
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 2,
+          "kind_id": 311064,
+          "token_kind": "tok_assign",
+          "spelling_id": 320,
+          "spelling": "="
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 3,
+          "kind_id": 311084,
+          "token_kind": "tok_backslash",
+          "spelling_id": 321,
+          "spelling": "\\"
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 4,
+          "kind_id": 311002,
+          "token_kind": "tok_identifier",
+          "spelling_id": 322,
+          "spelling": "val"
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 5,
+          "kind_id": 311034,
+          "token_kind": "tok_lparen",
+          "spelling_id": 323,
+          "spelling": "("
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 6,
+          "kind_id": 311035,
+          "token_kind": "tok_rparen",
+          "spelling_id": 324,
+          "spelling": ")"
+        },
+        {
+          "owner_id": 511,
+          "ordinal": 7,
+          "kind_id": 311085,
+          "token_kind": "tok_semicolon",
+          "spelling_id": 325,
+          "spelling": ";"
+        }
+      ],
+      "interpolations": [
+        {
+          "owner_id": 508,
+          "ordinal": 0,
+          "expression_id": 520,
+          "representation_role_id": 7002,
+          "constant_id": 526,
+          "value_id": 531,
+          "parameter_number": 1,
+          "parameter_depth": 1
+        }
+      ],
+      "actual_N_parameter": [
+        {
+          "id": 540,
+          "placeholder_constant_id": 526,
+          "value_id": 531,
+          "name": "N"
+        }
+      ],
+      "interpolation_structural_children": []
+    },
+    "source": {
+      "annotation_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/source/reflection_payloads.roslynobj",
+      "annotation_sha256": "d5127fbb3e4674f4002d160efd719ca34a08a5a69334fd3d69f1af3b33105031",
+      "member_specifications": [
+        {
+          "id": 816,
+          "type_id": 695,
+          "name_id": null,
+          "requested_alignment": "0",
+          "bit_width": "0",
+          "no_unique_address": 0
+        }
+      ],
+      "annotation_attributes": [
+        {
+          "owner_id": 816,
+          "ordinal": 0,
+          "attribute_id": 817,
+          "attribute_kind": "ak_annotation",
+          "attribute_family": "af_std",
+          "argument_id": 818,
+          "argument_kind": "aak_constant",
+          "constant_id": 744,
+          "integer_value": "17"
+        },
+        {
+          "owner_id": 816,
+          "ordinal": 1,
+          "attribute_id": 819,
+          "attribute_kind": "ak_annotation",
+          "attribute_family": "af_std",
+          "argument_id": 820,
+          "argument_kind": "aak_constant",
+          "constant_id": 775,
+          "integer_value": "23"
+        }
+      ],
+      "annotation_array_reflections": [
+        {
+          "variable_id": 373,
+          "constant_initializer_id": 736,
+          "ordinal": 0,
+          "reflection_occurrence": 740,
+          "reflected_constant": 744
+        },
+        {
+          "variable_id": 373,
+          "constant_initializer_id": 736,
+          "ordinal": 1,
+          "reflection_occurrence": 771,
+          "reflected_constant": 775
+        }
+      ],
+      "reflected_member_specifications": [
+        {
+          "id": 814,
+          "value_id": 821,
+          "entity_id": 816
+        }
+      ],
+      "token_path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/source/retained_tokens.roslynobj",
+      "token_sha256": "f0395b90467d085c8c86b4075a6bfffa6a12228f212895c3b18630e495999e05",
+      "token_sequence_expressions": [
+        {
+          "expression_id": 557,
+          "token_sequence_id": 560,
+          "representation_role_id": 7002,
+          "position_id": 558,
+          "range_id": null
+        }
+      ],
+      "recorded_tokens": [
+        {
+          "owner_id": 560,
+          "ordinal": 0,
+          "kind_id": 311103,
+          "token_kind": "tok_int",
+          "spelling_id": 302,
+          "spelling": "int"
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 1,
+          "kind_id": 311002,
+          "token_kind": "tok_identifier",
+          "spelling_id": 303,
+          "spelling": "generated_value"
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 2,
+          "kind_id": 311064,
+          "token_kind": "tok_assign",
+          "spelling_id": 304,
+          "spelling": "="
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 3,
+          "kind_id": 311084,
+          "token_kind": "tok_backslash",
+          "spelling_id": 305,
+          "spelling": "\\"
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 4,
+          "kind_id": 311002,
+          "token_kind": "tok_identifier",
+          "spelling_id": 306,
+          "spelling": "val"
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 5,
+          "kind_id": 311034,
+          "token_kind": "tok_lparen",
+          "spelling_id": 307,
+          "spelling": "("
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 6,
+          "kind_id": 311035,
+          "token_kind": "tok_rparen",
+          "spelling_id": 308,
+          "spelling": ")"
+        },
+        {
+          "owner_id": 560,
+          "ordinal": 7,
+          "kind_id": 311085,
+          "token_kind": "tok_semicolon",
+          "spelling_id": 309,
+          "spelling": ";"
+        }
+      ],
+      "interpolations": [
+        {
+          "owner_id": 557,
+          "ordinal": 0,
+          "expression_id": 569,
+          "representation_role_id": 7002,
+          "constant_id": 575,
+          "value_id": 580,
+          "parameter_number": 1,
+          "parameter_depth": 1
+        }
+      ],
+      "actual_N_parameter": [
+        {
+          "id": 592,
+          "placeholder_constant_id": 575,
+          "value_id": 580,
+          "name": "N"
+        }
+      ],
+      "interpolation_structural_children": []
+    }
+  },
+  "bounded_retention": {
+    "initial_attempt": "Combined input included evaluated retained_token_pattern<7>(); source failed before publication at optional expr_range end seq4294943504 while valid point/start were seq22. Failed attempts excluded from object counts.",
+    "one_token_variant": "Split annotation and token inputs; token has no evaluated use and uses normal --no_defer_parse_function_templates to retain prototype. Source succeeded; native repeated optional range assertion with another unmappable end sequence3681041408.",
+    "approved_fix": "Only actual enk_token_sequence expression origins now use recorded point, omitting optional range. No thresholds, coordinates, frontend token cache dereferences, core edits or source reconstruction. Other expression origins unchanged.",
+    "actual_tokens": "Eight exact ordered kinds and spelling strings include interpolator delimiters. N is a separate actual constant-expression interpolation, not a duplicated token. Both original template bodies and interpolation are metadata.",
+    "annotation": "Actual reflected array element constants and canonical annotation argument constants are identical IDs in lexical order17/23; exporter only follows actual a_data_member_spec.annotations list.",
+    "evaluated_sequence": "No successful evaluated token-sequence object or token_cache payload is claimed. Final token input is retained prototype only.",
+    "failed_evidence": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/initial-combined"
+  }
+}

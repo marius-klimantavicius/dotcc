@@ -1549,3 +1549,58 @@ frozen file/evidence hashes match. The final validation, stage, activation and
 build summaries are copied with the six-positive/one-pending scope. Backend,
 configuration and schema bytes are unchanged. Restart, unrelated and unaccepted
 experimental inputs are excluded from this checkpoint.
+
+
+### Accepted reflection annotations and retained token/interpolation payloads
+
+The reflection/token checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four final native/source objects pass 115
+reader assertions; self-checks pass 73. Build, generator, literal-field and
+whitespace checks pass. All 14 existing profile builds pass after synchronizing
+the one-line backend fix. Each stage retains 316 pinned stock inputs, the pinned
+tool and 26 canonical backend files. Failed probes and the early three-object
+reader gate are excluded from final counts. No full 211-object refresh or scale
+rerun is claimed.
+
+Field coverage is now **1,509 verified / 19 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Kind-family proof and optional source fields remain distinct from
+required owner-payload and active-branch evidence.
+
+Two compact ordinary C++26 inputs activate six fields. The prospective reflected
+member retains two ordered ak_annotation attributes with exact int constants 17
+and 23, canonical owners, argument links and value reflections. The retained token
+prototype owns eight typed kinds and independent spellings in actual order. Its
+N interpolation remains a separate ordered metadata expression referencing the
+actual parameter value/type; no evaluated structural child or function traversal
+is created. Existing typed properties suffice; no API or schema expansion.
+
+The combined probe reached an invalid optional expression-range endpoint during
+stock sequence lookup. One prototype-only variant retained source tokens, but the
+native counterpart repeated the optional-range assertion. For enk_token_sequence
+only, the backend now retains its recorded point and omits its optional expression
+range. Every other kind is unchanged. This is an explicit backend availability
+policy, not a claim that EDG universally omits token ranges. No endpoint repair,
+threshold, token-cache read, source recovery or core change is involved.
+
+The final four-object proof closes all six fields. Constant-evaluated private
+frontend token caches are never inspected or reconstructed. The original name
+argument-list and enum-template reviews identify exact producer contexts and
+single uncompiled recipes; neither review promotes a field or infers a pointer.
+
+Next native and reader work combines those two retained template/name cases,
+then bounded control/asm/MS, contextual base/override and targeted pragma/list
+arms. Dynamic-init empty-target and selected dependent-array/name/orphan links
+retain explicit positive-evidence obligations. No confirmed missing serialization
+adapter or factory is open. Full phases 3–4/M0–M5 continue; EDG remains the sole
+semantic authority and optional source positions remain nonblocking.
+
+Final managed inventory: managed-reflection-token251-ready.json. Its four owned
+paths, six logs, four objects and final manifest match all 15 frozen hashes.
+Native validation, stage/pin/build and activation evidence are recorded with the
+final four-object scope. Restart and unrelated work remain excluded.
+
+Native inventory: native-reflection-token251-ready.json; all 16 linked
+file/evidence/header hashes match. Historical 211 unique paths contain zero
+token-sequence kinds in the bounded impact scan; this is not a reader rerun.
+All 14 actual strict builds and final pin/stock-tool/backend gates pass.

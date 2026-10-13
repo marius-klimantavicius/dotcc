@@ -1,0 +1,6 @@
+{
+  "baseline_manifest": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/all-profile-results-final.json",
+  "read_only_unique_paths_scanned": 211,
+  "token_sequence_positive_paths": [],
+  "scope": "Kind-only impact scan; no fixture rerun or baseline refresh claimed."
+}

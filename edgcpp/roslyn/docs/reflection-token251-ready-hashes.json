@@ -1,0 +1,16 @@
+{
+  "inventory": "/tmp/roslyn-managed-ready-reflection-token251.json",
+  "verified_files": 15,
+  "all_match": true,
+  "checks": {
+    "fresh_assertions": 115,
+    "fresh_unique_paths": 4,
+    "self_assertions": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "native_literal_fields": "PASS",
+    "whitespace": "PASS"
+  }
+}

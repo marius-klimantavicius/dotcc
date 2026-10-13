@@ -1,0 +1,131 @@
+{
+  "ready": "HOLD",
+  "checkpoint_base": "adf248632e3971b85b5ab9bf688beff0b1fdf7b9",
+  "created_utc": "2026-10-13T22:35:52.354369+00:00",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "scope": "Six exact retained reflection/token/annotation fields, four native/source objects; no API or schema change. Point-only source origin for enk_token_sequence, every other kind unchanged.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_execution.h",
+      "sha256": "6662075d00f7b80666ae9e4dcd84c181409ae6a9559056bf1df777e8a5689a28",
+      "bytes": 35675
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "9df1afca9868d11e5588f40b9fbff0ad295eab719b5aca3dd9f1b97824ac6773",
+      "bytes": 78594
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/ReflectionPayloadProjection.cs",
+      "sha256": "9d7337a59092799ee1dfb2a9f64ea6a1507c8f9fa2db1dfc1989e4d295e562b1",
+      "bytes": 5162
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/reflection-token251-evidence.tsv",
+      "sha256": "c0f8223eefd30514f6fff534fa3686ea91a7847460ca3c3e6c0dc3d3c9a31196",
+      "bytes": 5460
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-reflection-token251-build.log",
+      "sha256": "2c086f6438453088b5ff46e73085d1ef2312511652b46f3a4c834e18e46ab030",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-reflection-token251-fresh4-v1.log",
+      "sha256": "544079c7ecfdf4e62e73a01883666a4e0742e1eba9cc3457c7c9d75d99363960",
+      "bytes": 998
+    },
+    {
+      "path": "/tmp/roslynobj-managed-reflection-token251-self.log",
+      "sha256": "1671e0d7bcc6aaaa48ebaa55b3d844a54c6a50d6cc9ea38984d1017cdfcac78a",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-reflection-token251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-reflection-token251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-reflection-token251-whitespace.log",
+      "sha256": "d1c4071a6e263f1c76b7aacfa6defccfebb23f5c32488fa7a0b15526b0d68586",
+      "bytes": 278
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/all-profile-results-final.json",
+    "sha256": "78e61a412e5b13511af8aa06f1d756980b9723bfc81f022e889644d66acd1b54",
+    "bytes": 3337
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/native/reflection_payloads.roslynobj",
+      "sha256": "5761c80b56b8795ecd0b4cd3cdb3813ad16d48d60add56e803d35ccf95157e3b",
+      "bytes": 692224,
+      "profile": "native",
+      "fixture": "reflection_payloads",
+      "entities": 1013,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/native/retained_tokens.roslynobj",
+      "sha256": "5ba267b5eb4316d4f6d02b8bb9998ad8906b78abc2f10ab635ed1600e0b9a4a6",
+      "bytes": 661504,
+      "profile": "native",
+      "fixture": "retained_tokens",
+      "entities": 601,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/source/reflection_payloads.roslynobj",
+      "sha256": "d5127fbb3e4674f4002d160efd719ca34a08a5a69334fd3d69f1af3b33105031",
+      "bytes": 692224,
+      "profile": "source",
+      "fixture": "reflection_payloads",
+      "entities": 1051,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/reflection-token/source/retained_tokens.roslynobj",
+      "sha256": "f0395b90467d085c8c86b4075a6bfffa6a12228f212895c3b18630e495999e05",
+      "bytes": 662528,
+      "profile": "source",
+      "fixture": "retained_tokens",
+      "entities": 607,
+      "fk_errors": 0,
+      "page_size": 1024
+    }
+  ],
+  "checks": {
+    "fresh_assertions": 115,
+    "fresh_unique_paths": 4,
+    "self_assertions": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "native_literal_fields": "PASS",
+    "whitespace": "PASS"
+  },
+  "evidence_rows": {
+    "positive": 6,
+    "pending": 0
+  },
+  "excluded": [
+    "early3 pilot gate is historical; final4 log and manifest authoritative",
+    "failed combined token evaluation attempts excluded",
+    "constant-evaluated frontend token_cache not accessed or reconstructed"
+  ],
+  "native_gate": "Native/source strict builds pass; remaining twelve profile builds/gates independently owned by native and not claimed complete here."
+}

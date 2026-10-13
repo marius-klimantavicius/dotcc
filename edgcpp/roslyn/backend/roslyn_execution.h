@@ -98,7 +98,7 @@ static Rid roslyn_asm(an_asm_entry_ptr p) {
 static Rid roslyn_expr(an_expr_node_ptr p,int role) {
  if(!DO_IL_LOWERING&&role==7001)role=7003;bool fresh;Rid id=DB.claim(p,"expression",fresh);if(!fresh){DB.promote_execution(id,role);return id;}role=DB.semantic_role(id,role);int saved_role=roslyn_default_role;roslyn_default_role=role;
  if(p->kind==enk_error||p->kind==enk_reclaimed||p->kind==enk_last){DB.fail("Invalid EDG expression reached");roslyn_default_role=saved_role;return id;}
- int kind=roslyn_kind_expression(p->kind);DB.put("semantic_node",{{"id",id},{"kind_id",kind},{"source_origin_id",R(roslyn_origin(p->position,&p->expr_range.end,&p->expr_range.start))},{"compiler_generated",static_cast<int>(p->compiler_generated)},{"representation_role_id",role}});
+ int kind=roslyn_kind_expression(p->kind);Rid origin=p->kind==enk_token_sequence?roslyn_origin(p->position):roslyn_origin(p->position,&p->expr_range.end,&p->expr_range.start);DB.put("semantic_node",{{"id",id},{"kind_id",kind},{"source_origin_id",R(origin)},{"compiler_generated",static_cast<int>(p->compiler_generated)},{"representation_role_id",role}});
  RoslynSqlValue normalized;
 #if DO_IL_LOWERING
  normalized=RoslynSqlValue(static_cast<int>(p->is_non_normalized_boolean_controlling_expr));

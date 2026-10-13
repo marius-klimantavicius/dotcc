@@ -1,0 +1,30 @@
+{
+  "field": "an_integer_type_supplement.assoc_template",
+  "status": "active actual member-enum template pointer; not inferred enclosing class template",
+  "authority": "/tmp/roslynobj-edg-upstream-20261012",
+  "declaration": "src/il_def.h:9581-9585 specifies member opaque enumerations of class templates; alloc starts NULL in src/il_alloc.c:1462.",
+  "producers": [
+    {
+      "source": "src/templates.c:33600-33666",
+      "function": "enum_template_declaration",
+      "meaning": "Out-of-class definition of an opaque enumeration member scans enum declaration, calls set_il_template_entry, writes the enum supplement assoc_template from that enum declaration supplement."
+    },
+    {
+      "source": "src/templates.c:11325-11357",
+      "function": "instantiate_template_enum",
+      "meaning": "Instantiates enum declared in class template/nested class and assigns its actual enum template entry; scoped enumerator demand enters from instantiate_template_enum_if_needed11300."
+    }
+  ],
+  "template_kind": "src/templates.c:30615-30629 sets templk_member_enum, own canonical/definition template and enum prototype_instantiation.type when prototypes enabled. It is not the enclosing templk_class descriptor.",
+  "retention": "src/walk_entry.h:4091-4110 remaps integer supplement assoc_template without DO_IL_LOWERING/prototype guard. Exact retained descriptor availability still must be observed under selected profiles.",
+  "writer": "backend/roslyn_gen_be.c:189 directly maps supplement->assoc_template to enum_symbol.template_id; no inferred class association and no identified writer gap.",
+  "reader": "EnumSymbolDetails.Template existing generated relationship; Symbols.cs EnumSymbol currently lacks a convenience Template property, so a direct property may be appropriate after positive activation.",
+  "candidate_source": "template<class T> struct EnumHost {\n  enum class State : unsigned;\n};\ntemplate<class T>\nenum class EnumHost<T>::State : unsigned { First = 1, Sized = sizeof(T) };\nEnumHost<int>::State enum_state = EnumHost<int>::State::Sized;\n",
+  "candidate_profiles": "Existing source/native GNU C++20; ordinary C++11+ feature, no CLI/new build flags or profiles. Root did not compile/export.",
+  "required_positive_evidence": "Actual State enum supplement points to actual templk_member_enum descriptor with State enum prototype/definition where retained; concrete enum and descriptor identities are distinct from EnumHost class template. Use Sized forces scoped enum definition instantiation. Determine actual values/nullable relations from stock output, never fill from enclosing class.",
+  "non_claims": [
+    "No claim every nested enum has this link.",
+    "No claim all profiles retain all prototype roots.",
+    "No code or compiler modifications, no tests/exports run by root."
+  ]
+}

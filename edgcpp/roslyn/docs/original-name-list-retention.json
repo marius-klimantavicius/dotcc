@@ -1,0 +1,43 @@
+{
+  "field": "a_name_reference.orig_template_arg_list",
+  "status": "active; earlier zero explained by stock lexical deduplication, not global lowering exclusion",
+  "authority": "/tmp/roslynobj-edg-upstream-20261012",
+  "producers": [
+    {
+      "source": "src/expr.c:8839-8877",
+      "meaning": "After successful overload resolution restores name reference and keeps only explicitly specified arguments from the list returned by selection."
+    },
+    {
+      "source": "src/exprutil.c:24780-24786",
+      "meaning": "Unique function-template reference also records the list returned by find_template_function."
+    },
+    {
+      "source": "src/lexical.c:24282-24302",
+      "meaning": "Variable template name records explicitly specified locator arguments after trimming trailing defaults."
+    }
+  ],
+  "retention_guards": [
+    {
+      "source": "src/templates.c:23164-23176;23201-23207;23230-23239;23352-23365",
+      "meaning": "find_template_function copies original arguments while recording name forms, strips local/nonreal typerefs for instantiation, then clears returned list when lexical comparison matches the selected routine list or recording is disabled."
+    },
+    {
+      "source": "src/templates.c:11953-12008",
+      "meaning": "Lexical comparison tests kind/explicit flags and exact type, constant, or template pointers; semantic equivalence does not imply lexical identity."
+    },
+    {
+      "source": "src/exprutil.c:6107-6120",
+      "meaning": "Variable path likewise clears a lexical duplicate of the variable instance list; distinct typedef spelling can survive."
+    },
+    {
+      "source": "src/walk_entry.h:2642-2650",
+      "meaning": "The name-reference union walker walks original argument list directly. The nearby prototype guard at3577 is for typeref supplement, not name references."
+    }
+  ],
+  "why_prior_fixture_zero": "retained_name_forms.cpp called named_overload<int,9> and named_overload<int> selecting different Number9/7 instances with no differing typedef spelling. Different source explicit counts do not force a lexical mismatch with either selected instantiation.",
+  "writer": "backend/roslyn_names.h:25-26 directly walks retained list into original_template_argument ordered rows; no writer gap found.",
+  "candidate_source": "template<class T, int N> int retained_original(T) { return N; }\nint prime_original(int value) { return retained_original<int, 7>(value); }\nint alias_original(int value) {\n  using LocalInt = int;\n  return retained_original<LocalInt, 7>(value);\n}\n",
+  "candidate_profile": "Existing source GNU C++20 profile with DEFAULT_RECORD_FORM_OF_NAME_REFERENCE1; no config/core/backend change. Not compiled by root.",
+  "expected_evidence": "At least alias call name-reference should retain original LocalInt/7 argument descriptors distinct from selected routine instantiation int/7; actual counts/identities must be checked from EDG and may not be inferred. Local typedef deliberately exercises original-list preservation versus stripped instantiation. Native lexical descriptor absence remains legitimate.",
+  "scope": "Read-only source audit; one proposed bounded fixture, no builds/exports/edits/tests; does not block current reflection batch."
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "profile": "native",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "source",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "cfront",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "exported",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "sun",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "usl21",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "usl30",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "host-long-double",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "host-double",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "softfloat",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "instantiation",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "tableless",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "extern-inline",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  },
+  {
+    "profile": "separate-init",
+    "pinnedInputsComparedToGit": 316,
+    "canonicalBackendFiles": 26,
+    "stockToolPinned": true
+  }
+]
