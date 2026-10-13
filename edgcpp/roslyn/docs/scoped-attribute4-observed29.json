@@ -1,0 +1,370 @@
+{
+  "totals": {
+    "attributes": 133,
+    "local_attribute_args": 0,
+    "scoped_expressions": 0,
+    "scoped_local_refs": 0
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+      "counts": {
+        "attributes": 9,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/source_attributes.roslynobj",
+      "counts": {
+        "attributes": 4,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/types.roslynobj",
+      "counts": {
+        "attributes": 3,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/variables.roslynobj",
+      "counts": {
+        "attributes": 5,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/vector_values.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/common.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/layout.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines.roslynobj",
+      "counts": {
+        "attributes": 9,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/source_attributes.roslynobj",
+      "counts": {
+        "attributes": 4,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/variables.roslynobj",
+      "counts": {
+        "attributes": 5,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/vector_values.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/routines.roslynobj",
+      "counts": {
+        "attributes": 9,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/attributes.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/common.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/layout.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/retained.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines.roslynobj",
+      "counts": {
+        "attributes": 9,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/source_attributes.roslynobj",
+      "counts": {
+        "attributes": 4,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/type_edges.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/types.roslynobj",
+      "counts": {
+        "attributes": 3,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variable_semantics.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/variables.roslynobj",
+      "counts": {
+        "attributes": 5,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/vector_values.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/separate-init/separate_initialization.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj",
+      "counts": {
+        "attributes": 8,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/retained.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "counts": {
+        "attributes": 9,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_attributes.roslynobj",
+      "counts": {
+        "attributes": 4,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/type_edges.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/types.roslynobj",
+      "counts": {
+        "attributes": 3,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variable_semantics.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variables.roslynobj",
+      "counts": {
+        "attributes": 5,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_values.roslynobj",
+      "counts": {
+        "attributes": 2,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/tableless/retained.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/tableless/variable_semantics.roslynobj",
+      "counts": {
+        "attributes": 1,
+        "local_attribute_args": 0,
+        "scoped_expressions": 0,
+        "scoped_local_refs": 0
+      }
+    }
+  ]
+}

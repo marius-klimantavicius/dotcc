@@ -1,0 +1,15 @@
+{
+  "scope": "Shared enum discriminant/getter only; not every-case runtime registration or payload proof. Existing exact pristine enum/switch/catalog IDs and guards reviewed in pragma99-static260.json. Upper sentinels unchanged.",
+  "families": {
+    "edg_upc_pragma": "PragmaDirective.Upc.Kind",
+    "edg_upc_access": "PragmaDirective.Upc.AccessMethod",
+    "edg_upc_coherence": "PragmaDirective.Upc.CoherenceOperation",
+    "edg_ms_pragma_comment": "PragmaDirective.Comment.Kind",
+    "edg_ms_pragma_conform": "PragmaDirective.Conformance.Kind",
+    "edg_gcc_pragma": "PragmaDirective.Gcc.Kind"
+  },
+  "actual_test": "PragmaScopeProjection.cs:18-19,31-32,37-41",
+  "accepted_log": "/tmp/roslynobj-managed-relations251-pragma5-v2.log PASS109/5",
+  "accepted_checkpoint": "79b52bdbf621e83d1ffa3571f2be031bf1341539",
+  "source_obligations": "Each pragma active union and exact target/list/payload has independent field rows; this shared discriminator proof does not substitute source attributes or guessing ignored preprocessing metadata."
+}

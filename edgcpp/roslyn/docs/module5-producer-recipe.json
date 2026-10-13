@@ -1,0 +1,69 @@
+{
+  "scope": "Read-only stock source recipe for later bounded module5 activation; no compilation/probe or repository writes by root.",
+  "profile": "Use already compiled source profile, same --c++20 --modules as accepted module_interface/module_import objects. No new macro/build configuration, EDG core edits, FE module_entity traversal, or RoslynObj linking.",
+  "existing_proof": "closure251-phantom29/all-profile-results-final.json has genuine source producer --create_module_interface RoslynNative.ifc and consumer --modules_directory, with public Program mfk_edg_ifc assertion. Stock content detection, not suffix, determines file kind.",
+  "stock_options": {
+    "create_header_unit": "cmd_line542-553,11208-11215: --create_header_unit PATH",
+    "create_interface": "--create_module_interface PATH,11217-11224",
+    "create_internal_partition": "--create_module_internal_partition PATH,11226-11233; use non-export module declaration (decls20765-20784)",
+    "header_mapping": "--header_unit ABS_HEADER_PATH=ABS_CACHE_PATH; cmd_line10904-10923 splits on =; actual header must also be findable through include search",
+    "module_search": "--modules_directory DIR; modules479-526 maps A:B to A-B.eifc then A-B.ifc. Both suffixes checked for actual magic. No MS DLL/platform metadata required."
+  },
+  "proposed_inputs": {
+    "partition.cpp": "export module RoslynParts:Part;\nexport int part_value() { return 17; }\n",
+    "primary.cpp": "export module RoslynParts;\nexport import :Part [[roslyn_probe::marker]];\nexport int combined_value() { return part_value(); }\n",
+    "module_header.hpp": "struct HeaderValue { int value; };\ninline int header_value(HeaderValue value) { return value.value; }\n",
+    "header_consumer.cpp": "import \"module_header.hpp\" [[roslyn_probe::marker]];\nint use_header() { return header_value(HeaderValue{3}); }\n"
+  },
+  "proposed_invocations_common": [
+    "existing source compiler through roslyn-cpfe.py",
+    "--c++20",
+    "--modules"
+  ],
+  "proposed_invocations_suffix": [
+    [
+      "--create_module_interface",
+      "CACHE/RoslynParts-Part.eifc",
+      "partition.cpp",
+      "-o",
+      "partition.roslynobj"
+    ],
+    [
+      "--modules_directory",
+      "CACHE",
+      "--create_module_interface",
+      "CACHE/RoslynParts.eifc",
+      "primary.cpp",
+      "-o",
+      "primary.roslynobj"
+    ],
+    [
+      "--create_header_unit",
+      "CACHE/Header.eifc",
+      "module_header.hpp",
+      "-o",
+      "header.roslynobj"
+    ],
+    [
+      "--header_unit",
+      "ABS/module_header.hpp=ABS/CACHE/Header.eifc",
+      "-I",
+      "ABS",
+      "header_consumer.cpp",
+      "-o",
+      "header_consumer.roslynobj"
+    ]
+  ],
+  "expected_retained_branches": {
+    "partition": "modules145-180 find_or_create_module creates mk_unit_partition, exact partition name Part plus pointer to separately allocated mk_unit RoslynParts; actual import descriptor makes it reachable, no cross-object resolution performed by reader.",
+    "header": "decls20599+ creates mk_header_unit and source-spelled headername; modules553-573 resolve_header sets resolved_header before cache mapping; resolved_file is separate compiledIFC path. Actual header search required, cannot fill it from IFCpath.",
+    "attributes": "decls20645-20659 scan_attributes(al_module), attach_attributes(...iek_module_import_decl); attribute3755-3756 stores on actual import descriptor. Unknown namespaced marker is proposed ordinary ignored attribute and may produce warning; not validated yet. It must be retained on import, never substituted with module entity attrs."
+  },
+  "limits": [
+    "These snippets/options are stock-source-derived candidates, NOT executed successful fixture claims. Native worker should validate with its serialized lane.",
+    "Do not use skip_module_imports: modules1730 treats it as testing bypass and it would omit real successful import/header resolution semantics.",
+    "Do not confuse creating compiler IFC dependencies with implementing cross-.roslynobj linking. All model facts are local to each emitted TU; future linking remains out of scope.",
+    "Public expectations should focus canonical Part.Unit pointer, header spelled vs resolved paths, and actual import.Attributes owner/target identity. No source-coordinate expectations required.",
+    "Internal partition optional follow-up if boolean true matters; module5 currently needs partition name/unit and header name/resolved header plus importattrs, not mandatory additional profile campaign."
+  ]
+}

@@ -1,13 +1,14 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after routine/EH and constant-dependent acceptance:
-eight existing objects pass350 reader assertions and four fresh objects pass92;
-self73, clean build/generator/literal/diff checks pass. These are12 unique bounded
-paths. Fourteen previously compiled stages/pins are unchanged and reverified;
-no new strict build, full187 rerun or scale campaign is claimed. Exact ifunc
-cache variables, EH table variables, constructor operands/overlap lifetimes,
-nested throw-type flags, dependent sizeof/template-template packs/written typeof
-operands and lowering-created constant storage now have direct public proof.
+Active on 2026-10-13 after scoped availability/derivation/orphan/prototype/UUID
+acceptance: eight existing objects pass499 and four fresh objects pass95; self73,
+clean build/generator/literal/diff checks pass. These are12 distinct bounded
+paths. All14 unchanged stages/pins retain316 pristine inputs/26 canonical files;
+no new strict build/full187/scale campaign is claimed. Per-owner availability
+state/reason, orphan list quantities/identities, inclusive derivation tails and
+reverse order, C prototype scope sharing and actual class/enum UUID storage pass.
+The prior routine/constant gate (existing8/PASS350,fresh4/PASS92,self73) remains
+separate accepted history. Array-specific dependent-bound activation is pending.
 The preceding retained-six gate (fresh5/PASS97,existing9/PASS518,self73) is a
 separate bounded checkpoint. Array-specific dependent-bound activation remains
 pending; its constant-owned alternative stays positively verified.
@@ -50,15 +51,16 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are1388 verified and144 mapped pending-validation fields at this boundary.
+There are1409 verified and122 mapped pending-validation fields at this boundary.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.
 All active adapters reviewed so far exist; residual rows are exact public identity
 proofs, absent retained branch examples or stock/profile disposition review.
-Scoped availability rows and reader query are implemented; a bounded entity/state/
-reason public check remains before final reader closure. Five unused optional/
-unknown/frontend contract slots have source-backed removal proposals awaiting a
-separate regenerated-format batch. No confirmed new native adapter gap is open. Promoted-local class ownership is
+Scoped availability rows and reader query now have bounded actual owner/state/
+reason public acceptance; no availability framework implementation remains. Five unused optional/
+unknown/frontend slots have reviewed removals; the separate regenerated-format
+batch is next at the held compiler/reader boundary. The following USL throw,
+scoped attribute and module metadata probes will use that new contract. No confirmed new native adapter gap is open. Promoted-local class ownership is
 consumed transient staging, not an unavailable required semantic reconstruction.
 All 2,000 field rows now have an explicit mapping or disposition; mapping alone
 is not acceptance. Accepted bounded type/layout/init and template/parameter/attribute scalar

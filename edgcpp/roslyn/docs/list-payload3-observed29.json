@@ -1,0 +1,141 @@
+{
+  "totals": {
+    "asm_label": 1,
+    "class_befriending": 5,
+    "routine_befriending": 11,
+    "multiversion": 10,
+    "startup": 3
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 1,
+        "routine_befriending": 1,
+        "multiversion": 0,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 1,
+        "multiversion": 2,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/layout.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 1,
+        "routine_befriending": 1,
+        "multiversion": 0,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 1,
+        "multiversion": 2,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/routines.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 1,
+        "multiversion": 2,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/layout.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 1,
+        "routine_befriending": 1,
+        "multiversion": 0,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/routines.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 1,
+        "multiversion": 2,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/separate-init/separate_initialization.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 0,
+        "multiversion": 0,
+        "startup": 3
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 1,
+        "routine_befriending": 1,
+        "multiversion": 0,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 1,
+        "routine_befriending": 1,
+        "multiversion": 0,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 1,
+        "multiversion": 2,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj",
+      "counts": {
+        "asm_label": 0,
+        "class_befriending": 0,
+        "routine_befriending": 1,
+        "multiversion": 0,
+        "startup": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_statements.roslynobj",
+      "counts": {
+        "asm_label": 1,
+        "class_befriending": 0,
+        "routine_befriending": 0,
+        "multiversion": 0,
+        "startup": 0
+      }
+    }
+  ]
+}

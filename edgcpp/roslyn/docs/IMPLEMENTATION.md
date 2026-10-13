@@ -1142,3 +1142,41 @@ Scoped availability is implemented; final public state/reason acceptance remains
 The source-backed final five-slot contract cleanup is reviewed but unimplemented;
 regeneration/admission/new-contract evidence will be coordinated in its own batch.
 Full phases3–4/M0–M5 remains active, with no inferred semantic replacements.
+
+
+### Accepted availability, orphan/derivation and prototype/UUID proof
+
+Current e49f251 remains unchanged. Existing8 paths pass499 and fresh4 pass95,
+12 distinct objects total; self73, build0warnings/errors, generator249/1946,
+literal/diff checks pass. Native4 currentobjects pass FK0/1KiB/complete/no semantic
+BLOB-or-REAL. All14 unchanged stages retain316 Git-pinned inputs/26 canonical
+backend files/tool pins; no new strictbuild/full187/scale run is claimed. Ready
+inventories are /tmp/roslyn-managed-ready-availability-orphan251.json and
+/tmp/roslyn-native-ready-prototype-uuid251.json; root independent4 check is
+/tmp/roslyn-root-prototype-uuid4-independent.json.
+
+GetAvailability now has exact actual-owner/state/reason tests for TU, types,
+routines and calls, including absent entry omission. Void is always incomplete
+per stock allocator and retains absent size/alignment; no independent language
+category expectation overrides EDG. Orphan lists preserve per-kind ordinals and
+literal scope numbers, without inferring execution/lexical ownership. Derivation
+paths expose direct/preferred/access and forward/reverse inclusive-tail segments;
+shared steps do not merge wrapper identity or create missing path prefixes.
+C prototype scopes contain actual tag types and exclude parameters; source two
+routine descriptors share one scope with its separately retained associated type.
+Class/enum UUID declarations and __uuidof produce actual lowered storage, exact
+GUID initializer fields/bytes and distinct source type-address targets.
+
+Field proof1409verified/122required pending. VLA dimension-variable guard is0
+in all14 selected profiles; !ABI_CHANGES_FOR_RTTI is active only USL21/30, whose
+existing inputs have no throws, so accessible-base links remain a real positive
+queue. Custom entity tag factories all exist:65 actual entity kinds materialize
+in the bounded accepted navigation corpus, other cases have explicit reviewed/
+unobserved status and separate field obligations. Pragma subgroup enum getters,
+scoped fact states and reserved unused fact/local-expression scalar IDs now have
+accurate family dispositions, without runtime-every-kind or payload promotion.
+
+Next is reviewed five-column cleanup at this held boundary, followed by genuine
+current-contract refresh/admission. Unknown non-type deduction payloads cannot
+be silently discarded. USL throw/scoped attribute/module probes follow the new
+contract; no user approval or completion pause applies.

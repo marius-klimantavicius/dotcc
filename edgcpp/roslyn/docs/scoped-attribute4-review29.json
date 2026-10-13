@@ -1,0 +1,65 @@
+{
+  "pending_at_review": 4,
+  "cohort": "accepted187unique/e49f",
+  "authority": "Stockil_def2788/2828,18745-18754;attribute3925-3993,5065-5096;il14939-15025,15206-15229;il_alloc5775-5784. Root read-only. No FE cache/provenance/test expansion.",
+  "observations": "/tmp/roslyn-root-scoped-attribute4-observed29.json",
+  "summary": {
+    "missing_positive_branch": 4
+  },
+  "bounded_future_probe": "Realfunction [[assume(x > 0)]]; standardC++23 or actualGNU13 registrationattribute239; no new configuration/core changes. This is future queue advice only, active nativeprototype/UUID batch unchanged.",
+  "retention": "apply_one_attribute explicitly keeps expressions retrievable whether applied or not. Allretainedfunction memory available backend. Originalempty wrapperexpr is expected. No globalabsence/inactiveguard disposition.",
+  "rows": [
+    {
+      "owner": "an_attribute_arg",
+      "member": "local_expr_ref",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2788",
+      "disposition": "mapped_pending_validation",
+      "destination": "attribute_argument.is_local_expression_reference/scoped_expression_id",
+      "api_property": "AttributeArgument.IsLocalExpressionReference / ScopedExpression",
+      "fixture": "stock expr_node_from_attribute_arg accesses exact expression; no positive retained fixture yet",
+      "reason": "243 genuine module evidence: aak_expression and local_expr_ref. Status: mapped-awaiting-positive. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "missing_positive_branch",
+      "review": "0true133attribute args in187; directflagwriter exists. Actual producer make_local_expr_node_refs_for_args runs ifaak_expression&&!local_expr_ref&&!in_file_scope(expr), no additional compileguard. Stock illustrative [[assume(x > 0)]]; in function withparameterx gives expectedlocalmemory. Existing builtin/__assume forms are differentowners and do notproveattribute arm."
+    },
+    {
+      "owner": "an_attribute_arg",
+      "member": "variant.sexpr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:2828",
+      "disposition": "mapped_pending_validation",
+      "destination": "attribute_argument.is_local_expression_reference/scoped_expression_id",
+      "api_property": "AttributeArgument.IsLocalExpressionReference / ScopedExpression",
+      "fixture": "stock expr_node_from_attribute_arg accesses exact expression; no positive retained fixture yet",
+      "reason": "243 genuine module evidence: aak_expression and local_expr_ref. Status: mapped-awaiting-positive. See managed/semantic243-evidence.tsv and actual module acceptance logs.",
+      "review_status": "missing_positive_branch",
+      "review": "0wrapperlinks. Producer allocates dummy file-region ILwrapper with commoncorrespondence, setslocalflag andunionsexpr. expr_node_from_attribute_arg il15206-15229 follows wrapper.enclosing_routine\u2192scope\u2192lerk_scoped_expr, no FEcache/reanalysis/allocation. Native writer callshelper then exactwrapperexport. Exercise AttributeArgument.ScopedExpression canonicalidentity and metadata-onlyexpression, inactive directexpr union neverdereferenced."
+    },
+    {
+      "owner": "a_scoped_expression",
+      "member": "source_corresp",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18749",
+      "disposition": "mapped_pending_validation",
+      "destination": "entity_source_correspondence.source_correspondence_id;backend/roslyn_local_expressions.h:59\u201362",
+      "api_property": "ScopedExpression.SourceCorrespondence/Expression",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Canonical actual wrapper and retained common correspondence/expression captured, following exact lerk_scoped_expr indirection when needed. Expression is metadata recipe; no visit-context substitution.",
+      "review_status": "missing_positive_branch",
+      "review": "Actual wrapper correspondence initializedstockdefault then make_local_expr_node_ref il.c14939+ sets enclosing_routine to real function. Retaining that exact common correspondence is semantic context, not optional coordinate guessing. Existing wrappercommonwriter present; no positivewrapper yet. Verify EnclosingRoutine canonical identity, not syntheticdeclaredname/sourceposition."
+    },
+    {
+      "owner": "a_scoped_expression",
+      "member": "expr",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:18752",
+      "disposition": "mapped_pending_validation",
+      "destination": "scoped_expression.expression_id;backend/roslyn_local_expressions.h:59\u201362",
+      "api_property": "ScopedExpression.SourceCorrespondence/Expression",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Canonical actual wrapper and retained common correspondence/expression captured, following exact lerk_scoped_expr indirection when needed. Expression is metadata recipe; no visit-context substitution.",
+      "review_status": "missing_positive_branch",
+      "review": "Stockalloc_scoped_expression5775-5784 initializes directexprNULL; attribute3925-3960 creation leaves itNULL and stores expression in actual function scope.expr_node_refs with kindlerk_scoped_expr/referrerwrapper. Exporter follows residentpreindexedlocalref; public Expression should match AttributeArgument.Expression and exact Scope.LocalExpressionReferences expression. Do not mark missing because directexprfieldNULL or treat frontendcache as source. No matchedpositive yet."
+    }
+  ]
+}

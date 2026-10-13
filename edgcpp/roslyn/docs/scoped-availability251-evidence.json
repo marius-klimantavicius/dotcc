@@ -1,0 +1,30 @@
+{
+  "accepted_inventory": "/tmp/roslyn-managed-ready-availability-orphan251.json",
+  "accepted_log": "/tmp/roslynobj-managed-availability-orphan251-existing8-v2.log PASS499/8",
+  "state_policy": "Sparse actual-owner entries only. Public loss state NotRetained intentionally combines lost/not_retained; no missing-row default or inferred field availability.",
+  "actual_fact_names": [
+    "alignment",
+    "body",
+    "declaration_sequence",
+    "layout",
+    "macro_arguments",
+    "macro_tree",
+    "original_signature",
+    "size",
+    "source",
+    "source_dispatch",
+    "source_parameters",
+    "source_target",
+    "tokens",
+    "trivia"
+  ],
+  "reserved_fact_names": [
+    "lifetime_details",
+    "lowering_origin",
+    "original_type",
+    "template_origin"
+  ],
+  "void_source": "Stock il_alloc.c2262-2275 explicitly makes void always incomplete; exporter preserves incomplete precedence, public Size/Alignment absent. Routine descriptor demonstrates separate NotApplicable object quantities.",
+  "runtime_every_case_claim": false,
+  "no_new_implementation_framework": true
+}

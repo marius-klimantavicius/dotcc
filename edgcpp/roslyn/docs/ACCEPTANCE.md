@@ -1,11 +1,11 @@
 # Remaining acceptance work
 
-Current bounded checkpoint:251tables/e49f,8existing/PASS350 plus4fresh/PASS92,
-12 distinct paths,self73,cleanbuild/gen/literal/diff. All14 unchanged compiled
-stages/pins reverified; no new strictbuild/full187/scale run. Field proof1388
-verified/144required pending,89captured optional-source/15explicit limits.
-Remaining adapters reviewed exist; exact identity/active branch proof, scoped
-availability acceptance and the separate five-slot format cleanup remain.
+Current bounded checkpoint:251tables/e49f,existing8/PASS499 plusfresh4/PASS95,
+12distinctpaths,self73,cleanbuild/gen/literal/diff. All14 unchanged compiled stages
+andpins verified; no new strictbuild/full187/scale run. Field proof1409verified/
+122requiredpending,89captured optional-source/15limits. Scoped availability state/
+reason acceptance passes; finalfive regenerated-contract cleanup and retained
+branch/public identity proof remain. All older evidence is explicitly historical.
 
 ## Historical milestone evidence
 

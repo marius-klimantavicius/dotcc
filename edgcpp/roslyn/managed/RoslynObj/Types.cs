@@ -182,5 +182,11 @@ public sealed class BaseDerivation : SemanticEntity
     internal BaseDerivation(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public BaseDerivationDetails Details { get; }
     public BaseSubobject BaseSubobject => Details.BaseSubobject;
+    public bool IsDirect => Details.IsDirect;
+    public bool IsPreferred => Details.IsPreferred;
+    public SemanticKind? Access => Details.Access;
+    /// <summary>The recorded path segment, ending at its retained tail. Elided prefixes are not reconstructed.</summary>
     public IReadOnlyList<BaseDerivationStepDetails> Steps => Object.List("SELECT * FROM base_derivation_step WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new BaseDerivationStepDetails(Object,r));
+    public IEnumerable<BaseDerivationStepDetails> ReversedSteps => Steps.Reverse();
+    public BaseDerivationStepDetails? PathTail => Steps.FirstOrDefault(step=>step.Ordinal==Details.PathTailOrdinal);
 }

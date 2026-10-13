@@ -1,3 +1,30 @@
+# Accepted prototype/UUID and availability; final five-column format cleanup
+
+Current e49f251 passes existing8/PASS499,fresh4/PASS95,self73,build0warnings/errors,
+generator249/1946,literal/diff. All14 unchanged stages/pins verified; no new strict
+build/full187/scale run. Field proof1409verified/122pending,89captured optional
+source/15limits. Scoped availability owner/state/reason acceptance is complete.
+Native C prototype scope and class/enum UUID storage are actual retained IL.
+
+Next freeze/remove exactly final-five-slot-contract.tsv fields at this held
+boundary. Keep251 tables and append-only39,145 kind IDs. Regenerate framed
+SQL+catalog digest, producer/reader bindings and explicit compatibility evidence;
+reject genuine archived e49f objects at admission. CleanupAction.IsUnordered
+remains explicit nullable unknown. A retained transient non-type unknown-bound
+argument must fail export clearly, never silently lose its integer payload.
+Refresh all current valid-profile inputs including new metadata-root/pragma/
+retained/constant-dependent/prototype-UUID fixtures, not only archived187 baseline.
+Native owns the serialized14 strict build/export lane; managed owns typed API/
+generator/regression checks. No core, private metadata, corruption or migration.
+
+Once accepted, next native semantic probes are existing-USL accessible throw-base
+lists and actual scoped [[assume]] attribute expressions, followed by minimal
+stock IFC-backed module partition/header/import-attribute metadata. Next managed
+proof is existing expression/EH/asm/capture exact relationships. No optional
+source position campaign or independent C++ semantic reconstruction.
+
+---
+
 # Accepted routine/EH and constant-dependent branches; next bounded closure
 
 Current e49f251 schema is unchanged. Eight existing paths pass350 and four fresh

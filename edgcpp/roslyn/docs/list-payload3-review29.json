@@ -1,0 +1,51 @@
+{
+  "pending_at_review": 3,
+  "cohort": "accepted187unique/e49f",
+  "authority": "Stock il_def6225-6233/8316-8340; exactroslyn_execution94/layout205/routines32,428/entities73-77. Root read-only; existing public identity/order tests only.",
+  "observations": "/tmp/roslyn-root-list-payload3-observed29.json",
+  "summary": {
+    "existing_positive_needs_public_identity": 1,
+    "ready_evidence_join": 2
+  },
+  "rows": [
+    {
+      "owner": "a_label_list",
+      "member": "label",
+      "guard": "!defined(IL_DEF_H) && GNU_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:6229",
+      "disposition": "mapped_pending_validation",
+      "destination": "asm_label.label_id;backend/roslyn_execution.h:94",
+      "api_property": "AssemblyOperation.Labels[].Label;AssemblyDefinition.Labels[].Label",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Typed utility list targets retained through exact owner membership. No semantic merging by names/values; routine version priority and file-scope dynamic init order retain actual list order.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "Actual1 asm goto label links in cohort. Writer directly serializes label pointer with ownerordinal. Program nativeGNU asserts Labels.Count1, but no exact Labels[].Label canonicalTarget/definingstatement identity read found; generic navigation may touchlink but not exactexpectedpayload. Existing genuine GNU asm fixture sufficient for small identity assertion; no native probe needed."
+    },
+    {
+      "owner": "a_class_list_entry",
+      "member": "class_type",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:8324",
+      "disposition": "mapped_pending_validation",
+      "destination": "record_befriending_class.target_id;routine_befriending_class.type_id;backend/roslyn_layout.h:205;roslyn_routines.h:428",
+      "api_property": "RecordType.BefriendingClasses;FunctionSymbol.BefriendingClasses",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Typed utility list targets retained through exact owner membership. No semantic merging by names/values; routine version priority and file-scope dynamic init order retain actual list order.",
+      "review_status": "ready_evidence_join",
+      "review": "Actual class/routine reverse befriending relations direct class_type pointer through ordered owner association. ClassRelationsProjection33 exact LayoutFriend.BefriendingClasses ==[LayoutFriends] canonicaldescriptor; RoutineProjection49 actual RoutineFriend. List cell is not a separate semantic identity; no name-based merging. Existing owner proofs suffice utilitypayload, not arbitrary newownerarms."
+    },
+    {
+      "owner": "a_routine_list_entry",
+      "member": "routine",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:8336",
+      "disposition": "mapped_pending_validation",
+      "destination": "routine_multiversion.routine_id;file_scope_dynamic_init_routine.routine_id;backend/roslyn_routines.h:32;roslyn_entities.h:68\u201371",
+      "api_property": "FunctionSymbol.GnuSupplement.Details.RoutineMultiversionRows[].Routine;TranslationUnit.Details.FileScopeDynamicInitRoutineRows[].Routine",
+      "fixture": "stock declaration and current native/public adapter audit267; positive activation not promoted",
+      "reason": "Typed utility list targets retained through exact owner membership. No semantic merging by names/values; routine version priority and file-scope dynamic init order retain actual list order.",
+      "review_status": "ready_evidence_join",
+      "review": "Actual targeted_versions direct routine pointers; RoutineProjection57-58 exact2 representative/version reciprocalidentity and default-first thenSSE2 retainedorder. Actual separate_init SemanticActivationProjection8-16 exact3 priority-first variable.DynamicInitializationRoutine identities, ordinals0/1/2, unitowners andbodies. Threadlocal nonlazy list guard remains separately inactive; this utility closure doesnotclaim TLSactivation."
+    }
+  ]
+}
