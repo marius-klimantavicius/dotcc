@@ -61,7 +61,6 @@ public sealed class TranslationUnitDetails : SemanticDetail
     public FunctionSymbol? EntryPoint => Object.Link(Data.OptionalLong("entry_point_id"), value => Object.Function(value));
     public IReadOnlyList<TranslationUnitRootDetails> TranslationUnitRootRows => Object.List("SELECT * FROM translation_unit_root WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new TranslationUnitRootDetails(Object, r));
     public IReadOnlyList<FileScopeDynamicInitRoutineDetails> FileScopeDynamicInitRoutineRows => Object.List("SELECT * FROM file_scope_dynamic_init_routine WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new FileScopeDynamicInitRoutineDetails(Object, r));
-    public IReadOnlyList<StaticInitializationDetails> StaticInitializationRows => Object.List("SELECT * FROM static_initialization WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new StaticInitializationDetails(Object, r));
     public IReadOnlyList<TranslationUnitModuleImportDetails> TranslationUnitModuleImportRows => Object.List("SELECT * FROM translation_unit_module_import WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new TranslationUnitModuleImportDetails(Object, r));
 }
 
@@ -382,7 +381,6 @@ public sealed class RoutineSymbolDetails : SemanticDetail
     public GnuRoutineSupplement? GnuSupplement => Object.Link(Data.OptionalLong("gnu_supplement_id"), value => Object.GnuRoutineSupplement(value));
     public IReadOnlyList<RoutineParameterDetails> RoutineParameterRows => Object.List("SELECT * FROM routine_parameter WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new RoutineParameterDetails(Object, r));
     public IReadOnlyList<OverrideRelationDetails> OverrideRelationRows => Object.List("SELECT * FROM override_relation WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new OverrideRelationDetails(Object, r));
-    public IReadOnlyList<AbiRoutineRelationshipDetails> AbiRoutineRelationshipRows => Object.List("SELECT * FROM abi_routine_relationship WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new AbiRoutineRelationshipDetails(Object, r));
     public IReadOnlyList<RoutineSelectedOverrideDetails> RoutineSelectedOverrideRows => Object.List("SELECT * FROM routine_selected_override WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RoutineSelectedOverrideDetails(Object, r));
     public IReadOnlyList<RoutineBefriendingClassDetails> RoutineBefriendingClassRows => Object.List("SELECT * FROM routine_befriending_class WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RoutineBefriendingClassDetails(Object, r));
 }
@@ -675,7 +673,6 @@ public sealed class TypeDetails : SemanticDetail
     public VariableSymbol? TypeinfoVariable => Object.Link(Data.OptionalLong("typeinfo_variable_id"), value => Object.Variable(value));
     public SemanticKind SizeKind => Object.Kind(Data.Long("size_kind_id"));
     public IReadOnlyList<DirectBaseDetails> DirectBaseRows => Object.List("SELECT * FROM direct_base WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new DirectBaseDetails(Object, r));
-    public IReadOnlyList<VirtualMemberDetails> VirtualMemberRows => Object.List("SELECT * FROM virtual_member WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new VirtualMemberDetails(Object, r));
     public IReadOnlyList<LoweredTypeRelationshipDetails> LoweredTypeRelationshipRows => Object.List("SELECT * FROM lowered_type_relationship WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new LoweredTypeRelationshipDetails(Object, r));
 }
 
@@ -1176,18 +1173,6 @@ public sealed class BaseDerivationStepDetails : SemanticDetail
     public BaseSubobject Subobject => Object.Link(Data.OptionalLong("subobject_id"), value => Object.Subobject(value))!;
 }
 
-public sealed class VirtualMemberDetails : SemanticDetail
-{
-    internal VirtualMemberDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public CppType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Type(value))!;
-    public long Ordinal => Data.Long("ordinal");
-    public FunctionSymbol Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value))!;
-    public bool IsInherited => Data.Bool("is_inherited");
-    public bool IsPure => Data.Bool("is_pure");
-    public bool IsFinal => Data.Bool("is_final");
-    public BigInteger? Slot => Number(Data.OptionalText("slot"));
-}
-
 public sealed class OverrideRelationDetails : SemanticDetail
 {
     internal OverrideRelationDetails(RoslynObject owner, Row row) : base(owner, row) { }
@@ -1197,8 +1182,6 @@ public sealed class OverrideRelationDetails : SemanticDetail
     public BaseSubobject? Subobject => Object.Link(Data.OptionalLong("subobject_id"), value => Object.Subobject(value));
     public BaseSubobject? OverridingSubobject => Object.Link(Data.OptionalLong("overriding_subobject_id"), value => Object.Subobject(value));
     public BaseSubobject? ReturnAdjustmentSubobject => Object.Link(Data.OptionalLong("return_adjustment_subobject_id"), value => Object.Subobject(value));
-    public BigInteger? Adjustment => Number(Data.OptionalText("adjustment"));
-    public BigInteger? ReturnAdjustment => Number(Data.OptionalText("return_adjustment"));
     public long? BaseOrdinal => Data.OptionalLong("base_ordinal");
 }
 
@@ -1209,38 +1192,6 @@ public sealed class LoweredTypeRelationshipDetails : SemanticDetail
     public long Ordinal => Data.Long("ordinal");
     public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
     public CppType Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Type(value))!;
-}
-
-public sealed class AbiRoutineRelationshipDetails : SemanticDetail
-{
-    internal AbiRoutineRelationshipDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public FunctionSymbol Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Function(value))!;
-    public long Ordinal => Data.Long("ordinal");
-    public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
-    public FunctionSymbol Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Function(value))!;
-    public BigInteger? Adjustment => Number(Data.OptionalText("adjustment"));
-    public BigInteger? ReturnAdjustment => Number(Data.OptionalText("return_adjustment"));
-}
-
-public sealed class VirtualTableDetails : SemanticDetail
-{
-    internal VirtualTableDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public VariableSymbol Variable => Object.Link(Data.OptionalLong("variable_id"), value => Object.Variable(value))!;
-    public CppType? RecordType => Object.Link(Data.OptionalLong("record_type_id"), value => Object.Type(value));
-    public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
-    public IReadOnlyList<VirtualTableEntryDetails> VirtualTableEntryRows => Object.List("SELECT * FROM virtual_table_entry WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new VirtualTableEntryDetails(Object, r));
-}
-
-public sealed class VirtualTableEntryDetails : SemanticDetail
-{
-    internal VirtualTableEntryDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public VirtualTableDetails Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Detail("virtual_table", value, r => new VirtualTableDetails(Object, r)))!;
-    public long Ordinal => Data.Long("ordinal");
-    public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
-    public FunctionSymbol? Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value));
-    public SemanticEntity? Entity => Object.Link(Data.OptionalLong("entity_id"), value => Object.Entity(value));
-    public BigInteger? Adjustment => Number(Data.OptionalText("adjustment"));
-    public Constant? Constant => Object.Link(Data.OptionalLong("constant_id"), value => Object.Constant(value));
 }
 
 public sealed class SemanticNodeDetails : SemanticDetail
@@ -1591,7 +1542,6 @@ public sealed class JumpStatementDetails : SemanticDetail
     public ExpressionOperation? Value => Object.Link(Data.OptionalLong("value_id"), value => Object.Expression(value));
     public LabelSymbol? Label => Object.Link(Data.OptionalLong("label_id"), value => Object.Label(value));
     public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
-    public Lifetime? SourceLifetime => Object.Link(Data.OptionalLong("source_lifetime_id"), value => Object.Lifetime(value));
     public Lifetime? CommonLifetime => Object.Link(Data.OptionalLong("common_lifetime_id"), value => Object.Lifetime(value));
 }
 
@@ -1599,7 +1549,6 @@ public sealed class LabelStatementDetails : SemanticDetail
 {
     internal LabelStatementDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public LabelSymbol Label => Object.Link(Data.OptionalLong("label_id"), value => Object.Label(value))!;
-    public StatementOperation? Statement => Object.Link(Data.OptionalLong("statement_id"), value => Object.Statement(value));
 }
 
 public sealed class TryDescriptorDetails : SemanticDetail
@@ -1682,7 +1631,6 @@ public sealed class TemporaryExpressionDetails : SemanticDetail
 {
     internal TemporaryExpressionDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
-    public TemporaryDetails? Temporary => Object.Link(Data.OptionalLong("temporary_id"), value => Object.Detail("temporary", value, r => new TemporaryDetails(Object, r)));
     public CppType? SourceType => Object.Link(Data.OptionalLong("source_type_id"), value => Object.Type(value));
 }
 
@@ -1798,7 +1746,6 @@ public sealed class AllocationExpressionDetails : SemanticDetail
     public FunctionSymbol? Deallocator => Object.Link(Data.OptionalLong("deallocator_id"), value => Object.Function(value));
     public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
     public ExpressionOperation? ArrayCount => Object.Link(Data.OptionalLong("array_count_id"), value => Object.Expression(value));
-    public ExpressionOperation? SizeExpression => Object.Link(Data.OptionalLong("size_expression_id"), value => Object.Expression(value));
     public ExpressionOperation? Operand => Object.Link(Data.OptionalLong("operand_id"), value => Object.Expression(value));
     public bool IsDelete => Data.Bool("is_delete");
     public bool IsArray => Data.Bool("is_array");
@@ -1879,11 +1826,8 @@ public sealed class CoroutineDetails : SemanticDetail
 {
     internal CoroutineDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public FunctionSymbol Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value))!;
-    public StatementOperation? Body => Object.Link(Data.OptionalLong("body_id"), value => Object.Statement(value));
     public VariableSymbol? Promise => Object.Link(Data.OptionalLong("promise_id"), value => Object.Variable(value));
     public VariableSymbol? Handle => Object.Link(Data.OptionalLong("handle_id"), value => Object.Variable(value));
-    public ExpressionOperation? Allocation => Object.Link(Data.OptionalLong("allocation_id"), value => Object.Expression(value));
-    public ExpressionOperation? Deallocation => Object.Link(Data.OptionalLong("deallocation_id"), value => Object.Expression(value));
     public ExpressionOperation? InitialSuspend => Object.Link(Data.OptionalLong("initial_suspend_id"), value => Object.Expression(value));
     public ExpressionOperation? FinalSuspend => Object.Link(Data.OptionalLong("final_suspend_id"), value => Object.Expression(value));
     public ExpressionOperation? ReturnObject => Object.Link(Data.OptionalLong("return_object_id"), value => Object.Expression(value));
@@ -1920,7 +1864,6 @@ public sealed class CoroutineOperationDetails : SemanticDetail
     public ExpressionOperation? Ready => Object.Link(Data.OptionalLong("ready_id"), value => Object.Expression(value));
     public ExpressionOperation? Suspend => Object.Link(Data.OptionalLong("suspend_id"), value => Object.Expression(value));
     public ExpressionOperation? Resume => Object.Link(Data.OptionalLong("resume_id"), value => Object.Expression(value));
-    public ExpressionOperation? ProtocolCall => Object.Link(Data.OptionalLong("protocol_call_id"), value => Object.Expression(value));
 }
 
 public sealed class VlaDimensionDetails : SemanticDetail
@@ -1930,8 +1873,6 @@ public sealed class VlaDimensionDetails : SemanticDetail
     public ExpressionOperation? Expression => Object.Link(Data.OptionalLong("expression_id"), value => Object.Expression(value));
     public VlaDimension? OriginalDimension => Object.Link(Data.OptionalLong("original_dimension_id"), value => Object.VlaDimension(value));
     public VariableSymbol? DimensionVariable => Object.Link(Data.OptionalLong("dimension_variable_id"), value => Object.Variable(value));
-    public VariableSymbol? CountVariable => Object.Link(Data.OptionalLong("count_variable_id"), value => Object.Variable(value));
-    public StatementOperation? EvaluationStatement => Object.Link(Data.OptionalLong("evaluation_statement_id"), value => Object.Statement(value));
     public bool InPrototypeScope => Data.Bool("in_prototype_scope");
     public bool HasSizeStatement => Data.Bool("has_size_statement");
     public SourcePosition? SourcePosition => Object.Link(Data.OptionalLong("source_position_id"), value => Object.Position(value));
@@ -2033,11 +1974,6 @@ public sealed class AttributeDetails : SemanticDetail
     public bool IsStandardGcc => Data.Bool("is_standard_gcc");
     public bool IsImplicitAbiTag => Data.Bool("is_implicit_abi_tag");
     public bool NamespaceFromUsing => Data.Bool("namespace_from_using");
-    public string? StringArgument => Object.Text(Data.OptionalLong("string_argument_id"));
-    public BigInteger? IntegerArgument => Number(Data.OptionalText("integer_argument"));
-    public CppType? TypeArgument => Object.Link(Data.OptionalLong("type_argument_id"), value => Object.Type(value));
-    public ExpressionOperation? ExpressionArgument => Object.Link(Data.OptionalLong("expression_argument_id"), value => Object.Expression(value));
-    public SemanticEntity? EntityArgument => Object.Link(Data.OptionalLong("entity_argument_id"), value => Object.Entity(value));
     public IReadOnlyList<AttributeArgumentLinkDetails> AttributeArgumentLinkRows => Object.List("SELECT * FROM attribute_argument_link WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new AttributeArgumentLinkDetails(Object, r));
 }
 
@@ -2347,7 +2283,6 @@ public sealed class ReflectionValueDetails : SemanticDetail
     internal ReflectionValueDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
     public SemanticEntity? Entity => Object.Link(Data.OptionalLong("entity_id"), value => Object.Entity(value));
-    public FunctionSymbol? OwnerRoutine => Object.Link(Data.OptionalLong("owner_routine_id"), value => Object.Function(value));
     public BigInteger? LocalScopeNumber => Number(Data.OptionalText("local_scope_number"));
 }
 
@@ -2414,7 +2349,6 @@ public sealed class InitializationDetails : SemanticDetail
     public VlaDimension? VlaDimension => Object.Link(Data.OptionalLong("vla_dimension_id"), value => Object.VlaDimension(value));
     public bool IsFreeingOfExceptionObject => Data.Bool("is_freeing_of_exception_object");
     public IReadOnlyList<InitializationOperandDetails> InitializationOperandRows => Object.List("SELECT * FROM initialization_operand WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new InitializationOperandDetails(Object, r));
-    public IReadOnlyList<ConstructionDependencyDetails> ConstructionDependencyRows => Object.List("SELECT * FROM construction_dependency WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new ConstructionDependencyDetails(Object, r));
 }
 
 public sealed class InitializationOperandDetails : SemanticDetail
@@ -2427,16 +2361,6 @@ public sealed class InitializationOperandDetails : SemanticDetail
     public ExpressionOperation? Expression => Object.Link(Data.OptionalLong("expression_id"), value => Object.Expression(value));
     public FieldSymbol? Field => Object.Link(Data.OptionalLong("field_id"), value => Object.Field(value));
     public BaseSubobject? BaseSubobject => Object.Link(Data.OptionalLong("base_subobject_id"), value => Object.Subobject(value));
-}
-
-public sealed class TemporaryDetails : SemanticDetail
-{
-    internal TemporaryDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public CppType Type => Object.Link(Data.OptionalLong("type_id"), value => Object.Type(value))!;
-    public VariableSymbol? Variable => Object.Link(Data.OptionalLong("variable_id"), value => Object.Variable(value));
-    public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
-    public Lifetime? Lifetime => Object.Link(Data.OptionalLong("lifetime_id"), value => Object.Lifetime(value));
-    public Lifetime? ExtendedLifetime => Object.Link(Data.OptionalLong("extended_lifetime_id"), value => Object.Lifetime(value));
 }
 
 public sealed class LifetimeDetails : SemanticDetail
@@ -2478,35 +2402,11 @@ public sealed class LifetimeTransitionDetails : SemanticDetail
     public Lifetime? Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Lifetime(value));
 }
 
-public sealed class ConstructionDependencyDetails : SemanticDetail
-{
-    internal ConstructionDependencyDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public Initialization Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Initialization(value))!;
-    public long Ordinal => Data.Long("ordinal");
-    public Initialization Dependency => Object.Link(Data.OptionalLong("dependency_id"), value => Object.Initialization(value))!;
-    public VariableSymbol? Condition => Object.Link(Data.OptionalLong("condition_id"), value => Object.Variable(value));
-}
-
-public sealed class StaticInitializationDetails : SemanticDetail
-{
-    internal StaticInitializationDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public TranslationUnit Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Unit(value))!;
-    public long Ordinal => Data.Long("ordinal");
-    public VariableSymbol Variable => Object.Link(Data.OptionalLong("variable_id"), value => Object.Variable(value))!;
-    public SemanticKind InitializationKind => Object.Kind(Data.Long("initialization_kind_id"));
-    public Initialization? Initialization => Object.Link(Data.OptionalLong("initialization_id"), value => Object.Initialization(value));
-    public Constant? Constant => Object.Link(Data.OptionalLong("constant_id"), value => Object.Constant(value));
-    public FunctionSymbol? InitRoutine => Object.Link(Data.OptionalLong("init_routine_id"), value => Object.Function(value));
-    public FunctionSymbol? TerminationRoutine => Object.Link(Data.OptionalLong("termination_routine_id"), value => Object.Function(value));
-    public bool IsThreadLocal => Data.Bool("is_thread_local");
-}
-
 public sealed class ExceptionSpecificationDetails : SemanticDetail
 {
     internal ExceptionSpecificationDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
     public Constant? NoexceptArgument => Object.Link(Data.OptionalLong("noexcept_argument_id"), value => Object.Constant(value));
-    public ExpressionOperation? NoexceptExpression => Object.Link(Data.OptionalLong("noexcept_expression_id"), value => Object.Expression(value));
     public FunctionSymbol? CopyFromPrototypeRoutine => Object.Link(Data.OptionalLong("copy_from_prototype_routine_id"), value => Object.Function(value));
     public SourceInfo? SourceOrigin => Object.Link(Data.OptionalLong("source_origin_id"), value => Object.Source(value));
     public bool ArgumentCached => Data.Bool("argument_cached");
@@ -2536,11 +2436,10 @@ public sealed class FunctionEhDetails : SemanticDetail
     internal FunctionEhDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public FunctionSymbol Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value))!;
     public ExpressionOperation? Prologue => Object.Link(Data.OptionalLong("prologue_id"), value => Object.Expression(value));
-    public ExpressionOperation? Epilogue => Object.Link(Data.OptionalLong("epilogue_id"), value => Object.Expression(value));
     public VariableSymbol? RegionTable => Object.Link(Data.OptionalLong("region_table_id"), value => Object.Variable(value));
     public VariableSymbol? ArrayTable => Object.Link(Data.OptionalLong("array_table_id"), value => Object.Variable(value));
-    public BigInteger InitialState => RequiredNumber(Data.OptionalText("initial_state"));
-    public BigInteger NullState => RequiredNumber(Data.OptionalText("null_state"));
+    public BigInteger? InitialState => Number(Data.OptionalText("initial_state"));
+    public BigInteger? NullState => Number(Data.OptionalText("null_state"));
     public IReadOnlyList<CleanupRegionDetails> CleanupRegionRows => Object.List("SELECT * FROM cleanup_region WHERE function_eh_id=$owner ORDER BY ordinal,id", Data.Long("id"), r => new CleanupRegionDetails(Object, r), "cleanup_region");
     public IReadOnlyList<CleanupArrayDetails> CleanupArrayRows => Object.List("SELECT * FROM cleanup_array WHERE function_eh_id=$owner ORDER BY ordinal,id", Data.Long("id"), r => new CleanupArrayDetails(Object, r), "cleanup_array");
     public IReadOnlyList<LoweredEhOperationDetails> LoweredEhOperationRows => Object.List("SELECT * FROM lowered_eh_operation WHERE function_eh_id=$owner ORDER BY id", Data.Long("id"), r => new LoweredEhOperationDetails(Object, r), "lowered_eh_operation");
@@ -2646,7 +2545,7 @@ public sealed class CleanupStateOperationDetails : SemanticDetail
 {
     internal CleanupStateOperationDetails(RoslynObject owner, Row row) : base(owner, row) { }
     public CleanupRegion? Region => Object.Link(Data.OptionalLong("region_id"), value => Object.Region(value));
-    public BigInteger StateNumber => RequiredNumber(Data.OptionalText("state_number"));
+    public BigInteger? StateNumber => Number(Data.OptionalText("state_number"));
     public bool IsUnreachable => Data.Bool("is_unreachable");
 }
 

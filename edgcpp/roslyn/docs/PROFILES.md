@@ -157,3 +157,11 @@ imprecision override. Primary/other profiles retain those capabilities. Remainin
 automatic-instantiation/minimal-inlining/inline-variable positive guards are
 assigned in build/activation267-plan.tsv. CLI/CX and optional location recovery
 remain outside scope; all stock source inputs are pinned and unchanged.
+
+
+Accepted260 adds stock-valid automatic/inline-variable instantiation and tableless
+partial EH:12 strict profiles/182 genuine objects/PASS2462. Four retained variable
+flags have real positives; three inlining-only flags are incompatible with user
+partial-EH scope because pristine inline.c35–44 requires full portable EH.
+Tableless uses metadata initialization pointers and null numeric states, never
+inferred cleanup tables/storage. Source positions stay optional.

@@ -1,6 +1,6 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after accepted performance267 (176 objects/PASS2092,self73).
+Active on 2026-10-13 after accepted260 (182 objects/PASS2462,self73).
 The267 bounded variable/execution batch is complete; this checklist
 separates missing work from existing adapters awaiting evidence. Full M0–M5 stays
 open. C++/CLI and C++/CX are excluded by the user. Native Microsoft extensions
@@ -23,15 +23,15 @@ remain required. Optional source positions never block semantic acceptance.
   navigation and removal of phantom fields. Positive activation of inactive guards
   remains pending; profile/M5 work stays serialized.
 - Resolve remaining active union/field gaps family by family from the worksheet.
-  A planned mapping is not proof of a writer. Current planned39 and raw64 rows
+  A planned mapping is not proof of a writer. One tiny optional source-list adapter remains; raw11 rows
   include fields already implemented but not reconciled; audit before proposing
   new payloads. Prioritize execution, variables/routines, class/base/field layout,
   dependent/template identity and lifetime/EH semantics over optional locations.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are655 verified and881 mapped pending-validation fields at this boundary.
-18 additional already-captured coordinate fields are mapped_optional_source,
+There are696 verified and913 mapped pending-validation fields at this boundary.
+24 additional already-captured coordinate fields are mapped_optional_source,
 with12 explicit omitted optional-source fields; these do not require new location
 probes or block semantic completion. Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
 close unconditional scalars, including false values. Active union alternatives,
@@ -71,10 +71,13 @@ official SoftFloat now have strict builds and genuine positive ordinary API
 evidence. Stock USL signature/export restrictions and host-double fixed-point
 precision restriction are explicit; wider primary/other profiles retain them.
 
-Remaining guarded configurations are automatic template instantiation, minimal
-inlining and inline-variable instantiation, assigned through the stock-valid
-build/activation267-plan.tsv. Seven retained variable facts are currently nullable
-with disabled guards and must not be claimed positively activated yet.
+Automatic/inline-variable instantiation now has a stock-valid profile with four
+actual positive guarded flags; accepted260 API and snapshot evidence passes182/PASS2462.
+Three minimal-inlining-only flags are inactive_upstream_configuration: pristine
+inline.c35–44 unconditionally requires full portable EH lowering, which the user
+forbids. Disabling runtime exceptions cannot bypass the guard. No core workaround
+or imprecision option is used. A stock-valid tableless partial-EH profile is next
+for exact cleanup-start/completed-initialization links, not inferred storage parity.
 
 ## Remaining M5 and release evidence
 

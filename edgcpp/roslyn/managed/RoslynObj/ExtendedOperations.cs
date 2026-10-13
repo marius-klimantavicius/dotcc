@@ -67,7 +67,6 @@ public sealed class LabelOperation : StatementOperation
     public LabelStatementDetails LabelStatement => Object.Detail("label_statement",Id,r=>new LabelStatementDetails(Object,r));
     public LabelSymbol Label => LabelStatement.Label;
     public Lifetime? Lifetime => Label.Lifetime;
-    public StatementOperation? Statement => LabelStatement.Statement;
 }
 
 public sealed class CoroutineOperation : StatementOperation
@@ -76,12 +75,9 @@ public sealed class CoroutineOperation : StatementOperation
     internal CoroutineOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public CoroutineDetails Coroutine => Object.Detail("coroutine",Id,r=>new CoroutineDetails(Object,r));
     public FunctionSymbol Function => Coroutine.Routine;
-    public StatementOperation? Body => Coroutine.Body;
     public VariableSymbol? Promise => Coroutine.Promise;
     public VariableSymbol? Handle => Coroutine.Handle;
     public VariableSymbol? ThisParameterCopy => Coroutine.ThisParameterCopy;
-    public ExpressionOperation? Allocation => Coroutine.Allocation;
-    public ExpressionOperation? Deallocation => Coroutine.Deallocation;
     public ExpressionOperation? InitialSuspend => Coroutine.InitialSuspend;
     public ExpressionOperation? FinalSuspend => Coroutine.FinalSuspend;
     public ExpressionOperation? ReturnObject => Coroutine.ReturnObject;
@@ -109,7 +105,7 @@ public sealed class TemporaryOperation : ExpressionOperation
     internal TemporaryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public TemporaryExpressionDetails TemporaryExpression => Object.Detail("temporary_expression",Id,r=>new TemporaryExpressionDetails(Object,r));
     public Initialization? Initialization => TemporaryExpression.Initialization;
-    public TemporaryDetails? Temporary => TemporaryExpression.Temporary;
+    public SemanticEntity? Target => Initialization?.Target;
     public CppType? SourceType => TemporaryExpression.SourceType;
 }
 

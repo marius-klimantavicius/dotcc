@@ -131,6 +131,10 @@ public class LoweredEhOperation : ExpressionOperation
     public override void Accept(SemanticVisitor visitor) => visitor.VisitLoweredEh(this);
     internal LoweredEhOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public LoweredEhOperationDetails ExceptionOperation => Object.Detail("lowered_eh_operation",Id,r=>new LoweredEhOperationDetails(Object,r));
+    public SemanticKind ExceptionKind => ExceptionOperation.Kind;
+    public Initialization? Initialization => ExceptionOperation.Initialization;
+    public Initialization? CleanupStart => ExceptionKind.Name is "leck_cleanup_state" or "leck_unreachable_cleanup_state" ? Initialization : null;
+    public Initialization? CompletedInitializer => ExceptionKind.Name=="leck_initialization_completed" ? Initialization : null;
 }
 
 public sealed class CleanupStateOperation : LoweredEhOperation
@@ -139,7 +143,8 @@ public sealed class CleanupStateOperation : LoweredEhOperation
     internal CleanupStateOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public CleanupStateOperationDetails State => Object.Detail("cleanup_state_operation",Id,r=>new CleanupStateOperationDetails(Object,r));
     public CleanupRegion? Region => State.Region;
-    public System.Numerics.BigInteger StateNumber => State.StateNumber;
+    public System.Numerics.BigInteger? StateNumber => State.StateNumber;
+    public bool IsUnreachable => State.IsUnreachable;
 }
 
 public class StatementOperation : Operation
@@ -188,6 +193,9 @@ public sealed class FunctionBody
           SELECT 0,id FROM node_root WHERE id IS NOT NULL
           UNION SELECT 1,id FROM lifetime_root WHERE id IS NOT NULL
           UNION SELECT 0,c.child_id FROM structural_child c JOIN reachable r ON r.id=c.owner_id WHERE r.category=0
+          UNION SELECT 0,e.initialization_id FROM lowered_eh_operation e JOIN reachable r ON r.id=e.id WHERE r.category=0 AND e.initialization_id IS NOT NULL
+          UNION SELECT 0,i.master_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.master_id IS NOT NULL
+          UNION SELECT 0,i.next_destruction_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.next_destruction_id IS NOT NULL
           UNION SELECT 0,h.parameter_initialization_id FROM handler h JOIN try_handler th ON th.handler_id=h.id JOIN try_statement s ON s.descriptor_id=th.owner_id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND h.parameter_initialization_id IS NOT NULL
           UNION SELECT 1,b.lifetime_id FROM block_descriptor b JOIN block_statement s ON s.descriptor_id=b.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND b.lifetime_id IS NOT NULL
           UNION SELECT 1,t.lifetime_id FROM try_descriptor t JOIN try_statement s ON s.descriptor_id=t.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND t.lifetime_id IS NOT NULL

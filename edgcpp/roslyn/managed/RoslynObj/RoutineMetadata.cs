@@ -10,7 +10,6 @@ public sealed class ExceptionSpecification : SemanticEntity
     public FunctionSymbol? CopyFromPrototypeRoutine => Details.CopyFromPrototypeRoutine;
     public bool ArgumentCached => Details.ArgumentCached;
     public Constant? NoexceptArgument => Details.NoexceptArgument;
-    public ExpressionOperation? NoexceptExpression => Details.NoexceptExpression;
     public bool? NoexceptEffective => Details.NoexceptEffective;
     public bool IsDependent => Details.IsDependent;
     public bool IsIndeterminate => Details.IsIndeterminate;

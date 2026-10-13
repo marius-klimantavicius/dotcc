@@ -16,10 +16,10 @@ public sealed partial class RoslynObject
             or "type" or "declaration" or "scope" or "initialization" or "lifetime" or "template_argument"
             or "template_instance" or "source_file" or "source_position" or "source_range" or "source_origin"
             or "macro_definition" or "macro_invocation" or "record_layout" or "cleanup_region" or "cleanup_action"
-            or "cleanup_array" or "name" or "temporary" or "base_derivation" or "base_subobject"
+            or "cleanup_array" or "name" or "base_derivation" or "base_subobject"
             or "template_parameter" or "template_specialization" or "include_occurrence" or "source_attachment"
             or "attribute" or "attribute_argument" or "attribute_group" or "data_member_spec" or "block_descriptor" or "try_descriptor" or "local_static_initialization" or "constructor_initializer" or "subobject_path" or "name_reference" or "exception_specification"
-            or "virtual_table" or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion" or "template_symbol"
+            or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion" or "template_symbol"
             or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
             or "line_directive" or "source_entry" or "source_sublist" or "source_end_construct" or "instantiation_directive"
             or "linkage_specification" or "microsoft_if_exists" or "record_declaration" or "pragma"
@@ -259,7 +259,6 @@ public sealed partial class RoslynObject
             "enumerator_symbol"=>Enumerator(id),
             "alias"=>Alias(id),
             "using"=>Using(id),
-            "temporary"=>new SemanticRecord<TemporaryDetails>(this,id,Detail("temporary",id,r=>new TemporaryDetails(this,r))),
             "base_derivation"=>Derivation(id),
             "base_subobject"=>Subobject(id),
             "template_parameter"=>TemplateParameter(id),
@@ -290,7 +289,6 @@ public sealed partial class RoslynObject
             "subobject_path"=>SubobjectPath(id),
             "name_reference"=>NameReference(id),
             "exception_specification"=>ExceptionSpecification(id),
-            "virtual_table"=>new SemanticRecord<VirtualTableDetails>(this,id,Detail("virtual_table",id,r=>new VirtualTableDetails(this,r))),
             "vla_dimension"=>VlaDimension(id),
             "switch_descriptor"=>SwitchDescriptor(id), "switch_case_entry"=>SwitchCase(id),
             "coroutine"=>new SemanticRecord<CoroutineDetails>(this,id,Detail("coroutine",id,r=>new CoroutineDetails(this,r))),

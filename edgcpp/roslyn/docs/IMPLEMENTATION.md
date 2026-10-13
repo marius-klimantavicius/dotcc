@@ -811,3 +811,37 @@ still require remaining exact field/union/identity evidence and actual gap closu
 Next bounded batch removes20 audited unproduced scaffolds plus unreachable
 temporary table; native activates seven currently-inactive retained variable facts
 through stock-valid instantiation/inlining overlays. Continue without approval hold.
+
+
+## Accepted260 scaffold and tableless partial-EH milestone
+
+Final182 genuine objects PASS2462/self73; clean reader258 detail facades/2028
+properties, generator/literal checks and genuine prior267 rejection. Independent
+12-stage proof compares316 stock Git inputs and26 canonical backend files per
+stage; all182 objects have260 tables,1KiB pages,FK0, complete expression type
+links and no semantic BLOB/REAL. Contract:
+`83418408ba791622839f1c44fadcdaf71de682726d7d08949c85bbd150191e0f`.
+
+Removes20 unwritten fields and7 unreachable scaffolds while preserving exact
+virtual/table-variable, current ABI, initializer and lifetime alternatives.
+DeclaredVirtualMethods projects recorded owned methods, with inherited/override
+navigation through actual bases. Tableless partial EH keeps exact metadata-only
+cleanup-start and completed-initialization pointers, nullable numeric states and
+actual prologue routine. Genuine positive completed targets2, cleanup references35
+and3 unreachable states; actual constructor calls remain2object/4temporary once.
+No private cleanup descriptors, generated tables or storage parity are inferred.
+
+Automatic/inline-variable instantiation activates four exact retained variable
+flags (positive counts1/1/1/4). Three minimal-inlining flags cannot activate because
+stock inline.c35–44 unconditionally requires forbidden full portable EH; guard0
+and NULL are explicit, no exceptions-off/core workaround. Lowered dynamic local
+static wrappers are removed by stock; source positive ownership remains and
+lowered executable constructors are checked directly.
+
+Final scale0.58s/45,548KiB/7,573,504bytes/98,815entities/7,023operations; bounded
+reader cold2.160s/warm1.596s,115.5/111.4MB RSS,4096rows/128pages. Field coverage
+696 verified/913 mapped awaiting evidence/11 raw/1 planned optional source-list
+association.24 captured optional coordinates and12 deliberate source omissions
+are outside mandatory semantic gates. Full phases3–4 remain open for exact
+remaining scalar/union/identity field evidence and non-scalar catalog closure;
+next tiny orphan association uses existing relation, no source reconstruction.

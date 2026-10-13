@@ -107,7 +107,7 @@ try
         var region=body.ExceptionHandling.CleanupRegions.Single();
         Check(region.Ordinal==0&&region.NextRegion is null,"Actual EH region zero must remain distinct from null sentinel.");
         var state=operations.OfType<CleanupStateOperation>().Single();
-        Check(state.Region==region&&state.StateNumber.IsZero,"Cleanup states must resolve normalized regions.");
+        Check(state.Region==region&&state.StateNumber==0,"Cleanup states must resolve normalized regions.");
         Check(body.ExceptionHandling.Details!.NullState==BigInteger.Parse("18446744073709551615"),"Unsigned EH sentinel must remain exact beyond long.");
         var action=region.Actions.Single();
         Check(action.TargetMethod==external&&action.Array!.ElementCount==-1&&action.Storage!.Variable!.Name=="x","Exceptional cleanup must preserve storage, routine and dynamic counts.");
@@ -221,6 +221,7 @@ try
         using var obj=RoslynObject.Open(input);
         var unit=obj.TranslationUnit;
         ProfileProjection.Verify(unit,Path.GetFileName(input),Check);
+        TablelessEhProjection.Verify(unit,Path.GetFileName(input),Check);
         Numeric.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         ConstantReferences.Verify(unit,input,obj.Manifest.CaptureProfile=="source_semantic",Check);
         CommonProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
@@ -265,7 +266,9 @@ try
         }
         if(Path.GetFileName(input)=="m0.roslynobj")
         {
-            Check(cleanupActions==(obj.Manifest.CaptureProfile=="source_semantic"?0:6),"The real C++ object must preserve its profile's actual exceptional cleanup tables.");
+            var declaredBase=(RecordType)unit.Types.Single(t=>t.Name=="Base");
+            Check(declaredBase.DeclaredVirtualMethods.Any(f=>f.Name=="get")&&declaredBase.DeclaredVirtualMethods.All(f=>f.ContainingType==declaredBase&&f.IsVirtual),"Declared virtual method navigation must expose retained routines owned by the actual class without inventing table slots or inherited declarations.");
+            Check(cleanupActions==(unit.Capabilities.Any(c=>c.Name=="GENERATE_EH_TABLES"&&c.Enabled==true)?6:0),"The real C++ object must preserve its profile's actual exceptional cleanup tables.");
             if(obj.Manifest.CaptureProfile!="source_semantic")
                 Check(unit.Functions.Where(f=>f.ContainingType is not null).SelectMany(f=>f.Parameters).Any(p=>p.Role.Name=="this_parameter"),"Lowered retained method signatures must expose their explicit receiver roles.");
             else

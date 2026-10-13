@@ -10,12 +10,12 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT.parents[0] / 'artifacts/roslynobj'
-PROFILES = ('sun', 'usl21', 'usl30', 'softfloat', 'host-long-double', 'host-double')
+PROFILES = ('sun', 'usl21', 'usl30', 'softfloat', 'host-long-double', 'host-double', 'instantiation', 'tableless')
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', choices=PROFILES, required=True)
 parser.add_argument('--output-directory', type=Path)
 args = parser.parse_args()
-output = args.output_directory or ARTIFACTS / 'profile-smoke' / args.profile
+output = (args.output_directory or ARTIFACTS / 'profile-smoke' / args.profile).resolve()
 output.mkdir(parents=True, exist_ok=True)
 environment = os.environ.copy()
 environment['ROSLYNOBJ_COMPILER'] = str(ARTIFACTS / 'profiles' / args.profile / 'build/bin/roslyn-cpfe')
@@ -25,6 +25,16 @@ if args.profile == 'sun':
 elif args.profile in ('usl21', 'usl30'):
     cases = [('profile_usl', ['--c++03', '--cfront_2.1' if args.profile == 'usl21' else '--cfront_3.0']),
              ('basic', ['--c++20'])]
+elif args.profile == 'instantiation':
+    for sidecar in (output / 'instantiation.ii', output / 'instantiation.ti'):
+        sidecar.unlink(missing_ok=True)
+    cases = [('instantiation_flags', ['--c++20', '--old_specializations', '--auto_instantiation', '--instantiate', 'used',
+                                     '--ii_file', str(output / 'instantiation.ii'),
+                                     '--template_info_file', str(output / 'instantiation.ti')])]
+elif args.profile == 'tableless':
+    cases = [('m0', ['--c++20']), ('cleanup_semantics', ['--c++20']),
+             ('retained', ['--c++23']), ('basic', ['--c++20']),
+             ('tableless_eh', ['--c++20'])]
 else:
     cases = [('profile_numeric', ['--c++20', '--g++', '--gnu_version', '130000']),
              ('exact', ['--c++20', '--g++', '--gnu_version', '130000']),
@@ -42,7 +52,7 @@ for name, options in cases:
     command = ['python3', str(ROOT / 'build/roslyn-cpfe.py'), *options, str(source), '-o', str(destination)]
     start = time.monotonic()
     with (output / (name + '.log')).open('w') as log:
-        process = subprocess.run(command, env=environment, stdout=log, stderr=subprocess.STDOUT)
+        process = subprocess.run(command, env=environment, cwd=output, stdout=log, stderr=subprocess.STDOUT)
     row = dict(profile=args.profile, fixture=name, argv=command, path=str(destination),
                exit_code=process.returncode, seconds=round(time.monotonic() - start, 3))
     if not process.returncode:

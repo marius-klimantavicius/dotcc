@@ -13,6 +13,8 @@ public partial class RecordType
     public bool HasVirtualBases => Record.AnyVirtualBaseClasses;
     public bool HasVirtualFunctions => Record.AnyVirtualFunctionsIncludingBases;
     public bool HasPureVirtualFunctions => Record.AnyPureVirtualFunctions;
+    /// <summary>Retained virtual routines owned by this record; this collection does not describe virtual table slots.</summary>
+    public IReadOnlyList<FunctionSymbol> DeclaredVirtualMethods => Object.List("SELECT * FROM routine_symbol WHERE containing_type_id=$owner AND is_virtual=1 ORDER BY id",Id,r=>Object.Function(r.Long("id")),"routine_symbol");
     public BigInteger? MaximumMemberAlignment => Record.MaximumMemberAlignment;
     public BaseSubobject? PrimaryBaseSubobject => Record.PrimaryBaseSubobject;
     public BaseSubobject? VirtualFunctionInfoBaseSubobject => Record.VirtualFunctionInfoBaseSubobject;

@@ -1,4 +1,4 @@
-static const char roslynobj_schema_contract_sha256[] = "034cf58664b43af97cf491ab271620b693d96fb64d6ca09e7504927b01101671";
+static const char roslynobj_schema_contract_sha256[] = "83418408ba791622839f1c44fadcdaf71de682726d7d08949c85bbd150191e0f";
 static const char roslynobj_schema_sql[] = R"roslynsql(-- RoslynObj 1.0: normalized scalar and typed relationship contract.
 -- SQLite 3.37+ required. Exact target quantities use canonical decimal TEXT.
 -- Extension kind catalogs are persisted only when referenced.
@@ -1075,17 +1075,6 @@ CREATE TABLE base_derivation_step (
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
-CREATE TABLE virtual_member (
-  owner_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  ordinal INTEGER NOT NULL,
-  routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  is_inherited INTEGER NOT NULL DEFAULT 0,
-  is_pure INTEGER NOT NULL DEFAULT 0,
-  is_final INTEGER NOT NULL DEFAULT 0,
-  slot TEXT,
-  PRIMARY KEY (owner_id, ordinal)
-) WITHOUT ROWID, STRICT;
-
 CREATE TABLE override_relation (
   owner_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   ordinal INTEGER NOT NULL,
@@ -1093,8 +1082,6 @@ CREATE TABLE override_relation (
   subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
   overriding_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
   return_adjustment_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
-  adjustment TEXT,
-  return_adjustment TEXT,
   base_ordinal INTEGER,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
@@ -1104,34 +1091,6 @@ CREATE TABLE lowered_type_relationship (
   ordinal INTEGER NOT NULL,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   target_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  PRIMARY KEY (owner_id, ordinal)
-) WITHOUT ROWID, STRICT;
-
-CREATE TABLE abi_routine_relationship (
-  owner_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  ordinal INTEGER NOT NULL,
-  kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  target_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  adjustment TEXT,
-  return_adjustment TEXT,
-  PRIMARY KEY (owner_id, ordinal)
-) WITHOUT ROWID, STRICT;
-
-CREATE TABLE virtual_table (
-  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  record_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
-  kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
-) STRICT;
-
-CREATE TABLE virtual_table_entry (
-  owner_id INTEGER REFERENCES virtual_table(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  ordinal INTEGER NOT NULL,
-  kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  adjustment TEXT,
-  constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
@@ -1441,14 +1400,12 @@ CREATE TABLE jump_statement (
   value_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   label_id INTEGER REFERENCES label_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
-  source_lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
   common_lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE label_statement (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  label_id INTEGER REFERENCES label_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  statement_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED
+  label_id INTEGER REFERENCES label_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
 ) STRICT;
 
 CREATE TABLE try_descriptor (
@@ -1519,7 +1476,6 @@ CREATE TABLE type_query_expression (
 CREATE TABLE temporary_expression (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
-  temporary_id INTEGER REFERENCES temporary(id) DEFERRABLE INITIALLY DEFERRED,
   source_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
@@ -1619,7 +1575,6 @@ CREATE TABLE allocation_expression (
   deallocator_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
   array_count_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  size_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   operand_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   is_delete INTEGER NOT NULL DEFAULT 0,
   is_array INTEGER NOT NULL DEFAULT 0,
@@ -1693,11 +1648,8 @@ CREATE TABLE lambda_capture (
 CREATE TABLE coroutine (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  body_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
   promise_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   handle_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  allocation_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  deallocation_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   initial_suspend_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   final_suspend_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   return_object_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
@@ -1730,8 +1682,7 @@ CREATE TABLE coroutine_operation (
   operand_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   ready_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   suspend_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  resume_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  protocol_call_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED
+  resume_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE vla_dimension (
@@ -1740,8 +1691,6 @@ CREATE TABLE vla_dimension (
   expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   original_dimension_id INTEGER REFERENCES vla_dimension(id) DEFERRABLE INITIALLY DEFERRED,
   dimension_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  count_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  evaluation_statement_id INTEGER REFERENCES statement(id) DEFERRABLE INITIALLY DEFERRED,
   in_prototype_scope INTEGER NOT NULL DEFAULT 0,
   has_size_statement INTEGER NOT NULL DEFAULT 0,
   source_position_id INTEGER REFERENCES source_position(id) DEFERRABLE INITIALLY DEFERRED
@@ -1829,12 +1778,7 @@ CREATE TABLE attribute (
   is_pack_expansion INTEGER NOT NULL DEFAULT 0,
   is_standard_gcc INTEGER NOT NULL DEFAULT 0,
   is_implicit_abi_tag INTEGER NOT NULL DEFAULT 0,
-  namespace_from_using INTEGER NOT NULL DEFAULT 0,
-  string_argument_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
-  integer_argument TEXT,
-  type_argument_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
-  expression_argument_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  entity_argument_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED
+  namespace_from_using INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 
 CREATE TABLE attribute_group (
@@ -2111,7 +2055,6 @@ CREATE TABLE reflection_value (
   id INTEGER PRIMARY KEY REFERENCES constant_value(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  owner_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   local_scope_number TEXT
 ) STRICT;
 
@@ -2188,15 +2131,6 @@ CREATE TABLE initialization_operand (
   PRIMARY KEY (owner_id, role_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
-CREATE TABLE temporary (
-  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
-  lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
-  extended_lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED
-) STRICT;
-
 CREATE TABLE lifetime (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
@@ -2230,32 +2164,10 @@ CREATE TABLE lifetime_transition (
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
-CREATE TABLE construction_dependency (
-  owner_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  ordinal INTEGER NOT NULL,
-  dependency_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  condition_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  PRIMARY KEY (owner_id, ordinal)
-) WITHOUT ROWID, STRICT;
-
-CREATE TABLE static_initialization (
-  owner_id INTEGER REFERENCES translation_unit(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  ordinal INTEGER NOT NULL,
-  variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  initialization_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  initialization_id INTEGER REFERENCES initialization(id) DEFERRABLE INITIALLY DEFERRED,
-  constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
-  init_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  termination_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  is_thread_local INTEGER NOT NULL DEFAULT 0,
-  PRIMARY KEY (owner_id, ordinal)
-) WITHOUT ROWID, STRICT;
-
 CREATE TABLE exception_specification (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   noexcept_argument_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
-  noexcept_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   copy_from_prototype_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
   argument_cached INTEGER NOT NULL DEFAULT 0,
@@ -2282,11 +2194,10 @@ CREATE TABLE function_eh (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   prologue_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  epilogue_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
   region_table_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   array_table_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  initial_state TEXT NOT NULL,
-  null_state TEXT NOT NULL
+  initial_state TEXT,
+  null_state TEXT
 ) STRICT;
 
 CREATE TABLE eh_table_projection (
@@ -2376,7 +2287,7 @@ CREATE TABLE lowered_eh_operation (
 CREATE TABLE cleanup_state_operation (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   region_id INTEGER REFERENCES cleanup_region(id) DEFERRABLE INITIALLY DEFERRED,
-  state_number TEXT NOT NULL,
+  state_number TEXT,
   is_unreachable INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 

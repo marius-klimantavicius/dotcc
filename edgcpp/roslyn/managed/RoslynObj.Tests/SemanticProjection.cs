@@ -6,6 +6,7 @@ internal static class SemanticProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
+        var ehTables=unit.Capabilities.Any(c=>c.Name=="GENERATE_EH_TABLES"&&c.Enabled==true);
         if(fixture is "variables.roslynobj" or "cleanup_semantics.roslynobj" or "source_attributes.roslynobj")
         {
             Sweep(unit.Variables.Select(v=>v.Details),"variable_symbol",check);
@@ -67,16 +68,24 @@ internal static class SemanticProjection
         }
         if(fixture=="cleanup_semantics.roslynobj")
         {
+            var linked=unit.Entities.OfType<Initialization>().Single(i=>i.Target is VariableSymbol {Name:"locals"}&&i.NextInDestructionList is not null);
+            check(linked.NextInDestructionList!.Kind.Name==(source?"dik_constructor":"dik_none"),"The actual local-array destruction recipe must retain its next initialization identity, including the profile's recorded constructor or cleared recipe kind.");
             var lifetimes=unit.Entities.OfType<Lifetime>().ToArray();
             check(lifetimes.Any(l=>l.BoundEntity is Scope)&&lifetimes.Any(l=>l.BoundEntity is TryDescriptor),"Genuine lifetimes must retain their actual scope and try bindings.");
             if(source)check(lifetimes.Any(l=>l.BoundEntity is LocalStaticInitialization),"Source local-static lifetime bindings must preserve their actual initialization descriptor.");
-            else check(lifetimes.Any(l=>l.BoundEntity is BlockDescriptor)&&lifetimes.Any(l=>l.BoundEntity is null),"Lowered block bindings and cleared lifetime bindings must remain distinct without reconstructed ownership.");
+            else
+            {
+                check(lifetimes.Any(l=>l.BoundEntity is BlockDescriptor),"Lowered block lifetime bindings must retain their actual descriptor identity.");
+                if(ehTables)check(lifetimes.Any(l=>l.BoundEntity is null),"The table-backed lowered profile must preserve its cleared lifetime bindings without reconstructed ownership.");
+            }
             check(lifetimes.Any(l=>l.HasImplicitChild)&&lifetimes.Any(l=>l.Children.Count>0)&&lifetimes.Any(l=>l.ParentCheckpoint is not null),"Recorded lifetime children, implicit-child availability and parent destruction checkpoints must navigate through actual retained relationships.");
             var cleanups=lifetimes.SelectMany(l=>l.Cleanups).ToArray();
             check(cleanups.Length>0&&cleanups.Any(c=>c.Destructor?.ContainingType?.Name=="CleanupBase"),"Minimal lifetime obligations must project the actual initialization destructor without duplicate stored facts.");
             var local=unit.Functions.Single(f=>f.Name=="cleanup_local_static").Body!;
             check(local.Scope!.FunctionStaticLifetime is {Kind.Name:"olk_function_static"} root&&root.BoundEntity==local.Scope&&root!=local.Scope.Lifetime,"The function-static root must retain its exact scope binding separately from the ordinary scope lifetime.");
-            check(local.Scope.LocalStaticInitializations.Count>0&&local.Scope.LocalStaticInitializations.All(i=>i.Variable.LocalStaticInitializations.Contains(i)),"Local-static storage lists must navigate canonical descriptors and their exact variable reverse associations.");
+            if(source)check(local.Scope.LocalStaticInitializations.Count>0,"The source local-static recipe must retain its actual scoped descriptor before lowering removes completed wrappers.");
+            check(local.Scope.LocalStaticInitializations.All(i=>i.Variable.LocalStaticInitializations.Contains(i)),"Every retained local-static storage descriptor must navigate its exact variable reverse association.");
+            if(!source)check(local.DescendantOperations().OfType<CallOperation>().Count(c=>c.TargetMethod is {ContainingType.Name:"CleanupBase",SpecialFunctionKind.Name:"sfk_constructor"})==1,"The lowered local-static body must retain its one actual constructor evaluation without reconstructing the removed dynamic wrapper.");
             var paths=unit.Functions.Single(f=>f.Name=="cleanup_paths").Body!;
             check(paths.Lifetimes.Count>0&&!paths.Lifetimes.Contains(unit.GlobalScope.Lifetime!),"Body lifetime navigation must remain rooted in captured body/scope/recipe facts without expanding through the file parent into unrelated routine children.");
             if(source)
@@ -92,7 +101,7 @@ internal static class SemanticProjection
                 check(handlers.Any(h=>h.ParameterInitialization is not null)&&handlers.All(h=>h.ParameterInitializationLifetime==h.ParameterInitialization?.Lifetime),"Handler parameter initialization lifetimes must follow the actual initialization rather than an invented handler lifetime.");
             }
             var arrays=unit.Functions.Where(f=>f.Body is not null).SelectMany(f=>f.Body!.ExceptionHandling.Arrays).ToArray();
-            if(!source)
+            if(!source&&ehTables)
             {
                 check(arrays.Any(a=>a.ElementCount==-1)&&arrays.Any(a=>a.ElementCount==2)&&arrays.All(a=>a.HandleConstant is not null),"Actual static and dynamic array cleanup tables must retain their raw handle constants and exact element counts.");
                 var actions=unit.Functions.Where(f=>f.Body is not null).SelectMany(f=>f.Body!.ExceptionHandling.CleanupRegions).SelectMany(r=>r.Actions).ToArray();

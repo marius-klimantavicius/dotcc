@@ -4,6 +4,7 @@ public sealed class Initialization : SemanticEntity
 {
     internal Initialization(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public InitializationDetails Details { get; }
+    public InitializationOperation? Operation => Object.Store.Get("semantic_node",Id) is null ? null : (InitializationOperation)Object.Node(Id);
     public SemanticKind Kind => Details.Kind;
     public SemanticEntity? Target => Details.Target;
     public Operation? Expression => Details.Expression;
@@ -14,8 +15,9 @@ public sealed class Initialization : SemanticEntity
     public Lifetime? Lifetime => Details.Lifetime;
     public Lifetime? InitExpressionLifetime => Details.InitExpressionLifetime;
     public Lifetime? OverlappingLifetime => Details.OverlappingLifetime;
+    public Initialization? Master => Details.Master;
+    public Initialization? NextInDestructionList => Details.NextDestruction;
     public IReadOnlyList<InitializationOperandDetails> Operands => Object.List("SELECT * FROM initialization_operand WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new InitializationOperandDetails(Object,r));
-    public IReadOnlyList<ConstructionDependencyDetails> Dependencies => Object.List("SELECT * FROM construction_dependency WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new ConstructionDependencyDetails(Object,r));
 }
 
 public sealed class Lifetime : SemanticEntity

@@ -1,3 +1,24 @@
+# Accepted scaffold and tableless partial-EH contract (260 tables)
+
+Accepted performance267 committed `f657bba2781e535b3538a08cf2e467a8dce98ff2`:176
+objects/PASS2092,self73,ten independently pinned strict stages. Current260 keeps
+39,145 stable kinds, removes20 unwritten fields and7 unreachable scaffold tables.
+Reserved catalog IDs stay unchanged; exact existing virtual method/table-variable,
+initializer/lifetime/ABI relations remain. Three numeric EH state fields become
+nullable for stock-supported tableless partial lowering. Existing initialization_id
+retains exact cleanup-start/completed initializer by construct kind, as metadata.
+Fingerprint: `83418408ba791622839f1c44fadcdaf71de682726d7d08949c85bbd150191e0f`.
+
+Native owns tableless prologue/profile and serialized instantiation/profile exports;
+managed owns common lowered-EH operation arms plus reader/projections/API checks.
+Four instantiation-only flags now have genuine positives; final current260 public
+acceptance passes182/PASS2462,self73 and12 pinned strict stages. Three minimal-inlining flags cannot activate under user partial
+EH scope because stock inline.c35–44 requires forbidden full portable lowering.
+No runtime-exceptions-off workaround, core changes or guessed cleanup-storage
+semantics. Root read-only safety review is tableless-eh260-review.json.
+
+---
+
 # Accepted performance267 construction and storage contract
 
 Semantic267 committed as `d2cdd575e541e37880a6219175b765e6542fbfa5`:158 genuine

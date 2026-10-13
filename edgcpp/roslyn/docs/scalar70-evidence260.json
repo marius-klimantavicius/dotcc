@@ -1,0 +1,34 @@
+{
+  "rows": 70,
+  "source_authority": "pristine EDG il_def.h",
+  "static": "/tmp/roslyn-root-scalar70-static260.json",
+  "observed": "/tmp/roslyn-root-scalar70-observed260.json",
+  "observed_method": "Direct linked scalar columns on176 previously accepted performance267 objects, not mere kind-table membership.",
+  "boundaries": [
+    "Scope/access/name linkage use accepted shared typed projection checks.",
+    "Storage and integer/float discriminant getters directly exercised by accepted final182 shared scalar sweeps; not an assertion every enum value appears.",
+    "Alias/range sentinels, custom insertion macro and explicit frontend-only values kept separate.",
+    "sck_none is an actual no/unknown-scope value, not automatically a last sentinel.",
+    "sc_typedef is not used for variable/routine storage but can be meaningful in retained declared-storage contexts; not blanket excluded.",
+    "Builtin/operator/expression payloads and every individual enum runtime activation are not claimed."
+  ],
+  "counts": {
+    "exhaustive_guarded_discriminator_adapter": 55,
+    "sentinel_not_semantic_instance": 3,
+    "enum_range_alias_canonicalized": 3,
+    "inactive_customization_placeholder": 1,
+    "stock_frontend_only_discriminator": 8
+  },
+  "final_managed_evidence": {
+    "log": "/tmp/roslynobj-managed-scaffold260-final182.log",
+    "result": "PASS2462",
+    "symbol_scalar_batches": 182,
+    "arithmetic_scalar_batches": 25,
+    "properties": [
+      "Storage",
+      "EdgIntegerKind",
+      "EdgFloatKind"
+    ],
+    "updated_shared_family_rows": 36
+  }
+}

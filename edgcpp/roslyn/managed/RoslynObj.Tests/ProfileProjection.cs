@@ -6,6 +6,16 @@ internal static class ProfileProjection
     internal static void Verify(TranslationUnit unit,string fixture,Action<bool,string> check)
     {
         bool Enabled(string name)=>unit.Capabilities.Single(c=>c.Name==name).Enabled==true;
+        if(fixture=="instantiation_flags.roslynobj")
+        {
+            check(Enabled("AUTOMATIC_TEMPLATE_INSTANTIATION")&&Enabled("INSTANTIATE_INLINE_VARIABLES"),"The genuine instantiation profile must record the enabled guards for its retained variable facts.");
+            var suppressed=unit.Variables.Single(v=>v.DoNotInstantiate==true);
+            var required=unit.Variables.Single(v=>v.InstanceRequired==true);
+            check(suppressed is {Name:"value",CanBeInstantiated:false,InstanceRequired:false}&&suppressed.Details.ExplicitDoNotInstantiate&&suppressed.Details.IsSpecialized&&suppressed.Details.SpecializedWithOldSyntax&&suppressed.ContainingEntity==unit.GlobalScope&&suppressed.Instantiation is not null&&suppressed.TemplateArguments.Count==0,"The actual suppressed member must retain its flags and lowered file scope while its discarded argument list remains empty.");
+            check(required is {Name:"value",CanBeInstantiated:true,DoNotInstantiate:false,InlineInstanceRequired:true}&&required.Type.Kind.Name=="tk_integer"&&required.ContainingEntity==unit.GlobalScope&&required.Instantiation is not null&&required.TemplateArguments.Count==0,"The actual required member must retain its opposite flags, current integer type and lowered owner without recovering absent instance arguments.");
+            check(unit.Variables.Single(v=>v.Name=="required_inline_variable").InlineInstanceRequired==true&&unit.Variables.Single(v=>v.Name=="value"&&v.Instantiation is null).InlineInstanceRequired==true,"Actual ordinary and lowered class-member inline variables must retain their enabled inline-instance requirement flags.");
+            SemanticProjection.Sweep(unit.Variables.Select(v=>v.Details),"variable_symbol",check);
+        }
         if(fixture=="profile_sun.roslynobj")
         {
             check(Enabled("SUN_EXTENSIONS_ALLOWED")&&Enabled("sun_mode")&&Enabled("sun_linker_scope_allowed"),"The genuine Sun object must record its actual compile and runtime extension configuration.");

@@ -5,6 +5,8 @@ internal static class Numeric
 {
     internal static void Verify(TranslationUnit unit,string filename,bool source,Action<bool,string> check)
     {
+        if(filename is "types.roslynobj" or "type_edges.roslynobj" or "bit_precise.roslynobj" or "fixed_point.roslynobj" or "nonreal_float.roslynobj" or "gnu_nonreal_float.roslynobj" or "float_kinds.roslynobj" or "profile_numeric.roslynobj")
+            SemanticProjection.Sweep(unit.Types.OfType<ArithmeticType>().Select(t=>t.Arithmetic),"arithmetic_type",check);
         if(filename=="fixed_point.roslynobj")
         {
             var values=unit.Entities.OfType<ConstantValue<FixedPointValueDetails>>().Select(v=>v.Payload).ToArray();

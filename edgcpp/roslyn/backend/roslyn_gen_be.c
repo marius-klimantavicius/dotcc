@@ -268,6 +268,13 @@ static Rid roslyn_eh(an_eh_prologue_supplement_ptr p,Rid prologue) {
  if(p->region_table)DB.put("eh_table_projection",{{"owner_id",roslyn_variable(p->region_table)},{"kind_id",K("role","cleanup")},{"function_eh_id",eh}});
  if(p->array_table)DB.put("eh_table_projection",{{"owner_id",roslyn_variable(p->array_table)},{"kind_id",K("role","element")},{"function_eh_id",eh}});return eh;
 }
+#elif DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING
+static Rid roslyn_eh(an_eh_prologue_supplement_ptr p,Rid prologue) {
+ auto old=roslyn_function_eh.find(p->routine);if(old!=roslyn_function_eh.end())return old->second;
+ Rid eh=DB.fresh("function_eh");roslyn_function_eh[p->routine]=eh;roslyn_current_eh=eh;
+ DB.put("function_eh",{{"id",eh},{"routine_id",roslyn_routine(p->routine)},{"prologue_id",prologue},
+  {"initial_state",RoslynSqlValue()},{"null_state",RoslynSqlValue()}});return eh;
+}
 #endif
 #include "roslyn_execution.h"
 #include "roslyn_templates.h"
@@ -352,6 +359,12 @@ static void roslyn_back_end() {
  CAP(il_header.default_upc_strict_access);CAP(upc_num_threads);CAP(upc_dynamic_threads());
 #endif
  CAP(AUTOMATIC_TEMPLATE_INSTANTIATION);CAP(INSTANTIATE_INLINE_VARIABLES);CAP(DEFAULT_RECORD_FORM_OF_NAME_REFERENCE);CAP(CREATE_LEXICAL_TYPEREFS);CAP(record_form_of_name_reference);CAP(cfront_2_1_mode);CAP(cfront_3_0_mode);
+#if AUTOMATIC_TEMPLATE_INSTANTIATION
+ CAP(DEFAULT_AUTOMATIC_INSTANTIATION_MODE);CAP(automatic_instantiation_mode);CAP(INSTANTIATE_TEMPLATES_EVERYWHERE_USED);CAP(USE_TEMPLATE_INFO_FILE);CAP(INSTANTIATION_FLAGS_IN_TEMPLATE_INFO_FILE);
+#endif
+#if MINIMAL_INLINING
+ CAP(inlining_enabled);CAP(DEFAULT_INLINE_STATEMENT_LIMIT);CAP(inline_statement_limit);
+#endif
  CAP(NEED_NAME_MANGLING);CAP(DO_IL_LOWERING);CAP(DO_FULL_PORTABLE_EH_LOWERING);CAP(GENERATE_EH_TABLES);CAP(DO_UNORDERED_EH_PROCESSING);CAP(KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED);CAP(BACK_END_IS_C_GEN_BE);CAP(BACK_END_IS_CP_GEN_BE);CAP(BACK_END_SHOULD_BE_CALLED);CAP(DOING_SOURCE_ANALYSIS);CAP(IL_SHOULD_BE_WRITTEN_TO_FILE);CAP(IA64_ABI);CAP(CFRONT_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_2_1_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_3_0_OBJECT_CODE_COMPATIBILITY);CAP(ASSIGNMENT_TO_THIS_ALLOWED);CAP(NEW_CAN_BE_FOLDED_INTO_CTOR);CAP(HANDLE_VIRTUAL_BASES_IN_COMPLETE_CTOR_DTORS);CAP(TIE_DEFAULT_GNU_ABI_VERSION_TO_GNU_VERSION);CAP(target_configuration_index);CAP(MINIMAL_INLINING);CAP(MAINTAIN_NEEDED_FLAGS);CAP(DEFAULT_REMOVE_UNNEEDED_ENTITIES);CAP(PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE);CAP(LOWER_VARIABLE_LENGTH_ARRAYS);CAP(LOWER_CLASS_RVALUE_ADJUST);CAP(LOWER_COMPLEX);CAP(LOWER_FIXED_POINT);CAP(LOWER_IFUNC);CAP(LOWER_LVALUE_RETURNING_OPERATIONS);CAP(LOWER_MICROSOFT_NONCONSTANT_AGGREGATE);CAP(LOWER_DESIGNATED_INITIALIZERS);CAP(GENERATE_SOURCE_SEQUENCE_LISTS);CAP(MAINTAIN_CLASS_MEMBER_LIST);CAP(RECORD_BACKING_EXPRS_WITH_IL_LOWERING);CAP(ONE_INSTANTIATION_PER_OBJECT);CAP(EXTRA_SOURCE_POSITIONS_IN_IL);CAP(RECORD_MACROS_IN_IL);CAP(FULLY_RESOLVED_MACRO_POSITIONS);CAP(RECORD_MACRO_INVOCATIONS);CAP(MACRO_INVOCATION_TREE_IN_IL);CAP(RECORD_MACRO_ARGS);CAP(COMPILE_MULTIPLE_TRANSLATION_UNITS);CAP(COROUTINE_ENABLING_POSSIBLE);CAP(REFLECTION_ENABLING_POSSIBLE);CAP(reflection_enabled);CAP(PROTOTYPE_INSTANTIATIONS_IN_IL);CAP(ALL_TEMPLATE_INFO_IN_IL);CAP(prototype_instantiations_in_il);CAP(all_template_info_in_il);CAP(HOST_FP_VALUE_IS_128BIT);CAP(USE_SOFTFLOAT);CAP(USE_FLOAT128_FOR_HOST_FP_VALUE);CAP(HOST_HAS_FLOAT16_TYPE);CAP(exceptions_enabled);CAP(gpp_mode);CAP(gcc_mode);CAP(clang_mode);CAP(gnu_version);CAP(microsoft_mode);CAP(microsoft_version);CAP(RECORD_UNRECOGNIZED_ATTRIBUTES);CAP(record_unrecognized_attributes);CAP(RECOGNIZE_MICROSOFT_ATTRIBUTES);CAP(SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING);CAP(cppcli_enabled);CAP(cppcx_enabled);CAP(targ_microsoft_ptr_to_member_sizing);CAP(CPPCLI_ENABLING_POSSIBLE);CAP(CPPCX_ENABLING_POSSIBLE);CAP(READ_CPPCLI_PORTABLE_ASSEMBLIES);CAP(EXPORT_ENABLING_POSSIBLE);CAP(export_template_allowed);CAP(DEFAULT_EXPORT_TEMPLATE_ALLOWED);
 #undef CAP
  const char *count_text=std::getenv("ROSLYNOBJ_ARGUMENT_COUNT");if(count_text){long count=std::strtol(count_text,nullptr,10);for(long i=0;i<count;++i){std::string key="ROSLYNOBJ_ARGUMENT_"+Q(i);const char *argument=std::getenv(key.c_str());if(argument)DB.put("invocation_argument",{{"ordinal",static_cast<sqlite3_int64>(i)},{"text_id",DB.atom(argument)}});}}

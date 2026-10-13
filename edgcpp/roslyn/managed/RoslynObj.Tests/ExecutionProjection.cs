@@ -53,7 +53,10 @@ internal static class ExecutionProjection
             check(unit.Entities.OfType<ConversionOperation>().Any(c=>c.OperatorKind.Name=="eok_dynamic_cast"&&c.Operand.Type is PointerType&&c.TargetType is PointerType),"A source dynamic cast must navigate actual pointer operand/result types without a fabricated conversion row.");
         }
         if(fixture=="retained.roslynobj"&&source)
+        {
             check(unit.Entities.OfType<TemporaryOperation>().Count(t=>t.SourceType is {Name:"ProtocolAwaiter"}&&t.Initialization is not null)==6,"Actual coroutine temporaries must retain their six source ProtocolAwaiter descriptors and initialization identities without consulting private original-type links.");
+            check(unit.Entities.OfType<TemporaryOperation>().Where(t=>t.SourceType is {Name:"ProtocolAwaiter"}).All(t=>t.Target is null),"Source coroutine temporaries with no retained initialization variable must preserve an absent target instead of allocating a synthetic temporary entity.");
+        }
         if(fixture is "upc_dynamic.roslynobj" or "upc_static.roslynobj")
         {
             var dynamic=fixture=="upc_dynamic.roslynobj";var value=unit.Variables.Single(v=>v.Name=="upc_values").Type;

@@ -1,0 +1,155 @@
+{
+  "edg_scope": {
+    "enum": "a_scope_kind",
+    "catalog_count": 19,
+    "source_names": [
+      "sck_file",
+      "sck_func_prototype",
+      "sck_block",
+      "sck_namespace",
+      "sck_namespace_extension",
+      "sck_namespace_reactivation",
+      "sck_class_struct_union",
+      "sck_class_reactivation",
+      "sck_template_declaration",
+      "sck_template_instantiation",
+      "sck_instantiation_context",
+      "sck_module_decl_import",
+      "sck_module_isolated",
+      "sck_pragma",
+      "sck_function_access",
+      "sck_condition",
+      "sck_enum",
+      "sck_function",
+      "sck_none"
+    ],
+    "case_count": 19,
+    "aliases": {},
+    "extra_zero_sentinel": {},
+    "guards": [],
+    "exact_id_and_guard_match": true
+  },
+  "edg_access": {
+    "enum": "an_access_specifier",
+    "catalog_count": 4,
+    "source_names": [
+      "as_public",
+      "as_protected",
+      "as_private",
+      "as_inaccessible"
+    ],
+    "case_count": 4,
+    "aliases": {},
+    "extra_zero_sentinel": {},
+    "guards": [],
+    "exact_id_and_guard_match": true
+  },
+  "edg_name_linkage": {
+    "enum": "a_name_linkage_kind",
+    "catalog_count": 6,
+    "source_names": [
+      "nlk_none",
+      "nlk_internal",
+      "nlk_cplusplus_external",
+      "nlk_external",
+      "nlk_last_standard",
+      "CUSTOM_NAME_LINKAGE_KINDS",
+      "nlk_last"
+    ],
+    "case_count": 6,
+    "aliases": {
+      "nlk_last_standard": "nlk_external"
+    },
+    "extra_zero_sentinel": {
+      "nlk_last": 0
+    },
+    "guards": [
+      "#ifdef CUSTOM_NAME_LINKAGE_KINDS",
+      "#endif"
+    ],
+    "exact_id_and_guard_match": true
+  },
+  "edg_storage_class": {
+    "enum": "a_storage_class",
+    "catalog_count": 8,
+    "source_names": [
+      "sc_unspecified",
+      "sc_extern",
+      "sc_static",
+      "sc_auto",
+      "sc_typedef",
+      "sc_register",
+      "sc_asm",
+      "sc_last"
+    ],
+    "case_count": 8,
+    "aliases": {},
+    "extra_zero_sentinel": {},
+    "guards": [],
+    "exact_id_and_guard_match": true
+  },
+  "edg_integer_kind": {
+    "enum": "an_integer_kind",
+    "catalog_count": 17,
+    "source_names": [
+      "ik_char",
+      "ik_signed_char",
+      "ik_unsigned_char",
+      "ik_short",
+      "ik_unsigned_short",
+      "ik_int",
+      "ik_unsigned_int",
+      "ik_long",
+      "ik_unsigned_long",
+      "ik_long_long",
+      "ik_unsigned_long_long",
+      "ik_int128",
+      "ik_unsigned_int128",
+      "ik_bit_precise",
+      "ik_unsigned_bit_precise",
+      "ik_last",
+      "ik_none"
+    ],
+    "case_count": 16,
+    "aliases": {
+      "ik_none": "ik_last"
+    },
+    "extra_zero_sentinel": {},
+    "guards": [
+      "#if LONG_LONG_ALLOWED",
+      "#endif",
+      "#if INT128_EXTENSIONS_ALLOWED",
+      "#endif"
+    ],
+    "exact_id_and_guard_match": true
+  },
+  "edg_float_kind": {
+    "enum": "a_float_kind",
+    "catalog_count": 16,
+    "source_names": [
+      "fk_float16",
+      "fk_fp16",
+      "fk_float",
+      "fk_float32x",
+      "fk_double",
+      "fk_float64x",
+      "fk_long_double",
+      "fk_float80",
+      "fk_float128",
+      "fk_first_extended_type",
+      "fk_std_bfloat16",
+      "fk_std_float16",
+      "fk_std_float32",
+      "fk_std_float64",
+      "fk_std_float128",
+      "fk_last"
+    ],
+    "case_count": 15,
+    "aliases": {
+      "fk_first_extended_type": "fk_std_bfloat16"
+    },
+    "extra_zero_sentinel": {},
+    "guards": [],
+    "exact_id_and_guard_match": true
+  }
+}

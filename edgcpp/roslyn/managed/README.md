@@ -106,8 +106,14 @@ when the name records an explicit argument count; instance arguments are separat
 
 `RecordType.BasesInPostorder` and `BasesInPreorder` preserve the available EDG
 orders. Base derivations and overrides retain contextual subobject identities;
-they do not imply a unique parent. Layouts expose effective and nonvirtual sizes,
-ordered fields, declared bit-field widths and stored widths separately. Optional
+they do not imply a unique parent.
+`DeclaredVirtualMethods` follows retained virtual routines owned by the record.
+Inherited relationships remain accessible through actual `BaseSubobjects` and
+`Overrides`. Class table and VTT variables expose their exact constant
+initializers; the reader does not construct a flattened virtual slot map.
+
+Layouts expose effective and nonvirtual sizes, ordered fields, declared bit-field
+widths and stored widths separately. Optional
 ABI indices and Microsoft container offsets stay null when their build does not
 retain them. All layout quantities use exact target values. `CppType.Size` and `Alignment`
 are nullable when the captured availability fact does not establish a concrete
@@ -185,6 +191,14 @@ exceptional-only destruction. `FunctionBody.Lifetimes` follows captured scope,
 body and recipe references without assigning function ownership. Goto
 `CommonLifetime` is the recorded common boundary; lifetime parents can represent
 continuation predecessors after labels.
+`Initialization.Master` and `NextInDestructionList` preserve the exact recipe
+associations separately from evaluated children. Temporary expressions follow
+their actual `Initialization.Target`; an absent target remains null.
+
+Partial EH with tables exposes numeric states and decoded regions. A tableless
+partial-EH object instead retains actual `CleanupStart` and `CompletedInitializer`
+recipes as metadata. Its state numbers and initial/null state scalars are null;
+the reader does not infer regions, storage or extra evaluated children.
 
 `Scope.LocalStaticInitializations` preserves its storage-list order. File and
 namespace execution order remains `Scope.DynamicInitializations`.

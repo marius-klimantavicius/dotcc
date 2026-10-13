@@ -4,6 +4,7 @@ internal static class CommonProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
+        SemanticProjection.Sweep(unit.Entities.OfType<Symbol>().Select(s=>s.SymbolDetails),"symbol",check);
         if(fixture is not ("common.roslynobj" or "common_labels.roslynobj" or "common_microsoft.roslynobj"))return;
         var correspondences=unit.Entities.OfType<SourceCorrespondence>().ToArray();
         SemanticProjection.Sweep(correspondences.Select(c=>c.Details),"source_correspondence",check);

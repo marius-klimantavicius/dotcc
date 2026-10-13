@@ -1,0 +1,55 @@
+{
+  "authority": "pristine EDG 7.0 /tmp/roslynobj-edg-upstream-20261012",
+  "configuration": "DO_IL_LOWERING=1, DO_FULL_PORTABLE_EH_LOWERING=0, GENERATE_EH_TABLES=0, KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED=1; exceptions enabled",
+  "conclusion": "Both tableless lowered EH references are surviving typed IL dynamic-initialization references and may be serialized as exact metadata links. They are not lowering-private destructible or stack init-position descriptors.",
+  "evidence": [
+    {
+      "source": "src/targ_def.h:5036-5063",
+      "fact": "Full portable mode forces tables, but partial mode supports no tables and forces lifetime retention."
+    },
+    {
+      "source": "src/il_def.h:15525-15574",
+      "fact": "Cleanup/unreachable-state cleanup_ptr denotes destruction at which to start cleanup; initialization_completed.dynamic_init denotes completed initialization."
+    },
+    {
+      "source": "src/lower_eh.c:6330-6366",
+      "fact": "State operation stores actual cleanup_state dynamic-init pointer directly in tableless mode."
+    },
+    {
+      "source": "src/lower_init.c:7718-7726",
+      "fact": "Completion operation stores actual dip pointer after construction completion; never repeat its initialization on traversal."
+    },
+    {
+      "source": "src/il_alloc.c:2466-2481;src/il_alloc.h:477-488",
+      "fact": "Dynamic initialization allocated in current IL memory region by alloc_cil_of_type."
+    },
+    {
+      "source": "src/lower_il.c:22876-22924;22951;23172-23180",
+      "fact": "End-of-lowering cleanup frees and clears destructible_entity_descr, preserves dip/lifetime/destruction lists when retention active. init_destination may be stack-only and is not exported."
+    },
+    {
+      "source": "src/fe_wrapup.c:843-855",
+      "fact": "Resident IL configuration frees front-end-only memory region, not retained IL regions."
+    },
+    {
+      "source": "src/walk_entry.h:1909-1915,1941-1947",
+      "fact": "Stock IL walker recognizes both references as a_dynamic_init_ptr / iek_dynamic_init."
+    },
+    {
+      "source": "src/c_gen_be.c:6980-6989,7010-7015",
+      "fact": "Debug partial-EH cases recognize pointer representation; not an emitted portable-EH recipe."
+    },
+    {
+      "source": "src/il_def.h:14820-14831",
+      "fact": "Tableless prologue supplement retains routine association and has no region/array table fields."
+    }
+  ],
+  "adapter_notes": [
+    "Broaden common lowered-EH handler from tables-only guard without enabling full portable lowering.",
+    "Use existing lowered_eh_operation.initialization_id as kind-discriminated exact pointer link; do not duplicate payload.",
+    "State-number and initial/null-state numeric values are unavailable in pointer mode; nullable typed properties instead of invented zero/index.",
+    "Serialize pointer targets via existing Initialization adapter as metadata and preserve actual destructor/lifetime/master/current target links.",
+    "Retained references do not justify reconstructing freed lowering-private storage conditions or claiming table-decoded EH action parity. Primary table-backed profile remains executable cleanup/storage authority.",
+    "Genuine simple/conditional/array/nested-try fixtures should demonstrate surviving identity links after wrapup; no corruption tests."
+  ]
+}

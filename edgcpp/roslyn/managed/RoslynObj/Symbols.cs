@@ -20,13 +20,11 @@ public sealed class TranslationUnit : SemanticEntity
     public IReadOnlyList<Constant> Constants => Object.List("SELECT * FROM constant ORDER BY id",0,r=>Object.Constant(r.Long("id")),"constant");
     public IReadOnlyList<TranslationUnitRootDetails> Roots => Object.List("SELECT * FROM translation_unit_root WHERE owner_id=$owner ORDER BY kind_id,ordinal",Id,r=>new TranslationUnitRootDetails(Object,r));
     public IReadOnlyList<FileScopeDynamicInitRoutineDetails> FileScopeInitializationRoutines => Object.List("SELECT * FROM file_scope_dynamic_init_routine WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new FileScopeDynamicInitRoutineDetails(Object,r));
-    public IReadOnlyList<VirtualTableDetails> VirtualTables => Object.List("SELECT * FROM virtual_table ORDER BY id",0,r=>new VirtualTableDetails(Object,r),"virtual_table");
     public IReadOnlyList<SourceFile> Sources => Object.List("SELECT * FROM source_file ORDER BY id", 0, r => Object.File(r.Long("id")), "source_file");
     public IReadOnlyList<SourceMappingSegment> SourceMappings => Object.List("SELECT * FROM source_mapping_segment ORDER BY id", 0, r => Object.Mapping(r.Long("id")), "source_mapping_segment");
     public IReadOnlyList<PragmaDirective> Pragmas => Object.List("SELECT * FROM pragma ORDER BY id",0,r=>Object.Pragma(r.Long("id")),"pragma");
     public IReadOnlyList<CppModule> Modules => Object.List("SELECT * FROM module ORDER BY id",0,r=>Object.Module(r.Long("id")),"module");
     public IReadOnlyList<ModuleImport> ModuleImports => Object.List("SELECT m.* FROM translation_unit_module_import r JOIN module_import m ON m.id=r.import_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.ModuleImport(r.Long("id")),"module_import");
-    public IReadOnlyList<StaticInitializationDetails> StaticInitializations => Object.List("SELECT * FROM static_initialization WHERE owner_id=$owner ORDER BY ordinal", Id, r => new StaticInitializationDetails(Object, r));
     public IReadOnlyList<BuildCapability> Capabilities => Object.List("SELECT * FROM build_capability ORDER BY name_id", 0,
         r => new BuildCapability(Object.Text(r.Long("name_id"))!, Object.Text(r.OptionalLong("value_id")), r.Bool("required"), r.OptionalBool("enabled"), Object.Kind(r.Long("state_id"))));
     public IReadOnlyList<string> InvocationArguments => Object.List("SELECT * FROM invocation_argument ORDER BY ordinal", 0, r => Object.Text(r.Long("text_id"))!);
@@ -69,7 +67,6 @@ public sealed partial class FunctionSymbol : Symbol
     public SemanticKind BodyState => Details.BodyState;
     public bool? HasNoEffect => Details.HasNoEffect;
     public bool? IsIneligible => Details.IsIneligible;
-    public IReadOnlyList<AbiRoutineRelationshipDetails> AbiRelationships => Object.List("SELECT * FROM abi_routine_relationship WHERE owner_id=$owner ORDER BY ordinal", Id, r => new AbiRoutineRelationshipDetails(Object, r));
     public IReadOnlyList<OverrideRelationDetails> Overrides => Object.List("SELECT * FROM override_relation WHERE owner_id=$owner ORDER BY ordinal", Id, r => new OverrideRelationDetails(Object, r));
 }
 

@@ -1,0 +1,74 @@
+{
+  "authority": "/tmp/roslynobj-edg-upstream-20261012/src",
+  "scope": "read-only source and adapter mapping; not new runtime coverage",
+  "tables": [
+    {
+      "table": "virtual_member",
+      "backend_producers": [],
+      "recommendation": "remove_unproduced_table_preserving_named_alternatives",
+      "source_basis": [
+        "roslyn_routines.h:189-192,389",
+        "roslyn_layout.h:84",
+        "il_def.h:9080-9094"
+      ],
+      "semantic_requirements": "Use actual declared methods with routine IsVirtual/IsPure/IsFinal and VirtualFunctionNumber. Inherited associations are base subobjects plus exact override_relation. Preserve a useful high-level declared virtual-method property; do not fabricate a flattened final-overrider/slot list."
+    },
+    {
+      "table": "abi_routine_relationship",
+      "backend_producers": [],
+      "recommendation": "remove_unproduced_table_preserving_named_alternatives",
+      "source_basis": [
+        "roslyn_routines.h:180,390-401",
+        "il_def.h:13194-13234",
+        "c_gen_be.c:10539-10576"
+      ],
+      "semantic_requirements": "Exact PrimaryEntry, OverridingFunction, OverriddenFunction, ThisAdjustment, VcallIndex, ReturnAdjustment, VbaseIndex and ctor/dtor kind already preserved. Bodies remain actual lowered operations. Remove unused generic duplicate relation."
+    },
+    {
+      "table": "virtual_table",
+      "backend_producers": [],
+      "recommendation": "remove_unproduced_table_preserving_named_alternatives",
+      "source_basis": [
+        "roslyn_layout.h:71,163-165,172-173",
+        "roslyn_variables.h:10-14",
+        "il_def.h:9146-9161"
+      ],
+      "semantic_requirements": "Record and base exact table-variable links retain actual variable/constant aggregate payload, VTT link and vcall offsets. Retain convenient record-level table variables. Do not reconstruct discarded construction records or label every arbitrary RTTI variable as a vtable."
+    },
+    {
+      "table": "virtual_table_entry",
+      "backend_producers": [],
+      "recommendation": "remove_unproduced_table_preserving_named_alternatives",
+      "source_basis": [
+        "roslyn_variables.h:14",
+        "roslyn_constants.h",
+        "roslyn_values.h",
+        "il_def.h:9146-9161"
+      ],
+      "semantic_requirements": "Actual variable constant initializers expose ordered aggregate and exact symbolic addresses/integers. No authoritative producer for this parallel synthetic entry interpretation; do not re-derive ABI adjustments from table shape."
+    },
+    {
+      "table": "construction_dependency",
+      "backend_producers": [],
+      "recommendation": "remove_unproduced_table_preserving_named_alternatives",
+      "source_basis": [
+        "roslyn_gen_be.c:211-217,250-252",
+        "roslyn_lifetimes.h:67-77",
+        "il_def.h:4376-4388"
+      ],
+      "semantic_requirements": "Actual initialization Master, NextDestruction, overlapping/init-expression lifetimes, Lifetime.Cleanups and cleanup region Condition retain exact relations. Generic dependency plus condition-variable row has no direct producer. Do not invent a construction dependency DAG."
+    },
+    {
+      "table": "static_initialization",
+      "backend_producers": [],
+      "recommendation": "remove_unproduced_table_preserving_named_alternatives",
+      "source_basis": [
+        "roslyn_entities.h:67-74",
+        "roslyn_variables.h:10-20,99-104",
+        "roslyn_lifetimes.h:32-38",
+        "il_def.h:19086-19104"
+      ],
+      "semantic_requirements": "Actual variable initializer union, file-scope ordered init routines, lazy TLS init/wrapper, scope local-static descriptors/lifetimes and lowered bodies preserve execution. Retain accessible high-level properties. Do not assert a one-variable/one-init-and-termination-routine pairing absent in EDG."
+    }
+  ]
+}
