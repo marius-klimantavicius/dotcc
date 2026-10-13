@@ -370,3 +370,116 @@ variable cleanup/binding/TLS, routine and reflection closure, maximum native
 profiles and all remaining semantic field/kind rows remain required. Source
 location priorities follow the user's instruction; compiler construction records
 are excluded, actual resulting operations/types/tables/variables are captured.
+
+
+Checkpoint `b7f52f778` committed 66 entirely owned files after final 421 assertions,
+all 45 artifact inspections and independent four-profile 316-input pin checks.
+Unrelated index records were preserved byte-for-byte. The next frozen semantic
+contract contains 243 tables /39,067 stable kinds, with exact canonical attribute/
+argument ownership, block/try/local-static lifetime bindings, constructor order,
+contextual EH storage and the audited variable flag/union surface. Managed now
+owns roslyn_attributes.h exclusively; native owns lifetime/EH/variable adapters.
+Both lanes continue implementation, not a new approval or pause.
+
+Measured composite ordered relations now use WITHOUT ROWID; integer identity
+and single-key tables retain rowid, and writer page size remains 4KiB. At the checkpoint, the field
+ledger recorded 144 verified mappings, 327 mapped awaiting exact positive activation,
+14 explicit adapter gaps and 1,326 raw pending fields. Optional source-coordinate
+rows are not phase gates under the user's priority; remaining semantic rows and
+all other approved native extension/profile acceptance remain required.
+
+
+## Active 243-table genuine integration
+
+Primary strict compilation passes with the stock reflection feature enabled by
+the independent profile configuration. First genuine `basic`, `m0`,
+`cleanup_semantics` and `variables` objects have all 243 tables and zero foreign-key
+failures. The cleanup fixture activates 18 lifetime rows: 15 actual scope bindings,
+one block descriptor, one try descriptor and one legitimate null/unbound binding.
+It retains 21 minimal cleanup obligations, seven recorded child links, four array
+records (including runtime count -1), a VLA-count ABI supplement, a no-object
+cleanup location and 12 local-static initialization wrappers. The variable fixture
+retains two structured-binding memberships, a GNU cleanup obligation and distinct
+standard/extension TLS facts. These are inspected native facts; full public reader
+activation and source/cfront/exported refresh remain in progress.
+
+The reader compiles cleanly against the frozen contract and both valid rowid and
+composite-WITHOUT-ROWID self fixtures pass 73 assertions. Generated 241 detail
+classes /1,701 properties and 72 literal writes are synchronized. This does not
+establish genuine native semantic acceptance by itself.
+
+Exact field mapping now records 144 verified fields, 445 mapped awaiting
+positive activation, 13 explicit partial adapter gaps and 1182 raw pending
+fields. Canonical variable/lifetime/initializer adapters have compiled mappings;
+compiler worklist/hash/slice-bit and definitively front-end-allocated construction
+records have explicit exclusions. CLI-only fields follow the user's scope change;
+native Microsoft COM/IDL/interface/property semantics remain required. Remaining
+semantic modifiers/initializer-defined entities/instantiation and lvalue-use flags
+are still open. Optional coordinates are not completion gates.
+
+
+Final 243 validation has accepted 69 snapshot objects and exact canonical backend
+bytes /316 pinned stock inputs in all four stages. Before committing, a genuine
+partial thrown-aggregate probe exposed an incorrect integer-handle base at member
+offsets 0 and 8. The exact pinned producer uses the runtime thrown object, so the
+final contract appends thrown_object_relative and distinguishes no-object release
+through its actual retained void() prototype. The checkpoint remains open until
+this correction is refreshed and publicly asserted. The region format also has
+no unordered bit: the action fact is nullable/unavailable, while retained
+initialization flags and executable region links remain authoritative.
+
+Cfront cleanup now activates indirect VTT/delegation supplement locations and VLA
+count location; source constructor initializer order is real. Source-only unknown
+attribute retention produces two distinct deprecated descriptors sharing one
+canonical argument; an unretained vendor template-parameter marker is not claimed
+as owner-sharing evidence. Both native and source reflection publish genuine
+nine reflected values and one data-member specification. Managed resumed its
+required Sol xhigh model after a transient capacity error and continues actual
+family scalar/navigation assertions, including recipe lifetime descendants.
+
+
+## Final 243 checkpoint evidence
+
+All four strict builds and final 51 matrix /24 durable smoke objects pass. The
+reader passes 502 matrix assertions and 317 smoke assertions; valid rowid and
+composite self fixtures pass 73. Independent coordinator inspection of all 75
+paths confirms 243 tables, zero foreign-key failures, complete expression type
+links and no semantic BLOB/REAL columns. Stage verification records exact
+canonical backend bytes and 316 pinned stock inputs for each profile. The reader
+build has zero warnings/errors; generated 241 details /1,697 properties and
+72 literal writes match the amended schema.
+
+The final decoder distinguishes thrown-object offsets 0 and 8 from the actual
+no-argument no-object release, including cfront object-taking wrappers. Unknown
+action unordered state stays null. Ordinary array storage/count reverse contexts,
+VTT/VLA locations, constructor/destructor order and execution roots, local-static
+and handler lifetime projections pass. Canonical distinct attributes share their
+actual argument and group; type/expression argument arms and actual reflected
+entities/data-member specifications navigate through public properties.
+
+The last narrow tuple review found no writer omission: stock tuple-like get calls
+use actual dynamic initialization and stmk_init statements, and both calls are
+reachable exactly once. Ordinary initk_binding expressions are alias recipes.
+A durable small fixture has refreshed six variable paths; its direct public
+assertions pass. The final combined 75 reopened objects pass 750 assertions,
+including valid composite self fixtures. Six affected variable paths separately
+pass157. Exact scalar record counts are now742 variable /280 initialization,
+with172 lifetime /66 attribute /54 argument records.
+
+The field ledger now records 226 verified, 395 mapped awaiting representative
+conditional/identity activation, 13 explicit partial adapter gaps and 1144 raw
+pending fields. Direct scalar proof includes source/guard/column/property mapping
+and a real family getter sweep: 742 variable, 66 attribute, 54 argument, 172
+lifetime and 280 initialization records. A false value is valid evidence for an
+unconditional copy; active unions, unavailable states and ordering/identity/
+execution obligations require positive representative cases. See the durable
+managed semantic243 evidence and scalar-sweep TSV files. No scalar sweep closes
+legacy unwritten columns or unsupported guarded payloads.
+
+Full phases remain active. Next implementation families are native class/base/
+layout/fields and managed routine/signature/GNU supplement, followed by remaining
+expression/constant/extension/profile closure and M5 writer/storage performance.
+Native scale export currently measures 86,523 entities /5.308s versus the prior
+232 ~3.8s; reverse-FK scans and native page-size comparisons remain measured
+follow-up work, not a completed performance gate. Source coordinates remain
+optional under the user priority.

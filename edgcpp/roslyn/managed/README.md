@@ -71,6 +71,11 @@ Parameters participate in the common `Symbol` hierarchy; `TemplateKind` and
 `ParameterKind` expose their retained subtype classifications. Placeholder
 associations follow exact stored pointers, including multiple retained declarations.
 Named type symbols delegate attributes to their authoritative type descriptor.
+Attributes and arguments preserve their actual descriptor identities independently
+from ordered owner associations. `Attribute.Owners` and
+`AttributeArgument.OwningAttributes` retain sharing; an attribute's optional
+`Owner` is available only for a unique association. Groups retain their own
+identity and expose their captured members.
 Lambda initializations and lambda expressions share one `LambdaDefinition` with
 its actual capture list. Assembly operations similarly delegate to their captured
 `AssemblyDefinition`; module/import objects retain ordered translation-unit imports.
@@ -99,6 +104,28 @@ bytes from target characters. `TargetBytes` is empty for character-unit values;
 `TargetProfile.PointerBits` is a bit width; alignment and layout quantities use
 target addressable units.
 
+Blocks and try statements navigate their separate retained descriptors. A
+lifetime's optional `BoundEntity` follows its actual stored binding, including a
+cleared binding after lowering. `Children` records reverse creation order;
+`HasImplicitChild` identifies children that may be absent from that list.
+Lifetime cleanup entries expose recorded initialization recipes, including
+exceptional-only destruction. `FunctionBody.Lifetimes` follows captured scope,
+body and recipe references without assigning function ownership. Goto
+`CommonLifetime` is the recorded common boundary; lifetime parents can represent
+continuation predecessors after labels.
+
+`Scope.LocalStaticInitializations` preserves its storage-list order. File and
+namespace execution order remains `Scope.DynamicInitializations`.
+`Scope.ConstructorInitializers` records construction or destruction order;
+`EffectiveInitialization` follows a field default recipe only when the retained
+initializer explicitly requests it. Array cleanup handles remain exact constants,
+while each cleanup action carries its own captured storage location.
+`CleanupArray.StorageLocations` and `CountLocations` project those using-action
+relationships; their singular properties are available only when the recorded
+location is unique. Thrown-object and receiver-relative addressing remain
+separate kinds. `CleanupAction.IsUnordered` is nullable because a lowered cleanup
+table does not retain that initialization flag.
+
 The owner holds a read-only SQLite transaction for the lifetime of the snapshot.
 Reads and disposal are synchronized; collections are immutable paged views.
 Sequential enumeration uses keyset paging and fetches related rows in bounded
@@ -106,7 +133,9 @@ batches. `ReadOptions` controls row/page cache counts and page size; cache evict
 changes cost without dropping data. `PagedList.Enumerate` and operation traversal
 accept cancellation. Database-backed reads after disposal throw
 `ObjectDisposedException`. Already detached scalar values remain ordinary values.
-`Statistics` exposes query, row and cache counters for measurements.
+`Statistics` exposes query, row and cache counters plus the largest batch size.
+Companion and child-prefetch batches contain at most 900 keys regardless of the
+selected page and cache sizes.
 
 Opening checks the supported schema version, complete header, stable kind catalog
 and required representation capabilities. The reader fails on incompatible

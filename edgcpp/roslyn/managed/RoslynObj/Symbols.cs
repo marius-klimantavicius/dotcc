@@ -64,6 +64,10 @@ public sealed class FunctionSymbol : Symbol
     public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
     public IReadOnlyList<CppType> TypeArguments => Instantiation?.TypeArguments ?? [];
     public FunctionSymbol? PrimaryEntry => Details.PrimaryEntry;
+    public bool IsDefined => Details.IsDefined;
+    public SemanticKind BodyState => Details.BodyState;
+    public bool? HasNoEffect => Details.HasNoEffect;
+    public bool? IsIneligible => Details.IsIneligible;
     public IReadOnlyList<AbiRoutineRelationshipDetails> AbiRelationships => Object.List("SELECT * FROM abi_routine_relationship WHERE owner_id=$owner ORDER BY ordinal", Id, r => new AbiRoutineRelationshipDetails(Object, r));
     public IReadOnlyList<OverrideRelationDetails> Overrides => Object.List("SELECT * FROM override_relation WHERE owner_id=$owner ORDER BY ordinal", Id, r => new OverrideRelationDetails(Object, r));
 }
@@ -113,21 +117,38 @@ public sealed class ParameterType : SemanticEntity
 
 public sealed class VariableSymbol : Symbol
 {
-    private readonly Lazy<StaticInitializationDetails?> regionInitializer;
+    private readonly Lazy<IReadOnlyList<LocalStaticInitialization>> regionInitializers;
     internal VariableSymbol(RoslynObject owner, long id, Row row) : base(owner, id)
     {
         Details = new(owner,row);
-        regionInitializer = new(() => owner.Store.Query("SELECT * FROM static_initialization WHERE variable_id=$owner ORDER BY ordinal",id).FirstOrDefault() is {} initial ? new StaticInitializationDetails(owner,initial) : null);
+        regionInitializers = new(() => owner.List("SELECT * FROM local_static_initialization WHERE variable_id=$owner ORDER BY id",id,r=>owner.LocalStaticInitialization(r.Long("id")),"local_static_initialization"));
     }
     public VariableSymbolDetails Details { get; }
     public CppType Type => Details.Type;
-    public Initialization? Initializer => Details.Initializer ?? regionInitializer.Value?.Initialization;
+    public Initialization? Initializer => Details.Initializer ?? LocalStaticInitialization?.Initialization;
     public SemanticKind InitializationKind => Details.InitializationKind;
     public TemplateInstantiation? Instantiation => Details.Instance;
     public TemplateDescriptor? Template => Instantiation?.OriginalDefinition;
     public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
-    public Constant? ConstantInitializer => Details.ConstantInitializer ?? regionInitializer.Value?.Constant;
+    public Constant? ConstantInitializer => Details.ConstantInitializer ?? LocalStaticInitialization?.Constant;
     public Lifetime? Lifetime => Details.Lifetime;
+    public IReadOnlyList<LocalStaticInitialization> LocalStaticInitializations => regionInitializers.Value;
+    public LocalStaticInitialization? LocalStaticInitialization
+    {
+        get { var initializers=LocalStaticInitializations.Take(2).ToArray();return initializers.Length==1?initializers[0]:null; }
+    }
+    public FunctionSymbol? CleanupRoutine => Details.CleanupRoutine;
+    public bool IsStructuredBinding => Details.IsStructuredBinding;
+    public bool IsStructuredBindingContainer => Details.IsStructuredBindingContainer;
+    public VariableSymbol? BindingContainer => Details.BindingContainer;
+    public ExpressionOperation? BoundExpression => Details.BoundExpression;
+    public bool IsThreadLocal => Details.IsThreadLocal;
+    public bool StandardThreadLocalDeclared => Details.StandardThreadLocalDeclared;
+    public bool StandardThreadLocalEffective => Details.StandardThreadLocalEffective;
+    public bool ExtensionThreadLocal => Details.ExtensionThreadLocal;
+    public string? AssemblyName => Details.AssemblyName;
+    public SemanticKind? RegisterKind => Details.RegisterKind;
+    public long? NamedRegisterNumber => Details.NamedRegisterNumber;
     public IReadOnlyList<VariableBindingDetails> Bindings => Object.List("SELECT * FROM variable_binding WHERE owner_id=$owner ORDER BY ordinal", Id, r => new VariableBindingDetails(Object, r));
     public EhTableProjectionDetails? ExceptionTable => Object.Store.Query("SELECT * FROM eh_table_projection WHERE owner_id=$owner", Id).FirstOrDefault() is { } row ? new(Object, row) : null;
 }
@@ -155,6 +176,7 @@ public sealed class LabelSymbol : Symbol
     internal LabelSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public LabelSymbolDetails Details { get; }
     public StatementOperation? Target => Details.Statement;
+    public Lifetime? Lifetime => Details.Lifetime;
 }
 
 public sealed class Scope : SemanticEntity
@@ -163,6 +185,12 @@ public sealed class Scope : SemanticEntity
     public ScopeDetails Details { get; }
     public Scope? Parent => Details.Parent;
     public SemanticKind Kind => Details.Kind;
+    public Lifetime? Lifetime => Details.Lifetime;
+    public Lifetime? FunctionStaticLifetime => Details.FunctionStaticLifetime;
+    /// <summary>Retained storage-list order; this does not establish execution order.</summary>
+    public IReadOnlyList<LocalStaticInitialization> LocalStaticInitializations => Object.List("SELECT i.* FROM scope_local_static_initialization r JOIN local_static_initialization i ON i.id=r.initialization_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.LocalStaticInitialization(r.Long("id")),"local_static_initialization");
+    /// <summary>Retained construction or destruction order.</summary>
+    public IReadOnlyList<ConstructorInitializer> ConstructorInitializers => Object.List("SELECT i.* FROM scope_constructor_initializer r JOIN constructor_initializer i ON i.id=r.initializer_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.ConstructorInitializer(r.Long("id")),"constructor_initializer");
     public IReadOnlyList<SemanticEntity> Members => Object.List("SELECT * FROM scope_member WHERE owner_id=$owner ORDER BY ordinal", Id, r => Object.Entity(r.Long("member_id")));
     public IReadOnlyList<Initialization> DynamicInitializations => Object.List("SELECT i.* FROM scope_initialization r JOIN initialization i ON i.id=r.initialization_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Initialization(r.Long("id")),"initialization");
     public IReadOnlyList<SourceEntry> SourceSequence => Object.List("SELECT e.* FROM scope_source_entry r JOIN source_entry e ON e.id=r.entry_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.SourceEntry(r.Long("id")),"source_entry");
@@ -221,5 +249,5 @@ public class TypeSymbol : Symbol
     internal TypeSymbol(RoslynObject owner,long id,Row row) : base(owner,id) { }
     public TypeSymbolDetails Details => Object.Detail("type_symbol",Id,r=>new TypeSymbolDetails(Object,r));
     public CppType Type => Details.Type;
-    public override IReadOnlyList<AttributeDetails> Attributes => Type.Attributes;
+    public override IReadOnlyList<Attribute> Attributes => Type.Attributes;
 }

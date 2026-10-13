@@ -37,6 +37,15 @@ static Rid roslyn_entity(const a_tagged_pointer &p) {
  case iek_asm_entry:return roslyn_asm(reinterpret_cast<an_asm_entry_ptr>(p.ptr));
  case iek_vla_dimension:return roslyn_vla_dimension(reinterpret_cast<a_vla_dimension_ptr>(p.ptr));
  case iek_param_type:return roslyn_parameter_type(reinterpret_cast<a_param_type_ptr>(p.ptr));
+ case iek_template_arg:return roslyn_argument(reinterpret_cast<a_template_arg_ptr>(p.ptr));
+ case iek_token_sequence:return roslyn_token_sequence(reinterpret_cast<a_token_sequence_ptr>(p.ptr));
+ case iek_attribute:return roslyn_attribute(reinterpret_cast<an_attribute_ptr>(p.ptr));
+ case iek_attribute_arg:return roslyn_attribute_argument(reinterpret_cast<an_attribute_arg_ptr>(p.ptr));
+ case iek_data_member_spec:return roslyn_data_member_specification(reinterpret_cast<a_data_member_spec_ptr>(p.ptr));
+ case iek_block:return roslyn_block_descriptor(reinterpret_cast<a_block_ptr>(p.ptr));
+ case iek_try_supplement:return roslyn_try_descriptor(reinterpret_cast<a_try_supplement_ptr>(p.ptr));
+ case iek_local_static_variable_init:return roslyn_local_static_initialization(reinterpret_cast<a_local_static_variable_init_ptr>(p.ptr));
+ case iek_constructor_init:return roslyn_constructor_initializer(reinterpret_cast<a_constructor_init_ptr>(p.ptr));
  case iek_scoped_expression:return roslyn_scoped_expression(reinterpret_cast<a_scoped_expression_ptr>(p.ptr));
 #if MICROSOFT_EXTENSIONS_ALLOWED
  case iek_ms_attribute:return roslyn_ms_attribute(reinterpret_cast<an_ms_attribute_ptr>(p.ptr));

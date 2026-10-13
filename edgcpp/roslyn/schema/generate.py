@@ -19,7 +19,8 @@ def table(name, columns, key='id', entity=False):
             typ, spec = 'INTEGER', 'REFERENCES ' + typ[1:] + '(id) DEFERRABLE INITIALLY DEFERRED ' + spec
         cols.append(f'{name_} {typ} {spec}'.rstrip())
     if key != 'id': cols.append('PRIMARY KEY (' + key + ')')
-    tables.append('CREATE TABLE ' + name + ' (\n  ' + ',\n  '.join(cols) + '\n) STRICT;')
+    storage = ' WITHOUT ROWID, STRICT;' if ',' in key else ' STRICT;'
+    tables.append('CREATE TABLE ' + name + ' (\n  ' + ',\n  '.join(cols) + '\n)' + storage)
 
 def entity(name, columns): table(name, columns, entity=True)
 def relation(name, columns, key='owner_id, ordinal'): table(name, columns, key)
@@ -122,7 +123,7 @@ is_parameter INTEGER NOT NULL DEFAULT 0
 parameter_type_ordinal INTEGER
 binding_container_id @variable_symbol
 instance_id @template_instance''')
-relation('variable_binding', 'owner_id @variable_symbol NOT NULL\nordinal INTEGER NOT NULL\nvariable_id @variable_symbol NOT NULL\nexpression_id @expression')
+relation('variable_binding', 'owner_id @variable_symbol NOT NULL\nordinal INTEGER NOT NULL\nvariable_id @variable_symbol NOT NULL')
 entity('field_symbol', '''record_type_id @type NOT NULL
 type_id @type NOT NULL
 default_initialization_id @initialization
@@ -301,7 +302,8 @@ entity('name_qualifier', 'previous_qualifier_id @name_qualifier\ntarget_id @enti
 relation('original_template_argument', 'owner_id @name_reference NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
 entity('constant_expression', 'constant_id @constant NOT NULL\nname_reference_id @name_reference')
 entity('conversion_expression', 'operand_id @expression NOT NULL\nsource_type_id @type\ntarget_type_id @type NOT NULL\nkind_id @kind NOT NULL\nroutine_id @routine_symbol\nbase_path_id @entity')
-entity('block_statement', 'scope_id @scope\nlifetime_id @lifetime\nfinal_position_id @source_position\nend_reachable INTEGER NOT NULL DEFAULT 0\nis_statement_expression INTEGER NOT NULL DEFAULT 0\nimplicit_scope_not_allowed INTEGER NOT NULL DEFAULT 0\nupc_access_method_id @kind')
+entity('block_descriptor', 'scope_id @scope\nlifetime_id @lifetime\nfinal_position_id @source_position\nend_reachable INTEGER NOT NULL DEFAULT 0\nis_statement_expression INTEGER NOT NULL DEFAULT 0\nimplicit_scope_not_allowed INTEGER NOT NULL DEFAULT 0\nupc_access_method_id @kind')
+entity('block_statement', 'descriptor_id @block_descriptor')
 entity('declaration_statement', 'has_static_or_thread_variable INTEGER NOT NULL DEFAULT 0')
 relation('declaration_statement_entity', 'owner_id @declaration_statement NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
 entity('initialization_statement', 'initialization_id @initialization NOT NULL')
@@ -312,10 +314,12 @@ entity('range_for', 'body_id @statement\nrange_variable_id @variable_symbol\nbeg
 entity('for_each_statement', 'body_id @statement\ncollection_id @expression\npattern_kind_id @kind NOT NULL\niterator_id @variable_symbol\ninitialization_id @expression\ntest_id @expression\nincrement_id @expression\nuses_previous_declaration_iterator INTEGER NOT NULL DEFAULT 0\nprevious_field_id @field_symbol\nassignment_id @expression\ncollection_reference_id @variable_symbol\ntemporary_variable_id @variable_symbol\nend_variable_id @variable_symbol\nscope_id @scope\niterator_scope_id @scope')
 entity('switch_statement', 'body_id @statement\nselector_id @expression\ndefault_label_id @label_symbol')
 relation('switch_case', 'owner_id @switch_statement NOT NULL\nordinal INTEGER NOT NULL\nstatement_id @statement\nlabel_id @label_symbol\nlow_constant_id @constant\nhigh_constant_id @constant\nis_default INTEGER NOT NULL DEFAULT 0')
-entity('jump_statement', 'kind_id @kind NOT NULL\nvalue_id @expression\nlabel_id @label_symbol\ninitialization_id @initialization\nsource_lifetime_id @lifetime\ntarget_lifetime_id @lifetime')
+entity('jump_statement', 'kind_id @kind NOT NULL\nvalue_id @expression\nlabel_id @label_symbol\ninitialization_id @initialization\nsource_lifetime_id @lifetime\ncommon_lifetime_id @lifetime')
 entity('label_statement', 'label_id @label_symbol NOT NULL\nstatement_id @statement')
-entity('try_statement', 'body_id @statement NOT NULL\nis_function_try INTEGER NOT NULL DEFAULT 0\nlifetime_id @lifetime\nfinally_statement_id @statement')
-entity('handler', 'try_id @try_statement NOT NULL\nordinal INTEGER NOT NULL\nbody_id @statement NOT NULL\ncaught_type_id @type\nparameter_id @variable_symbol\nparameter_initialization_id @initialization\ntypeinfo_id @variable_symbol\nlifetime_id @lifetime\nsource_position_id @source_position')
+entity('try_descriptor', 'body_id @statement NOT NULL\nis_function_try INTEGER NOT NULL DEFAULT 0\nlifetime_id @lifetime\nfinally_statement_id @statement')
+entity('try_statement', 'descriptor_id @try_descriptor NOT NULL')
+relation('try_handler', 'owner_id @try_descriptor NOT NULL\nordinal INTEGER NOT NULL\nhandler_id @handler NOT NULL')
+entity('handler', 'body_id @statement NOT NULL\ncaught_type_id @type\nparameter_id @variable_symbol\nparameter_initialization_id @initialization\ntypeinfo_id @variable_symbol\nsource_position_id @source_position')
 entity('microsoft_try_statement', 'body_id @statement NOT NULL\nfilter_id @expression\nhandler_id @statement\nfinally_id @statement\nexcept_or_finally_position_id @source_position\nis_finally INTEGER NOT NULL DEFAULT 0')
 entity('throw_expression', 'operand_id @expression\nthrown_type_id @type\ninitialization_id @initialization\ndestructor_id @routine_symbol\nis_rethrow INTEGER NOT NULL DEFAULT 0')
 relation('throw_accessible_base', 'owner_id @throw_expression NOT NULL\nordinal INTEGER NOT NULL\nsubobject_id @base_subobject NOT NULL')
@@ -421,9 +425,8 @@ relation('asm_operand', 'owner_id @asm_entry NOT NULL\nordinal INTEGER NOT NULL\
 relation('asm_operand_constraint', 'owner_id @asm_entry NOT NULL\noperand_ordinal INTEGER NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\ncondition_code_id @text_atom', 'owner_id, operand_ordinal, ordinal')
 relation('asm_clobber', 'owner_id @asm_entry NOT NULL\nordinal INTEGER NOT NULL\ntext_id @text_atom\nregister_kind_id @kind')
 relation('asm_label', 'owner_id @asm_entry NOT NULL\nordinal INTEGER NOT NULL\nlabel_id @label_symbol NOT NULL')
-entity('attribute', '''owner_id @entity NOT NULL
-ordinal INTEGER NOT NULL
-kind_id @kind NOT NULL
+relation('owner_attribute', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\nattribute_id @attribute NOT NULL')
+entity('attribute', '''kind_id @kind NOT NULL
 family_id @kind
 location_id @kind
 name_id @text_atom
@@ -442,9 +445,8 @@ type_argument_id @type
 expression_argument_id @expression
 entity_argument_id @entity''')
 entity('attribute_group', 'source_origin_id @source_origin\nnamespace_name_id @text_atom')
-relation('attribute_argument', '''owner_id @attribute NOT NULL
-ordinal INTEGER NOT NULL
-kind_id @kind NOT NULL
+relation('attribute_argument_link', 'owner_id @attribute NOT NULL\nordinal INTEGER NOT NULL\nargument_id @attribute_argument NOT NULL')
+entity('attribute_argument', '''kind_id @kind NOT NULL
 text_id @text_atom
 integer_value TEXT
 type_id @type
@@ -559,8 +561,9 @@ guard_variable_id @variable_symbol
 vla_dimension_id @vla_dimension''')
 relation('initialization_operand', 'owner_id @initialization NOT NULL\nrole_id @kind NOT NULL\nordinal INTEGER NOT NULL\ninitialization_id @initialization\nexpression_id @expression\nfield_id @field_symbol\nbase_subobject_id @base_subobject', 'owner_id, role_id, ordinal')
 entity('temporary', 'type_id @type NOT NULL\nvariable_id @variable_symbol\ninitialization_id @initialization\nlifetime_id @lifetime\nextended_lifetime_id @lifetime')
-entity('lifetime', 'kind_id @kind NOT NULL\nparent_id @lifetime\nowner_id @entity\nscope_id @scope\nparent_checkpoint_id @initialization\nbegin_node_id @semantic_node\nend_node_id @semantic_node')
-relation('lifetime_cleanup', 'owner_id @lifetime NOT NULL\nordinal INTEGER NOT NULL\ninitialization_id @initialization NOT NULL\ndestructor_id @routine_symbol\nis_unordered INTEGER NOT NULL DEFAULT 0\nis_conditional INTEGER NOT NULL DEFAULT 0')
+entity('lifetime', 'kind_id @kind NOT NULL\nparent_id @lifetime\nbound_entity_id @entity\nparent_checkpoint_id @initialization\nhas_implicit_child INTEGER NOT NULL DEFAULT 0\nhas_block_after_label_child INTEGER NOT NULL DEFAULT 0')
+relation('lifetime_child', 'owner_id @lifetime NOT NULL\nordinal INTEGER NOT NULL\nchild_id @lifetime NOT NULL')
+relation('lifetime_cleanup', 'owner_id @lifetime NOT NULL\nordinal INTEGER NOT NULL\ninitialization_id @initialization NOT NULL')
 relation('lifetime_transition', 'owner_id @semantic_node NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\nsource_id @lifetime\ntarget_id @lifetime')
 relation('construction_dependency', 'owner_id @initialization NOT NULL\nordinal INTEGER NOT NULL\ndependency_id @initialization NOT NULL\ncondition_id @variable_symbol')
 relation('static_initialization', 'owner_id @translation_unit NOT NULL\nordinal INTEGER NOT NULL\nvariable_id @variable_symbol NOT NULL\ninitialization_kind_id @kind NOT NULL\ninitialization_id @initialization\nconstant_id @constant\ninit_routine_id @routine_symbol\ntermination_routine_id @routine_symbol\nis_thread_local INTEGER NOT NULL DEFAULT 0')
@@ -579,16 +582,16 @@ abi_detail_id @cleanup_abi_detail
 is_array INTEGER NOT NULL DEFAULT 0
 is_indirect INTEGER NOT NULL DEFAULT 0
 is_conditional INTEGER NOT NULL DEFAULT 0
-is_unordered INTEGER NOT NULL DEFAULT 0
+is_unordered INTEGER
 is_base_subobject INTEGER NOT NULL DEFAULT 0
 is_vla INTEGER NOT NULL DEFAULT 0
 is_deallocation INTEGER NOT NULL DEFAULT 0
 is_local_static_guard INTEGER NOT NULL DEFAULT 0''')
 entity('cleanup_storage_location', 'kind_id @kind NOT NULL\nvariable_id @variable_symbol\nbase_entity_id @entity\noffset TEXT NOT NULL')
-entity('cleanup_array', 'function_eh_id @function_eh NOT NULL\nordinal INTEGER NOT NULL\nstorage_id @cleanup_storage_location NOT NULL\nelement_size TEXT NOT NULL\nelement_count TEXT NOT NULL\ncount_location_id @cleanup_storage_location\nis_nonarray_size INTEGER NOT NULL DEFAULT 0')
+entity('cleanup_array', 'function_eh_id @function_eh NOT NULL\nordinal INTEGER NOT NULL\nhandle_constant_id @constant NOT NULL\nelement_size TEXT NOT NULL\nelement_count TEXT NOT NULL\nis_nonarray_size INTEGER NOT NULL DEFAULT 0')
 entity('cleanup_condition', 'storage_id @cleanup_storage_location NOT NULL\nkind_id @kind NOT NULL\ncomparison_value TEXT')
-entity('cleanup_abi_detail', 'vtt_entity_id @entity\nvtt_offset TEXT\nsubobject_id @base_subobject\nis_delegating INTEGER NOT NULL DEFAULT 0\ndelegation_argument TEXT\nvla_count_location_id @cleanup_storage_location')
-entity('lowered_eh_operation', 'kind_id @kind NOT NULL\nfunction_eh_id @function_eh\nregion_id @cleanup_region\nstate_number TEXT\nroutine_id @routine_symbol\nobject_type_id @type\nhandler_id @handler\ntry_block_id @try_statement\ntry_expression_id @expression\ncatch_expression_id @expression\ninitialization_id @initialization')
+entity('cleanup_abi_detail', 'vtt_location_id @cleanup_storage_location\nis_delegating INTEGER\nvla_count_location_id @cleanup_storage_location')
+entity('lowered_eh_operation', 'kind_id @kind NOT NULL\nfunction_eh_id @function_eh\nregion_id @cleanup_region\nstate_number TEXT\nroutine_id @routine_symbol\nobject_type_id @type\nhandler_id @handler\ntry_block_id @try_descriptor\ntry_expression_id @expression\ncatch_expression_id @expression\ninitialization_id @initialization')
 entity('cleanup_state_operation', 'region_id @cleanup_region\nstate_number TEXT NOT NULL\nis_unreachable INTEGER NOT NULL DEFAULT 0')
 relation('eh_handler_region', 'owner_id @handler NOT NULL\nordinal INTEGER NOT NULL\nregion_id @cleanup_region NOT NULL\nend_region_id @cleanup_region')
 entity('template_definition', '''kind_id @kind NOT NULL
@@ -860,6 +863,102 @@ entity('template_symbol', 'descriptor_id @template_definition NOT NULL')
 append_columns('template_definition', 'symbol_id @symbol')
 append_columns('initialization', 'is_freeing_of_exception_object INTEGER NOT NULL DEFAULT 0')
 
+append_columns('attribute_argument', 'is_local_expression_reference INTEGER NOT NULL DEFAULT 0\nscoped_expression_id @scoped_expression')
+append_columns('constant', 'associated_storage_variable_id @variable_symbol')
+append_columns('scope', 'function_static_lifetime_id @lifetime')
+append_columns('cleanup_storage_location', 'is_indirect INTEGER NOT NULL DEFAULT 0\nuses_this_parameter_offset INTEGER NOT NULL DEFAULT 0')
+entity('local_static_initialization', 'variable_id @variable_symbol NOT NULL\ninitialization_kind_id @kind NOT NULL\ninitialization_id @initialization\nconstant_id @constant\nlifetime_id @lifetime')
+relation('scope_local_static_initialization', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\ninitialization_id @local_static_initialization NOT NULL')
+entity('constructor_initializer', 'kind_id @kind NOT NULL\nfield_id @field_symbol\nbase_subobject_id @base_subobject\ninitialization_id @initialization\nsource_expression_id @expression\ncompiler_generated INTEGER NOT NULL\nis_pack_expansion INTEGER NOT NULL DEFAULT 0\nis_braced INTEGER NOT NULL DEFAULT 0\nuses_field_initializer INTEGER NOT NULL DEFAULT 0\noriginal_type_id @type\nsource_range_id @source_range')
+relation('scope_constructor_initializer', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\ninitializer_id @constructor_initializer NOT NULL')
+entity('data_member_spec', 'type_id @type NOT NULL\nname_id @text_atom\nrequested_alignment TEXT NOT NULL\nbit_width TEXT NOT NULL\nno_unique_address INTEGER NOT NULL DEFAULT 0')
+append_columns('variable_symbol', '''cleanup_routine_id @routine_symbol
+is_structured_binding INTEGER NOT NULL DEFAULT 0
+is_structured_binding_container INTEGER NOT NULL DEFAULT 0
+bound_expression_id @expression
+standard_thread_local_declared INTEGER NOT NULL DEFAULT 0
+standard_thread_local_effective INTEGER NOT NULL DEFAULT 0
+extension_thread_local INTEGER NOT NULL DEFAULT 0
+assembly_name_id @text_atom
+named_register_number INTEGER
+register_kind_id @kind
+dynamic_initialization_routine_id @routine_symbol
+thread_initialization_routine_id @routine_symbol
+thread_wrapper_routine_id @routine_symbol
+initialization_rewritten_as_assignment INTEGER NOT NULL DEFAULT 0
+lowering_generated INTEGER NOT NULL DEFAULT 0
+promoted_local_static INTEGER NOT NULL DEFAULT 0
+promoted_local_static_initialization INTEGER NOT NULL DEFAULT 0
+extends_lifetime INTEGER NOT NULL DEFAULT 0
+is_uninitialized INTEGER NOT NULL DEFAULT 0
+has_flexible_array_initializer INTEGER NOT NULL DEFAULT 0
+is_immutable INTEGER NOT NULL DEFAULT 0
+is_constexpr INTEGER NOT NULL DEFAULT 0
+is_constinit INTEGER NOT NULL DEFAULT 0
+is_pack INTEGER NOT NULL DEFAULT 0
+is_pack_element INTEGER NOT NULL DEFAULT 0''')
+append_columns('routine_symbol', 'is_defined INTEGER NOT NULL DEFAULT 0\nhas_no_effect INTEGER\nis_ineligible INTEGER')
+
+append_columns('variable_symbol', '''associated_parameter_type_id @parameter_type
+explicit_alignment TEXT
+initialization_priority INTEGER
+section_id @text_atom
+comdat_group_id @text_atom
+aliased_variable_id @variable_symbol
+vla_element_count_variable_id @variable_symbol
+effective_class_typeinfo_variable_id @variable_symbol
+is_used INTEGER NOT NULL DEFAULT 0
+address_taken INTEGER NOT NULL DEFAULT 0
+referenced_non_locally INTEGER NOT NULL DEFAULT 0
+modified_within_try_block INTEGER NOT NULL DEFAULT 0
+is_template_variable INTEGER NOT NULL DEFAULT 0
+is_prototype_instantiation INTEGER NOT NULL DEFAULT 0
+is_nonreal INTEGER NOT NULL DEFAULT 0
+is_specialized INTEGER NOT NULL DEFAULT 0
+specialized_with_old_syntax INTEGER NOT NULL DEFAULT 0
+explicit_instantiation INTEGER NOT NULL DEFAULT 0
+class_explicitly_instantiated INTEGER NOT NULL DEFAULT 0
+explicit_do_not_instantiate INTEGER NOT NULL DEFAULT 0
+parameter_value_changed INTEGER NOT NULL DEFAULT 0
+parameter_used_more_than_once INTEGER NOT NULL DEFAULT 0
+is_handler_parameter INTEGER NOT NULL DEFAULT 0
+is_this_parameter INTEGER NOT NULL DEFAULT 0
+is_anonymous_parent_object INTEGER NOT NULL DEFAULT 0
+is_member_constant INTEGER NOT NULL DEFAULT 0
+suppress_inline_definition INTEGER NOT NULL DEFAULT 0
+superseded_external INTEGER NOT NULL DEFAULT 0
+has_variably_modified_type INTEGER NOT NULL DEFAULT 0
+is_vla INTEGER NOT NULL DEFAULT 0
+is_compound_literal INTEGER NOT NULL DEFAULT 0
+has_explicit_initializer INTEGER NOT NULL DEFAULT 0
+has_parenthesized_initializer INTEGER NOT NULL DEFAULT 0
+has_direct_braced_initializer INTEGER NOT NULL DEFAULT 0
+declared_with_auto INTEGER NOT NULL DEFAULT 0
+declared_with_decltype_auto INTEGER NOT NULL DEFAULT 0
+declared_with_class_template_placeholder INTEGER NOT NULL DEFAULT 0
+declared_using_type_without_linkage INTEGER NOT NULL DEFAULT 0
+is_enhanced_for_iterator INTEGER NOT NULL DEFAULT 0
+initializer_in_class INTEGER NOT NULL DEFAULT 0
+constant_valued_recorded INTEGER NOT NULL DEFAULT 0
+is_template_parameter_object INTEGER NOT NULL DEFAULT 0
+is_in_class_specialization INTEGER NOT NULL DEFAULT 0
+is_optional_vtable INTEGER NOT NULL DEFAULT 0
+vtable_defined INTEGER NOT NULL DEFAULT 0
+is_weak INTEGER NOT NULL DEFAULT 0
+is_weakref INTEGER NOT NULL DEFAULT 0
+is_gnu_alias INTEGER NOT NULL DEFAULT 0
+has_gnu_used_attribute INTEGER NOT NULL DEFAULT 0
+has_gnu_abi_tag_attribute INTEGER NOT NULL DEFAULT 0
+is_not_common INTEGER NOT NULL DEFAULT 0
+is_common INTEGER NOT NULL DEFAULT 0
+has_internal_linkage_attribute INTEGER NOT NULL DEFAULT 0
+elf_visibility_kind_id @kind
+declared_storage_class_id @kind
+declared_type_id @type
+embeds_source_entries INTEGER NOT NULL DEFAULT 0''')
+
+
+
 # Optional differing raw descriptor state has no default factual value.
 for index, definition in enumerate(tables):
     definition = definition.replace('descriptor_incomplete INTEGER DEFAULT 0', 'descriptor_incomplete INTEGER')
@@ -951,7 +1050,7 @@ for id_,family,name in embedded_rows:
     state='invalid_concrete_node' if invalid else 'alias' if name in aliases else 'semantic'
     canonical=kind_ids.get(aliases[name]) if name in aliases else None
     sql_parts.append(f"INSERT INTO kind_disposition VALUES({id_},'{state}',{canonical if canonical else 'NULL'});\n")
-sql_parts.append('CREATE INDEX symbol_name ON symbol(name_id);\nCREATE INDEX symbol_owner ON symbol(containing_entity_id);\nCREATE INDEX declaration_symbol ON declaration(symbol_id);\nCREATE INDEX structural_parent ON structural_child(child_id);\nCREATE INDEX semantic_reference_target ON semantic_reference(target_id);\nCREATE INDEX macro_parent ON macro_invocation(parent_id,ordinal);\nCREATE INDEX cleanup_function ON cleanup_region(function_eh_id,ordinal);\nCREATE INDEX template_instance_template ON template_instance(template_id);\nCREATE INDEX type_name ON type(name_id);\nCREATE INDEX lifetime_owner ON lifetime(owner_id);\n')
+sql_parts.append('CREATE INDEX symbol_name ON symbol(name_id);\nCREATE INDEX symbol_owner ON symbol(containing_entity_id);\nCREATE INDEX declaration_symbol ON declaration(symbol_id);\nCREATE INDEX structural_parent ON structural_child(child_id);\nCREATE INDEX semantic_reference_target ON semantic_reference(target_id);\nCREATE INDEX macro_parent ON macro_invocation(parent_id,ordinal);\nCREATE INDEX cleanup_function ON cleanup_region(function_eh_id,ordinal);\nCREATE INDEX template_instance_template ON template_instance(template_id);\nCREATE INDEX type_name ON type(name_id);\nCREATE INDEX lifetime_binding ON lifetime(bound_entity_id);\n')
 sql_parts.append('CREATE INDEX constant_component_target ON constant_component(constant_id);\n')
 sql_parts.append('CREATE INDEX constant_name ON constant(name_id);\n')
 sql_parts.append('CREATE INDEX constant_owner ON constant(containing_entity_id);\nCREATE INDEX reference_expression_target ON reference_expression(target_id);\n')

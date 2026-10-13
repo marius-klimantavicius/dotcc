@@ -12,10 +12,10 @@ extensions and source-semantic native Microsoft ABI remain required.
 
 | Profile | Required behavior | Current evidence | Remaining validation |
 |---|---|---|---|
-| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Verified 2939 independent compiler and genuine primary fixtures, lowering=1/EH tables=1/full lowering=0; exact float16/float128/bfloat and bit-precise quantities | Complete extension/union fields; contextual array/VTT/unordered EH, remaining host/numeric configurations |
-| source | Source-semantic capture with native Microsoft ABI | Verified 2939 independent source build and GNU/native-MS runtime probes; VLA/statement/member-call/coroutine/source initialization traversal passes | New 232 physical/presumed mapping, declaration order and native MS attributes; all active source semantic fields |
-| cfront | Stock cfront compatibility including assignment-to-this and allocation folded into constructors | Verified 2939 independent cfront-like IA64=0 build and basic/m0/objects; overlay assignment=1/new-fold=1 | Genuine archaic operator activation and USL cfront2.1/3.0 configurations, exact virtual-base/control ABI role assertions |
-| exported | Legacy exported-template retention | Verified 2939 independent build and actual C++03 --export input, two retained export-marked templates; stock runtime prototype/all-template-info flags 1 | All guarded exported template payloads and definition-text availability/profile evidence |
+| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Verified b7f52f778 primary compiler/object/reader checkpoint, lowering=1/EH tables=1/full lowering=0; exact fixed-point/complex/imaginary/float16/float128/bfloat and pointer-member guards | Complete extension/union fields; 243 contextual array/VTT and lifetime acceptance in progress; unordered EH and remaining host/numeric configurations |
+| source | Source-semantic capture with native Microsoft ABI | Verified b7f52f778 source compiler/object/reader checkpoint: GNU/native-MS attributes, VLA/statement/member-call/coroutine/initializer traversal, template identity and modules | 243 constructor/lifetime/shared-attribute acceptance and all remaining active semantic fields; optional coordinates are not gates |
+| cfront | Stock cfront compatibility including assignment-to-this and allocation folded into constructors | Verified b7f52f778 cfront-like IA64=0 basic/m0/objects/types/numeric checkpoint; overlay assignment=1/new-fold=1 | Genuine archaic operator activation and USL cfront2.1/3.0 configurations, exact virtual-base/control ABI role assertions |
+| exported | Legacy exported-template retention | Verified b7f52f778 compiler/object/reader checkpoint and actual C++03 --export input, two retained export-marked templates; runtime prototype/all-template-info flags 1 | All guarded exported template payloads and definition-text availability/profile evidence |
 
 Primary runtime template retention follows `host_envir.c:6895–6900`: both
 `prototype_instantiations_in_il` and `all_template_info_in_il` are true. Lowering
@@ -49,8 +49,9 @@ ABI configuration. Exact resolved compilation and runtime ABI flags remain
 required evidence before either profile is accepted.
 
 
-The current 232 source/type/identity refresh is in progress and is not yet profile
-acceptance evidence. Maximum native coverage additionally requires resolved guard
+The b7f52f778 checkpoint validates the stated 232-table slice across all four
+profiles; it does not establish whole-profile closure. The current 243 semantic
+refresh remains in progress. Maximum native coverage additionally requires resolved guard
 and genuine activation probes for UPC, fixed-point, supported vector/host numeric
 forms, native COM/IDL attributes and C++26 reflection/token/data-member descriptors.
 Current overlays that disable an optional stock feature do not remove that feature
@@ -62,3 +63,12 @@ Source location is optional following the user's 2026-10-13 steering. Preserve
 direct retained metadata and established physical/presumed distinction without
 reconstruction. Profile acceptance prioritizes actual semantic operations/types/
 lifetimes/identity; incomplete optional coordinates do not block it.
+
+
+The active 243 configuration enables stock REFLECTION_ENABLING_POSSIBLE. A genuine
+GNU-mode `--set_flag reflection` input publishes nine reflection values and one
+retained prospective data-member specification with zero foreign-key failures;
+reader acceptance remains pending. Source-only RECORD_UNRECOGNIZED_ATTRIBUTES is
+being enabled for actual shared vendor-attribute descriptor lists. These are
+retained semantic identity probes, not optional coordinate reconstruction. Both
+resolved capability values and exact runtime arguments accompany refreshed objects.

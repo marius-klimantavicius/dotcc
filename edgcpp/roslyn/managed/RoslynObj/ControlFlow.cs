@@ -5,7 +5,9 @@ public sealed class BlockOperation : StatementOperation
     public override void Accept(SemanticVisitor visitor) => visitor.VisitBlock(this);
     internal BlockOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public BlockStatementDetails Block => Object.Detail("block_statement",Id,r=>new BlockStatementDetails(Object,r));
-    public Scope? Scope => Block.Scope;
+    public BlockDescriptor? Descriptor => Block.Descriptor;
+    public Scope? Scope => Descriptor?.Scope;
+    public new Lifetime? Lifetime => Descriptor?.Lifetime;
     public IReadOnlyList<StatementOperation> Statements => Object.List("SELECT s.* FROM block_item b JOIN statement s ON s.id=b.statement_id WHERE b.owner_id=$owner ORDER BY b.ordinal",Id,r=>Object.Statement(r.Long("id")),"statement");
 }
 
@@ -39,6 +41,7 @@ public sealed class JumpOperation : StatementOperation
     public SemanticKind JumpKind => Jump.Kind;
     public ExpressionOperation? Value => Jump.Value;
     public LabelSymbol? Target => Jump.Label;
+    public Lifetime? CommonLifetime => Jump.CommonLifetime;
 }
 
 public sealed class SwitchOperation : StatementOperation
@@ -56,8 +59,9 @@ public sealed class TryOperation : StatementOperation
     public override void Accept(SemanticVisitor visitor) => visitor.VisitTry(this);
     internal TryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public TryStatementDetails Try => Object.Detail("try_statement",Id,r=>new TryStatementDetails(Object,r));
-    public StatementOperation Body => Try.Body;
-    public IReadOnlyList<ExceptionHandler> Handlers => Object.List("SELECT * FROM handler WHERE try_id=$owner ORDER BY ordinal",Id,r=>Object.Handler(r.Long("id")),"handler");
+    public TryDescriptor Definition => Try.Descriptor;
+    public StatementOperation Body => Definition.Body;
+    public IReadOnlyList<ExceptionHandler> Handlers => Definition.Handlers;
 }
 
 public sealed class ExceptionHandler : SemanticEntity
@@ -68,7 +72,8 @@ public sealed class ExceptionHandler : SemanticEntity
     public CppType? CaughtType => Details.CaughtType;
     public VariableSymbol? Parameter => Details.Parameter;
     public Initialization? ParameterInitialization => Details.ParameterInitialization;
-    public Lifetime? Lifetime => Details.Lifetime;
+    public Lifetime? BodyLifetime => (Body as BlockOperation)?.Descriptor?.Lifetime;
+    public Lifetime? ParameterInitializationLifetime => ParameterInitialization?.Lifetime;
     public SourcePosition? Source => Details.SourcePosition;
 }
 

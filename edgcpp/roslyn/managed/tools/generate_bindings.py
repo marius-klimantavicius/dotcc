@@ -49,6 +49,12 @@ models = {
     'microsoft_if_exists':('MicrosoftIfExists','IfExists'), 'pragma':('PragmaDirective','Pragma'),
     'ms_attribute':('MicrosoftAttribute','MicrosoftAttribute'), 'ms_attribute_argument':('MicrosoftAttributeArgument','MicrosoftAttributeArgument'),
     'scoped_expression':('ScopedExpression','ScopedExpression'),
+    'attribute':('Attribute','Attribute'), 'attribute_argument':('AttributeArgument','AttributeArgument'),
+    'attribute_group':('AttributeGroup','AttributeGroup'),
+    'data_member_spec':('DataMemberSpecification','DataMemberSpecification'),
+    'block_descriptor':('BlockDescriptor','BlockDescriptor'), 'try_descriptor':('TryDescriptor','TryDescriptor'),
+    'local_static_initialization':('LocalStaticInitialization','LocalStaticInitialization'),
+    'constructor_initializer':('ConstructorInitializer','ConstructorInitializer'),
     'enum_symbol':('EnumSymbol','Enum'), 'alias_symbol':('AliasSymbol','Alias'),
     'template_specialization':('TemplateSpecialization','Specialization'),
     'base_subobject':('BaseSubobject','Subobject'), 'base_derivation':('BaseDerivation','Derivation')
@@ -58,8 +64,8 @@ booleans = {'compiler_generated','negative','nan_quiet','signed','incomplete','i
     'selection_known','selected_then','one_past_end','frees_storage','frees_array','throw_any',
     'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete',
     'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer','gnu_asm_form','error_descriptor',
-    'contains_unsupported_constructs','implementation_unit_importing_self','descriptor_incomplete','boolean_value'}
-numeric_text = {'scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
+    'contains_unsupported_constructs','implementation_unit_importing_self','descriptor_incomplete','boolean_value','no_unique_address'}
+numeric_text = {'scope_number','local_scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','first_line','logical_line','physical_line',
     'integer_argument','integer_value','pointer_alignment','shared_block_size','number_of_constraints'}

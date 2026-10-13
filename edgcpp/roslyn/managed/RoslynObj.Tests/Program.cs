@@ -95,7 +95,7 @@ try
         Check(body.ExceptionHandling.Details!.NullState==BigInteger.Parse("18446744073709551615"),"Unsigned EH sentinel must remain exact beyond long.");
         var action=region.Actions.Single();
         Check(action.TargetMethod==external&&action.Array!.ElementCount==-1&&action.Storage!.Variable!.Name=="x","Exceptional cleanup must preserve storage, routine and dynamic counts.");
-        Check(action.AbiDetail!.Details.IsDelegating&&region.Condition!.Storage==action.Storage,"Typed EH supplements must navigate without decoding flags.");
+        Check(action.AbiDetail!.IsDelegating==true&&action.AbiDetail.DelegationArgumentLocation==action.Storage&&region.Condition!.Storage==action.Storage,"Typed EH supplements must navigate the recorded delegation argument location without decoding flags.");
         Check(body.Lifetimes.Count==1&&unit.Declarations.Count==0&&external.Body is null,"Optional retained collections and body absence must be ordinary values.");
         var invocation=unit.Macros.Invocations.Single();
         Check(invocation.ArgumentText=="( 4 )"&&call.Source!.MacroExpansion==invocation,"Canonical macro argument text and operation origins must be retained.");
@@ -122,7 +122,9 @@ try
         INSERT INTO entity VALUES(160,(SELECT id FROM kind WHERE family='entity' AND name='variable'));
         INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) VALUES(160,(SELECT id FROM kind WHERE family='entity' AND name='variable'),8,6,3);
         INSERT INTO variable_symbol(id,type_id,initialization_kind_id) VALUES(160,3,(SELECT id FROM kind WHERE family='initializer' AND name='initk_function_local'));
-        INSERT INTO static_initialization(owner_id,ordinal,variable_id,initialization_kind_id,constant_id) VALUES(1,0,160,(SELECT id FROM kind WHERE family='initializer' AND name='initk_static'),30);
+        INSERT INTO entity VALUES(161,(SELECT id FROM kind WHERE family='entity' AND name='local_static_initialization'));
+        INSERT INTO local_static_initialization(id,variable_id,initialization_kind_id,constant_id) VALUES(161,160,(SELECT id FROM kind WHERE family='initializer' AND name='initk_static'),30);
+        INSERT INTO scope_local_static_initialization(owner_id,ordinal,initialization_id) VALUES(9,0,161);
         INSERT INTO entity VALUES(162,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol')),(163,(SELECT id FROM kind WHERE family='entity' AND name='declaration'));
         INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) VALUES(162,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol'),41,1,40);
         INSERT INTO type_symbol(id,type_id) VALUES(162,40);
@@ -131,7 +133,7 @@ try
         """)))
     {
         var variable=regional.TranslationUnit.Variables.Single(v=>v.InitializationKind.Name=="initk_function_local");
-        Check(variable.Details.ConstantInitializer is null&&variable.ConstantInitializer==regional.TranslationUnit.StaticInitializations.Single().Constant,"Local-static values must follow the exact region payload when the direct variable field is absent.");
+        Check(variable.Details.ConstantInitializer is null&&variable.ConstantInitializer==regional.TranslationUnit.Functions.Single(f=>f.Name=="compute").Body!.Scope!.LocalStaticInitializations.Single().Constant,"Local-static values must follow their exact scoped descriptor payload when the direct variable field is absent.");
         var declaration=regional.TranslationUnit.Declarations.Single();var declared=regional.TranslationUnit.Types.Single(t=>t.Name=="Widget");
         Check(regional.TranslationUnit.SemanticModel.GetSymbol(declaration)==declared.DeclarationSymbol&&regional.TranslationUnit.SemanticModel.GetType(declaration)==declared,"Declaration nodes must project the separate named symbol and actual type descriptor through ordinary semantic queries.");
         Check(declaration.NodeDetails is null&&declaration.Source?.MacroExpansion is not null,"A declaration must retain its own source record without duplicating a semantic-node row.");
@@ -200,6 +202,7 @@ try
         using var obj=RoslynObject.Open(input);
         var unit=obj.TranslationUnit;
         Numeric.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        SemanticProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         var functionCount=0;var operationCount=0;var bodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
         foreach(var function in unit.Functions)
         {
@@ -236,11 +239,17 @@ try
         }
         if(Path.GetFileName(input)=="m0.roslynobj")
         {
-            Check(cleanupActions==6,"The real C++ object must expose all six selected exceptional cleanup actions.");
-            Check(unit.Functions.Where(f=>f.ContainingType is not null).SelectMany(f=>f.Parameters).Any(p=>p.Role.Name=="this_parameter"),"Real retained method parameters must expose explicit receiver roles.");
+            Check(cleanupActions==(obj.Manifest.CaptureProfile=="source_semantic"?0:6),"The real C++ object must preserve its profile's actual exceptional cleanup tables.");
+            if(obj.Manifest.CaptureProfile!="source_semantic")
+                Check(unit.Functions.Where(f=>f.ContainingType is not null).SelectMany(f=>f.Parameters).Any(p=>p.Role.Name=="this_parameter"),"Lowered retained method signatures must expose their explicit receiver roles.");
+            else
+                Check(unit.Functions.Where(f=>f.ContainingType is not null).SelectMany(f=>f.Parameters).All(p=>p.Role.Name!="this_parameter"),"Source method signatures must preserve their actual formal list before implicit receiver parameters are added by lowering.");
             var macro=unit.Macros.Definitions.Single(m=>m.Name=="INC");
             Check(macro.Text=="#define INC(v) ((v)+1)","The real INC macro must retain definition text.");
-            Check(unit.Macros.Invocations.Any(m=>m.Definition==macro&&m.ArgumentText=="y"),"The real INC invocation must retain its argument text and definition identity.");
+            if(unit.SemanticModel.GetAvailability(unit).Any(a=>a.Property=="macro_arguments"&&a.State==AvailabilityState.Available))
+                Check(unit.Macros.Invocations.Any(m=>m.Definition==macro&&m.ArgumentText=="y"),"The real INC invocation must retain its argument text and definition identity when the profile retains arguments.");
+            else
+                Check(unit.Macros.Invocations.All(m=>m.ArgumentText is null),"Profiles without retained macro arguments must preserve their explicit absence.");
             using var paged=RoslynObject.Open(input,new(){PageSize=1,CachedPageCount=2,CachedRowCount=32});
             var parameter=paged.TranslationUnit.Functions.Single(f=>f.Name=="use").SourceParameters.Single(p=>p.Name=="n").Symbol!;
             var uses=paged.TranslationUnit.SemanticModel.GetReferences(parameter);

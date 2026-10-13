@@ -119,7 +119,12 @@ static Rid roslyn_constant(a_constant_ptr p) {
  default:DB.fail("Constant payload adapter missing: "+Q(p->kind));break;
  }
  Rid value=content.intern();roslyn_constant_values[p]=value;
+ Rid storage=0;
+#if DO_IL_LOWERING && !BACK_END_IS_C_GEN_BE && !IL_SHOULD_BE_WRITTEN_TO_FILE
+ storage=roslyn_variable(p->assoc_var);
+#endif
  DB.put("constant",{{"id",id},{"type_id",R(roslyn_type(p->type))},{"orig_type_id",R(roslyn_type(p->orig_type))},{"value_id",value},
+  {"associated_storage_variable_id",R(storage)},
   {"name_id",R(p->source_corresp.name?roslyn_name(p->source_corresp):0)},{"containing_entity_id",R(roslyn_owner(p->source_corresp))},{"source_origin_id",R(roslyn_origin(p->source_corresp.decl_position,&p->end_position))},
   {"backing_expression_id",R(roslyn_expr(p->local_expr_ref?expr_node_from_constant(p):p->expr,7002))},
   {"name_reference_id",R(p->kind==ck_ptr_to_member?roslyn_name_reference(p->variant.ptr_to_member.name_reference):0)},
@@ -127,5 +132,5 @@ static Rid roslyn_constant(a_constant_ptr p) {
   {"implicit_cast",static_cast<int>(p->implicit_cast)},{"explicit_cast_applied",static_cast<int>(p->explicit_cast_applied)},
   {"is_reinterpret_cast",static_cast<int>(p->is_reinterpret_cast)},{"is_reinterpret_like_cast",static_cast<int>(p->is_reinterpret_like_cast)},
   {"is_simple_zero",static_cast<int>(p->is_simple_zero)},{"is_pack_expansion",static_cast<int>(p->is_pack_expansion)}});
- return id;
+ roslyn_attributes(id,p->source_corresp.attributes);return id;
 }

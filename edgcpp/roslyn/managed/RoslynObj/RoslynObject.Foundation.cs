@@ -51,7 +51,7 @@ public abstract class SemanticEntity : IEquatable<SemanticEntity>
     {
         Object = owner; Id = id; artifact = owner.Manifest.ArtifactIdentity;
     }
-    public virtual IReadOnlyList<AttributeDetails> Attributes => Object.List("SELECT * FROM attribute WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AttributeDetails(Object,r),"attribute");
+    public virtual IReadOnlyList<Attribute> Attributes => Object.List("SELECT a.* FROM owner_attribute r JOIN attribute a ON a.id=r.attribute_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Attribute(r.Long("id")),"attribute");
     public IReadOnlyList<MicrosoftAttribute> MicrosoftAttributes => Object.List("SELECT a.* FROM owner_ms_attribute r JOIN ms_attribute a ON a.id=r.attribute_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.MicrosoftAttribute(r.Long("id")),"ms_attribute");
     public IReadOnlyList<SynthesizedOriginDetails> SynthesizedOrigins => Object.List("SELECT * FROM synthesized_origin WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new SynthesizedOriginDetails(Object,r));
     public IReadOnlyList<ConstraintMetadataDetails> Constraints => Object.List("SELECT * FROM constraint_metadata WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new ConstraintMetadataDetails(Object,r));

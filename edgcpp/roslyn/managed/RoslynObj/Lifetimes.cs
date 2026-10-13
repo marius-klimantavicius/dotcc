@@ -12,6 +12,8 @@ public sealed class Initialization : SemanticEntity
     public FunctionSymbol? Constructor => Details.Constructor;
     public FunctionSymbol? Destructor => Details.Destructor;
     public Lifetime? Lifetime => Details.Lifetime;
+    public Lifetime? InitExpressionLifetime => Details.InitExpressionLifetime;
+    public Lifetime? OverlappingLifetime => Details.OverlappingLifetime;
     public IReadOnlyList<InitializationOperandDetails> Operands => Object.List("SELECT * FROM initialization_operand WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new InitializationOperandDetails(Object,r));
     public IReadOnlyList<ConstructionDependencyDetails> Dependencies => Object.List("SELECT * FROM construction_dependency WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new ConstructionDependencyDetails(Object,r));
 }
@@ -22,7 +24,13 @@ public sealed class Lifetime : SemanticEntity
     public LifetimeDetails Details { get; }
     public SemanticKind Kind => Details.Kind;
     public Lifetime? Parent => Details.Parent;
-    public IReadOnlyList<LifetimeCleanupDetails> Cleanups => Object.List("SELECT * FROM lifetime_cleanup WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new LifetimeCleanupDetails(Object,r));
+    public SemanticEntity? BoundEntity => Details.BoundEntity;
+    public Initialization? ParentCheckpoint => Details.ParentCheckpoint;
+    public bool HasImplicitChild => Details.HasImplicitChild;
+    public bool HasBlockAfterLabelChild => Details.HasBlockAfterLabelChild;
+    /// <summary>Recorded children in reverse creation order. Implicit children may not appear in this list.</summary>
+    public IReadOnlyList<Lifetime> Children => Object.List("SELECT l.* FROM lifetime_child r JOIN lifetime l ON l.id=r.child_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Lifetime(r.Long("id")),"lifetime");
+    public IReadOnlyList<LifetimeCleanup> Cleanups => Object.List("SELECT * FROM lifetime_cleanup WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new LifetimeCleanup(Object,r));
 }
 
 public sealed class ExceptionHandlingInfo
@@ -54,6 +62,7 @@ public sealed class CleanupAction : SemanticEntity
     public CleanupStorageLocation? Storage => Details.Storage;
     public CleanupArray? Array => Details.Array;
     public CleanupAbiDetail? AbiDetail => Details.AbiDetail;
+    public bool? IsUnordered => Details.IsUnordered;
 }
 
 public sealed class CleanupStorageLocation : SemanticEntity
@@ -63,16 +72,27 @@ public sealed class CleanupStorageLocation : SemanticEntity
     public SemanticKind Kind => Details.Kind;
     public VariableSymbol? Variable => Details.Variable;
     public System.Numerics.BigInteger Offset => Details.Offset;
+    public bool IsIndirect => Details.IsIndirect;
+    public bool UsesThisParameterOffset => Details.UsesThisParameterOffset;
 }
 
 public sealed class CleanupArray : SemanticEntity
 {
     internal CleanupArray(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public CleanupArrayDetails Details { get; }
-    public CleanupStorageLocation Storage => Details.Storage;
+    public Constant HandleConstant => Details.HandleConstant;
+    public IReadOnlyList<CleanupStorageLocation> StorageLocations => Object.List("SELECT s.* FROM cleanup_storage_location s WHERE s.id IN (SELECT storage_id FROM cleanup_action WHERE array_id=$owner AND storage_id IS NOT NULL) ORDER BY s.id",Id,r=>Object.Storage(r.Long("id")),"cleanup_storage_location");
+    public CleanupStorageLocation? Storage
+    {
+        get { var locations=StorageLocations.Take(2).ToArray();return locations.Length==1?locations[0]:null; }
+    }
     public System.Numerics.BigInteger ElementSize => Details.ElementSize;
     public System.Numerics.BigInteger ElementCount => Details.ElementCount;
-    public CleanupStorageLocation? CountLocation => Details.CountLocation;
+    public IReadOnlyList<CleanupStorageLocation> CountLocations => Object.List("SELECT s.* FROM cleanup_storage_location s WHERE s.id IN (SELECT b.vla_count_location_id FROM cleanup_action a JOIN cleanup_abi_detail b ON b.id=a.abi_detail_id WHERE a.array_id=$owner AND b.vla_count_location_id IS NOT NULL) ORDER BY s.id",Id,r=>Object.Storage(r.Long("id")),"cleanup_storage_location");
+    public CleanupStorageLocation? CountLocation
+    {
+        get { var locations=CountLocations.Take(2).ToArray();return locations.Length==1?locations[0]:null; }
+    }
 }
 
 public sealed class CleanupCondition : SemanticEntity
@@ -87,4 +107,8 @@ public sealed class CleanupAbiDetail : SemanticEntity
 {
     internal CleanupAbiDetail(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public CleanupAbiDetailDetails Details { get; }
+    public CleanupStorageLocation? VttLocation => Details.VttLocation;
+    public CleanupStorageLocation? VlaCountLocation => Details.VlaCountLocation;
+    public bool? IsDelegating => Details.IsDelegating;
+    public CleanupStorageLocation? DelegationArgumentLocation => IsDelegating==true?VttLocation:null;
 }

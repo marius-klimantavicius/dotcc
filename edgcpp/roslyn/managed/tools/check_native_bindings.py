@@ -12,7 +12,7 @@ schema = {
 }
 issues = []
 for filename in ('roslyn_source_sequences.h', 'roslyn_templates.h',
-                 'roslyn_expressions_extra.h'):
+                 'roslyn_expressions_extra.h', 'roslyn_attributes.h'):
     source = (root / 'backend' / filename).read_text()
     calls = 0
     for match in re.finditer(r'DB\.put\("(\w+)"\s*,', source):

@@ -21,6 +21,7 @@ public sealed class Constant : SemanticEntity
     public ConstantValue Value => Details.Value;
     public Operation? BackingExpression => Details.BackingExpression;
     public SourceInfo? Source => Details.SourceOrigin;
+    public VariableSymbol? AssociatedStorageVariable => Details.AssociatedStorageVariable;
     public IReadOnlyList<ConstantComponentDetails> Components => Object.List("SELECT * FROM constant_component WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new ConstantComponentDetails(Object,r));
     public IReadOnlyList<Constant> Elements => Object.List("SELECT c.* FROM constant_component r JOIN constant c ON c.id=r.constant_id JOIN kind k ON k.id=r.role_id WHERE r.owner_id=$owner AND k.name='element' ORDER BY r.ordinal",Id,r=>Object.Constant(r.Long("id")),"constant");
 }
@@ -31,13 +32,22 @@ public class ConstantValue : SemanticEntity
     internal ConstantValue(RoslynObject owner,long id,Row row) : base(owner,id) { Kind=owner.Kind(row.Long("kind_id")); }
 }
 
-public sealed class ConstantValue<TDetails> : ConstantValue where TDetails : SemanticDetail
+public class ConstantValue<TDetails> : ConstantValue where TDetails : SemanticDetail
 {
     private readonly string table;
     private readonly Func<Row,TDetails> create;
     internal ConstantValue(RoslynObject owner,long id,Row row,string table,Func<Row,TDetails> create) : base(owner,id,row)
     { this.table=table; this.create=create; }
     public TDetails Payload => Object.Detail(table,Id,create);
+}
+
+public sealed class ReflectionValue : ConstantValue<ReflectionValueDetails>
+{
+    internal ReflectionValue(RoslynObject owner,long id,Row row) : base(owner,id,row,"reflection_value",r=>new(owner,r)) { }
+    public ReflectionValueDetails Details => Payload;
+    public SemanticKind EntityKind => Details.Kind;
+    public SemanticEntity? Entity => Details.Entity;
+    public BigInteger? LocalScopeNumber => Details.LocalScopeNumber;
 }
 
 public sealed class IntegerValue : ConstantValue

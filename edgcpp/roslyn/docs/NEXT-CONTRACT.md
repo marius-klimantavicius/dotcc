@@ -1,7 +1,7 @@
 # Next semantic contract batch
 
-This is the coordinator's concrete proposal for the batch after the verified
-232-table checkpoint. The current shared schema remains frozen during builds.
+This contract was frozen after verified checkpoint `b7f52f778`: 243 tables and
+39,067 append-only stable kinds. Both workers implement it with disjoint ownership.
 No new approval is required: these are retained semantic identities and execution
 facts in the already-authorized phases. Source coordinates are optional under
 the user's 2026-10-13 steering; preserve direct cheap metadata without guessing.
@@ -32,8 +32,8 @@ the user's 2026-10-13 steering; preserve direct cheap metadata without guessing.
 
 - Add `block_descriptor` for actual a_block, containing the current
   block_statement scope/lifetime/final-position/reachability/statement-expression/
-  implicit-scope/UPC-access fields. `block_statement` contains only its required
-  descriptor FK. The block's statement chain belongs to the statement union,
+  implicit-scope/UPC-access fields. `block_statement` contains only its optional
+  descriptor FK; null extra_info is retained without a fabricated wrapper. The block's statement chain belongs to the statement union,
   not a_block: existing `block_item` and execution edges stay statement-owned.
 - Add `try_descriptor` for actual a_try_supplement: dependent body, function-try
   flag and lifetime. Existing managed-dialect-only finally information remains
@@ -94,6 +94,13 @@ count location stays separate, and supplement addressing uses its own recorded
 flags. Array rows retain the actual handle Constant; decoded location belongs to
 each using CleanupAction.Storage with that region's flags. Array.StorageLocations
 exposes reverse contexts and optional unique Storage; no global-context guess.
+Recorded `IsDelegating` is nullable: the current IA64 lowered destructor kind
+provides an exact answer, while cfront wrapper purpose is not inferred. The same
+recorded supplemental VttLocation is the delegation argument locator when this
+fact is true; the unused synthetic scalar argument column has been removed.
+Handler lifetime navigation follows its actual body descriptor or parameter
+initialization relationships; a_handler has no independent lifetime field, so
+no such synthetic column remains.
 Stock currently appends one fresh array row per using region, but the model does
 not require undocumented uniqueness.
 
@@ -111,3 +118,49 @@ Native owns canonical lifetime/initializer adapters and integration. Managed own
 attribute/reflection extensions in its three headers plus reader/API/tests. The
 coordinator allocates schema/catalog IDs, preserves field-sized evidence and
 serializes the short contract handoff. Workers do not edit shared schema or commit.
+
+
+## Frozen variable and storage details
+
+Variable payload now retains the audited common/lowering/GNU/source semantic
+flags plus cleanup routine, associated parameter descriptor, actual binding
+container/membership, alignment/priority/section/COMDAT/alias/VLA/typeinfo links.
+Raw standard TLS, effective standard behavior and DM_THREAD extension remain
+separate. Current initialization-routine union branches on raw standard TLS;
+public duration can project effective-or-extension behavior. Named-register
+number is integer, GNU register is the existing stable named-register kind,
+and asm atom is a third active union branch. No independent alias/cleanup calls
+are fabricated. Prototype constant_valued is explicitly recorded, not a proof
+of a concrete evaluated value.
+
+Composite multi-column primary-key relations use WITHOUT ROWID after verified
+native 198 insertion and 232 reader measurements; identity and single-key tables
+retain rowid. Page size remains 4KiB until native insertion measurements justify
+a change. This is a representation choice with no altered semantic facts.
+
+
+The 243-table final validation boundary also enables stock C++26 reflection in
+profile configuration and source-only RECORD_UNRECOGNIZED_ATTRIBUTES retention.
+These activate genuine reflected descriptors and shared attribute owners without
+compiler-private state or fabricated metadata. Reflection uses the stock GNU
+mode with `--set_flag reflection`; source attributes preserve the actual vendor
+marker lists. Neither change expands optional source-coordinate work.
+
+
+Final genuine throw-aggregate validation activated integer member offsets 0 and
+8 with no THIS flag. The pinned lower_throw → partial aggregate cleanup →
+make_handle_for_entity producer binds these to the runtime thrown object. New
+`thrown_object_relative` preserves that base and exact offset. No-object release
+is classified from the actual primary zero handle with no addressing/ARRAY flags
+and retained effective void() target prototype without parameters/ellipsis/
+implicit object parameter; neither routine names nor compiler-generated status
+are required. Object-taking cfront destruction wrappers can have sfk_none and
+must not be mistaken for the release action.
+
+CleanupAction.IsUnordered is unavailable/null for decoded region tables: the
+format has no such bit, while Initialization.IsUnordered remains retained. Actual
+region links and conditional actions encode executable cleanup ordering. Array
+count locations come from the using actions' recorded ABI VLA-count locations,
+with plural contexts and only an unambiguous optional convenience. Removed the
+unwritten singleton array-count and ABI-subobject columns rather than fabricate
+associations. All three changes stay within this checkpoint's cleanup semantics.

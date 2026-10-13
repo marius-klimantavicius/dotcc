@@ -18,7 +18,7 @@ public sealed partial class RoslynObject
             or "macro_definition" or "macro_invocation" or "record_layout" or "cleanup_region" or "cleanup_action"
             or "cleanup_array" or "name" or "temporary" or "base_derivation" or "base_subobject"
             or "template_parameter" or "template_specialization" or "include_occurrence" or "source_attachment"
-            or "attribute" or "attribute_group" or "subobject_path" or "name_reference" or "exception_specification"
+            or "attribute" or "attribute_argument" or "attribute_group" or "data_member_spec" or "block_descriptor" or "try_descriptor" or "local_static_initialization" or "constructor_initializer" or "subobject_path" or "name_reference" or "exception_specification"
             or "virtual_table" or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion" or "template_symbol"
             or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
             or "line_directive" or "source_entry" or "source_sublist" or "source_end_construct" or "instantiation_directive"
@@ -62,6 +62,14 @@ public sealed partial class RoslynObject
     internal MicrosoftAttribute MicrosoftAttribute(long id) => Cached("ms_attribute",id,r=>new MicrosoftAttribute(this,id,r));
     internal MicrosoftAttributeArgument MicrosoftAttributeArgument(long id) => Cached("ms_attribute_argument",id,r=>new MicrosoftAttributeArgument(this,id,r));
     internal ScopedExpression ScopedExpression(long id) => Cached("scoped_expression",id,r=>new ScopedExpression(this,id,r));
+    internal Attribute Attribute(long id) => Cached("attribute",id,r=>new Attribute(this,id,r));
+    internal AttributeArgument AttributeArgument(long id) => Cached("attribute_argument",id,r=>new AttributeArgument(this,id,r));
+    internal AttributeGroup AttributeGroup(long id) => Cached("attribute_group",id,r=>new AttributeGroup(this,id,r));
+    internal DataMemberSpecification DataMemberSpecification(long id) => Cached("data_member_spec",id,r=>new DataMemberSpecification(this,id,r));
+    internal BlockDescriptor BlockDescriptor(long id) => Cached("block_descriptor",id,r=>new BlockDescriptor(this,id,r));
+    internal TryDescriptor TryDescriptor(long id) => Cached("try_descriptor",id,r=>new TryDescriptor(this,id,r));
+    internal LocalStaticInitialization LocalStaticInitialization(long id) => Cached("local_static_initialization",id,r=>new LocalStaticInitialization(this,id,r));
+    internal ConstructorInitializer ConstructorInitializer(long id) => Cached("constructor_initializer",id,r=>new ConstructorInitializer(this,id,r));
     internal MacroDefinition MacroDefinition(long id) => Cached("macro_definition",id,r=>new MacroDefinition(this,id,r));
     internal MacroInvocation MacroInvocation(long id) => Cached("macro_invocation",id,r=>new MacroInvocation(this,id,r));
     internal CleanupRegion Region(long id) => Cached("cleanup_region",id,r=>new CleanupRegion(this,id,r));
@@ -176,7 +184,7 @@ public sealed partial class RoslynObject
         "ck_designator"=>new ConstantValue<DesignatorValueDetails>(this,id,r,"designator_value",v=>new(this,v)),
         "ck_dynamic_init"=>new ConstantValue<DynamicInitializationValueDetails>(this,id,r,"dynamic_initialization_value",v=>new(this,v)),
         "ck_template_param"=>new ConstantValue<DependentValueDetails>(this,id,r,"dependent_value",v=>new(this,v)),
-        "ck_reflection"=>new ConstantValue<ReflectionValueDetails>(this,id,r,"reflection_value",v=>new(this,v)),
+        "ck_reflection"=>new ReflectionValue(this,id,r),
         "ck_void" or "ck_upc_threads" or "ck_upc_mythread"=>new ConstantValue(this,id,r),
         _=>throw new IncompatibleObjectException("The required constant kind is unsupported.")
     });
@@ -252,8 +260,14 @@ public sealed partial class RoslynObject
             "ms_attribute_argument"=>MicrosoftAttributeArgument(id),
             "scoped_expression"=>ScopedExpression(id),
             "source_attachment"=>new SemanticRecord<SourceAttachmentDetails>(this,id,Detail("source_attachment",id,r=>new SourceAttachmentDetails(this,r))),
-            "attribute"=>new SemanticRecord<AttributeDetails>(this,id,Detail("attribute",id,r=>new AttributeDetails(this,r))),
-            "attribute_group"=>new SemanticRecord<AttributeGroupDetails>(this,id,Detail("attribute_group",id,r=>new AttributeGroupDetails(this,r))),
+            "attribute"=>Attribute(id),
+            "attribute_argument"=>AttributeArgument(id),
+            "attribute_group"=>AttributeGroup(id),
+            "data_member_spec"=>DataMemberSpecification(id),
+            "block_descriptor"=>BlockDescriptor(id),
+            "try_descriptor"=>TryDescriptor(id),
+            "local_static_initialization"=>LocalStaticInitialization(id),
+            "constructor_initializer"=>ConstructorInitializer(id),
             "subobject_path"=>new SemanticRecord<SubobjectPathDetails>(this,id,Detail("subobject_path",id,r=>new SubobjectPathDetails(this,r))),
             "name_reference"=>new SemanticRecord<NameReferenceDetails>(this,id,Detail("name_reference",id,r=>new NameReferenceDetails(this,r))),
             "exception_specification"=>new SemanticRecord<ExceptionSpecificationDetails>(this,id,Detail("exception_specification",id,r=>new ExceptionSpecificationDetails(this,r))),

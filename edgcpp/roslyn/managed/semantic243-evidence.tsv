@@ -1,0 +1,43 @@
+source_field	guard_or_disposition	sql	public_navigation	genuine_evidence	status
+an_attribute.next	always	owner_attribute.ordinal	SemanticEntity.Attributes	source_attributes: routine/secondary distinct owners, same canonical argument	verified
+an_attribute.kind	always	attribute.kind_id	Attribute.Kind	source_attributes: ak_deprecated; variables: ak_cleanup	verified
+an_attribute.family	always	attribute.family_id	Attribute.Family	source/native attribute scalar family sweeps	verified
+an_attribute.syntactic_location	always	attribute.location_id	Attribute.Location	source/native attribute scalar family sweeps	verified
+an_attribute.name	always	attribute.name_id -> text_atom	Attribute.Name	source/native attribute scalar family sweeps	verified
+an_attribute.namespace_name	always	attribute.namespace_name_id -> text_atom	Attribute.NamespaceName	source/native attribute scalar family sweeps	verified
+an_attribute.on_primary_declaration	always	attribute.on_primary_declaration	Attribute.Details.OnPrimaryDeclaration	source/native attribute scalar family sweeps	verified
+an_attribute.transforms_type_specifier	always	attribute.transforms_type_specifier	Attribute.Details.TransformsTypeSpecifier	source/native attribute scalar family sweeps	verified
+an_attribute.is_pack_expansion	always	attribute.is_pack_expansion	Attribute.IsPackExpansion	source/native attribute scalar family sweeps; positive expansion pending	scalar-verified
+an_attribute.is_std_gcc_attribute	always	attribute.is_standard_gcc	Attribute.Details.IsStandardGcc	source/native attribute scalar family sweeps	verified
+an_attribute.is_implicit_abi_tag_attribute	GNU_EXTENSIONS_ALLOWED	attribute.is_implicit_abi_tag	Attribute.Details.IsImplicitAbiTag	variables: actual ABI-tag attribute retained; family scalar sweep	verified
+an_attribute.namespace_from_using	always	attribute.namespace_from_using	Attribute.Details.NamespaceFromUsing	source/native attribute scalar family sweeps	verified
+an_attribute.arguments	always	attribute_argument_link(owner_id,ordinal,argument_id)	Attribute.Arguments	source_attributes: distinct deprecated attributes share actual one canonical argument and preserve distinct identity	verified
+an_attribute.group	always	attribute.group_id	Attribute.Group / AttributeGroup.Members	source_attributes: distinct distinct deprecated attributes both retain one actual group	verified
+an_attribute.position/end_position	end guarded EXTRA_SOURCE_POSITIONS_IN_IL	attribute.source_origin_id	Attribute.Source	direct optional retained metadata; location precision not a gate	optional
+an_attribute.is_invalid_namespace	diagnostic cache	excluded	none	il_def3216; attribute.c1111-1120 and2506-2512 avoid repeated diagnostics	diagnostic-excluded
+an_attribute.applied_to_declared_type	frontend-only	excluded	none	il_def3182-3191 explicit frontend-only application tracking	frontend-excluded
+an_attribute.must_be_preserved_in_trans_unit_copy	frontend-only	excluded	none	il_def3192-3201 explicit frontend-only copying tracking	frontend-excluded
+an_attribute.assoc_info	frontend-only	excluded	none	il_def3239; attribute.c3707 holds a_decl_parse_state pointer	frontend-excluded
+an_attribute.pack_expansion_descr	frontend-only allocation	excluded	none	scope_stk.h457; scope_stk.c11505 alloc_fe_of_type(a_pack_expansion_descr)	frontend-excluded
+an_attribute_arg.next	always	attribute_argument_link.ordinal	Attribute.Arguments / AttributeArgument.OwningAttributes	source_attributes: actual shared argument under distinct attribute descriptors	verified
+an_attribute_arg.kind	always	attribute_argument.kind_id	AttributeArgument.Kind	final243 native constant/token; source empty/raw_token/constant/token	verified
+an_attribute_arg.variant.constant	aak_constant	attribute_argument.constant_id	AttributeArgument.Constant	source_attributes: exact target bytes shared declaration argument plus NUL	verified
+an_attribute_arg.variant.token/token_kind	aak_token or aak_raw_token	attribute_argument.token_text_id/token_kind_id	AttributeArgument.TokenText / TokenKind	final243 genuine family counts include token/raw_token; public scalar sweep	mapped-awaiting-positive-navigation
+an_attribute_arg.variant.type	aak_type	attribute_argument.type_id	AttributeArgument.Type	all four final243 smoke source_attributes: actual alignas(int) aak_type navigation	verified-positive
+an_attribute_arg.variant.expr	aak_expression and not local_expr_ref	attribute_argument.expression_id	AttributeArgument.Expression	all four final243 smoke source_attributes: actual GNU malloc routine ReferenceOperation metadata and exact index1	verified-positive
+an_attribute_arg.local_expr_ref/variant.sexpr	aak_expression and local_expr_ref	attribute_argument.is_local_expression_reference/scoped_expression_id	AttributeArgument.IsLocalExpressionReference / ScopedExpression	stock expr_node_from_attribute_arg accesses exact expression; no positive retained fixture yet	mapped-awaiting-positive
+an_attribute_arg.is_pack_expansion	always	attribute_argument.is_pack_expansion	AttributeArgument.IsPackExpansion	genuine source/native scalar family sweep; positive expansion pending	scalar-verified
+an_attribute_arg.pack_expansion_descr	frontend-only allocation	excluded	none	scope_stk.h457; scope_stk.c11505 alloc_fe_of_type(a_pack_expansion_descr)	frontend-excluded
+an_attribute_group.position/end_position	end guarded EXTRA_SOURCE_POSITIONS_IN_IL	attribute_group.source_origin_id	AttributeGroup.Source	direct optional retained metadata; one actual group canonical identity tested	optional
+a_data_member_spec.type	always	data_member_spec.type_id	DataMemberSpecification.Type	genuine reflection prospective member matches actual reflected int descriptor	verified
+a_data_member_spec.name	always	data_member_spec.name_id	DataMemberSpecification.Name	genuine reflection unset name remains null	verified
+a_data_member_spec.alignment	always	data_member_spec.requested_alignment decimal text	DataMemberSpecification.RequestedAlignment	genuine reflection unset request is0, no natural-layout substitution	verified
+a_data_member_spec.bit_width	always	data_member_spec.bit_width decimal text	DataMemberSpecification.BitWidth	genuine reflection unset request is0	verified
+a_data_member_spec.no_unique_address	always	data_member_spec.no_unique_address	DataMemberSpecification.NoUniqueAddress	genuine reflection records false, typed property tested	verified
+a_data_member_spec.annotations	always	owner_attribute(actual descriptor,ordinal,attribute_id)	DataMemberSpecification.Annotations	actual unannotated prospective member reports empty list; annotated arm activation pending	mapped-awaiting-positive
+a_object_lifetime lifetime/children/binding/checkpoint	resident retained IL	lifetime + lifetime_child + lifetime_cleanup	Lifetime / FunctionBody.Lifetimes	genuine lowered/source cleanup: actual scopes/blocks/try/local-static/null binding variants; ordered children/checkpoint and real minimal destructor recipes	verified-positive
+a_dynamic_init lifetime_of_init_expr/lifetime_of_overlapping_temps	always	initialization.init_expression_lifetime_id/overlapping_lifetime_id	Initialization.InitExpressionLifetime / OverlappingLifetime	exact recipe structural closure implemented; scalar sweep covers genuine initialization family	mapped
+cleanup table addressing	actual action/type/flags context	cleanup_storage_location.kind_id/offset/flags	CleanupStorageLocation.Kind/Offset/IsIndirect/UsesThisParameterOffset	final243 smoke lowered native/cfront/exported: thrown offsets0/8 versus no-object void() release; direct-variable/receiver array locations	verified-positive
+array cleanup raw handle and contextual ABI count	actual using action	cleanup_array.handle_constant_id + cleanup_action.abi_detail_id + cleanup_abi_detail.vla_count_location_id	CleanupArray.HandleConstant/StorageLocations/CountLocations	final243 smoke lowered profiles: raw handles static2/dynamic-1; actual VLA count using-action reverse and unique getter	verified-positive
+EH action unordered flag	not retained in table	cleanup_action.is_unordered nullable	CleanupAction.IsUnordered	all actions in final243 lowered cleanup smokes expose null; actual Initialization.IsUnordered remains separate	verified-availability
+a_variable.initializer.binding/dynamic	actual initialization.kind discriminator	variable_symbol.bound_expression_id/initializer_id + actual structural_child	VariableSymbol.BoundExpression/Initializer and FunctionBody.DescendantOperations	final75 PASS750: ordinary initk_binding aliases retain metadata; tuple initk_dynamic recipes execute get<0>/get<1> once each with distinct routine identities and exact specialization constants	verified-positive

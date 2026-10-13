@@ -161,7 +161,41 @@ public sealed class FunctionBody
     public SemanticNode Root { get; }
     public Scope? Scope { get; }
     public IReadOnlyList<VariableSymbol> Locals => Function.Object.List("WITH RECURSIVE nested(id) AS (SELECT id FROM scope WHERE id=$owner UNION ALL SELECT s.id FROM scope s JOIN nested p ON s.parent_id=p.id JOIN kind k ON k.id=s.kind_id WHERE k.name NOT IN ('function','class','prototype','template','namespace','file','sck_function','sck_class_struct_union','sck_class_reactivation','sck_func_prototype','sck_template_declaration','sck_template_instantiation','sck_instantiation_context','sck_file','sck_namespace','sck_namespace_extension','sck_namespace_reactivation','sck_module_decl_import','sck_module_isolated')) SELECT DISTINCT v.* FROM nested n JOIN scope_member m ON m.owner_id=n.id JOIN variable_symbol v ON v.id=m.member_id WHERE v.is_parameter=0 ORDER BY v.id",Scope?.Id??0,r=>Function.Object.Variable(r.Long("id")),"variable_symbol");
-    public IReadOnlyList<Lifetime> Lifetimes => Function.Object.List("SELECT * FROM lifetime WHERE owner_id=$owner ORDER BY id",Function.Id,r=>Function.Object.Lifetime(r.Long("id")),"lifetime");
+    private const string LifetimesQuery = """
+        WITH RECURSIVE own_scope(id) AS (
+          SELECT body_scope_id FROM routine_symbol WHERE id=$owner AND body_scope_id IS NOT NULL
+          UNION SELECT s.id FROM scope s JOIN own_scope p ON s.parent_id=p.id JOIN kind k ON k.id=s.kind_id
+          WHERE k.name NOT IN ('function','class','prototype','template','namespace','file','sck_function','sck_class_struct_union','sck_class_reactivation','sck_func_prototype','sck_template_declaration','sck_template_instantiation','sck_instantiation_context','sck_file','sck_namespace','sck_namespace_extension','sck_namespace_reactivation','sck_module_decl_import','sck_module_isolated')
+        ), node_root(id) AS (
+          SELECT body_root_id FROM routine_symbol WHERE id=$owner AND body_root_id IS NOT NULL
+          UNION SELECT s.initialization_id FROM scope_initialization s JOIN own_scope r ON r.id=s.owner_id
+          UNION SELECT i.initialization_id FROM local_static_initialization i JOIN scope_local_static_initialization s ON s.initialization_id=i.id JOIN own_scope r ON r.id=s.owner_id WHERE i.initialization_id IS NOT NULL
+          UNION SELECT i.initialization_id FROM constructor_initializer i JOIN scope_constructor_initializer s ON s.initializer_id=i.id JOIN own_scope r ON r.id=s.owner_id WHERE i.initialization_id IS NOT NULL
+          UNION SELECT f.default_initialization_id FROM constructor_initializer i JOIN field_symbol f ON f.id=i.field_id JOIN scope_constructor_initializer s ON s.initializer_id=i.id JOIN own_scope r ON r.id=s.owner_id WHERE i.uses_field_initializer=1 AND f.default_initialization_id IS NOT NULL
+        ), lifetime_root(id) AS (
+          SELECT id FROM lifetime WHERE bound_entity_id=$owner
+          UNION SELECT s.lifetime_id FROM scope s JOIN own_scope r ON r.id=s.id
+          UNION SELECT s.function_static_lifetime_id FROM scope s JOIN own_scope r ON r.id=s.id
+          UNION SELECT v.lifetime_id FROM variable_symbol v JOIN scope_member m ON m.member_id=v.id JOIN own_scope r ON r.id=m.owner_id
+          UNION SELECT i.lifetime_id FROM local_static_initialization i JOIN scope_local_static_initialization s ON s.initialization_id=i.id JOIN own_scope r ON r.id=s.owner_id
+        ), reachable(category,id) AS (
+          SELECT 0,id FROM node_root WHERE id IS NOT NULL
+          UNION SELECT 1,id FROM lifetime_root WHERE id IS NOT NULL
+          UNION SELECT 0,c.child_id FROM structural_child c JOIN reachable r ON r.id=c.owner_id WHERE r.category=0
+          UNION SELECT 0,h.parameter_initialization_id FROM handler h JOIN try_handler th ON th.handler_id=h.id JOIN try_statement s ON s.descriptor_id=th.owner_id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND h.parameter_initialization_id IS NOT NULL
+          UNION SELECT 1,s.lifetime_id FROM statement s JOIN reachable r ON r.id=s.id WHERE r.category=0 AND s.lifetime_id IS NOT NULL
+          UNION SELECT 1,b.lifetime_id FROM block_descriptor b JOIN block_statement s ON s.descriptor_id=b.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND b.lifetime_id IS NOT NULL
+          UNION SELECT 1,t.lifetime_id FROM try_descriptor t JOIN try_statement s ON s.descriptor_id=t.id JOIN reachable r ON r.id=s.id WHERE r.category=0 AND t.lifetime_id IS NOT NULL
+          UNION SELECT 1,i.lifetime_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.lifetime_id IS NOT NULL
+          UNION SELECT 1,i.init_expression_lifetime_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.init_expression_lifetime_id IS NOT NULL
+          UNION SELECT 1,i.overlapping_lifetime_id FROM initialization i JOIN reachable r ON r.id=i.id WHERE r.category=0 AND i.overlapping_lifetime_id IS NOT NULL
+          UNION SELECT 1,e.lifetime_id FROM lifetime_expression e JOIN reachable r ON r.id=e.id WHERE r.category=0 AND e.lifetime_id IS NOT NULL
+          UNION SELECT 1,c.child_id FROM lifetime_child c JOIN reachable r ON r.id=c.owner_id WHERE r.category=1
+          UNION SELECT 0,c.initialization_id FROM lifetime_cleanup c JOIN reachable r ON r.id=c.owner_id WHERE r.category=1
+        ) SELECT l.* FROM lifetime l JOIN reachable r ON r.id=l.id AND r.category=1 ORDER BY l.id
+        """;
+    /// <summary>Lifetimes reachable through actual scope, body and destruction-recipe relationships. This does not assign ownership to the function.</summary>
+    public IReadOnlyList<Lifetime> Lifetimes => Function.Object.List(LifetimesQuery,Function.Id,r=>Function.Object.Lifetime(r.Long("id")),"lifetime");
     public ExceptionHandlingInfo ExceptionHandling => new(Function);
     public IEnumerable<Operation> DescendantOperations(CancellationToken cancellationToken=default) => Root.DescendantOperations(cancellationToken);
 }

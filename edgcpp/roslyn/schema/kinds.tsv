@@ -39059,3 +39059,10 @@ id	family	name
 344021	edg_ms_attribute_target	msat_routine
 344022	edg_ms_attribute_target	msat_interfaceimpl
 344023	edg_ms_attribute_target	msat_any
+1081	entity	attribute_argument
+1082	entity	block_descriptor
+1083	entity	try_descriptor
+1084	entity	local_static_initialization
+1085	entity	constructor_initializer
+1086	entity	data_member_spec
+19006	storage_location_kind	thrown_object_relative

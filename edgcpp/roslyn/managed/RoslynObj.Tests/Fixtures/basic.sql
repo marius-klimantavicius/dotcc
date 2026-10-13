@@ -19,6 +19,7 @@ INSERT INTO entity(id,kind_id) SELECT value, k.id FROM
   UNION ALL SELECT 56,'cleanup_abi' UNION ALL SELECT 60,'expression' UNION ALL SELECT 61,'statement'
   UNION ALL SELECT 70,'macro_definition' UNION ALL SELECT 71,'macro_invocation' UNION ALL SELECT 72,'source_position'
   UNION ALL SELECT 73,'source_origin' UNION ALL SELECT 74,'source_file' UNION ALL SELECT 80,'lifetime'
+  UNION ALL SELECT 81,'block_descriptor' UNION ALL SELECT 82,'constant' UNION ALL SELECT 83,'constant_value' UNION ALL SELECT 84,'type'
   UNION ALL SELECT 90,'template' UNION ALL SELECT 91,'template_argument' UNION ALL SELECT 92,'template_instance'
   UNION ALL SELECT 93,'template_parameter' UNION ALL SELECT 94,'name' UNION ALL SELECT 95,'template_symbol' UNION ALL SELECT 96,'include_occurrence'
   UNION ALL SELECT 100,'constant_value' UNION ALL SELECT 101,'constant' UNION ALL SELECT 102,'type'
@@ -79,7 +80,8 @@ INSERT INTO statement(id,kind_id,expression_id,parent_id) SELECT a.id,k.id,expr,
  (SELECT 10 id,'stmk_block' n,NULL expr,NULL parent UNION ALL SELECT 14,'stmk_expr',11,10
  UNION ALL SELECT 15,'stmk_return',13,10 UNION ALL SELECT 61,'stmk_expr',60,10) a
  JOIN kind k ON k.family='statement' AND k.name=a.n;
-INSERT INTO block_statement(id,scope_id) VALUES(10,9);
+INSERT INTO block_descriptor(id,scope_id,lifetime_id) VALUES(81,9,80);
+INSERT INTO block_statement(id,descriptor_id) VALUES(10,81);
 INSERT INTO block_item VALUES(10,0,14),(10,1,61),(10,2,15);
 INSERT INTO structural_child(owner_id,role_id,ordinal,child_id) SELECT owner,k.id,ordinal,child FROM
  (SELECT 10 owner,'statement' n,0 ordinal,14 child UNION ALL SELECT 10,'statement',1,61 UNION ALL SELECT 10,'statement',2,15
@@ -115,10 +117,15 @@ INSERT INTO function_eh(id,routine_id,prologue_id,initial_state,null_state)
 INSERT INTO cleanup_region(id,function_eh_id,ordinal,condition_id) VALUES(51,50,0,55);
 INSERT INTO cleanup_storage_location(id,kind_id,variable_id,offset)
  VALUES(53,(SELECT id FROM kind WHERE family='storage_location_kind' AND name='direct_variable'),7,'0');
-INSERT INTO cleanup_array(id,function_eh_id,ordinal,storage_id,element_size,element_count) VALUES(54,50,0,53,'16','-1');
+INSERT INTO type(id,kind_id,size,alignment,incomplete) VALUES(84,(SELECT id FROM kind WHERE family='type' AND name='tk_pointer'),'8','8',0);
+INSERT INTO pointer_type(id,pointee_type_id) VALUES(84,3);
+INSERT INTO constant_value(id,kind_id) VALUES(83,(SELECT id FROM kind WHERE family='constant' AND name='ck_address'));
+INSERT INTO address_value(id,base_kind_id,base_entity_id,offset) VALUES(83,(SELECT id FROM kind WHERE family='address_base' AND name='abk_variable'),7,'0');
+INSERT INTO constant(id,type_id,value_id) VALUES(82,84,83);
+INSERT INTO cleanup_array(id,function_eh_id,ordinal,handle_constant_id,element_size,element_count) VALUES(54,50,0,82,'16','-1');
 INSERT INTO cleanup_condition(id,storage_id,kind_id,comparison_value)
  VALUES(55,53,(SELECT id FROM kind WHERE family='condition_kind' AND name='nonzero'),'0');
-INSERT INTO cleanup_abi_detail(id,is_delegating,delegation_argument) VALUES(56,1,'1');
+INSERT INTO cleanup_abi_detail(id,is_delegating,vtt_location_id) VALUES(56,1,53);
 INSERT INTO cleanup_action(id,region_id,ordinal,kind_id,routine_id,storage_id,array_id,abi_detail_id,is_array,is_conditional)
  VALUES(52,51,0,(SELECT id FROM kind WHERE family='cleanup_kind' AND name='destructor'),20,53,54,56,1,1);
 INSERT INTO lowered_eh_operation(id,kind_id,function_eh_id,region_id,state_number)
@@ -134,8 +141,8 @@ INSERT INTO source_origin(id,position_id,kind_id)
 INSERT INTO macro_definition(id,name_id,text_id,kind_id,is_function_like)
  VALUES(70,13,14,(SELECT id FROM kind WHERE family='source_origin_kind' AND name='ordinary'),1);
 INSERT INTO macro_invocation(id,definition_id,position_id,argument_text_id,ordinal) VALUES(71,70,72,15,0);
-INSERT INTO lifetime(id,kind_id,owner_id,scope_id)
- VALUES(80,(SELECT id FROM kind WHERE family='lifetime' AND name='olk_block'),6,9);
+INSERT INTO lifetime(id,kind_id,bound_entity_id)
+ VALUES(80,(SELECT id FROM kind WHERE family='lifetime' AND name='olk_block'),81);
 INSERT INTO symbol(id,kind_id,name_id,type_id)
  VALUES(95,(SELECT id FROM kind WHERE family='entity' AND name='template_symbol'),41,40),
        (93,(SELECT id FROM kind WHERE family='entity' AND name='template_parameter'),94,3);
