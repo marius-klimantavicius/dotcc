@@ -1,32 +1,35 @@
 # Remaining phase 3–4 closure
 
-Current bounded USL/scoped-attribute and expression identity checkpoint: current
-4bb94 contract remains251 tables/39,145 stable kinds. Existing8 paths pass1048
-assertions and fresh4 pass101; self73/build0/generator249/1941/whitespace pass.
-All14 existing compiled stages and pins are reverified (316 stock inputs/tool,
-26 canonical backend files); new strict builds0. No new full211/scale campaign
-is claimed. The preceding final-five PASS4437/211 distinct cohort remains separate.
-Field proof is1440 verified/90 required pending,89 optional captured/15 limits;
-stock-generator inactive79. All2000 rows mapped/dispositioned. All kind labels have
-explicit source/writer/getter/reserved or active-unobserved dispositions; this does
-not certify every owner payload or demand a fixture for every enum value.
+Current bounded list/control and module checkpoint keeps the accepted4bb94
+251-table/39,145-kind contract unchanged. Seven existing objects pass543 and
+three fresh source objects pass84 (10 distinct paths); self73/build0/whitespace
+checks pass. All14 unchanged compiled stages retain316 pinned stock inputs/tool
+and26 canonical backend files; new strict builds0. No full211/scale rerun is claimed.
+The final-five211/PASS4437 and later12-path1048/101 gates remain separate history.
 
-Actual USL throws preserve recorded context-specific ordered base lists, proven
-by raw pointers and public identity; no access recomputation. Scoped assumption
-arguments preserve their canonical wrapper/local-reference expression and enclosing
-routine while raw wrapper expr isNULL and the subtree remains metadata. Existing
-EH state/handler/try/epilogue, lifetime/reuse, capture and asm links pass exact
-public checks. Original const glvalue type survives beside current prvalue/type;
-asm ParentScope/EnclosingRoutine remain their actualNULL rather than body-derived
-facts. Thirty-one owner/utility proof rows close, one dependent-string concat row
-is stock-generator inactive by exact14-profile guard/producer-chain evidence.
+Field proof is1458 verified/70 required pending, with2 mapped_stock_input_unavailable
+partition slots. All2000 rows have explicit mapping/disposition;89 optional captured
+source fields/15 optional limits and79 stock-generator inactive fields remain.
+All kind labels have exact writer/getter/reserved/unobserved dispositions; this is
+not every-owner payload or every-enum runtime activation proof.
 
-Next native lane is stock IFC-backed module5 metadata; then bounded master/deferred,
-variable-template defaults/partials, dependent constant/name/reflection recipes.
-Next managed lane is existing list/control/handler/MS and remaining routine/type
-identities. No confirmed current adapter or factory implementation defect is open;
-missing retained alternatives and exact positive identities remain required. Partial
-EH/core/source restrictions stay unchanged. Full phases3–4/M0–M5 remains active.
+Actual loop initializer/increment, scope VLA/label/vcall ordering, native SEH
+body/filter/cleanup, catch/typeinfo and native named-attribute arguments now pass
+exact identities/edges. Clobber/catch list checks are explicitly singleton only;
+for-init scope remains unactivated. Header-unit name/resolved header versus IFC
+path and import-owned marker attribute are genuine positives. Selected stock IFC
+partition production succeeds but import fails on bare-primary/full-partition name
+mismatch; the producer has no retained current-module root. Preserve partition
+schema/API adapter and describe unavailable selected-stock input validation, not
+universal inactivity or a verified positive. No core/IFC/skip-import workaround.
+
+Next native bounded batch activates variable-template selected partial/default
+arguments and parameter/default-lambda metadata with existing profiles. Next managed
+batch proves existing template/type/base/attribute target relationships. Remaining
+master/deferred, dependent constants/types, capture/foreach, name and reflection/token
+recipes are explicit uncompiled queues. No confirmed missing adapter/factory is open;
+70 required positive/identity obligations and final release proof remain. Source
+positions stay optional. Full phases3–4/M0–M5 stays active without an approval pause.
 
 ## Current implementation and integration
 
@@ -53,7 +56,8 @@ EH/core/source restrictions stay unchanged. Full phases3–4/M0–M5 remains act
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are1440 verified and90 mapped pending-validation fields at this boundary.
+There are1458 verified and70 mapped pending-validation fields at this boundary,
+plus two explicit selected-stock input/retention limitations.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.
 All active adapters reviewed so far exist; residual rows are exact public identity

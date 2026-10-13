@@ -1,0 +1,58 @@
+{
+  "scope": "Pinned EDG producer audit; uncompiled ordinary source recipes, no API semantic evaluation",
+  "baseline": "Current211 exact template_ref/destructor/integer_pack/generic_subscript payloads all0; active producers, not inactivity proof",
+  "observed": "/tmp/roslyn-root-dependent-constant5-observed.json",
+  "recipes": [
+    {
+      "fields": [
+        "a_constant.variant.template_param.variant.template_ref.con",
+        "a_constant.variant.template_param.variant.template_ref.arg_list"
+      ],
+      "producer": [
+        "exprutil.c10035\u201310077 make_unknown_dependent_function_operand wraps unknown function when explicit template args",
+        "lexical.c27665\u201327679 equivalent coalesced template-id route"
+      ],
+      "code": "template<class T> int dependent_template_call(T& object) { return object.template apply<int, 3>(4); }\nstruct ConcreteApply { template<class U, int N> int apply(U value) { return value + N; } };\nint use_apply(ConcreteApply& value) { return dependent_template_call(value); }\n",
+      "profile": "existing source C++20",
+      "check": "retained prototype tpck_template_ref actual dependent child constant + ordered type/int3 arguments; selected instantiation is separate EDG output; null argument list means explicit <> not absent template-id"
+    },
+    {
+      "fields": [
+        "a_constant.variant.template_param.variant.destructor.type"
+      ],
+      "producer": [
+        "lookup.c1026\u20131041 takes actual locator destructor type, unwraps actual proxy type then stores tpck_destructor",
+        "il_def.h5510 nonreal type plus unqualified flag"
+      ],
+      "code": "template<class T> void dependent_destroy(T* pointer) { pointer->~T(); }\nstruct Destroyable { ~Destroyable(); };\nvoid use_destroy(Destroyable* pointer) { dependent_destroy(pointer); }\n",
+      "profile": "existing source C++20",
+      "check": "actual prototype Destructor type equals T placeholder, while instantiated call targets selected concrete destructor; never resolve it in API"
+    },
+    {
+      "fields": [
+        "a_constant.variant.template_param.variant.bound"
+      ],
+      "producer": [
+        "lexical.c21055\u201321102 __integer_pack dependent bound makes tpck_integer_pack argument",
+        "il.c22519\u201322539 exact copied bound during substitution"
+      ],
+      "code": "template<int... Values> struct IntegerValues {};\ntemplate<int N> struct IntegerPackHost { using type = IntegerValues<__integer_pack(N)...>; };\nIntegerPackHost<3>::type integer_values;\n",
+      "profile": "existing source GNU mode/version supporting stock __integer_pack",
+      "check": "prototype integer-pack bound constant canonical N parameter; compare actual instantiated0/1/2 argument list without generating it in API"
+    },
+    {
+      "fields": [
+        "a_constant.variant.designator.variant.subscript"
+      ],
+      "producer": [
+        "decl_inits.c2140\u20132240 leaves dependent first/last and appends actual ck_designator",
+        "exprutil.c16242\u201316267 generic designator copies first/last ordered constants"
+      ],
+      "code": "template<int N> int dependent_designator() { int values[8] = { [N] = 7 }; return values[N]; }\ntemplate<int First, int Last> int dependent_range_designator() { int values[8] = { [First ... Last] = 9 }; return values[First]; }\n",
+      "profile": "bounded existing source GNU-extension probe; first retain uninstantiated prototypes, stock acceptance decides; no forced unsupported instantiation",
+      "check": "generic designator Subscript rows one bound or ordered first/last constants; constant_components preserve occurrences independent from interned scalar values"
+    }
+  ],
+  "writer": "roslyn_constants.h132\u2013138 direct active union and ordered list traversal",
+  "public_api": "ConstantValue<DependentValueDetails>/ConstantValue<DesignatorValueDetails>; typed details links and ordered DependentTemplateArgumentRows/DesignatorSubscriptRows, canonical occurrence Components. No new IDs exposed or semantic guessing."
+}

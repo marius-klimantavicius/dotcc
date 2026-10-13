@@ -1,0 +1,66 @@
+{
+  "scope": "Read-only pinned EDG audit; recipes uncompiled; no core changes or reconstructed semantics",
+  "baseline": "closure251-final-five, 211 objects; all four exact owner payload counts zero",
+  "fields": [
+    {
+      "fields": [
+        "a_param_type.entities_defined_in_default_arg",
+        "a_class_type_supplement.lambda_parent.routine"
+      ],
+      "stock": [
+        "il_def.h6516\u20136550: default entity list currently closure types",
+        "il_def.h9204\u20139213: routine parent for closure directly in default arg",
+        "expr.c51984\u201352018: default scan appends to actual parameter entity list",
+        "def_arg.c329\u2013351 and scope_stk.c920\u2013961: assigns actual routine parent",
+        "trans_copy.c1333\u20131377: clears parent when routine eliminated; null is legitimate",
+        "lower_il.c9539\u20139552: clears lowered default expression; do not recover"
+      ],
+      "recipe": "struct DefaultLambdaHost { void invoke(int value = [] { return 17; }()); };\nvoid use_default_lambda(DefaultLambdaHost& h) { h.invoke(); }\n",
+      "profiles": [
+        "source first, existing C++20",
+        "native comparison optional"
+      ],
+      "assertions": [
+        "actual parameter entities list identity and order",
+        "actual closure LambdaParent is retained invoke routine when non-null; flags false",
+        "no inverse recovery from lowered call or source text"
+      ]
+    },
+    {
+      "fields": [
+        "a_param_type.attributes"
+      ],
+      "stock": [
+        "attribute.c3717\u20133751: get_attribute_link maps iek_param_type to ptp->attributes",
+        "attribute.c5706\u20135749: maybe_unused accepts parameter, copies to variable later",
+        "attribute.c5215: carries_dependency explicitly applies to parameter except GCC emulation"
+      ],
+      "recipe": "void parameter_attributes([[maybe_unused]] int value);\n",
+      "profiles": [
+        "source existing C++20 declaration-only to avoid variable-owner transfer assumptions"
+      ],
+      "assertions": [
+        "ParameterType.Attributes actual owner rows and canonical attribute identity, not neighboring parameter variable attributes"
+      ],
+      "fallback": "[[carries_dependency]] on parameter in ordinary non-GCC profile only if first recipe does not retain parameter attribute"
+    },
+    {
+      "fields": [
+        "a_param_type.ms_attributes"
+      ],
+      "stock": [
+        "ms_attrib.c636\u2013649 and748\u2013762: in/out msak_misc permitted parameter targets",
+        "ms_attrib.c2914\u20132957: attaches actual attribute.entity to parameter and writes ptp->ms_attributes; not scope list",
+        "actual source capability: RECOGNIZE_MICROSOFT_ATTRIBUTES=1, SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING=0"
+      ],
+      "recipe": "void native_parameter_attributes([in] int value, [out] int* result);\n",
+      "profiles": [
+        "existing native Microsoft runtime flags --target win64 --microsoft --microsoft_version 1930; no CLI/CX or SDK"
+      ],
+      "assertions": [
+        "parameter-specific MicrosoftAttributes, exact in/out names and attribute.Entity identity",
+        "record actual stock accepted target; do not synthesize COM metadata"
+      ]
+    }
+  ]
+}

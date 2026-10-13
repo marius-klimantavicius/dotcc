@@ -1,0 +1,39 @@
+{
+  "scope": "Read-only exact selected-stock producer audit; existing211 payloads0 does not prove inactivity",
+  "fields": [
+    {
+      "field": "a_for_loop.for_init_scope",
+      "status": "active source profile; ordinary lowering relocates scope into containing block",
+      "producer": [
+        "il_def.h15923 C++ declaration init with standard scoping",
+        "statements.c5428\u20135449 records push_for_init_scope result",
+        "statements.c5470\u20135510 ordinary C++ declaration invokes producer if !use_nonstandard_for_init_scope",
+        "lower_il.c19730\u201319764 moves same scope to wrapping block and sets loop fieldNULL"
+      ],
+      "code": "int retained_for_scope(int count) { int sum = 0; for (int index = 0; index < count; ++index) sum += index; return sum; }\n",
+      "profile": "existing source C++20 first; native comparison optional",
+      "check": "source Loop.InitScope exact actual block scope containing declared index; native loop null is expected, actual surrounding Block.Scope is authoritative. Do not recover loop InitScope from nearby scope in API."
+    },
+    {
+      "field": "a_statement.variant.asm_func_body",
+      "status": "active native/source compiled ASM_FUNCTION_ALLOWED=1; distinct asm function syntax",
+      "producer": [
+        "decls.c21465\u201321469 distinguishes asm void f() from asm(...)",
+        "func_def.c47\u2013139 scans opaque body and produces stmk_asm_func_body",
+        "func_def.c1847 routine.scope.assoc_block stores asm statement directly",
+        "lower_il.c20243 supports retained asm body, C generator case9974 emits it"
+      ],
+      "code": "asm void retained_asm_function() {\n  nop\n}\nvoid use_retained_asm_function() { retained_asm_function(); }\n",
+      "profile": "existing source first, native optional; no new build flags, GNU/MS statement asm syntax is not this producer",
+      "check": "function body root actual AssemblyOperation kind stmk_asm_func_body and retained text containing nop; no assembler instruction interpretation, whitespace campaign or guessed token/source positions; native compiler stock decides acceptance"
+    }
+  ],
+  "writers": [
+    "roslyn_execution.h236 init_scope direct pointer",
+    "roslyn_execution.h218 asm text atom"
+  ],
+  "api": [
+    "LoopOperation.InitScope",
+    "AssemblyOperation Text with exact stmk_asm_func_body kind factory"
+  ]
+}

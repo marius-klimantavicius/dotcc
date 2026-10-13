@@ -1,0 +1,98 @@
+{
+  "checkpoint_base": "31e8ca7d8a9f46b4c540a7b4c0f74f12c5d1d29a",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/module_smoke.py",
+      "sha256": "e7d68c7f1d79481ace936ed8f81544601ff287d08bb63e7f270e4d4af6bc6238"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_partition.cpp",
+      "sha256": "7eac9de6ebaf82bc6335feeb998912268b793ea8b4492c9c6099c1aeac1de339"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_primary.cpp",
+      "sha256": "67074a8b80d36a9bb50e5f8ff53ae6fad7041bd9b0a4e944d0e8ab991635d1ec"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_header.hpp",
+      "sha256": "ddf4f26cd85ee203fff4c0594ee8393790db2854c8385fb3e9c69e82ae7f7f3a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_header_consumer.cpp",
+      "sha256": "2cf8fd564f3789bdbf9c205f139de336adaa5a9250a66241f5136c3895a9659f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "ff81de215b30dfca4785d070c4d814893ba4c753b849bed629acf572c42b0498"
+    }
+  ],
+  "candidate_owned_paths": 5,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 3,
+  "unique_objects": 3,
+  "export_profiles": [
+    "source"
+  ],
+  "attempts": 4,
+  "failed_attempts": 1,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/all-profile-results-final.json",
+      "sha256": "84ff2795b19a94d5ab1605ca8b044b5a3dfab1971803df5fb194d37988279459"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/attempt-results.json",
+      "sha256": "90631981234b472521a6e7e7209f602122e69e8935a82f878f0ba19c2e3550b6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/ifc-dependencies.json",
+      "sha256": "b995dd3c80e3458f118caac48e733d2e828af8d221067c7eb6dd7d7a763af5c5"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/validation-summary-final.json",
+      "sha256": "407f268f52a531809e24da342e0ba3b898bd4c3c64d7cf0c34c4eae12574fe94"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/gate-final.log",
+      "sha256": "53ccebf693678bcbca70a7840b4e5c5dcdbf0579e4c40318e0684a73a186f5a5"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/activation-proof.json",
+      "sha256": "b3d8df0f1b176f0aa7fe78efea973a673c13b8f54a1b0016c78d020a1f19dbc1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/partition-limitation.json",
+      "sha256": "37561aece6e7371562aeb8495c705936bcd55a8786d843f425c024bff2963f76"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/field-evidence.tsv",
+      "sha256": "d3669cef1fab998e1cddf01e85fac964561897cf657690a435db0bcdadd64e1f"
+    }
+  ],
+  "public_gate": "managed pending",
+  "actual_positive_fields": [
+    "module.header_unit.name",
+    "module.header_unit.resolved_header",
+    "module_import.attributes"
+  ],
+  "pending_fields": [
+    "module.unit_partition.name",
+    "module.unit_partition.unit"
+  ],
+  "limit": "Actual stock IFC partition producer stores bare primary name; full partition import fails before backend; no bypass or cache patch"
+}

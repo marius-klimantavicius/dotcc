@@ -1,0 +1,91 @@
+{
+  "changed_rows": [
+    [
+      "a_for_loop",
+      "initialization"
+    ],
+    [
+      "a_for_loop",
+      "increment"
+    ],
+    [
+      "an_asm_operand",
+      "next"
+    ],
+    [
+      "a_named_register_list",
+      "next"
+    ],
+    [
+      "a_named_register_list",
+      "reg"
+    ],
+    [
+      "a_label",
+      "next"
+    ],
+    [
+      "a_vla_dimension",
+      "next"
+    ],
+    [
+      "a_handler",
+      "next"
+    ],
+    [
+      "a_handler",
+      "typeinfo_var"
+    ],
+    [
+      "a_microsoft_try_supplement",
+      "guarded_statement"
+    ],
+    [
+      "a_microsoft_try_supplement",
+      "except_expr"
+    ],
+    [
+      "a_microsoft_try_supplement",
+      "cleanup_statement"
+    ],
+    [
+      "an_ms_attribute_arg",
+      "next"
+    ],
+    [
+      "an_ms_attribute_arg",
+      "param_name"
+    ],
+    [
+      "a_vcall_offset_entry",
+      "next"
+    ],
+    [
+      "a_module",
+      "variant.header_unit.name"
+    ],
+    [
+      "a_module",
+      "variant.header_unit.resolved_header"
+    ],
+    [
+      "a_module_import_decl",
+      "attributes"
+    ]
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1458,
+    "inactive_stock_generator": 79,
+    "mapped_pending_validation": 70,
+    "excluded_frontend_only": 59,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "policy": "18 positive bounded field/list proofs. Singleton projections explicitly do not claim successor plural activation. For-init scope remains pending; two module partition slots retain independent selected-stock input-unavailable disposition."
+}

@@ -1,0 +1,53 @@
+{
+  "scope": "Read-only pinned EDG; new recipes uncompiled; no CLI/CX, no FE-only pending-capture graph",
+  "recipes": [
+    {
+      "fields": [
+        "a_lambda_capture.captured.init_capture_field",
+        "a_lambda_capture.capture_info.source_closure_field"
+      ],
+      "producer": [
+        "class_decl.c2497\u20132513 marks indirect init capture and stores actual outer field",
+        "class_decl.c2353\u20132386 field_for_lambda_capture resolves pending outer capture to actual source_closure_field; backend must only read completed union, not call helper"
+      ],
+      "code": "int nested_init_capture(int seed) { auto outer = [value = seed] { auto inner = [value] { return value; }; return inner(); }; return outer(); }\nint nested_variable_capture(int seed) { auto outer = [seed] { auto inner = [seed] { return seed; }; return inner(); }; return outer(); }\n",
+      "profile": "source C++20 existing; actual init-capture metadata vs lowered constructor effects remain distinct",
+      "checks": [
+        "inner indirect init capture points to actual outer init capture field",
+        "ordinary nested capture retains actual source closure field rather than original variable alone",
+        "ClosureField is destination and SourceClosureField is source; never merge them or read pending FE pointer"
+      ],
+      "writer": "roslyn_expressions_extra.h40\u201361 existing union tags/field_pending guard"
+    },
+    {
+      "fields": [
+        "a_for_each_loop.iterator.prev_decl.field"
+      ],
+      "producer": [
+        "expr.c50935\u201351006 accepts sk_field of current class and stores actual field pointer, variable arm null",
+        "il_def.h16112\u201316153 previous variable/field exactly one"
+      ],
+      "code": "struct NativeFieldIterator { int current; int sum(int (&values)[3]) { int total = 0; for each (current in values) total += current; return total; } };\nint use_field_iterator(int (&values)[3]) { NativeFieldIterator object{}; return object.sum(values); }\n",
+      "profile": "existing source Microsoft flags like native_microsoft fixture; native C++ field and array, no SDK",
+      "checks": [
+        "UsesPreviousDeclarationIterator true, PreviousField exact current field, variable arm absent",
+        "actual assignment/test/increment/body relations only; no independently synthesized loop"
+      ],
+      "writer": "roslyn_execution.h246 direct PreviousField"
+    }
+  ],
+  "observed": {
+    "indirect_capture_field": {
+      "total": 0,
+      "positive": []
+    },
+    "source_closure_field": {
+      "total": 0,
+      "positive": []
+    },
+    "foreach_previous_field": {
+      "total": 0,
+      "positive": []
+    }
+  }
+}

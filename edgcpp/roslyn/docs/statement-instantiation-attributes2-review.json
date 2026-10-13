@@ -1,0 +1,22 @@
+{
+  "scope": "Read-only existing statement-positive plus tiny uncompiled explicit-instantiation recipe",
+  "fields": [
+    {
+      "field": "a_statement.attributes",
+      "status": "Existing fresh positive requires only exact public owner test, no compiler work",
+      "producer": "statements.c1762 attaches prefix attributes to iek_statement; roslyn_execution.h196 actual statement owner list",
+      "actual": "root251/throw-scoped-attribute/source/scoped_assume statement384 stmk_empty -> attribute389 assume; independent RO query",
+      "existing_test": "ExpressionIdentityProjection152+ verifies scoped argument/expression but not statement owner",
+      "hint": "actual assume Attribute.Owners must contain same StatementOperation whose Attributes contains canonical attribute; distinguish attribute metadata condition from evaluated statement child"
+    },
+    {
+      "field": "an_instantiation_directive.attributes",
+      "status": "active source-sequence producer; uncompiled recipe",
+      "producer": "templates.c42612\u201342644 copies prefix/id/tag attribute lists to directive then source sequence entry",
+      "writer": "roslyn_source_sequences.h108\u2013116 actual directive Attributes",
+      "code": "template<class T> struct AttributedInstantiation { T value; };\ntemplate struct __attribute__((visibility(\"default\"))) AttributedInstantiation<int>;\n",
+      "profile": "existing source C++20 GNU mode; no lexical/profile change",
+      "check": "actual directive owns explicitly written visibility attribute and string argument; do not substitute originating-template/instantiated-type attributes or require copied descriptors to share identity"
+    }
+  ]
+}

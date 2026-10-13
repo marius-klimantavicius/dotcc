@@ -1,0 +1,95 @@
+{
+  "hashes": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/module_smoke.py",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_partition.cpp",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_primary.cpp",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_header.hpp",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/module_header_consumer.cpp",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/all-profile-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/attempt-results.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/ifc-dependencies.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/backend-hashes-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/stage-verification-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/validation-summary-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/gate-final.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/activation-proof.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/partition-limitation.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/field-evidence.tsv",
+      "matches": true
+    }
+  ],
+  "objects": [
+    {
+      "fixture": "module_partition",
+      "tables": 251,
+      "foreign_key_errors": 0,
+      "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "module_rows": 0,
+      "import_rows": 0
+    },
+    {
+      "fixture": "module_header",
+      "tables": 251,
+      "foreign_key_errors": 0,
+      "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "module_rows": 0,
+      "import_rows": 0
+    },
+    {
+      "fixture": "module_header_consumer",
+      "tables": 251,
+      "foreign_key_errors": 0,
+      "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "module_rows": 1,
+      "import_rows": 1
+    }
+  ],
+  "failed_primary_absent": true
+}

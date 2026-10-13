@@ -1,0 +1,25 @@
+{
+  "scope": "Pinned stock input/retention limitation, not missing exporter feature and not field inactivity",
+  "fields": [
+    "a_module.variant.unit_partition.name",
+    "a_module.variant.unit_partition.unit"
+  ],
+  "proposed_disposition": "mapped_stock_input_unavailable",
+  "evidence": [
+    "Source partition producer succeeds; module_partition.roslynobj has zero module rows",
+    "ifc_modules_write.c278 writes module_name_of; il.c33368 excludes partition from that name",
+    "modules.c577\u2013583 validates import against module_full_name_of; il.c33392 includes colon plus partition",
+    "ifc_modules_read.c2549\u20132581 returns stored module name unchanged",
+    "cmd_line.c11217\u201311233 interface/internal creation chooses flags, not a different stored-name path",
+    "il_def.h183 and19112 retained module roots are associated imported source files and imported_modules",
+    "il.c4057\u20134103 sole non-null assoc_module assignment belongs to imported module source registration",
+    "backend/roslyn_modules.h9 already writes actual partition name and recursively maps actual unit"
+  ],
+  "limits": [
+    "No successful selected-stock-produced partition import reaches backend in current recipe",
+    "Do not infer universal impossibility for external compatible IFC input",
+    "No core patch, IFC alteration, skipped import, front-end cache traversal or source-text reconstruction",
+    "Retain schema/API adapter; describe absence of positive selected-input validation separately from adapter completion"
+  ],
+  "validation_boundary": "Header-unit and import-attribute positive tests independent; optional source coordinates need no further work"
+}

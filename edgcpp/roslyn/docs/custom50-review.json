@@ -45,8 +45,9 @@
         "special"
       ],
       "writer": "roslyn_gen_be.c:267 exact EH action flags128 guard,4 deallocation, routine pointer destructor, else special; exception_object vocabulary has no writer. Actual exception release/freeing facts remain target/storage/initialization flags, not reconstructed category.",
-      "api": "CleanupAction.Kind/Details.Kind; existing exact decoded storage tests and navigation; dedicated Kind scalar getter proof queued in bounded managed next pass.",
-      "getter_pending": true
+      "api": "CleanupAction.Kind/Details.Kind; existing exact decoded storage tests and navigation; dedicated Kind scalar getter proof queued in bounded managed next pass. Final bounded public getter evidence PASS1048 now accepted (46 instance/66 action descriptors); no unobserved tag activation claim.",
+      "getter_initially_pending": true,
+      "getter_currently_validated": true
     },
     "storage_location_kind": {
       "active": [
@@ -82,8 +83,9 @@
         "suppressed"
       ],
       "writer": "roslyn_templates.h:275-315 retained prototype/nonreal/dependent and do_not_instantiate flags with priority dependent then suppressed then concrete; external_definition vocabulary unproduced, exact body/definition flags remain separate.",
-      "api": "TemplateInstantiation.State/Details.State; native values observed, navigation currently excludes SemanticKind; dedicated state getter proof queued in bounded managed next pass.",
-      "getter_pending": true
+      "api": "TemplateInstantiation.State/Details.State; native values observed, navigation currently excludes SemanticKind; dedicated state getter proof queued in bounded managed next pass. Final bounded public getter evidence PASS1048 now accepted (46 instance/66 action descriptors); no unobserved tag activation claim.",
+      "getter_initially_pending": true,
+      "getter_currently_validated": true
     },
     "exception_specification_kind": {
       "active": [
@@ -121,5 +123,13 @@
     "reserved": 10
   },
   "observations": "custom50-observed-finalfive.json",
-  "policy": "Exact current write-site/native FK observation and generated/ordinary getter proof; owner payload and active alternative positives remain separately required. Seven active labels retain explicit pending shared getter proof."
+  "policy": "Exact current write-site/native FK observation and generated/ordinary getter proof; owner payload and active alternative positives remain separately required. Both initially missing shared getter families now have accepted genuine reads.",
+  "getter_proof_update": {
+    "checkpoint": "31e8ca7d8",
+    "evidence": "managed/expression-identity251-evidence.tsv; existing8 PASS1048",
+    "instance_state_descriptors": 46,
+    "cleanup_action_kind_descriptors": 66,
+    "pending_shared_getters": 0,
+    "limit": "Native unobserved/reserved tag activation and owner-field payload obligations remain unchanged."
+  }
 }

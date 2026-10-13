@@ -1,0 +1,50 @@
+{
+  "scope": "Pinned native C++ retained producers; no profile changes/CREATE_LEXICAL_TYPEREFS/FE symbol reads; recipes uncompiled",
+  "observed": {
+    "orig_nested": {
+      "total": 0,
+      "positive": []
+    },
+    "bitwidth": {
+      "total": 0,
+      "positive": []
+    },
+    "typeref_proxy": {
+      "total": 0,
+      "positive": []
+    }
+  },
+  "recipes": [
+    {
+      "field": "a_template_param_type_supplement.orig_nested_type",
+      "producer": [
+        "symbol_tbl.c3652\u20133664 prototype nested type invokes actual creation",
+        "lookup.c1178\u20131220 documented nested B/b example sets orig_nested_type and adds nonreal type to IL under prototype_instantiations_in_il"
+      ],
+      "code": "template<class T> struct NestedHolder { struct Nested { T value; }; Nested nested; };\nNestedHolder<int> nested_holder;\n",
+      "profile": "existing source C++20",
+      "check": "nonreal dependent descriptor actual original nested record pointer, distinct from lexical parent/owning outer class"
+    },
+    {
+      "field": "a_template_param_type_supplement.constraint.bit_width_constant",
+      "producer": [
+        "decl_spec.c8322\u20138328 dependent width branch",
+        "il.c12122\u201312141 tptk_bit_precise_int exact depth/tag and constant"
+      ],
+      "code": "template<int Width> struct DependentBits { _BitInt(Width) signed_value; unsigned _BitInt(Width + 1) unsigned_value; };\nDependentBits<9> dependent_bits;\n",
+      "profile": "existing source C++23 --bit_precise_integers (runtime flag already used accepted native/bit_precise)",
+      "check": "actual dependent bit-width constants plus unsigned bit, Constraint expression arm absent by depth union; instantiated widths9/10 are EDG facts, no API evaluation"
+    },
+    {
+      "field": "a_typeref_type_supplement.proxy_class",
+      "producer": [
+        "lookup.c5282\u20135306 preserves dependent decltype typeref/typedef then requests actual class proxy",
+        "lookup.c651\u2013679 selects typeref.extra_info.proxy_class and sets reciprocal class.proxy_of_type"
+      ],
+      "code": "template<class T> struct TyperefProxyHolder { using Result = decltype(T::make()); typename Result::member value; };\nstruct ProxyResult { using member = int; };\nstruct ProxyProducer { static ProxyResult make(); };\nTyperefProxyHolder<ProxyProducer> typeref_proxy_holder;\n",
+      "profile": "existing source C++20, current typeref retention",
+      "check": "actual TypeReference.Reference.ProxyClass and reciprocal RecordType.ProxyOfType to same typeref; do not substitute other-owner template parameter/namespace proxies"
+    }
+  ],
+  "API_note": "Current typed details expose all3 links. Consider convenient DependentType.OriginalNestedType / BitWidthConstant and TypeReference.ProxyClass when positive tests land: existing parent_type_id/Dependency.ParentType means original nested type, not lexical parent. No schema change needed."
+}

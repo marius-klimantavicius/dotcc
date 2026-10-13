@@ -1,0 +1,53 @@
+{
+  "scope": "Association semantics versus raw lookup hints, no new schema needed without missing retained relation",
+  "fields": [
+    {
+      "field": "a_source_correspondence.has_associated_pragma",
+      "classification": "Normalize meaningful association through pragma.target_id + target_tag_kind_id; do not expose raw flag as exact target-existence equality",
+      "authority": [
+        "il_def.h3386 describes created-and-bound entry and find_assoc_pragma lookup hint",
+        "il.c28388\u201328468 creates actual target pointer and sets bit together",
+        "il.c27040\u201327068 removes pragma target/list entry and clears source flag",
+        "decl_spec.c733\u2013822 rebinds actual targets during C23 canonicalization"
+      ],
+      "destination": "pragma.target_id; entity_source_correspondence; scope_pragma; source_entry reachability",
+      "api": "PragmaDirective.Target / Details.TargetTagKind; TranslationUnit.Pragmas and Scope.Pragmas",
+      "limit": "Do not call FE find_assoc_pragma, infer association from source adjacency, or claim raw copied flag independently reconstructible from final graph"
+    },
+    {
+      "field": "a_source_correspondence.has_associated_attribute",
+      "classification": "Native Microsoft creation/presence hint; actual ms_attribute.target_id is authoritative semantic target",
+      "authority": [
+        "il_def.h3410 definition",
+        "ms_attrib.c2790\u20132821 suppresses target when prototype not retained",
+        "ms_attrib.c2910\u20132957 appends valid descriptors, sets actual entity target when representable, sets source flag after processing"
+      ],
+      "destination": "ms_attribute.target_id; target_tag_kind_id; owner_ms_attribute for distinct physical list membership",
+      "api": "MicrosoftAttribute.Target; scope/parameter MicrosoftAttributes are owner lists, not general inverse target association",
+      "existing_positive": "current211 source/native_attributes UUID targets NativeUuid, while owner_ms_attribute scope membership also contains standalone module attribute",
+      "limit": "Do not equate raw flag with any owner-list row. Flag can outlive processing/copying or an unrecorded prototype; such history is not additional executable/type/lifetime fact."
+    },
+    {
+      "field": "a_pragma.entity",
+      "classification": "Actual target writer exists; current211 all target_id null, positive still pending",
+      "authority": [
+        "pragma.c890\u2013927 converts actual declaration/statement into tagged target",
+        "pragma.c1230\u20131268 next-construct auto-retention calls producer",
+        "roslyn_source_sequences.h194\u2013209 directly stores tagged target"
+      ]
+    }
+  ],
+  "minimal_positive_recipe": {
+    "code": "#pragma test_bind_next_pass declaration\nint bound_declaration;\nint bound_statement(int input) {\n#pragma test_bind_next_pass statement\n  return input + bound_declaration;\n}\n",
+    "kind": "Stock EDG built-in test pragma (not corruption, no manufactured IL, no added extension)",
+    "producer": "pragma.c2101\u20132116 INCLUDE_EDG_TEST_PRAGMAS branch registers pass-through next-construct with both declaration/statement targets and auto-retention; il_def.h6857 spelling",
+    "existing_config": "source build/src/includes/cmake_defines.h187\u2013189 EDG_TEST_VERSION=1; pinned defines.h520\u2013525 Linux test version enables INCLUDE_EDG_TEST_PRAGMAS; verify effective switch in native lane before claiming activation",
+    "profile": "existing source first; uncompiled. No core/build changes or new profile required if existing switch active",
+    "assertions": [
+      "first PragmaDirective.Target exactly bound_declaration variable, second exactly actual return statement",
+      "scope list ownership and target are independent",
+      "test actual semantic target tag/identity; no coordinate requirement"
+    ]
+  },
+  "ordinary_route_caveat": "Unknown pragmas in GENERATE_SOURCE_SEQUENCE_LISTS=1 are next-token, target-null (pragma.c2314\u20132338); printf/scanf/define_type_info next-construct pragmas in current backend are not auto-retained. Do not spend new profile solely to force ordinary unknown pragma target."
+}

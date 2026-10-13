@@ -1,0 +1,106 @@
+{
+  "status": "ready-held",
+  "owned_files": [
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "3d5e4247c9cfa69a8e8221966616762a08cdafcb3fb688f28642336ff96f898b"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/ListControlIdentityProjection.cs",
+      "sha256": "af6a903f4160daac4866eca4fa1a286434cb27a79ac06919a56095d345c525fa"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/list-control251-evidence.tsv",
+      "sha256": "40ed1dce44a91872362de5236c035db79213f0cfc69f1daebbed3931e48d5dc8"
+    }
+  ],
+  "contract": "251 tables/39145 kinds/digest4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559 unchanged",
+  "tests": {
+    "existing7_assertions": 543,
+    "modules3_assertions": 84,
+    "unique_paths": 10,
+    "self": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "diff_and_untracked_whitespace": "passed"
+  },
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-listcontrol251-build.log",
+      "sha256": "1a545bd6dd9c91ae058c005f8ff0999f2806aac58719d927b446dcede93b21e0"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-listcontrol251-existing7.log",
+      "sha256": "959f40a2fb24601345cb48ac97a3d6faa01d984b63580f9e21be73c6a1e353b1"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-listcontrol251-modules3.log",
+      "sha256": "e3ef9903ce0c176bca8b478e46bed05435021c9de6fea3749544c6df267b72ff"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-listcontrol251-self.log",
+      "sha256": "49be4229005d180eef8091da9af9f69e981c4ac98a7dfe0c19d8253740496fcb"
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/upc_affinity.roslynobj",
+      "sha256": "36a53d149ccd7f2c0fec1c589fd05b5bdf39f1ac6f96310878b960758839a2d0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_statements.roslynobj",
+      "sha256": "055a04e1eeacf849f064d87282e4ae271957a566b5e8e79eca8001fa3d1f48e2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_vla.roslynobj",
+      "sha256": "20112e80b1fb5484bdcbd72500d9bce4bb3069a6917e2c20561a4b5476e8dc32"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/cleanup_semantics.roslynobj",
+      "sha256": "e03929917862b396c4b7d025963797f676e8df01b03f738a5ce84d9079097b7f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/native_microsoft.roslynobj",
+      "sha256": "d1bd8896bac9a81fa80ed44ae3c111929ab2ae550d952cea6af4ef3fc0719af0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/native_attributes.roslynobj",
+      "sha256": "175101c3efc9275726944d4eb528b2094e26bdefa83e0060c3d4ee104c41525a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/layout.roslynobj",
+      "sha256": "6e306022c0dcdf9e1b4faf80a2654f578b0b02c508b7a0871fa271e128a2da18"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/source/module_partition.roslynobj",
+      "sha256": "2869568c66e348e238c1484d067aed8b61458a4e9d910d436cfd6039c485b975"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/source/module_header.roslynobj",
+      "sha256": "258daeee23293d95a178de6f92311748d242c16386c67c5a37c6de5dedec2192"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/modules/source/module_header_consumer.roslynobj",
+      "sha256": "5a666fcbd609724d463919ca632d970a0bee062badfd2ed3d87231ac85e70cc4"
+    }
+  ],
+  "proof_tsv": "edgcpp/roslyn/managed/list-control251-evidence.tsv",
+  "proof_rows": 21,
+  "explicit_limits": [
+    "For-init scope is actually null in chosen fixture/current211; remains pending activation.",
+    "Catch and clobber lists are singleton-only: complete owner/ordinal/identity proof, no multi-element successor/order claim.",
+    "Type.next not selected for a new independent expected-order proof; remains separate.",
+    "VLA list is exact memory-scope order, not an inferred rank/evaluation schedule.",
+    "Virtual-call-offset records are exact ordered metadata, not a synthesized flattened virtual table.",
+    "Partition producer has no module/import roots; failed consumer is excluded. Partition name/unit remain pending; header-unit Unit null is a different active arm.",
+    "No new schema, native API/adapters, compiler build, full211 or scale repeat."
+  ],
+  "commands_running": [],
+  "next": "Coordinator commit/release; native module candidate bytes held, root review passed.",
+  "coordinator_evidence_correction": {
+    "path": "edgcpp/roslyn/managed/list-control251-evidence.tsv",
+    "original_ready_sha256": "0617a8d8f142b9e670449688db0293f245c15621958cb9e7a81f6f20baef1409",
+    "current_sha256": "40ed1dce44a91872362de5236c035db79213f0cfc69f1daebbed3931e48d5dc8",
+    "change": "VLA normalized relation column name entity_id corrected to actual member_id; no source/test/object change."
+  }
+}

@@ -1259,3 +1259,40 @@ Remaining module, template/default, reflection/token, dependent constant and oth
 record alternatives are bounded genuine-producer queues. Source-backed recipes are
 explicitly uncompiled until the native lane runs them. Existing pointer/list/control
 proof continues in parallel. Full phases3–4/M0–M5 remains open; no approval pause.
+
+
+### Accepted list/control and header-module identities
+
+Format4bb94/251/39,145 remains unchanged. Existing7 paths pass543 and fresh3
+pass84; self73/build0/whitespace checks pass (10distinct total). Fourteen unchanged
+stages retain316 pinned stock inputs/tool and26 canonical backend bytes; new builds0.
+No full211/scale campaign or code/schema/API changes. Evidence: managed/list-control251-
+evidence.tsv, managed-list-control251-evidence.json, native-modules251-evidence.json,
+list-control251-proof-joins.json, modules3-independent.json and module-partition2-
+stock-limitation.json. Coordinator corrected one evidence-only scope_member column
+name entity_id→actual member_id and recorded the old/new hash; test/source/object
+bytes remain exactly accepted.
+
+Eighteen fields close through exact source/writer/public proof. Loop initialization/
+increment evaluated edges, descriptor/memory-list label/VLA/vcall order, catch/typeinfo,
+MS native SEH and named COM arguments remain separate facts. Clobber/catch lists have
+real singleton context/ordinal proof without claiming plural successors. The actual
+for-init scope remains absent/pending and receives an ordinary C++ source recipe.
+Header consumer retains exact source-header and distinct compiled-IFC paths plus its
+canonical import-owned marker attribute. Neither producer's empty module list creates
+an inferred own-module root. Failed partition import is excluded from success manifests
+and its driver propagates failure honestly.
+
+Current field1458verified/70pending plus2 mapped_stock_input_unavailable. Pinned IFC
+writer stores bare primary module_name_of while importer requires full partition name;
+no normal map/directory/internal-unit route fixes it. Actual partition adapter/schema/API
+stay implemented; external compatible input is unclaimed. No core/cache/IFC mutation or
+skipped import. This is a selected-stock input/retention limitation, not generic field
+inactivity or exporter data loss. Header/import3 positives are independent.
+
+All current kind labels have explicit static writer/typed projection/reserved/unobserved
+status; late custom50 shared getter proof is updated in its artifact. Remaining producer
+recipes include parameter/default-lambda, selected partial/default template arguments,
+dependent constants/types, empty objects, captures/foreach, names, master/deferred and
+reflection/injection tokens. Recipes are uncompiled until native lane validation, never
+assumed evidence. Full phases3–4/M0–M5 remains active. No optional source campaign.

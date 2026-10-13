@@ -1,0 +1,51 @@
+{
+  "scope": "Read-only existing211 and stock producer audit; all new recipes uncompiled",
+  "observed_report": "/tmp/roslyn-root-base-override7-observed.json",
+  "ready": [
+    {
+      "field": "a_vcall_offset_entry.next",
+      "writer": "roslyn_layout.h173 e=e->next with ordinal",
+      "proof": "ClassRelationsProjection22\u201323 exact layout native/exported two-entry order, routine/base identities; baseline16 plural owners"
+    }
+  ],
+  "existing_identity_hints": [
+    {
+      "fields": [
+        "an_overriding_virtual_function.overriding_function",
+        "an_overriding_virtual_function.primary_function"
+      ],
+      "writer": "roslyn_layout.h84 direct actual pointers, canonical routine IDs",
+      "proof_to_strengthen": "native/layout copy override owner1724 LayoutDiamond.copy ->649 LayoutRoot.copy, contextual Root1721; API Owner/Overridden can compare actual canonical function identities. Existing name-only ReturnAdjustment check insufficient for both exact links."
+    }
+  ],
+  "recipes": [
+    {
+      "field": "an_overriding_virtual_function.base_class",
+      "producer": "class_decl.c5427\u20135441 chooses new_direct_bcp or exact corresp_base_class;5523\u20135525 copies pointers",
+      "code": "struct OverrideRoot { virtual int call(); };\nstruct OverrideMiddle : OverrideRoot { int call() override; };\nstruct OverrideLeaf : OverrideMiddle {};\nOverrideLeaf override_leaf;\nint observe_override(OverrideLeaf& p) { return p.call(); }\n",
+      "profile": "source/native existing",
+      "assertion": "Leaf contextual Root override actual OverridingSubobject points to Leaf contextual Middle; never derive this in API"
+    },
+    {
+      "field": "a_base_class.primary_base_class",
+      "producer": "class_decl.c6513 nominal_primary_base translates actual class primary into contextual base; layout.c4936\u20134970 writes if layout target not already allocated",
+      "code": "struct PrimaryRoot { virtual int call(); };\nstruct PrimaryMiddle : PrimaryRoot {};\nstruct PrimaryLeaf : PrimaryMiddle {};\nPrimaryLeaf primary_leaf;\n",
+      "profile": "native IA64",
+      "assertion": "contextual Middle primary may identify contextual Root; distinguish RecordType.PrimaryBaseSubobject"
+    },
+    {
+      "field": "a_base_class.data_section_base_class",
+      "producer": "layout.c4130\u20134176 embeds virtual-base data when outer virtual base is complete subobject; class_decl.c8784+ also writes",
+      "code": "struct EmbeddedRoot { int value; };\nstruct EmbeddedMiddle : virtual EmbeddedRoot { int middle; };\nstruct EmbeddedLeaf : virtual EmbeddedMiddle { int leaf; };\nEmbeddedLeaf embedded_leaf;\n",
+      "profile": "existing usl21/usl30/cfront as supported",
+      "assertion": "actual virtual Root DataSectionBaseSubobject identifies contextual Middle if selected layout embeds it; no ABI recomputation"
+    },
+    {
+      "field": "a_base_class.attributes",
+      "producer": "class_decl.c10511 scans al_base_specifier;10868/10906 attach actual list;attribute.c3752 targets bcp->attributes",
+      "code": "struct AttributedBase {};\nstruct AttributedDerived : [[roslyn_probe::marker]] AttributedBase {};\nAttributedDerived attributed_derived;\n",
+      "profile": "existing source with record_unrecognized_attributes like accepted module header import marker",
+      "assertion": "actual base owner attribute namespace/name and identity; unknown attribute is producer-retained metadata, not invented semantics"
+    }
+  ]
+}
