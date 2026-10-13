@@ -254,9 +254,131 @@ public sealed class RoutineSymbolDetails : SemanticDetail
     public bool IsDefined => Data.Bool("is_defined");
     public bool? HasNoEffect => Data.OptionalBool("has_no_effect");
     public bool? IsIneligible => Data.OptionalBool("is_ineligible");
+    public bool AddressTaken => Data.Bool("address_taken");
+    public bool OverridesBaseMember => Data.Bool("overrides_base_member");
+    public bool IsOverride => Data.Bool("is_override");
+    public bool? IsAbstract => Data.OptionalBool("is_abstract");
+    public bool? IsSealed => Data.OptionalBool("is_sealed");
+    public bool? IsNewMember => Data.OptionalBool("is_new_member");
+    public bool? IsInterfaceSlot => Data.OptionalBool("is_interface_slot");
+    public long? DefinitionCannotBeGenerated => Data.OptionalLong("definition_cannot_be_generated");
+    public bool CovariantReturnVirtualOverride => Data.Bool("covariant_return_virtual_override");
+    public bool IsDeclaredConstexpr => Data.Bool("is_declared_constexpr");
+    public bool IsConstexprIntrinsic => Data.Bool("is_constexpr_intrinsic");
+    public bool IsCalled => Data.Bool("is_called");
+    public bool IsExplicitConstructor => Data.Bool("is_explicit_constructor");
+    public bool IsExplicitConversionFunction => Data.Bool("is_explicit_conversion_function");
+    public bool IsTrivialDefaultConstructor => Data.Bool("is_trivial_default_constructor");
+    public bool IsTrivialCopyFunction => Data.Bool("is_trivial_copy_function");
+    public bool IsTrivialDestructor => Data.Bool("is_trivial_destructor");
+    public bool IsInitializerListCtor => Data.Bool("is_initializer_list_ctor");
+    public bool IsDelegatingCtor => Data.Bool("is_delegating_ctor");
+    public bool IsInheritingCtor => Data.Bool("is_inheriting_ctor");
+    public bool InheritsVirtually => Data.Bool("inherits_virtually");
+    public bool IsDeductionGuideFromInheritingCtor => Data.Bool("is_deduction_guide_from_inheriting_ctor");
+    public bool? AssignmentToThisDone => Data.OptionalBool("assignment_to_this_done");
+    public bool IsTemplateFunction => Data.Bool("is_template_function");
+    public bool IsSpecialized => Data.Bool("is_specialized");
+    public bool SpecializedWithOldSyntax => Data.Bool("specialized_with_old_syntax");
+    public bool IsPrototypeInstantiation => Data.Bool("is_prototype_instantiation");
+    public bool NeverThrows => Data.Bool("never_throws");
+    public bool IsInClassSpecialization => Data.Bool("is_in_class_specialization");
+    public bool ExplicitInstantiation => Data.Bool("explicit_instantiation");
+    public bool ClassExplicitlyInstantiated => Data.Bool("class_explicitly_instantiated");
+    public bool ExplicitDoNotInstantiate => Data.Bool("explicit_do_not_instantiate");
+    public bool HasNodiscardAttribute => Data.Bool("has_nodiscard_attribute");
+    public bool? NeverInline => Data.OptionalBool("never_inline");
+    public bool? IsNaked => Data.OptionalBool("is_naked");
+    public bool? DeclaredOnlyAsFriend => Data.OptionalBool("declared_only_as_friend");
+    public bool? ExplicitExternInline => Data.OptionalBool("explicit_extern_inline");
+    public bool? IsDirectLinkageSpecifierOnNondefDecl => Data.OptionalBool("is_direct_linkage_specifier_on_nondef_decl");
+    public bool? IsInitializationRoutine => Data.OptionalBool("is_initialization_routine");
+    public bool? IsFinalizationRoutine => Data.OptionalBool("is_finalization_routine");
+    public bool? IsWeak => Data.OptionalBool("is_weak");
+    public bool? IsWeakref => Data.OptionalBool("is_weakref");
+    public bool? IsGnuAlias => Data.OptionalBool("is_gnu_alias");
+    public bool? IsIfunc => Data.OptionalBool("is_ifunc");
+    public bool? HasGnuUsedAttribute => Data.OptionalBool("has_gnu_used_attribute");
+    public bool? HasGnuAbiTagAttribute => Data.OptionalBool("has_gnu_abi_tag_attribute");
+    public bool? InGnuAbiTagNamespace => Data.OptionalBool("in_gnu_abi_tag_namespace");
+    public bool? ImplicitAbiTagsAdded => Data.OptionalBool("implicit_abi_tags_added");
+    public bool? AllocatesMemory => Data.OptionalBool("allocates_memory");
+    public bool? NoInstrumentFunction => Data.OptionalBool("no_instrument_function");
+    public bool? NoCheckMemoryUsage => Data.OptionalBool("no_check_memory_usage");
+    public bool? AlwaysInline => Data.OptionalBool("always_inline");
+    public bool? GnuC89Inline => Data.OptionalBool("gnu_c89_inline");
+    public bool? ImplicitAlias => Data.OptionalBool("implicit_alias");
+    public bool? HasInternalLinkageAttribute => Data.OptionalBool("has_internal_linkage_attribute");
+    public bool? CanBeInstantiated => Data.OptionalBool("can_be_instantiated");
+    public bool? DoNotInstantiate => Data.OptionalBool("do_not_instantiate");
+    public bool? InstanceRequired => Data.OptionalBool("instance_required");
+    public bool ContainsTryBlock => Data.Bool("contains_try_block");
+    public bool ContainsLocalClassType => Data.Bool("contains_local_class_type");
+    public bool SupersededExternal => Data.Bool("superseded_external");
+    public bool IsDefinedInFriendDecl => Data.Bool("is_defined_in_friend_decl");
+    public bool IsDefinedOutsideOfParent => Data.Bool("is_defined_outside_of_parent");
+    public bool? IsInlinable => Data.OptionalBool("is_inlinable");
+    public bool? DefinitionNeeded => Data.OptionalBool("definition_needed");
+    public bool ExplTemplateArgListUsed => Data.Bool("expl_template_arg_list_used");
+    public bool? DefinitionHasDirectLinkageSpecifier => Data.OptionalBool("definition_has_direct_linkage_specifier");
+    public bool DefinitionForInliningOnly => Data.Bool("definition_for_inlining_only");
+    public bool? InlineInstanceRequired => Data.OptionalBool("inline_instance_required");
+    public bool SuppressInlineBody => Data.Bool("suppress_inline_body");
+    public bool NeedOutOfLineCopy => Data.Bool("need_out_of_line_copy");
+    public bool ContainsStatementExpression => Data.Bool("contains_statement_expression");
+    public bool? InlineInClassDefinition => Data.OptionalBool("inline_in_class_definition");
+    public bool? IsUseComdat => Data.OptionalBool("is_use_comdat");
+    public bool? IsAliasEntry => Data.OptionalBool("is_alias_entry");
+    public bool? StaticsHaveBeenPromoted => Data.OptionalBool("statics_have_been_promoted");
+    public bool IsLambdaBody => Data.Bool("is_lambda_body");
+    public bool DeclaredUsingTypeWithoutLinkage => Data.Bool("declared_using_type_without_linkage");
+    public bool ContainsLocalStaticVariable => Data.Bool("contains_local_static_variable");
+    public bool? IsEmbedsSourceEntries => Data.OptionalBool("is_embeds_source_entries");
+    public bool IsRawLiteralOperator => Data.Bool("is_raw_literal_operator");
+    public bool? HasCtorPriority => Data.OptionalBool("has_ctor_priority");
+    public bool? HasDtorPriority => Data.OptionalBool("has_dtor_priority");
+    public bool HasDeducibleReturnType => Data.Bool("has_deducible_return_type");
+    public bool HasDeducedReturnType => Data.Bool("has_deduced_return_type");
+    public bool ContainsGenericLambda => Data.Bool("contains_generic_lambda");
+    public bool IsCoroutine => Data.Bool("is_coroutine");
+    public bool FriendDefinedInInstantiation => Data.Bool("friend_defined_in_instantiation");
+    public bool HasPassObjectSizeAttr => Data.Bool("has_pass_object_size_attr");
+    public bool FromInjectedTokens => Data.Bool("from_injected_tokens");
+    public bool? IsPureFunction => Data.OptionalBool("is_pure_function");
+    public SemanticKind? DeclaredStorageClass => Object.Link(Data.OptionalLong("declared_storage_class_id"), value => Object.Kind(value));
+    public CppType? DeclaredType => Object.Link(Data.OptionalLong("declared_type_id"), value => Object.Type(value));
+    public SemanticKind? OperatorName => Object.Link(Data.OptionalLong("operator_name_id"), value => Object.Kind(value));
+    public FunctionSymbol? LambdaCallOperator => Object.Link(Data.OptionalLong("lambda_call_operator_id"), value => Object.Function(value));
+    public TemplateDescriptor? DeductionGuideTemplate => Object.Link(Data.OptionalLong("deduction_guide_template_id"), value => Object.Template(value));
+    public BigInteger? VirtualFunctionNumber => Number(Data.OptionalText("virtual_function_number"));
+    public long? ConstexprIntrinsic => Data.OptionalLong("constexpr_intrinsic");
+    public RequiresClause? TrailingRequiresClause => Object.Link(Data.OptionalLong("trailing_requires_clause_id"), value => Object.RequiresClause(value));
+    public FunctionSymbol? InheritedRoutine => Object.Link(Data.OptionalLong("inherited_routine_id"), value => Object.Function(value));
+    public UsingDeclarationDetails? GeneratingUsing => Object.Link(Data.OptionalLong("generating_using_id"), value => Object.Detail("using_declaration", value, r => new UsingDeclarationDetails(Object, r)));
+    public FunctionSymbol? OverridingFunction => Object.Link(Data.OptionalLong("overriding_function_id"), value => Object.Function(value));
+    public FunctionSymbol? OverriddenFunction => Object.Link(Data.OptionalLong("overridden_function_id"), value => Object.Function(value));
+    public BigInteger? ThisAdjustment => Number(Data.OptionalText("this_adjustment"));
+    public BigInteger? VcallIndex => Number(Data.OptionalText("vcall_index"));
+    public BigInteger? ReturnAdjustment => Number(Data.OptionalText("return_adjustment"));
+    public BigInteger? VbaseIndex => Number(Data.OptionalText("vbase_index"));
+    public SemanticKind? CtorDtorKind => Object.Link(Data.OptionalLong("ctor_dtor_kind_id"), value => Object.Kind(value));
+    public BigInteger? InitializationPriority => Number(Data.OptionalText("initialization_priority"));
+    public SemanticKind? FpContract => Object.Link(Data.OptionalLong("fp_contract_id"), value => Object.Kind(value));
+    public SemanticKind? FenvAccess => Object.Link(Data.OptionalLong("fenv_access_id"), value => Object.Kind(value));
+    public SemanticKind? CxLimitedRange => Object.Link(Data.OptionalLong("cx_limited_range_id"), value => Object.Kind(value));
+    public SemanticKind? FxFullPrecision => Object.Link(Data.OptionalLong("fx_full_precision_id"), value => Object.Kind(value));
+    public SemanticKind? FxFractOverflow => Object.Link(Data.OptionalLong("fx_fract_overflow_id"), value => Object.Kind(value));
+    public SemanticKind? FxAccumOverflow => Object.Link(Data.OptionalLong("fx_accum_overflow_id"), value => Object.Kind(value));
+    public long? UpcAccessMethod => Data.OptionalLong("upc_access_method");
+    public SemanticKind? ElfVisibility => Object.Link(Data.OptionalLong("elf_visibility_id"), value => Object.Kind(value));
+    public SemanticKind? SurroundingNameLinkage => Object.Link(Data.OptionalLong("surrounding_name_linkage_id"), value => Object.Kind(value));
+    public bool? DefinitionCNameLinkageSpecified => Data.OptionalBool("definition_c_name_linkage_specified");
+    public GnuRoutineSupplement? GnuSupplement => Object.Link(Data.OptionalLong("gnu_supplement_id"), value => Object.GnuRoutineSupplement(value));
     public IReadOnlyList<RoutineParameterDetails> RoutineParameterRows => Object.List("SELECT * FROM routine_parameter WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new RoutineParameterDetails(Object, r));
     public IReadOnlyList<OverrideRelationDetails> OverrideRelationRows => Object.List("SELECT * FROM override_relation WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new OverrideRelationDetails(Object, r));
     public IReadOnlyList<AbiRoutineRelationshipDetails> AbiRoutineRelationshipRows => Object.List("SELECT * FROM abi_routine_relationship WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new AbiRoutineRelationshipDetails(Object, r));
+    public IReadOnlyList<RoutineSelectedOverrideDetails> RoutineSelectedOverrideRows => Object.List("SELECT * FROM routine_selected_override WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RoutineSelectedOverrideDetails(Object, r));
+    public IReadOnlyList<RoutineBefriendingClassDetails> RoutineBefriendingClassRows => Object.List("SELECT * FROM routine_befriending_class WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RoutineBefriendingClassDetails(Object, r));
 }
 
 public sealed class RoutineParameterDetails : SemanticDetail
@@ -387,10 +509,27 @@ public sealed class FieldSymbolDetails : SemanticDetail
     public bool IsMutable => Data.Bool("is_mutable");
     public bool IsBitField => Data.Bool("is_bit_field");
     public bool IsGeneratedBase => Data.Bool("is_generated_base");
-    public bool IsGeneratedVptr => Data.Bool("is_generated_vptr");
+    public bool? IsGeneratedVptr => Data.OptionalBool("is_generated_vptr");
     public Constant? BitSizeConstant => Object.Link(Data.OptionalLong("bit_size_constant_id"), value => Object.Constant(value));
     public ExpressionOperation? BitWidthExpression => Object.Link(Data.OptionalLong("bit_width_expression_id"), value => Object.Expression(value));
     public BigInteger? DeclaredBitSize => Number(Data.OptionalText("declared_bit_size"));
+    public bool IsAnonymousParentObject => Data.Bool("is_anonymous_parent_object");
+    public bool IsInitCapture => Data.Bool("is_init_capture");
+    public bool IsCapturedThis => Data.Bool("is_captured_this");
+    public bool IsCapturedPackElement => Data.Bool("is_captured_pack_element");
+    public bool HasInitializer => Data.Bool("has_initializer");
+    public bool InitIsCtorDependent => Data.Bool("init_is_ctor_dependent");
+    public bool HasDirectBracedInitializer => Data.Bool("has_direct_braced_initializer");
+    public bool HasNonconstantInitializer => Data.Bool("has_nonconstant_initializer");
+    public bool HasNoUniqueAddressAttribute => Data.Bool("has_no_unique_address_attribute");
+    public bool IsOptimizedEmptyClass => Data.Bool("is_optimized_empty_class");
+    public bool BitSizeConstantExprInLocalExprNodeRef => Data.Bool("bit_size_constant_expr_in_local_expr_node_ref");
+    public bool? IsPacked => Data.OptionalBool("is_packed");
+    public long? VlaTreatedAsZeroLengthArray => Data.OptionalLong("vla_treated_as_zero_length_array");
+    public long? ClassSubobjectWithTailPadding => Data.OptionalLong("class_subobject_with_tail_padding");
+    public long? BitFieldIsSigned => Data.OptionalLong("bit_field_is_signed");
+    public BigInteger? ExplicitAlignment => Number(Data.OptionalText("explicit_alignment"));
+    public IReadOnlyList<FieldInitializerEntityDetails> FieldInitializerEntityRows => Object.List("SELECT * FROM field_initializer_entity WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new FieldInitializerEntityDetails(Object, r));
 }
 
 public sealed class FieldPropertyDetails : SemanticDetail
@@ -627,12 +766,64 @@ public sealed class RoutineTypeDetails : SemanticDetail
     public CppType? ThisType => Object.Link(Data.OptionalLong("this_type_id"), value => Object.Type(value));
     public SemanticKind? CallingConvention => Object.Link(Data.OptionalLong("calling_convention_id"), value => Object.Kind(value));
     public SemanticKind? LanguageLinkage => Object.Link(Data.OptionalLong("language_linkage_id"), value => Object.Kind(value));
-    public ExceptionSpecificationDetails? ExceptionSpecification => Object.Link(Data.OptionalLong("exception_specification_id"), value => Object.Detail("exception_specification", value, r => new ExceptionSpecificationDetails(Object, r)));
+    public ExceptionSpecification? ExceptionSpecification => Object.Link(Data.OptionalLong("exception_specification_id"), value => Object.ExceptionSpecification(value));
     public bool IsVariadic => Data.Bool("is_variadic");
     public bool IsConst => Data.Bool("is_const");
     public bool IsVolatile => Data.Bool("is_volatile");
     public SemanticKind? RefQualifier => Object.Link(Data.OptionalLong("ref_qualifier_id"), value => Object.Kind(value));
     public bool HasPrototype => Data.Bool("has_prototype");
+    public bool OldStyleParamsScanned => Data.Bool("old_style_params_scanned");
+    public bool HasTrailingReturnType => Data.Bool("has_trailing_return_type");
+    public bool LintArgsusedFlag => Data.Bool("lint_argsused_flag");
+    public bool ValueReturnedByCctor => Data.Bool("value_returned_by_cctor");
+    public bool? ValueReturnedAsParameter => Data.OptionalBool("value_returned_as_parameter");
+    public bool? ReturnValueParameterFollowsThis => Data.OptionalBool("return_value_parameter_follows_this");
+    public bool AssocRoutineIsCtor => Data.Bool("assoc_routine_is_ctor");
+    public bool AssocRoutineIsDtor => Data.Bool("assoc_routine_is_dtor");
+    public bool AssocRoutineIsLambdaBody => Data.Bool("assoc_routine_is_lambda_body");
+    public bool RoutineNameLinkageIsExplicit => Data.Bool("routine_name_linkage_is_explicit");
+    public bool DoesNotReturn => Data.Bool("does_not_return");
+    public bool HasEnableIfAttribute => Data.Bool("has_enable_if_attribute");
+    public bool? ResultShouldBeUsed => Data.OptionalBool("result_should_be_used");
+    public bool? IsGnuConst => Data.OptionalBool("is_gnu_const");
+    public bool IsVariadicInstance => Data.Bool("is_variadic_instance");
+    public bool? ExplicitCallingConvention => Data.OptionalBool("explicit_calling_convention");
+    public bool HadBeenImplicitlyConst => Data.Bool("had_been_implicitly_const");
+    public bool IsConditionallyExplicit => Data.Bool("is_conditionally_explicit");
+    public bool HasThisParam => Data.Bool("has_this_param");
+    public FunctionSymbol? AssociatedRoutine => Object.Link(Data.OptionalLong("associated_routine_id"), value => Object.Function(value));
+    public Scope? PrototypeScope => Object.Link(Data.OptionalLong("prototype_scope_id"), value => Object.Scope(value));
+    public long LintVarargsCount => Data.Long("lint_varargs_count");
+    public SemanticKind? ArgumentPragma => Object.Link(Data.OptionalLong("argument_pragma_id"), value => Object.Kind(value));
+    public long? FormatArgument => Data.OptionalLong("format_argument");
+    public long? FirstFormatSubstitutionArgument => Data.OptionalLong("first_format_substitution_argument");
+    public long? SentinelPosition => Data.OptionalLong("sentinel_position");
+    public bool IsRestrict => Data.Bool("is_restrict");
+    public bool IsAtomic => Data.Bool("is_atomic");
+    public bool IsNullable => Data.Bool("is_nullable");
+    public bool IsNonnull => Data.Bool("is_nonnull");
+    public bool IsNullUnspecified => Data.Bool("is_null_unspecified");
+    public bool IsUnaligned => Data.Bool("is_unaligned");
+    public bool IsNear => Data.Bool("is_near");
+    public bool IsFar => Data.Bool("is_far");
+    public bool IsShared => Data.Bool("is_shared");
+    public bool IsUpcStrict => Data.Bool("is_upc_strict");
+    public bool IsUpcRelaxed => Data.Bool("is_upc_relaxed");
+    public long? AddressSpace => Data.OptionalLong("address_space");
+    public bool IsThisConst => Data.Bool("is_this_const");
+    public bool IsThisVolatile => Data.Bool("is_this_volatile");
+    public bool IsThisRestrict => Data.Bool("is_this_restrict");
+    public bool IsThisAtomic => Data.Bool("is_this_atomic");
+    public bool IsThisNullable => Data.Bool("is_this_nullable");
+    public bool IsThisNonnull => Data.Bool("is_this_nonnull");
+    public bool IsThisNullUnspecified => Data.Bool("is_this_null_unspecified");
+    public bool IsThisUnaligned => Data.Bool("is_this_unaligned");
+    public bool IsThisNear => Data.Bool("is_this_near");
+    public bool IsThisFar => Data.Bool("is_this_far");
+    public bool IsThisShared => Data.Bool("is_this_shared");
+    public bool IsThisUpcStrict => Data.Bool("is_this_upc_strict");
+    public bool IsThisUpcRelaxed => Data.Bool("is_this_upc_relaxed");
+    public long? ThisAddressSpace => Data.OptionalLong("this_address_space");
     public IReadOnlyList<RoutineTypeParameterDetails> RoutineTypeParameterRows => Object.List("SELECT * FROM routine_type_parameter WHERE owner_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new RoutineTypeParameterDetails(Object, r));
 }
 
@@ -746,6 +937,58 @@ public sealed class RecordTypeDetails : SemanticDetail
     public bool IsInterface => Data.Bool("is_interface");
     public bool IsInterfaceLike => Data.Bool("is_interface_like");
     public bool IsSealed => Data.Bool("is_sealed");
+    public bool? CompilerGenerated => Data.OptionalBool("compiler_generated");
+    public bool? HasSubobjectType => Data.OptionalBool("has_subobject_type");
+    public bool IsGenericLambdaClosureClass => Data.Bool("is_generic_lambda_closure_class");
+    public bool HasLambdaConversionFunction => Data.Bool("has_lambda_conversion_function");
+    public bool IsInitializerList => Data.Bool("is_initializer_list");
+    public bool HasInitializerListCtor => Data.Bool("has_initializer_list_ctor");
+    public bool HasAnonymousUnionMember => Data.Bool("has_anonymous_union_member");
+    public bool DefinedInVariableInitializer => Data.Bool("defined_in_variable_initializer");
+    public bool DefinedInFieldInitializer => Data.Bool("defined_in_field_initializer");
+    public bool NamedInInlineTemplateDirective => Data.Bool("named_in_inline_template_directive");
+    public bool IsVaListTag => Data.Bool("is_va_list_tag");
+    public bool DefinedInParentClass => Data.Bool("defined_in_parent_class");
+    public bool HasNodiscardAttribute => Data.Bool("has_nodiscard_attribute");
+    public bool HasFieldInitializer => Data.Bool("has_field_initializer");
+    public long? ContainsError => Data.OptionalLong("contains_error");
+    public long? ContainsLocalType => Data.OptionalLong("contains_local_type");
+    public long? ContainsUnnamedNamespaceType => Data.OptionalLong("contains_unnamed_namespace_type");
+    public long? DoesNotContainParentlessLambdaInDefaultArgument => Data.OptionalLong("does_not_contain_parentless_lambda_in_default_argument");
+    public long? DoesNotContainDeprecatedOrUnavailableType => Data.OptionalLong("does_not_contain_deprecated_or_unavailable_type");
+    public long? InheritanceKindIsExplicit => Data.OptionalLong("inheritance_kind_is_explicit");
+    public bool? HasCoclassAttribute => Data.OptionalBool("has_coclass_attribute");
+    public bool? HasExplicitlyAlignedSubobject => Data.OptionalBool("has_explicitly_aligned_subobject");
+    public bool? DefinitionNeeded => Data.OptionalBool("definition_needed");
+    public BaseSubobject? PrimaryBaseSubobject => Object.Link(Data.OptionalLong("primary_base_subobject_id"), value => Object.Subobject(value));
+    public BaseSubobject? VirtualFunctionInfoBaseSubobject => Object.Link(Data.OptionalLong("virtual_function_info_base_subobject_id"), value => Object.Subobject(value));
+    public BigInteger? VirtualFunctionInfoOffset => Number(Data.OptionalText("virtual_function_info_offset"));
+    public BigInteger? HighestVirtualFunctionNumber => Number(Data.OptionalText("highest_virtual_function_number"));
+    public BigInteger? NextNegativeVirtualTableIndex => Number(Data.OptionalText("next_negative_virtual_table_index"));
+    public BigInteger? FirstVcallOffsetIndex => Number(Data.OptionalText("first_vcall_offset_index"));
+    public VariableSymbol? VirtualFunctionTableVariable => Object.Link(Data.OptionalLong("virtual_function_table_variable_id"), value => Object.Variable(value));
+    public VariableSymbol? VirtualTableTableVariable => Object.Link(Data.OptionalLong("virtual_table_table_variable_id"), value => Object.Variable(value));
+    public VariableSymbol? UuidVariable => Object.Link(Data.OptionalLong("uuid_variable_id"), value => Object.Variable(value));
+    public string? UuidString => Object.Text(Data.OptionalLong("uuid_string_id"));
+    public SemanticKind? OriginalTagKind => Object.Link(Data.OptionalLong("original_tag_kind_id"), value => Object.Kind(value));
+    public SemanticKind? InheritanceKind => Object.Link(Data.OptionalLong("inheritance_kind_id"), value => Object.Kind(value));
+    public SemanticKind? ElfVisibility => Object.Link(Data.OptionalLong("elf_visibility_id"), value => Object.Kind(value));
+    public SemanticKind? AnonymousUnionKind => Object.Link(Data.OptionalLong("anonymous_union_kind_id"), value => Object.Kind(value));
+    public FieldSymbol? AnonymousUnionField => Object.Link(Data.OptionalLong("anonymous_union_field_id"), value => Object.Field(value));
+    public FunctionSymbol? AllocationRoutine => Object.Link(Data.OptionalLong("allocation_routine_id"), value => Object.Function(value));
+    public FunctionSymbol? DeallocationRoutine => Object.Link(Data.OptionalLong("deallocation_routine_id"), value => Object.Function(value));
+    public long MinimumTemplateArguments => Data.Long("minimum_template_arguments");
+    public SemanticEntity? LambdaParentEntity => Object.Link(Data.OptionalLong("lambda_parent_entity_id"), value => Object.Entity(value));
+    public CppType? ProxyOfType => Object.Link(Data.OptionalLong("proxy_of_type_id"), value => Object.Type(value));
+    public bool? IsNear => Data.OptionalBool("is_near");
+    public bool? IsFar => Data.OptionalBool("is_far");
+    public IReadOnlyList<RecordBasePostorderDetails> RecordBasePostorderRows => Object.List("SELECT * FROM record_base_postorder WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordBasePostorderDetails(Object, r));
+    public IReadOnlyList<RecordBasePreorderDetails> RecordBasePreorderRows => Object.List("SELECT * FROM record_base_preorder WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordBasePreorderDetails(Object, r));
+    public IReadOnlyList<RecordBefriendingClassDetails> RecordBefriendingClassRows => Object.List("SELECT * FROM record_befriending_class WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordBefriendingClassDetails(Object, r));
+    public IReadOnlyList<RecordFriendDetails> RecordFriendRows => Object.List("SELECT * FROM record_friend WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordFriendDetails(Object, r));
+    public IReadOnlyList<RecordPromotedTypeDetails> RecordPromotedTypeRows => Object.List("SELECT * FROM record_promoted_type WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordPromotedTypeDetails(Object, r));
+    public IReadOnlyList<RecordEventInterfaceDetails> RecordEventInterfaceRows => Object.List("SELECT * FROM record_event_interface WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordEventInterfaceDetails(Object, r));
+    public IReadOnlyList<RecordVcallOffsetDetails> RecordVcallOffsetRows => Object.List("SELECT * FROM record_vcall_offset WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordVcallOffsetDetails(Object, r));
 }
 
 public sealed class TypeReferenceDetails : SemanticDetail
@@ -839,7 +1082,7 @@ public sealed class FieldLayoutDetails : SemanticDetail
     public BigInteger? Offset => Number(Data.OptionalText("offset"));
     public BigInteger? BitOffset => Number(Data.OptionalText("bit_offset"));
     public BigInteger? BitWidth => Number(Data.OptionalText("bit_width"));
-    public CppType? ContainerType => Object.Link(Data.OptionalLong("container_type_id"), value => Object.Type(value));
+    public BigInteger? ContainerOffset => Number(Data.OptionalText("container_offset"));
 }
 
 public sealed class DirectBaseDetails : SemanticDetail
@@ -861,13 +1104,30 @@ public sealed class BaseSubobjectDetails : SemanticDetail
     public BigInteger? Offset => Number(Data.OptionalText("offset"));
     public bool IsVirtual => Data.Bool("is_virtual");
     public bool IsDirect => Data.Bool("is_direct");
-    public BaseSubobject? Parent => Object.Link(Data.OptionalLong("parent_id"), value => Object.Subobject(value));
-    public FieldSymbol? BaseField => Object.Link(Data.OptionalLong("base_field_id"), value => Object.Field(value));
+    public bool Ambiguous => Data.Bool("ambiguous");
+    public bool SharesVirtualFunctionInfo => Data.Bool("shares_virtual_function_info");
+    public bool IgnoreDuringDependentLookup => Data.Bool("ignore_during_dependent_lookup");
+    public bool IsOptimizedEmptyBase => Data.Bool("is_optimized_empty_base");
+    public bool IsPackExpansion => Data.Bool("is_pack_expansion");
+    public bool HasPublicDerivation => Data.Bool("has_public_derivation");
+    public bool? CompleteSubobject => Data.OptionalBool("complete_subobject");
+    public CppType? OriginalType => Object.Link(Data.OptionalLong("original_type_id"), value => Object.Type(value));
+    public long DirectBaseNumber => Data.Long("direct_base_number");
+    public BaseSubobject? PrimaryBaseSubobject => Object.Link(Data.OptionalLong("primary_base_subobject_id"), value => Object.Subobject(value));
+    public BaseSubobject? DataSectionBaseSubobject => Object.Link(Data.OptionalLong("data_section_base_subobject_id"), value => Object.Subobject(value));
+    public BigInteger? VirtualBasePointerOffset => Number(Data.OptionalText("virtual_base_pointer_offset"));
+    public BaseSubobject? VirtualBasePointerBaseSubobject => Object.Link(Data.OptionalLong("virtual_base_pointer_base_subobject_id"), value => Object.Subobject(value));
+    public VariableSymbol? VirtualFunctionTableVariable => Object.Link(Data.OptionalLong("virtual_function_table_variable_id"), value => Object.Variable(value));
+    public BigInteger? VirtualFunctionTableIndex => Number(Data.OptionalText("virtual_function_table_index"));
+    public BigInteger? ConstructionTableIndex => Number(Data.OptionalText("construction_table_index"));
+    public BigInteger? ConstructionSubarrayIndex => Number(Data.OptionalText("construction_subarray_index"));
+    public BigInteger? VirtualBaseOffsetIndex => Number(Data.OptionalText("virtual_base_offset_index"));
     public IReadOnlyList<RoutineTypeParameterDetails> RoutineTypeParameterRows => Object.List("SELECT * FROM routine_type_parameter WHERE base_subobject_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new RoutineTypeParameterDetails(Object, r));
     public IReadOnlyList<BaseDerivationDetails> BaseDerivationRows => Object.List("SELECT * FROM base_derivation WHERE base_subobject_id=$owner ORDER BY ordinal,id", Data.Long("id"), r => new BaseDerivationDetails(Object, r), "base_derivation");
     public IReadOnlyList<SubobjectPathDetails> SubobjectPathRows => Object.List("SELECT * FROM subobject_path WHERE base_subobject_id=$owner ORDER BY id", Data.Long("id"), r => new SubobjectPathDetails(Object, r), "subobject_path");
     public IReadOnlyList<InitializationOperandDetails> InitializationOperandRows => Object.List("SELECT * FROM initialization_operand WHERE base_subobject_id=$owner ORDER BY role_id,ordinal", Data.Long("id"), r => new InitializationOperandDetails(Object, r));
     public IReadOnlyList<ConstructorInitializerDetails> ConstructorInitializerRows => Object.List("SELECT * FROM constructor_initializer WHERE base_subobject_id=$owner ORDER BY id", Data.Long("id"), r => new ConstructorInitializerDetails(Object, r), "constructor_initializer");
+    public IReadOnlyList<RecordVcallOffsetDetails> RecordVcallOffsetRows => Object.List("SELECT * FROM record_vcall_offset WHERE base_subobject_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RecordVcallOffsetDetails(Object, r));
 }
 
 public sealed class BaseDerivationDetails : SemanticDetail
@@ -913,6 +1173,7 @@ public sealed class OverrideRelationDetails : SemanticDetail
     public BaseSubobject? ReturnAdjustmentSubobject => Object.Link(Data.OptionalLong("return_adjustment_subobject_id"), value => Object.Subobject(value));
     public BigInteger? Adjustment => Number(Data.OptionalText("adjustment"));
     public BigInteger? ReturnAdjustment => Number(Data.OptionalText("return_adjustment"));
+    public long? BaseOrdinal => Data.OptionalLong("base_ordinal");
 }
 
 public sealed class LoweredTypeRelationshipDetails : SemanticDetail
@@ -2182,13 +2443,14 @@ public sealed class ExceptionSpecificationDetails : SemanticDetail
     public bool? NoexceptEffective => Data.OptionalBool("noexcept_effective");
     public bool IsDependent => Data.Bool("is_dependent");
     public bool IsIndeterminate => Data.Bool("is_indeterminate");
+    public bool CopyFromPrototype => Data.Bool("copy_from_prototype");
     public IReadOnlyList<ExceptionSpecificationTypeDetails> ExceptionSpecificationTypeRows => Object.List("SELECT * FROM exception_specification_type WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new ExceptionSpecificationTypeDetails(Object, r));
 }
 
 public sealed class ExceptionSpecificationTypeDetails : SemanticDetail
 {
     internal ExceptionSpecificationTypeDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public ExceptionSpecificationDetails Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Detail("exception_specification", value, r => new ExceptionSpecificationDetails(Object, r)))!;
+    public ExceptionSpecification Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.ExceptionSpecification(value))!;
     public long Ordinal => Data.Long("ordinal");
     public CppType Type => Object.Link(Data.OptionalLong("type_id"), value => Object.Type(value))!;
     public bool IsRedundant => Data.Bool("is_redundant");
@@ -2361,8 +2623,7 @@ public sealed class TemplateHeaderDetails : SemanticDetail
     public Scope? Scope => Object.Link(Data.OptionalLong("scope_id"), value => Object.Scope(value));
     public SourceInfo? SourceOrigin => Object.Link(Data.OptionalLong("source_origin_id"), value => Object.Source(value));
     public bool IsGeneric => Data.Bool("is_generic");
-    public ExpressionOperation? Constraint => Object.Link(Data.OptionalLong("constraint_id"), value => Object.Expression(value));
-    public SourcePosition? RequiresPosition => Object.Link(Data.OptionalLong("requires_position_id"), value => Object.Position(value));
+    public RequiresClause? RequiresClause => Object.Link(Data.OptionalLong("requires_clause_id"), value => Object.RequiresClause(value));
     public IReadOnlyList<TemplateParameterDetails> TemplateParameterRows => Object.List("SELECT * FROM template_parameter WHERE header_id=$owner ORDER BY depth,ordinal,id", Data.Long("id"), r => new TemplateParameterDetails(Object, r), "template_parameter");
     public IReadOnlyList<TemplateGenericConstraintClauseDetails> TemplateGenericConstraintClauseRows => Object.List("SELECT * FROM template_generic_constraint_clause WHERE header_id=$owner ORDER BY ordinal,id", Data.Long("id"), r => new TemplateGenericConstraintClauseDetails(Object, r), "template_generic_constraint_clause");
 }
@@ -3001,5 +3262,135 @@ public sealed class DataMemberSpecDetails : SemanticDetail
     public BigInteger RequestedAlignment => RequiredNumber(Data.OptionalText("requested_alignment"));
     public BigInteger BitWidth => RequiredNumber(Data.OptionalText("bit_width"));
     public bool NoUniqueAddress => Data.Bool("no_unique_address");
+}
+
+public sealed class RequiresClauseDetails : SemanticDetail
+{
+    internal RequiresClauseDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public ExpressionOperation ConstraintExpression => Object.Link(Data.OptionalLong("constraint_expression_id"), value => Object.Expression(value))!;
+    public SourcePosition? RequiresPosition => Object.Link(Data.OptionalLong("requires_position_id"), value => Object.Position(value));
+}
+
+public sealed class GnuRoutineSupplementDetails : SemanticDetail
+{
+    internal GnuRoutineSupplementDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public string? Section => Object.Text(Data.OptionalLong("section_id"));
+    public string? AssemblyName => Object.Text(Data.OptionalLong("assembly_name_id"));
+    public FunctionSymbol? AliasedRoutine => Object.Link(Data.OptionalLong("aliased_routine_id"), value => Object.Function(value));
+    public FunctionSymbol? InlinePartner => Object.Link(Data.OptionalLong("inline_partner_id"), value => Object.Function(value));
+    public VariableSymbol? ResolverVariable => Object.Link(Data.OptionalLong("resolver_variable_id"), value => Object.Variable(value));
+    public BigInteger? ConstructorPriority => Number(Data.OptionalText("constructor_priority"));
+    public BigInteger? DestructorPriority => Number(Data.OptionalText("destructor_priority"));
+    public bool? IsRepresentative => Data.OptionalBool("is_representative");
+    public bool? IsTargetSpecificVersion => Data.OptionalBool("is_target_specific_version");
+    public bool? ResolverRequired => Data.OptionalBool("resolver_required");
+    public FunctionSymbol? Representative => Object.Link(Data.OptionalLong("representative_id"), value => Object.Function(value));
+    public IReadOnlyList<RoutineMultiversionDetails> RoutineMultiversionRows => Object.List("SELECT * FROM routine_multiversion WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new RoutineMultiversionDetails(Object, r));
+}
+
+public sealed class RoutineSelectedOverrideDetails : SemanticDetail
+{
+    internal RoutineSelectedOverrideDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public FunctionSymbol Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Function(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public SemanticEntity Entity => Object.Link(Data.OptionalLong("entity_id"), value => Object.Entity(value))!;
+}
+
+public sealed class RoutineBefriendingClassDetails : SemanticDetail
+{
+    internal RoutineBefriendingClassDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public FunctionSymbol Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Function(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public CppType Type => Object.Link(Data.OptionalLong("type_id"), value => Object.Type(value))!;
+}
+
+public sealed class RoutineMultiversionDetails : SemanticDetail
+{
+    internal RoutineMultiversionDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public GnuRoutineSupplement Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.GnuRoutineSupplement(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public FunctionSymbol Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value))!;
+}
+
+public sealed class RecordBasePostorderDetails : SemanticDetail
+{
+    internal RecordBasePostorderDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public BaseSubobject Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Subobject(value))!;
+}
+
+public sealed class RecordBasePreorderDetails : SemanticDetail
+{
+    internal RecordBasePreorderDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public BaseSubobject Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Subobject(value))!;
+}
+
+public sealed class RecordBefriendingClassDetails : SemanticDetail
+{
+    internal RecordBefriendingClassDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public CppType Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Type(value))!;
+}
+
+public sealed class RecordFriendDetails : SemanticDetail
+{
+    internal RecordFriendDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public SemanticEntity Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Entity(value))!;
+}
+
+public sealed class RecordPromotedTypeDetails : SemanticDetail
+{
+    internal RecordPromotedTypeDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public CppType Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Type(value))!;
+}
+
+public sealed class FieldInitializerEntityDetails : SemanticDetail
+{
+    internal FieldInitializerEntityDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public FieldSymbol Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Field(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public SemanticEntity Entity => Object.Link(Data.OptionalLong("entity_id"), value => Object.Entity(value))!;
+}
+
+public sealed class OwnerDeclModifierDetails : SemanticDetail
+{
+    internal OwnerDeclModifierDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public SemanticEntity Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.Entity(value))!;
+    public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
+}
+
+public sealed class RoutineTargetArchitectureDetails : SemanticDetail
+{
+    internal RoutineTargetArchitectureDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public GnuRoutineSupplement Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.GnuRoutineSupplement(value))!;
+    public SemanticKind Kind => Object.Kind(Data.Long("kind_id"));
+}
+
+public sealed class RecordEventInterfaceDetails : SemanticDetail
+{
+    internal RecordEventInterfaceDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public CppType Target => Object.Link(Data.OptionalLong("target_id"), value => Object.Type(value))!;
+    public SourceInfo? SourceOrigin => Object.Link(Data.OptionalLong("source_origin_id"), value => Object.Source(value));
+}
+
+public sealed class RecordVcallOffsetDetails : SemanticDetail
+{
+    internal RecordVcallOffsetDetails(RoslynObject owner, Row row) : base(owner, row) { }
+    public RecordType Owner => Object.Link(Data.OptionalLong("owner_id"), value => Object.RecordType(value))!;
+    public long Ordinal => Data.Long("ordinal");
+    public FunctionSymbol? Routine => Object.Link(Data.OptionalLong("routine_id"), value => Object.Function(value));
+    public BaseSubobject? BaseSubobject => Object.Link(Data.OptionalLong("base_subobject_id"), value => Object.Subobject(value));
+    public BigInteger VtableIndex => RequiredNumber(Data.OptionalText("vtable_index"));
+    public bool IsPrimary => Data.Bool("is_primary");
 }
 

@@ -110,7 +110,7 @@ internal static class SemanticProjection
         }
     }
 
-    private static void Sweep<T>(IEnumerable<T> records,string family,Action<bool,string> check) where T : SemanticDetail
+    internal static void Sweep<T>(IEnumerable<T> records,string family,Action<bool,string> check) where T : SemanticDetail
     {
         var properties=typeof(T).GetProperties(BindingFlags.Public|BindingFlags.Instance)
             .Where(p=>IsScalar(Nullable.GetUnderlyingType(p.PropertyType)??p.PropertyType)).ToArray();

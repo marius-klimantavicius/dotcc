@@ -3,6 +3,12 @@
 import argparse, hashlib, json, pathlib, shutil, subprocess
 PIN = '89e67e07c7f6d0fc38622f9778d8e79f40deaa0f'
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+def write_if_changed(path, text):
+    data=text.encode()
+    if not path.is_file() or path.read_bytes()!=data: path.write_bytes(data)
+def copy_if_changed(source, destination):
+    if not destination.is_file() or source.read_bytes()!=destination.read_bytes():
+        shutil.copyfile(source,destination)
 p = argparse.ArgumentParser()
 p.add_argument('--upstream', type=pathlib.Path, default=pathlib.Path('/tmp/roslynobj-edg-upstream-20261012'))
 p.add_argument('--stage', type=pathlib.Path, default=ROOT.parents[0] / 'artifacts/roslynobj/upstream')
@@ -17,8 +23,14 @@ a.stage.mkdir(parents=True, exist_ok=True)
 for rel in ('CMakeLists.txt', 'src', 'cmake', 'util'):
     source = a.upstream / rel
     destination = a.stage / rel
-    if source.is_dir(): shutil.copytree(source, destination, dirs_exist_ok=True)
-    else: shutil.copyfile(source, destination)
+    if source.is_dir():
+        # This single stock file is generated below from the pinned original
+        # plus the independently registered backend. Preserve an identical
+        # existing overlay instead of replacing it and forcing reconfigure.
+        def ignore_registration(directory,names):
+            return ('CMakeLists.txt',) if pathlib.Path(directory)==a.upstream/'src/cmake/cpfe' else ()
+        shutil.copytree(source, destination, dirs_exist_ok=True,ignore=ignore_registration)
+    else: copy_if_changed(source,destination)
 # Pin the stock configuration utility independently of the embedded tree.
 tool_source=ROOT.parents[0] / 'upstream/dev_tools/bin/edg-cmakedef'
 tool_data=tool_source.read_bytes()
@@ -27,23 +39,23 @@ expected_tool=subprocess.check_output(['git','-C',str(a.upstream),'rev-parse',PI
 if tool_blob != expected_tool: raise SystemExit('Stock edg-cmakedef differs from pin')
 tool_destination=a.stage / 'dev_tools/bin/edg-cmakedef'
 tool_destination.parent.mkdir(parents=True,exist_ok=True)
-shutil.copyfile(tool_source,tool_destination)
+copy_if_changed(tool_source,tool_destination)
 tool_destination.chmod(0o755)
 config = a.stage / 'cmake/macro-conf/roslynobj'
 config.mkdir(exist_ok=True)
-(config / 'base.cmakedef').write_text('import <linux-gcc-release/base>\n')
+write_if_changed(config / 'base.cmakedef','import <linux-gcc-release/base>\n')
 for name in ('cpfe-cp', 'cdisp', 'cpprtlib'):
-    (config / (name + '.cmakedef')).write_text(f'import <linux-gcc-release/{name}>\n')
-shutil.copyfile(ROOT / 'build/profiles/cpfe.cmakedef', config / 'cpfe.cmakedef')
+    write_if_changed(config / (name + '.cmakedef'),f'import <linux-gcc-release/{name}>\n')
+profile_text=(ROOT / 'build/profiles/cpfe.cmakedef').read_text()
 if a.profile != 'native':
-    with (config / 'cpfe.cmakedef').open('a') as profile:
-        profile.write('\n' + (ROOT / 'build/profiles' / (a.profile + '.cmakedef')).read_text())
+    profile_text+='\n'+(ROOT / 'build/profiles' / (a.profile + '.cmakedef')).read_text()
+write_if_changed(config / 'cpfe.cmakedef',profile_text)
 for f in (ROOT / 'backend').iterdir():
-    if f.is_file(): shutil.copyfile(f, a.stage / 'src' / f.name)
+    if f.is_file(): copy_if_changed(f, a.stage / 'src' / f.name)
 cmake = a.stage / 'src/cmake/cpfe/CMakeLists.txt'
 original = subprocess.check_output(['git','-C',str(a.upstream),'show',PIN+':src/cmake/cpfe/CMakeLists.txt'], text=True)
 capture_id={'native':2001,'source':2002,'cfront':2003,'exported':2004}[a.profile]
-cmake.write_text(original + '''\n# Independent roslynobj backend; stock source semantics remain unchanged.
+write_if_changed(cmake,original + '''\n# Independent roslynobj backend; stock source semantics remain unchanged.
 find_package(SQLite3 3.37 REQUIRED)
 set_source_files_properties(${PROJECT_SOURCE_DIR}/roslyn_gen_be.c PROPERTIES LANGUAGE CXX)
 add_executable(roslyn-cpfe ${ALL_C_FILES} ${PROJECT_SOURCE_DIR}/roslyn_gen_be.c ${TXT_FILES})

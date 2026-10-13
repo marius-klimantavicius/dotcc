@@ -16,6 +16,7 @@ static void roslyn_qualifier_fields(std::vector<std::pair<const char*,RoslynSqlV
 }
 static Rid roslyn_type(a_type_ptr p) {
  bool fresh;Rid id=DB.claim(p,"type",fresh);if(!fresh)return id;
+ roslyn_register_record_fields(p);
  int kind=roslyn_kind_type(p->kind);if(!kind)DB.fail("Unmapped EDG type kind");
  bool dependent=roslyn_type_is_dependent(p),incomplete=is_incomplete_type(p)!=FALSE;
  a_targ_size_t effective_size=size_of_type(p);a_targ_alignment effective_alignment=alignment_of_type(p);
@@ -40,13 +41,14 @@ static Rid roslyn_type(a_type_ptr p) {
  a_type_ptr effective_type=skip_typerefs(p);
  bool scalable=effective_type->kind==tk_scalable_vector||effective_type->kind==tk_scalable_vector_count||effective_type->kind==tk_riscv_vector;
  bool runtime_size=(effective_type->kind==tk_array&&effective_type->variant.array.is_variable_size_array)||scalable;
+ bool unresolved_record=(effective_type->kind==tk_class||effective_type->kind==tk_struct||effective_type->kind==tk_union)&&(effective_type->variant.class_struct_union.is_prototype_instantiation||effective_type->variant.class_struct_union.is_ms_instantiated_nonreal_class);
  bool no_object_size=effective_type->kind==tk_void||effective_type->kind==tk_routine;
- const char *size_state=dependent?"dependent":incomplete?"absent":runtime_size||no_object_size?"not_applicable":"available";
- const char *alignment_state=dependent?"dependent":incomplete?"absent":no_object_size||scalable?"not_applicable":"available";
+ const char *size_state=dependent||unresolved_record?"dependent":incomplete?"absent":runtime_size||no_object_size?"not_applicable":"available";
+ const char *alignment_state=dependent||unresolved_record?"dependent":incomplete?"absent":no_object_size||scalable?"not_applicable":"available";
  roslyn_fact(id,"size",size_state,dependent?"A placeholder or instantiation-dependent descriptor does not specify a concrete object size.":incomplete?"The retained type is incomplete.":runtime_size?"The effective descriptor has runtime or scalable size; retained dimension facts are available separately.":no_object_size?"The descriptor is not an object type.":nullptr);
  roslyn_fact(id,"alignment",alignment_state,dependent?"A placeholder or instantiation-dependent descriptor does not specify concrete alignment.":incomplete?"The retained type is incomplete.":scalable?"A scalable descriptor does not specify fixed object alignment.":no_object_size?"The descriptor is not an object type.":nullptr);
  bool record=p->kind==tk_class||p->kind==tk_struct||p->kind==tk_union;
- roslyn_fact(id,"layout",!record?"not_applicable":dependent?"dependent":incomplete?"absent":"available",!record?"The descriptor is not a record type.":dependent?"The retained record is instantiation-dependent.":incomplete?"The retained record is incomplete.":nullptr);
+ roslyn_fact(id,"layout",!record?"not_applicable":dependent||unresolved_record?"dependent":incomplete?"absent":"available",!record?"The descriptor is not a record type.":dependent?"The retained record is instantiation-dependent.":incomplete?"The retained record is incomplete.":nullptr);
  switch(p->kind){
  case tk_void:case tk_nullptr:case tk_reflection:break;
  case tk_integer: DB.put("arithmetic_type",{{"id",id},{"arithmetic_kind_id",K("arithmetic_kind",p->variant.integer.bool_type?"boolean":is_signed_integral_type(p)?"signed_integer":"unsigned_integer")},{"bits",static_cast<int>(p->size*targ_char_bit)},{"signed",static_cast<int>(is_signed_integral_type(p))},{"edg_integer_kind_id",roslyn_kind_edg_integer_kind(p->variant.integer.int_kind)},{"precision",is_bit_precise_kind(p->variant.integer.int_kind)&&p->variant.integer.extra_info?RoslynSqlValue(Q(p->variant.integer.extra_info->bit_width)):RoslynSqlValue()},{"explicitly_signed",static_cast<int>(p->variant.integer.explicitly_signed)},{"affiliated_enum_type_id",R(!p->variant.integer.enum_type?roslyn_type(p->variant.integer.enum_info.affiliated_type):0)},{"is_bool",static_cast<int>(p->variant.integer.bool_type)},{"is_wchar",static_cast<int>(p->variant.integer.wchar_t_type)},{"is_char8",static_cast<int>(p->variant.integer.char8_t_type)},{"is_char16",static_cast<int>(p->variant.integer.char16_t_type)},{"is_char32",static_cast<int>(p->variant.integer.char32_t_type)},{"is_microsoft_sized_integer",static_cast<int>(p->variant.integer.microsoft_sized_int_type)}});break;
@@ -67,54 +69,8 @@ static Rid roslyn_type(a_type_ptr p) {
  values.push_back({"is_threads_dimension",static_cast<int>(array.is_threads_dimension)});
 #endif
  roslyn_qualifier_fields(values,static_cast<a_type_qualifier_set>(array.qualifiers));DB.put_fields("array_type",values);break;}
- case tk_routine:{auto x=p->variant.routine.extra_info;Rid convention=0;
-#if MICROSOFT_EXTENSIONS_ALLOWED || GNU_X86_ATTRIBUTES_ALLOWED
- convention=roslyn_kind_edg_calling_convention(x->calling_convention);
-#endif
- DB.put("routine_type",{{"id",id},{"result_type_id",roslyn_type(p->variant.routine.return_type)},{"this_type_id",R(roslyn_type(x->this_class))},{"is_variadic",static_cast<int>(x->has_ellipsis)},{"has_prototype",static_cast<int>(x->prototyped)},{"calling_convention_id",R(convention)},{"language_linkage_id",roslyn_kind_edg_name_linkage(static_cast<a_name_linkage_kind>(x->routine_name_linkage))},{"is_const",static_cast<int>((x->qualifiers&TQ_CONST)!=0)},{"is_volatile",static_cast<int>((x->qualifiers&TQ_VOLATILE)!=0)},{"ref_qualifier_id",roslyn_kind_edg_ref_qualifier(static_cast<a_ref_qualifier_kind>(x->ref_qualifiers))},{"exception_specification_id",R(roslyn_exception_specification(x->exception_specification))}});int n=0;for(a_param_type_ptr a=x->param_type_list;a;a=a->next)DB.put("routine_type_parameter",{{"owner_id",id},{"ordinal",n++},{"parameter_type_id",roslyn_parameter_type(a)},{"role_id",K("role",roslyn_parameter_role(p,a,x->assoc_routine))},{"base_subobject_id",R(roslyn_base(roslyn_parameter_base(p,a,x->assoc_routine)))}});break;}
- case tk_class:case tk_struct:case tk_union:{auto &r=p->variant.class_struct_union;std::vector<std::pair<const char*,RoslynSqlValue>> values={{"id",id},{"scope_id",R(roslyn_scope(r.extra_info->assoc_scope))},{"definition_state_id",K("definition_state",incomplete?"incomplete":"complete")},{"is_abstract",static_cast<int>(r.abstract)},{"is_empty",static_cast<int>(r.is_empty_class)},{"subobject_partner_id",R(LR(r.extra_info,subobject_partner,roslyn_type))},{"instance_id",R(r.extra_info->assoc_template?roslyn_instance(p,id,r.extra_info->assoc_template,r.extra_info->template_arg_list,r.extra_info->partial_spec_template_arg_list):0)}};
- values.push_back({"is_final",static_cast<int>(r.final)});
- values.push_back({"any_const_member",static_cast<int>(r.any_const_member)});
- values.push_back({"any_volatile_member",static_cast<int>(r.any_volatile_member)});
- values.push_back({"any_mutable_member",static_cast<int>(r.any_mutable_member)});
- values.push_back({"any_virtual_base_classes",static_cast<int>(r.any_virtual_base_classes)});
- values.push_back({"any_virtual_functions",static_cast<int>(r.any_virtual_functions)});
- values.push_back({"any_pure_virtual_functions",static_cast<int>(r.any_pure_virtual_functions)});
- values.push_back({"any_virtual_functions_including_bases",static_cast<int>(r.any_virtual_functions_including_in_base_classes)});
- values.push_back({"nested_class_defined_outside_parent",static_cast<int>(r.nested_class_defined_outside_of_parent)});
- values.push_back({"originally_unnamed",static_cast<int>(r.originally_unnamed)});
- values.push_back({"is_nonstandard_anonymous_union",static_cast<int>(r.is_nonstd_anonymous_union_type)});
- values.push_back({"is_template_class",static_cast<int>(r.is_template_class)});
- values.push_back({"is_nonreal_class",static_cast<int>(r.is_nonreal_class)});
- values.push_back({"is_ms_instantiated_nonreal_class",static_cast<int>(r.is_ms_instantiated_nonreal_class)});
- values.push_back({"is_prototype_instantiation",static_cast<int>(r.is_prototype_instantiation)});
- values.push_back({"is_specialized",static_cast<int>(r.is_specialized)});
- values.push_back({"specialized_with_old_syntax",static_cast<int>(r.specialized_with_old_syntax)});
- values.push_back({"is_in_class_specialization",static_cast<int>(r.is_in_class_specialization)});
- values.push_back({"explicitly_instantiated",static_cast<int>(r.explicitly_instantiated)});
- values.push_back({"do_not_instantiate",static_cast<int>(r.do_not_instantiate)});
- values.push_back({"is_proxy_class",static_cast<int>(r.proxy_class)});
- values.push_back({"no_proper_data",static_cast<int>(r.no_proper_data)});
- values.push_back({"has_zero_init_component",static_cast<int>(r.has_zero_init_component)});
- values.push_back({"has_pointer_component",static_cast<int>(r.has_pointer_component)});
- values.push_back({"contains_flexible_array_member",static_cast<int>(r.contains_flexible_array_member)});
- values.push_back({"has_operator_ampersand",static_cast<int>(r.has_operator_ampersand)});
- values.push_back({"copy_assignment_declaration_suppressed",static_cast<int>(r.copy_assignment_decl_suppressed)});
- values.push_back({"copy_constructor_declaration_suppressed",static_cast<int>(r.copy_ctor_decl_suppressed)});
- values.push_back({"default_constructor_declaration_suppressed",static_cast<int>(r.default_ctor_decl_suppressed)});
- values.push_back({"destructor_declaration_suppressed",static_cast<int>(r.dtor_decl_suppressed)});
- values.push_back({"maximum_member_alignment",Q(r.max_member_alignment)});
-#if GNU_EXTENSIONS_ALLOWED
- values.push_back({"is_transparent",static_cast<int>(r.is_transparent)});
- values.push_back({"is_packed",static_cast<int>(r.is_packed)});
- values.push_back({"has_internal_linkage_attribute",static_cast<int>(r.has_internal_linkage_attribute)});
-#endif
-#if MICROSOFT_EXTENSIONS_ALLOWED
- values.push_back({"is_interface",static_cast<int>(r.is_interface)});
- values.push_back({"is_interface_like",static_cast<int>(r.is_interface_like)});
- values.push_back({"is_sealed",static_cast<int>(r.sealed)});
-#endif
- DB.put_fields("record_type",values);roslyn_record_declarations(p,id);Rid layout=DB.fresh("record_layout");DB.put("record_layout",{{"id",layout},{"type_id",id},{"is_complete",static_cast<int>(!incomplete&&!dependent)},{"nonvirtual_size",!incomplete&&!dependent?RoslynSqlValue(Q(r.extra_info->size_without_virtual_base_classes)):RoslynSqlValue()},{"nonvirtual_alignment",!incomplete&&!dependent?RoslynSqlValue(Q(r.extra_info->alignment_without_virtual_base_classes)):RoslynSqlValue()}});int n=0;for(a_field_ptr f=r.field_list;f;f=f->next)DB.put("field_layout",{{"owner_id",layout},{"ordinal",n++},{"field_id",roslyn_field(f,p)},{"offset",!incomplete&&!dependent?RoslynSqlValue(Q(f->offset)):RoslynSqlValue()},{"bit_offset",!incomplete&&!dependent?RoslynSqlValue(Q(f->offset_bit_remainder)):RoslynSqlValue()},{"bit_width",!incomplete&&!dependent?RoslynSqlValue(Q(f->bit_size)):RoslynSqlValue()}});for(a_base_class_ptr b=r.extra_info->base_classes;b;b=b->next)roslyn_base(b);n=0;for(a_base_class_ptr b=r.extra_info->direct_base_classes;b;b=b->next_direct)DB.put("direct_base",{{"owner_id",id},{"ordinal",n++},{"base_type_id",roslyn_type(b->type)},{"access_id",R(b->derivation?roslyn_kind_edg_access(b->derivation->access):0)},{"is_virtual",static_cast<int>(b->is_virtual)},{"subobject_id",roslyn_base(b)}});break;}
+ case tk_routine:roslyn_routine_type(p,id);break;
+ case tk_class:case tk_struct:case tk_union:roslyn_record_type(p,id);break;
  case tk_typeref:{auto &reference=p->variant.typeref;auto supplement=reference.extra_info;std::vector<std::pair<const char*,RoslynSqlValue>> values={{"id",id},{"underlying_type_id",roslyn_type(reference.type)},{"reference_kind_id",roslyn_kind_edg_typeref(reference.kind)},{"decltype_expression_id",R(supplement?roslyn_expr(decltype_arg(p),7002):0)},{"instance_id",R(supplement&&supplement->assoc_template?roslyn_instance(p,id,supplement->assoc_template,supplement->template_arg_list,supplement->orig_template_arg_list):0)}};
  values.push_back({"is_predeclared",static_cast<int>(reference.predeclared)});
  values.push_back({"has_variably_modified_type",static_cast<int>(reference.has_variably_modified_type)});

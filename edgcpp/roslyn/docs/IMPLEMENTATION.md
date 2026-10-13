@@ -483,3 +483,72 @@ Native scale export currently measures 86,523 entities /5.308s versus the prior
 232 ~3.8s; reverse-FK scans and native page-size comparisons remain measured
 follow-up work, not a completed performance gate. Source coordinates remain
 optional under the user priority.
+
+
+## Committed 243 milestone and active 258 contract
+
+Checkpoint `0cae3dd0b` commits the verified 243-table lifetime/cleanup/attribute/
+variable/reflection slice described above. Both implementers remain active on
+the requested GPT-6.1-Sol xhigh model. The shared next contract is frozen at
+258 tables /39,133 stable kinds: 66 append-only additions, zero changed prior
+ID mappings. Actual DDL execution and generated native schema/catalog byte
+synchronization passed; this is contract validation, not semantic acceptance.
+
+Native owns class/base/field/layout adapters and the common declaration-modifier
+helper. Managed owns the disjoint routine/current-signature/GNU-supplement and
+canonical requires-clause adapter plus reader/navigation tests. The native lane
+serializes all compiler/export builds. Field-sized contracts are preserved in
+`schema/layout-field-contract.tsv` and `schema/routine-field-contract.tsv`.
+Both families must produce adapter, public-property and genuine-fixture evidence
+before their ledger rows close. C/GNU/native-MS layout and routine pilot sources
+already parse using accepted243 compilers; the new semantic fields await258
+exports and public assertions.
+
+The current 24-run native page-size benchmark completed on valid basic/scale
+objects with equal table counts and zero FK failures. Scale median writer time
+is5.432/5.397/5.140/5.160s for1/2/4/8KiB;1KiB saves56.6% on tiny basic objects
+and11.3% on scale versus4KiB. Final default selection weighs reader evidence;
+reverse-FK indexing remains a separately measured writer optimization.
+
+
+Fresh source258 now verifies the actual Microsoft ABI runtime decisions after
+stock Win64 suffix overrides: pointer-member sizing and bitfield allocation1,
+container retention1, seven actual container-offset rows, event interface1 and
+UUID1. Overwide declared96/actual32 and dependent NULL widths distinguish raw
+requests from established layout; all11source smokes reopen FK0/1KiB. Other
+three stages are synchronizing final capability writes before the planned final
+89-path native snapshot. Full public assertions/pin gates remain in progress.
+
+
+## Verified258 class/layout and current-signature milestone
+
+Final all4 strict compilers and93 genuine snapshot paths pass at258 tables /
+39,133 stable kinds. Prior39,067 IDs remain unchanged;66 were appended. Native
+objects reopen with zero FK failures, actual1KiB pages, complete expression type
+links and no semantic BLOB/REAL columns. Coordinator independently compares
+all316 materialized stock inputs per stage directly to Gitpin and all24 staged
+backend files to canonical bytes. Native/compiler and reader commands are idle
+for this short checkpoint.
+
+Reader build has zero warnings/errors, valid default self PASS73 and final93
+with composite fixtures PASS1028. Generator/native-write checks validate256
+details /2001 properties and82 literal writes. Positive tests cover exact
+class/base postorder/preorder, base-owned override order, covariant contextual
+subobjects, real vcall/table links, C/generated/dependent layout availability,
+declared96 versus actual32 width and Microsoft offset37/bit1/container1byte.
+Canonical GNU aliases/ifunc/inline partners/multiversion dispatch and exact
+architecture members, callable-versus-written routine type, body availability,
+this/object qualifiers, current ABI parameters and original pack coordinates
+navigate through ordinary properties. Genuine cached and subordinate-prototype
+exception union branches, dynamic lists/empty and noexcept true/false/dependent/
+indeterminate pass in all4. Lambda closure flags and scoped-enum members have
+actual direct write/projection evidence, rather than relying on column defaults.
+
+The field ledger now records398 verified,499 mapped awaiting conditional/public
+closure,80 exact remaining adapter gaps and794 unaudited fields. Full phases
+remain active. Next native family is exact constant occurrences/value arms and
+existing native extension activation; managed owns executable expressions and
+statements in a disjoint header, including genuine source VLA evaluation sites.
+Common namespace/using/label/scope and remaining template/type/profile fields,
+final public format compatibility and M5 measured throughput/storage closure
+remain required. Optional source locations do not block these semantic gates.

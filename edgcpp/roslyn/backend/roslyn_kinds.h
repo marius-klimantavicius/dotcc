@@ -249,6 +249,9 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_access","as_private",307003},
 {"edg_access","as_protected",307002},
 {"edg_access","as_public",307001},
+{"edg_anonymous_union","auk_field",1036982},
+{"edg_anonymous_union","auk_none",1036980},
+{"edg_anonymous_union","auk_variable",1036981},
 {"edg_asm_constraint","aoc_any",318009},
 {"edg_asm_constraint","aoc_cc",318058},
 {"edg_asm_constraint","aoc_end_of_constraint",318002},
@@ -37479,6 +37482,26 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_character","chk_default",313002},
 {"edg_character","chk_last",313007},
 {"edg_character","chk_wchar_t",313003},
+{"edg_ctor_dtor","cdk_complete",1037004},
+{"edg_ctor_dtor","cdk_delegation",1037007},
+{"edg_ctor_dtor","cdk_deleting",1037006},
+{"edg_ctor_dtor","cdk_last",1037008},
+{"edg_ctor_dtor","cdk_none",1037003},
+{"edg_ctor_dtor","cdk_subobject",1037005},
+{"edg_decl_modifier","dmt_dllexport",1036990},
+{"edg_decl_modifier","dmt_dllimport",1036989},
+{"edg_decl_modifier","dmt_forceinline",1036993},
+{"edg_decl_modifier","dmt_global_link_scope",1036999},
+{"edg_decl_modifier","dmt_hidden_link_scope",1037001},
+{"edg_decl_modifier","dmt_last",1037002},
+{"edg_decl_modifier","dmt_microsoft_inline",1036992},
+{"edg_decl_modifier","dmt_noalias",1036996},
+{"edg_decl_modifier","dmt_novtable",1036995},
+{"edg_decl_modifier","dmt_restrict",1036997},
+{"edg_decl_modifier","dmt_safebuffers",1036998},
+{"edg_decl_modifier","dmt_selectany",1036994},
+{"edg_decl_modifier","dmt_symbolic_link_scope",1037000},
+{"edg_decl_modifier","dmt_thread",1036991},
 {"edg_element_position","epk_error",330001},
 {"edg_element_position","epk_last",330004},
 {"edg_element_position","epk_noreturn",330003},
@@ -37631,6 +37654,12 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_il_entry","iek_variable_template_info",316104},
 {"edg_il_entry","iek_vcall_offset_entry",316036},
 {"edg_il_entry","iek_vla_dimension",316035},
+{"edg_inheritance","ihk_incomplete",1036987},
+{"edg_inheritance","ihk_last",1036988},
+{"edg_inheritance","ihk_multiple",1036985},
+{"edg_inheritance","ihk_none",1036983},
+{"edg_inheritance","ihk_single",1036984},
+{"edg_inheritance","ihk_virtual",1036986},
 {"edg_integer_kind","ik_bit_precise",200014},
 {"edg_integer_kind","ik_char",200001},
 {"edg_integer_kind","ik_int",200006},
@@ -37710,6 +37739,40 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_ms_pragma_comment","mpct_linker",337004},
 {"edg_ms_pragma_comment","mpct_user",337005},
 {"edg_ms_pragma_conform","mpck_forScope",338001},
+{"edg_multiversion_arch","mvak_cpu_amdfam10h",1037015},
+{"edg_multiversion_arch","mvak_cpu_atom",1037017},
+{"edg_multiversion_arch","mvak_cpu_bdver1",1037012},
+{"edg_multiversion_arch","mvak_cpu_bdver2",1037013},
+{"edg_multiversion_arch","mvak_cpu_core2",1037016},
+{"edg_multiversion_arch","mvak_cpu_corei7",1037014},
+{"edg_multiversion_arch","mvak_default_target",1037019},
+{"edg_multiversion_arch","mvak_highest_cpu",1037018},
+{"edg_multiversion_arch","mvak_highest_isa",1037041},
+{"edg_multiversion_arch","mvak_invalid",1037009},
+{"edg_multiversion_arch","mvak_isa_aes",1037031},
+{"edg_multiversion_arch","mvak_isa_avx",1037033},
+{"edg_multiversion_arch","mvak_isa_avx2",1037039},
+{"edg_multiversion_arch","mvak_isa_avx512f",1037040},
+{"edg_multiversion_arch","mvak_isa_bmi",1037034},
+{"edg_multiversion_arch","mvak_isa_bmi2",1037038},
+{"edg_multiversion_arch","mvak_isa_fma",1037037},
+{"edg_multiversion_arch","mvak_isa_fma4",1037035},
+{"edg_multiversion_arch","mvak_isa_mmx",1037021},
+{"edg_multiversion_arch","mvak_isa_pclmul",1037032},
+{"edg_multiversion_arch","mvak_isa_popcnt",1037030},
+{"edg_multiversion_arch","mvak_isa_sse",1037022},
+{"edg_multiversion_arch","mvak_isa_sse2",1037023},
+{"edg_multiversion_arch","mvak_isa_sse3",1037024},
+{"edg_multiversion_arch","mvak_isa_sse4",1037026},
+{"edg_multiversion_arch","mvak_isa_sse4_1",1037028},
+{"edg_multiversion_arch","mvak_isa_sse4_2",1037029},
+{"edg_multiversion_arch","mvak_isa_sse4a",1037027},
+{"edg_multiversion_arch","mvak_isa_ssse3",1037025},
+{"edg_multiversion_arch","mvak_isa_xop",1037036},
+{"edg_multiversion_arch","mvak_last",1037042},
+{"edg_multiversion_arch","mvak_lowest_cpu",1037011},
+{"edg_multiversion_arch","mvak_lowest_isa",1037020},
+{"edg_multiversion_arch","mvak_unknown",1037010},
 {"edg_name_linkage","CUSTOM_NAME_LINKAGE_KINDS",305006},
 {"edg_name_linkage","nlk_cplusplus_external",305003},
 {"edg_name_linkage","nlk_external",305004},
@@ -38027,6 +38090,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"entity","field",1008},
 {"entity","function_eh",1043},
 {"entity","generic_constraint_clause",1057},
+{"entity","gnu_routine_supplement",1037044},
 {"entity","handler",1052},
 {"entity","include_occurrence",1027},
 {"entity","initialization",1017},
@@ -38053,6 +38117,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"entity","pragma",1076},
 {"entity","record_declaration",1075},
 {"entity","record_layout",1040},
+{"entity","requires_clause",1037043},
 {"entity","routine",1006},
 {"entity","scope",1003},
 {"entity","scoped_expression",1079},
@@ -38136,6 +38201,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"expression","enk_vla_dealloc",101023},
 {"expression","enk_yield",101029},
 {"fact","alignment",5016},
+{"fact","body",1037045},
 {"fact","declaration_sequence",5008},
 {"fact","layout",5017},
 {"fact","lifetime_details",5013},
@@ -78066,3 +78132,85 @@ case lerk_bit_field_width: return 345007;
 case lerk_constant_expr: return 345008;
 case lerk_scoped_expr: return 345009;
 default: return 0; } }
+static int roslyn_kind_edg_anonymous_union(an_anonymous_union_kind value) { switch(value) {
+case auk_none: return 1036980;
+case auk_variable: return 1036981;
+case auk_field: return 1036982;
+default: return 0; } }
+#if MICROSOFT_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_inheritance(an_inheritance_kind value) { switch(value) {
+case ihk_none: return 1036983;
+case ihk_single: return 1036984;
+case ihk_multiple: return 1036985;
+case ihk_virtual: return 1036986;
+case ihk_incomplete: return 1036987;
+default: return 0; } }
+#endif
+static int roslyn_kind_edg_decl_modifier(a_decl_modifier value) { switch(value) {
+#if MICROSOFT_EXTENSIONS_ALLOWED
+case dmt_dllimport: return 1036989;
+case dmt_dllexport: return 1036990;
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED || THREAD_LOCAL_STORAGE_SPECIFIER_ALLOWED
+case dmt_thread: return 1036991;
+#endif
+#if MICROSOFT_EXTENSIONS_ALLOWED
+case dmt_microsoft_inline: return 1036992;
+case dmt_forceinline: return 1036993;
+case dmt_selectany: return 1036994;
+case dmt_novtable: return 1036995;
+case dmt_noalias: return 1036996;
+case dmt_restrict: return 1036997;
+case dmt_safebuffers: return 1036998;
+#endif
+#if SUN_EXTENSIONS_ALLOWED
+case dmt_global_link_scope: return 1036999;
+case dmt_symbolic_link_scope: return 1037000;
+case dmt_hidden_link_scope: return 1037001;
+#endif
+case dmt_last: return 1037002;
+default: return 0; } }
+static int roslyn_kind_edg_ctor_dtor(a_ctor_or_dtor_kind value) { switch(value) {
+case cdk_none: return 1037003;
+#if IA64_ABI
+case cdk_complete: return 1037004;
+case cdk_subobject: return 1037005;
+case cdk_deleting: return 1037006;
+case cdk_delegation: return 1037007;
+#endif
+case cdk_last: return 1037008;
+default: return 0; } }
+#if USE_X86_FUNCTION_MULTIVERSIONING
+static int roslyn_kind_edg_multiversion_arch(a_multiversion_arch_kind value) { switch(value) {
+case mvak_invalid: return 1037009;
+case mvak_unknown: return 1037010;
+case mvak_cpu_bdver1: return 1037012;
+case mvak_cpu_bdver2: return 1037013;
+case mvak_cpu_corei7: return 1037014;
+case mvak_cpu_amdfam10h: return 1037015;
+case mvak_cpu_core2: return 1037016;
+case mvak_cpu_atom: return 1037017;
+case mvak_default_target: return 1037019;
+case mvak_isa_mmx: return 1037021;
+case mvak_isa_sse: return 1037022;
+case mvak_isa_sse2: return 1037023;
+case mvak_isa_sse3: return 1037024;
+case mvak_isa_ssse3: return 1037025;
+case mvak_isa_sse4: return 1037026;
+case mvak_isa_sse4a: return 1037027;
+case mvak_isa_sse4_1: return 1037028;
+case mvak_isa_sse4_2: return 1037029;
+case mvak_isa_popcnt: return 1037030;
+case mvak_isa_aes: return 1037031;
+case mvak_isa_pclmul: return 1037032;
+case mvak_isa_avx: return 1037033;
+case mvak_isa_bmi: return 1037034;
+case mvak_isa_fma4: return 1037035;
+case mvak_isa_xop: return 1037036;
+case mvak_isa_fma: return 1037037;
+case mvak_isa_bmi2: return 1037038;
+case mvak_isa_avx2: return 1037039;
+case mvak_isa_avx512f: return 1037040;
+case mvak_last: return 1037042;
+default: return 0; } }
+#endif

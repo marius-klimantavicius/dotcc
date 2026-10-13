@@ -23,7 +23,7 @@ public sealed partial class RoslynObject
             or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
             or "line_directive" or "source_entry" or "source_sublist" or "source_end_construct" or "instantiation_directive"
             or "linkage_specification" or "microsoft_if_exists" or "record_declaration" or "pragma"
-            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression"=>kind,
+            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression" or "requires_clause" or "gnu_routine_supplement"=>kind,
         _=>throw new IncompatibleObjectException("A required entity kind is unsupported.")
     };
     internal TranslationUnit Unit(long id) => Cached("translation_unit",id,r=>new TranslationUnit(this,id,r));
@@ -62,6 +62,9 @@ public sealed partial class RoslynObject
     internal MicrosoftAttribute MicrosoftAttribute(long id) => Cached("ms_attribute",id,r=>new MicrosoftAttribute(this,id,r));
     internal MicrosoftAttributeArgument MicrosoftAttributeArgument(long id) => Cached("ms_attribute_argument",id,r=>new MicrosoftAttributeArgument(this,id,r));
     internal ScopedExpression ScopedExpression(long id) => Cached("scoped_expression",id,r=>new ScopedExpression(this,id,r));
+    internal ExceptionSpecification ExceptionSpecification(long id) => Cached("exception_specification",id,r=>new ExceptionSpecification(this,id,r));
+    internal RequiresClause RequiresClause(long id) => Cached("requires_clause",id,r=>new RequiresClause(this,id,r));
+    internal GnuRoutineSupplement GnuRoutineSupplement(long id) => Cached("gnu_routine_supplement",id,r=>new GnuRoutineSupplement(this,id,r));
     internal Attribute Attribute(long id) => Cached("attribute",id,r=>new Attribute(this,id,r));
     internal AttributeArgument AttributeArgument(long id) => Cached("attribute_argument",id,r=>new AttributeArgument(this,id,r));
     internal AttributeGroup AttributeGroup(long id) => Cached("attribute_group",id,r=>new AttributeGroup(this,id,r));
@@ -194,6 +197,8 @@ public sealed partial class RoslynObject
         var kind=Kind(Store.Required("entity",id).Long("kind_id")).Name;
         return kind switch
         {
+            "requires_clause"=>RequiresClause(id),
+            "gnu_routine_supplement"=>GnuRoutineSupplement(id),
             "constant"=>Constant(id),
             "constant_value"=>Value(id),
             "handler"=>Handler(id),
@@ -270,7 +275,7 @@ public sealed partial class RoslynObject
             "constructor_initializer"=>ConstructorInitializer(id),
             "subobject_path"=>new SemanticRecord<SubobjectPathDetails>(this,id,Detail("subobject_path",id,r=>new SubobjectPathDetails(this,r))),
             "name_reference"=>new SemanticRecord<NameReferenceDetails>(this,id,Detail("name_reference",id,r=>new NameReferenceDetails(this,r))),
-            "exception_specification"=>new SemanticRecord<ExceptionSpecificationDetails>(this,id,Detail("exception_specification",id,r=>new ExceptionSpecificationDetails(this,r))),
+            "exception_specification"=>ExceptionSpecification(id),
             "virtual_table"=>new SemanticRecord<VirtualTableDetails>(this,id,Detail("virtual_table",id,r=>new VirtualTableDetails(this,r))),
             "vla_dimension"=>new SemanticRecord<VlaDimensionDetails>(this,id,Detail("vla_dimension",id,r=>new VlaDimensionDetails(this,r))),
             "coroutine"=>new SemanticRecord<CoroutineDetails>(this,id,Detail("coroutine",id,r=>new CoroutineDetails(this,r))),

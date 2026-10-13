@@ -48,7 +48,7 @@ public class Symbol : SemanticEntity
     public override string ToString() => Name ?? Kind.Name;
 }
 
-public sealed class FunctionSymbol : Symbol
+public sealed partial class FunctionSymbol : Symbol
 {
     internal FunctionSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public RoutineSymbolDetails Details { get; }
@@ -153,7 +153,7 @@ public sealed class VariableSymbol : Symbol
     public EhTableProjectionDetails? ExceptionTable => Object.Store.Query("SELECT * FROM eh_table_projection WHERE owner_id=$owner", Id).FirstOrDefault() is { } row ? new(Object, row) : null;
 }
 
-public sealed class FieldSymbol : Symbol
+public sealed partial class FieldSymbol : Symbol
 {
     internal FieldSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public FieldSymbolDetails Details { get; }
@@ -184,6 +184,9 @@ public sealed class Scope : SemanticEntity
     internal Scope(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public ScopeDetails Details { get; }
     public Scope? Parent => Details.Parent;
+    public SemanticEntity? AssociatedEntity => Details.AssociatedEntity;
+    /// <summary>Captured child scopes; enumeration does not establish source declaration order.</summary>
+    public IReadOnlyList<Scope> Children => Object.List("SELECT * FROM scope WHERE parent_id=$owner ORDER BY id",Id,r=>Object.Scope(r.Long("id")),"scope");
     public SemanticKind Kind => Details.Kind;
     public Lifetime? Lifetime => Details.Lifetime;
     public Lifetime? FunctionStaticLifetime => Details.FunctionStaticLifetime;
@@ -191,7 +194,9 @@ public sealed class Scope : SemanticEntity
     public IReadOnlyList<LocalStaticInitialization> LocalStaticInitializations => Object.List("SELECT i.* FROM scope_local_static_initialization r JOIN local_static_initialization i ON i.id=r.initialization_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.LocalStaticInitialization(r.Long("id")),"local_static_initialization");
     /// <summary>Retained construction or destruction order.</summary>
     public IReadOnlyList<ConstructorInitializer> ConstructorInitializers => Object.List("SELECT i.* FROM scope_constructor_initializer r JOIN constructor_initializer i ON i.id=r.initializer_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.ConstructorInitializer(r.Long("id")),"constructor_initializer");
-    public IReadOnlyList<SemanticEntity> Members => Object.List("SELECT * FROM scope_member WHERE owner_id=$owner ORDER BY ordinal", Id, r => Object.Entity(r.Long("member_id")));
+    public IReadOnlyList<SemanticEntity> Members => Kind.Name=="sck_enum"
+        ? Object.List("SELECT q.* FROM (SELECT member_id,ordinal,0 AS list_id FROM scope_member WHERE owner_id=$owner UNION ALL SELECT e.symbol_id AS member_id,e.ordinal,1 AS list_id FROM scope s JOIN type t ON t.id=s.associated_entity_id JOIN enumerator e ON e.owner_id=t.symbol_id WHERE s.id=$owner AND NOT EXISTS (SELECT 1 FROM scope_member m WHERE m.owner_id=s.id AND m.member_id=e.symbol_id)) q ORDER BY q.list_id,q.ordinal",Id,r=>Object.Entity(r.Long("member_id")))
+        : Object.List("SELECT * FROM scope_member WHERE owner_id=$owner ORDER BY ordinal", Id, r => Object.Entity(r.Long("member_id")));
     public IReadOnlyList<Initialization> DynamicInitializations => Object.List("SELECT i.* FROM scope_initialization r JOIN initialization i ON i.id=r.initialization_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Initialization(r.Long("id")),"initialization");
     public IReadOnlyList<SourceEntry> SourceSequence => Object.List("SELECT e.* FROM scope_source_entry r JOIN source_entry e ON e.id=r.entry_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.SourceEntry(r.Long("id")),"source_entry");
     public IEnumerable<SourceEntry> SourceEntries => SourceSequenceTraversal.Flatten(SourceSequence);
@@ -250,4 +255,5 @@ public class TypeSymbol : Symbol
     public TypeSymbolDetails Details => Object.Detail("type_symbol",Id,r=>new TypeSymbolDetails(Object,r));
     public CppType Type => Details.Type;
     public override IReadOnlyList<Attribute> Attributes => Type.Attributes;
+    public override IReadOnlyList<SemanticKind> DeclarationModifiers => Type.DeclarationModifiers;
 }

@@ -103,7 +103,8 @@ public sealed class TemplateHeader : SemanticEntity
     public TemplateHeader? Parent => Details.Parent;
     public Scope? Scope => Details.Scope;
     public SourceInfo? Source => Details.SourceOrigin;
-    public ExpressionOperation? Constraint => Details.Constraint;
+    public RequiresClause? RequiresClause => Details.RequiresClause;
+    public ExpressionOperation? Constraint => RequiresClause?.Constraint;
     public bool IsGeneric => Details.IsGeneric;
     public IReadOnlyList<TemplateParameter> Parameters => Object.List("SELECT * FROM template_parameter WHERE header_id=$owner ORDER BY ordinal,id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
     public IReadOnlyList<GenericConstraintClause> GenericConstraints => Object.List("SELECT * FROM template_generic_constraint_clause WHERE header_id=$owner ORDER BY ordinal,id",Id,r=>Object.GenericClause(r.Long("id")),"template_generic_constraint_clause");

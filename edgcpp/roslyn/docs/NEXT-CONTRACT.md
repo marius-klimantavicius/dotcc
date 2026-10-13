@@ -135,8 +135,8 @@ of a concrete evaluated value.
 
 Composite multi-column primary-key relations use WITHOUT ROWID after verified
 native 198 insertion and 232 reader measurements; identity and single-key tables
-retain rowid. Page size remains 4KiB until native insertion measurements justify
-a change. This is a representation choice with no altered semantic facts.
+retain rowid. Writer page size is now1KiB following the243 native insertion/size benchmark
+and prior valid reader packaging comparisons. This is a representation choice with no altered semantic facts.
 
 
 The 243-table final validation boundary also enables stock C++26 reflection in
@@ -164,3 +164,34 @@ count locations come from the using actions' recorded ABI VLA-count locations,
 with plural contexts and only an unambiguous optional convenience. Removed the
 unwritten singleton array-count and ABI-subobject columns rather than fabricate
 associations. All three changes stay within this checkpoint's cleanup semantics.
+
+
+## Frozen 258 class/layout and routine/signature contract
+
+Canonical SQL and generated native headers now contain258 tables and39,133
+stable kinds. Field-sized mappings are in the two schema/*-field-contract.tsv
+files. Native implements roslyn_layout.h; managed implements roslyn_routines.h.
+No further contract review hold applies.
+
+Record layout size/alignment project the ordinary Type helper quantities.
+Meaningful layout additionally excludes prototypes/MS nonreal instantiations;
+nonvirtual quantities are C++-only and generated subobject supplemental alignment
+is unavailable (its allocator default is not copied). Field offsets require
+actual meaningful layout and IA64 offset_is_set where that field exists; bit
+remainder is within a target addressable byte. Actual adjusted width differs
+from declared integer width; dependent stand-ins are unavailable. No ephemeral
+container type, invented vptr discriminator or unique base parent is stored.
+Base preorder/postorder and override base_ordinal retain actual stock order.
+
+Common Symbol remains the authority for generated/storage facts. Callable
+routine_type_id follows the current skip_typerefs descriptor while Symbol.Type
+preserves the actual retained type. C++ purevirtual and GNU pure-function flags
+are distinct. GNU supplement identity, representative-first union and dispatch
+priority order remain exact; architectures/modifiers are normalized stablekind
+sets. Canonical requires_clause owns constraint/optional keyword position;
+header/routine links share it without duplicated payload. Source locations
+remain optional and receive no reconstruction or new probe campaign.
+
+Signature exception descriptors additionally retain the explicit CopyFromPrototype
+flag. Cached token arm has precedence before a prototype-routine union read;
+no backend template/noexcept resolution is performed.

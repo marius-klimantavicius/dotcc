@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate schema/kind includes mechanically from the shared contract."""
-import argparse,csv,hashlib,pathlib,re,subprocess
+import argparse,csv,hashlib,pathlib,re,subprocess,sys
 root=pathlib.Path(__file__).resolve().parents[1]
+subprocess.run([sys.executable,str(root/'build/check_catalog.py')],check=True)
 p=argparse.ArgumentParser();p.add_argument('--upstream',type=pathlib.Path,default=pathlib.Path('/tmp/roslynobj-edg-upstream-20261012'));args=p.parse_args()
 pin='89e67e07c7f6d0fc38622f9778d8e79f40deaa0f'
 if subprocess.check_output(['git','-C',str(args.upstream),'rev-parse','HEAD'],text=True).strip()!=pin:raise SystemExit('Upstream does not match required pin')
@@ -20,21 +21,23 @@ out.extend('{"'+r['family']+'","'+r['name']+'",'+r['id']+'},' for r in sorted(ro
 out.append('};')
 src=re.sub(r'/\*.*?\*/',lambda m:'\n'*m.group(0).count('\n'),pinned_source(up),flags=re.S)
 families={'a_statement_kind':'statement','an_expr_node_kind':'expression','an_expr_operator_kind':'operator','a_builtin_operation_kind':'builtin','a_constant_repr_kind':'constant','an_address_base_kind':'address_base','a_type_kind':'type','a_dynamic_init_kind':'dynamic_init','a_constructor_init_kind':'constructor_init','a_templ_arg_kind':'template_argument','a_template_kind':'template','an_object_lifetime_kind':'lifetime','a_lowered_eh_construct_kind':'lowered_eh','a_template_param_constant_kind':'template_constant','a_template_param_type_kind':'template_type','a_for_each_pattern_kind':'for_each_pattern','a_template_parameter_kind':'template_parameter','an_init_kind':'initializer','an_integer_kind':'edg_integer_kind','a_float_kind':'edg_float_kind','a_special_function_kind':'edg_special_function','a_name_linkage_kind':'edg_name_linkage','a_storage_class':'edg_storage_class','an_access_specifier':'edg_access','a_calling_convention':'edg_calling_convention','a_typeref_kind':'edg_typeref','an_attribute_kind':'edg_attribute','an_attribute_arg_kind':'edg_attribute_argument','an_attribute_family':'edg_attribute_family','an_attribute_location':'edg_attribute_location','a_builtin_function_kind_tag':'edg_builtin_function','a_token_kind':'token','a_builtin_user_function_kind':'edg_builtin_user_function','a_scope_kind':'edg_scope','a_ref_qualifier_kind':'edg_ref_qualifier','a_fixed_point_precision':'edg_fixed_precision','a_character_kind':'edg_character','an_opname_kind':'edg_opname','an_il_entry_kind':'edg_il_entry','an_asm_operand_constraint_kind':'edg_asm_constraint','an_asm_operand_modifier':'edg_asm_modifier','a_named_register':'edg_named_register','a_module_kind':'edg_module','a_module_file_kind':'edg_module_file','a_rewritten_property_reference_kind':'rewritten_property','a_vector_kind':'edg_vector_kind','an_ELF_visibility_kind':'edg_elf_visibility','an_element_position_kind':'edg_element_position','a_pragma_kind':'edg_pragma','a_stdc_pragma_kind':'edg_stdc_pragma','a_stdc_pragma_value':'edg_stdc_value','a_upc_pragma_kind':'edg_upc_pragma','a_upc_access_method':'edg_upc_access','a_upc_coherence_stack_operation':'edg_upc_coherence','a_microsoft_pragma_comment_type':'edg_ms_pragma_comment','a_microsoft_pragma_conform_kind':'edg_ms_pragma_conform','a_gcc_pragma_kind':'edg_gcc_pragma','an_ms_attribute_kind':'edg_ms_attribute','an_ms_attribute_arg_kind':'edg_ms_attribute_argument','a_local_expr_node_ref_kind':'edg_local_expression_kind'}
+families.update({'an_anonymous_union_kind':'edg_anonymous_union', 'an_inheritance_kind':'edg_inheritance', 'a_decl_modifier':'edg_decl_modifier', 'a_ctor_or_dtor_kind':'edg_ctor_dtor', 'a_multiversion_arch_kind':'edg_multiversion_arch'})
 for typ,fam in families.items():
  enum_src=src
- if typ=='a_builtin_user_function_kind': enum_src=re.sub(r'/\*.*?\*/',lambda m:'\n'*m.group(0).count('\n'),pinned_source(up.with_name('sys_predef.h')),flags=re.S)
+ if typ in ('a_builtin_user_function_kind','a_multiversion_arch_kind'): enum_src=re.sub(r'/\*.*?\*/',lambda m:'\n'*m.group(0).count('\n'),pinned_source(up.with_name('sys_predef.h')),flags=re.S)
  if typ=='a_builtin_function_kind_tag': enum_src=re.sub(r'/\*.*?\*/',lambda m:'\n'*m.group(0).count('\n'),pinned_source(up.with_name('builtin_kinds.h')),flags=re.S)
  m=re.search(r'enum '+typ+r'[^\{]*\{(.*?)\};',enum_src,re.S)
  if not m:raise SystemExit('Missing enum '+typ)
  guard={'a_lowered_eh_construct_kind':'DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING','a_fixed_point_precision':'FIXED_POINT_ALLOWED','an_asm_operand_constraint_kind':'GNU_EXTENSIONS_ALLOWED && !RECORD_RAW_ASM_OPERAND_DESCRIPTIONS','an_asm_operand_modifier':'GNU_EXTENSIONS_ALLOWED && !RECORD_RAW_ASM_OPERAND_DESCRIPTIONS','a_named_register':'GNU_EXTENSIONS_ALLOWED','a_rewritten_property_reference_kind':'MICROSOFT_EXTENSIONS_ALLOWED','a_vector_kind':'GNU_EXTENSIONS_ALLOWED && GNU_VECTOR_TYPES_ALLOWED','an_ELF_visibility_kind':'GNU_EXTENSIONS_ALLOWED && GNU_VISIBILITY_ATTRIBUTE_ALLOWED','a_upc_pragma_kind':'UPC_EXTENSIONS_ALLOWED','a_upc_access_method':'UPC_EXTENSIONS_ALLOWED','a_upc_coherence_stack_operation':'UPC_EXTENSIONS_ALLOWED','a_microsoft_pragma_comment_type':'MICROSOFT_EXTENSIONS_ALLOWED','a_microsoft_pragma_conform_kind':'MICROSOFT_EXTENSIONS_ALLOWED','a_gcc_pragma_kind':'GNU_EXTENSIONS_ALLOWED','an_ms_attribute_kind':'MICROSOFT_EXTENSIONS_ALLOWED','an_ms_attribute_arg_kind':'MICROSOFT_EXTENSIONS_ALLOWED'}.get(typ)
+ guard={'an_inheritance_kind':'MICROSOFT_EXTENSIONS_ALLOWED','a_multiversion_arch_kind':'USE_X86_FUNCTION_MULTIVERSIONING'}.get(typ,guard)
  if guard:out.append('#if '+guard)
  out.append('static int roslyn_kind_'+fam+'('+typ+' value) { switch(value) {')
  for line in m.group(1).splitlines():
   if line.lstrip().startswith('#'):out.append(line)
   else:
    for e,alias in re.findall(r'\b([A-Za-z]+_[A-Za-z_0-9]+)\s*(=\s*[^,\n]+)?',line):
-    if e in ('fk_first_extended_type','bufk_first'):continue
-    if alias and not re.fullmatch(r'=\s*(?:[0-9]+|0x[0-9a-fA-F]+)',alias) and e!='fk_std_bfloat16':continue
+    if e in ('fk_first_extended_type','bufk_first','mvak_lowest_cpu','mvak_highest_cpu','mvak_lowest_isa','mvak_highest_isa'):continue
+    if alias and not re.fullmatch(r'=\s*(?:-?[0-9]+|0x[0-9a-fA-F]+)',alias) and e not in ('fk_std_bfloat16','mvak_cpu_bdver1','mvak_isa_mmx'):continue
     if (fam,e) not in lookup:
      if e.endswith('_last'):out.append('case '+e+': return 0;');continue
      raise SystemExit('Missing catalog '+fam+' '+e)

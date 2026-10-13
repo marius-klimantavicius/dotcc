@@ -1,0 +1,129 @@
+source_field	guard	table	columns	contract
+a_class_type_supplement.compiler_generated	DO_IL_LOWERING	record_type	compiler_generated	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.has_subobject_type	DO_IL_LOWERING	record_type	has_subobject_type	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.is_lambda_closure_class	always	record_type	is_lambda	Existing is_lambda is sole exact flag authority; ordinary IsLambdaClosureClass projects it.
+a_class_type_supplement.is_generic_lambda_closure_class	always	record_type	is_generic_lambda_closure_class	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.has_lambda_conversion_function	always	record_type	has_lambda_conversion_function	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.is_initializer_list	always	record_type	is_initializer_list	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.has_initializer_list_ctor	always	record_type	has_initializer_list_ctor	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.has_anonymous_union_member	always	record_type	has_anonymous_union_member	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.defined_in_variable_initializer	always	record_type	defined_in_variable_initializer	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.defined_in_field_initializer	always	record_type	defined_in_field_initializer	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.named_in_inline_template_directive	always	record_type	named_in_inline_template_directive	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.is_va_list_tag	always	record_type	is_va_list_tag	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.defined_in_parent_class	always	record_type	defined_in_parent_class	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.has_nodiscard_attribute	always	record_type	has_nodiscard_attribute	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.has_field_initializer	always	record_type	has_field_initializer	INTEGER direct retained flag; existing is_lambda remains closure flag convenience
+a_class_type_supplement.contains_error	always	record_type	contains_error	nullable INTEGER: true is known; false only when corresponding contains_error_cached flag true; otherwise NULL
+a_class_type_supplement.contains_local_type	always	record_type	contains_local_type	nullable INTEGER: true is known; false only when corresponding contains_local_type_cached flag true; otherwise NULL
+a_class_type_supplement.contains_unnamed_namespace_type	always	record_type	contains_unnamed_namespace_type	nullable INTEGER: true is known; false only when corresponding contains_unnamed_namespace_type_cached flag true; otherwise NULL
+a_class_type_supplement.does_not_contain_parentless_lambda_in_default_argument	always	record_type	does_not_contain_parentless_lambda_in_default_argument	nullable INTEGER: true known absence; false not determined -> NULL
+a_class_type_supplement.does_not_contain_deprecated_or_unavailable_type	always	record_type	does_not_contain_deprecated_or_unavailable_type	nullable INTEGER: true known absence; false not determined -> NULL
+a_class_type_supplement.base_classes	always	record_base_postorder	owner_id/ordinal/target_id	ordered owner record_type,ordinal,base_subobject_id; exact postorder traversal
+a_class_type_supplement.preorder_base_classes	IA64_ABI	record_base_preorder	owner_id/ordinal/target_id	ordered owner record_type,ordinal,base_subobject_id; exact next_preorder
+a_class_type_supplement.primary_base_class	IA64_ABI	record_type	primary_base_subobject_id	optional base_subobject FK
+a_class_type_supplement.virtual_function_info_base_class	always	record_type	virtual_function_info_base_subobject_id	optional base_subobject FK; least-derived sharing association
+a_class_type_supplement.virtual_function_info_offset	class.any_virtual_functions && meaningful_layout	record_type	virtual_function_info_offset	nullable TEXT target-byte offset; undefined when no directly declared virtual functions
+a_class_type_supplement.highest_virtual_function_number	always	record_type	highest_virtual_function_number	TEXT exact numeric including VIRTUAL_FUNCTION_NUMBER_NONE sentinel; no fabricated slot count
+a_class_type_supplement.next_negative_virtual_table_index	DO_IL_LOWERING && IA64_ABI && actual virtual table present	record_type	next_negative_virtual_table_index	nullable TEXT; otherwise unused negative default is not a fact
+a_class_type_supplement.first_vcall_offset_index	DO_IL_LOWERING && IA64_ABI	record_type	first_vcall_offset_index	nullable TEXT: zero until set -> NULL
+a_class_type_supplement.virtual_function_table_var	DO_IL_LOWERING && !IL_SHOULD_BE_WRITTEN_TO_FILE && !BACK_END_IS_C_GEN_BE	record_type	virtual_function_table_variable_id	optional exact variable_symbol FK
+a_class_type_supplement.virtual_table_table_var	DO_IL_LOWERING && IA64_ABI && !IL_SHOULD_BE_WRITTEN_TO_FILE && !BACK_END_IS_C_GEN_BE	record_type	virtual_table_table_variable_id	optional exact variable_symbol FK
+a_class_type_supplement.uuid_variable	DO_IL_LOWERING && MICROSOFT_EXTENSIONS_ALLOWED && !IL_SHOULD_BE_WRITTEN_TO_FILE && !BACK_END_IS_C_GEN_BE	record_type	uuid_variable_id	optional exact variable_symbol FK
+a_class_type_supplement.uuid_string	MICROSOFT_EXTENSIONS_ALLOWED	record_type	uuid_string_id	optional text_atom FK
+a_class_type_supplement.orig_type_kind	MICROSOFT_EXTENSIONS_ALLOWED	record_type	original_tag_kind_id	exact type-kind enum, retained native mangling information
+a_class_type_supplement.inheritance_kind	MICROSOFT_EXTENSIONS_ALLOWED	record_type	inheritance_kind_id	exact new edg_inheritance enum family
+a_class_type_supplement.inheritance_kind_is_explicit	MICROSOFT_EXTENSIONS_ALLOWED	record_type	inheritance_kind_is_explicit	INTEGER
+a_class_type_supplement.has_coclass_attribute	MICROSOFT_EXTENSIONS_ALLOWED	record_type	has_coclass_attribute	INTEGER native COM semantics
+a_class_type_supplement.has_explicitly_aligned_subobject	MICROSOFT_EXTENSIONS_ALLOWED	record_type	has_explicitly_aligned_subobject	INTEGER
+a_class_type_supplement.ELF_visibility	GNU_EXTENSIONS_ALLOWED && GNU_VISIBILITY_ATTRIBUTE_ALLOWED	record_type	elf_visibility_id	existing edg_elf_visibility enum
+a_class_type_supplement.qualifiers	NEAR_AND_FAR_ALLOWED	record_type	is_near/is_far	individual exact qualifier booleans
+a_class_type_supplement.anonymous_union_kind	always	record_type	anonymous_union_kind_id	exact new edg_anonymous_union enum family
+a_class_type_supplement.anonymous_union_field	anonymous_union_kind==auk_field	record_type	anonymous_union_field_id	optional field_symbol FK
+a_class_type_supplement.befriending_classes	always	record_befriending_class	owner_id/ordinal/target_id	ordered record owner,ordinal,type_id; actual reverse friendship direction
+a_class_type_supplement.friends	always	record_friend	owner_id/ordinal/target_id	ordered record owner,ordinal,entity_id; actual explicitly befriended entities
+a_class_type_supplement.assoc_operator_new_routine	NEW_CAN_BE_FOLDED_INTO_CTOR	record_type	allocation_routine_id	optional routine_symbol FK
+a_class_type_supplement.assoc_operator_delete_routine	DELETE_CAN_BE_FOLDED_INTO_DTOR	record_type	deallocation_routine_id	optional routine_symbol FK
+a_class_type_supplement.min_template_arguments	always	record_type	minimum_template_arguments	INTEGER int32 preserving -1 sentinel
+a_class_type_supplement.lambda_parent	is_lambda_closure_class && active defined_in_* discriminator	record_type	lambda_parent_entity_id	optional entity FK from variable/field/routine union; no independent parent inference
+a_class_type_supplement.proxy_of_type	always	record_type	proxy_of_type_id	optional type FK
+a_class_type_supplement.promoted_local_types	DO_IL_LOWERING && PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE	record_promoted_type	owner_id/ordinal/target_id	ordered exact resident type-list roots; no ownership inference
+a_class_type_supplement.event_interfaces	MICROSOFT_EXTENSIONS_ALLOWED	record_event_interface	owner_id/ordinal/target_id	ordered record owner,ordinal,type_id + optional direct source origin; native __event __interface only
+a_class_type_supplement.decl_modifiers	DECL_MODIFIERS_IN_USE	owner_decl_modifier	owner_decl_modifier	owner entity,modifier kind; individual exact set bits, common helper with routines/variables
+a_vcall_offset_entry.routine	DO_IL_LOWERING && IA64_ABI	record_vcall_offset	routine_id	ordered owner record_type,ordinal; exact retained IL allocated entry (not FE work allocation); index TEXT, typed refs
+a_vcall_offset_entry.base_class	DO_IL_LOWERING && IA64_ABI	record_vcall_offset	base_subobject_id	ordered owner record_type,ordinal; exact retained IL allocated entry (not FE work allocation); index TEXT, typed refs
+a_vcall_offset_entry.vcall_offset_index	DO_IL_LOWERING && IA64_ABI	record_vcall_offset	vtable_index	ordered owner record_type,ordinal; exact retained IL allocated entry (not FE work allocation); index TEXT, typed refs
+a_vcall_offset_entry.is_primary	DO_IL_LOWERING && IA64_ABI	record_vcall_offset	is_primary	ordered owner record_type,ordinal; exact retained IL allocated entry (not FE work allocation); index TEXT, typed refs
+a_class_type_supplement.size_without_virtual_base_classes	meaningful_layout && !C_mode()	record_layout	nonvirtual_size	nullable TEXT target bytes; C defaults 0 are not valid quantities
+a_class_type_supplement.alignment_without_virtual_base_classes	meaningful_layout && !C_mode() && (!DO_IL_LOWERING || !compiler_generated)	record_layout	nonvirtual_alignment	nullable TEXT target-byte alignment; C default 1 is not valid quantity
+record meaningful_layout	!is_incomplete_type && !roslyn_type_is_dependent && !is_prototype_instantiation && !is_ms_instantiated_nonreal_class	record_layout	is_complete	same guard controls available offsets and class layout facts; Type.Size/Alignment are sole ordinary quantity storage
+a_type.variant.class_struct_union.definition_needed	MAINTAIN_NEEDED_FLAGS	record_type	definition_needed	INTEGER actual needed definition semantic retention
+a_base_class.ambiguous	always	base_subobject	ambiguous	INTEGER direct retained semantic flag
+a_base_class.shares_virtual_function_info	always	base_subobject	shares_virtual_function_info	INTEGER direct retained semantic flag
+a_base_class.ignore_during_dependent_lookup	always	base_subobject	ignore_during_dependent_lookup	INTEGER direct retained semantic flag
+a_base_class.is_optimized_empty_base	always	base_subobject	is_optimized_empty_base	INTEGER direct retained semantic flag
+a_base_class.is_pack_expansion	always	base_subobject	is_pack_expansion	INTEGER direct retained semantic flag
+a_base_class.has_public_derivation	always	base_subobject	has_public_derivation	INTEGER direct retained semantic flag
+a_base_class.orig_type	always	base_subobject	original_type_id	optional safe exact specified type FK; NULL indirect paths
+a_base_class.direct_base_number	always	base_subobject	direct_base_number	INTEGER actual 1-based direct sequence/0 indirect
+a_base_class.primary_base_class	IA64_ABI	base_subobject	primary_base_subobject_id	optional exact base FK
+a_base_class.offset	meaningful derived layout && (!IA64_ABI || offset_is_set)	base_subobject	offset	nullable TEXT target bytes
+a_base_class.complete_subobject	CFRONT_OBJECT_CODE_COMPATIBILITY	base_subobject	complete_subobject	INTEGER
+a_base_class.data_section_base_class	CFRONT_OBJECT_CODE_COMPATIBILITY && is_virtual	base_subobject	data_section_base_subobject_id	optional base FK
+a_base_class.pointer_offset	!IA64_ABI && is_virtual && meaningful derived layout && (!CFRONT_OBJECT_CODE_COMPATIBILITY || pointer_offset_is_set)	base_subobject	virtual_base_pointer_offset	nullable TEXT target bytes
+a_base_class.pointer_base_class	!IA64_ABI && is_virtual	base_subobject	virtual_base_pointer_base_subobject_id	optional exact base FK
+a_base_class.virtual_function_table_var	DO_IL_LOWERING && !IA64_ABI && !IL_SHOULD_BE_WRITTEN_TO_FILE && !BACK_END_IS_C_GEN_BE	base_subobject	virtual_function_table_variable_id	optional resident variable FK
+a_base_class.virtual_function_table_offset	DO_IL_LOWERING && IA64_ABI	base_subobject	virtual_function_table_index	TEXT exact vtable-group index incl -1 sentinel
+a_base_class.index_in_construction_vtbl_array	DO_IL_LOWERING && ABI_CHANGES_FOR_CONSTRUCTION_VTBLS	base_subobject	construction_table_index	TEXT actual index (1 based entry minus one), zero absent; do not traverse FE construction records
+a_base_class.base_subarray_index_in_construction_vtbl_array	DO_IL_LOWERING && ABI_CHANGES_FOR_CONSTRUCTION_VTBLS && (IA64_ABI || !is_virtual)	base_subobject	construction_subarray_index	TEXT exact current index, zero absent
+a_base_class.vbase_offset_index	DO_IL_LOWERING && IA64_ABI && is_virtual	base_subobject	virtual_base_offset_index	TEXT signed current vtable index
+a_base_class.attributes	always	owner_attribute	owner_attribute	existing canonical ordered attribute owner associations
+a_base_class_derivation.access	always	base_derivation	access_id	use exact edg_access family, no default public coercion
+a_base_class.variant.overriding_virtual_functions	!is_pack_expansion	override_relation	existing refs + base_ordinal	add INTEGER ordinal in current base override list; existing owner/ordinal remains per overriding routine; preserve typed primary/overrider/return-adjustment links
+a_field.is_anonymous_parent_object	always	field_symbol	is_anonymous_parent_object	INTEGER direct retained semantic flag
+a_field.is_init_capture	always	field_symbol	is_init_capture	INTEGER direct retained semantic flag
+a_field.is_captured_this	always	field_symbol	is_captured_this	INTEGER direct retained semantic flag
+a_field.is_captured_pack_element	always	field_symbol	is_captured_pack_element	INTEGER direct retained semantic flag
+a_field.has_initializer	always	field_symbol	has_initializer	INTEGER direct retained semantic flag
+a_field.init_is_ctor_dependent	always	field_symbol	init_is_ctor_dependent	INTEGER direct retained semantic flag
+a_field.has_direct_braced_initializer	always	field_symbol	has_direct_braced_initializer	INTEGER direct retained semantic flag
+a_field.has_nonconstant_initializer	always	field_symbol	has_nonconstant_initializer	INTEGER direct retained semantic flag
+a_field.has_no_unique_address_attribute	always	field_symbol	has_no_unique_address_attribute	INTEGER direct retained semantic flag
+a_field.is_optimized_empty_class	always	field_symbol	is_optimized_empty_class	INTEGER direct retained semantic flag
+a_field.bit_size_constant_expr_in_local_expr_node_ref	always	field_symbol	bit_size_constant_expr_in_local_expr_node_ref	INTEGER direct retained semantic flag
+a_field.is_packed	GNU_EXTENSIONS_ALLOWED	field_symbol	is_packed	INTEGER direct retained flag
+a_field.vla_treated_as_zero_length_array	GNU_EXTENSIONS_ALLOWED	field_symbol	vla_treated_as_zero_length_array	INTEGER direct retained flag
+a_field.is_lowered_base_class	DO_IL_LOWERING	field_symbol	is_generated_base	INTEGER direct retained flag
+a_field.class_subobject_with_tail_padding	DO_IL_LOWERING	field_symbol	class_subobject_with_tail_padding	INTEGER direct retained flag
+a_field.alignment	always	field_symbol	explicit_alignment	nullable TEXT target-byte alignment; raw0 unset ->NULL; not effective alignment
+a_field.bit_field_is_signed	is_bit_field	field_symbol	bit_field_is_signed	nullable INTEGER outside bit field
+a_field.declared_bit_size	is_bit_field && bit_size_constant.kind==ck_integer (therefore not ck_error)	field_symbol	declared_bit_size	nullable TEXT exact declared width; dependent/error stand-in is not quantity
+a_field.bit_size	is_bit_field && resolved integer nonerror width && resolved nondependent effective integral field type	field_layout	bit_width	nullable TEXT actual adjusted width, distinct declared width
+a_field.offset/offset_bit_remainder	meaningful containing layout && (!IA64_ABI || offset_is_set)	field_layout	offset/bit_offset	nullable TEXT target-byte offset and bit remainder <Target.AddressableUnitBits
+a_field.offset_in_container	RECORD_BIT_FIELD_CONTAINER_OFFSETS_IN_IL && targ_microsoft_bit_field_allocation && is_bit_field && meaningful containing layout	field_layout	container_offset	nullable TEXT whole target bytes within actual container; no container type survives
+a_field.entities_defined_in_initializer	always	field_initializer_entity	owner_id/ordinal/entity_id	actual ordered list roots, metadata; initializer recipe is not independently evaluated
+a_field.compiler_generated	always	symbol	compiler_generated	existing real direct generated fact; no vptr-specific identity is retained
+field_symbol.is_generated_vptr	no retained producer	field_symbol	is_generated_vptr	make nullable and emit NULL; no name/offset reconstruction (root audited lower_il field_at_offset_if_any)
+field_layout.container_type_id	no retained producer	remove	container_type_id	layout current_container_type is ephemeral; C generator-only bit_field_alignment_type inactive
+a_scope.variant for sck_func_prototype	kind==sck_func_prototype	scope	associated_entity_id	actual type for prototype/enum/class; actual statement condition; actual handler block; reactivation remains FE-only excluded
+a_scope.variant for sck_enum	kind==sck_enum	scope	associated_entity_id	actual type for prototype/enum/class; actual statement condition; actual handler block; reactivation remains FE-only excluded
+a_scope.variant for sck_class_struct_union	kind==sck_class_struct_union	scope	associated_entity_id	actual type for prototype/enum/class; actual statement condition; actual handler block; reactivation remains FE-only excluded
+a_scope.variant for sck_condition	kind==sck_condition	scope	associated_entity_id	actual type for prototype/enum/class; actual statement condition; actual handler block; reactivation remains FE-only excluded
+a_scope.variant for sck_block	kind==sck_block	scope	associated_entity_id	actual type for prototype/enum/class; actual statement condition; actual handler block; reactivation remains FE-only excluded
+a_base_class.trans_unit_corresp	as documented	excluded	-	front-end correspondence pointer
+a_base_class.variant.pack_expansion_descr	as documented	excluded	-	documented front-end only
+a_base_class.ms_attributes	as documented	excluded	-	currently CLI/CX interface only, excluded by user
+a_base_class.base_construction_vtbls	as documented	excluded	-	FE construction allocation, unsafe after backend boundary
+a_class_type_supplement.construction_vtbls	as documented	excluded	-	FE construction allocation, unsafe after backend boundary
+a_class_type_supplement.hidden_names_processed/base_class_hiding_in_progress	as documented	excluded	-	front-end hiding bookkeeping
+a_class_type_supplement.removed_from_il/hash_value	as documented	excluded	-	retention processing/hash memoization, no independent semantic fact
+a_type.variant.class_struct_union.keep_definition_in_il	as documented	excluded	-	documented front-end only
+a_type.variant.class_struct_union.virtual_functions_marked_as_required	as documented	excluded	-	worklist memoization
+a_type.variant.class_struct_union.inc_class_used_in_array_type	as documented	excluded	-	C generator repair bookkeeping; independent C backend disabled
+a_class_type_supplement CLI visibility/type/partial/metadata/dispose/invocation/attribute_usage members	as documented	excluded	-	CLI/CX explicitly excluded by user
+a_field.is_initonly	as documented	excluded	-	CLI only explicitly excluded
+a_field.bit_field_alignment_type	as documented	excluded	-	BACK_END_IS_C_GEN_BE only, independent backend disables it
+a_scope sck_class_reactivation	as documented	excluded	-	front-end scope-stack context; not retained scope root
+data_size_of_type	as documented	excluded	-	FE-unsafe symbol_for query; forbidden helper
+base_subobject.parent_id	no retained single parent producer	remove	parent_id	derivation paths are authoritative and may be plural/suffixes; no unique Parent survives
+base_subobject.base_field_id	no direct retained producer	remove	base_field_id	lowered generated base fields remain exact class field-list facts; no name/offset reconstruction of base association

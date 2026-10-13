@@ -1,0 +1,202 @@
+source_field	guard	table	columns	contract
+a_routine.address_taken	always	routine_symbol	address_taken	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_virtual	always	routine_symbol	is_virtual	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.overrides_base_member	always	routine_symbol	overrides_base_member	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.pure_virtual	always	routine_symbol	is_pure	Existing C++ pure virtual column; public IsPureVirtual, never GNU pure-function flag
+a_routine.final	always	routine_symbol	is_final	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.override	always	routine_symbol	is_override	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.abstract	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_abstract	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.sealed	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_sealed	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.new_member	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_new_member	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.interface_slot	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_interface_slot	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.definition_cannot_be_generated	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	definition_cannot_be_generated	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.covariant_return_virtual_override	always	routine_symbol	covariant_return_virtual_override	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_inline	always	routine_symbol	is_inline	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_declared_constexpr	always	routine_symbol	is_declared_constexpr	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_constexpr	always	routine_symbol	is_constexpr	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_consteval	always	routine_symbol	is_consteval	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_constexpr_intrinsic	always	routine_symbol	is_constexpr_intrinsic	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.compiler_generated	always	symbol	compiler_generated	Common Symbol.IsCompilerGenerated is sole authority.
+a_routine.defined	always	routine_symbol	is_defined	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.called	always	routine_symbol	is_called	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_explicit_constructor	always	routine_symbol	is_explicit_constructor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_explicit_conversion_function	always	routine_symbol	is_explicit_conversion_function	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_trivial_default_constructor	always	routine_symbol	is_trivial_default_constructor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_trivial_copy_function	always	routine_symbol	is_trivial_copy_function	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_trivial_destructor	always	routine_symbol	is_trivial_destructor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_initializer_list_ctor	always	routine_symbol	is_initializer_list_ctor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_delegating_ctor	always	routine_symbol	is_delegating_ctor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_inheriting_ctor	always	routine_symbol	is_inheriting_ctor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.inherits_virtually	always	routine_symbol	inherits_virtually	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_deduction_guide_from_inheriting_ctor	always	routine_symbol	is_deduction_guide_from_inheriting_ctor	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.assignment_to_this_done	(ASSIGNMENT_TO_THIS_ALLOWED)	routine_symbol	assignment_to_this_done	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_template_function	always	routine_symbol	is_template_function	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_specialized	always	routine_symbol	is_specialized	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.specialized_with_old_syntax	always	routine_symbol	specialized_with_old_syntax	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_prototype_instantiation	always	routine_symbol	is_prototype_instantiation	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.never_throws	always	routine_symbol	never_throws	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_in_class_specialization	always	routine_symbol	is_in_class_specialization	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.explicit_instantiation	always	routine_symbol	explicit_instantiation	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.class_explicitly_instantiated	always	routine_symbol	class_explicitly_instantiated	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.explicit_do_not_instantiate	always	routine_symbol	explicit_do_not_instantiate	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_nodiscard_attribute	always	routine_symbol	has_nodiscard_attribute	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.never_inline	(GNU_EXTENSIONS_ALLOWED || MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	never_inline	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_pure	(GNU_EXTENSIONS_ALLOWED || MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_pure_function	GNU/MS pure-function attribute flag; distinct from existing C++ is_pure (pure_virtual)
+a_routine.is_naked	(GNU_EXTENSIONS_ALLOWED || MICROSOFT_EXTENSIONS_ALLOWED) && (GNU_NAKED_ATTRIBUTE_ALLOWED || MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_naked	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.declared_only_as_friend	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	declared_only_as_friend	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.explicit_extern_inline	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	explicit_extern_inline	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.direct_linkage_specifier_on_nondef_decl	(MICROSOFT_EXTENSIONS_ALLOWED)	routine_symbol	is_direct_linkage_specifier_on_nondef_decl	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_reverse_conversion_function	(MICROSOFT_EXTENSIONS_ALLOWED)	excluded	-	CLI/CX excluded by user
+a_routine.is_generic_definition	(MICROSOFT_EXTENSIONS_ALLOWED)	excluded	-	CLI/CX excluded by user
+a_routine.is_generic_instance	(MICROSOFT_EXTENSIONS_ALLOWED)	excluded	-	CLI/CX excluded by user
+a_routine.is_initialization_routine	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	is_initialization_routine	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_finalization_routine	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	is_finalization_routine	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_weak	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	is_weak	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_weakref	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	is_weakref	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_gnu_alias	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	is_gnu_alias	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_ifunc	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	is_ifunc	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_gnu_used_attribute	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	has_gnu_used_attribute	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_gnu_abi_tag_attribute	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	has_gnu_abi_tag_attribute	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.in_gnu_abi_tag_namespace	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	in_gnu_abi_tag_namespace	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.implicit_abi_tags_added	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	implicit_abi_tags_added	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.allocates_memory	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	allocates_memory	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.no_instrument_function	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	no_instrument_function	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.no_check_memory_usage	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	no_check_memory_usage	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.always_inline	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	always_inline	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.gnu_c89_inline	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	gnu_c89_inline	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.implicit_alias	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	implicit_alias	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_internal_linkage_attribute	(GNU_EXTENSIONS_ALLOWED)	routine_symbol	has_internal_linkage_attribute	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.can_be_instantiated	(AUTOMATIC_TEMPLATE_INSTANTIATION)	routine_symbol	can_be_instantiated	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.do_not_instantiate	(AUTOMATIC_TEMPLATE_INSTANTIATION)	routine_symbol	do_not_instantiate	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.instance_required	(AUTOMATIC_TEMPLATE_INSTANTIATION)	routine_symbol	instance_required	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.contains_try_block	always	routine_symbol	contains_try_block	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.contains_local_class_type	always	routine_symbol	contains_local_class_type	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.superseded_external	always	routine_symbol	superseded_external	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.defined_in_friend_decl	always	routine_symbol	is_defined_in_friend_decl	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.defined_outside_of_parent	always	routine_symbol	is_defined_outside_of_parent	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.inlinable	(DO_IL_LOWERING && MINIMAL_INLINING)	routine_symbol	is_inlinable	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.definition_needed	(MAINTAIN_NEEDED_FLAGS)	routine_symbol	definition_needed	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.keep_definition_in_il	(MAINTAIN_NEEDED_FLAGS)	excluded	-	explicit frontend retention work flag
+a_routine.expl_template_arg_list_used	always	routine_symbol	expl_template_arg_list_used	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.definition_C_name_linkage_specified	(BACK_END_IS_CP_GEN_BE)	routine_symbol	definition_c_name_linkage_specified	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.definition_has_direct_linkage_specifier	(BACK_END_IS_CP_GEN_BE)	routine_symbol	definition_has_direct_linkage_specifier	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_been_defined	(BACK_END_IS_CP_GEN_BE) && (NONCLASS_TEMPLATE_INSTANTIATIONS_IN_SOURCE_SEQUENCE_LISTS)	excluded	-	C++ source renderer emission tracking
+a_routine.evaluated_in_interpreter	(BACK_END_IS_CP_GEN_BE) && (NONCLASS_TEMPLATE_INSTANTIATIONS_IN_SOURCE_SEQUENCE_LISTS)	excluded	-	C++ source renderer constexpr emission decision cache
+a_routine.suppress_explicit_specialization	(BACK_END_IS_CP_GEN_BE) && (NONCLASS_TEMPLATE_INSTANTIATIONS_IN_SOURCE_SEQUENCE_LISTS)	excluded	-	C++ source renderer workaround cache
+a_routine.need_for_template_args_determined	(BACK_END_IS_CP_GEN_BE) && (NONCLASS_TEMPLATE_INSTANTIATIONS_IN_SOURCE_SEQUENCE_LISTS)	excluded	-	C++ source renderer workaround cache
+a_routine.template_args_required	(BACK_END_IS_CP_GEN_BE) && (NONCLASS_TEMPLATE_INSTANTIATIONS_IN_SOURCE_SEQUENCE_LISTS)	excluded	-	C++ source renderer workaround cache
+a_routine.definition_for_inlining_only	always	routine_symbol	definition_for_inlining_only	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.inline_instance_required	(INSTANTIATE_EXTERN_INLINE)	routine_symbol	inline_instance_required	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.suppress_inline_body	always	routine_symbol	suppress_inline_body	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.on_inline_function_list	always	excluded	-	list-membership bookkeeping
+a_routine.need_out_of_line_copy	always	routine_symbol	need_out_of_line_copy	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.contains_statement_expression	always	routine_symbol	contains_statement_expression	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.inline_in_class_definition	(IA64_ABI)	routine_symbol	inline_in_class_definition	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.use_comdat	(DO_IL_LOWERING && IA64_ABI)	routine_symbol	is_use_comdat	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_alias_entry	(DO_IL_LOWERING && IA64_ABI)	routine_symbol	is_alias_entry	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.lowering_delayed_on_nested_function	(DO_IL_LOWERING)	excluded	-	lowering schedule bookkeeping
+a_routine.has_no_effect	(DO_IL_LOWERING)	routine_symbol	has_no_effect	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.statics_have_been_promoted	(PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE)	routine_symbol	statics_have_been_promoted	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_lambda_body	always	routine_symbol	is_lambda_body	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.declared_using_type_without_linkage	always	routine_symbol	declared_using_type_without_linkage	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_defaulted	always	routine_symbol	is_defaulted	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_deleted	always	routine_symbol	is_deleted	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.contains_local_static_variable	always	routine_symbol	contains_local_static_variable	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.embedded_source_sequence_entries	(GENERATE_SOURCE_SEQUENCE_LISTS)	routine_symbol	is_embeds_source_entries	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.considered_decider_function_at_some_point	always	excluded	-	explicit frontend diagnostic tracking
+a_routine.is_raw_literal_operator	always	routine_symbol	is_raw_literal_operator	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_tls_init_alias	(USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES)	routine_symbol	is_tls_initialization_alias	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_tls_init_routine	always	routine_symbol	is_tls_initialization_routine	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_ctor_priority	(GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED)	routine_symbol	has_ctor_priority	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_dtor_priority	(GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED)	routine_symbol	has_dtor_priority	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_deducible_return_type	always	routine_symbol	has_deducible_return_type	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_deduced_return_type	always	routine_symbol	has_deduced_return_type	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.contains_generic_lambda	always	routine_symbol	contains_generic_lambda	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_coroutine	always	routine_symbol	is_coroutine	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_top_level_in_mem_region	always	excluded	-	memory-region lifetime bookkeeping
+a_routine.friend_defined_in_instantiation	always	routine_symbol	friend_defined_in_instantiation	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.is_ineligible	always	routine_symbol	is_ineligible	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.has_pass_object_size_attr	always	routine_symbol	has_pass_object_size_attr	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.from_injected_tokens	always	routine_symbol	from_injected_tokens	nullable INTEGER for has_no_effect/is_ineligible; true means recorded proof, false unknown. Other direct flags INTEGER
+a_routine.source_corresp	always	symbol	existing fields	common identity/source/name/linkage/access/owner, no duplicate
+a_routine.next	always	scope_member	ordinal	existing owning scope order, do not duplicate next pointer
+a_routine.type	always	symbol + routine_symbol	symbol.type_id / routine_symbol.routine_type_id	exact written/current p->type preserved in Symbol; exact skip_typerefs callable descriptor captured in RoutineType FK
+a_routine.function_def_number	nonnull actual descriptor	routine_symbol	body_scope_id/body_root_id	resolve resident descriptor, not a standalone semantic number
+a_routine.memory_region/hash_value	always	excluded	-	allocator region and hash cache
+a_routine.storage_class	always	symbol	storage_id	populate existing common effective storage, not duplicated routine field
+a_routine.declared_storage_class/declared_type	GENERATE_SOURCE_SEQUENCE_LISTS	routine_symbol	declared_storage_class_id/declared_type_id	kind FK/type FK, nullable when compile field absent
+a_routine.variant.opname_kind	sfk_operator	routine_symbol	operator_name_id	exact enum stable kind; other special arms must not read
+a_routine.variant.builtin_function_kind	sfk_none && BUILTIN_FUNCTIONS_ENABLED	routine_symbol	builtin_kind_id	existing exact builtin enum
+a_routine.variant.ctor_dtor.alternate_entry_points	IA64_ABI && DO_IL_LOWERING && ctor/dtor	excluded	-	explicit frontend-only; public alternates query reverse primary_entry_id
+a_routine.variant.ctor_dtor.base_name_offset	IA64_ABI && DO_IL_LOWERING && ctor/dtor	excluded	-	mangler substring offset implementation detail
+a_routine.variant.property_or_event_descr	native accessor special kinds	excluded	-	these accessor kinds are CLI/CX; native declspec property descriptor belongs field, retained separately
+a_routine.variant.lambda_call_operator	sfk_lambda_entry_point	routine_symbol	lambda_call_operator_id	exact routine FK
+a_routine.variant.class_template	sfk_deduction_guide	routine_symbol	deduction_guide_template_id	exact TemplateDescriptor FK
+a_routine.number.virtual_function	!is_constexpr_intrinsic && is_virtual && !is_consteval	routine_symbol	virtual_function_number	canonical decimal TEXT; null outside active arm
+a_routine.number.constexpr_intrinsic	is_constexpr_intrinsic	routine_symbol	constexpr_intrinsic	INTEGER; null outside active arm
+a_routine.decl_modifiers	DECL_MODIFIERS_IN_USE	owner_decl_modifier	owner_id/kind_id	exact guarded dmt set members; common callback native-owned, no raw mask
+a_routine.trailing_requires_clause	always	requires_clause + routine_symbol	trailing_requires_clause_id	canonical descriptor id/constraint_expression_id/requires_position_id; optional direct position
+a_routine.overridden_functions	MICROSOFT_EXTENSIONS_ALLOWED	routine_selected_override	owner_id/ordinal/entity_id	actual tagged targets routine or dependent constant, no guessed override slots
+a_routine.friends_or_originator.befriending_classes	!is_inheriting_ctor	routine_befriending_class	owner_id/ordinal/type_id	actual class-list order; no source reconstruction
+a_routine.friends_or_originator.inherited_routine	is_inheriting_ctor	routine_symbol	inherited_routine_id	exact routine FK, not friend-list traversal
+a_routine.generating_using_decl	always	routine_symbol	generating_using_id	using_declaration FK
+a_routine.template_arg_list/assoc_template	always	template_instance + routine_symbol	existing links	keep exact descriptor/argument relations
+a_routine.overriding_function_for_wrapper/overridden_function_for_wrapper	DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN	routine_symbol	overriding_function_id/overridden_function_id	exact routines; preserve wrapper purpose unknown if no retained discriminator
+a_routine.delta/vcall_index/return_delta/vbase_index	DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN && IA64_ABI	routine_symbol	this_adjustment/vcall_index/return_adjustment/vbase_index	canonical decimal TEXT, null when compile branch unavailable
+a_routine.primary_ctor_or_dtor	DO_IL_LOWERING && IA64_ABI	routine_symbol	primary_entry_id	existing edge; reverse query provides alternate entries
+a_routine.ctor_dtor_kind	DO_IL_LOWERING && IA64_ABI	routine_symbol	ctor_dtor_kind_id	exact enum kind
+a_routine.init_priority	GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED && DO_IL_LOWERING	routine_symbol	initialization_priority	canonical decimal TEXT
+a_routine.instantiation_needed_bit_number	ONE_INSTANTIATION_PER_OBJECT	excluded	-	slice/instantiation driver bit number, not semantic identity
+a_routine.routine_fixup	always	excluded	-	explicit frontend-only deferred body fixup
+a_routine.fp_contract/fenv_access/cx_limited_range	always	routine_symbol	fp_contract_id/fenv_access_id/cx_limited_range_id	exact a_stdc_pragma_value enum kinds
+a_routine.fx_full_precision/fx_fract_overflow/fx_accum_overflow	FIXED_POINT_ALLOWED	routine_symbol	fx_full_precision_id/fx_fract_overflow_id/fx_accum_overflow_id	exact pragma enum kinds
+a_routine.upc_access_method	(UPC_EXTENSIONS_ALLOWED)	routine_symbol	upc_access_method	INTEGER exact safe mode value
+a_routine.ELF_visibility	GNU_EXTENSIONS_ALLOWED && GNU_VISIBILITY_ATTRIBUTE_ALLOWED	routine_symbol	elf_visibility_id	exact stable enum kind
+a_routine surrounding/definition linkage fields	BACK_END_IS_CP_GEN_BE	routine_symbol	surrounding_name_linkage_id/definition_c_name_linkage_specified/definition_has_direct_linkage_specifier	only direct retained linkage form; renderer state flags excluded
+a_routine.gnu_extra_info	GNU_EXTENSIONS_ALLOWED || REDEFINE_EXTNAME_PRAGMA_ENABLED	gnu_routine_supplement + routine_symbol	gnu_supplement_id	canonical actual supplement descriptor identity; optional
+a_gnu_routine_supplement.section/asm_name	same supplement guard	gnu_routine_supplement	section_id/assembly_name_id	exact text atoms
+a_gnu_routine_supplement.aliased_routine/inline_partner	same supplement guard	gnu_routine_supplement	aliased_routine_id/inline_partner_id	exact current routine edges; aliased target is resolver when owner.IsIfunc
+a_gnu_routine_supplement.resolver_var	LOWER_IFUNC	gnu_routine_supplement	resolver_variable_id	exact retained cache variable FK
+a_gnu_routine_supplement.ctor_priority/dtor_priority	GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED + owner has_ctor/has_dtor_priority	gnu_routine_supplement	constructor_priority/destructor_priority	nullable decimal TEXT only active flags; allocator initializes defaults; owner context passed to callback
+a_gnu_routine_supplement is_representative/is_target_specific_version/mv_resolver_required	GNU_FUNCTION_MULTIVERSIONING; resolver also USE_X86_FUNCTION_MULTIVERSIONING	gnu_routine_supplement	is_representative/is_target_specific_version/resolver_required	direct booleans; discriminator representative wins before target-specific
+a_gnu_routine_supplement.mv_info.representative.targeted_versions	is_representative && GNU_FUNCTION_MULTIVERSIONING	routine_multiversion	owner_id/ordinal/routine_id	exact dispatch priority, default first; no sorting or scanning symbol table
+a_gnu_routine_supplement.mv_info.targeted_version.representative/target_bitset	else is_target_specific_version && GNU_FUNCTION_MULTIVERSIONING; bits USE_X86_FUNCTION_MULTIVERSIONING	gnu_routine_supplement + routine_target_architecture	representative_id / owner_id,kind_id	exact routine and stable kind set members using actual enum bit positions, no name-based classification
+routine_symbol.runtime_kind_id	no retained a_routine discriminator found	remove or leave explicitly unavailable	-	do not classify runtime routines by name/signature; actual special/builtin kinds remain authoritative
+a_routine_type_supplement.has_ellipsis	always	routine_type	is_variadic	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.prototyped	always	routine_type	has_prototype	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.old_style_params_scanned	always	routine_type	old_style_params_scanned	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.trailing_return_type	always	routine_type	has_trailing_return_type	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.lint_argsused_flag	always	routine_type	lint_argsused_flag	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.value_returned_by_cctor	always	routine_type	value_returned_by_cctor	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.value_returned_as_parameter	(DO_IL_LOWERING)	routine_type	value_returned_as_parameter	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.return_value_parameter_follows_this	(DO_IL_LOWERING)	routine_type	return_value_parameter_follows_this	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.assoc_routine_is_ctor	always	routine_type	assoc_routine_is_ctor	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.assoc_routine_is_dtor	always	routine_type	assoc_routine_is_dtor	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.assoc_routine_is_lambda_body	always	routine_type	assoc_routine_is_lambda_body	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.suppress_diagnostic_on_incomplete_return_type	always	excluded	-	explicit frontend-only diagnostic cache
+a_routine_type_supplement.routine_name_linkage_is_explicit	always	routine_type	routine_name_linkage_is_explicit	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.does_not_return	always	routine_type	does_not_return	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.has_enable_if_attribute	always	routine_type	has_enable_if_attribute	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.result_should_be_used	(GNU_EXTENSIONS_ALLOWED)	routine_type	result_should_be_used	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.is_const	(GNU_EXTENSIONS_ALLOWED)	routine_type	is_gnu_const	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.is_variadic_instance	always	routine_type	is_variadic_instance	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.explicit_calling_convention	(MICROSOFT_EXTENSIONS_ALLOWED || GNU_X86_ATTRIBUTES_ALLOWED)	routine_type	explicit_calling_convention	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.had_been_implicitly_const	always	routine_type	had_been_implicitly_const	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.is_conditionally_explicit	always	routine_type	is_conditionally_explicit	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.has_this_param	always	routine_type	has_this_param	INTEGER direct flag; value_returned_as_parameter/return_value_parameter_follows_this nullable when DO_IL_LOWERING unavailable
+a_routine_type_supplement.param_type_list	always	routine_type_parameter	existing descriptor/role/base associations	ordered current signature; hidden roles from native audited helpers, no fabricated source signature
+a_routine_type_supplement.assoc_routine/prototype_scope	always	routine_type	associated_routine_id/prototype_scope_id	nullable actual routine/scope FKs
+a_routine_type_supplement.routine_name_linkage	always	routine_type	language_linkage_id	existing exact type linkage, distinct from common Symbol linkage
+a_routine_type_supplement.qualifiers	always	routine_type	is_const/is_volatile/is_restrict/is_atomic/is_nullable/is_nonnull/is_null_unspecified/is_unaligned/is_near/is_far/is_shared/is_upc_strict/is_upc_relaxed/address_space	normalize same exact qualifier-set semantics as existing type/array adapter; no duplicate raw mask
+a_routine_type_supplement.this_qualifiers	always	routine_type	is_this_const/is_this_volatile/is_this_restrict/is_this_atomic/is_this_nullable/is_this_nonnull/is_this_null_unspecified/is_this_unaligned/is_this_near/is_this_far/is_this_shared/is_this_upc_strict/is_this_upc_relaxed/this_address_space	distinct qualifiers applied to pointer itself, not the object
+a_routine_type_supplement.ref_qualifiers	always	routine_type	ref_qualifier_id	existing exact enum
+a_routine_type_supplement.calling_convention	MICROSOFT_EXTENSIONS_ALLOWED || GNU_X86_ATTRIBUTES_ALLOWED	routine_type	calling_convention_id	existing exact enum; explicit flag separate
+a_routine_type_supplement.lint_varargs_count	always	routine_type	lint_varargs_count	INTEGER actual retained policy; -1 means not set
+a_routine_type_supplement.arg_pragma	always	routine_type	argument_pragma_id	exact pragma kind enum
+a_routine_type_supplement.fmt_arg/format_first_subst_arg/sentinel_pos	GNU_EXTENSIONS_ALLOWED	routine_type	format_argument/first_format_substitution_argument/sentinel_position	INTEGER actual retained argument indices; no signature ordinal remapping
+a_routine_type_supplement.this_class	always	routine_type	this_type_id	existing unqualified/untypedefed containing-class descriptor
+a_routine_type_supplement.exception_specification	always	routine_type	exception_specification_id	existing exact descriptor; tokens/private backend helper cache excluded
+routine_type supplement ownership	extension of exact a_type tk_routine	routine_type	existing id	keep existing logical type subtype to avoid unnecessary signature-table migration; reflection-tag producer availability remains explicit
+a_param_type pack_expansion_descr	frontend-only allocation	excluded	-	existing safe IsParameterPack/IsPackElement/WasNontrailingPack remain; no descriptor dereference
+private typeref.orig_type/routine.unlowered_type	backend unreadable	excluded	-	original-signature scoped availability remains lost; no frontend symbols/semantic queries
+a_multiversion_arch_kind	USE_X86_FUNCTION_MULTIVERSIONING	stable edg_multiversion_arch catalog	canonical leaf CPU/ISA/default/unknown names	sys_predef.h658-701: enum aliases are range markers, choose leaf aliases for bit-member identity

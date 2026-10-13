@@ -64,6 +64,23 @@ unique. The type descriptor stays separate.
 Template headers, parameter placeholders and defaults navigate through typed
 objects. Function signatures and requires-expression parameters share canonical
 `ParameterType` descriptors, including retained declared types and default facts.
+`FunctionSymbol.Signature` follows the current callable routine type, including
+hidden ABI parameters. `DefinitionType` is the optional retained written type;
+the reader does not recover an original signature from lowered parameters.
+Member object qualifiers and `this` pointer qualifiers navigate separately.
+`ExceptionSpecification` keeps ordered throw types, explicit noexcept arguments,
+indeterminate state and deferred prototype relationships. Concrete consteval
+bodies remain metadata, and `IsDefined` stays true for discarded definitions.
+GNU routine supplements expose exact aliases, ifunc resolvers, inline partners
+and multiversion relationships; targeted versions retain recorded dispatch order.
+`IsPureVirtual` and `IsPureFunction` describe separate C++ and GNU facts.
+
+`RecordType.BasesInPostorder` and `BasesInPreorder` preserve the available EDG
+orders. Base derivations and overrides retain contextual subobject identities;
+they do not imply a unique parent. Layouts expose effective and nonvirtual sizes,
+ordered fields, declared bit-field widths and stored widths separately. Optional
+ABI indices and Microsoft container offsets stay null when their build does not
+retain them. All layout quantities use exact target values.
 Every retained template has a `TemplateDescriptor`. A true template declaration
 has a separate `TemplateSymbol` whose `Descriptor` preserves that relationship.
 Template-template placeholders instead point to their actual parameter symbols.

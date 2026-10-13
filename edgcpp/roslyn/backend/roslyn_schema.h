@@ -214,7 +214,127 @@ CREATE TABLE routine_symbol (
   is_tls_initialization_alias INTEGER NOT NULL DEFAULT 0,
   is_defined INTEGER NOT NULL DEFAULT 0,
   has_no_effect INTEGER,
-  is_ineligible INTEGER
+  is_ineligible INTEGER,
+  address_taken INTEGER NOT NULL DEFAULT 0,
+  overrides_base_member INTEGER NOT NULL DEFAULT 0,
+  is_override INTEGER NOT NULL DEFAULT 0,
+  is_abstract INTEGER,
+  is_sealed INTEGER,
+  is_new_member INTEGER,
+  is_interface_slot INTEGER,
+  definition_cannot_be_generated INTEGER,
+  covariant_return_virtual_override INTEGER NOT NULL DEFAULT 0,
+  is_declared_constexpr INTEGER NOT NULL DEFAULT 0,
+  is_constexpr_intrinsic INTEGER NOT NULL DEFAULT 0,
+  is_called INTEGER NOT NULL DEFAULT 0,
+  is_explicit_constructor INTEGER NOT NULL DEFAULT 0,
+  is_explicit_conversion_function INTEGER NOT NULL DEFAULT 0,
+  is_trivial_default_constructor INTEGER NOT NULL DEFAULT 0,
+  is_trivial_copy_function INTEGER NOT NULL DEFAULT 0,
+  is_trivial_destructor INTEGER NOT NULL DEFAULT 0,
+  is_initializer_list_ctor INTEGER NOT NULL DEFAULT 0,
+  is_delegating_ctor INTEGER NOT NULL DEFAULT 0,
+  is_inheriting_ctor INTEGER NOT NULL DEFAULT 0,
+  inherits_virtually INTEGER NOT NULL DEFAULT 0,
+  is_deduction_guide_from_inheriting_ctor INTEGER NOT NULL DEFAULT 0,
+  assignment_to_this_done INTEGER,
+  is_template_function INTEGER NOT NULL DEFAULT 0,
+  is_specialized INTEGER NOT NULL DEFAULT 0,
+  specialized_with_old_syntax INTEGER NOT NULL DEFAULT 0,
+  is_prototype_instantiation INTEGER NOT NULL DEFAULT 0,
+  never_throws INTEGER NOT NULL DEFAULT 0,
+  is_in_class_specialization INTEGER NOT NULL DEFAULT 0,
+  explicit_instantiation INTEGER NOT NULL DEFAULT 0,
+  class_explicitly_instantiated INTEGER NOT NULL DEFAULT 0,
+  explicit_do_not_instantiate INTEGER NOT NULL DEFAULT 0,
+  has_nodiscard_attribute INTEGER NOT NULL DEFAULT 0,
+  never_inline INTEGER,
+  is_naked INTEGER,
+  declared_only_as_friend INTEGER,
+  explicit_extern_inline INTEGER,
+  is_direct_linkage_specifier_on_nondef_decl INTEGER,
+  is_initialization_routine INTEGER,
+  is_finalization_routine INTEGER,
+  is_weak INTEGER,
+  is_weakref INTEGER,
+  is_gnu_alias INTEGER,
+  is_ifunc INTEGER,
+  has_gnu_used_attribute INTEGER,
+  has_gnu_abi_tag_attribute INTEGER,
+  in_gnu_abi_tag_namespace INTEGER,
+  implicit_abi_tags_added INTEGER,
+  allocates_memory INTEGER,
+  no_instrument_function INTEGER,
+  no_check_memory_usage INTEGER,
+  always_inline INTEGER,
+  gnu_c89_inline INTEGER,
+  implicit_alias INTEGER,
+  has_internal_linkage_attribute INTEGER,
+  can_be_instantiated INTEGER,
+  do_not_instantiate INTEGER,
+  instance_required INTEGER,
+  contains_try_block INTEGER NOT NULL DEFAULT 0,
+  contains_local_class_type INTEGER NOT NULL DEFAULT 0,
+  superseded_external INTEGER NOT NULL DEFAULT 0,
+  is_defined_in_friend_decl INTEGER NOT NULL DEFAULT 0,
+  is_defined_outside_of_parent INTEGER NOT NULL DEFAULT 0,
+  is_inlinable INTEGER,
+  definition_needed INTEGER,
+  expl_template_arg_list_used INTEGER NOT NULL DEFAULT 0,
+  definition_has_direct_linkage_specifier INTEGER,
+  definition_for_inlining_only INTEGER NOT NULL DEFAULT 0,
+  inline_instance_required INTEGER,
+  suppress_inline_body INTEGER NOT NULL DEFAULT 0,
+  need_out_of_line_copy INTEGER NOT NULL DEFAULT 0,
+  contains_statement_expression INTEGER NOT NULL DEFAULT 0,
+  inline_in_class_definition INTEGER,
+  is_use_comdat INTEGER,
+  is_alias_entry INTEGER,
+  statics_have_been_promoted INTEGER,
+  is_lambda_body INTEGER NOT NULL DEFAULT 0,
+  declared_using_type_without_linkage INTEGER NOT NULL DEFAULT 0,
+  contains_local_static_variable INTEGER NOT NULL DEFAULT 0,
+  is_embeds_source_entries INTEGER,
+  is_raw_literal_operator INTEGER NOT NULL DEFAULT 0,
+  has_ctor_priority INTEGER,
+  has_dtor_priority INTEGER,
+  has_deducible_return_type INTEGER NOT NULL DEFAULT 0,
+  has_deduced_return_type INTEGER NOT NULL DEFAULT 0,
+  contains_generic_lambda INTEGER NOT NULL DEFAULT 0,
+  is_coroutine INTEGER NOT NULL DEFAULT 0,
+  friend_defined_in_instantiation INTEGER NOT NULL DEFAULT 0,
+  has_pass_object_size_attr INTEGER NOT NULL DEFAULT 0,
+  from_injected_tokens INTEGER NOT NULL DEFAULT 0,
+  is_pure_function INTEGER,
+  declared_storage_class_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  declared_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
+  operator_name_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  lambda_call_operator_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  deduction_guide_template_id INTEGER REFERENCES template_definition(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_function_number TEXT,
+  constexpr_intrinsic INTEGER,
+  trailing_requires_clause_id INTEGER REFERENCES requires_clause(id) DEFERRABLE INITIALLY DEFERRED,
+  inherited_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  generating_using_id INTEGER REFERENCES using_declaration(id) DEFERRABLE INITIALLY DEFERRED,
+  overriding_function_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  overridden_function_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  this_adjustment TEXT,
+  vcall_index TEXT,
+  return_adjustment TEXT,
+  vbase_index TEXT,
+  ctor_dtor_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  initialization_priority TEXT,
+  fp_contract_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  fenv_access_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  cx_limited_range_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  fx_full_precision_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  fx_fract_overflow_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  fx_accum_overflow_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  upc_access_method INTEGER,
+  elf_visibility_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  surrounding_name_linkage_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  definition_c_name_linkage_specified INTEGER,
+  gnu_supplement_id INTEGER REFERENCES gnu_routine_supplement(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE routine_parameter (
@@ -340,10 +460,26 @@ CREATE TABLE field_symbol (
   is_mutable INTEGER NOT NULL DEFAULT 0,
   is_bit_field INTEGER NOT NULL DEFAULT 0,
   is_generated_base INTEGER NOT NULL DEFAULT 0,
-  is_generated_vptr INTEGER NOT NULL DEFAULT 0,
+  is_generated_vptr INTEGER,
   bit_size_constant_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED,
   bit_width_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  declared_bit_size TEXT
+  declared_bit_size TEXT,
+  is_anonymous_parent_object INTEGER NOT NULL DEFAULT 0,
+  is_init_capture INTEGER NOT NULL DEFAULT 0,
+  is_captured_this INTEGER NOT NULL DEFAULT 0,
+  is_captured_pack_element INTEGER NOT NULL DEFAULT 0,
+  has_initializer INTEGER NOT NULL DEFAULT 0,
+  init_is_ctor_dependent INTEGER NOT NULL DEFAULT 0,
+  has_direct_braced_initializer INTEGER NOT NULL DEFAULT 0,
+  has_nonconstant_initializer INTEGER NOT NULL DEFAULT 0,
+  has_no_unique_address_attribute INTEGER NOT NULL DEFAULT 0,
+  is_optimized_empty_class INTEGER NOT NULL DEFAULT 0,
+  bit_size_constant_expr_in_local_expr_node_ref INTEGER NOT NULL DEFAULT 0,
+  is_packed INTEGER,
+  vla_treated_as_zero_length_array INTEGER,
+  class_subobject_with_tail_padding INTEGER,
+  bit_field_is_signed INTEGER,
+  explicit_alignment TEXT
 ) STRICT;
 
 CREATE TABLE field_property (
@@ -567,7 +703,59 @@ CREATE TABLE routine_type (
   is_const INTEGER NOT NULL DEFAULT 0,
   is_volatile INTEGER NOT NULL DEFAULT 0,
   ref_qualifier_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
-  has_prototype INTEGER NOT NULL DEFAULT 1
+  has_prototype INTEGER NOT NULL DEFAULT 1,
+  old_style_params_scanned INTEGER NOT NULL DEFAULT 0,
+  has_trailing_return_type INTEGER NOT NULL DEFAULT 0,
+  lint_argsused_flag INTEGER NOT NULL DEFAULT 0,
+  value_returned_by_cctor INTEGER NOT NULL DEFAULT 0,
+  value_returned_as_parameter INTEGER,
+  return_value_parameter_follows_this INTEGER,
+  assoc_routine_is_ctor INTEGER NOT NULL DEFAULT 0,
+  assoc_routine_is_dtor INTEGER NOT NULL DEFAULT 0,
+  assoc_routine_is_lambda_body INTEGER NOT NULL DEFAULT 0,
+  routine_name_linkage_is_explicit INTEGER NOT NULL DEFAULT 0,
+  does_not_return INTEGER NOT NULL DEFAULT 0,
+  has_enable_if_attribute INTEGER NOT NULL DEFAULT 0,
+  result_should_be_used INTEGER,
+  is_gnu_const INTEGER,
+  is_variadic_instance INTEGER NOT NULL DEFAULT 0,
+  explicit_calling_convention INTEGER,
+  had_been_implicitly_const INTEGER NOT NULL DEFAULT 0,
+  is_conditionally_explicit INTEGER NOT NULL DEFAULT 0,
+  has_this_param INTEGER NOT NULL DEFAULT 0,
+  associated_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  prototype_scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
+  lint_varargs_count INTEGER NOT NULL DEFAULT -1,
+  argument_pragma_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  format_argument INTEGER,
+  first_format_substitution_argument INTEGER,
+  sentinel_position INTEGER,
+  is_restrict INTEGER NOT NULL DEFAULT 0,
+  is_atomic INTEGER NOT NULL DEFAULT 0,
+  is_nullable INTEGER NOT NULL DEFAULT 0,
+  is_nonnull INTEGER NOT NULL DEFAULT 0,
+  is_null_unspecified INTEGER NOT NULL DEFAULT 0,
+  is_unaligned INTEGER NOT NULL DEFAULT 0,
+  is_near INTEGER NOT NULL DEFAULT 0,
+  is_far INTEGER NOT NULL DEFAULT 0,
+  is_shared INTEGER NOT NULL DEFAULT 0,
+  is_upc_strict INTEGER NOT NULL DEFAULT 0,
+  is_upc_relaxed INTEGER NOT NULL DEFAULT 0,
+  address_space INTEGER,
+  is_this_const INTEGER NOT NULL DEFAULT 0,
+  is_this_volatile INTEGER NOT NULL DEFAULT 0,
+  is_this_restrict INTEGER NOT NULL DEFAULT 0,
+  is_this_atomic INTEGER NOT NULL DEFAULT 0,
+  is_this_nullable INTEGER NOT NULL DEFAULT 0,
+  is_this_nonnull INTEGER NOT NULL DEFAULT 0,
+  is_this_null_unspecified INTEGER NOT NULL DEFAULT 0,
+  is_this_unaligned INTEGER NOT NULL DEFAULT 0,
+  is_this_near INTEGER NOT NULL DEFAULT 0,
+  is_this_far INTEGER NOT NULL DEFAULT 0,
+  is_this_shared INTEGER NOT NULL DEFAULT 0,
+  is_this_upc_strict INTEGER NOT NULL DEFAULT 0,
+  is_this_upc_relaxed INTEGER NOT NULL DEFAULT 0,
+  this_address_space INTEGER
 ) STRICT;
 
 CREATE TABLE parameter_type (
@@ -674,7 +862,52 @@ CREATE TABLE record_type (
   maximum_member_alignment TEXT,
   is_interface INTEGER NOT NULL DEFAULT 0,
   is_interface_like INTEGER NOT NULL DEFAULT 0,
-  is_sealed INTEGER NOT NULL DEFAULT 0
+  is_sealed INTEGER NOT NULL DEFAULT 0,
+  compiler_generated INTEGER,
+  has_subobject_type INTEGER,
+  is_generic_lambda_closure_class INTEGER NOT NULL DEFAULT 0,
+  has_lambda_conversion_function INTEGER NOT NULL DEFAULT 0,
+  is_initializer_list INTEGER NOT NULL DEFAULT 0,
+  has_initializer_list_ctor INTEGER NOT NULL DEFAULT 0,
+  has_anonymous_union_member INTEGER NOT NULL DEFAULT 0,
+  defined_in_variable_initializer INTEGER NOT NULL DEFAULT 0,
+  defined_in_field_initializer INTEGER NOT NULL DEFAULT 0,
+  named_in_inline_template_directive INTEGER NOT NULL DEFAULT 0,
+  is_va_list_tag INTEGER NOT NULL DEFAULT 0,
+  defined_in_parent_class INTEGER NOT NULL DEFAULT 0,
+  has_nodiscard_attribute INTEGER NOT NULL DEFAULT 0,
+  has_field_initializer INTEGER NOT NULL DEFAULT 0,
+  contains_error INTEGER,
+  contains_local_type INTEGER,
+  contains_unnamed_namespace_type INTEGER,
+  does_not_contain_parentless_lambda_in_default_argument INTEGER,
+  does_not_contain_deprecated_or_unavailable_type INTEGER,
+  inheritance_kind_is_explicit INTEGER,
+  has_coclass_attribute INTEGER,
+  has_explicitly_aligned_subobject INTEGER,
+  definition_needed INTEGER,
+  primary_base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_function_info_base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_function_info_offset TEXT,
+  highest_virtual_function_number TEXT,
+  next_negative_virtual_table_index TEXT,
+  first_vcall_offset_index TEXT,
+  virtual_function_table_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_table_table_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  uuid_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  uuid_string_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
+  original_tag_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  inheritance_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  elf_visibility_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  anonymous_union_kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  anonymous_union_field_id INTEGER REFERENCES field_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  allocation_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  deallocation_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  minimum_template_arguments INTEGER NOT NULL DEFAULT -1,
+  lambda_parent_entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
+  proxy_of_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
+  is_near INTEGER,
+  is_far INTEGER
 ) STRICT;
 
 CREATE TABLE type_reference (
@@ -759,7 +992,7 @@ CREATE TABLE field_layout (
   offset TEXT,
   bit_offset TEXT,
   bit_width TEXT,
-  container_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
+  container_offset TEXT,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
@@ -780,8 +1013,24 @@ CREATE TABLE base_subobject (
   offset TEXT,
   is_virtual INTEGER NOT NULL DEFAULT 0,
   is_direct INTEGER NOT NULL DEFAULT 0,
-  parent_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
-  base_field_id INTEGER REFERENCES field_symbol(id) DEFERRABLE INITIALLY DEFERRED
+  ambiguous INTEGER NOT NULL DEFAULT 0,
+  shares_virtual_function_info INTEGER NOT NULL DEFAULT 0,
+  ignore_during_dependent_lookup INTEGER NOT NULL DEFAULT 0,
+  is_optimized_empty_base INTEGER NOT NULL DEFAULT 0,
+  is_pack_expansion INTEGER NOT NULL DEFAULT 0,
+  has_public_derivation INTEGER NOT NULL DEFAULT 0,
+  complete_subobject INTEGER,
+  original_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
+  direct_base_number INTEGER NOT NULL DEFAULT 0,
+  primary_base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  data_section_base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_base_pointer_offset TEXT,
+  virtual_base_pointer_base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_function_table_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  virtual_function_table_index TEXT,
+  construction_table_index TEXT,
+  construction_subarray_index TEXT,
+  virtual_base_offset_index TEXT
 ) STRICT;
 
 CREATE TABLE base_derivation (
@@ -821,6 +1070,7 @@ CREATE TABLE override_relation (
   return_adjustment_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
   adjustment TEXT,
   return_adjustment TEXT,
+  base_ordinal INTEGER,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
@@ -1947,7 +2197,8 @@ CREATE TABLE exception_specification (
   throw_any INTEGER NOT NULL DEFAULT 0,
   noexcept_effective INTEGER,
   is_dependent INTEGER NOT NULL DEFAULT 0,
-  is_indeterminate INTEGER NOT NULL DEFAULT 0
+  is_indeterminate INTEGER NOT NULL DEFAULT 0,
+  copy_from_prototype INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 
 CREATE TABLE exception_specification_type (
@@ -2098,8 +2349,7 @@ CREATE TABLE template_header (
   scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
   source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
   is_generic INTEGER NOT NULL DEFAULT 0,
-  constraint_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED,
-  requires_position_id INTEGER REFERENCES source_position(id) DEFERRABLE INITIALLY DEFERRED
+  requires_clause_id INTEGER REFERENCES requires_clause(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE template_parameter (
@@ -2670,6 +2920,120 @@ CREATE TABLE data_member_spec (
   bit_width TEXT NOT NULL,
   no_unique_address INTEGER NOT NULL DEFAULT 0
 ) STRICT;
+
+CREATE TABLE requires_clause (
+  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
+  constraint_expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  requires_position_id INTEGER REFERENCES source_position(id) DEFERRABLE INITIALLY DEFERRED
+) STRICT;
+
+CREATE TABLE gnu_routine_supplement (
+  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
+  section_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
+  assembly_name_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
+  aliased_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  inline_partner_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  resolver_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  constructor_priority TEXT,
+  destructor_priority TEXT,
+  is_representative INTEGER,
+  is_target_specific_version INTEGER,
+  resolver_required INTEGER,
+  representative_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED
+) STRICT;
+
+CREATE TABLE routine_selected_override (
+  owner_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE routine_befriending_class (
+  owner_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE routine_multiversion (
+  owner_id INTEGER REFERENCES gnu_routine_supplement(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_base_postorder (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  target_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_base_preorder (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  target_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_befriending_class (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  target_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_friend (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  target_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_promoted_type (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  target_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE field_initializer_entity (
+  owner_id INTEGER REFERENCES field_symbol(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE owner_decl_modifier (
+  owner_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, kind_id)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE routine_target_architecture (
+  owner_id INTEGER REFERENCES gnu_routine_supplement(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id, kind_id)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_event_interface (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  target_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE record_vcall_offset (
+  owner_id INTEGER REFERENCES record_type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
+  vtable_index TEXT NOT NULL,
+  is_primary INTEGER NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
 INSERT INTO kind VALUES(1001,'entity','translation_unit');
 INSERT INTO kind VALUES(1002,'entity','name');
 INSERT INTO kind VALUES(1003,'entity','scope');

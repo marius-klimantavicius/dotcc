@@ -80,15 +80,10 @@ static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) 
 #if MICROSOFT_EXTENSIONS_ALLOWED
   generic=p->is_generic;
 #endif
-  Rid constraint=0,requires_position=0;
-  if(!generic && p->constraint.requires_clause) {
-    constraint=roslyn_expr(p->constraint.requires_clause->constraint,7002);
-    requires_position=roslyn_position(p->constraint.requires_clause->requires_pos);
-  }
+  Rid requires_clause=!generic?roslyn_requires_clause(p->constraint.requires_clause):0;
   DB.put("template_header",{{"id",id},{"template_id",R(owner_id)},{"parent_id",R(parent)},
     {"scope_id",R(roslyn_scope(p->scope))},{"source_origin_id",R(roslyn_origin(p->template_pos))},
-    {"is_generic",static_cast<int>(generic)},{"constraint_id",R(constraint)},
-    {"requires_position_id",R(requires_position)}});
+    {"is_generic",static_cast<int>(generic)},{"requires_clause_id",R(requires_clause)}});
 #if MICROSOFT_EXTENSIONS_ALLOWED
   if(generic) {
     int clause_ordinal=0;

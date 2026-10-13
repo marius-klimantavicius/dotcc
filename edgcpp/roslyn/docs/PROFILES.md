@@ -12,8 +12,8 @@ extensions and source-semantic native Microsoft ABI remain required.
 
 | Profile | Required behavior | Current evidence | Remaining validation |
 |---|---|---|---|
-| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Verified b7f52f778 primary compiler/object/reader checkpoint, lowering=1/EH tables=1/full lowering=0; exact fixed-point/complex/imaginary/float16/float128/bfloat and pointer-member guards | Complete extension/union fields; 243 contextual array/VTT and lifetime acceptance in progress; unordered EH and remaining host/numeric configurations |
-| source | Source-semantic capture with native Microsoft ABI | Verified b7f52f778 source compiler/object/reader checkpoint: GNU/native-MS attributes, VLA/statement/member-call/coroutine/initializer traversal, template identity and modules | 243 constructor/lifetime/shared-attribute acceptance and all remaining active semantic fields; optional coordinates are not gates |
+| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Verified b7f52f778 primary compiler/object/reader checkpoint, lowering=1/EH tables=1/full lowering=0; exact fixed-point/complex/imaginary/float16/float128/bfloat and pointer-member guards | Complete extension/union fields; 243 contextual array/VTT and lifetime acceptance verified; unordered EH and remaining host/numeric configurations |
+| source | Source-semantic capture with native Microsoft ABI | Verified b7f52f778 source compiler/object/reader checkpoint: GNU/native-MS attributes, VLA/statement/member-call/coroutine/initializer traversal, template identity and modules | 243 constructor/lifetime/shared-attribute acceptance verified; all remaining active semantic fields; optional coordinates are not gates |
 | cfront | Stock cfront compatibility including assignment-to-this and allocation folded into constructors | Verified b7f52f778 cfront-like IA64=0 basic/m0/objects/types/numeric checkpoint; overlay assignment=1/new-fold=1 | Genuine archaic operator activation and USL cfront2.1/3.0 configurations, exact virtual-base/control ABI role assertions |
 | exported | Legacy exported-template retention | Verified b7f52f778 compiler/object/reader checkpoint and actual C++03 --export input, two retained export-marked templates; runtime prototype/all-template-info flags 1 | All guarded exported template payloads and definition-text availability/profile evidence |
 
@@ -50,13 +50,14 @@ required evidence before either profile is accepted.
 
 
 The b7f52f778 checkpoint validates the stated 232-table slice across all four
-profiles; it does not establish whole-profile closure. The current 243 semantic
-refresh remains in progress. Maximum native coverage additionally requires resolved guard
+profiles; it does not establish whole-profile closure. The 0cae3dd0b checkpoint additionally validates the 243 semantic slice with 750
+assertions across 75 genuine snapshot paths. Full profile closure remains open. Maximum native coverage additionally requires resolved guard
 and genuine activation probes for UPC, fixed-point, supported vector/host numeric
 forms, native COM/IDL attributes and C++26 reflection/token/data-member descriptors.
 Current overlays that disable an optional stock feature do not remove that feature
-from the approved native scope. MAINTAIN_CLASS_MEMBER_LIST is separately selectable
-(default 0) and must be activated before accepting ordered class declarations.
+from the approved native scope. MAINTAIN_CLASS_MEMBER_LIST is enabled by the source profile (stock default0);
+its genuine ordered member-declaration acceptance belongs to source semantic
+identity/order, separately from optional coordinates.
 
 
 Source location is optional following the user's 2026-10-13 steering. Preserve
@@ -68,7 +69,49 @@ lifetimes/identity; incomplete optional coordinates do not block it.
 The active 243 configuration enables stock REFLECTION_ENABLING_POSSIBLE. A genuine
 GNU-mode `--set_flag reflection` input publishes nine reflection values and one
 retained prospective data-member specification with zero foreign-key failures;
-reader acceptance remains pending. Source-only RECORD_UNRECOGNIZED_ATTRIBUTES is
-being enabled for actual shared vendor-attribute descriptor lists. These are
+reader acceptance passed in 0cae3dd0b. Source-only RECORD_UNRECOGNIZED_ATTRIBUTES is
+enabled and actual shared vendor-attribute descriptor lists are verified. These are
 retained semantic identity probes, not optional coordinate reconstruction. Both
 resolved capability values and exact runtime arguments accompany refreshed objects.
+
+
+## Remaining maximum-native configurations
+
+Read-only preprocessing of each actual staged Ninja backend command resolves
+UPC_EXTENSIONS_ALLOWED, NEAR_AND_FAR_ALLOWED, GNU_VECTOR_TYPES_ALLOWED,
+RISCV_VECTOR_BUILTINS_ENABLED, FIXED_POINT_ALLOWED, host float128 and float16
+to1 in all four builds. These need genuine runtime activation, not an additional
+convenience overlay. Stock options are --upc/--upc_threads and
+--upc_strict/--upc_relaxed; near/far requires --microsoft_16 (ordinary Microsoft
+mode explicitly clears that runtime choice). GNU scalable syntax is
+__edg_scalable_vector_type__(int,2).
+
+Target-specific predefined SVE/vector-count/RISC-V families additionally require
+the corresponding stock ARM64/RISC-V target and version: ARM64 SVE GNU10/Clang10;
+SVCount GNU14/Clang17; RISC-V GNU13/Clang14; tuples GNU14/Clang17; bfloat vector
+GNU15/Clang19 (sys_predef3150-3193). Separate stock target profiles, preserving
+all actual resolved/runtime facts, must activate these where supported.
+
+SUN_EXTENSIONS_ALLOWED, CFRONT_2_1_OBJECT_CODE_COMPATIBILITY,
+CFRONT_3_0_OBJECT_CODE_COMPATIBILITY and USE_SOFTFLOAT resolve0 in the four
+current builds. Sun needs its stock compile flag plus --sun. USL2.1 and3.0 are
+mutually exclusive actual ABI builds, distinct from cfront dialect/IA64=0.
+Alternate host numeric storage follows the stock mutually exclusive
+USE_FLOAT128/LONG_DOUBLE/DOUBLE choices; SoftFloat3e+ is an external dependency
+with all three host selectors disabled. These remain explicit M4 profile gates,
+subject only to authoritative upstream platform/configuration limitations.
+
+
+Source Win64 Microsoft layout needs suffixed stock configuration overrides, not
+only target/dialect labels or the unsuffixed legacy flag. The prior Linux-built
+source target setter resolved TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_win64 and
+TARG_MICROSOFT_BIT_FIELD_ALLOCATION_win64 to0 through BACK_END_IS_CP_GEN_BE.
+Verified258 activation uses source-only suffix1 for both and enables
+RECORD_BIT_FIELD_CONTAINER_OFFSETS_IN_IL=1. Actual resolved/runtime values and
+genuine pointer-member/container-byte assertions pass on the refreshed profile:
+ABI=microsoft, both runtime decisions1, seven actual container offsets. Other
+profiles retain their own actual ABI decisions.
+
+The258 milestone passes93 genuine paths /1028 reader assertions and explicit
+1KiB writer pages. This extends tested family coverage; maximum-native guard
+activation and full per-field/union closure remain open.

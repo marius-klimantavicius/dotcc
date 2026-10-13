@@ -52,6 +52,9 @@ models = {
     'attribute':('Attribute','Attribute'), 'attribute_argument':('AttributeArgument','AttributeArgument'),
     'attribute_group':('AttributeGroup','AttributeGroup'),
     'data_member_spec':('DataMemberSpecification','DataMemberSpecification'),
+    'requires_clause':('RequiresClause','RequiresClause'),
+    'exception_specification':('ExceptionSpecification','ExceptionSpecification'),
+    'gnu_routine_supplement':('GnuRoutineSupplement','GnuRoutineSupplement'),
     'block_descriptor':('BlockDescriptor','BlockDescriptor'), 'try_descriptor':('TryDescriptor','TryDescriptor'),
     'local_static_initialization':('LocalStaticInitialization','LocalStaticInitialization'),
     'constructor_initializer':('ConstructorInitializer','ConstructorInitializer'),
@@ -65,10 +68,27 @@ booleans = {'compiler_generated','negative','nan_quiet','signed','incomplete','i
     'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete',
     'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer','gnu_asm_form','error_descriptor',
     'contains_unsupported_constructs','implementation_unit_importing_self','descriptor_incomplete','boolean_value','no_unique_address'}
+# Direct retained flags whose nullable profile columns do not use is_/has_.
+booleans.update({'assignment_to_this_done','never_throws','never_inline','declared_only_as_friend',
+    'explicit_extern_inline','in_gnu_abi_tag_namespace','implicit_abi_tags_added','allocates_memory',
+    'no_instrument_function','no_check_memory_usage','always_inline','gnu_c89_inline','implicit_alias',
+    'can_be_instantiated','do_not_instantiate','instance_required','definition_needed',
+    'definition_has_direct_linkage_specifier','inline_instance_required','inline_in_class_definition',
+    'statics_have_been_promoted','definition_c_name_linkage_specified','result_should_be_used',
+    'explicit_calling_convention','resolver_required','old_style_params_scanned','lint_argsused_flag',
+    'value_returned_by_cctor','value_returned_as_parameter','return_value_parameter_follows_this',
+    'assoc_routine_is_ctor','assoc_routine_is_dtor','assoc_routine_is_lambda_body',
+    'routine_name_linkage_is_explicit','does_not_return','had_been_implicitly_const','has_this_param',
+    'complete_subobject'})
 numeric_text = {'scope_number','local_scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','first_line','logical_line','physical_line',
     'integer_argument','integer_value','pointer_alignment','shared_block_size','number_of_constraints'}
+numeric_text.update({'virtual_function_number','this_adjustment','vcall_index','return_adjustment',
+    'vbase_index','initialization_priority','constructor_priority','destructor_priority',
+    'virtual_function_table_index','construction_table_index','construction_subarray_index',
+    'virtual_base_offset_index','highest_virtual_function_number','next_negative_virtual_table_index',
+    'first_vcall_offset_index','vtable_index'})
 numeric_atom = {('integer_value','value_id'),('floating_value','significand_id'),
     ('floating_value','nan_payload_id'),('fixed_point_value','scaled_integer_id')}
 lines = ['// Generated from schema/roslynobj.sql by managed/tools/generate_bindings.py. Do not edit.',
@@ -111,7 +131,7 @@ for table, block in blocks:
             if not nullable:
                 expr = f'RequiredNumber(Data.OptionalText("{col}"))' if isnumeric else expr+'!'
         else:
-            typ='bool' if col.startswith(('is_','has_')) or col in booleans or 'DEFAULT 0' in tail else 'long'
+            typ='bool' if col.startswith(('is_','has_')) or col in booleans or ('DEFAULT 0' in tail and col!='direct_base_number') else 'long'
             expr=f'Data.{"Bool" if typ=="bool" else "Long"}("{col}")'
         if ref and ref.group(1)=='kind' and nullable:
             expr=f'Object.Link(Data.OptionalLong("{col}"), value => Object.Kind(value))'

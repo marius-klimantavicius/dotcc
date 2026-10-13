@@ -203,6 +203,8 @@ try
         var unit=obj.TranslationUnit;
         Numeric.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         SemanticProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        RoutineProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
+        LayoutProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         var functionCount=0;var operationCount=0;var bodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
         foreach(var function in unit.Functions)
         {

@@ -37,6 +37,7 @@ static Rid roslyn_entity(const a_tagged_pointer &p) {
  case iek_asm_entry:return roslyn_asm(reinterpret_cast<an_asm_entry_ptr>(p.ptr));
  case iek_vla_dimension:return roslyn_vla_dimension(reinterpret_cast<a_vla_dimension_ptr>(p.ptr));
  case iek_param_type:return roslyn_parameter_type(reinterpret_cast<a_param_type_ptr>(p.ptr));
+ case iek_requires_clause:return roslyn_requires_clause(reinterpret_cast<a_requires_clause_ptr>(p.ptr));
  case iek_template_arg:return roslyn_argument(reinterpret_cast<a_template_arg_ptr>(p.ptr));
  case iek_token_sequence:return roslyn_token_sequence(reinterpret_cast<a_token_sequence_ptr>(p.ptr));
  case iek_attribute:return roslyn_attribute(reinterpret_cast<an_attribute_ptr>(p.ptr));

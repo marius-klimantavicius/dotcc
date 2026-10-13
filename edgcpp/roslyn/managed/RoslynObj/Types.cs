@@ -75,16 +75,16 @@ public sealed class ArrayType : CppType
     public Operation? BoundExpression => Array.BoundExpression;
 }
 
-public sealed class RoutineType : CppType
+public sealed partial class RoutineType : CppType
 {
     internal RoutineType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public RoutineTypeDetails Routine => Object.Detail("routine_type", Id, r => new RoutineTypeDetails(Object, r));
     public CppType ReturnType => Routine.ResultType;
     public IReadOnlyList<SignatureParameter> Parameters => Object.List("SELECT p.*,t.owner_id,t.ordinal,t.parameter_type_id,t.role_id,t.base_subobject_id FROM routine_type_parameter t JOIN parameter_type p ON p.id=t.parameter_type_id WHERE t.owner_id=$owner ORDER BY t.ordinal", Id, r => new SignatureParameter(Object, r),"parameter_type");
-    public ExceptionSpecificationDetails? ExceptionSpecification => Routine.ExceptionSpecification;
+    public ExceptionSpecification? ExceptionSpecification => Routine.ExceptionSpecification;
 }
 
-public class RecordType : CppType
+public partial class RecordType : CppType
 {
     internal RecordType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public RecordTypeDetails Record => Object.Detail("record_type", Id, r => new RecordTypeDetails(Object, r));
@@ -126,24 +126,26 @@ public sealed class DependentType : CppType
     public DependentTypeDetails Dependency => Object.Detail("dependent_type", Id, r => new DependentTypeDetails(Object, r));
 }
 
-public sealed class RecordLayout : SemanticEntity
+public sealed partial class RecordLayout : SemanticEntity
 {
     internal RecordLayout(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public RecordLayoutDetails Details { get; }
     public CppType Type => Details.Type;
     public BigInteger Size => Type.Size;
     public BigInteger Alignment => Type.Alignment;
-    public IReadOnlyList<FieldLayoutDetails> Fields => Object.List("SELECT * FROM field_layout WHERE owner_id=$owner ORDER BY ordinal", Id, r => new FieldLayoutDetails(Object, r));
+    public IReadOnlyList<FieldLayout> Fields => Object.List("SELECT * FROM field_layout WHERE owner_id=$owner ORDER BY ordinal", Id, r => new FieldLayout(Object, r));
 }
 
-public sealed class BaseSubobject : SemanticEntity
+public sealed partial class BaseSubobject : SemanticEntity
 {
     internal BaseSubobject(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public BaseSubobjectDetails Details { get; }
     public CppType MostDerivedType => Details.MostDerivedType;
     public CppType BaseType => Details.BaseType;
     public BigInteger? Offset => Details.Offset;
-    public BaseSubobject? Parent => Details.Parent;
+    public long DirectBaseNumber => Details.DirectBaseNumber;
+    public bool? IsCompleteSubobject => Details.CompleteSubobject;
+    public IReadOnlyList<OverrideRelationDetails> Overrides => Object.List("SELECT * FROM override_relation WHERE subobject_id=$owner ORDER BY base_ordinal,owner_id,ordinal",Id,r=>new OverrideRelationDetails(Object,r));
     public IReadOnlyList<BaseDerivation> Derivations => Object.List("SELECT * FROM base_derivation WHERE base_subobject_id=$owner ORDER BY ordinal,id",Id,r=>Object.Derivation(r.Long("id")),"base_derivation");
 }
 

@@ -78,6 +78,12 @@ static Rid roslyn_type(a_type_ptr);
 static Rid roslyn_scope(a_scope_ptr);
 static Rid roslyn_routine(a_routine_ptr);
 static Rid roslyn_variable(a_variable_ptr);
+#if DECL_MODIFIERS_IN_USE
+static void roslyn_decl_modifiers(Rid,a_decl_modifier_set);
+#endif
+static void roslyn_routine_type(a_type_ptr,Rid);
+static Rid roslyn_requires_clause(a_requires_clause_ptr);
+static void roslyn_qualifier_fields(std::vector<std::pair<const char*,RoslynSqlValue>> &,a_type_qualifier_set);
 static Rid roslyn_field(a_field_ptr,a_type_ptr=nullptr);
 static Rid roslyn_label(a_label_ptr);
 static Rid roslyn_constant(a_constant_ptr);
@@ -142,7 +148,7 @@ static a_routine_ptr roslyn_scope_routine(a_scope_ptr p) {std::set<a_scope_ptr> 
 static a_scope_ptr roslyn_source_scope(a_source_correspondence &c) {if(c.parent_scope)return c.parent_scope;auto found=roslyn_scope_parents.find(&c);return found==roslyn_scope_parents.end()?nullptr:found->second;}
 static Rid roslyn_owner(a_source_correspondence &c) {
  a_scope_ptr retained_parent=roslyn_source_scope(c);
- if(retained_parent&&retained_parent->kind==sck_class_struct_union)return roslyn_type(retained_parent->variant.assoc_type);
+ if(retained_parent&&(retained_parent->kind==sck_class_struct_union||retained_parent->kind==sck_enum))return roslyn_type(retained_parent->variant.assoc_type);
  if(retained_parent&&retained_parent->kind==sck_namespace)return roslyn_namespace(retained_parent->variant.assoc_namespace);
  if(c.enclosing_routine)return roslyn_routine(c.enclosing_routine);
  if(retained_parent){a_scope_ptr p=retained_parent;if(p->kind==sck_class_struct_union)return roslyn_type(p->variant.assoc_type);if(p->kind==sck_namespace)return roslyn_namespace(p->variant.assoc_namespace);return roslyn_scope(p);}
@@ -181,7 +187,7 @@ static Rid roslyn_scope(a_scope_ptr p) {
  bool fresh;Rid id=DB.claim(p,"scope",fresh);if(!fresh)return id;
  int saved_role=roslyn_default_role;a_routine_ptr saved_routine=roslyn_current_routine;
  a_routine_ptr owning_routine=roslyn_scope_routine(p);if(owning_routine){roslyn_current_routine=owning_routine;roslyn_default_role=roslyn_routine_role(owning_routine);}
- Rid assoc=0;if(p->kind==sck_function)assoc=roslyn_routine(p->variant.routine.ptr);else if(p->kind==sck_namespace)assoc=roslyn_namespace(p->variant.assoc_namespace);else if(p->kind==sck_class_struct_union)assoc=roslyn_type(p->variant.assoc_type);
+ Rid assoc=0;if(p->kind==sck_function)assoc=roslyn_routine(p->variant.routine.ptr);else if(p->kind==sck_namespace)assoc=roslyn_namespace(p->variant.assoc_namespace);else if(p->kind==sck_class_struct_union||p->kind==sck_func_prototype||p->kind==sck_enum)assoc=roslyn_type(p->variant.assoc_type);else if(p->kind==sck_condition)assoc=roslyn_statement(p->variant.assoc_statement);else if(p->kind==sck_block)assoc=roslyn_handler(p->variant.assoc_handler);
  DB.put("scope",{{"id",id},{"kind_id",roslyn_kind_edg_scope(p->kind)},{"parent_id",R(roslyn_scope(roslyn_scope_parent(p)))},{"associated_entity_id",R(assoc)},{"lifetime_id",R(roslyn_lifetime(p->lifetime))},{"function_static_lifetime_id",R(p->kind==sck_function?roslyn_lifetime(p->variant.routine.lifetime_of_local_static_vars):0)}});
  int n=0;
 #define MEMBER(target) DB.put("scope_member",{{"owner_id",id},{"ordinal",n++},{"member_id",target}})
@@ -222,35 +228,9 @@ static Rid roslyn_namespace(a_namespace_ptr p) {
  bool fresh;Rid id=DB.claim(p,"namespace",fresh);if(!fresh)return id;roslyn_symbol(id,"namespace",p->source_corresp,0);
  DB.put("namespace_symbol",{{"id",id},{"scope_id",R(p->is_namespace_alias?0:roslyn_scope(p->variant.assoc_scope))},{"alias_target_id",R(p->is_namespace_alias?roslyn_namespace(p->variant.assoc_namespace):0)},{"is_inline",static_cast<int>(p->is_inline)},{"is_anonymous",static_cast<int>(p->source_corresp.name==nullptr)}});return id;
 }
-static Rid roslyn_routine(a_routine_ptr p) {
- bool fresh;Rid id=DB.claim(p,"routine",fresh);if(!fresh)return id;roslyn_prepare_declaration(id);
- int saved_role=roslyn_default_role;roslyn_default_role=roslyn_routine_role(p);
- a_routine_ptr saved_routine=roslyn_current_routine;roslyn_current_routine=p;
- Rid type=roslyn_type(p->type);roslyn_symbol(id,"routine",p->source_corresp,type,p->compiler_generated);
-
- a_scope_ptr scope=p->function_def_number!=NULL_function_def_number?scope_for_routine_or_null(p):nullptr;roslyn_collect_local_initializers(scope);
- roslyn_fact(id,"original_signature",DO_IL_LOWERING&&!roslyn_metadata_routine(p)?"lost":"available",DO_IL_LOWERING&&!roslyn_metadata_routine(p)?"Stock lowering changes the current signature; the unlowered routine type is not backend-readable.":nullptr);
- bool retained_parameters=scope!=nullptr;for(a_param_type_ptr a=skip_typerefs(p->type)->variant.routine.extra_info->param_type_list;a;a=a->next)if(a->param_num)retained_parameters=true;
- roslyn_fact(id,"source_parameters",retained_parameters||!DO_IL_LOWERING?"available":"not_retained",retained_parameters||!DO_IL_LOWERING?nullptr:"The current signature has no retained source-parameter association; current ABI parameters remain available.");
- Rid saved_eh=roslyn_current_eh;roslyn_current_eh=0;Rid root=scope?roslyn_statement(scope->assoc_block,roslyn_routine_role(p)):0;
- Rid containing=roslyn_type(skip_typerefs(p->type)->variant.routine.extra_info->this_class);if(!containing&&p->source_corresp.is_class_member&&p->source_corresp.parent_scope)containing=roslyn_type(p->source_corresp.parent_scope->variant.assoc_type);
- RoslynSqlValue has_no_effect;
-#if DO_IL_LOWERING
- if(p->has_no_effect)has_no_effect=RoslynSqlValue(1);
-#endif
- DB.put("routine_symbol",{{"id",id},{"routine_type_id",type},{"containing_type_id",R(containing)},{"body_root_id",R(root)},{"body_scope_id",R(roslyn_scope(scope))},{"body_state_id",K("body_state",p->is_prototype_instantiation?"dependent":scope||p->defined?"definition":"declaration_only")},{"is_defined",static_cast<int>(p->defined)},{"has_no_effect",has_no_effect},{"is_ineligible",p->is_ineligible?RoslynSqlValue(1):RoslynSqlValue()},{"is_virtual",static_cast<int>(p->is_virtual)},{"is_pure",static_cast<int>(p->pure_virtual)},{"is_inline",static_cast<int>(p->is_inline)},{"is_constexpr",static_cast<int>(p->is_constexpr)},{"is_deleted",static_cast<int>(p->is_deleted)},{"is_defaulted",static_cast<int>(p->is_defaulted)},{"is_consteval",static_cast<int>(p->is_consteval)},{"is_final",static_cast<int>(p->final)},{"is_tls_initialization_routine",static_cast<int>(p->is_tls_init_routine)},{"is_tls_initialization_alias",TLS_ALIAS(p)},{"special_function_id",roslyn_kind_edg_special_function(p->special_kind)},{"builtin_kind_id",R(p->special_kind==sfk_none?roslyn_builtin_function_kind(p->variant.builtin_function_kind):0)},{"primary_entry_id",R(ROSLYN_PRIMARY_ENTRY(p))},{"template_id",R(roslyn_template(p->assoc_template))},{"instance_id",R(p->assoc_template?roslyn_instance(p,id,p->assoc_template,p->template_arg_list,nullptr):0)}});
- if(scope){int ordinal=0;a_param_type_ptr formal=skip_typerefs(p->type)->variant.routine.extra_info->param_type_list;for(a_variable_ptr v=scope->variant.routine.parameters;v;v=v->next){DB.put("routine_parameter",{{"owner_id",id},{"ordinal",ordinal++},{"parameter_id",roslyn_variable(v)},{"role_id",K("role",v->is_this_parameter?"this_parameter":roslyn_parameter_role(p->type,formal,p))},{"is_source_parameter",static_cast<int>(!v->is_this_parameter&&v->variant.assoc_param_type&&v->variant.assoc_param_type->param_num!=0)}});if(formal)formal=formal->next;}}
- roslyn_current_eh=saved_eh;roslyn_current_routine=saved_routine;roslyn_default_role=saved_role;return id;
-}
+#include "roslyn_routines.h"
 #include "roslyn_variables.h"
-static Rid roslyn_field(a_field_ptr p,a_type_ptr record) {
- bool fresh;Rid id=DB.claim(p,"field",fresh);if(!fresh)return id;roslyn_prepare_declaration(id);Rid type=roslyn_type(p->type);roslyn_symbol(id,"field",p->source_corresp,type,p->compiler_generated);
- if(!record&&p->source_corresp.parent_scope)record=p->source_corresp.parent_scope->variant.assoc_type;
- #if MICROSOFT_EXTENSIONS_ALLOWED
- if(p->property_or_event_descr){auto property=p->property_or_event_descr;if(property->kind==pek_declspec_property)DB.put("field_property",{{"id",id},{"get_name_id",R(DB.atom(property->get_routine.name))},{"put_name_id",R(DB.atom(property->set_routine.name))}});}
-#endif
- DB.put("field_symbol",{{"id",id},{"record_type_id",roslyn_type(record)},{"type_id",type},{"is_bit_field",static_cast<int>(p->is_bit_field)},{"is_mutable",static_cast<int>(p->is_mutable)},{"default_initialization_id",R(roslyn_init(p->initializer,7002))},{"bit_size_constant_id",R(roslyn_constant(p->bit_size_constant))},{"bit_width_expression_id",R(roslyn_expr(p->bit_size_constant_expr_in_local_expr_node_ref?roslyn_local_expression(p,lerk_bit_field_width):p->bit_size_constant?p->bit_size_constant->expr:nullptr,7002))},{"declared_bit_size",p->is_bit_field?RoslynSqlValue(Q(p->declared_bit_size)):RoslynSqlValue()}});return id;
-}
+#include "roslyn_layout.h"
 static Rid roslyn_label(a_label_ptr p) {
  bool fresh;Rid id=DB.claim(p,"label",fresh);if(!fresh)return id;roslyn_symbol(id,"label",p->source_corresp,0);
  DB.put("label_symbol",{{"id",id},{"statement_id",R(roslyn_statement(p->exec_stmt))},{"lifetime_id",R(p->exec_stmt&&p->exec_stmt->kind==stmk_label?roslyn_lifetime(p->exec_stmt->variant.label.lifetime):0)},{"is_break",static_cast<int>(p->break_label)},{"is_continue",static_cast<int>(p->continue_label)}});return id;
@@ -527,19 +507,6 @@ static Rid roslyn_statement(a_statement_ptr p,int role) {
  }
  roslyn_default_role=saved_role;return id;
 }
-static Rid roslyn_base(a_base_class_ptr p) {
- bool fresh;Rid id=DB.claim(p,"base_subobject",fresh);if(!fresh)return id;
- bool has_offset;
-#if IA64_ABI
- has_offset=p->offset_is_set;
-#else
- has_offset=p->derived_class&&!p->derived_class->incomplete&&!p->is_pack_expansion&&!p->derived_class->variant.class_struct_union.is_prototype_instantiation;
-#endif
- DB.put("base_subobject",{{"id",id},{"most_derived_type_id",roslyn_type(p->derived_class)},{"base_type_id",roslyn_type(p->type)},{"offset",has_offset?RoslynSqlValue(Q(p->offset)):RoslynSqlValue()},{"is_virtual",static_cast<int>(p->is_virtual)},{"is_direct",static_cast<int>(p->direct)}});
- int path_number=0;for(a_base_class_derivation_ptr d=p->derivation;d;d=d->next){bool df;Rid deriv=DB.claim(d,"base_derivation",df);if(!df)continue;int count=0;for(a_derivation_step_ptr step=d->path;step;step=step->next){DB.put("base_derivation_step",{{"owner_id",deriv},{"ordinal",count++},{"subobject_id",roslyn_base(step->base_class)}});if(step==d->path_tail)break;}DB.put("base_derivation",{{"id",deriv},{"base_subobject_id",id},{"ordinal",path_number++},{"is_direct",static_cast<int>(d->direct)},{"is_preferred",static_cast<int>(d->preferred)},{"access_id",K("access",d->access==as_private?"private":d->access==as_protected?"protected":"public")},{"path_tail_ordinal",count?RoslynSqlValue(count-1):RoslynSqlValue()}});}
- if(!p->is_pack_expansion){for(an_overriding_virtual_function_ptr o=p->variant.overriding_virtual_functions;o;o=o->next)DB.put("override_relation",{{"owner_id",roslyn_routine(o->overriding_function)},{"ordinal",roslyn_override_ordinals[roslyn_routine(o->overriding_function)]++},{"overridden_id",roslyn_routine(o->primary_function)},{"subobject_id",id},{"overriding_subobject_id",R(roslyn_base(o->base_class))},{"return_adjustment_subobject_id",R(roslyn_base(o->return_adjustment_base_class))}});}
- return id;
-}
 #include "roslyn_templates.h"
 static Rid roslyn_primary_declaration(Rid symbol) {
  auto known=roslyn_primary_declarations.find(symbol);return known==roslyn_primary_declarations.end()?0:known->second;
@@ -584,11 +551,12 @@ static void roslyn_macros() {
 }
 static void roslyn_capability(const char *name,const std::string &value,bool enabled,bool required=false){DB.put("build_capability",{{"name_id",DB.atom(name)},{"state_id",K("availability","available")},{"value_id",DB.atom(value)},{"enabled",static_cast<int>(enabled)},{"required",static_cast<int>(required)}});}
 static void roslyn_back_end() {
- RoslynStore store;roslyn_db=&store;roslyn_current_eh=0;roslyn_static_ordinal=0;roslyn_override_ordinals.clear();roslyn_local_constants.clear();roslyn_projected_tables.clear();roslyn_function_eh.clear();roslyn_regions.clear();roslyn_current_routine=nullptr;roslyn_default_role=DO_IL_LOWERING?7001:7003;roslyn_macro_invocations.clear();roslyn_positions.clear();roslyn_ranges.clear();roslyn_origins.clear();roslyn_availability.clear();roslyn_values.clear();roslyn_name_values.clear();roslyn_primary_declarations.clear();roslyn_parameter_placeholders.clear();roslyn_constant_values.clear();roslyn_scope_parents.clear();roslyn_local_expressions.clear();roslyn_vla_contexts.clear();roslyn_collected_scopes.clear();
+ RoslynStore store;roslyn_db=&store;roslyn_current_eh=0;roslyn_static_ordinal=0;roslyn_override_ordinals.clear();roslyn_field_records.clear();roslyn_local_constants.clear();roslyn_projected_tables.clear();roslyn_function_eh.clear();roslyn_regions.clear();roslyn_current_routine=nullptr;roslyn_default_role=DO_IL_LOWERING?7001:7003;roslyn_macro_invocations.clear();roslyn_positions.clear();roslyn_ranges.clear();roslyn_origins.clear();roslyn_availability.clear();roslyn_values.clear();roslyn_name_values.clear();roslyn_primary_declarations.clear();roslyn_parameter_placeholders.clear();roslyn_constant_values.clear();roslyn_scope_parents.clear();roslyn_local_expressions.clear();roslyn_vla_contexts.clear();roslyn_collected_scopes.clear();
  std::string output=std::getenv("ROSLYNOBJ_OUTPUT")?std::getenv("ROSLYNOBJ_OUTPUT"):std::string(il_header.primary_source_file->file_name)+".roslynobj";
  std::string temporary=output+".tmp.XXXXXX";std::vector<char> sibling(temporary.begin(),temporary.end());sibling.push_back(0);int temporary_fd=mkstemp(sibling.data());if(temporary_fd<0){std::perror("roslynobj temporary output");std::exit(EXIT_FAILURE);}if(::close(temporary_fd)!=0){std::perror("roslynobj temporary close");std::remove(sibling.data());std::exit(EXIT_FAILURE);}temporary=sibling.data();
  if(sqlite3_open_v2(temporary.c_str(),&store.connection,SQLITE_OPEN_READWRITE,nullptr)!=SQLITE_OK)store.fail(sqlite3_errmsg(store.connection));
- const char *page_size=std::getenv("ROSLYNOBJ_SQLITE_PAGE_SIZE");if(page_size){if(std::strcmp(page_size,"1024")&&std::strcmp(page_size,"2048")&&std::strcmp(page_size,"4096")&&std::strcmp(page_size,"8192"))store.fail("ROSLYNOBJ_SQLITE_PAGE_SIZE must be 1024, 2048, 4096, or 8192");else store.exec((std::string("PRAGMA page_size=")+page_size).c_str());}
+ const char *page_size=std::getenv("ROSLYNOBJ_SQLITE_PAGE_SIZE");if(!page_size)page_size="1024";
+ if(std::strcmp(page_size,"1024")&&std::strcmp(page_size,"2048")&&std::strcmp(page_size,"4096")&&std::strcmp(page_size,"8192"))store.fail("ROSLYNOBJ_SQLITE_PAGE_SIZE must be 1024, 2048, 4096, or 8192");else store.exec((std::string("PRAGMA page_size=")+page_size).c_str());
  store.exec("PRAGMA foreign_keys=ON; PRAGMA journal_mode=DELETE; BEGIN IMMEDIATE;");store.exec(roslynobj_schema_sql);
  roslyn_unit=DB.fresh("translation_unit");
  roslyn_fact(roslyn_unit,"macro_tree",MACRO_INVOCATION_TREE_IN_IL?"available":"disabled",MACRO_INVOCATION_TREE_IN_IL?nullptr:"MACRO_INVOCATION_TREE_IN_IL is disabled in this resolved build.");
@@ -600,6 +568,7 @@ static void roslyn_back_end() {
  DB.put("translation_unit",{{"id",roslyn_unit},{"global_scope_id",scope},{"entry_point_id",R(roslyn_routine(il_header.main_routine))},{"primary_input_id",source},{"language_mode_id",DB.atom(std::string(il_header.source_language==sl_C?"c":"c++")+Q(il_header.std_version))}});
  DB.put("target_profile",{{"id",1},{"abi_id",K("abi",IA64_ABI?"itanium":targ_microsoft_ptr_to_member_sizing?"microsoft":CFRONT_OBJECT_CODE_COMPATIBILITY?"cfront":"cfront_like")},{"addressable_unit_bits",static_cast<int>(targ_char_bit)},{"little_endian",static_cast<int>(targ_little_endian)},{"pointer_bits",static_cast<int>(targ_sizeof_pointer*targ_char_bit)},{"pointer_alignment",Q(targ_alignof_pointer)}});
 #define CAP(name) roslyn_capability(#name,Q(name),name!=0)
+ CAP(RECORD_BIT_FIELD_CONTAINER_OFFSETS_IN_IL);CAP(TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_win64);CAP(TARG_MICROSOFT_BIT_FIELD_ALLOCATION_win64);CAP(targ_microsoft_bit_field_allocation);
  CAP(il_header.plain_chars_are_signed);CAP(il_header.pcc_compatibility_mode);CAP(il_header.enum_type_is_integral);CAP(il_header.default_max_member_alignment);CAP(il_header.UCN_identifiers_used);CAP(il_header.vla_used);CAP(il_header.any_templates_seen);CAP(il_header.prototype_instantiations_in_il);CAP(il_header.il_has_all_prototype_instantiations);CAP(il_header.il_has_C_semantics);CAP(il_header.target_configuration_index);
 #if GNU_EXTENSIONS_ALLOWED
  CAP(il_header.gcc_mode);CAP(il_header.gpp_mode);CAP(il_header.clang_mode);CAP(il_header.gnu_version);CAP(il_header.clang_version);CAP(il_header.short_enums);CAP(il_header.default_nocommon);CAP(il_header.gnu_c89_inlining);

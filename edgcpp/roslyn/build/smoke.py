@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export the genuine current lifetime and variable fixtures, serially."""
+"""Export the genuine semantic-family fixtures, serially."""
 import argparse
 import json
 import os
@@ -17,7 +17,14 @@ CASES = {
     'variables': ['--c++20', '--gnu_version', '130000'],
     'reflection': ['--c++26', '--g++', '--set_flag', 'reflection'],
     'source_attributes': ['--c++20', '--gnu_version', '130000'],
+    'layout': ['--c++20', '--gnu_version', '130000'],
+    'layout_c': ['--c99', '--gnu_version', '130000'],
+    'routines': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'routines_exception': ['--c++14', '--gnu_version', '130000'],
+    'layout_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
+    'routines_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
 }
+SOURCE_ONLY = {'layout_microsoft', 'routines_microsoft'}
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', choices=('native', 'source', 'cfront', 'exported'), default='native')
@@ -31,10 +38,13 @@ environment = os.environ.copy()
 environment['ROSLYNOBJ_COMPILER'] = str(compiler_root / 'build/bin/roslyn-cpfe')
 results = []
 failed = False
-for name in args.fixture or CASES:
+selected = args.fixture or [name for name in CASES if args.profile == 'source' or name not in SOURCE_ONLY]
+if args.profile != 'source' and any(name in SOURCE_ONLY for name in selected):
+    parser.error('Microsoft layout cases require the source profile configured for Microsoft ABI')
+for name in selected:
     destination = output / (name + '.roslynobj')
-    source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / (name + '.cpp') if name in ('reflection', 'source_attributes')
-              else ROOT / 'tests/fixtures' / (name + '.cpp'))
+    source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' / (name + '.cpp') if name in ('reflection', 'source_attributes', 'routines', 'routines_exception', 'routines_microsoft')
+              else ROOT / 'tests/fixtures' / ('layout.cpp' if name == 'layout_microsoft' else name + ('.c' if name == 'layout_c' else '.cpp')))
     command = ['python3', str(ROOT / 'build/roslyn-cpfe.py'), *CASES[name],
                str(source), '-o', str(destination)]
     start = time.monotonic()
@@ -47,6 +57,7 @@ for name in args.fixture or CASES:
         with sqlite3.connect(destination.resolve().as_uri() + '?mode=ro', uri=True) as database:
             result['entities'] = database.execute('SELECT count(*) FROM entity').fetchone()[0]
             result['fk_errors'] = len(database.execute('PRAGMA foreign_key_check').fetchall())
+            result['page_size'] = database.execute('PRAGMA page_size').fetchone()[0]
         failed |= result['fk_errors'] != 0
     else:
         failed = True

@@ -98,6 +98,9 @@ static Rid roslyn_variable(a_variable_ptr p) {
 #endif
 #undef VARIABLE_FLAG
  DB.put_fields("variable_symbol",fields);
+#if DECL_MODIFIERS_IN_USE
+ roslyn_decl_modifiers(id,p->decl_modifiers);
+#endif
  if(p->is_struct_binding_container){int ordinal=0;for(an_il_entity_list_entry_ptr b=p->variant.bindings;b;b=b->next){
   if(b->entity.kind!=iek_variable){DB.fail("Structured binding list contains a non-variable entry");break;}
   DB.put("variable_binding",{{"owner_id",id},{"ordinal",ordinal++},{"variable_id",roslyn_variable(reinterpret_cast<a_variable_ptr>(b->entity.ptr))}});

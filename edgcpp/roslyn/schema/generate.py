@@ -35,7 +35,10 @@ def append_columns(name, columns):
             existing = set(re.findall(r'^  (\w+) ', definition, re.M))
             added = set(re.findall(r'^  (\w+) ', extension, re.M))
             assert not existing & added, (name, existing & added)
-            tables[index] = definition.replace('\n) STRICT;', ',\n' + extension + '\n) STRICT;')
+            if '\n  PRIMARY KEY (' in definition:
+                tables[index] = definition.replace('\n  PRIMARY KEY (', '\n' + extension + ',\n  PRIMARY KEY (', 1)
+            else:
+                tables[index] = definition.replace('\n)', ',\n' + extension + '\n)', 1)
             return
     raise ValueError('Unknown typed table ' + name)
 def value_table(name, columns):
@@ -957,6 +960,301 @@ declared_storage_class_id @kind
 declared_type_id @type
 embeds_source_entries INTEGER NOT NULL DEFAULT 0''')
 
+
+
+
+# Reviewed class/layout and routine/signature semantic contract (post-243).
+append_columns('routine_symbol', '''address_taken INTEGER NOT NULL DEFAULT 0
+overrides_base_member INTEGER NOT NULL DEFAULT 0
+is_override INTEGER NOT NULL DEFAULT 0
+is_abstract INTEGER
+is_sealed INTEGER
+is_new_member INTEGER
+is_interface_slot INTEGER
+definition_cannot_be_generated INTEGER
+covariant_return_virtual_override INTEGER NOT NULL DEFAULT 0
+is_declared_constexpr INTEGER NOT NULL DEFAULT 0
+is_constexpr_intrinsic INTEGER NOT NULL DEFAULT 0
+is_called INTEGER NOT NULL DEFAULT 0
+is_explicit_constructor INTEGER NOT NULL DEFAULT 0
+is_explicit_conversion_function INTEGER NOT NULL DEFAULT 0
+is_trivial_default_constructor INTEGER NOT NULL DEFAULT 0
+is_trivial_copy_function INTEGER NOT NULL DEFAULT 0
+is_trivial_destructor INTEGER NOT NULL DEFAULT 0
+is_initializer_list_ctor INTEGER NOT NULL DEFAULT 0
+is_delegating_ctor INTEGER NOT NULL DEFAULT 0
+is_inheriting_ctor INTEGER NOT NULL DEFAULT 0
+inherits_virtually INTEGER NOT NULL DEFAULT 0
+is_deduction_guide_from_inheriting_ctor INTEGER NOT NULL DEFAULT 0
+assignment_to_this_done INTEGER
+is_template_function INTEGER NOT NULL DEFAULT 0
+is_specialized INTEGER NOT NULL DEFAULT 0
+specialized_with_old_syntax INTEGER NOT NULL DEFAULT 0
+is_prototype_instantiation INTEGER NOT NULL DEFAULT 0
+never_throws INTEGER NOT NULL DEFAULT 0
+is_in_class_specialization INTEGER NOT NULL DEFAULT 0
+explicit_instantiation INTEGER NOT NULL DEFAULT 0
+class_explicitly_instantiated INTEGER NOT NULL DEFAULT 0
+explicit_do_not_instantiate INTEGER NOT NULL DEFAULT 0
+has_nodiscard_attribute INTEGER NOT NULL DEFAULT 0
+never_inline INTEGER
+is_naked INTEGER
+declared_only_as_friend INTEGER
+explicit_extern_inline INTEGER
+is_direct_linkage_specifier_on_nondef_decl INTEGER
+is_initialization_routine INTEGER
+is_finalization_routine INTEGER
+is_weak INTEGER
+is_weakref INTEGER
+is_gnu_alias INTEGER
+is_ifunc INTEGER
+has_gnu_used_attribute INTEGER
+has_gnu_abi_tag_attribute INTEGER
+in_gnu_abi_tag_namespace INTEGER
+implicit_abi_tags_added INTEGER
+allocates_memory INTEGER
+no_instrument_function INTEGER
+no_check_memory_usage INTEGER
+always_inline INTEGER
+gnu_c89_inline INTEGER
+implicit_alias INTEGER
+has_internal_linkage_attribute INTEGER
+can_be_instantiated INTEGER
+do_not_instantiate INTEGER
+instance_required INTEGER
+contains_try_block INTEGER NOT NULL DEFAULT 0
+contains_local_class_type INTEGER NOT NULL DEFAULT 0
+superseded_external INTEGER NOT NULL DEFAULT 0
+is_defined_in_friend_decl INTEGER NOT NULL DEFAULT 0
+is_defined_outside_of_parent INTEGER NOT NULL DEFAULT 0
+is_inlinable INTEGER
+definition_needed INTEGER
+expl_template_arg_list_used INTEGER NOT NULL DEFAULT 0
+definition_has_direct_linkage_specifier INTEGER
+definition_for_inlining_only INTEGER NOT NULL DEFAULT 0
+inline_instance_required INTEGER
+suppress_inline_body INTEGER NOT NULL DEFAULT 0
+need_out_of_line_copy INTEGER NOT NULL DEFAULT 0
+contains_statement_expression INTEGER NOT NULL DEFAULT 0
+inline_in_class_definition INTEGER
+is_use_comdat INTEGER
+is_alias_entry INTEGER
+statics_have_been_promoted INTEGER
+is_lambda_body INTEGER NOT NULL DEFAULT 0
+declared_using_type_without_linkage INTEGER NOT NULL DEFAULT 0
+contains_local_static_variable INTEGER NOT NULL DEFAULT 0
+is_embeds_source_entries INTEGER
+is_raw_literal_operator INTEGER NOT NULL DEFAULT 0
+has_ctor_priority INTEGER
+has_dtor_priority INTEGER
+has_deducible_return_type INTEGER NOT NULL DEFAULT 0
+has_deduced_return_type INTEGER NOT NULL DEFAULT 0
+contains_generic_lambda INTEGER NOT NULL DEFAULT 0
+is_coroutine INTEGER NOT NULL DEFAULT 0
+friend_defined_in_instantiation INTEGER NOT NULL DEFAULT 0
+has_pass_object_size_attr INTEGER NOT NULL DEFAULT 0
+from_injected_tokens INTEGER NOT NULL DEFAULT 0
+is_pure_function INTEGER
+declared_storage_class_id @kind
+declared_type_id @type
+operator_name_id @kind
+lambda_call_operator_id @routine_symbol
+deduction_guide_template_id @template_definition
+virtual_function_number TEXT
+constexpr_intrinsic INTEGER
+trailing_requires_clause_id @requires_clause
+inherited_routine_id @routine_symbol
+generating_using_id @using_declaration
+overriding_function_id @routine_symbol
+overridden_function_id @routine_symbol
+this_adjustment TEXT
+vcall_index TEXT
+return_adjustment TEXT
+vbase_index TEXT
+ctor_dtor_kind_id @kind
+initialization_priority TEXT
+fp_contract_id @kind
+fenv_access_id @kind
+cx_limited_range_id @kind
+fx_full_precision_id @kind
+fx_fract_overflow_id @kind
+fx_accum_overflow_id @kind
+upc_access_method INTEGER
+elf_visibility_id @kind
+surrounding_name_linkage_id @kind
+definition_c_name_linkage_specified INTEGER
+gnu_supplement_id @gnu_routine_supplement''')
+append_columns('routine_type', '''old_style_params_scanned INTEGER NOT NULL DEFAULT 0
+has_trailing_return_type INTEGER NOT NULL DEFAULT 0
+lint_argsused_flag INTEGER NOT NULL DEFAULT 0
+value_returned_by_cctor INTEGER NOT NULL DEFAULT 0
+value_returned_as_parameter INTEGER
+return_value_parameter_follows_this INTEGER
+assoc_routine_is_ctor INTEGER NOT NULL DEFAULT 0
+assoc_routine_is_dtor INTEGER NOT NULL DEFAULT 0
+assoc_routine_is_lambda_body INTEGER NOT NULL DEFAULT 0
+routine_name_linkage_is_explicit INTEGER NOT NULL DEFAULT 0
+does_not_return INTEGER NOT NULL DEFAULT 0
+has_enable_if_attribute INTEGER NOT NULL DEFAULT 0
+result_should_be_used INTEGER
+is_gnu_const INTEGER
+is_variadic_instance INTEGER NOT NULL DEFAULT 0
+explicit_calling_convention INTEGER
+had_been_implicitly_const INTEGER NOT NULL DEFAULT 0
+is_conditionally_explicit INTEGER NOT NULL DEFAULT 0
+has_this_param INTEGER NOT NULL DEFAULT 0
+associated_routine_id @routine_symbol
+prototype_scope_id @scope
+lint_varargs_count INTEGER NOT NULL DEFAULT -1
+argument_pragma_id @kind
+format_argument INTEGER
+first_format_substitution_argument INTEGER
+sentinel_position INTEGER
+is_restrict INTEGER NOT NULL DEFAULT 0
+is_atomic INTEGER NOT NULL DEFAULT 0
+is_nullable INTEGER NOT NULL DEFAULT 0
+is_nonnull INTEGER NOT NULL DEFAULT 0
+is_null_unspecified INTEGER NOT NULL DEFAULT 0
+is_unaligned INTEGER NOT NULL DEFAULT 0
+is_near INTEGER NOT NULL DEFAULT 0
+is_far INTEGER NOT NULL DEFAULT 0
+is_shared INTEGER NOT NULL DEFAULT 0
+is_upc_strict INTEGER NOT NULL DEFAULT 0
+is_upc_relaxed INTEGER NOT NULL DEFAULT 0
+address_space INTEGER
+is_this_const INTEGER NOT NULL DEFAULT 0
+is_this_volatile INTEGER NOT NULL DEFAULT 0
+is_this_restrict INTEGER NOT NULL DEFAULT 0
+is_this_atomic INTEGER NOT NULL DEFAULT 0
+is_this_nullable INTEGER NOT NULL DEFAULT 0
+is_this_nonnull INTEGER NOT NULL DEFAULT 0
+is_this_null_unspecified INTEGER NOT NULL DEFAULT 0
+is_this_unaligned INTEGER NOT NULL DEFAULT 0
+is_this_near INTEGER NOT NULL DEFAULT 0
+is_this_far INTEGER NOT NULL DEFAULT 0
+is_this_shared INTEGER NOT NULL DEFAULT 0
+is_this_upc_strict INTEGER NOT NULL DEFAULT 0
+is_this_upc_relaxed INTEGER NOT NULL DEFAULT 0
+this_address_space INTEGER''')
+append_columns('record_type', '''compiler_generated INTEGER
+has_subobject_type INTEGER
+is_generic_lambda_closure_class INTEGER NOT NULL DEFAULT 0
+has_lambda_conversion_function INTEGER NOT NULL DEFAULT 0
+is_initializer_list INTEGER NOT NULL DEFAULT 0
+has_initializer_list_ctor INTEGER NOT NULL DEFAULT 0
+has_anonymous_union_member INTEGER NOT NULL DEFAULT 0
+defined_in_variable_initializer INTEGER NOT NULL DEFAULT 0
+defined_in_field_initializer INTEGER NOT NULL DEFAULT 0
+named_in_inline_template_directive INTEGER NOT NULL DEFAULT 0
+is_va_list_tag INTEGER NOT NULL DEFAULT 0
+defined_in_parent_class INTEGER NOT NULL DEFAULT 0
+has_nodiscard_attribute INTEGER NOT NULL DEFAULT 0
+has_field_initializer INTEGER NOT NULL DEFAULT 0
+contains_error INTEGER
+contains_local_type INTEGER
+contains_unnamed_namespace_type INTEGER
+does_not_contain_parentless_lambda_in_default_argument INTEGER
+does_not_contain_deprecated_or_unavailable_type INTEGER
+inheritance_kind_is_explicit INTEGER
+has_coclass_attribute INTEGER
+has_explicitly_aligned_subobject INTEGER
+definition_needed INTEGER
+primary_base_subobject_id @base_subobject
+virtual_function_info_base_subobject_id @base_subobject
+virtual_function_info_offset TEXT
+highest_virtual_function_number TEXT
+next_negative_virtual_table_index TEXT
+first_vcall_offset_index TEXT
+virtual_function_table_variable_id @variable_symbol
+virtual_table_table_variable_id @variable_symbol
+uuid_variable_id @variable_symbol
+uuid_string_id @text_atom
+original_tag_kind_id @kind
+inheritance_kind_id @kind
+elf_visibility_id @kind
+anonymous_union_kind_id @kind
+anonymous_union_field_id @field_symbol
+allocation_routine_id @routine_symbol
+deallocation_routine_id @routine_symbol
+minimum_template_arguments INTEGER NOT NULL DEFAULT -1
+lambda_parent_entity_id @entity
+proxy_of_type_id @type
+is_near INTEGER
+is_far INTEGER''')
+append_columns('base_subobject', '''ambiguous INTEGER NOT NULL DEFAULT 0
+shares_virtual_function_info INTEGER NOT NULL DEFAULT 0
+ignore_during_dependent_lookup INTEGER NOT NULL DEFAULT 0
+is_optimized_empty_base INTEGER NOT NULL DEFAULT 0
+is_pack_expansion INTEGER NOT NULL DEFAULT 0
+has_public_derivation INTEGER NOT NULL DEFAULT 0
+complete_subobject INTEGER
+original_type_id @type
+direct_base_number INTEGER NOT NULL DEFAULT 0
+primary_base_subobject_id @base_subobject
+data_section_base_subobject_id @base_subobject
+virtual_base_pointer_offset TEXT
+virtual_base_pointer_base_subobject_id @base_subobject
+virtual_function_table_variable_id @variable_symbol
+virtual_function_table_index TEXT
+construction_table_index TEXT
+construction_subarray_index TEXT
+virtual_base_offset_index TEXT''')
+append_columns('field_symbol', '''is_anonymous_parent_object INTEGER NOT NULL DEFAULT 0
+is_init_capture INTEGER NOT NULL DEFAULT 0
+is_captured_this INTEGER NOT NULL DEFAULT 0
+is_captured_pack_element INTEGER NOT NULL DEFAULT 0
+has_initializer INTEGER NOT NULL DEFAULT 0
+init_is_ctor_dependent INTEGER NOT NULL DEFAULT 0
+has_direct_braced_initializer INTEGER NOT NULL DEFAULT 0
+has_nonconstant_initializer INTEGER NOT NULL DEFAULT 0
+has_no_unique_address_attribute INTEGER NOT NULL DEFAULT 0
+is_optimized_empty_class INTEGER NOT NULL DEFAULT 0
+bit_size_constant_expr_in_local_expr_node_ref INTEGER NOT NULL DEFAULT 0
+is_packed INTEGER
+vla_treated_as_zero_length_array INTEGER
+class_subobject_with_tail_padding INTEGER
+bit_field_is_signed INTEGER
+explicit_alignment TEXT''')
+append_columns('field_layout', '''container_offset TEXT''')
+append_columns('override_relation', '''base_ordinal INTEGER''')
+append_columns('template_header', '''requires_clause_id @requires_clause''')
+append_columns('exception_specification', 'copy_from_prototype INTEGER NOT NULL DEFAULT 0')
+entity('requires_clause', '''constraint_expression_id @expression NOT NULL
+requires_position_id @source_position''')
+entity('gnu_routine_supplement', '''section_id @text_atom
+assembly_name_id @text_atom
+aliased_routine_id @routine_symbol
+inline_partner_id @routine_symbol
+resolver_variable_id @variable_symbol
+constructor_priority TEXT
+destructor_priority TEXT
+is_representative INTEGER
+is_target_specific_version INTEGER
+resolver_required INTEGER
+representative_id @routine_symbol''')
+relation('routine_selected_override', 'owner_id @routine_symbol NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
+relation('routine_befriending_class', 'owner_id @routine_symbol NOT NULL\nordinal INTEGER NOT NULL\ntype_id @type NOT NULL')
+relation('routine_multiversion', 'owner_id @gnu_routine_supplement NOT NULL\nordinal INTEGER NOT NULL\nroutine_id @routine_symbol NOT NULL')
+relation('record_base_postorder', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntarget_id @base_subobject NOT NULL')
+relation('record_base_preorder', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntarget_id @base_subobject NOT NULL')
+relation('record_befriending_class', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntarget_id @type NOT NULL')
+relation('record_friend', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntarget_id @entity NOT NULL')
+relation('record_promoted_type', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntarget_id @type NOT NULL')
+relation('field_initializer_entity', 'owner_id @field_symbol NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
+relation('owner_decl_modifier', 'owner_id @entity NOT NULL\nkind_id @kind NOT NULL', 'owner_id, kind_id')
+relation('routine_target_architecture', 'owner_id @gnu_routine_supplement NOT NULL\nkind_id @kind NOT NULL', 'owner_id, kind_id')
+relation('record_event_interface', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\ntarget_id @type NOT NULL\nsource_origin_id @source_origin')
+relation('record_vcall_offset', 'owner_id @record_type NOT NULL\nordinal INTEGER NOT NULL\nroutine_id @routine_symbol\nbase_subobject_id @base_subobject\nvtable_index TEXT NOT NULL\nis_primary INTEGER NOT NULL')
+for index, definition in enumerate(tables):
+    if definition.startswith('CREATE TABLE field_layout ('):
+        definition = re.sub(r'^  container_type_id [^\n]+,\n', '', definition, flags=re.M)
+    if definition.startswith('CREATE TABLE base_subobject ('):
+        definition = re.sub(r'^  (?:parent_id|base_field_id) [^\n]+,\n', '', definition, flags=re.M)
+    if definition.startswith('CREATE TABLE field_symbol ('):
+        definition = definition.replace('is_generated_vptr INTEGER NOT NULL DEFAULT 0', 'is_generated_vptr INTEGER')
+    if definition.startswith('CREATE TABLE template_header ('):
+        definition = re.sub(r'^  (?:constraint_id|requires_position_id) [^\n]+,\n', '', definition, flags=re.M)
+    tables[index] = definition
 
 
 # Optional differing raw descriptor state has no default factual value.
