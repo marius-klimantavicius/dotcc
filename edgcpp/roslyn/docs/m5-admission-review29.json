@@ -1,0 +1,18 @@
+{
+  "scope": "Read-only M5 release admission and independent-artifact identity audit; no builds, tests, core or repository edits",
+  "implemented": [
+    "RoslynObject.Open checks supported major/minor, complete snapshot, exact required enabled schema+catalog fingerprint before exposing TranslationUnit, known catalog identity, and supported required enabled capability names.",
+    "Five required representation capability names are supported; backend emits graph, exact-values and schema always, source-semantic for source profile, partial-EH when retained context exists. Informational EDG build/runtime capabilities remain queryable without rejection.",
+    "schema/generate.py1493 fingerprints framed SQL and full catalog. Ordinary old genuine development snapshots are rejected at Open through existing --reject-incompatible path.",
+    "RoslynWorkspace opens independent RoslynObject instances and disposes opened instances if subsequent opening fails. No symbol merge or linker.",
+    "SemanticEntity equality/hash use artifact identity plus local entity ID; SemanticModel checks artifact identity before queries. Producer creates random128-bit artifact identity; independent compilation intentionally new identity.",
+    "Read-only bounded caching, concurrent reads/eviction and disposal have existing Concurrency.cs acceptance; unchanged code does not justify repeating full performance campaign."
+  ],
+  "remaining": [
+    "Final public release compatibility policy remains explicitly unfinished in managed/README.md230-238 and CLOSURE. Numeric format1.0 currently spans incompatible development fingerprints. Document final accepted release boundary and archived-development exclusion honestly.",
+    "No RoslynWorkspace or ArtifactIdentity references found in managed tests .cs; broader owned tests/build source has no positive workspace acceptance. Earlier narrative multi-TU-tested claim lacks located evidence. Add bounded public tests using existing genuine separate artifacts and same artifact reopens/copy, without native export or corruption inputs.",
+    "Workspace acceptance should show same-named independent TU entities unequal, same artifact reopened equal with stable hashes, no collection dedup/linking, cross-artifact SemanticModel rejection, independent object disposal and full workspace disposal. Clarify that copied immutable files preserve artifact identity while independent compilations do not."
+  ],
+  "policy_recommendation": "Freeze final approved fingerprint as the initial public release contract when semantic closure completes. Keep exact fingerprint admission for now; do not claim broad old-object support or add migration. State supported minor extensions are additive, incompatible semantics require a new major, and each future supported contract must be explicitly admitted and tested with genuine artifacts. A future unknown minor may be rejected; forward compatibility is not promised. Different informational EDG target/runtime profiles do not create linking or semantic equivalence.",
+  "non_goals": "No forged capability databases, corruption campaign, arbitrary column probing, semantic inference, cross-TU resolution, or speculative future schema framework."
+}

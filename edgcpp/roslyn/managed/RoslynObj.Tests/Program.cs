@@ -233,6 +233,7 @@ try
         ExecutionProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         ExecutionMetadataProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         ScalarFamilies.Verify(unit,Path.GetFileName(input),Check);
+        RetainedTypeProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         UnevaluatedProjection.Verify(unit,Path.GetFileName(input),Check);
         NavigationFamilies.Verify(unit,Path.GetFileName(input),Check);
         var functionCount=0;var operationCount=0;var executableBodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
@@ -543,7 +544,7 @@ try
             var visitor=new ProtocolVisitor();foreach(var operation in awaits)visitor.Visit(operation);visitor.Visit(coroutine);
             Check(visitor.Awaits>=12&&visitor.Coroutines==1,"Named coroutine and await visitors must dispatch to their corresponding hooks.");
         }
-        if(Path.GetFileName(input)=="source_statements.roslynobj")
+        if(Path.GetFileName(input)=="source_statements.roslynobj"&&obj.Manifest.CaptureProfile=="source_semantic")
         {
             var nodes=unit.Entities.OfType<SemanticNode>().ToArray();
             var range=nodes.OfType<RangeForOperation>().Single();

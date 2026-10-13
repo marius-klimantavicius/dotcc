@@ -52,8 +52,10 @@ static void roslyn_header_roots() {
    DB.put("translation_unit_root",{{"owner_id",roslyn_unit},{"kind_id",K("root_kind","resident_region")},{"ordinal",ordinal++},{"entity_id",roslyn_scope(s)}});
  ordinal=0;for(a_type_ptr t=il_header.nontag_types_used_in_exception_or_rtti;t;t=t->next)
   DB.put("translation_unit_root",{{"owner_id",roslyn_unit},{"kind_id",K("root_kind","nontag_type")},{"ordinal",ordinal++},{"entity_id",roslyn_type(t)}});
- ordinal=0;for(an_il_entity_list_entry_ptr e=il_header.file_scope_statements;e;e=e->next)
-  DB.put("translation_unit_root",{{"owner_id",roslyn_unit},{"kind_id",K("root_kind","file_scope_statement")},{"ordinal",ordinal++},{"entity_id",roslyn_entity(e->entity)}});
+ {int saved_role=roslyn_default_role;roslyn_default_role=7002;
+  ordinal=0;for(an_il_entity_list_entry_ptr e=il_header.file_scope_statements;e;e=e->next)
+   DB.put("translation_unit_root",{{"owner_id",roslyn_unit},{"kind_id",K("root_kind","file_scope_statement")},{"ordinal",ordinal++},{"entity_id",roslyn_entity(e->entity)}});
+  roslyn_default_role=saved_role;}
 #if SCOPE_ORPHANED_LIST_PROCESSING_NEEDED
  ordinal=0;for(a_scope_orphaned_list_header_ptr h=il_header.scope_orphaned_list_headers;h;h=h->next){
   bool fresh;Rid id=DB.claim(h,"orphan_scope",fresh);if(!fresh)continue;

@@ -4,6 +4,29 @@ internal static class ExecutionMetadataProjection
 {
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
+        if(fixture=="file_scope_metadata.roslynobj")
+        {
+            var roots=unit.Roots.Where(r=>r.Kind.Name=="file_scope_statement").OrderBy(r=>r.Ordinal).Select(r=>(BlockOperation)r.Entity).ToArray();
+            check(roots.Length==2&&roots.All(r=>r.RepresentationRole.Name=="metadata"&&r.Details.Parent is null),"The actual file-scope statement list must retain two metadata block roots with no inferred statement parent.");
+            var direct=roots.Single(r=>r.Statements.Any(s=>s.Expression is CallOperation {TargetMethod.Name:"header_side_effect"}));
+            var captured=Captured(direct).ToArray();
+            var unevaluated=captured.OfType<CallOperation>().Single();
+            check(captured.All(n=>n.RepresentationRole.Name=="metadata")&&unevaluated.TargetMethod?.Name=="header_side_effect"&&!direct.DescendantOperations().Any(),"The direct sizeof statement-expression must retain its actual selected call and structural subtree entirely as metadata.");
+            var control=unit.Functions.Single(f=>f.Name=="actual_file_stmt_control");
+            check(control.Body!.DescendantOperations().OfType<CallOperation>().Count(c=>c.TargetMethod==unevaluated.TargetMethod)==1,"The ordinary control function must evaluate its selected side-effect call exactly once.");
+            check(unit.Functions.Where(f=>f.Body is not null).All(f=>!f.Body!.DescendantOperations().Contains(unevaluated)),"A source-sequence association must not place the unevaluated direct call in any executable routine body.");
+            if(source)
+            {
+                check(unit.Entities.OfType<SourceEntry>().Any(e=>e.Target==direct)&&unit.Entities.OfType<SourceEndConstruct>().Any(e=>e.Target==direct),"The retained source entry and end association must point to the same metadata block without promoting it.");
+                var scheduled=unit.GlobalScope.DynamicInitializations.Single();
+                check(scheduled.Operation?.RepresentationRole.Name=="source_semantic"&&scheduled.Expression is CallOperation {TargetMethod.Name:"header_side_effect",RepresentationRole.Name:"source_semantic"},"The separate stock-scheduled local initializer must preserve its actual source execution role despite the enclosing sizeof block's metadata role.");
+            }
+            else
+            {
+                var startup=unit.Functions.Single(f=>f.Body is not null&&f!=control);
+                check(startup.IsCompilerGenerated&&startup.Body!.DescendantOperations().OfType<CallOperation>().Count(c=>c.TargetMethod==unevaluated.TargetMethod)==1,"The actual generated startup body must retain its one scheduled initializer call independently from the unevaluated direct statement-expression; the header's separate-init routine list need not contain this lowering-generated routine.");
+            }
+        }
         if(fixture=="gnu_asm_modify.roslynobj"||fixture=="source_statements.roslynobj"&&source)
         {
             var assembly=unit.Entities.OfType<AssemblyOperation>().ToArray();
@@ -76,6 +99,7 @@ internal static class ExecutionMetadataProjection
         }
         if(fixture=="retained.roslynobj"&&source)
         {
+            SemanticProjection.Sweep(unit.Entities.OfType<AllocationOperation>().Select(a=>a.Allocation),"allocation_expression",check);
             var call=unit.Entities.OfType<CallOperation>().Single(c=>c.TargetMethod is {Name:"read",ContainingType.Name:"ExplicitObject"});
             check(call.Receiver is null&&call.Arguments.Count==1&&call.Arguments[0].Parameter is {IsExplicitThis:true} descriptor&&descriptor==call.TargetMethod!.Parameters[0].Descriptor,"A retained explicit-object call must bind its first ordinary argument to the actual explicit-this descriptor while keeping Receiver absent.");
         }
@@ -83,7 +107,11 @@ internal static class ExecutionMetadataProjection
         {
             var initializations=unit.Entities.OfType<InitializationStatementOperation>().ToArray();
             if(initializations.Length>0)
+            {
                 check(initializations.All(s=>s.Children.OfType<InitializationOperation>().Any(i=>i.Initialization==s.Initialization)),"A named initialization statement must expose the same actual initialization that appears in its evaluated children.");
+                var visitor=new ResultVisitor();foreach(var statement in initializations)statement.Accept(visitor);
+                check(visitor.Initializations==initializations.Length,"Each typed initialization statement must dispatch its named visitor.");
+            }
             if(source&&fixture=="source_statements.roslynobj")
             {
                 var function=unit.Functions.Single(f=>f.Name=="statement_result");
@@ -91,11 +119,29 @@ internal static class ExecutionMetadataProjection
                 check(visitor.Results>0&&function.Body.DescendantOperations().OfType<StatementExpressionResultOperation>().Any(s=>s.Expression is not null),"A GNU statement-expression result must dispatch its named visitor and retain its actual result expression.");
             }
         }
+        if(source&&fixture is ("cleanup_semantics.roslynobj" or "retained.roslynobj"))
+        {
+            var labels=unit.Entities.OfType<LabelOperation>().ToArray();
+            check(labels.Length>0&&labels.All(l=>l.Lifetime is not null&&l.Lifetime==l.Label.Lifetime),"Actual source label statements must expose the exact retained LabelSymbol lifetime through ordinary LabelOperation navigation.");
+        }
+    }
+
+    private static IEnumerable<SemanticNode> Captured(SemanticNode root)
+    {
+        var pending=new Stack<SemanticNode>();var seen=new HashSet<SemanticNode>();pending.Push(root);
+        while(pending.TryPop(out var node))
+        {
+            if(!seen.Add(node))continue;
+            yield return node;
+            foreach(var child in node.Children)pending.Push(child);
+        }
     }
 
     private sealed class ResultVisitor : SemanticVisitor
     {
         public int Results;
+        public int Initializations;
         public override void VisitStatementExpressionResult(StatementExpressionResultOperation operation) { Results++;base.VisitStatementExpressionResult(operation); }
+        public override void VisitInitializationStatement(InitializationStatementOperation operation) { Initializations++;base.VisitInitializationStatement(operation); }
     }
 }

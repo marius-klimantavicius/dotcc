@@ -164,6 +164,9 @@ static Rid roslyn_source_sublist(a_src_seq_sublist_ptr p) {
 static Rid roslyn_source_entity(const a_tagged_pointer &p) {
   if(!p.ptr)return 0;
   switch(p.kind) {
+    case iek_statement:return roslyn_statement(reinterpret_cast<a_statement_ptr>(p.ptr),7002);
+    case iek_expr_node:return roslyn_expr(reinterpret_cast<an_expr_node_ptr>(p.ptr),7002);
+    case iek_dynamic_init:return roslyn_init(reinterpret_cast<a_dynamic_init_ptr>(p.ptr),7002);
     case iek_pragma:return roslyn_pragma(reinterpret_cast<a_pragma_ptr>(p.ptr));
 #if RECORD_MACROS_IN_IL
     case iek_macro:return roslyn_macro(reinterpret_cast<a_macro_ptr>(p.ptr));

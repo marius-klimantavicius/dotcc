@@ -258,6 +258,13 @@ public sealed class EnumSymbol : TypeSymbol
     public CppType? UnderlyingType => Details.UnderlyingType;
     public CppType? ExplicitUnderlyingType => Details.ExplicitUnderlyingType;
     public bool HasExplicitBase => Details.HasExplicitBase;
+    /// <summary>Exact retained enum scope associations; this reverse relation has no source order.</summary>
+    public IReadOnlyList<Scope> Scopes => Object.List("SELECT s.* FROM scope s JOIN kind k ON k.id=s.kind_id WHERE s.associated_entity_id=$owner AND k.name='sck_enum' ORDER BY s.id",Type.Id,r=>Object.Scope(r.Long("id")),"scope");
+    /// <summary>The unique retained enum scope, or null when absent or ambiguous.</summary>
+    public Scope? Scope
+    {
+        get { var scopes=Scopes.Take(2).ToArray();return scopes.Length==1?scopes[0]:null; }
+    }
     public IReadOnlyList<EnumeratorDetails> Enumerators => Object.List("SELECT * FROM enumerator WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new EnumeratorDetails(Object,r));
 }
 

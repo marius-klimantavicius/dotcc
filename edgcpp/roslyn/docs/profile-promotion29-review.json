@@ -1,0 +1,142 @@
+{
+  "cfront": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "1"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "exported": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "extern-inline": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "host-double": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "host-long-double": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "instantiation": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "native": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "separate-init": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "softfloat": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "source": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "0"
+    ]
+  ],
+  "sun": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "tableless": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "0"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "usl21": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "1"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ],
+  "usl30": [
+    [
+      "NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "1"
+    ],
+    [
+      "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+      "1"
+    ]
+  ]
+}

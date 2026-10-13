@@ -1,6 +1,9 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after accepted29 cleanup/e49f boundary (14 profiles,187 unique paths,PASS3871). Earlier accepted251 boundaries below are historical.
+Active on 2026-10-13 after metadata-root/empty-enum acceptance (14 strict profiles,
+25 refreshed unique paths/PASS1039 plus10 existing paths/PASS278,self73). The
+accepted29 cleanup/e49f boundary (187 unique paths,PASS3871) remains a separate
+historical baseline; no full187 rerun or new scale campaign is claimed.
 Accepted251 cleanup/evaluation-role batch passes2621 on175 unique paths
 (186 validation entries),self73. Prior182/PASS2462 and bounded47/PASS919
 remain historical evidence with their stated compiler/snapshot boundaries.
@@ -34,7 +37,11 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 1066 verified and 488 mapped pending-validation fields at this boundary.
+There are1195 verified and358 mapped pending-validation fields at this boundary.
+Existing field/base/class/statement/routine/expression and pragma/module/new-delete
+proofs were joined from the accepted187-path evidence, with31 additional required
+rows closed by the bounded new public tests. Promoted-local class ownership is
+consumed transient staging, not an unavailable required semantic reconstruction.
 All 2,000 field rows now have an explicit mapping or disposition; mapping alone
 is not acceptance. Accepted bounded type/layout/init and template/parameter/attribute scalar
 proof joins pass919 across47 existing paths. Next direct Boolean proofs cover
@@ -113,6 +120,16 @@ table-based execution-storage parity.
 - Finish workspace/artifact identity and final required capability/version policy.
   Development admission now frames SQL plus the full stable catalog. Genuine
   old/new snapshots test compatibility; corruption campaigns remain excluded.
+  The existing admission implementation satisfies the conservative policy in
+  m5-admission-review29.json: exact supported fingerprint and required enabled
+  capabilities, with informational target/runtime capabilities remaining queryable.
+  Numeric1.0 alone does not admit older development contracts. Freeze the final
+  accepted fingerprint as the initial public boundary only after semantic closure;
+  future contracts require explicit admission and genuine tests, additive supported
+  minors only, and a major change for incompatible semantics. No migration or
+  forward-compatibility promise is made. Direct workspace/artifact identity tests
+  remain queued using existing genuine artifacts; earlier multi-TU narrative does
+  not substitute for those public tests.
 - Reconcile full field/kind coverage and documentation with direct writer/getter/
   fixture evidence. Take significant verified milestone commits while work
   continues; do not hold workers for exhaustive ledger cleanup.

@@ -1,0 +1,88 @@
+{
+  "pragma": {
+    "rows": 1,
+    "paths": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj"
+    ],
+    "nonnull": {
+      "id": 1,
+      "kind_id": 1,
+      "target_tag_kind_id": 1,
+      "source_origin_id": 1,
+      "source_entry_id": 1,
+      "ignore_in_back_end": 1,
+      "is_microsoft_operator": 1
+    }
+  },
+  "pragma_stdc": {
+    "rows": 1,
+    "paths": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj"
+    ],
+    "nonnull": {
+      "id": 1,
+      "kind_id": 1,
+      "value_id": 1
+    }
+  },
+  "pragma_upc": {
+    "rows": 0,
+    "paths": [],
+    "nonnull": {}
+  },
+  "pragma_ident": {
+    "rows": 0,
+    "paths": [],
+    "nonnull": {}
+  },
+  "pragma_comment": {
+    "rows": 0,
+    "paths": [],
+    "nonnull": {}
+  },
+  "pragma_conform": {
+    "rows": 0,
+    "paths": [],
+    "nonnull": {}
+  },
+  "pragma_include_alias": {
+    "rows": 0,
+    "paths": [],
+    "nonnull": {}
+  },
+  "pragma_gcc": {
+    "rows": 0,
+    "paths": [],
+    "nonnull": {}
+  },
+  "module": {
+    "rows": 1,
+    "paths": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/module_import.roslynobj"
+    ],
+    "nonnull": {
+      "id": 1,
+      "kind_id": 1,
+      "resolved_file_id": 1,
+      "file_kind_id": 1,
+      "contains_unsupported_constructs": 1,
+      "name_id": 1,
+      "uses_angle_brackets": 1,
+      "suppress_macro_export": 1,
+      "is_internal_partition": 1
+    }
+  },
+  "module_import": {
+    "rows": 1,
+    "paths": [
+      "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/module_import.roslynobj"
+    ],
+    "nonnull": {
+      "id": 1,
+      "module_id": 1,
+      "source_position_id": 1,
+      "module_name_position_id": 1,
+      "implementation_unit_importing_self": 1
+    }
+  }
+}

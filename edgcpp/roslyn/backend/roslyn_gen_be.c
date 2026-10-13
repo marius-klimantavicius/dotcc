@@ -188,7 +188,8 @@ static Rid roslyn_type_declaration(a_type_ptr p,Rid type) {
 #endif
  if(supplement){values.push_back({"enumerator_list_seen",static_cast<int>(supplement->enumerator_list_seen)});values.push_back({"enumerator_list_complete",static_cast<int>(supplement->enumerator_list_complete)});values.push_back({"has_nodiscard",static_cast<int>(supplement->has_nodiscard_attribute)});values.push_back({"base_position_id",R(e.has_explicit_enum_base?roslyn_position(supplement->base_type_position):0)});values.push_back({"template_id",R(roslyn_template(supplement->assoc_template))});}
  DB.put_fields("enum_symbol",values);
- a_constant_ptr first=e.is_scoped_enum?(e.enum_info.assoc_scope?e.enum_info.assoc_scope->constants:nullptr):e.enum_info.constant_list;int n=0;for(a_constant_ptr c=first;c;c=c->next){Rid constant=roslyn_constant(c);bool ef;Rid enumerator=DB.claim(c,"enumerator_symbol",ef);if(ef)roslyn_symbol(enumerator,"enumerator_symbol",c->source_corresp,roslyn_type(c->type));DB.put("enumerator",{{"owner_id",symbol},{"ordinal",n++},{"symbol_id",enumerator},{"constant_id",constant}});}}
+ a_constant_ptr first=e.is_scoped_enum?(e.enum_info.assoc_scope?e.enum_info.assoc_scope->constants:nullptr):e.enum_info.constant_list;int n=0;for(a_constant_ptr c=first;c;c=c->next){Rid constant=roslyn_constant(c);bool ef;Rid enumerator=DB.claim(c,"enumerator_symbol",ef);if(ef)roslyn_symbol(enumerator,"enumerator_symbol",c->source_corresp,roslyn_type(c->type));DB.put("enumerator",{{"owner_id",symbol},{"ordinal",n++},{"symbol_id",enumerator},{"constant_id",constant}});}
+ if(e.is_scoped_enum)roslyn_scope(e.enum_info.assoc_scope);}
 
  return symbol;
 }

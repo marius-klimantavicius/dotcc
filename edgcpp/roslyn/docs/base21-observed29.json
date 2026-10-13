@@ -1,0 +1,254 @@
+{
+  "distinct_paths": 187,
+  "queries": {
+    "links": "SELECT count(*),count(original_type_id),count(primary_base_subobject_id),count(data_section_base_subobject_id),count(virtual_base_pointer_base_subobject_id),count(virtual_function_table_variable_id),sum(is_virtual),sum(is_direct),sum(complete_subobject) FROM base_subobject",
+    "quantities": "SELECT count(offset),sum(offset<>'0'),count(virtual_base_pointer_offset),sum(virtual_base_pointer_offset<>'0'),count(virtual_function_table_index),sum(CAST(virtual_function_table_index AS INTEGER)<0),count(virtual_base_offset_index),sum(CAST(virtual_base_offset_index AS INTEGER)<0) FROM base_subobject",
+    "attributes": "SELECT count(*) FROM owner_attribute a JOIN base_subobject b ON b.id=a.owner_id",
+    "paths": "SELECT count(*),count(path_tail_ordinal),sum(is_direct),sum(is_preferred) FROM base_derivation",
+    "steps": "SELECT count(*) FROM base_derivation_step",
+    "direct": "SELECT count(*) FROM direct_base",
+    "preorder": "SELECT count(*) FROM record_base_preorder",
+    "postorder": "SELECT count(*) FROM record_base_postorder"
+  },
+  "totals": {
+    "links": {
+      "0": 87,
+      "1": 77,
+      "2": 0,
+      "3": 0,
+      "4": 5,
+      "5": 11,
+      "6": 35,
+      "7": 77,
+      "8": 2
+    },
+    "quantities": {
+      "0": 86,
+      "1": 43,
+      "2": 18,
+      "3": 18,
+      "4": 42,
+      "5": 22,
+      "6": 17,
+      "7": 17
+    },
+    "attributes": {
+      "0": 0
+    },
+    "paths": {
+      "0": 92,
+      "1": 92,
+      "2": 77,
+      "3": 87
+    },
+    "steps": {
+      "0": 107
+    },
+    "direct": {
+      "0": 77
+    },
+    "preorder": {
+      "0": 42
+    },
+    "postorder": {
+      "0": 87
+    }
+  },
+  "examples": {
+    "links": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          3,
+          2,
+          0,
+          0,
+          1,
+          2,
+          2,
+          2,
+          null
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          null
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          null
+        ]
+      }
+    ],
+    "quantities": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          3,
+          2,
+          2,
+          2,
+          0,
+          null,
+          0,
+          null
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          1,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null
+        ]
+      }
+    ],
+    "attributes": [],
+    "paths": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          3,
+          3,
+          2,
+          3
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          4
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1
+        ]
+      }
+    ],
+    "direct": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          2
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1
+        ]
+      }
+    ],
+    "preorder": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/cleanup_semantics.roslynobj",
+        "row": [
+          3
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/common.roslynobj",
+        "row": [
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/constant_occurrences.roslynobj",
+        "row": [
+          1
+        ]
+      }
+    ],
+    "postorder": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          3
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1
+        ]
+      }
+    ]
+  }
+}

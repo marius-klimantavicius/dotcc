@@ -1,0 +1,16 @@
+{
+  "owner": "a_new_delete_supplement",
+  "authority": "pristine il_def.h14678-14764; backend/roslyn_expressions_extra.h86-119",
+  "accepted_cohort": "05d745e94/187 distinct files/PASS3871",
+  "joined": {
+    "is_new": "Program.cs525-527 contrasts three allocations with actual array deletion and selected routines; exact !is_new write.",
+    "aligned_version": "Program.cs527 selects actual aligned Allocated object and exact retained alignment flag, independently from placement.",
+    "type": "Program.cs527 exact selected Allocated record; Program.cs525-526 array allocation/deletion typed payload.",
+    "routine": "Program.cs525-526 exact operator new[]/operator delete[] selected functions, no inferred call.",
+    "arg": "Program.cs525 actual delete operand and527 single actual placement argument; new ordered list excludes implicit byte-size argument by stock contract.",
+    "dynamic_init": "Program.cs526 genuine source array initialization link; execution structural child is same canonical DI.",
+    "freeing_of_storage_on_exception": "Program.cs526 actual exceptional freeing DI; exact writer records cleanup reference metadata7002 rather than unconditional evaluated child.",
+    "number_of_elements": "Program.cs526 actual retained runtime array-count expression; absent compile-time count is not fabricated."
+  },
+  "pending": "has_new_initializer, brace/parenthesized aggregate flags and parenthesized type flag need direct scalar getter sweep; no missing adapter, no inferred byte-size expression"
+}

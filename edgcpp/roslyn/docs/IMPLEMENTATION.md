@@ -1015,3 +1015,38 @@ statement-expression side-effect/control probe and preserve real execution
 promotion. Scoped-enum empty-scope reachability remains a candidate for native
 review, not proven defect. Four additional unwritten optional/count/unknown slots
 are queued separately. Full phases3–4 remain active until required proof closes.
+
+### Accepted metadata roles and empty scoped-enum reachability
+
+The e49f251-table contract is unchanged. Metadata header roots, non-function
+scope/block and condition associations, and source-sequence tagged statement,
+expression and initialization references now hydrate at metadata role7002.
+Actual function bodies and EDG-scheduled dynamic initializations retain execution
+precedence. The GNU direct-call sizeof subtree is wholly metadata in both native
+and source objects; the separate local-initializer case retains EDG's actual
+source global initialization and lowered generated startup call. No independent
+C++ evaluation rule overrides those retained execution facts.
+
+Actual empty scoped-enum assoc_scope pointers are now exported directly. Public
+EnumSymbol.Scopes preserves plural reverse identity, with Scope only when unique.
+Root/nested empty and populated enum scopes, parent identities and canonical
+members pass; builtin align_val_t legitimately has no scope from its stock
+producer. All seven previously retained real-enum cohort shapes are unchanged.
+
+Native root251/metadata-root gates pass14 strict profiles, each316 pinned Git
+inputs/26 canonical backend files and stock tool pin. Twenty-five unique fresh
+objects pass251tables/e49f/FK0/1KiB/complete/no semantic BLOB-or-REAL checks.
+Managed PASS1039 covers those25 paths; PASS278 covers10 existing type/vector/
+member-pointer/layout/routine paths; self/WITHOUTROWID73, clean build, generator,
+literal fields and diff checks pass. This is bounded acceptance, not a rerun of
+all187 archived paths or the unchanged scale/packaging/concurrency campaign.
+
+Field proof1195verified/358required pending,85optional captured/12omitted;
+all2000rows have explicit mappings/dispositions. Existing scalar/identity joins
+and the new retained-links251 evidence preserve distinct type/definition,
+member-pointer class/member, vector element/size, DMI metadata and width96/32,
+constructor PrimaryEntry, label lifetime and named initialization statement
+identities. The class promoted-local list is consumed staging; actual promoted
+types remain retained. M5 exact development admission policy is documented;
+workspace positive identity/disposal tests and further semantic proof remain
+next required work. No completion claim or user approval hold applies.

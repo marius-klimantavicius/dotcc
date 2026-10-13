@@ -1,0 +1,56 @@
+{
+  "cohort": "05d745e94;198 validations/187 distinct paths",
+  "joined_rows": [
+    {
+      "owner": "a_pragma",
+      "member": "next",
+      "proof": "ScopeRelationsProjection.cs41-42 exact owner/list identities and recorded ordinals on source/source_order"
+    },
+    {
+      "owner": "a_pragma",
+      "member": "kind",
+      "proof": "Program.cs464 exact retained STDC pragma kind plus ScalarFamilies actual pragma kind getter"
+    },
+    {
+      "owner": "a_pragma",
+      "member": "variant.stdc.kind",
+      "proof": "Program.cs464 exact stdc_pk_fp_contract typed union kind"
+    },
+    {
+      "owner": "a_pragma",
+      "member": "variant.stdc.value",
+      "proof": "Program.cs464 exact stdc_pv_on typed union value"
+    },
+    {
+      "owner": "a_module",
+      "member": "kind",
+      "proof": "Program.cs595-598 exact mk_unit on source/module_import"
+    },
+    {
+      "owner": "a_module",
+      "member": "resolved_file",
+      "proof": "Program.cs597 genuine resolved IFC link present on named import"
+    },
+    {
+      "owner": "a_module",
+      "member": "file_kind",
+      "proof": "Program.cs597 exact mfk_edg_ifc retained module file kind"
+    },
+    {
+      "owner": "a_module",
+      "member": "variant.unit.name",
+      "proof": "Program.cs597 exact RoslynNative named-unit active arm"
+    },
+    {
+      "owner": "a_module_import_decl",
+      "member": "next",
+      "proof": "Program.cs596-598 single actual ordered import occurrence and canonical TranslationUnit.Modules identity; zero-import interface contrast"
+    },
+    {
+      "owner": "a_module_import_decl",
+      "member": "module_info",
+      "proof": "Program.cs596-598 import.Module canonical identity and exact declared unit name/kind"
+    }
+  ],
+  "remaining": "Only STDC pragma and named-unit import were observed; UPC/comment/conform/include-alias/ident/GCC union payloads, header-unit/partition links, actual import attributes stay pending. No new tests or exports."
+}

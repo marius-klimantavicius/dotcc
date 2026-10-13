@@ -5,7 +5,7 @@ internal static class ScalarFamilies
 {
     internal static void Verify(TranslationUnit unit,string fixture,Action<bool,string> check)
     {
-        if(fixture is "types.roslynobj" or "type_edges.roslynobj" or "template_edges.roslynobj" or "vector_values.roslynobj" or "vector_arm.roslynobj" or "vector_riscv.roslynobj")
+        if(fixture is "types.roslynobj" or "type_edges.roslynobj" or "template_edges.roslynobj" or "vector_values.roslynobj" or "vector_arm.roslynobj" or "vector_riscv.roslynobj" or "member_pointers.roslynobj")
         {
             var types=unit.Types.ToArray();
             Family(types.Select(t=>t.Details),"type",check);
@@ -13,6 +13,10 @@ internal static class ScalarFamilies
             Family(types.OfType<TypeReference>().Select(t=>t.Reference),"type_reference",check);
             Family(types.OfType<DependentType>().Select(t=>t.Dependency),"dependent_type",check);
             Family(types.OfType<VectorType>().Select(t=>t.Vector),"vector_type",check);
+            Family(unit.Entities.OfType<EnumSymbol>().Select(t=>t.Details),"enum_symbol",check);
+            Family(types.OfType<PointerType>().Select(t=>t.Pointer),"pointer_type",check);
+            Family(types.OfType<MemberPointerType>().Select(t=>t.MemberPointer),"member_pointer_type",check);
+            Family(types.OfType<QualifiedType>().Select(t=>t.Qualification),"qualified_type",check);
             var records=types.OfType<RecordType>().Select(t=>t.Record).ToArray();
             Family(records,"record_type",check);
             if(fixture=="types.roslynobj")

@@ -8,7 +8,7 @@ translation units or depend on Microsoft.CodeAnalysis.
 The user excluded C++/CLI and C++/CX support from the revised task. Native
 Microsoft C++ extensions remain in scope.
 
-Phases 3–4 are approved and in progress. The current251 exporter-to-reader boundary passes3871 assertions across187
+Phases 3–4 are approved and in progress. The accepted251 baseline passes3871 assertions across187
 unique paths and14 strict profiles; complete M0–M5 acceptance is tracked in
 [the implementation ledger](docs/IMPLEMENTATION.md),
 [remaining acceptance](docs/ACCEPTANCE.md), and

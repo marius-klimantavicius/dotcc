@@ -41,6 +41,8 @@ CASES = {
     'gnu_asm_modify': ['--c++20', '--g++', '--gnu_version', '130000'],
     'constructor_semantics': ['--c++17', '--g++', '--gnu_version', '130000'],
     'variable_semantics': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'file_scope_metadata': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'empty_scoped_enum': ['--c++20'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

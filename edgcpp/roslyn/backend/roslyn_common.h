@@ -88,7 +88,7 @@ static Rid roslyn_scope(a_scope_ptr p) {
  bool fresh;Rid id=DB.claim(p,"scope",fresh);if(!fresh)return id;
  int saved_role=roslyn_default_role;a_routine_ptr saved_routine=roslyn_current_routine;
  a_routine_ptr owning_routine=roslyn_scope_routine(p);if(owning_routine){roslyn_current_routine=owning_routine;roslyn_default_role=roslyn_routine_role(owning_routine);}
- Rid assoc=0;if(p->kind==sck_function)assoc=roslyn_routine(p->variant.routine.ptr);else if(p->kind==sck_namespace)assoc=roslyn_namespace(p->variant.assoc_namespace);else if(p->kind==sck_class_struct_union||p->kind==sck_class_reactivation||p->kind==sck_func_prototype||p->kind==sck_enum)assoc=roslyn_type(p->variant.assoc_type);else if(p->kind==sck_condition)assoc=roslyn_statement(p->variant.assoc_statement);else if(p->kind==sck_block)assoc=roslyn_handler(p->variant.assoc_handler);
+ Rid assoc=0;if(p->kind==sck_function)assoc=roslyn_routine(p->variant.routine.ptr);else if(p->kind==sck_namespace)assoc=roslyn_namespace(p->variant.assoc_namespace);else if(p->kind==sck_class_struct_union||p->kind==sck_class_reactivation||p->kind==sck_func_prototype||p->kind==sck_enum)assoc=roslyn_type(p->variant.assoc_type);else if(p->kind==sck_condition)assoc=roslyn_statement(p->variant.assoc_statement,7002);else if(p->kind==sck_block)assoc=roslyn_handler(p->variant.assoc_handler);
  DB.put("scope",{{"id",id},{"kind_id",roslyn_kind_edg_scope(p->kind)},{"parent_id",R(roslyn_scope(roslyn_scope_parent(p)))},{"associated_entity_id",R(assoc)},{"lifetime_id",R(roslyn_lifetime(p->lifetime))},{"function_static_lifetime_id",R(p->kind==sck_function?roslyn_lifetime(p->variant.routine.lifetime_of_local_static_vars):0)},
   {"is_constexpr_routine",static_cast<int>(p->is_constexpr_routine)},{"is_stmt_expr_block",static_cast<int>(p->is_stmt_expr_block)},{"is_placeholder_scope",static_cast<int>(p->is_placeholder_scope)},
   {"this_parameter_id",R(p->kind==sck_function?roslyn_variable(p->variant.routine.this_param_variable):0)},{"nrvo_variable_id",R(p->kind==sck_function?roslyn_variable(p->variant.routine.return_value_variable):0)}});
@@ -119,7 +119,7 @@ static Rid roslyn_scope(a_scope_ptr p) {
  }
 
  int init_ordinal=0;for(a_dynamic_init_ptr i=p->dynamic_inits;i;i=i->next)DB.put("scope_initialization",{{"owner_id",id},{"ordinal",init_ordinal++},{"initialization_id",roslyn_init(i)}});
- if(p->assoc_block)roslyn_statement(p->assoc_block);
+ if(p->assoc_block)roslyn_statement(p->assoc_block,p->kind==sck_function?roslyn_default_role:7002);
  roslyn_scope_expression_references(p,id);
  roslyn_source_sequences(p,id);
 #if MICROSOFT_EXTENSIONS_ALLOWED

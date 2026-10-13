@@ -1,0 +1,191 @@
+{
+  "distinct_paths": 187,
+  "queries": {
+    "field_links": "SELECT count(*),count(type_id),count(default_initialization_id),count(bit_size_constant_id),count(bit_width_expression_id),sum(is_bit_field),sum(is_mutable),sum(is_packed),sum(bit_field_is_signed),sum(vla_treated_as_zero_length_array),sum(is_generated_base),sum(class_subobject_with_tail_padding) FROM field_symbol",
+    "generated": "SELECT count(*),sum(s.compiler_generated) FROM field_symbol f JOIN symbol s ON s.id=f.id",
+    "initializer_entities": "SELECT k.name,count(*) FROM field_initializer_entity f JOIN entity e ON e.id=f.entity_id JOIN kind k ON k.id=e.kind_id GROUP BY 1",
+    "property": "SELECT count(*),count(get_name_id),count(put_name_id) FROM field_property",
+    "layout": "SELECT count(*),count(offset),count(bit_offset),count(bit_width),count(container_offset) FROM field_layout",
+    "default_roles": "SELECT k.name,count(*) FROM field_symbol f JOIN semantic_node n ON n.id=f.default_initialization_id JOIN kind k ON k.id=n.representation_role_id GROUP BY 1"
+  },
+  "totals": {
+    "field_links": {
+      "0": 1952,
+      "1": 1952,
+      "2": 8,
+      "3": 61,
+      "4": 0,
+      "5": 61,
+      "6": 5,
+      "7": 4,
+      "8": 0,
+      "9": 0,
+      "10": 86,
+      "11": 26
+    },
+    "generated": {
+      "0": 1952,
+      "1": 1008
+    },
+    "initializer_entities": {},
+    "property": {
+      "0": 1,
+      "1": 1,
+      "2": 1
+    },
+    "layout": {
+      "0": 1952,
+      "1": 1895,
+      "2": 1895,
+      "3": 51,
+      "4": 7
+    },
+    "default_roles": {
+      "metadata/0": 8
+    }
+  },
+  "examples": {
+    "field_links": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          42,
+          42,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          6,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          16,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common_labels.roslynobj",
+        "row": [
+          4,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "generated": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          42,
+          30
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          16,
+          8
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common_labels.roslynobj",
+        "row": [
+          4,
+          0
+        ]
+      }
+    ],
+    "initializer_entities": [],
+    "property": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj",
+        "row": [
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "layout": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          42,
+          42,
+          42,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          16,
+          15,
+          15,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common_labels.roslynobj",
+        "row": [
+          4,
+          4,
+          4,
+          0,
+          0
+        ]
+      }
+    ],
+    "default_roles": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout.roslynobj",
+        "row": [
+          "metadata",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/objects.roslynobj",
+        "row": [
+          "metadata",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/layout.roslynobj",
+        "row": [
+          "metadata",
+          1
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "distinct_paths": 187,
+  "queries": {
+    "links": "SELECT count(*),count(primary_base_subobject_id),count(virtual_function_info_base_subobject_id),count(anonymous_union_field_id),count(scope_id),count(instance_id),count(allocation_routine_id),count(deallocation_routine_id),count(subobject_partner_id),count(uuid_variable_id),count(proxy_of_type_id) FROM record_type",
+    "cache": "SELECT count(contains_error),sum(contains_error),count(contains_local_type),sum(contains_local_type),count(contains_unnamed_namespace_type),sum(contains_unnamed_namespace_type) FROM record_type",
+    "quantities": "SELECT count(virtual_function_info_offset),count(next_negative_virtual_table_index),count(first_vcall_offset_index),sum(inheritance_kind_is_explicit),sum(is_near),sum(is_far) FROM record_type",
+    "lambda_parent": "SELECT k.name,count(*) FROM record_type r JOIN entity e ON e.id=r.lambda_parent_entity_id JOIN kind k ON k.id=e.kind_id GROUP BY 1",
+    "vcall": "SELECT count(*),count(routine_id),count(base_subobject_id),sum(is_primary) FROM record_vcall_offset",
+    "friends": "SELECT count(*) FROM record_befriending_class",
+    "promoted": "SELECT count(*) FROM record_promoted_type",
+    "decl_mods": "SELECT count(*) FROM owner_decl_modifier m JOIN record_type r ON r.id=m.owner_id",
+    "members": "SELECT count(*) FROM record_declaration"
+  },
+  "totals": {
+    "links": {
+      "0": 1387,
+      "1": 12,
+      "2": 34,
+      "3": 5,
+      "4": 1093,
+      "5": 256,
+      "6": 0,
+      "7": 31,
+      "8": 767,
+      "9": 0,
+      "10": 4
+    },
+    "cache": {
+      "0": 558,
+      "1": 0,
+      "2": 261,
+      "3": 0,
+      "4": 44,
+      "5": 0
+    },
+    "quantities": {
+      "0": 139,
+      "1": 89,
+      "2": 544,
+      "3": 1,
+      "4": 4,
+      "5": 4
+    },
+    "lambda_parent": {
+      "variable/0": 21
+    },
+    "vcall": {
+      "0": 71,
+      "1": 71,
+      "2": 12,
+      "3": 2
+    },
+    "friends": {
+      "0": 5
+    },
+    "promoted": {
+      "0": 0
+    },
+    "decl_mods": {
+      "0": 1
+    },
+    "members": {
+      "0": 312
+    }
+  },
+  "examples": {
+    "links": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          17,
+          0,
+          2,
+          0,
+          15,
+          0,
+          0,
+          0,
+          17,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          10,
+          0,
+          0,
+          0,
+          8,
+          2,
+          0,
+          0,
+          9,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common_labels.roslynobj",
+        "row": [
+          2,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "cache": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          6,
+          0,
+          3,
+          0,
+          0,
+          null
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          5,
+          0,
+          2,
+          0,
+          0,
+          null
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common_labels.roslynobj",
+        "row": [
+          1,
+          0,
+          0,
+          null,
+          0,
+          null
+        ]
+      }
+    ],
+    "quantities": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          5,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj",
+        "row": [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "lambda_parent": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/routines.roslynobj",
+        "row": [
+          "variable",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/variable_initializers.roslynobj",
+        "row": [
+          "variable",
+          4
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/routines.roslynobj",
+        "row": [
+          "variable",
+          1
+        ]
+      }
+    ],
+    "vcall": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/cleanup_semantics.roslynobj",
+        "row": [
+          3,
+          3,
+          1,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/constant_occurrences.roslynobj",
+        "row": [
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/execution_cpp.roslynobj",
+        "row": [
+          2,
+          2,
+          1,
+          0
+        ]
+      }
+    ],
+    "friends": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/layout.roslynobj",
+        "row": [
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/layout.roslynobj",
+        "row": [
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/layout.roslynobj",
+        "row": [
+          1
+        ]
+      }
+    ],
+    "promoted": [],
+    "decl_mods": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/sun/profile_sun.roslynobj",
+        "row": [
+          1
+        ]
+      }
+    ],
+    "members": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/cleanup_semantics.roslynobj",
+        "row": [
+          14
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+        "row": [
+          10
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common_microsoft.roslynobj",
+        "row": [
+          3
+        ]
+      }
+    ]
+  }
+}

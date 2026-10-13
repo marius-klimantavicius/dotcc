@@ -504,9 +504,9 @@ public sealed class FieldSymbolDetails : SemanticDetail
     public bool IsOptimizedEmptyClass => Data.Bool("is_optimized_empty_class");
     public bool BitSizeConstantExprInLocalExprNodeRef => Data.Bool("bit_size_constant_expr_in_local_expr_node_ref");
     public bool? IsPacked => Data.OptionalBool("is_packed");
-    public long? VlaTreatedAsZeroLengthArray => Data.OptionalLong("vla_treated_as_zero_length_array");
-    public long? ClassSubobjectWithTailPadding => Data.OptionalLong("class_subobject_with_tail_padding");
-    public long? BitFieldIsSigned => Data.OptionalLong("bit_field_is_signed");
+    public bool? VlaTreatedAsZeroLengthArray => Data.OptionalBool("vla_treated_as_zero_length_array");
+    public bool? ClassSubobjectWithTailPadding => Data.OptionalBool("class_subobject_with_tail_padding");
+    public bool? BitFieldIsSigned => Data.OptionalBool("bit_field_is_signed");
     public BigInteger? ExplicitAlignment => Number(Data.OptionalText("explicit_alignment"));
     public IReadOnlyList<FieldInitializerEntityDetails> FieldInitializerEntityRows => Object.List("SELECT * FROM field_initializer_entity WHERE owner_id=$owner ORDER BY ordinal", Data.Long("id"), r => new FieldInitializerEntityDetails(Object, r));
 }

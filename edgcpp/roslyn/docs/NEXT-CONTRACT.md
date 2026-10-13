@@ -1,15 +1,30 @@
-# Next bounded metadata-root and retained typed-query closure
+# Accepted metadata-root and next bounded semantic proof closure
 
 Accepted29 cleanup/e49f format passes14strict/187paths/PASS3871/self73.
-Next repair metadata-only file-scope statement root export using exact header
-reachability semantics; preserve already-executed roles. Tiny genuine GNU sizeof
-statement-expression side-effect/control checks,14 backend-only strict sync,
-no full187 rerun unless an affected existing arm is found.
+The following correction passes14strict,25 refreshed unique paths/PASS1039,
+10 existing paths/PASS278,self73,clean build and generator/literal checks.
+Repair metadata-only file-scope statement roots, non-function scope block
+associations, condition-scope statement associations and source-sequence tagged
+statement/expression/initialization navigation. Each association initially uses
+metadata role7002; actual function bodies and EDG-scheduled initializers retain
+execution precedence. The sizeof probe with a local initializer genuinely occurs
+in EDG's global dynamic-initialization list and lowered startup routine, so those
+recorded calls remain executable. A separate probe without a local initializer
+checks purely metadata reachability. Fourteen strict stages and a bounded affected
+native/source subset are refreshed; the accepted187-path baseline stays explicit.
 
 Four queued unsupported slots reviewed in four-columns251-review.json may be
-handled separately without recovering optional positions. Scoped enum empty
-scope remains a native probe/reachability candidate. Required field proof and
-typed-operation conveniences continue; no C++ reanalysis, linking or translator.
+handled separately without recovering optional positions. Empty scoped-enum scope
+omission is confirmed by native retained pointers; hydrate the actual assoc_scope
+and expose plural EnumSymbol.Scopes plus an unambiguous optional Scope. Builtin
+align_val_t legitimately has no assoc_scope, as the stock producer audit confirms.
+Required field proof and typed queries continue; no C++ reanalysis, linking or
+translator. The worksheet now has1195 verified/358 required pending, distinct from
+the accepted29 milestone's1066/488. Next native batch activates existing pragma
+unions and scope NRVO/asm/if_exists links using minimal genuine input. Next managed
+batch checks populated Base/Class/Constant identities and workspace/artifact
+identity with existing genuine snapshots. Native remains the sole compiler lane;
+no schema change or optional-position recovery is needed for these batches.
 
 ---
 

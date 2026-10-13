@@ -129,12 +129,18 @@ public sealed class VectorType : CppType
 {
     internal VectorType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public VectorTypeDetails Vector => Object.Detail("vector_type", Id, r => new VectorTypeDetails(Object, r));
+    public CppType ElementType => Vector.ElementType;
+    /// <summary>The retained size expression constant, when supplied; this does not synthesize scalable storage size.</summary>
+    public Constant? SizeConstant => Vector.SizeConstant;
 }
 
 public sealed class MemberPointerType : CppType
 {
     internal MemberPointerType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public MemberPointerTypeDetails MemberPointer => Object.Detail("member_pointer_type", Id, r => new MemberPointerTypeDetails(Object, r));
+    public CppType DeclaringType => MemberPointer.DeclaringType;
+    public CppType? OriginalDeclaringType => MemberPointer.OriginalDeclaringType;
+    public CppType MemberType => MemberPointer.MemberType;
 }
 
 public sealed class DependentType : CppType

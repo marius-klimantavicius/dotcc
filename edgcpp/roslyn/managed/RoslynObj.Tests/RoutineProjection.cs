@@ -30,6 +30,9 @@ internal static class RoutineProjection
         {
             FunctionSymbol Function(string name) => unit.Functions.Single(f=>f.Name==name);
             var typed=Function("routine_typed_declaration");
+            check(typed.DeclaredType==typed.SymbolDetails.Type&&typed.DefinitionType==typed.Details.DeclaredType&&Function("routine_alias").DefinitionType is null,"Current common function type and optional retained defining type must follow their own exact authorities without a declaration-only source-type fallback.");
+            if(source)check(typed.DefinitionType is RoutineType definition&&definition!=typed.Signature&&definition.ReturnType==typed.ReturnType,"This source definition must retain its distinct actual defining signature with the recorded return type.");
+            else check(typed.DefinitionType is null,"The lowered profile must preserve unavailable source defining-type metadata as null.");
             check(typed.Signature.Parameters.Count==1&&typed.ReturnType.Kind.Name=="tk_integer"&&typed.Signature.LanguageLinkage?.Name=="nlk_external","A function declared through an extern-C typedef must navigate its actual callable signature and retained type linkage.");
             if(source)check(typed.SourceCorrespondence!.Linkage?.Name=="nlk_cplusplus_external"&&typed.Signature.IsLanguageLinkageExplicit,"Source symbol linkage and explicit type linkage must remain distinct recorded facts.");
             var pure=Function("routine_pure");
@@ -55,6 +58,11 @@ internal static class RoutineProjection
             var bases=unit.Types.Single(t=>t.Name=="RoutineDerived").BaseSubobjects;
             check(bases.Any(b=>b.BaseType.Name=="RoutineBase"&&b.DirectBaseNumber==2),"The second direct base must preserve the numeric sequence value two without boolean coercion.");
             if(!source)check(unit.Functions.Any(f=>f.OverridingFunctionForWrapper is {Name:"clone"}&&f.OverriddenFunctionForWrapper is {Name:"clone"}),"A genuine nonprimary covariant base must retain its actual wrapper target identities.");
+            if(!source)
+            {
+                var alternate=unit.Functions.Where(f=>f.PrimaryEntry is not null).ToArray();
+                check(alternate.Length>0&&alternate.All(f=>f.PrimaryEntry!=f&&f.PrimaryEntry!.ContainingType==f.ContainingType&&f.PrimaryEntry.SpecialFunctionKind==f.SpecialFunctionKind)&&alternate.Any(f=>f.ContainingType?.Name=="RoutineValue"&&f.SpecialFunctionKind?.Name=="sfk_constructor"),"Actual alternate constructor/destructor entries must navigate their distinct retained primary entry of the same class and special-function kind without reconstructing a wrapper hierarchy.");
+            }
             if(profile is "native_lowered" or "exported_templates_lowered")check(unit.Functions.Any(f=>f.OverridingFunctionForWrapper is {Name:"clone"}&&f.ReturnAdjustment is not null),"An Itanium ABI wrapper must retain its guarded exact return adjustment metadata.");
             if(profile=="cfront_lowered")check(unit.Functions.All(f=>f.ReturnAdjustment is null),"Cfront routines must preserve unknown adjustment metadata when the Itanium-only fields are not present.");
         }
