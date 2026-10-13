@@ -1,0 +1,80 @@
+{
+  "totals": {
+    "prototype_scope_id": 0,
+    "allocation_routine_id": 0,
+    "uuid_variable_id": 0
+  },
+  "positive_objects": [],
+  "profile_capabilities": {
+    "cfront": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "0",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "1"
+    },
+    "exported": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "extern-inline": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "host-double": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "host-long-double": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "instantiation": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "native": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "separate-init": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "softfloat": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "source": {
+      "DO_IL_LOWERING": "0",
+      "IA64_ABI": "0",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "sun": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "tableless": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "1",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "0"
+    },
+    "usl21": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "0",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "1"
+    },
+    "usl30": {
+      "DO_IL_LOWERING": "1",
+      "IA64_ABI": "0",
+      "NEW_CAN_BE_FOLDED_INTO_CTOR": "1"
+    }
+  }
+}

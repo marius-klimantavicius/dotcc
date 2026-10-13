@@ -46,6 +46,10 @@ public sealed class ExceptionHandlingInfo
     private readonly FunctionSymbol function;
     internal ExceptionHandlingInfo(FunctionSymbol function) => this.function=function;
     public FunctionEhDetails? Details => function.Object.Store.Query("SELECT * FROM function_eh WHERE routine_id=$owner",function.Id).FirstOrDefault() is {} row ? new(function.Object,row):null;
+    /// <summary>The actual retained cleanup-region table variable, independent of the decoded regions.</summary>
+    public VariableSymbol? RegionTable => Details?.RegionTable;
+    /// <summary>The actual retained array-cleanup table variable, absent when this EH representation has no table.</summary>
+    public VariableSymbol? ArrayTable => Details?.ArrayTable;
     public IReadOnlyList<LoweredEhOperation> Epilogues => function.Object.List("SELECT n.* FROM lowered_eh_operation e JOIN semantic_node n ON n.id=e.id JOIN function_eh f ON f.id=e.function_eh_id JOIN kind k ON k.id=e.kind_id WHERE f.routine_id=$owner AND k.name='leck_function_epilogue' ORDER BY n.id",function.Id,r=>(LoweredEhOperation)function.Object.Node(r.Long("id")),"semantic_node");
     public IReadOnlyList<CleanupRegion> CleanupRegions => function.Object.List("SELECT r.* FROM cleanup_region r JOIN function_eh f ON f.id=r.function_eh_id WHERE f.routine_id=$owner ORDER BY r.ordinal",function.Id,r=>function.Object.Region(r.Long("id")),"cleanup_region");
     public IReadOnlyList<CleanupArray> Arrays => function.Object.List("SELECT a.* FROM cleanup_array a JOIN function_eh f ON f.id=a.function_eh_id WHERE f.routine_id=$owner ORDER BY a.ordinal",function.Id,r=>function.Object.Array(r.Long("id")),"cleanup_array");

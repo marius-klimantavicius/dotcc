@@ -41,8 +41,9 @@ layouts, executable bodies, exact constants, templates, partial exception cleanu
 recipes, source positions and macro associations. See
 [the managed usage guide](managed/README.md). Optional retained relationships are
 null or empty. The captured profile documents lowering losses such as unavailable
-original virtual-call targets. Scoped availability rows remain under implementation;
-lost source associations are not reconstructed.
+original virtual-call targets. Scoped availability rows distinguish retained, dependent, disabled and lost
+facts on their actual owners; the final reader proof checklist remains open.
+Lost source associations are not reconstructed.
 
 The shared contract lives in `schema/generate.py` and the authoritative append-only
 `schema/kinds.tsv`. Regenerate with `python3 edgcpp/roslyn/schema/generate.py` and

@@ -1,0 +1,135 @@
+{
+  "owners": [
+    "a_linkage_spec_block",
+    "a_source_sequence_entry",
+    "a_src_seq_end_of_construct",
+    "a_src_seq_sublist"
+  ],
+  "pending_at_review": 9,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stock il_def2099+,2279-2341,2388+; backend roslyn_source_sequences98-160,259+; public Program source_order450+ and SemanticProjection37-44; SourceSequences.cs. Root read-only. Ordered list infrastructure normalized, not semantic inference.",
+  "observations": "/tmp/roslyn-root-source-list9-observed29.json",
+  "summary": {
+    "ready_evidence_join": 8,
+    "existing_positive_needs_public_identity": 1
+  },
+  "rows": [
+    {
+      "owner": "a_source_sequence_entry",
+      "member": "next",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2100",
+      "disposition": "mapped_pending_validation",
+      "destination": "scope_source_entry;source_sublist_entry ordinal;backend/roslyn_source_sequences.h:144-160,259-265",
+      "api_property": "Scope.SourceSequence;SourceSublist.Entries",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Forward/reverse list plumbing represented by owner-local ordered canonical entries; nested sublist boundaries retained. GENERATE_SOURCE_SEQUENCE_LISTS only.",
+      "review_status": "ready_evidence_join",
+      "review": "Stock il_def2099+ doubly-linked physical list. Backend follows actual next into ordered owner relation. Program source_order exact local/member sequence with actual sublist splices verifies order; raw pointer identity intentionally normalized away."
+    },
+    {
+      "owner": "a_source_sequence_entry",
+      "member": "prev",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2104",
+      "disposition": "mapped_pending_validation",
+      "destination": "scope_source_entry;source_sublist_entry ordinal;backend/roslyn_source_sequences.h:144-160,259-265",
+      "api_property": "Scope.SourceSequence;SourceSublist.Entries",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Forward/reverse list plumbing represented by owner-local ordered canonical entries; nested sublist boundaries retained. GENERATE_SOURCE_SEQUENCE_LISTS only.",
+      "review_status": "ready_evidence_join",
+      "review": "Stock previous is inverse list infrastructure, recoverable from retained owner/ordinal; no independent semantic relationship omitted. Physical ordered source relations remain separate from flattened logical enumeration. No claim backend dereferences prev or reconstructs raw EDG addresses."
+    },
+    {
+      "owner": "a_source_sequence_entry",
+      "member": "entity",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2108",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_entry.tag_kind_id,target_id,declaration_id;backend/roslyn_source_sequences.h:144-151",
+      "api_property": "SourceEntry.Tag;SourceEntry.Target;SourceEntry.Declaration",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Actual tagged target and exact primary/secondary declaration association; no inferred lexical owner.",
+      "review_status": "ready_evidence_join",
+      "review": "2337 actual entries. Direct tagged source target writer, Program source_order tests exact typed targets/repeated distinct occurrences/same selected symbol and wrappers."
+    },
+    {
+      "owner": "a_src_seq_end_of_construct",
+      "member": "entity",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2286",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_end_construct.target_tag_kind_id,target_id;backend/roslyn_source_sequences.h:101-106",
+      "api_property": "SourceEndConstruct.TargetTag;SourceEndConstruct.Target",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Actual terminating construct tagged association.",
+      "review_status": "ready_evidence_join",
+      "review": "477 actual target links. Direct tagged target writer; source_order exact end:Local and end:stmk_block public target traversal closes type/statement cases. No position reconstruction required."
+    },
+    {
+      "owner": "a_src_seq_sublist",
+      "member": "next",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2321",
+      "disposition": "mapped_pending_validation",
+      "destination": "scope_source_sublist(owner_id,ordinal,sublist_id);backend/roslyn_source_sequences.h:261-262",
+      "api_property": "Scope.SourceSublists",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Exact owner-local sublist sequence; no pointer duplication.",
+      "review_status": "ready_evidence_join",
+      "review": "8 actual scope sublist links,2 scopes with multiple sublists. Direct next traversal produces scope_source_sublist ordered relation. Existing source_order flattening/order and SemanticProjection orphan actual2 sublists lengths1/3 verify retained structure; raw linked-list cell identity not exported."
+    },
+    {
+      "owner": "a_src_seq_sublist",
+      "member": "source_sequence_list",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2326",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_sublist_entry(owner_id,ordinal,entry_id);backend/roslyn_source_sequences.h:152-160",
+      "api_property": "SourceSublist.Entries",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Exact canonical entries with ordered membership; traversal stops at actual last_source_sequence_entry.",
+      "review_status": "ready_evidence_join",
+      "review": "8 sublists12 actual entry links. Writer begins actual list head, emits exact ordinal sequence; public SourceSublist.Entries and orphan1/3 lengths/identity assertion plus source_order exact local flattening."
+    },
+    {
+      "owner": "a_src_seq_sublist",
+      "member": "last_source_sequence_entry",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS",
+      "source": "src/il_def.h:2333",
+      "disposition": "mapped_pending_validation",
+      "destination": "source_sublist_entry final ordinal;backend/roslyn_source_sequences.h:158",
+      "api_property": "SourceSublist.Entries",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Consumed as inclusive producer traversal boundary; final collection element represents last entry, no redundant pointer.",
+      "review_status": "ready_evidence_join",
+      "review": "Writer inclusive break after actual last pointer, preserving sublist boundary. Exact public source_order local sequence including following parent entries and orphan lengths1/3 exercise bounded projection. Last pointer is normalized as final ordered entry; not a separate source fact."
+    },
+    {
+      "owner": "a_linkage_spec_block",
+      "member": "name_string",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS && GENERATE_LINKAGE_SPEC_BLOCKS",
+      "source": "src/il_def.h:2389",
+      "disposition": "mapped_pending_validation",
+      "destination": "linkage_specification.name_string_id;backend/roslyn_source_sequences.h:122-129",
+      "api_property": "LinkageSpecification.NameString",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Actual constant/name-linkage enum or direct optional coordinate under GENERATE_SOURCE_SEQUENCE_LISTS && GENERATE_LINKAGE_SPEC_BLOCKS.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "1 source/source_order NameString constant1398, exact string units67,0 (C and terminator). Writer and typed Constant property correct. Program assertion message mentions string but only reads NameLinkage.Name; add small actual NameString canonical constant/value assertion when bounded identity queue allows. No producer/profile work needed."
+    },
+    {
+      "owner": "a_linkage_spec_block",
+      "member": "name_linkage",
+      "guard": "!defined(IL_DEF_H) && GENERATE_SOURCE_SEQUENCE_LISTS && GENERATE_LINKAGE_SPEC_BLOCKS",
+      "source": "src/il_def.h:2393",
+      "disposition": "mapped_pending_validation",
+      "destination": "linkage_specification.name_linkage_id;backend/roslyn_source_sequences.h:122-129",
+      "api_property": "LinkageSpecification.NameLinkage",
+      "fixture": "source/writer/API mapping only; no new coordinate probes or runtime claims",
+      "reason": "Actual constant/name-linkage enum or direct optional coordinate under GENERATE_SOURCE_SEQUENCE_LISTS && GENERATE_LINKAGE_SPEC_BLOCKS.",
+      "review_status": "ready_evidence_join",
+      "review": "1 source/source_order linkage actual nlk_external directly copied, Program existing real braced-linkage assertion reads NameLinkage.Name."
+    }
+  ]
+}

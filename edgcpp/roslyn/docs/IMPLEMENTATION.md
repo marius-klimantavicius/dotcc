@@ -1106,3 +1106,39 @@ Current proof1365verified/169required pending,89captured optional-source/15limit
 all2000 rows explicit. Remaining work is actual branch activation, exact existing
 public identity proof and documented stock/user limitations, plus five queued
 unsupported minimal-contract slots. EDG stays the sole semantic authority.
+
+
+### Accepted routine/EH identities and dependent constant storage
+
+Current e49f251 contract is unchanged. Managed8existing paths pass350 and4fresh
+paths pass92,12 unique total; self73, build0warnings/errors, generator249/1946,
+literal/diff checks pass. Native4 objects pass FK0/1KiB/complete/exact contract/no
+structured BLOB-or-REAL. Fourteen unchanged compiled stages retain316 Git-pinned
+inputs/26 canonical backend files/tool pins. No new strictbuild/full187/scale
+campaign is claimed. Ready inventories: /tmp/roslyn-native-ready-constant-dependent251.json
+and /tmp/roslyn-managed-ready-routine-eh251.json. Root independent4 envelope is
+/tmp/roslyn-root-constant-dependent4-independent.json.
+
+Exact ifunc cache storage and EH region/array table variables remain distinct
+from original resolvers and decoded actions. Constructor operands and overlap
+lifetime links pass evaluated-edge/metadata tests. Nested throw-type flags have
+real direct scalar reads, including false. Dependent sizeof expression, actual
+template-template pack and written type operands pass both native/source shapes.
+C99 complex lowering creates a resident static variable/copy constant; read-only
+pointer traces prove the same occurrence and variable reach the backend. Public
+reciprocal initializer/storage and executed return identity pass; source has no
+storage and retains ComplexValue. No helper allocation or C-generator emulation.
+
+Current field proof1388verified/144pending. Exact local-scope utility origins,
+template parameter metadata and normalized source-list boundaries close through
+existing genuine evidence. Original typeref qualifiers are profile-disabled
+(CREATE_LEXICAL_TYPEREFS0 all14), and class allocation cache is explicitly consumed
+and cleared before backend while resulting calls remain authoritative. The actual
+local-expression discriminator uses the EDG family; nine old custom scalar IDs
+stay reserved/nonemitted, and eight actual scalar getters have family proof.
+Owner-specific unseen payload branches remain separate obligations.
+
+Scoped availability is implemented; final public state/reason acceptance remains.
+The source-backed final five-slot contract cleanup is reviewed but unimplemented;
+regeneration/admission/new-contract evidence will be coordinated in its own batch.
+Full phases3–4/M0–M5 remains active, with no inferred semantic replacements.

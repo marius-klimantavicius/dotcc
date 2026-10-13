@@ -1,0 +1,22 @@
+{
+  "scope": "Scalar discriminant adapter/getter family only; owner-specific dependent array/scoped expression/bitwidth arms retain separate field obligations. No schema/catalog change.",
+  "legacy_family": "local_expression_reference IDs118001-118009 are never emitted by the only relation writer; reserved stable IDs retained. Do not confuse the relation table name with its EDG discriminator family.",
+  "actual_family": "edg_local_expression_kind IDs345001-345009, exact source/generated switch preprocessor guards preserved; lerk_none remains initialization-only and rejected by exporter.",
+  "actual_fk_counts_fresh5": {
+    "lerk_array_bound": 4,
+    "lerk_constant_expr": 4,
+    "lerk_tpl_param_expr": 4
+  },
+  "accepted_log": "/tmp/roslynobj-managed-declarations251-new5-final.log PASS97",
+  "actual_tests": "RetainedBranchesProjection.cs25-28 exact kinds/scope/referrer/expression links",
+  "artifacts": [
+    "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-six/source/retained_branches_c.roslynobj",
+    "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-six/source/retained_branches_cpp.roslynobj",
+    "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-six/source/retained_branches_microsoft.roslynobj",
+    "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-six/native/retained_branches_c.roslynobj",
+    "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-six/native/retained_branches_cpp.roslynobj"
+  ],
+  "writer": "backend/roslyn_local_expressions.h68",
+  "source": "Pristine il_def.h14836-14865",
+  "no_new_tests_or_exports": true
+}

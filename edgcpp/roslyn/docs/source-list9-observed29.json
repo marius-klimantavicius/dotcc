@@ -1,0 +1,649 @@
+{
+  "unique_paths": 187,
+  "totals": {
+    "entries": 2337,
+    "end_constructs": 477,
+    "sublists": 8,
+    "sublist_entries": 12,
+    "scope_sublist_links": 8,
+    "multi_sublist_scopes": 2,
+    "linkage_names": 1
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/basic.roslynobj",
+      "counts": {
+        "entries": 17,
+        "end_constructs": 3,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/cleanup_semantics.roslynobj",
+      "counts": {
+        "entries": 121,
+        "end_constructs": 24,
+        "sublists": 1,
+        "sublist_entries": 1,
+        "scope_sublist_links": 1,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common.roslynobj",
+      "counts": {
+        "entries": 133,
+        "end_constructs": 27,
+        "sublists": 2,
+        "sublist_entries": 4,
+        "scope_sublist_links": 2,
+        "multi_sublist_scopes": 1,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common_labels.roslynobj",
+      "counts": {
+        "entries": 13,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/common_microsoft.roslynobj",
+      "counts": {
+        "entries": 27,
+        "end_constructs": 7,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constant_aggregates.roslynobj",
+      "counts": {
+        "entries": 28,
+        "end_constructs": 5,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constant_embed.roslynobj",
+      "counts": {
+        "entries": 2,
+        "end_constructs": 0,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constant_occurrences.roslynobj",
+      "counts": {
+        "entries": 94,
+        "end_constructs": 18,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/constructor_semantics.roslynobj",
+      "counts": {
+        "entries": 41,
+        "end_constructs": 10,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/execution_c.roslynobj",
+      "counts": {
+        "entries": 76,
+        "end_constructs": 13,
+        "sublists": 1,
+        "sublist_entries": 1,
+        "scope_sublist_links": 1,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/execution_cpp.roslynobj",
+      "counts": {
+        "entries": 77,
+        "end_constructs": 17,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/fixed_point.roslynobj",
+      "counts": {
+        "entries": 14,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/gnu_asm_modify.roslynobj",
+      "counts": {
+        "entries": 6,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/gnu_nonreal_float.roslynobj",
+      "counts": {
+        "entries": 8,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/label_difference.roslynobj",
+      "counts": {
+        "entries": 23,
+        "end_constructs": 3,
+        "sublists": 1,
+        "sublist_entries": 1,
+        "scope_sublist_links": 1,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout.roslynobj",
+      "counts": {
+        "entries": 92,
+        "end_constructs": 19,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_c.roslynobj",
+      "counts": {
+        "entries": 29,
+        "end_constructs": 5,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+      "counts": {
+        "entries": 95,
+        "end_constructs": 21,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/m0.roslynobj",
+      "counts": {
+        "entries": 57,
+        "end_constructs": 13,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/member_pointers.roslynobj",
+      "counts": {
+        "entries": 25,
+        "end_constructs": 4,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/module_import.roslynobj",
+      "counts": {
+        "entries": 6,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/module_interface.roslynobj",
+      "counts": {
+        "entries": 5,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/name_references.roslynobj",
+      "counts": {
+        "entries": 35,
+        "end_constructs": 9,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_attributes.roslynobj",
+      "counts": {
+        "entries": 9,
+        "end_constructs": 2,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_dependent_foreach.roslynobj",
+      "counts": {
+        "entries": 9,
+        "end_constructs": 2,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/native_microsoft.roslynobj",
+      "counts": {
+        "entries": 64,
+        "end_constructs": 13,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/near_far.roslynobj",
+      "counts": {
+        "entries": 14,
+        "end_constructs": 3,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/nonreal_float.roslynobj",
+      "counts": {
+        "entries": 16,
+        "end_constructs": 2,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/provenance.roslynobj",
+      "counts": {
+        "entries": 21,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/reflection.roslynobj",
+      "counts": {
+        "entries": 36,
+        "end_constructs": 8,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/retained.roslynobj",
+      "counts": {
+        "entries": 257,
+        "end_constructs": 63,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines.roslynobj",
+      "counts": {
+        "entries": 185,
+        "end_constructs": 43,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines_exception.roslynobj",
+      "counts": {
+        "entries": 38,
+        "end_constructs": 9,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/routines_microsoft.roslynobj",
+      "counts": {
+        "entries": 36,
+        "end_constructs": 9,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_attributes.roslynobj",
+      "counts": {
+        "entries": 19,
+        "end_constructs": 4,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_order.roslynobj",
+      "counts": {
+        "entries": 80,
+        "end_constructs": 14,
+        "sublists": 2,
+        "sublist_entries": 4,
+        "scope_sublist_links": 2,
+        "multi_sublist_scopes": 1,
+        "linkage_names": 1
+      },
+      "linkage": [
+        {
+          "entity": 1397,
+          "constant": 1398,
+          "linkage": "nlk_external",
+          "units": [
+            67,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_statements.roslynobj",
+      "counts": {
+        "entries": 95,
+        "end_constructs": 18,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/source_vla.roslynobj",
+      "counts": {
+        "entries": 12,
+        "end_constructs": 1,
+        "sublists": 1,
+        "sublist_entries": 1,
+        "scope_sublist_links": 1,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/template_edges.roslynobj",
+      "counts": {
+        "entries": 62,
+        "end_constructs": 13,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/type_edges.roslynobj",
+      "counts": {
+        "entries": 48,
+        "end_constructs": 11,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/types.roslynobj",
+      "counts": {
+        "entries": 27,
+        "end_constructs": 4,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/unevaluated_clang.roslynobj",
+      "counts": {
+        "entries": 26,
+        "end_constructs": 6,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/unevaluated_microsoft.roslynobj",
+      "counts": {
+        "entries": 22,
+        "end_constructs": 5,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/upc_affinity.roslynobj",
+      "counts": {
+        "entries": 26,
+        "end_constructs": 5,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/upc_dynamic.roslynobj",
+      "counts": {
+        "entries": 16,
+        "end_constructs": 3,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/upc_static.roslynobj",
+      "counts": {
+        "entries": 16,
+        "end_constructs": 3,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variable_initializers.roslynobj",
+      "counts": {
+        "entries": 30,
+        "end_constructs": 7,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variable_semantics.roslynobj",
+      "counts": {
+        "entries": 24,
+        "end_constructs": 4,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/variables.roslynobj",
+      "counts": {
+        "entries": 79,
+        "end_constructs": 12,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_arm.roslynobj",
+      "counts": {
+        "entries": 16,
+        "end_constructs": 3,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_riscv.roslynobj",
+      "counts": {
+        "entries": 20,
+        "end_constructs": 4,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/vector_values.roslynobj",
+      "counts": {
+        "entries": 10,
+        "end_constructs": 1,
+        "sublists": 0,
+        "sublist_entries": 0,
+        "scope_sublist_links": 0,
+        "multi_sublist_scopes": 0,
+        "linkage_names": 0
+      }
+    }
+  ]
+}

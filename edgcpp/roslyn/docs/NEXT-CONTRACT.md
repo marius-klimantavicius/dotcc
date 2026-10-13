@@ -1,3 +1,26 @@
+# Accepted routine/EH and constant-dependent branches; next bounded closure
+
+Current e49f251 schema is unchanged. Eight existing paths pass350 and four fresh
+paths pass92; self73, build0 warnings/errors, generator249/1946, literal/diff pass.
+All14 unchanged stages retain316 pinned inputs/26 canonical backend files/tool
+pins. Coverage1388 verified/144 required pending,89 captured optional-source and
+15 explicit optional limits. No broad187 refresh or performance rerun is claimed.
+
+Native next: C retained prototype scope, actual class/enum UUID storage from
+__uuidof, then selected current-guard proof for VLA variable and throw accessible
+bases. Managed next: scoped availability entity/state/reason examples, exact
+orphan/derivation ownership/order and remaining small existing typed identities.
+Actual EDG scheduling remains authority; no optional provenance reconstruction.
+
+Scoped availability implementation is present, so remaining work is acceptance
+and accurate docs rather than a new framework. The final-five-slot-contract.tsv
+proposal removes four unwritten columns plus one frontend deduction intermediate
+with explicit nullable CleanupAction.IsUnordered unknown policy. Its root review
+is clear, but SQL/producer/generated readers must change together in a subsequent
+isolated boundary. Current readers/objects remain held to the existing digest.
+
+---
+
 # Accepted declaration/template identities; next required proof closure
 
 Current e49f251 schema is unchanged. Five fresh retained-branch objects pass97

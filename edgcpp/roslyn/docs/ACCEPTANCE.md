@@ -1,5 +1,14 @@
 # Remaining acceptance work
 
+Current bounded checkpoint:251tables/e49f,8existing/PASS350 plus4fresh/PASS92,
+12 distinct paths,self73,cleanbuild/gen/literal/diff. All14 unchanged compiled
+stages/pins reverified; no new strictbuild/full187/scale run. Field proof1388
+verified/144required pending,89captured optional-source/15explicit limits.
+Remaining adapters reviewed exist; exact identity/active branch proof, scoped
+availability acceptance and the separate five-slot format cleanup remain.
+
+## Historical milestone evidence
+
 Current accepted29 boundary:251tables/e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa,
 14 strict pinned profiles,198 validation instances/187 unique paths,
 readerPASS3871,self73;1066 verified/488 required field proofs pending.

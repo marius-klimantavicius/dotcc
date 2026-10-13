@@ -1,0 +1,15 @@
+{
+  "evidence": "edgcpp/artifacts/roslynobj/root251/local-scope-proof/route-proof.json",
+  "sha256": "2b1ce8d7d4ad18557ad38b7ed7f7eb6417234c2008fee46d51aa05685f472073",
+  "native_public_snapshot": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/templates.roslynobj",
+  "native_public_identity": {
+    "correspondence_id": 1117,
+    "parent_scope_id": 1118,
+    "enclosing_routine_id": 1090,
+    "parent_kind": "sck_function",
+    "associated_entity_id": 1090
+  },
+  "raw_route_verified": true,
+  "accepted_reader_log": "/tmp/roslynobj-managed-declarations251-existing9-final.log PASS518",
+  "semantic_policy": "Normalize exact retained referrer\u2192scope identity; no new wrapper entity, reconstructed ownership or source location. Owner-specific alternative arms retain their own coverage."
+}

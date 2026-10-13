@@ -1,0 +1,96 @@
+{
+  "owners": [
+    "a_template_parameter",
+    "a_token_sequence",
+    "a_token_sequence_entry"
+  ],
+  "pending_at_review": 6,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Stockil_def17150-17203/4675-4705;expr21084-21357;interpret21767-21774;il_alloc3406+;stockcp_gen18593-18642. Exactroslyn_templates/expressions_extra and publictests. Rootreadonly.",
+  "observations": "/tmp/roslyn-root-parameter-token6-observed29.json",
+  "summary": {
+    "missing_positive_branch": 4,
+    "ready_evidence_join": 1,
+    "existing_positive_needs_public_identity": 1
+  },
+  "rows": [
+    {
+      "owner": "a_token_sequence_entry",
+      "member": "token_kind",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4682",
+      "disposition": "mapped_pending_validation",
+      "destination": "token_sequence_token.kind_id;backend/roslyn_expressions_extra.h",
+      "api_property": "TokenSequenceTokenDetails.Kind",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "0tokens. Writer reads exact recordedkind andordinal; sourceproducer cache_curr_token_sequence_entry expr21084-21105 copiescurr_token. Stockcp_gen_be18593-18642 uses recordedtokens and expression interpolationlist inlexicalorder. Need realretained expressionsequence; common attribute.TokenKind notsameowner proof."
+    },
+    {
+      "owner": "a_token_sequence_entry",
+      "member": "spelling",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4686",
+      "disposition": "mapped_pending_validation",
+      "destination": "token_sequence_token.spelling_id;backend/roslyn_expressions_extra.h",
+      "api_property": "TokenSequenceTokenDetails.Spelling",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "0tokens. Actualproducer expr21098-21101 copies il_string_for_curr_token into file-scopestring for each recordedtoken; this executablecode is moreprecise than oldil_def4686 comment excludingconstant spellings. Interpolatoroperand expressions deliberately notin tokenlist; delimiters/comma tokens retained. Currentbackend interns whateveractualspellingEDGsupplies, NULL staysNULL. Do not fetch frontendtoken_cache or sourcefilebytes."
+    },
+    {
+      "owner": "a_token_sequence",
+      "member": "tokens",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:4695",
+      "disposition": "mapped_pending_validation",
+      "destination": "token_sequence.token_sequence_token;backend/roslyn_expressions_extra.h",
+      "api_property": "token_sequence ordered relationship",
+      "fixture": "retained;source/CLI profiles pending",
+      "reason": "Kind/union-guarded retained residual adapter implemented; serialized native compilation and genuine family fixture validation pending. Semantic cleanup references remain outside sequential execution containment.",
+      "review_status": "missing_positive_branch",
+      "review": "0token_sequence rows/0token_sequence_token rows. Semantic token-sequence model is reflection/injection payload, notgeneral macro/whitespace provenance. expr21154-21281 scans ^^ { ... } under injection_enabled into actualILtokens + separate interpolationoperandlist. interpret21767-21774 creates constant-evaluated tokensequence with onlyfrontend token_cache; alloczeroes tokens. Originalexpression and evaluatedreflection descriptor differ; no cache dereference/reconstruction or claiminterpretedtokensretained."
+    },
+    {
+      "owner": "a_template_parameter",
+      "member": "source_corresp",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17156",
+      "disposition": "mapped_pending_validation",
+      "destination": "symbol.name_id/source_origin_id/containing_entity_id; backend/roslyn_templates.h:roslyn_symbol",
+      "api_property": "TemplateParameter.Name/Source",
+      "fixture": "schema198 template common-Symbol integration pending",
+      "reason": "Direct retained EDG field; valid native export/FK and managed template navigation assertions pass.",
+      "review_status": "ready_evidence_join",
+      "review": "436 actualparameters436canonical sourcecorresp associations. Exacttemplates writer153 roslyn_symbol(...parameter->source_corresp) attaches actualdescriptor; Program364 namedordered T/N and366-368 placeholder\u2194parameter declarationidentity; template-template Rebound C test425-428. Sourcepositions optional andnoextra probes. Correctstaleworksheet APItoTemplateParameter.SourceCorrespondence/inherited Name/Source; correspondence relation is entity_source_correspondence, notobsolete symbol.containing_entity column."
+    },
+    {
+      "owner": "a_template_parameter",
+      "member": "variant.type.default_arg_type",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17177",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_parameter.default_argument_id; backend/roslyn_templates.h",
+      "api_property": "TemplateParameterDetails.default_argument_id",
+      "fixture": "templates_extended_pending",
+      "reason": "Direct placeholder/default/flag adapter implemented; dedicated nonzero fixture remains required.",
+      "review_status": "existing_positive_needs_public_identity",
+      "review": "3 retained type-default pointers on native/source/tableless retained fixture. Writer wraps actualtype in typeddefaultargument tak_type; no frontend deduction. CurrentProgram369 tests nontype constantdefault, not type-defaultidentity. Addbounded existingretained typeddefault check; genericNavigationFamilies traverseslink but not exactselectedtype assertion."
+    },
+    {
+      "owner": "a_template_parameter",
+      "member": "variant.templ.default_arg_template",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:17199",
+      "disposition": "mapped_pending_validation",
+      "destination": "template_parameter.default_argument_id; backend/roslyn_templates.h",
+      "api_property": "TemplateParameterDetails.default_argument_id",
+      "fixture": "templates_extended_pending",
+      "reason": "Direct placeholder/default/flag adapter implemented; dedicated nonzero fixture remains required.",
+      "review_status": "missing_positive_branch",
+      "review": "0template-default refs in436parameter cohort. ExistingRebound ParameterBase actualtemplateargument and placeholderidentities do NOT prove template-default arm. Straight stockdefaultpointer serialized through tak_template wrapper; needs actualretained defaulttemplate fixture, notchosenargument fallback."
+    }
+  ]
+}

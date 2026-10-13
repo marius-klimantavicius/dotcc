@@ -122,6 +122,7 @@ public class TypeReference : CppType
     public TypeReferenceDetails Reference => Object.Detail("type_reference", Id, r => new TypeReferenceDetails(Object, r));
     public CppType UnderlyingType => Reference.UnderlyingType;
     public ExpressionOperation? DecltypeExpression => Reference.DecltypeExpression;
+    public CppType? OperatorTypeArgument => Reference.OperatorTypeArgument;
     public IReadOnlyList<LocalExpressionReferenceDetails> ContextualExpressions => Object.List("SELECT * FROM local_expression_reference WHERE referrer_id=$owner ORDER BY owner_id,ordinal",Id,r=>new LocalExpressionReferenceDetails(Object,r));
     public override TemplateInstantiation? Instantiation => Reference.Instance;
     public IReadOnlyList<TemplateArgument> OriginalTemplateArguments => Object.List("SELECT a.* FROM typeref_original_template_argument r JOIN template_argument a ON a.id=r.argument_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.Argument(r.Long("id")),"template_argument");

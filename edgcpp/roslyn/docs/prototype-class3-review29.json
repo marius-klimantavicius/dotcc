@@ -1,0 +1,51 @@
+{
+  "pending_at_review": 3,
+  "cohort": "05d745e94 closure251-phantom29 /187unique",
+  "authority": "Pristine EDG stock il_def7634-7653,9132-9175;il.c10303-10338;class_decl22268-22318;lower_init17139+,19746-19885;lower_il22448-22491,22834;host_envir1898-1913. Root read-only. No helpers/probes/profile mutation.",
+  "observations": "/tmp/roslyn-root-prototype-class3-observed29.json",
+  "summary": {
+    "missing_positive_branch": 2,
+    "frontend_transient_exclusion_candidate": 1
+  },
+  "rows": [
+    {
+      "owner": "a_routine_type_supplement",
+      "member": "prototype_scope",
+      "guard": "!defined(IL_DEF_H)",
+      "source": "src/il_def.h:7634",
+      "disposition": "mapped_pending_validation",
+      "destination": "routine_type.prototype_scope_id",
+      "api_property": "RoutineType.Routine.PrototypeScope",
+      "fixture": "267 mapping-only source/guard review; positive/scalar join pending",
+      "reason": "Actual scope. il_def7634\u20137653 explicitly says parameters never belong to this scope; C++ nonnull limited to hidden-name configuration. Reviewed pristine stock declarations and roslyn_routines.h56\u201366. Mapping only.",
+      "review_status": "missing_positive_branch",
+      "review": "All187 zero. Stock il_def7634-7653 describes real C prototype-scope tag/enum declarations, never parameters; C++ only hidden names. il.c10303-10338 creates file-region scope, links routine_type.prototype_scope and scope.assoc_type, and gives NULL parent except nested prototype scopes. Thus do not exclude due C++ hidden-name macro or invent parameter ownership. Backend roslyn_routines57 directpointer, RoutineType.PrototypeScope high-level exists. A valid C function prototype with local struct/enum tag (or old-style parameter-list tag) should be a bounded existing-profile positive; no new configuration needed. C++ hiddennames stockhost1898-1913 disabled/suppressed underlowering, optional source-name work unnecessary."
+    },
+    {
+      "owner": "a_class_type_supplement",
+      "member": "assoc_operator_new_routine",
+      "guard": "!defined(IL_DEF_H) && NEW_CAN_BE_FOLDED_INTO_CTOR",
+      "source": "src/il_def.h:9132",
+      "disposition": "mapped_pending_validation",
+      "destination": "record_type.allocation_routine_id;backend/roslyn_layout.h:176",
+      "api_property": "",
+      "fixture": "final258 layout/C/nativeMS all4 snapshot; public acceptance pending",
+      "reason": "Actual native adapter compiled in all4 profiles. optional routine_symbol FK",
+      "review_status": "frontend_transient_exclusion_candidate",
+      "review": "All187 zero; actualDB NEW_CAN_BE_FOLDED_INTO_CTOR1 onlycfront/usl21/usl30, allDO_IL_LOWERING1; sourceDO_IL_LOWERING0 butNEW0. Stock class_decl22268-22318 explicitly optimization chooses default operatornew, no prototypeinstances; decl_inits10114/expr24902 populate. lower_init17139+ consumes actualroutine toemit constructor allocation call. lower_il22448-22491 deliberately NULLs new/delete cache at regionwrapup toavoidspurious needed dependencies, invoked22834 beforebackend. This cache is consumed frontend/lowering infrastructure in currentprofiles; preserve emitted calls/currenttargets, neverguess AllocationRoutine or run semantichelper to recreate. For hypothetical future nonlowered NEW1 profile pointer could be retained; do not globalize configured exclusion."
+    },
+    {
+      "owner": "a_class_type_supplement",
+      "member": "uuid_variable",
+      "guard": "!defined(IL_DEF_H) && DO_IL_LOWERING && MICROSOFT_EXTENSIONS_ALLOWED",
+      "source": "src/il_def.h:9169",
+      "disposition": "mapped_pending_validation",
+      "destination": "record_type.uuid_variable_id;backend/roslyn_layout.h:168",
+      "api_property": "",
+      "fixture": "final258 layout/C/nativeMS all4 snapshot; public acceptance pending",
+      "reason": "Actual native adapter compiled in all4 profiles. optional exact variable_symbol FK",
+      "review_status": "missing_positive_branch",
+      "review": "All187 zero, not transient/excluded. NativeCOM __declspec(uuid) plus executed/address-used __uuidof creates required storage. lower_init19746-19847 uuid_variable_for_type selects class or enum field, creates real static _GUID variable and aggregate initializer thenstores pointer; lower_uuidof19850-19885 rewrites exactconstant to variableaddress. Existing layoutfixture carries uuid string only; absenceof __uuidof doesnot require allocation. backend roslyn_layout168 exactpointer under lowering/MS/resident guards, RecordType.UuidVariable available. Bounded native Microsoft-language acceptedprofile probe may exercise bothclass/enum; do not use source-only profile as storageproof, no CLI importer/metadata or corechange required."
+    }
+  ]
+}

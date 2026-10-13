@@ -1,0 +1,33 @@
+{
+  "reviewed_contract": "edgcpp/roslyn/docs/final-five-slot-contract.tsv",
+  "decision": "No blocker to bounded removal as proposed, subject to preserving documented null APIs and exact retained payloads. No repository mutation by root.",
+  "cohort": "accepted187unique/e49f",
+  "counts": {
+    "vector_type.element_count": {
+      "owner_rows": 2122,
+      "nonnull": 0
+    },
+    "parameter_type.source_origin_id": {
+      "owner_rows": 8143,
+      "nonnull": 0
+    },
+    "include_occurrence.position_id": {
+      "owner_rows": 197,
+      "nonnull": 0
+    },
+    "cleanup_action.is_unordered": {
+      "owner_rows": 239,
+      "nonnull": 0
+    },
+    "template_argument.deduced_array_bound": {
+      "owner_rows": 818,
+      "nonnull": 0
+    }
+  },
+  "notes": [
+    "First4 have no producer; conditional deduced_array_bound writer does exist and must not be described as unwritten. Stock il_def7789 says only type deduction, templates2950-2968/13623-13634 converts to actual Constant. Stock IFC writer3446 rejects this transient state and lower_name8356 asserts it is absent from mangled retained arguments. No source-language rededuction in exporter/API.",
+    "CleanupAction.IsUnordered remains nullable unknown, not false and not copied from Initialization.IsUnordered. Preserve actual EDG condition and region transitions. IncludeOccurrence.Position remains documented null if public facade retained. ParameterType source must not substitute associated Variable source.",
+    "Vector direct facts remain intact: element type/currentsize/sizeconstant/kind/tuple/multiplier. Stock num_vector_elements3995-4026 is only fixed tk_vector, packedextbool uses originalconstant, dependent packedbool returns placeholder1. Do not expose that placeholder as real quantity or generalize to scalable/RISCV.",
+    "Generated Detail properties, bindings, schema hashes/catalog-admission docs and historical snapshot expectations need coordinated update. No broad profile/source/core changes justified. Final normal supported objects must be regenerated against new exact contract; archived e49f remains genuine incompatible development format when admission changes."
+  ]
+}
