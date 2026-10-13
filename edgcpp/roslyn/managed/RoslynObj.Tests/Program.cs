@@ -164,7 +164,7 @@ try
         INSERT INTO entity VALUES(270,(SELECT id FROM kind WHERE family='entity' AND name='constant_value'));
         INSERT INTO constant_value(id,kind_id) VALUES(270,(SELECT id FROM kind WHERE family='constant' AND name='ck_aggregate'));
         INSERT INTO aggregate_value(id,type_id) VALUES(270,40);
-        INSERT INTO aggregate_element(owner_id,ordinal,value_id,type_id,field_id) VALUES(270,0,31,3,42);
+        INSERT INTO aggregate_element(owner_id,ordinal,value_id,type_id) VALUES(270,0,31,3);
         INSERT INTO constant(id,type_id,value_id) VALUES(230,3,31),(231,3,31),(260,40,270),(261,40,270);
         INSERT INTO constant_component(owner_id,role_id,ordinal,constant_id) VALUES(260,(SELECT id FROM kind WHERE family='constant_component_role' AND name='element'),0,230),(261,(SELECT id FROM kind WHERE family='constant_component_role' AND name='element'),0,231);
         """)))
@@ -226,6 +226,8 @@ try
         ConstantReferences.Verify(unit,input,obj.Manifest.CaptureProfile=="source_semantic",Check);
         CommonProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         SemanticProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        SemanticActivationProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        ScopeRelationsProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         RoutineProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         LayoutProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         ExecutionProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
@@ -510,7 +512,7 @@ try
             Check(awaits.Length==12&&awaits.Count(a=>a.Kind.Name=="enk_yield")==3&&awaits.All(a=>Protocol(a.Ready,"await_ready")&&Protocol(a.Suspend,"await_suspend")&&Protocol(a.Resume,"await_resume")),"Real await and yield descriptors must preserve EDG's selected ready/suspend/resume protocol calls, including wrapped result assignments.");
             var parameterFunction=unit.Functions.Single(f=>f.Name=="coroutine_parameter");
             var parameterCoroutine=parameterFunction.Body!.DescendantOperations().OfType<CoroutineOperation>().Single();
-            Check(parameterCoroutine.ParameterCopies.Single().Copy.Type.Name=="CopyParameter"&&parameterCoroutine.ParameterCopies.All(c=>c.Parameter is null),"A by-value coroutine must expose its actual parameter-copy variable without trailing scope locals or inferred original-parameter relationships.");
+            Check(parameterCoroutine.ParameterCopies.Single().Copy is {Type.Name:"CopyParameter",Details.IsParameter:true},"A by-value coroutine must expose its actual parameter-copy variable without trailing scope locals or inferred original-parameter relationships.");
             Check(unit.Functions.Single(f=>f.Name=="run"&&f.ContainingType?.Name=="MemberCoroutine").Body!.DescendantOperations().OfType<CoroutineOperation>().Single().ThisParameterCopy is not null,"A member coroutine must expose the actual retained this-parameter copy.");
             if(obj.Manifest.Stage=="lowered")
                 Check(parameterFunction.Body.DescendantOperations().OfType<CallOperation>().Count(c=>c.TargetMethod is {ContainingType.Name:"CopyParameter",Details.SpecialFunction.Name:"sfk_constructor"})==1,"A lowered coroutine parameter copy must expose its actual constructor replacement exactly once through the body.");

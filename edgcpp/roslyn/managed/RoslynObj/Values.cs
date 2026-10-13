@@ -1,5 +1,4 @@
 using System.Numerics;
-using System.Text;
 namespace RoslynObj;
 
 public sealed class Constant : SemanticEntity
@@ -82,36 +81,18 @@ public sealed class StringValue : ConstantValue
 {
     internal StringValue(RoslynObject owner,long id,Row row) : base(owner,id,row) { }
     public StringValueDetails Details => Object.Detail("string_value",Id,r=>new StringValueDetails(Object,r));
-    /// <summary>Count of stored units; native target-byte values include the terminator and do not count Unicode characters.</summary>
+    /// <summary>Count of actual stored units, including any recorded terminator. Native target-byte values do not count Unicode characters.</summary>
     public BigInteger Length => Details.Length;
     public BigInteger? ByteLength => UnitKind.Name=="target_bytes"?Details.Length:null;
     public long StorageUnitBits => Details.ElementBits;
     public long ElementBits => Details.ElementBits;
     public SemanticKind Encoding => Details.Encoding;
-    public string? Text => Details.Text;
     public SemanticKind UnitKind => Details.UnitKind;
     /// <summary>Compatibility alias for StorageUnits; native values contain target bytes, not decoded wide code points.</summary>
     public IReadOnlyList<uint> CodeUnits => StorageUnits;
     public IReadOnlyList<byte> TargetBytes => UnitKind.Name == "target_bytes" ? new ProjectedList<uint,byte>(StorageUnits,unit=>checked((byte)unit)) : [];
-    public IReadOnlyList<uint> StorageUnits
-    {
-        get
-        {
-            if(Text is not {} text)
-                return Object.List("SELECT * FROM string_unit WHERE owner_id=$owner ORDER BY ordinal",Id,r=>checked((uint)r.Long("unit")));
-            var units=Encoding.Name switch
-            {
-                "ascii" => text.Select(c=>checked((uint)c)).ToArray(),
-                "utf8" => System.Text.Encoding.UTF8.GetBytes(text).Select(b=>(uint)b).ToArray(),
-                "utf16" when UnitKind.Name == "target_bytes" => (Object.Manifest.Target.Endianness == "little" ? System.Text.Encoding.Unicode : System.Text.Encoding.BigEndianUnicode).GetBytes(text).Select(b=>(uint)b).ToArray(),
-                "utf16" => text.Select(c=>(uint)c).ToArray(),
-                "utf32" when UnitKind.Name == "target_bytes" => new UTF32Encoding(Object.Manifest.Target.Endianness == "big",false,true).GetBytes(text).Select(b=>(uint)b).ToArray(),
-                "utf32" => text.EnumerateRunes().Select(r=>(uint)r.Value).ToArray(),
-                _=>throw new IncompatibleObjectException("The string fast-path encoding is unsupported.")
-            };
-            return Array.AsReadOnly(units);
-        }
-    }
+    /// <summary>The exact ordered stored units, without host text decoding or an added terminator.</summary>
+    public IReadOnlyList<uint> StorageUnits => Object.List("SELECT * FROM string_unit WHERE owner_id=$owner ORDER BY ordinal",Id,r=>checked((uint)r.Long("unit")));
 }
 
 public sealed class AggregateValue : ConstantValue
@@ -131,5 +112,4 @@ public sealed class LabelDifferenceValue : ConstantValue
     public LabelSymbol? FromLabel => RightLabel;
     public ConstantValue FromValue => Details.FromValue;
     public ConstantValue ToValue => Details.ToValue;
-    public BigInteger? Offset => Details.Offset;
 }

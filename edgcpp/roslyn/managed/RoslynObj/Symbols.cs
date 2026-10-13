@@ -39,6 +39,7 @@ public class Symbol : SemanticEntity
     public override string? Name => base.Name;
     public SemanticKind Kind => SymbolDetails.Kind;
     public SemanticEntity? ContainingEntity => SourceCorrespondence?.ContainingEntity;
+    /// <summary>The current type descriptor attached to the common symbol. A variable's retained declaration type is exposed by VariableSymbol.DefinitionType.</summary>
     public CppType? DeclaredType => SymbolDetails.Type;
     public SourceInfo? Source => SourceCorrespondence?.Source;
     public bool IsCompilerGenerated => SymbolDetails.CompilerGenerated;
@@ -54,7 +55,7 @@ public sealed partial class FunctionSymbol : Symbol
     public RoutineType Signature => (RoutineType)Details.RoutineType;
     public CppType ReturnType => Signature.ReturnType;
     public CppType? ContainingType => Details.ContainingType;
-    private const string ParameterQuery = "SELECT p.*,t.owner_id,t.ordinal,t.parameter_type_id,t.role_id,t.base_subobject_id,COALESCE(r.role_id,t.role_id) AS resolved_role_id,r.parameter_id AS retained_variable_id,r.default_initialization_id AS retained_default_id,r.is_source_parameter AS retained_source FROM routine_type_parameter t JOIN parameter_type p ON p.id=t.parameter_type_id LEFT JOIN routine_parameter r ON r.owner_id=$owner AND r.ordinal=t.ordinal WHERE t.owner_id=(SELECT routine_type_id FROM routine_symbol WHERE id=$owner) ORDER BY t.ordinal";
+    private const string ParameterQuery = "SELECT p.*,t.owner_id,t.ordinal,t.parameter_type_id,t.role_id,t.base_subobject_id,COALESCE(r.role_id,t.role_id) AS resolved_role_id,r.parameter_id AS retained_variable_id,r.is_source_parameter AS retained_source FROM routine_type_parameter t JOIN parameter_type p ON p.id=t.parameter_type_id LEFT JOIN routine_parameter r ON r.owner_id=$owner AND r.ordinal=t.ordinal WHERE t.owner_id=(SELECT routine_type_id FROM routine_symbol WHERE id=$owner) ORDER BY t.ordinal";
     public IReadOnlyList<Parameter> Parameters => Object.List(ParameterQuery, Id, r => new Parameter(Object, r),"parameter_type");
     public IReadOnlyList<Parameter> SourceParameters => Object.List(ParameterQuery.Replace("ORDER BY t.ordinal", "AND r.is_source_parameter=1 ORDER BY t.ordinal"), Id, r => new Parameter(Object, r),"parameter_type");
     public FunctionBody? Body => Details.BodyRoot is { } root ? new(this, root, Details.BodyScope) : null;
@@ -93,7 +94,6 @@ public sealed class Parameter : SignatureParameter
     public VariableSymbol? Symbol => owner.Link(row.OptionalLong("retained_variable_id"),owner.Variable);
     public override string? Name => Symbol?.Name ?? base.Name;
     public override SemanticKind Role => owner.Kind(row.Long("resolved_role_id"));
-    public Initialization? DefaultInitialization => owner.Link(row.OptionalLong("retained_default_id"),owner.Initialization);
     public bool IsSourceParameter => row.OptionalBool("retained_source") == true;
 }
 
@@ -123,13 +123,14 @@ public sealed class VariableSymbol : Symbol
     }
     public VariableSymbolDetails Details { get; }
     public CppType Type => Details.Type;
+    /// <summary>The retained declaration type, when recorded. No current-type fallback is applied.</summary>
+    public CppType? DefinitionType => Details.DeclaredType;
     public Initialization? Initializer => Details.Initializer ?? LocalStaticInitialization?.Initialization;
     public SemanticKind InitializationKind => Details.InitializationKind;
     public TemplateInstantiation? Instantiation => Details.Instance;
     public TemplateDescriptor? Template => Instantiation?.OriginalDefinition;
     public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
     public Constant? ConstantInitializer => Details.ConstantInitializer ?? LocalStaticInitialization?.Constant;
-    public Lifetime? Lifetime => Details.Lifetime;
     public IReadOnlyList<LocalStaticInitialization> LocalStaticInitializations => regionInitializers.Value;
     public LocalStaticInitialization? LocalStaticInitialization
     {
@@ -272,7 +273,6 @@ public sealed class AliasSymbol : TypeSymbol
 {
     internal AliasSymbol(RoslynObject owner,long id,Row row) : base(owner,id,row) => Details=new(owner,row);
     public new AliasSymbolDetails Details { get; }
-    public SemanticEntity? Target => Details.Target;
     public CppType? UnderlyingType => Details.UnderlyingType;
 }
 

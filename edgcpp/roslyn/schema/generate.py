@@ -1345,6 +1345,36 @@ retired_columns = {
     'source_file': {'verified_digest_id'},
     'source_origin': {'spelling_range_id', 'expansion_range_id'},
 }
+
+# Exact owner-table audit: these slots have no EDG payload producer. Actual
+# target bytes, constants, expressions, typed ctor links and lifetimes remain.
+owner_table_phantom_columns = {
+    'string_value': {'text_id'},
+    'label_difference_value': {'offset'},
+    'aggregate_element': {'field_id', 'initialization_id'},
+    'designator_value': {'range_end', 'value_id', 'type_id'},
+    'dependent_value': {'entity_id'},
+    'template_argument': {'expression_id'},
+    'template_specialization': {'constraint_id'},
+    'for_each_statement': {'initialization_id'},
+    'coroutine_parameter_copy': {'parameter_id'},
+    'asm_clobber': {'text_id'},
+    'attribute_group': {'namespace_name_id'},
+    'attribute_argument': {'text_id', 'integer_value', 'entity_id'},
+    'routine_parameter': {'default_initialization_id'},
+    'try_descriptor': {'finally_statement_id'},
+    'handler': {'source_position_id'},
+    'variable_symbol': {'lifetime_id'},
+    'alias_symbol': {'target_id'},
+    'dependent_type': {'expression_id'},
+    'reference_expression': {'subobject_id'},
+    'initialization': {'is_array', 'vla_dimension_id'},
+    'initialization_operand': {'initialization_id', 'field_id', 'base_subobject_id'},
+}
+assert sum(map(len, owner_table_phantom_columns.values())) == 29
+for table_name, columns in owner_table_phantom_columns.items():
+    retired_columns.setdefault(table_name, set()).update(columns)
+
 kept_tables = []
 removed_column_count = 0
 for definition in tables:
@@ -1360,7 +1390,7 @@ for definition in tables:
         removed_column_count += count
     kept_tables.append(definition)
 assert len(tables) - len(kept_tables) == 9
-assert removed_column_count == 18
+assert removed_column_count == 47
 tables = kept_tables
 
 custom = {

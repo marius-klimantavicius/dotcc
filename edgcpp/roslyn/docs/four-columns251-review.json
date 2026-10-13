@@ -1,0 +1,75 @@
+{
+  "candidate_count": 4,
+  "distinct_snapshot_paths": 175,
+  "source_pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "status": "Queued for coordinator after frozen29; no repository changes",
+  "method": "Exact owner source/writer/API review, full RDF bitset and direct EDG vector helper review, readonly historical committed251 snapshots; no build/tests or source recovery.",
+  "rows": [
+    {
+      "table": "vector_type",
+      "column": "element_count",
+      "recommendation": "Remove unwritten storage; any later count convenience needs explicit concrete-only semantics",
+      "stock_source": "il_def.h10947-10992;types.c3995-4026",
+      "actual": "element_type_id; size_constant_id; edg_vector_kind_id; tuple_elements; length_multiplier; exact type descriptor size/effective size and element type",
+      "notes": "No direct a_type vector count field. Stock readonly num_vector_elements exists for tk_vector only: ordinary descriptor sizes divide; vk_ext bool uses size_constant; dependent bool returns stand-in1. All helper inputs already retained, so removing empty column loses no facts. Do not invent fixed runtime count for scalable/RISC-V/dependent vectors or serialize helper stand-ins. No new probe required for removal.",
+      "owner_writer_sites": [
+        "roslyn_types.h:124",
+        "roslyn_types.h:125",
+        "roslyn_types.h:126"
+      ],
+      "observed": {
+        "rows": 2122,
+        "nonnull": 0,
+        "files_with_rows": 14
+      }
+    },
+    {
+      "table": "parameter_type",
+      "column": "source_origin_id",
+      "recommendation": "Remove unwritten storage; document optional Source unavailable, or remove facade if contract chooses",
+      "stock_source": "il_def.h6385-6562,decl_pos_info6550-6555",
+      "actual": "parameter current/declared types, name, ordinal, flags, default expression and attributes unchanged; associated actual variable has its own source correspondence",
+      "notes": "Stock has optional decl_pos_info under EXTRA_SOURCE_POSITIONS_IN_IL, already explicitly excluded_optional_source in field worksheet. No current writer, no shared source-correspondence owner. Do not substitute related variable source as parameter-type source. No optional coordinate implementation/probe campaign.",
+      "owner_writer_sites": [
+        "roslyn_parameters.h:67"
+      ],
+      "observed": {
+        "rows": 7541,
+        "nonnull": 0,
+        "files_with_rows": 155
+      }
+    },
+    {
+      "table": "include_occurrence",
+      "column": "position_id",
+      "recommendation": "Remove unwritten storage; preserve documented null Position if API availability property retained",
+      "stock_source": "il_def.h136-253 a_source_file",
+      "actual": "exact sequence interval, first line, physical file, display/written names, parent/children order and retained flags",
+      "notes": "Stock source-file descriptor has no include-directive a_source_position. First sequence is content interval, not inferred directive location. Existing PhysicalSource.cs10 explicitly documents null Position. Do not reconstruct from parent or filenames.",
+      "owner_writer_sites": [
+        "roslyn_source.h:41"
+      ],
+      "observed": {
+        "rows": 185,
+        "nonnull": 0,
+        "files_with_rows": 175
+      }
+    },
+    {
+      "table": "cleanup_action",
+      "column": "is_unordered",
+      "recommendation": "Remove redundant nullable storage only while preserving public nullable IsUnordered availability contract",
+      "stock_source": "lower_eh.c3083-3168 RDF flags;3630-3693 table writer;3947-3989 unordered block lowering;il_def.h4078-4088 raw DI flag",
+      "actual": "recorded cleanup region next links, conditions, actions/storage; initialization.is_unordered on retained DI",
+      "notes": "All region flags reviewed: no unordered bit. EDG encodes unordered destruction via conditional entities and region-chain state transitions, not independent action boolean. No guessing from condition presence or action ordering. CleanupAction.IsUnordered must remain null for lowered table actions, neverfalse. Existing SemanticProjection.cs146 asserts this. Direct Initialization.IsUnordered remains separate and retained.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:266"
+      ],
+      "observed": {
+        "rows": 222,
+        "nonnull": 0,
+        "files_with_rows": 21
+      }
+    }
+  ]
+}

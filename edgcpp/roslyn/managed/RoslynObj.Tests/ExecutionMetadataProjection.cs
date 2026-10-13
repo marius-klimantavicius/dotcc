@@ -34,6 +34,8 @@ internal static class ExecutionMetadataProjection
             check(loop.Children.Contains(loop.Body!)&&loop.IteratorScope!.Members.Contains(loop.Iterator!),"The unresolved foreach must preserve its actual body edge and iterator-scope variable membership.");
             check(!unit.Functions.Single(f=>f.Name=="native_dependent_foreach"&&f.Body is not null).Body!.DescendantOperations().Any(),"The retained dependent foreach prototype must not enter executable function traversal.");
         }
+        if(fixture is "native_dependent_foreach.roslynobj" or "native_microsoft.roslynobj")
+            check(unit.Entities.OfType<ForEachOperation>().All(loop=>loop.ChildRelations.Where(c=>c.Role.Name=="initialization").OrderBy(c=>c.Ordinal).Select(c=>((InitializationOperation)c.Child).Initialization).SequenceEqual(loop.Initializations)),"ForEach.Initializations must preserve the exact plural evaluated recipe edges and their retained order without an inferred singleton.");
         if(fixture=="upc_affinity.roslynobj")
         {
             var body=unit.Functions.Single(f=>f.Name=="upc_affinity_loop").Body!;

@@ -1,5 +1,10 @@
 # Remaining acceptance work
 
+Current accepted29 boundary:251tables/e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa,
+14 strict pinned profiles,198 validation instances/187 unique paths,
+readerPASS3871,self73;1066 verified/488 required field proofs pending.
+Older milestones below are history; see CLOSURE for explicit remaining work.
+
 Latest bounded GNU-asm/header proof:13 strict pinned profiles, two new +r
 objects, PASS479/nine genuine paths and WORself73. Contract remains251.
 Current accepted boundary251:175 distinct files /186 validation instances,

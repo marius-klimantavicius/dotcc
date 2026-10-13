@@ -1,0 +1,169 @@
+{
+  "candidate_count": 9,
+  "distinct_snapshot_paths": 175,
+  "source_pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "method": "Bounded table-specific producer plus exact stock union review and readonly committed251 snapshot observation. No repository edits or probes.",
+  "rows": [
+    {
+      "table": "variable_symbol",
+      "column": "lifetime_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h3993-4050; a_variable definition through11876",
+      "retained_alternative": "initialization.lifetime_id/init_expression_lifetime_id/overlapping_lifetime_id; local_static_initialization.lifetime_id; scope lifetimes",
+      "notes": "No direct variable lifetime field. Different recipe and initializer-temporary lifetimes must remain distinct. Remove Variable.Lifetime phantom rather than guessing one from scope or recipe.",
+      "owner_writer_sites": [
+        "roslyn_variables.h:113"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 4452,
+        "nondefault": 0,
+        "files_with_rows": 174
+      }
+    },
+    {
+      "table": "alias_symbol",
+      "column": "target_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h10732-10740 tk_typeref",
+      "retained_alternative": "alias_symbol.underlying_type_id -> variant.typeref.type; type_symbol descriptor",
+      "notes": "Actual typedef alias writer roslyn_gen_be.c160-170 has underlying type, no independent symbol target. Preserve Alias.UnderlyingType and descriptor.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:170"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 3347,
+        "nondefault": 0,
+        "files_with_rows": 175
+      }
+    },
+    {
+      "table": "dependent_type",
+      "column": "expression_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h9330-9401 template_param supplement",
+      "retained_alternative": "dependent_type.constraint_id / bit_width_constant_id / parent_type_id / proxy_class_id / coordinates",
+      "notes": "Union distinguishes type constraint from bit-width constant and frontend-only class-template symbol. No generic expression field. roslyn_types.h123 preserves direct active arms.",
+      "owner_writer_sites": [
+        "roslyn_types.h:123"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 336,
+        "nondefault": 0,
+        "files_with_rows": 83
+      }
+    },
+    {
+      "table": "reference_expression",
+      "column": "subobject_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h15351-15386;15590-15603",
+      "retained_alternative": "reference target/name_reference; surrounding ordered operator operands; actual member_pointer_value.subobject_id and subobject_path.base_subobject_id",
+      "notes": "Variable/routine/field/type reference variants have no base-subobject pointer. Field node is operand of dot_field/points_to_field; do not synthesize contextual base onto reference.",
+      "owner_writer_sites": [
+        "roslyn_execution.h:143",
+        "roslyn_execution.h:144",
+        "roslyn_execution.h:145",
+        "roslyn_execution.h:151"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 8484,
+        "nondefault": 0,
+        "files_with_rows": 155
+      }
+    },
+    {
+      "table": "initialization",
+      "column": "is_array",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h3993-4394 especially4274-4337",
+      "retained_alternative": "constructor_array_copy; frees_array; is_initializer_list_array; actual target type; repeat constants",
+      "notes": "No generic DI array flag. Constructor is_array_copy has precise repeated-element argument semantics. Preserve exact distinct flags; do not substitute derived generic flag.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:214"
+      ],
+      "default": "0",
+      "observed": {
+        "rows": 738,
+        "nondefault": 0,
+        "files_with_rows": 82
+      }
+    },
+    {
+      "table": "initialization",
+      "column": "vla_dimension_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h3993-4394;11800-11805",
+      "retained_alternative": "array_type.vla_dimension_id; expression_vla_dimension; variable_symbol.vla_element_count_variable_id; is_vla_deallocation",
+      "notes": "DI has no singular VLA-dimension pointer. Actual array/operation dimension lists and variable element-count storage remain directly navigable.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:214"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 738,
+        "nondefault": 0,
+        "files_with_rows": 82
+      }
+    },
+    {
+      "table": "initialization_operand",
+      "column": "initialization_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h4286-4300 constructor.args",
+      "retained_alternative": "initialization_operand.expression_id; actual initialization children for ck_dynamic_init aggregate constants",
+      "notes": "Constructor args are expression list only. roslyn_gen_be.c199-217 preserves nested aggregate initialization nodes separately; no need to duplicate onto operand row.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:217"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 40,
+        "nondefault": 0,
+        "files_with_rows": 9
+      }
+    },
+    {
+      "table": "initialization_operand",
+      "column": "field_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h4286-4300 constructor.args",
+      "retained_alternative": "constructor_initializer.field_id; constant.initialized_field_id; actual reference-expression field target",
+      "notes": "Field target belongs to constructor initializer / optimized empty-object occurrence, not constructor argument entry. Preserve those direct relationships.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:217"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 40,
+        "nondefault": 0,
+        "files_with_rows": 9
+      }
+    },
+    {
+      "table": "initialization_operand",
+      "column": "base_subobject_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h4286-4300 constructor.args",
+      "retained_alternative": "constructor_initializer.base_subobject_id; constant.initialized_base_subobject_id",
+      "notes": "Base target belongs to constructor initializer / optimized empty-object occurrence, not argument entry. Preserve exact base links and ordered expression arguments.",
+      "owner_writer_sites": [
+        "roslyn_gen_be.c:217"
+      ],
+      "default": null,
+      "observed": {
+        "rows": 40,
+        "nondefault": 0,
+        "files_with_rows": 9
+      }
+    }
+  ],
+  "limits": [
+    "Zero counts alone are not removal justification; source definition and actual writer reviewed for every candidate.",
+    "Preserve all actual adjacent links/flags; no semantic inference/reconstruction proposed.",
+    "This is not a claim that all adjacent conditional alternatives have positive fixtures."
+  ]
+}

@@ -1,0 +1,531 @@
+{
+  "distinct_paths": 175,
+  "observations": {
+    "type": {
+      "is_dependent": {
+        "rows": 19881,
+        "nonnull": 19881,
+        "nonzero": 789,
+        "values": {
+          "0": 19092,
+          "1": 789
+        }
+      },
+      "has_microsoft_w64_specifier": {
+        "rows": 19881,
+        "nonnull": 19881,
+        "nonzero": 0,
+        "values": {
+          "0": 19881
+        }
+      }
+    },
+    "arithmetic_type": {
+      "edg_integer_kind_id": {
+        "rows": 1784,
+        "nonnull": 1070,
+        "nonzero": 1070,
+        "values": {}
+      },
+      "edg_float_kind_id": {
+        "rows": 1784,
+        "nonnull": 707,
+        "nonzero": 707,
+        "values": {}
+      },
+      "is_char8": {
+        "rows": 1784,
+        "nonnull": 1784,
+        "nonzero": 4,
+        "values": {
+          "0": 1780,
+          "1": 4
+        }
+      },
+      "is_char16": {
+        "rows": 1784,
+        "nonnull": 1784,
+        "nonzero": 8,
+        "values": {
+          "0": 1776,
+          "1": 8
+        }
+      },
+      "is_char32": {
+        "rows": 1784,
+        "nonnull": 1784,
+        "nonzero": 4,
+        "values": {
+          "0": 1780,
+          "1": 4
+        }
+      },
+      "affiliated_enum_type_id": {
+        "rows": 1784,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      },
+      "precision": {
+        "rows": 1784,
+        "nonnull": 3,
+        "nonzero": 3,
+        "values": {
+          "None": 1781,
+          "9": 2,
+          "129": 1
+        }
+      }
+    },
+    "enum_symbol": {
+      "has_explicit_base": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 123,
+        "values": {
+          "1": 123,
+          "0": 12
+        }
+      },
+      "is_scoped": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 127,
+        "values": {
+          "1": 127,
+          "0": 8
+        }
+      },
+      "is_packed": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 2,
+        "values": {
+          "0": 133,
+          "1": 2
+        }
+      },
+      "originally_unnamed": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 0,
+        "values": {
+          "0": 135
+        }
+      },
+      "is_template_enum": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 0,
+        "values": {
+          "0": 135
+        }
+      },
+      "is_prototype_instantiation": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 0,
+        "values": {
+          "0": 135
+        }
+      },
+      "is_nonreal": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 0,
+        "values": {
+          "0": 135
+        }
+      },
+      "is_specialized": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 0,
+        "values": {
+          "0": 135
+        }
+      },
+      "is_ms_instantiated_nonreal_enum": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 0,
+        "values": {
+          "0": 135
+        }
+      },
+      "elf_visibility_id": {
+        "rows": 135,
+        "nonnull": 135,
+        "nonzero": 135,
+        "values": {}
+      },
+      "explicit_underlying_type_id": {
+        "rows": 135,
+        "nonnull": 123,
+        "nonzero": 123,
+        "values": {}
+      }
+    },
+    "pointer_type": {
+      "based_variable_id": {
+        "rows": 3128,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      },
+      "is_reference": {
+        "rows": 3128,
+        "nonnull": 3128,
+        "nonzero": 1355,
+        "values": {
+          "0": 1773,
+          "1": 1355
+        }
+      },
+      "is_rvalue_reference": {
+        "rows": 3128,
+        "nonnull": 3128,
+        "nonzero": 373,
+        "values": {
+          "0": 2755,
+          "1": 373
+        }
+      },
+      "is_ptr32": {
+        "rows": 3128,
+        "nonnull": 3128,
+        "nonzero": 0,
+        "values": {
+          "0": 3128
+        }
+      },
+      "is_ptr64": {
+        "rows": 3128,
+        "nonnull": 3128,
+        "nonzero": 0,
+        "values": {
+          "0": 3128
+        }
+      },
+      "is_sptr": {
+        "rows": 3128,
+        "nonnull": 3128,
+        "nonzero": 0,
+        "values": {
+          "0": 3128
+        }
+      },
+      "is_uptr": {
+        "rows": 3128,
+        "nonnull": 3128,
+        "nonzero": 0,
+        "values": {
+          "0": 3128
+        }
+      }
+    },
+    "array_type": {
+      "bound_expression_id": {
+        "rows": 862,
+        "nonnull": 52,
+        "nonzero": 52,
+        "values": {}
+      },
+      "dependent_bound_expression_id": {
+        "rows": 862,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      },
+      "bound_constant_id": {
+        "rows": 862,
+        "nonnull": 89,
+        "nonzero": 89,
+        "values": {}
+      }
+    },
+    "member_pointer_type": {
+      "declaring_type_id": {
+        "rows": 5,
+        "nonnull": 5,
+        "nonzero": 5,
+        "values": {}
+      },
+      "original_declaring_type_id": {
+        "rows": 5,
+        "nonnull": 5,
+        "nonzero": 5,
+        "values": {}
+      },
+      "member_type_id": {
+        "rows": 5,
+        "nonnull": 5,
+        "nonzero": 5,
+        "values": {}
+      },
+      "is_ptr32": {
+        "rows": 5,
+        "nonnull": 5,
+        "nonzero": 0,
+        "values": {
+          "0": 5
+        }
+      },
+      "is_ptr64": {
+        "rows": 5,
+        "nonnull": 5,
+        "nonzero": 0,
+        "values": {
+          "0": 5
+        }
+      }
+    },
+    "vector_type": {
+      "element_type_id": {
+        "rows": 2122,
+        "nonnull": 2122,
+        "nonzero": 2122,
+        "values": {}
+      },
+      "size_constant_id": {
+        "rows": 2122,
+        "nonnull": 10,
+        "nonzero": 10,
+        "values": {}
+      },
+      "edg_vector_kind_id": {
+        "rows": 2122,
+        "nonnull": 150,
+        "nonzero": 150,
+        "values": {}
+      },
+      "tuple_elements": {
+        "rows": 2122,
+        "nonnull": 1972,
+        "nonzero": 1972,
+        "values": {
+          "None": 150,
+          "1": 584,
+          "2": 308,
+          "3": 212,
+          "4": 212,
+          "5": 164,
+          "6": 164,
+          "7": 164,
+          "8": 164
+        }
+      },
+      "length_multiplier": {
+        "rows": 2122,
+        "nonnull": 1916,
+        "nonzero": 1916,
+        "values": {
+          "None": 206,
+          "1": 388,
+          "2": 196,
+          "4": 100,
+          "8": 52,
+          "16": 4,
+          "32": 4,
+          "64": 4,
+          "-2": 288,
+          "3": 96,
+          "-3": 192,
+          "-4": 192,
+          "5": 48,
+          "-5": 64,
+          "6": 48,
+          "-6": 64,
+          "7": 48,
+          "-7": 64,
+          "-8": 64
+        }
+      }
+    },
+    "dependent_type": {
+      "parameter_kind_id": {
+        "rows": 336,
+        "nonnull": 336,
+        "nonzero": 336,
+        "values": {}
+      },
+      "constraint_id": {
+        "rows": 336,
+        "nonnull": 6,
+        "nonzero": 6,
+        "values": {}
+      },
+      "bit_width_constant_id": {
+        "rows": 336,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      },
+      "proxy_class_id": {
+        "rows": 336,
+        "nonnull": 4,
+        "nonzero": 4,
+        "values": {}
+      },
+      "parent_type_id": {
+        "rows": 336,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      }
+    },
+    "type_reference": {
+      "decltype_expression_id": {
+        "rows": 4590,
+        "nonnull": 15,
+        "nonzero": 15,
+        "values": {}
+      },
+      "instance_id": {
+        "rows": 4590,
+        "nonnull": 41,
+        "nonzero": 41,
+        "values": {}
+      },
+      "operator_type_argument_id": {
+        "rows": 4590,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      },
+      "proxy_class_id": {
+        "rows": 4590,
+        "nonnull": 0,
+        "nonzero": 0,
+        "values": {}
+      }
+    },
+    "qualified_type": {
+      "is_const": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 1162,
+        "values": {
+          "0": 3428,
+          "1": 1162
+        }
+      },
+      "is_volatile": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_restrict": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 7,
+        "values": {
+          "0": 4583,
+          "1": 7
+        }
+      },
+      "is_atomic": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_nullable": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_nonnull": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_null_unspecified": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_unaligned": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_near": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_far": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 12,
+        "values": {
+          "0": 4578,
+          "1": 12
+        }
+      },
+      "is_shared": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 8,
+        "values": {
+          "0": 4582,
+          "1": 8
+        }
+      },
+      "is_upc_strict": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "is_upc_relaxed": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      },
+      "address_space": {
+        "rows": 4590,
+        "nonnull": 4590,
+        "nonzero": 0,
+        "values": {
+          "0": 4590
+        }
+      }
+    }
+  },
+  "vector_variants": {
+    "tk_scalable_vector": 56,
+    "tk_vector": 150,
+    "tk_riscv_vector": 1916
+  },
+  "scoped_enum_has_scope": {
+    "0": 120,
+    "1": 7
+  }
+}

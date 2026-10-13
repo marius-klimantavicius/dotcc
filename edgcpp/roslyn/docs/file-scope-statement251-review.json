@@ -1,0 +1,37 @@
+{
+  "source_pin": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "scope": "Readonly exact source-role review; no repository edits or compilation",
+  "stock_rules": [
+    {
+      "source": "src/expr.c29885-29906",
+      "fact": "ek_sizeof explicitly bypasses function-only/default-argument/template restriction for GNU statement expression."
+    },
+    {
+      "source": "src/expr.c29920-29946",
+      "fact": "Unevaluated context can suppress source sequence generation, but actual compound block still scanned and passed to record_file_scope_statement_expr."
+    },
+    {
+      "source": "src/expr.c29830-29849",
+      "fact": "If block is allocated in file-scope region, an iek_statement entry is prepended to il_header.file_scope_statements. Actual list order is reverse insertion, not execution schedule."
+    },
+    {
+      "source": "src/il_def.h18807-18813",
+      "fact": "Header list is for file-scope statements reachable from other IL entries, not a scheduled TU execution list."
+    },
+    {
+      "source": "src/expr.c29974-29984",
+      "fact": "Statement expression with variably modified result type is explicitly rejected; the proposed int result is fixed and sizeof operand unevaluated."
+    }
+  ],
+  "backend_issue": {
+    "source": "backend/roslyn_entities.h55-56;roslyn_gen_be.c98-100;roslyn_execution.h194;roslyn_store.h115-132",
+    "fact": "Header list generic entity traversal inherits default7001 or7003. Statement adapter calls promote_execution on existing node, so this reachability visit can upgrade an otherwise metadata-only unevaluated block and its children."
+  },
+  "recommendation": "Visit only this header list with saved/restored default metadata7002, preserving existing active execution role through Store semantic_role/promote rules. Do not demote nodes reached from genuine execution; do not modify global default for all header roots. No schema addition required.",
+  "proposed_positive_source": "int file_scope_effect();\nint file_stmt_size = sizeof(({ int x=file_scope_effect(); x; }));\nint actual_file_stmt_control() { return file_scope_effect(); }\n",
+  "validation": "Genuine file_scope_statement root must exist, exported block/subtree of sizeof remainsmetadata, sizeof initializer exact integer sizeof(int), no synthetic execution link from TU root. Ordinary control routine call still executable exactlyonce. Check native/source profile retention as available; do not guess when EDG removes something.",
+  "limits": [
+    "Source review establishes parser path and role bug risk, not successful live fixture activation. Native lane owns probe.",
+    "No optional source-coordinate work or semantic reconstruction."
+  ]
+}

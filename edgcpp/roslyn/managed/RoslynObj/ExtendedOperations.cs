@@ -36,7 +36,8 @@ public sealed class ForEachOperation : StatementOperation
     public ExpressionOperation? Collection => ForEach.Collection;
     public SemanticKind PatternKind => ForEach.PatternKind;
     public VariableSymbol? Iterator => ForEach.Iterator;
-    public ExpressionOperation? Initialization => ForEach.Initialization;
+    /// <summary>Actual evaluated initialization recipes in retained operand order.</summary>
+    public IReadOnlyList<Initialization> Initializations => Object.List("SELECT i.* FROM structural_child c JOIN kind k ON k.id=c.role_id JOIN initialization i ON i.id=c.child_id WHERE c.owner_id=$owner AND k.name='initialization' ORDER BY c.ordinal",Id,r=>Object.Initialization(r.Long("id")),"initialization");
     public ExpressionOperation? Test => ForEach.Test;
     public ExpressionOperation? Increment => ForEach.Increment;
     public VariableSymbol? CollectionReference => ForEach.CollectionReference;

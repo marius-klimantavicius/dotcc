@@ -187,7 +187,6 @@ public sealed class FunctionBody
           SELECT id FROM lifetime WHERE bound_entity_id=$owner
           UNION SELECT s.lifetime_id FROM scope s JOIN own_scope r ON r.id=s.id
           UNION SELECT s.function_static_lifetime_id FROM scope s JOIN own_scope r ON r.id=s.id
-          UNION SELECT v.lifetime_id FROM variable_symbol v JOIN scope_member m ON m.member_id=v.id JOIN own_scope r ON r.id=m.owner_id
           UNION SELECT i.lifetime_id FROM local_static_initialization i JOIN scope_local_static_initialization s ON s.initialization_id=i.id JOIN own_scope r ON r.id=s.owner_id
         ), reachable(category,id) AS (
           SELECT 0,id FROM node_root WHERE id IS NOT NULL

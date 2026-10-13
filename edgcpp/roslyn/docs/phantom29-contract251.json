@@ -1,0 +1,330 @@
+{
+  "old_tables": 251,
+  "new_tables": 251,
+  "stable_kinds": 39145,
+  "columns_to_remove": [
+    {
+      "table": "string_value",
+      "column": "text_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5050-5071",
+      "retained_alternative": "string_value length; string_unit ordered target bytes; constant literal prefix/flags",
+      "api": "StringValue.StorageUnits/TargetBytes/Length",
+      "notes": "EDG provides target machine bytes, including embedded/multiple/no NUL; no canonical Unicode string. Remove unused Text shortcut and reader text-reencoding branch; preserve exact bytes.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:87"
+      ],
+      "observed": {
+        "rows": 187,
+        "nonnull": 0,
+        "distinct_files_with_rows": 71
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "label_difference_value",
+      "column": "offset",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5258-5269",
+      "retained_alternative": "from/to constant values and types; occurrence constant_component; embedded address_value.offset",
+      "api": "LabelDifferenceValue.FromValue/ToValue; Constant.Components",
+      "notes": "Stock payload is a pair of symbolic label addresses, no computed numeric difference. Do not infer target instruction offsets.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:106"
+      ],
+      "observed": {
+        "rows": 4,
+        "nonnull": 0,
+        "distinct_files_with_rows": 2
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "aggregate_element",
+      "column": "field_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5290-5325",
+      "retained_alternative": "constant occurrence initialized_field_id/initialized_base_subobject_id for optimized empty objects; designator_value.field_id when present",
+      "api": "Constant.Elements[i].Details.InitializedField/InitializedBaseSubobject; designator details",
+      "notes": "Ordinary aggregate list elements are constants; no per-element direct field. Existing ordered occurrence relation preserves next order without field assignment inference.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:108"
+      ],
+      "observed": {
+        "rows": 5575,
+        "nonnull": 0,
+        "distinct_files_with_rows": 69
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "aggregate_element",
+      "column": "initialization_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5285-5315",
+      "retained_alternative": "dynamic_initialization_value.initialization_id for ck_dynamic_init; aggregate_element.value_id and constant_component",
+      "api": "AggregateValue.Elements[i].Value payload; Constant.Elements",
+      "notes": "Do not duplicate dynamic initialization edge onto every aggregate-element row.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:108"
+      ],
+      "observed": {
+        "rows": 5575,
+        "nonnull": 0,
+        "distinct_files_with_rows": 69
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "designator_value",
+      "column": "range_end",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5524-5558;5346-5366",
+      "retained_alternative": "designator_subscript ordered constant values/types (generic range has two); resolved repeated ranges use ck_init_repeat count and tail flag",
+      "api": "DesignatorValueDetails.DesignatorSubscriptRows; RepeatValueDetails.Count",
+      "notes": "No direct range-end field in EDG designator union. Do not derive scalar endpoints from dependent expressions.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:139"
+      ],
+      "observed": {
+        "rows": 10,
+        "nonnull": 0,
+        "distinct_files_with_rows": 4
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "designator_value",
+      "column": "value_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5524-5558",
+      "retained_alternative": "next ordered constant occurrence/aggregate_element contains designated initializer; generic subscript values in designator_subscript",
+      "api": "Constant.Elements; AggregateValue.Elements; DesignatorValueDetails.DesignatorSubscriptRows",
+      "notes": "Stock explicitly says designated field/element initialized by constant pointed to by next. Value interned separately; preserve occurrence ordering.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:139"
+      ],
+      "observed": {
+        "rows": 10,
+        "nonnull": 0,
+        "distinct_files_with_rows": 4
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "designator_value",
+      "column": "type_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5524-5558",
+      "retained_alternative": "constant.type_id/orig_type_id on occurrence; designator_subscript.type_id for generic endpoints; aggregate_element.type_id for element",
+      "api": "Constant.Type/OriginalType; DesignatorSubscriptDetails.Type",
+      "notes": "No singular type payload field in designator union.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:139"
+      ],
+      "observed": {
+        "rows": 10,
+        "nonnull": 0,
+        "distinct_files_with_rows": 4
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "dependent_value",
+      "column": "entity_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h5367-5523",
+      "retained_alternative": "parameter coordinates, actual expression/type/constant operands and lists; occurrence source_correspondence semantic owner/name",
+      "api": "DependentValueDetails.Expression/Type/ConstantValue; Constant.SourceCorrespondence/DeclaredParameters",
+      "notes": "tpck_member explicitly has no variant; unknown_function.symbol is explicitly frontend-only and cannot be used in backend. No synthetic symbol resolution.",
+      "exact_owner_write_sites": [
+        "roslyn_constants.h:137"
+      ],
+      "observed": {
+        "rows": 143,
+        "nonnull": 0,
+        "distinct_files_with_rows": 59
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "template_argument",
+      "column": "expression_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h7683-7842",
+      "retained_alternative": "template_argument.constant_id -> constant.backing_expression_id and contextual local_expression_reference; dependent-value expression when present",
+      "api": "TemplateArgument.Constant.BackingExpression/ContextualExpressions and Constant.Value dependent payload",
+      "notes": "No expression arm in template_arg; arg_operand expressly frontend-only. Optional convenience Expression must not claim a different independent EDG field.",
+      "exact_owner_write_sites": [
+        "roslyn_templates.h:50",
+        "roslyn_templates.h:237"
+      ],
+      "observed": {
+        "rows": 791,
+        "nonnull": 0,
+        "distinct_files_with_rows": 87
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "template_specialization",
+      "column": "constraint_id",
+      "recommendation": "remove_unwritten_phantom_column",
+      "stock_source": "il_def.h17208-17248;17287-17432",
+      "retained_alternative": "template_header.requires_clause_id; requires_clause expression; concept template_definition.constraint_id; routine-type requires clauses",
+      "api": "TemplateDescriptor.Headers/TemplateHeader.RequiresClause/Constraint; TemplateDescriptor.Constraint for concept",
+      "notes": "Synthetic template_specialization row reflects retained is_specialized flag and actual entity. No independent constraint field exists there. Do not copy primary constraint as if it were specialized selection result.",
+      "exact_owner_write_sites": [
+        "roslyn_templates.h:308"
+      ],
+      "observed": {
+        "rows": 11,
+        "nonnull": 0,
+        "distinct_files_with_rows": 11
+      },
+      "review_owner": "root"
+    },
+    {
+      "table": "for_each_statement",
+      "column": "initialization_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_execution.h:246-248",
+      "retained_alternative": "No singular writer; actual dynamic recipes recorded under structural_child role.initialization",
+      "api_migration": "Remove singular field/property; expose plural Initializations from exact role.initialization children; do not select a first entry"
+    },
+    {
+      "table": "coroutine_parameter_copy",
+      "column": "parameter_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_execution.h:65",
+      "retained_alternative": "Only actual copy_id and copy initialization exist; stock list has no original parameter mapping",
+      "api_migration": "Preserve Copy/Initialization and separate ThisParameterCopy; do not match source parameter by ordinal/name/type"
+    },
+    {
+      "table": "asm_clobber",
+      "column": "text_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_execution.h:93",
+      "retained_alternative": "Actual named-register enum only",
+      "api_migration": "Preserve RegisterKind; remove unwritten text property rather than invent register spelling"
+    },
+    {
+      "table": "attribute_group",
+      "column": "namespace_name_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_attributes.h:11",
+      "retained_alternative": "Group stores actual range only; namespace belongs to each attribute descriptor",
+      "api_migration": "Attribute.NamespaceName is retained per member; group.Members navigation; no group namespace fallback"
+    },
+    {
+      "table": "attribute_argument",
+      "column": "text_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_attributes.h:17-34",
+      "retained_alternative": "Token/raw-token arm writes token_text_id only",
+      "api_migration": "Preserve TokenText and TokenKind; remove unused general Text alias"
+    },
+    {
+      "table": "attribute_argument",
+      "column": "integer_value",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_attributes.h:21,34",
+      "retained_alternative": "aak_constant links canonical Constant with typed Value",
+      "api_migration": "Navigate argument.Constant.Value (IntegerValue when actually integer); no synthetic scalar copy"
+    },
+    {
+      "table": "attribute_argument",
+      "column": "entity_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_attributes.h:17-34",
+      "retained_alternative": "Union has constant/type/expression/token arms, no generic entity pointer",
+      "api_migration": "Preserve actual Constant/Type/Expression/ScopedExpression arm navigation; no guessed generic Entity target"
+    },
+    {
+      "table": "routine_parameter",
+      "column": "default_initialization_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_routines.h:439-441",
+      "retained_alternative": "No per-function default DI writer; signature descriptor retains default expression",
+      "api_migration": "Preserve Parameter.Descriptor.DefaultExpression; remove unwritten Parameter.DefaultInitialization and SQL join alias"
+    },
+    {
+      "table": "try_descriptor",
+      "column": "finally_statement_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_lifetimes.h:22-27",
+      "retained_alternative": "C++ try supplement has body/handlers/lifetime, no finally field",
+      "api_migration": "Preserve TryDescriptor.Body/Handlers/Lifetime; native MicrosoftTryOperation.Finally is a separate actual family"
+    },
+    {
+      "table": "handler",
+      "column": "source_position_id",
+      "review_owner": "managed",
+      "writer_audit": "backend/roslyn_lifetimes.h:15-20",
+      "retained_alternative": "Handler serializer has body/parameter/type/init/typeinfo, no handler source position",
+      "api_migration": "Remove unwritten handler.Source; Body.Source or Parameter.Source stay independently named optional direct metadata, never fallback"
+    },
+    {
+      "table": "variable_symbol",
+      "column": "lifetime_id",
+      "retained_alternative": "Initialization.Lifetime / exact scoped local-static lifetime; no a_variable lifetime pointer",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "alias_symbol",
+      "column": "target_id",
+      "retained_alternative": "AliasSymbol.UnderlyingType from actual typeref.type",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "dependent_type",
+      "column": "expression_id",
+      "retained_alternative": "Actual type constraint / bit width constant / parent type by template-param discriminator",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "reference_expression",
+      "column": "subobject_id",
+      "retained_alternative": "Exact selected target and separately typed base-conversion operands",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "initialization",
+      "column": "is_array",
+      "retained_alternative": "Exact constructor_array_copy/is_array_freeing flags and recorded kind; no generic array bit",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "initialization",
+      "column": "vla_dimension_id",
+      "retained_alternative": "Variable.VlaElementCount or actual metadata expressions; no dynamic_init VLA pointer",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "initialization_operand",
+      "column": "initialization_id",
+      "retained_alternative": "Exact expression operand rows; aggregate dynamic-init nodes are separate typed children",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "initialization_operand",
+      "column": "field_id",
+      "retained_alternative": "Exact expression operand rows; ConstructorInitializer.Field separate actual relation",
+      "review_owner": "root_source_review_complete"
+    },
+    {
+      "table": "initialization_operand",
+      "column": "base_subobject_id",
+      "retained_alternative": "Exact expression operand rows; ConstructorInitializer.BaseSubobject separate actual relation",
+      "review_owner": "root_source_review_complete"
+    }
+  ],
+  "schema_change_requires_new_fingerprint": true,
+  "source_reviews": [
+    "constant-columns251-review.json",
+    "nine-columns251-review.json",
+    "managed-phantom-alternatives251.tsv"
+  ],
+  "fingerprint": "e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa",
+  "removed_fact_scope": "Only unsupported owner-table placeholders, not retained EDG payloads. Populated exact alternative links remain."
+}

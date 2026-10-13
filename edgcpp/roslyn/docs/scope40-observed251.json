@@ -1,0 +1,300 @@
+{
+  "distinct_paths": 175,
+  "queries": {
+    "scope_assoc": "SELECT k.name,ek.name,count(*) FROM scope s JOIN kind k ON k.id=s.kind_id JOIN entity e ON e.id=s.associated_entity_id JOIN kind ek ON ek.id=e.kind_id GROUP BY 1,2",
+    "scope_member": "SELECT k.name,count(*) FROM scope_member m JOIN entity e ON e.id=m.member_id JOIN kind k ON k.id=e.kind_id GROUP BY 1",
+    "scope_nrvo": "SELECT count(*) FROM scope WHERE nrvo_variable_id IS NOT NULL",
+    "scope_lifetime": "SELECT count(*) FROM scope WHERE lifetime_id IS NOT NULL",
+    "scope_static_lifetime": "SELECT count(*) FROM scope WHERE function_static_lifetime_id IS NOT NULL",
+    "block": "SELECT count(*),count(scope_id),count(lifetime_id),sum(end_reachable),sum(is_statement_expression),sum(implicit_scope_not_allowed) FROM block_descriptor",
+    "block_upc": "SELECT k.name,count(*) FROM block_descriptor b JOIN kind k ON k.id=b.upc_access_method_id GROUP BY 1",
+    "try": "SELECT count(*),count(body_id),count(lifetime_id),sum(is_function_try) FROM try_descriptor",
+    "scope_pragma": "SELECT count(*) FROM scope_pragma",
+    "scope_if_exists": "SELECT count(*) FROM scope_if_exists",
+    "scope_initialization": "SELECT count(*) FROM scope_initialization",
+    "scope_local_static_initialization": "SELECT count(*) FROM scope_local_static_initialization",
+    "scope_constructor_initializer": "SELECT count(*) FROM scope_constructor_initializer",
+    "scope_source_entry": "SELECT count(*) FROM scope_source_entry",
+    "scope_source_sublist": "SELECT count(*) FROM scope_source_sublist",
+    "local_expression_reference": "SELECT count(*) FROM local_expression_reference",
+    "try_handler": "SELECT count(*) FROM try_handler"
+  },
+  "totals": {
+    "scope_assoc": {
+      "sck_function/routine": 2440,
+      "sck_namespace/namespace": 244,
+      "sck_block/handler": 26,
+      "sck_class_struct_union/type": 1003,
+      "sck_enum/type": 7,
+      "sck_condition/statement": 1
+    },
+    "scope_member": {
+      "namespace": 253,
+      "routine": 5350,
+      "type": 5011,
+      "variable": 1919,
+      "label": 41,
+      "constant": 141,
+      "template": 366,
+      "using": 25,
+      "vla_dimension": 8
+    },
+    "scope_nrvo": {
+      "0": 0
+    },
+    "scope_lifetime": {
+      "0": 391
+    },
+    "scope_static_lifetime": {
+      "0": 7
+    },
+    "block": {
+      "0": 3230,
+      "1": 78,
+      "2": 10,
+      "3": 440,
+      "4": 17,
+      "5": 2
+    },
+    "block_upc": {
+      "upc_access_unspecified": 3230
+    },
+    "try": {
+      "0": 26,
+      "1": 26,
+      "2": 26,
+      "3": 0
+    },
+    "scope_pragma": {
+      "0": 1
+    },
+    "scope_if_exists": {
+      "0": 0
+    },
+    "scope_initialization": {
+      "0": 17
+    },
+    "scope_local_static_initialization": {
+      "0": 202
+    },
+    "scope_constructor_initializer": {
+      "0": 130
+    },
+    "scope_source_entry": {
+      "0": 2245
+    },
+    "scope_source_sublist": {
+      "0": 8
+    },
+    "local_expression_reference": {
+      "0": 4
+    },
+    "try_handler": {
+      "0": 26
+    }
+  },
+  "examples": {
+    "scope_assoc": {
+      "sck_function/routine": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "sck_namespace/namespace": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "sck_block/handler": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/m0.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj"
+      ],
+      "sck_class_struct_union/type": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common_labels.roslynobj"
+      ],
+      "sck_enum/type": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/types.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj"
+      ],
+      "sck_condition/statement": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/retained.roslynobj"
+      ]
+    },
+    "scope_member": {
+      "namespace": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "routine": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "type": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "variable": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "label": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common_labels.roslynobj"
+      ],
+      "constant": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj"
+      ],
+      "template": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/execution_cpp.roslynobj"
+      ],
+      "using": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/common.roslynobj"
+      ],
+      "vla_dimension": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/execution_c.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_vla.roslynobj"
+      ]
+    },
+    "scope_nrvo": {},
+    "scope_lifetime": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ]
+    },
+    "scope_static_lifetime": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/cleanup_semantics.roslynobj"
+      ]
+    },
+    "block": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "3": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ],
+      "1": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_aggregates.roslynobj"
+      ],
+      "2": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/cleanup_semantics.roslynobj"
+      ],
+      "4": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_aggregates.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj"
+      ],
+      "5": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_statements.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/upc_affinity.roslynobj"
+      ]
+    },
+    "block_upc": {
+      "upc_access_unspecified": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj"
+      ]
+    },
+    "try": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/m0.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj"
+      ],
+      "1": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/m0.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj"
+      ],
+      "2": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/m0.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj"
+      ]
+    },
+    "scope_pragma": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/source_order.roslynobj"
+      ]
+    },
+    "scope_if_exists": {},
+    "scope_initialization": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/layout.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj"
+      ]
+    },
+    "scope_local_static_initialization": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/constant_occurrences.roslynobj"
+      ]
+    },
+    "scope_constructor_initializer": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/routines.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/exported/layout.roslynobj"
+      ]
+    },
+    "scope_source_entry": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/basic.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj"
+      ]
+    },
+    "scope_source_sublist": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/common.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/execution_c.roslynobj"
+      ]
+    },
+    "local_expression_reference": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/native/objects.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/source/native_microsoft.roslynobj"
+      ]
+    },
+    "try_handler": {
+      "0": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/cleanup_semantics.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/m0.roslynobj",
+        "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251/cfront/objects.roslynobj"
+      ]
+    }
+  }
+}

@@ -9,6 +9,12 @@ internal static class SemanticProjection
         var ehTables=unit.Capabilities.Any(c=>c.Name=="GENERATE_EH_TABLES"&&c.Enabled==true);
         if(source&&fixture is ("cleanup_semantics.roslynobj" or "source_statements.roslynobj"))
             Sweep(unit.Entities.OfType<ConstructorInitializer>().Select(i=>i.Details),"constructor_initializer",check);
+        if(fixture is "cleanup_semantics.roslynobj" or "source_statements.roslynobj")
+        {
+            Sweep(unit.Entities.OfType<BlockDescriptor>().Select(d=>d.Details),"block_descriptor",check);
+            Sweep(unit.Entities.OfType<TryDescriptor>().Select(d=>d.Details),"try_descriptor",check);
+            Sweep(unit.Entities.OfType<LocalStaticInitialization>().Select(d=>d.Details),"local_static_initialization",check);
+        }
         if(fixture is "templates.roslynobj" or "template_edges.roslynobj" or "retained.roslynobj" or "routines.roslynobj")
         {
             Sweep(unit.TemplateDescriptors.Select(t=>t.Details),"template_definition",check);
@@ -78,6 +84,9 @@ internal static class SemanticProjection
         if(fixture=="variables.roslynobj")
         {
             var variables=unit.Variables.Where(v=>v.Name is not null).GroupBy(v=>v.Name!).ToDictionary(g=>g.Key,g=>g.First());
+            check(unit.Variables.All(v=>v.DefinitionType==v.Details.DeclaredType&&v.DeclaredType==v.SymbolDetails.Type),"A variable's retained definition type must delegate to its exact declared-type field while the inherited DeclaredType keeps the current common-symbol descriptor.");
+            if(source)check(variables["standard_thread_value"].DefinitionType is not null,"A source variable must expose its actual retained declaration type through DefinitionType.");
+            if(unit.Capabilities.Any(c=>c.Name=="GENERATE_SOURCE_SEQUENCE_LISTS"&&c.Enabled==false))check(unit.Variables.All(v=>v.DefinitionType is null),"An unrecorded definition type must remain absent even when the variable's current type is present.");
             check(variables["standard_thread_value"] is {IsThreadLocal:true,StandardThreadLocalDeclared:true,StandardThreadLocalEffective:true,ExtensionThreadLocal:false}&&variables["constant_thread_value"].Details.IsConstinit,"Actual standard TLS declarations must retain their declared/effective flags and constinit state separately.");
             check(variables["extension_thread_value"] is {IsThreadLocal:true,ExtensionThreadLocal:true,StandardThreadLocalDeclared:false},"GNU TLS must preserve its extension discriminator independently from standard thread_local.");
             var ordinary=unit.Functions.Single(f=>f.Name=="variable_bindings").Body!;
@@ -116,6 +125,7 @@ internal static class SemanticProjection
             check(local.Scope!.FunctionStaticLifetime is {Kind.Name:"olk_function_static"} root&&root.BoundEntity==local.Scope&&root!=local.Scope.Lifetime,"The function-static root must retain its exact scope binding separately from the ordinary scope lifetime.");
             if(source)check(local.Scope.LocalStaticInitializations.Count>0,"The source local-static recipe must retain its actual scoped descriptor before lowering removes completed wrappers.");
             check(local.Scope.LocalStaticInitializations.All(i=>i.Variable.LocalStaticInitializations.Contains(i)),"Every retained local-static storage descriptor must navigate its exact variable reverse association.");
+            check(local.Scope.LocalStaticInitializations.All(i=>i.Kind==i.Details.InitializationKind),"Each retained local-static descriptor must expose its actual initialization-kind discriminator through the ordinary Kind property.");
             if(!source)check(local.DescendantOperations().OfType<CallOperation>().Count(c=>c.TargetMethod is {ContainingType.Name:"CleanupBase",SpecialFunctionKind.Name:"sfk_constructor"})==1,"The lowered local-static body must retain its one actual constructor evaluation without reconstructing the removed dynamic wrapper.");
             var paths=unit.Functions.Single(f=>f.Name=="cleanup_paths").Body!;
             check(paths.Lifetimes.Count>0&&!paths.Lifetimes.Contains(unit.GlobalScope.Lifetime!),"Body lifetime navigation must remain rooted in captured body/scope/recipe facts without expanding through the file parent into unrelated routine children.");

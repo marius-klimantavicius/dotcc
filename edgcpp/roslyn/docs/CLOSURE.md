@@ -1,6 +1,6 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 after accepted251 commit eea0003 and its bounded extern-inline/native dependent foreach follow-up.
+Active on 2026-10-13 after accepted29 cleanup/e49f boundary (14 profiles,187 unique paths,PASS3871). Earlier accepted251 boundaries below are historical.
 Accepted251 cleanup/evaluation-role batch passes2621 on175 unique paths
 (186 validation entries),self73. Prior182/PASS2462 and bounded47/PASS919
 remain historical evidence with their stated compiler/snapshot boundaries.
@@ -34,7 +34,7 @@ remain required. Optional source positions never block semantic acceptance.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 948 verified and 607 mapped pending-validation fields at this boundary.
+There are 1066 verified and 488 mapped pending-validation fields at this boundary.
 All 2,000 field rows now have an explicit mapping or disposition; mapping alone
 is not acceptance. Accepted bounded type/layout/init and template/parameter/attribute scalar
 proof joins pass919 across47 existing paths. Next direct Boolean proofs cover
@@ -74,7 +74,7 @@ positive activation. Column existence or default values alone are insufficient.
 
 ## Remaining configured native profiles
 
-The thirteen current profiles validate lowered native, source-semantic native
+The fourteen current profiles validate lowered native, source-semantic native
 Microsoft, cfront-like/assignment-to-this and exported templates. Genuine263
 probes cover compiled UPC dynamic/static threads, near/far, ARM scalable/modal
 and RISC-V fractional/tuple/boolean types. These do not require new build flags.
@@ -188,3 +188,46 @@ routine roots. Primary IA64 requires lazy TLS; non-IA64 nonlazy TLS has an exact
 stock do_single_init assertion to investigate without bypass. Grouped owner-table
 phantom removal preserves populated alternatives and will regenerate admission
 fingerprint before refreshed acceptance. Full phases3–4 remain active.
+
+
+## Accepted29 owner-table cleanup and semantic activation
+
+Current251tables/39,145stable IDs contract:
+`e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa`.
+Remove29 unsupported owner-table placeholders; every populated EDG alternative
+remains. This is removal of our unused schema/API slots, not loss of EDG facts.
+Source-backed reviews and phantom29-contract251.json specify each alternative.
+
+All14 strict stages pass316 pristine Git inputs/26 canonical backend files and
+stock tool pins. Full publication gate198 instances/187 distinct paths passes
+251tables/FK0/1KiB/complete/no semantic BLOB-or-REAL/expression types. Reader
+PASS3871/187, WORself73, clean249facades/1946properties, generator/literal and
+genuine old251 admission rejection pass. Source ctor GNU C++17 array input and
+delegation, exact assembly/register arms, priority200/201, separate initialization
+routine order, TLS init/wrapper and tableless class-pointer RTTI all pass actual
+public identities. The source array example does not assert ConstructorArrayCopy
+true; its recorded recipe is nonconstant aggregate with source expression.
+
+Separate-init14th profile keeps lazyTLS1, partialEH and KEEP1. Named register2 is
+a configured stock EDG test target descriptor, not a physical-hardware assertion.
+Variable.DefinitionType exposes the retained declaration descriptor or null;
+existing common DeclaredType denotes current type. Foreach.Initializations follows
+actual ordered initialization children. Exact bytes/constants/constraints/typed
+ctor targets and actual initialization/lifetime links remain.
+
+Coverage1066verified/488required pending-validation;85 captured optional source
+metadata rows and12 explicit optional omissions, no raw/planned fields. Existing
+field proof joins are distinct from unactivated unions/kinds and unsupported
+original-source queries. Source locations remain nice to have.
+
+Scale0.59s/45,528KiB/7,500,800bytes,98,815entities/7,023operations. Reader
+cold2098.59ms/warm1538.39ms,RSS111.5/110.6MB,bounded4096rows/128pages. Prior
+packaging/concurrency/eviction proofs stay accepted; no broad repeat campaign.
+
+Next confirmed fix: file-scope statement header roots are reachability metadata;
+export them initially7002 so unevaluated sizeof backing blocks are not promoted.
+All187 accepted paths lack this root arm; add a tiny stock-approved sizeof
+statement-expression side-effect/control probe and preserve real execution
+promotion. Scoped-enum empty-scope reachability remains a candidate for native
+review, not proven defect. Four additional unwritten optional/count/unknown slots
+are queued separately. Full phases3–4 remain active until required proof closes.

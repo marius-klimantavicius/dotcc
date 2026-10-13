@@ -72,6 +72,8 @@ trailing arguments have none. Implicit source receivers remain separate, while
 an explicit-object parameter is an ordinary argument with its recorded descriptor.
 Variables expose their ordered `EntitiesDefinedInInitializer`, including actual
 closure types defined by static-member initializers.
+`VariableSymbol.DefinitionType` is the optional retained declaration type.
+Inherited `Symbol.DeclaredType` refers to the current common-symbol type descriptor.
 `FunctionSymbol.Signature` follows the current callable routine type, including
 hidden ABI parameters. `DefinitionType` is the optional retained written type;
 the reader does not recover an original signature from lowered parameters.
@@ -202,6 +204,8 @@ the reader does not infer regions, storage or extra evaluated children.
 
 `Scope.LocalStaticInitializations` preserves its storage-list order. File and
 namespace execution order remains `Scope.DynamicInitializations`.
+Native `ForEachOperation.Initializations` follows the plural evaluated initializer
+edges in their recorded order. It does not select a synthetic singleton recipe.
 `Scope.ConstructorInitializers` records construction or destruction order;
 `EffectiveInitialization` follows a field default recipe only when the retained
 initializer explicitly requests it. Array cleanup handles remain exact constants,
@@ -239,8 +243,8 @@ From the repository root:
 python3 edgcpp/roslyn/managed/tools/generate_bindings.py --check
 dotnet build edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj
 dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
-  edgcpp/artifacts/roslynobj/closure251/smoke-native/basic.roslynobj \
-  edgcpp/artifacts/roslynobj/closure251/smoke-native/m0.roslynobj
+  edgcpp/artifacts/roslynobj/closure251-phantom29/native/basic.roslynobj \
+  edgcpp/artifacts/roslynobj/closure251-phantom29/native/m0.roslynobj
 ```
 
 Without object paths, the console test project runs the valid shared-schema

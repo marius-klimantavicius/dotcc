@@ -2,7 +2,7 @@
 """Configure and build the isolated roslynobj native producer."""
 import argparse,os,pathlib,subprocess
 ROOT=pathlib.Path(__file__).resolve().parents[1]
-p=argparse.ArgumentParser();p.add_argument('--jobs',type=int,default=8);p.add_argument('--profile',choices=('native','source','cfront','exported','sun','usl21','usl30','softfloat','host-long-double','host-double','instantiation','extern-inline','tableless'),default='native');p.add_argument('--upstream',type=pathlib.Path,default=pathlib.Path('/tmp/roslynobj-edg-upstream-20261012'));a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--jobs',type=int,default=8);p.add_argument('--profile',choices=('native','source','cfront','exported','sun','usl21','usl30','softfloat','host-long-double','host-double','instantiation','extern-inline','separate-init','tableless'),default='native');p.add_argument('--upstream',type=pathlib.Path,default=pathlib.Path('/tmp/roslynobj-edg-upstream-20261012'));a=p.parse_args()
 subprocess.run(['python3',str(ROOT/'build/generate.py'),'--upstream',str(a.upstream)],check=True)
 artifact=ROOT.parents[0]/'artifacts/roslynobj'
 if a.profile!='native':artifact=artifact/'profiles'/a.profile

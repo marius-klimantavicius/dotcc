@@ -972,3 +972,46 @@ routine roots. Primary IA64 requires lazy TLS; non-IA64 nonlazy TLS has an exact
 stock do_single_init assertion to investigate without bypass. Grouped owner-table
 phantom removal preserves populated alternatives and will regenerate admission
 fingerprint before refreshed acceptance. Full phases3–4 remain active.
+
+
+## Accepted29 owner-table cleanup and semantic activation
+
+Current251tables/39,145stable IDs contract:
+`e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa`.
+Remove29 unsupported owner-table placeholders; every populated EDG alternative
+remains. This is removal of our unused schema/API slots, not loss of EDG facts.
+Source-backed reviews and phantom29-contract251.json specify each alternative.
+
+All14 strict stages pass316 pristine Git inputs/26 canonical backend files and
+stock tool pins. Full publication gate198 instances/187 distinct paths passes
+251tables/FK0/1KiB/complete/no semantic BLOB-or-REAL/expression types. Reader
+PASS3871/187, WORself73, clean249facades/1946properties, generator/literal and
+genuine old251 admission rejection pass. Source ctor GNU C++17 array input and
+delegation, exact assembly/register arms, priority200/201, separate initialization
+routine order, TLS init/wrapper and tableless class-pointer RTTI all pass actual
+public identities. The source array example does not assert ConstructorArrayCopy
+true; its recorded recipe is nonconstant aggregate with source expression.
+
+Separate-init14th profile keeps lazyTLS1, partialEH and KEEP1. Named register2 is
+a configured stock EDG test target descriptor, not a physical-hardware assertion.
+Variable.DefinitionType exposes the retained declaration descriptor or null;
+existing common DeclaredType denotes current type. Foreach.Initializations follows
+actual ordered initialization children. Exact bytes/constants/constraints/typed
+ctor targets and actual initialization/lifetime links remain.
+
+Coverage1066verified/488required pending-validation;85 captured optional source
+metadata rows and12 explicit optional omissions, no raw/planned fields. Existing
+field proof joins are distinct from unactivated unions/kinds and unsupported
+original-source queries. Source locations remain nice to have.
+
+Scale0.59s/45,528KiB/7,500,800bytes,98,815entities/7,023operations. Reader
+cold2098.59ms/warm1538.39ms,RSS111.5/110.6MB,bounded4096rows/128pages. Prior
+packaging/concurrency/eviction proofs stay accepted; no broad repeat campaign.
+
+Next confirmed fix: file-scope statement header roots are reachability metadata;
+export them initially7002 so unevaluated sizeof backing blocks are not promoted.
+All187 accepted paths lack this root arm; add a tiny stock-approved sizeof
+statement-expression side-effect/control probe and preserve real execution
+promotion. Scoped-enum empty-scope reachability remains a candidate for native
+review, not proven defect. Four additional unwritten optional/count/unknown slots
+are queued separately. Full phases3–4 remain active until required proof closes.

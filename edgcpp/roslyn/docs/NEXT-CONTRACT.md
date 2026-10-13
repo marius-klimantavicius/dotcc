@@ -1,3 +1,54 @@
+# Next bounded metadata-root and retained typed-query closure
+
+Accepted29 cleanup/e49f format passes14strict/187paths/PASS3871/self73.
+Next repair metadata-only file-scope statement root export using exact header
+reachability semantics; preserve already-executed roles. Tiny genuine GNU sizeof
+statement-expression side-effect/control checks,14 backend-only strict sync,
+no full187 rerun unless an affected existing arm is found.
+
+Four queued unsupported slots reviewed in four-columns251-review.json may be
+handled separately without recovering optional positions. Scoped enum empty
+scope remains a native probe/reachability candidate. Required field proof and
+typed-operation conveniences continue; no C++ reanalysis, linking or translator.
+
+---
+
+# Frozen29 owner-table cleanup and required semantic positives
+
+Current frozen producer/reader contract has251 tables and39,145 unchanged stable
+kind IDs. Fingerprint:
+`e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa`.
+Exactly29 columns are removed per phantom29-contract251.json, constant-columns251-
+review.json, nine-columns251-review.json and managed-phantom-alternatives251.tsv.
+They were unsupported placeholders with no matching owner-table EDG writer; this
+removes no retained EDG facts. Remaining column types, nullability, defaults and
+keys are unchanged. Actual target bytes/constants, expression operands, typed
+constructor fields/bases, constraints, alias underlying types and DI/local-static
+lifetimes remain authoritative. No derived replacement or C++ reanalysis.
+
+Coordinator owns authoritative SQL/catalog/fingerprint/docs/ledger/git. Managed
+owns regenerated facades plus exact handwritten query/API updates, plural foreach
+initializations, Variable.DefinitionType and bounded real public proofs. Native
+owns serialized14 strict/pinned stages and final same-contract cohort, including
+source GNU pre-C++20 class-array constructor copy/delegation, existing local-static
+kind, direct variable asm/register/TLS/RTTI arms and separate global-init routines.
+The14th profile keeps lazyTLS1/partialEH/KEEP1; stock target named-register test
+catalog is explicitly enabled and recorded there, with no physical hardware claim.
+
+Primary IA64 forbids nonlazyTLS under threads; a non-IA64 stock path has an
+unresolved assertion constraint. No assertion/checking/core/full-EH workaround.
+GNU default-member statement expression was rejected outside block scope; optional
+source probing stopped. Array-copy SourceExpression remains required semantics.
+
+Reader rejects genuine prior251 fingerprint, refreshes all accepted paths to the
+new exact format, and preserves ordinary typed navigation. Existing packing/cache/
+concurrency proofs remain accepted; one current scale run assesses changed row
+shape. No repeat packaging campaign or corruption-based tests. Full phases3–4
+remain open:966 verified/588 required pending,85 optional-source captured/12 omitted
+at freeze. Pending adapters/positive evidence remain distinct.
+
+---
+
 # Next bounded asm discriminator and owner-table cleanup
 
 Current251 and its13-profile extern-inline/native dependent foreach follow-up are

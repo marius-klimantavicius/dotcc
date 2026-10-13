@@ -39,6 +39,8 @@ CASES = {
     'unevaluated_clang': ['--c++20', '--clang', '--clang_version', '190000'],
     'native_dependent_foreach': ['--c++20', '--microsoft', '--microsoft_version', '1930', '--parse_templates', '--no_defer_parse_function_templates'],
     'gnu_asm_modify': ['--c++20', '--g++', '--gnu_version', '130000'],
+    'constructor_semantics': ['--c++17', '--g++', '--gnu_version', '130000'],
+    'variable_semantics': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

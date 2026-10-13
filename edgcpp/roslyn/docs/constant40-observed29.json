@@ -1,0 +1,359 @@
+{
+  "distinct_paths": 187,
+  "queries": {
+    "constant_links": "SELECT count(*),count(type_id),count(orig_type_id),count(backing_expression_id),count(associated_storage_variable_id),count(name_reference_id) FROM constant",
+    "address": "SELECT k.name,count(*),count(a.base_entity_id),count(a.subobject_path_id) FROM address_value a JOIN kind k ON k.id=a.base_kind_id GROUP BY 1",
+    "dependent": "SELECT k.name,count(*),count(d.expression_id),count(d.type_id),count(d.conversion_type_id),count(d.constant_value_id),count(d.constant_type_id) FROM dependent_value d JOIN kind k ON k.id=d.kind_id GROUP BY 1",
+    "empty_initialization": "SELECT k.name,count(*),count(c.initialized_field_id),count(c.initialized_base_subobject_id) FROM constant c JOIN constant_value v ON v.id=c.value_id JOIN kind k ON k.id=v.kind_id WHERE c.initializes_empty_object GROUP BY 1",
+    "lists": "SELECT k.name,count(*) FROM constant_component c JOIN kind k ON k.id=c.role_id GROUP BY 1",
+    "stack_offsets": "SELECT count(*),count(variable_id),sum(offset<>'0') FROM stack_offset_value",
+    "dep_elements": "SELECT count(*) FROM dependent_constant_element",
+    "dep_args": "SELECT count(*) FROM dependent_template_argument",
+    "designator_subscripts": "SELECT count(*) FROM designator_subscript",
+    "memberptr": "SELECT count(*),count(member_id),count(subobject_id),sum(is_function_ptr),sum(is_null) FROM member_pointer_value",
+    "memberptr_names": "SELECT count(*) FROM constant c JOIN constant_value v ON v.id=c.value_id JOIN kind k ON k.id=v.kind_id WHERE k.name='ck_ptr_to_member' AND c.name_reference_id IS NOT NULL",
+    "reflections": "SELECT k.name,count(*) FROM reflection_value r JOIN kind k ON k.id=r.kind_id GROUP BY 1",
+    "contexts": "SELECT k.name,count(*) FROM local_expression_reference r JOIN kind k ON k.id=r.kind_id GROUP BY 1"
+  },
+  "totals": {
+    "constant_links": {
+      "0": 9999,
+      "1": 9993,
+      "2": 261,
+      "3": 670,
+      "4": 0,
+      "5": 12
+    },
+    "address": {
+      "abk_constant/0": 30,
+      "abk_constant/1": 30,
+      "abk_constant/2": 0,
+      "abk_routine/0": 205,
+      "abk_routine/1": 205,
+      "abk_routine/2": 0,
+      "abk_variable/0": 339,
+      "abk_variable/1": 339,
+      "abk_variable/2": 13,
+      "abk_label/0": 16,
+      "abk_label/1": 16,
+      "abk_label/2": 0
+    },
+    "dependent": {
+      "tpck_expression/0": 36,
+      "tpck_expression/1": 36,
+      "tpck_expression/2": 0,
+      "tpck_expression/3": 0,
+      "tpck_expression/4": 0,
+      "tpck_expression/5": 0,
+      "tpck_param/0": 79,
+      "tpck_param/1": 0,
+      "tpck_param/2": 0,
+      "tpck_param/3": 0,
+      "tpck_param/4": 0,
+      "tpck_param/5": 0,
+      "tpck_sizeof/0": 30,
+      "tpck_sizeof/1": 0,
+      "tpck_sizeof/2": 30,
+      "tpck_sizeof/3": 0,
+      "tpck_sizeof/4": 0,
+      "tpck_sizeof/5": 0,
+      "tpck_member/0": 3,
+      "tpck_member/1": 0,
+      "tpck_member/2": 0,
+      "tpck_member/3": 0,
+      "tpck_member/4": 0,
+      "tpck_member/5": 0
+    },
+    "empty_initialization": {},
+    "lists": {
+      "element/0": 5740,
+      "repeated/0": 18,
+      "from/0": 4,
+      "to/0": 4
+    },
+    "stack_offsets": {
+      "0": 9,
+      "1": 9,
+      "2": 0
+    },
+    "dep_elements": {
+      "0": 0
+    },
+    "dep_args": {
+      "0": 0
+    },
+    "designator_subscripts": {
+      "0": 0
+    },
+    "memberptr": {
+      "0": 9,
+      "1": 5,
+      "2": 2,
+      "3": 4,
+      "4": 4
+    },
+    "memberptr_names": {
+      "0": 12
+    },
+    "reflections": {
+      "iek_data_member_spec/0": 4,
+      "iek_field/0": 4,
+      "iek_routine/0": 4,
+      "iek_template/0": 4,
+      "iek_type/0": 16,
+      "iek_variable/0": 4
+    },
+    "contexts": {
+      "lerk_constant_expr/0": 5
+    }
+  },
+  "examples": {
+    "constant_links": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/basic.roslynobj",
+        "row": [
+          4,
+          4,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          159,
+          159,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/common.roslynobj",
+        "row": [
+          26,
+          26,
+          1,
+          1,
+          0,
+          0
+        ]
+      }
+    ],
+    "address": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          "abk_constant",
+          5,
+          5,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          "abk_routine",
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          "abk_variable",
+          18,
+          18,
+          0
+        ]
+      }
+    ],
+    "dependent": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          "tpck_expression",
+          2,
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_occurrences.roslynobj",
+        "row": [
+          "tpck_param",
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/execution_cpp.roslynobj",
+        "row": [
+          "tpck_expression",
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "empty_initialization": [],
+    "lists": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          "element",
+          94
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_aggregates.roslynobj",
+        "row": [
+          "element",
+          27
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/constant_aggregates.roslynobj",
+        "row": [
+          "repeated",
+          3
+        ]
+      }
+    ],
+    "stack_offsets": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/cleanup_semantics.roslynobj",
+        "row": [
+          2,
+          2,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/objects.roslynobj",
+        "row": [
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/exported/cleanup_semantics.roslynobj",
+        "row": [
+          2,
+          2,
+          0
+        ]
+      }
+    ],
+    "dep_elements": [],
+    "dep_args": [],
+    "designator_subscripts": [],
+    "memberptr": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/member_pointers.roslynobj",
+        "row": [
+          2,
+          0,
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+        "row": [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/member_pointers.roslynobj",
+        "row": [
+          6,
+          4,
+          2,
+          3,
+          2
+        ]
+      }
+    ],
+    "memberptr_names": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/layout_microsoft.roslynobj",
+        "row": [
+          2
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/source/member_pointers.roslynobj",
+        "row": [
+          10
+        ]
+      }
+    ],
+    "reflections": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/reflection.roslynobj",
+        "row": [
+          "iek_data_member_spec",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/reflection.roslynobj",
+        "row": [
+          "iek_field",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/reflection.roslynobj",
+        "row": [
+          "iek_routine",
+          1
+        ]
+      }
+    ],
+    "contexts": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/cfront/objects.roslynobj",
+        "row": [
+          "lerk_constant_expr",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/extern-inline/objects.roslynobj",
+        "row": [
+          "lerk_constant_expr",
+          1
+        ]
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-phantom29/native/objects.roslynobj",
+        "row": [
+          "lerk_constant_expr",
+          1
+        ]
+      }
+    ]
+  }
+}

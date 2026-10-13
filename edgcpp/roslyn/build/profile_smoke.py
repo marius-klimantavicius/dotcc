@@ -10,7 +10,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT.parents[0] / 'artifacts/roslynobj'
-PROFILES = ('sun', 'usl21', 'usl30', 'softfloat', 'host-long-double', 'host-double', 'instantiation', 'extern-inline', 'tableless')
+PROFILES = ('sun', 'usl21', 'usl30', 'softfloat', 'host-long-double', 'host-double', 'instantiation', 'extern-inline', 'separate-init', 'tableless')
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--profile', choices=PROFILES, required=True)
 parser.add_argument('--output-directory', type=Path)
@@ -40,6 +40,9 @@ elif args.profile == 'extern-inline':
         options.extend(['--auto_instantiation', '--instantiate', 'used',
                         '--ii_file', str(output / (name + '.ii')),
                         '--template_info_file', str(output / (name + '.ti'))])
+elif args.profile == 'separate-init':
+    cases = [('separate_initialization', ['--c++20', '--g++', '--gnu_version', '130000']),
+             ('named_register', ['--c99', '--named_registers'])]
 elif args.profile == 'tableless':
     cases = [('m0', ['--c++20']), ('cleanup_semantics', ['--c++20']),
              ('retained', ['--c++23']), ('basic', ['--c++20']),
@@ -56,7 +59,7 @@ results = []
 for name, options in cases:
     if args.profile == 'host-double':
         options = [*options, '--target', 'win64']
-    source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' if name == 'routines' else ROOT / 'tests/fixtures') / (name + ('.c' if name in ('nonreal_float', 'fixed_point') else '.cpp'))
+    source = (ROOT / 'managed/RoslynObj.Tests/Fixtures' if name == 'routines' else ROOT / 'tests/fixtures') / (name + ('.c' if name in ('nonreal_float', 'fixed_point', 'named_register') else '.cpp'))
     destination = output / (name + '.roslynobj')
     command = ['python3', str(ROOT / 'build/roslyn-cpfe.py'), *options, str(source), '-o', str(destination)]
     start = time.monotonic()

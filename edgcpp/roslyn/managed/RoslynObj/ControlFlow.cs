@@ -95,7 +95,6 @@ public sealed class ExceptionHandler : SemanticEntity
     public Initialization? ParameterInitialization => Details.ParameterInitialization;
     public Lifetime? BodyLifetime => (Body as BlockOperation)?.Descriptor?.Lifetime;
     public Lifetime? ParameterInitializationLifetime => ParameterInitialization?.Lifetime;
-    public SourcePosition? Source => Details.SourcePosition;
 }
 
 public sealed class AssemblyOperation : StatementOperation
