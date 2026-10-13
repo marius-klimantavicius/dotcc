@@ -1,0 +1,17 @@
+{
+  "rows": 24,
+  "objects_observed": 182,
+  "counts": {
+    "exhaustive_guarded_discriminator_adapter": 16,
+    "sentinel_not_semantic_instance": 3,
+    "enum_alias_canonicalized": 1,
+    "mapped_optional_source": 3,
+    "initialization_only_not_semantic_instance": 1
+  },
+  "limits": [
+    "Shared scalar projection only; local-expression context/referrer payload requires separate evidence.",
+    "Optional element position does not gate completion.",
+    "Aliases and sentinels remain reserved stable IDs.",
+    "Character default aliases char; lerk_none source explicitly initialization-only."
+  ]
+}

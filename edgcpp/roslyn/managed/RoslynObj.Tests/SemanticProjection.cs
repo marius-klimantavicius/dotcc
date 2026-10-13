@@ -7,6 +7,28 @@ internal static class SemanticProjection
     internal static void Verify(TranslationUnit unit,string fixture,bool source,Action<bool,string> check)
     {
         var ehTables=unit.Capabilities.Any(c=>c.Name=="GENERATE_EH_TABLES"&&c.Enabled==true);
+        if(fixture is "templates.roslynobj" or "template_edges.roslynobj" or "retained.roslynobj" or "routines.roslynobj")
+        {
+            Sweep(unit.TemplateDescriptors.Select(t=>t.Details),"template_definition",check);
+            Sweep(unit.Entities.OfType<TemplateHeader>().Select(h=>h.Details),"template_header",check);
+            Sweep(unit.Entities.OfType<TemplateParameter>().Select(p=>p.Details),"template_parameter",check);
+            Sweep(unit.Entities.OfType<TemplateArgument>().Select(a=>a.Details),"template_argument",check);
+            Sweep(unit.Entities.OfType<ParameterType>().Select(p=>p.Details),"parameter_type",check);
+        }
+        if(fixture is "objects.roslynobj" or "native_microsoft.roslynobj")
+        {
+            var references=unit.Entities.OfType<Scope>().SelectMany(s=>s.LocalExpressionReferences).ToArray();
+            Sweep(references,"local_expression_reference",check);
+            if(references.Length>0)
+                check(references.All(r=>r.Kind.Name=="lerk_constant_expr"&&r.Referrer is Constant constant&&constant.ContextualExpressions.Any(c=>c.Owner==r.Owner&&c.Ordinal==r.Ordinal&&c.Expression==r.Expression)&&r.Owner.LocalExpressionReferences.Any(c=>c.Ordinal==r.Ordinal&&c.Referrer==constant&&c.Expression==r.Expression)),"Actual constant-expression contexts must preserve their recorded kind, scope, referrer and expression through both typed projections.");
+        }
+        if(source&&fixture is ("source_order.roslynobj" or "common.roslynobj" or "template_edges.roslynobj"))
+        {
+            var members=unit.Entities.OfType<SemanticRecord<OrphanScopeDetails>>().SelectMany(s=>s.Details.OrphanScopeMemberRows).ToArray();
+            var sublists=members.Where(m=>m.Entity is SourceSublist).ToArray();
+            if(sublists.Length>0)
+                check(sublists.Length==2&&sublists.Select(m=>((SourceSublist)m.Entity).Entries.Count).SequenceEqual(new[]{1,3})&&sublists.All(m=>m.Kind.Name=="source_sublist"&&((SourceSublist)m.Entity).Details.SourceSublistEntryRows.Select(r=>r.Entry).SequenceEqual(((SourceSublist)m.Entity).Entries)&&((SourceSublist)m.Entity).Entries.All(e=>e.Target is not null)),"Actual orphan source-sublist members must navigate their two canonical descriptors and retained one/three ordered source entries.");
+        }
         if(fixture is "variables.roslynobj" or "cleanup_semantics.roslynobj" or "source_attributes.roslynobj")
         {
             Sweep(unit.Variables.Select(v=>v.Details),"variable_symbol",check);
@@ -15,6 +37,10 @@ internal static class SemanticProjection
             Sweep(unit.Entities.OfType<AttributeArgument>().Select(a=>a.Details),"attribute_argument",check);
             Sweep(unit.Entities.OfType<Lifetime>().Select(l=>l.Details),"lifetime",check);
             Sweep(unit.Entities.OfType<Initialization>().Select(i=>i.Details),"initialization",check);
+            foreach(var initialization in unit.Entities.OfType<Initialization>())
+            {
+                _=initialization.IsConditionalGuard;_=initialization.IsVlaDeallocation;_=initialization.IsFreeingOfExceptionObject;
+            }
         }
         if(fixture=="reflection.roslynobj")
         {

@@ -23,14 +23,19 @@ remain required. Optional source positions never block semantic acceptance.
   navigation and removal of phantom fields. Positive activation of inactive guards
   remains pending; profile/M5 work stays serialized.
 - Resolve remaining active union/field gaps family by family from the worksheet.
-  A planned mapping is not proof of a writer. One tiny optional source-list adapter remains; raw11 rows
-  include fields already implemented but not reconciled; audit before proposing
-  new payloads. Prioritize execution, variables/routines, class/base/field layout,
+  A planned mapping is not proof of a writer. The final optional orphan source-list association is implemented and passes
+  existing source fixtures; its public navigation check is in the bounded pass.
+  No raw or planned field adapters remain; reconcile validation evidence before
+  proposing new payloads. Prioritize execution, variables/routines, class/base/field layout,
   dependent/template identity and lifetime/EH semantics over optional locations.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are696 verified and913 mapped pending-validation fields at this boundary.
+There are 849 verified and 768 mapped pending-validation fields at this boundary.
+All 2,000 field rows now have an explicit mapping or disposition; mapping alone
+is not acceptance. Accepted bounded type/layout/init and template/parameter/attribute scalar
+proof joins pass919 across47 existing paths. Next direct Boolean proofs cover
+constant/lambda/common expressions; non-scalar identities/unions stay distinct.
 24 additional already-captured coordinate fields are mapped_optional_source,
 with12 explicit omitted optional-source fields; these do not require new location
 probes or block semantic completion. Direct source/guard/write/SQL/property evidence plus genuine family sweeps may
@@ -61,7 +66,7 @@ positive activation. Column existence or default values alone are insufficient.
 
 ## Remaining configured native profiles
 
-The ten current profiles validate lowered native, source-semantic native
+The twelve current profiles validate lowered native, source-semantic native
 Microsoft, cfront-like/assignment-to-this and exported templates. Genuine263
 probes cover compiled UPC dynamic/static threads, near/far, ARM scalable/modal
 and RISC-V fractional/tuple/boolean types. These do not require new build flags.
@@ -76,8 +81,9 @@ actual positive guarded flags; accepted260 API and snapshot evidence passes182/P
 Three minimal-inlining-only flags are inactive_upstream_configuration: pristine
 inline.c35–44 unconditionally requires full portable EH lowering, which the user
 forbids. Disabling runtime exceptions cannot bypass the guard. No core workaround
-or imprecision option is used. A stock-valid tableless partial-EH profile is next
-for exact cleanup-start/completed-initialization links, not inferred storage parity.
+or imprecision option is used. The stock-valid tableless partial-EH profile is accepted for exact cleanup-start
+and completed-initialization links with absent numeric states. It does not imply
+table-based execution-storage parity.
 
 ## Remaining M5 and release evidence
 
@@ -90,8 +96,9 @@ for exact cleanup-start/completed-initialization links, not inferred storage par
   relations. Avoid blanket indexes. The generated-header timestamp correction is
   verified: backend/link-only rebuild and subsequent Ninja no-work. The private
   FK-load candidate reduces scale median30.28s to0.59s with identical logical rows;
-  canonical index-free adoption passes176 public acceptance; controlled scale
-  median0.56s/7.586MB and final bounded reader sample2.627s cold/2.119s warm.
+  canonical adoption passes182 public acceptance. Current260 scale is0.58s,
+  7,573,504bytes and45,548KiB RSS; bounded reader cold2.160s/warm1.596s.
+  Prior controlled median0.56s/7.586MB remains the before/after evidence.
 - Retain measured1KiB page default and WITHOUT ROWID composite relations. The243
   packaging comparison already covers24 successful runs; reopen only if new
   schema or measured workload warrants it, not as an unperformed baseline gate.

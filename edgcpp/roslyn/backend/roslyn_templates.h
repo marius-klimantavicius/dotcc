@@ -236,7 +236,7 @@ static Rid roslyn_argument(a_template_arg_ptr p) {
   }
   DB.put("template_argument",{{"id",id},{"kind_id",roslyn_kind_template_argument(p->kind)},
     {"type_id",R(type)},{"constant_id",R(constant)},{"template_id",R(templ)},
-    {"is_pack",static_cast<int>(p->is_pack || p->kind==tak_start_of_pack_expansion)},
+    {"is_pack",static_cast<int>(p->is_pack)},
     {"is_explicit",static_cast<int>(p->explicitly_specified)},
     {"is_pack_element",static_cast<int>(p->is_pack_element)},
     {"is_ellipsis",static_cast<int>(p->has_pack_ellipsis)},

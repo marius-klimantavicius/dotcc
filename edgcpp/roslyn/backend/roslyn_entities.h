@@ -62,6 +62,9 @@ static void roslyn_header_roots() {
   int n=0;for(a_type_ptr t=h->orphaned_types;t;t=t->next)DB.put("orphan_scope_member",{{"owner_id",id},{"kind_id",K("entity","type")},{"ordinal",n++},{"entity_id",roslyn_type(t)}});
   n=0;for(a_variable_ptr v=h->orphaned_variables;v;v=v->next)DB.put("orphan_scope_member",{{"owner_id",id},{"kind_id",K("entity","variable")},{"ordinal",n++},{"entity_id",roslyn_variable(v)}});
   n=0;for(a_namespace_ptr ns=h->orphaned_namespaces;ns;ns=ns->next)DB.put("orphan_scope_member",{{"owner_id",id},{"kind_id",K("entity","namespace")},{"ordinal",n++},{"entity_id",roslyn_namespace(ns)}});
+#if GENERATE_SOURCE_SEQUENCE_LISTS
+  n=0;for(a_src_seq_sublist_ptr s=h->orphaned_src_seq_sublists;s;s=s->next)DB.put("orphan_scope_member",{{"owner_id",id},{"kind_id",K("entity","source_sublist")},{"ordinal",n++},{"entity_id",roslyn_source_sublist(s)}});
+#endif
  }
 #endif
 #if SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS

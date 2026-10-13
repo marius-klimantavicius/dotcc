@@ -1,0 +1,117 @@
+{
+  "status": "reviewed coordinator producer/API inventory; queued after current exact-pack/scalar acceptance",
+  "method": "Search all canonical backend .c/.h excluding generated SQL/catalog for table names and DB.put producers; inspect handwritten reader projections and actual retained alternatives. No runtime promotion.",
+  "relations": [
+    {
+      "table": "qualified_name_part",
+      "producer": null,
+      "public": "generated facade only",
+      "alternative": "exact source/current name atoms and retained NameReference.Qualifier/NameQualifier.Previous chain; no qualified-name reconstruction"
+    },
+    {
+      "table": "declaration_sequence",
+      "producer": null,
+      "public": "generated facade only",
+      "alternative": "Scope.SourceSequence/SourceEntries and canonical source_entry ownership preserve actual retained occurrence order; Symbol.Declarations remains identity enumeration, not source order"
+    },
+    {
+      "table": "lowered_type_relationship",
+      "producer": null,
+      "public": "CppType.LoweringRelationships/OriginalType/LoweringOrigin always empty/null",
+      "alternative": "Exact ParameterType/Variable/Function/secondary Declaration declared type fields and RecordType.SubobjectPartner. Both CppType.DeclaredType and CanonicalType are unwritten and removed, not used as semantic substitutes; original lowering-only typeref.orig_type remains unavailable."
+    },
+    {
+      "table": "lifetime_transition",
+      "producer": null,
+      "public": "generated facade only",
+      "alternative": "actual Lifetime bindings/children/recorded cleanup checkpoint and Jump.CommonLifetime; no reconstructed transition graph"
+    },
+    {
+      "table": "eh_handler_region",
+      "producer": null,
+      "public": "generated facade only",
+      "alternative": "actual Handler body/type/init and CleanupRegion.NextRegion/Actions plus lowered EH operands; no guessed handler-to-region range association"
+    },
+    {
+      "table": "constraint_metadata",
+      "producer": null,
+      "public": "SemanticEntity.Constraints always empty; unrelated GenericConstraintClause.Constraints is an actual separate typed relation",
+      "alternative": "RequiresClause.Constraint, TemplateDescriptor.Constraint and retained template_generic_constraint descriptors; no substitution/resolution"
+    },
+    {
+      "table": "synthesized_origin",
+      "producer": null,
+      "public": "SemanticEntity.SynthesizedOrigins always empty",
+      "alternative": "actual CompilerGenerated/lowering flags and explicitly populated current partners/primary ABI/parameter links; no inferred cause graph"
+    },
+    {
+      "table": "source_attachment",
+      "producer": null,
+      "public": "SourceFile.Attachments always empty; only generic entity factory",
+      "alternative": "retained source facts remain optional; no attachment loading/rereading requested, no fabricated compilation-time file snapshots"
+    },
+    {
+      "table": "name",
+      "producer": null,
+      "public": "generic NameDetails factory only; sole inbound FK is removed qualified_name_part",
+      "alternative": "canonical SourceCorrespondence exact current/auxiliary atoms and source-name projection; name reference qualifier descriptors retain their exact actual chain"
+    }
+  ],
+  "catalog_policy": "preserve append-only kind IDs; mark unsupported scaffold-only custom kinds reserved_not_emitted, not implemented payload",
+  "negative_control": "kind_disposition has a real store helper INSERT OR IGNORE producer and is retained",
+  "required_review": "confirm grouped removal preserves populated alternatives; current checkpoint unaffected",
+  "columns": {
+    "target_profile": [
+      "description_id"
+    ],
+    "declaration": [
+      "implicit"
+    ],
+    "routine_symbol": [
+      "runtime_kind_id"
+    ],
+    "variable_symbol": [
+      "parameter_type_ordinal"
+    ],
+    "type": [
+      "canonical_type_id",
+      "declared_type_id"
+    ],
+    "type_reference": [
+      "typedef_symbol_id"
+    ],
+    "vector_type": [
+      "scalable_count_type_id"
+    ],
+    "semantic_node": [
+      "synthesis_kind_id"
+    ],
+    "loop_statement": [
+      "test_position_id"
+    ],
+    "constant": [
+      "is_literal"
+    ],
+    "member_pointer_value": [
+      "adjustment"
+    ],
+    "initialization": [
+      "condition_variable_id",
+      "is_elided",
+      "guard_variable_id"
+    ],
+    "source_file": [
+      "verified_digest_id"
+    ],
+    "source_origin": [
+      "spelling_range_id",
+      "expansion_range_id"
+    ]
+  },
+  "column_evidence": "All listed columns have zero actual native write-site in their owner table; global lexical/identifier scan excludes macro-stringized flag false positives. Declaration.implicit and type.declared_type_id separately checked by exact table-specific writer. No unknown/null scaffold is replaced by inferred semantic fact.",
+  "preserved": "Keep actual source/compiler-generated/lowering flags, parameter/variable/routine/secondary declared types, Constant.OriginalType, BaseSubobject.OriginalType, constructor original type, exact RecordType.SubobjectPartner, TypeReference.UnderlyingType, member-pointer target/cast/base, conditional cleanup flags, condition variable via ConditionOperation.Variable, actual label/common lifetimes, and typed retained constraints.",
+  "counts": {
+    "tables": 9,
+    "columns": 18
+  }
+}

@@ -45,6 +45,8 @@ public sealed class LoopOperation : StatementOperation
     public StatementOperation? Body => Loop.Body;
     public ExpressionOperation? Condition => Loop.Condition;
     public StatementOperation? Initialization => Loop.Initialization;
+    /// <summary>The retained scope for the loop initializer, when present.</summary>
+    public Scope? InitScope => Loop.InitScope;
     public ExpressionOperation? Increment => Loop.Increment;
     public ExpressionOperation? Affinity => Loop.Affinity;
 }

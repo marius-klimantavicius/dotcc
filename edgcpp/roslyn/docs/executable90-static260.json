@@ -1,0 +1,68 @@
+{
+  "expression": {
+    "enum": "an_expr_node_kind",
+    "catalog_count": 45,
+    "aliases": {
+      "enk_runtime_sizeof": "enk_sizeof"
+    },
+    "internal_guards": [
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if DO_IL_LOWERING && !DO_FULL_PORTABLE_EH_LOWERING",
+      "#endif",
+      "#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN",
+      "#endif",
+      "#if VLA_DEALLOCATIONS_IN_IL",
+      "#endif",
+      "#if BUILTIN_FUNCTIONS_ENABLED",
+      "#endif"
+    ],
+    "exact_names_ids_guards": true,
+    "active_native_dispatch_complete": true,
+    "active_managed_factory_complete": true,
+    "active_kind_count": 40,
+    "error_or_excluded": [
+      "enk_error",
+      "enk_gcnew",
+      "enk_last",
+      "enk_reclaimed"
+    ]
+  },
+  "statement": {
+    "enum": "a_statement_kind",
+    "catalog_count": 35,
+    "aliases": {},
+    "internal_guards": [
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if ASM_FUNCTION_ALLOWED",
+      "#endif",
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if UPC_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if GNU_EXTENSIONS_ALLOWED",
+      "#endif"
+    ],
+    "exact_names_ids_guards": true,
+    "active_native_dispatch_complete": true,
+    "active_managed_factory_complete": true,
+    "active_kind_count": 34,
+    "error_or_excluded": [
+      "stmk_last"
+    ]
+  },
+  "dynamic_init": {
+    "enum": "a_dynamic_init_kind",
+    "catalog_count": 10,
+    "aliases": {
+      "dik_call_returning_class_via_cctor": "dik_class_result_via_ctor"
+    },
+    "internal_guards": [],
+    "exact_names_ids_guards": true,
+    "active_native_dispatch_complete": true,
+    "active_managed_factory_complete": true,
+    "active_kind_count": 9,
+    "error_or_excluded": []
+  }
+}

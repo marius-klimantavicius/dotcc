@@ -73,7 +73,9 @@ booleans = {'compiler_generated','negative','nan_quiet','signed','incomplete','i
     'selection_known','selected_then','one_past_end','frees_storage','frees_array','throw_any',
     'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete',
     'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer','gnu_asm_form','error_descriptor',
-    'contains_unsupported_constructs','implementation_unit_importing_self','descriptor_incomplete','boolean_value','no_unique_address'}
+    'contains_unsupported_constructs','implementation_unit_importing_self','descriptor_incomplete','boolean_value','no_unique_address',
+    'contains_error','contains_local_type','contains_unnamed_namespace_type',
+    'does_not_contain_parentless_lambda_in_default_argument','does_not_contain_deprecated_or_unavailable_type'}
 # Direct retained flags whose nullable profile columns do not use is_/has_.
 booleans.update({'definition_cannot_be_generated','assignment_to_this_done','never_throws','never_inline','declared_only_as_friend',
     'explicit_extern_inline','in_gnu_abi_tag_namespace','implicit_abi_tags_added','allocates_memory',

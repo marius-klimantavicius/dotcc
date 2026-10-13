@@ -1,0 +1,42 @@
+{
+  "edg_character": {
+    "enum": "a_character_kind",
+    "count": 7,
+    "exact_source_names_ids_guards": true,
+    "guards": [],
+    "aliases": {
+      "chk_default": "chk_char"
+    },
+    "outer_guard": null
+  },
+  "edg_fixed_precision": {
+    "enum": "a_fixed_point_precision",
+    "count": 4,
+    "exact_source_names_ids_guards": true,
+    "guards": [],
+    "aliases": {},
+    "outer_guard": "FIXED_POINT_ALLOWED"
+  },
+  "edg_element_position": {
+    "enum": "an_element_position_kind",
+    "count": 4,
+    "exact_source_names_ids_guards": true,
+    "guards": [
+      "#if EXTRA_SOURCE_POSITIONS_IN_IL",
+      "#endif"
+    ],
+    "aliases": {},
+    "outer_guard": null
+  },
+  "edg_local_expression_kind": {
+    "enum": "a_local_expr_node_ref_kind",
+    "count": 9,
+    "exact_source_names_ids_guards": true,
+    "guards": [
+      "#if PROTOTYPE_INSTANTIATIONS_IN_IL",
+      "#endif"
+    ],
+    "aliases": {},
+    "outer_guard": null
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "rows": 90,
+  "objects_observed": 182,
+  "counts": {
+    "explicit_kind_dispatch_adapter": 83,
+    "sentinel_not_semantic_instance": 2,
+    "excluded_error_or_reclaimed": 2,
+    "excluded_user_scope": 1,
+    "enum_alias_canonicalized": 2
+  },
+  "missing_active_dispatch": [],
+  "limits": [
+    "Static dispatch coverage only, not all runtime union payloads proven.",
+    "Source-semantic and lowered representation roles remain separate.",
+    "dik_none is a genuine retained initialization/destruction descriptor kind, not a sentinel.",
+    "Stock deprecated aliases map to canonical IDs; reserved alias IDs not emitted.",
+    "No malformed/corruption tests and no additional source-location effort."
+  ]
+}

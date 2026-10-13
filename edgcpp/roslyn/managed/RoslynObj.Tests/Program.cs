@@ -230,6 +230,7 @@ try
         LayoutProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         ExecutionProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         ExecutionMetadataProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        ScalarFamilies.Verify(unit,Path.GetFileName(input),Check);
         var functionCount=0;var operationCount=0;var bodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();
         foreach(var function in unit.Functions)
         {
@@ -400,6 +401,7 @@ try
             var populated=unit.Variables.Single(v=>v.Name=="populated_pack").Type.Instantiation!;
             var pack=populated.Arguments.Single();
             Check(pack.IsPack&&pack.Elements.Select(a=>a.Type!.Size).SequenceEqual(new BigInteger?[]{4,8,1}),"A real type argument pack must expose ordered retained element types.");
+            Check(pack.Kind.Name=="tak_start_of_pack_expansion"&&!pack.Details.IsPack,"The actual expansion marker must preserve its false retained is_pack bit independently from the public pack convenience.");
             Check(unit.Variables.Single(v=>v.Name=="empty_pack").Type.Instantiation!.Arguments.Single().Elements.Count==0,"A real empty argument pack must remain an empty pack rather than an absent argument.");
             var selected=unit.Variables.Single(v=>v.Name=="selected_pointer").Type.Instantiation!;
             Check(selected.ArgumentMappings.Select(a=>a.Role.Name).SequenceEqual(new[]{"primary","selected_partial"})&&selected.ArgumentMappings[0].Argument.Type is PointerType&&selected.ArgumentMappings[1].Argument.Type?.Kind.Name=="tk_integer","Selected partial arguments must preserve their own map alongside the primary arguments.");

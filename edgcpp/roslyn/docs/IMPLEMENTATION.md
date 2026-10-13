@@ -845,3 +845,41 @@ association.24 captured optional coordinates and12 deliberate source omissions
 are outside mandatory semantic gates. Full phases3–4 remain open for exact
 remaining scalar/union/identity field evidence and non-scalar catalog closure;
 next tiny orphan association uses existing relation, no source reconstruction.
+
+
+## Post-accepted260 bounded evidence closure
+
+The direct orphan source-sublist association passes incremental source compilation
+and three existing exports; source_order/common retain two actual links each,
+with one/three ordered entries. Bounded reader family acceptance passes779 on28
+current paths, including those canonical descriptors and actual scoped-expression
+projections. No schema/catalog identity or coordinate reconstruction is added.
+
+All2,000 field rows now have explicit mappings/dispositions:696verified,
+921mapped pending-validation, zero raw/planned. Four remaining CLI-only fields
+have exact stock exclusions; requires/for/access-base list mappings use existing
+writers/getters and retain positive validation separately. Native type/layout/init
+and managed template/parameter/attribute scalar proofs are being reconciled.
+Source-only locations and intentionally omitted coordinates remain optional.
+
+Routine43/scalar24/pragma99 catalog evidence preserves aliases/sentinels and
+active-context/runtime availability separately from scalar identity. The next
+bounded read-only root review covers retained tagged IL-entry dispatch, while
+coordinator reconciles custom reserved catalog values; no payload closure is
+claimed from a catalog entry alone. Full phases3–4 remain active.
+
+
+Bounded exact-pack/scalar checkpoint: PASS919 on47 existing genuine paths,
+WORself73, clean build/generator/literal gates. Raw template is_pack bit is now
+stored separately from the documented ordinary pack-marker convenience. Two
+current strict native/source binaries and six affected template exports pass;
+other ten stage source bytes are synchronized but binaries/snapshots remain at
+accepted260 and will refresh with the next grouped contract. Orphan source lists
+pass three existing exports and strengthened canonical/count/order navigation.
+
+Coverage is now849verified/768mapped pending-validation,
+with zero raw/planned rows. Exact guard/nonNULL/direct-write scalar proof closes
+only the reviewed fields; active union/quantity/identity evidence remains open.
+Nine zero-producer tables plus18 no-writer columns are queued for grouped cleanup
+(final-unproduced-relations260-review.json), preserving populated alternatives
+and stable kind IDs. Full phases3–4 continue immediately.

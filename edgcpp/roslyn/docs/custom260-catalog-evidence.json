@@ -1,0 +1,886 @@
+{
+  "objects": 182,
+  "source_literal_family_references": [
+    "abi",
+    "arithmetic_kind",
+    "asm_operand_kind",
+    "availability",
+    "body_state",
+    "bound_kind",
+    "call_kind",
+    "capture_kind",
+    "cleanup_kind",
+    "condition_kind",
+    "constant_component_role",
+    "definition_state",
+    "edg_ms_attribute_target",
+    "entity",
+    "exception_specification_kind",
+    "fact",
+    "float_class",
+    "float_representation",
+    "generic_constraint",
+    "instantiation_state",
+    "jump_kind",
+    "literal_encoding_prefix",
+    "range_endpoint",
+    "reference_kind",
+    "role",
+    "root_kind",
+    "size_kind",
+    "source_dispatch_kind",
+    "source_origin_kind",
+    "specialization_kind",
+    "storage_duration",
+    "storage_location_kind",
+    "string_encoding",
+    "string_unit_kind",
+    "template_argument_role",
+    "value_category",
+    "vector_kind"
+  ],
+  "custom_families_without_literal_K_reference": {
+    "capture_profile": [
+      "native_lowered",
+      "source_semantic",
+      "cfront_lowered",
+      "exported_templates_lowered"
+    ],
+    "representation_role": [
+      "execution",
+      "metadata",
+      "source_semantic"
+    ],
+    "name_category": [
+      "named",
+      "anonymous",
+      "unnamed",
+      "generated"
+    ],
+    "type_relationship": [
+      "declared",
+      "storage",
+      "subobject_partner",
+      "retained_original"
+    ],
+    "abi_routine_kind": [
+      "primary",
+      "alternate_complete",
+      "alternate_subobject",
+      "deleting_destructor",
+      "thunk",
+      "wrapper",
+      "target"
+    ],
+    "scope_kind": [
+      "file",
+      "namespace",
+      "class",
+      "function",
+      "block",
+      "prototype",
+      "template"
+    ],
+    "linkage": [
+      "none",
+      "internal",
+      "external",
+      "c",
+      "cpp"
+    ],
+    "access": [
+      "public",
+      "protected",
+      "private",
+      "none"
+    ],
+    "ref_qualifier": [
+      "none",
+      "lvalue",
+      "rvalue"
+    ],
+    "calling_convention": [
+      "default",
+      "cdecl",
+      "stdcall",
+      "fastcall",
+      "thiscall",
+      "vectorcall"
+    ],
+    "type_reference_kind": [
+      "typedef",
+      "qualified",
+      "decltype",
+      "template",
+      "alias"
+    ],
+    "virtual_table_kind": [
+      "vtable",
+      "vtt",
+      "rtti"
+    ],
+    "attribute_kind": [
+      "gnu",
+      "microsoft",
+      "standard"
+    ],
+    "managed_kind": [
+      "cli",
+      "cx",
+      "handle",
+      "tracking_reference",
+      "property",
+      "event",
+      "delegate",
+      "array"
+    ],
+    "source_attachment_kind": [
+      "frozen_compilation_input",
+      "post_compilation_reread",
+      "external"
+    ],
+    "lifetime_transition_kind": [
+      "enter",
+      "exit",
+      "jump",
+      "return",
+      "throw"
+    ],
+    "special_function_kind": [
+      "ordinary",
+      "constructor",
+      "destructor",
+      "conversion",
+      "operator",
+      "thunk",
+      "wrapper"
+    ],
+    "eh_table_kind": [
+      "region",
+      "array"
+    ]
+  },
+  "actual_fk_custom_observations": {
+    "1001": {
+      "entity.kind_id": 182
+    },
+    "1003": {
+      "entity.kind_id": 4423
+    },
+    "1005": {
+      "entity.kind_id": 264,
+      "symbol.kind_id": 264,
+      "declaration.kind_id": 264
+    },
+    "1006": {
+      "entity.kind_id": 5621,
+      "symbol.kind_id": 5621,
+      "declaration.kind_id": 5621
+    },
+    "1007": {
+      "entity.kind_id": 4773,
+      "symbol.kind_id": 4773,
+      "declaration.kind_id": 4773,
+      "orphan_scope_member.kind_id": 273
+    },
+    "1013": {
+      "entity.kind_id": 20768,
+      "orphan_scope_member.kind_id": 17
+    },
+    "1014": {
+      "entity.kind_id": 18332
+    },
+    "1015": {
+      "entity.kind_id": 23842
+    },
+    "1016": {
+      "entity.kind_id": 9675
+    },
+    "1018": {
+      "entity.kind_id": 542
+    },
+    "1021": {
+      "entity.kind_id": 362
+    },
+    "1022": {
+      "entity.kind_id": 376,
+      "symbol.kind_id": 376,
+      "declaration.kind_id": 373
+    },
+    "1023": {
+      "entity.kind_id": 787
+    },
+    "1024": {
+      "entity.kind_id": 604
+    },
+    "1025": {
+      "entity.kind_id": 13
+    },
+    "1026": {
+      "entity.kind_id": 191
+    },
+    "1027": {
+      "entity.kind_id": 192
+    },
+    "1028": {
+      "entity.kind_id": 203
+    },
+    "1029": {
+      "entity.kind_id": 67740
+    },
+    "1030": {
+      "entity.kind_id": 34824
+    },
+    "1031": {
+      "entity.kind_id": 34131
+    },
+    "1032": {
+      "entity.kind_id": 17394
+    },
+    "1038": {
+      "entity.kind_id": 2455
+    },
+    "1040": {
+      "entity.kind_id": 1361
+    },
+    "1050": {
+      "entity.kind_id": 10155
+    },
+    "1051": {
+      "entity.kind_id": 3126
+    },
+    "1053": {
+      "entity.kind_id": 275
+    },
+    "1058": {
+      "entity.kind_id": 4881,
+      "symbol.kind_id": 1356,
+      "declaration.kind_id": 1356
+    },
+    "1063": {
+      "entity.kind_id": 7994
+    },
+    "1080": {
+      "entity.kind_id": 340,
+      "symbol.kind_id": 340,
+      "declaration.kind_id": 340
+    },
+    "1082": {
+      "entity.kind_id": 3418
+    },
+    "2001": {
+      "object_header.capture_profile_id": 68
+    },
+    "3001": {
+      "target_profile.abi_id": 97
+    },
+    "49001": {
+      "translation_unit_root.kind_id": 2709
+    },
+    "4001": {
+      "build_capability.state_id": 22290,
+      "fact_availability.state_id": 38417
+    },
+    "4002": {
+      "fact_availability.state_id": 11257
+    },
+    "4003": {
+      "fact_availability.state_id": 41895
+    },
+    "4004": {
+      "fact_availability.state_id": 1785
+    },
+    "4005": {
+      "fact_availability.state_id": 191
+    },
+    "4006": {
+      "fact_availability.state_id": 8905
+    },
+    "4007": {
+      "fact_availability.state_id": 731
+    },
+    "5001": {
+      "fact_availability.fact_id": 18265
+    },
+    "5004": {
+      "fact_availability.fact_id": 5621
+    },
+    "5008": {
+      "fact_availability.fact_id": 133
+    },
+    "5009": {
+      "fact_availability.fact_id": 182
+    },
+    "5010": {
+      "fact_availability.fact_id": 182
+    },
+    "5011": {
+      "fact_availability.fact_id": 182
+    },
+    "5012": {
+      "fact_availability.fact_id": 182
+    },
+    "5014": {
+      "fact_availability.fact_id": 5621
+    },
+    "5015": {
+      "fact_availability.fact_id": 20768
+    },
+    "5016": {
+      "fact_availability.fact_id": 20768
+    },
+    "5017": {
+      "fact_availability.fact_id": 20768
+    },
+    "1010": {
+      "symbol.kind_id": 142,
+      "declaration.kind_id": 142
+    },
+    "1011": {
+      "symbol.kind_id": 3383,
+      "declaration.kind_id": 3383
+    },
+    "13001": {
+      "routine_symbol.body_state_id": 2440
+    },
+    "13002": {
+      "routine_symbol.body_state_id": 2998
+    },
+    "31002": {
+      "variable_symbol.storage_duration_id": 1403
+    },
+    "46001": {
+      "arithmetic_type.arithmetic_kind_id": 467
+    },
+    "46002": {
+      "arithmetic_type.arithmetic_kind_id": 607
+    },
+    "46005": {
+      "arithmetic_type.arithmetic_kind_id": 726
+    },
+    "6029": {
+      "routine_type_parameter.role_id": 1620,
+      "routine_parameter.role_id": 621,
+      "call_argument.role_id": 830
+    },
+    "6033": {
+      "routine_type_parameter.role_id": 5813,
+      "routine_parameter.role_id": 1683,
+      "call_argument.role_id": 1697
+    },
+    "14001": {
+      "record_type.definition_state_id": 1120
+    },
+    "7001": {
+      "semantic_node.representation_role_id": 28547
+    },
+    "6001": {
+      "structural_child.role_id": 22779,
+      "expression_operand.role_id": 17615
+    },
+    "6012": {
+      "structural_child.role_id": 6723
+    },
+    "8001": {
+      "expression.value_category_id": 21240
+    },
+    "8002": {
+      "expression.value_category_id": 2598
+    },
+    "16001": {
+      "reference_expression.reference_kind_id": 5579
+    },
+    "17001": {
+      "jump_statement.kind_id": 2556
+    },
+    "36002": {
+      "exception_specification.kind_id": 1171
+    },
+    "36003": {
+      "exception_specification.kind_id": 1284
+    },
+    "27001": {
+      "template_instance.state_id": 241
+    },
+    "27002": {
+      "template_instance.state_id": 361
+    },
+    "27004": {
+      "template_instance.state_id": 2
+    },
+    "26001": {
+      "template_instance_argument.role_id": 606
+    },
+    "23004": {
+      "template_specialization.kind_id": 13
+    },
+    "21001": {
+      "source_file.origin_kind_id": 191,
+      "source_position.origin_kind_id": 61589,
+      "source_origin.kind_id": 29996,
+      "macro_definition.kind_id": 34
+    },
+    "22001": {
+      "source_range.endpoint_kind_id": 34824
+    },
+    "21002": {
+      "macro_definition.kind_id": 17359,
+      "source_position.origin_kind_id": 5
+    },
+    "1017": {
+      "entity.kind_id": 850
+    },
+    "1033": {
+      "entity.kind_id": 1042
+    },
+    "5002": {
+      "fact_availability.fact_id": 2444
+    },
+    "5003": {
+      "fact_availability.fact_id": 2444
+    },
+    "31001": {
+      "variable_symbol.storage_duration_id": 701
+    },
+    "31005": {
+      "variable_symbol.storage_duration_id": 2651
+    },
+    "6007": {
+      "structural_child.role_id": 276
+    },
+    "6010": {
+      "structural_child.role_id": 554,
+      "semantic_reference.role_id": 231
+    },
+    "6034": {
+      "semantic_reference.role_id": 326,
+      "subobject_path.kind_id": 8,
+      "designator_value.kind_id": 7
+    },
+    "9001": {
+      "call_expression.call_kind_id": 2314
+    },
+    "16002": {
+      "reference_expression.reference_kind_id": 2486
+    },
+    "21006": {
+      "source_position.origin_kind_id": 6143,
+      "source_origin.kind_id": 4134
+    },
+    "1008": {
+      "entity.kind_id": 1937,
+      "symbol.kind_id": 1937,
+      "declaration.kind_id": 1937
+    },
+    "1020": {
+      "entity.kind_id": 91
+    },
+    "1043": {
+      "entity.kind_id": 193
+    },
+    "1044": {
+      "entity.kind_id": 372
+    },
+    "1045": {
+      "entity.kind_id": 265
+    },
+    "1046": {
+      "entity.kind_id": 372
+    },
+    "1048": {
+      "entity.kind_id": 83
+    },
+    "1052": {
+      "entity.kind_id": 30
+    },
+    "1055": {
+      "entity.kind_id": 96
+    },
+    "1061": {
+      "entity.kind_id": 208
+    },
+    "1083": {
+      "entity.kind_id": 30
+    },
+    "1084": {
+      "entity.kind_id": 235
+    },
+    "1085": {
+      "entity.kind_id": 156
+    },
+    "49002": {
+      "translation_unit_root.kind_id": 208
+    },
+    "49003": {
+      "translation_unit_root.kind_id": 26
+    },
+    "13003": {
+      "routine_symbol.body_state_id": 144
+    },
+    "6031": {
+      "routine_parameter.role_id": 57,
+      "routine_type_parameter.role_id": 80,
+      "call_argument.role_id": 73
+    },
+    "15001": {
+      "array_type.bound_kind_id": 850
+    },
+    "15002": {
+      "array_type.bound_kind_id": 76
+    },
+    "6032": {
+      "routine_type_parameter.role_id": 418,
+      "routine_parameter.role_id": 63,
+      "call_argument.role_id": 250
+    },
+    "7002": {
+      "semantic_node.representation_role_id": 2642
+    },
+    "6008": {
+      "structural_child.role_id": 94
+    },
+    "6009": {
+      "structural_child.role_id": 102
+    },
+    "9002": {
+      "call_expression.call_kind_id": 22
+    },
+    "16003": {
+      "reference_expression.reference_kind_id": 1105
+    },
+    "50001": {
+      "constant_component.role_id": 5837
+    },
+    "48001": {
+      "string_value.unit_kind_id": 207
+    },
+    "11001": {
+      "string_value.encoding_id": 207
+    },
+    "6025": {
+      "eh_table_projection.kind_id": 165,
+      "structural_child.role_id": 9,
+      "semantic_reference.role_id": 3
+    },
+    "18001": {
+      "cleanup_action.kind_id": 220
+    },
+    "19001": {
+      "cleanup_storage_location.kind_id": 139
+    },
+    "19003": {
+      "cleanup_storage_location.kind_id": 183
+    },
+    "19005": {
+      "cleanup_storage_location.kind_id": 16
+    },
+    "20001": {
+      "cleanup_condition.kind_id": 83
+    },
+    "1068": {
+      "entity.kind_id": 3
+    },
+    "1047": {
+      "entity.kind_id": 53
+    },
+    "6036": {
+      "eh_table_projection.kind_id": 52,
+      "subobject_path.kind_id": 8,
+      "designator_value.kind_id": 3
+    },
+    "18003": {
+      "cleanup_action.kind_id": 6
+    },
+    "19004": {
+      "cleanup_storage_location.kind_id": 6
+    },
+    "1054": {
+      "entity.kind_id": 27
+    },
+    "13004": {
+      "routine_symbol.body_state_id": 39
+    },
+    "46003": {
+      "arithmetic_type.arithmetic_kind_id": 46
+    },
+    "14002": {
+      "record_type.definition_state_id": 241
+    },
+    "6014": {
+      "semantic_reference.role_id": 48
+    },
+    "40005": {
+      "lambda_capture.kind_id": 6
+    },
+    "26002": {
+      "template_instance_argument.role_id": 22
+    },
+    "45004": {
+      "floating_value.representation_kind_id": 97
+    },
+    "45005": {
+      "floating_value.representation_kind_id": 59
+    },
+    "10001": {
+      "floating_value.class_id": 160
+    },
+    "10002": {
+      "floating_value.class_id": 60
+    },
+    "10003": {
+      "floating_value.class_id": 7
+    },
+    "10004": {
+      "floating_value.class_id": 7
+    },
+    "1035": {
+      "entity.kind_id": 204
+    },
+    "1056": {
+      "entity.kind_id": 179
+    },
+    "1081": {
+      "entity.kind_id": 138
+    },
+    "1064": {
+      "entity.kind_id": 30,
+      "symbol.kind_id": 30,
+      "declaration.kind_id": 30
+    },
+    "16006": {
+      "reference_expression.reference_kind_id": 11
+    },
+    "1012": {
+      "entity.kind_id": 31
+    },
+    "15005": {
+      "array_type.bound_kind_id": 2
+    },
+    "37001": {
+      "vector_type.vector_kind_id": 150
+    },
+    "1009": {
+      "entity.kind_id": 43,
+      "symbol.kind_id": 43,
+      "declaration.kind_id": 43
+    },
+    "15003": {
+      "array_type.bound_kind_id": 7
+    },
+    "6013": {
+      "structural_child.role_id": 14
+    },
+    "6019": {
+      "structural_child.role_id": 36
+    },
+    "6020": {
+      "structural_child.role_id": 36
+    },
+    "6021": {
+      "structural_child.role_id": 36
+    },
+    "6003": {
+      "call_argument.role_id": 7,
+      "structural_child.role_id": 64,
+      "initialization_operand.role_id": 59
+    },
+    "17002": {
+      "jump_statement.kind_id": 26
+    },
+    "45001": {
+      "floating_value.representation_kind_id": 18
+    },
+    "45003": {
+      "floating_value.representation_kind_id": 57
+    },
+    "45006": {
+      "floating_value.representation_kind_id": 3
+    },
+    "17006": {
+      "jump_statement.kind_id": 7
+    },
+    "50005": {
+      "constant_component.role_id": 4
+    },
+    "50006": {
+      "constant_component.role_id": 4
+    },
+    "1049": {
+      "entity.kind_id": 24
+    },
+    "18002": {
+      "cleanup_action.kind_id": 39
+    },
+    "19002": {
+      "cleanup_storage_location.kind_id": 20
+    },
+    "19006": {
+      "cleanup_storage_location.kind_id": 8
+    },
+    "31003": {
+      "variable_symbol.storage_duration_id": 18
+    },
+    "1086": {
+      "entity.kind_id": 4
+    },
+    "6030": {
+      "routine_parameter.role_id": 6,
+      "routine_type_parameter.role_id": 6,
+      "call_argument.role_id": 3
+    },
+    "9003": {
+      "call_expression.call_kind_id": 107
+    },
+    "1036": {
+      "entity.kind_id": 21
+    },
+    "50002": {
+      "constant_component.role_id": 17
+    },
+    "6035": {
+      "subobject_path.kind_id": 5
+    },
+    "6011": {
+      "structural_child.role_id": 7
+    },
+    "6024": {
+      "structural_child.role_id": 4
+    },
+    "37002": {
+      "vector_type.vector_kind_id": 56
+    },
+    "37003": {
+      "vector_type.vector_kind_id": 1916
+    },
+    "1037": {
+      "entity.kind_id": 444
+    },
+    "1059": {
+      "entity.kind_id": 4
+    },
+    "1060": {
+      "entity.kind_id": 20
+    },
+    "1069": {
+      "entity.kind_id": 2428
+    },
+    "1070": {
+      "entity.kind_id": 9
+    },
+    "1071": {
+      "entity.kind_id": 489
+    },
+    "1072": {
+      "entity.kind_id": 2
+    },
+    "1073": {
+      "entity.kind_id": 1
+    },
+    "1075": {
+      "entity.kind_id": 325
+    },
+    "1076": {
+      "entity.kind_id": 1
+    },
+    "2002": {
+      "object_header.capture_profile_id": 49
+    },
+    "3003": {
+      "target_profile.abi_id": 47
+    },
+    "7003": {
+      "semantic_node.representation_role_id": 3178
+    },
+    "51001": {
+      "call_expression.source_dispatch_kind_id": 184
+    },
+    "21003": {
+      "source_position.origin_kind_id": 1,
+      "source_origin.kind_id": 1,
+      "macro_definition.kind_id": 1
+    },
+    "21004": {
+      "source_position.origin_kind_id": 2
+    },
+    "1067": {
+      "entity.kind_id": 2
+    },
+    "6006": {
+      "structural_child.role_id": 5
+    },
+    "28001": {
+      "asm_operand.kind_id": 2
+    },
+    "28002": {
+      "asm_operand.kind_id": 1
+    },
+    "1041": {
+      "entity.kind_id": 9
+    },
+    "15004": {
+      "array_type.bound_kind_id": 9
+    },
+    "1077": {
+      "entity.kind_id": 2
+    },
+    "1078": {
+      "entity.kind_id": 7
+    },
+    "8003": {
+      "expression.value_category_id": 4
+    },
+    "40001": {
+      "lambda_capture.kind_id": 3
+    },
+    "40002": {
+      "lambda_capture.kind_id": 1
+    },
+    "46006": {
+      "arithmetic_type.arithmetic_kind_id": 7
+    },
+    "46007": {
+      "arithmetic_type.arithmetic_kind_id": 6
+    },
+    "46008": {
+      "arithmetic_type.arithmetic_kind_id": 3
+    },
+    "51003": {
+      "call_expression.source_dispatch_kind_id": 1
+    },
+    "9004": {
+      "call_expression.call_kind_id": 1
+    },
+    "1065": {
+      "entity.kind_id": 1
+    },
+    "1066": {
+      "entity.kind_id": 1
+    },
+    "51002": {
+      "call_expression.source_dispatch_kind_id": 6
+    },
+    "3004": {
+      "target_profile.abi_id": 34
+    },
+    "2003": {
+      "object_header.capture_profile_id": 36
+    },
+    "6042": {
+      "routine_parameter.role_id": 10,
+      "routine_type_parameter.role_id": 20,
+      "call_argument.role_id": 10
+    },
+    "6043": {
+      "routine_parameter.role_id": 28,
+      "routine_type_parameter.role_id": 29,
+      "call_argument.role_id": 41
+    },
+    "2004": {
+      "object_header.capture_profile_id": 29
+    },
+    "3002": {
+      "target_profile.abi_id": 4
+    }
+  },
+  "method": "All actual FK-to-kind columns in every current accepted object, excluding kind_disposition catalog admission bookkeeping. Native source excludes generated catalog/schema. Lack of literal family reference is not by itself a semantic exclusion."
+}

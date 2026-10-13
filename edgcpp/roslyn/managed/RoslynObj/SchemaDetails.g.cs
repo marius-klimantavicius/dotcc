@@ -974,11 +974,11 @@ public sealed class RecordTypeDetails : SemanticDetail
     public bool DefinedInParentClass => Data.Bool("defined_in_parent_class");
     public bool HasNodiscardAttribute => Data.Bool("has_nodiscard_attribute");
     public bool HasFieldInitializer => Data.Bool("has_field_initializer");
-    public long? ContainsError => Data.OptionalLong("contains_error");
-    public long? ContainsLocalType => Data.OptionalLong("contains_local_type");
-    public long? ContainsUnnamedNamespaceType => Data.OptionalLong("contains_unnamed_namespace_type");
-    public long? DoesNotContainParentlessLambdaInDefaultArgument => Data.OptionalLong("does_not_contain_parentless_lambda_in_default_argument");
-    public long? DoesNotContainDeprecatedOrUnavailableType => Data.OptionalLong("does_not_contain_deprecated_or_unavailable_type");
+    public bool? ContainsError => Data.OptionalBool("contains_error");
+    public bool? ContainsLocalType => Data.OptionalBool("contains_local_type");
+    public bool? ContainsUnnamedNamespaceType => Data.OptionalBool("contains_unnamed_namespace_type");
+    public bool? DoesNotContainParentlessLambdaInDefaultArgument => Data.OptionalBool("does_not_contain_parentless_lambda_in_default_argument");
+    public bool? DoesNotContainDeprecatedOrUnavailableType => Data.OptionalBool("does_not_contain_deprecated_or_unavailable_type");
     public long? InheritanceKindIsExplicit => Data.OptionalLong("inheritance_kind_is_explicit");
     public bool? HasCoclassAttribute => Data.OptionalBool("has_coclass_attribute");
     public bool? HasExplicitlyAlignedSubobject => Data.OptionalBool("has_explicitly_aligned_subobject");

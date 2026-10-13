@@ -17,6 +17,12 @@ public sealed class Initialization : SemanticEntity
     public Lifetime? OverlappingLifetime => Details.OverlappingLifetime;
     public Initialization? Master => Details.Master;
     public Initialization? NextInDestructionList => Details.NextDestruction;
+    /// <summary>Whether this is a generated local-static guard cleanup recipe. False in source IL does not describe the runtime guard obligation.</summary>
+    public bool IsConditionalGuard => Details.IsConditionalGuard;
+    /// <summary>Whether this is a generated VLA deallocation recipe. Source IL records false before such recipes are generated.</summary>
+    public bool IsVlaDeallocation => Details.IsVlaDeallocation;
+    /// <summary>Whether this is a generated table-based EH exception-object release recipe. False in other profiles does not exclude exception destruction.</summary>
+    public bool IsFreeingOfExceptionObject => Details.IsFreeingOfExceptionObject;
     public IReadOnlyList<InitializationOperandDetails> Operands => Object.List("SELECT * FROM initialization_operand WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new InitializationOperandDetails(Object,r));
 }
 

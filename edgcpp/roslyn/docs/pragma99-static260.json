@@ -1,0 +1,124 @@
+{
+  "edg_pragma": {
+    "enum": "a_pragma_kind",
+    "source_line": 6652,
+    "count": 57,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [
+      "#if IDENT_DIRECTIVE_AND_PRAGMA",
+      "#endif",
+      "#if PRAGMA_WEAK_ALLOWED",
+      "#endif",
+      "#if UPC_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if REDEFINE_EXTNAME_PRAGMA_ENABLED",
+      "#endif",
+      "#if SUN_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if GNU_EXTENSIONS_ALLOWED",
+      "#if GNU_VECTOR_TYPES_ALLOWED && BUILTIN_FUNCTIONS_ENABLED",
+      "#endif",
+      "#endif",
+      "#if INCLUDE_EDG_TEST_PRAGMAS",
+      "#endif",
+      "#if ADD_CHECKING_PRAGMAS_FOR_INTERNAL_TESTING",
+      "#endif",
+      "#if DEBUG",
+      "#endif",
+      "#if NEED_IL_DISPLAY",
+      "#endif",
+      "#if GENERATE_MICROSOFT_IF_EXISTS_ENTRIES",
+      "#endif",
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#if NATIVE_MULTIBYTE_CHARS_SUPPORTED_WITH_UNICODE",
+      "#endif",
+      "#endif",
+      "#if INCLUDE_UNRECOGNIZED_PRAGMAS_IN_IL",
+      "#endif"
+    ],
+    "aliases": {
+      "pk_ident": "pk_ident_directive"
+    }
+  },
+  "edg_stdc_pragma": {
+    "enum": "a_stdc_pragma_kind",
+    "source_line": 6569,
+    "count": 8,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [
+      "#if FIXED_POINT_ALLOWED",
+      "#endif"
+    ],
+    "aliases": {}
+  },
+  "edg_stdc_value": {
+    "enum": "a_stdc_pragma_value",
+    "source_line": 6593,
+    "count": 5,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [
+      "#if FIXED_POINT_ALLOWED",
+      "#endif"
+    ],
+    "aliases": {}
+  },
+  "edg_upc_pragma": {
+    "enum": "a_upc_pragma_kind",
+    "source_line": 6356,
+    "count": 2,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [],
+    "aliases": {}
+  },
+  "edg_upc_access": {
+    "enum": "a_upc_access_method",
+    "source_line": 6363,
+    "count": 3,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [],
+    "aliases": {}
+  },
+  "edg_upc_coherence": {
+    "enum": "a_upc_coherence_stack_operation",
+    "source_line": 6375,
+    "count": 3,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [],
+    "aliases": {}
+  },
+  "edg_ms_pragma_comment": {
+    "enum": "a_microsoft_pragma_comment_type",
+    "source_line": 6894,
+    "count": 6,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [],
+    "aliases": {}
+  },
+  "edg_ms_pragma_conform": {
+    "enum": "a_microsoft_pragma_conform_kind",
+    "source_line": 6906,
+    "count": 1,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [],
+    "aliases": {}
+  },
+  "edg_gcc_pragma": {
+    "enum": "a_gcc_pragma_kind",
+    "source_line": 6611,
+    "count": 9,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [
+      "#if GNU_VISIBILITY_ATTRIBUTE_ALLOWED",
+      "#endif"
+    ],
+    "aliases": {}
+  },
+  "edg_elf_visibility": {
+    "enum": "an_ELF_visibility_kind",
+    "source_line": 2020,
+    "count": 5,
+    "exact_source_names_ids_guards": true,
+    "internal_guards": [],
+    "aliases": {}
+  }
+}

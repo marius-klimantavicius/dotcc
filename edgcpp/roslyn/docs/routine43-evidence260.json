@@ -1,0 +1,20 @@
+{
+  "rows": 43,
+  "objects_observed": 182,
+  "source": "pristine EDG il_def.h:2573,7215,7384,12191",
+  "static": "/tmp/roslyn-root-routine43-static260.json",
+  "observed": "/tmp/roslyn-root-routine43-observed260.json",
+  "counts": {
+    "exhaustive_guarded_discriminator_adapter": 32,
+    "excluded_user_scope": 6,
+    "enum_range_alias_canonicalized": 2,
+    "sentinel_not_semantic_instance": 3
+  },
+  "meaning": [
+    "Only shared scalar discriminator/projection proof, not each kind positive runtime or special function payload closure.",
+    "Native __declspec property getter/setter NameReference kinds are present and retained; Microsoft enum guard alone does not exclude them.",
+    "cc_clrcall requires cppcli_enabled per declarator.c5189-5196, user excluded.",
+    "Constructor alternate kinds remain conditional DO_IL_LOWERING&&IA64_ABI; all five actual values observed.",
+    "rqk_default/sfk_none/cdk_none/cc_default are genuine discriminants, not upper sentinels."
+  ]
+}

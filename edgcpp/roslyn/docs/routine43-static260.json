@@ -1,0 +1,44 @@
+{
+  "edg_special_function": {
+    "enum": "a_special_function_kind",
+    "catalog_count": 26,
+    "guard_directives": [
+      "#if MICROSOFT_EXTENSIONS_ALLOWED",
+      "#endif",
+      "#if BUILTIN_FUNCTIONS_ENABLED",
+      "#endif"
+    ],
+    "alias": {
+      "sfk_first_accessor": "sfk_property_get",
+      "sfk_last_accessor": "sfk_event_raise"
+    },
+    "exact_source_names_ids_guards": true
+  },
+  "edg_calling_convention": {
+    "enum": "a_calling_convention",
+    "catalog_count": 8,
+    "guard_directives": [
+      "#if MICROSOFT_EXTENSIONS_ALLOWED || GNU_X86_ATTRIBUTES_ALLOWED",
+      "#endif"
+    ],
+    "alias": {},
+    "exact_source_names_ids_guards": true
+  },
+  "edg_ref_qualifier": {
+    "enum": "a_ref_qualifier_kind",
+    "catalog_count": 3,
+    "guard_directives": [],
+    "alias": {},
+    "exact_source_names_ids_guards": true
+  },
+  "edg_ctor_dtor": {
+    "enum": "a_ctor_or_dtor_kind",
+    "catalog_count": 6,
+    "guard_directives": [
+      "#if IA64_ABI",
+      "#endif"
+    ],
+    "alias": {},
+    "exact_source_names_ids_guards": true
+  }
+}

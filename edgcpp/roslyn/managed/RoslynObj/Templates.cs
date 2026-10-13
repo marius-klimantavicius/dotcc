@@ -89,7 +89,8 @@ public sealed class TemplateArgument : SemanticEntity
     public Constant? Constant => Details.Constant;
     public Operation? Expression => Details.Expression;
     public TemplateDescriptor? Template => Details.Template;
-    public bool IsPack => Details.IsPack;
+    /// <summary>Whether this argument is a recorded pack or a pack-expansion marker. Details.IsPack exposes the retained flag itself.</summary>
+    public bool IsPack => Details.IsPack || Kind.Name=="tak_start_of_pack_expansion";
     public bool IsPackElement => Details.IsPackElement;
     public bool IsExplicit => Details.IsExplicit;
     public bool IsProvisional => Details.IsProvisional;

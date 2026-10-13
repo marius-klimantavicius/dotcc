@@ -82,6 +82,7 @@ static Rid roslyn_source_correspondence(a_source_correspondence &);
 static void roslyn_attach_correspondence(Rid,a_source_correspondence &);
 #if GENERATE_SOURCE_SEQUENCE_LISTS
 static Rid roslyn_source_entry(a_source_sequence_entry_ptr);
+static Rid roslyn_source_sublist(a_src_seq_sublist_ptr);
 #endif
 static Rid roslyn_routine(a_routine_ptr);
 static Rid roslyn_variable(a_variable_ptr);

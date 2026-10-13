@@ -1,0 +1,71 @@
+{
+  "objects": 182,
+  "table_rows": {
+    "qualified_name_part": 0,
+    "declaration_sequence": 0,
+    "lowered_type_relationship": 0,
+    "lifetime_transition": 0,
+    "eh_handler_region": 0,
+    "constraint_metadata": 0,
+    "synthesized_origin": 0,
+    "source_attachment": 0,
+    "name": 0
+  },
+  "column_values": {
+    "target_profile.description_id": {
+      "None": 182
+    },
+    "declaration.implicit": {
+      "None": 18332
+    },
+    "routine_symbol.runtime_kind_id": {
+      "None": 5621
+    },
+    "variable_symbol.parameter_type_ordinal": {
+      "None": 4773
+    },
+    "type.canonical_type_id": {
+      "None": 20768
+    },
+    "type.declared_type_id": {
+      "None": 20768
+    },
+    "type_reference.typedef_symbol_id": {
+      "None": 4720
+    },
+    "vector_type.scalable_count_type_id": {
+      "None": 2122
+    },
+    "semantic_node.synthesis_kind_id": {
+      "None": 34367
+    },
+    "loop_statement.test_position_id": {
+      "None": 4
+    },
+    "constant.is_literal": {
+      "None": 10155
+    },
+    "member_pointer_value.adjustment": {
+      "None": 9
+    },
+    "initialization.condition_variable_id": {
+      "None": 850
+    },
+    "initialization.is_elided": {
+      "0": 850
+    },
+    "initialization.guard_variable_id": {
+      "None": 850
+    },
+    "source_file.verified_digest_id": {
+      "None": 191
+    },
+    "source_origin.spelling_range_id": {
+      "None": 34131
+    },
+    "source_origin.expansion_range_id": {
+      "None": 34131
+    }
+  },
+  "review": "No recorded values lost: nine tables empty,18 columns only SQL default false/null. Independently reviewed native writer/header uses and public alternatives. Preserve actual stock fields listed in coordinator proposal."
+}

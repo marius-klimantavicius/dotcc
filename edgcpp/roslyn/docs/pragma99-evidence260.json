@@ -1,0 +1,16 @@
+{
+  "rows": 99,
+  "objects_observed": 182,
+  "counts": {
+    "exhaustive_guarded_discriminator_adapter": 94,
+    "enum_alias_canonicalized": 1,
+    "sentinel_not_semantic_instance": 4
+  },
+  "limits": [
+    "Only discriminants and shared getter pathways; enabled pragma union payload still separate required evidence.",
+    "Front-end-only pragma comments do not exclude discriminator reused by routine argument-pragma metadata.",
+    "pk_none and stdc_pv_none are actual recorded routine defaults; gcc_pk_none can denote unrecognized pragma.",
+    "Config-guarded debug/testing/retention kinds remain context-dependent catalog entries, not runtime-positive claims.",
+    "No source location probing or core edits."
+  ]
+}
