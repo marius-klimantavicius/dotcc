@@ -45,7 +45,7 @@ public sealed class SourceFile : SemanticEntity
 {
     internal SourceFile(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public SourceFileDetails Details { get; }
-    public string Name => IncludeOccurrences.FirstOrDefault()?.DisplayName ?? Path;
+    public override string Name => IncludeOccurrences.FirstOrDefault()?.DisplayName ?? Path;
     public string Path => Details.Path;
     public IReadOnlyList<IncludeOccurrence> IncludeOccurrences => Object.List("SELECT * FROM include_occurrence WHERE file_id=$owner ORDER BY ordinal,id",Id,r=>Object.Include(r.Long("id")),"include_occurrence");
     public IReadOnlyList<SourceAttachmentDetails> Attachments => Object.List("SELECT * FROM source_attachment WHERE file_id=$owner ORDER BY id",Id,r=>new SourceAttachmentDetails(Object,r),"source_attachment");
@@ -55,9 +55,9 @@ public sealed class MacroDefinition : SemanticEntity
 {
     internal MacroDefinition(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public MacroDefinitionDetails Details { get; }
-    public string Name => Details.Name;
+    public override string Name => base.Name!;
     public string Text => Details.Text;
-    public SourcePosition? Position => Details.Position;
+    public SourcePosition? Position => SourceCorrespondence?.Source?.Position;
     public SourceRange? ReplacementRange => Details.ReplacementRange;
 }
 

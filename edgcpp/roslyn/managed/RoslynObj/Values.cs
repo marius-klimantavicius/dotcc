@@ -13,15 +13,15 @@ public sealed class Constant : SemanticEntity
     public ConstantDetails Details { get; }
     public CppType? Type => Details.Type;
     public CppType? OriginalType => Details.OrigType;
-    public string? Name => Object.Name(Object.Store.Required("constant",Id).OptionalLong("name_id"));
-    public SemanticEntity? ContainingEntity => Details.ContainingEntity;
+    public override string? Name => base.Name;
+    public SemanticEntity? ContainingEntity => SourceCorrespondence?.ContainingEntity;
     public IReadOnlyList<Symbol> DeclarationSymbols => declarationSymbols.Value;
     public Symbol? DeclarationSymbol => DeclarationSymbols.Count==1 ? DeclarationSymbols[0] : null;
     public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_constant_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
     public ConstantValue Value => Details.Value;
     public Operation? BackingExpression => Details.BackingExpression;
     public IReadOnlyList<LocalExpressionReferenceDetails> ContextualExpressions => Object.List("SELECT * FROM local_expression_reference WHERE referrer_id=$owner ORDER BY owner_id,ordinal",Id,r=>new LocalExpressionReferenceDetails(Object,r));
-    public SourceInfo? Source => Details.SourceOrigin;
+    public SourceInfo? Source => Details.SourceOrigin??SourceCorrespondence?.Source;
     public VariableSymbol? AssociatedStorageVariable => Details.AssociatedStorageVariable;
     public IReadOnlyList<ConstantComponentDetails> Components => Object.List("SELECT * FROM constant_component WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new ConstantComponentDetails(Object,r));
     public IReadOnlyList<Constant> Elements => Object.List("SELECT c.* FROM constant_component r JOIN constant c ON c.id=r.constant_id JOIN kind k ON k.id=r.role_id WHERE r.owner_id=$owner AND k.name='element' ORDER BY r.ordinal",Id,r=>Object.Constant(r.Long("id")),"constant");

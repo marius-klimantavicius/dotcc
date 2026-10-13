@@ -74,7 +74,7 @@ static Rid roslyn_asm(an_asm_entry_ptr p) {
  count=Q(p->number_of_constraints);
 #endif
 #endif
- DB.put("asm_entry",{{"id",id},{"asm_string_id",roslyn_constant(p->asm_string)},{"source_origin_id",R(roslyn_origin(p->source_corresp.decl_position))},{"gnu_asm_form",gnu_form},{"is_volatile",is_volatile},{"has_volatile_keyword",has_volatile},{"has_inline_keyword",has_inline},{"is_goto",is_goto},{"number_of_constraints",count}});roslyn_attributes(id,p->source_corresp.attributes);
+ DB.put("asm_entry",{{"id",id},{"asm_string_id",roslyn_constant(p->asm_string)},{"gnu_asm_form",gnu_form},{"is_volatile",is_volatile},{"has_volatile_keyword",has_volatile},{"has_inline_keyword",has_inline},{"is_goto",is_goto},{"number_of_constraints",count}});roslyn_attach_correspondence(id,p->source_corresp);
 #if GNU_EXTENSIONS_ALLOWED
  int ordinal=0;for(an_asm_operand_ptr a=p->operands;a;a=a->next){
  RoslynSqlValue constraint,modifier;const char *kind;

@@ -15,7 +15,7 @@ public class CppType : SemanticEntity
     }
     public TypeDetails Details { get; }
     public SemanticKind Kind => Details.Kind;
-    public string? Name => Object.Name(Object.Store.Required("type", Id).OptionalLong("name_id"));
+    public override string? Name => base.Name;
     public BigInteger? Size => sizeAvailability.Value is {} fact&&Object.Kind(fact.Long("state_id")).Name=="available"?EffectiveSize:null;
     /// <summary>The retained stock helper quantity; it may be a THREADS coefficient or a placeholder when size is unavailable.</summary>
     public BigInteger EffectiveSize => Details.Size;
@@ -27,13 +27,13 @@ public class CppType : SemanticEntity
     public bool IsIncomplete => Details.Incomplete;
     public bool? DescriptorIsIncomplete => Details.DescriptorIncomplete;
     public bool IsDependent => Details.IsDependent;
-    public SourceInfo? Source => Details.SourceOrigin;
+    public SourceInfo? Source => SourceCorrespondence?.Source;
     public CppType? CanonicalType => Details.CanonicalType;
     public CppType? DeclaredType => Details.DeclaredType;
     public IReadOnlyList<Symbol> DeclarationSymbols => declarationSymbols.Value;
     public Symbol? DeclarationSymbol => DeclarationSymbols.Count==1 ? DeclarationSymbols[0] : null;
     public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_type_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
-    public IReadOnlyList<Symbol> Members => Object.List("SELECT s.* FROM symbol s WHERE s.containing_entity_id=$owner OR s.id IN (SELECT id FROM field_symbol WHERE record_type_id=$owner UNION SELECT id FROM routine_symbol WHERE containing_type_id=$owner) ORDER BY s.id", Id, r => Object.Symbol(r.Long("id")), "symbol");
+    public IReadOnlyList<Symbol> Members => Object.List("SELECT s.* FROM symbol s WHERE s.id IN (SELECT e.owner_id FROM entity_source_correspondence e JOIN source_correspondence c ON c.id=e.source_correspondence_id JOIN scope p ON p.id=c.parent_scope_id WHERE p.associated_entity_id=$owner) OR s.id IN (SELECT id FROM field_symbol WHERE record_type_id=$owner UNION SELECT id FROM routine_symbol WHERE containing_type_id=$owner) ORDER BY s.id", Id, r => Object.Symbol(r.Long("id")), "symbol");
     public IReadOnlyList<FieldSymbol> Fields => Object.List("SELECT q.* FROM (SELECT f.*,COALESCE(o.ordinal,9223372036854775807) AS field_ordinal FROM field_symbol f LEFT JOIN record_layout l ON l.type_id=f.record_type_id LEFT JOIN field_layout o ON o.owner_id=l.id AND o.field_id=f.id WHERE f.record_type_id=$owner) q ORDER BY q.field_ordinal,q.id", Id, r => Object.Field(r.Long("id")), "field_symbol");
     public IReadOnlyList<FunctionSymbol> Methods => Object.List("SELECT * FROM routine_symbol WHERE containing_type_id=$owner ORDER BY id", Id, r => Object.Function(r.Long("id")), "routine_symbol");
     public virtual TemplateInstantiation? Instantiation => null;

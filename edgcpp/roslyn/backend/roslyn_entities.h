@@ -1,16 +1,5 @@
 /* Typed tagged roots and retained declarations. No generic payload storage. */
 static Rid roslyn_entity(const a_tagged_pointer &p);
-static Rid roslyn_using(a_using_decl_ptr p,a_scope_ptr scope=nullptr) {
- bool fresh;Rid id=DB.claim(p,"using",fresh);if(!fresh)return id;
- DB.put("using_declaration",{{"id",id},{"target_id",R(roslyn_entity(p->entity))},
-  {"lexical_scope_id",R(roslyn_scope(scope))},{"source_origin_id",R(roslyn_origin(p->position))},
-  {"is_directive",static_cast<int>(p->is_using_directive)},{"is_class_member",static_cast<int>(p->is_class_member)},
-  {"is_inheriting_constructor",static_cast<int>(p->is_inheriting_ctor)},{"is_hidden",static_cast<int>(p->hidden)},
-  {"compiler_generated",static_cast<int>(p->compiler_generated)},{"is_inline_namespace",static_cast<int>(p->inline_namespace)},
-  {"is_strong",static_cast<int>(p->strong)},{"is_pack_expansion",static_cast<int>(p->is_pack_expansion)},
-  {"is_representative",static_cast<int>(p->is_representative)},{"is_using_enum",static_cast<int>(p->is_using_enum)}});
- roslyn_attributes(id,p->attributes);return id;
-}
 static Rid roslyn_static_assertion(a_static_assertion_ptr p) {
  bool fresh;Rid id=DB.claim(p,"static_assertion",fresh);if(!fresh)return id;
  DB.put("static_assertion",{{"id",id},{"condition_id",roslyn_constant(p->condition)},

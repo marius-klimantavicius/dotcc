@@ -39,7 +39,7 @@ string Fixture(string name,int extraVariables=0,int extraOperations=0,string? ad
             return key.Success&&key.Groups[1].Value.Contains(',') ? match.Value.Replace(") STRICT;",") WITHOUT ROWID, STRICT;") : match.Value;
         },System.Text.RegularExpressions.RegexOptions.Singleline);
     command.CommandText=schema;command.ExecuteNonQuery();
-    foreach(var id in new long[]{1037050,5015,5016})
+    foreach(var id in new long[]{1037050,1037057,5015,5016})
     {
         var kind=RoslynObject.CatalogKind(id);
         command.CommandText="INSERT OR IGNORE INTO kind(id,family,name) VALUES($id,$family,$kind)";
@@ -54,7 +54,7 @@ string Fixture(string name,int extraVariables=0,int extraOperations=0,string? ad
     for(var i=0;i<extraVariables;i++)
     {
         var id=1000+i;
-        command.CommandText=$"INSERT INTO entity VALUES({id},(SELECT id FROM kind WHERE family='entity' AND name='variable')); INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) VALUES({id},(SELECT id FROM kind WHERE family='entity' AND name='variable'),8,1,3); INSERT INTO variable_symbol(id,type_id,initialization_kind_id) VALUES({id},3,(SELECT id FROM kind WHERE family='initializer' AND name='initk_none'));";
+        command.CommandText=$"INSERT INTO entity VALUES({id},(SELECT id FROM kind WHERE family='entity' AND name='variable')); INSERT INTO symbol(id,kind_id,type_id) VALUES({id},(SELECT id FROM kind WHERE family='entity' AND name='variable'),3); INSERT INTO entity_source_correspondence VALUES({id},707); INSERT INTO variable_symbol(id,type_id,initialization_kind_id) VALUES({id},3,(SELECT id FROM kind WHERE family='initializer' AND name='initk_none'));";
         command.ExecuteNonQuery();
     }
     for(var i=0;i<extraOperations;i++)
@@ -136,16 +136,19 @@ try
     }
     using(var regional=RoslynObject.Open(Fixture("regional",additionalRows:"""
         INSERT INTO entity VALUES(160,(SELECT id FROM kind WHERE family='entity' AND name='variable'));
-        INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) VALUES(160,(SELECT id FROM kind WHERE family='entity' AND name='variable'),8,6,3);
+        INSERT INTO symbol(id,kind_id,type_id) VALUES(160,(SELECT id FROM kind WHERE family='entity' AND name='variable'),3);
+        INSERT INTO entity_source_correspondence VALUES(160,707);
         INSERT INTO variable_symbol(id,type_id,initialization_kind_id) VALUES(160,3,(SELECT id FROM kind WHERE family='initializer' AND name='initk_function_local'));
         INSERT INTO entity VALUES(161,(SELECT id FROM kind WHERE family='entity' AND name='local_static_initialization'));
         INSERT INTO local_static_initialization(id,variable_id,initialization_kind_id,constant_id) VALUES(161,160,(SELECT id FROM kind WHERE family='initializer' AND name='initk_static'),30);
         INSERT INTO scope_local_static_initialization(owner_id,ordinal,initialization_id) VALUES(9,0,161);
         INSERT INTO entity VALUES(162,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol')),(163,(SELECT id FROM kind WHERE family='entity' AND name='declaration'));
-        INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) VALUES(162,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol'),41,1,40);
+        INSERT INTO symbol(id,kind_id,type_id) VALUES(162,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol'),40);
+        INSERT INTO entity_source_correspondence VALUES(162,740),(163,740);
+        UPDATE source_correspondence SET source_origin_id=73 WHERE id=740;
         INSERT INTO type_symbol(id,type_id) VALUES(162,40);
         UPDATE type SET symbol_id=162 WHERE id=40;
-        INSERT INTO declaration(id,kind_id,symbol_id,lexical_scope_id,source_origin_id) VALUES(163,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol'),162,2,73);
+        INSERT INTO declaration(id,kind_id,symbol_id) VALUES(163,(SELECT id FROM kind WHERE family='entity' AND name='type_symbol'),162);
         """)))
     {
         var variable=regional.TranslationUnit.Variables.Single(v=>v.InitializationKind.Name=="initk_function_local");
@@ -218,6 +221,8 @@ try
         using var obj=RoslynObject.Open(input);
         var unit=obj.TranslationUnit;
         Numeric.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
+        ConstantReferences.Verify(unit,input,obj.Manifest.CaptureProfile=="source_semantic",Check);
+        CommonProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         SemanticProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile=="source_semantic",Check);
         RoutineProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         LayoutProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
@@ -356,7 +361,7 @@ try
         if(Path.GetFileName(input)=="attributes.roslynobj")
         {
             var type=unit.Types.Single(t=>t.Name=="Aligned");Symbol symbol=type.DeclarationSymbol!;
-            Check(symbol.Attributes.Count>0&&symbol.Attributes.All(a=>a.Owner==type)&&symbol.Attributes.Select(a=>a.Kind.Name).SequenceEqual(type.Attributes.Select(a=>a.Kind.Name)),"Named class attributes must navigate the authoritative descriptor rows through the common Symbol façade.");
+            Check(symbol.Attributes.Count>0&&symbol.Attributes.All(a=>a.Owners.Contains(type)&&a.Owners.Contains(symbol))&&symbol.Attributes.Select(a=>a.Kind.Name).SequenceEqual(type.Attributes.Select(a=>a.Kind.Name)),"Named class attributes must navigate the authoritative descriptor rows through the common Symbol façade.");
         }
         if(Path.GetFileName(input)=="types.roslynobj")
         {
@@ -379,7 +384,7 @@ try
             Check(aligned.Size==Quantity("aligned_integer_size")&&aligned.Alignment==Quantity("aligned_integer_alignment"),"Explicit aligned typedefs must preserve effective target alignment without blind underlying-type projection.");
             var qualified=unit.Types.Single(t=>t.Name=="QualifiedInteger");
             Check(qualified.Size==Quantity("qualified_integer_size")&&qualified.DescriptorSize!=qualified.Size,"Qualified aliases must expose effective size alongside the retained descriptor quantity.");
-            Check(colour.Attributes.Any(a=>a.Kind.Name=="ak_deprecated"&&a.Owner==colour.Type)&&integer.Attributes.Any(a=>a.Kind.Name=="ak_deprecated"&&a.Owner==integer.Type),"Named enum and typedef attributes must retain their descriptor authority through symbol navigation.");
+            Check(colour.Attributes.Any(a=>a.Kind.Name=="ak_deprecated"&&a.Owners.Contains(colour.Type)&&a.Owners.Contains(colour))&&integer.Attributes.Any(a=>a.Kind.Name=="ak_deprecated"&&a.Owners.Contains(integer.Type)&&a.Owners.Contains(integer)),"Named enum and typedef attributes must retain their descriptor authority through symbol navigation.");
             var operands=unit.Entities.OfType<TypeOperandOperation>().ToArray();
             Check(operands.Length>0&&operands.All(o=>unit.SemanticModel.GetSymbol(o)==o.OperandType?.DeclarationSymbol),"Retained type operand symbol queries must follow only the actual descriptor-symbol relationship.");
             Check(operands.Where(o=>o.OperandType?.DeclarationSymbol is not null).All(o=>unit.SemanticModel.GetReferences(o.OperandType!.DeclarationSymbol!).Any(r=>r.Owner==o)),"Named type descriptor uses must appear in ordinary symbol references.");

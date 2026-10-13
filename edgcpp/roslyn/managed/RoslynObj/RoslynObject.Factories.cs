@@ -23,7 +23,7 @@ public sealed partial class RoslynObject
             or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"
             or "line_directive" or "source_entry" or "source_sublist" or "source_end_construct" or "instantiation_directive"
             or "linkage_specification" or "microsoft_if_exists" or "record_declaration" or "pragma"
-            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression" or "requires_clause" or "gnu_routine_supplement" or "switch_descriptor" or "switch_case_entry"=>kind,
+            or "ms_attribute" or "ms_attribute_argument" or "scoped_expression" or "requires_clause" or "gnu_routine_supplement" or "switch_descriptor" or "switch_case_entry" or "source_correspondence"=>kind,
         _=>throw new IncompatibleObjectException("A required entity kind is unsupported.")
     };
     internal TranslationUnit Unit(long id) => Cached("translation_unit",id,r=>new TranslationUnit(this,id,r));
@@ -68,6 +68,8 @@ public sealed partial class RoslynObject
     internal SwitchDescriptor SwitchDescriptor(long id) => Cached("switch_descriptor",id,r=>new SwitchDescriptor(this,id,r));
     internal SwitchCaseEntry SwitchCase(long id) => Cached("switch_case_entry",id,r=>new SwitchCaseEntry(this,id,r));
     internal VlaDimension VlaDimension(long id) => Cached("vla_dimension",id,r=>new VlaDimension(this,id,r));
+    internal UsingDeclaration Using(long id) => Cached("using_declaration",id,r=>new UsingDeclaration(this,id,r));
+    internal SourceCorrespondence Correspondence(long id) => Cached("source_correspondence",id,r=>new SourceCorrespondence(this,id,r));
     internal SubobjectPath SubobjectPath(long id) => Cached("subobject_path",id,r=>new SubobjectPath(this,id,r));
     internal Attribute Attribute(long id) => Cached("attribute",id,r=>new Attribute(this,id,r));
     internal AttributeArgument AttributeArgument(long id) => Cached("attribute_argument",id,r=>new AttributeArgument(this,id,r));
@@ -204,6 +206,7 @@ public sealed partial class RoslynObject
         var kind=Kind(Store.Required("entity",id).Long("kind_id")).Name;
         return kind switch
         {
+            "source_correspondence"=>Correspondence(id),
             "requires_clause"=>RequiresClause(id),
             "gnu_routine_supplement"=>GnuRoutineSupplement(id),
             "constant"=>Constant(id),
@@ -251,7 +254,7 @@ public sealed partial class RoslynObject
             "enum"=>Enum(id),
             "enumerator_symbol"=>Enumerator(id),
             "alias"=>Alias(id),
-            "using"=>new SemanticRecord<UsingDeclarationDetails>(this,id,Detail("using_declaration",id,r=>new UsingDeclarationDetails(this,r))),
+            "using"=>Using(id),
             "temporary"=>new SemanticRecord<TemporaryDetails>(this,id,Detail("temporary",id,r=>new TemporaryDetails(this,r))),
             "base_derivation"=>Derivation(id),
             "base_subobject"=>Subobject(id),

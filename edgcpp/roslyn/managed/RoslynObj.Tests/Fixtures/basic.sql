@@ -27,9 +27,9 @@ INSERT INTO entity(id,kind_id) SELECT value, k.id FROM
   UNION ALL SELECT 150,'expression' UNION ALL SELECT 170,'parameter_type') a JOIN kind k ON k.family='entity' AND k.name=a.name;
 INSERT INTO target_profile(id,abi_id,addressable_unit_bits,little_endian,pointer_bits,pointer_alignment)
  VALUES(1,(SELECT id FROM kind WHERE family='abi' AND name='itanium'),8,1,64,'8');
-INSERT INTO scope(id,kind_id,parent_id,associated_entity_id)
- VALUES(2,(SELECT id FROM kind WHERE family='scope_kind' AND name='file'),NULL,1),
- (9,(SELECT id FROM kind WHERE family='scope_kind' AND name='function'),2,6);
+INSERT INTO scope(id,kind_id,parent_id,associated_entity_id,is_constexpr_routine,is_stmt_expr_block,is_placeholder_scope)
+ VALUES(2,(SELECT id FROM kind WHERE family='scope_kind' AND name='file'),NULL,1,0,0,0),
+ (9,(SELECT id FROM kind WHERE family='scope_kind' AND name='function'),2,6,0,0,0);
 INSERT INTO translation_unit(id,global_scope_id,primary_input_id,language_mode_id) VALUES(1,2,74,4);
 INSERT INTO object_header VALUES(1,1,0,'fixture-artifact',1,2,3,
  (SELECT id FROM kind WHERE family='capture_profile' AND name='native_lowered'),1,74,1,1);
@@ -39,13 +39,13 @@ INSERT INTO build_capability(name_id,state_id,value_id,required,enabled)
 INSERT INTO name(id,spelling_id,category_id) SELECT id,spelling,
  (SELECT id FROM kind WHERE family='name_category' AND name='named')
  FROM (SELECT 5 id,5 spelling UNION ALL SELECT 8,6 UNION ALL SELECT 21,7 UNION ALL SELECT 41,9 UNION ALL SELECT 43,10 UNION ALL SELECT 94,16);
-INSERT INTO type(id,kind_id,name_id,size,alignment,incomplete,size_kind_id) VALUES
- (3,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),NULL,'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
- (4,(SELECT id FROM kind WHERE family='type' AND name='tk_routine'),NULL,'0','1',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
- (40,(SELECT id FROM kind WHERE family='type' AND name='tk_struct'),41,'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
- (102,(SELECT id FROM kind WHERE family='type' AND name='tk_float'),NULL,'8','8',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
- (105,(SELECT id FROM kind WHERE family='type' AND name='tk_array'),NULL,'6','2',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
- (106,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),NULL,'2','2',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity'));
+INSERT INTO type(id,kind_id,size,alignment,incomplete,size_kind_id) VALUES
+ (3,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (4,(SELECT id FROM kind WHERE family='type' AND name='tk_routine'),'0','1',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (40,(SELECT id FROM kind WHERE family='type' AND name='tk_struct'),'16','16',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (102,(SELECT id FROM kind WHERE family='type' AND name='tk_float'),'8','8',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (105,(SELECT id FROM kind WHERE family='type' AND name='tk_array'),'6','2',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity')),
+ (106,(SELECT id FROM kind WHERE family='type' AND name='tk_integer'),'2','2',0,(SELECT id FROM kind WHERE family='size_kind' AND name='recorded_quantity'));
 INSERT INTO arithmetic_type(id,arithmetic_kind_id,bits,signed,precision,radix) VALUES
  (3,(SELECT id FROM kind WHERE family='arithmetic_kind' AND name='unsigned_integer'),128,0,128,2),
  (102,(SELECT id FROM kind WHERE family='arithmetic_kind' AND name='floating'),64,1,53,2),
@@ -55,7 +55,7 @@ INSERT INTO routine_type(id,result_type_id) VALUES(4,3);
 INSERT INTO parameter_type(id,type_id,parameter_number) VALUES(170,3,1);
 INSERT INTO routine_type_parameter(owner_id,ordinal,parameter_type_id,role_id)
  VALUES(4,0,170,(SELECT id FROM kind WHERE family='role' AND name='ordinary_parameter'));
-INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) SELECT a.id,k.id,name_id,owner_id,type_id
+INSERT INTO symbol(id,kind_id,type_id) SELECT a.id,k.id,type_id
  FROM (SELECT 6 id,'routine' n,5 name_id,1 owner_id,4 type_id UNION ALL SELECT 20,'routine',21,1,4
  UNION ALL SELECT 7,'variable',8,6,3 UNION ALL SELECT 42,'field',43,40,3) a JOIN kind k ON k.family='entity' AND k.name=a.n;
 INSERT INTO routine_symbol(id,routine_type_id,body_root_id,body_scope_id,body_state_id) VALUES
@@ -138,14 +138,14 @@ INSERT INTO source_position(id,sequence,column,original_sequence,original_column
  VALUES(72,'10',3,'5',7,71,74,'10',(SELECT id FROM kind WHERE family='source_origin_kind' AND name='macro'));
 INSERT INTO source_origin(id,position_id,kind_id)
  VALUES(73,72,(SELECT id FROM kind WHERE family='source_origin_kind' AND name='macro'));
-INSERT INTO macro_definition(id,name_id,text_id,kind_id,is_function_like)
- VALUES(70,13,14,(SELECT id FROM kind WHERE family='source_origin_kind' AND name='ordinary'),1);
+INSERT INTO macro_definition(id,text_id,kind_id,is_function_like)
+ VALUES(70,14,(SELECT id FROM kind WHERE family='source_origin_kind' AND name='ordinary'),1);
 INSERT INTO macro_invocation(id,definition_id,position_id,argument_text_id,ordinal) VALUES(71,70,72,15,0);
 INSERT INTO lifetime(id,kind_id,bound_entity_id)
  VALUES(80,(SELECT id FROM kind WHERE family='lifetime' AND name='olk_block'),81);
-INSERT INTO symbol(id,kind_id,name_id,type_id)
- VALUES(95,(SELECT id FROM kind WHERE family='entity' AND name='template_symbol'),41,40),
-       (93,(SELECT id FROM kind WHERE family='entity' AND name='template_parameter'),94,3);
+INSERT INTO symbol(id,kind_id,type_id)
+ VALUES(95,(SELECT id FROM kind WHERE family='entity' AND name='template_symbol'),40),
+       (93,(SELECT id FROM kind WHERE family='entity' AND name='template_parameter'),3);
 INSERT INTO template_definition(id,kind_id,pattern_id)
  VALUES(90,(SELECT id FROM kind WHERE family='template' AND name='templk_class'),40);
 INSERT INTO template_symbol(id,descriptor_id) VALUES(95,90);
@@ -160,3 +160,12 @@ INSERT INTO fact_availability(owner_id,fact_id,state_id)
  SELECT t.id,f.id,a.id FROM type t,kind f,kind a
  WHERE f.family='fact' AND f.name IN('size','alignment') AND a.family='availability'
  AND a.name=CASE WHEN t.kind_id=(SELECT id FROM kind WHERE family='type' AND name='tk_routine') THEN 'not_applicable' ELSE 'available' END;
+
+-- Canonical retained correspondence identity; copied wrappers remain distinct.
+INSERT INTO entity(id,kind_id) SELECT 700+owner,(SELECT id FROM kind WHERE family='entity' AND name='source_correspondence')
+ FROM (SELECT 6 owner UNION ALL SELECT 20 UNION ALL SELECT 7 UNION ALL SELECT 42 UNION ALL SELECT 40 UNION ALL SELECT 70 UNION ALL SELECT 90 UNION ALL SELECT 93);
+INSERT INTO source_correspondence(id,current_name_id,parent_scope_id,enclosing_routine_id,source_origin_id,is_imported_from_module,access_id,referenced,linkage_id,is_local_to_function,is_class_member,copied_from_secondary_trans_unit,same_name_as_external_entity_in_secondary_trans_unit,member_of_unknown_base,qualified_unknown_base_member,is_deprecated_or_unavailable,externalized,maybe_unused)
+ SELECT 700+owner,name,scope,routine,source,0,(SELECT id FROM kind WHERE family='access' AND name='none'),0,(SELECT id FROM kind WHERE family='linkage' AND name='none'),CASE WHEN routine IS NULL THEN 0 ELSE 1 END,0,0,0,0,0,0,0,0
+ FROM (SELECT 6 owner,5 name,2 scope,NULL routine,NULL source UNION ALL SELECT 20,7,2,NULL,NULL UNION ALL SELECT 7,6,9,6,NULL UNION ALL SELECT 42,10,2,NULL,NULL UNION ALL SELECT 40,9,2,NULL,NULL UNION ALL SELECT 70,13,2,NULL,73 UNION ALL SELECT 90,9,2,NULL,NULL UNION ALL SELECT 93,16,2,NULL,NULL);
+INSERT INTO entity_source_correspondence(owner_id,source_correspondence_id) VALUES(6,706),(20,720),(7,707),(42,742),(40,740),(70,770),(90,790),(95,790),(93,793);
+INSERT INTO scope_child(owner_id,ordinal,child_id) VALUES(2,0,9);

@@ -181,7 +181,7 @@ static Rid roslyn_routine(a_routine_ptr p) {
   {"instance_id",R(p->assoc_template?roslyn_instance(p,id,p->assoc_template,p->template_arg_list,nullptr):0)},
   {"trailing_requires_clause_id",R(roslyn_requires_clause(p->trailing_requires_clause))},
   {"inherited_routine_id",R(p->is_inheriting_ctor?roslyn_routine(p->friends_or_originator.inherited_routine):0)},
-  {"generating_using_id",R(roslyn_using(p->generating_using_decl,p->source_corresp.parent_scope))},
+  {"generating_using_id",R(roslyn_using(p->generating_using_decl))},
   {"fp_contract_id",roslyn_kind_edg_stdc_value(static_cast<a_stdc_pragma_value>(p->fp_contract))},
   {"fenv_access_id",roslyn_kind_edg_stdc_value(static_cast<a_stdc_pragma_value>(p->fenv_access))},
   {"cx_limited_range_id",roslyn_kind_edg_stdc_value(static_cast<a_stdc_pragma_value>(p->cx_limited_range))}};

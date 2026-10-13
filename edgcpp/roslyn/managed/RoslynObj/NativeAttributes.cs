@@ -6,7 +6,7 @@ public sealed class MicrosoftAttribute : SemanticEntity
     internal MicrosoftAttribute(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public MsAttributeDetails Details { get; }
     public SemanticKind Kind => Details.Kind;
-    public string? Name => Details.Name;
+    public override string? Name => Details.Name;
     public string? Text => Details.Text;
     public SemanticEntity? Target => Details.Target;
     public SourcePosition? Position => Details.SourcePosition;
@@ -35,5 +35,5 @@ public sealed class ScopedExpression : SemanticEntity
     internal ScopedExpression(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public ScopedExpressionDetails Details { get; }
     public ExpressionOperation Expression => Details.Expression;
-    public SourceInfo? Source => Details.SourceOrigin;
+    public SourceInfo? Source => SourceCorrespondence?.Source;
 }

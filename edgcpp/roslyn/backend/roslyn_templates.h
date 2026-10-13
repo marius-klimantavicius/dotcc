@@ -170,6 +170,7 @@ static Rid roslyn_template(a_template_ptr p) {
     bool symbol_fresh;declaration_symbol=DB.claim(p,"template_symbol",symbol_fresh);
     if(symbol_fresh)roslyn_prepare_declaration(declaration_symbol);
   }
+  roslyn_attach_correspondence(id,p->source_corresp);
   // Claim the header before following prototype bodies, whose members can point back.
   roslyn_template_header(p->template_decl,p);
   Rid pattern=0,constraint=0,symbol_type=0;

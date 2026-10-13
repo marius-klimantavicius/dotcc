@@ -1,4 +1,37 @@
-# Active constant and execution batch (263 tables)
+# Active common metadata batch (266 tables)
+
+The accepted 263 checkpoint is committed as `a409df1be08efeee4f8ebf952a53bb5298306c91`.
+The current frozen contract contains **266 tables and 39,145 append-only kinds**;
+all 39,144 accepted IDs are unchanged. The canonical contract is
+[common-semantic-contract.md](common-semantic-contract.md) and
+`schema/common-field-contract.tsv` (92 field-sized rows).
+
+All four strict compilers pass. A serial refresh is producing 146 genuine objects
+(51 matrix cases and 95 smoke cases). Reader migration builds clean, self fixtures
+pass73, and the first genuine basic/m0 pair passes104. A genuine263 object is
+rejected at Open by the new framed SQL-plus-full-catalog fingerprint. These are
+intermediate integration results, not acceptance of the full266 boundary.
+
+Native owns `roslyn_common.h`, other native adapters and the serialized compiler
+lane. Managed owns reader/API/tests and its disjoint execution/template/extra
+headers. Coordinator owns schema/catalog, coverage and checkpoint integration.
+The migration keeps canonical actual correspondence identity, exact source/current/
+fabricated naming, primary-versus-secondary declaration authority, normalized
+attribute ownership, using owner preindex and actual scope-child order. Proxy
+types retain descriptors and exact associations without invented TypeSymbols.
+
+Exact constant-target reference queries already build and pass195 targeted
+assertions, plus86 with page size1. These follow only retained declaration,
+address-base and member-pointer associations; equal folded values never establish
+symbol uses. Full refreshed object/API acceptance remains next.
+
+The remaining completion path is tracked in [CLOSURE.md](CLOSURE.md). Source
+locations stay optional; both workers continue through all remaining semantic and
+profile gates after this checkpoint without an approval pause.
+
+---
+
+# Accepted constant and execution batch (263 tables)
 
 Frozen after verified checkpoint `8d9c4bd88` on 2026-10-13: **263 typed tables,
 39,144 append-only kinds**. Eleven new IDs were appended; all 39,133 checkpoint

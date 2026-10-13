@@ -10,12 +10,12 @@ public sealed class Attribute : SemanticEntity
     public SemanticKind Kind => Details.Kind;
     public SemanticKind? Family => Details.Family;
     public SemanticKind? Location => Details.Location;
-    public string? Name => Details.Name;
+    public override string? Name => Details.Name;
     public string? NamespaceName => Details.NamespaceName;
     public AttributeGroup? Group => Details.Group;
     public SourceInfo? Source => Details.SourceOrigin;
     public bool IsPackExpansion => Details.IsPackExpansion;
-    public IReadOnlyList<SemanticEntity> Owners => Object.List("SELECT e.* FROM entity e WHERE e.id IN (SELECT owner_id FROM owner_attribute WHERE attribute_id=$owner) ORDER BY e.id",Id,r=>Object.Entity(r.Long("id")),"entity");
+    public IReadOnlyList<SemanticEntity> Owners => Object.List("SELECT e.* FROM entity e WHERE e.id IN (SELECT r.owner_id FROM owner_attribute r WHERE r.attribute_id=$owner AND NOT EXISTS (SELECT 1 FROM source_correspondence c WHERE c.id=r.owner_id) UNION SELECT e.owner_id FROM owner_attribute r JOIN entity_source_correspondence e ON e.source_correspondence_id=r.owner_id WHERE r.attribute_id=$owner) ORDER BY e.id",Id,r=>Object.Entity(r.Long("id")),"entity");
     public SemanticEntity? Owner
     {
         get { var owners=Owners.Take(2).ToArray();return owners.Length==1?owners[0]:null; }
@@ -55,7 +55,7 @@ public sealed class DataMemberSpecification : SemanticEntity
     internal DataMemberSpecification(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public DataMemberSpecDetails Details { get; }
     public CppType Type => Details.Type;
-    public string? Name => Details.Name;
+    public override string? Name => Details.Name;
     /// <summary>Requested target alignment; zero leaves the request unset.</summary>
     public BigInteger RequestedAlignment => Details.RequestedAlignment;
     /// <summary>Requested bit-field width; zero denotes an ordinary member.</summary>

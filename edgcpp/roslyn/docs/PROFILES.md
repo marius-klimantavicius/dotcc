@@ -12,10 +12,10 @@ extensions and source-semantic native Microsoft ABI remain required.
 
 | Profile | Required behavior | Current evidence | Remaining validation |
 |---|---|---|---|
-| native | Stock GNU/Linux lowering, partial exception tables, retained prototypes as metadata | Verified b7f52f778 primary compiler/object/reader checkpoint, lowering=1/EH tables=1/full lowering=0; exact fixed-point/complex/imaginary/float16/float128/bfloat and pointer-member guards | Complete extension/union fields; 243 contextual array/VTT and lifetime acceptance verified; unordered EH and remaining host/numeric configurations |
-| source | Source-semantic capture with native Microsoft ABI | Verified b7f52f778 source compiler/object/reader checkpoint: GNU/native-MS attributes, VLA/statement/member-call/coroutine/initializer traversal, template identity and modules | 243 constructor/lifetime/shared-attribute acceptance verified; all remaining active semantic fields; optional coordinates are not gates |
-| cfront | Stock cfront compatibility including assignment-to-this and allocation folded into constructors | Verified b7f52f778 cfront-like IA64=0 basic/m0/objects/types/numeric checkpoint; overlay assignment=1/new-fold=1 | Genuine archaic operator activation and USL cfront2.1/3.0 configurations, exact virtual-base/control ABI role assertions |
-| exported | Legacy exported-template retention | Verified b7f52f778 compiler/object/reader checkpoint and actual C++03 --export input, two retained export-marked templates; runtime prototype/all-template-info flags 1 | All guarded exported template payloads and definition-text availability/profile evidence |
+| native | Stock GNU/Linux lowering, partial EH tables, prototypes as metadata | Accepted263 `a409df1be`, lowering1/EH tables1/fullEH0; exact scalar families, UPC dynamic/static and enabled vectors/near-far | Remaining field/kind evidence, unordered EH and alternate host numeric profiles |
+| source | Source semantics with native Microsoft ABI | Accepted263 `a409df1be`, source VLA expression evaluation, current MS layout, call/coroutine/init/template/module navigation | Remaining guarded fields and public evidence; optional coordinates are not gates |
+| cfront | Stock cfront-like layout with assignment-to-this and folded allocation | Accepted263 `a409df1be`, IA64=0/assignment1/new-fold1 and actual ABI distinctions | Actual USL2.1/3.0 configurations and remaining archaic/virtual-base/control positive evidence |
+| exported | Legacy exported templates | Accepted263 `a409df1be`, real C++03 --export markers and runtime prototype/all-template retention1 | Remaining guarded payload/evidence; definition text only where actually retained |
 
 Primary runtime template retention follows `host_envir.c:6895–6900`: both
 `prototype_instantiations_in_il` and `all_template_info_in_il` are true. Lowering
@@ -125,3 +125,23 @@ numeric switch cases preserve canonical identities and recorded orders. This
 closes these activated families, not whole-profile field completeness. Sun,
 actual USL2.1/3.0, alternate host numeric/SoftFloat and remaining active field
 branches still require their planned evidence or authoritative limitations.
+
+
+## Current266 integration boundary
+
+All four strict builds and146 genuine outputs pass native/FK/fingerprint gates.
+The reader migration has positive source/Microsoft pilots; full146 acceptance is
+in progress. Seven narrow measured reverse-FK indexes and complete retained-scope
+preindex/final using-owner reconciliation require one final strict refresh.
+Scale before correction:87.933s /7,571,456bytes; after measurement pending. This is
+an active integration checkpoint, not completion of configured-surface closure.
+Remaining semantic/profile/performance gates are separated in CLOSURE.md.
+
+
+Final owner-corrected266 boundary is accepted pending commit:146 objects /
+PASS1915, self73, current framed fingerprint and all independent native pin gates.
+The initial migration failures were resolved by exact list-versus-reverse-parent
+navigation, plural attribute owners, nullable fabricated-name projection and
+removing the generated constructor's inferred using owner. Seven measured indexes
+reduce writer87.933→30.381s, with residual M5 optimization open. Further configured
+native profiles and field/kind closure remain required, as CLOSURE.md records.

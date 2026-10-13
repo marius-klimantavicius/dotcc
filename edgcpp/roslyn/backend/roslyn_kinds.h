@@ -38123,6 +38123,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"entity","scope",1003},
 {"entity","scoped_expression",1079},
 {"entity","source_attachment",1034},
+{"entity","source_correspondence",1037057},
 {"entity","source_end_construct",1071},
 {"entity","source_entry",1069},
 {"entity","source_file",1026},

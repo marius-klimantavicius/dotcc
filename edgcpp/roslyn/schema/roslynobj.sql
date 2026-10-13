@@ -128,7 +128,12 @@ CREATE TABLE scope (
   parent_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
   associated_entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
-  function_static_lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED
+  function_static_lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
+  is_constexpr_routine INTEGER NOT NULL,
+  is_stmt_expr_block INTEGER NOT NULL,
+  is_placeholder_scope INTEGER NOT NULL,
+  this_parameter_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  nrvo_variable_id INTEGER REFERENCES variable_symbol(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE scope_member (
@@ -148,15 +153,9 @@ CREATE TABLE scope_initialization (
 CREATE TABLE symbol (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  name_id INTEGER REFERENCES name(id) DEFERRABLE INITIALLY DEFERRED,
-  containing_entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
-  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
-  linkage_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
   storage_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
-  access_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
-  compiler_generated INTEGER NOT NULL DEFAULT 0,
-  is_imported_from_module INTEGER NOT NULL DEFAULT 0
+  compiler_generated INTEGER NOT NULL DEFAULT 0
 ) STRICT;
 
 CREATE TABLE type_symbol (
@@ -186,7 +185,13 @@ CREATE TABLE namespace_symbol (
   alias_target_id INTEGER REFERENCES namespace_symbol(id) DEFERRABLE INITIALLY DEFERRED,
   is_inline INTEGER NOT NULL DEFAULT 0,
   is_anonymous INTEGER NOT NULL DEFAULT 0,
-  scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED
+  scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
+  proxy_class_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
+  has_internal_linkage INTEGER NOT NULL,
+  named_in_strong_using INTEGER NOT NULL,
+  is_std INTEGER NOT NULL,
+  has_gnu_abi_tag_attribute INTEGER,
+  is_namespace_alias INTEGER NOT NULL
 ) STRICT;
 
 CREATE TABLE routine_symbol (
@@ -494,7 +499,14 @@ CREATE TABLE label_symbol (
   lifetime_id INTEGER REFERENCES lifetime(id) DEFERRABLE INITIALLY DEFERRED,
   is_break INTEGER NOT NULL DEFAULT 0,
   is_continue INTEGER NOT NULL DEFAULT 0,
-  is_leave INTEGER NOT NULL DEFAULT 0
+  is_leave INTEGER,
+  reachable_by_fall_through INTEGER NOT NULL,
+  is_switch_break INTEGER NOT NULL,
+  address_taken INTEGER,
+  locally_declared INTEGER,
+  is_likely INTEGER NOT NULL,
+  is_unlikely INTEGER NOT NULL,
+  microsoft_try_depth TEXT
 ) STRICT;
 
 CREATE TABLE enum_symbol (
@@ -549,7 +561,13 @@ CREATE TABLE using_declaration (
   is_strong INTEGER NOT NULL DEFAULT 0,
   is_pack_expansion INTEGER NOT NULL DEFAULT 0,
   is_representative INTEGER NOT NULL DEFAULT 0,
-  is_using_enum INTEGER NOT NULL DEFAULT 0
+  is_using_enum INTEGER NOT NULL DEFAULT 0,
+  is_enumerator INTEGER NOT NULL,
+  adjusted_access_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED,
+  qualifier_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
+  qualifier_namespace_id INTEGER REFERENCES namespace_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  is_global_qualified INTEGER,
+  next_in_set_id INTEGER REFERENCES using_declaration(id) DEFERRABLE INITIALLY DEFERRED
 ) STRICT;
 
 CREATE TABLE static_assertion (
@@ -562,9 +580,7 @@ CREATE TABLE static_assertion (
 CREATE TABLE type (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  name_id INTEGER REFERENCES name(id) DEFERRABLE INITIALLY DEFERRED,
   symbol_id INTEGER REFERENCES symbol(id) DEFERRABLE INITIALLY DEFERRED,
-  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
   size TEXT NOT NULL,
   alignment TEXT NOT NULL,
   descriptor_size TEXT,
@@ -1743,7 +1759,6 @@ CREATE TABLE vla_operation (
 CREATE TABLE asm_entry (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   asm_string_id INTEGER REFERENCES constant(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
   gnu_asm_form INTEGER NOT NULL DEFAULT 0,
   is_volatile INTEGER NOT NULL DEFAULT 0,
   has_volatile_keyword INTEGER NOT NULL DEFAULT 0,
@@ -1856,8 +1871,6 @@ CREATE TABLE attribute_argument (
 CREATE TABLE constant (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
-  name_id INTEGER REFERENCES name(id) DEFERRABLE INITIALLY DEFERRED,
-  containing_entity_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
   orig_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   value_id INTEGER REFERENCES constant_value(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
@@ -2611,9 +2624,7 @@ CREATE TABLE source_origin (
 
 CREATE TABLE macro_definition (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  name_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   text_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  position_id INTEGER REFERENCES source_position(id) DEFERRABLE INITIALLY DEFERRED,
   replacement_range_id INTEGER REFERENCES source_range(id) DEFERRABLE INITIALLY DEFERRED,
   kind_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   is_function_like INTEGER NOT NULL DEFAULT 0,
@@ -2911,8 +2922,7 @@ CREATE TABLE ms_attribute_target (
 
 CREATE TABLE scoped_expression (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
-  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED
+  expression_id INTEGER REFERENCES expression(id) DEFERRABLE INITIALLY DEFERRED NOT NULL
 ) STRICT;
 
 CREATE TABLE local_expression_reference (
@@ -3087,6 +3097,49 @@ CREATE TABLE record_vcall_offset (
   base_subobject_id INTEGER REFERENCES base_subobject(id) DEFERRABLE INITIALLY DEFERRED,
   vtable_index TEXT NOT NULL,
   is_primary INTEGER NOT NULL,
+  PRIMARY KEY (owner_id, ordinal)
+) WITHOUT ROWID, STRICT;
+
+CREATE TABLE source_correspondence (
+  id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
+  current_name_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
+  unmangled_name_or_mangled_encoding_id INTEGER REFERENCES text_atom(id) DEFERRABLE INITIALLY DEFERRED,
+  parent_scope_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED,
+  enclosing_routine_id INTEGER REFERENCES routine_symbol(id) DEFERRABLE INITIALLY DEFERRED,
+  is_imported_from_module INTEGER NOT NULL,
+  source_origin_id INTEGER REFERENCES source_origin(id) DEFERRABLE INITIALLY DEFERRED,
+  access_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  referenced INTEGER NOT NULL,
+  needed INTEGER,
+  linkage_id INTEGER REFERENCES kind(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  is_local_to_function INTEGER NOT NULL,
+  is_class_member INTEGER NOT NULL,
+  name_has_been_mangled INTEGER,
+  unnamed_entity_given_fabricated_name INTEGER,
+  is_decl_after_first_in_comma_list INTEGER,
+  copied_from_secondary_trans_unit INTEGER NOT NULL,
+  same_name_as_external_entity_in_secondary_trans_unit INTEGER NOT NULL,
+  member_of_unknown_base INTEGER NOT NULL,
+  qualified_unknown_base_member INTEGER NOT NULL,
+  member_of_unknown_super INTEGER,
+  microsoft_identifier_used INTEGER,
+  marked_as_gnu_extension INTEGER,
+  is_deprecated_or_unavailable INTEGER NOT NULL,
+  externalized INTEGER NOT NULL,
+  maybe_unused INTEGER NOT NULL,
+  source_sequence_entry_id INTEGER REFERENCES source_entry(id) DEFERRABLE INITIALLY DEFERRED
+) STRICT;
+
+CREATE TABLE entity_source_correspondence (
+  owner_id INTEGER REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  source_correspondence_id INTEGER REFERENCES source_correspondence(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  PRIMARY KEY (owner_id)
+) STRICT;
+
+CREATE TABLE scope_child (
+  owner_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  ordinal INTEGER NOT NULL,
+  child_id INTEGER REFERENCES scope(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   PRIMARY KEY (owner_id, ordinal)
 ) WITHOUT ROWID, STRICT;
 
@@ -4867,19 +4920,26 @@ INSERT INTO kind_disposition VALUES(1084,'semantic',NULL);
 INSERT INTO kind_disposition VALUES(1085,'semantic',NULL);
 INSERT INTO kind_disposition VALUES(1086,'semantic',NULL);
 INSERT INTO kind_disposition VALUES(19006,'semantic',NULL);
-CREATE INDEX symbol_name ON symbol(name_id);
-CREATE INDEX symbol_owner ON symbol(containing_entity_id);
 CREATE INDEX declaration_symbol ON declaration(symbol_id);
 CREATE INDEX structural_parent ON structural_child(child_id);
 CREATE INDEX semantic_reference_target ON semantic_reference(target_id);
 CREATE INDEX macro_parent ON macro_invocation(parent_id,ordinal);
 CREATE INDEX cleanup_function ON cleanup_region(function_eh_id,ordinal);
 CREATE INDEX template_instance_template ON template_instance(template_id);
-CREATE INDEX type_name ON type(name_id);
 CREATE INDEX lifetime_binding ON lifetime(bound_entity_id);
 CREATE INDEX constant_component_target ON constant_component(constant_id);
-CREATE INDEX constant_name ON constant(name_id);
-CREATE INDEX constant_owner ON constant(containing_entity_id);
 CREATE INDEX reference_expression_target ON reference_expression(target_id);
 CREATE INDEX enumerator_constant ON enumerator(constant_id);
 CREATE INDEX enumerator_symbol ON enumerator(symbol_id);
+CREATE INDEX source_correspondence_current_name ON source_correspondence(current_name_id);
+CREATE INDEX source_correspondence_auxiliary_name ON source_correspondence(unmangled_name_or_mangled_encoding_id);
+CREATE INDEX correspondence_entities ON entity_source_correspondence(source_correspondence_id);
+CREATE INDEX source_correspondence_parent ON source_correspondence(parent_scope_id);
+CREATE INDEX source_correspondence_routine ON source_correspondence(enclosing_routine_id);
+CREATE INDEX source_correspondence_origin ON source_correspondence(source_origin_id);
+CREATE INDEX constant_origin ON constant(source_origin_id);
+CREATE INDEX semantic_node_origin ON semantic_node(source_origin_id);
+CREATE INDEX source_origin_position ON source_origin(position_id);
+CREATE INDEX source_position_spelling ON source_position(spelling_position_id);
+CREATE INDEX source_range_start ON source_range(start_id);
+CREATE INDEX source_range_end ON source_range(end_id);

@@ -53,8 +53,18 @@ static Rid roslyn_subobject_path(a_subobject_path_ptr p) {
   {"element_offset",p->is_offset?RoslynSqlValue(Q(p->variant.ptr_offset)):RoslynSqlValue()},
   {"next_id",R(roslyn_subobject_path(p->next))},{"is_converted",static_cast<int>(p->is_converted)}});return id;
 }
+static Rid roslyn_constant_origin(a_constant_ptr constant) {
+ Rid point=roslyn_origin(constant->source_corresp.decl_position);
+#if EXTRA_SOURCE_POSITIONS_IN_IL
+ Rid range=roslyn_origin(constant->source_corresp.decl_position,&constant->end_position);
+ return range!=point?range:0;
+#else
+ return 0;
+#endif
+}
 static Rid roslyn_constant(a_constant_ptr p) {
  bool fresh;Rid id=DB.claim(p,"constant",fresh);if(!fresh)return id;
+ roslyn_attach_correspondence(id,p->source_corresp);
  RoslynContent content(p->kind);
  switch(p->kind){
  case ck_void:break;
@@ -137,7 +147,7 @@ static Rid roslyn_constant(a_constant_ptr p) {
 #endif
  std::vector<std::pair<const char*,RoslynSqlValue>> facts={{"id",id},{"type_id",R(roslyn_type(p->type))},{"orig_type_id",R(roslyn_type(p->orig_type))},{"value_id",value},
   {"associated_storage_variable_id",R(storage)},
-  {"name_id",R(p->source_corresp.name?roslyn_name(p->source_corresp):0)},{"containing_entity_id",R(roslyn_owner(p->source_corresp))},{"source_origin_id",R(roslyn_origin(p->source_corresp.decl_position,&p->end_position))},
+  {"source_origin_id",R(roslyn_constant_origin(p))},
   {"backing_expression_id",R(roslyn_expr(p->expr?p->expr:p->local_expr_ref?roslyn_unique_local_expression(p,lerk_constant_expr):nullptr,7002))},
   {"name_reference_id",R(p->kind==ck_ptr_to_member?roslyn_name_reference(p->variant.ptr_to_member.name_reference):0)},
   {"character_kind_id",roslyn_kind_edg_character(static_cast<a_character_kind>(p->character_kind))},
@@ -193,5 +203,5 @@ static Rid roslyn_constant(a_constant_ptr p) {
  if(p->kind==ck_template_param)facts.push_back({"template_local_expr_ref",static_cast<int>(p->variant.template_param.local_expr_ref)});
 #endif
  DB.put_fields("constant",facts);
- roslyn_attributes(id,p->source_corresp.attributes);return id;
+ return id;
 }

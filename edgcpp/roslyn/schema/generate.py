@@ -1261,6 +1261,57 @@ for index, definition in enumerate(tables):
     tables[index] = definition
 
 
+
+# Reviewed canonical common semantic contract after checkpoint a409df1be.
+entity('source_correspondence', '''current_name_id @text_atom
+unmangled_name_or_mangled_encoding_id @text_atom
+parent_scope_id @scope
+enclosing_routine_id @routine_symbol
+is_imported_from_module INTEGER NOT NULL
+source_origin_id @source_origin
+access_id @kind NOT NULL
+referenced INTEGER NOT NULL
+needed INTEGER
+linkage_id @kind NOT NULL
+is_local_to_function INTEGER NOT NULL
+is_class_member INTEGER NOT NULL
+name_has_been_mangled INTEGER
+unnamed_entity_given_fabricated_name INTEGER
+is_decl_after_first_in_comma_list INTEGER
+copied_from_secondary_trans_unit INTEGER NOT NULL
+same_name_as_external_entity_in_secondary_trans_unit INTEGER NOT NULL
+member_of_unknown_base INTEGER NOT NULL
+qualified_unknown_base_member INTEGER NOT NULL
+member_of_unknown_super INTEGER
+microsoft_identifier_used INTEGER
+marked_as_gnu_extension INTEGER
+is_deprecated_or_unavailable INTEGER NOT NULL
+externalized INTEGER NOT NULL
+maybe_unused INTEGER NOT NULL
+source_sequence_entry_id @source_entry''')
+relation('entity_source_correspondence', 'owner_id @entity NOT NULL\nsource_correspondence_id @source_correspondence NOT NULL', 'owner_id')
+relation('scope_child', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\nchild_id @scope NOT NULL')
+append_columns('scope', 'is_constexpr_routine INTEGER NOT NULL\nis_stmt_expr_block INTEGER NOT NULL\nis_placeholder_scope INTEGER NOT NULL\nthis_parameter_id @variable_symbol\nnrvo_variable_id @variable_symbol')
+append_columns('namespace_symbol', 'proxy_class_id @type\nhas_internal_linkage INTEGER NOT NULL\nnamed_in_strong_using INTEGER NOT NULL\nis_std INTEGER NOT NULL\nhas_gnu_abi_tag_attribute INTEGER\nis_namespace_alias INTEGER NOT NULL')
+append_columns('using_declaration', 'is_enumerator INTEGER NOT NULL\nadjusted_access_id @kind\nqualifier_type_id @type\nqualifier_namespace_id @namespace_symbol\nis_global_qualified INTEGER\nnext_in_set_id @using_declaration')
+append_columns('label_symbol', 'reachable_by_fall_through INTEGER NOT NULL\nis_switch_break INTEGER NOT NULL\naddress_taken INTEGER\nlocally_declared INTEGER\nis_likely INTEGER NOT NULL\nis_unlikely INTEGER NOT NULL\nmicrosoft_try_depth TEXT')
+remove_common_columns = {
+    'symbol': {'name_id', 'containing_entity_id', 'source_origin_id', 'access_id', 'linkage_id', 'is_imported_from_module'},
+    'type': {'name_id', 'source_origin_id'},
+    'constant': {'name_id', 'containing_entity_id'},
+    'scoped_expression': {'source_origin_id'},
+    'asm_entry': {'source_origin_id'},
+    'macro_definition': {'name_id', 'position_id'},
+}
+for index, definition in enumerate(tables):
+    table_name = re.match(r'CREATE TABLE (\w+) ', definition).group(1)
+    for column in remove_common_columns.get(table_name, set()):
+        definition = re.sub(r'^  '+column+r' [^\n]+,\n', '', definition, flags=re.M)
+        definition = re.sub(r',\n  '+column+r' [^\n]+(?=\n\))', '', definition)
+    if table_name == 'label_symbol':
+        definition = definition.replace('is_leave INTEGER NOT NULL DEFAULT 0', 'is_leave INTEGER')
+    tables[index] = definition
+
 # Optional differing raw descriptor state has no default factual value.
 for index, definition in enumerate(tables):
     definition = definition.replace('descriptor_incomplete INTEGER DEFAULT 0', 'descriptor_incomplete INTEGER')
@@ -1407,18 +1458,22 @@ for id_,family,name in embedded_rows:
     state='invalid_concrete_node' if invalid else 'alias' if name in aliases else 'semantic'
     canonical=kind_ids.get(aliases[name]) if name in aliases else None
     sql_parts.append(f"INSERT INTO kind_disposition VALUES({id_},'{state}',{canonical if canonical else 'NULL'});\n")
-sql_parts.append('CREATE INDEX symbol_name ON symbol(name_id);\nCREATE INDEX symbol_owner ON symbol(containing_entity_id);\nCREATE INDEX declaration_symbol ON declaration(symbol_id);\nCREATE INDEX structural_parent ON structural_child(child_id);\nCREATE INDEX semantic_reference_target ON semantic_reference(target_id);\nCREATE INDEX macro_parent ON macro_invocation(parent_id,ordinal);\nCREATE INDEX cleanup_function ON cleanup_region(function_eh_id,ordinal);\nCREATE INDEX template_instance_template ON template_instance(template_id);\nCREATE INDEX type_name ON type(name_id);\nCREATE INDEX lifetime_binding ON lifetime(bound_entity_id);\n')
+sql_parts.append('CREATE INDEX declaration_symbol ON declaration(symbol_id);\nCREATE INDEX structural_parent ON structural_child(child_id);\nCREATE INDEX semantic_reference_target ON semantic_reference(target_id);\nCREATE INDEX macro_parent ON macro_invocation(parent_id,ordinal);\nCREATE INDEX cleanup_function ON cleanup_region(function_eh_id,ordinal);\nCREATE INDEX template_instance_template ON template_instance(template_id);\nCREATE INDEX lifetime_binding ON lifetime(bound_entity_id);\n')
 sql_parts.append('CREATE INDEX constant_component_target ON constant_component(constant_id);\n')
-sql_parts.append('CREATE INDEX constant_name ON constant(name_id);\n')
-sql_parts.append('CREATE INDEX constant_owner ON constant(containing_entity_id);\nCREATE INDEX reference_expression_target ON reference_expression(target_id);\n')
+sql_parts.append('CREATE INDEX reference_expression_target ON reference_expression(target_id);\n')
 sql_parts.append('CREATE INDEX enumerator_constant ON enumerator(constant_id);\nCREATE INDEX enumerator_symbol ON enumerator(symbol_id);\n')
+sql_parts.append('CREATE INDEX source_correspondence_current_name ON source_correspondence(current_name_id);\nCREATE INDEX source_correspondence_auxiliary_name ON source_correspondence(unmangled_name_or_mangled_encoding_id);\nCREATE INDEX correspondence_entities ON entity_source_correspondence(source_correspondence_id);\nCREATE INDEX source_correspondence_parent ON source_correspondence(parent_scope_id);\nCREATE INDEX source_correspondence_routine ON source_correspondence(enclosing_routine_id);\n')
+# Measured large-TU deferred-FK parent inserts scan these populated children.
+# Keep this set narrow: scale266/scale-reverse-fk-evidence.json records plans
+# and cardinalities; empty or small referencing tables are intentionally omitted.
+sql_parts.append('CREATE INDEX source_correspondence_origin ON source_correspondence(source_origin_id);\nCREATE INDEX constant_origin ON constant(source_origin_id);\nCREATE INDEX semantic_node_origin ON semantic_node(source_origin_id);\nCREATE INDEX source_origin_position ON source_origin(position_id);\nCREATE INDEX source_position_spelling ON source_position(spelling_position_id);\nCREATE INDEX source_range_start ON source_range(start_id);\nCREATE INDEX source_range_end ON source_range(end_id);\n')
 sql=''.join(sql_parts)
 # Execute actual DDL before publication; this tests storage syntax only.
 connection=sqlite3.connect(':memory:')
 connection.executescript(sql)
 connection.close()
 (HERE/'roslynobj.sql').write_text(sql)
-fingerprint = hashlib.sha256(sql.encode()).hexdigest()
+fingerprint = hashlib.sha256(b'RoslynObj SQL\0'+sql.encode()+b'\0RoslynObj catalog\0'+catalog_path.read_bytes()).hexdigest()
 (HERE/'contract.sha256').write_text(fingerprint+'\n')
 (HERE/'schema.inc').write_text('static const char roslynobj_schema_contract_sha256[] = "'+fingerprint+'";\nstatic const char roslynobj_schema_sql[] = R"roslynsql('+sql+')roslynsql";\n')
 (HERE.parent/'managed/RoslynObj/SchemaContract.g.cs').write_text('// Generated by schema/generate.py; exact development contract admission.\nnamespace RoslynObj;\npublic sealed partial class RoslynObject\n{\n    internal const string SchemaContractFingerprint = "'+fingerprint+'";\n}\n')

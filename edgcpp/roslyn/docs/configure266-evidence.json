@@ -1,0 +1,37 @@
+{
+  "cause": "build.py unconditional CMake configure invokes stock macro_configuration_to_defines FILE(WRITE) even for unchanged contents",
+  "stock_source": [
+    "cmake/macro-conf.cmake:142-172",
+    "src/defines.h:38",
+    "src/CMakeLists.txt:177-178"
+  ],
+  "generated_header_in_decl_dependencies": true,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/upstream/src/decls.c",
+      "mtime_ns": 1791795329840785867,
+      "size": 1055522,
+      "sha256": "1b362f931dd532b477c272d4cc4481baa822660ffb278c00475ae2da51b8fdc0"
+    },
+    {
+      "path": "/tmp/roslynobj-edg-upstream-20261012/src/decls.c",
+      "mtime_ns": 1791795329840785867,
+      "size": 1055522,
+      "sha256": "1b362f931dd532b477c272d4cc4481baa822660ffb278c00475ae2da51b8fdc0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/build/src/includes/cmake_defines.h",
+      "mtime_ns": 1791890586514309543,
+      "size": 197248,
+      "sha256": "0ad016b07a37ace8e95c87947bd5779b7342bd0fa59ffbbc4e0e72a997dae2d6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/build/src/cmake/cpfe/CMakeFiles/roslyn-cpfe.dir/__/__/decls.c.o",
+      "mtime_ns": 1791890590686415113,
+      "size": 2596808,
+      "sha256": "d524ff8640ce034224cb70a962451b804b4ba0b5567718af291d343218d2e2e9"
+    }
+  ],
+  "proposed_fix": "Owned build wrapper preserves prior timestamp for known generated cmake_*defines.h only after successful configure and exact identical bytes; changed contents and compiler commands still rebuild. No pinned core changes.",
+  "verification_status": "Read-only source/dependency/timestamp evidence only; no configure or build invoked."
+}

@@ -4,7 +4,7 @@ public sealed class CppModule : SemanticEntity
 {
     internal CppModule(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public ModuleDetails Details { get; }
-    public string? Name => Details.Name;
+    public override string? Name => Details.Name;
     public SemanticKind Kind => Details.Kind;
     public SemanticKind FileKind => Details.FileKind;
     public string? ResolvedFile => Details.ResolvedFile;

@@ -1,0 +1,18 @@
+owner	member	guard	source	disposition	destination	producer	api_property	fixture	reason
+a_class_type_supplement	is_partial	!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED	src/il_def.h:8898	exclusion_proposal				not applicable	sole setter class_decl33406 under cppcx_enabled; user-excluded
+a_class_type_supplement	removed_from_il	!defined(IL_DEF_H)	src/il_def.h:9007	exclusion_proposal				not applicable	IL list removal bookkeeping, not C++ class semantic fact
+a_class_type_supplement	partial_class_bodies	!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED	src/il_def.h:9126	exclusion_proposal				not applicable	only partial C++/CX cached bodies; user-excluded
+a_routine	hash_value	!defined(IL_DEF_H)	src/il_def.h:12264	exclusion_proposal				not applicable	cached hash
+a_routine	variant.ctor_dtor.alternate_entry_points	!defined(IL_DEF_H) && IA64_ABI && DO_IL_LOWERING	src/il_def.h:12316	exclusion_proposal				not applicable	il_def12316 explicitly frontend-only; actual retained primary_ctor_or_dtor reverse links already stored
+a_routine	variant.ctor_dtor.base_name_offset	!defined(IL_DEF_H) && IA64_ABI && DO_IL_LOWERING	src/il_def.h:12323	exclusion_proposal				not applicable	mangling string construction offset, not calling convention or semantic entry identity
+a_routine	variant.property_or_event_descr	!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED	src/il_def.h:12335	exclusion_proposal				not applicable	routine accessor union producers are CLI/CX; native __declspec property lives field_property + name_reference (exprutil24178), preserve that separate native path
+a_routine	is_reverse_conversion_function	!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED	src/il_def.h:12617	exclusion_proposal				not applicable	class_decl16988 explicitly asserts cli_or_cx_enabled; user-excluded
+a_routine	is_generic_definition	!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED	src/il_def.h:12621	exclusion_proposal				not applicable	managed dialect generic definition; user-excluded
+a_routine	is_generic_instance	!defined(IL_DEF_H) && MICROSOFT_EXTENSIONS_ALLOWED	src/il_def.h:12627	exclusion_proposal				not applicable	managed dialect generic instance; user-excluded
+a_routine	keep_definition_in_il	!defined(IL_DEF_H) && MAINTAIN_NEEDED_FLAGS	src/il_def.h:12785	exclusion_proposal				not applicable	il_def12785 explicitly frontend retention scheduling
+a_routine	on_inline_function_list	!defined(IL_DEF_H)	src/il_def.h:12883	exclusion_proposal				not applicable	compiler list membership
+a_routine	lowering_delayed_on_nested_function	!defined(IL_DEF_H) && DO_IL_LOWERING	src/il_def.h:12958	exclusion_proposal				not applicable	lowering scheduling
+a_routine	considered_decider_function_at_some_point	!defined(IL_DEF_H)	src/il_def.h:13016	exclusion_proposal				not applicable	il_def13016 explicitly frontend-only historical key-function tracking
+a_routine	is_top_level_in_mem_region	!defined(IL_DEF_H)	src/il_def.h:13074	exclusion_proposal				not applicable	memory region freeing bookkeeping
+a_routine	instantiation_needed_bit_number	!defined(IL_DEF_H) && ONE_INSTANTIATION_PER_OBJECT	src/il_def.h:13241	exclusion_proposal				not applicable	ONE_INSTANTIATION_PER_OBJECT bit-number bookkeeping
+a_routine	routine_fixup	!defined(IL_DEF_H)	src/il_def.h:13247	exclusion_proposal				not applicable	il_def13247 explicitly frontend-only pending friend-body fixup

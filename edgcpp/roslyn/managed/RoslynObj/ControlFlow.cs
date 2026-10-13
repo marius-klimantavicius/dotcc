@@ -101,7 +101,7 @@ public sealed class AssemblyDefinition : SemanticEntity
     internal AssemblyDefinition(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public AsmEntryDetails Details { get; }
     public Constant AsmString => Details.AsmString;
-    public SourceInfo? Source => Details.SourceOrigin;
+    public SourceInfo? Source => SourceCorrespondence?.Source;
     public bool IsGnu => Details.GnuAsmForm;
     public bool IsVolatile => Details.IsVolatile;
     public bool IsGoto => Details.IsGoto;
@@ -172,7 +172,7 @@ public sealed class LambdaDefinition : SemanticEntity
     public LambdaDefinitionDetails Details { get; }
     public CppType ClosureType => Details.ClosureType;
     public FunctionSymbol? CallOperator => Details.CallOperator;
-    public SourceInfo? Source => Details.SourceOrigin;
+    public SourceInfo? Source => SourceCorrespondence?.Source;
     public bool IsGeneric => Details.IsGeneric;
     public bool IsMutable => Details.IsMutable;
     public bool HasCaptureDefault => Details.HasCaptureDefault;

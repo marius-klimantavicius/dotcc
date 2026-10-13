@@ -39,6 +39,8 @@ static std::map<Rid,Rid> roslyn_primary_declarations;
 static std::map<const void*,std::set<Rid>> roslyn_parameter_placeholders;
 static std::map<a_constant_ptr,Rid> roslyn_constant_values;
 static std::map<const void*,a_scope_ptr> roslyn_scope_parents;
+static std::map<a_using_decl_ptr,std::set<a_scope_ptr>> roslyn_using_scopes;
+static std::map<Rid,a_source_correspondence_ptr> roslyn_correspondence_owners;
 
 #define DB (*roslyn_db)
 #define K(f,n) roslyn_tag(f,n)
@@ -76,6 +78,11 @@ static void roslyn_fact(Rid owner,const char *fact,const char *state,const char 
 static void roslyn_collect_local_initializers(a_scope_ptr);
 static Rid roslyn_type(a_type_ptr);
 static Rid roslyn_scope(a_scope_ptr);
+static Rid roslyn_source_correspondence(a_source_correspondence &);
+static void roslyn_attach_correspondence(Rid,a_source_correspondence &);
+#if GENERATE_SOURCE_SEQUENCE_LISTS
+static Rid roslyn_source_entry(a_source_sequence_entry_ptr);
+#endif
 static Rid roslyn_routine(a_routine_ptr);
 static Rid roslyn_variable(a_variable_ptr);
 #if DECL_MODIFIERS_IN_USE
@@ -130,13 +137,6 @@ static Rid roslyn_source_file(a_source_file_ptr,Rid=0,int=0);
 static void roslyn_macros();
 static Rid roslyn_module(a_module_ptr);
 #include "roslyn_source.h"
-static Rid roslyn_name(a_source_correspondence &c) {
- const char *name=c.name;
-#if NEED_NAME_MANGLING
- if(c.name_has_been_mangled)name=c.unmangled_name_or_mangled_encoding;
-#endif
- Rid spelling=DB.atom(name);int category=K("name_category",name?"named":"unnamed");auto key=std::make_pair(spelling,category);auto known=roslyn_name_values.find(key);if(known!=roslyn_name_values.end())return known->second;Rid id=DB.fresh("name");roslyn_name_values[key]=id;DB.put("name",{{"id",id},{"spelling_id",R(spelling)},{"category_id",category}});return id;
-}
 #include "roslyn_attributes.h"
 #include "roslyn_parameters.h"
 #include "roslyn_names.h"
@@ -146,98 +146,20 @@ static a_scope_ptr roslyn_scope_parent(a_scope_ptr p) {if(!p)return nullptr;if(p
 static bool roslyn_metadata_routine(a_routine_ptr p) {return p&&(p->is_prototype_instantiation||p->is_consteval||special_kind_is(p,sfk_deduction_guide));}
 static int roslyn_routine_role(a_routine_ptr p) {return roslyn_metadata_routine(p)?7002:DO_IL_LOWERING?7001:7003;}
 static a_routine_ptr roslyn_scope_routine(a_scope_ptr p) {std::set<a_scope_ptr> seen;for(;p&&seen.insert(p).second;p=roslyn_scope_parent(p))if(p->kind==sck_function)return p->variant.routine.ptr;return nullptr;}
-static a_scope_ptr roslyn_source_scope(a_source_correspondence &c) {if(c.parent_scope)return c.parent_scope;auto found=roslyn_scope_parents.find(&c);return found==roslyn_scope_parents.end()?nullptr:found->second;}
-static Rid roslyn_owner(a_source_correspondence &c) {
- a_scope_ptr retained_parent=roslyn_source_scope(c);
- if(retained_parent&&(retained_parent->kind==sck_class_struct_union||retained_parent->kind==sck_enum))return roslyn_type(retained_parent->variant.assoc_type);
- if(retained_parent&&retained_parent->kind==sck_namespace)return roslyn_namespace(retained_parent->variant.assoc_namespace);
- if(c.enclosing_routine)return roslyn_routine(c.enclosing_routine);
- if(retained_parent){a_scope_ptr p=retained_parent;if(p->kind==sck_class_struct_union)return roslyn_type(p->variant.assoc_type);if(p->kind==sck_namespace)return roslyn_namespace(p->variant.assoc_namespace);return roslyn_scope(p);}
- return 0;
-}
-static Rid roslyn_prepare_declaration(Rid symbol,bool declare=true) {
- if(!declare)return 0;auto known=roslyn_primary_declarations.find(symbol);if(known!=roslyn_primary_declarations.end())return known->second;
- Rid declaration=DB.fresh("declaration");roslyn_primary_declarations[symbol]=declaration;return declaration;
-}
-static void roslyn_register_parameter_placeholder(const void *descriptor,Rid parameter) {
- if(!descriptor)return;
- auto &bindings=roslyn_parameter_placeholders[descriptor];bindings.insert(parameter);
- Rid symbol=bindings.size()==1?*bindings.begin():0;
- Rid type=DB.existing(descriptor,"type");if(type)DB.set_type_symbol(type,symbol);
- Rid templ=DB.existing(descriptor,"template");if(templ)DB.set_template_symbol(templ,symbol);
-}
-static void roslyn_symbol(Rid id,const char *kind,a_source_correspondence &c,Rid type,int generated=0,int storage=0,bool attrs=true,bool declare=true) {
- Rid declaration=roslyn_prepare_declaration(id,declare);
- DB.put("symbol",{{"id",id},{"kind_id",K("entity",kind)},{"name_id",roslyn_name(c)},{"containing_entity_id",R(roslyn_owner(c))},{"type_id",R(type)},{"source_origin_id",R(roslyn_origin(c.decl_position))},{"compiler_generated",generated},{"linkage_id",roslyn_kind_edg_name_linkage(static_cast<a_name_linkage_kind>(c.name_linkage))},{"access_id",roslyn_kind_edg_access(static_cast<an_access_specifier>(c.access))},{"storage_id",R(storage)}});
- if(attrs)roslyn_attributes(id,c.attributes);
- roslyn_fact(id,"source",roslyn_has_position(c.decl_position)?"available":"absent",roslyn_has_position(c.decl_position)?nullptr:"The retained declaration has no source sequence position.");
- if(!declare)return;
- DB.put("declaration",{{"id",declaration},{"kind_id",K("entity",kind)},{"symbol_id",id},{"lexical_scope_id",R(roslyn_scope(roslyn_source_scope(c)))},{"source_origin_id",R(roslyn_origin(c.decl_position))},{"compiler_generated",generated}});
-#if EXTRA_SOURCE_POSITIONS_IN_IL
- roslyn_declaration_positions(declaration,c.decl_pos_info,kind);
-#endif
-}
 static void roslyn_child(Rid owner,const char *role,int ordinal,Rid child) {
  if(child){DB.evaluated_child(owner,child);DB.put("structural_child",{{"owner_id",owner},{"role_id",K("role",role)},{"ordinal",ordinal},{"child_id",child}});}
 }
 static void roslyn_reference(Rid owner,const char *role,int ordinal,Rid target) {
  if(target)DB.put("semantic_reference",{{"owner_id",owner},{"role_id",K("role",role)},{"ordinal",ordinal},{"target_id",target}});
 }
+#include "roslyn_common.h"
 #include "roslyn_entities.h"
-static Rid roslyn_scope(a_scope_ptr p) {
- bool fresh;Rid id=DB.claim(p,"scope",fresh);if(!fresh)return id;
- int saved_role=roslyn_default_role;a_routine_ptr saved_routine=roslyn_current_routine;
- a_routine_ptr owning_routine=roslyn_scope_routine(p);if(owning_routine){roslyn_current_routine=owning_routine;roslyn_default_role=roslyn_routine_role(owning_routine);}
- Rid assoc=0;if(p->kind==sck_function)assoc=roslyn_routine(p->variant.routine.ptr);else if(p->kind==sck_namespace)assoc=roslyn_namespace(p->variant.assoc_namespace);else if(p->kind==sck_class_struct_union||p->kind==sck_func_prototype||p->kind==sck_enum)assoc=roslyn_type(p->variant.assoc_type);else if(p->kind==sck_condition)assoc=roslyn_statement(p->variant.assoc_statement);else if(p->kind==sck_block)assoc=roslyn_handler(p->variant.assoc_handler);
- DB.put("scope",{{"id",id},{"kind_id",roslyn_kind_edg_scope(p->kind)},{"parent_id",R(roslyn_scope(roslyn_scope_parent(p)))},{"associated_entity_id",R(assoc)},{"lifetime_id",R(roslyn_lifetime(p->lifetime))},{"function_static_lifetime_id",R(p->kind==sck_function?roslyn_lifetime(p->variant.routine.lifetime_of_local_static_vars):0)}});
- int n=0;
-#define MEMBER(target) DB.put("scope_member",{{"owner_id",id},{"ordinal",n++},{"member_id",target}})
- for(a_type_ptr t=p->types;t;t=t->next){MEMBER(roslyn_type(t));}
- for(a_variable_ptr v=p->variables;v;v=v->next){MEMBER(roslyn_variable(v));}
- for(a_variable_ptr v=p->nonstatic_variables;v;v=v->next){MEMBER(roslyn_variable(v));}
- for(a_routine_ptr r=p->routines;r;r=r->next){MEMBER(roslyn_routine(r));}
- for(a_constant_ptr c=p->constants;c;c=c->next){MEMBER(roslyn_constant(c));}
- for(a_namespace_ptr ns=p->namespaces;ns;ns=ns->next){MEMBER(roslyn_namespace(ns));}
- for(a_label_ptr l=p->labels;l;l=l->next){MEMBER(roslyn_label(l));}
- for(a_template_ptr t=p->templates;t;t=t->next){MEMBER(roslyn_template(t));}
- for(a_using_decl_ptr u=p->using_declarations;u;u=u->next){MEMBER(roslyn_using(u,p));}
- for(a_using_decl_ptr u=p->using_directives;u;u=u->next){MEMBER(roslyn_using(u,p));}
- for(an_asm_entry_ptr a=p->asm_entries;a;a=a->next){MEMBER(roslyn_asm(a));}
- for(a_vla_dimension_ptr d=p->vla_dimensions;d;d=d->next){MEMBER(roslyn_vla_dimension(d));}
-#undef MEMBER
- for(a_scope_ptr s=p->scopes;s;s=s->next)roslyn_scope(s);
- int local_static_ordinal=0;for(a_local_static_variable_init_ptr i=p->local_static_variable_inits;i;i=i->next)
-  DB.put("scope_local_static_initialization",{{"owner_id",id},{"ordinal",local_static_ordinal++},{"initialization_id",roslyn_local_static_initialization(i)}});
- int constructor_ordinal=0;for(a_constructor_init_ptr i=p->kind==sck_function?p->variant.routine.constructor_inits:nullptr;i;i=i->next){
-  DB.put("scope_constructor_initializer",{{"owner_id",id},{"ordinal",constructor_ordinal},{"initializer_id",roslyn_constructor_initializer(i)}});
-#if !DO_IL_LOWERING
-  if(p->kind==sck_function&&p->assoc_block){Rid body=roslyn_statement(p->assoc_block,roslyn_default_role);roslyn_child(body,"initialization",constructor_ordinal,roslyn_init(i->initializer,roslyn_default_role));roslyn_child(body,"operand",constructor_ordinal,roslyn_expr(i->source_expr,roslyn_default_role));}
-#endif
-  ++constructor_ordinal;
- }
-
- int init_ordinal=0;for(a_dynamic_init_ptr i=p->dynamic_inits;i;i=i->next)DB.put("scope_initialization",{{"owner_id",id},{"ordinal",init_ordinal++},{"initialization_id",roslyn_init(i)}});
- if(p->assoc_block)roslyn_statement(p->assoc_block);
- roslyn_scope_expression_references(p,id);
- roslyn_source_sequences(p,id);
-#if MICROSOFT_EXTENSIONS_ALLOWED
- roslyn_ms_attributes(id,p->ms_attributes);
-#endif
- roslyn_default_role=saved_role;roslyn_current_routine=saved_routine;return id;
-}
-static Rid roslyn_namespace(a_namespace_ptr p) {
- bool fresh;Rid id=DB.claim(p,"namespace",fresh);if(!fresh)return id;roslyn_symbol(id,"namespace",p->source_corresp,0);
- DB.put("namespace_symbol",{{"id",id},{"scope_id",R(p->is_namespace_alias?0:roslyn_scope(p->variant.assoc_scope))},{"alias_target_id",R(p->is_namespace_alias?roslyn_namespace(p->variant.assoc_namespace):0)},{"is_inline",static_cast<int>(p->is_inline)},{"is_anonymous",static_cast<int>(p->source_corresp.name==nullptr)}});return id;
-}
 #include "roslyn_routines.h"
 #include "roslyn_variables.h"
 #include "roslyn_layout.h"
-static Rid roslyn_label(a_label_ptr p) {
- bool fresh;Rid id=DB.claim(p,"label",fresh);if(!fresh)return id;roslyn_symbol(id,"label",p->source_corresp,0);
- DB.put("label_symbol",{{"id",id},{"statement_id",R(roslyn_statement(p->exec_stmt))},{"lifetime_id",R(p->exec_stmt&&p->exec_stmt->kind==stmk_label?roslyn_lifetime(p->exec_stmt->variant.label.lifetime):0)},{"is_break",static_cast<int>(p->break_label)},{"is_continue",static_cast<int>(p->continue_label)}});return id;
-}
 static Rid roslyn_type_declaration(a_type_ptr p,Rid type) {
  if(p->kind==tk_template_param){auto parameter=roslyn_parameter_placeholders.find(p);return parameter==roslyn_parameter_placeholders.end()||parameter->second.size()!=1?0:*parameter->second.begin();}
+ if((p->kind==tk_class||p->kind==tk_struct||p->kind==tk_union)&&p->variant.class_struct_union.proxy_class)return 0;
  bool declared=p->source_corresp.name||p->kind==tk_class||p->kind==tk_struct||p->kind==tk_union||(p->kind==tk_integer&&p->variant.integer.enum_type);
  if(!declared)return 0;
  bool fresh;Rid symbol=DB.claim(p,"type_symbol",fresh);if(!fresh)return symbol;
@@ -366,13 +288,13 @@ static Rid roslyn_macro(a_macro_ptr);
 #include "roslyn_ms_attributes.h"
 #include "roslyn_local_expressions.h"
 static Rid roslyn_macro(a_macro_ptr p) {
- bool fresh;Rid id=DB.claim(p,"macro_definition",fresh);if(!fresh)return id;
+ bool fresh;Rid id=DB.claim(p,"macro_definition",fresh);if(!fresh)return id;roslyn_attach_correspondence(id,p->source_corresp);
  Rid replacement=0;
 #if EXTRA_SOURCE_POSITIONS_IN_IL
  replacement=roslyn_range(p->replacement_text_range);
 #endif
  const char *origin=p->is_predefined?"predefined":p->is_command_line_definition?"command_line":"ordinary";
- DB.put("macro_definition",{{"id",id},{"name_id",DB.atom(p->source_corresp.name)},{"text_id",DB.atom(p->text)},{"position_id",R(roslyn_position(p->source_corresp.decl_position))},{"replacement_range_id",R(replacement)},{"kind_id",K("source_origin_kind",origin)},{"is_function_like",static_cast<int>(!p->object_like)},{"is_predefined",static_cast<int>(p->is_predefined)},{"is_undef",static_cast<int>(p->is_undef)}});return id;
+ DB.put("macro_definition",{{"id",id},{"text_id",DB.atom(p->text)},{"replacement_range_id",R(replacement)},{"kind_id",K("source_origin_kind",origin)},{"is_function_like",static_cast<int>(!p->object_like)},{"is_predefined",static_cast<int>(p->is_predefined)},{"is_undef",static_cast<int>(p->is_undef)}});return id;
 }
 static void roslyn_macros() {
 #if MACRO_INVOCATION_TREE_IN_IL
@@ -390,7 +312,7 @@ static void roslyn_macros() {
 }
 static void roslyn_capability(const char *name,const std::string &value,bool enabled,bool required=false){DB.put("build_capability",{{"name_id",DB.atom(name)},{"state_id",K("availability","available")},{"value_id",DB.atom(value)},{"enabled",static_cast<int>(enabled)},{"required",static_cast<int>(required)}});}
 static void roslyn_back_end() {
- RoslynStore store;roslyn_db=&store;roslyn_current_eh=0;roslyn_static_ordinal=0;roslyn_override_ordinals.clear();roslyn_field_records.clear();roslyn_local_constants.clear();roslyn_projected_tables.clear();roslyn_function_eh.clear();roslyn_regions.clear();roslyn_current_routine=nullptr;roslyn_default_role=DO_IL_LOWERING?7001:7003;roslyn_macro_invocations.clear();roslyn_positions.clear();roslyn_ranges.clear();roslyn_origins.clear();roslyn_availability.clear();roslyn_values.clear();roslyn_name_values.clear();roslyn_primary_declarations.clear();roslyn_parameter_placeholders.clear();roslyn_constant_values.clear();roslyn_scope_parents.clear();roslyn_local_expressions.clear();roslyn_vla_contexts.clear();roslyn_collected_scopes.clear();
+ RoslynStore store;roslyn_db=&store;roslyn_current_eh=0;roslyn_static_ordinal=0;roslyn_override_ordinals.clear();roslyn_field_records.clear();roslyn_local_constants.clear();roslyn_projected_tables.clear();roslyn_function_eh.clear();roslyn_regions.clear();roslyn_current_routine=nullptr;roslyn_default_role=DO_IL_LOWERING?7001:7003;roslyn_macro_invocations.clear();roslyn_positions.clear();roslyn_ranges.clear();roslyn_origins.clear();roslyn_availability.clear();roslyn_values.clear();roslyn_name_values.clear();roslyn_primary_declarations.clear();roslyn_parameter_placeholders.clear();roslyn_constant_values.clear();roslyn_scope_parents.clear();roslyn_using_scopes.clear();roslyn_correspondence_owners.clear();roslyn_local_expressions.clear();roslyn_vla_contexts.clear();roslyn_collected_scopes.clear();roslyn_collected_types.clear();
  std::string output=std::getenv("ROSLYNOBJ_OUTPUT")?std::getenv("ROSLYNOBJ_OUTPUT"):std::string(il_header.primary_source_file->file_name)+".roslynobj";
  std::string temporary=output+".tmp.XXXXXX";std::vector<char> sibling(temporary.begin(),temporary.end());sibling.push_back(0);int temporary_fd=mkstemp(sibling.data());if(temporary_fd<0){std::perror("roslynobj temporary output");std::exit(EXIT_FAILURE);}if(::close(temporary_fd)!=0){std::perror("roslynobj temporary close");std::remove(sibling.data());std::exit(EXIT_FAILURE);}temporary=sibling.data();
  if(sqlite3_open_v2(temporary.c_str(),&store.connection,SQLITE_OPEN_READWRITE,nullptr)!=SQLITE_OK)store.fail(sqlite3_errmsg(store.connection));
@@ -403,7 +325,8 @@ static void roslyn_back_end() {
  roslyn_fact(roslyn_unit,"tokens","not_retained","Stock IL retains specialized token sequences, but no general source token stream.");
  roslyn_fact(roslyn_unit,"trivia","not_retained","No complete source trivia stream is retained by this stock configuration.");
  if(!GENERATE_SOURCE_SEQUENCE_LISTS)roslyn_fact(roslyn_unit,"declaration_sequence","disabled","GENERATE_SOURCE_SEQUENCE_LISTS is disabled in this resolved build.");
- roslyn_source_information();Rid source=roslyn_source_file(il_header.primary_source_file);roslyn_macros();for(a_memory_region_number region=1;region<=highest_used_region_number;++region)for(a_scope_ptr s=il_header.region_scope_entry[region];s;s=s->next)roslyn_collect_local_initializers(s);Rid scope=roslyn_scope(il_header.primary_scope);roslyn_header_roots();
+ for(a_memory_region_number region=1;region<=highest_used_region_number;++region)for(a_scope_ptr s=il_header.region_scope_entry[region];s;s=s->next)roslyn_collect_local_initializers(s);
+ roslyn_source_information();Rid source=roslyn_source_file(il_header.primary_source_file);roslyn_macros();Rid scope=roslyn_scope(il_header.primary_scope);roslyn_header_roots();
  DB.put("translation_unit",{{"id",roslyn_unit},{"global_scope_id",scope},{"entry_point_id",R(roslyn_routine(il_header.main_routine))},{"primary_input_id",source},{"language_mode_id",DB.atom(std::string(il_header.source_language==sl_C?"c":"c++")+Q(il_header.std_version))}});
  DB.put("target_profile",{{"id",1},{"abi_id",K("abi",IA64_ABI?"itanium":targ_microsoft_ptr_to_member_sizing?"microsoft":CFRONT_OBJECT_CODE_COMPATIBILITY?"cfront":"cfront_like")},{"addressable_unit_bits",static_cast<int>(targ_char_bit)},{"little_endian",static_cast<int>(targ_little_endian)},{"pointer_bits",static_cast<int>(targ_sizeof_pointer*targ_char_bit)},{"pointer_alignment",Q(targ_alignof_pointer)}});
 #define CAP(name) roslyn_capability(#name,Q(name),name!=0)
@@ -418,14 +341,14 @@ static void roslyn_back_end() {
 #if UPC_EXTENSIONS_ALLOWED
  CAP(il_header.default_upc_strict_access);CAP(upc_num_threads);CAP(upc_dynamic_threads());
 #endif
- CAP(DO_IL_LOWERING);CAP(DO_FULL_PORTABLE_EH_LOWERING);CAP(GENERATE_EH_TABLES);CAP(DO_UNORDERED_EH_PROCESSING);CAP(KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED);CAP(BACK_END_IS_C_GEN_BE);CAP(BACK_END_IS_CP_GEN_BE);CAP(BACK_END_SHOULD_BE_CALLED);CAP(DOING_SOURCE_ANALYSIS);CAP(IL_SHOULD_BE_WRITTEN_TO_FILE);CAP(IA64_ABI);CAP(CFRONT_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_2_1_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_3_0_OBJECT_CODE_COMPATIBILITY);CAP(ASSIGNMENT_TO_THIS_ALLOWED);CAP(NEW_CAN_BE_FOLDED_INTO_CTOR);CAP(HANDLE_VIRTUAL_BASES_IN_COMPLETE_CTOR_DTORS);CAP(TIE_DEFAULT_GNU_ABI_VERSION_TO_GNU_VERSION);CAP(target_configuration_index);CAP(MINIMAL_INLINING);CAP(MAINTAIN_NEEDED_FLAGS);CAP(DEFAULT_REMOVE_UNNEEDED_ENTITIES);CAP(PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE);CAP(LOWER_VARIABLE_LENGTH_ARRAYS);CAP(LOWER_CLASS_RVALUE_ADJUST);CAP(LOWER_COMPLEX);CAP(LOWER_FIXED_POINT);CAP(LOWER_IFUNC);CAP(LOWER_LVALUE_RETURNING_OPERATIONS);CAP(LOWER_MICROSOFT_NONCONSTANT_AGGREGATE);CAP(LOWER_DESIGNATED_INITIALIZERS);CAP(GENERATE_SOURCE_SEQUENCE_LISTS);CAP(MAINTAIN_CLASS_MEMBER_LIST);CAP(RECORD_BACKING_EXPRS_WITH_IL_LOWERING);CAP(ONE_INSTANTIATION_PER_OBJECT);CAP(EXTRA_SOURCE_POSITIONS_IN_IL);CAP(RECORD_MACROS_IN_IL);CAP(FULLY_RESOLVED_MACRO_POSITIONS);CAP(RECORD_MACRO_INVOCATIONS);CAP(MACRO_INVOCATION_TREE_IN_IL);CAP(RECORD_MACRO_ARGS);CAP(COMPILE_MULTIPLE_TRANSLATION_UNITS);CAP(COROUTINE_ENABLING_POSSIBLE);CAP(REFLECTION_ENABLING_POSSIBLE);CAP(reflection_enabled);CAP(PROTOTYPE_INSTANTIATIONS_IN_IL);CAP(ALL_TEMPLATE_INFO_IN_IL);CAP(prototype_instantiations_in_il);CAP(all_template_info_in_il);CAP(HOST_FP_VALUE_IS_128BIT);CAP(USE_SOFTFLOAT);CAP(USE_FLOAT128_FOR_HOST_FP_VALUE);CAP(HOST_HAS_FLOAT16_TYPE);CAP(exceptions_enabled);CAP(gpp_mode);CAP(gcc_mode);CAP(clang_mode);CAP(gnu_version);CAP(microsoft_mode);CAP(microsoft_version);CAP(RECORD_UNRECOGNIZED_ATTRIBUTES);CAP(record_unrecognized_attributes);CAP(RECOGNIZE_MICROSOFT_ATTRIBUTES);CAP(SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING);CAP(cppcli_enabled);CAP(cppcx_enabled);CAP(targ_microsoft_ptr_to_member_sizing);CAP(CPPCLI_ENABLING_POSSIBLE);CAP(CPPCX_ENABLING_POSSIBLE);CAP(READ_CPPCLI_PORTABLE_ASSEMBLIES);CAP(EXPORT_ENABLING_POSSIBLE);CAP(export_template_allowed);CAP(DEFAULT_EXPORT_TEMPLATE_ALLOWED);
+ CAP(NEED_NAME_MANGLING);CAP(DO_IL_LOWERING);CAP(DO_FULL_PORTABLE_EH_LOWERING);CAP(GENERATE_EH_TABLES);CAP(DO_UNORDERED_EH_PROCESSING);CAP(KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED);CAP(BACK_END_IS_C_GEN_BE);CAP(BACK_END_IS_CP_GEN_BE);CAP(BACK_END_SHOULD_BE_CALLED);CAP(DOING_SOURCE_ANALYSIS);CAP(IL_SHOULD_BE_WRITTEN_TO_FILE);CAP(IA64_ABI);CAP(CFRONT_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_2_1_OBJECT_CODE_COMPATIBILITY);CAP(CFRONT_3_0_OBJECT_CODE_COMPATIBILITY);CAP(ASSIGNMENT_TO_THIS_ALLOWED);CAP(NEW_CAN_BE_FOLDED_INTO_CTOR);CAP(HANDLE_VIRTUAL_BASES_IN_COMPLETE_CTOR_DTORS);CAP(TIE_DEFAULT_GNU_ABI_VERSION_TO_GNU_VERSION);CAP(target_configuration_index);CAP(MINIMAL_INLINING);CAP(MAINTAIN_NEEDED_FLAGS);CAP(DEFAULT_REMOVE_UNNEEDED_ENTITIES);CAP(PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE);CAP(LOWER_VARIABLE_LENGTH_ARRAYS);CAP(LOWER_CLASS_RVALUE_ADJUST);CAP(LOWER_COMPLEX);CAP(LOWER_FIXED_POINT);CAP(LOWER_IFUNC);CAP(LOWER_LVALUE_RETURNING_OPERATIONS);CAP(LOWER_MICROSOFT_NONCONSTANT_AGGREGATE);CAP(LOWER_DESIGNATED_INITIALIZERS);CAP(GENERATE_SOURCE_SEQUENCE_LISTS);CAP(MAINTAIN_CLASS_MEMBER_LIST);CAP(RECORD_BACKING_EXPRS_WITH_IL_LOWERING);CAP(ONE_INSTANTIATION_PER_OBJECT);CAP(EXTRA_SOURCE_POSITIONS_IN_IL);CAP(RECORD_MACROS_IN_IL);CAP(FULLY_RESOLVED_MACRO_POSITIONS);CAP(RECORD_MACRO_INVOCATIONS);CAP(MACRO_INVOCATION_TREE_IN_IL);CAP(RECORD_MACRO_ARGS);CAP(COMPILE_MULTIPLE_TRANSLATION_UNITS);CAP(COROUTINE_ENABLING_POSSIBLE);CAP(REFLECTION_ENABLING_POSSIBLE);CAP(reflection_enabled);CAP(PROTOTYPE_INSTANTIATIONS_IN_IL);CAP(ALL_TEMPLATE_INFO_IN_IL);CAP(prototype_instantiations_in_il);CAP(all_template_info_in_il);CAP(HOST_FP_VALUE_IS_128BIT);CAP(USE_SOFTFLOAT);CAP(USE_FLOAT128_FOR_HOST_FP_VALUE);CAP(HOST_HAS_FLOAT16_TYPE);CAP(exceptions_enabled);CAP(gpp_mode);CAP(gcc_mode);CAP(clang_mode);CAP(gnu_version);CAP(microsoft_mode);CAP(microsoft_version);CAP(RECORD_UNRECOGNIZED_ATTRIBUTES);CAP(record_unrecognized_attributes);CAP(RECOGNIZE_MICROSOFT_ATTRIBUTES);CAP(SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING);CAP(cppcli_enabled);CAP(cppcx_enabled);CAP(targ_microsoft_ptr_to_member_sizing);CAP(CPPCLI_ENABLING_POSSIBLE);CAP(CPPCX_ENABLING_POSSIBLE);CAP(READ_CPPCLI_PORTABLE_ASSEMBLIES);CAP(EXPORT_ENABLING_POSSIBLE);CAP(export_template_allowed);CAP(DEFAULT_EXPORT_TEMPLATE_ALLOWED);
 #undef CAP
  const char *count_text=std::getenv("ROSLYNOBJ_ARGUMENT_COUNT");if(count_text){long count=std::strtol(count_text,nullptr,10);for(long i=0;i<count;++i){std::string key="ROSLYNOBJ_ARGUMENT_"+Q(i);const char *argument=std::getenv(key.c_str());if(argument)DB.put("invocation_argument",{{"ordinal",static_cast<sqlite3_int64>(i)},{"text_id",DB.atom(argument)}});}}
  if(!DO_IL_LOWERING)roslyn_capability("source_semantic_graph_v1","1",true,true);
  roslyn_capability("normalized_semantic_graph_v1","1",true,true);roslyn_capability("normalized_semantic_schema_v1",roslynobj_schema_contract_sha256,true,true);roslyn_capability("exact_target_values_v1","1",true,true);if(!roslyn_function_eh.empty())roslyn_capability("edg_partial_eh_v1","1",true,true);
  unsigned char random[16];sqlite3_randomness(16,random);std::string artifact;static const char hex[]="0123456789abcdef";for(unsigned char b:random){artifact+=hex[b>>4];artifact+=hex[b&15];}
  DB.put("object_header",{{"id",1},{"format_major",1},{"format_minor",0},{"artifact_id",artifact},{"producer_id",DB.atom("roslyn_gen_be")},{"revision_id",DB.atom("89e67e07c7f6d0fc38622f9778d8e79f40deaa0f")},{"edg_version_id",DB.atom(il_header.compiler_version)},{"capture_profile_id",ROSLYN_CAPTURE_PROFILE_ID},{"target_profile_id",1},{"main_source_file_id",source},{"translation_unit_id",roslyn_unit},{"complete",1}});
- store.check_foreign_keys();
+ roslyn_reconcile_using_scopes();store.check_foreign_keys();
  if(!store.failed)store.exec("COMMIT;");else store.exec("ROLLBACK;");
  store.close();roslyn_db=nullptr;
  if(store.failed){std::remove(temporary.c_str());std::fprintf(stderr,"roslynobj export error: %s\n",store.failure.c_str());std::exit(EXIT_FAILURE);}

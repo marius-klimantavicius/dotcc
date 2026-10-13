@@ -196,6 +196,7 @@ internal sealed class SnapshotStore : IDisposable
     {
         if (page.Length == 0) return;
         var ids = page.Select(r => r.Long("id")).Distinct().ToArray();
+        PrimeCorrespondences(ids,token);
         if(table=="entity")
         {
             foreach(var group in page.GroupBy(r=>RoslynObject.EntityTable(RoslynObject.CatalogKind(r.Long("kind_id")).Name)))
@@ -246,6 +247,25 @@ internal sealed class SnapshotStore : IDisposable
             PrimeCompanions("entity",targets,token);
             _=PrimeRows("declaration",page.Select(r=>r.OptionalLong("declaration_id")).OfType<long>().Distinct().ToArray(),token);
         }
+    }
+
+    private void PrimeCorrespondences(long[] ids,CancellationToken token)
+    {
+        var commonIds=new List<long>();
+        foreach(var batch in ids.Chunk(900))
+        {
+            var pending=batch.Where(id=>!rows.TryGet(("entity_source_correspondence",id),out _)).ToArray();
+            foreach(var id in batch)
+                if(rows.TryGet(("entity_source_correspondence",id),out var cached)&&cached is not null)commonIds.Add(cached.Long("source_correspondence_id"));
+            if(pending.Length==0)continue;
+            maximumBatchSize=Math.Max(maximumBatchSize,pending.Length);
+            var parameters=string.Join(',',Enumerable.Range(0,pending.Length).Select(i=>"$key"+i));
+            var found=QueryParameters($"SELECT * FROM entity_source_correspondence WHERE owner_id IN ({parameters})",0,token,pending.Cast<object?>().ToArray());
+            var present=found.Select(row=>row.Long("owner_id")).ToHashSet();
+            foreach(var row in found){rows.Set(("entity_source_correspondence",row.Long("owner_id")),row);commonIds.Add(row.Long("source_correspondence_id"));}
+            foreach(var id in pending)if(!present.Contains(id))rows.Set(("entity_source_correspondence",id),null);
+        }
+        _=PrimeRows("source_correspondence",commonIds.Distinct().ToArray(),token);
     }
 
     private Row[] PrimeRows(string table,long[] ids,CancellationToken token)

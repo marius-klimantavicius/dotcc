@@ -103,6 +103,15 @@ struct RoslynStore {
     if(rc==SQLITE_OK)rc=sqlite3_bind_int64(stmt,2,descriptor);if(rc==SQLITE_OK)rc=sqlite3_step(stmt);
     if(rc!=SQLITE_DONE)fail(sqlite3_errmsg(connection));
   }
+  void set_using_scope(sqlite3_int64 declaration,sqlite3_int64 scope) {
+    if(failed)return;const std::string sql="UPDATE using_declaration SET lexical_scope_id=? WHERE id=?";
+    sqlite3_stmt *stmt=nullptr;auto found=statements.find(sql);if(found!=statements.end())stmt=found->second;
+    else {if(sqlite3_prepare_v2(connection,sql.c_str(),-1,&stmt,nullptr)!=SQLITE_OK){fail(sqlite3_errmsg(connection));return;}statements.emplace(sql,stmt);}
+    int rc=sqlite3_reset(stmt);if(rc==SQLITE_OK)rc=sqlite3_clear_bindings(stmt);
+    if(rc==SQLITE_OK)rc=scope?sqlite3_bind_int64(stmt,1,scope):sqlite3_bind_null(stmt,1);
+    if(rc==SQLITE_OK)rc=sqlite3_bind_int64(stmt,2,declaration);if(rc==SQLITE_OK)rc=sqlite3_step(stmt);
+    if(rc!=SQLITE_DONE)fail(sqlite3_errmsg(connection));
+  }
   int semantic_role(sqlite3_int64 id,int role) {
     auto found=semantic_roles.find(id);if(found!=semantic_roles.end()&&(found->second==7001||found->second==7003))return found->second;
     semantic_roles[id]=role;return role;

@@ -13,8 +13,8 @@ public sealed class TemplateDescriptor : SemanticEntity
     public Symbol? DeclarationSymbol => DeclarationSymbols.Count==1 ? DeclarationSymbols[0] : null;
     public TemplateParameter? DeclaredParameter => DeclarationSymbol as TemplateParameter;
     public IReadOnlyList<TemplateParameter> DeclaredParameters => Object.List("SELECT * FROM template_parameter WHERE placeholder_template_id=$owner ORDER BY id",Id,r=>Object.TemplateParameter(r.Long("id")),"template_parameter");
-    public string? Name => DeclarationSymbol?.Name;
-    public SourceInfo? Source => DeclarationSymbol?.Source;
+    public override string? Name => base.Name;
+    public SourceInfo? Source => SourceCorrespondence?.Source;
     public SemanticKind Kind => Details.Kind;
     public SemanticKind TemplateKind => Details.Kind;
     public SemanticEntity? Pattern => Details.Pattern;

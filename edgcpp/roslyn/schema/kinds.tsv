@@ -39143,3 +39143,4 @@ id	family	name
 1037054	literal_encoding_prefix	utf16
 1037055	literal_encoding_prefix	utf32
 1037056	literal_encoding_prefix	wide
+1037057	entity	source_correspondence

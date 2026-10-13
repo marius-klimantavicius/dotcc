@@ -55,7 +55,10 @@ artifact identity plus captured entity identity; `RoslynWorkspace` opens many
 objects without linking or merging them.
 
 `SemanticModel.GetReferences(symbol)` returns captured reference uses and selected
-call targets, with their owner nodes and optional source origins. Declaration
+call targets, with their owner nodes and optional source origins. Literal pointer,
+member-pointer and label-difference targets follow exact captured relationships;
+a constant initializer without an expression retains its Constant occurrence as
+the reference owner. Declaration
 objects are semantic nodes, so `GetSymbol(declaration)` and `GetType(declaration)`
 follow retained descriptor links without reconstructing C++ lookup. A type's
 `DeclarationSymbols` exposes the actual declarations associated with a descriptor;
@@ -74,6 +77,24 @@ bodies remain metadata, and `IsDefined` stays true for discarded definitions.
 GNU routine supplements expose exact aliases, ifunc resolvers, inline partners
 and multiversion relationships; targeted versions retain recorded dispatch order.
 `IsPureVirtual` and `IsPureFunction` describe separate C++ and GNU facts.
+
+`SemanticEntity.SourceCorrespondence` exposes its actual retained common
+metadata, including recorded parent scope, enclosing routine and semantic flags.
+Associated type descriptors, symbols and primary declarations share that exact
+correspondence. Copied wrappers keep distinct identities. `Name` projects the
+retained source name; `CurrentName`, `FabricatedName` and `MangledEncoding` remain
+separate projections. Fabricated unnamed entities have no source name. Symbol
+search compares that stored source-name projection without language lookup.
+Primary declarations delegate common metadata; secondary occurrences retain their
+own null or empty fields without falling back to the primary declaration.
+
+`Scope.Children` follows the actual ordered child-scope list.
+`ChildScopesByParent` is the separate reverse-parent relation; a scope may be
+absent from the recorded child list while retaining its parent. Using declarations
+expose exact qualifier/target/set links and captured lexical owners. Lowering can
+remove written using forms. Microsoft proxy types keep their descriptor metadata
+and namespace/type associations without an invented type declaration or concrete
+placeholder layout.
 
 `RecordType.BasesInPostorder` and `BasesInPreorder` preserve the available EDG
 orders. Base derivations and overrides retain contextual subobject identities;
@@ -176,7 +197,8 @@ and required representation capabilities. The reader fails on incompatible
 required kinds instead of returning an opaque unknown operation. Informational
 EDG configuration and sparse availability records are accessible separately.
 During development, a required `normalized_semantic_schema_v1` capability carries
-the generated schema fingerprint. Opening rejects missing or mismatched
+the generated schema fingerprint covering framed SQL and the full stable kind
+catalog. Opening rejects missing or mismatched
 fingerprints before publishing a model, including older development objects with
 the same numeric format version. This gate is not a final public-format promise.
 
@@ -186,8 +208,8 @@ From the repository root:
 python3 edgcpp/roslyn/managed/tools/generate_bindings.py --check
 dotnet build edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj
 dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
-  edgcpp/artifacts/roslynobj/constant263/native/basic.roslynobj \
-  edgcpp/artifacts/roslynobj/constant263/native/m0.roslynobj
+  edgcpp/artifacts/roslynobj/common266/smoke-native/basic.roslynobj \
+  edgcpp/artifacts/roslynobj/common266/smoke-native/m0.roslynobj
 ```
 
 Without object paths, the console test project runs the valid shared-schema

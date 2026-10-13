@@ -18,13 +18,14 @@ static Rid roslyn_type(a_type_ptr p) {
  bool fresh;Rid id=DB.claim(p,"type",fresh);if(!fresh)return id;
  roslyn_register_record_fields(p);
  int kind=roslyn_kind_type(p->kind);if(!kind)DB.fail("Unmapped EDG type kind");
+ roslyn_attach_correspondence(id,p->source_corresp);
  bool dependent=roslyn_type_is_dependent(p),incomplete=is_incomplete_type(p)!=FALSE;
  bool threads_sized=false;
 #if UPC_EXTENSIONS_ALLOWED
  threads_sized=is_underlying_threads_dimensioned_array_type(p)!=FALSE;
 #endif
  a_targ_size_t effective_size=size_of_type(p);a_targ_alignment effective_alignment=alignment_of_type(p);
- std::vector<std::pair<const char*,RoslynSqlValue>> facts={{"id",id},{"kind_id",kind},{"symbol_id",R(roslyn_type_declaration(p,id))},{"name_id",roslyn_name(p->source_corresp)},{"source_origin_id",R(roslyn_origin(p->source_corresp.decl_position))},{"size",Q(effective_size)},{"size_kind_id",K("size_kind",threads_sized?"upc_threads":"recorded_quantity")},{"alignment",Q(effective_alignment)},{"descriptor_size",p->size!=effective_size?RoslynSqlValue(Q(p->size)):RoslynSqlValue()},{"descriptor_alignment",p->alignment!=effective_alignment?RoslynSqlValue(Q(p->alignment)):RoslynSqlValue()},{"incomplete",static_cast<int>(incomplete)},{"descriptor_incomplete",p->incomplete!=incomplete?RoslynSqlValue(static_cast<int>(p->incomplete)):RoslynSqlValue()},{"is_dependent",static_cast<int>(dependent)},{"is_atomic",static_cast<int>(is_c11_atomic_qualified_type(p))},{"used_in_exception_or_rtti",static_cast<int>(p->used_in_exception_or_rtti)},{"declared_in_function_prototype",static_cast<int>(p->declared_in_function_prototype)},{"is_tag_redefinition",static_cast<int>(p->is_tag_redefinition)},{"alignment_set_explicitly",static_cast<int>(p->alignment_set_explicitly)},{"is_builtin_va_list",static_cast<int>(p->is_builtin_va_list)},{"is_builtin_va_list_from_cstdarg",static_cast<int>(p->is_builtin_va_list_from_cstdarg)}};
+ std::vector<std::pair<const char*,RoslynSqlValue>> facts={{"id",id},{"kind_id",kind},{"symbol_id",R(roslyn_type_declaration(p,id))},{"size",Q(effective_size)},{"size_kind_id",K("size_kind",threads_sized?"upc_threads":"recorded_quantity")},{"alignment",Q(effective_alignment)},{"descriptor_size",p->size!=effective_size?RoslynSqlValue(Q(p->size)):RoslynSqlValue()},{"descriptor_alignment",p->alignment!=effective_alignment?RoslynSqlValue(Q(p->alignment)):RoslynSqlValue()},{"incomplete",static_cast<int>(incomplete)},{"descriptor_incomplete",p->incomplete!=incomplete?RoslynSqlValue(static_cast<int>(p->incomplete)):RoslynSqlValue()},{"is_dependent",static_cast<int>(dependent)},{"is_atomic",static_cast<int>(is_c11_atomic_qualified_type(p))},{"used_in_exception_or_rtti",static_cast<int>(p->used_in_exception_or_rtti)},{"declared_in_function_prototype",static_cast<int>(p->declared_in_function_prototype)},{"is_tag_redefinition",static_cast<int>(p->is_tag_redefinition)},{"alignment_set_explicitly",static_cast<int>(p->alignment_set_explicitly)},{"is_builtin_va_list",static_cast<int>(p->is_builtin_va_list)},{"is_builtin_va_list_from_cstdarg",static_cast<int>(p->is_builtin_va_list_from_cstdarg)}};
 #if GNU_EXTENSIONS_ALLOWED
  facts.push_back({"may_alias",static_cast<int>(p->may_alias)});facts.push_back({"has_gnu_abi_tag_attribute",static_cast<int>(p->has_gnu_abi_tag_attribute)});facts.push_back({"in_gnu_abi_tag_namespace",static_cast<int>(p->in_gnu_abi_tag_namespace)});
 #endif
@@ -41,11 +42,10 @@ static Rid roslyn_type(a_type_ptr p) {
  facts.push_back({"typeinfo_variable_id",R(roslyn_variable(p->typeinfo_var))});
 #endif
  DB.put_fields("type",facts);
- roslyn_attributes(id,p->source_corresp.attributes);
  a_type_ptr effective_type=skip_typerefs(p);
  bool scalable=effective_type->kind==tk_scalable_vector||effective_type->kind==tk_scalable_vector_count||effective_type->kind==tk_riscv_vector;
  bool runtime_size=(effective_type->kind==tk_array&&effective_type->variant.array.is_variable_size_array)||scalable;
- bool unresolved_record=(effective_type->kind==tk_class||effective_type->kind==tk_struct||effective_type->kind==tk_union)&&(effective_type->variant.class_struct_union.is_prototype_instantiation||effective_type->variant.class_struct_union.is_ms_instantiated_nonreal_class);
+ bool unresolved_record=(effective_type->kind==tk_class||effective_type->kind==tk_struct||effective_type->kind==tk_union)&&(effective_type->variant.class_struct_union.is_prototype_instantiation||effective_type->variant.class_struct_union.is_ms_instantiated_nonreal_class||effective_type->variant.class_struct_union.proxy_class);
  bool no_object_size=effective_type->kind==tk_void||effective_type->kind==tk_routine;
  const char *size_state=dependent||unresolved_record?"dependent":incomplete?"absent":runtime_size||no_object_size||threads_sized?"not_applicable":"available";
  const char *alignment_state=dependent||unresolved_record?"dependent":incomplete?"absent":no_object_size||scalable?"not_applicable":"available";

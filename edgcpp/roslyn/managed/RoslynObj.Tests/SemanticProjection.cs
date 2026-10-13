@@ -35,7 +35,7 @@ internal static class SemanticProjection
             {
                 var secondary=unit.Declarations.Where(d=>d.Symbol==routine&&d.Secondary is not null).SelectMany(d=>d.Attributes).Single(a=>a.Kind.Name=="ak_deprecated");
                 check(primary!=secondary&&secondary.Arguments.Single()==argument&&argument.OwningAttributes.Contains(primary)&&argument.OwningAttributes.Contains(secondary),"Distinct real routine/secondary attributes must preserve their shared actual argument identity and both reverse associations.");
-                check(primary.Owner==routine&&secondary.Owner is Declaration&&primary.Group==secondary.Group&&primary.Group!.Members.Contains(primary)&&primary.Group.Members.Contains(secondary),"Canonical attribute ownership and group identity must follow actual descriptors independently from their shared argument.");
+                check(primary.Owners.Contains(routine)&&secondary.Owner is Declaration&&primary.Group==secondary.Group&&primary.Group!.Members.Contains(primary)&&primary.Group.Members.Contains(secondary),"Canonical attribute ownership and group identity must follow actual descriptors independently from their shared argument.");
             }
             check(argument.Constant?.Value is StringValue text&&text.TargetBytes.SequenceEqual(System.Text.Encoding.ASCII.GetBytes("shared declaration argument").Append((byte)0)),"The shared actual attribute argument must expose its exact target string constant without copied payloads.");
             var alignment=unit.Variables.Single(v=>v.Name=="attributed_alignment").Attributes.Single(a=>a.Kind.Name=="ak_align");

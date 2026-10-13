@@ -582,7 +582,7 @@ The unwritten baseline constant.is_literal is nullable unknown, not default fals
 The following final 263 acceptance replaces the earlier in-progress native and
 reader status reports. Exact checkpoint evidence is recorded below.
 
-### Accepted 263 constant/execution milestone (commit pending)
+### Accepted 263 constant/execution milestone (`a409df1be`)
 
 Final exact bytes pass **1795 public reader assertions / 137 genuine objects**,
 self/WITHOUT ROWID fixtures PASS73, build zero warnings/errors, 261 generated
@@ -605,3 +605,94 @@ Fresh large object:86,609 entities /7023 operations /6,532,096 bytes. Reader col
 remaining M5 writer indices/host profiles/complete field and kind closure remain
 required. Native stock77 recompilation on reconfigure is tracked for a later
 build-only fix rather than changing this verified boundary.
+
+
+## Active 266 common metadata integration
+
+The263 checkpoint is committed as `a409df1be08efeee4f8ebf952a53bb5298306c91`.
+The current frozen266-table /39,145-kind common contract preserves all prior IDs.
+All four strict compilers pass; the serialized146-output refresh is running.
+The migrated reader builds clean, self PASS73, first genuine basic/m0 PASS104;
+archived263 admission rejects before navigation. Exact retained constant-target
+references independently pass195 and page-size1 UNION86.
+
+Read-only secondary declaration, pragma and module reviews reconcile66 rows
+without promoting verification. Current ledger:567 verified,608 mapped awaiting
+validation,168 planned adapter mappings,403 raw pending; exact exclusions remain
+separate. Raw pending does not mean absent implementation. The separated remaining
+semantic/profile/performance work is in CLOSURE.md. Both implementers remain
+active on disjoint ownership; full phases3–4 and M0–M5 stay open.
+
+
+The266 native refresh now passes146 genuine objects (native45/source46/cfront29/
+exported26), all266 tables, FK0,1KiB and current required fingerprint. All four
+stages match26 canonical backend files and316 pinned stock inputs. The compiler
+lane is idle; large artifact refresh uses the same verified snapshot. Reader
+source/Microsoft pilot PASS137 verifies using qualifier/owner/set links, alias
+chain, proxy absence of declarations/layout, common identity and native flags.
+Full public acceptance remains in progress. Compiled native-common266-mappings.tsv
+joins83 exact field mappings without verification promotion; worksheet now567
+verified,662 mapped awaiting validation,114 planned implementation,400 raw pending.
+
+
+### Narrow266 scale and preindex correction
+
+First common-metadata scale export passed FK0/266 tables/1KiB but took87.933s
+with45,024KiB maximum RSS,98,697 entities and7,571,456bytes. EXPLAIN parent
+INSERT and reverse-query evidence identifies seven populated scan paths: origin
+references from constant/semantic_node/correspondence (5008/7028/8188 rows), and
+position references from origin/spelling/range endpoints (18047/35091/16049 each).
+Seven narrow reverse indexes are now generated, with unchanged semantic payload
+and catalog. After performance and exact snapshot acceptance remain pending.
+
+The retained-scope prepass must follow associated namespace/class/enum/prototype
+scopes as well as resident file/function region roots and actual child lists.
+Pinned stock region chains omit those associated scopes. Idempotent collection
+before newly reached scope hydration and final plural using-owner reconciliation
+avoid visit-order-dependent owner claims; final membership is never inferred from
+target parents. Native implements this narrow correction in the same refresh.
+The earlier source pilots already retained final owners through late updates;
+this closes the preindex guarantee rather than inventing additional memberships.
+
+
+The final owner-corrected146 reader gate passes1915 assertions (fresh log
+/tmp/roslynobj-managed-common-final146-owner-corrected.log). All retained using
+scalar owners now match exactly one actual scope-list membership; zero/plural
+memberships yield null. The inherited-constructor metadata descriptor surviving
+lowering no longer borrows the generated routine's file parent. Stock
+lower_il22241–22258 clears the original using list while retaining that routine
+association. Source positive owner/set/qualifier cases remain required.
+
+Final scale after seven indexes and owner correction:30.381s /45,056KiB RSS /
+98,697 entities /8,865,792bytes, same rowcounts as before. The seven indexes reduce
+87.933s by65.45% at17.09% byte growth. Writer throughput remains an open measured
+M5 item; it is not declared closed by this checkpoint. Reader cold32,002 commands /
+231,910 rows /2086.59ms /111.16MB; warm32,001 /231,909 /1551.19ms /110.72MB, bounded
+4096-row /128-page caches. Final self/compatibility/evidence checks are pending
+before commit. Next actual gaps/profiles remain separated in CLOSURE.md.
+
+
+### Accepted266 common metadata milestone (commit pending)
+
+Final exact snapshot:146 genuine objects PASS1915; self/WITHOUT ROWID PASS73;
+archived genuine263 rejects at Open; clean build0 warnings/errors;264 generated
+detail facades /2089 properties;144 native literal-write admission checks.
+All four strict compilers,26 canonical backend files and316 pinned Git inputs per
+stage independently verified. Required framed SQL-plus-full-catalog digest is
+9547581ad6fd52c32342290c282807cbffd3b9b5d694bac1f870177895cde2e2.
+All39,144 prior catalog IDs preserved; one new canonical descriptor kind appended.
+
+Field-sized proof joins close46 additional rows. Worksheet now613 verified,
+667 mapped awaiting validation,114 planned adapter rows,314 raw pending, with
+explicit exclusions separate. Kind worksheet now includes every39,145 catalog ID;
+new positive kind cases do not imply complete remaining payload/field closure.
+92 public evidence rows and83 native-field joins preserve scalar versus positive
+versus pending/exclusion status; no default-only or table-only promotion.
+
+Final reader scale cold2115ms /32,002 commands /231,910 rows, warm1561ms /32,001 /
+231,909, bounded4096 rows/128 pages. Writer87.933→30.381s at17.09% size growth is
+recorded as measured progress, with residual throughput/storage optimization still
+open. Next bounded variable/UPC/designated statement-source-entry gaps, removal of
+phantom fields, build-wrapper timestamp correction and configured native host/
+Sun/USL profiles continue immediately after commit. CLOSURE.md remains the full
+completion checklist; phases3–4 are not yet complete.

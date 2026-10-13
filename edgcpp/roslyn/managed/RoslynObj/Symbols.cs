@@ -1,3 +1,4 @@
+using System.Numerics;
 namespace RoslynObj;
 
 public sealed class TranslationUnit : SemanticEntity
@@ -37,13 +38,13 @@ public class Symbol : SemanticEntity
 {
     internal Symbol(RoslynObject owner, long id) : base(owner, id) { }
     public SymbolDetails SymbolDetails => Object.Detail("symbol", Id, r => new SymbolDetails(Object, r));
-    public string? Name => Object.Name(Object.Store.Required("symbol", Id).OptionalLong("name_id"));
+    public override string? Name => base.Name;
     public SemanticKind Kind => SymbolDetails.Kind;
-    public SemanticEntity? ContainingEntity => SymbolDetails.ContainingEntity;
+    public SemanticEntity? ContainingEntity => SourceCorrespondence?.ContainingEntity;
     public CppType? DeclaredType => SymbolDetails.Type;
-    public SourceInfo? Source => SymbolDetails.SourceOrigin;
+    public SourceInfo? Source => SourceCorrespondence?.Source;
     public bool IsCompilerGenerated => SymbolDetails.CompilerGenerated;
-    public bool IsImportedFromModule => SymbolDetails.IsImportedFromModule;
+    public bool IsImportedFromModule => SourceCorrespondence?.IsImportedFromModule??false;
     public IReadOnlyList<Declaration> Declarations => Object.List("SELECT * FROM declaration WHERE symbol_id=$owner ORDER BY id", Id, r => Object.Declaration(r.Long("id")), "declaration");
     public override string ToString() => Name ?? Kind.Name;
 }
@@ -105,7 +106,7 @@ public sealed class ParameterType : SemanticEntity
     public ParameterTypeDetails Details { get; }
     public CppType Type => Details.Type;
     public CppType? DeclaredType => Details.DeclaredType;
-    public string? Name => Details.Name;
+    public override string? Name => Details.Name;
     public long ParameterNumber => Details.ParameterNumber;
     public SourceInfo? Source => Details.SourceOrigin;
     public ExpressionOperation? DefaultExpression => Details.DefaultExpression;
@@ -168,6 +169,13 @@ public sealed class NamespaceSymbol : Symbol
     internal NamespaceSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public NamespaceSymbolDetails Details { get; }
     public Scope? Scope => Details.Scope;
+    public NamespaceSymbol? AliasTarget => Details.AliasTarget;
+    public CppType? ProxyClass => Details.ProxyClass;
+    public bool HasInternalLinkage => Details.HasInternalLinkage;
+    public bool IsNamespaceAlias => Details.IsNamespaceAlias;
+    public bool NamedInStrongUsing => Details.NamedInStrongUsing;
+    public bool IsStandardNamespace => Details.IsStd;
+    public bool? HasGnuAbiTagAttribute => Details.HasGnuAbiTagAttribute;
     public IReadOnlyList<SemanticEntity> Members => Scope?.Members ?? [];
 }
 
@@ -175,6 +183,12 @@ public sealed class LabelSymbol : Symbol
 {
     internal LabelSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public LabelSymbolDetails Details { get; }
+    public bool ReachableByFallThrough => Details.ReachableByFallThrough;
+    public bool? AddressTaken => Details.AddressTaken;
+    public bool? IsLocallyDeclared => Details.LocallyDeclared;
+    public bool IsSwitchBreak => Details.IsSwitchBreak;
+    public bool? IsLeave => Details.IsLeave;
+    public BigInteger? MicrosoftTryDepth => Details.MicrosoftTryDepth;
     public StatementOperation? Target => Details.Statement;
     public Lifetime? Lifetime => Details.Lifetime;
 }
@@ -183,10 +197,17 @@ public sealed class Scope : SemanticEntity
 {
     internal Scope(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public ScopeDetails Details { get; }
+    public bool IsConstexprRoutine => Details.IsConstexprRoutine;
+    public bool IsStatementExpressionBlock => Details.IsStmtExprBlock;
+    public bool IsPlaceholder => Details.IsPlaceholderScope;
+    public VariableSymbol? ThisParameter => Details.ThisParameter;
+    public VariableSymbol? NrvoVariable => Details.NrvoVariable;
     public Scope? Parent => Details.Parent;
     public SemanticEntity? AssociatedEntity => Details.AssociatedEntity;
-    /// <summary>Captured child scopes; enumeration does not establish source declaration order.</summary>
-    public IReadOnlyList<Scope> Children => Object.List("SELECT * FROM scope WHERE parent_id=$owner ORDER BY id",Id,r=>Object.Scope(r.Long("id")),"scope");
+    /// <summary>Reverse Parent links; this relation is separate from the recorded child list and has no source order.</summary>
+    public IReadOnlyList<Scope> ChildScopesByParent => Object.List("SELECT * FROM scope WHERE parent_id=$owner ORDER BY id",Id,r=>Object.Scope(r.Long("id")),"scope");
+    /// <summary>The actual retained child-scope list order; this is separate from reverse Parent links.</summary>
+    public IReadOnlyList<Scope> Children => Object.List("SELECT s.* FROM scope_child c JOIN scope s ON s.id=c.child_id WHERE c.owner_id=$owner ORDER BY c.ordinal",Id,r=>Object.Scope(r.Long("id")),"scope");
     public SemanticKind Kind => Details.Kind;
     public Lifetime? Lifetime => Details.Lifetime;
     public Lifetime? FunctionStaticLifetime => Details.FunctionStaticLifetime;
@@ -212,10 +233,11 @@ public sealed class Declaration : SemanticNode
     public DeclarationDetails Details { get; }
     public override SemanticKind Kind => Details.Kind;
     public SemanticEntity Symbol => Details.Symbol;
-    public Scope? LexicalScope => Details.LexicalScope;
-    public override SourceInfo? Source => Details.SourceOrigin;
+    public Scope? LexicalScope => Secondary is not null?Details.LexicalScope:Symbol.SourceCorrespondence?.ParentScope;
+    public override SourceInfo? Source => Secondary is not null?Details.SourceOrigin:Symbol.SourceCorrespondence?.Source;
     public override SemanticKind RepresentationRole => Object.Kind(7003);
     public override bool IsCompilerGenerated => Details.CompilerGenerated;
+    public override IReadOnlyList<Attribute> Attributes => Secondary is not null?base.Attributes:Symbol.Attributes;
     public SecondaryDeclarationDetails? Secondary => Object.Store.Get("secondary_declaration",Id) is {} row ? new(Object,row) : null;
     public DeclarationPositionsDetails? Positions => Object.Store.GetByOwner("declaration_positions",Id) is {} row ? new(Object,row) : null;
     public IReadOnlyList<DeclarationElementPositionDetails> ElementPositions => Object.List("SELECT * FROM declaration_element_position WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new DeclarationElementPositionDetails(Object,r));

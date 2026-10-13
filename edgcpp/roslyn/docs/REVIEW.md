@@ -178,3 +178,41 @@ source expression-context VLA evaluation exactly once, typed AddressValue and
 SubobjectPath byte/element units, and explicit target storage-byte aliases.
 Source/current/fabricated name separation and common metadata migrations remain
 next-batch required work. No current263 review blocker remains.
+
+
+### Next name-reference cleanup (after266)
+
+The bounded name/reference/qualifier review is in names266-mappings.tsv:16
+existing mappings and2 frontend cache-link exclusions. No native payload gap.
+Remove unproduced name_reference.builtin_kind_id/Details.BuiltinKind in the next
+contract: stock name reference has no corresponding field, and the actual builtin
+kind is retained on Routine. OriginalTemplateArguments may directly project the
+existing ordered rows; ordinal-bearing rows remain available. This does not alter
+the current266 acceptance boundary or expand optional source coordinates.
+
+
+### Active266 preindex and scale correction
+
+Region_scope_entry contains file/function roots; associated namespace/class/enum/
+prototype scopes are not all in p.scopes. Expand retained association traversal,
+collect idempotently before scope hydration, and reconcile plural using owners
+once after roots to avoid a recursive singleton update being overwritten. No
+frontend symbol access or invented inverse child membership. Stock sources:
+il.c3743/3787–3803/10233–10241/10314–10329; il_def10149–10154; scope_stk3004.
+
+Scale baseline87.933s/7,571,456bytes has seven measured populated reverse-FK scan
+paths. Seven narrow indexes now generated; strict/native/reader/after performance
+acceptance is pending. Preserve before/after evidence and assess improvement
+before adding any other index. SourceEntry reverse path has no populated native
+scale references and is not included merely because it is a foreign key.
+
+
+### Next build-only configuration timestamp correction
+
+configure266-evidence.json identifies stock macro-conf.cmake142–172 unconditional
+FILE(WRITE) of generated build includes/cmake_defines.h and debug/release variants.
+Every stock TU includes it through defines.h38; no unchanged stock source mtime
+changed. The owned build wrapper may restore a saved generated-header mtime only
+when a successful configure produces byte-identical content. Changed content and
+changed Ninja compiler commands still invalidate correctly. Verify genuine no-op
+and backend-only builds after the266 checkpoint; never edit pinned stock CMake.

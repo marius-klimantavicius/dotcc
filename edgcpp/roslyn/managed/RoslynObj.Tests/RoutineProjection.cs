@@ -31,7 +31,7 @@ internal static class RoutineProjection
             FunctionSymbol Function(string name) => unit.Functions.Single(f=>f.Name==name);
             var typed=Function("routine_typed_declaration");
             check(typed.Signature.Parameters.Count==1&&typed.ReturnType.Kind.Name=="tk_integer"&&typed.Signature.LanguageLinkage?.Name=="nlk_external","A function declared through an extern-C typedef must navigate its actual callable signature and retained type linkage.");
-            if(source)check(typed.SymbolDetails.Linkage?.Name=="nlk_cplusplus_external"&&typed.Signature.IsLanguageLinkageExplicit,"Source symbol linkage and explicit type linkage must remain distinct recorded facts.");
+            if(source)check(typed.SourceCorrespondence!.Linkage?.Name=="nlk_cplusplus_external"&&typed.Signature.IsLanguageLinkageExplicit,"Source symbol linkage and explicit type linkage must remain distinct recorded facts.");
             var pure=Function("routine_pure");
             check(pure.IsPureFunction==true&&!pure.IsPureVirtual&&unit.Functions.Any(f=>f.Name=="pure"&&f.IsPureVirtual&&f.IsPureFunction!=true),"GNU pure-function attributes must remain distinct from C++ pure virtual members.");
             var qualified=unit.Functions.Single(f=>f.Name=="qualified"&&f.ContainingType?.Name=="RoutineDerived");
@@ -88,7 +88,7 @@ internal static class RoutineProjection
             var status=(EnumSymbol)unit.Types.Single(t=>t.Name=="Status").DeclarationSymbol!;
             var scope=unit.Entities.OfType<Scope>().Single(s=>s.AssociatedEntity==status.Type);
             check(scope.Members.OfType<EnumeratorSymbol>().Select(e=>e.Name).SequenceEqual(new[]{"ready","done"})&&scope.Members.OfType<EnumeratorSymbol>().All(e=>e.ContainingEntity==status.Type),"Scoped enum member navigation must retain its exact descriptor association and enumerator containing type.");
-            check(scope.Parent!.Children.Contains(scope),"Child scope navigation must follow the retained Parent relation without a fabricated source order.");
+            check(scope.Parent!.ChildScopesByParent.Contains(scope),"Reverse child-scope navigation must follow the retained Parent relation independently from the actual ordered scope list.");
         }
     }
 }
