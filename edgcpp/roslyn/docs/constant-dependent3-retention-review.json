@@ -1,0 +1,47 @@
+{
+  "scope": "Three pending dependent constant fields; no backend FE lookup or compiler run",
+  "observations": "/tmp/roslyn-root-constant-dependent3-observed.json",
+  "guards": "/tmp/roslyn-root-constant-dependent3-buildguards.json",
+  "fresh211": "No nonnull unknown conversion type or tpck_address/dependent_constant/concat_string_literals rows. Absence alone not global inactivity.",
+  "findings": [
+    {
+      "field": "unknown_function.conversion_type",
+      "status": "active producer, missing positive retained case",
+      "stock": [
+        "lookup.c:3534-3547 dependent non-lambda source class/result type calls create_unknown_conversion_symbol",
+        "lookup.c:3492-3515 stores locator conversion_result_type on tpck_unknown_function; FE symbol field remains forbidden",
+        "il_def.h:5430-5464 result type semantic pointer distinct from FE symbol",
+        "il.c:7881 and templates.c:16846 retain/traverse actual conversion type"
+      ],
+      "recipe": "template<class T> int convert_dependent(T value){ return value.operator int(); }\nstruct Convertible { operator int() const; };\nint convert_actual(Convertible value){ return convert_dependent(value); }",
+      "expected": "Prototype unknown function constant carries actual int ConversionType; concrete selected conversion uses EDG target. Do not resolve unknown symbol/name in backend."
+    },
+    {
+      "field": "variant.constant",
+      "status": "active producers in tpck_address and tpck_dependent_constant; missing positive",
+      "stock": [
+        "folding.c:7270-7288 address of tpck_member lvalue creates tpck_address wrapping exact member constant",
+        "exprutil.c:17990-17997 pointer-to-current-class-member in dependent prototype invokes force_constant_to_be_dependent",
+        "folding.c:188-202 wraps shareable original constant retaining type/character kind",
+        "il.c:22540-22550 substitution consumes dependency wrapper by copying underlying constant"
+      ],
+      "recipe": "template<class T> auto unknown_member_address(){ return &T::field; }\ntemplate<class T> struct MemberPattern { int field; static auto own_member_address(){ return &MemberPattern::field; } };\nauto concrete_member_address(){ return MemberPattern<int>::own_member_address(); }",
+      "expected": "Retained prototypes can demonstrate address wrapper and/or forced dependent member-pointer wrapper; original wrapped constant occurrence and interned value/type remain separate canonical links. Concrete substitution may legitimately remove wrapper."
+    },
+    {
+      "field": "variant.string_literal_list",
+      "status": "stock-generator-only producer chain inactive in all14 current profiles; no new probe/profile recommended",
+      "stock": [
+        "expr.c:42372-42381 only BACK_END_IS_CP_GEN_BE prototype function-name string creates dependent ck_string wrapper (sets func_name_tok then force_constant_to_be_dependent)",
+        "Only other force_constant_to_be_dependent caller is exprutil.c:17996 for pointer-to-member constants, not strings",
+        "literals.c:2618-2624 dependent concatenation requires tpck_dependent_constant around ck_string;2660-2673 preserves ordered part list",
+        "il.c:22551-22585 copies already-existing concat list during substitution; not independent seed producer",
+        "il_def.h:5472-5478 list entries explicitly ck_string or dependent_constant wrapping ck_string"
+      ],
+      "guard": "Recorded BACK_END_IS_CP_GEN_BE=0 in every current14 profile, while prototype_instantiations_in_il=1. This is configuration evidence, not zero-row inference.",
+      "expected": "Classify current stock-generator inactive with source chain and guard proof; retain adapter for represented shape. Do not enable C++ text backend or invent concat constants just to activate it."
+    }
+  ],
+  "existing_writer": "roslyn_constants.h maps conversion_type and wrapper value/type plus constant_component dependent; concat ordered dependent_constant_element plus occurrence components. No missing adapter diagnosed.",
+  "limits": "Minimal active recipes are uncompiled; native decides later bounded grouped activation. Do not globally exclude active constant wrapper merely because concat string producer is stock-generator-only."
+}

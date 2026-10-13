@@ -1,0 +1,118 @@
+{
+  "status": "ready-held",
+  "owned_files": [
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "7434eb508d08f3f70bfa8acd4167b6554aed3d430f639de9a195cbb68130d50f"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/RoslynObj.Tests/ExpressionIdentityProjection.cs",
+      "sha256": "4543d18e10b57b5aebfcff8085ae1cc55a1eafaee147100eaeb0153bda05544d"
+    },
+    {
+      "path": "edgcpp/roslyn/managed/expression-identity251-evidence.tsv",
+      "sha256": "14b04a7bfbe7bf981bbd84dca794e40617c6da2d5b8c42e6e3ccfa1eee5d891b"
+    }
+  ],
+  "contract": "251 tables/39145 stable kinds/current4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "tests": {
+    "existing8_assertions": 1048,
+    "fresh4_assertions": 101,
+    "distinct_paths": 12,
+    "self": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator": "249 tables/1941 properties; --check passed",
+    "diff_and_untracked_whitespace": "passed"
+  },
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-expridentity251-build-final.log",
+      "sha256": "5fe68926c3e1a023fa248463142952958932a59347f2faa8c092c51db0b1aae8"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-expridentity251-existing8-final.log",
+      "sha256": "169043b74cdbdd878d7b670306dec68cff769d0e2659835458d1579ac9f7a16e"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-expridentity251-fresh4-final.log",
+      "sha256": "89ca0eb94a71f78ebbf029549d256de8a6f8906e070aef327435ff1b8cada7e0"
+    },
+    {
+      "path": "/tmp/roslynobj-managed-expridentity251-self.log",
+      "sha256": "a36c06a9ebc1349e7200b3fc50c597fb4df85d5ec8c811aaca6e016486c5e7b2"
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/cleanup_semantics.roslynobj",
+      "sha256": "e03929917862b396c4b7d025963797f676e8df01b03f738a5ce84d9079097b7f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "sha256": "ac683fbc9530fa298a26d7b7ccb61b515112e77c3e6628f63382638b48e76865"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/retained.roslynobj",
+      "sha256": "530d5954caa36d6475c82311ec16325424e045974e12e7b6c075f21e9f5f5747"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/retained.roslynobj",
+      "sha256": "1f0a3c325ac7d7889f2f6768afb765fa18a2f72ef108f789d65539d8d05f7d4f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/member_pointers.roslynobj",
+      "sha256": "41aa5131e3750aef47daeb8c144f23e851ed8f62f3cf78355dbac62c14a7a8be"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_statements.roslynobj",
+      "sha256": "055a04e1eeacf849f064d87282e4ae271957a566b5e8e79eca8001fa3d1f48e2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/execution_c.roslynobj",
+      "sha256": "da71a08d36b1ddfa9d9a19bc157f6fdfc1bb24256f98298e75126fa3ad93118d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/constant_occurrences.roslynobj",
+      "sha256": "8e8c028fe5b8b67bb7db0429c711f02a0960a539e365068f0cc018750473a09e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/usl21/throw_accessible.roslynobj",
+      "sha256": "cfc7de0f4f64b81d52d7b381185b6f9999b588de18a657eae5c1bb27e8451155"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/usl30/throw_accessible.roslynobj",
+      "sha256": "450de44edc12729dd8325211f711f860a2945398949057f2597e6d33619d364a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/native/scoped_assume.roslynobj",
+      "sha256": "d79638cc732748af8c6ab4a9006cd3800a908de7171e6073c14bd555efcfa0c9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/source/scoped_assume.roslynobj",
+      "sha256": "2f4c9892cb68ab2db5b6ce0077fb018cf2ae32fd1c3d9a8b2c73154286f27be7"
+    }
+  ],
+  "proof_tsv": "edgcpp/roslyn/managed/expression-identity251-evidence.tsv",
+  "proof_rows": {
+    "existing_selected_fields": 19,
+    "native_fresh_fields": 7,
+    "custom_kind_getter_families": 2
+  },
+  "meaningful_guard_and_identity_notes": [
+    "No schema, fingerprint, native adapter or public facade changes. Program hook plus one focused helper and field-sized evidence only.",
+    "Original const glvalue descriptor is distinct from current unqualified prvalue; no current value-category recovery.",
+    "Asm common parent/routine pointers are actually null; canonical owner reverse link retained with no body-ownership fallback.",
+    "Reuse recipe has no evaluated reuse-to-init edge, while actual independent initializer site retains active role.",
+    "Numeric EH states resolve current routine regions or actual null-state sentinel; conditional then/else EH edges do not assert unconditional catch execution.",
+    "USL throw-base lists match native exact raw list/context/order proof, not a reader access calculation.",
+    "Scoped assume actual direct expr is null in raw stock; public normalized expression comes from exact retained lerk_scoped_expr referrer/context and stays metadata."
+  ],
+  "explicitly_unclaimed": [
+    "Capture source_closure_field and indirect_init_capture alternatives remain unactivated/pending.",
+    "No reserved/unobserved kind activation inferred from getter-family proof.",
+    "No full211, performance, native build or source-provenance expansion."
+  ],
+  "commands_running": [],
+  "next": "Coordinator checkpoint; native held matching candidate files; remaining semantic fields remain separate bounded follow-up."
+}

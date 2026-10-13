@@ -1,0 +1,125 @@
+{
+  "families": {
+    "abi": {
+      "active": [
+        "itanium",
+        "cfront",
+        "microsoft",
+        "cfront_like"
+      ],
+      "writer": "roslyn_gen_be.c:343 IA64_ABI then target Microsoft pointer-member sizing then actual CFRONT_OBJECT_CODE_COMPATIBILITY; label is selector provenance, not a claim of complete Microsoft ABI implementation. Runtime/header capabilities remain exact independently.",
+      "api": "ObjectManifest.Target.Abi populated at RoslynObject.Open.cs:39-45 from actual catalog FK; every genuine accepted Open exercises projection."
+    },
+    "value_category": {
+      "active": [
+        "prvalue",
+        "lvalue",
+        "xvalue"
+      ],
+      "writer": "roslyn_execution.h:106 p->is_lvalue then p->is_xvalue else prvalue; exact retained category, no C++ inference.",
+      "api": "ExpressionOperation.ValueCategory and ExpressionDetails.ValueCategory; ExecutionProjection expression sweep and final211 scalar:expression batches."
+    },
+    "call_kind": {
+      "active": [
+        "direct",
+        "indirect",
+        "member",
+        "member_pointer"
+      ],
+      "writer": "roslyn_execution.h:114-137 exact current call opcode/member-pointer/operator shape and direct routine pointer; source dispatch captured independently only source profile.",
+      "api": "CallOperation.CallKind/CallExpressionDetails.CallKind; ExecutionProjection SweepFamilies final211 21 actual CallKind batches."
+    },
+    "definition_state": {
+      "active": [
+        "complete",
+        "incomplete"
+      ],
+      "writer": "roslyn_layout.h:89 retained stock incompleteness selects complete/incomplete; dependent layout/type availability and record flags stay independent. dependent vocabulary has no writer.",
+      "api": "RecordType.Record.DefinitionState; LayoutProjection genuine record scalar sweep final211."
+    },
+    "cleanup_kind": {
+      "active": [
+        "destructor",
+        "deallocation",
+        "guard",
+        "special"
+      ],
+      "writer": "roslyn_gen_be.c:267 exact EH action flags128 guard,4 deallocation, routine pointer destructor, else special; exception_object vocabulary has no writer. Actual exception release/freeing facts remain target/storage/initialization flags, not reconstructed category.",
+      "api": "CleanupAction.Kind/Details.Kind; existing exact decoded storage tests and navigation; dedicated Kind scalar getter proof queued in bounded managed next pass.",
+      "getter_pending": true
+    },
+    "storage_location_kind": {
+      "active": [
+        "direct_variable",
+        "indirect_variable",
+        "receiver_relative",
+        "static_address",
+        "no_object",
+        "thrown_object_relative"
+      ],
+      "writer": "roslyn_gen_be.c:227-234 exact EH handle kinds/address/stack-offset plus recorded indirect/receiver flags; actual thrown-object and no-object audited flag+signature classification. Signed byte offsets retained, unknown handles fail.",
+      "api": "CleanupStorageLocation.Kind; SemanticProjection cleanup_semantics exact no_object/thrown/direct/receiver values, routine/EH navigation. Shared getter exercised, all six actual kinds materialized separately."
+    },
+    "specialization_kind": {
+      "active": [
+        "retained_specialization"
+      ],
+      "writer": "roslyn_templates.h:308-311 retained is_specialized flag links actual entity without guessing explicit/partial/implicit source syntax; those three historical labels reserved.",
+      "api": "TemplateSpecialization.Kind; Program.cs:381 exact retained_specialization and selected.Entity identity."
+    },
+    "template_argument_role": {
+      "active": [
+        "primary",
+        "selected_partial"
+      ],
+      "writer": "roslyn_templates.h:318-320 passes actual primary list and retained selected partial list; typeref originals use separate relation and never selected-partial mislabel.",
+      "api": "TemplateInstantiation.ArgumentMappings[].Role/Arguments/SelectedPartialArguments; Program.cs:427 actual primary+selected_partial canonical arguments/order."
+    },
+    "instantiation_state": {
+      "active": [
+        "concrete",
+        "dependent",
+        "suppressed"
+      ],
+      "writer": "roslyn_templates.h:275-315 retained prototype/nonreal/dependent and do_not_instantiate flags with priority dependent then suppressed then concrete; external_definition vocabulary unproduced, exact body/definition flags remain separate.",
+      "api": "TemplateInstantiation.State/Details.State; native values observed, navigation currently excludes SemanticKind; dedicated state getter proof queued in bounded managed next pass.",
+      "getter_pending": true
+    },
+    "exception_specification_kind": {
+      "active": [
+        "dynamic",
+        "noexcept"
+      ],
+      "writer": "roslyn_type_support.h:2-9 null pointer means no descriptor; nonnull is_noexcept selects noexcept else dynamic. Dependence retained separately in IsDependent, not guessed dependent category. none/dependent vocabulary reserved. Active cached/copy-prototype union guards exact.",
+      "api": "ExceptionSpecification.Kind/Details.Kind; RoutineProjection genuine scalar specification sweeps final211."
+    },
+    "capture_kind": {
+      "active": [
+        "copy",
+        "reference",
+        "this",
+        "star_this",
+        "initialization"
+      ],
+      "writer": "roslyn_expressions_extra.h:42-60 actual initcapture, parameter-reference/this-variable and capture_by_reference flags select current recorded capture descriptor category; capture variable/field/indirect/source union links separately guarded.",
+      "api": "LambdaCaptureDetails.Kind; SemanticProjection lambda_capture genuine scalar batches final211. this/star_this active writer unobserved in211, never positive proof from copy/reference/init neighbors."
+    },
+    "root_kind": {
+      "active": [
+        "resident_region",
+        "scope_orphan",
+        "nontag_type",
+        "file_scope_statement"
+      ],
+      "writer": "roslyn_entities.h:48-67 exact header resident region scopes, nontag types, file-scope statement reachability and orphan headers. file_initializer/retained_declaration historical vocabulary reserved; real file dynamic initializers/routines/source statements captured in separate exact relations.",
+      "api": "TranslationUnit.Roots[].Kind; ExecutionMetadataProjection.cs:9 exact metadata header roots; NavigationFamilies reaches other actual root entities, no execution-order inference."
+    }
+  },
+  "summary": {
+    "observed_active": 37,
+    "unobserved_active": 3,
+    "reserved": 10
+  },
+  "observations": "custom50-observed-finalfive.json",
+  "policy": "Exact current write-site/native FK observation and generated/ordinary getter proof; owner payload and active alternative positives remain separately required. Seven active labels retain explicit pending shared getter proof."
+}

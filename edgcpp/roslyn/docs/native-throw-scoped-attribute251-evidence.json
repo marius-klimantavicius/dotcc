@@ -1,0 +1,87 @@
+{
+  "checkpoint_base": "51da08ee12b3704811c6f6e1bcae239b42134d74",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "8e9dd354590e025cf5606a166c510a69bdcafb6ea24d511ee17df61230428568"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/profile_smoke.py",
+      "sha256": "b2e5b94b1f1d4695fd8f3cbdfb5e36396d8c369a4ccb90a491f7b37360c1e017"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/scoped_assume.cpp",
+      "sha256": "df79130c263fa4da8cd380976f0044db93f13e3f24ab9b512d3c6a6c17f3e351"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/throw_accessible.cpp",
+      "sha256": "489a63567e319331eb8306138e8b9325bf81cecc5d4234a6f020cedc15bca5e6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "03a816d3af9bd4d490668eec463b16381e01ab786fad0d23ebe23f74d76e642a"
+    }
+  ],
+  "candidate_owned_paths": 4,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_debugger_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/all-profile-results-final.json",
+      "sha256": "b0ac3e98d42cfc7d3753b9f968fcd3524ffb13d61ca4ce71bf2b469127ca68db"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/build-results-final.json",
+      "sha256": "477e427eb8c7f43d9185dddd30965778007d01a0554cb2311aeb3dc5e081ffee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/validation-summary-final.json",
+      "sha256": "56192fe530cd99babcf14ef330d82ac6ab49309235283211256e446c2c95d719"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/activation-proof.json",
+      "sha256": "5620e90195d64724f51fca2e731a60ae9a214ee530c264db528623230edb6f3b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/field-evidence.tsv",
+      "sha256": "19bfba7cb4be4e5b3112391bea6a31801074cb5e50794f104572b5e67d2b0ff7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/retained-route.gdb",
+      "sha256": "5c13907c50edb912ffe4b77f2eca496b3c0a7c83556d70c0a665d303a92f2eba"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/throw-scoped-attribute/existing-guard-proof-all14.json",
+      "sha256": "faa8c204552d7b5a170510dfcdff2c71e5b456c42520985efb940b06fd20a374"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-throw-scoped-attribute-evidence251.tsv",
+  "public_gate": "managed pending",
+  "actual_positives": {
+    "usl21": "four actual object/pointer throws and10 exact ordered accessible-base pointers",
+    "usl30": "four actual object/pointer throws and10 exact ordered accessible-base pointers",
+    "native": "one local attribute argument, scoped wrapper directexprNULL and exact lerk expression; metadata7002",
+    "source": "one local attribute argument, scoped wrapper directexprNULL and exact lerk expression; metadata7002"
+  },
+  "raw_evidence": "Raw final trace paths under raw-traces; omitted-standard-option trace is excluded preliminary evidence"
+}

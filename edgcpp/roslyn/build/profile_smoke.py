@@ -24,6 +24,7 @@ if args.profile == 'sun':
              ('basic', ['--c++20', '--sun'])]
 elif args.profile in ('usl21', 'usl30'):
     cases = [('profile_usl', ['--c++03', '--cfront_2.1' if args.profile == 'usl21' else '--cfront_3.0']),
+             ('throw_accessible', ['--c++03', '--cfront_2.1' if args.profile == 'usl21' else '--cfront_3.0', '--exceptions']),
              ('basic', ['--c++20'])]
 elif args.profile == 'instantiation':
     for sidecar in (output / 'instantiation.ii', output / 'instantiation.ti'):

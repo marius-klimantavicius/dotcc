@@ -1,39 +1,32 @@
 # Remaining phase 3–4 closure
 
-Active on 2026-10-13 at the final five-column format boundary. Current contract
-is `4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`:
-251 tables and 39,145 unchanged stable kind IDs. All 14 strict profiles pass
-316 Git-pinned stock inputs, the stock tool pin and 26 canonical backend files.
-All 211 validation instances are distinct paths and pass complete-header,
-FK, 1 KiB page, semantic-storage and expression-type checks. The final managed
-211-path navigation gate passes4437 assertions; build0 warnings/errors, self73,
-archived-e49f rejection, generator249/1941, literal/diff and bounded scale checks
-pass. Early124/PASS2610 is explicitly intermediate history.
+Current bounded USL/scoped-attribute and expression identity checkpoint: current
+4bb94 contract remains251 tables/39,145 stable kinds. Existing8 paths pass1048
+assertions and fresh4 pass101; self73/build0/generator249/1941/whitespace pass.
+All14 existing compiled stages and pins are reverified (316 stock inputs/tool,
+26 canonical backend files); new strict builds0. No new full211/scale campaign
+is claimed. The preceding final-five PASS4437/211 distinct cohort remains separate.
+Field proof is1440 verified/90 required pending,89 optional captured/15 limits;
+stock-generator inactive79. All2000 rows mapped/dispositioned. All kind labels have
+explicit source/writer/getter/reserved or active-unobserved dispositions; this does
+not certify every owner payload or demand a fixture for every enum value.
 
-Exactly five unsupported/optional/frontend slots are removed together with their
-unused generated projections. CleanupAction.IsUnordered remains nullable unknown;
-Initialization.IsUnordered is a separate retained fact. An unexpected retained
-unknown-bound non-type deduction argument fails export explicitly before union
-access, rather than dropping its integer payload or inventing a Constant.
-Every surviving column definition, index and kind row is unchanged. Eight matching
-old/new snapshots have identical surviving semantic rows; their sole nonidentity
-variation is EDG's predefined __TIME__ text. Older e49f objects are deliberately
-rejected by the new reader. This is a development contract checkpoint, not a
-migration or public version-freeze promise.
+Actual USL throws preserve recorded context-specific ordered base lists, proven
+by raw pointers and public identity; no access recomputation. Scoped assumption
+arguments preserve their canonical wrapper/local-reference expression and enclosing
+routine while raw wrapper expr isNULL and the subtree remains metadata. Existing
+EH state/handler/try/epilogue, lifetime/reuse, capture and asm links pass exact
+public checks. Original const glvalue type survives beside current prvalue/type;
+asm ParentScope/EnclosingRoutine remain their actualNULL rather than body-derived
+facts. Thirty-one owner/utility proof rows close, one dependent-string concat row
+is stock-generator inactive by exact14-profile guard/producer-chain evidence.
 
-Required field proof remains 1409 verified and 122 mapped pending validation.
-All 2,000 rows have a mapping or explicit disposition; no raw/planned adapter rows
-remain. The remaining work is exact public identity/ordering proof, absent retained
-branch examples and stock/profile disposition review. No confirmed new missing
-native dispatch or API implementation is open in the reviewed queue. Scoped
-availability, workspace/artifact identity, private bulk loading, bounded reader
-caches and packaging are implemented and have genuine acceptance. Full M0–M5
-stays open until required semantic proof and final release documentation close.
-C++/CLI/CX and semantic linking are excluded. Source locations are optional.
-
-Older bounded milestones and the 187-path e49f baseline remain historical evidence;
-the new 211-path cohort includes their recent metadata, declaration, constant and
-prototype/UUID probes. Do not relabel old assertions as current executions.
+Next native lane is stock IFC-backed module5 metadata; then bounded master/deferred,
+variable-template defaults/partials, dependent constant/name/reflection recipes.
+Next managed lane is existing list/control/handler/MS and remaining routine/type
+identities. No confirmed current adapter or factory implementation defect is open;
+missing retained alternatives and exact positive identities remain required. Partial
+EH/core/source restrictions stay unchanged. Full phases3–4/M0–M5 remains active.
 
 ## Current implementation and integration
 
@@ -60,7 +53,7 @@ prototype/UUID probes. Do not relabel old assertions as current executions.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are1409 verified and122 mapped pending-validation fields at this boundary.
+There are1440 verified and90 mapped pending-validation fields at this boundary.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.
 All active adapters reviewed so far exist; residual rows are exact public identity

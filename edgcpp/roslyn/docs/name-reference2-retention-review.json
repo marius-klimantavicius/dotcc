@@ -1,0 +1,30 @@
+{
+  "scope": "NameReference.DestructorType and OriginalTemplateArguments; active source name-form retention only",
+  "observed": "/tmp/roslyn-root-name-reference2-observed.json",
+  "fresh211": "Both owner-specific links have zero positives; this is not global inactive proof.",
+  "recipe": "struct NamedDestructor { ~NamedDestructor(); };\nusing DestructorAlias = NamedDestructor;\nvoid explicit_alias_destructor(NamedDestructor* p){ p->~DestructorAlias(); }\ntemplate<class T, int N=7> int named_overload(T){ return N; }\ntemplate<class T> int named_overload(T*){ return 2; }\nint explicit_template_names(){ return named_overload<int,9>(1) + named_overload<int>(1); }\n",
+  "profile": "Existing source --c++20 with already-enabled name-form retention; no CREATE_LEXICAL_TYPEREFS change, raw-token spelling recovery or core patch. Native comparison optional only if useful.",
+  "destructor": {
+    "stock": [
+      "il_def.h:2651-2657 specifically named type after ~ when different from class name or keyword; direct ~Class need not populate link",
+      "lexical.c:24256-24277 make_name_reference_from_locator copies exact locator destructor_type",
+      "exprutil.c:6101-6108 attaches allocated name reference to actual routine node",
+      "lexical.c:24315-24406 allocates/reuses IL a_name_reference; source-correspondence links retained, FE hash map is not required/readable by backend"
+    ],
+    "expected": "Actual destructor routine reference carries alias type descriptor through NameReference.DestructorType; selected destructor canonical routine still belongs to underlying NamedDestructor. No inferred named type from parent class.",
+    "limit": "Nonclass pseudo-destructor can become no-op; use real nontrivial declared destructor to retain a callable operation. Alias syntax is ordinary C++ and does not need lexical-type retention expansion."
+  },
+  "original_args": {
+    "stock": [
+      "lexical.c:24279-24303 records explicit count; functions defer list until overload selection",
+      "expr.c:8817-8822 saves name form before EDG overload selection;8853-8877 restores, converts nontype argument values to selected parameter types and removes trailing defaults before storing orig_template_arg_list",
+      "exprutil.c:24778-24786 another producer for explicit template reference resolving to single function",
+      "exprutil.c:6109-6121 clears equivalent original list only in variable-node branch when same lexical arguments or name-form recording disabled; do not extend this consumption claim to routine references",
+      "lexical.c:24331-24339 prototype guard inactive when prototype_instantiations_in_il true; actual functions avoid relying on prototype-only name references"
+    ],
+    "expected": "For named_overload<int,9>, actual routine NameReference records two explicit arguments; named_overload<int> records one explicit argument while selected concrete routine instantiation includes default N=7. Exact selected call target and both ordered lists remain distinct.",
+    "limit": "orig_template_arg_list is EDG retained and converted semantic argument form, not raw source token spelling. Do not reconstruct argument list from selected instance when absent."
+  },
+  "existing_export_api": "roslyn_names.h:18 guarded destructor_type;25 ordered original_template_argument rows. NameReferences.cs:11 DestructorType and20 OriginalTemplateArguments already idiomatic.",
+  "status": "Uncompiled bounded recipes only; no implementation defect found. Ignore and do not commit unrelated exploratory name_reference_overloads.cpp."
+}

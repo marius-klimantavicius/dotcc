@@ -1223,3 +1223,39 @@ activation and exact public identities remain mandatory. Next native USL throw a
 scoped-attribute probes precede module IFC metadata; managed checks existing
 expression/EH/asm/capture links. Semantic authority remains EDG. Full phases3–4/M0–M5
 continue without an approval pause or public version freeze.
+
+
+### Accepted contextual throw/scoped metadata and expression identities
+
+Current4bb94/251/39,145 format is unchanged. Eight existing objects pass1048
+and four fresh objects pass101 (12distinct total); self73, clean build,
+generator249/1941 and whitespace checks pass. Fourteen unchanged compiled stages
+retain316 pinned stock inputs/tool and26 canonical backend bytes; no new strict
+build/full211/scale test. Evidence: native-throw-scoped-attribute251-evidence.json,
+managed-expression-identity251-evidence.json, managed/expression-identity251-evidence.tsv,
+throw-scoped4-independent.json and expression-identity251-proof-joins.json.
+
+USL21/30 each preserve four object/pointer throws with10 ordered accessible-base
+relations; member/external contexts match raw stock pointers and IDs. Scope-local
+assumption arguments share actual wrapper/referrer/expression/routine IDs. Direct
+wrapper exprNULL is stock normal; context resolves only through retained lerk entry.
+Condition subtrees stay metadata with no evaluated body edge. No core/config/adapter
+change was needed: tiny genuine inputs activate existing native profiles.
+
+Typed tests prove15 expression/EH owner fields, two asm fields, two captures,
+seven fresh fields, four existing source/list scalar/identity joins and one label
+utility payload (31required rows). Field1440verified/90pending; independent consumed
+CP-generator string-concat seed exclusion moves inactive_stock_generator78→79.
+Other two dependent constant wrapper/conversion fields remain active pending.
+Shared instance-state/action-kind getters have real46/66descriptor reads. All kind
+labels now have explicit exact active/reserved/unobserved dispositions, with no
+payload-wide or runtime-every-kind claim. Original field const glvalue type and
+current prvalue are distinct. Asm actualParentScope/EnclosingRoutineNULL staysNULL;
+reuse points to an earlier recipe without reevaluation, while independent real
+initialization remains active. Numeric EH states/sentinels and epilogues retain
+canonical routine/handler/try relationships. No source/lifetime/access reanalysis.
+
+Remaining module, template/default, reflection/token, dependent constant and other
+record alternatives are bounded genuine-producer queues. Source-backed recipes are
+explicitly uncompiled until the native lane runs them. Existing pointer/list/control
+proof continues in parallel. Full phases3–4/M0–M5 remains open; no approval pause.

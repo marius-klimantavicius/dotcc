@@ -1,32 +1,33 @@
-# Final five-column format gate; next bounded semantic proof
+# Accepted bounded throw/scoped and expression identities; next module metadata
 
-Current format is251 tables/39,145 stable kinds, framed SQL/catalog fingerprint
-`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
-The final-five producer/reader cleanup is implemented. All14 strict/pinned stages
-and211 distinct current-format objects pass native publication gates. Final managed
-211 navigation passes4437 after exact IA64/macro-profile assertion corrections;
-self73, clean generation/build and genuine archived-e49f admission rejection pass.
-Early124/PASS2610 is intermediate evidence. Five generated properties are removed (249bindings/1941
-properties), with no changed survivor property types. Field proof1409/122 remains.
+Current bounded USL/scoped-attribute and expression identity checkpoint: current
+4bb94 contract remains251 tables/39,145 stable kinds. Existing8 paths pass1048
+assertions and fresh4 pass101; self73/build0/generator249/1941/whitespace pass.
+All14 existing compiled stages and pins are reverified (316 stock inputs/tool,
+26 canonical backend files); new strict builds0. No new full211/scale campaign
+is claimed. The preceding final-five PASS4437/211 distinct cohort remains separate.
+Field proof is1440 verified/90 required pending,89 optional captured/15 limits;
+stock-generator inactive79. All2000 rows mapped/dispositioned. All kind labels have
+explicit source/writer/getter/reserved or active-unobserved dispositions; this does
+not certify every owner payload or demand a fixture for every enum value.
 
-After this checkpoint, native takes two bounded recipes in existing profiles:
-USL21/30 accessible throw-base lists and C++23 scoped [[assume]] attribute arguments.
-Then stage the reviewed stock IFC-backed module partition/header/import-attribute
-recipes. Managed takes a bounded existing expression/EH/asm/capture identity batch,
-separate from new retained-branch activation. Root reviews exact stock retention
-and unused custom discriminator labels. No schema mutation is planned for these
-semantic batches; missing payloads must be concrete before adding a field.
+Actual USL throws preserve recorded context-specific ordered base lists, proven
+by raw pointers and public identity; no access recomputation. Scoped assumption
+arguments preserve their canonical wrapper/local-reference expression and enclosing
+routine while raw wrapper expr isNULL and the subtree remains metadata. Existing
+EH state/handler/try/epilogue, lifetime/reuse, capture and asm links pass exact
+public checks. Original const glvalue type survives beside current prvalue/type;
+asm ParentScope/EnclosingRoutine remain their actualNULL rather than body-derived
+facts. Thirty-one owner/utility proof rows close, one dependent-string concat row
+is stock-generator inactive by exact14-profile guard/producer-chain evidence.
 
-Later native recipes are shared master/init-expression lifetime and legitimate
-const-evaluation deferred default argument/member initializer wrappers. Current
-zero rows do not establish global unavailability. Readers use EDG-folded results,
-never re-evaluate defaults or recover frontend caches.
+Next native lane is stock IFC-backed module5 metadata; then bounded master/deferred,
+variable-template defaults/partials, dependent constant/name/reflection recipes.
+Next managed lane is existing list/control/handler/MS and remaining routine/type
+identities. No confirmed current adapter or factory implementation defect is open;
+missing retained alternatives and exact positive identities remain required. Partial
+EH/core/source restrictions stay unchanged. Full phases3–4/M0–M5 remains active.
 
-The final-five archived/current comparison, exact minimal-column policy and
-private-publication gates remain explicit. The next release freeze follows semantic
-closure; there is no old-development compatibility or migration promise. Preserve
-partial EH, actual lifetimes and EDG scheduling. No core, position campaign,
-semantic inference, corruption tests or cross-object linking.
 
 ---
 

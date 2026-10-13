@@ -1,0 +1,27 @@
+{
+  "scope": "a_constant aggregate/dynamic_init.field_or_base optimized-empty occurrence identity",
+  "conclusion": "Do not classify globally consumed yet. Ordinary executable/static aggregate consumers remove them, but retained template defaults/prototype scopes are distinct potential roots not covered by that argument. A bounded native positive probe is warranted.",
+  "stock_producer": [
+    "il.c:6339-6380 add_constant_to_aggregate, DO_IL_LOWERING, sets initializes_empty_object and exact field/base union when EDG layout marks optimized empty",
+    "layout.c:2683 sets optimized empty field for no_unique_address with empty class;2939 etc optimized empty bases",
+    "il_def.h:5284-5298/5319-5326 restricts actual field/base union to ck_dynamic_init/ck_aggregate"
+  ],
+  "ordinary_consumers": [
+    "lower_init.c:6701-6727 selects exact recorded field/base, sets remove_constant;7033-7047 unlinks occurrence after lowering its actual initializer",
+    "lower_il.c:5184-5203 lowers aggregate children then removes flagged empty aggregate occurrences",
+    "lower_il.c:9002-9036 lowers actual tak_nontype template argument constants, so ordinary concrete NTTP argument is not sufficient as a retention argument"
+  ],
+  "retained_boundary": [
+    "lower_il.c:9353-9365 skips ignore_type_in_back_end;10047 skips ignored routines;22399-22404 skips prototype orphan scopes",
+    "Template parameter default_arg_constant is separate from actual template argument lists; lower_il contains no direct a_template_parameter/default_arg_constant traversal. This alone is not complete proof that no other root mutates/shared-copies the constant.",
+    "roslyn_templates.h emits actual retained template parameter default constant; roslyn_routines.h:155-169 follows retained scope_for_routine_or_null even for dependent prototype, marks body availability from actual pointer. No recovery if scope absent."
+  ],
+  "candidate_cpp": "struct EmptyBase {};\nstruct EmptyField {};\nstruct EmptyAggregate : EmptyBase { [[no_unique_address]] EmptyField field; int value; };\ntemplate<EmptyAggregate Value = EmptyAggregate{{}, {}, 17}> struct KeepsEmptyDefault {};\nKeepsEmptyDefault<> actual_default;\nstruct DynamicEmptyBase { DynamicEmptyBase(int); };\nstruct DynamicEmptyField { DynamicEmptyField(int); };\nstruct DynamicAggregate : DynamicEmptyBase { [[no_unique_address]] DynamicEmptyField field; int value; };\ntemplate<class T> int retained_empty_init(int n){ DynamicAggregate value{DynamicEmptyBase(n), DynamicEmptyField(n), n}; return value.value; }\nint actual_empty_init(){ return retained_empty_init<int>(3); }\n",
+  "profile": "Existing native --c++20; source DO_IL_LOWERING0 cannot seed these members. No new profile, helper call, keep-freed patch or layout inference.",
+  "assertions": [
+    "If retained flagged occurrences exist, verify aggregate versus dynamic_init active arm, exact base/field target and occurrence ownership from EDG.",
+    "Concrete executable initialization may legitimately lack empty aggregate occurrences while containing EDG-generated selected constructor calls; do not recreate removed records.",
+    "Use raw read-only trace if needed to determine whether default/prototype occurrence was copied or lowered; no semantic helper invocation."
+  ],
+  "limits": "Recipe not compiled by root. A negative fixture cannot alone prove all accepted configurations consume every possible root. Constructor declarations suffice for frontend generation; no linker needed."
+}

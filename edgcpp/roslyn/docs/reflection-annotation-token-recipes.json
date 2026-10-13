@@ -1,0 +1,32 @@
+{
+  "scope": "Semantic reflection annotation list and injection token/interpolation payloads, not optional trivia",
+  "annotation": {
+    "stock": [
+      "interpret.h:170 registers std::meta::reflect_constant<T>(.) -> reflection;378 registers data_member_spec(info,any-options)->info",
+      "interpret.c:13198-13261 reflect_constant scalar produces actual iek_constant reflection",
+      "interpret.c:21236-21340 reads options by declaration position: name,alignment,bitwidth,no_unique_address,annotations",
+      "interpret.c:20953-20985 optional helper returns disengaged when false boolean flag; no name/int payload read",
+      "interpret.c:21013-21066 annotations range read from first two actual pointer members pointing within one reflection array",
+      "interpret.c:20988-21010 accepts value reflection or existing ak_annotation reflection",
+      "interpret.c:21191-21233 builds ordered ak_annotation/af_std/on_primary_declaration with aak_constant arguments;21373+ define_aggregate later attaches same list"
+    ],
+    "candidate": "namespace std::meta {\nusing info=decltype(^^void);\ntemplate<class T> consteval info reflect_constant(T);\nstruct absent_option { bool engaged; };\nstruct annotation_range { const info* begin; const info* end; };\nstruct data_member_options { absent_option name, alignment, bit_width; bool no_unique_address; annotation_range annotations; };\nconsteval info data_member_spec(info, data_member_options);\n}\nconstexpr std::meta::info annotation_values[] = { std::meta::reflect_constant(17), std::meta::reflect_constant(23) };\nconstexpr auto annotated_member_spec = std::meta::data_member_spec(^^int, {{false},{false},{false},false,{annotation_values,annotation_values+2}});\n",
+    "limits": "Minimal ordinary C++ intrinsic declarations/options wrapper follows exact pinned interpreter positional contract, extending existing empty-options fixture; not a portable replacement std::meta library or database fabrication. Recipe uncompiled. If native chooses actual upstream library declarations, keep same semantics; no broad library-layout campaign.",
+    "assertions": "DataMemberSpecification.Type int; actual ordered2 annotation attributes with constant values17/23 and same exact constant identities; do not derive annotation from options independently in exporter."
+  },
+  "token_sequence": {
+    "stock": [
+      "il_def.h:4676-4705 tokens are semantic source sequence payload; frontend token_cache forbidden, evaluated sequences intentionally tokensNULL",
+      "expr.c:21084-21104 records token_kind and independent IL spelling copy",
+      "expr.c:21107-21150 scans interpolation operands into separate expression list; no constant evaluation required for val operand at scan",
+      "expr.c:21154-21281 records tokens excluding interpolation operands, preserves delimiters, binds ordered interpolation list",
+      "lexical.c:10341-10384 recognizes backslash val(...),str(...),[...],{...},splice delimiters",
+      "interpret.c:21767+ evaluated sequence can use frontend cache and has no tokens; backend must not read cache",
+      "roslyn_expressions_extra.h:6-13 token rows;249-252 sequence and ordered metadata operands already exported"
+    ],
+    "candidate": "template<int N> consteval auto retained_token_pattern(){ return ^^{ int generated_value = \\val(N); }; }\n// Optional second context: constexpr auto evaluated_tokens = retained_token_pattern<7>();\n",
+    "profile": "Existing source reflection profile C++26 plus stock --injection switch; no build/profile change. Start with retained dependent prototype so sequence is not evaluated away; optional instantiation demonstrates evaluated versus source form separately.",
+    "assertions": "Actual retained sequence tokens have ordered kinds/spellings, including val delimiters and ordinary identifier; N lives in ordered interpolation expression list, not duplicated as sequence tokens. Keep prototype metadata out of actual evaluated execution traversal. No whitespace/comments/location assertions."
+  },
+  "status": "Read-only producer/recipe review. Native must confirm real activation; no claims of positive materialization yet; no helper/interpreter/cache recovery in backend."
+}

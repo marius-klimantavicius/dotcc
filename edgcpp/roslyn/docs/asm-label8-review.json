@@ -1,0 +1,55 @@
+{
+  "scope": "8 asm/list/label fields; existing accepted final211 and ExpressionIdentityProjection PASS1048, no new fixture/source-location work",
+  "observed": "/tmp/roslyn-root-asm-label8-observed.json",
+  "ready": [
+    {
+      "owner": "an_asm_operand",
+      "member": "constraints",
+      "evidence": "roslyn_execution.h:85-89 direct parsed chain; ExecutionMetadataProjection:38 exact canonical owner and real operand ordinal;44 actual singleton aoc_reg_integer; Program574 constraint count equals actual operand count. Source source_statements parsed3 singleton constraints and gnu_asm_modify actual1.",
+      "limit": "Positive parsed constraints; no multi-alternative separator sequence assertion is claimed for this owner."
+    },
+    {
+      "owner": "an_asm_operand",
+      "member": "expression",
+      "evidence": "ExecutionMetadataProjection:37 every exact operand expression is same argument child at same ordinal, appears once in executed body and has current role;43 exact +r source variable identity. Direct writer execution.h:91 and stmk_asm role promotion."
+    },
+    {
+      "owner": "a_label",
+      "member": "source_corresp",
+      "evidence": "CommonProjection:18 all actual correspondence.Entities roundtrip to same SourceCorrespondence including common_labels real first/second LabelSymbols; direct roslyn_common.h label association. Fresh source common_labels label202\u2192corresp204 and216\u2192218 are concrete label owners, not source-coordinate proof."
+    },
+    {
+      "owner": "a_label",
+      "member": "exec_stmt",
+      "evidence": "ExpressionIdentityProjection:117 actual asm-goto reached label\u2192LabelOperation statement\u2192same label canonical identity; Source source_statements label1477\u2192statement1482. Direct writer roslyn_common label p->exec_stmt."
+    }
+  ],
+  "bounded_existing_assertion_hints": [
+    {
+      "owner": "an_asm_operand",
+      "member": "next",
+      "evidence": "Actual two operands on source_statements asm owner1505 ordinals0(output expr1517),1(input expr1524); existing tests count kinds and compare each edge ordinal but do not explicitly assert ordered operand target/kind sequence.",
+      "hint": "On existing ordinary inline_assembly statement, assert Operands roles [output,input], ordinals[0,1], actual parameter/local targets. No new fixture."
+    },
+    {
+      "owner": "a_named_register_list",
+      "member": "next",
+      "evidence": "Current source_statements each of two descriptors has exactly1 clobber ordinal0. Program574 requires singleton but no canonical owner/ordinal assertion. There is no positive multi-clobber link in that fixture.",
+      "hint": "Existing singleton suffices to assert owner/ordinal and no extra entry if accepting bounded list proof; document no multi-element observation rather than pretending ordered plurality was tested. No new fixture requested."
+    },
+    {
+      "owner": "a_named_register_list",
+      "member": "reg",
+      "evidence": "Source source_statements both clobbers kind320002; existing Program574 only requires RegisterKind nonnull, not selected register value.",
+      "hint": "Assert actual catalog name anr_memory plus canonical owner on existing singleton; direct kind helper semantics from EDG, not register parsing."
+    },
+    {
+      "owner": "a_label",
+      "member": "next",
+      "evidence": "ScopeRelations13 compares rows to public Members and sorted ordinals, but does not assert independent expected label sequence. Actual source common_labels owner201 has (ordinal1,first202),(ordinal2,second216); source_statements owner1216 has first1217,second1227.",
+      "hint": "On existing relevant scope assert OfType<LabelSymbol>() exact [first,second] sequence and same canonical label/Target objects, distinct from CFG execution ordering. No new fixture."
+    }
+  ],
+  "summary": "4 exact existing joins ready;4 conservative tiny existing-object identity/order hints, not new exporter/API gaps. Singleton list limitation explicitly retained.",
+  "note": "Do not promote source coordinate fields from label source-correspondence semantic association."
+}

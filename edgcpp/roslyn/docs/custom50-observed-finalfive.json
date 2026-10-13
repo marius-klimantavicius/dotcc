@@ -1,0 +1,181 @@
+{
+  "manifest": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/all-profile-results-final.json",
+  "unique_paths": 211,
+  "counts": {
+    "abi": {
+      "cfront_like": 32,
+      "itanium": 113,
+      "microsoft": 62,
+      "cfront": 4
+    },
+    "value_category": {
+      "lvalue": 2533,
+      "prvalue": 21095,
+      "xvalue": 4
+    },
+    "call_kind": {
+      "direct": 2352,
+      "indirect": 22,
+      "member": 108,
+      "member_pointer": 1
+    },
+    "definition_state": {
+      "complete": 1182,
+      "incomplete": 300
+    },
+    "cleanup_kind": {
+      "deallocation": 37,
+      "destructor": 197,
+      "guard": 6
+    },
+    "storage_location_kind": {
+      "direct_variable": 122,
+      "indirect_variable": 18,
+      "no_object": 14,
+      "receiver_relative": 170,
+      "static_address": 6,
+      "thrown_object_relative": 6
+    },
+    "specialization_kind": {
+      "retained_specialization": 11
+    },
+    "template_argument_role": {
+      "primary": 680,
+      "selected_partial": 16
+    },
+    "instantiation_state": {
+      "concrete": 238,
+      "dependent": 404,
+      "suppressed": 2
+    },
+    "exception_specification_kind": {
+      "noexcept": 1425,
+      "dynamic": 1233
+    },
+    "capture_kind": {
+      "initialization": 6,
+      "copy": 3,
+      "reference": 1
+    },
+    "root_kind": {
+      "resident_region": 2849,
+      "scope_orphan": 191,
+      "nontag_type": 28,
+      "file_scope_statement": 4
+    }
+  },
+  "first_examples": {
+    "abi": {
+      "cfront_like": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/basic.roslynobj",
+      "itanium": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/exported/basic.roslynobj",
+      "microsoft": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/basic.roslynobj",
+      "cfront": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/usl21/basic.roslynobj"
+    },
+    "value_category": {
+      "lvalue": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/basic.roslynobj",
+      "prvalue": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/basic.roslynobj",
+      "xvalue": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/retained.roslynobj"
+    },
+    "call_kind": {
+      "direct": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/basic.roslynobj",
+      "indirect": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/layout.roslynobj",
+      "member": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/routines.roslynobj",
+      "member_pointer": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/member_pointers.roslynobj"
+    },
+    "definition_state": {
+      "complete": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "incomplete": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj"
+    },
+    "cleanup_kind": {
+      "deallocation": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "destructor": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "guard": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj"
+    },
+    "storage_location_kind": {
+      "direct_variable": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "indirect_variable": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "no_object": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "receiver_relative": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "static_address": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "thrown_object_relative": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj"
+    },
+    "specialization_kind": {
+      "retained_specialization": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/variables.roslynobj"
+    },
+    "template_argument_role": {
+      "primary": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/common.roslynobj",
+      "selected_partial": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/variables.roslynobj"
+    },
+    "instantiation_state": {
+      "concrete": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/common.roslynobj",
+      "dependent": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/common.roslynobj",
+      "suppressed": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/instantiation/instantiation_flags.roslynobj"
+    },
+    "exception_specification_kind": {
+      "noexcept": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/basic.roslynobj",
+      "dynamic": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj"
+    },
+    "capture_kind": {
+      "initialization": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/template_edges.roslynobj",
+      "copy": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/retained.roslynobj",
+      "reference": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/retained.roslynobj"
+    },
+    "root_kind": {
+      "resident_region": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/basic.roslynobj",
+      "scope_orphan": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/cleanup_semantics.roslynobj",
+      "nontag_type": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/cfront/execution_cpp.roslynobj",
+      "file_scope_statement": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/native/file_scope_metadata.roslynobj"
+    }
+  },
+  "columns": {
+    "abi": [
+      "target_profile",
+      "abi_id"
+    ],
+    "value_category": [
+      "expression",
+      "value_category_id"
+    ],
+    "call_kind": [
+      "call_expression",
+      "call_kind_id"
+    ],
+    "definition_state": [
+      "record_type",
+      "definition_state_id"
+    ],
+    "cleanup_kind": [
+      "cleanup_action",
+      "kind_id"
+    ],
+    "storage_location_kind": [
+      "cleanup_storage_location",
+      "kind_id"
+    ],
+    "specialization_kind": [
+      "template_specialization",
+      "kind_id"
+    ],
+    "template_argument_role": [
+      "template_instance_argument",
+      "role_id"
+    ],
+    "instantiation_state": [
+      "template_instance",
+      "state_id"
+    ],
+    "exception_specification_kind": [
+      "exception_specification",
+      "kind_id"
+    ],
+    "capture_kind": [
+      "lambda_capture",
+      "kind_id"
+    ],
+    "root_kind": [
+      "translation_unit_root",
+      "kind_id"
+    ]
+  },
+  "limits": "Only actual FK-column occurrences, not dictionary rows; observed tag does not certify owner payload identity/order."
+}

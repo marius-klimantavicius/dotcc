@@ -1,24 +1,32 @@
 # Remaining acceptance work
 
-Current final-five format checkpoint:251 tables/39,145 stable kinds,
-`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
-All14 strict stages pass316 pinned stock inputs, stock tool and26 canonical backend
-checks. All211 validation instances are211 distinct paths and pass native gates;
-reader PASS4437/self73, clean build/generator249/1941/literal/diff and genuine
-archived-e49f Open rejection pass. Scale exports0.57s/44,220KiB and reads
-cold2.208s/warm1.572s at4096rows/128pages. Matching archived scale cardinalities
-agree, new7,487,488bytes is1KiB smaller; no repeated old/new timing claim.
+Current bounded USL/scoped-attribute and expression identity checkpoint: current
+4bb94 contract remains251 tables/39,145 stable kinds. Existing8 paths pass1048
+assertions and fresh4 pass101; self73/build0/generator249/1941/whitespace pass.
+All14 existing compiled stages and pins are reverified (316 stock inputs/tool,
+26 canonical backend files); new strict builds0. No new full211/scale campaign
+is claimed. The preceding final-five PASS4437/211 distinct cohort remains separate.
+Field proof is1440 verified/90 required pending,89 optional captured/15 limits;
+stock-generator inactive79. All2000 rows mapped/dispositioned. All kind labels have
+explicit source/writer/getter/reserved or active-unobserved dispositions; this does
+not certify every owner payload or demand a fixture for every enum value.
 
-Five minimal-column removals leave surviving column definitions/indexes/kind rows
-unchanged. Root's eight-file common-column comparison finds only stock __TIME__
-metadata variation after artifact identity/contract normalization. Unsupported
-unexpected deduction records fail export explicitly; actual retained constants,
-initializers, lifetimes, sizes, declared types and source fields remain exact.
+Actual USL throws preserve recorded context-specific ordered base lists, proven
+by raw pointers and public identity; no access recomputation. Scoped assumption
+arguments preserve their canonical wrapper/local-reference expression and enclosing
+routine while raw wrapper expr isNULL and the subtree remains metadata. Existing
+EH state/handler/try/epilogue, lifetime/reuse, capture and asm links pass exact
+public checks. Original const glvalue type survives beside current prvalue/type;
+asm ParentScope/EnclosingRoutine remain their actualNULL rather than body-derived
+facts. Thirty-one owner/utility proof rows close, one dependent-string concat row
+is stock-generator inactive by exact14-profile guard/producer-chain evidence.
 
-Field proof1409verified/122required pending,89captured optional-source/15limits.
-All raw/planned rows are resolved. Scoped availability and workspace identity have
-genuine tests. Remaining work is exact existing public identities, missing retained
-branch examples and documented stock dispositions; phases3–4/M0–M5 remain open.
+Next native lane is stock IFC-backed module5 metadata; then bounded master/deferred,
+variable-template defaults/partials, dependent constant/name/reflection recipes.
+Next managed lane is existing list/control/handler/MS and remaining routine/type
+identities. No confirmed current adapter or factory implementation defect is open;
+missing retained alternatives and exact positive identities remain required. Partial
+EH/core/source restrictions stay unchanged. Full phases3–4/M0–M5 remains active.
 
 ## Historical milestone evidence
 

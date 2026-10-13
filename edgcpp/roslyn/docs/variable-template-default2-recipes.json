@@ -1,0 +1,41 @@
+{
+  "scope": "Two missing positive retained template contexts; source review only, no compiler execution",
+  "observations": "/tmp/roslyn-root-variable-template-default2-observed.json",
+  "fresh211_counts": {
+    "primary_variable_arguments": 20,
+    "partial_variable_arguments": 0,
+    "template_template_defaults": 0
+  },
+  "recipe": "template<class T> int selected_value = 11;\ntemplate<class T> int selected_value<T*> = 29;\nint* selected_address(){ return &selected_value<int*>; }\nint* primary_address(){ return &selected_value<int>; }\ntemplate<class T> struct DefaultBox { T value; };\ntemplate<template<class> class Container = DefaultBox> struct UsesDefault { Container<int> item; };\nUsesDefault<> default_instance;\n",
+  "profiles": "Existing native and source --c++20; no new configuration. Address-taking deliberately materializes variable specialization storage. Source profile retains optional template declarations without requiring inversion of lowered code.",
+  "variable_partial": {
+    "stock": [
+      "il_def.h:11183-11208 explicitly distinct primary actual list and selected partial actual list; static class data members null",
+      "symbol_tbl.h:7149-7157 routes variable symbols to variable.template_info.partial_spec_template_arg_list",
+      "templates.c:4541-4580 check_partial_specializations calls EDG matches/selection and stores selected deduced list through pointer",
+      "templates.c:31015-31026 partial declaration keeps T* primary mapping versus T partial mapping",
+      "templates.c:8127 instance assoc_template set from EDG actual selected template supplement"
+    ],
+    "existing_writer": "roslyn_variables.h:19 passes actual assoc_template,primary,partial pointers to roslyn_instance; roslyn_templates.h:320-321 preserves separate roles. Backend must never call selection helpers.",
+    "assertions": [
+      "Find concrete variable instance whose primary argument is pointer-to-int and selected partial argument is int; actual static initializer29; selected address targets canonical variable.",
+      "Primary-only int instance initializer11 and empty SelectedPartialArguments; primary actual int.",
+      "Use exact TemplateDescriptor identity links as emitted, not string/name lookup to infer selected origin. Existing TemplateInstantiation.Arguments/SelectedPartialArguments properties need no new API."
+    ]
+  },
+  "template_template_default": {
+    "stock": [
+      "templates.c:29173-29188 scan_template_template_param_default_arg stores resolved a_template pointer even if dependent token cache also exists",
+      "templates.c:32796-32830 update_il_template_parameter copies pointer into IL tpk_template default_arg_template",
+      "templates.c:2084-2093 updated default argument value synchronizes existing IL record",
+      "il_def.h:17194-17202 default is a template pointer distinct from placeholder template"
+    ],
+    "existing_writer": "roslyn_templates.h:145-149 exports placeholder separately from normalized tak_template default argument referencing actual template descriptor; Templates.cs:125-126 PlaceholderTemplate/DefaultArgument",
+    "assertions": [
+      "Container parameter DefaultArgument.Kind is tak_template and DefaultArgument.Template is actual DefaultBox descriptor, distinct from PlaceholderTemplate.",
+      "UsesDefault<> concrete instance actual template argument references same DefaultBox descriptor; typed instantiated field item uses EDG-selected DefaultBox<int>.",
+      "Do not access freed frontend cache or synthesize default from actual instantiation if declaration default absent."
+    ]
+  },
+  "limits": "Recipes are deliberately minimal and uncompiled; actual retained result determines assertions. Neither nonactivation in211 nor absence after some lowerings proves global unsupported state."
+}

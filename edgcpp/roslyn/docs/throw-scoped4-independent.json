@@ -1,0 +1,42 @@
+[
+  {
+    "profile": "usl21",
+    "fixture": "throw_accessible",
+    "tables": 251,
+    "fk_errors": 0,
+    "complete": 1,
+    "digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "raw_retained_pointer_order_matches": true,
+    "accessible_base_rows": 10
+  },
+  {
+    "profile": "usl30",
+    "fixture": "throw_accessible",
+    "tables": 251,
+    "fk_errors": 0,
+    "complete": 1,
+    "digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "raw_retained_pointer_order_matches": true,
+    "accessible_base_rows": 10
+  },
+  {
+    "profile": "native",
+    "fixture": "scoped_assume",
+    "tables": 251,
+    "fk_errors": 0,
+    "complete": 1,
+    "digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "canonical_scoped_local_expression": 392,
+    "condition_nodes_metadata": 4
+  },
+  {
+    "profile": "source",
+    "fixture": "scoped_assume",
+    "tables": 251,
+    "fk_errors": 0,
+    "complete": 1,
+    "digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "canonical_scoped_local_expression": 396,
+    "condition_nodes_metadata": 3
+  }
+]

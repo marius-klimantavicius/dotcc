@@ -53,6 +53,7 @@ CASES = {
     'constant_storage': ['--c99', '--gcc', '--gnu_version', '130000'],
     'prototype_scope': ['--c11', '--gcc', '--gnu_version', '130000'],
     'uuid_storage': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
+    'scoped_assume': ['--c++23'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

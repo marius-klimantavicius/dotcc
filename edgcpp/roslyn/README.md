@@ -12,7 +12,7 @@ Phases 3–4 are approved and in progress. The current251-table format passes
 4,437 reader assertions across211 distinct objects and14 strict pinned profiles.
 Full M0–M5 acceptance is tracked in [the implementation ledger](docs/IMPLEMENTATION.md),
 [remaining acceptance](docs/ACCEPTANCE.md), and [compatibility profiles](docs/PROFILES.md).
-There are1409 verified field rows and122 required proof rows still open; table or
+There are1440 verified field rows and90 required proof rows still open; table or
 kind presence alone does not establish complete semantic-family coverage.
 
 The build uses a clean EDG 7.0 checkout pinned at

@@ -1,0 +1,143 @@
+{
+  "changed_rows": [
+    [
+      "an_expr_node",
+      "orig_lvalue_type"
+    ],
+    [
+      "an_expr_node",
+      "variant.operation.operands"
+    ],
+    [
+      "an_expr_node",
+      "variant.constant.name_reference"
+    ],
+    [
+      "an_expr_node",
+      "variant.object_lifetime.expr"
+    ],
+    [
+      "an_expr_node",
+      "variant.object_lifetime.ptr"
+    ],
+    [
+      "an_expr_node",
+      "variant.reused_value_init"
+    ],
+    [
+      "an_expr_node",
+      "variant.lowered_eh.variant.caught_object_handler"
+    ],
+    [
+      "an_expr_node",
+      "variant.lowered_eh.variant.cleanup_region_number"
+    ],
+    [
+      "an_expr_node",
+      "variant.lowered_eh.variant.epilogue_routine"
+    ],
+    [
+      "an_expr_node",
+      "variant.lowered_eh.variant.epilogue_handler"
+    ],
+    [
+      "an_expr_node",
+      "variant.lowered_eh.variant.epilogue_try_block"
+    ],
+    [
+      "an_expr_node",
+      "variant.lowered_eh.variant.try_and_catch_expr"
+    ],
+    [
+      "an_expr_node",
+      "variant.builtin_choose_expr.operands"
+    ],
+    [
+      "an_expr_node",
+      "variant.builtin_choose_expr.choose_first"
+    ],
+    [
+      "an_expr_node",
+      "variant.initializer.dyn_init"
+    ],
+    [
+      "an_asm_entry",
+      "source_corresp"
+    ],
+    [
+      "an_asm_entry",
+      "labels"
+    ],
+    [
+      "a_lambda_capture",
+      "captured.variable"
+    ],
+    [
+      "a_lambda_capture",
+      "closure_field"
+    ],
+    [
+      "a_throw_supplement",
+      "accessible_base_classes"
+    ],
+    [
+      "an_accessible_base_class",
+      "next"
+    ],
+    [
+      "an_accessible_base_class",
+      "base_class"
+    ],
+    [
+      "an_attribute_arg",
+      "local_expr_ref"
+    ],
+    [
+      "an_attribute_arg",
+      "variant.sexpr"
+    ],
+    [
+      "a_scoped_expression",
+      "source_corresp"
+    ],
+    [
+      "a_scoped_expression",
+      "expr"
+    ],
+    [
+      "an_asm_operand",
+      "constraints"
+    ],
+    [
+      "an_asm_operand",
+      "expression"
+    ],
+    [
+      "a_label",
+      "source_corresp"
+    ],
+    [
+      "a_label",
+      "exec_stmt"
+    ],
+    [
+      "a_label_list",
+      "label"
+    ]
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1440,
+    "inactive_stock_generator": 79,
+    "mapped_pending_validation": 90,
+    "excluded_frontend_only": 59,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5
+  },
+  "kind_shared_getter_labels": 7,
+  "policy": "26 TSV positive owner rows +4 exact existing source/writer/test joins +one utility label payload. No payload promotion from dictionary observations."
+}

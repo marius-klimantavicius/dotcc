@@ -1,0 +1,56 @@
+{
+  "scope": "a_dynamic_init.master_entry/init_expr_lifetime and a_const_eval_reattempt_state.default_arg/default_mem_init",
+  "observed": "/tmp/roslyn-root-init-reattempt4-observed.json",
+  "observed_summary": "211 fresh final-five objects: zero nonnull master/init-expression lifetime links and zero retained deferred-evaluation bit rows; absence is not a global inactivity proof.",
+  "findings": [
+    {
+      "field": "a_dynamic_init.init_expr_lifetime",
+      "semantics": "Initializer full-expression temporary lifetime, distinct from lifetime of initialized object. Direct nonnull EDG link required; do not derive from scope or nested temporaries.",
+      "producer": [
+        "il_def.h:4040-4048 documents distinction",
+        "exprutil.c:3336-3373 wrap_up_dynamic_init_full_expression binds expr_stack lifetime to dynamic init",
+        "il.c:29094 addr_of_lifetime_ptr chooses init_expr_lifetime;29107+ bind sets reciprocal entity",
+        "decl_inits.c:235-277 copied default constructor arguments with temporary lifetime bind to dip"
+      ],
+      "consumer": [
+        "lower_init.c:10352-10373 pushes retained initializer temporary lifetime for lowering; constructor arrays defer to default_version_of_routine",
+        "il.c:31644-31657 deleted initializer unlinks and clears lifetime"
+      ],
+      "candidate": "struct Tmp { Tmp(); ~Tmp(); }; struct Owner { Owner(const Tmp&); ~Owner(); }; void f(){ Owner value((Tmp())); } // source profile first; parenthesized constructor initialization with destructible temporary",
+      "assertion": "Actual Initialization.InitExpressionLifetime distinct from initialized object Lifetime; exact lifetime owning initialization and destruction targets/order from EDG."
+    },
+    {
+      "field": "a_dynamic_init.master_entry",
+      "semantics": "Dependent class temporary uses master temporary storage/destruction for optimized conditional/comma rvalue. It is semantic sharing, never extra sequential execution.",
+      "producer": [
+        "il_def.h:4379-4387",
+        "exprutil.c:16870-16914 do_class_rvalue_question_optimization removes operand destructions, sets master flag and two master links",
+        "overload.c:23900-23919 comma optimization creates master and sets final operand link"
+      ],
+      "consumer": [
+        "lower_init.c:10734-10887 uses actual master variable/init_destination for initialized storage",
+        "lower_init.c:13246-13269 uses master storage/destination"
+      ],
+      "candidate": "struct Item { Item(); ~Item(); }; void take(const Item&); void choose(bool b){ take(b ? Item() : Item()); } // source profile first",
+      "assertion": "Two real operand initialization records may share exact master record; master ClassResultMaster flag and sole actual destruction retained. Do not require shape if stock EDG chooses other representation."
+    },
+    {
+      "field": "a_const_eval_reattempt_state.default_arg/default_mem_init",
+      "semantics": "Retained deferred consteval wrapper state can be semantic IL, not exclusively frontend interpreter bookkeeping. Final evaluated copies are EDG-folded constants; never ask managed reader to reevaluate.",
+      "producer": [
+        "interpret.c:11220-11277 check_constexpr_source_pos_deferred sets default_arg and default_mem_init for source-location builtins in default contexts",
+        "exprutil.c:7160-7174 failed consteval with permitted reattempt allocates enk_const_eval_deferred; copies exact state and wrapped call",
+        "il.h:1022-1052 explicit flags and merge semantics"
+      ],
+      "consumer": [
+        "il.c:23771-23823 copies deferred wrapper into correct memory region when no reattempt context; when default argument/member initializer copy flags match, invokes stock interpreter and produces constant",
+        "cp_gen_be.c:19945-19947 stock C++ generator explicitly supports retained deferred wrapper via wrapped expression"
+      ],
+      "candidate": "consteval unsigned location_value(){ return __builtin_LINE(); } void defaulted(unsigned value=location_value()); struct Deferred { unsigned value=location_value(); }; void use(){ defaulted(); Deferred instance; } // source --c++20 --g++ --gnu_version130000; actual compiler option spelling from existing recipes",
+      "assertion": "Retained declaration default wrapper/state when available, wrapped call metadata and exact target; actual used default/member initialization resolves to EDG constant. No source-coordinate recovery required.",
+      "note": "Do not exclude merely because it mentions source locations: these builtins produce C++ expression values. A bounded recipe tests retained IL; user optional-source rule still forbids reconstruction."
+    }
+  ],
+  "backend": "Existing direct export in roslyn_gen_be.c:215 and roslyn_expressions_extra.h:239-244; no missing adapter identified.",
+  "status": "Producer recipes only; root did not compile or add fixtures. Native owns any bounded activation after final-five checkpoint."
+}

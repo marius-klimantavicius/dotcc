@@ -1,0 +1,72 @@
+{
+  "native": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "source": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "cfront": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "exported": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "sun": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "usl21": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "usl30": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "host-long-double": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "host-double": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "softfloat": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "instantiation": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "tableless": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "extern-inline": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  },
+  "separate-init": {
+    "BACK_END_IS_CP_GEN_BE": "0",
+    "PROTOTYPE_INSTANTIATIONS_IN_IL": "1",
+    "prototype_instantiations_in_il": "1"
+  }
+}
