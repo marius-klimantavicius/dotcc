@@ -1,0 +1,76 @@
+{
+  "checkpoint_base": "73709e1fa01b41d53db539f50d1bc3b93e27f71d",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "b141bbfd5c377c71386bfa13194ee7a27ab3b90de43f23f8a1fd907810a9b389"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/retained_expressions.cpp",
+      "sha256": "3cffcaea8c31f7618974b4a3a20bce9f967eb7aec661e234730e8c7334ce5613"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "384ac2e0bfd8069fa6ef10c6a9c80804c673602c1e45b13a3158b1c7a677fb0e"
+    }
+  ],
+  "candidate_owned_paths": 2,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_debugger_commands_running": false,
+  "validation_instances": 2,
+  "unique_objects": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/all-profile-results-final.json",
+      "sha256": "46e75ceb5ba5e9921c84652c0b77e1ea92f0746d78726252d0112a0f391c6531"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/build-results-final.json",
+      "sha256": "477e427eb8c7f43d9185dddd30965778007d01a0554cb2311aeb3dc5e081ffee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/backend-hashes-final.json",
+      "sha256": "e2b2bbc222b02db85edf0aeef04de43c5d1a98259bfeb4e5af3f99801828047b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/validation-summary-final.json",
+      "sha256": "cf1e246d6f9d0ff4063f5b9e6f3f94fdfbb9f29e756c87e863f1612ebff4f310"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/gate-final.log",
+      "sha256": "46eb3fbe6a67dfa490bfa47d078617d49723afd678f9e278647fb0a4e4177d05"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/activation-proof.json",
+      "sha256": "d6ae8d45c3ecc8dbdb026bcb249b7a57d177e7816896196b2830d5689aa9d9d1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/field-evidence.tsv",
+      "sha256": "7e0a4944cbbd64ebe93f0ee07e25e0ef747ca707f50de238e017c9ad83b37591"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/retained-route.gdb",
+      "sha256": "18025fb6f5d6456d8283fff3c584f2c884061baf413dc4fd41806ffb2e200cc9"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-retained-expressions-evidence251.tsv",
+  "public_gate": "fresh2 PASS90; existing2 PASS137; self73",
+  "actual_positives": [
+    "source bitwise source and single evaluated edge",
+    "sizeof-pack actual expression alternative",
+    "ordered dependent braced1/2 operands",
+    "natural alias CTAD template-name actual template pointer",
+    "pack-index distinct pack/index actual pointers"
+  ],
+  "native_absence": "bitwise recipe absent after actual lowering; dependent branches retained metadata"
+}

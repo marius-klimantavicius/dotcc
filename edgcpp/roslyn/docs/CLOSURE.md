@@ -1,41 +1,42 @@
 # Remaining phase 3–4 closure
 
-The bounded declaration/default checkpoint keeps the accepted `4bb94` contract
-unchanged: 251 tables and 39,145 stable kind IDs. Seven existing objects pass 454
-reader assertions and four fresh native/source objects pass 99 (11 distinct
-paths). Self-checks pass 73; build, generator, literal-field and whitespace checks
-pass. All 14 unchanged compiler stages retain 316 pinned stock inputs, the pinned
-stock tool and 26 canonical backend files; new strict builds: zero. This is not a
-full 211-object refresh or a performance rerun.
+The retained-expression checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Two existing objects pass 137 reader
+assertions and two fresh native/source objects pass 90 (four distinct paths).
+Self-checks pass 73; build, generator, literal-field and whitespace checks pass.
+All 14 unchanged compiler stages retain 316 pinned stock inputs, the pinned tool
+and 26 canonical backend files; new strict builds: zero. This is not a full
+211-object refresh or a performance rerun.
 
-Field coverage is now **1,476 verified / 52 required pending**, with two explicit
-selected-stock module-partition input limitations. All 2,000 rows have an explicit
-mapping or disposition. The 89 captured optional source fields, 15 optional limits
-and 79 inactive stock-generator fields remain separate. Kind-family dispatch and
-getter evidence does not establish every owner payload or runtime alternative.
+Field coverage is now **1,484 verified / 44 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Optional source fields and documented inactive configurations do
+not become semantic reconstruction tasks. Kind-family dispatch/getter proof still
+does not imply every owner payload or every runtime alternative.
 
-Actual variable-template primary pointer arguments and selected-partial integer
-arguments remain distinct. Template-template defaults point to the real DefaultBox
-descriptor, independently from the placeholder. Default-lambda entities retain
-ordered parameter membership and the exact routine parent; the source default
-expression is metadata and the lowered native expression is legitimately absent.
-Parameter attributes and native Microsoft in/out targets preserve recognized source
-versus suppressed native kinds. The explicit-instantiation visibility attribute
-belongs to its source directive; native source sequences are disabled.
+An ordinary C++26 fixture retains the expression arms for sizeof-pack, dependent
+braced arguments, template names and pack indexing. Exact operands, ordered
+metadata references and canonical parameter/template pointers pass without
+structural execution edges. Alias CTAD naturally produces the template-name
+records; no fallback intrinsic was needed. The source structured-binding copy
+retains its actual bitwise source and evaluated edge; native lowering removes the
+recipe. Initialization.BitwiseCopySource exposes only that exact retained,
+kind-gated pointer and does not reconstruct a replacement.
 
-Existing objects additionally prove exact designated source-entry and pragma
-backpointers, written enum/type defaults, nested-requirement metadata, applied UUID
-record identity, overriding/overridden routine identities and statement attribute
-ownership. Independent Microsoft target masks, overriding-subobject pointers and
-unactivated constant field/base/designator branches remain pending.
+Two existing objects prove the independent Microsoft target mask (msat_none,
+separate from the record application target) and exact grouped scope type-list
+order. The eight positive rows are in managed/remaining-retained251-evidence.tsv
+and remaining-retained251-proof-joins.json. The earlier declaration/default
+11-path gate remains separate accepted history.
 
-Next native work activates the remaining source expression/initialization arms from
-expression7-recipes.json using the existing profiles. Next managed work proves a
-small set of existing list/target identities, then accepts the fresh expression
-objects. Master/deferred, dependent constants/types, empty objects, captures/foreach,
-names and reflection/token producers remain bounded queues. No confirmed missing
-adapter or factory is open. Full phases 3–4/M0–M5 continue; positions remain optional,
-and EDG retained facts remain the sole semantic authority.
+Next native work targets initializer-expression lifetime, shared master entries
+and retained consteval default-state flags using init-reattempt4-retention-review.json.
+Next reader work follows those exact retained identities, with source/lowered
+availability preserved. Dependent constants/types, empty-object links, names,
+captures/foreach, small list/pragma/asm arms and reflection/token producers remain
+bounded queues. No confirmed missing serialization adapter or factory is open.
+Full phases 3–4/M0–M5 continue; EDG is the sole semantic authority and optional
+positions remain nonblocking.
 
 ## Current implementation and integration
 
@@ -62,7 +63,7 @@ and EDG retained facts remain the sole semantic authority.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 1476 verified and 52 mapped pending-validation fields at this boundary,
+There are 1484 verified and 44 mapped pending-validation fields at this boundary,
 plus two explicit selected-stock input/retention limitations.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.

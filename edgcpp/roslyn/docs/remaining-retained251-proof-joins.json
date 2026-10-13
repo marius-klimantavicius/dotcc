@@ -1,0 +1,88 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "accepted_unique_paths": 4,
+  "existing_assertions": 137,
+  "fresh_assertions": 90,
+  "self_assertions": 73,
+  "joins": [
+    {
+      "owner": "an_ms_attribute",
+      "member": "target",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:10",
+      "identity": "UUID554 has exact one recorded edg_ms_attribute_target.msat_none entry ordinal0; application Target is separately record377 NativeUuid."
+    },
+    {
+      "owner": "a_type",
+      "member": "next",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:26",
+      "identity": "Actual namespaceScope443 type list457 Integer\u2192472 RepeatedAlias\u2192484 Sequence\u2192793 Choice has ordinals0..3; classScope496 type list497 Nested\u2192545 Alias has ordinals0..1. Canonical owners and direct ParentScope links match."
+    },
+    {
+      "owner": "a_dynamic_init",
+      "member": "variant.bitwise_copy.source",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:38",
+      "identity": "DI960 targets actual structured array binding container884 and source961 eok_ref_indirect\u2192ref964\u2192parameter916 values. Container initializer reciprocal and left/right bindings preserved. DI and source are each reached once through actual evaluated operand0 edge."
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.sizeof_pack.variant.expr",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:49",
+      "identity": "Native837\u2192838\u2192packVariable843 and source1015\u21921016\u2192packVariable1021 point to actual expression_pack_size formal pack. The wrapped expression has metadata7002 and no evaluated owner edge."
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.braced_init_list",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:54",
+      "identity": "Native1026 and source1227 retain two canonical constant expression operands with actual values1,2, owner identity and ordinals0,1. Both operands metadata and braced list has no structural children."
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.template_name",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:58",
+      "identity": "Native1198/1208 link same alias class descriptor493; source1392/1402 link same descriptor593. Descriptor is actual DeducibleAlias templk_class with CppType pattern, separate from same-named deduction-guide function descriptors."
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.pack_index.expr",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:62",
+      "identity": "Native1260 wraps1265\u2192values1269; source1456 wraps1461\u2192values1465. The target is the actual select_pack_value formal parameter pack, recorded as metadata reference0."
+    },
+    {
+      "owner": "an_expr_node",
+      "member": "variant.pack_index.index_expr",
+      "before": "mapped_pending_validation",
+      "after": "mapped_verified",
+      "test": "RoslynObj.Tests/RemainingRetainedProjection.cs:62",
+      "identity": "Native index1282 uses canonical placeholderConstant1232 of templateParameter1292 Index; source index1482 uses constant1426 of parameter1493. Exact tpck_param value and ordered refs[pack,index] at0,1 retain metadata7002 with no structural children."
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1484,
+    "inactive_stock_generator": 79,
+    "excluded_frontend_only": 59,
+    "mapped_pending_validation": 44,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "inactive_upstream_configuration": 5,
+    "mapped_stock_input_unavailable": 2
+  },
+  "ready_hash_checks": 15
+}

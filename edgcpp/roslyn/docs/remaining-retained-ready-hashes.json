@@ -1,0 +1,66 @@
+{
+  "count": 15,
+  "all_match": true,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/RemainingRetainedProjection.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/remaining-retained251-evidence.tsv",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-build.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-existing2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-fresh2-v1.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-self.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-generator.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-literal.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/native_attributes.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_order.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/native/retained_expressions.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/source/retained_expressions.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/all-profile-results-final.json",
+      "matches": true
+    }
+  ]
+}

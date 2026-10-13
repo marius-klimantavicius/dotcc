@@ -252,6 +252,7 @@ try
         ExpressionIdentityProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         ListControlIdentityProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         DeclarationLinkIdentityProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
+        RemainingRetainedProjection.Verify(unit,Path.GetFileName(input),obj.Manifest.CaptureProfile,Check);
         UnevaluatedProjection.Verify(unit,Path.GetFileName(input),Check);
         NavigationFamilies.Verify(unit,Path.GetFileName(input),Check);
         var functionCount=0;var operationCount=0;var executableBodyCount=0;var callCount=0;var cleanupActions=0;var targets=new List<string?>();

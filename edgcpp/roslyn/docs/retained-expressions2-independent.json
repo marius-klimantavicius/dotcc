@@ -1,0 +1,118 @@
+[
+  {
+    "profile": "native",
+    "copies": [],
+    "dependent": [
+      {
+        "id": 837,
+        "name": "enk_sizeof_pack",
+        "wrapped_expression_id": 838,
+        "template_id": null,
+        "pack_index_id": null
+      },
+      {
+        "id": 1026,
+        "name": "enk_braced_init_list",
+        "wrapped_expression_id": null,
+        "template_id": null,
+        "pack_index_id": null
+      },
+      {
+        "id": 1198,
+        "name": "enk_template_name",
+        "wrapped_expression_id": null,
+        "template_id": 493,
+        "pack_index_id": null
+      },
+      {
+        "id": 1208,
+        "name": "enk_template_name",
+        "wrapped_expression_id": null,
+        "template_id": 493,
+        "pack_index_id": null
+      },
+      {
+        "id": 1260,
+        "name": "enk_pack_index",
+        "wrapped_expression_id": 1265,
+        "template_id": null,
+        "pack_index_id": 1282
+      }
+    ],
+    "ordered_operands": [
+      {
+        "owner_id": 1026,
+        "name": "operand",
+        "ordinal": 0,
+        "expression_id": 1031
+      },
+      {
+        "owner_id": 1026,
+        "name": "operand",
+        "ordinal": 1,
+        "expression_id": 1038
+      }
+    ]
+  },
+  {
+    "profile": "source",
+    "copies": [
+      {
+        "id": 960,
+        "source_id": 961,
+        "target_id": 884
+      }
+    ],
+    "dependent": [
+      {
+        "id": 1015,
+        "name": "enk_sizeof_pack",
+        "wrapped_expression_id": 1016,
+        "template_id": null,
+        "pack_index_id": null
+      },
+      {
+        "id": 1227,
+        "name": "enk_braced_init_list",
+        "wrapped_expression_id": null,
+        "template_id": null,
+        "pack_index_id": null
+      },
+      {
+        "id": 1392,
+        "name": "enk_template_name",
+        "wrapped_expression_id": null,
+        "template_id": 593,
+        "pack_index_id": null
+      },
+      {
+        "id": 1402,
+        "name": "enk_template_name",
+        "wrapped_expression_id": null,
+        "template_id": 593,
+        "pack_index_id": null
+      },
+      {
+        "id": 1456,
+        "name": "enk_pack_index",
+        "wrapped_expression_id": 1461,
+        "template_id": null,
+        "pack_index_id": 1482
+      }
+    ],
+    "ordered_operands": [
+      {
+        "owner_id": 1227,
+        "name": "operand",
+        "ordinal": 0,
+        "expression_id": 1232
+      },
+      {
+        "owner_id": 1227,
+        "name": "operand",
+        "ordinal": 1,
+        "expression_id": 1239
+      }
+    ]
+  }
+]

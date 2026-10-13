@@ -56,6 +56,7 @@ CASES = {
     'scoped_assume': ['--c++23'],
     'template_parameter_defaults': ['--c++20', '--g++', '--gnu_version', '130000'],
     'parameter_attributes_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930'],
+    'retained_expressions': ['--c++26', '--g++', '--gnu_version', '130000'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

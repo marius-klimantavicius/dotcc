@@ -1,0 +1,307 @@
+{
+  "native": {
+    "dependent_nodes": [
+      {
+        "id": 837,
+        "kind_id": 101032,
+        "wrapped_expression_id": 838,
+        "template_id": null,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_sizeof_pack",
+        "representation_role_id": 7002,
+        "metadata_references": [
+          {
+            "ordinal": 0,
+            "target_id": 838
+          }
+        ]
+      },
+      {
+        "id": 1026,
+        "kind_id": 101033,
+        "wrapped_expression_id": null,
+        "template_id": null,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_braced_init_list",
+        "representation_role_id": 7002,
+        "metadata_references": [
+          {
+            "ordinal": 0,
+            "target_id": 1031
+          },
+          {
+            "ordinal": 1,
+            "target_id": 1038
+          }
+        ],
+        "ordered_operands": [
+          {
+            "ordinal": 0,
+            "expression_id": 1031,
+            "representation_role_id": 7002,
+            "literal": "1"
+          },
+          {
+            "ordinal": 1,
+            "expression_id": 1038,
+            "representation_role_id": 7002,
+            "literal": "2"
+          }
+        ]
+      },
+      {
+        "id": 1198,
+        "kind_id": 101041,
+        "wrapped_expression_id": null,
+        "template_id": 493,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_template_name",
+        "representation_role_id": 7002,
+        "metadata_references": [],
+        "recorded_template_name": "DeducibleAlias"
+      },
+      {
+        "id": 1208,
+        "kind_id": 101041,
+        "wrapped_expression_id": null,
+        "template_id": 493,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_template_name",
+        "representation_role_id": 7002,
+        "metadata_references": [],
+        "recorded_template_name": "DeducibleAlias"
+      },
+      {
+        "id": 1260,
+        "kind_id": 101043,
+        "wrapped_expression_id": 1265,
+        "template_id": null,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": 1282,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_pack_index",
+        "representation_role_id": 7002,
+        "metadata_references": [
+          {
+            "ordinal": 0,
+            "target_id": 1265
+          },
+          {
+            "ordinal": 1,
+            "target_id": 1282
+          }
+        ]
+      }
+    ],
+    "bitwise_copies": [],
+    "raw_members_match_sql": true,
+    "natural_alias_ctad": "DeducibleAlias template-name retained; explicit builtin fallback not used",
+    "raw_trace": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/raw-traces/native/route.json"
+  },
+  "source": {
+    "dependent_nodes": [
+      {
+        "id": 1015,
+        "kind_id": 101032,
+        "wrapped_expression_id": 1016,
+        "template_id": null,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_sizeof_pack",
+        "representation_role_id": 7002,
+        "metadata_references": [
+          {
+            "ordinal": 0,
+            "target_id": 1016
+          }
+        ]
+      },
+      {
+        "id": 1227,
+        "kind_id": 101033,
+        "wrapped_expression_id": null,
+        "template_id": null,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_braced_init_list",
+        "representation_role_id": 7002,
+        "metadata_references": [
+          {
+            "ordinal": 0,
+            "target_id": 1232
+          },
+          {
+            "ordinal": 1,
+            "target_id": 1239
+          }
+        ],
+        "ordered_operands": [
+          {
+            "ordinal": 0,
+            "expression_id": 1232,
+            "representation_role_id": 7002,
+            "literal": "1"
+          },
+          {
+            "ordinal": 1,
+            "expression_id": 1239,
+            "representation_role_id": 7002,
+            "literal": "2"
+          }
+        ]
+      },
+      {
+        "id": 1392,
+        "kind_id": 101041,
+        "wrapped_expression_id": null,
+        "template_id": 593,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_template_name",
+        "representation_role_id": 7002,
+        "metadata_references": [],
+        "recorded_template_name": "DeducibleAlias"
+      },
+      {
+        "id": 1402,
+        "kind_id": 101041,
+        "wrapped_expression_id": null,
+        "template_id": 593,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": null,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_template_name",
+        "representation_role_id": 7002,
+        "metadata_references": [],
+        "recorded_template_name": "DeducibleAlias"
+      },
+      {
+        "id": 1456,
+        "kind_id": 101043,
+        "wrapped_expression_id": 1461,
+        "template_id": null,
+        "initialization_id": null,
+        "noexcept_required": null,
+        "pack_index_id": 1482,
+        "pack_type_id": null,
+        "pack_template_id": null,
+        "fold_operator_id": null,
+        "fold_left_associative": null,
+        "token_sequence_id": null,
+        "reattempt_default_argument": null,
+        "reattempt_default_member_initializer": null,
+        "name": "enk_pack_index",
+        "representation_role_id": 7002,
+        "metadata_references": [
+          {
+            "ordinal": 0,
+            "target_id": 1461
+          },
+          {
+            "ordinal": 1,
+            "target_id": 1482
+          }
+        ]
+      }
+    ],
+    "bitwise_copies": [
+      {
+        "id": 960,
+        "source_id": 961,
+        "target_id": 884,
+        "representation_role_id": 7003,
+        "evaluated_edges": [
+          {
+            "owner_id": 960,
+            "role_id": 6001,
+            "ordinal": 0,
+            "child_id": 961
+          }
+        ],
+        "source_subtree_roles": [
+          {
+            "id": 961,
+            "representation_role_id": 7003
+          }
+        ]
+      }
+    ],
+    "raw_members_match_sql": true,
+    "natural_alias_ctad": "DeducibleAlias template-name retained; explicit builtin fallback not used",
+    "raw_trace": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/raw-traces/source/route.json"
+  }
+}

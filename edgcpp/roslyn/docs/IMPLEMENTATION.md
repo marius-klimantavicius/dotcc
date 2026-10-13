@@ -1345,3 +1345,51 @@ summaries. Coordinator checks all 21 managed file/log/object/manifest hashes and
 all 12 native candidate/evidence hashes. Restart and unrelated files stay excluded.
 The previous list/control/module milestone remains separate history. No schema,
 backend or configuration bytes change in this checkpoint.
+
+
+### Accepted retained expression and list/target identities
+
+The retained-expression checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Two existing objects pass 137 reader
+assertions and two fresh native/source objects pass 90 (four distinct paths).
+Self-checks pass 73; build, generator, literal-field and whitespace checks pass.
+All 14 unchanged compiler stages retain 316 pinned stock inputs, the pinned tool
+and 26 canonical backend files; new strict builds: zero. This is not a full
+211-object refresh or a performance rerun.
+
+Field coverage is now **1,484 verified / 44 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Optional source fields and documented inactive configurations do
+not become semantic reconstruction tasks. Kind-family dispatch/getter proof still
+does not imply every owner payload or every runtime alternative.
+
+An ordinary C++26 fixture retains the expression arms for sizeof-pack, dependent
+braced arguments, template names and pack indexing. Exact operands, ordered
+metadata references and canonical parameter/template pointers pass without
+structural execution edges. Alias CTAD naturally produces the template-name
+records; no fallback intrinsic was needed. The source structured-binding copy
+retains its actual bitwise source and evaluated edge; native lowering removes the
+recipe. Initialization.BitwiseCopySource exposes only that exact retained,
+kind-gated pointer and does not reconstruct a replacement.
+
+Two existing objects prove the independent Microsoft target mask (msat_none,
+separate from the record application target) and exact grouped scope type-list
+order. The eight positive rows are in managed/remaining-retained251-evidence.tsv
+and remaining-retained251-proof-joins.json. The earlier declaration/default
+11-path gate remains separate accepted history.
+
+Next native work targets initializer-expression lifetime, shared master entries
+and retained consteval default-state flags using init-reattempt4-retention-review.json.
+Next reader work follows those exact retained identities, with source/lowered
+availability preserved. Dependent constants/types, empty-object links, names,
+captures/foreach, small list/pragma/asm arms and reflection/token producers remain
+bounded queues. No confirmed missing serialization adapter or factory is open.
+Full phases 3–4/M0–M5 continue; EDG is the sole semantic authority and optional
+positions remain nonblocking.
+
+Frozen reader inventory: managed-remaining-retained251-ready.json; independent
+hash review: remaining-retained-ready-hashes.json. All 15 file/log/object/manifest
+hashes match. Native publication/pin summaries and frozen inventory accompany this
+checkpoint. No schema, native backend or build configuration changes. Only the
+thin existing-pointer reader convenience, ordinary fixture and scoped proof checks
+are added; restart/unrelated files remain excluded from commit.

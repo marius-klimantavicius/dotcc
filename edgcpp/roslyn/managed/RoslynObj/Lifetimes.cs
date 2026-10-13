@@ -8,6 +8,8 @@ public sealed class Initialization : SemanticEntity
     public SemanticKind Kind => Details.Kind;
     public SemanticEntity? Target => Details.Target;
     public Operation? Expression => Details.Expression;
+    /// <summary>The exact retained source expression of a bitwise-copy recipe, when present.</summary>
+    public ExpressionOperation? BitwiseCopySource => Kind.Name=="dik_bitwise_copy"?Details.Source:null;
     public Constant? Constant => Details.Constant;
     public LambdaDefinition? Lambda => Details.Lambda;
     public FunctionSymbol? Constructor => Details.Constructor;

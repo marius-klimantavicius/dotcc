@@ -1,0 +1,116 @@
+{
+  "checkpoint": "remaining retained payload identities251",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/RemainingRetainedProjection.cs",
+      "sha256": "2932c8217ef704d86115063c15defd512ca03bb4a5f17150b6f035556e053f67",
+      "bytes": 7366
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "0215856559d2e36365ee3d1e255b9e5ae53156ff443eca3d767d8bd7b2f84610",
+      "bytes": 78179
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+      "sha256": "c7ec40ea8ce77f8fe0886e71d793d66f7a766e6757d806d0f298a76ef7891af9",
+      "bytes": 9019
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/remaining-retained251-evidence.tsv",
+      "sha256": "c8b5b51ce0efbdabb85ead3f46f85ec1f3f1b5fefbf513273fbda2eddaefe9f3",
+      "bytes": 6736
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-build.log",
+      "sha256": "45fade27942c6a51363e143d50e681a9efbd989f82f069aec4fe67ea160ca08a",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-existing2.log",
+      "sha256": "144aada559a93fb4f8032cf32ecb75de3db1e101eeae76e45a02ca07083f66d8",
+      "bytes": 4360
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-fresh2-v1.log",
+      "sha256": "fd3079852200e594ee12f8e9a4cab328ae9e6a4e2649bdfa6ea444437b97628c",
+      "bytes": 584
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-self.log",
+      "sha256": "4187f0c5467a4b09fb43b7bd7ba30ef5fe26bcd61066c92a9b66f9af1ce950ad",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-remaining-retained251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    }
+  ],
+  "accepted_objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/native_attributes.roslynobj",
+      "sha256": "175101c3efc9275726944d4eb528b2094e26bdefa83e0060c3d4ee104c41525a",
+      "bytes": 653312
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/closure251-final-five/source/source_order.roslynobj",
+      "sha256": "d41d98d49c8de822761e93aad0336be478edea7056980c3719deaa235953a1d8",
+      "bytes": 709632
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/native/retained_expressions.roslynobj",
+      "sha256": "fb29d36e11aa2c16bebc494bc541a8af3b064b3a04d1f9288b94203683f3986a",
+      "bytes": 750592
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/source/retained_expressions.roslynobj",
+      "sha256": "aafde4bc8c8672c04da2e92fffba2be4a4ad3d7dfda703f82f0d22ea55a2165b",
+      "bytes": 738304
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/retained-expressions/all-profile-results-final.json",
+    "sha256": "46e75ceb5ba5e9921c84652c0b77e1ea92f0746d78726252d0112a0f391c6531",
+    "bytes": 1764
+  },
+  "checks": {
+    "build": "0 warnings/errors",
+    "existing": "PASS137/2 unique",
+    "fresh": "PASS90/2 unique",
+    "self": "PASS73",
+    "generator": "249 table bindings/1941 properties; --check passes",
+    "literal_writes": "passes",
+    "whitespace": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/RemainingRetainedProjection.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+        "clean": true
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/remaining-retained251-evidence.tsv",
+        "clean": true
+      }
+    ]
+  },
+  "proof": "8 positive field rows; actual target-kind mask separate from application target; exact grouped type-list order; source-only evaluated bitwise copy and metadata dependent expression arms",
+  "api_change": "Initialization.BitwiseCopySource is a kind-gated exact source_id facade, with no fallback",
+  "scope": "4 unique compatible snapshots; no full211/scale/native build or schema mutation",
+  "running_commands": [],
+  "state": "owned files held for coordinator checkpoint; no independent commit"
+}
