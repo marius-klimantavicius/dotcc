@@ -80,16 +80,54 @@ from source or replaced with a blanket pragma. The final report will separate
 faithfully mapped invocations, configuration deltas, frontend diagnostics,
 backend publication failures, crashes and reader admission results.
 
-Four export workers share the native worker's sole scheduling ownership. Pilot
-RSS/output sizes and available disk govern this bound. Per-entry commands, source
+The initial run used four export workers under the native worker's sole
+scheduling ownership. Measured CPU, I/O and RAM headroom supports a budget of up
+to eight; graceful transitions drain active outputs before resuming. Actual
+worker counts remain recorded in each run. RSS/output sizes and available disk
+govern this bound. Per-entry commands, source
 hashes, producer hashes, exit codes, wall time/RSS, diagnostic logs and output
 sizes are recorded. Failed attempts are not successful objects. The exporter
 checks foreign keys before publication; project admission does not repeat a full
 large-object semantic/database scan for every successful TU.
 
 The managed lane opens selected successful objects and samples actual retained
-symbol/type/function/operation properties. Its pending generic sampler caps name
+symbol/type/function/operation properties. The validated sampler caps name
 matches and routine roots; no whole-program graph is constructed. FindSymbols
 and GetReferences return lazy paged lists, but SQL searches may still inspect
 many rows and Count uses a SQL count. Selected navigation is not C++ lookup,
 whole-TU validation or a constant-time query guarantee.
+
+## Reproducible driver and bounded reader checks
+
+The owned [project driver](../build/project_export.py) prepares commands from the
+compilation database and records source/recipe hashes and actual host predefines.
+It supports a fresh attempt directory, a content-addressed frozen compiler,
+graceful stop and resume, and explicit selection of completed attempts. A new
+prepare operation refuses to overwrite an existing manifest. For example, with
+the configured paths above and a current native compiler:
+
+```sh
+python3 edgcpp/roslyn/build/project_export.py \
+  --source-root /mnt/storage/roslynobj-duckdb-20261014/source \
+  --compile-db /mnt/storage/roslynobj-duckdb-20261014/build/compile_commands.json \
+  --attempt-root /path/to/new-attempt \
+  --compiler /path/to/current/roslyn-cpfe \
+  --contract 3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6 \
+  --prepare --run --jobs 4 --stack-mib 64 --allow-semantic-delta
+```
+
+`--allow-semantic-delta` permits the annotated visibility attempts; it does not
+establish equivalent host metadata. Resume uses `--run` without `--prepare` and
+checks the recorded compiler, compilation database and environment. Graceful
+SIGTERM/SIGINT stops dispatch and waits for active outputs. The `select` command
+accounts for all 650 configured entries as published, failed or pending, checks
+the output version/fingerprint against its selected attempt, and limits legacy
+reuse to explicitly approved indices. It does not rescan foreign keys or materialize graphs.
+
+The representative reader gate passes 3,630 assertions on genuine C++ entry 316
+and corrected GNU C entry 164. It samples four C++ roots/404 operations and two
+C roots/280 operations; one C root reaches its 256-operation cap. Exact commands,
+object hashes, cold/warm query/cache/RSS metrics and limits are recorded in
+[the frozen sampler evidence](duckdb-project-sampler-ready.json). The managed
+[usage guide](../managed/README.md) documents the property sampler and sequential
+`--admit-input` mode. These two samples do not establish whole-project completion.

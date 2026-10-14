@@ -291,6 +291,31 @@ selection on the same object. These checks establish sampled real-input
 navigation and bounded reader costs, not complete traversal or execution of the
 translation unit. They do not rerun the synthetic fixture or full-entity benchmark.
 
+For project snapshots, `--project-input` accepts explicit recorded source names.
+These two examples sample the DuckDB C++ boolean-operator TU and C background-thread TU;
+replace the paths with their generated artifacts:
+
+```sh
+dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
+  --project-input /path/to/boolean_operators.roslynobj type:Vector function:And function:Or
+dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
+  --project-input /path/to/background_thread.roslynobj \
+  function:duckdb_je_background_thread_boot0 function:duckdb_je_background_threads_enable
+```
+
+Keys use `type:`, `function:` or `symbol:` and match retained names through
+`SemanticModel.FindSymbols`. The helper accepts at most eight keys, checks at most
+64 matches per name and samples at most four matching symbols per key, four
+routine roots and 256 operations per root. The paged materialization limit does
+not bound the database's name-search work. Function samples must contain actual
+executable operations. JSON results record selected counts, truncation, opening
+costs and cold/warm traversal with the same cache limits described above. The C
+example reached one routine's 256-operation cap; its reported sample is partial.
+Cold means fresh reader caches in a new process, without an operating-system
+cache flush. This mode performs bounded typed and visitor checks on the supplied
+sample. For admission alone, `--admit-input` opens and disposes each supplied
+artifact sequentially and reports its actual format and artifact identity.
+
 After a supervisor-owned schema change, regenerate committed bindings with
 `python3 edgcpp/roslyn/managed/tools/generate_bindings.py`. Normal library builds
 consume those generated sources and do not require Python.

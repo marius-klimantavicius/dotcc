@@ -1,0 +1,44 @@
+{
+  "status": "READY owned reproducible driver only; longcampaignactive",
+  "owned_tracked_paths": [
+    "edgcpp/roslyn/build/project_export.py"
+  ],
+  "sha256": {
+    "/home/marius/p/dotcc/edgcpp/roslyn/build/project_export.py": "c66e40540c2205657dfa4e588b981a1d6c4d48f03507991d0525381d8ed71e3d"
+  },
+  "validation": {
+    "py_compile": "passed",
+    "help": "passed",
+    "actual_recipe_sets0_164_316": "exact forwarded definitions and GNUmode equality",
+    "subset_accounting": "0published+650pending; importedgenuine3+647pending",
+    "immutable_reuse": "3existingactualobjects,0compilerinvocations",
+    "selector": "formatpair+contract+complete checked; no FK/graph rescans",
+    "stop": "SIGTERMrequestsdrainactive; nochildsignals; contentaddressedcompiler reuse"
+  },
+  "proof_sha256": {
+    "/mnt/storage/roslynobj-duckdb-20261014/export/tracked-driver-prepare-check/recipe-equivalence-check.json": "4a08809932f25d7810ebf5b731bcf8f686177dbfa65427a082635fb86d671194",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/subset-accounting-check.json": "31ccede0b9cd5609ad7bbe5002435bd4cf747b551606a8c9ba1d2192754646cd",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/subset-reuse-accounting.json": "9dde777b5c1b8e9f0cbbc169dfce5f11695112ee7be389a77ce41eccc82e2e4a",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/tracked-driver-reuse-check/external-import-proof.json": "28c6e7dc3affacecc57104ead76eb5746d6b64fc93b515703322c43320594f81",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/tracked-driver-reuse-check/dispatch-final.json": "35c77b7e9c659dbc0851d8646087a2142e4daf51f30ef6351d544959a22f20d6",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/tracked-driver-reuse-check/producer-snapshot.json": "ad8f8211f3c846e14dccf7d9d78b22bb4f206e24d3d682329961636f6ed4fc2c",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/pin-stage-proof.json": "ae5d28c4665787b8698d6f62708a190615fc0e35573f30e07bb6bf3b39c12a5d",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/remaining-selection.json": "a64cd66e64ed391856c2f00be7e11ab423b94363594a16d6a070ef1e9e026294",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/resources-before-resize.json": "23beb6216b0d86af1472d4e9bdd32e8ae6ce5185504c33e85ee3ceacaf1019a6"
+  },
+  "final_selection_command": [
+    "python3",
+    "/home/marius/p/dotcc/edgcpp/roslyn/build/project_export.py",
+    "select",
+    "--manifest",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/project/manifest.json",
+    "--manifest",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json",
+    "--legacy-reuse",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/remaining-selection.json",
+    "--output",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/selected-final.json"
+  ],
+  "current_campaign_driver": "ignoredcopyremainsimmutable; trackeddriverreadyforfuturefreshattempts/resume",
+  "campaign_commit": "98f3374536a309fb71a9c9d89f7ffb295e44c09e"
+}

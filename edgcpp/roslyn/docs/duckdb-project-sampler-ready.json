@@ -1,0 +1,312 @@
+{
+  "ready": "HOLD",
+  "created_utc": "2026-10-14T15:44:51.289981+00:00",
+  "checkpoint_base": "98f3374536a309fb71a9c9d89f7ffb295e44c09e",
+  "scope": "Bounded generic project-input consumer validated on one representative genuine DuckDB C++ TU and one corrected C TU; subsequent whole-project finalized-set admission remains separate.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/ProjectInputAcceptance.cs",
+      "sha256": "580e068491ab08d449143668eef1aecca252de29070cb36109e2420cde57b45f",
+      "bytes": 9275
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "1e9f696b6c9ac765441ef1abb4575f0d2936f548ed6bcc3e3895ab0bcec9c482",
+      "bytes": 80255
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/README.md",
+      "sha256": "2ef2c221731376a8e9e98321009da770ccdb9e8b2ad508eaa33a64269144dd1c",
+      "bytes": 20721
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-project-build.log",
+      "sha256": "289f297a8012e68ad04b7bd18a291675cbeca3ad66cffc59cf95132548085318",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-project-whitespace.log",
+      "sha256": "34e0be15a18732f35d13ec23b9901323586ba31d0207a613dbafd97663a89421",
+      "bytes": 92
+    }
+  ],
+  "samples": [
+    {
+      "sample": "cpp",
+      "object": {
+        "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+        "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+        "bytes": 156354560
+      },
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--project-input",
+        "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+        "type:Vector",
+        "function:And",
+        "function:Or"
+      ],
+      "log": {
+        "path": "/tmp/roslynobj-managed-duckdb-project-cpp-final.log",
+        "sha256": "15085ffda8ba6ee85152aabf5060305fc2ee73f15ac3c07d95a3576eb92b5f1a",
+        "bytes": 1486
+      },
+      "exit_code": 0,
+      "assertions": 2193,
+      "metrics": [
+        {
+          "phase": "open",
+          "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+          "wall_ms": 62.27,
+          "rss_before": 46551040,
+          "rss_bytes": 88014848,
+          "peak_rss_bytes": 88014848,
+          "commands": 10,
+          "rows": 1304
+        },
+        {
+          "phase": "cold",
+          "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+          "names": [
+            {
+              "Kind": "type",
+              "Name": "Vector",
+              "Matches": 11,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "And",
+              "Matches": 2,
+              "Selected": 2,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "Or",
+              "Matches": 2,
+              "Selected": 2,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 12,
+          "routine_roots": 4,
+          "operations": 404,
+          "calls": 40,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 1145,
+          "rows": 1907,
+          "wall_ms": 238.3645,
+          "rss_bytes": 95477760,
+          "peak_rss_bytes": 95477760,
+          "cached_rows": 2409,
+          "cached_pages": 128,
+          "max_batch": 12,
+          "assertions": 1096
+        },
+        {
+          "phase": "warm",
+          "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+          "names": [
+            {
+              "Kind": "type",
+              "Name": "Vector",
+              "Matches": 11,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "And",
+              "Matches": 2,
+              "Selected": 2,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "Or",
+              "Matches": 2,
+              "Selected": 2,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 12,
+          "routine_roots": 4,
+          "operations": 404,
+          "calls": 40,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 237,
+          "rows": 499,
+          "wall_ms": 159.7187,
+          "rss_bytes": 98590720,
+          "peak_rss_bytes": 98590720,
+          "cached_rows": 2409,
+          "cached_pages": 128,
+          "max_batch": 12,
+          "assertions": 1097
+        }
+      ]
+    },
+    {
+      "sample": "c",
+      "object": {
+        "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0164/unit.roslynobj",
+        "sha256": "58370169836067684473c1e4722290d32ddb17890c98ac632a2026975bb32c54",
+        "bytes": 64636928
+      },
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--project-input",
+        "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0164/unit.roslynobj",
+        "function:duckdb_je_background_thread_boot0",
+        "function:duckdb_je_background_threads_enable"
+      ],
+      "log": {
+        "path": "/tmp/roslynobj-managed-duckdb-project-c-final.log",
+        "sha256": "b3a4ec9795cc0ef96ed9b2e977ec4ca04dae363d2a3fc7af0505eb2f91a055c2",
+        "bytes": 1454
+      },
+      "exit_code": 0,
+      "assertions": 1437,
+      "metrics": [
+        {
+          "phase": "open",
+          "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0164/unit.roslynobj",
+          "wall_ms": 59.6859,
+          "rss_before": 46710784,
+          "rss_bytes": 87801856,
+          "peak_rss_bytes": 87801856,
+          "commands": 10,
+          "rows": 1010
+        },
+        {
+          "phase": "cold",
+          "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0164/unit.roslynobj",
+          "names": [
+            {
+              "Kind": "function",
+              "Name": "duckdb_je_background_thread_boot0",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "duckdb_je_background_threads_enable",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 4,
+          "routine_roots": 2,
+          "operations": 280,
+          "calls": 27,
+          "truncated_roots": 1,
+          "operation_limit_per_root": 256,
+          "commands": 701,
+          "rows": 1219,
+          "wall_ms": 76.278,
+          "rss_bytes": 95002624,
+          "peak_rss_bytes": 95002624,
+          "cached_rows": 1507,
+          "cached_pages": 128,
+          "max_batch": 33,
+          "assertions": 718
+        },
+        {
+          "phase": "warm",
+          "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0164/unit.roslynobj",
+          "names": [
+            {
+              "Kind": "function",
+              "Name": "duckdb_je_background_thread_boot0",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "duckdb_je_background_threads_enable",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 4,
+          "routine_roots": 2,
+          "operations": 280,
+          "calls": 27,
+          "truncated_roots": 1,
+          "operation_limit_per_root": 256,
+          "commands": 162,
+          "rows": 344,
+          "wall_ms": 19.0375,
+          "rss_bytes": 95576064,
+          "peak_rss_bytes": 95576064,
+          "cached_rows": 1507,
+          "cached_pages": 128,
+          "max_batch": 33,
+          "assertions": 719
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "unique_artifacts": 2,
+    "cold_warm_passes": 4,
+    "assertions": 3630,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "whitespace": "PASS"
+  },
+  "limits": {
+    "explicit_keys": 8,
+    "name_matches": 64,
+    "selected_symbols_per_key": 4,
+    "routine_roots": 4,
+    "operations_per_root": 256,
+    "call_arguments_or_parameters": 8,
+    "cached_rows": 4096,
+    "cached_pages": 128,
+    "page_size": 128,
+    "maximum_batch": 900,
+    "query_budget": "512+12*(operations+selected_entities)"
+  },
+  "interpretation": [
+    "Exact recorded source-name matching and typed-kind selection; no language lookup or record-primary/alias collapse.",
+    "Paged fetching bounds materialization but not underlying SQL search work.",
+    "Cold is a new process/reader; no OS-cache flush. Warm repeats same selected semantic identities on same object, without a reference-identity claim.",
+    "At least one selected function must retain a nonempty executable operation sample.",
+    "The C sample intentionally reports one routine truncated at256; counts are sampled, not complete TU traversal.",
+    "No reverse reference query, full model/DB-FK/type/scalar scan, source reconstruction, execution equivalence, synthetic/self/full211/scale repetition or native export scheduler work.",
+    "Use finalized selected-success manifest for whole-project Open+Dispose admission; these two representative artifacts alone do not establish whole-project generation completion."
+  ],
+  "reused_unchanged_checks": {
+    "self": {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-self.log",
+      "sha256": "851a088e533649e7b1f82d1a0b863be34cb786091559168b5856ff1f7181df1d",
+      "bytes": 129
+    },
+    "generator": {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    "literal": {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    }
+  },
+  "excluded": [
+    "First successful C/C++ logs preceded newly required nonzero-executable-sample assertion; final logs alone authoritative for current helper bytes."
+  ]
+}

@@ -6,6 +6,7 @@ using System.Reflection;
 
 if(args.FirstOrDefault()=="--benchmark") { Benchmark.Run(args.Skip(1));return; }
 if(args.FirstOrDefault()=="--real-input") { RealInputAcceptance.Run(args[1],args[2]);return; }
+if(args.FirstOrDefault()=="--project-input") { ProjectInputAcceptance.Run(args[1],args.Skip(2).ToArray());return; }
 if(args.FirstOrDefault()=="--nullable-base-input") { NullableBaseInputAcceptance.Run(args[1],args[2],args[3]);return; }
 if(args.FirstOrDefault()=="--admit-input")
 {
