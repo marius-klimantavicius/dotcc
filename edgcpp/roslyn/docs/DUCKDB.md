@@ -1,133 +1,109 @@
-# Whole-project DuckDB RoslynObj export
+# DuckDB core library RoslynObj export
 
-The user authorized attempting RoslynObj generation for the whole configured
-DuckDB project on 2026-10-14. Generation is in progress; no whole-project success
-or faithful equivalence for all host options is claimed yet. This task follows the
-accepted phases 3–4 checkpoint `fc22240f6`.
+The requested core-library scope is complete: all 164 configured compilation
+entries publish independent RoslynObj files and pass managed reader admission.
+There are no core frontend/backend failures or unmapped semantic flags. The
+selected files total 104,942,180,352 bytes (97.735 GiB).
 
-## Pinned source and configured scope
-
-The clean official current-main checkout is commit
+The source is a clean official current-main checkout at
 `a809d3cd519df6db70223c562c4de80da311868b`, version `v2.1.0-dev1`, not a stable
-release. Its dedicated root is `/mnt/storage/roslynobj-duckdb-20261014`, referenced
-by the ignored workspace path `edgcpp/artifacts/roslynobj/duckdb`.
+release. The dedicated directory is `/mnt/storage/roslynobj-duckdb-20261014`,
+referenced by the ignored workspace path `edgcpp/artifacts/roslynobj/duckdb`.
 
-The fresh Release/Ninja configuration enables the main library, shell and C++
-unit tests with default unity and bundled core_functions/parquet/json/icu.
-Configuration creates the compile database without building the host library.
-There are 650 distinct configured command entries for 640 source paths and 243
-targets: 575 effective C++17, 65 GNU C99 and 10 host-default GNU C17 invocations.
-Each actual unity translation unit receives one object; source-path duplicates
-with different commands remain distinct. This scope excludes optional external
-extensions and other platform/build variants.
+## Exact core scope
 
-The actual GCC 13.3 include paths, per-command defines and target predefines are
-recorded. All 650 commands select x86-64-v3. Host exception/RTTI choices and C/C++
-dialects are preserved rather than inherited from earlier benchmark recipes.
-Neither DuckDB nor EDG core source is rewritten. No excluded dotobj campaign
-results, recipes or findings are used.
+Core ownership follows configured object outputs starting with `src/`, rather
+than source filenames alone. This selects entries 227–390: 163 C++17 invocations
+and one GNU C17 invocation, across 145 core targets and 164 direct input paths.
+It includes generated `duckdb_static_extension_loader.c` and
+`static_extension_autoregister.cpp` compiled into the main library. Separate test,
+shell, tools, bundled-extension implementation and third-party targets do not
+count toward this result. Headers and other included dependencies remain part of
+the actual core translation units.
 
-## Concrete exporter corrections
+There are 139 unity invocations with 1,627 distinct recorded included source
+paths. Direct inputs and these included paths form a union of 1,791 paths,
+including generated unity paths; this is not a count of independent translation
+units. Coverage comes from configured commands and actual generated unity include
+lists, without claiming optional platform/build variants.
 
-A genuine C++ entry first exposed a constant registration-order bug. Attaching its
-source correspondence could reenter the same constant through a parent scope,
-record instance and template arguments before its exact content/value had been
-registered. The exporter mistook this metadata reentry for an inline content
-cycle. It now registers exact content and the value mapping before attaching
-correspondence; content, union traversal and the cycle guard remain unchanged.
+The fresh Release/Ninja configuration was originally used to enumerate the whole
+project with the default bundled core_functions/parquet/json/icu, shell and tests.
+The user's final instruction restricted completion to the main core-library
+commands above. These existing commands were selected without reconfiguring or
+changing their source, defines, include paths or target choices. The actual GCC
+13.3 system includes, host predefines and x86-64-v3 feature deltas are recorded.
+Host exception/RTTI choices and GNU C dialect are preserved. Neither DuckDB nor
+EDG core source was rewritten, and no excluded dotobj findings or recipes were used.
 
-A second failure exposed an actual null EDG `derived_class` pointer on retained
-prototype constructor-initializer base placeholders. Format 2.0 preserves that
-absence in a nullable column/property, keeping the base type, identity and
-initializer link. It does not derive an owner from traversal ancestry. The reader
-admits exactly the published 1.0 and current 2.0 contracts; [FORMAT.md](FORMAT.md)
-and [the exact comparison](nullable-base-major2-contract.json) document the change.
+## Artifacts and proof
 
-Focused current native outputs for configured entries 0 and 316 now publish and
-pass reader admission. Canonical prototype scope/initializer/base navigation
-passes 15 assertions; four genuine old/new objects pass admission, and a genuine
-earlier development object is rejected. Existing constant/template fixtures pass
-173 assertions with their preserved recipes. The managed build is clean and the
-current reader self-check passes 73 assertions. This is focused regression
-acceptance, not another full profile or whole-field campaign. The native profile
-was rebuilt; the other 13 accepted profile builds remain historical 1.0 evidence.
+Committed [core manifest](duckdb-core-manifest.json),
+[summary](duckdb-core-summary.json) and
+[reader reconciliation](duckdb-core-reader-admission.json) freeze the accepted
+result. [Native](duckdb-core-native-ready.json) and
+[managed](duckdb-core-managed-ready.json) inventories record the evidence hashes.
 
-A separate crash trace showed exhaustion of the default 8 MiB process stack:
-the stack pointer reached the mapping boundary during a deep exporter traversal.
-An explicit 64 MiB process stack lets the same entry 18 publish a 697,355,264-byte
-object. This is a recorded runtime limit adjustment, without changing EDG IL or
-exported semantics. GNU C header diagnostics were separately traced to EDG's
-strict GNU mode when selecting C99/C17; the supported `--no_strict_gnu` option
-restores the host GNU dialect. A corrected C entry 164 publishes.
+The local artifact directory contains:
 
-## Campaign provenance and remaining limits
+- `export/selected-core-final.json`: the 164 selected paths, hashes, versions and
+  exact attempt links.
+- `export/core-final-summary.json`: scope, totals, versions and configuration.
+- `export/core-per-entry-final-summary.json`: original commands, actual EDG
+  commands, logs, output sizes and timing/resource records.
+- `export/core-source-coverage.json`: direct and unity source/target coverage.
+- `export/reader-admission/journal.jsonl`: incremental reader admission records
+  keyed by immutable path/hash and actual artifact identity.
 
-The initial baseline uses an immutable copied 1.0 producer with the constant-order
-fix. Completed baseline results, commands and diagnostics are retained. Corrected
-2.0 attempts use a separate directory and compiler keyed by its hash. Final
-selection will cover every configured entry and retain links to all earlier
-attempts; successful unchanged 1.0 objects can be admitted without re-export.
+The core set uses 163 current format 2.0 objects and one accepted format 1.0
+object, entry 228. Exact admission is documented in [FORMAT.md](FORMAT.md).
+The exporter checks foreign keys before atomic publication. Every selected core
+object was opened and disposed by the managed reader; final reconciliation uses
+these existing proofs without reopening unchanged objects or scanning their
+whole graphs. Native header/publication checks and reader admission are recorded
+separately.
 
-The first 26 baseline invocations lacked ten actual target predefines. Their
-original recipes remain immutable; final selection must mark those attempts as
-configuration deltas and require corrected selected outputs. All 75 C invocations require the
-GNU dialect correction, including any baseline successes.
+A bounded property/visitor sample on the actual core boolean-operator input
+(entry 316) passes 2,193 assertions over four roots, 404 operations and 40 calls.
+The earlier C allocator sample belongs to a separate dependency target and is not
+counted as core evidence. [The frozen sampler evidence](duckdb-project-sampler-ready.json)
+retains both original sample scopes and cache/query/RSS limits. Name searches are
+paged but may still inspect many SQL rows; sampled navigation is not C++ lookup,
+whole-TU validation or execution equivalence.
 
-There is no exact stock EDG mapping for the default/inline visibility options in
-189 configured extension invocations. These are attempted but remain explicit
-configuration deltas, even if they produce objects. Visibility is not guessed
-from source or replaced with a blanket pragma. The final report will separate
-faithfully mapped invocations, configuration deltas, frontend diagnostics,
-backend publication failures, crashes and reader admission results.
+The [owned project driver](../build/project_export.py) prepares exact configured
+invocations, records source/recipe hashes and actual host predefines, freezes a
+content-addressed compiler, and supports graceful stop/resume and selection of
+completed attempts. It refuses to overwrite an existing prepared manifest. Each
+object remains an independent translation unit; neither exporter nor reader links
+or merges the project.
 
-The initial run used four export workers under the native worker's sole
-scheduling ownership. Measured CPU, I/O and RAM headroom supports a budget of up
-to eight; graceful transitions drain active outputs before resuming. Actual
-worker counts remain recorded in each run. RSS/output sizes and available disk
-govern this bound. Per-entry commands, source
-hashes, producer hashes, exit codes, wall time/RSS, diagnostic logs and output
-sizes are recorded. Failed attempts are not successful objects. The exporter
-checks foreign keys before publication; project admission does not repeat a full
-large-object semantic/database scan for every successful TU.
+## Exporter corrections and exploratory history
 
-The managed lane opens selected successful objects and samples actual retained
-symbol/type/function/operation properties. The validated sampler caps name
-matches and routine roots; no whole-program graph is constructed. FindSymbols
-and GetReferences return lazy paged lists, but SQL searches may still inspect
-many rows and Count uses a SQL count. Selected navigation is not C++ lookup,
-whole-TU validation or a constant-time query guarantee.
+The concrete fixes were committed in `98f337453`; the reproducible driver and
+bounded consumer were committed in `de5e9cc2c`.
 
-## Reproducible driver and bounded reader checks
+A real constant's correspondence traversal reentered it before its exact value
+had been registered. Registering content and the value mapping before attaching
+metadata fixes this false cycle diagnosis without changing the payload or cycle
+guard. A separate valid EDG prototype base placeholder has a null `derived_class`
+pointer; format 2.0 preserves the nullable owner while retaining base type,
+identity and constructor-initializer associations. See [the contract comparison](nullable-base-major2-contract.json),
+[managed fix proof](duckdb-major2-managed-ready.json) and
+[native fix proof](duckdb-major2-native-ready.json).
 
-The owned [project driver](../build/project_export.py) prepares commands from the
-compilation database and records source/recipe hashes and actual host predefines.
-It supports a fresh attempt directory, a content-addressed frozen compiler,
-graceful stop and resume, and explicit selection of completed attempts. A new
-prepare operation refuses to overwrite an existing manifest. For example, with
-the configured paths above and a current native compiler:
+A representative trace also established exhaustion of the default 8 MiB stack;
+corrected project runs use an explicit 64 MiB process stack. GNU C invocations use
+the supported `--no_strict_gnu` option to match the configured GNU dialect. Actual
+runtime limits and timings are retained per attempt; missing older pilot limit
+metadata stays unavailable. Stock frontend/backend CPU times are distinct from
+combined invocation wall time, and summed invocation wall time is not concurrent
+campaign elapsed time.
 
-```sh
-python3 edgcpp/roslyn/build/project_export.py \
-  --source-root /mnt/storage/roslynobj-duckdb-20261014/source \
-  --compile-db /mnt/storage/roslynobj-duckdb-20261014/build/compile_commands.json \
-  --attempt-root /path/to/new-attempt \
-  --compiler /path/to/current/roslyn-cpfe \
-  --contract 3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6 \
-  --prepare --run --jobs 4 --stack-mib 64 --allow-semantic-delta
-```
-
-`--allow-semantic-delta` permits the annotated visibility attempts; it does not
-establish equivalent host metadata. Resume uses `--run` without `--prepare` and
-checks the recorded compiler, compilation database and environment. Graceful
-SIGTERM/SIGINT stops dispatch and waits for active outputs. The `select` command
-accounts for all 650 configured entries as published, failed or pending, checks
-the output version/fingerprint against its selected attempt, and limits legacy
-reuse to explicitly approved indices. It does not rescan foreign keys or materialize graphs.
-
-The representative reader gate passes 3,630 assertions on genuine C++ entry 316
-and corrected GNU C entry 164. It samples four C++ roots/404 operations and two
-C roots/280 operations; one C root reaches its 256-operation cap. Exact commands,
-object hashes, cold/warm query/cache/RSS metrics and limits are recorded in
-[the frozen sampler evidence](duckdb-project-sampler-ready.json). The managed
-[usage guide](../managed/README.md) documents the property sampler and sequential
-`--admit-input` mode. These two samples do not establish whole-project completion.
+The original 650-entry exploratory campaign and all earlier results remain under
+`export/project` and `export/major2`. Their commands, provisional architecture/GNU
+C attempts, failures and interruptions are preserved. The user then excluded
+tests and restricted the task to core library source. Noncore queued work stopped
+and active commands drained safely. Noncore visibility-option differences and
+Catch test diagnostics are outside the accepted core scope, not core failures.
+No remaining test triage, dialect escalation or optional-source campaign was run.

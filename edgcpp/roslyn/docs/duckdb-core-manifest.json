@@ -1,0 +1,3296 @@
+{
+  "configured_entries": 164,
+  "distinct_sources": 164,
+  "original_configured_entries": 650,
+  "scope_rule": "Configured target_output starts with 'src/'",
+  "selected_published": 164,
+  "unique_objects": 164,
+  "failed": 0,
+  "pending": 0,
+  "published_objects": [
+    {
+      "entry_index": 227,
+      "original_entry_indices": [
+        227
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0227/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/duckdb_static_extension_loader.c",
+      "source_sha256": "f2b8bffa8e2b1b72e920000e6410ad4f60880dd0447e86c5068ae162f8ab8acb",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1081344,
+      "sha256": "b3f81d1de66d65270109fe76f1d6b8bff4d0ead46a4b4c4cfe97d479e093e3cc",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0227/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0227/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 228,
+      "original_entry_indices": [
+        228
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/project/0228/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/extension/loader/static_extension_autoregister.cpp",
+      "source_sha256": "cd3769cefcc718a2361ba3fb26fb7522d27132e5d7249991f7681b54d1efc1ac",
+      "category": "bundled_extensions",
+      "format_major": 1,
+      "format_minor": 0,
+      "contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "bytes": 1108992,
+      "sha256": "922c7b8a09fea0cfa4fe788c1dd7a0abeaa80ed79521aa85d44e8373a88af85e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/project/0228/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/project/0228/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/project/manifest.json"
+    },
+    {
+      "entry_index": 229,
+      "original_entry_indices": [
+        229
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0229/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/ub_duckdb_optimizer.cpp",
+      "source_sha256": "1389fbfc47e9ea7dfe36c9e1c329f871b047b3ec613ce656068d43b6f879b567",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1870276608,
+      "sha256": "693b955b402dbcf8e20a455bdb0352b76add59af3803a1527ea91d70b85db3b3",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0229/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0229/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 230,
+      "original_entry_indices": [
+        230
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0230/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/compressed_materialization/ub_duckdb_optimizer_compressed_materialization.cpp",
+      "source_sha256": "7d54b6391e402b1d87cc6d2ac3d69e8343e6b32d7845979604d87a365ec5ea02",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 422946816,
+      "sha256": "acbc37b58334e86c0e10d4069b0912c0cd285861a02078f56074e64da72c672d",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0230/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0230/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 231,
+      "original_entry_indices": [
+        231
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0231/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/join_order/ub_duckdb_optimizer_join_order.cpp",
+      "source_sha256": "1c7a5a171f0d726bb66e0564cf13ef2450c05b3399fc89719d0fde146b0e34e6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 965530624,
+      "sha256": "8936666c51ceed7d7f294e04755e174bc4248d5c3319af15693c4a1723bd8d35",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0231/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0231/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 232,
+      "original_entry_indices": [
+        232
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0232/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/matcher/ub_duckdb_optimizer_matcher.cpp",
+      "source_sha256": "cc9f96b5142fd58e7e1f2e94f244689be7615da60e586a0faa3a111fb9f0fd7f",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 380136448,
+      "sha256": "e414002c3939995de27f8eb3b66ff67a20c487811591ffc95848d58d4d9fac3a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0232/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0232/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 233,
+      "original_entry_indices": [
+        233
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0233/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/pullup/ub_duckdb_optimizer_pullup.cpp",
+      "source_sha256": "124f9ed7c380d6c67b427b947e1ed08555cf82f76ca193a69eb8bc88705c53d8",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 365876224,
+      "sha256": "21179e91c40388c294a777716a5c4b9e2266552c11ed57d61ffa4ece3609ac80",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0233/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0233/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 234,
+      "original_entry_indices": [
+        234
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0234/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/pushdown/ub_duckdb_optimizer_pushdown.cpp",
+      "source_sha256": "2abdfd40c9e0795af97491c1560bdf191611a18007897814e5111dc5e616f61a",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 676285440,
+      "sha256": "43c42d729d263f05bffbeede065e8de4812b6ef217cb05c346265d5510e81d6e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0234/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0234/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 235,
+      "original_entry_indices": [
+        235
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0235/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/relation_statistics/ub_duckdb_optimizer_relation_statistics.cpp",
+      "source_sha256": "1e879497ea14518f502bb71b66a2e092093e402c2c3cd5347687f836c4a77e44",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 737948672,
+      "sha256": "97725ec5ffe4b2672f4994c47505aaa5c11adf8301303aad48fab667ddc6ffaa",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0235/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0235/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 236,
+      "original_entry_indices": [
+        236
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0236/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/rule/ub_duckdb_optimizer_rules.cpp",
+      "source_sha256": "6baf29fec092379ff5b595fa632b3690e1fb2d22c090eb6adaca13890f1eb6bf",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 676520960,
+      "sha256": "ae609fe3f4cfa38a69b1df42c9cbd50b13e0caeee80c139492e0f85dca8eb2f2",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0236/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0236/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 237,
+      "original_entry_indices": [
+        237
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0237/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/statistics/expression/ub_duckdb_optimizer_statistics_expr.cpp",
+      "source_sha256": "cfca19411466c68c661fc7300ef59b5e738abcc4c95295711541e6e80221b9e4",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 294482944,
+      "sha256": "7c50c17fe7dac6e82daf78a964581fbb4ca14e6897e207116a85668fe0047016",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0237/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0237/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 238,
+      "original_entry_indices": [
+        238
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0238/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/optimizer/statistics/operator/ub_duckdb_optimizer_statistics_op.cpp",
+      "source_sha256": "3e84bfb23c73aec07690841c041343e9741882e322b845bff84c4f8e4f9a0baa",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 748787712,
+      "sha256": "5a20124d8d9a47b36207d7f51cfb810286e645359c5d7ea0336404c1618c4e0e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0238/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0238/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 239,
+      "original_entry_indices": [
+        239
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0239/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/ub_duckdb_planner.cpp",
+      "source_sha256": "e7ee87e09638de651071d64cc2430984b48362d53b57b25cecf0d449d92fbc82",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1333877760,
+      "sha256": "5e4130dfa77640dc95a5bb3b891c92f9b66c2751536cbfd5480dc802b55b6c95",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0239/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0239/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 240,
+      "original_entry_indices": [
+        240
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0240/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/expression/ub_duckdb_planner_expression.cpp",
+      "source_sha256": "a4428c228e7cb0d40b66939759963351d296d5cf1e7e8aeb911bd227d352d7e3",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 585041920,
+      "sha256": "e737e80f54755c699f9c9405b54d6ba8812e4e4e8e91909dffefc64b7d1d3e58",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0240/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0240/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 241,
+      "original_entry_indices": [
+        241
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0241/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/binder/expression/ub_duckdb_bind_expression.cpp",
+      "source_sha256": "cc86ad365cb7302f09ce1a71820faa84697a1686eced8b627eeddf9ce66620f2",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 852497408,
+      "sha256": "7fba740c2c48dd8460db4825ef6225a079ba5c6055865fe10d7994310cc747ec",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0241/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0241/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 242,
+      "original_entry_indices": [
+        242
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0242/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/binder/query_node/ub_duckdb_bind_query_node.cpp",
+      "source_sha256": "791258e77e9294ce1b22fc888a24b36a32cd72d05bfa54e2d7783bbb0d8e7ed7",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1134275584,
+      "sha256": "2bb568e4fd2443d0745dcebab40a0ef130301f260253f62a5e795437dba9c356",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0242/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0242/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 243,
+      "original_entry_indices": [
+        243
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0243/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/binder/statement/ub_duckdb_bind_statement.cpp",
+      "source_sha256": "ee5da13907efcad7c7c3b0ebf5dc6592dafe0d612e9baa456628b36269a6bd57",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1403220992,
+      "sha256": "419be94ef4256824b8bf24cc2bdcd8ed575feb8c4191fe42043642b23b8cecf5",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0243/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0243/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 244,
+      "original_entry_indices": [
+        244
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0244/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/binder/tableref/ub_duckdb_bind_tableref.cpp",
+      "source_sha256": "839d47e3f26b7a2b31a74ee1a2837c9cd026d48d7c4bfe6ba40851e62088acb6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 994705408,
+      "sha256": "314ff097d78c2b34e9a3497c93aeec285ef7d70fa617927a63595b3abf147c2e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0244/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0244/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 245,
+      "original_entry_indices": [
+        245
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0245/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/expression_binder/ub_duckdb_expression_binders.cpp",
+      "source_sha256": "824219daeecbfd89fc1375678a0ca3032a3adf78742c1ad377e249d375c4441f",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 847609856,
+      "sha256": "64c825a8e48d813816c598cd510a8f9f83c75cc50a7626beb1608bdef7b63642",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0245/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0245/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 246,
+      "original_entry_indices": [
+        246
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0246/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/filter/ub_duckdb_planner_filter.cpp",
+      "source_sha256": "631622fca8b44e80373e84dacb393f8a1398d7cb9d786b7e4aa7a221b5536ca0",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 582551552,
+      "sha256": "6273d4f424796d624a5c165e5c7b36fa109c3b7076a94f3d18527ea94abd39aa",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0246/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0246/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 247,
+      "original_entry_indices": [
+        247
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0247/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/operator/ub_duckdb_planner_operator.cpp",
+      "source_sha256": "8c511acfd107d011c56fbdfff2ea3214e9d64d4ff01c8c9ebe0d08013f984768",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 924538880,
+      "sha256": "b3840f72c50a43b54b8e7aeab9857e9f9c7d482d0f534978227ac2914c13c4ee",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0247/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0247/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 248,
+      "original_entry_indices": [
+        248
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0248/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/subquery/ub_duckdb_planner_subquery.cpp",
+      "source_sha256": "c8edc19af69fa31953341c45b6624a6a0cc59d1ee8acb11b15a7f9700c287ed5",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 947623936,
+      "sha256": "3e175a51242707635e46c228a54d5ee384fb93cf0482b0cba5b233f885db7f15",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0248/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0248/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 249,
+      "original_entry_indices": [
+        249
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0249/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/planner/sql_export/ub_duckdb_planner_sql_export.cpp",
+      "source_sha256": "6e825bd101795d7612fa6a24734f3d1eaa6049cbb691e7483053164d3541fcd5",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 895115264,
+      "sha256": "0c7173326e8a57ca62a5b077fd731cae899690f593a16549853ce284b0713eb4",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0249/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0249/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 250,
+      "original_entry_indices": [
+        250
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0250/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/ub_duckdb_parser.cpp",
+      "source_sha256": "5ac3014273d0dbb7f68fbbab223c070c656ee73e20be4c9b7bb16c686ebc3c47",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 724544512,
+      "sha256": "27c4e4c684aed50ed545d409041382eaf22a72bfd640cd4a4849bcfcec511d7e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0250/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0250/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 251,
+      "original_entry_indices": [
+        251
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0251/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/constraints/ub_duckdb_constraints.cpp",
+      "source_sha256": "b413433dcd509539cf0883144c395ffbea1cf4668806db1c53de358cd7409073",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 140216320,
+      "sha256": "ecd8908e932ef2a98bcb490f2adc7b5ac274a69f1b7e68174500c664b17dba46",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0251/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0251/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 252,
+      "original_entry_indices": [
+        252
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0252/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/expression/ub_duckdb_expression.cpp",
+      "source_sha256": "8c1fc7ab80e740a9ff7dbe9ff6364c2cc0c072726082bdcd823f885ea2584340",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 475300864,
+      "sha256": "bb187bb7eee1042f04d421b2936d8f9c1eb55bf86b0c0ced908eb21f5019296f",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0252/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0252/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 253,
+      "original_entry_indices": [
+        253
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0253/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/parsed_data/ub_duckdb_parsed_data.cpp",
+      "source_sha256": "5cf8f6fe8e36d300f504246a4e013cb43893cd1d59d3162cff624572e7f70e8c",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 685212672,
+      "sha256": "1e877308810e8d875ecb2de060a668e1c18cde7fcc0ca4019593ae00dff6e1af",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0253/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0253/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 254,
+      "original_entry_indices": [
+        254
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0254/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/peg/ub_duckdb_parser_peg.cpp",
+      "source_sha256": "0e9c5d21e001624a897875b1020341c6ed59fe274a446c0a34fea51575c3951f",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 891083776,
+      "sha256": "18bb75e731fccf488dc3b361665c41b25e19b0d66df2579c8ef6a16f1b6fce95",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0254/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0254/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 255,
+      "original_entry_indices": [
+        255
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0255/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/peg/tokenizer/ub_duckdb_parser_peg_tokenizer.cpp",
+      "source_sha256": "4b25eb53d891df269a4e8d680862a6ff322867e0e9174921d8685ebc100c3e64",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 283426816,
+      "sha256": "0502eb2d082777c6ca93cd3637e447f65787e7e9e79aced52c5f0a256e655c70",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0255/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0255/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 256,
+      "original_entry_indices": [
+        256
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0256/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/peg/transformer/ub_duckdb_parser_peg_transformer.cpp",
+      "source_sha256": "9d9b5816a0ad738ec1bf11348dbab3dbee56f29ded74a86009e1fdddea564a05",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1395521536,
+      "sha256": "24466aa9d7a4e2c2d9e92ddc3a3433241f084dc6309945d12980ad9f749ffed2",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0256/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0256/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 257,
+      "original_entry_indices": [
+        257
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0257/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/peg/keyword_helper/ub_duckdb_parser_peg_keyword_helper.cpp",
+      "source_sha256": "a092074682ac085bcff80efe7073bb7b441799ed58594019635192c90437bbad",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 298646528,
+      "sha256": "c0dbc5de7569055c598fb33ff65829c4e8f7ed47f61aceedaf1203816fc0528f",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0257/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0257/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 258,
+      "original_entry_indices": [
+        258
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0258/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/query_node/ub_duckdb_query_node.cpp",
+      "source_sha256": "914e037c0b019c30c166f840c4427aa5b7aa4037944b03da386edee50a865c02",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 312186880,
+      "sha256": "d50ad1031ab840484d5e8b04295c5e45ce6d7875f3ded6183171188db59b0e28",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0258/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0258/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 259,
+      "original_entry_indices": [
+        259
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0259/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/statement/ub_duckdb_statement.cpp",
+      "source_sha256": "4a5eac45bf2325ebe028dbdb7730a873eefa6adadc5e4fd6f8d76a8de9411bf2",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 550543360,
+      "sha256": "5ccf10ed4f9cb54f5531a54db97e16dc4693fe93d5176e1545f3e32f393e2e4f",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0259/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0259/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 260,
+      "original_entry_indices": [
+        260
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0260/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parser/tableref/ub_duckdb_parser_tableref.cpp",
+      "source_sha256": "60406beda11f099a25f1c30f7022a62adfbc4b3f1ab8a528a80aacb84c834f30",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 401910784,
+      "sha256": "d49241d2cac461497311173e2489d10ed6c9a09ed7e72618d62946104f81070d",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0260/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0260/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 261,
+      "original_entry_indices": [
+        261
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0261/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/ub_duckdb_function.cpp",
+      "source_sha256": "0b151529f0daa18cc39d5bd48530903d5f1191a5a309a1c734a9cf83a55a2b28",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 844188672,
+      "sha256": "aceab5fa65c24ca1207309c9312b9fa145881d038ff2279a7bbbc1944da2712d",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0261/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0261/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 262,
+      "original_entry_indices": [
+        262
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0262/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/aggregate/ub_duckdb_func_aggr.cpp",
+      "source_sha256": "23f6bdaa97371b2170e20dce0f0da659d7676600fc6a5cd9382401f7ec701dbb",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 537894912,
+      "sha256": "1e4326c1ff6baa54ef62f0876e9d5849d2f5d3973918f1deb22c2ce3a1c79438",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0262/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0262/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 263,
+      "original_entry_indices": [
+        263
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0263/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/aggregate/distributive/ub_duckdb_aggr_distr.cpp",
+      "source_sha256": "2803681fdc7461e3c2db4cb3594b2d7f9d57a19cad2b5f689c209123526fa0d9",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 613469184,
+      "sha256": "3ee1ea3c9b0ae8bf3ea09f8954bc1152742b96156dd0780fae5602e316246f38",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0263/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0263/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 264,
+      "original_entry_indices": [
+        264
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0264/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/cast/ub_duckdb_func_cast.cpp",
+      "source_sha256": "d1b0304201e3734885ac43a0cfc03a6a864d979a9d7d191b6a11ddedeb0f0df4",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 718194688,
+      "sha256": "686bf1dc3db2b4f82d63a3fef6bc4cca57bdecff8d1ff173569922d400e43694",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0264/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0264/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 265,
+      "original_entry_indices": [
+        265
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0265/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/cast/union/ub_duckdb_union_cast.cpp",
+      "source_sha256": "3e1925eb27f121283d9cd70c0e719539b746e5610914b3ea10cfc8147df02f0d",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 215666688,
+      "sha256": "b44fba3147d4a30efcb017263b402e469265c268cde417667013b03204cda8a5",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0265/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0265/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 266,
+      "original_entry_indices": [
+        266
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0266/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/cast/variant/ub_duckdb_variant_cast.cpp",
+      "source_sha256": "a1eaff9b7a6d0addce6bfe3b67dc0f7a68a1ad2b0ebecca273373ab55c3c3a82",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 436876288,
+      "sha256": "1af2b7142b868e8a494c26df16ab506d3da59032b6c3bd0a621a9d5718b368e1",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0266/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0266/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 267,
+      "original_entry_indices": [
+        267
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0267/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/pragma/ub_duckdb_func_pragma.cpp",
+      "source_sha256": "6a7033d9a6b34599e02a1e3a4a1efc8b75aff182532aa735feac109002e6e636",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 702387200,
+      "sha256": "5ebe5c3568325f1c0584fe2c713795466466cb868b984286da61db450b8e743b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0267/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0267/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 268,
+      "original_entry_indices": [
+        268
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0268/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/ub_duckdb_func_scalar.cpp",
+      "source_sha256": "03a925ba555bcc6e6eee596aa95fc44045fc6bed688a3cf39e8c8c5c44fde5b4",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 534752256,
+      "sha256": "6c7fedc75d2ea942e4cc8d7ae58341a8dbb15931496d4ba33db65963923794da",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0268/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0268/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 269,
+      "original_entry_indices": [
+        269
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0269/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/comparison/ub_duckdb_func_comparison.cpp",
+      "source_sha256": "5c98b33caa1a708e18ae31d5f93ec8e59f9c47325a882c96cf7ba0a8fc5056a8",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 478918656,
+      "sha256": "16840e03455e9b1656275dffe1c73b98ce0bba5ed010c5df7f4b81205c5aed5a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0269/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0269/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 270,
+      "original_entry_indices": [
+        270
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0270/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/compressed_materialization/ub_duckdb_func_compressed_materialization.cpp",
+      "source_sha256": "c25d04482ebc370a2f8a04b66eb41954fcd8b36407d6f6036d59f44ac92be49b",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 404805632,
+      "sha256": "334b410308d1f65ca5d09585eab59bd02d58080ecc44075cb67906f088e301f2",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0270/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0270/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 271,
+      "original_entry_indices": [
+        271
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0271/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/date/ub_duckdb_func_date.cpp",
+      "source_sha256": "3fb5ba1592dc5b56c1fa35156e9e26d1b76817ab20b811360787d3fe6e1010fe",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 336885760,
+      "sha256": "f5b405bd5aafdc4fab9764d53e5bbb5827fd8a0af5f24fa4d901933bc4f55c70",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0271/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0271/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 272,
+      "original_entry_indices": [
+        272
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0272/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/generic/ub_duckdb_func_generic_main.cpp",
+      "source_sha256": "2adfae0a2d499207ab67d3b6f2344dc1f6f688338d59dcaecb10752f7f9ac8c8",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 542969856,
+      "sha256": "2e855c60b706e93579ddc14c133cf2bd771256007fb9fc772443a914776a514f",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0272/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0272/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 273,
+      "original_entry_indices": [
+        273
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0273/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/list/ub_duckdb_func_list_nested.cpp",
+      "source_sha256": "82d4d55f638133663faaac179e363f5dc2407bcfaa7a53d16213298a47f88b22",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 428257280,
+      "sha256": "840f633d2db055254f9a8c3c9261c0dff3430920f61441e2bfc0226c555794ec",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0273/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0273/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 274,
+      "original_entry_indices": [
+        274
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0274/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/map/ub_duckdb_function_map.cpp",
+      "source_sha256": "14041f76418519081803a5281f603fd8971b2b8194396919e5dff9238c4ae66a",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 320286720,
+      "sha256": "b863f4a9332ec1468e2dff0391bf3466b9a7cbeba2f5b99630edb5b89de1fb02",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0274/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0274/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 275,
+      "original_entry_indices": [
+        275
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0275/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/operator/ub_duckdb_func_ops_main.cpp",
+      "source_sha256": "beabf69619c16d720c848733320bb4e346fdceefcb86b7d8467c1451fde43646",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1079473152,
+      "sha256": "5a96e077299baa28f660a08867f1e365c57d44339e0038f1dfa7a436e06de505",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0275/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0275/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 276,
+      "original_entry_indices": [
+        276
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0276/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/sequence/ub_duckdb_func_seq.cpp",
+      "source_sha256": "7f0d8820ccc2b417b1ad51e47ef9b68731a211b1813d464e366c90b92712d169",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 515193856,
+      "sha256": "b1cf8bf8fd50dcb750199d0c14acdfdfbee4bef9b87ea4cfdf099acb7973849b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0276/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0276/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 277,
+      "original_entry_indices": [
+        277
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0277/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/string/ub_duckdb_func_string_main.cpp",
+      "source_sha256": "9424e4b70ec9460f5da07237136080f53352ae9c98315c63ea9fab0d7fb35aee",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 736184320,
+      "sha256": "37f74077d93ed867daf067dd3d393f4b2d9995cf38fda4ed394858755b02357e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0277/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0277/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 278,
+      "original_entry_indices": [
+        278
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0278/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/string/regexp/ub_duckdb_func_string_regexp.cpp",
+      "source_sha256": "4ad07ec064285f955592822a98d6c6ba8bb00e82acca1de7c1ef90cd96c8f26b",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 333438976,
+      "sha256": "00cd3e9fc6edac672c4ce6406ca5750a0894b5f878ea9cad95e088361d17519a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0278/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0278/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 279,
+      "original_entry_indices": [
+        279
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0279/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/struct/ub_duckdb_func_struct_main.cpp",
+      "source_sha256": "bb0a5a76f1007f00a7e76d21619cbc5a0b9940c0cc7987974c5ef60e9aa8e03f",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 453488640,
+      "sha256": "5be4b52aa5dec77e8dc1f7dc3876d750f59079c5d3bbb95dfe7405fe91c4982d",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0279/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0279/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 280,
+      "original_entry_indices": [
+        280
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0280/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/variant/ub_duckdb_func_variant_main.cpp",
+      "source_sha256": "601bfa9379993dcfe8ba194c825c39b888414fd5aac4b09668d2f7a842ec3eaf",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 415197184,
+      "sha256": "d8a649171d6d21a5657d7fc456dad6f82142dca57fdb2a1582682868927ae9f0",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0280/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0280/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 281,
+      "original_entry_indices": [
+        281
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0281/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/system/ub_duckdb_func_system.cpp",
+      "source_sha256": "a7f9325e2cf271a18437df8ba07a46263cdb5a94ea7e331120cc838211ae59e5",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 738842624,
+      "sha256": "794712bae6c89ec3f485d642b659026f50b8f3ff431dc5ba62cfd3225843fcc5",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0281/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0281/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 282,
+      "original_entry_indices": [
+        282
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0282/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/scalar/geometry/ub_duckdb_func_geometry.cpp",
+      "source_sha256": "df4f8c57207b7c5ccd620fb1434b5b761d0b83f109c31eb2563dca77a63c9c13",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 329458688,
+      "sha256": "52586dabc37f441635947003d93c4d7d075595f8e7516f185df4b80a6ef99644",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0282/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0282/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 283,
+      "original_entry_indices": [
+        283
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0283/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/table/ub_duckdb_func_table.cpp",
+      "source_sha256": "8d299f4fc1b3908bcf6bcea3d643e2c21781c15ed9399ccdd86c822d0d78bd71",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1431192576,
+      "sha256": "430f16e67ff90bd70415b444f6cc04f52af3b5c5ef5c0dd65b27b3665e0517aa",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0283/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0283/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 284,
+      "original_entry_indices": [
+        284
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0284/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/table/system/ub_duckdb_table_func_system.cpp",
+      "source_sha256": "5b59fcb9ab111f1e232c06734988635f9fb55ca692665f6350316bd8c7f0838e",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1321077760,
+      "sha256": "409bc3499c5269c42a0475c21c08ae2d6e9707cb03da82ffdd9fc2eb9af2196b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0284/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0284/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 285,
+      "original_entry_indices": [
+        285
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0285/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/table/version/ub_duckdb_func_table_version.cpp",
+      "source_sha256": "7a011c334da0e629bc9d790f518b0f2ddad75efef0a9a2767bbf4155307e5f21",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 467057664,
+      "sha256": "6db7cee665ba9b403c544cd7f74fb77f43bb704b475c2b9d81907153ffd97d10",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0285/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0285/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 286,
+      "original_entry_indices": [
+        286
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0286/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/table/arrow/ub_duckdb_arrow_conversion.cpp",
+      "source_sha256": "c6d546220d76298db499554f44bf010fa82cf10090850b7d1f32fcfd4bf32173",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 365854720,
+      "sha256": "f5846b2940c671154c7a3eb04302849962f52228b077c95f59bfdeb7446189e4",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0286/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0286/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 287,
+      "original_entry_indices": [
+        287
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0287/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/window/ub_duckdb_func_window.cpp",
+      "source_sha256": "d2c1542f50402e8fafc11918ca5b0b1ac1e55e72de95317e228f99037b8a4788",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 819473408,
+      "sha256": "651fdab46adec1be70236ac1defe90b7caa7cd470e18478c414679c51ab1b92c",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0287/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0287/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 288,
+      "original_entry_indices": [
+        288
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0288/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/function/variant/ub_duckdb_function_variant.cpp",
+      "source_sha256": "be5e9c588ec5c1808266383fbac35eff493225a2b60e71dfe127a32f658371b6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 323521536,
+      "sha256": "c7620479d1f9b26677d7c70cb36a6e897a17aaf6b7d2386cca2ce1bc805a69b0",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0288/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0288/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 289,
+      "original_entry_indices": [
+        289
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0289/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/catalog/ub_duckdb_catalog.cpp",
+      "source_sha256": "febe6ca23a2f1e7a0a104e294f8c2f2c566afed409945978848d3ac7900abe68",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 926922752,
+      "sha256": "5cd0f30b37fc69e070ff9f62d77d3a1d55eb014b4b2f76e28ebacbfe2d2634ce",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0289/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0289/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 290,
+      "original_entry_indices": [
+        290
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0290/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/catalog/catalog_entry/ub_duckdb_catalog_entries.cpp",
+      "source_sha256": "2b193514ffce92b644880b4f55761be2f10aa038acafc174148a7267e11383bd",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1069308928,
+      "sha256": "1e1546074fb641744ca231a7bef990dbc333c5df2a78fc8bf637c9f793c5a794",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0290/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0290/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 291,
+      "original_entry_indices": [
+        291
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0291/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/catalog/catalog_entry/dependency/ub_duckdb_catalog_entries_dependency.cpp",
+      "source_sha256": "d4d36ef11762adf7123e5222af8281574e42e7fad6ab20fa0612af95e20b5622",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 185055232,
+      "sha256": "78627f2bb9fe11038c48b7737390d99938d5917e97996bf9f0f30a8007ad9bc7",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0291/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0291/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 292,
+      "original_entry_indices": [
+        292
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0292/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/catalog/default/ub_duckdb_catalog_default_entries.cpp",
+      "source_sha256": "feaf0d45b8a610acddf69537cd6c74d919ace6a2e5a78ab0a81240fa01af9781",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 650993664,
+      "sha256": "2fc671935f5a9054f3ed701693292f00ab32623a01e540bc37e46c27491b7a39",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0292/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0292/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 293,
+      "original_entry_indices": [
+        293
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/ub_duckdb_common.cpp",
+      "source_sha256": "1156b0287de8bd71aa3923e30c7dc6ca5334980e46bc2a884bd0fecd31c91d77",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1837615104,
+      "sha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 294,
+      "original_entry_indices": [
+        294
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0294/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/adbc/ub_duckdb_adbc.cpp",
+      "source_sha256": "71b27b1c11f02179a33e14d257904c5ae1fea41d2cf010daa709b73c02f04308",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 648387584,
+      "sha256": "52f7096b8bde4f68a0677f7a16250f8cc4c431f936e362aae4e8886d17758a69",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0294/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0294/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 295,
+      "original_entry_indices": [
+        295
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0295/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/adbc/nanoarrow/ub_duckdb_adbc_nanoarrow.cpp",
+      "source_sha256": "51d3f72b2624af765029714a027e1d303c3b4d285991273ca9894022baf3e586",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 583601152,
+      "sha256": "197a65cf909f304ddaaa7bf34b3045519c25ee8e4776e66e10875104eeb6b435",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0295/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0295/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 296,
+      "original_entry_indices": [
+        296
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0296/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/allocator/ub_duckdb_common_allocator.cpp",
+      "source_sha256": "1c488f5168d9ca268c31f21a215d448443ebff50558bf4122a516e0440fc5344",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 117318656,
+      "sha256": "7c7e07a864f277776b90cd45dab0f9201a5f6d94c725093e446600c507df02ff",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0296/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0296/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 297,
+      "original_entry_indices": [
+        297
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0297/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/arrow/ub_duckdb_common_arrow.cpp",
+      "source_sha256": "7112f14dabb431dc98b41e6cb7e1987d81faebd98cd065d75eafba3c54356318",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 564481024,
+      "sha256": "5c9ca0011ffe43d9d4ca0ad0b2cd88235f96c11de1e2bc9f7ca6b4d8288e6e3f",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0297/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0297/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 298,
+      "original_entry_indices": [
+        298
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0298/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/arrow/appender/ub_duckdb_common_arrow_appender.cpp",
+      "source_sha256": "34d1603bfa840c602af8b261f61066d4aa8c0e483bb4ef6b9c1b3750a16b95ad",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 264871936,
+      "sha256": "94411853a0894907dca49d3016f111fdbb21b7067d5017b532fb868e029ce075",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0298/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0298/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 299,
+      "original_entry_indices": [
+        299
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0299/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/crypto/ub_duckdb_common_crypto.cpp",
+      "source_sha256": "8cd55647947e0f3002d7c6f64a9c6a9047fffcbf97a4da1ae054db587d1bc40b",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 138704896,
+      "sha256": "7bc294536bd7ac3e5aeba1540c5a453be09d9b90b466375a7c3c5019fc3cf886",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0299/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0299/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 300,
+      "original_entry_indices": [
+        300
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0300/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/enums/ub_duckdb_common_enums.cpp",
+      "source_sha256": "625b89f7ad9731ab379184a38791036408c704fd045fcd8b1e8e872194298fc7",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 415345664,
+      "sha256": "6856d59e243fffd9b1b986beee12651948204195ebe94b200ad516e65fb48841",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0300/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0300/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 301,
+      "original_entry_indices": [
+        301
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0301/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/exception/ub_duckdb_common_exception.cpp",
+      "source_sha256": "b98ddfb227f157391fc9c80d3f94cec6420117b353e3951da0c683f3abaca4ed",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 183534592,
+      "sha256": "59631e65004caa19c5f9916bc0946f26356495defa77ba722a70d7a2a2233289",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0301/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0301/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 302,
+      "original_entry_indices": [
+        302
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0302/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/multi_file/ub_duckdb_common_multi_file.cpp",
+      "source_sha256": "7552c83454daefe76ea5ac76f92e2fe255196b1a29a885890997be09e48b2be0",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 905320448,
+      "sha256": "cb1b9c67b10e0e646320ef8ba56f06c5d930f96d71df6852ab0acbe23955af99",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0302/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0302/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 303,
+      "original_entry_indices": [
+        303
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0303/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/operator/ub_duckdb_common_operators.cpp",
+      "source_sha256": "895045a228478688b8990e4eb7d6607c5b276983d8855a9caf97e132c2fa1d07",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 311142400,
+      "sha256": "5c2c1e604cf9a3aa718020289fd04f32b24d97ed9c18d3a17e9098c610b1a568",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0303/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0303/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 304,
+      "original_entry_indices": [
+        304
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0304/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/progress_bar/ub_duckdb_progress_bar.cpp",
+      "source_sha256": "643d5b658581cbb1524239dda687ef10060f5e52243a3db5d57ea80dfac90465",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 298261504,
+      "sha256": "74b78d4cce410207790dde57e2dc9c076cdc1c24c6f233421065a451f917a4ac",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0304/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0304/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 305,
+      "original_entry_indices": [
+        305
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0305/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/tree_renderer/ub_duckdb_common_tree_renderer.cpp",
+      "source_sha256": "6bf39cbef9ba71012af8d9a38737c55fbd1171e4966a76de79e58e9823b48003",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 615624704,
+      "sha256": "32a7f54427361c4e56893af86bc42e7f00e2a5d7182a908054afd95fadef6493",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0305/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0305/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 306,
+      "original_entry_indices": [
+        306
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0306/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/row_operations/ub_duckdb_row_operations.cpp",
+      "source_sha256": "63cfdfd7ef0084dc9e311f58b4a339946c9212409fc610768eaf5fafcc36d659",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 455732224,
+      "sha256": "0841dbde2d69b99019351e3e1447678b99045440d9e1c4b1182259ef2b4c3892",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0306/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0306/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 307,
+      "original_entry_indices": [
+        307
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0307/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/serializer/ub_duckdb_common_serializer.cpp",
+      "source_sha256": "7297b23f1d944ba60804130169621a872d341276830f34e38edb12d72342e658",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 466805760,
+      "sha256": "e03975f9b5e886edea3f4cbbf4fa24006543a193e09ae0d643f373fc42d2c94f",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0307/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0307/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 308,
+      "original_entry_indices": [
+        308
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0308/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/sort/ub_duckdb_sort.cpp",
+      "source_sha256": "76b5d8293269a06a59aa02a9c6eb1e3ac4e0a9a7fc75abcbda3653bc19d8b5f6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 860755968,
+      "sha256": "260beeb7b5815c72129723ca3058936fa3b2f7d21e0f6faccd48183001a6bbfa",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0308/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0308/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 309,
+      "original_entry_indices": [
+        309
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0309/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/types/ub_duckdb_common_types.cpp",
+      "source_sha256": "a29176ad1e97a312f438075d759a657451070424be3f67d7315565b0440ad8b7",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1056241664,
+      "sha256": "cd9c88623d38616307fc376828b18641946c88effc0b3cc7a812347b5bf473e8",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0309/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0309/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 310,
+      "original_entry_indices": [
+        310
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0310/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/types/column/ub_duckdb_common_types_column.cpp",
+      "source_sha256": "7f8366f968e650eee831d54ca1c2c032695c0fcac2b8005e5db1982bf082f122",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 689444864,
+      "sha256": "56ded47ddc16af6b82f5d877568c45c6f7e4c4185ab0209d7bc3f75952fcbd53",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0310/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0310/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 311,
+      "original_entry_indices": [
+        311
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0311/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/types/row/ub_duckdb_common_types_row.cpp",
+      "source_sha256": "d28a89d954ee8522a33d936b3b3488a19a1c974a095834f70fb17922b31b0240",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 710674432,
+      "sha256": "203f5d068ddc46c173bfe8df68ea6dc0c66ccf3dc432fe136cbe6175768b5730",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0311/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0311/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 312,
+      "original_entry_indices": [
+        312
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0312/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/types/variant/ub_duckdb_common_variant.cpp",
+      "source_sha256": "9e449bc6de4dc4ff2d8f75dca3337012869863a35540be116421083d0a7a212a",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 405304320,
+      "sha256": "6cf19d6dad001f58df2b90027ddc4139a0c2e79e66c773c7a85194436d9fba19",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0312/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0312/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 313,
+      "original_entry_indices": [
+        313
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0313/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/util/ub_duckdb_common_util.cpp",
+      "source_sha256": "afbd3524825f7e0c5ef4670961abe07bc32c5348165b66b94fde7012d773a1bd",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 207277056,
+      "sha256": "0e3579daa556eb33d65b40a642612b31843e27f537afd7bcf5ea6e1581eb39b3",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0313/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0313/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 314,
+      "original_entry_indices": [
+        314
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0314/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/value_operations/ub_duckdb_value_operations.cpp",
+      "source_sha256": "e4c3de6e364482e73d27e6bf66669ce88759472fd14dd9230c4b5c3a14418f2a",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 310394880,
+      "sha256": "5db715d4e0e324a7d5d0dd432f1611414ce936ebb3c50176962a19ff7288696d",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0314/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0314/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 315,
+      "original_entry_indices": [
+        315
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0315/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/vector/ub_duckdb_common_vector_types.cpp",
+      "source_sha256": "97f9b617fceb2a9451722334767ff9b6ede60ab9d35deac7124b736e8ea4f13a",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 398391296,
+      "sha256": "2914f3025318bd2bf70abadf0f8e97129fd951da176c04554df978ca436a3631",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0315/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0315/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 316,
+      "original_entry_indices": [
+        316
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/boolean_operators.cpp",
+      "source_sha256": "29eded9934221b5aa409fa77fca51b0026356fb243e49f9dda5fcc7a9c4fee94",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 156354560,
+      "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 317,
+      "original_entry_indices": [
+        317
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0317/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/scalar_executor.cpp",
+      "source_sha256": "423ecbbc7d01fe4edb2dedaded9688012763a67e66ebdc800b3157fff54d98fa",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 146621440,
+      "sha256": "35a8420b6cabf89d1b5d48f61d3f8cd4c94798366297c034c94cbc778096b8fc",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0317/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0317/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 318,
+      "original_entry_indices": [
+        318
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0318/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_cast.cpp",
+      "source_sha256": "26bb7916a641c1c9e2e37a1b7a1cbefe20ad8d9ea6d1ca6535b6f42e1c22acee",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 264750080,
+      "sha256": "c824db3359c602b1a81268a4aaeb8c5a3f7fe0f56c6638675c92abb0f037c66b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0318/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0318/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 319,
+      "original_entry_indices": [
+        319
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0319/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/comparison_operators.cpp",
+      "source_sha256": "209d329b1122c0b3f3c74eae9bb4127313d18f75a2ef4919bdbd2301de146d40",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 326609920,
+      "sha256": "ee0b684965ff54ff7d51a778379a65fbe67ab9f13620ac570ace7dcbb60aac86",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0319/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0319/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 320,
+      "original_entry_indices": [
+        320
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0320/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_copy.cpp",
+      "source_sha256": "ad3cc2648f1e247a09277f3ebc6ab91c65c202b713dc8cd9f84cde7258a43dd1",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 148301824,
+      "sha256": "2f8e68364c87e1bdb1187e8ea616bbf917ddd130493c629c366115b4f3855a62",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0320/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0320/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 321,
+      "original_entry_indices": [
+        321
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0321/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/generators.cpp",
+      "source_sha256": "783e10167779d41ae9bb54129b6fe757b37711f75ddb9688f1309396afb22f57",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 150206464,
+      "sha256": "cc35c027ab2adef6a457a2d92a2fccb339b2983806c6b9f60bc8cca9f6c57c26",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0321/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0321/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 322,
+      "original_entry_indices": [
+        322
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0322/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_hash.cpp",
+      "source_sha256": "4ff85b21cc647946c2c6c55b959fec77619d59590428b67c2480e0401ef627b8",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 168483840,
+      "sha256": "f9c8f29b38e5a0a5cfcfc176778694dddd548c08f2df5ed9ce327da3470504bd",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0322/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0322/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 323,
+      "original_entry_indices": [
+        323
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0323/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_storage.cpp",
+      "source_sha256": "fd16686d2b9eb3f3cb64edc19cb1cef4ea3dee808e701a89ba0147b3813add04",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 156171264,
+      "sha256": "0365dcecce05b433bb2d992bad205022badde726fd3fead1b20f34060880e691",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0323/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0323/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 324,
+      "original_entry_indices": [
+        324
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0324/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/null_operations.cpp",
+      "source_sha256": "7a3f9fb50d4a3f9eb139ce31ba298d66099b1c38173c95be37c566f34a003a95",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 149028864,
+      "sha256": "3b53ec62ebd1f13f1ee41fddcf5526df4e2a100f56c11b107cf3a13d4a58319e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0324/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0324/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 325,
+      "original_entry_indices": [
+        325
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0325/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/numeric_inplace_operators.cpp",
+      "source_sha256": "a3a72a127fbd01d1b7f0a4b78d4fa56e6e3a30689270baa08172ab7ace865e98",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 148642816,
+      "sha256": "c142a104194abf7f902c4d8c799baa8426fe4e83098ff65e931e73ba3cfc6997",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0325/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0325/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 326,
+      "original_entry_indices": [
+        326
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0326/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/is_distinct_from.cpp",
+      "source_sha256": "67830e137c2ef9f4651634fc2839ca5d1f9228ffdc14871b74fa32883d8cf263",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 154042368,
+      "sha256": "eb79df3a96dd39f192566c9cbf2bc152a01e8332389cb670f18ae5cc0a55940b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0326/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0326/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 327,
+      "original_entry_indices": [
+        327
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0327/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/logging/ub_duckdb_logging.cpp",
+      "source_sha256": "da0369d9fdb717642a13c40ad225fbf536a9cf521729d2825859b60603887515",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1007055872,
+      "sha256": "198f153aafd16dae2f18b123f21cb69f1b81a042cf53d7745476db2a99cf63b8",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0327/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0327/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 328,
+      "original_entry_indices": [
+        328
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0328/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/ub_duckdb_execution.cpp",
+      "source_sha256": "efb028e2c62b1563ab7634a4824e990c28afdbf63c618e5393763b6bec51b188",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1138979840,
+      "sha256": "52a5a4af2883708e816a533df1e8a9dc2360a322050cf61c3e7534cd0d476d10",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0328/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0328/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 329,
+      "original_entry_indices": [
+        329
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0329/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/expression_executor/ub_duckdb_expression_executor.cpp",
+      "source_sha256": "931a86af3c9f2d794e65902ae798cc225dde04d5d45737655219f1088fb0f7ed",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 675399680,
+      "sha256": "53964fcae76825c8bb6d40a6b2549a416667b4ef2924a17b87e44de3bee95c78",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0329/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0329/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 330,
+      "original_entry_indices": [
+        330
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0330/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/nested_loop_join/ub_duckdb_nested_loop_join.cpp",
+      "source_sha256": "341ee2ad28fa6d10d0059bf1cc3b3b4aff3cd4e1fb9e692f5327d4b4dbde6ab6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 356658176,
+      "sha256": "d5db56b3a52a8960e785b7692a86dd741894f0b8e228cd3e1eddd93a7e1f8a7a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0330/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0330/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 331,
+      "original_entry_indices": [
+        331
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0331/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/aggregate/ub_duckdb_operator_aggregate.cpp",
+      "source_sha256": "7dbd28a640ca955421636b42be1ad351b78ac7398a7880ee90421cdb6848951c",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 872101888,
+      "sha256": "28f720878d5041a2ccd9d60f0d36a70ed169118c0bc79e5deb7e8d689a9531a7",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0331/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0331/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 332,
+      "original_entry_indices": [
+        332
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0332/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/buffer_manager/ub_duckdb_csv_buffer_manager.cpp",
+      "source_sha256": "c9de549eaabb8b6fbebbbac85ec34781ba17889b9a4aa2582ae325ef22526ec7",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 559136768,
+      "sha256": "cc2a2b1ebc7e3160f298fe091aaac8e42193fd182a01746f75aeb7b06e82525a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0332/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0332/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 333,
+      "original_entry_indices": [
+        333
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0333/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/encode/ub_duckdb_csv_encode.cpp",
+      "source_sha256": "8114dee60c074ca19475c5c7f3f558b033a926059e9d12717edddd6e459a03b6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 581706752,
+      "sha256": "da7d06225e50ae9905336d4c837aa8149fa1e114fec300577aa62e2ecb61da76",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0333/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0333/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 334,
+      "original_entry_indices": [
+        334
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0334/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/scanner/ub_duckdb_csv_scanner.cpp",
+      "source_sha256": "350e4909385b83e02f87e9a29825cf6c69ae6321eb98d45d28910818779774c8",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 819852288,
+      "sha256": "2b0ba1dc103fb473b1720a0873b7229f4e7fdc5a5a7bc8c4f04686fcfbd63e69",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0334/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0334/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 335,
+      "original_entry_indices": [
+        335
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0335/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/sniffer/ub_duckdb_csv_sniffer.cpp",
+      "source_sha256": "03b055fddb6b08cc1e056dbaa6d25a8d5353c6282de777a64da82bfe7bc16722",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 658664448,
+      "sha256": "6fc9485879d705dac3ad32911931e6e74adfcd0aca94ee4215c8a5f4ee4693ff",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0335/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0335/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 336,
+      "original_entry_indices": [
+        336
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0336/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/state_machine/ub_duckdb_csv_state_machine.cpp",
+      "source_sha256": "af08c37a4cb47dcd0ca5be130dc2518cec89410dd90095d51f2335bf21cd42dd",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 578052096,
+      "sha256": "4c736940c8371d2b98e42bddc6c142d86c15d9e307c607221efb8f2410b0e5ab",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0336/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0336/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 337,
+      "original_entry_indices": [
+        337
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0337/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/table_function/ub_duckdb_operator_csv_table_function.cpp",
+      "source_sha256": "b499e2f1ed5b74d28b90632bc99ea2110391b50348b8e37164e5ebab9c3d69d1",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 835640320,
+      "sha256": "cfd99b1858829213ec581e7deec8467a74a9ae84c474c2c96d607f1e2cd3a618",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0337/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0337/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 338,
+      "original_entry_indices": [
+        338
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0338/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/csv_scanner/util/ub_duckdb_csv_util.cpp",
+      "source_sha256": "63641e7376729f4458339deee75a6302ce221b8f9b6e3425885e11e0bd093fc1",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 631744512,
+      "sha256": "5a108f66e85f018a42e7c26e02af03451417b88640f79c18e6c5fdc35754a69a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0338/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0338/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 339,
+      "original_entry_indices": [
+        339
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0339/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/filter/ub_duckdb_operator_filter.cpp",
+      "source_sha256": "574d17fd21bfc2d42fa8ff66354142c5a2a2132c65dfbb370034a4314c0c5f6e",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 288357376,
+      "sha256": "4e329d759d436f087d2e83342e90d89c0a20ecf5027c6fc477d0ceda8d6f7e4d",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0339/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0339/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 340,
+      "original_entry_indices": [
+        340
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0340/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/helper/ub_duckdb_operator_helper.cpp",
+      "source_sha256": "876e75733b30e08129d6f2421257fb96c8c6126e8e2a4e5a97f4932da7340cb1",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 901149696,
+      "sha256": "9ec2cae08f59f5b4378080c15b20415b4d2562fe9a7379759cd2f2b8690c50ef",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0340/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0340/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 341,
+      "original_entry_indices": [
+        341
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0341/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/join/ub_duckdb_operator_join.cpp",
+      "source_sha256": "8eb3a5b442193d301f9b6d4c171662de90d9be6e49c0ce0cb4e81b0ac357e6c4",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1058594816,
+      "sha256": "e014cbb0a9bec9fc30fdadb862f6e8d96579d5b38a3d2aa56a40ac95f6f8a4fd",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0341/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0341/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 342,
+      "original_entry_indices": [
+        342
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0342/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/order/ub_duckdb_operator_order.cpp",
+      "source_sha256": "45d0a1ea0e89ac387a0eb0d84c4b2afc30ee31d455524e1eeb149013eefa85ad",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 518476800,
+      "sha256": "73a3da2b803744b4f337b801e0c91987662dbfed2a4edc615686cfe8b47043f6",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0342/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0342/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 343,
+      "original_entry_indices": [
+        343
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0343/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/persistent/ub_duckdb_operator_persistent.cpp",
+      "source_sha256": "be0992f3441a8f6361b656c63b63e83a80e93c97f1a873321c0f09e51e143f3b",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1359154176,
+      "sha256": "98ee4a1059acce6b2908e549a9af9caa5ea839e051c0ade2b4ec590178e93e30",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0343/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0343/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 344,
+      "original_entry_indices": [
+        344
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0344/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/projection/ub_duckdb_operator_projection.cpp",
+      "source_sha256": "d2f5a26cfdb79dcb43151db62340913ab98820c2aa6e068b957d6456339c5594",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 506829824,
+      "sha256": "3a220952f982ffde07b65f480891d25b65cc389353d0b1cd63257dabb3e81201",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0344/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0344/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 345,
+      "original_entry_indices": [
+        345
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0345/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/scan/ub_duckdb_operator_scan.cpp",
+      "source_sha256": "210476989b58df17bccb11f3ccd0a2469aa8f935faf2cb468e09d4eb20f0b9b9",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 771503104,
+      "sha256": "8dfce1502d78d4d0b9c7c11c6e5d21715f840c1cbb3e8445f1ff95d4b6bd8b65",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0345/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0345/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 346,
+      "original_entry_indices": [
+        346
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0346/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/schema/ub_duckdb_operator_schema.cpp",
+      "source_sha256": "7a374d7391b118ab85fb685f7da882416c3a22a55d368d8e6994ca0957c50c20",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 835401728,
+      "sha256": "2d90dc23f909821e94a3c1193ff8515c16fb1e33cb452d81d70cf4c024d430c5",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0346/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0346/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 347,
+      "original_entry_indices": [
+        347
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0347/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/operator/set/ub_duckdb_operator_set.cpp",
+      "source_sha256": "69058e41bbabd18742610fdb2cfc17a5160366c15b95b55945f7e1dacc086eb6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 756344832,
+      "sha256": "7314981b7d9331283585039509ac14d4ccae91d57d992da9b563c43b05b45dab",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0347/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0347/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 348,
+      "original_entry_indices": [
+        348
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0348/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/physical_plan/ub_duckdb_physical_plan.cpp",
+      "source_sha256": "4b8c3c25c63fae9d2b78a6054c220e17f6d7586f7508a0fe0b225e16cc95b065",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1184936960,
+      "sha256": "3b7f6fbff78c295f17d027795390ecfd9b88d8bc73db8ff48832fd9d79e13f1e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0348/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0348/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 349,
+      "original_entry_indices": [
+        349
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0349/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/index/ub_duckdb_execution_index.cpp",
+      "source_sha256": "c5ae4c762f3f2c78b2b181b283ba26cb86f8699b47a68339733afad56163c08b",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 574500864,
+      "sha256": "486ce340478fc4390bb8cfa34b0a61ec24bd3b053cbbd86d6f860ad0a2457ffa",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0349/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0349/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 350,
+      "original_entry_indices": [
+        350
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0350/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/index/art/ub_duckdb_execution_index_art.cpp",
+      "source_sha256": "e3d5e12005dd0ac88422c6b58c16100ff64df7b1639e6a2a65319ddf56975f6b",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 794386432,
+      "sha256": "c1b6fd8f2356d58b785ef46b6a5dbc6751877ba4cb3837538eefbc4c0ef8e62a",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0350/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0350/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 351,
+      "original_entry_indices": [
+        351
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0351/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/execution/sample/ub_duckdb_sample.cpp",
+      "source_sha256": "c7cfa1a6b7283b8f2c00f0d9edcfdba4f65dd6d76487a6876c42ec2e08f0b1ed",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 195489792,
+      "sha256": "aca1ab88a6f6a59b92c8a6e6af581c47b51645e61ef6639240211042de0462e8",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0351/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0351/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 352,
+      "original_entry_indices": [
+        352
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0352/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/ub_duckdb_main.cpp",
+      "source_sha256": "9a74687504af4af25eb7e52ca291f62e272886b0673683922b3ddb0b0f361477",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1801291776,
+      "sha256": "78c712139c93760bc954e7b09af27d5c6f578554505a0412fa05f405655bce86",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0352/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0352/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 353,
+      "original_entry_indices": [
+        353
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0353/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/capi/v1/ub_duckdb_main_capi_v1.cpp",
+      "source_sha256": "66e230fa05766c84bde5945dd6e269561dc559bf0c0a3ea1a61db3bfd9840a75",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 844283904,
+      "sha256": "a1f6b4d16a404a3861af966bd828a8af9bc5ff01e80e7556261facc75ba80d37",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0353/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0353/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 354,
+      "original_entry_indices": [
+        354
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0354/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/capi/v1/cast/ub_duckdb_main_capi_cast.cpp",
+      "source_sha256": "81c7c0cec27fd807278c131e3745a55f8ada40e7d5334c602452343e992a3e55",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 590872576,
+      "sha256": "7da3148a42ad0023992dc2f3f06fcfc943f0e2f992a37cdab5d63ba6a605b6a8",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0354/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0354/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 355,
+      "original_entry_indices": [
+        355
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0355/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/capi/v2/ub_duckdb_main_capi_v2.cpp",
+      "source_sha256": "675dd519cdea3daa792a46bff84e98f8c268cdd27ae74b2e36bd41ae63705353",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1321410560,
+      "sha256": "ef6fc5073906cac658bd2413480fc405109b57ac7cf3a8f870de7f862afd5ec0",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0355/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0355/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 356,
+      "original_entry_indices": [
+        356
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0356/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_alias.cpp",
+      "source_sha256": "0febd4d486c51d7ef26d8cc01922ae910fbd760308c6db625d81179a87ce6e3c",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 574198784,
+      "sha256": "c8ef9df7f59bb849762f174283c4e0f01d1a57658069ca9e258d0b2724ce06cc",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0356/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0356/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 357,
+      "original_entry_indices": [
+        357
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0357/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_helper.cpp",
+      "source_sha256": "4c51f75a2814dfc02198bc1a777609ae65ed42894e6e77ed5f5fb0aa6cf5bbd8",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 684708864,
+      "sha256": "cf70b3b902c629ea8045dc9444d700018ae9e1c5f91f01cd6d7595f4ce6fe51e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0357/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0357/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 358,
+      "original_entry_indices": [
+        358
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0358/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_install.cpp",
+      "source_sha256": "c7485b8b8c8559b82ca80bcb60c1380295449ec55fdb9548cc82d0be6b4dee9c",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 711774208,
+      "sha256": "eb02364f2cbde4f1f57aa8059ce51c99cc000e6072e32c63ad0e6a25916c0810",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0358/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0358/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 359,
+      "original_entry_indices": [
+        359
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0359/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_load.cpp",
+      "source_sha256": "595bed7921a693fa497f9eae7c68f6e293c40719fa3a12be8a190f5e7bdb7086",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 635872256,
+      "sha256": "0af64522e9b3d99853db2dd0d172951bcee371c0e90823dfacf0ce012aeee1dc",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0359/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0359/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 360,
+      "original_entry_indices": [
+        360
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0360/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_loader.cpp",
+      "source_sha256": "08c71cf4d279d0eb85062afa1887163b00f2633401f0a4686acf803f5e263027",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 539695104,
+      "sha256": "0f3752e9cd568d36b446b4ffe87a30d4fc256c00ab0ad33d93f8c22b728751d6",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0360/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0360/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 361,
+      "original_entry_indices": [
+        361
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0361/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_repository_manager.cpp",
+      "source_sha256": "4838cbad878dfdefe418059b87792f64ddca589b7afdbf582f91a51328570c42",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 614801408,
+      "sha256": "f60a5fa943ef7be230384375b3258733c3b27de2b93d37ebfe53271bfe40ace5",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0361/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0361/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 362,
+      "original_entry_indices": [
+        362
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0362/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/external_extension_provider.cpp",
+      "source_sha256": "beda3cfab9c2b06343e1fbe30e14ce19711f0515ab287f6ae2d7d3ad01189dbc",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 262482944,
+      "sha256": "369f557fc5707ba8262aed83d3802b924bcfd4ce789e91d042eeefc7f0c259fa",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0362/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0362/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 363,
+      "original_entry_indices": [
+        363
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0363/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/linked_extension_registry.cpp",
+      "source_sha256": "2c67c331d6c0a30251f51cb3b586da31aafaa27536a19e6ba966babf3abb789b",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 466921472,
+      "sha256": "2ab562fe6b80e79afaf4e6f9d8287bcdf99c8d3c5c2b916126719d730e0cbdc2",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0363/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0363/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 364,
+      "original_entry_indices": [
+        364
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0364/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_install_dynamic.cpp",
+      "source_sha256": "74b1a3dd577903facab88ba185082dc88f6c4ab089b5f839c526df68d6364136",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 720263168,
+      "sha256": "9eb9bdb1c946b56abcc09b0d6f17d8c20de85c5ae0858c67dbbfd2a531a91b95",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0364/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0364/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 365,
+      "original_entry_indices": [
+        365
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0365/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/extension/extension_load_dynamic.cpp",
+      "source_sha256": "837eb0d5cd4b8564f5def25399497ab25dd31674e2383e53a416e7b5bab04c29",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 577298432,
+      "sha256": "31c00c84e078aa21d12e85395c6143958adb560d278e225effc987e271683ae8",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0365/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0365/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 366,
+      "original_entry_indices": [
+        366
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0366/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/extension/local_extension_repository/local_extension_repository.cpp",
+      "source_sha256": "66ee3387b4e5c26fc343cc467abca0cc1206295e55f8ea3d5930200af57c3eca",
+      "category": "bundled_extensions",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 460393472,
+      "sha256": "37be0b6f77713a3e2f805fa0d01a73bc0df9be93fa060bba5c70c80b4f6fcaee",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0366/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0366/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 367,
+      "original_entry_indices": [
+        367
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0367/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/http/ub_duckdb_common_http.cpp",
+      "source_sha256": "d43dd4488035bc7715c5b1ce6d7900a2df1c118fb64ec9a85f6dab48e8ad02cc",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 722633728,
+      "sha256": "b0e697ff4742d527ec2908f82e34b3d3d68467fef4c011bdd13aae3abd8d6667",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0367/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0367/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 368,
+      "original_entry_indices": [
+        368
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0368/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/main/http/http_client_httplib.cpp",
+      "source_sha256": "8a9b2cd6d372e891a68861c83a56adcf925a9f42262ba77fca019389b1f70eda",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 732541952,
+      "sha256": "055d2c7c615fc85e1c1f133cedbb7532ed726ea4b23f51ca32c484b6a01b9417",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0368/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0368/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 369,
+      "original_entry_indices": [
+        369
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0369/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/profiler/ub_duckdb_main_profiler.cpp",
+      "source_sha256": "bbea93ff1619800bbf1ffdf74703c0b068d26949f7c1d3083a31611f5a5c9c1e",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 614649856,
+      "sha256": "f5eebd377c573a53cd0dba8216dba36c6ef9fdd60ff9101d18176f5a7aad4b48",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0369/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0369/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 370,
+      "original_entry_indices": [
+        370
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0370/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/relation/ub_duckdb_main_relation.cpp",
+      "source_sha256": "4042bb4f364ee9bf7e223aae0982caafe119cbae5b43d77205e80478654c6ba7",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 811472896,
+      "sha256": "a61ae74b81a169da1f474975e5b13d8c41b0f79d4709c8da1c199ba05a7aaa1b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0370/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0370/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 371,
+      "original_entry_indices": [
+        371
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0371/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/secret/ub_duckdb_main_secret.cpp",
+      "source_sha256": "a88d619bd77a483c858b11be2e23f35f83ce8b5afa2f8362202248c26fb9570d",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 785865728,
+      "sha256": "65e878f35482c26ebd711b5d3e9bfa64f1d6bbf412f501472509d9b0f8fc78ac",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0371/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0371/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 372,
+      "original_entry_indices": [
+        372
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0372/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/settings/ub_duckdb_main_settings.cpp",
+      "source_sha256": "a96ffcac688b780a4d883b40847f5fc93a9a417b778805fd43ec52de68ddccf9",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 890952704,
+      "sha256": "212b3c1728c81ff3a14f7d260d5a067acb20eb38641bed061b40c7af23b91278",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0372/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0372/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 373,
+      "original_entry_indices": [
+        373
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0373/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/main/buffered_data/ub_duckdb_main_buffered_data.cpp",
+      "source_sha256": "3f3b626e18cc076a88eaca76f1bd1d19017bd0f0a6377c64241da6f2146a7392",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 324391936,
+      "sha256": "4c2d101bcdb001619623af4c4740be431b256121dd37481a73d0cf400bc6bb35",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0373/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0373/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 374,
+      "original_entry_indices": [
+        374
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0374/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/parallel/ub_duckdb_parallel.cpp",
+      "source_sha256": "d821191f0bb1457c30fd51927ec89849aa0b3701fefa67b7f06a51d00ec539bb",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1014851584,
+      "sha256": "b58cfdd38f384fa582d086f1087579a3a1fc3f59554dc4ab6d01e2ac6d298bd5",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0374/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0374/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 375,
+      "original_entry_indices": [
+        375
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0375/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/ub_duckdb_storage.cpp",
+      "source_sha256": "62a5d39a06a895040800a37dd4585620c4988bfc066df0cfabfd858ff8fe43c3",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1298849792,
+      "sha256": "966a62eb778f7cbe17e8198e8274441b1b8113c07d1fde98a9d091811f929829",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0375/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0375/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 376,
+      "original_entry_indices": [
+        376
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0376/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/buffer/ub_duckdb_storage_buffer.cpp",
+      "source_sha256": "9f6b6470d89f31cc86de43218e1388e28934c2121b793dd0d692a3fca2506d22",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 368849920,
+      "sha256": "732484651b430caa5946da1b3242d57ed97737e5034f1f78c510111f916c8091",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0376/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0376/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 377,
+      "original_entry_indices": [
+        377
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0377/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/checkpoint/ub_duckdb_storage_checkpoint.cpp",
+      "source_sha256": "17754c9157c7447f0db82a13adf1d551d7d32d6894c95449871eeb98b175b2b0",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 793664512,
+      "sha256": "9ac37e33012ff479d804bdf56bbbd6753ae63aac0618a87dfe94d9b247f44b10",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0377/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0377/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 378,
+      "original_entry_indices": [
+        378
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0378/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/compression/ub_duckdb_storage_compression.cpp",
+      "source_sha256": "13e7bd47a655746a603388408ca74d6ad67869a3bb3a4e403a5eb4949fb5eabb",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1114824704,
+      "sha256": "57e49c8d2020cfebf306f6144d6e9468184aaf46e2f04d5795bd5554047b071e",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0378/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0378/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 379,
+      "original_entry_indices": [
+        379
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0379/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/compression/chimp/ub_duckdb_storage_compression_chimp.cpp",
+      "source_sha256": "13070aae7553c69800972a79108feb744d384629fdd903eb824904b05cbb14ad",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 589039616,
+      "sha256": "e467ea90da8b834cccb693442c8ed1f590e48ddaf77a3725f333de0d41da9dc1",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0379/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0379/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 380,
+      "original_entry_indices": [
+        380
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0380/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/compression/alp/ub_duckdb_storage_compression_alp.cpp",
+      "source_sha256": "3ea0b127699c2c95468c6dc4d5cc6b6b530b796c64246ee3f4ffa54096220aa6",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 660136960,
+      "sha256": "373f8e465b352c31639abac98c791e6468405c64f74135aad9a3efba689e7b31",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0380/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0380/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 381,
+      "original_entry_indices": [
+        381
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0381/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/compression/roaring/ub_duckdb_storage_compression_roaring.cpp",
+      "source_sha256": "77c3a50beb8defb7ecc51f0b72ab1c5569200fa28987c875e46b11a2598fb2f7",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 653760512,
+      "sha256": "5045ea2ccd11282138501afd2371e8a12847891914f28761b914245c78952193",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0381/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0381/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 382,
+      "original_entry_indices": [
+        382
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0382/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/compression/dictionary/ub_duckdb_storage_compression_dictionary.cpp",
+      "source_sha256": "09f5dbbc5ef10168e24edddb779931ff70255fab0a75b716e9372fab57d882d9",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 591446016,
+      "sha256": "fd13fd9830878089ed17dea2bd595f08c15ded0488b39f900a17813024db9261",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0382/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0382/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 383,
+      "original_entry_indices": [
+        383
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0383/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/compression/dict_fsst/ub_duckdb_storage_compression_dict_fsst.cpp",
+      "source_sha256": "21fb4d98d31c0145331182005ba7ddb555aaa78ccb19849a2a34182b3ff40799",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 638568448,
+      "sha256": "44c1737d80607e3e8c292c8a0b244ca2f57f31168375d8152884dc1ea4f3c943",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0383/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0383/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 384,
+      "original_entry_indices": [
+        384
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0384/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/external_file_cache/ub_duckdb_external_file_cache.cpp",
+      "source_sha256": "edce7eb78c604cab53addc1e589687e698dcfa8edd55ffff66c3e37133773519",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 639050752,
+      "sha256": "87ec85f2a260f2a580a2104c601ac624bbe5b17a024c6507d7ffe59914da5db0",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0384/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0384/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 385,
+      "original_entry_indices": [
+        385
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0385/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/metadata/ub_duckdb_storage_metadata.cpp",
+      "source_sha256": "35f338dc9a92f4d30f3ab24ac7029b354174554a1db57050394943c70ca82577",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 324589568,
+      "sha256": "449224f2e6d8573d272d6d8b6fc3b41b580bc8e2dcfa22cefe5d7b91663f4f16",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0385/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0385/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 386,
+      "original_entry_indices": [
+        386
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0386/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/serialization/ub_duckdb_storage_serialization.cpp",
+      "source_sha256": "c4ce50953160957b0ab140de6c1d3a60ff92a7469d8ef1dfd41bcb2105b30e6e",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1438840832,
+      "sha256": "6844b0d53f0cd8a105c4f1d640093c51c504c35c69b42fdbd9ea83fb25f059df",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0386/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0386/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 387,
+      "original_entry_indices": [
+        387
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0387/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/statistics/ub_duckdb_storage_statistics.cpp",
+      "source_sha256": "6217849af6a3caf50366230a00e7d3961643482faace846a146e3c44596b68bd",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 552160256,
+      "sha256": "43a5a973e547bfcb814405f873d643a1106a4a54ca5f421abab7eee10dfb5677",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0387/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0387/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 388,
+      "original_entry_indices": [
+        388
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0388/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/table/ub_duckdb_storage_table.cpp",
+      "source_sha256": "e68276d22b81cb99cb7ffc960711400b0e31a6a964be7d26e7783776bbc7fb40",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1188000768,
+      "sha256": "e39c22db0d088d496a4fb5daa67ecdf843091e9f472a4d807c41f7091b56fd14",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0388/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0388/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 389,
+      "original_entry_indices": [
+        389
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0389/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/storage/table/variant/ub_duckdb_storage_table_variant.cpp",
+      "source_sha256": "f78651f53d813f6a029c81db9e15911c35ab15a1f9cc6a299d2b42a15a50eb3c",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 522625024,
+      "sha256": "7c464f040d114836881269ea2a10be03778fae9f0933ae92d71034b11a9e3b1b",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0389/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0389/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    },
+    {
+      "entry_index": 390,
+      "original_entry_indices": [
+        390
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0390/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/transaction/ub_duckdb_transaction.cpp",
+      "source_sha256": "b205f7f602702507dc6d71b07d3652e75533856d2a3983bc1e3eb420bf87bc75",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 911653888,
+      "sha256": "42da5f1aea3cd032f4683a2c3106ef073b520fcd682a7f6c79b39d949b2749c1",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0390/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0390/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    }
+  ],
+  "failures": [],
+  "pending_indices": [],
+  "source_selection_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T165523807094Z-selected.json",
+  "selection": "Metadata-only subset of an existing verified selection; no object reopens or hashes."
+}

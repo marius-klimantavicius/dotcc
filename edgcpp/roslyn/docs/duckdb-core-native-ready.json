@@ -1,0 +1,96 @@
+{
+  "status": "READY/HOLD core-only native deliverable; commands idle",
+  "timestamp_utc": "2026-10-14T17:02:45.722430+00:00",
+  "scope": "Configured output starts src/; includes extension loader glue entries227/228; excludes tests, separate extensions, thirdparty, shell and other tools",
+  "core_entries": 164,
+  "unique_objects": 164,
+  "published": 164,
+  "failed": 0,
+  "pending": 0,
+  "object_bytes": 104942180352,
+  "targets": 145,
+  "coverage": {
+    "scope_rule": "Configured target_output starts with 'src/'",
+    "configured_entries": 164,
+    "direct_source_paths": 164,
+    "unity_entries": 139,
+    "recorded_unity_contained_source_paths": 1627,
+    "direct_or_contained_source_paths": 1791,
+    "direct_and_contained_overlap": 0,
+    "authority": "Actual recorded unity include lists; no claim about unconfigured optional sources."
+  },
+  "language_counts": {
+    "c": 1,
+    "c++": 163
+  },
+  "format_counts": {
+    "2.0": 163,
+    "1.0": 1
+  },
+  "flag_mapping_counts": {
+    "flag_mapping_complete": 164
+  },
+  "source_revision": "a809d3cd519df6db70223c562c4de80da311868b",
+  "compiler_snapshot": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer-snapshot.json",
+  "compiler_sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+  "native_commit": "98f3374536a309fb71a9c9d89f7ffb295e44c09e",
+  "driver_commit": "de5e9cc2c3cd6ba5a86262bc70d9dc226eb788bf",
+  "pin_proof_reused": "/mnt/storage/roslynobj-duckdb-20261014/export/pin-stage-proof.json",
+  "pin_scope": "14 stock stages pristine; native26backend files current,13 historicalformat1 stages not claimed current",
+  "sha256": {
+    "/mnt/storage/roslynobj-duckdb-20261014/export/selected-core-final.json": "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core-final-summary.json": "6b6cc089e54b4f6000f618df9ca13ae2fbdf63e69bd666fb2010a294dcb43b18",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core-per-entry-final-summary.json": "e6fd7a1c9ac1ecac98e42315de27e3da82b8762549482878d580639653a8ba69",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core-source-coverage.json": "d06247dad5a79c6ce46a42af849f3de41297cf07008f56f9e0fc2f46c9b4b051",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core-scope-historical-campaign.json": "ab572396579c6b2cb46c79e7ab620d4f0bceb2de045c34efd9d50a26db9371be",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core_report.py": "364696b2c958544453a06406eb2060dc3e1a310e67ed7063882fd07d650462ce",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core-report.log": "0b009139fce99a3ea48b7109b9c9b4671f1278b8a2bc37789af9f3b3467a61c2",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/pin-stage-proof.json": "ae5d28c4665787b8698d6f62708a190615fc0e35573f30e07bb6bf3b39c12a5d",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/project/manifest.json": "67b6d44133e289242813c14a18c06676b0495c2375ad2db9ba8d4527f20aad39",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/project/results-stopped-final.json": "2e318a4f3f7b52ec8176c7d0c2debfeeeb812769df1108bf54641012f9d97c09",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json": "6faaba3183dfe23f0730912ad0852ad4d43a31f8570cfee32def9ba6d2216623",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/remaining-selection.json": "a64cd66e64ed391856c2f00be7e11ab423b94363594a16d6a070ef1e9e026294",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer-snapshot.json": "e361477be1df383813a9e6fe8b501a6635199c267a232a129d2a5349007f70ee",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/scope-core-only-stop-request.json": "18bdf50c0901b66dc99503440f1a2a8c27233b1dad10c707a103e7f8c9e9d075",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/major2/dispatch-final.json": "2cf4f4d069d7724a1030f6904b1a3c055aab6dfec5d22eaa7ef53d1c4f86fc5b",
+    "/mnt/storage/roslynobj-duckdb-20261014/build/compile_commands.json": "e52f8c5f375ced3be260aec3d67fbec66870bc61043b3bf3ac3077da4dab2168",
+    "/mnt/storage/roslynobj-duckdb-20261014/build/CMakeCache.txt": "4e28a68bb4a97ceabba7b93431c6b14e1d0c1093ed5d3b34874692e6a405c727",
+    "/mnt/storage/roslynobj-duckdb-20261014/configure.log": "7fbe90391dd8123d2198f6d251fb76c212f28bb5993247d63ae26bd6941b6199",
+    "/home/marius/p/dotcc/edgcpp/roslyn/build/project_export.py": "c66e40540c2205657dfa4e588b981a1d6c4d48f03507991d0525381d8ed71e3d",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T165523807094Z-selected.json": "94e895844df669f6693df5370e6ffd272014d86773fa3fe8630c02e32ec770de"
+  },
+  "owned_tracked_paths": [],
+  "recorded_artifact_hashes": "All164 existing native hashes preserved in selected-core-final.json; no object rehashes",
+  "native_admission": "Existing verified selector snapshot subset only; no object reopens/FK/graph/table scans",
+  "reader_gate": "Managed existing journal identity cross-join separate; no new reader admission scans requested",
+  "historical_campaign": {
+    "scope": "Historical whole-project campaign preserved outside final core-only deliverable",
+    "configured_entries": 650,
+    "corrected_attempts_completed": 604,
+    "corrected_statuses": {
+      "published": 449,
+      "published_with_semantic_delta": 152,
+      "frontend_configuration_or_source_failure": 3
+    },
+    "approved_legacy_successes": 38,
+    "whole_campaign_published": 639,
+    "whole_campaign_failed": 3,
+    "whole_campaign_not_dispatched_after_scope_change": 8,
+    "dispatcher_stopped": true,
+    "dispatcher_exit_code": 0,
+    "stop_request": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/scope-core-only-stop-request.json",
+    "dispatch_record": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/dispatch-final.json",
+    "preservation": "No old objects, logs, recipes, partial attempts or copied compilers deleted or overwritten by scope selection"
+  },
+  "active_native_commands": 0,
+  "metadata_reproduction_argv": [
+    "python3",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/core_report.py",
+    "--source-selection",
+    "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T165523807094Z-selected.json"
+  ],
+  "excluded_from_deliverable": [
+    "Whole650 campaign exploratory noncore attempts",
+    "Unused whole-project final_report.py skeleton"
+  ]
+}

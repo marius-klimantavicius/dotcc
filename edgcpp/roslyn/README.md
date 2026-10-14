@@ -27,8 +27,10 @@ and supported enabled required capabilities remain required;
 [format policy](docs/FORMAT.md) documents exact admission and identity scope.
 There is no migration or forward-compatibility promise.
 
-A [whole-project DuckDB generation attempt](docs/DUCKDB.md) is in progress,
-separate from the accepted phases 3–4 checkpoint above.
+[DuckDB core-library generation](docs/DUCKDB.md) is accepted for all 164 configured
+core inputs: 97.735 GiB of independent objects, each admitted by the reader, with
+no core failures or unmapped semantic flags. The user's final scope excludes tests
+and separate extension/dependency targets.
 
 The build uses a clean EDG 7.0 checkout pinned at
 `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. The default materialized checkout is

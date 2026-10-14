@@ -1,0 +1,118 @@
+{
+  "status": "READY/HOLD",
+  "scope": "Final164 core-library selected objects all match prior successful current-reader admission; no additional Open/objecthash/FK/graph/compiler work or source/code edits.",
+  "core_reader_report": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/core-reconciliation/core-reader-admission-final.json",
+    "sha256": "12a037188eb56055bc0562d7016b6f176e633f9c106631c83f2156aa652df135",
+    "bytes": 213472
+  },
+  "selected_core_manifest": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/selected-core-final.json",
+    "sha256": "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff",
+    "bytes": 168802
+  },
+  "core_journal": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/core-reconciliation/core-journal-final.jsonl",
+    "sha256": "c33a5c551f4ceb29d46919c9d07265bcad520e3264908732146a4745279ef525",
+    "bytes": 185128
+  },
+  "logs": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T160210846133Z-reader.log",
+      "sha256": "868170e46812b5120947fbcd63725f2948d7d8665712b64bbcdec50eb01a7f59",
+      "bytes": 25233
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T160704145165Z-reader.log",
+      "sha256": "f01e417b15c6be389cd564f95d793280736d65b3071edd9f7a113d6e2271f1d1",
+      "bytes": 13974
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T160942480600Z-reader.log",
+      "sha256": "c8e2f8dc49e64852064bddf297cf2bebc17c67f32cb6fe9425524562ca77f75c",
+      "bytes": 1563
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T161148039012Z-reader.log",
+      "sha256": "fb6b2966c52b3575ceb2ccef7c127709ae77bec86a41b48dbd7a2dd04d37f738",
+      "bytes": 2074
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T161419534322Z-reader.log",
+      "sha256": "fd12260420abee55af79535906e75f3a169ca97dffc837fa7fd4b1da242edc35",
+      "bytes": 2924
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T161653944645Z-reader.log",
+      "sha256": "4f48b80b145201ba5dc7ceb05e06eff9a969d7e010af890f06bc63c37130ad15",
+      "bytes": 2924
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T161833254384Z-reader.log",
+      "sha256": "0834548e345c856e74e73d5463f627bfcc4abc748ab1b8db4a8c06c67eb72f79",
+      "bytes": 2074
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T162213558766Z-reader.log",
+      "sha256": "24c36e7d1c68ea415ab0cb2c25414783580e4923d82a392f2caf311422c477c3",
+      "bytes": 1563
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T162448732231Z-reader.log",
+      "sha256": "c2e8daa9cd486d8d37d7cfa4fff88dfe1b336f13a45427ca7584f324bd5e2cdd",
+      "bytes": 4454
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T162625336270Z-reader.log",
+      "sha256": "865b58923d57fa9726a5f295090568f06d3b9ebfe8e3c04806223316ce7b6c38",
+      "bytes": 1563
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T162814311233Z-reader.log",
+      "sha256": "6b04737b2ae0d999405163f28475904e8d0293fc01b2b6c1b438b830cf7c7165",
+      "bytes": 1734
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T163016206535Z-reader.log",
+      "sha256": "9d6e1e9f5c952c253448f61ba1261dae3e4c69a1ccf4454d576a6feea3d5ebba",
+      "bytes": 1734
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T163147975100Z-reader.log",
+      "sha256": "66b2034603a03f358caecd13f7c7ad5b19c4260de2abe74e3ffdf5085b79ce18",
+      "bytes": 1734
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T163358245252Z-reader.log",
+      "sha256": "58bebe50d4497399dbf8dbc51211e6acc6c3032fd904d4f5e18be6303b0fa174",
+      "bytes": 2244
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T163459362824Z-reader.log",
+      "sha256": "70d0cdaafaa5d304ade3d2b53042b7c1e80df4c515d8d724c0b2d2a06ae767dd",
+      "bytes": 543
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/20261014T163633442507Z-reader.log",
+      "sha256": "26e740ae1f19ad6618c1c5fbbb4d612b4ff88d897141cdf829ca34350f2f736c",
+      "bytes": 2754
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-dual-admission.log",
+      "sha256": "fb2f5b6110870f7548236170d60c9d1178fad2f120f93e156665b175f440db99",
+      "bytes": 726
+    }
+  ],
+  "checks": {
+    "configured_core": 164,
+    "selected_unique_objects": 164,
+    "existing_admissions_matched": 164,
+    "missing": 0,
+    "reader_failures": 0,
+    "native_selected_failures": 0,
+    "pending": 0,
+    "new_reconciliation_opens": 0,
+    "artifact_rehashes": 0
+  },
+  "object_hashes_and_identities_recorded_in": "/mnt/storage/roslynobj-duckdb-20261014/export/reader-admission/core-reconciliation/core-reader-admission-final.json"
+}
