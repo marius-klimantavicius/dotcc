@@ -1,0 +1,85 @@
+{
+  "status": "READY/HOLD",
+  "owned_paths": [],
+  "report": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/sqlite-reader-acceptance-final.json",
+  "report_sha256": "63093f90ee692e0d35da96f622fee79632bbfe544f8966f476d98d56db5f479c",
+  "artifact": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "bytes": 297556992,
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "hash_authority": "/mnt/storage/roslynobj-sqlite-20261014/export/result.json",
+    "rehash_performed_by_reader": false,
+    "artifact_identity": "9097468216bba3077ff4a24753d09245",
+    "format": [
+      2,
+      0
+    ],
+    "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+    "page_size": 1024
+  },
+  "summary": {
+    "admitted_artifacts": 1,
+    "sample_assertions": 2749,
+    "module_descriptor_assertions": 153,
+    "total_assertions": 2902,
+    "routine_roots": 4,
+    "operations_per_pass": 526,
+    "calls_per_pass": 32,
+    "roots_truncated_at_256": 2,
+    "extra_module_exact_names": 19,
+    "extra_module_routine_roots": 0,
+    "extra_module_operations": 0,
+    "producer_defined_routines_confirmed": 23,
+    "sqlite3_type_name_matches": 2
+  },
+  "files": [
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/sqlite-reader-acceptance-final.json",
+      "sha256": "63093f90ee692e0d35da96f622fee79632bbfe544f8966f476d98d56db5f479c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/admission.log",
+      "sha256": "ac1af3c756a06e90aebc6f142af4ba7bc424a345d4b8ffaefaedc667f95360a3"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/project.log",
+      "sha256": "9cd7a26f9aed4b9fa61b363059d260dec65a248ae501fab014c6ada446d00786"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/module-symbols-1.log",
+      "sha256": "03360c3469bd9c28ad44aeca682a472e1b8bf6b54137e70e2b44472ff10f5eb0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/module-symbols-2.log",
+      "sha256": "8db791017ef7b38273a681c5d85bb70a579e126620c0dee82581f7b403253a65"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/module-symbols-3.log",
+      "sha256": "61fe0afd21b2def72f8bc5cb93bedc5a6fa7610d18e8a733e4327044cb400a75"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/source-provenance.json",
+      "sha256": "15b91e47e6d687c70eeb19e88dfc13aa1abb4ace00007203d5813738eb6cb800"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/release-source-identity.json",
+      "sha256": "e513c66744ef9c55af0384d639dc98e3f6e1482bead2ff7fbda182c5ba144728"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/producer-provenance.json",
+      "sha256": "0367bf0ee1dcc016321749296c483879e609618e98ec420c2f42ff9326496ea5"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/recipe.json",
+      "sha256": "c9fd865970541b7e589b1869c90ac8b31b63233e93d1c7144943a33efb2a40e8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/result.json",
+      "sha256": "52a0ab3ceacdc3fa6dec7a64aa6c939710f5ef7581282cc43528a59f764fc69a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/feature-symbol-proof-final.json",
+      "sha256": "17b8a4c5abb11cb58f7d0cf3c21c786c487b9c43e0f284f67b66200ed9be6189"
+    }
+  ]
+}

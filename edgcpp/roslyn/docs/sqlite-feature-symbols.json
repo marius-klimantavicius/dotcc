@@ -1,0 +1,257 @@
+{
+  "query": "select t.value,s.id,k.name,r.is_defined,r.body_root_id,r.body_scope_id,s.type_id from text_atom t join source_correspondence c on c.current_name_id=t.id join entity_source_correspondence x on x.source_correspondence_id=c.id join symbol s on s.id=x.owner_id join kind k on k.id=s.kind_id left join routine_symbol r on r.id=s.id where t.value in (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) order by t.value,s.id",
+  "selected_names": [
+    "sqlite3_open_v2",
+    "jsonExtractFunc",
+    "jsonbValidityCheck",
+    "sqlite3Fts5Init",
+    "sqlite3WalCheckpoint",
+    "sqlite3",
+    "sqlite3Fts3Init",
+    "sqlite3RtreeInit",
+    "geopolyAreaFunc",
+    "sqlite3session_create",
+    "sqlite3_preupdate_hook",
+    "sqlite3rbu_open",
+    "sqlite3DbstatRegister",
+    "sqlite3DbpageRegister",
+    "sqlite3StmtVtabInit",
+    "sqlite3VdbeBytecodeVtabInit",
+    "math1Func",
+    "sqlite3_table_column_metadata",
+    "sqlite3Stat4ProbeSetValue",
+    "sqlite3_snapshot_get",
+    "sqlite3CarrayRegister",
+    "sqlite3_normalized_sql",
+    "sqlite3_unlock_notify",
+    "sqlite3_threadsafe"
+  ],
+  "rows": [
+    {
+      "name": "geopolyAreaFunc",
+      "symbol_id": 3211691,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3211708,
+      "body_scope_id": 3211722,
+      "type_id": 3211693
+    },
+    {
+      "name": "jsonExtractFunc",
+      "symbol_id": 3476846,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3476863,
+      "body_scope_id": 3476877,
+      "type_id": 3476848
+    },
+    {
+      "name": "jsonbValidityCheck",
+      "symbol_id": 1654185,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 1654197,
+      "body_scope_id": 1654211,
+      "type_id": 1654183
+    },
+    {
+      "name": "math1Func",
+      "symbol_id": 3378640,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3378657,
+      "body_scope_id": 3378671,
+      "type_id": 3378642
+    },
+    {
+      "name": "sqlite3",
+      "symbol_id": 176529,
+      "kind": "alias",
+      "is_defined": null,
+      "body_root_id": null,
+      "body_scope_id": null,
+      "type_id": 176525
+    },
+    {
+      "name": "sqlite3",
+      "symbol_id": 176540,
+      "kind": "type_symbol",
+      "is_defined": null,
+      "body_root_id": null,
+      "body_scope_id": null,
+      "type_id": 176536
+    },
+    {
+      "name": "sqlite3CarrayRegister",
+      "symbol_id": 1733967,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 1733983,
+      "body_scope_id": 1734012,
+      "type_id": 1733969
+    },
+    {
+      "name": "sqlite3DbpageRegister",
+      "symbol_id": 3239166,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3239181,
+      "body_scope_id": 3239195,
+      "type_id": 3239168
+    },
+    {
+      "name": "sqlite3DbstatRegister",
+      "symbol_id": 3247390,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3247405,
+      "body_scope_id": 3247419,
+      "type_id": 3247392
+    },
+    {
+      "name": "sqlite3Fts3Init",
+      "symbol_id": 2333820,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 2333835,
+      "body_scope_id": 2333849,
+      "type_id": 2333822
+    },
+    {
+      "name": "sqlite3Fts5Init",
+      "symbol_id": 2655234,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 2655249,
+      "body_scope_id": 3125657,
+      "type_id": 2655236
+    },
+    {
+      "name": "sqlite3RtreeInit",
+      "symbol_id": 3125681,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3125696,
+      "body_scope_id": 3125710,
+      "type_id": 3125683
+    },
+    {
+      "name": "sqlite3Stat4ProbeSetValue",
+      "symbol_id": 947052,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 947064,
+      "body_scope_id": 947078,
+      "type_id": 947050
+    },
+    {
+      "name": "sqlite3StmtVtabInit",
+      "symbol_id": 3263495,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3263510,
+      "body_scope_id": 3263524,
+      "type_id": 3263497
+    },
+    {
+      "name": "sqlite3VdbeBytecodeVtabInit",
+      "symbol_id": 3268334,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3268349,
+      "body_scope_id": 3268363,
+      "type_id": 3268336
+    },
+    {
+      "name": "sqlite3WalCheckpoint",
+      "symbol_id": 446037,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 446066,
+      "body_scope_id": 446080,
+      "type_id": 446039
+    },
+    {
+      "name": "sqlite3_normalized_sql",
+      "symbol_id": 3306637,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3306653,
+      "body_scope_id": 3306667,
+      "type_id": 3306639
+    },
+    {
+      "name": "sqlite3_open_v2",
+      "symbol_id": 3283358,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3283376,
+      "body_scope_id": 3283405,
+      "type_id": 3283360
+    },
+    {
+      "name": "sqlite3_preupdate_hook",
+      "symbol_id": 3666667,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3666696,
+      "body_scope_id": 3666710,
+      "type_id": 3666669
+    },
+    {
+      "name": "sqlite3_snapshot_get",
+      "symbol_id": 3666936,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3666953,
+      "body_scope_id": 3666967,
+      "type_id": 3666938
+    },
+    {
+      "name": "sqlite3_table_column_metadata",
+      "symbol_id": 2601233,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 2601245,
+      "body_scope_id": 2601259,
+      "type_id": 2601231
+    },
+    {
+      "name": "sqlite3_threadsafe",
+      "symbol_id": 3284848,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3284862,
+      "body_scope_id": 3284880,
+      "type_id": 3284850
+    },
+    {
+      "name": "sqlite3_unlock_notify",
+      "symbol_id": 3299065,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3299088,
+      "body_scope_id": 3299102,
+      "type_id": 3299067
+    },
+    {
+      "name": "sqlite3rbu_open",
+      "symbol_id": 3755940,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3755958,
+      "body_scope_id": 3755989,
+      "type_id": 3755942
+    },
+    {
+      "name": "sqlite3session_create",
+      "symbol_id": 3798602,
+      "kind": "routine",
+      "is_defined": 1,
+      "body_root_id": 3798621,
+      "body_scope_id": 3798635,
+      "type_id": 3798604
+    }
+  ],
+  "method": "Bounded exact-name result queries; no explicit whole-graph or FK enumeration; SQL may inspect many rows"
+}

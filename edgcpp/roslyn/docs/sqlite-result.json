@@ -1,0 +1,35 @@
+{
+  "exit_code": 0,
+  "combined_wall_seconds": 27.67044800997246,
+  "stock_timing": {
+    "Front end": {
+      "cpu_seconds": 0.54,
+      "elapsed_seconds_rounded_stock": 0.0
+    },
+    "Back end": {
+      "cpu_seconds": 23.28,
+      "elapsed_seconds_rounded_stock": 27.0
+    },
+    "Total compilation": {
+      "cpu_seconds": 24.07,
+      "elapsed_seconds_rounded_stock": 27.0
+    }
+  },
+  "source_sha256": "2da161e310ef0aba3465f22a4d12b8a43723236f0942fa76e8aac523c3317243",
+  "recipe": "/mnt/storage/roslynobj-sqlite-20261014/export/recipe.json",
+  "log": "/mnt/storage/roslynobj-sqlite-20261014/export/compiler.log",
+  "time_log": "/mnt/storage/roslynobj-sqlite-20261014/export/time.txt",
+  "process_stack_limit_bytes": 67108864,
+  "status": "published",
+  "max_rss_kib": 604384,
+  "artifact": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+  "bytes": 297556992,
+  "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+  "header": [
+    1,
+    2,
+    0
+  ],
+  "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+  "page_size": 1024
+}

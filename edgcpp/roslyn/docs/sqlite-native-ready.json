@@ -1,0 +1,131 @@
+{
+  "status": "READY/HOLD native SQLite official amalgamation; commands idle",
+  "timestamp_utc": "2026-10-14T17:21:21.964016+00:00",
+  "owned_tracked_paths": [
+    "edgcpp/roslyn/build/sqlite_export.py"
+  ],
+  "sha256": {
+    "/home/marius/p/dotcc/edgcpp/roslyn/build/sqlite_export.py": "8ff2a71302a4f80ffa47c1c27562e2ee71a2cff4dbc8c45a878e537324e49b57",
+    "/mnt/storage/roslynobj-sqlite-20261014/export_sqlite.py": "7a4d057a6cf99c96b3f3a13bc7ec230f25bd9f1c86d24cb2ed09ef7004231334",
+    "/mnt/storage/roslynobj-sqlite-20261014/source-provenance.json": "15b91e47e6d687c70eeb19e88dfc13aa1abb4ace00007203d5813738eb6cb800",
+    "/mnt/storage/roslynobj-sqlite-20261014/release-source-identity.json": "e513c66744ef9c55af0384d639dc98e3f6e1482bead2ff7fbda182c5ba144728",
+    "/mnt/storage/roslynobj-sqlite-20261014/producer-provenance.json": "0367bf0ee1dcc016321749296c483879e609618e98ec420c2f42ff9326496ea5",
+    "/mnt/storage/roslynobj-sqlite-20261014/official-download.html": "beb95b4521630645db499ad86302bd216c71db7ca143eeeb7085a4a72f955d7d",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/recipe.json": "c9fd865970541b7e589b1869c90ac8b31b63233e93d1c7144943a33efb2a40e8",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/result.json": "52a0ab3ceacdc3fa6dec7a64aa6c939710f5ef7581282cc43528a59f764fc69a",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/compiler.log": "67c62079918765d8d1aa6af88fdf2ea1f023ea3e18e6f71e694fb2e667e96fda",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/time.txt": "1761392fec82f9c665ced46641cd07904f6cf057e1cd8388abd694fe8052b01d",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/host-predefines.txt": "25ef8500b08875a835256e077143eba43c22028aaad8404814c9eb8b23bf8cdc",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/host-include-search.txt": "a2c037c66f8978f543ef022ce2eef171572760745a9961b56a0fd73939b1df8f",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/configured-source-macros.txt": "9b9019cd6addcfaada9823597d12606dff182a6b30bcc7df1da6391e6c3ede5d",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/feature-symbol-proof-final.json": "17b8a4c5abb11cb58f7d0cf3c21c786c487b9c43e0f284f67b66200ed9be6189",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/feature-matrix.json": "33671e3583daf1e7c509593f73925fa7fe33e7fad107814631d2f94c78d28825",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/publisher-proof.json": "f1173a49b090f86b002088067dda2f2a3c0f91687e69af38a790c61d6e354a6d",
+    "/mnt/storage/roslynobj-sqlite-20261014/driver-validation/validation.json": "61e63360cbcf12d0569c6eca8cef7f0cb3405096e9c521cb6336a7a38fb06163",
+    "/mnt/storage/roslynobj-sqlite-20261014/driver-validation/help.log": "25e22ff3d8341ebb1c7037fe797446ce5bdb479e17dce5d6905e1bf509cfe4fe",
+    "/mnt/storage/roslynobj-sqlite-20261014/driver-validation/syntax.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/mnt/storage/roslynobj-sqlite-20261014/driver-validation/whitespace.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_version": "3.54.0",
+  "archive_url": "https://sqlite.org/2026/sqlite-amalgamation-3540000.zip",
+  "archive_sha3_256": "7b670a62fdfbd672b75fef004cb703c8a3e87d3a5cc7d675b4a08337004a2d93",
+  "archive_sha256": "68e913b0fe8ec6b4e5f391c594a28872884e80d6cd042a1e50c957be46b5aa4d",
+  "source_files": {
+    "source/sqlite-amalgamation-3540000/sqlite3ext.h": "48963abfefb41ac329ef9d706acb5eadba952a99a748285c9ded6b5e0942721b",
+    "source/sqlite-amalgamation-3540000/shell.c": "c444573b69d70516e64df5ab38911f814ed5509020c92cc899bf1f6ffa582e8f",
+    "source/sqlite-amalgamation-3540000/sqlite3.h": "cd20a2877bc82b94e36c1093b727dd87cfa3c1d581aac6e240925535cbd90166",
+    "source/sqlite-amalgamation-3540000/sqlite3.c": "2da161e310ef0aba3465f22a4d12b8a43723236f0942fa76e8aac523c3317243"
+  },
+  "official_source_identity": {
+    "SQLITE_VERSION": "\"3.54.0\"",
+    "SQLITE_VERSION_NUMBER": "3054000",
+    "SQLITE_SOURCE_ID": "\"2026-10-09 15:46:58 be8d059e9a49089ab2dce5ed26dd87aaf598fdc5fbe0b107c0dd758464bcd5e3\""
+  },
+  "artifact": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+  "artifact_sha256_recorded_at_publication": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+  "bytes": 297556992,
+  "format": [
+    2,
+    0
+  ],
+  "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+  "header": [
+    1,
+    2,
+    0
+  ],
+  "page_size": 1024,
+  "combined_frontend_export_wall_seconds": 27.67044800997246,
+  "stock_timing": {
+    "Front end": {
+      "cpu_seconds": 0.54,
+      "elapsed_seconds_rounded_stock": 0.0
+    },
+    "Back end": {
+      "cpu_seconds": 23.28,
+      "elapsed_seconds_rounded_stock": 27.0
+    },
+    "Total compilation": {
+      "cpu_seconds": 24.07,
+      "elapsed_seconds_rounded_stock": 27.0
+    }
+  },
+  "max_rss_kib": 604384,
+  "compiler_sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+  "process_stack_limit_bytes": 67108864,
+  "feature_flags": [
+    "-DSQLITE_THREADSAFE=1",
+    "-DSQLITE_ENABLE_FTS4=1",
+    "-DSQLITE_ENABLE_FTS5=1",
+    "-DSQLITE_ENABLE_RTREE=1",
+    "-DSQLITE_ENABLE_GEOPOLY=1",
+    "-DSQLITE_ENABLE_SESSION=1",
+    "-DSQLITE_ENABLE_PREUPDATE_HOOK=1",
+    "-DSQLITE_ENABLE_RBU=1",
+    "-DSQLITE_ENABLE_DBSTAT_VTAB=1",
+    "-DSQLITE_ENABLE_DBPAGE_VTAB=1",
+    "-DSQLITE_ENABLE_STMTVTAB=1",
+    "-DSQLITE_ENABLE_BYTECODE_VTAB=1",
+    "-DSQLITE_ENABLE_MATH_FUNCTIONS=1",
+    "-DSQLITE_ENABLE_COLUMN_METADATA=1",
+    "-DSQLITE_ENABLE_STAT4=1",
+    "-DSQLITE_ENABLE_SNAPSHOT=1",
+    "-DSQLITE_ENABLE_CARRAY=1",
+    "-DSQLITE_ENABLE_NORMALIZE=1",
+    "-DSQLITE_ENABLE_UNLOCK_NOTIFY=1"
+  ],
+  "default_features": [
+    "JSON",
+    "JSONB",
+    "WAL"
+  ],
+  "features_proof": "/mnt/storage/roslynobj-sqlite-20261014/export/feature-matrix.json",
+  "definition_proof": "/mnt/storage/roslynobj-sqlite-20261014/export/feature-symbol-proof-final.json",
+  "publisher_proof": "/mnt/storage/roslynobj-sqlite-20261014/export/publisher-proof.json",
+  "driver_validation": "/mnt/storage/roslynobj-sqlite-20261014/driver-validation/validation.json",
+  "actual_driver": "/mnt/storage/roslynobj-sqlite-20261014/export_sqlite.py",
+  "reusable_driver": "/home/marius/p/dotcc/edgcpp/roslyn/build/sqlite_export.py",
+  "reproduction_argv": [
+    "python3",
+    "/home/marius/p/dotcc/edgcpp/roslyn/build/sqlite_export.py",
+    "--root",
+    "/mnt/storage/roslynobj-sqlite-20261014",
+    "--attempt-root",
+    "<new output directory>"
+  ],
+  "reader_gate": "Separate managed READY/HOLD /tmp/roslyn-managed-sqlite354-ready.json; PASS2749 four-root + PASS153 module descriptors",
+  "reader_report": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/sqlite-reader-acceptance-final.json",
+  "generation_attempts": 1,
+  "failed_attempts": 0,
+  "core_source_edits": false,
+  "compiler_rebuild": false,
+  "runtime_SQL": false,
+  "publication_verification": "Native writer mandatory checks; no redundant FK/full-graph enumeration or object rehash",
+  "active_native_commands": 0,
+  "excluded": [
+    "NATIVE_RESTART.md",
+    "Prior SQLite/dotobj material",
+    "DuckDB objects and campaign results",
+    "Initial feature-name query draft"
+  ]
+}

@@ -1,0 +1,322 @@
+{
+  "configured_features": [
+    {
+      "macro": "SQLITE_THREADSAFE",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3_threadsafe",
+        "symbol_id": 3284848,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3284862,
+        "body_scope_id": 3284880,
+        "type_id": 3284850
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_FTS4",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3Fts3Init",
+        "symbol_id": 2333820,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 2333835,
+        "body_scope_id": 2333849,
+        "type_id": 2333822
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_FTS5",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3Fts5Init",
+        "symbol_id": 2655234,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 2655249,
+        "body_scope_id": 3125657,
+        "type_id": 2655236
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_RTREE",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3RtreeInit",
+        "symbol_id": 3125681,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3125696,
+        "body_scope_id": 3125710,
+        "type_id": 3125683
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_GEOPOLY",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "geopolyAreaFunc",
+        "symbol_id": 3211691,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3211708,
+        "body_scope_id": 3211722,
+        "type_id": 3211693
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_SESSION",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3session_create",
+        "symbol_id": 3798602,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3798621,
+        "body_scope_id": 3798635,
+        "type_id": 3798604
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_PREUPDATE_HOOK",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3_preupdate_hook",
+        "symbol_id": 3666667,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3666696,
+        "body_scope_id": 3666710,
+        "type_id": 3666669
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_RBU",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3rbu_open",
+        "symbol_id": 3755940,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3755958,
+        "body_scope_id": 3755989,
+        "type_id": 3755942
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_DBSTAT_VTAB",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3DbstatRegister",
+        "symbol_id": 3247390,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3247405,
+        "body_scope_id": 3247419,
+        "type_id": 3247392
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_DBPAGE_VTAB",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3DbpageRegister",
+        "symbol_id": 3239166,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3239181,
+        "body_scope_id": 3239195,
+        "type_id": 3239168
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_STMTVTAB",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3StmtVtabInit",
+        "symbol_id": 3263495,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3263510,
+        "body_scope_id": 3263524,
+        "type_id": 3263497
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_BYTECODE_VTAB",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3VdbeBytecodeVtabInit",
+        "symbol_id": 3268334,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3268349,
+        "body_scope_id": 3268363,
+        "type_id": 3268336
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_MATH_FUNCTIONS",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "math1Func",
+        "symbol_id": 3378640,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3378657,
+        "body_scope_id": 3378671,
+        "type_id": 3378642
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_COLUMN_METADATA",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3_table_column_metadata",
+        "symbol_id": 2601233,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 2601245,
+        "body_scope_id": 2601259,
+        "type_id": 2601231
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_STAT4",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3Stat4ProbeSetValue",
+        "symbol_id": 947052,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 947064,
+        "body_scope_id": 947078,
+        "type_id": 947050
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_SNAPSHOT",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3_snapshot_get",
+        "symbol_id": 3666936,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3666953,
+        "body_scope_id": 3666967,
+        "type_id": 3666938
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_CARRAY",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3CarrayRegister",
+        "symbol_id": 1733967,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 1733983,
+        "body_scope_id": 1734012,
+        "type_id": 1733969
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_NORMALIZE",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3_normalized_sql",
+        "symbol_id": 3306637,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3306653,
+        "body_scope_id": 3306667,
+        "type_id": 3306639
+      }
+    },
+    {
+      "macro": "SQLITE_ENABLE_UNLOCK_NOTIFY",
+      "requested_value": "1",
+      "actual_host_preprocessed_value": "1",
+      "retained_implementation": {
+        "name": "sqlite3_unlock_notify",
+        "symbol_id": 3299065,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3299088,
+        "body_scope_id": 3299102,
+        "type_id": 3299067
+      }
+    }
+  ],
+  "default_features": [
+    {
+      "feature": "JSON",
+      "omission_macro": "SQLITE_OMIT_JSON",
+      "omission_macro_present": false,
+      "retained_implementation": {
+        "name": "jsonExtractFunc",
+        "symbol_id": 3476846,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 3476863,
+        "body_scope_id": 3476877,
+        "type_id": 3476848
+      }
+    },
+    {
+      "feature": "JSONB",
+      "omission_macro": "SQLITE_OMIT_JSON",
+      "omission_macro_present": false,
+      "retained_implementation": {
+        "name": "jsonbValidityCheck",
+        "symbol_id": 1654185,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 1654197,
+        "body_scope_id": 1654211,
+        "type_id": 1654183
+      }
+    },
+    {
+      "feature": "WAL",
+      "omission_macro": "SQLITE_OMIT_WAL",
+      "omission_macro_present": false,
+      "retained_implementation": {
+        "name": "sqlite3WalCheckpoint",
+        "symbol_id": 446037,
+        "kind": "routine",
+        "is_defined": 1,
+        "body_root_id": 446066,
+        "body_scope_id": 446080,
+        "type_id": 446039
+      }
+    }
+  ],
+  "no_input_omission_flags": true,
+  "no_enable_json1_flag": true,
+  "source_identity": {
+    "SQLITE_VERSION": "\"3.54.0\"",
+    "SQLITE_VERSION_NUMBER": "3054000",
+    "SQLITE_SOURCE_ID": "\"2026-10-09 15:46:58 be8d059e9a49089ab2dce5ed26dd87aaf598fdc5fbe0b107c0dd758464bcd5e3\""
+  },
+  "scope": "Compile-time retention and definitions only; no runtime SQL or linking claim"
+}

@@ -32,6 +32,10 @@ core inputs: 97.735 GiB of independent objects, each admitted by the reader, wit
 no core failures or unmapped semantic flags. The user's final scope excludes tests
 and separate extension/dependency targets.
 
+[SQLite amalgamation generation](docs/SQLITE.md) is accepted for untouched SQLite
+3.54.0 with JSON/JSONB, FTS3/4/5, WAL and the documented optional modules enabled.
+One 283.77 MiB object passes reader admission and bounded feature navigation.
+
 The build uses a clean EDG 7.0 checkout pinned at
 `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. The default materialized checkout is
 `/tmp/roslynobj-edg-upstream-20261012`; staging and generated artifacts live under

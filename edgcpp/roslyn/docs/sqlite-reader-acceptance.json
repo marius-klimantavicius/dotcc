@@ -1,0 +1,716 @@
+{
+  "status": "READY/HOLD",
+  "recorded_at_utc": "2026-10-14T17:19:18.223122+00:00",
+  "scope": "One official fresh SQLite 3.54.0 amalgamation object: existing reader admission, four bounded routine-root samples and nineteen exact-name descriptor-only module checks.",
+  "artifact": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "bytes": 297556992,
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "hash_authority": "/mnt/storage/roslynobj-sqlite-20261014/export/result.json",
+    "rehash_performed_by_reader": false,
+    "artifact_identity": "9097468216bba3077ff4a24753d09245",
+    "format": [
+      2,
+      0
+    ],
+    "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+    "page_size": 1024
+  },
+  "reader_binary": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+    "sha256": "6e1f967c29a2732c97297c2870f70c9fd9e15aebb74358fcb2296c59499e18a8",
+    "build_performed": false,
+    "basis": "Previously built committed consumer reused without source or binary changes."
+  },
+  "gates": [
+    {
+      "mode": "--admit-input",
+      "argv": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--admit-input",
+        "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj"
+      ],
+      "exit_code": 0,
+      "log": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/admission.log",
+      "log_sha256": "ac1af3c756a06e90aebc6f142af4ba7bc424a345d4b8ffaefaedc667f95360a3",
+      "result": "PASS:1 genuine object admissions",
+      "observations": [
+        {
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "FormatMajor": 2,
+          "FormatMinor": 0,
+          "ArtifactIdentity": "9097468216bba3077ff4a24753d09245"
+        }
+      ]
+    },
+    {
+      "mode": "--project-input",
+      "argv": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--project-input",
+        "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+        "type:sqlite3",
+        "function:sqlite3_open_v2",
+        "function:jsonExtractFunc",
+        "function:sqlite3Fts5Init",
+        "function:sqlite3WalCheckpoint"
+      ],
+      "exit_code": 0,
+      "log": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/project.log",
+      "log_sha256": "9cd7a26f9aed4b9fa61b363059d260dec65a248ae501fab014c6ada446d00786",
+      "result": "PASS:project-input, 2749 assertions",
+      "observations": [
+        {
+          "phase": "open",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "wall_ms": 61.1084,
+          "rss_before": 46108672,
+          "rss_bytes": 86638592,
+          "peak_rss_bytes": 86638592,
+          "commands": 10,
+          "rows": 985
+        },
+        {
+          "phase": "cold",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "type",
+              "Name": "sqlite3",
+              "Matches": 2,
+              "Selected": 2,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "sqlite3_open_v2",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "jsonExtractFunc",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "sqlite3Fts5Init",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "sqlite3WalCheckpoint",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 16,
+          "routine_roots": 4,
+          "operations": 526,
+          "calls": 32,
+          "truncated_roots": 2,
+          "operation_limit_per_root": 256,
+          "commands": 1464,
+          "rows": 2929,
+          "wall_ms": 217.9885,
+          "rss_bytes": 95514624,
+          "peak_rss_bytes": 95514624,
+          "cached_rows": 3570,
+          "cached_pages": 128,
+          "max_batch": 99,
+          "assertions": 1374
+        },
+        {
+          "phase": "warm",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "type",
+              "Name": "sqlite3",
+              "Matches": 2,
+              "Selected": 2,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "sqlite3_open_v2",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "jsonExtractFunc",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "sqlite3Fts5Init",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "function",
+              "Name": "sqlite3WalCheckpoint",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 16,
+          "routine_roots": 4,
+          "operations": 526,
+          "calls": 32,
+          "truncated_roots": 2,
+          "operation_limit_per_root": 256,
+          "commands": 293,
+          "rows": 795,
+          "wall_ms": 130.0327,
+          "rss_bytes": 100536320,
+          "peak_rss_bytes": 100536320,
+          "cached_rows": 3570,
+          "cached_pages": 128,
+          "max_batch": 99,
+          "assertions": 1375
+        }
+      ]
+    },
+    {
+      "mode": "--project-input",
+      "argv": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--project-input",
+        "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+        "symbol:jsonbValidityCheck",
+        "symbol:sqlite3Fts3Init",
+        "symbol:sqlite3RtreeInit",
+        "symbol:geopolyAreaFunc",
+        "symbol:sqlite3session_create",
+        "symbol:sqlite3_preupdate_hook",
+        "symbol:sqlite3rbu_open",
+        "symbol:sqlite3DbstatRegister"
+      ],
+      "exit_code": 0,
+      "log": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/module-symbols-1.log",
+      "log_sha256": "03360c3469bd9c28ad44aeca682a472e1b8bf6b54137e70e2b44472ff10f5eb0",
+      "result": "PASS:project-input, 61 assertions",
+      "observations": [
+        {
+          "phase": "open",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "wall_ms": 62.055,
+          "rss_before": 46292992,
+          "rss_bytes": 86937600,
+          "peak_rss_bytes": 86937600,
+          "commands": 10,
+          "rows": 985
+        },
+        {
+          "phase": "cold",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "symbol",
+              "Name": "jsonbValidityCheck",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3Fts3Init",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3RtreeInit",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "geopolyAreaFunc",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3session_create",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_preupdate_hook",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3rbu_open",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3DbstatRegister",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 16,
+          "routine_roots": 0,
+          "operations": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 65,
+          "rows": 57,
+          "wall_ms": 203.329,
+          "rss_bytes": 93454336,
+          "peak_rss_bytes": 93454336,
+          "cached_rows": 63,
+          "cached_pages": 8,
+          "max_batch": 1,
+          "assertions": 30
+        },
+        {
+          "phase": "warm",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "symbol",
+              "Name": "jsonbValidityCheck",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3Fts3Init",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3RtreeInit",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "geopolyAreaFunc",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3session_create",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_preupdate_hook",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3rbu_open",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3DbstatRegister",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 16,
+          "routine_roots": 0,
+          "operations": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 8,
+          "rows": 0,
+          "wall_ms": 1.0346,
+          "rss_bytes": 94027776,
+          "peak_rss_bytes": 94027776,
+          "cached_rows": 63,
+          "cached_pages": 8,
+          "max_batch": 1,
+          "assertions": 31
+        }
+      ]
+    },
+    {
+      "mode": "--project-input",
+      "argv": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--project-input",
+        "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+        "symbol:sqlite3DbpageRegister",
+        "symbol:sqlite3StmtVtabInit",
+        "symbol:sqlite3VdbeBytecodeVtabInit",
+        "symbol:math1Func",
+        "symbol:sqlite3_table_column_metadata",
+        "symbol:sqlite3Stat4ProbeSetValue",
+        "symbol:sqlite3_snapshot_get",
+        "symbol:sqlite3CarrayRegister"
+      ],
+      "exit_code": 0,
+      "log": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/module-symbols-2.log",
+      "log_sha256": "8db791017ef7b38273a681c5d85bb70a579e126620c0dee82581f7b403253a65",
+      "result": "PASS:project-input, 61 assertions",
+      "observations": [
+        {
+          "phase": "open",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "wall_ms": 64.0427,
+          "rss_before": 46354432,
+          "rss_bytes": 87015424,
+          "peak_rss_bytes": 87015424,
+          "commands": 10,
+          "rows": 985
+        },
+        {
+          "phase": "cold",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3DbpageRegister",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3StmtVtabInit",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3VdbeBytecodeVtabInit",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "math1Func",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_table_column_metadata",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3Stat4ProbeSetValue",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_snapshot_get",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3CarrayRegister",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 16,
+          "routine_roots": 0,
+          "operations": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 65,
+          "rows": 57,
+          "wall_ms": 210.0059,
+          "rss_bytes": 93421568,
+          "peak_rss_bytes": 93421568,
+          "cached_rows": 63,
+          "cached_pages": 8,
+          "max_batch": 1,
+          "assertions": 30
+        },
+        {
+          "phase": "warm",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3DbpageRegister",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3StmtVtabInit",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3VdbeBytecodeVtabInit",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "math1Func",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_table_column_metadata",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3Stat4ProbeSetValue",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_snapshot_get",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3CarrayRegister",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 16,
+          "routine_roots": 0,
+          "operations": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 8,
+          "rows": 0,
+          "wall_ms": 1.1616,
+          "rss_bytes": 93990912,
+          "peak_rss_bytes": 93990912,
+          "cached_rows": 63,
+          "cached_pages": 8,
+          "max_batch": 1,
+          "assertions": 31
+        }
+      ]
+    },
+    {
+      "mode": "--project-input",
+      "argv": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/bin/Debug/net10.0/RoslynObj.Tests.dll",
+        "--project-input",
+        "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+        "symbol:sqlite3_normalized_sql",
+        "symbol:sqlite3_unlock_notify",
+        "symbol:sqlite3_threadsafe"
+      ],
+      "exit_code": 0,
+      "log": "/mnt/storage/roslynobj-sqlite-20261014/export/reader-admission/module-symbols-3.log",
+      "log_sha256": "61fe0afd21b2def72f8bc5cb93bedc5a6fa7610d18e8a733e4327044cb400a75",
+      "result": "PASS:project-input, 31 assertions",
+      "observations": [
+        {
+          "phase": "open",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "wall_ms": 60.2379,
+          "rss_before": 46215168,
+          "rss_bytes": 86962176,
+          "peak_rss_bytes": 86962176,
+          "commands": 10,
+          "rows": 985
+        },
+        {
+          "phase": "cold",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_normalized_sql",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_unlock_notify",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_threadsafe",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 6,
+          "routine_roots": 0,
+          "operations": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 25,
+          "rows": 22,
+          "wall_ms": 95.0479,
+          "rss_bytes": 93528064,
+          "peak_rss_bytes": 93528064,
+          "cached_rows": 28,
+          "cached_pages": 3,
+          "max_batch": 1,
+          "assertions": 15
+        },
+        {
+          "phase": "warm",
+          "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+          "names": [
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_normalized_sql",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_unlock_notify",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            },
+            {
+              "Kind": "symbol",
+              "Name": "sqlite3_threadsafe",
+              "Matches": 1,
+              "Selected": 1,
+              "Truncated": false
+            }
+          ],
+          "selected_entities": 6,
+          "routine_roots": 0,
+          "operations": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 3,
+          "rows": 0,
+          "wall_ms": 0.9382,
+          "rss_bytes": 94072832,
+          "peak_rss_bytes": 94072832,
+          "cached_rows": 28,
+          "cached_pages": 3,
+          "max_batch": 1,
+          "assertions": 16
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "admitted_artifacts": 1,
+    "sample_assertions": 2749,
+    "module_descriptor_assertions": 153,
+    "total_assertions": 2902,
+    "routine_roots": 4,
+    "operations_per_pass": 526,
+    "calls_per_pass": 32,
+    "roots_truncated_at_256": 2,
+    "extra_module_exact_names": 19,
+    "extra_module_routine_roots": 0,
+    "extra_module_operations": 0,
+    "producer_defined_routines_confirmed": 23,
+    "sqlite3_type_name_matches": 2
+  },
+  "limits": {
+    "roots": 4,
+    "operations_per_root": 256,
+    "name_result_cap": 64,
+    "selected_symbols_per_key": 4,
+    "keys_per_process": 8,
+    "cached_rows": 4096,
+    "cached_pages": 128,
+    "page_size": 128,
+    "maximum_prefetch_batch": 900,
+    "query_budget": "512 + 12 * (sampled operations + selected entities)",
+    "cold_definition": "Fresh reader and process caches; no operating-system cache flush.",
+    "coverage": "Sampled ordinary semantic descriptors and retained execution operations, not complete TU traversal or SQLite runtime SQL/module tests.",
+    "symbol_lookup": "Exact retained names via lazy paged FindSymbols; result/materialization limits do not bound underlying SQL lookup work."
+  },
+  "producer_proofs": [
+    "/mnt/storage/roslynobj-sqlite-20261014/source-provenance.json",
+    "/mnt/storage/roslynobj-sqlite-20261014/release-source-identity.json",
+    "/mnt/storage/roslynobj-sqlite-20261014/producer-provenance.json",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/recipe.json",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/result.json",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/feature-symbol-proof-final.json"
+  ],
+  "source_or_reader_changes": [],
+  "excluded_work": "No old SQLite/dotobj campaign findings, DuckDB retests, native compiler commands, graph/FK/type/scalar scans, corruption scenarios or runtime SQL."
+}
