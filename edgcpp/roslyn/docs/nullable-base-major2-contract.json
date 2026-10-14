@@ -1,0 +1,45 @@
+{
+  "tables": 251,
+  "stable_kinds": 39145,
+  "exact_column_changes": [
+    {
+      "table": "base_subobject",
+      "old": [
+        [
+          1,
+          "most_derived_type_id",
+          "INTEGER",
+          1,
+          null,
+          0
+        ]
+      ],
+      "new": [
+        [
+          1,
+          "most_derived_type_id",
+          "INTEGER",
+          0,
+          null,
+          0
+        ]
+      ]
+    }
+  ],
+  "unchanged_catalog": true,
+  "format_major": 2,
+  "format_minor": 0,
+  "schema_contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+  "legacy_admitted": {
+    "major": 1,
+    "minor": 0,
+    "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+  },
+  "stock_authority": [
+    "il.c5019-5028 explicitly permits NULL derived_class for prototype mem-initializer placeholders",
+    "decl_inits.c7541-7572 allocates retained unresolved base_ctor_init descriptor with type/direct only"
+  ],
+  "actual_evidence": "entry0 raw GDB base pointer has derived_classNULL/typeNonNull, constructor_initializer metadata route; entry316 after constant-registration fix reaches same FK6",
+  "writer_policy": "R(roslyn_type(NULL)) writes SQLNULL; no synthetic owner or dropped base/constructor link; layout unavailable when recorded owner absent",
+  "admission_policy": "Only exact known (1,0)/4bb and (2,0)/3e818 pairs; actual artifacts test, no migration or unknown version admission"
+}

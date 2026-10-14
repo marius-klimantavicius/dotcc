@@ -789,7 +789,7 @@ direct_base	base_type_id	DirectBaseDetails.BaseType	CppType
 direct_base	access_id	DirectBaseDetails.Access	SemanticKind?
 direct_base	is_virtual	DirectBaseDetails.IsVirtual	bool
 direct_base	subobject_id	DirectBaseDetails.Subobject	BaseSubobject?
-base_subobject	most_derived_type_id	BaseSubobjectDetails.MostDerivedType	CppType
+base_subobject	most_derived_type_id	BaseSubobjectDetails.MostDerivedType	CppType?
 base_subobject	base_type_id	BaseSubobjectDetails.BaseType	CppType
 base_subobject	offset	BaseSubobjectDetails.Offset	BigInteger?
 base_subobject	is_virtual	BaseSubobjectDetails.IsVirtual	bool

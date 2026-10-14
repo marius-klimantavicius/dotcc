@@ -17,12 +17,18 @@ catalog values were activated or a future translator is implemented. See the
 [implementation ledger](docs/IMPLEMENTATION.md), [accepted evidence](docs/ACCEPTANCE.md)
 and [profiles](docs/PROFILES.md).
 
-The admitted contract is exactly
-`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
-Numeric 1.0 alone does not admit earlier development objects. The reader also
-requires complete snapshots and supported enabled required capabilities;
-[format policy](docs/FORMAT.md) names them and documents version/identity scope.
+The current producer emits format 2.0 with fingerprint
+`3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6`.
+It preserves actual null most-derived type pointers on retained prototype base
+placeholders. The reader explicitly admits this contract and the published 1.0
+fingerprint `4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+Numeric versions alone do not admit earlier development objects. Complete snapshots
+and supported enabled required capabilities remain required;
+[format policy](docs/FORMAT.md) documents exact admission and identity scope.
 There is no migration or forward-compatibility promise.
+
+A [whole-project DuckDB generation attempt](docs/DUCKDB.md) is in progress,
+separate from the accepted phases 3–4 checkpoint above.
 
 The build uses a clean EDG 7.0 checkout pinned at
 `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. The default materialized checkout is

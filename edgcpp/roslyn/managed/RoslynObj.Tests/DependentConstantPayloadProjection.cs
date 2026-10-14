@@ -48,7 +48,7 @@ internal static class DependentConstantPayloadProjection
         }
         var aggregates=occurrences.Where(c=>c.Value.Kind.Name=="ck_aggregate").ToArray();
         var baseConstant=aggregates.Single(c=>c.InitializedBaseSubobject is not null);var fieldConstant=aggregates.Single(c=>c.InitializedField is not null);
-        var subobject=baseConstant.InitializedBaseSubobject!;var record=(RecordType)subobject.MostDerivedType;
+        var subobject=baseConstant.InitializedBaseSubobject!;var record=(RecordType)subobject.MostDerivedType!;
         var field=record.Fields.Single(f=>f.Name=="field");
         check(aggregates.Length==2&&baseConstant.Details.InitializesEmptyObject==true&&baseConstant.Details.ConstantForBaseClass&&baseConstant.InitializedField is null&&subobject.BaseType.Name=="EmptyBase"&&subobject.Details.IsOptimizedEmptyBase&&record.Name=="EmptyAggregate"&&fieldConstant.Details.InitializesEmptyObject==true&&!fieldConstant.Details.ConstantForBaseClass&&fieldConstant.InitializedBaseSubobject is null&&fieldConstant.InitializedField==field&&field.Details.IsOptimizedEmptyClass,"The two retained empty aggregate occurrences must preserve their exact contextual base and no_unique_address field targets under the actual union discriminator.");
         var parameter=unit.Entities.OfType<TemplateParameter>().Single(p=>p.Name=="Value"&&p.DefaultArgument?.Constant is not null);var root=parameter.DefaultArgument!.Constant!;

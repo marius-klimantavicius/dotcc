@@ -6,8 +6,9 @@ namespace RoslynObj;
 
 public sealed partial class RoslynObject
 {
-    public const int SupportedFormatMajor = 1;
-    public const int SupportedFormatMinor = 0;
+    public const int SupportedFormatMajor = CurrentFormatMajor;
+    public const int SupportedFormatMinor = CurrentFormatMinor;
+    private const string LegacySchemaContractFingerprint = "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559";
     private static readonly IReadOnlyDictionary<long, SemanticKind> catalog = ReadCatalog();
     private static readonly HashSet<string> supportedCapabilities =
     ["normalized_semantic_graph_v1", "exact_target_values_v1", "edg_partial_eh_v1", "source_semantic_graph_v1", "normalized_semantic_schema_v1"];
@@ -22,11 +23,14 @@ public sealed partial class RoslynObject
         try
         {
             var header = store.Required("object_header", 1);
-            if (header.Int("format_major") != SupportedFormatMajor || header.Int("format_minor") > SupportedFormatMinor)
+            var major=header.Int("format_major");var minor=header.Int("format_minor");
+            var legacy=major==1&&minor==0;
+            if (!legacy&&(major!=SupportedFormatMajor||minor!=SupportedFormatMinor))
                 throw new IncompatibleObjectException("This RoslynObj format version is not supported.");
             if (!header.Bool("complete")) throw new IncompatibleObjectException("The object has no complete semantic snapshot.");
             var contract=store.Query("SELECT c.required,c.enabled,v.value AS fingerprint FROM build_capability c JOIN text_atom n ON n.id=c.name_id LEFT JOIN text_atom v ON v.id=c.value_id WHERE n.value='normalized_semantic_schema_v1'").SingleOrDefault();
-            if(contract is null||!contract.Bool("required")||contract.OptionalBool("enabled")!=true||contract.OptionalText("fingerprint")!=SchemaContractFingerprint)
+            var expectedContract=legacy?LegacySchemaContractFingerprint:SchemaContractFingerprint;
+            if(contract is null||!contract.Bool("required")||contract.OptionalBool("enabled")!=true||contract.OptionalText("fingerprint")!=expectedContract)
                 throw new IncompatibleObjectException("The object's normalized semantic schema contract does not match this reader's supported contract.");
             foreach (var kind in store.Query("SELECT * FROM kind ORDER BY id"))
                 if (catalog.TryGetValue(kind.Long("id"), out var expected)

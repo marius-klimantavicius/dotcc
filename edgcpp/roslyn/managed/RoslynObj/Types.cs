@@ -174,7 +174,8 @@ public sealed partial class BaseSubobject : SemanticEntity
 {
     internal BaseSubobject(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public BaseSubobjectDetails Details { get; }
-    public CppType MostDerivedType => Details.MostDerivedType;
+    /// <summary>The recorded most-derived context, or null when EDG did not populate that pointer.</summary>
+    public CppType? MostDerivedType => Details.MostDerivedType;
     public CppType BaseType => Details.BaseType;
     public BigInteger? Offset => Details.Offset;
     public long DirectBaseNumber => Details.DirectBaseNumber;

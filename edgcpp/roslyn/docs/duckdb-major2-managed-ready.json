@@ -1,0 +1,199 @@
+{
+  "status": "READY; focused defect/admission files held for coordinator integration, generic project sample execution still held",
+  "created_utc": "2026-10-14T15:35:29.039555+00:00",
+  "checkpoint_base": "fc22240f6637d5dc58b453e534f4cae1b65ba4c1",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "admitted_pairs": [
+    {
+      "major": 1,
+      "minor": 0,
+      "fingerprint": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+    },
+    {
+      "major": 2,
+      "minor": 0,
+      "fingerprint": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6"
+    }
+  ],
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_constants.h",
+      "sha256": "be054aa23b568eceb1b1aeed6955c37a69b807db36ba100e6ec3d4c462b27f03",
+      "bytes": 18571
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObject.Open.cs",
+      "sha256": "b01003b3d8684ce3bc02390e6fd80782118beee03d81116b5dcdfaa54301659e",
+      "bytes": 5413
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Types.cs",
+      "sha256": "d7b023fcfe684200c6ba4aa5d91265cf770152d61bbaf38da6ad01a6a815d956",
+      "bytes": 13814
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SchemaDetails.g.cs",
+      "sha256": "c6e90d154bb2a889acaeab507d68ef251245fa0f88743b19dc59d9783b8bca7d",
+      "bytes": 241333
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/field-bindings.tsv",
+      "sha256": "3bdfe079a2cfc009cedfba0e210fdc048f1da383a23e3745a7ef63f2718058d6",
+      "bytes": 152789
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "1e9f696b6c9ac765441ef1abb4575f0d2936f548ed6bcc3e3895ab0bcec9c482",
+      "bytes": 80255
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DependentConstantPayloadProjection.cs",
+      "sha256": "dbb3345b3ef3cd9d4251fed311833ee341f450ec11c0995608854f7797a47aee",
+      "bytes": 7540
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/NullableBaseInputAcceptance.cs",
+      "sha256": "26b010709276d03f93f8061e294f4c5439dd09e09275b87a8bf216e018c7dbcb",
+      "bytes": 2632
+    }
+  ],
+  "held_generic_helper": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/ProjectInputAcceptance.cs",
+    "sha256": "6afb973b359f6ba5696efbbb384ff9eeefdbaba9bbe9890b85380790cd90f9c2",
+    "bytes": 9131
+  },
+  "staging_dependency": "Program.cs contains the prepared --project-input branch, so commit ProjectInputAcceptance.cs with that branch or stage only the focused Program hunks. Generic helper compiled in final build but not yet run.",
+  "coordinator_generated_dependency": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SchemaContract.g.cs",
+    "sha256": "1ae1fb656b687d5b17d73f1ac79da497370945c89e50c940e9806b92ccbcfe42",
+    "bytes": 354
+  },
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-build-final.log",
+      "sha256": "766c74b8129be71761acfc1eb25c12110f9075cd411a98750293a27bb9a523c5",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-self.log",
+      "sha256": "851a088e533649e7b1f82d1a0b863be34cb786091559168b5856ff1f7181df1d",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-dual-admission.log",
+      "sha256": "fb2f5b6110870f7548236170d60c9d1178fad2f120f93e156665b175f440db99",
+      "bytes": 726
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-nullable-base-final-v3.log",
+      "sha256": "9413aee2a3d31431622094f76c49311058afb3509348e11a1287ab2720f7b562",
+      "bytes": 40
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-older-rejection.log",
+      "sha256": "179cce84a285d0aacce0a33ab88ddc4957d881f3b4f3bafd7d93f98a7b220256",
+      "bytes": 131
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-focused-regressions-final.log",
+      "sha256": "43e9ed6ea572fc0d77fc8a788ab71deaa5f1e93c8bd297887ec3240f6fe60ef7",
+      "bytes": 89677
+    },
+    {
+      "path": "/tmp/roslynobj-managed-duckdb-major2-whitespace.log",
+      "sha256": "8ca9dfc30874153ebc2f03070b558b85d82a6a310a5b63629978ae4c8f26f2c2",
+      "bytes": 79
+    }
+  ],
+  "objects": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/pilots-corrected/170/unit.roslynobj",
+      "sha256": "daf92f11a1746f35d63c6fd46c3670c4b87c77a485af3e5fd1eec989eb6c36e0",
+      "bytes": 61719552
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/pilots-final/76/unit.roslynobj",
+      "sha256": "67ba2449103de231deab6c038ae026971eed0d011ad43a5ecafac4d98b862cd6",
+      "bytes": 61974528
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0000/unit.roslynobj",
+      "sha256": "ed2726937ed531dcbf08cb86475df30241401dc5c0286bcc5dc19c7a6df4675d",
+      "bytes": 37534720
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+      "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+      "bytes": 156354560
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/constant_occurrences.roslynobj",
+      "sha256": "779846af54e573f426c6a25c007098090ccd4065e9a3eed371233ed1e34abf8e",
+      "bytes": 836608
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/native-exact/template_edges.roslynobj",
+      "sha256": "b37382fdf2ac6b572c7ab77510bf817f137ce2d25d6d8ff36a4d4fc569f20c9e",
+      "bytes": 802816
+    }
+  ],
+  "checks": {
+    "build_warnings": 0,
+    "build_errors": 0,
+    "current_self_assertions": 73,
+    "nullable_base_assertions": 15,
+    "genuine_old_new_admissions": 4,
+    "genuine_older_contract_rejection": "PASS",
+    "focused_current_native_regression_assertions": 173,
+    "focused_native_regression_unique_paths": 2,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "literal": "PASS",
+    "whitespace": "PASS"
+  },
+  "source_to_public_proof": {
+    "constant_ordering": {
+      "trace": {
+        "path": "/mnt/storage/roslynobj-duckdb-20261014/export/pilots-final/316/trace.log",
+        "sha256": "dbb98fd322597104e129b60b25a088cbcb2a5a36bd5c2bb599ce3bf0edea3ee8",
+        "bytes": 7446
+      },
+      "retained_payload": "ck_template_param/tpck_unknown_function __is_alloc_arg with actual conversion_type NULL",
+      "failure_route": "constant correspondence -> parent scope -> record instance/template arguments -> backing expression -> dependent template-ref constant -> value_of(original constant) before registration",
+      "write_change": "roslyn_constants.h now attaches correspondence after exact content.intern() and value-map insertion; guard/content/union facts unchanged",
+      "actual_retry": "major2/0316 publishes and admits; constant_occurrences and exact --c++20 template_edges focused public checks pass"
+    },
+    "nullable_base": {
+      "source_pointer": "Actual EDG temporary base-subobject most_derived_class NULL; source/core untouched",
+      "sql": "base_subobject.most_derived_type_id nullable; native writes R(roslyn_type(pointer))",
+      "properties": [
+        "BaseSubobject.MostDerivedType CppType?",
+        "BaseSubobjectDetails.MostDerivedType CppType?"
+      ],
+      "public_route": "FindSymbols(_Alloc_hider) -> actual IsPrototypeInstantiation routines -> Details.BodyScope -> recorded base ConstructorInitializer -> BaseSubobject -> BaseType other",
+      "expected": "Two distinct temporary bases retain same exact BaseType, NULL most-derived pointer, canonical scope-list owner/ordinal0; prototype bodies and initialization recipes remain metadata. No containing-class substitution or execution promotion."
+    }
+  },
+  "coverage_limits": [
+    "These are two concrete whole-project generation blockers and focused compatibility checks, not another all-field/M5 campaign.",
+    "Preserved legacy controls are genuine archived inputs for admission only, not final whole-project selected GNU-C exports.",
+    "Use finalized selected export manifest for subsequent whole-project Open+Dispose admission.",
+    "No full graph/database-FK/type/scalar scan of project inputs, no corruption cases and no unknown future header mutation."
+  ],
+  "excluded": [
+    "Nullable initial selector assumed all same-name constructors were prototypes; actual concrete routines retained and filtered by IsPrototypeInstantiation.",
+    "Nullable second selector assumed constructor list singleton; actual field initializer retained and exact base entry selected.",
+    "First template regression used GNU20 and had legitimate absent local_copy prototype body; authoritative retry uses preserved standard --c++20 recipe."
+  ]
+}

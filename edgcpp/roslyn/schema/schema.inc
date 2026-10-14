@@ -1,4 +1,6 @@
-static const char roslynobj_schema_contract_sha256[] = "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559";
+static const int roslynobj_format_major = 2;
+static const int roslynobj_format_minor = 0;
+static const char roslynobj_schema_contract_sha256[] = "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6";
 static const char roslynobj_schema_sql[] = R"roslynsql(-- RoslynObj 1.0: normalized scalar and typed relationship contract.
 -- SQLite 3.37+ required. Exact target quantities use canonical decimal TEXT.
 -- Extension kind catalogs are persisted only when referenced.
@@ -999,7 +1001,7 @@ CREATE TABLE direct_base (
 
 CREATE TABLE base_subobject (
   id INTEGER PRIMARY KEY REFERENCES entity(id) DEFERRABLE INITIALLY DEFERRED,
-  most_derived_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
+  most_derived_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED,
   base_type_id INTEGER REFERENCES type(id) DEFERRABLE INITIALLY DEFERRED NOT NULL,
   offset TEXT,
   is_virtual INTEGER NOT NULL DEFAULT 0,

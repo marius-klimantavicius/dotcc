@@ -2,15 +2,31 @@
 
 Final genuine-input evidence and measurements: [REAL-INPUTS.md](REAL-INPUTS.md).
 
-The initial public contract is numeric 1.0 with 251 tables and 39,145
+The current producer emits public format 2.0 with 251 tables and 39,145
 append-only stable kind IDs. Its exact framed SQL+catalog fingerprint is
-`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
-The public 1.0 boundary is accepted with genuine-input evidence. Numeric version
-alone does not admit older development snapshots.
+`3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6`.
+The reader admits exactly these version/fingerprint pairs:
 
-The reader checks a complete snapshot header, major 1/minor <= 0, exact required and
-enabled normalized_semantic_schema_v1 fingerprint, compatible catalog names/IDs
-and every enabled required capability. Supported required names are:
+| Version | Required normalized schema fingerprint |
+| --- | --- |
+| 2.0 | `3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6` |
+| 1.0 | `4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559` |
+
+Format 2.0 makes `base_subobject.most_derived_type_id` nullable. Stock EDG
+retains unresolved constructor-initializer base placeholders in template prototypes
+with an actual null `derived_class` pointer (`il.c:5019–5028`,
+`decl_inits.c:7541–7572`). The base identity, base type and constructor-initializer
+association remain present; `BaseSubobject.MostDerivedType` exposes that absence.
+The reader never substitutes an enclosing class. This changes the earlier public
+non-null guarantee, so the producer uses a new major version. The catalog and all
+other column contracts remain unchanged. See [the exact contract comparison](nullable-base-major2-contract.json)
+and [DuckDB evidence](DUCKDB.md).
+
+The reader also accepts genuine objects at the published 1.0 boundary without
+migration. Older development fingerprints with the same numeric version remain
+incompatible. It checks a complete snapshot header, an exact admitted pair,
+required and enabled normalized_semantic_schema_v1 capability, compatible catalog
+names/IDs and every enabled required capability. Supported required names are:
 
 - normalized_semantic_graph_v1
 - exact_target_values_v1

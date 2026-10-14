@@ -64,7 +64,6 @@ static Rid roslyn_constant_origin(a_constant_ptr constant) {
 }
 static Rid roslyn_constant(a_constant_ptr p) {
  bool fresh;Rid id=DB.claim(p,"constant",fresh);if(!fresh)return id;
- roslyn_attach_correspondence(id,p->source_corresp);
  RoslynContent content(p->kind);
  switch(p->kind){
  case ck_void:break;
@@ -141,6 +140,9 @@ static Rid roslyn_constant(a_constant_ptr p) {
  default:DB.fail("Constant payload adapter missing: "+Q(p->kind));break;
  }
  Rid value=content.intern();roslyn_constant_values[p]=value;
+ /* Correspondence can revisit this occurrence through its scope's template
+    arguments.  Register exact content before traversing that metadata graph. */
+ roslyn_attach_correspondence(id,p->source_corresp);
  Rid storage=0;
 #if DO_IL_LOWERING && !BACK_END_IS_C_GEN_BE && !IL_SHOULD_BE_WRITTEN_TO_FILE
  storage=roslyn_variable(p->assoc_var);

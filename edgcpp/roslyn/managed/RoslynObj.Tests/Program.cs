@@ -6,6 +6,17 @@ using System.Reflection;
 
 if(args.FirstOrDefault()=="--benchmark") { Benchmark.Run(args.Skip(1));return; }
 if(args.FirstOrDefault()=="--real-input") { RealInputAcceptance.Run(args[1],args[2]);return; }
+if(args.FirstOrDefault()=="--nullable-base-input") { NullableBaseInputAcceptance.Run(args[1],args[2],args[3]);return; }
+if(args.FirstOrDefault()=="--admit-input")
+{
+    if(args.Length<2)throw new ArgumentException("Supply at least one genuine object for admission.");
+    foreach(var path in args.Skip(1))
+    {
+        using var snapshot=RoslynObject.Open(path);
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new{path,snapshot.Manifest.FormatMajor,snapshot.Manifest.FormatMinor,snapshot.Manifest.ArtifactIdentity}));
+    }
+    Console.WriteLine($"PASS:{args.Length-1} genuine object admissions");return;
+}
 if(args.FirstOrDefault()=="--reject-incompatible")
 {
     try { using var incompatible=RoslynObject.Open(args[1]);throw new Exception("An archived incompatible development contract was admitted."); }
@@ -48,6 +59,9 @@ string Fixture(string name,int extraVariables=0,int extraOperations=0,string? ad
         command.ExecuteNonQuery();command.Parameters.Clear();
     }
     command.CommandText=Resource("basic").Replace("fixture-artifact",Guid.NewGuid().ToString());command.ExecuteNonQuery();
+    command.CommandText="UPDATE object_header SET format_major=$major,format_minor=$minor";
+    command.Parameters.AddWithValue("$major",RoslynObject.SupportedFormatMajor);command.Parameters.AddWithValue("$minor",RoslynObject.SupportedFormatMinor);
+    command.ExecuteNonQuery();command.Parameters.Clear();
     command.CommandText="INSERT INTO text_atom(value) VALUES($name),($digest)";
     command.Parameters.AddWithValue("$name","normalized_semantic_schema_v1");
     command.Parameters.AddWithValue("$digest",RoslynObject.SchemaContractFingerprint);command.ExecuteNonQuery();

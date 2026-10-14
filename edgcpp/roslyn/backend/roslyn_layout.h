@@ -49,7 +49,7 @@ static Rid roslyn_base(a_base_class_ptr p) {
 #if IA64_ABI
  has_offset=has_offset&&p->offset_is_set;
 #endif
- std::vector<std::pair<const char*,RoslynSqlValue>> facts={{"id",id},{"most_derived_type_id",roslyn_type(p->derived_class)},{"base_type_id",roslyn_type(p->type)},{"original_type_id",R(roslyn_type(p->orig_type))},{"offset",has_offset?RoslynSqlValue(Q(p->offset)):RoslynSqlValue()},{"is_virtual",static_cast<int>(p->is_virtual)},{"is_direct",static_cast<int>(p->direct)},{"direct_base_number",static_cast<int>(p->direct_base_number)}};
+ std::vector<std::pair<const char*,RoslynSqlValue>> facts={{"id",id},{"most_derived_type_id",R(roslyn_type(p->derived_class))},{"base_type_id",roslyn_type(p->type)},{"original_type_id",R(roslyn_type(p->orig_type))},{"offset",has_offset?RoslynSqlValue(Q(p->offset)):RoslynSqlValue()},{"is_virtual",static_cast<int>(p->is_virtual)},{"is_direct",static_cast<int>(p->direct)},{"direct_base_number",static_cast<int>(p->direct_base_number)}};
 #define BASE_FLAG(field) facts.push_back({#field,static_cast<int>(p->field)})
  BASE_FLAG(ambiguous);BASE_FLAG(shares_virtual_function_info);BASE_FLAG(ignore_during_dependent_lookup);BASE_FLAG(is_optimized_empty_base);BASE_FLAG(is_pack_expansion);BASE_FLAG(has_public_derivation);
 #if CFRONT_OBJECT_CODE_COMPATIBILITY

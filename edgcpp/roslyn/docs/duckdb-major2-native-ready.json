@@ -1,0 +1,114 @@
+{
+  "status": "READY narrow concrete-writer fix only; wholeDuckDBcampaign remains active",
+  "format": {
+    "major": 2,
+    "minor": 0,
+    "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6"
+  },
+  "owned_tracked_paths": [],
+  "canonical_backend_sha256": {
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_attributes.h": "d4566560cdb7caa6acf7ada8ebb8e07e99d87ecb308bdba5cbf0b75cc9597385",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_common.h": "4e50c50f0b0d72c4540779b3e7b3bd7b8ec6151220a940f7fe2da64e6f7ecbaf",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_constants.h": "be054aa23b568eceb1b1aeed6955c37a69b807db36ba100e6ec3d4c462b27f03",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_entities.h": "7a9613cd7a409df029f00c434198deb1b52f77bf969f8f9dd02eb14fbd0f5570",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_execution.h": "6662075d00f7b80666ae9e4dcd84c181409ae6a9559056bf1df777e8a5689a28",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_expressions_extra.h": "21afbe1e679e12a5cb6adc38baa86bd5ca693d44763cc6e36db462f60e6b1ff3",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_float.h": "3f114bb824598468addc4c59fd94988cd70abc165f75292d0f6217540b2a30c7",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_gen_be.c": "d11f3b5ea34e88e43737bf33be209f9ace169eefb942be9086ad1955a49b4566",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_kinds.h": "1328bd0fea397b52b003c5f28c9b7754103b9fb908e54768c76b95944154d47a",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_layout.h": "a0e0c24f0931cbf91f943760401b2c8bf5b78b07e80460ff662d70b4b5ef81ab",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_lifetimes.h": "6242b7a1153eb7caa21eb5b97c8b30fe457fe355b75d386b6d94e29e11b50cb1",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_local_expressions.h": "a2d224b22e7e07047eb546259460aa5ebfef36e9323c18e3aa049b452f9b6832",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_modules.h": "6b361e8e11fb174c647847461a2749efa6187d294aad68982401de7b184d7725",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_ms_attributes.h": "79d9e680d9ad278a917d1afc9e83e85cf754c29dbf6fae7ff0a1eca71a60883d",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_names.h": "00a6219ca6abcc550837e21b0fe863f66c0ea3e948c6c8c5ac0dfb70b312f929",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_parameters.h": "ca6aba8f2f090850f493cace3f169862381e18690bd9b7eee42574245023413c",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_routines.h": "64b4770c95d7301072e472d9848655f00243eda140cd48337cf67f77f7356535",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_schema.h": "e5ba83a5dc241acb7a38db822e02eb818fb244099ef5e11212a762fa3cc4c017",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_source.h": "50a3004c6af53eb92012fbd82b972388804dd0ac57ae6bc038f8f65181c4998d",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_source_sequences.h": "10d60929601f05ee6962a96078dac0deb6864ac3898e586ab63e9bff312f0e46",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_store.h": "cb57648d5db530c070690a7a9b99e4e267dd98f6634b7aa42904d93c68bae822",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_templates.h": "aaa2f2710d276309dc2dc5260180471600a58e4c9f6c35b65ad4946bcf416d0c",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_type_support.h": "6bf8babe0c7d76faf40465837609c678533a0617da7931817b6f6661c7a07fbd",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_types.h": "026f782786bdb00d6d1d571729dadfe41c2b7a22f8628384a6c941c0e9d72578",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_values.h": "552fe2a0eb74a60c0c9a42f1461218f699aa98445cddd61b761dbb19bc9adb78",
+    "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_variables.h": "934619897e232be6857b7bd013fb9b24e39662a129f9f9e47414ebb1bd8ff5db"
+  },
+  "objects": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0000/unit.roslynobj",
+      "bytes": 37534720,
+      "sha256": "ed2726937ed531dcbf08cb86475df30241401dc5c0286bcc5dc19c7a6df4675d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+      "bytes": 156354560,
+      "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/constant_occurrences.roslynobj",
+      "bytes": 836608,
+      "sha256": "779846af54e573f426c6a25c007098090ccd4065e9a3eed371233ed1e34abf8e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/native-exact/template_edges.roslynobj",
+      "bytes": 802816,
+      "sha256": "b37382fdf2ac6b572c7ab77510bf817f137ce2d25d6d8ff36a4d4fc569f20c9e"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/pin-stage-proof.json",
+      "sha256": "ae5d28c4665787b8698d6f62708a190615fc0e35573f30e07bb6bf3b39c12a5d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer-snapshot.json",
+      "sha256": "e361477be1df383813a9e6fe8b501a6635199c267a232a129d2a5349007f70ee"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/native-build.log",
+      "sha256": "d33f90272760e04079207017a7978f10b589da522236a7279d9a37c56b5adcc9"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0000/result.json",
+      "sha256": "0a30378486e1b93abc9b6a752887f1a881c9111680a25508434d33d622180922"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/result.json",
+      "sha256": "4dbd3e33da5c0d6e0a0b6d2236c091d92887bb4b2f356c6b2a5a168d1a3b8cfc"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/results.json",
+      "sha256": "a0f75d85a6dd7d4ed721a7c4ce2efb17342e32ea20c3b37f1885720e0cc969db"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/native-exact/result.json",
+      "sha256": "e3d0646686ae0e0e1d0a355700eb50ae5708dca7625c364eb9a5cb29e389941d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/pilots-final/0/base-trace.log",
+      "sha256": "36437871ad77161c7846facc1d92032737f7396193974a6659260b1216808abb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/pilots-final/316/trace-final.log",
+      "sha256": "e44bcc4f1f995ac7f8c76595b4b150447b6df34c0ec938431cc657b5f943155c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/native-constant-fix-build.log",
+      "sha256": "2d5739150cfdfba6f562e03a8f2417c0ff265034a08e5026174bf3f4edf38c4f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0018/crash-trace.log",
+      "sha256": "75fba5120191afe183e352d87343c6e1e3ba416bb89db786bfd109ed9b4091de"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/gnu-c-dialect-correction.json",
+      "sha256": "3ea49304d2977bcdf4a2233840232f29a75aaeb435fea8e6da3ff8d84b1f20ae"
+    }
+  ],
+  "historical_profiles": "Other13 historicalformat1,316pinsverified; no freshcurrentclaim",
+  "excluded_gnu_template_variant": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/regressions/template_edges.roslynobj",
+  "native_build_exit": 0,
+  "whole_project_campaign_root": "/mnt/storage/roslynobj-duckdb-20261014/export",
+  "baseline_compiler_immutable": true
+}

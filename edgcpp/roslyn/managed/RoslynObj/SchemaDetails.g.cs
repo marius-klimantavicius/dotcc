@@ -1080,7 +1080,7 @@ public sealed class DirectBaseDetails : SemanticDetail
 public sealed class BaseSubobjectDetails : SemanticDetail
 {
     internal BaseSubobjectDetails(RoslynObject owner, Row row) : base(owner, row) { }
-    public CppType MostDerivedType => Object.Link(Data.OptionalLong("most_derived_type_id"), value => Object.Type(value))!;
+    public CppType? MostDerivedType => Object.Link(Data.OptionalLong("most_derived_type_id"), value => Object.Type(value));
     public CppType BaseType => Object.Link(Data.OptionalLong("base_type_id"), value => Object.Type(value))!;
     public BigInteger? Offset => Number(Data.OptionalText("offset"));
     public bool IsVirtual => Data.Bool("is_virtual");

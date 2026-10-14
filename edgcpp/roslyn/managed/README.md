@@ -239,11 +239,14 @@ Opening checks the supported schema version, complete header, stable kind catalo
 and required representation capabilities. The reader fails on incompatible
 required kinds instead of returning an opaque unknown operation. Informational
 EDG configuration and sparse availability records are accessible separately.
-During development, a required `normalized_semantic_schema_v1` capability carries
-the generated schema fingerprint covering framed SQL and the full stable kind
-catalog. Opening rejects missing or mismatched
-fingerprints before publishing a model, including older development objects with
-the same numeric format version. This gate is not a final public-format promise.
+The required `normalized_semantic_schema_v1` capability carries the fingerprint
+covering framed SQL and the full stable kind catalog. Opening admits only the
+published 1.0/`4bb94e…` and current 2.0/`3e818d…` pairs, with complete headers and
+supported enabled required capabilities. Older development objects with the same
+numeric version are rejected. No migration or arbitrary forward compatibility is
+promised; [the format policy](../docs/FORMAT.md) lists the exact fingerprints.
+`BaseSubobject.MostDerivedType` is nullable because actual EDG prototype
+constructor-initializer placeholders can have no most-derived type pointer.
 
 From the repository root:
 

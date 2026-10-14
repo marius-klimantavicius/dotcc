@@ -1,11 +1,19 @@
 # Supported scope and retained-data limits
 
-Initial public format 1.0 serializes the actual resident EDG IL from the accepted
-[14 profiles](PROFILES.md). The [field](field-coverage.tsv) and [kind](kind-coverage.tsv) worksheets record
+The original public 1.0 boundary serializes the actual resident EDG IL from the
+accepted [14 profiles](PROFILES.md). Current format 2.0 adds a nullable base-owner
+contract, validated with genuine DuckDB inputs in the native profile; the other
+13 profile builds remain historical 1.0 evidence. The [field](field-coverage.tsv) and [kind](kind-coverage.tsv) worksheets record
 exact adapters, public proof and justified dispositions. All required field proofs
 are closed; unsupported/error/sentinel/retired catalog labels do not imply absent
 C++ implementation. Exhaustive shared discriminator adapters are distinct from
 runtime activation of every enum value. EDG remains the sole semantic authority.
+
+Unresolved base constructor initializers in template prototypes can retain a base
+placeholder whose most-derived type pointer is null. Format 2.0 and the nullable
+`BaseSubobject.MostDerivedType` property preserve this stock EDG state without
+inventing an owner or discarding the initializer. The reader explicitly admits the
+published 1.0 and 2.0 fingerprints; see [format admission](FORMAT.md).
 
 The lowered native graph has priority. EDG can rewrite current signatures, hidden
 ABI arguments, member-pointer/reference operations, range-for machinery and
