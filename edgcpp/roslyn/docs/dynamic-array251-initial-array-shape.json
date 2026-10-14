@@ -1,0 +1,200 @@
+{
+  "profiles": {
+    "source": {
+      "array_type": [
+        {
+          "id": 704,
+          "element_type_id": 249,
+          "bound_kind_id": 15005,
+          "bound": null,
+          "bound_expression_id": null,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 1,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": null,
+          "dependent_bound_constant_id": 708,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": null,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        },
+        {
+          "id": 866,
+          "element_type_id": 249,
+          "bound_kind_id": 15001,
+          "bound": "5",
+          "bound_expression_id": 870,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 0,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": 868,
+          "dependent_bound_constant_id": null,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": null,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        }
+      ],
+      "local_expression_reference": [
+        {
+          "owner_id": 701,
+          "ordinal": 0,
+          "kind_id": 345003,
+          "referrer_id": 708,
+          "expression_id": 710
+        },
+        {
+          "owner_id": 701,
+          "ordinal": 1,
+          "kind_id": 345008,
+          "referrer_id": 708,
+          "expression_id": 744
+        },
+        {
+          "owner_id": 863,
+          "ordinal": 0,
+          "kind_id": 345004,
+          "referrer_id": 866,
+          "expression_id": 870
+        },
+        {
+          "owner_id": 863,
+          "ordinal": 1,
+          "kind_id": 345008,
+          "referrer_id": 868,
+          "expression_id": 870
+        }
+      ]
+    },
+    "native": {
+      "array_type": [
+        {
+          "id": 565,
+          "element_type_id": 289,
+          "bound_kind_id": 15005,
+          "bound": null,
+          "bound_expression_id": null,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 1,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": null,
+          "dependent_bound_constant_id": 569,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": null,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        },
+        {
+          "id": 698,
+          "element_type_id": 289,
+          "bound_kind_id": 15001,
+          "bound": "5",
+          "bound_expression_id": 702,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 0,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": 700,
+          "dependent_bound_constant_id": null,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": null,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        }
+      ],
+      "local_expression_reference": [
+        {
+          "owner_id": 562,
+          "ordinal": 0,
+          "kind_id": 345003,
+          "referrer_id": 569,
+          "expression_id": 571
+        },
+        {
+          "owner_id": 562,
+          "ordinal": 1,
+          "kind_id": 345008,
+          "referrer_id": 569,
+          "expression_id": 599
+        },
+        {
+          "owner_id": 720,
+          "ordinal": 0,
+          "kind_id": 345004,
+          "referrer_id": 698,
+          "expression_id": 702
+        },
+        {
+          "owner_id": 720,
+          "ordinal": 1,
+          "kind_id": 345008,
+          "referrer_id": 700,
+          "expression_id": 702
+        }
+      ]
+    }
+  }
+}

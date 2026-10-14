@@ -4,13 +4,15 @@
 is saved in local historical pause notes, with both worker notes. Both implementation
 lanes are active; full approved M0–M5 work remains required.
 
-**Current verified boundary: 263 tables / 39,144 stable kinds; final137 PASS1795,
-self/WITHOUT ROWID PASS73, build zero warnings/errors, all four strict compilers,
-316 direct Git-pinned inputs and 25 canonical backend files per stage.** The
-coordinator is recording this significant milestone commit, then both workers
-continue the reviewed common metadata contract. Full M0–M5 remains in progress;
-current field counts are 567 verified /550 mapped pending validation /136 mapped
-pending implementation /493 raw pending, with exact exclusions separate.
+**Current verified boundary: 251 tables / 39,145 stable kinds, exact `4bb94`
+contract. Required field evidence: 1,524 verified / 0 pending; two selected stock
+module-partition input limitations and optional-source dispositions remain explicit.
+The latest bounded four-object gate passes112, self73 and a clean managed build;
+all14 unchanged compiler stages retain316 stock inputs/26 canonical backend files.
+No broad corpus or scale rerun is claimed.** Phases3–4/M0–M5 remain open for genuine
+upstream-positive and practical real-TU acceptance, then current profile/API/limits
+and public-format policy publication. See CLOSURE and NEXT-CONTRACT for current
+required work; earlier milestones below retain their historical evidence.
 
 The user approved phases 3–4 on 2026-10-12, including complete M0–M5 delivery.
 The accepted profile prioritizes stock EDG lowering and documents lost original
@@ -1750,3 +1752,16 @@ All 15 managed and 18 native frozen hashes match. Final validation, stage,
 activation and all-14 resolved pragma guard summaries record four exact positives
 and three independent source dispositions. No API/backend/config/schema changes.
 Restart files and unrelated work remain excluded.
+
+## Initializer/array field evidence complete
+
+The final two required fields pass112 across four distinct native/source objects;
+self73, clean build and generator249/1941/literal/whitespace pass. The native ordinary
+C++20 metadata default preserves exact optimized-empty dynamic base/field targets.
+The local-class variant preserves the actual array-owned dependent-bound expression
+and function-scope relation; the plain function constant-owned alternative remains
+separate. ArrayType.DependentBoundExpression is a direct nullable convenience.
+Current4bb schema/backend/configuration and all14 pinned compiled stages are unchanged.
+See dynamic-array251-activation-proof.json, native/managed readies and the source-route
+report. Coverage1524verified/0requiredpending is field acceptance, not completeM0–M5.
+Genuine upstream inputs, one practical large realC++TU and final release docs remain.

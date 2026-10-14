@@ -69,6 +69,8 @@ CASES = {
     'contextual_bases': ['--c++20', '--g++', '--gnu_version', '130000'],
     'associated_pragma_orphans': ['--c++20', '--g++', '--gnu_version', '130000'],
     'embedded_virtual_bases': ['--c++03', '--cfront_2.1'],
+    'dynamic_empty_bound': ['--c++20'],
+    'dependent_array_class_bound': ['--c++20'],
     'common': ['--c++20', '--g++', '--gnu_version', '130000'],
     'common_labels': ['--c11', '--gcc', '--gnu_version', '130000'],
     'common_microsoft': ['--c++20', '--target', 'win64', '--microsoft', '--microsoft_version', '1930', '--ms_permissive'],

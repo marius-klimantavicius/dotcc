@@ -1,0 +1,131 @@
+{
+  "ready": "HOLD",
+  "created_utc": "2026-10-14T13:16:14.351838+00:00",
+  "checkpoint_base": "2a5682188a65a6b716e143541ec8915e83cd8f6f",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "scope": "Two remaining dynamic empty-target/array-owned dependent-bound field positives, four current ordinary C++20 native/source objects. Direct nullable ArrayType.DependentBoundExpression; no schema/backend/profile/config change. Field milestone only, subsequent real-TU/M4/M5 acceptance remains.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Types.cs",
+      "sha256": "8eb7cdfbde1d6ec62a3758a538917b14732d118803d1977d457a71d5b8a4b1fd",
+      "bytes": 13703
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "c9ffd63fc9aab4c94cfcbd7e896bcec61c304b9fb275f6a861633667f43870db",
+      "bytes": 79108
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/DynamicEmptyTargetProjection.cs",
+      "sha256": "f22bc86b706599e42a5c1da46fdfd1b72ebdfaf41758e7386b5b15c7a44ff30c",
+      "bytes": 7502
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/dynamic-array251-evidence.tsv",
+      "sha256": "5a80b09da4b76d93c12422b3861dc822004b4cb4a83b75461decd78aaeeb366a",
+      "bytes": 3358
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-build.log",
+      "sha256": "446cfde8b3fdfa35f5ef7e27950ebd7cfafca49fb9cb27c5a45daf15c029d44f",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-fresh4-v2.log",
+      "sha256": "566d1105270136d2e19f99c81ebe2efd454e4e21b45b0d2f71a3e2139bf58e66",
+      "bytes": 1042
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-self.log",
+      "sha256": "49be4229005d180eef8091da9af9f69e981c4ac98a7dfe0c19d8253740496fcb",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-whitespace.log",
+      "sha256": "659e7cccf7849aa8ed49c4e8f0ab8c739f1bf957728bf8cf72897a9c7306903a",
+      "bytes": 276
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/all-profile-results-final.json",
+    "sha256": "5666a6f03f73688ee7ef38788c593fdd5c28ab79ffcdc9eeff85d337397d6bc2",
+    "bytes": 2915
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/source/dynamic_empty_bound.roslynobj",
+      "sha256": "19c87e98fc033f4870eb1b5a68afd6f317501d08b36e69fde25967610bb53465",
+      "bytes": 676864,
+      "profile": "source",
+      "fixture": "dynamic_empty_bound",
+      "entities": 916,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/native/dynamic_empty_bound.roslynobj",
+      "sha256": "a5730377f8ca784ece4596ff3d20a3c921c72fa5999fb67f72be24cc6d57cd57",
+      "bytes": 689152,
+      "profile": "native",
+      "fixture": "dynamic_empty_bound",
+      "entities": 938,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/source-class-variant/dependent_array_class_bound.roslynobj",
+      "sha256": "4b9ff9a07cc24825fec45565fae0974c0bfd7c23082dda5e9d1658f4c765b624",
+      "bytes": 655360,
+      "profile": "source",
+      "fixture": "dependent_array_class_bound",
+      "entities": 651,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/native-class-variant/dependent_array_class_bound.roslynobj",
+      "sha256": "c4bcc3a00d3d0f66854bc0b9674aba1038483297b97c570300683c92ae9e7855",
+      "bytes": 654336,
+      "profile": "native",
+      "fixture": "dependent_array_class_bound",
+      "entities": 633,
+      "fk_errors": 0,
+      "page_size": 1024
+    }
+  ],
+  "checks": {
+    "fresh_assertions": 112,
+    "fresh_unique_paths": 4,
+    "self_assertions": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "literal": "PASS",
+    "whitespace": "PASS"
+  },
+  "evidence_rows": {
+    "positive": 2,
+    "pending": 0
+  },
+  "excluded": [
+    "early2 historical positive gate not authoritative final cohort",
+    "fresh4-v1 failed test assumed prototype Function.InstantiationNULL; corrected to actual associated FunctionSymbol, v2 only accepted",
+    "root dynamic-empty-pilot ignored artifact not in current final manifest"
+  ],
+  "native_gate": "Native final pin/core/canonical/object gates and compact proof independently owned; no native changes or new build requested."
+}

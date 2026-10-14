@@ -1,44 +1,38 @@
-# Accepted contextual bases; next initializer/array and real-input acceptance
+# Field evidence complete; next genuine-input and release acceptance
 
-The contextual base/association checkpoint keeps the accepted `4bb94` contract
-unchanged: 251 tables and 39,145 stable kind IDs. Five final native/source/USL21
-objects pass 103 public assertions; self-checks pass 73. Build, generator,
-literal-field and whitespace checks pass. All 14 unchanged stages retain 316
-pinned stock inputs, the pinned tool and 26 canonical backend files; new builds:
-zero. No accepted gate, full corpus or performance rerun is claimed.
+The initializer/array checkpoint keeps the accepted `4bb94` contract unchanged:
+251 tables and 39,145 stable kind IDs. Four distinct final native/source objects
+pass 112 public assertions; self-checks pass 73. Build, generator, literal-field
+and whitespace checks pass. All 14 unchanged stages retain 316 pinned stock
+inputs, the pinned tool and 26 canonical backend files; new builds: zero. No
+accepted gate, full corpus or performance rerun is claimed.
 
-Field coverage is now **1,522 verified / 2 required pending**, plus two explicit
+Field coverage is now **1,524 verified / 0 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
-or disposition. Four contextual base fields close through exact positive identity
-proof: overriding subobject, primary base, base-owned attributes and USL data-section
-base. These links remain distinct from record-level primary/vinfo relations; no
-C++ inheritance, layout or access calculation is performed in the reader.
+or disposition. Native ordinary C++20 defaults preserve exact optimized-empty
+base/field targets and selected constructor metadata. The GNU generic aggregate
+alternative and source nullable lowering facts remain distinct. A local-class
+array retains its own `lerk_dep_array_bound` expression, array referrer and routine
+scope in both profiles; the plain function alternative instead retains actual
+constant-owned expression references. No bound, target or execution is inferred.
 
-Three fields have reviewed selected-producer/configuration dispositions, preserving
-their direct writers and nullable APIs. All 14 resolved configurations disable test,
-unrecognized and internal-checking pragma target seeds; ordinary pragma effects
-remain captured on their actual descriptors. EDG_TEST_VERSION alone does not
-activate test pragmas. Fresh stock namespace factories insert even local aliases
-into file/namespace storage lists; orphan headers only copy actual function/block
-lists. The alias and target remain canonical outside the empty orphan namespace
-list. No ownership or target is fabricated from source adjacency or ScopeNumber.
-These are selected stock boundaries, not claims about all EDG/foreign IL inputs.
+`ArrayType.DependentBoundExpression` directly exposes the retained nullable link.
+The exact source route and final metadata identities are recorded in
+`dependent-array-local-bound-retention-review.json` and the two-row managed proof.
 
-The remaining required fields are dynamic-init optimized-empty target associations
-and selected dependent-array local-bound references. The dynamic source review
-explains prior unmarked defaults through gpp-mode generic aggregate construction;
-a separate ordinary EDG C++20 input without GNU mode is queued. The array review
-is examining file-memory local-static references versus routine-variable constant
-fixup, with no inference from already-verified constant-owned expression links.
+Phases 3–4/M0–M5 remain open despite completion of required field evidence.
+Existing artifacts establish owned fixtures and synthetic scale acceptance;
+genuine upstream-positive samples and a practical large real C++ translation unit
+still need bounded acceptance and input provenance. Producer elapsed time must
+be labeled combined frontend/export time; stock `--timing` can distinguish actual
+frontend and backend CPU measurements. Existing packaging/workspace/performance
+evidence will be reused honestly. Current profile/limits/API and public-format
+summaries will be consolidated afterward. Exact fingerprint development admission
+is unchanged; public format freeze follows final acceptance, with no migration or
+forward-compatibility promise. EDG remains sole authority, optional locations stay
+nonblocking, and the two selected stock module limits remain explicit.
 
-Phases 3–4/M0–M5 remain open beyond those two rows. Existing artifacts establish
-owned fixtures and synthetic scale acceptance; genuine upstream-positive samples
-and a practical large real C++ translation unit still need bounded acceptance and
-input provenance before final closure. Existing packaging/workspace/performance
-evidence will be reused honestly. Final current profile/limits/API and public-format
-policy summaries will be consolidated after semantic acceptance; development exact
-fingerprint admission remains unchanged, with no migration/forward-compatibility
-promise. EDG remains the sole authority and optional source work stays nonblocking.
+## Earlier checkpoint history
 
 # Accepted routine/EH and constant-dependent branches; next bounded closure
 

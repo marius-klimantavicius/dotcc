@@ -1,0 +1,78 @@
+[
+  {
+    "profile": "source",
+    "fixture": "dynamic_empty_bound",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "--c++20",
+      "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dynamic_empty_bound.cpp",
+      "-o",
+      "edgcpp/artifacts/roslynobj/root251/dynamic-array/source/dynamic_empty_bound.roslynobj"
+    ],
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/source/dynamic_empty_bound.roslynobj",
+    "exit_code": 0,
+    "seconds": 0.066,
+    "entities": 916,
+    "fk_errors": 0,
+    "page_size": 1024,
+    "fixture_sha256": "4a025a3a7158109c8d5f04d669fe5101d539e5cb05feba221e27a706f9ce2bb7"
+  },
+  {
+    "profile": "native",
+    "fixture": "dynamic_empty_bound",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "--c++20",
+      "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dynamic_empty_bound.cpp",
+      "-o",
+      "edgcpp/artifacts/roslynobj/root251/dynamic-array/native/dynamic_empty_bound.roslynobj"
+    ],
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/native/dynamic_empty_bound.roslynobj",
+    "exit_code": 0,
+    "seconds": 0.077,
+    "entities": 938,
+    "fk_errors": 0,
+    "page_size": 1024,
+    "fixture_sha256": "4a025a3a7158109c8d5f04d669fe5101d539e5cb05feba221e27a706f9ce2bb7"
+  },
+  {
+    "profile": "source",
+    "fixture": "dependent_array_class_bound",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "--c++20",
+      "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dependent_array_class_bound.cpp",
+      "-o",
+      "edgcpp/artifacts/roslynobj/root251/dynamic-array/source-class-variant/dependent_array_class_bound.roslynobj"
+    ],
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/source-class-variant/dependent_array_class_bound.roslynobj",
+    "exit_code": 0,
+    "seconds": 0.063,
+    "entities": 651,
+    "fk_errors": 0,
+    "page_size": 1024,
+    "fixture_sha256": "7b866fcf7a2367940848ac9ce8d0803adfd5df019e6375ade5a0d696d622a318"
+  },
+  {
+    "profile": "native",
+    "fixture": "dependent_array_class_bound",
+    "argv": [
+      "python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "--c++20",
+      "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dependent_array_class_bound.cpp",
+      "-o",
+      "edgcpp/artifacts/roslynobj/root251/dynamic-array/native-class-variant/dependent_array_class_bound.roslynobj"
+    ],
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/native-class-variant/dependent_array_class_bound.roslynobj",
+    "exit_code": 0,
+    "seconds": 0.072,
+    "entities": 633,
+    "fk_errors": 0,
+    "page_size": 1024,
+    "fixture_sha256": "7b866fcf7a2367940848ac9ce8d0803adfd5df019e6375ade5a0d696d622a318"
+  }
+]

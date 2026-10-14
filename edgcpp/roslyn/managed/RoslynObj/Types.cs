@@ -89,6 +89,8 @@ public sealed class ArrayType : CppType
     public BigInteger? ThreadsMultiplier => Array.BoundKind.Name=="upc_threads"?Array.Bound:null;
     public VlaDimension? VlaDimension => Array.VlaDimension;
     public Operation? BoundExpression => Array.BoundExpression;
+    /// <summary>The retained array-owned local expression of a dependent bound, when recorded.</summary>
+    public ExpressionOperation? DependentBoundExpression => Array.DependentBoundExpression;
 }
 
 public sealed partial class RoutineType : CppType

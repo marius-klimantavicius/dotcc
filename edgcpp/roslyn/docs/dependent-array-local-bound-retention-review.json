@@ -1,0 +1,53 @@
+{
+  "field": "a_type.variant.array.dep_constant_bound_expr_in_local_expr_node_ref",
+  "authority": "Pinned pristine EDG; direct retained array-specific local-expression association, no reconstructed bound.",
+  "stock_route": [
+    {
+      "source": "src/scope_stk.c:3011-3018",
+      "fact": "Pushing a class scope switches expression allocation to file memory."
+    },
+    {
+      "source": "src/declarator.c:4999-5010",
+      "fact": "do_fs_constant_fixup precedes the array-local expression helper."
+    },
+    {
+      "source": "src/il.c:6926-6953,5690-5723",
+      "fact": "tpck_expression copying is conditional. A plain function-memory expression retained by suppress-copy can be cleared into a constant-owned lerk_tpl_param_expr during memory-region fixup; this is not an array-owned reference."
+    },
+    {
+      "source": "src/il.c:26304,26421",
+      "fact": "The local-entity predicate recognizes a retained variable with enclosing routine, including local static storage; routine-variable memory fixup excludes file-scope-memory variables."
+    },
+    {
+      "source": "src/declarator.c:4653-4675;src/il.c:14988-14994",
+      "fact": "A local-class file-memory expression with actual local-static reference survives constant fixup. The array helper copies it into function memory, creates lerk_dep_array_bound with the array as referrer and sets the actual array flag."
+    }
+  ],
+  "first_plain_function_alternative": {
+    "source_array": 704,
+    "source_constant": 708,
+    "kind": "lerk_tpl_param_expr",
+    "array_link": null,
+    "conclusion": "Real retained constant-owned alternative. Neither global unavailability nor positive array-owned branch evidence."
+  },
+  "final_local_class_variant": {
+    "source": {
+      "array": 384,
+      "expression": 426,
+      "owner_scope": 367,
+      "associated_routine": 333
+    },
+    "native": {
+      "array": 395,
+      "expression": 431,
+      "owner_scope": 379,
+      "associated_routine": 352
+    },
+    "reference_kind": "lerk_dep_array_bound",
+    "representation_role": "metadata",
+    "concrete_bound": 5
+  },
+  "acceptance": "Four final native/source objects; fresh4-v2 PASS112 and self73. Exact canonical referrer, scope, expression, retained local_extent initializer2, concrete bound5 and absent execution traversal checked by DynamicEmptyTargetProjection.VerifyArray.",
+  "implementation": "Existing producer unchanged; ArrayType.DependentBoundExpression is a direct nullable convenience over ArrayTypeDetails.DependentBoundExpression.",
+  "limits": "No source/config/core change, frontend helper calls, global retention claim, new strict build, broad corpus or scale rerun."
+}

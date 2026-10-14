@@ -1,0 +1,95 @@
+{
+  "checkpoint_base": "2a5682188a65a6b716e143541ec8915e83cd8f6f",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "1a7e96f245760e3884b57202d065be9123a39c6cab48df49e748edea08ef69f1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dynamic_empty_bound.cpp",
+      "sha256": "4a025a3a7158109c8d5f04d669fe5101d539e5cb05feba221e27a706f9ce2bb7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/dependent_array_class_bound.cpp",
+      "sha256": "7b866fcf7a2367940848ac9ce8d0803adfd5df019e6375ade5a0d696d622a318"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "3a03c961d54dc62c8a5544413d9fd18ab9cd124503f4e8f482797e8e466e73b5"
+    }
+  ],
+  "candidate_owned_paths": 3,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "input_count": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/all-profile-results-final.json",
+      "sha256": "5666a6f03f73688ee7ef38788c593fdd5c28ab79ffcdc9eeff85d337397d6bc2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/build-results-final.json",
+      "sha256": "c0e4c5349570f16fae39c4a6fb00324e5802b9957ec6165d4b42fee20a498f1e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/backend-hashes-start.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/backend-hashes-final.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/validation-summary-final.json",
+      "sha256": "f8e7b9b0f276174884797e6b870eafae65e8b855c263717036ad85c1ce60f218"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/activation-proof.json",
+      "sha256": "b5c21876ec2518aca6b1d4d26f94fc0f72dacb644e385a32945d2066cb73a495"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/activation-proof.py",
+      "sha256": "7b958b88e4cc7d54181f2068f92364d6a590c9fdfafe14a0ca2ffbf977faafd9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/field-evidence.tsv",
+      "sha256": "b70c99c05ef153e11e402f6f7e56c9be51f3b06953706c3515c30659f37a405c"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/dynamic-empty-stock-recipe.json",
+      "sha256": "516bb934e84c8a791c6373bb06178482e522c1f79dffa913e47fe12fcfdc709c"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-dynamic-array-evidence251.tsv",
+  "public_gate": "Managed final fixed4 PASS112/self73/build0/generator/literal/whitespace; /tmp/roslyn-managed-ready-dynamic-array251.json frozen.",
+  "selected_fields": 2,
+  "positive_fields": 2,
+  "variant_count": 1,
+  "actual_positives": [
+    "native ck_dynamic_init empty-base and empty-field union targets in ordered typed aggregate template default metadata, gpp_mode0",
+    "source/native actual array-owned lerk_dep_array_bound function-scope owner, canonical type referrer and exact metadata expression following static local variable"
+  ],
+  "legitimate_alternatives": [
+    "source two typed default descriptors preserve dynamic constructor payload with NULL lowered empty-target flags/links",
+    "first plain-function static bound remains dependent constant-owned tpl-param local expression, no inferred array link",
+    "concrete instantiated arrays record bound5 with NULL dependent-bound expression; no independent bound evaluation"
+  ],
+  "initial_ignored_pilot": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-empty-pilot",
+  "hold": true
+}

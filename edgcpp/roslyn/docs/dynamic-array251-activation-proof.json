@@ -1,0 +1,597 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "selected_fields": 2,
+  "positive_fields": 2,
+  "variant_count": 1,
+  "backend_changes": false,
+  "configuration_changes": false,
+  "new_strict_builds": 0,
+  "profiles": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/source/dynamic_empty_bound.roslynobj",
+      "sha256": "19c87e98fc033f4870eb1b5a68afd6f317501d08b36e69fde25967610bb53465",
+      "default_parameters": [
+        {
+          "id": 566,
+          "type_id": 371,
+          "default_expression_id": 567,
+          "has_unevaluated_template_default": 1
+        },
+        {
+          "id": 636,
+          "type_id": 371,
+          "default_expression_id": 637,
+          "has_unevaluated_template_default": 1
+        }
+      ],
+      "default_nodes": [
+        {
+          "id": 567,
+          "kind_id": 101009,
+          "source_origin_id": null,
+          "compiler_generated": 0,
+          "representation_role_id": 7002,
+          "kind_name": "enk_temp_init"
+        },
+        {
+          "id": 637,
+          "kind_id": 101009,
+          "source_origin_id": null,
+          "compiler_generated": 0,
+          "representation_role_id": 7002,
+          "kind_name": "enk_temp_init"
+        }
+      ],
+      "dynamic_occurrences": [
+        {
+          "id": 573,
+          "type_id": 229,
+          "is_generic_initializer": 0,
+          "constant_for_base_class": 1,
+          "initializes_empty_object": null,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 577,
+          "constructor_id": 242,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 590,
+          "type_id": 302,
+          "is_generic_initializer": 0,
+          "constant_for_base_class": 0,
+          "initializes_empty_object": null,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 594,
+          "constructor_id": 315,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 641,
+          "type_id": 229,
+          "is_generic_initializer": 0,
+          "constant_for_base_class": 1,
+          "initializes_empty_object": null,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 643,
+          "constructor_id": 242,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 646,
+          "type_id": 302,
+          "is_generic_initializer": 0,
+          "constant_for_base_class": 0,
+          "initializes_empty_object": null,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 648,
+          "constructor_id": 315,
+          "representation_role_id": 7002
+        }
+      ],
+      "aggregate_components": [
+        {
+          "owner_id": 569,
+          "role_id": 50001,
+          "ordinal": 0,
+          "constant_id": 573
+        },
+        {
+          "owner_id": 569,
+          "role_id": 50001,
+          "ordinal": 1,
+          "constant_id": 590
+        },
+        {
+          "owner_id": 569,
+          "role_id": 50001,
+          "ordinal": 2,
+          "constant_id": 606
+        },
+        {
+          "owner_id": 639,
+          "role_id": 50001,
+          "ordinal": 0,
+          "constant_id": 641
+        },
+        {
+          "owner_id": 639,
+          "role_id": 50001,
+          "ordinal": 1,
+          "constant_id": 646
+        },
+        {
+          "owner_id": 639,
+          "role_id": 50001,
+          "ordinal": 2,
+          "constant_id": 651
+        }
+      ],
+      "dialect_caps": {
+        "gnu_version": "80100",
+        "gpp_mode": "0",
+        "normalized_semantic_schema_v1": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+      },
+      "plain_function_array_alternative": [
+        {
+          "id": 704,
+          "element_type_id": 249,
+          "bound_kind_id": 15005,
+          "bound": null,
+          "bound_expression_id": null,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 1,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": null,
+          "dependent_bound_constant_id": 708,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": null,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        }
+      ],
+      "plain_constant_owned_reference": [
+        {
+          "owner_id": 701,
+          "ordinal": 0,
+          "kind_id": 345003,
+          "referrer_id": 708,
+          "expression_id": 710,
+          "reference_kind": "lerk_tpl_param_expr"
+        },
+        {
+          "owner_id": 701,
+          "ordinal": 1,
+          "kind_id": 345008,
+          "referrer_id": 708,
+          "expression_id": 744,
+          "reference_kind": "lerk_constant_expr"
+        }
+      ],
+      "class_variant": {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/source-class-variant/dependent_array_class_bound.roslynobj",
+        "sha256": "4b9ff9a07cc24825fec45565fae0974c0bfd7c23082dda5e9d1658f4c765b624",
+        "array": {
+          "id": 384,
+          "element_type_id": 364,
+          "bound_kind_id": 15005,
+          "bound": null,
+          "bound_expression_id": null,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 1,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": null,
+          "dependent_bound_constant_id": 388,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": 426,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        },
+        "actual_array_reference": [
+          {
+            "owner_id": 367,
+            "ordinal": 0,
+            "kind_id": 345005,
+            "referrer_id": 384,
+            "expression_id": 426,
+            "reference_kind": "lerk_dep_array_bound"
+          }
+        ],
+        "scope": {
+          "id": 367,
+          "kind_id": 315018,
+          "parent_id": 215,
+          "associated_entity_id": 333,
+          "lifetime_id": null,
+          "function_static_lifetime_id": null,
+          "is_constexpr_routine": 0,
+          "is_stmt_expr_block": 0,
+          "is_placeholder_scope": 0,
+          "this_parameter_id": null,
+          "nrvo_variable_id": null
+        },
+        "field": [
+          {
+            "id": 382,
+            "record_type_id": 368,
+            "type_id": 384
+          }
+        ],
+        "bound_metadata_nodes": [
+          {
+            "id": 426,
+            "kind_id": 101005,
+            "source_origin_id": null,
+            "compiler_generated": 1,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 427,
+            "kind_id": 101005,
+            "source_origin_id": 402,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 428,
+            "kind_id": 101006,
+            "source_origin_id": 405,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 429,
+            "kind_id": 101006,
+            "source_origin_id": 415,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 432,
+            "kind_id": 101007,
+            "source_origin_id": 415,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          }
+        ],
+        "static_reference": [
+          {
+            "id": 432,
+            "target_id": 360,
+            "storage_duration_id": 31002,
+            "enclosing_routine_id": 333,
+            "parent_scope_id": 367
+          }
+        ],
+        "constant_only_ref_for_bound_count": 0,
+        "concrete_arrays": [
+          {
+            "id": 608,
+            "bound": "5",
+            "dependent_bound_expression_id": null
+          }
+        ]
+      }
+    },
+    "native": {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/native/dynamic_empty_bound.roslynobj",
+      "sha256": "a5730377f8ca784ece4596ff3d20a3c921c72fa5999fb67f72be24cc6d57cd57",
+      "default_parameters": [
+        {
+          "id": 424,
+          "type_id": 257,
+          "default_expression_id": 425,
+          "has_unevaluated_template_default": 1
+        }
+      ],
+      "default_nodes": [
+        {
+          "id": 425,
+          "kind_id": 101009,
+          "source_origin_id": null,
+          "compiler_generated": 0,
+          "representation_role_id": 7002,
+          "kind_name": "enk_temp_init"
+        }
+      ],
+      "dynamic_occurrences": [
+        {
+          "id": 431,
+          "type_id": 231,
+          "is_generic_initializer": 0,
+          "constant_for_base_class": 1,
+          "initializes_empty_object": 1,
+          "initialized_field_id": null,
+          "initialized_base_subobject_id": 299,
+          "initialization_id": 435,
+          "constructor_id": 436,
+          "representation_role_id": 7002
+        },
+        {
+          "id": 463,
+          "type_id": 244,
+          "is_generic_initializer": 0,
+          "constant_for_base_class": 0,
+          "initializes_empty_object": 1,
+          "initialized_field_id": 270,
+          "initialized_base_subobject_id": null,
+          "initialization_id": 467,
+          "constructor_id": 468,
+          "representation_role_id": 7002
+        }
+      ],
+      "aggregate_components": [
+        {
+          "owner_id": 427,
+          "role_id": 50001,
+          "ordinal": 0,
+          "constant_id": 431
+        },
+        {
+          "owner_id": 427,
+          "role_id": 50001,
+          "ordinal": 1,
+          "constant_id": 463
+        },
+        {
+          "owner_id": 427,
+          "role_id": 50001,
+          "ordinal": 2,
+          "constant_id": 494
+        }
+      ],
+      "base_target": {
+        "id": 299,
+        "most_derived_type_id": 257,
+        "base_type_id": 231,
+        "offset": "0",
+        "is_virtual": 0,
+        "is_direct": 1,
+        "ambiguous": 0,
+        "shares_virtual_function_info": 0,
+        "ignore_during_dependent_lookup": 0,
+        "is_optimized_empty_base": 1,
+        "is_pack_expansion": 0,
+        "has_public_derivation": 1,
+        "complete_subobject": null,
+        "original_type_id": 231,
+        "direct_base_number": 1,
+        "primary_base_subobject_id": null,
+        "data_section_base_subobject_id": null,
+        "virtual_base_pointer_offset": null,
+        "virtual_base_pointer_base_subobject_id": null,
+        "virtual_function_table_variable_id": null,
+        "virtual_function_table_index": "-1",
+        "construction_table_index": "0",
+        "construction_subarray_index": "0",
+        "virtual_base_offset_index": null
+      },
+      "field_target": {
+        "id": 270,
+        "record_type_id": 257,
+        "type_id": 244,
+        "is_optimized_empty_class": 1
+      },
+      "dialect_caps": {
+        "gnu_version": "80100",
+        "gpp_mode": "0",
+        "normalized_semantic_schema_v1": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+      },
+      "plain_function_array_alternative": [
+        {
+          "id": 565,
+          "element_type_id": 289,
+          "bound_kind_id": 15005,
+          "bound": null,
+          "bound_expression_id": null,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 1,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": null,
+          "dependent_bound_constant_id": 569,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": null,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        }
+      ],
+      "plain_constant_owned_reference": [
+        {
+          "owner_id": 562,
+          "ordinal": 0,
+          "kind_id": 345003,
+          "referrer_id": 569,
+          "expression_id": 571,
+          "reference_kind": "lerk_tpl_param_expr"
+        },
+        {
+          "owner_id": 562,
+          "ordinal": 1,
+          "kind_id": 345008,
+          "referrer_id": 569,
+          "expression_id": 599,
+          "reference_kind": "lerk_constant_expr"
+        }
+      ],
+      "class_variant": {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/dynamic-array/native-class-variant/dependent_array_class_bound.roslynobj",
+        "sha256": "c4bcc3a00d3d0f66854bc0b9674aba1038483297b97c570300683c92ae9e7855",
+        "array": {
+          "id": 395,
+          "element_type_id": 241,
+          "bound_kind_id": 15005,
+          "bound": null,
+          "bound_expression_id": null,
+          "vla_dimension_id": null,
+          "bound_is_zero": 0,
+          "is_template_dependent": 1,
+          "is_variable": 0,
+          "is_vla": 0,
+          "has_vla_dimension": 0,
+          "is_static": 0,
+          "is_threads_dimension": 0,
+          "bound_constant_id": null,
+          "dependent_bound_constant_id": 399,
+          "is_const": 0,
+          "is_volatile": 0,
+          "is_restrict": 0,
+          "is_atomic": 0,
+          "is_nullable": 0,
+          "is_nonnull": 0,
+          "is_unaligned": 0,
+          "is_near": 0,
+          "is_far": 0,
+          "is_shared": 0,
+          "is_upc_strict": 0,
+          "is_upc_relaxed": 0,
+          "dependent_bound_expression_id": 431,
+          "address_space": 0,
+          "is_null_unspecified": 0
+        },
+        "actual_array_reference": [
+          {
+            "owner_id": 379,
+            "ordinal": 0,
+            "kind_id": 345005,
+            "referrer_id": 395,
+            "expression_id": 431,
+            "reference_kind": "lerk_dep_array_bound"
+          }
+        ],
+        "scope": {
+          "id": 379,
+          "kind_id": 315018,
+          "parent_id": 217,
+          "associated_entity_id": 352,
+          "lifetime_id": null,
+          "function_static_lifetime_id": null,
+          "is_constexpr_routine": 0,
+          "is_stmt_expr_block": 0,
+          "is_placeholder_scope": 0,
+          "this_parameter_id": null,
+          "nrvo_variable_id": null
+        },
+        "field": [
+          {
+            "id": 393,
+            "record_type_id": 380,
+            "type_id": 395
+          }
+        ],
+        "bound_metadata_nodes": [
+          {
+            "id": 431,
+            "kind_id": 101005,
+            "source_origin_id": null,
+            "compiler_generated": 1,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 432,
+            "kind_id": 101005,
+            "source_origin_id": 413,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 433,
+            "kind_id": 101006,
+            "source_origin_id": 416,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 434,
+            "kind_id": 101006,
+            "source_origin_id": 426,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          },
+          {
+            "id": 437,
+            "kind_id": 101007,
+            "source_origin_id": 426,
+            "compiler_generated": 0,
+            "representation_role_id": 7002
+          }
+        ],
+        "static_reference": [
+          {
+            "id": 437,
+            "target_id": 376,
+            "storage_duration_id": 31002,
+            "enclosing_routine_id": 352,
+            "parent_scope_id": 379
+          }
+        ],
+        "constant_only_ref_for_bound_count": 0,
+        "concrete_arrays": [
+          {
+            "id": 569,
+            "bound": "5",
+            "dependent_bound_expression_id": null
+          }
+        ]
+      }
+    }
+  },
+  "public_gate": "Managed final fixed4 PASS112/self73/build0/generator/literal/whitespace",
+  "producer_notes": {
+    "dynamic": "Ordinary EDG20 gpp_mode0 follows typed aggregate path; native actual initializes_empty_object bits select exact base/field union, both dynamic constructors remain prototype default metadata. GNU generic path negative is not blanket loss.",
+    "array": "First plain function creates function-region dependent expression consumed into constant-owned tpl-param reference. One variant moves bound into local class field; stock push_scope_full class branch selects file IL region before constant fixup, then array-bound helper records actual array-owned local-expression relation. Static duration and enclosing routine are retained; no backend frontend helper or reference reconstruction.",
+    "copy": "il.c6926-6953 tpck expression copy is conditional; declarator4999-5010 suppress-copy and fs-fixup ordering matter. No assertion that copying is unconditional."
+  }
+}

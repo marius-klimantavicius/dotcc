@@ -1,0 +1,32 @@
+{
+  "scope": "a_constant.variant.dynamic_init.field_or_base retention after general lowering",
+  "status": "Bounded non-GNU positive recipe justified; not executed by root; no inactive/global-consumption conclusion.",
+  "prior_observation": {
+    "artifact": "edgcpp/artifacts/roslynobj/root251/dependent-constant-empty/native/dependent_constant_payloads.roslynobj",
+    "argv": "--c++20 --g++ --gnu_version 130000",
+    "retained_root": "parameter2024.DefaultExpression2025 -> dynamic_init2026 -> aggregate2027; dynamic children2031/2049",
+    "flags": "Prior accepted activation-proof.json records is_generic_initializer=1, initializes_empty_object=0, targetNULL."
+  },
+  "exact_explanation": [
+    "decl_inits.c:4790-4800 process_aggregate_initializer: real class still takes aggr_init_generic_element in prototype context when gpp_mode is true, independently of arg_list_is_dependent.",
+    "decl_inits.c:1082-1166 aggr_init_generic_element: recursively appended list components pass NULL bcp and fp at1153-1154, and mark is_generic_initializer at1164. Thus known component class types and optimized layout flags cannot create empty targets in this path.",
+    "il.c:6341-6377 add_constant_to_aggregate requires class-typed constant plus nonNULL optimized bcp/fp to set initializes_empty_object and active field_or_base.",
+    "decl_inits.c:3237 aggr_init_field passes actual fp;3697-3698 aggr_init_base marks constant_for_base_class and passes actual bcp; remaining default initialization2888-2889/3020 also passes actual owners.",
+    "il.c:6269-6295 copy_constant copies entire constant before clearing only next/source/local_expr_ref; generic negative is not evidence of blanket target erasure by this copy."
+  ],
+  "candidate_cpp": "struct DynamicEmptyBase { DynamicEmptyBase(int); };\nstruct DynamicEmptyField { DynamicEmptyField(int); };\nstruct DynamicAggregate : DynamicEmptyBase { [[no_unique_address]] DynamicEmptyField field; int value; };\ntemplate<class T> void retained_dynamic_default(DynamicAggregate value = {DynamicEmptyBase(5), DynamicEmptyField(5), 5});\n",
+  "candidate_invocation": "Existing native profile/compiler --c++20 without --g++ or --gnu_version. Existing source profile counterpart supplies DO_IL_LOWERING0 boundary. Wrapper adds only clear_flag use_predefined_macro_file. Confirm final actual dialect/provenance; do not change core, build configuration, parser helpers or lowering.",
+  "retention_argument": [
+    "Fixed literal arguments are nondependent. With gpp_mode false, real class process_aggregate_initializer should use typed aggregate path instead of forced generic path. This is a hypothesis to test, not asserted fixture outcome.",
+    "lower_il.c:10047 lower_routine_list skips ignored routines;9353-9365 lower_type skips ignored types. Template-prototype parameter default was already retained in GNU observation, so same root is justified.",
+    "Ordinary lowered parameter defaults are explicitly cleared lower_il.c9540-9551 and10328-10334; do not infer recovery.",
+    "lower_init.c6701-6727/7018-7047 consumes marked empty initializer components in execution. This does not establish that all retained metadata roots are consumed."
+  ],
+  "verification_if_positive": [
+    "Actual dynamic active kind and InitializesEmptyObject true",
+    "Exact base vs field target canonical identity, base flag, containing aggregate occurrence order",
+    "Prototype default expression metadata and selected constructor links, no inferred runtime execution",
+    "Source mode nullable flags/absent lowered association accepted"
+  ],
+  "limits": "No new build, export, fixture edit, or test run by root. Preserve direct mapping even if recipe negative; zero rows alone are not producer-absence proof."
+}
