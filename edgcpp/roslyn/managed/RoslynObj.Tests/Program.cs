@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Reflection;
 
 if(args.FirstOrDefault()=="--benchmark") { Benchmark.Run(args.Skip(1));return; }
+if(args.FirstOrDefault()=="--real-input") { RealInputAcceptance.Run(args[1],args[2]);return; }
 if(args.FirstOrDefault()=="--reject-incompatible")
 {
     try { using var incompatible=RoslynObject.Open(args[1]);throw new Exception("An archived incompatible development contract was admitted."); }

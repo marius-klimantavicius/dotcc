@@ -1,0 +1,467 @@
+{
+  "scope": "Bounded ordinary reader acceptance of three pristine upstream positive tests and the pristine real compiler translation unit src/types.c. No field-coverage expansion or full-translation-unit traversal claim.",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "consumer": {
+    "source": "RoslynObj.Tests/RealInputAcceptance.cs",
+    "entry_point": "--real-input <object> <templates|lifetimes|inheritance|types-tu>",
+    "name_query": "SemanticModel.FindSymbols uses recorded source names, without language lookup or demangling. Distinct class/typedef declarations remain distinct.",
+    "read_options": {
+      "PageSize": 128,
+      "CachedRowCount": 4096,
+      "CachedPageCount": 128
+    },
+    "limits": {
+      "name_results": 64,
+      "routine_roots": 4,
+      "operations_per_root": 256,
+      "shallow_root_children": 8,
+      "call_arguments_or_parameters": 8,
+      "callee_references": 8,
+      "maximum_prefetch_keys": 900
+    },
+    "query_budget_per_pass": "512 + 12 * (operations + shallow_nodes + selected_entities)",
+    "common_checks": [
+      "bounded executable prefix preserves distinct canonical operations and actual executable roles",
+      "shallow named visitor common/call hooks dispatch each sampled node exactly once",
+      "SemanticModel GetOperation/GetType/GetSymbol match actual retained facades and canonical links",
+      "typed call arguments, callable signature and parameter types agree with retained descriptors",
+      "when a selected call has a recorded routine target, its sampled captured references are nonempty and preserve that target",
+      "warm selected entity sequence preserves artifact-scoped semantic identity; no reference-identity assertion"
+    ],
+    "measurement_definitions": {
+      "open": "RoslynObject.Open including admission/catalog reads, measured separately from selection/traversal",
+      "cold": "first selective pass in a fresh reader and separate process per artifact; operating-system caches are not flushed",
+      "warm": "same selection and bounded traversal on the same open object",
+      "rss": "process working-set and peak-working-set bytes from System.Diagnostics.Process; includes runtime and reader",
+      "queries": "actual reader Statistics.Commands deltas; rows are Statistics.RowsRead deltas"
+    },
+    "limits_of_evidence": [
+      "One measured cold/warm pair per artifact; timings are observations, not a statistical throughput benchmark.",
+      "At most four routine roots and 256 operations per root plus shallow visitor nodes; this does not establish whole-TU traversal or execution.",
+      "No synthetic fixture/scalar sweep, full211 cohort, scale, packing, workspace, package, concurrency, or eviction repeat.",
+      "Previously accepted self73, eviction/concurrency/max900/workspace/package proofs remain separate accepted evidence.",
+      "Producer frontend/backend timings, table/index bytes and sharing are native-owned observations in the producer manifest/report."
+    ]
+  },
+  "producer_manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/all-profile-results-final.json",
+    "sha256": "c0ccde9ff1c532f64f920dc0f6a25a009bfc88481051f745996fac99b437693f",
+    "bytes": 13155
+  },
+  "consumer_results": {
+    "path": "/tmp/roslynobj-managed-real251-results-final.json",
+    "sha256": "6a409ddc7998bb4056e5c3e01a7e0ee7eafe1e02c678fb301c26a501280ca373",
+    "bytes": 987
+  },
+  "artifacts": [
+    {
+      "input_case": "templates",
+      "object": {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+        "sha256": "b8c06962c4c728468e583c508d4e14b7936c2941d7715434991ae0ede03a4c16",
+        "bytes": 985088
+      },
+      "source": {
+        "path": "/tmp/roslynobj-edg-upstream-20261012/tests/tests/edg/cmeerw/gnats-23971.sft.cpp",
+        "sha256": "0853d787555853bec852a679832d157d40a72f08b2bda182a3c4210c20db62bb",
+        "bytes": 5488
+      },
+      "source_relative_path": "tests/tests/edg/cmeerw/gnats-23971.sft.cpp",
+      "producer_manifest_observations": {
+        "profile": "native",
+        "entities": 4252,
+        "fk_errors": 0,
+        "page_size": 1024,
+        "tables": 251,
+        "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+      },
+      "consumer_log": {
+        "path": "/tmp/roslynobj-managed-real251-templates-final-v2.log",
+        "sha256": "8955021587a16bb64901ca90a998c4b2aa7a677f01d3a7a5c4b7582ad2f2b4ef",
+        "bytes": 1199
+      },
+      "assertions": 105,
+      "expected_public_relations": {
+        "source_names": [
+          "CLS",
+          "class_tmpl",
+          "Outer",
+          "Inner",
+          "inner_dpdt_fn"
+        ],
+        "relations": [
+          "CLS enumerator order and canonical owner",
+          "actual Outer symbol/pattern/concrete instance and Inner specialization relations",
+          "up to four actual implemented inner_dpdt_fn bodies"
+        ]
+      },
+      "measurements": [
+        {
+          "phase": "open",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+          "input_case": "templates",
+          "wall_ms": 61.2844,
+          "rss_before": 46702592,
+          "rss_bytes": 88076288,
+          "peak_rss_bytes": 88076288,
+          "commands": 10,
+          "rows": 934
+        },
+        {
+          "phase": "cold",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+          "input_case": "templates",
+          "selected_entities": 11,
+          "routine_roots": 4,
+          "operations": 6,
+          "shallow_nodes": 4,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 285,
+          "rows": 455,
+          "wall_ms": 52.6868,
+          "rss_bytes": 93552640,
+          "peak_rss_bytes": 93552640,
+          "cached_rows": 538,
+          "cached_pages": 25,
+          "max_batch": 29,
+          "assertions": 52
+        },
+        {
+          "phase": "warm",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+          "input_case": "templates",
+          "selected_entities": 11,
+          "routine_roots": 4,
+          "operations": 6,
+          "shallow_nodes": 4,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 5,
+          "rows": 0,
+          "wall_ms": 0.465,
+          "rss_bytes": 93605888,
+          "peak_rss_bytes": 93605888,
+          "cached_rows": 538,
+          "cached_pages": 25,
+          "max_batch": 29,
+          "assertions": 53
+        }
+      ]
+    },
+    {
+      "input_case": "lifetimes",
+      "object": {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+        "sha256": "4dd562afb4e77e98a970d44da50da00240c5ea56bfa6f5b2b6c0b06462cccb0e",
+        "bytes": 646144
+      },
+      "source": {
+        "path": "/tmp/roslynobj-edg-upstream-20261012/tests/tests/edg/wcc/gnats27497-missing-dtor-instantiation.sft.cpp",
+        "sha256": "5f0ddaf8a51efe21266a81db131b869e02b098435327c4da0eebb6dc2742aa9f",
+        "bytes": 468
+      },
+      "source_relative_path": "tests/tests/edg/wcc/gnats27497-missing-dtor-instantiation.sft.cpp",
+      "producer_manifest_observations": {
+        "profile": "native",
+        "entities": 552,
+        "fk_errors": 0,
+        "page_size": 1024,
+        "tables": 251,
+        "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+      },
+      "consumer_log": {
+        "path": "/tmp/roslynobj-managed-real251-lifetimes-final-v2.log",
+        "sha256": "5f42f47c95e3402e220e78fd5adbc29178d939894e274a6fe9314143fba614d8",
+        "bytes": 1191
+      },
+      "assertions": 41,
+      "expected_public_relations": {
+        "source_names": [
+          "Y",
+          "y",
+          "main"
+        ],
+        "relations": [
+          "Y.z actual X<int> type argument and instantiated defined destructor",
+          "global y actual pointer to Y",
+          "implemented main body"
+        ]
+      },
+      "measurements": [
+        {
+          "phase": "open",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+          "input_case": "lifetimes",
+          "wall_ms": 60.0181,
+          "rss_before": 46690304,
+          "rss_bytes": 87834624,
+          "peak_rss_bytes": 87834624,
+          "commands": 10,
+          "rows": 932
+        },
+        {
+          "phase": "cold",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+          "input_case": "lifetimes",
+          "selected_entities": 6,
+          "routine_roots": 1,
+          "operations": 3,
+          "shallow_nodes": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 69,
+          "rows": 80,
+          "wall_ms": 43.8973,
+          "rss_bytes": 92995584,
+          "peak_rss_bytes": 92995584,
+          "cached_rows": 91,
+          "cached_pages": 11,
+          "max_batch": 4,
+          "assertions": 20
+        },
+        {
+          "phase": "warm",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+          "input_case": "lifetimes",
+          "selected_entities": 6,
+          "routine_roots": 1,
+          "operations": 3,
+          "shallow_nodes": 0,
+          "calls": 0,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 3,
+          "rows": 0,
+          "wall_ms": 0.3152,
+          "rss_bytes": 93069312,
+          "peak_rss_bytes": 93069312,
+          "cached_rows": 91,
+          "cached_pages": 11,
+          "max_batch": 4,
+          "assertions": 21
+        }
+      ]
+    },
+    {
+      "input_case": "inheritance",
+      "object": {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+        "sha256": "25b826c09a641bac9a6bb0eb2839a1eb69477c8b0a1f10820ba27e8f39af5f4b",
+        "bytes": 1120256
+      },
+      "source": {
+        "path": "/tmp/roslynobj-edg-upstream-20261012/tests/tests/edg/ccs/inhctor/gnats17687c.sft.cpp",
+        "sha256": "63a8fa0cd279a26d4e1d0cdbe8b329ff95c960a582b88d00814962139e181536",
+        "bytes": 1804
+      },
+      "source_relative_path": "tests/tests/edg/ccs/inhctor/gnats17687c.sft.cpp",
+      "producer_manifest_observations": {
+        "profile": "native",
+        "entities": 4945,
+        "fk_errors": 0,
+        "page_size": 1024,
+        "tables": 251,
+        "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+      },
+      "consumer_log": {
+        "path": "/tmp/roslynobj-managed-real251-inheritance-final-v2.log",
+        "sha256": "6d8dd464b83c8d003f0b683d8f38c9a7c0e8af0f457e00c7892b4f333b7cffc7",
+        "bytes": 1225
+      },
+      "assertions": 911,
+      "expected_public_relations": {
+        "source_names": [
+          "D2",
+          "P",
+          "d2",
+          "p",
+          "main"
+        ],
+        "relations": [
+          "globals actual D2/P type descriptors",
+          "declared D2 direct bases V1,V2 and P direct bases N,O in stored order",
+          "D2 shared virtual B actual most-derived type and two contextual derivations",
+          "implemented main body"
+        ]
+      },
+      "measurements": [
+        {
+          "phase": "open",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+          "input_case": "inheritance",
+          "wall_ms": 60.1563,
+          "rss_before": 46784512,
+          "rss_bytes": 87986176,
+          "peak_rss_bytes": 87986176,
+          "commands": 10,
+          "rows": 930
+        },
+        {
+          "phase": "cold",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+          "input_case": "inheritance",
+          "selected_entities": 7,
+          "routine_roots": 1,
+          "operations": 176,
+          "shallow_nodes": 0,
+          "calls": 2,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 529,
+          "rows": 879,
+          "wall_ms": 64.7981,
+          "rss_bytes": 93831168,
+          "peak_rss_bytes": 93831168,
+          "cached_rows": 1099,
+          "cached_pages": 128,
+          "max_batch": 10,
+          "assertions": 455
+        },
+        {
+          "phase": "warm",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+          "input_case": "inheritance",
+          "selected_entities": 7,
+          "routine_roots": 1,
+          "operations": 176,
+          "shallow_nodes": 0,
+          "calls": 2,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 97,
+          "rows": 209,
+          "wall_ms": 8.1554,
+          "rss_bytes": 93970432,
+          "peak_rss_bytes": 93970432,
+          "cached_rows": 1099,
+          "cached_pages": 128,
+          "max_batch": 10,
+          "assertions": 456
+        }
+      ]
+    },
+    {
+      "input_case": "types-tu",
+      "object": {
+        "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+        "sha256": "9bcabc853553ebfbc5933e92b1fab3274ff0930f1566431590ed0ea875d02781",
+        "bytes": 106483712
+      },
+      "source": {
+        "path": "/tmp/roslynobj-edg-upstream-20261012/src/types.c",
+        "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc",
+        "bytes": 799640
+      },
+      "source_relative_path": "src/types.c",
+      "producer_manifest_observations": {
+        "profile": "native",
+        "entities": 1235097,
+        "fk_errors": 0,
+        "page_size": 1024,
+        "tables": 251,
+        "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559"
+      },
+      "consumer_log": {
+        "path": "/tmp/roslynobj-managed-real251-types-tu-final-v2.log",
+        "sha256": "d2be6c681abb3d6550479f05b3af83d2b7f962d7c1aa6e60f2be1a64fb592f61",
+        "bytes": 1188
+      },
+      "assertions": 389,
+      "expected_public_relations": {
+        "source_names": [
+          "a_type",
+          "skip_typerefs",
+          "is_incomplete_type",
+          "is_function_type",
+          "is_integral_or_enum_type"
+        ],
+        "relations": [
+          "actual a_type RecordType declaration selected separately from same-name typedef AliasSymbol",
+          "kind and next field containing-record identity",
+          "four implemented recorded routine bodies and callable types"
+        ]
+      },
+      "measurements": [
+        {
+          "phase": "open",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+          "input_case": "types-tu",
+          "wall_ms": 56.3652,
+          "rss_before": 46546944,
+          "rss_bytes": 87875584,
+          "peak_rss_bytes": 87875584,
+          "commands": 10,
+          "rows": 1009
+        },
+        {
+          "phase": "cold",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+          "input_case": "types-tu",
+          "selected_entities": 8,
+          "routine_roots": 4,
+          "operations": 66,
+          "shallow_nodes": 0,
+          "calls": 3,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 339,
+          "rows": 630,
+          "wall_ms": 194.1324,
+          "rss_bytes": 95588352,
+          "peak_rss_bytes": 95588352,
+          "cached_rows": 595,
+          "cached_pages": 81,
+          "max_batch": 27,
+          "assertions": 194
+        },
+        {
+          "phase": "warm",
+          "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+          "input_case": "types-tu",
+          "selected_entities": 8,
+          "routine_roots": 4,
+          "operations": 66,
+          "shallow_nodes": 0,
+          "calls": 3,
+          "truncated_roots": 0,
+          "operation_limit_per_root": 256,
+          "commands": 5,
+          "rows": 0,
+          "wall_ms": 0.8507,
+          "rss_bytes": 95653888,
+          "peak_rss_bytes": 95653888,
+          "cached_rows": 595,
+          "cached_pages": 81,
+          "max_batch": 27,
+          "assertions": 195
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "unique_artifacts": 4,
+    "cold_warm_passes": 8,
+    "assertions": 1446,
+    "all_exit_codes": 0,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "native_literal_bindings": "PASS"
+  },
+  "reused_self_log": {
+    "path": "/tmp/roslynobj-managed-dynamic-array251-self.log",
+    "sha256": "49be4229005d180eef8091da9af9f69e981c4ac98a7dfe0c19d8253740496fcb",
+    "bytes": 129
+  },
+  "excluded": [
+    "types-tu final-v1 test-selection failure from treating same-name class and typedef AliasSymbol as a single TypeSymbol; corrected consumer selection only, no backend/API semantic change",
+    "intermediate successful logs before the final coherent build; final-v2 logs alone are authoritative here"
+  ]
+}

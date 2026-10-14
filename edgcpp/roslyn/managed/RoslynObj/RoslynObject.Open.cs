@@ -27,7 +27,7 @@ public sealed partial class RoslynObject
             if (!header.Bool("complete")) throw new IncompatibleObjectException("The object has no complete semantic snapshot.");
             var contract=store.Query("SELECT c.required,c.enabled,v.value AS fingerprint FROM build_capability c JOIN text_atom n ON n.id=c.name_id LEFT JOIN text_atom v ON v.id=c.value_id WHERE n.value='normalized_semantic_schema_v1'").SingleOrDefault();
             if(contract is null||!contract.Bool("required")||contract.OptionalBool("enabled")!=true||contract.OptionalText("fingerprint")!=SchemaContractFingerprint)
-                throw new IncompatibleObjectException("The object's normalized semantic schema contract does not match this reader's development contract.");
+                throw new IncompatibleObjectException("The object's normalized semantic schema contract does not match this reader's supported contract.");
             foreach (var kind in store.Query("SELECT * FROM kind ORDER BY id"))
                 if (catalog.TryGetValue(kind.Long("id"), out var expected)
                     && (expected.Family != kind.Text("family") || expected.Name != kind.Text("name")))

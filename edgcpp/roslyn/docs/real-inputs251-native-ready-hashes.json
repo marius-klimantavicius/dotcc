@@ -1,0 +1,134 @@
+{
+  "all_match": true,
+  "checked": 32,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/upstream_acceptance.py",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/all-profile-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/attempt-results.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/input-pin-proof.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/types-host-edg-recipe.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/driver-recipe-verification.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/types-recorded-source-provenance.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/storage-timing-metrics.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/measurement-summary.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/metrics-final.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/build-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/backend-hashes-start.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/backend-hashes-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/stage-verification-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/validation-summary-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/gate-final.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates-time.txt",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes-time.txt",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance-time.txt",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/types-first-headers/upstream_types.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/types-first-headers/upstream_types-time.txt",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types-time.txt",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/types-first-headers/types-host-edg-recipe.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+      "matches": true
+    }
+  ]
+}

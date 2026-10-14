@@ -1,0 +1,175 @@
+{
+  "checkpoint_base": "25b549c643fe756bebd5608b46a3ad0d1dbe42d5",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/upstream_acceptance.py",
+      "sha256": "48602efaa0fa29384026f41a9ec7b4b5c9f200e939c7a07ca485da74226ea369"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "353f8eb63d7b607ef39ce19521d403dbf90aa89e491558f74e2ff459eb7b1df9"
+    }
+  ],
+  "candidate_owned_paths": 1,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 4,
+  "unique_objects": 4,
+  "pristine_positive_tests": 3,
+  "practical_real_tus": 1,
+  "fallback_tests": 0,
+  "real_tu_attempts": 2,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/all-profile-results-final.json",
+      "sha256": "c0ccde9ff1c532f64f920dc0f6a25a009bfc88481051f745996fac99b437693f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/attempt-results.json",
+      "sha256": "2354be82b1bdeae5dd0e25c439417aa74b55c7bf3562932bd5144267bde60a21"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/input-pin-proof.json",
+      "sha256": "4af88d0ea5e6cc60a64de0637bb6efaf0b12fcbebb24d39d06a24fe67228370d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/types-host-edg-recipe.json",
+      "sha256": "87a0ffc827130832bd05db3276d4c119076dd8fd8c33b064ea12cbdb32f1e182"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/driver-recipe-verification.json",
+      "sha256": "2f2896934bd9600488439a31c460a6c94640b8913cba749f56aa04d38a64cb98"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/types-recorded-source-provenance.json",
+      "sha256": "02d24fb9b0dd26236f8d95c3e3eb6678469ef4b485667187e19f7e2c0e89181d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/storage-timing-metrics.json",
+      "sha256": "ff80e1dd1fb5982b46b7dfd58655bcca0309cf9eec4b59fc534894795791fb8f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/measurement-summary.json",
+      "sha256": "3cf336e1e31b8525069bf340f0abfc10e2ec78379c0a3293dee08ccf75acbac9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/metrics-final.log",
+      "sha256": "c7212c395067a711c9b143a6e00db57f09e1f45b9c15aafb1ac54eb1aa2301e7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/build-results-final.json",
+      "sha256": "c0e4c5349570f16fae39c4a6fb00324e5802b9957ec6165d4b42fee20a498f1e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/backend-hashes-start.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/backend-hashes-final.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/validation-summary-final.json",
+      "sha256": "81c6406201c2216e5d264ccfc9a134a05ed9c51ddaa10654e9851d620d1ed65b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/gate-final.log",
+      "sha256": "ecf0cc181aec9caa5f389b8baeffbc84124599fe3d52320288d93c7a747c9306"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.log",
+      "sha256": "29b9bbfe84fa97e2d6d9bade1fda0dd0eb7a9c9949fbfff09877a1c05d7b8ae0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates-time.txt",
+      "sha256": "a96b7a11cca287bd4a654e3217aeb9a770122b5b03e23f544443f80150ee8f37"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.log",
+      "sha256": "05f225c013673a4ef26029167249f57caba0e2a6516282e603efccca06edd2fd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes-time.txt",
+      "sha256": "8272624743bb787a2556994a495c3f17501e1767e9a538439e91f0b6d8260bf9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.log",
+      "sha256": "fa61f747c0bb92e176ea093c0af59a88438fecbcdcc60254baaa59b22b8d0bae"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance-time.txt",
+      "sha256": "7f15bd8a115a035a56c72070deef6a95771732b9278b968e1142f911c31dd63e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/types-first-headers/upstream_types.log",
+      "sha256": "354993302cc414b0b8a6154d40c15a30a10a659efb8271a63f08e344d5ac464b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/types-first-headers/upstream_types-time.txt",
+      "sha256": "eeeb5fcaabaa1351287a0b06d809b08075925d38490c742700d3eb9af5c6d0de"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.log",
+      "sha256": "8cea9b16200443056f0999d156d932f5f62f4457834d5004e2c8d7a36282b9ee"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types-time.txt",
+      "sha256": "58487015fa1a674360d4699bf35467f9e743716e8007690efbfcecb18828e791"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/types-first-headers/types-host-edg-recipe.json",
+      "sha256": "c1412da2d7b19c962e9452bda4fdec961a6b9549bd2ebf573334bd631c4075bf"
+    }
+  ],
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+      "sha256": "b8c06962c4c728468e583c508d4e14b7936c2941d7715434991ae0ede03a4c16",
+      "entities": 4252,
+      "bytes": 985088
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+      "sha256": "4dd562afb4e77e98a970d44da50da00240c5ea56bfa6f5b2b6c0b06462cccb0e",
+      "entities": 552,
+      "bytes": 646144
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+      "sha256": "25b826c09a641bac9a6bb0eb2839a1eb69477c8b0a1f10820ba27e8f39af5f4b",
+      "entities": 4945,
+      "bytes": 1120256
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+      "sha256": "9bcabc853553ebfbc5933e92b1fab3274ff0930f1566431590ed0ea875d02781",
+      "entities": 1235097,
+      "bytes": 106483712
+    }
+  ],
+  "public_gate": "Coordinator reports coherent final4 PASS1446, no blockers; managed final inventory handled separately.",
+  "real_tu": {
+    "source_relative_path": "src/types.c",
+    "source_bytes": 799640,
+    "entities": 1235097,
+    "bytes": 106483712,
+    "frontend_cpu_seconds": 0.28,
+    "backend_cpu_seconds": 7.12,
+    "stock_total_cpu_seconds": 7.48,
+    "combined_wrapper_wall_seconds": 7.67,
+    "max_producer_rss_kib": 254620
+  },
+  "measurement_scope": "No producer repetitions. Stock --timing separates rounded frontend/backend CPU; wrapper/time wall and RSS combine wrapper/frontend/exporter. Readonly SQL metrics separately count actual table/index pages and atom/value reference sharing.",
+  "host_adjustment": "Only actual GCC __CHAR_BIT__=8 and __SCHAR_MAX__=0x7f, discovered by -dM. First failure preserved separately. No input/core/header/profile rewrite.",
+  "hold": true
+}

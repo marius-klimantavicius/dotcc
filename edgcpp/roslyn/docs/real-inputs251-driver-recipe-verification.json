@@ -1,0 +1,9 @@
+{
+  "driver": "/home/marius/p/dotcc/edgcpp/roslyn/build/upstream_acceptance.py",
+  "types_options_equal_successful_pilot": true,
+  "host_predefined_delta": {
+    "__CHAR_BIT__": "8",
+    "__SCHAR_MAX__": "0x7f"
+  },
+  "no_producer_rerun": true
+}

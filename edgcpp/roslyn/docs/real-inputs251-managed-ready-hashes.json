@@ -1,0 +1,90 @@
+{
+  "all_match": true,
+  "checked": 21,
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/README.md",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObject.Open.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/RealInputAcceptance.cs",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/real-inputs251-evidence.json",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-build.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-generator.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-literal.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-whitespace.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-templates-final-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-lifetimes-final-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-inheritance-final-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-types-tu-final-v2.log",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/all-profile-results-final.json",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+      "matches": true
+    },
+    {
+      "path": "/tmp/roslynobj-managed-dynamic-array251-self.log",
+      "matches": true
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/real-inputs251-evidence.json",
+      "matches": true
+    }
+  ]
+}

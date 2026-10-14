@@ -1,0 +1,136 @@
+{
+  "ready": "HOLD",
+  "created_utc": "2026-10-14T13:50:34.211688+00:00",
+  "checkpoint_base": "25b549c643fe756bebd5608b46a3ad0d1dbe42d5",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "scope": "Genuine upstream/real-TU bounded ordinary consumer acceptance and narrow managed usage/admission wording; no schema/backend/profile/config change.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/README.md",
+      "sha256": "a1b1d0a3611df9b25638b786e31494ce9f9d5577a3a526489ea789747bfd92b8",
+      "bytes": 18862
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "437311625c3e2b102af5750bc03cbf3869959809828bcbc5bb2a130e8f46cb07",
+      "bytes": 79203
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObject.Open.cs",
+      "sha256": "59c027e06551331149e0308caa634eeb569983259739d76db2f9139730adbb23",
+      "bytes": 5068
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/RealInputAcceptance.cs",
+      "sha256": "9435adea9dfa360c1679ceb85e1f1f705ed1abe7855251035b914eb131e48e03",
+      "bytes": 11903
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/real-inputs251-evidence.json",
+      "sha256": "69c76587007737ff474768eab58e78ec9abcd2c25b8098a1415adaf2ccb64bf6",
+      "bytes": 17789
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-real251-build.log",
+      "sha256": "521cacd6d64ec1baab80f9c79a6e31118ea51af18f5fa8ab7c42d037d9d441c0",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-whitespace.log",
+      "sha256": "47cdc093ba5c17916dfb92ffc666615f478f4732da694587ea671be72a1be90b",
+      "bytes": 90
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-templates-final-v2.log",
+      "sha256": "8955021587a16bb64901ca90a998c4b2aa7a677f01d3a7a5c4b7582ad2f2b4ef",
+      "bytes": 1199
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-lifetimes-final-v2.log",
+      "sha256": "5f42f47c95e3402e220e78fd5adbc29178d939894e274a6fe9314143fba614d8",
+      "bytes": 1191
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-inheritance-final-v2.log",
+      "sha256": "6d8dd464b83c8d003f0b683d8f38c9a7c0e8af0f457e00c7892b4f333b7cffc7",
+      "bytes": 1225
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-types-tu-final-v2.log",
+      "sha256": "d2be6c681abb3d6550479f05b3af83d2b7f962d7c1aa6e60f2be1a64fb592f61",
+      "bytes": 1188
+    },
+    {
+      "path": "/tmp/roslynobj-managed-real251-results-final.json",
+      "sha256": "6a409ddc7998bb4056e5c3e01a7e0ee7eafe1e02c678fb301c26a501280ca373",
+      "bytes": 987
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/all-profile-results-final.json",
+    "sha256": "c0ccde9ff1c532f64f920dc0f6a25a009bfc88481051f745996fac99b437693f",
+    "bytes": 13155
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+      "sha256": "b8c06962c4c728468e583c508d4e14b7936c2941d7715434991ae0ede03a4c16",
+      "bytes": 985088
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+      "sha256": "4dd562afb4e77e98a970d44da50da00240c5ea56bfa6f5b2b6c0b06462cccb0e",
+      "bytes": 646144
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+      "sha256": "25b826c09a641bac9a6bb0eb2839a1eb69477c8b0a1f10820ba27e8f39af5f4b",
+      "bytes": 1120256
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+      "sha256": "9bcabc853553ebfbc5933e92b1fab3274ff0930f1566431590ed0ea875d02781",
+      "bytes": 106483712
+    }
+  ],
+  "checks": {
+    "unique_artifacts": 4,
+    "cold_warm_passes": 8,
+    "assertions": 1446,
+    "all_exit_codes": 0,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "native_literal_bindings": "PASS"
+  },
+  "reused_self_log": {
+    "path": "/tmp/roslynobj-managed-dynamic-array251-self.log",
+    "sha256": "49be4229005d180eef8091da9af9f69e981c4ac98a7dfe0c19d8253740496fcb",
+    "bytes": 129
+  },
+  "evidence": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/real-inputs251-evidence.json",
+    "sha256": "69c76587007737ff474768eab58e78ec9abcd2c25b8098a1415adaf2ccb64bf6",
+    "bytes": 17789
+  },
+  "native_gate": "Native owns producer/envelope/pin/canonical/packing evidence; reader does not request new producer runs.",
+  "exclusions": [
+    "types-tu final-v1 test-selection failure from treating same-name class and typedef AliasSymbol as a single TypeSymbol; corrected consumer selection only, no backend/API semantic change",
+    "intermediate successful logs before the final coherent build; final-v2 logs alone are authoritative here"
+  ]
+}

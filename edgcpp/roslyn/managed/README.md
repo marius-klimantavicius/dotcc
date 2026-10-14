@@ -80,7 +80,7 @@ closure types defined by static-member initializers.
 `VariableSymbol.DefinitionType` is the optional retained declaration type.
 Inherited `Symbol.DeclaredType` refers to the current common-symbol type descriptor.
 `FunctionSymbol.Signature` follows the current callable routine type, including
-hidden ABI parameters. `DefinitionType` is the optional retained written type;
+hidden ABI parameters. `DefinitionType` is the optional retained defining type;
 the reader does not recover an original signature from lowered parameters.
 Member object qualifiers and `this` pointer qualifiers navigate separately.
 `ExceptionSpecification` keeps ordered throw types, explicit noexcept arguments,
@@ -128,6 +128,9 @@ quantity. `EffectiveSize` and `EffectiveAlignment` expose the raw retained stock
 helper quantities. Dynamic UPC arrays keep their THREADS coefficient in
 `ThreadsSizeMultiplier` and `ArrayType.ThreadsMultiplier`; ordinary size and
 bound are absent. An incomplete array bound remains distinct from explicit zero.
+`ArrayType.DependentBoundExpression` follows the actual array-owned local
+expression when retained. Constant-owned dependent expressions remain separate
+contexts on the recorded bound constant.
 Every retained template has a `TemplateDescriptor`. A true template declaration
 has a separate `TemplateSymbol` whose `Descriptor` preserves that relationship.
 Template-template placeholders instead point to their actual parameter symbols.
@@ -262,6 +265,28 @@ Use `--benchmark` followed by object paths to measure full public entity and bod
 navigation on each object twice. The cold pass starts with empty reader caches;
 the warm pass reuses the bounded caches. The harness reports commands, rows, wall
 time, process working set and cache counts without flushing operating-system caches.
+
+Use `--real-input` for the bounded pristine-input acceptance consumer:
+
+```sh
+dotnet run --project edgcpp/roslyn/managed/RoslynObj.Tests/RoslynObj.Tests.csproj -- \
+  --real-input edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj types-tu
+```
+
+The other accepted case keys are `templates`, `lifetimes` and `inheritance`,
+paired with their `upstream_*.roslynobj` artifacts. Run each artifact in its own
+process for opening and process-memory measurements. This mode uses
+`SemanticModel.FindSymbols` to select recorded declarations; a class and its
+same-name typedef alias remain distinct. It samples at most four routine roots
+and 256 executable operations per root, with shallow named visitor dispatch and
+typed semantic queries. It reports opening time and RSS separately from cold and
+warm traversal, including queries, rows, cache counts, largest prefetch batch and
+any truncated roots. The configured limits are 4,096 cached rows, 128 cached
+pages, a page size of 128 and at most 900 prefetch keys. Cold means a fresh reader
+in a new process; operating-system caches are not flushed. Warm repeats the same
+selection on the same object. These checks establish sampled real-input
+navigation and bounded reader costs, not complete traversal or execution of the
+translation unit. They do not rerun the synthetic fixture or full-entity benchmark.
 
 After a supervisor-owned schema change, regenerate committed bindings with
 `python3 edgcpp/roslyn/managed/tools/generate_bindings.py`. Normal library builds

@@ -1,0 +1,59 @@
+{
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "tables": 251,
+  "stable_kind_ids": 39145,
+  "field_rows": 2000,
+  "field_dispositions": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1524,
+    "inactive_stock_generator": 81,
+    "excluded_frontend_only": 59,
+    "inactive_upstream_configuration": 7,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "mapped_stock_input_unavailable": 2
+  },
+  "required_field_proofs_pending": 0,
+  "phase_status": "Phases3-4/M0-M5 accepted; no approved required work remains",
+  "remaining_gates": [],
+  "explicit_limits": [
+    {
+      "owner": "a_module",
+      "member": "variant.unit_partition.name",
+      "reason": "Adapter and public property retain actual partition name/Unit when reachable. Selected pinned stock partition producer succeeds but has no retained current-module root; downstream IFC import fails before backend because ifc_modules_write278 stores bare module_name_of and modules577-583 compares module_full_name_of. Reader returns stored name unchanged. No normal directory/map/internal-unit option changes that route. This is explicit selected-stock input/retention limitation, not missing field, universal inactivity, verified positive or externally compatible IFC impossibility. No core/cache/IFC edits or skipped import to fabricate evidence."
+    },
+    {
+      "owner": "a_module",
+      "member": "variant.unit_partition.unit",
+      "reason": "Adapter and public property retain actual partition name/Unit when reachable. Selected pinned stock partition producer succeeds but has no retained current-module root; downstream IFC import fails before backend because ifc_modules_write278 stores bare module_name_of and modules577-583 compares module_full_name_of. Reader returns stored name unchanged. No normal directory/map/internal-unit option changes that route. This is explicit selected-stock input/retention limitation, not missing field, universal inactivity, verified positive or externally compatible IFC impossibility. No core/cache/IFC edits or skipped import to fabricate evidence."
+    }
+  ],
+  "already_accepted_reused": [
+    "14 stock/tool/core/backend compiler stages",
+    "24 packaging experiments,1KiB and WITHOUT ROWID",
+    "9 workspace/artifact identity checks",
+    "11 logical duplicate-pair comparisons excluding random artifact identity and stock __TIME__ metadata",
+    "Synthetic scale only,clearly distinct from real-TU acceptance",
+    "Cache eviction,concurrent reads/disposal,maximum900 parameter batching,bounded4096 rows/128pages"
+  ],
+  "semantic_authority": "Only actual EDG retained facts; no core modifications, semantic reanalysis, guessed optional source recovery or cross-TU linking.",
+  "public_format": {
+    "major": 1,
+    "minor": 0,
+    "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+    "policy": "Exact supported framed SQL+catalog contract and enabled required capabilities; no migration/old-development/forward-compatibility promise."
+  },
+  "semantic_checkpoint": "25b549c643fe756bebd5608b46a3ad0d1dbe42d5",
+  "genuine_input_acceptance": {
+    "distinct_objects": 4,
+    "pristine_positive_tests": 3,
+    "practical_real_tus": 1,
+    "public_assertions": 1446,
+    "evidence": "REAL-INPUTS.md",
+    "native_inventory": "native-real-inputs251-ready.json",
+    "managed_inventory": "managed-real-inputs251-ready.json"
+  }
+}

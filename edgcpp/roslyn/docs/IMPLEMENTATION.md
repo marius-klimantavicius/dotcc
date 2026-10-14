@@ -1,18 +1,18 @@
 # RoslynObj implementation ledger
 
-**Resumed at the user's explicit request on 2026-10-13.** Historical restart state
-is saved in local historical pause notes, with both worker notes. Both implementation
-lanes are active; full approved M0–M5 work remains required.
+Final genuine-input evidence and measurements: [REAL-INPUTS.md](REAL-INPUTS.md).
 
-**Current verified boundary: 251 tables / 39,145 stable kinds, exact `4bb94`
-contract. Required field evidence: 1,524 verified / 0 pending; two selected stock
-module-partition input limitations and optional-source dispositions remain explicit.
-The latest bounded four-object gate passes112, self73 and a clean managed build;
-all14 unchanged compiler stages retain316 stock inputs/26 canonical backend files.
-No broad corpus or scale rerun is claimed.** Phases3–4/M0–M5 remain open for genuine
-upstream-positive and practical real-TU acceptance, then current profile/API/limits
-and public-format policy publication. See CLOSURE and NEXT-CONTRACT for current
-required work; earlier milestones below retain their historical evidence.
+**Phases 3–4/M0–M5 accepted, 2026-10-14.** Initial public format 1.0 uses251 tables,
+39,145 stable kind IDs and the exact4bb fingerprint linked in FORMAT.md. Required
+field evidence:1,524 verified /0 pending; all 2,000 worksheet mappings/dispositions
+are explicit, with two selected stock module-input limits separate. Fourteen
+compiled stages retain 316 stock inputs/26 canonical backend files/tool pins.
+Three genuine upstream positives and one practical 1.24M-entity real C++ translation unit have
+producer/storage and bounded public reader acceptance. Existing synthetic scale,
+packaging,workspace,determinism and concurrent bounded-reader proofs are reused
+with honest scope. Current profile/API/limits and admission policy are published.
+No core changes or reader semantic reanalysis were introduced. Earlier milestone
+sections are history; CLOSURE.md records the accepted current boundary.
 
 The user approved phases 3–4 on 2026-10-12, including complete M0–M5 delivery.
 The accepted profile prioritizes stock EDG lowering and documents lost original
@@ -47,14 +47,20 @@ communication and independent review. Workers never commit independently. After 
 
 ## Milestone state
 
-| Gate | State | Evidence / remaining acceptance |
+| Gate | State | Current evidence / remaining acceptance |
 |---|---|---|
-| M0 | In progress | Pristine pinned core verified unchanged; independent compiler, global backend wrapper, lowering1 / tables1 / fullEH0. Basic, C++20 EH/virtual/template, exact scalars and macro fixtures publish atomically with zero unresolved FKs. Valid-compilation missing-parent and destination-directory failures return nonzero, preserve existing contents and leave no temporary output. Remaining: all compatibility profiles and complete EH adjunct/profile probes. |
-| M1 | In progress | Generated STRICT DDL, authoritative explicit stable IDs, exact scalar/unit contract and valid managed fixture exist. Full field coverage worksheet inventories 1,993 declarations, including plain structs and multi-declarators. Complete field/property mapping and all configured scalar/EH forms remain required. |
-| M2 | In progress | Verified native→reader checkpoint: selected add call, initialization execution containment, ordinary symbols/types/control flow, source positions and current signatures. Broader complete-family field audit remains required. |
-| M3 | In progress | Real C++ fixture exports 8 physical regions /6 actions /32 EH operations /8 lifetimes; reader navigates all actions. Observable destructor array fixture now produces count3/element-size4. Template/class/ABI and remaining cleanup adjunct completeness remain open. |
-| M4 | In progress | Exhaustive active adapters and all planned compatibility profiles with valid upstream inputs. |
-| M5 | In progress | Bounded managed page/row caches, sequential keyset paging and batched children tested. Full large-TU measurements, independent-object packaging and determinism remain required. |
+| M0 | Accepted | Isolated backend and atomic publication; stock pin, tool pin, 316 core inputs and 26 backend files in all 14 stages. Partial EH/KEEP lifetimes and profile capabilities are recorded; core unchanged. Ordinary write/publication failures are covered. |
+| M1 | Accepted implementation and field evidence | Single STRICT relational contract, 251 tables / 39,145 append-only IDs; all 2,000 worksheet fields mapped or explicitly dispositioned. 1,524 required field rows verified, zero pending; two selected stock module-input limits separate. Exact numeric/unit/role/null contracts and generated249 facades/1,941 properties agree. Initial public format 1.0 is published with exact admission in FORMAT.md. |
+| M2 | Accepted | Real retained declarations, symbols/types/constants/operations/control-flow and canonical identities navigate through ordinary properties; typed visitors, execution versus metadata and current signatures have genuine acceptance. Optional coordinate losses are explicit. |
+| M3 | Accepted | Lowered initialization/destruction/allocation, lifetime and partial/tableless EH, contextual class/base/field layout, virtual/ABI/template links and guarded native extensions have exact positive/identity/quantity evidence. No reader semantic reanalysis or full portable EH. |
+| M4 | Accepted | Fourteen stock-valid profiles, enabled adapters and exhaustive discriminator correspondence are accepted. Kind-family mapping does not claim every enum value was activated. Required field proofs are complete; three pristine upstream positive units pass export and ordinary public reader checks. |
+| M5 | Accepted | Lazy/batched loading, bounded caches, eviction/concurrency/disposal, nine workspace identities, 24 packaging runs, eleven logical duplicate comparisons and synthetic scale are accepted. The practical pristine types.c C++ translation unit has input provenance, producer frontend/backend CPU, combined wall/RSS, storage/sharing and reader opening/sampled cold-warm metrics. Current profile/API/limits and initial public format 1.0 policy are published. |
+
+## Historical implementation milestones
+
+The sections below record earlier accepted boundaries and contemporaneous remaining
+work. Their counts, pending statements and old schema fingerprints are historical;
+[CLOSURE.md](CLOSURE.md) and [NEXT-CONTRACT.md](NEXT-CONTRACT.md) govern current work.
 
 ## Verified initial checkpoint
 

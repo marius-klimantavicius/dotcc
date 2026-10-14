@@ -1,0 +1,34 @@
+{
+  "upstream_templates": {
+    "path": "/tmp/roslynobj-edg-upstream-20261012/tests/tests/edg/cmeerw/gnats-23971.sft.cpp",
+    "relative_path": "tests/tests/edg/cmeerw/gnats-23971.sft.cpp",
+    "bytes": 5488,
+    "sha256": "0853d787555853bec852a679832d157d40a72f08b2bda182a3c4210c20db62bb",
+    "git_blob": "f45a7dd46197029ad37026ea76ef516e5e023b90",
+    "revision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"
+  },
+  "upstream_lifetimes": {
+    "path": "/tmp/roslynobj-edg-upstream-20261012/tests/tests/edg/wcc/gnats27497-missing-dtor-instantiation.sft.cpp",
+    "relative_path": "tests/tests/edg/wcc/gnats27497-missing-dtor-instantiation.sft.cpp",
+    "bytes": 468,
+    "sha256": "5f0ddaf8a51efe21266a81db131b869e02b098435327c4da0eebb6dc2742aa9f",
+    "git_blob": "28920b01d8c00f266d5b6147b3e6645764a3971b",
+    "revision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"
+  },
+  "upstream_inheritance": {
+    "path": "/tmp/roslynobj-edg-upstream-20261012/tests/tests/edg/ccs/inhctor/gnats17687c.sft.cpp",
+    "relative_path": "tests/tests/edg/ccs/inhctor/gnats17687c.sft.cpp",
+    "bytes": 1804,
+    "sha256": "63a8fa0cd279a26d4e1d0cdbe8b329ff95c960a582b88d00814962139e181536",
+    "git_blob": "f5ee3b88af747fa071dd9155f7cb3de9fe9329e3",
+    "revision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"
+  },
+  "upstream_types": {
+    "path": "/tmp/roslynobj-edg-upstream-20261012/src/types.c",
+    "relative_path": "src/types.c",
+    "bytes": 799640,
+    "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc",
+    "git_blob": "261861fe8952c3190d8191bb37d32f12f6dd5592",
+    "revision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"
+  }
+}

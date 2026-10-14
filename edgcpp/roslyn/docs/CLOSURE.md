@@ -1,40 +1,117 @@
-# Remaining phase 3–4 closure
+# Accepted phase 3–4 closure
 
-The initializer/array checkpoint keeps the accepted `4bb94` contract unchanged:
-251 tables and 39,145 stable kind IDs. Four distinct final native/source objects
-pass 112 public assertions; self-checks pass 73. Build, generator, literal-field
-and whitespace checks pass. All 14 unchanged stages retain 316 pinned stock
-inputs, the pinned tool and 26 canonical backend files; new builds: zero. No
-accepted gate, full corpus or performance rerun is claimed.
+Final genuine-input evidence and measurements: [REAL-INPUTS.md](REAL-INPUTS.md).
 
-Field coverage is now **1,524 verified / 0 required pending**, plus two explicit
-selected-stock module-partition input limitations. All 2,000 rows have a mapping
-or disposition. Native ordinary C++20 defaults preserve exact optimized-empty
-base/field targets and selected constructor metadata. The GNU generic aggregate
-alternative and source nullable lowering facts remain distinct. A local-class
-array retains its own `lerk_dep_array_bound` expression, array referrer and routine
-scope in both profiles; the plain function alternative instead retains actual
-constant-owned expression references. No bound, target or execution is inferred.
+Phases 3–4 implementation and required field evidence are accepted at the initial
+public format 1.0 boundary:251 tables / 39,145 stable kind IDs, exact fingerprint
+`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+All 2,000 worksheet fields have explicit mappings/dispositions; 1,524 required field
+rows are verified and none are pending. Two selected stock module-partition input
+limitations remain distinct from implementation gaps. CLI/CX and optional-source
+limits retain their explicit reviewed scope. EDG is the sole semantic authority.
 
-`ArrayType.DependentBoundExpression` directly exposes the retained nullable link.
-The exact source route and final metadata identities are recorded in
-`dependent-array-local-bound-retention-review.json` and the two-row managed proof.
+M0–M3 implementation, real object navigation and C++ initialization/lifetime/ABI
+semantics are accepted. M4 includes14 stock-valid compiled profiles with 316 direct
+Git-pinned core inputs, the stock tool pin and26 canonical backend files each,
+exhaustive configured adapter/discriminator correspondence and three original
+upstream positive test inputs. Kind-family correspondence does not claim runtime
+activation of every catalog value. M5 adds a practical real C++ translation unit,
+pristine src/types.c (799,640 bytes), using the actual native build defines/includes
+and documented GCC13.3 predefines. All four final genuine-input objects pass ordinary
+selective reader gates; no input/core rewrite, new profile, broad corpus or synthetic
+scale rerun is claimed.
 
-Phases 3–4/M0–M5 remain open despite completion of required field evidence.
-Existing artifacts establish owned fixtures and synthetic scale acceptance;
-genuine upstream-positive samples and a practical large real C++ translation unit
-still need bounded acceptance and input provenance. Producer elapsed time must
-be labeled combined frontend/export time; stock `--timing` can distinguish actual
-frontend and backend CPU measurements. Existing packaging/workspace/performance
-evidence will be reused honestly. Current profile/limits/API and public-format
-summaries will be consolidated afterward. Exact fingerprint development admission
-is unchanged; public format freeze follows final acceptance, with no migration or
-forward-compatibility promise. EDG remains sole authority, optional locations stay
-nonblocking, and the two selected stock module limits remain explicit.
+The real TU has 1,235,097 entities/157,692 text atoms in 106,483,712 bytes. Stock timing
+reports frontend CPU 0.28 s/backend CPU 7.12 s; combined producer wall 7.678 s and peak RSS
+254,620 KiB are separately recorded. Table/index/schema bytes and actual atom/value
+sharing are measured. Reader opening and sampled cold/warm traversal are recorded
+for each artifact, with selected canonical symbols/types/body/visitor/reference
+checks and bounded 4,096 rows/128 pages/900 parameter batches. Cold means a fresh reader
+cache; OS caches are not flushed and the sample is not a full-TU traversal.
+
+Existing 24 packaging experiments, nine workspace identity checks, eleven logical
+duplicate-pair comparisons, cache eviction/concurrency/disposal and synthetic
+scale remain accepted evidence with their original inputs and timing scope. No
+old result is relabeled a new real-project measurement. Current profile/usage/
+limits and public-format policy are published together. Numeric 1.0 alone never
+admits an old development snapshot: the reader requires the exact supported framed
+SQL+catalog fingerprint and enabled required capabilities. No migration or forward
+compatibility promise is made. See FORMAT.md and PROFILES.md for current policy.
+
+## Current completion checklist
+
+Implementation, required field evidence and final genuine-input acceptance are complete
+at the accepted4bb contract. No raw/planned adapters, required field proofs or
+approved M0–M5 acceptance batches remain. Final actual evidence and current
+profile/API/limits/format publication close the phases; field-count zero alone
+was not used as completion evidence.
+
+Already accepted M5 evidence is reused:24 packaging runs support1KiB pages and
+WITHOUT ROWID relations; nine workspace checks cover immutable repeated/copied
+artifact identity, distinct compilations and cross-artifact query/disposal isolation.
+Cache eviction/concurrent reads/disposal, sequential keyset paging and maximum900
+parameter batches are accepted; normal cache limits are4,096 rows/128pages.
+Eleven genuine duplicate pairs compare equal logical payloads excluding random
+artifact identity and recorded stock __TIME__ clock metadata. No whole-program
+symbol table/linker is created.
+
+The generated synthetic scale acceptance remains explicitly synthetic: current
+final-five object7,487,488bytes/98,697entities/7,023operations, measured whole producer
+0.57s/44,220KiB RSS, reader cold2.208s/warm1.572s. The archived e49f object has equal
+cardinalities and7,488,512bytes; this is a size comparison, not repeated timing.
+The controlled FK-loader before/after median30.28s→0.59s logical-equality evidence
+and the24 packaging experiments are historical accepted measurements. They do not
+substitute for the new real-project input. Stock --timing supplies frontend and
+backend CPU measurements; wrapper wall time remains combined producer elapsed.
+
+Two selected stock partition-name/unit input limitations remain mapped with actual
+writer/API. The public stock-generated IFC import mismatch prevents that route
+before backend; standalone producer retains no corresponding module root. This
+is not a claim that those EDG fields are universally impossible. Actual header-unit
+and import-attribute records pass separately. Alloptional-source limits and selected
+inactive/transient/CLI-CX exclusions retain exact source reasons in the worksheet;
+none is a silently unimplemented required execution/type/lifetime payload.
+
+## Genuine-input acceptance
+
+Three original pristine upstream positive units export successfully: gnats-23971
+(C++20 strict), gnats27497-missing-dtor-instantiation (C++11) and gnats17687c
+(C++17, positive branch). Their bodies are not copied or rewritten to pass.
+The practical real input is pristine src/types.c,799,640 bytes, from the same stock
+revision. Its actual native Ninja C++14 command supplies the defines/include paths;
+EDG receives the supported equivalent language/no-exceptions/no-RTTI switches.
+Actual GCC13.3 predefined __CHAR_BIT__8 and __SCHAR_MAX__0x7f close the initial
+header-recipe failure; both attempts and the narrow delta are preserved.
+
+The real TU exports1,235,097 entities/157,692 text atoms into106,483,712 bytes with
+FK0/1KiB/current4bb. Stock timing reports frontend CPU 0.28 s/backend CPU 7.12 s/totalCPU
+7.48s, while wrapper combined wall is7.678s and process peakRSS254,620 KiB. These are
+separate recorded clocks, not phase timings derived by subtracting totals. No
+source/backend/configuration/build change or broad corpus rerun is required.
+Storage totals are87,066,624 table bytes,19,209,216 index bytes and207,872 schema
+bytes. 157,692 text atoms store 3,893,693 unique text bytes for 562,596 actual references;
+repeating text at each reference would require 23,757,904 text bytes alone (this is
+not a whole-database compression estimate).59,597 constant occurrences use37,908
+value rows, with3,942 shared values. Source occurrences and storage identity remain
+separate despite value sharing. Reader selective opening/cold-warm acceptance passes on all four artifacts. Producer
+measurements and ordinary public navigation together satisfy the final M4/M5 gate.
+
+## Public-format policy
+
+Initial public format 1.0 admits only the exact accepted framed SQL+stable-catalog
+fingerprint. Earlier numeric 1.0 development snapshots remain incompatible. The reader requires a complete header,
+supported major/minor ceiling, matching enabled required schema capability and
+supported required capabilities. Informational target/runtime/build capabilities
+remain queryable without independently rejecting an object. The initial public 1.0 fingerprint is now frozen after genuine-input acceptance
+and current documentation.
+No data migration, old-development or future-contract compatibility is promised.
+Future supported minors require explicit admitted/tested additive contracts;
+incompatible semantics require a major change. Reopened/copied immutable artifacts
+keep identity; independent compilation creates a new identity, regardless of names.
 
 ## Earlier checkpoint history
 
-## Current implementation and integration
+## Historical implementation and integration
 
 - The266 common migration is accepted across all12 actual source-correspondence owner
   families: namespace, constant, type, variable, field, routine, asm, label,
@@ -57,7 +134,7 @@ nonblocking, and the two selected stock module limits remain explicit.
   proposing new payloads. Prioritize execution, variables/routines, class/base/field layout,
   dependent/template identity and lifetime/EH semantics over optional locations.
 
-## Existing adapters needing validation or ledger reconciliation
+## Historical adapter validation and reconciliation
 
 There are 1524 verified and 0 mapped pending-validation fields at this boundary,
 plus two explicit selected-stock input/retention limitations.
@@ -107,7 +184,7 @@ positive activation. Column existence or default values alone are insufficient.
   fixtures plus exhaustive dispatch evidence; thousands of duplicate probes are
   unnecessary. Unknown required semantics must never silently become optional.
 
-## Remaining configured native profiles
+## Historical configured-profile work
 
 The fourteen current profiles validate lowered native, source-semantic native
 Microsoft, cfront-like/assignment-to-this and exported templates. Genuine263
@@ -128,7 +205,7 @@ or imprecision option is used. The stock-valid tableless partial-EH profile is a
 and completed-initialization links with absent numeric states. It does not imply
 table-based execution-storage parity.
 
-## Remaining M5 and release evidence
+## Historical M5 and release work
 
 - Refresh and measure final frontend/export/reader throughput, RSS, table/index
   bytes and atom/value sharing on real large TUs; preserve bounded cache/paging,

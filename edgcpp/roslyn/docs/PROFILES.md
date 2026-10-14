@@ -1,38 +1,71 @@
 # Compatibility profile evidence
 
-Current accepted29 boundary:251tables/e49f0f888402b4fedd4e40cbd18ec9580fb859f67ac3d539c60975437ce98eaa,
-14 strict pinned profiles,198 validation instances/187 unique paths,
-readerPASS3871,self73;1066 verified/488 required field proofs pending.
-Older milestones below are history; see CLOSURE for explicit remaining work.
+Final genuine-input evidence and measurements: [REAL-INPUTS.md](REAL-INPUTS.md).
 
-Latest bounded GNU-asm/header proof:13 strict pinned profiles, two new +r
-objects, PASS479/nine genuine paths and WORself73. Contract remains251.
-Current accepted boundary251:175 distinct files /186 validation instances,
-PASS2621 reader assertions,self73,12 strict pristine-pinned profiles.
-Contract `c76079ee21b05d278466e87f49f8e8851453b7fe561eb51652e089705e93de71`;
-Bounded follow-up:13 strict profiles/four new distinct objects, constructor128,
-extern-inline114, native dependent/resolved foreach116 and WORself73 pass.
-All older status paragraphs below are milestone history. Remaining required
-field/kind proof is tracked in
-[CLOSURE.md](CLOSURE.md); optional source positions do not block completion.
+Current contract: 251 tables / 39,145 stable kind IDs, exact
+`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+All 14 compiled stages retain 316 pristine Git-pinned inputs, the stock tool pin and
+26 canonical backend files. The final-five refresh covered211 distinct objects
+and PASS4437/self73; subsequent bounded accepted checkpoints extend exact branch
+proof without claiming a full refreshed cohort. Latest initializer/array acceptance
+is four fresh objects/PASS112/self73, unchanged compiled stages and format.
+Required field evidence is complete (1,524 verified /0 pending); two selected stock
+module-input limits remain explicit. Three genuine upstream positives and the practical large real types.c C++ translation unit
+pass export and ordinary public reader gates. Initial public format 1.0 admits the
+exact fingerprint above; see [format policy](FORMAT.md).
 
+EDG revision: `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. All profile overlays
+live in `build/profiles`; exact resolved build values, runtime arguments and actual
+input prerequisites are recorded in each object. A profile name or successful
+configure alone does not prove activation. All profiles keep full portable EH
+lowering disabled; the native extensions below are distinct from excluded CLI/CX.
 
-The pinned EDG revision is `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`.
-These profiles retain the approved scope; a pending probe is required work.
-Compile configuration, resolved values, runtime options and input prerequisites
-must all be recorded before a profile is accepted. A successful configure alone
-does not demonstrate that an option changed the stock frontend behavior.
+| Profile | Accepted configuration and representative evidence |
+|---|---|
+| native | Stock lowered GNU/Linux execution with partial EH tables and retained lifetimes; exact values, calls, cleanup, templates, UPC, near/far, fixed/scalable/RISC-V vectors and native MS syntax under actual runtime switches. |
+| source | Source-semantic capture, source-only member lists and ordinary name-form retention; native Microsoft Win64 sizing/bitfield flags and actual container offsets. Optional lexical typerefs remain disabled. C mode disables ordinary name-form recording at runtime. |
+| cfront | Actual cfront-like layout/assignment-to-this and allocation-folding configuration, distinct from the USL ABI overlays. |
+| exported | Genuine legacy C++03 exported-template retention and navigation. Definition text is available only when actually retained. |
+| sun | Stock Sun extension flag and `--sun`, with actual linker-scope modifier evidence. |
+| usl21 | Mutually exclusive USL2.1 compatibility configuration; actual ABI, virtual embedding/data-section and throw-accessible-base records. |
+| usl30 | Mutually exclusive USL3.0 compatibility configuration with actual target layout facts. |
+| host-long-double | Stock alternate host numeric storage with exact decoder/profile acceptance. |
+| host-double | Stock Win64 double host storage. Fixed-point is disabled only here because stock long_Accum requires greater precision; no imprecision opt-in. |
+| softfloat | Official SoftFloat storage/library configuration; exact numeric families and layout guards accepted. |
+| instantiation | Automatic template/inline-variable instantiation and actual guarded variable flags; no minimal-inlining/full-EH activation. |
+| tableless | Stock-valid partial EH without generated tables: exact metadata cleanup-start/completed-initializer references and null numeric states. Does not promise table-based cleanup-storage parity. |
+| extern-inline | Automatic instantiation with INSTANTIATE_EXTERN_INLINE1/LOWER_EXTERN_INLINE0; actual routine bits and retained partial EH/lifetimes. |
+| separate-init | Separate file-scope initializer routines, PATCH0/lazyTLS1; actual ordered startup associations and runtime storage facts. |
 
-The user subsequently instructed: "Ignore C++/CLI support." C++/CLI and C++/CX
-implementation and metadata/profile gates are excluded. Native Microsoft C++
-extensions and source-semantic native Microsoft ABI remain required.
+Selected limits are explicit in the field worksheet and CLOSURE: MINIMAL_INLINING
+requires forbidden full portable EH; nonlazy TLS startup-list conjunction is
+inactive in these profiles; configured test/unrecognized/checking pragma target
+seeds are disabled. Stock-generated module partition IFC import fails before the
+backend under the selected public route, so partition name/unit writer and API
+remain mapped with input-unavailable disposition. Header-unit/import attributes
+have genuine separate acceptance. No required semantic record is reconstructed.
+Optional source positions, macro/token provenance and omitted token-expression
+ranges do not trigger a new recovery profile. The source profile does not promise
+execution parity with the lowered native graph; individual representation roles
+and availability are authoritative.
 
-| Profile | Required behavior | Current evidence | Remaining validation |
-|---|---|---|---|
-| native | Stock GNU/Linux lowering, partial EH tables, prototypes as metadata | Accepted263 `a409df1be`, lowering1/EH tables1/fullEH0; exact scalar families, UPC dynamic/static and enabled vectors/near-far | Remaining field/kind evidence, unordered EH and alternate host numeric profiles |
-| source | Source semantics with native Microsoft ABI | Accepted263 `a409df1be`, source VLA expression evaluation, current MS layout, call/coroutine/init/template/module navigation | Remaining guarded fields and public evidence; optional coordinates are not gates |
-| cfront | Stock cfront-like layout with assignment-to-this and folded allocation | Accepted263 `a409df1be`, IA64=0/assignment1/new-fold1 and actual ABI distinctions | Actual USL2.1/3.0 configurations and remaining archaic/virtual-base/control positive evidence |
-| exported | Legacy exported templates | Accepted263 `a409df1be`, real C++03 --export markers and runtime prototype/all-template retention1 | Remaining guarded payload/evidence; definition text only where actually retained |
+Build and select a profile from the repository root:
+
+```sh
+python3 edgcpp/roslyn/build/build.py --profile source --jobs 8
+ROSLYNOBJ_COMPILER=edgcpp/artifacts/roslynobj/profiles/source/build/bin/roslyn-cpfe \
+  python3 edgcpp/roslyn/build/roslyn-cpfe.py --c++20 input.cpp -o input.roslynobj
+```
+
+The actual artifact paths are also emitted by build.py; runtime target/dialect
+switches must be supplied for the input rather than inferred from the profile.
+See the managed usage guide for immutable property navigation and availability.
+
+## Historical profile milestones
+
+The paragraphs below preserve earlier configuration observations and pending
+statements at those boundaries. Current accepted status is the table above;
+old format fingerprints and four-profile counts are not current admission gates.
 
 Primary runtime template retention follows `host_envir.c:6895–6900`: both
 `prototype_instantiations_in_il` and `all_template_info_in_il` are true. Lowering
@@ -190,3 +223,5 @@ all objects pass4bb94e5f contract/FK0/1KiB and public PASS4437/self73. Source-on
 name-form retention, actual partial/tableless EH, named test registers and separate-init
 lazy TLS configuration remain unchanged. Earlier paragraphs describe their historical
 acceptance boundaries. No new profile or core change was required for these removals.
+
+Current retained-data scope is summarized in [limits](LIMITS.md).

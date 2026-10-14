@@ -8,15 +8,21 @@ translation units or depend on Microsoft.CodeAnalysis.
 The user excluded C++/CLI and C++/CX support from the revised task. Native
 Microsoft C++ extensions remain in scope.
 
-Phases 3–4 are approved and in progress. The current251-table format passes
-4,437 reader assertions across211 distinct objects and14 strict pinned profiles.
-Full M0–M5 acceptance is tracked in [the implementation ledger](docs/IMPLEMENTATION.md),
-[remaining acceptance](docs/ACCEPTANCE.md), and [compatibility profiles](docs/PROFILES.md).
-There are 1,522 verified field rows and 2 required proof rows still open, with two
-explicit selected-stock module-input limitations; table or
-kind presence alone does not establish complete semantic-family coverage. The latest
-bounded contextual base gate passes 103 assertions on five fresh objects;
-the format remains unchanged.
+Phases 3–4/M0–M5 are accepted at initial public format 1.0: 251 tables and 39,145
+stable kind IDs. Fourteen strict pinned profiles, 1,524 verified required field
+rows with none pending, three original upstream positive tests and a practical
+1.24M-entity real C++ translation unit have scoped acceptance. Two selected stock module-partition
+input limits and optional-source losses remain explicit; this does not claim all
+catalog values were activated or a future translator is implemented. See the
+[implementation ledger](docs/IMPLEMENTATION.md), [accepted evidence](docs/ACCEPTANCE.md)
+and [profiles](docs/PROFILES.md).
+
+The admitted contract is exactly
+`4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559`.
+Numeric 1.0 alone does not admit earlier development objects. The reader also
+requires complete snapshots and supported enabled required capabilities;
+[format policy](docs/FORMAT.md) names them and documents version/identity scope.
+There is no migration or forward-compatibility promise.
 
 The build uses a clean EDG 7.0 checkout pinned at
 `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. The default materialized checkout is
@@ -45,7 +51,7 @@ recipes, source positions and macro associations. See
 [the managed usage guide](managed/README.md). Optional retained relationships are
 null or empty. The captured profile documents lowering losses such as unavailable
 original virtual-call targets. Scoped availability rows distinguish retained, dependent, disabled and lost
-facts on their actual owners and have genuine public acceptance. Remaining owner-field proof is tracked separately.
+facts on their actual owners and have genuine public acceptance. The field worksheet records the exact owner proof and explicit dispositions.
 Lost source associations are not reconstructed.
 
 The shared contract lives in `schema/generate.py` and the authoritative append-only

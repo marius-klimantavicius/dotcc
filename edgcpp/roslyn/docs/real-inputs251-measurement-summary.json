@@ -1,0 +1,178 @@
+[
+  {
+    "fixture": "upstream_templates",
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_templates.roslynobj",
+    "bytes": 985088,
+    "entities": 4252,
+    "page_size": 1024,
+    "page_count": 962,
+    "table_bytes": 640000,
+    "index_bytes": 137216,
+    "schema_bytes": 207872,
+    "stock_timing": {
+      "Front end time": {
+        "cpu_seconds": 0.0,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Back end time": {
+        "cpu_seconds": 0.04,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Total compilation time": {
+        "cpu_seconds": 0.05,
+        "reported_elapsed_seconds": 0.0
+      }
+    },
+    "combined_wrapper_wall_seconds": 0.09,
+    "max_producer_rss_kib": 30976,
+    "text_atoms": {
+      "rows": 528,
+      "referenced_atoms": 528,
+      "total_references": 2402,
+      "multiply_referenced_atoms": 60,
+      "max_references_per_atom": 582,
+      "unique_text_bytes": 15401,
+      "text_bytes_if_repeated_per_reference": 111500
+    },
+    "constant_values": {
+      "rows": 8,
+      "occurrences": 124,
+      "referenced_values": 8,
+      "total_references": 124,
+      "multiply_referenced_values": 7,
+      "max_references_per_value": 36
+    }
+  },
+  {
+    "fixture": "upstream_lifetimes",
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_lifetimes.roslynobj",
+    "bytes": 646144,
+    "entities": 552,
+    "page_size": 1024,
+    "page_count": 631,
+    "table_bytes": 359424,
+    "index_bytes": 78848,
+    "schema_bytes": 207872,
+    "stock_timing": {
+      "Front end time": {
+        "cpu_seconds": 0.0,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Back end time": {
+        "cpu_seconds": 0.02,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Total compilation time": {
+        "cpu_seconds": 0.03,
+        "reported_elapsed_seconds": 0.0
+      }
+    },
+    "combined_wrapper_wall_seconds": 0.07,
+    "max_producer_rss_kib": 29440,
+    "text_atoms": {
+      "rows": 322,
+      "referenced_atoms": 322,
+      "total_references": 645,
+      "multiply_referenced_atoms": 21,
+      "max_references_per_atom": 66,
+      "unique_text_bytes": 7801,
+      "text_bytes_if_repeated_per_reference": 19794
+    },
+    "constant_values": {
+      "rows": 3,
+      "occurrences": 5,
+      "referenced_values": 3,
+      "total_references": 5,
+      "multiply_referenced_values": 2,
+      "max_references_per_value": 2
+    }
+  },
+  {
+    "fixture": "upstream_inheritance",
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_inheritance.roslynobj",
+    "bytes": 1120256,
+    "entities": 4945,
+    "page_size": 1024,
+    "page_count": 1094,
+    "table_bytes": 759808,
+    "index_bytes": 152576,
+    "schema_bytes": 207872,
+    "stock_timing": {
+      "Front end time": {
+        "cpu_seconds": 0.0,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Back end time": {
+        "cpu_seconds": 0.06,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Total compilation time": {
+        "cpu_seconds": 0.06,
+        "reported_elapsed_seconds": 0.0
+      }
+    },
+    "combined_wrapper_wall_seconds": 0.09,
+    "max_producer_rss_kib": 31232,
+    "text_atoms": {
+      "rows": 617,
+      "referenced_atoms": 617,
+      "total_references": 2446,
+      "multiply_referenced_atoms": 71,
+      "max_references_per_atom": 418,
+      "unique_text_bytes": 11613,
+      "text_bytes_if_repeated_per_reference": 110269
+    },
+    "constant_values": {
+      "rows": 112,
+      "occurrences": 169,
+      "referenced_values": 112,
+      "total_references": 169,
+      "multiply_referenced_values": 25,
+      "max_references_per_value": 11
+    }
+  },
+  {
+    "fixture": "upstream_types",
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/real-inputs/native/upstream_types.roslynobj",
+    "bytes": 106483712,
+    "entities": 1235097,
+    "page_size": 1024,
+    "page_count": 103988,
+    "table_bytes": 87066624,
+    "index_bytes": 19209216,
+    "schema_bytes": 207872,
+    "stock_timing": {
+      "Front end time": {
+        "cpu_seconds": 0.28,
+        "reported_elapsed_seconds": 0.0
+      },
+      "Back end time": {
+        "cpu_seconds": 7.12,
+        "reported_elapsed_seconds": 7.0
+      },
+      "Total compilation time": {
+        "cpu_seconds": 7.48,
+        "reported_elapsed_seconds": 7.0
+      }
+    },
+    "combined_wrapper_wall_seconds": 7.67,
+    "max_producer_rss_kib": 254620,
+    "text_atoms": {
+      "rows": 157692,
+      "referenced_atoms": 157692,
+      "total_references": 562596,
+      "multiply_referenced_atoms": 3835,
+      "max_references_per_atom": 116507,
+      "unique_text_bytes": 3893693,
+      "text_bytes_if_repeated_per_reference": 23757904
+    },
+    "constant_values": {
+      "rows": 37908,
+      "occurrences": 59597,
+      "referenced_values": 37908,
+      "total_references": 59597,
+      "multiply_referenced_values": 3942,
+      "max_references_per_value": 5659
+    }
+  }
+]
