@@ -1,0 +1,58 @@
+{
+  "validation_instances": 5,
+  "unique_objects": 5,
+  "profiles": 14,
+  "digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "objects_checked": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/source/contextual_bases.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 1241
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/source/associated_pragma_orphans.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 623
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/native/contextual_bases.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 1952
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/native/associated_pragma_orphans.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 605
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/usl21/embedded_virtual_bases.roslynobj",
+      "tables": 251,
+      "fk_errors": 0,
+      "page_size": 1024,
+      "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+      "complete_headers": 1,
+      "blob_real_columns": 0,
+      "entities": 487
+    }
+  ]
+}

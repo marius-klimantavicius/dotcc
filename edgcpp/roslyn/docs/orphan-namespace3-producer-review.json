@@ -1,0 +1,17 @@
+{
+  "field": "a_scope_orphaned_list_header.orphaned_namespaces",
+  "recommendation": "inactive_stock_generator for fresh selected pinned producer; retain direct writer/API/list category. Not a claim about external serialized IL or arbitrary EDG versions.",
+  "authority": [
+    "il_def.h16976 documents orphaned namespace aliases for function scopes, but a field comment alone does not prove an active producer.",
+    "il_alloc.c559 initializes orphaned_namespaces NULL; il.c5080-5112 r_add_scope_orphaned_il_lists is the sole population assignment, copying scope->namespaces from function/block scopes.",
+    "il_alloc.c4713 initializes scope->namespaces NULL.",
+    "il.c5405-5427 add_to_namespaces_list is the namespace-list insertion producer and always chooses depth_innermost_namespace_scope, documented/implemented file or namespace scope.",
+    "All four callers: decls.c15870 local/other namespace alias factory; decls.c16370 namespace definition; symbol_tbl.c8709 namespace predeclaration; ifc_modules_read.c12101 imported namespace. Each uses that insertion producer.",
+    "decls.c16155-16175 permits aliases in function/block scopes, but make_namespace_alias15841-15875 still appends the descriptor at namespace/file storage. Aliased symbol, enclosing/local source relationships and storage list remain distinct.",
+    "Other scope->namespaces assignments: trans_copy.c1924 removes an existing item;2729 appends a corresponding item in finish_trans_unit_copy, whose2315-2337 contract is file/namespace/class scope and whose namespace branch2720 asserts pointers block (not class). It does not introduce a function/block namespace list.",
+    "scope_stk.c3490-3495 sets depth for file scope;3632-3646 updates only namespace/extension context;5872-5880 restores actual parent namespace of instantiation;9628 restores prior stack value. decls.c7487/9393 temporarily select effective namespace for old GNU block externs, not a function scope.",
+    "walk_entry.h3943-3948 remaps/walks already existing orphan list, lower_il.c22415 consumes, il_display.c8235 displays, il.c31142-31155 prunes. None is a new list producer."
+  ],
+  "observed_control": "Native reports genuine LocalAlias retained source605->namespace575 and native596->583; source orphan header623 contains source sublist, zero namespace members. Actual descriptors retained: zero orphan membership is not namespace data loss.",
+  "limits": "No root builds/exports/edits. Current native observation is worker evidence awaiting final frozen inventory. No invented scope ownership, no parser invocation, no modification to EDG. Existing scope/namespace mappings remain used. Further syntax variation is not justified by these producers."
+}

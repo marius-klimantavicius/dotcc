@@ -1701,3 +1701,52 @@ All 15 managed and 14 native frozen hashes match. Final validation, stage and
 activation summaries record seven positive first-attempt fields. Only one direct
 reader convenience is added; backend/config/schema bytes are unchanged. Restart
 and unrelated work remain excluded.
+
+
+### Accepted contextual base identities and selected association boundaries
+
+The contextual base/association checkpoint keeps the accepted `4bb94` contract
+unchanged: 251 tables and 39,145 stable kind IDs. Five final native/source/USL21
+objects pass 103 public assertions; self-checks pass 73. Build, generator,
+literal-field and whitespace checks pass. All 14 unchanged stages retain 316
+pinned stock inputs, the pinned tool and 26 canonical backend files; new builds:
+zero. No accepted gate, full corpus or performance rerun is claimed.
+
+Field coverage is now **1,522 verified / 2 required pending**, plus two explicit
+selected-stock module-partition input limitations. All 2,000 rows have a mapping
+or disposition. Four contextual base fields close through exact positive identity
+proof: overriding subobject, primary base, base-owned attributes and USL data-section
+base. These links remain distinct from record-level primary/vinfo relations; no
+C++ inheritance, layout or access calculation is performed in the reader.
+
+Three fields have reviewed selected-producer/configuration dispositions, preserving
+their direct writers and nullable APIs. All 14 resolved configurations disable test,
+unrecognized and internal-checking pragma target seeds; ordinary pragma effects
+remain captured on their actual descriptors. EDG_TEST_VERSION alone does not
+activate test pragmas. Fresh stock namespace factories insert even local aliases
+into file/namespace storage lists; orphan headers only copy actual function/block
+lists. The alias and target remain canonical outside the empty orphan namespace
+list. No ownership or target is fabricated from source adjacency or ScopeNumber.
+These are selected stock boundaries, not claims about all EDG/foreign IL inputs.
+
+The remaining required fields are dynamic-init optimized-empty target associations
+and selected dependent-array local-bound references. The dynamic source review
+explains prior unmarked defaults through gpp-mode generic aggregate construction;
+a separate ordinary EDG C++20 input without GNU mode is queued. The array review
+is examining file-memory local-static references versus routine-variable constant
+fixup, with no inference from already-verified constant-owned expression links.
+
+Phases 3–4/M0–M5 remain open beyond those two rows. Existing artifacts establish
+owned fixtures and synthetic scale acceptance; genuine upstream-positive samples
+and a practical large real C++ translation unit still need bounded acceptance and
+input provenance before final closure. Existing packaging/workspace/performance
+evidence will be reused honestly. Final current profile/limits/API and public-format
+policy summaries will be consolidated after semantic acceptance; development exact
+fingerprint admission remains unchanged, with no migration/forward-compatibility
+promise. EDG remains the sole authority and optional source work stays nonblocking.
+
+Inventories: managed-contextual251-ready.json and native-contextual251-ready.json.
+All 15 managed and 18 native frozen hashes match. Final validation, stage,
+activation and all-14 resolved pragma guard summaries record four exact positives
+and three independent source dispositions. No API/backend/config/schema changes.
+Restart files and unrelated work remain excluded.

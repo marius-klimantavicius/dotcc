@@ -1,44 +1,44 @@
 # Remaining phase 3–4 closure
 
-The control/asm/MS checkpoint keeps the accepted `4bb94` contract unchanged:
-251 tables and 39,145 stable kind IDs. Four final GNU/MS native/source objects
-pass 113 reader assertions; self-checks pass 73. Build, generator, literal-field
-and whitespace checks pass. All 14 unchanged compiler stages retain 316 pinned
-stock inputs, the pinned tool and 26 canonical backend files; new builds: zero.
-All seven active branches succeed first attempt. No full 211-object refresh or
-performance rerun is claimed.
+The contextual base/association checkpoint keeps the accepted `4bb94` contract
+unchanged: 251 tables and 39,145 stable kind IDs. Five final native/source/USL21
+objects pass 103 public assertions; self-checks pass 73. Build, generator,
+literal-field and whitespace checks pass. All 14 unchanged stages retain 316
+pinned stock inputs, the pinned tool and 26 canonical backend files; new builds:
+zero. No accepted gate, full corpus or performance rerun is claimed.
 
-Field coverage is now **1,518 verified / 9 required pending**, plus two explicit
+Field coverage is now **1,522 verified / 2 required pending**, plus two explicit
 selected-stock module-partition input limitations. All 2,000 rows have a mapping
-or disposition. Kind-family proof and optional source fields remain distinct from
-required owner-payload and active-branch evidence.
+or disposition. Four contextual base fields close through exact positive identity
+proof: overriding subobject, primary base, base-owned attributes and USL data-section
+base. These links remain distinct from record-level primary/vinfo relations; no
+C++ inheritance, layout or access calculation is performed in the reader.
 
-Seven exact branches close: the source for-init scope and evaluated initialization,
-ordinary while/do body edges, opaque asm-function body, previous-field foreach
-iterator, GNU routine assembly name, ordered plural scope asm entries and the
-Microsoft physical attribute-block chain. Actual body/call/assignment identities
-and representation roles are separate from metadata scope and storage lists.
-Native lowering clears the for-init scope and foreach descriptor; neither is
-recovered. Both profiles retain the observed recognized uuid/no_injected_text
-kinds. Physical block links, scope-list ownership and application targets remain
-distinct. ForEachOperation.PreviousField exposes its exact nullable recorded link.
+Three fields have reviewed selected-producer/configuration dispositions, preserving
+their direct writers and nullable APIs. All 14 resolved configurations disable test,
+unrecognized and internal-checking pragma target seeds; ordinary pragma effects
+remain captured on their actual descriptors. EDG_TEST_VERSION alone does not
+activate test pragmas. Fresh stock namespace factories insert even local aliases
+into file/namespace storage lists; orphan headers only copy actual function/block
+lists. The alias and target remain canonical outside the empty orphan namespace
+list. No ownership or target is fabricated from source adjacency or ScopeNumber.
+These are selected stock boundaries, not claims about all EDG/foreign IL inputs.
 
-One separately reviewed field, type_operand.name_reference, has no nonnull
-producer in fresh selected pinned stock output. The allocator clears it; twelve
-actual allocation sites fill type/positions only; getter, walker and display paths
-only consume it, and copy/substitution preserve the original kind/null. It is
-classified inactive_stock_generator (80 such rows), with the direct writer and
-nullable API retained. This is neither payload removal nor a claim about every
-EDG/foreign IL input. No manufactured positive or extra probe is added.
+The remaining required fields are dynamic-init optimized-empty target associations
+and selected dependent-array local-bound references. The dynamic source review
+explains prior unmarked defaults through gpp-mode generic aggregate construction;
+a separate ordinary EDG C++20 input without GNU mode is queued. The array review
+is examining file-memory local-static references versus routine-variable constant
+fixup, with no inference from already-verified constant-owned expression links.
 
-Next native and reader work targets four contextual base/override relationships,
-the exact associated pragma target/presence pair and orphaned local namespace
-aliases. The queued namespace recipe follows the actual file-memory alias list;
-storage ScopeNumber does not become a guessed lexical owner or execution edge.
-The dynamic-init empty-target and selected dependent-array local-bound links
-remain explicit positive/retention questions. No confirmed serialization adapter
-or factory gap is open. Full phases 3–4/M0–M5 continue; EDG remains the sole
-semantic authority and optional source positions remain nonblocking.
+Phases 3–4/M0–M5 remain open beyond those two rows. Existing artifacts establish
+owned fixtures and synthetic scale acceptance; genuine upstream-positive samples
+and a practical large real C++ translation unit still need bounded acceptance and
+input provenance before final closure. Existing packaging/workspace/performance
+evidence will be reused honestly. Final current profile/limits/API and public-format
+policy summaries will be consolidated after semantic acceptance; development exact
+fingerprint admission remains unchanged, with no migration/forward-compatibility
+promise. EDG remains the sole authority and optional source work stays nonblocking.
 
 ## Current implementation and integration
 
@@ -65,7 +65,7 @@ semantic authority and optional source positions remain nonblocking.
 
 ## Existing adapters needing validation or ledger reconciliation
 
-There are 1518 verified and 9 mapped pending-validation fields at this boundary,
+There are 1522 verified and 2 mapped pending-validation fields at this boundary,
 plus two explicit selected-stock input/retention limitations.
 Existing field/base/class/statement/routine/expression and pragma/module/new-delete
 proofs were joined from the accepted187-path evidence and bounded public tests.

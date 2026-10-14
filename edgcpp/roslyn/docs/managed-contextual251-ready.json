@@ -1,0 +1,137 @@
+{
+  "ready": "HOLD",
+  "created_utc": "2026-10-14T12:50:18.060125+00:00",
+  "checkpoint_base": "270b7700be58c4b756fb2802a362651584310c13",
+  "schema_tables": 251,
+  "schema_kinds": 39145,
+  "schema_digest": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "scope": "Four positive contextual base fields plus three honest selected pragma/orphan absences, five current source/native/USL21 objects. No API/backend/schema/config change.",
+  "owned_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/Program.cs",
+      "sha256": "d34c412eabf8743e7f62d778f40003627d0e06cc0c9e9f34f9fb52d642ae2558",
+      "bytes": 78980
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj.Tests/ContextualAssociationProjection.cs",
+      "sha256": "58e4e0a633d78e258d3bc9233740b0c9172395f719d1114d93cd2e88b7ea6c9a",
+      "bytes": 6724
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/contextual251-evidence.tsv",
+      "sha256": "2fa777a0c8b0d9639ccd452f68a9454ed5dce86bfb252408b3d230b497278db0",
+      "bytes": 6924
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/roslynobj-managed-contextual251-build.log",
+      "sha256": "dd0f8d75df8d4baeddb60d77d555caff13991a6ece319ca7e4b8199c1aa412e9",
+      "bytes": 294
+    },
+    {
+      "path": "/tmp/roslynobj-managed-contextual251-fresh5-v1.log",
+      "sha256": "effe992fd0c23b82bbf5bab1f9146872cbc87e45b2b0e5bd28bbe98dd61c91c0",
+      "bytes": 1271
+    },
+    {
+      "path": "/tmp/roslynobj-managed-contextual251-self.log",
+      "sha256": "ddfc98b3c5671632d04a9c044b4249971ebf351580fa18dd6de0944aef8e3483",
+      "bytes": 129
+    },
+    {
+      "path": "/tmp/roslynobj-managed-contextual251-generator.log",
+      "sha256": "ecc8abefd870ccd87ebe988c74f175014781a6a3b06f9091223b9443f451c6ff",
+      "bytes": 56
+    },
+    {
+      "path": "/tmp/roslynobj-managed-contextual251-literal.log",
+      "sha256": "0e2f21f57c5d1a98d1faa48daebd3c5e3091e9b72fd940097da141d369984e85",
+      "bytes": 342
+    },
+    {
+      "path": "/tmp/roslynobj-managed-contextual251-whitespace.log",
+      "sha256": "b047ab5a8c04721af66da33101a993485c7c3b964c7ab3f6383ae8ef8cf0c268",
+      "bytes": 219
+    }
+  ],
+  "manifest": {
+    "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/all-profile-results-final.json",
+    "sha256": "e3f9490b56915a64be03b4beac3570deab1c7528a989ff86484400b23329a8ec",
+    "bytes": 4019
+  },
+  "objects": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/source/contextual_bases.roslynobj",
+      "sha256": "b2da6043b51d9c65add20f0ceb36d08e9912bce4ab95902576fe1b4037b6f935",
+      "bytes": 710656,
+      "profile": "source",
+      "fixture": "contextual_bases",
+      "entities": 1241,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/source/associated_pragma_orphans.roslynobj",
+      "sha256": "98dfd5b5c0c3be9943fecb5d06279f7bda48dc12d5d6df14e89b822ce0807166",
+      "bytes": 657408,
+      "profile": "source",
+      "fixture": "associated_pragma_orphans",
+      "entities": 623,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/native/contextual_bases.roslynobj",
+      "sha256": "f72cf65ad8501d8966742a88aeedb2a1a026ad31b81a3e998c0cb1e3672542ac",
+      "bytes": 811008,
+      "profile": "native",
+      "fixture": "contextual_bases",
+      "entities": 1952,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/native/associated_pragma_orphans.roslynobj",
+      "sha256": "f403bfb4505b8dc5fa6153ff03a531b0f8756a52836527a35850f679144021e8",
+      "bytes": 660480,
+      "profile": "native",
+      "fixture": "associated_pragma_orphans",
+      "entities": 605,
+      "fk_errors": 0,
+      "page_size": 1024
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/usl21/embedded_virtual_bases.roslynobj",
+      "sha256": "0f61b4e0b9e68dcb8a0187b37144843420b1dcedb6f9c08ad88c259b0b00ec16",
+      "bytes": 629760,
+      "profile": "usl21",
+      "fixture": "embedded_virtual_bases",
+      "entities": 487,
+      "fk_errors": 0,
+      "page_size": 1024
+    }
+  ],
+  "checks": {
+    "fresh_assertions": 103,
+    "fresh_unique_paths": 5,
+    "self_assertions": 73,
+    "build_warnings": 0,
+    "build_errors": 0,
+    "generator_tables": 249,
+    "generator_properties": 1941,
+    "literal": "PASS",
+    "whitespace": "PASS"
+  },
+  "evidence_rows": {
+    "positive": 4,
+    "pending": 3
+  },
+  "limits": [
+    "Selected test pragma guard FALSE, descriptors/targets0; no global exclusion",
+    "Selected namespace alias survives in actual file-scope list, orphan namespace memberships0; no fabricated bucket",
+    "Contextual base pointer versus record primary/layout authorities preserved",
+    "Unrelated pause auxiliaries and stock/core dirty files unchanged"
+  ],
+  "native_gate": "All14 unchanged pin/core/canonical/object gates reported complete by native; independently owned native inventory follows."
+}

@@ -1,0 +1,43 @@
+{
+  "positive_fields": 4,
+  "selected_configuration_dispositions": 2,
+  "selected_fresh_generator_dispositions": 1,
+  "managed_final": "PASS103/five unique/self73",
+  "joins": [
+    {
+      "owner": "an_overriding_virtual_function",
+      "member": "base_class",
+      "test_anchor": "RoslynObj.Tests/ContextualAssociationProjection.cs:15"
+    },
+    {
+      "owner": "a_base_class",
+      "member": "primary_base_class",
+      "test_anchor": "RoslynObj.Tests/ContextualAssociationProjection.cs:22"
+    },
+    {
+      "owner": "a_base_class",
+      "member": "attributes",
+      "test_anchor": "RoslynObj.Tests/ContextualAssociationProjection.cs:30"
+    },
+    {
+      "owner": "a_base_class",
+      "member": "data_section_base_class",
+      "test_anchor": "RoslynObj.Tests/ContextualAssociationProjection.cs:40"
+    }
+  ],
+  "counts": {
+    "mapped_optional_source": 89,
+    "excluded_list_plumbing": 26,
+    "excluded_bookkeeping": 67,
+    "excluded_user_scope": 126,
+    "mapped_verified": 1522,
+    "inactive_stock_generator": 81,
+    "excluded_frontend_only": 59,
+    "inactive_upstream_configuration": 7,
+    "excluded_optional_source": 15,
+    "excluded_private": 4,
+    "mapped_pending_validation": 2,
+    "mapped_stock_input_unavailable": 2
+  },
+  "native14_stage_gates": "all14 unchanged316/26/tool; all14 resolved guards false; new builds0"
+}

@@ -1,0 +1,24 @@
+{
+  "fields": [
+    "a_source_correspondence.has_associated_pragma",
+    "a_pragma.entity"
+  ],
+  "recommendation": "No nonnull pragma-target producer in inspected fresh selected native/source/usl21 configurations; classify explicit guarded stock boundary, retain direct target writer/API. No test-infrastructure profile or source adjacency reconstruction justified.",
+  "resolved_evidence": "edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/selected-resolved-guards.json: native/source/usl21 INCLUDE_EDG_TEST_PRAGMAS=FALSE, INCLUDE_UNRECOGNIZED_PRAGMAS_IN_IL=FALSE, ADD_CHECKING_PRAGMAS_FOR_INTERNAL_TESTING=FALSE; BACK_END_IS_CP_GEN_BE=0. GENERATE_SOURCE_SEQUENCE_LISTS source1/native0/usl210.",
+  "producer_audit": [
+    "il.c28387-28457 add_entity_pragma_to_list sets target tag/pointer and sourcecorresp or statement has_associated_pragma together. Only actual call is pragma.c832 via add_pragma_to_il; nonentity alternative822 has no target.",
+    "pragma.c890-928 create_il_entry_for_pragma gets actual symbol or statement target, with no source-position inference.",
+    "All12 next-construct registrations: printf_args1558,scanf_args1573,lint_argsused1588,lint_varargs_count1603,lint_notreached1618 have autoILfalse; define_type_info1769 autoIL BACK_END_IS_CP_GEN_BE; test_next_decl2018,test_next_statement2033,test_bind_next_pass2101 require INCLUDE_EDG_TEST_PRAGMAS; checking2118 requires ADD_CHECKING_PRAGMAS_FOR_INTERNAL_TESTING; il_display2163 autoILfalse; unrecognized2351 requires INCLUDE_UNRECOGNIZED_PRAGMAS_IN_IL and !GENERATE_SOURCE_SEQUENCE_LISTS.",
+    "pragma.c1175-1176 and1265-1268 general next-construct processing only materializes target for autoILtrue descriptions. Additional manual nonnull callback1486 is under INCLUDE_EDG_TEST_PRAGMAS1465-1507.",
+    "Other create_il_entry_for_pragma calls in preproc.c3508,3527,3641,4306,4477,4495,4708,4912 and attribute.c10539 pass NULL symbol/statement; preproc.c3005 add_pragma_to_il likewiseNULL. pragma.c998/1011/1078 next-token/immediate paths passNULL.",
+    "decls.c14222-14239 record_arg_pragma stores actual argument-checking kind on routine-type supplement, not a target pragma. Existing semantic facts should be verified via that direct mapping, not missing pragma descriptor reconstruction.",
+    "decl_spec.c733-824 only rebinds existing pragma targets/flags on C23 canonicalization; lower_il.c18415-18444 transfers an existing associated pragma when rewriting statement. Neither creates a seed.",
+    "il_def.h3386-3390 has_associated_pragma describes lookup hint for actual target relation; no separately fabricated rawflag or target-list equality needed."
+  ],
+  "correction_to_prior_recipe": "Earlier association-pragma3-review.json inferred possible enabled test pragma from EDG_TEST_VERSION. Resolved translation-unit macro evidence supersedes that inference: INCLUDE_EDG_TEST_PRAGMAS remains FALSE. Prior recipe was explicitly uncompiled; new valid source compiled with warnings and no target pragmas. Do not mark positive.",
+  "limits": [
+    "Review covers pinned source and the three actual resolved profiles supplied; coordinator/native should verify other accepted overlays do not activate these switches before broad14-profile wording.",
+    "Unknown pragma text is optional unrecognized-source data; disabled EDG self-test pragmas are testing infrastructure. Known pragma effects remain authoritative in their resolved EDG fields.",
+    "No root builds/exports/edits; retain existing semantic mappings and no core changes."
+  ]
+}

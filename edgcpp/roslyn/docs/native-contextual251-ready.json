@@ -1,0 +1,109 @@
+{
+  "checkpoint_base": "270b7700be58c4b756fb2802a362651584310c13",
+  "schema_contract": "4bb94e5feda94e85fe4b6fe4e8eb5f3494f3b112d14a56dc71e6b069861a2559",
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/smoke.py",
+      "sha256": "a27e4d57caf4da5b90b68cc9842c93693ad1503bf53a2460edee9f54b99b7574"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/contextual_bases.cpp",
+      "sha256": "a732b49a1dce307cf434732bcbcf23d6343ffc79a9e249bc9cb4425f025864fa"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/associated_pragma_orphans.cpp",
+      "sha256": "c944a817b75458cdda10277efb730221c7c1d0312b3943634dd623e948ade715"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/tests/fixtures/embedded_virtual_bases.cpp",
+      "sha256": "067ab3c343f896053f9157678fa016e236c4f7b3a7d8f13fe095e7800dd0c17a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/NATIVE_RESTART.md",
+      "sha256": "02550a160d1318dc276dd0401922948bbc898c5016cfe9a16ff5f5b5a0aa5f06"
+    }
+  ],
+  "candidate_owned_paths": 4,
+  "restart_note_untracked": true,
+  "canonical_backend_changed": false,
+  "configuration_changed": false,
+  "new_strict_builds": 0,
+  "previous_compiled_profiles_verified": 14,
+  "compiler_export_gate_commands_running": false,
+  "validation_instances": 5,
+  "unique_objects": 5,
+  "input_count": 3,
+  "artifacts": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma",
+  "evidence_files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/all-profile-results-final.json",
+      "sha256": "e3f9490b56915a64be03b4beac3570deab1c7528a989ff86484400b23329a8ec"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/build-results-final.json",
+      "sha256": "c0e4c5349570f16fae39c4a6fb00324e5802b9957ec6165d4b42fee20a498f1e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/backend-hashes-start.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/backend-hashes-final.json",
+      "sha256": "bc4dbb8c75c86b24d1ee496b2e3c750bc6206c85ea9607723323c4c8e31c6566"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/stage-verification-final.json",
+      "sha256": "cba18880018ddfc4e60e833bbee32e006cdedf5c0828d5cc3c75bd2f7c8e4187"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/validation-summary-final.json",
+      "sha256": "039bc00fe21fa4f8d9fabddf40afdd74192ea7c8138266597a34552cc3b8817e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/gate-final.log",
+      "sha256": "16c4d7a03c2124de30a8f0a8bd01b2eaf33436034a1566621052aa3087957cfb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/activation-proof.json",
+      "sha256": "bcb034e52c1e79550ed3ed9e7faa7273303f66689606be7378bf5fcaeb7e73d9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/activation-proof.py",
+      "sha256": "b26b2b29451972b5feb0f89fd5398c82f887abec0dc2c2d57266e6c5de74e1f1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/field-evidence.tsv",
+      "sha256": "e278d8b781f92511f305585c99e937177964dc0adfa683af3478e3e4d324572d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/selected-resolved-guards.json",
+      "sha256": "59a912242cc0dbd87eff22d841e4fb72af44134721fe6ad5ba458ac1f9639513"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/resolved-guards-all14.json",
+      "sha256": "fcb2a85b50e137f5d45e3f1425bb42b40aa65b630ef4ea4e51bcebf13fee7eaf"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/roslynobj/root251/contextual-base-pragma/resolve-guards.py",
+      "sha256": "2879dec04556a9fcb79ed5da4fb9e0cbb853b2ac5a7cd2a9816b12b9ace24f4a"
+    }
+  ],
+  "field_evidence": "/tmp/roslyn-native-contextual-base-pragma-evidence251.tsv",
+  "public_gate": "Managed final5 PASS103/self73/build0/generator/literal/whitespace; /tmp/roslyn-managed-ready-contextual251.json frozen.",
+  "selected_fields": 7,
+  "positive_fields": 4,
+  "variant_count": 0,
+  "actual_positives": [
+    "source/native contextual override Root to Middle",
+    "native contextual Middle primary Root distinct from record primary Middle",
+    "source base attribute roslyn_probe::marker",
+    "USL21 virtual Root data section contextual Middle"
+  ],
+  "retention_limits": [
+    "Test, unknown and internal checking pragma routes resolve FALSE in all14 actual current configurations; no pragma-target/presence positive from the accepted recipe, no adjacency or raw-bit reconstruction. Existing writer/API retained.",
+    "Pinned fresh namespace alias factory inserts actual innermost namespace/file list, not a function orphan list; canonical alias/target and exact recorded membership survive. Parent/root reviewed inactive_stock_generator disposition; existing nullable header field/writer/API retained without future-input universal exclusion."
+  ],
+  "hold": true,
+  "guard_disposition_profiles": 14,
+  "disposition_fields": 3
+}
