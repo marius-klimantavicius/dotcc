@@ -45,9 +45,10 @@ not build/run/export or mutate Git.
 
 The expanded configured SQL matrix now passes native/JIT/AOT, all 12 cases /
 129 statements; compact receipt is `acceptance/sqlite/sql-features-report.json`.
-Its six phases include original 43-statement JIT compatibility. Native maintenance
-snapshot/RBU oracle passes at `t4/native-maintenance-1/native-maintenance.json`;
-generated counterpart remains in progress.
+Its six phases include original 43-statement JIT compatibility. Snapshot/RBU lifecycle now passes native/JIT/AOT, all five phases, in
+`acceptance/sqlite/maintenance-report.json`. Extended API JIT passes; AOT is
+running. Readability scalar-switch/pure-discard changes are frozen in snapshot13,
+focused proof then new complete publication/build/runtime are queued.
 
 Remaining T4: snapshot/carray/normalize and
 metadata APIs; RBU; cross-process locking/shared-cache/unlock-notify and tokenizer

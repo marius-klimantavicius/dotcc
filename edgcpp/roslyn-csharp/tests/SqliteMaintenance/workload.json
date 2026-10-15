@@ -1,0 +1,51 @@
+{
+  "workloadVersion": 1,
+  "scope": "finite single-process snapshot WAL retention and resumable RBU update",
+  "snapshot": {
+    "setup": [
+      "PRAGMA page_size=4096",
+      "PRAGMA journal_mode=WAL",
+      "PRAGMA wal_autocheckpoint=0",
+      "CREATE TABLE item(id INTEGER PRIMARY KEY,label TEXT,qty INTEGER)",
+      "INSERT INTO item VALUES(1,'one',11),(2,'two',22),(3,'three',33)"
+    ],
+    "mutations": [
+      "BEGIN IMMEDIATE",
+      "UPDATE item SET label='changed',qty=111 WHERE id=1",
+      "INSERT INTO item VALUES(4,'four',44)",
+      "COMMIT"
+    ],
+    "read": "SELECT id,label,qty FROM item ORDER BY id",
+    "initializeReplay": "PRAGMA application_id",
+    "checkpoint": "PRAGMA wal_checkpoint(TRUNCATE)",
+    "integrity": "PRAGMA integrity_check"
+  },
+  "rbu": {
+    "targetSetup": [
+      "PRAGMA page_size=4096",
+      "PRAGMA journal_mode=DELETE",
+      "CREATE TABLE item(id INTEGER PRIMARY KEY,label TEXT,qty INTEGER)",
+      "CREATE INDEX item_label ON item(label)",
+      "INSERT INTO item VALUES(1,'one',11),(2,'two',22),(3,'three',33)"
+    ],
+    "updateSetup": [
+      "CREATE TABLE data_item(id INTEGER,label TEXT,qty INTEGER,rbu_control)",
+      "INSERT INTO data_item VALUES(1,'changed',111,'.xx'),(2,NULL,NULL,1),(4,'four',44,0)",
+      "CREATE TABLE rbu_count(tbl TEXT PRIMARY KEY,cnt INTEGER) WITHOUT ROWID",
+      "INSERT INTO rbu_count VALUES('data_item',3)"
+    ],
+    "read": "SELECT id,label,qty FROM item ORDER BY id",
+    "indexRead": "SELECT id,label FROM item INDEXED BY item_label WHERE label>='c' ORDER BY label,id",
+    "integrity": "PRAGMA integrity_check",
+    "maximumSteps": 128,
+    "maximumPauseSteps": 16
+  },
+  "limits": [
+    "Single process with sequential connections; no threads, races, sleeps or failure injection.",
+    "Snapshot handles belong to one live WAL generation. A pinned read transaction retains history; no compare/open after WAL deletion or close.",
+    "snapshot_recover runs outside a read transaction on the live WAL; orphaned/PERSIST_WAL recovery is not covered.",
+    "RBU uses a rollback-journal target, ordinary INTEGER PRIMARY KEY rows, one secondary index, explicit separate state database and default VFS.",
+    "RBU vacuum, custom VFS/rename, deltas, virtual tables, constraints, interrupted-process recovery and concurrent writers remain separate.",
+    "Exact rows and finite state/progress traces are established by the separate pinned native oracle, then compared by generated application bodies."
+  ]
+}

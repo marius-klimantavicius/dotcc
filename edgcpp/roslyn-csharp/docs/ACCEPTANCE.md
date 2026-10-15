@@ -52,6 +52,9 @@ workloads accidentally. Record the exact providers loaded by the generated app.
 The initial T4 stateful slice passes JIT/NativeAOT two-connection snapshot, BUSY,
 rollback, checkpoint and close/reopen checks, plus both closed-file interchange
 directions. See [bounded evidence](../acceptance/sqlite/stateful-report.json).
+Ownership/preupdate/session/backup and the expanded configured SQL feature
+matrix also pass JIT/NativeAOT. [T4-PROGRESS.md](T4-PROGRESS.md) distinguishes
+completed finite rows from remaining API/concurrency/failure/readability work.
 The broader matrix below remains required.
 
 ## Required runtime workloads

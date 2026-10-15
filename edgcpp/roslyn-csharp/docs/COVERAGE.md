@@ -10,7 +10,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
 | T2 | Closed for bounded fixture contracts | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md), [two-unit CLI](T2-PROGRAM.md), [native aggregate boundaries](T2-AGGREGATE-ABI.md) and source review pass | Broader forms remain explicitly unsupported/unexercised; broader C++ and target profiles remain later work |
 | T3 | Closed for complete source and first execution | [Production audit](../acceptance/sqlite/production-audit.json): all 4,212 bodies, 103 requirements, five completion hashes; 19 JIT/AOT execution phases pass | Broader configured behavior/provider audit/readability belongs to T4 |
-| T4 | In progress | Initial exact SQL observations; finite native persistence/WAL/locking oracle prepared and run | Generated stateful/interchange proof, all remaining configured rows, broader APIs/error/callback/provider and readability/restart evidence |
+| T4 | In progress | [Current matrix](T4-PROGRESS.md): JIT/AOT persistence/interchange, ownership/preupdate/session/backup and expanded 12-case/129-statement SQL proofs pass | Generated extended API/snapshot/RBU, cross-process/shared-cache/tokenizer, controlled failure/provider audit and readability/restart rows |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
 | T6 | Not implemented | None | Additional ABIs/platforms and bounded multi-unit scale with dependency closure |
 
@@ -22,8 +22,9 @@ The pinned SQLite input is immutable:
 `/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj`, SHA256
 `e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c`.
 Generated outputs and long logs use `/mnt/storage/roslynobj-csharp-20261015`.
-No generated application currently loads native SQLite, and no generated SQLite execution
-has been claimed.
+Generated SQLite execution is proven in JIT and NativeAOT. Its loaded-library
+inventories contain generated ABI/system/runtime libraries and exclude native
+SQLite application libraries; the native reference runs separately.
 
 ## First T1 execution evidence
 
