@@ -396,3 +396,13 @@ snapshot13 or its CLI binaries. Once published, run fresh production harness,
 then use new completion/API evidence for concurrency/failure/tokenizer fixtures.
 Native concurrency and controlled heap/pager-failure oracles now pass; workers
 prepare generated counterparts in their NEW disjoint directories.
+
+
+Concurrency gate now passes all five measured phases against final source13:
+`t4/concurrency-{jit,aot}-result-1/concurrency-report.json`, exact 29 native
+observations, worker release/empty callback errors/source freezes. Compact
+`acceptance/sqlite/concurrency-report.json`. The serialized AOT driver continues
+failure/tokenizer/provider proofs; do not start another builder. Provider audit
+reconciles all 103 selections and distinguishes 16 host targets + 1 logical-errno
+substitution with exact focused evidence from 71 untraced native selections;
+no new all 88 invocation requirement or whole-provider-variant claim.
