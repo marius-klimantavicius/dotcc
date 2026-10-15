@@ -62,7 +62,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
         }).ToArray();
         while (pending.TryDequeue(out var entity)) entities.Add(Describe(entity));
         var manifest = input.Manifest;
-        return Row(("ProbeVersion", 1), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
+        return Row(("ProbeVersion", 3), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
             ("Semantics", "Local locators use only public semantic equality. Public structural paths preserve parent/role/ordinal and repeated identities; they are not an execution schedule, reachability proof or inferred ownership. Metadata boundaries are recorded without executing or expanding them into body occurrences. Typed facets independently record actual call/initialization/control relationships; matching facets can alias a single operand and must not be replayed."),
             ("Bounds", new { MaximumEntities, MaximumOccurrences, MaximumDepth, CachedRows = 4096, CachedPages = 128, PageSize = 128 }),
             ("Provenance", new { manifest.FormatMajor, manifest.FormatMinor, manifest.ArtifactIdentity, manifest.Producer,
@@ -125,6 +125,14 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 row["IsTrivialCopyFunction"] = function.IsTrivialCopyFunction; row["IsTrivialDestructor"] = function.IsTrivialDestructor;
                 row["PrimaryEntry"] = Ref(function.PrimaryEntry);
                 row["AlternateEntryPoints"] = function.AlternateEntryPoints.Select(entry => Ref(entry)).ToArray();
+                row["PolicyFacts"] = new { function.Details.IsWeak, function.Details.IsWeakref, function.Details.IsGnuAlias,
+                    function.Details.IsIfunc, function.Details.IsUseComdat, function.Details.IsAliasEntry,
+                    AliasedRoutine = Ref(function.GnuSupplement?.AliasedRoutine),
+                    TargetedVersions = function.GnuSupplement?.TargetedVersions.Select(version => Ref(version)).ToArray(),
+                    Representative = Ref(function.GnuSupplement?.Representative),
+                    IsRepresentative = function.GnuSupplement?.Details.IsRepresentative,
+                    IsTargetSpecificVersion = function.GnuSupplement?.Details.IsTargetSpecificVersion,
+                    ResolverRequired = function.GnuSupplement?.Details.ResolverRequired };
                 row["Signature"] = Signature(function.Signature);
                 row["ExecutionParameters"] = function.Parameters.Select(Parameter).ToArray();
                 row["SourceParametersForDisplayOnly"] = function.SourceParameters.Select(Parameter).ToArray();
@@ -164,7 +172,33 @@ internal sealed class LifetimeProbe(RoslynObject input)
             case VariableSymbol variable:
                 row["EntityKind"] = "variable"; row["Type"] = Ref(variable.Type); row["Storage"] = variable.SymbolDetails.Storage?.Name;
                 row["StorageDuration"] = variable.Details.StorageDuration?.Name; row["InitializationKind"] = variable.InitializationKind.Name;
-                row["InitializerAssociation"] = Ref(variable.Initializer); break;
+                row["InitializerAssociation"] = Ref(variable.Initializer);
+                row["InitializerOperationRole"] = variable.Initializer?.Operation?.RepresentationRole.Name;
+                row["DeclaredInitializerAssociation"] = Ref(variable.Details.Initializer);
+                row["DeclaredConstantInitializer"] = Ref(variable.Details.ConstantInitializer);
+                row["ConstantInitializer"] = variable.ConstantInitializer is { } constantInitializer ? new
+                {
+                    Constant = Ref(constantInitializer), Type = Ref(constantInitializer.Type), ValueKind = constantInitializer.Value.Kind.Name,
+                    AssociatedStorageVariable = Ref(constantInitializer.AssociatedStorageVariable)
+                } : null;
+                var projection = variable.ExceptionTable;
+                row["ExceptionTable"] = projection is null ? null : new
+                {
+                    Kind = projection.Kind.Name, Owner = Ref(projection.Owner), Function = Ref(projection.FunctionEh.Routine),
+                    RegionTable = Ref(projection.FunctionEh.RegionTable), ArrayTable = Ref(projection.FunctionEh.ArrayTable),
+                    InitialState = Number(projection.FunctionEh.InitialState), NullState = Number(projection.FunctionEh.NullState)
+                };
+                row["LocalStaticInitializations"] = variable.LocalStaticInitializations.Select(local => new
+                {
+                    Variable = Ref(local.Variable), Kind = local.Kind.Name, Initialization = Ref(local.Initialization),
+                    InitializationKind = local.Initialization?.Kind.Name, OperationRole = local.Initialization?.Operation?.RepresentationRole.Name,
+                    Target = Ref(local.Initialization?.Target), Constructor = Ref(local.Initialization?.Constructor), Destructor = Ref(local.Initialization?.Destructor),
+                    ExpressionAssociation = Ref(local.Initialization?.Expression), Constant = Ref(local.Constant), ConstantKind = local.Constant?.Value.Kind.Name,
+                    Lifetime = Ref(local.Lifetime), IsConditional = local.Initialization?.Details.IsConditional,
+                    IsReusedValue = local.Initialization?.Details.IsReusedValue, IsConditionalGuard = local.Initialization?.IsConditionalGuard,
+                    IsVlaDeallocation = local.Initialization?.IsVlaDeallocation, IsFreeingOfExceptionObject = local.Initialization?.IsFreeingOfExceptionObject
+                }).ToArray();
+                break;
             case FieldSymbol field:
                 row["EntityKind"] = "field"; row["Type"] = Ref(field.Type); break;
             case ParameterType descriptor:

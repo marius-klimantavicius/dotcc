@@ -184,15 +184,12 @@ public sealed partial class CSharpEmitter
 
         private void EmitFunction(FunctionSymbol function)
         {
-            ValidateOrdinaryRoutineRoles(function.Signature);
+            ValidateGeneratedDefinitionRoles(function);
             if (IsUInt128Value(function.ReturnType) || function.Parameters.Any(parameter => IsUInt128Value(parameter.Type)))
                 throw Limit("Unsigned 128-bit execution parameters/results require a separately exercised call representation.", "integer128-call");
-            if (function.Parameters.Any(p => p.Role.Name != "ordinary_parameter"))
-                throw Limit("An execution parameter has a hidden role requiring an exercised ABI adapter.", "parameter");
             if (function.Signature.IsVariadic) ValidateNativeScalarSignature(function.Signature);
             var body = function.Body!;
-            if (body.ExceptionHandling.CleanupRegions.Count != 0 || body.Lifetimes.Any(l => l.Cleanups.Count != 0))
-                throw Limit("This body has retained lifetime cleanup obligations; T1 does not implement C++ cleanup.", "lifetime");
+            ValidateNormalCleanupBody(function);
             var localNames = new HashSet<string>(StringComparer.Ordinal);
             foreach (var parameter in function.Parameters)
             {
@@ -201,6 +198,7 @@ public sealed partial class CSharpEmitter
             }
             foreach (var variable in body.Locals)
             {
+                if (IsOmittedNormalRegionTable(variable)) continue;
                 if (TryAdmitStaticLocal(variable)) continue;
                 if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0 || variable.Details.StorageDuration?.Name is "static" or "thread")
                     throw Limit("Static/thread local storage requires the T2 initialization contract.", "storage");
@@ -228,6 +226,7 @@ public sealed partial class CSharpEmitter
             writer.Open();
             foreach (var variable in body.Locals)
             {
+                if (IsOmittedNormalRegionTable(variable)) continue;
                 if (IsAllocatedStaticLocal(variable)) continue;
                 writer.Line($"{TypeName(variable.Type)} {names[variable]};");
                 if (MemoryRepresentationType(variable.Type) is PointerType) writer.Line($"{names[variable]} = {PointerZero(variable.Type)};");
@@ -543,7 +542,11 @@ public sealed partial class CSharpEmitter
             }
             if (type is PointerType pointer)
             {
-                if (pointer.IsReference) throw Limit("Reference storage adaptation has no exercised T1 contract.", "reference");
+                if (pointer.IsReference)
+                {
+                    if (TryGeneratedReferenceType(pointer, out var referenceType)) return referenceType;
+                    throw Limit("Reference storage requires a selected generated lifetime adapter.", "reference");
+                }
                 ValidateValueAddress(pointer.PointeeType);
                 if (TryVoidPointerType(pointer, out var voidPointer)) return voidPointer;
                 if (MemoryRepresentationType(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }

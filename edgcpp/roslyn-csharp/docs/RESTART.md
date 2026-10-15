@@ -44,10 +44,22 @@ acceptance. Public inventory records 16 normal required definitions/no required
 imports and 13 exceptional definitions/one required EDG runtime helper
 `__destroy_exception_object`. Retained `_ZTIi` is not a required native import;
 actual type facts still govern exception matching. The focused public lifetime
-probe is being implemented; generated lifetime execution has not run.
+probe passes; facts 4 disclose the actual compiler-table projection and empty
+static descriptors. The bounded normal adapter now passes production CLI,
+native/JIT/NativeAOT complete observations twice from immutable
+`t5/normal-source-3`; [normal receipt](../acceptance/lifetimes/normal-report.json)
+records all 15 expected phase outcomes, source/input freezes and deterministic
+publication. Output is `t5/normal-cli-generated-3`. All 16 definitions are
+represented; C2/D2 bodies are separate and C#-compiled, not runtime-activated by
+this fixture. Expected weak and exceptional rejection checks pass. The unused
+alias negative-test expectation was corrected and preserved, not turned into
+an alias execution claim. No builder remains active.
 Keep native-boundary unwinding,
 lexical cleanup reconstruction and broader inheritance/TLS/arrays outside this
-first slice. EDG and its recorded execution remain authoritative.
+first slice. EDG and its recorded execution remain authoritative. Next is the
+approved generated-only integer [EH contract](T5-EH-CONTRACT.md): destination
+search must precede cleanup and payload ownership follows the selected handler.
+Normal emitter/checker files are frozen for checkpoint; runtime has not changed.
 
 Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
 Root supervises read-only. Two gpt-6.1-sol xhigh workers are available: inventory

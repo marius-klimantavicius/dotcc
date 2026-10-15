@@ -1,6 +1,6 @@
 # Translation coverage and evidence
 
-Updated 2026-10-15. The design at `e40280bea` is approved. Implementation starts
+Updated 2026-10-16. The design at `e40280bea` is approved. Implementation starts
 from the public RoslynObj 2.0 reader (with its exact published 1.0 admission).
 EDG is the semantic authority. No prior dotobj implementation or evidence is used.
 
@@ -11,7 +11,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | T2 | Closed for bounded fixture contracts | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md), [two-unit CLI](T2-PROGRAM.md), [native aggregate boundaries](T2-AGGREGATE-ABI.md) and source review pass | Broader forms remain explicitly unsupported/unexercised; broader C++ and target profiles remain later work |
 | T3 | Closed for complete source and first execution | [Production audit](../acceptance/sqlite/production-audit.json): all 4,212 bodies, 103 requirements, five completion hashes; 19 JIT/AOT execution phases pass | Broader configured behavior/provider audit/readability belongs to T4 |
 | T4 | Closed for configured finite SQLite acceptance | [Consolidated receipt](../acceptance/sqlite/t4-acceptance.json), [row table](T4-PROGRESS.md): native/JIT/AOT behavior, providers, readability/resources and restart pass | Explicit unexercised variants remain; broader C++/portability/scale belong to T5/T6 |
-| T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
+| T5 | Open; bounded normal lifetimes exercised | [Normal C++ lifetime proof](T5-NORMAL-LIFETIMES.md): production CLI, native/JIT/AOT complete twice-run observations, selected receiver/result/reference roles and explicit destruction | Generated exception handling next; constructor failure/arrays, rethrow/termination, inheritance/dispatch, RTTI/member pointers, guards/TLS and broader ABI forms remain open |
 | T6 | Not implemented | None | Additional ABIs/platforms and bounded multi-unit scale with dependency closure |
 
 Capability rows will record captured form, projection/provider, activation,

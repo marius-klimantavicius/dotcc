@@ -346,9 +346,13 @@ internal sealed partial class InventoryState
             else if (function.BodyState.Name == "definition")
                 Error("ROC1400", "A recorded executable definition has no retained body.", input.Path, locator, "body");
             if (function.Signature.IsVariadic) Count("signature", "variadic", required, locator);
-            if (function.GnuSupplement?.AliasedRoutine is not null || function.PrimaryEntry is not null
+            var independentAlternateEntry = function.PrimaryEntry is not null && request.Inputs.Length == 1
+                && DefinedAlternateEntryPolicy.HasIndependentBody(function, functionList);
+            if (function.GnuSupplement?.AliasedRoutine is not null || function.PrimaryEntry is not null && !independentAlternateEntry
                 || function.Details.IsWeak == true || function.Details.IsIfunc == true)
                 Count("link-policy", "alias-weak-ifunc-alternate-entry", required, locator);
+            if (independentAlternateEntry)
+                Count("signature", "defined-constructor-destructor-alternate-entry", required, locator);
             reports.Add(function, new(locator, function.Name, function.CurrentName, LinkageName(function),
                 function.SourceCorrespondence?.Linkage.Name, function.IsDefined, function.BodyState.Name, required,
                 required ? "executable-definition" : function.Body is not null ? "retained-nonexecuting-body" : "no-executable-body",

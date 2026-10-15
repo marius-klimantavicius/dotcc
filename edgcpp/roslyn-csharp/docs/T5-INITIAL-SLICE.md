@@ -1,8 +1,8 @@
 T4 finite SQLite acceptance is committed at `53dec72d7`; bounded T5 activation
 is now open. Both candidates have genuine captures, twice-run separate native
-observations and focused public-model reports. Generated lifetime execution
-is not yet accepted. This document changes no product admission or emitter
-behavior. [PLAN.md](PLAN.md) and
+observations and focused public-model reports. The bounded normal slice now has
+[production CLI/JIT/NativeAOT acceptance](T5-NORMAL-LIFETIMES.md); exceptional
+execution remains the next separate implementation. [PLAN.md](PLAN.md) and
 [ACCEPTANCE.md](ACCEPTANCE.md) require ordered normal/exceptional lifetime
 evidence; SQLite success does not establish these C++ contracts.
 

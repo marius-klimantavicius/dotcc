@@ -14,6 +14,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanExpressionCore(ExpressionOperation expression)
         {
+            if (TryPlanNormalLifetime(expression, out var normalLifetime)) return normalLifetime;
             var type = CsType.Value(expression.Type);
             switch (expression)
             {
@@ -337,7 +338,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanCall(CallOperation call)
         {
-            if (call.Receiver is not null || call.Call.ReturnSlot is not null) throw Limit("Hidden receiver/result-slot calls need selected ABI plans.", "call");
+            ValidateGeneratedCallRoles(call);
             if (call.Operator.EvalLeftToRight && call.Operator.EvalRightToLeft)
                 throw Limit("This retained combination of call constraints has no selected plan.", "sequencing");
             var rawOperands = call.Operands;

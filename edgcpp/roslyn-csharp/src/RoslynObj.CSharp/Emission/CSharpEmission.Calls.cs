@@ -59,8 +59,10 @@ public sealed partial class CSharpEmitter
         {
             var raw = Unwrap(type);
             if (raw.Kind.Name == "tk_void" && allowVoid) return;
-            if (raw is PointerType)
+            if (raw is PointerType pointer)
             {
+                if (pointer.IsReference)
+                    throw Limit("Native reference parameters/results require a separately exercised C++ boundary adapter.", "native-abi");
                 if (type.Size != 8 || type.Alignment != 8 || raw.Size != 8 || raw.Alignment != 8)
                     throw Limit("Native pointers require the captured natural 8-byte scalar representation.", "native-abi");
                 _ = TypeName(type);
@@ -154,7 +156,7 @@ public sealed partial class CSharpEmitter
 
         private string EmitCall(CallOperation call)
         {
-            if (call.Receiver is not null || call.Call.ReturnSlot is not null) throw Limit("Hidden receiver/result-slot adaptation requires a proven ABI representation.", "call");
+            ValidateGeneratedCallRoles(call);
             if (call.Operator.EvalRightToLeft && call.Arguments.Count > 1 && call.Arguments.Any(a => HasEffects(a.Value)))
                 throw Limit("A call with right-to-left evaluation and effectful arguments requires explicit sequencing temporaries.", "sequencing");
             if (call.Operator.EvalRightToLeft && call.Callee is not ReferenceOperation { Target: FunctionSymbol } &&
