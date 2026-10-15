@@ -1,9 +1,10 @@
 # Translation milestones and acceptance
 
-Status: approved gates, with implementation in progress. T0's complete SQLite
-inventory, T1's initial runnable fixture gate and T2's bounded storage/calls/program
-fixture gate are closed. The [explicit limits](T2-REMAINING.md) remain; SQLite T3
-implementation is next.
+Status: approved gates, with implementation in progress. T0 inventory, T1 initial
+fixtures, T2 bounded storage/calls/program contracts and T3 complete unchanged
+SQLite source publication plus first JIT/NativeAOT execution are closed. The
+[explicit limits](T2-REMAINING.md) remain. T4 configured behavioral/readability
+acceptance is active; broader C++ and scale remain later gates.
 See [the design](PLAN.md) and [current evidence](COVERAGE.md).
 
 ## Milestones

@@ -6,11 +6,11 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 
 | Gate | Current state | Evidence | Remaining requirements |
 | --- | --- | --- | --- |
-| T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
+| T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | T0 is inventory only; execution is proved separately under T2/T3 |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | Closed for bounded fixture contracts | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md), [two-unit CLI](T2-PROGRAM.md), [native aggregate boundaries](T2-AGGREGATE-ABI.md) and source review pass | Broader forms remain explicitly unsupported/unexercised; actual SQLite needs move into T3 |
-| T3 | In progress | [Actual full-object diagnostics and bounded execution proofs](T3-PROGRESS.md); 57 first blockers remain in pass 3 | Complete SQLite emission, all tested provider contracts/CLI integration, first SQL in JIT and NativeAOT |
-| T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
+| T2 | Closed for bounded fixture contracts | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md), [two-unit CLI](T2-PROGRAM.md), [native aggregate boundaries](T2-AGGREGATE-ABI.md) and source review pass | Broader forms remain explicitly unsupported/unexercised; broader C++ and target profiles remain later work |
+| T3 | Closed for complete source and first execution | [Production audit](../acceptance/sqlite/production-audit.json): all 4,212 bodies, 103 requirements, five completion hashes; 19 JIT/AOT execution phases pass | Broader configured behavior/provider audit/readability belongs to T4 |
+| T4 | In progress | Initial exact SQL observations; finite native persistence/WAL/locking oracle prepared and run | Generated stateful/interchange proof, all remaining configured rows, broader APIs/error/callback/provider and readability/restart evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
 | T6 | Not implemented | None | Additional ABIs/platforms and bounded multi-unit scale with dependency closure |
 
@@ -100,7 +100,7 @@ results are 147423/45/751 for storage/copy/callback fixtures. The separate
 [T1 regression](../acceptance/storage-callbacks/t1-regression.json) passes all
 23 phases after these emitter/runtime changes. At that checkpoint typed expression planning and
 SysV cursors were compiled baselines; subsequent primitive variadic acceptance is
-recorded below. Later sequencing/program receipts establish their bounded integration. T2 remains open; see the explicit limits in
+recorded below. Later sequencing/program receipts establish their bounded integration. This original checkpoint left T2 open; the later bounded gate is now closed. See the explicit limits in
 [T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).
 
 The separate pinned native SQLite oracle passes 43 SQL statements across core
@@ -151,3 +151,12 @@ T3 diagnostic emission now reaches all 4,212 full SQLite bodies with zero emitte
 diagnostics. This is emission evidence only: the first full C# build has 169
 projection errors, and generated SQL execution and production publication remain
 open. See [the exact progress and compiler evidence](T3-PROGRESS.md).
+
+
+T3 now closes with the unchanged full-feature object published through the
+production CLI and executed in fresh JIT/NativeAOT processes. The
+[19-phase production proof](../acceptance/sqlite/generated-production-report.json)
+validates real completion/request/public requirements, exact 46 initial statements
+across two modes, four hashes identical to the independent diagnostic emission,
+source/input freezes and reader-independent dependencies. See
+[the detailed execution boundary](SQLITE-EXECUTION.md); T4 is not complete.

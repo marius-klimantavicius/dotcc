@@ -275,3 +275,18 @@ production execution verification are next, followed by remaining T4.
 Emission worker owns explicit production validation mode in harness metadata;
 inventory worker owns NEW finite stateful WAL/locking/interchange workload and
 native oracle paths. No product source changes are in flight.
+
+
+T3 is now CLOSED: production CLI translation/publication and fresh JIT/NativeAOT
+bind/reset/clear plus 43 SQL statements pass. Production report is
+`t3/sqlite-generated-production-run-1/generated-sqlite-report.json` SHA
+`dafaa011dae26c81d3c9f0b6ac7f441e848696873ad9ce1f0f86778a695e7c9a`.
+All 19 phases/source freezes pass; all four emitted files match diagnostic pass 6.
+Compact audit is `acceptance/sqlite/production-audit.json`; broader T4 remains open.
+No builder/translation process is running. Worker inventory implements the NEW
+Stateful C# counterpart; finite native40/13/5 modes pass in `t4/native-stateful-2`,
+`native-append-1`, `native-verify-1`. Attempt1 sidecar guard failure remains
+preserved; final verification uses readwrite open without create, no deletion.
+Emission worker production validator/driver is frozen pending checkpoint.
+Next: compile generated stateful counterpart against actual production output,
+run JIT/AOT snapshot/BUSY/persistence and both closed-file interchange directions.

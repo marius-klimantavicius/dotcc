@@ -1,0 +1,100 @@
+{
+  "gate": "T3-complete-SQLite-source-and-initial-execution",
+  "status": "passed",
+  "sourceCheckpoint": "d3a151330",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-11/source-snapshot.json",
+    "sha256": "b418eafe4528255dc32d81c14728a4cbf3b2d49b2f4a077f1f3daf1febfe9eba",
+    "bytes": 66646
+  },
+  "request": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-preparation-1/manifest.json",
+    "sha256": "440a12bda7414fd2c67a26e71830e16cd0f3f333e16ead94c578c0d1fe24456f",
+    "bytes": 99154
+  },
+  "bindingReconciliation": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-preparation-1/binding-reconciliation.json",
+    "sha256": "c3f941ff602d19324eeaeb94bdd5f94c54d10d4587b6c568b9064744bd053ff8",
+    "bytes": 212244
+  },
+  "completion": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+    "sha256": "2380b6aeab39408c31a2a0e6a4975910e50076e4123e211724630a251c16d476",
+    "bytes": 1159
+  },
+  "programReport": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/program-report.json",
+    "sha256": "10d953e5cc91b75cb45a7ab9d918972fcf2c9e4830bf7a9130a9f64394c9693b",
+    "bytes": 36639943
+  },
+  "metrics": {
+    "elapsedSeconds": 427.1054803,
+    "peakWorkingSetBytes": 1969623040,
+    "readerCommands": 8541526,
+    "readerRowsRead": 9490354
+  },
+  "sourceFiles": [
+    {
+      "relativePath": "Generated.cs",
+      "sha256": "51b4fa27fe60bc0a2a378b680805e55df99770971288797906efcf11ea77fdf5",
+      "sizeBytes": 18518886
+    },
+    {
+      "relativePath": "Generated.csproj",
+      "sha256": "c6cbf98d50f4aa823054efafb45d1c75e00909aeb08c5cdf1b91d8bef1c3f195",
+      "sizeBytes": 1449
+    },
+    {
+      "relativePath": "Generated.Abi.c",
+      "sha256": "3b02d6e5d476b6da28c43c4981ba0f668d3a227248872c1e44a629309c5caf7a",
+      "sizeBytes": 1193040
+    },
+    {
+      "relativePath": "Generated.NativeImports.json",
+      "sha256": "a050e7fa3c7bb6fb53b395585cc759b2a8321468e263d887d50262d43887e3bc",
+      "sizeBytes": 320995
+    },
+    {
+      "relativePath": "program-report.json",
+      "sha256": "10d953e5cc91b75cb45a7ab9d918972fcf2c9e4830bf7a9130a9f64394c9693b",
+      "sizeBytes": 36639943
+    }
+  ],
+  "requiredBodies": 4212,
+  "requiredImports": 103,
+  "runtimeIntrinsicFulfillments": 15,
+  "nativeBindings": 88,
+  "allFiveCompletionHashesVerified": true,
+  "execution": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/generated-sqlite-report.json",
+    "sha256": "dafaa011dae26c81d3c9f0b6ac7f441e848696873ad9ce1f0f86778a695e7c9a",
+    "bytes": 295287
+  },
+  "phaseReceipts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-manifest-run-1/run.json",
+      "sha256": "4a928e1c91bc239541dd79d7b39e8e52f1b6134a0fb14142fdfcf6d825055988",
+      "bytes": 1429
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-cli-build-1/run.json",
+      "sha256": "5d3a81c5abede139050415b3dece1f593f0c10da81033c113d1ec17bf2a01cf4",
+      "bytes": 1194
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-cli-translate-2/run.json",
+      "sha256": "f457825375337689df05eea9c7e3bb1606fab6a706d84560c20ce66b6c240cf7",
+      "bytes": 1270
+    }
+  ],
+  "preservedToolingFailure": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-cli-translate-1/run.json",
+    "sha256": "c3b625c199bf55f9f12bdc4472f1f37e0195f4b6f85a0dea98758094d1c6b2fa",
+    "bytes": 1269
+  },
+  "limits": [
+    "T3 source publication and first JIT/NativeAOT execution are complete; broader configured T4 acceptance is open.",
+    "Execution receipt productionComplete=false means broader acceptance; sourcePublished/completionValidated are true.",
+    "No EDG/core changes, object re-export, feature reduction or native SQLite application fallback."
+  ]
+}

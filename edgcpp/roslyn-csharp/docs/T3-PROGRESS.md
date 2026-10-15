@@ -1,7 +1,9 @@
 # SQLite implementation progress
 
-The unchanged full-feature object still has no complete generated project or SQL
-execution. The first full library-emission diagnostic pass reported 596 first
+T3 is now complete: the unchanged full-feature object publishes a complete
+generated project through the CLI and passes first SQL execution in both runtime
+modes. See [production evidence](SQLITE-EXECUTION.md). The following diagnostic
+history preserves earlier incomplete attempts. The first full library-emission diagnostic pass reported 596 first
 blockers in 270.91 seconds. After the bounded control/intrinsic/provider changes,
 the second reports 313 in 298.35 seconds. The third reports 57 in 340.62
 seconds, within the fixed 900-second/8-GiB budget. These are first failures per body/representation, not exhaustive counts
@@ -132,3 +134,7 @@ five-case/43-statement observations, reader-independent runtime dependencies and
 no native SQLite application loaded. Corrected all-thread descendant measurement
 covers the full managed build and AOT compiler within budgets. Production CLI
 translation/publication is running; T3 completion and broader T4 remain open.
+
+
+T3 gate closed after [production source publication and execution](SQLITE-EXECUTION.md).
+All 19 production phases pass; T4 configured acceptance continues separately.

@@ -4,8 +4,11 @@ Status: implementation approved on 2026-10-15 (design commit `e40280bea`).
 T0 complete SQLite inventory and T1 genuine C/C++ fixtures pass their gates.
 The fixtures match native execution in JIT/NativeAOT with deterministic emission.
 T2's bounded storage/calls/program fixture gate now passes, including separately
-proved native aggregate boundaries. SQLite T3 implementation is active, with 57 first blockers in the latest full-object
-diagnostic pass. See the [coverage ledger](docs/COVERAGE.md) and
+proved native aggregate boundaries. The unchanged full SQLite object now emits and builds completely. The initial
+bind/reset/clear and 43-statement SQL workload match native in JIT/NativeAOT.
+Production CLI source publication and its fresh JIT/NativeAOT execution proof
+pass the T3 gate.
+Broader SQLite T4 and C++ execution remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
 This separate consumer will translate a set of `.roslynobj` translation units
@@ -33,5 +36,7 @@ The runner uses the pinned frozen producer and separate native oracle processes.
 An existing immutable fixture export directory can be supplied with `--objects`.
 The [T1 report](acceptance/t1/report.json) records source/build/input/output hashes,
 public layout/template evidence, commands, resource budgets and observations.
-The [SQLite manifest](acceptance/sqlite/README.md) is an inventory input;
-Complete SQLite emission/build/execution and broader C++ support remain open.
+See [SQLite reproduction and provider configuration](acceptance/sqlite/README.md)
+and the [first real-project execution evidence](docs/SQLITE-EXECUTION.md).
+The complete enabled-feature matrix, persistence/locking/interchange, broader
+ownership/error/callback behavior, readability and broader C++ remain separate gates.

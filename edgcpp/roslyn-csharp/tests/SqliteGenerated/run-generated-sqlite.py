@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test an existing genuine, unpublished SQLite candidate; never export or translate."""
+"""Test existing genuine diagnostic or CLI-published SQLite source; never translate."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -26,8 +26,14 @@ def receipt(path: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--candidate", type=Path, required=True)
-    parser.add_argument("--candidate-receipt", type=Path, required=True)
+    parser.add_argument("--mode", choices=("diagnostic", "production"), default="diagnostic")
+    parser.add_argument("--candidate", type=Path)
+    parser.add_argument("--candidate-receipt", type=Path)
+    parser.add_argument("--generated-project", type=Path)
+    parser.add_argument("--completion", type=Path)
+    parser.add_argument("--program-report", type=Path)
+    parser.add_argument("--request-manifest", type=Path)
+    parser.add_argument("--compare-diagnostic-receipt", type=Path)
     parser.add_argument("--artifacts", type=Path, required=True)
     parser.add_argument("--inventory", type=Path, default=Path("/mnt/storage/roslynobj-csharp-20261015/t0/sqlite-inventory-address-closure/program-report.json"))
     parser.add_argument("--oracle-build-receipt", type=Path, default=PROJECT / "acceptance/sqlite/native-oracle-build.json")
@@ -39,20 +45,34 @@ def main() -> int:
         parser.add_argument("--" + name + "-memory-bytes", type=int, default=gib * 1024**3)
     parser.add_argument("--log-bytes", type=int, default=64 * 1024**2)
     args = parser.parse_args()
+    production = args.mode == "production"
+    passed_status = "passed-cli-published-source-initial-sql-tests" if production else "passed-unpublished-candidate-initial-sql-tests"
+    if production and (not all((args.generated_project, args.completion, args.program_report, args.request_manifest)) or args.candidate or args.candidate_receipt):
+        parser.error("Production mode requires --generated-project, --completion, --program-report and --request-manifest, without diagnostic arguments.")
+    if not production and (not args.candidate or not args.candidate_receipt or any((args.generated_project, args.completion, args.program_report, args.request_manifest, args.compare_diagnostic_receipt))):
+        parser.error("Diagnostic mode requires --candidate and --candidate-receipt; production evidence requires explicit production mode.")
     budgets = {name: {"seconds": getattr(args, name + "_seconds"), "memoryBytes": getattr(args, name + "_memory_bytes")}
         for name in ("build", "aot", "execution")}
     if min([args.log_bytes, *[value for budget in budgets.values() for value in budget.values()]]) <= 0:
         parser.error("All explicit budgets must be positive.")
-    artifacts, candidate = args.artifacts.resolve(), args.candidate.resolve()
+    artifacts = args.artifacts.resolve()
+    candidate = args.generated_project.resolve().parent if production else args.candidate.resolve()
+    if production and args.generated_project.resolve() != candidate / "Generated.csproj":
+        parser.error("Production mode requires the actual CLI Generated.csproj.")
     artifacts.mkdir(parents=True, exist_ok=False)
     phases, frozen, frozen_copies = [], {}, {}
-    report = {"status": "incomplete-unpublished-candidate-tests", "role": "generated-csharp-candidate-tests-only",
-        "productionPublished": False, "productionComplete": False, "wholeProviderCoverageAccepted": False,
+    report = {"status": "incomplete-published-source-tests" if production else "incomplete-unpublished-candidate-tests",
+        "role": "generated-csharp-production-source-tests-only" if production else "generated-csharp-candidate-tests-only",
+        "requestedSourceMode": args.mode, "productionPublished": False, "sourcePublished": False, "completionValidated": False,
+        "productionComplete": False, "wholeProviderCoverageAccepted": False,
         "nativeApplicationFallbackPermitted": False, "budgets": budgets, "logBytesPerPhase": args.log_bytes,
-        "phases": phases, "limits": ["Tests an existing zero-error genuine full-object candidate; no export/retranslation/publication",
+        "phases": phases, "limits": ["Tests existing genuine full-object source; this driver never exports/retranslates/publishes application source",
             "Bind/reset/clear smoke and unchanged five-case/43-statement initial SQL workload only",
             "Native application oracle runs only in separate processes; providers remain explicit system ABI bindings",
-            "Passing these tests does not complete remaining T4 workloads or establish every provider contract"]}
+            "Passing these tests does not complete remaining T4 workloads or establish every provider contract"],
+        "coverageInterpretation": {"initialCoverage": "JIT and NativeAOT bind/reset/clear plus unchanged 43-statement typed SQL comparison",
+            "extendedAreasRemainOpen": ["extended ownership/destructor callbacks", "error and fault behavior", "persistence/WAL/concurrency",
+                "remaining API workloads", "broader AOT/provider ABI, error, thread and lifetime matrix"]}}
     environment = os.environ.copy()
     environment.update({"DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER": "1", "MSBUILDDISABLENODEREUSE": "1"})
     for name in ("LD_LIBRARY_PATH", "LD_PRELOAD"): environment.pop(name, None)
@@ -110,21 +130,31 @@ def main() -> int:
             copied.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, copied)
             frozen_copies[copied] = receipt(copied)
-        candidate_receipt = args.candidate_receipt.resolve()
+        candidate_receipt = args.completion.resolve() if production else args.candidate_receipt.resolve()
         freeze(candidate_receipt)
         captured = json.loads(candidate_receipt.read_text())
-        if (captured.get("candidateGenerated") is not True or captured.get("errorCount") != 0
-            or captured.get("productionPublished") is not False or captured.get("outputPublished") is not False
-            or captured["input"]["sha256"] != INPUT_SHA256 or Path(captured["diagnosticCandidate"]).resolve() != candidate
-            or (candidate / "completion.json").exists()):
-            raise RuntimeError("Expected the exact unpublished, zero-error, unchanged full SQLite diagnostic candidate.")
-        for item in captured["candidateFiles"]:
-            path = (candidate / item["RelativePath"]).resolve()
-            if not path.is_relative_to(candidate) or digest(path) != item["sha256"] or path.stat().st_size != item["bytes"]:
-                raise RuntimeError("An emitted source/provider file differs from the exact candidate receipt.")
+        if production:
+            freeze(args.program_report)
+            freeze(args.request_manifest)
+            completed_program = json.loads(args.program_report.read_text())
+            source_input = completed_program["inputs"][0]
+            source_functions = sum(item["requiredBody"] for item in completed_program["functions"])
+            file_entries = [(item["relativePath"], item["sha256"], item["sizeBytes"]) for item in captured["files"]]
+        else:
+            if (captured.get("candidateGenerated") is not True or captured.get("errorCount") != 0
+                or captured.get("productionPublished") is not False or captured.get("outputPublished") is not False
+                or captured["input"]["sha256"] != INPUT_SHA256 or Path(captured["diagnosticCandidate"]).resolve() != candidate
+                or (candidate / "completion.json").exists()):
+                raise RuntimeError("Expected the exact unpublished, zero-error, unchanged full SQLite diagnostic candidate.")
+            source_input, source_functions = captured["input"], captured["emittedFunctions"]
+            file_entries = [(item["RelativePath"], item["sha256"], item["bytes"]) for item in captured["candidateFiles"]]
+        for name, sha256, size in file_entries:
+            path = (candidate / name).resolve()
+            if not path.is_relative_to(candidate) or digest(path) != sha256 or path.stat().st_size != size:
+                raise RuntimeError("An emitted source/provider file differs from the exact source receipt.")
             freeze(path)
-        freeze(Path(captured["input"]["path"]))
-        if digest(Path(captured["input"]["path"])) != INPUT_SHA256: raise RuntimeError("The immutable SQLite object changed.")
+        freeze(Path(source_input["path"]))
+        if digest(Path(source_input["path"])) != INPUT_SHA256: raise RuntimeError("The immutable SQLite object changed.")
         freeze(args.inventory)
         freeze(args.oracle_build_receipt)
         oracle_build = json.loads(args.oracle_build_receipt.read_text())
@@ -152,8 +182,9 @@ def main() -> int:
         runtime_props = next((parent / "Directory.Build.props" for parent in runtime.parents if (parent / "Directory.Build.props").is_file()), None)
         if runtime_props is not None: runtime_inputs.append(runtime_props)
         for path in runtime_inputs: freeze(path)
-        report["candidate"] = {"receipt": receipt(candidate_receipt), "emittedFiles": captured["candidateFiles"],
-            "input": captured["input"], "emittedFunctions": captured["emittedFunctions"], "runtimeInputs": [receipt(path) for path in runtime_inputs]}
+        report["publishedSource" if production else "candidate"] = {"receipt": receipt(candidate_receipt),
+            "emittedFiles": captured["files"] if production else captured["candidateFiles"],
+            "input": source_input, "emittedFunctions": source_functions, "runtimeInputs": [receipt(path) for path in runtime_inputs]}
         report["harnessSnapshot"] = {"directory": str(snapshot), "files": list(frozen_copies.values())}
         dotnet, cc, aot_cc = tool(args.dotnet), tool(args.cc), tool(args.aot_cc)
         for name in ("nm", "ldd"): tool(name)
@@ -171,9 +202,40 @@ def main() -> int:
         for path in compiler_inputs: freeze(path)
         report["toolchain"]["managedCompilerAndLinker"] = [receipt(path) for path in compiler_inputs]
         aliases, api_report = artifacts / "CapturedAliases.cs", artifacts / "api-surface.json"
-        run("validate-candidate-api", [sys.executable, snapshot / "tests/SqliteGenerated/SurfaceValidator.py",
-            "--generated-project", generated_project, "--candidate-receipt", candidate_receipt,
+        admission = ["--mode", "production", "--completion", candidate_receipt, "--program-report", args.program_report.resolve(),
+            "--request-manifest", args.request_manifest.resolve()] if production else ["--candidate-receipt", candidate_receipt]
+        run("validate-production-api" if production else "validate-candidate-api", [sys.executable, snapshot / "tests/SqliteGenerated/SurfaceValidator.py",
+            "--generated-project", generated_project, *admission,
             "--inventory", args.inventory.resolve(), "--aliases", aliases, "--report", api_report])
+        if production:
+            report["sourcePublication"] = json.loads(api_report.read_text())["productionEvidence"]
+            report["completionValidated"] = True
+            report["sourcePublished"] = True
+            report["productionPublished"] = True
+        if args.compare_diagnostic_receipt is not None:
+            basis_path = args.compare_diagnostic_receipt.resolve()
+            freeze(basis_path)
+            basis = json.loads(basis_path.read_text())
+            if (basis.get("candidateGenerated") is not True or basis.get("errorCount") != 0 or basis.get("productionPublished") is not False
+                or basis["input"]["sha256"] != INPUT_SHA256):
+                raise RuntimeError("Source comparison requires an actual genuine zero-error diagnostic receipt.")
+            basis_directory = Path(basis["diagnosticCandidate"]).resolve()
+            comparisons = []
+            for item in basis["candidateFiles"]:
+                before = (basis_directory / item["RelativePath"]).resolve()
+                if not before.is_relative_to(basis_directory) or digest(before) != item["sha256"] or before.stat().st_size != item["bytes"]:
+                    raise RuntimeError("Diagnostic comparison source differs from its actual receipt.")
+                freeze(before)
+                after = (candidate / item["RelativePath"]).resolve()
+                if not after.is_relative_to(candidate): raise RuntimeError("A comparison path escaped the actual CLI output.")
+                comparisons.append({"relativePath": item["RelativePath"], "diagnostic": receipt(before),
+                    "production": receipt(after), "hashEqual": digest(before) == digest(after)})
+            basis_references = ET.parse(basis_directory / "Generated.csproj").getroot().findall(".//ProjectReference")
+            if len(basis_references) != 1: raise RuntimeError("Diagnostic comparison has an unexpected runtime project graph.")
+            report["diagnosticSourceComparison"] = {"receipt": receipt(basis_path), "files": comparisons,
+                "diagnosticRuntimeProject": str((basis_directory / basis_references[0].attrib["Include"]).resolve()),
+                "productionRuntimeProject": str(runtime.resolve()), "cliFilesSubstituted": False,
+                "scope": "Byte hashes and actual runtime paths are compared; differences are reported without replacing CLI output"}
         freeze(aliases)
         freeze(api_report)
         # Rebuild the generated ABI-only helper with the attributed compiler, even
@@ -255,7 +317,7 @@ def main() -> int:
         for mode in native_reports: execute("aot", mode, [aot / "SqliteGenerated"])
         report["observations"] = observations
         report["apiSurface"] = receipt(api_report)
-        report["status"] = "passed-unpublished-candidate-initial-sql-tests"
+        report["status"] = passed_status
     except Exception as error:
         report["failure"] = str(error)
         print(str(error), file=sys.stderr)
@@ -271,7 +333,7 @@ def main() -> int:
         report["observationAndApiReports"] = [receipt(path) for path in sorted(artifacts.glob("*.json")) if path != report_path]
         report_path.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"status": report["status"], "report": receipt(report_path)}))
-    return 0 if report["status"] == "passed-unpublished-candidate-initial-sql-tests" else 1
+    return 0 if report["status"] == passed_status else 1
 
 
 if __name__ == "__main__":

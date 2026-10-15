@@ -28,5 +28,23 @@ receipt. Root independently reviewed this result.
 This is the initial T2 source review, not a general algebraic optimization or a
 SQLite readability claim. Necessary casts, explicit layout and effect temporaries
 remain where they preserve recorded behavior. Cleanup/EH source review belongs
-to later supported C++ execution. Native aggregate boundary output still needs
-its own review and execution before T2 closes.
+to later supported C++ execution. The later [native aggregate proof](T2-AGGREGATE-ABI.md) supplies its separate
+review and execution evidence.
+
+
+## Full SQLite review remains open
+
+Read-only samples of pass 6 retain recognizable `sqlite3Strlen30`,
+`sqlite3VdbeMemGrow` and Kahan helper names, ordinary branches/loops, pointer fields
+and ownership calls. The current full output still has excess parentheses and
+global qualification, repeated same-type casts/unchecked wrappers, discarded
+result temporaries, emitted null `_ = 0;` statements and redundant braces.
+The 317 compile warnings include unreachable/unreferenced labels and reserved-name
+noise. These are concrete T4 review items; the initial JIT/AOT smoke is execution
+evidence rather than full readability acceptance.
+
+Any cleanup must use retained pure/null operations, selected types and proven
+stable places, preserving branch-local effects and memory access counts. It must
+not reconstruct source syntax or alter captured ordering/materialization. Review
+representative full SQLite C# after production execution and the stateful checks;
+do not introduce a broad simplification gate ahead of those tests.

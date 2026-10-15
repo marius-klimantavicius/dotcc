@@ -37,9 +37,11 @@ process high-water RSS have different meanings; the receipt labels both.
 
 The [complete inventory](../../docs/SQLITE-INVENTORY.md) passes and the
 [import audit](import-audit.json) lists all 103 requirements, including 15
-recorded compiler intrinsics. Candidate providers remain unimplemented;
-`input.json` has no executable bindings. This is an inventory input, not a
-runnable SQLite configuration. T3/T4 execution is not implemented.
+recorded compiler intrinsics. `input.json` intentionally has no executable
+bindings. The preparation tool below adds the 88 explicit system bindings and
+retains the 15 recorded intrinsic lowerings. The unchanged full object now emits,
+builds and passes initial generated JIT/NativeAOT SQL tests; broader provider and
+T4 coverage remains separate.
 
 `prepare-native.py --attempt NEW_DIRECTORY` builds a separate native oracle
 from the exact unchanged source and all 19 feature definitions, after checking
@@ -53,7 +55,9 @@ The separate native oracle now passes the initial 43-statement deterministic
 SQL workload twice. [The receipt](native-sql-smoke.json) records exact loaded
 libraries, typed rows (including embedded-NUL text/blob bytes and binary64 bits),
 source/tool hashes and measured process high-water RSS. This is native-only
-baseline evidence; no generated SQLite execution or T3/T4 gate is claimed.
+baseline evidence; that native-only receipt does not prove generated execution.
+The separate [generated receipt](generated-candidate-report.json) supplies the
+initial JIT/NativeAOT proof.
 `sql-smoke.json` is the shared workload definition, with the remaining T4 areas
 listed explicitly. Bind/ownership APIs, persistence/WAL, concurrency and failure
 paths are not replaced by this SQL-only baseline.
@@ -71,3 +75,47 @@ execution, opens a fresh in-memory database for each case, and refuses to
 overwrite evidence. The first development workload attempt failed because
 Geopoly provides `_shape` implicitly; its preserved failure is recorded in the
 final receipt. The source/object/configuration stayed unchanged.
+
+
+## Production request and generated execution
+
+Use a fresh artifact root. The helper verifies the accepted inventory, exact
+input and provider files, every captured signature and the nine explicit asm-name
+aliases. It writes a retain-all library request, preserving all 19 source feature
+definitions. Providers are explicit libc/libm/system bindings; a native SQLite
+application binding is never supplied.
+
+```sh
+sqlite_attempt=/mnt/storage/roslynobj-csharp-20261015/sqlite-NEW
+python3 edgcpp/roslyn-csharp/acceptance/sqlite/prepare-generated-manifest.py \
+  --manifest "$sqlite_attempt/request.json" \
+  --report "$sqlite_attempt/binding-reconciliation.json" \
+  --output-directory "$sqlite_attempt/generated"
+
+python3 edgcpp/roslyn-csharp/tools/run-measured.py \
+  --output-dir "$sqlite_attempt/translate-run" \
+  --timeout-seconds 1800 --memory-bytes 8589934592 -- \
+  dotnet edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll \
+  translate "$sqlite_attempt/request.json" \
+  --report "$sqlite_attempt/program-report.json" --metrics "$sqlite_attempt/metrics.json"
+
+python3 edgcpp/roslyn-csharp/tests/SqliteGenerated/run-generated-sqlite.py \
+  --mode production --generated-project "$sqlite_attempt/generated/Generated.csproj" \
+  --completion "$sqlite_attempt/generated/completion.json" \
+  --program-report "$sqlite_attempt/generated/program-report.json" \
+  --request-manifest "$sqlite_attempt/request.json" \
+  --artifacts "$sqlite_attempt/execution" --aot-cc clang-18
+```
+
+For an isolated source snapshot, pass `--runtime-project ABSOLUTE_PROJECT` to the
+preparation helper. The generated project references only that runtime, never the
+reader or its SQLite package. The execution driver validates the real completion
+hashes and public requirements, builds JIT/NativeAOT, records exact compiler and
+provider identities, and compares bind/reset/clear plus all 43 SQL statements to
+separate pinned native-oracle processes. It never substitutes the oracle for
+generated application methods.
+
+See [current execution evidence and remaining gates](../../docs/SQLITE-EXECUTION.md).
+The native-only baseline, published source completion, generated execution and
+whole T4 acceptance are separate results. No failed attempt or artifact should be
+overwritten or removed to make a receipt appear successful.
