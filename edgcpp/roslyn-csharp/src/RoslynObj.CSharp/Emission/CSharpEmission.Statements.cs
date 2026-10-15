@@ -1,3 +1,4 @@
+using System.Numerics;
 using RoslynObj;
 
 namespace RoslynObj.CSharp;
@@ -208,20 +209,62 @@ public sealed partial class CSharpEmitter
             var captured = StatementName("__switch_value");
             var end = StatementName("__switch_end");
             writer.Line($"var {captured} = {value};");
-            foreach (var entry in selection.Cases.Where(entry => !entry.IsDefault))
+            var fallback = selection.DefaultCase is { } defaultCase ? names[defaultCase] : end;
+            if (TryScalarSwitchCases(selection, selector.Type, out var cases))
             {
-                if (entry.LowConstant?.Value is not IntegerValue || entry.HighConstant is { Value: not IntegerValue })
-                    throw Limit("A switch case needs its retained exact integer constant/range.", "switch");
-                var low = Constant(entry.LowConstant);
-                var comparison = entry.HighConstant is { } high
-                    ? $"({captured} >= {low}) && ({captured} <= {Constant(high)})" : $"{captured} == {low}";
-                writer.Line($"if ({comparison}) goto {names[entry]};");
+                // This is only dispatch. The retained case markers and body stay
+                // outside this scope, preserving every fallthrough/goto target.
+                writer.Line($"switch ({captured})"); writer.Open();
+                foreach (var entry in cases) writer.Line($"case {entry.Literal}: goto {names[entry.Entry]};");
+                writer.Line($"default: goto {fallback};"); writer.Close();
             }
-            writer.Line("goto " + (selection.DefaultCase is { } fallback ? names[fallback] : end) + ";");
+            else
+            {
+                foreach (var entry in selection.Cases.Where(entry => !entry.IsDefault))
+                {
+                    if (entry.LowConstant?.Value is not IntegerValue || entry.HighConstant is { Value: not IntegerValue })
+                        throw Limit("A switch case needs its retained exact integer constant/range.", "switch");
+                    var low = Constant(entry.LowConstant);
+                    var comparison = entry.HighConstant is { } high
+                        ? $"({captured} >= {low}) && ({captured} <= {Constant(high)})" : $"{captured} == {low}";
+                    writer.Line($"if ({comparison}) goto {names[entry]};");
+                }
+                writer.Line("goto " + fallback + ";");
+            }
             statementSwitches.Push(selection);
             try { if (selection.Body is not null) Statement(selection.Body, writer); }
             finally { statementSwitches.Pop(); }
             writer.Line(end + ":;");
+        }
+
+        private bool TryScalarSwitchCases(SwitchOperation selection, CppType selectorType,
+            out IReadOnlyList<(SwitchCaseEntry Entry, string Literal)> cases)
+        {
+            cases = [];
+            var representation = TypeName(selectorType);
+            var (bits, signed) = representation switch
+            {
+                "sbyte" => (8, true), "byte" => (8, false), "short" => (16, true), "ushort" => (16, false),
+                "int" => (32, true), "uint" => (32, false), "long" => (64, true), "ulong" => (64, false),
+                _ => (0, false)
+            };
+            if (bits == 0) return false;
+            var minimum = signed ? -(BigInteger.One << (bits - 1)) : BigInteger.Zero;
+            var maximum = (BigInteger.One << (signed ? bits - 1 : bits)) - 1;
+            var values = new HashSet<BigInteger>();
+            var result = new List<(SwitchCaseEntry Entry, string Literal)>();
+            foreach (var entry in selection.Cases.Where(entry => !entry.IsDefault))
+            {
+                if (entry.HighConstant is not null || entry.LowConstant is not { Value: IntegerValue integer, Type: { } constantType }
+                    || Unwrap(constantType) is not ArithmeticType { Arithmetic.ArithmeticKind.Name: "signed_integer" or "unsigned_integer" or "character" or "boolean" }
+                    || TypeName(constantType) is not ("sbyte" or "byte" or "short" or "ushort" or "int" or "uint" or "long" or "ulong")
+                    || integer.Value < minimum || integer.Value > maximum || !values.Add(integer.Value)) return false;
+                // The retained numeric value is already exact and in range.
+                // Only its C# literal view changes to the selector's storage type.
+                result.Add((entry, IntegerLiteral(integer.Value, selectorType)));
+            }
+            cases = result;
+            return true;
         }
     }
 }

@@ -376,3 +376,14 @@ incremental backup match exactly. Five phases and immutable source/API/provider
 identities are in `acceptance/sqlite/api-callbacks-report.json`. First metadata
 path mismatch is preserved. AOT explicitly pins clang 18. Emission worker now
 prepares NEW SqliteFeatureMatrix SQL workload; frozen API sources remain held.
+
+Readability focused proof now passes all 14 phases, exact native/JIT/AOT 21/23
+events. Compact receipt: `acceptance/sqlite/readability-focused-report.json`.
+Full source13 CLI publication RUNNING at `t4/readability-production-translate-1`,
+request `t4/readability-production-preparation-1/manifest.json`, intended output
+`t4/sqlite-readable-generated-1`. Only request output.directory differs from
+accepted production input; runtime11/providers/budgets unchanged. Do not overwrite
+snapshot13 or its CLI binaries. Once published, run fresh production harness,
+then use new completion/API evidence for concurrency/failure/tokenizer fixtures.
+Native concurrency and controlled heap/pager-failure oracles now pass; workers
+prepare generated counterparts in their NEW disjoint directories.

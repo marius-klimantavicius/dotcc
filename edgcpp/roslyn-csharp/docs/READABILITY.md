@@ -48,3 +48,10 @@ stable places, preserving branch-local effects and memory access counts. It must
 not reconstruct source syntax or alter captured ordering/materialization. Review
 representative full SQLite C# after production execution and the stateful checks;
 do not introduce a broad simplification gate ahead of those tests.
+
+The narrow scalar-dispatch cleanup passes its focused 14-phase native/JIT/AOT
+gate: [details](READABILITY-DISPATCH.md). It replaces only admitted scalar case
+comparisons with C# switch dispatch to retained labels and omits validated pure
+scalar discard statements. Source correspondence remains explicit; other casts,
+volatile helper accesses and braces are retained. A new complete source-13 CLI
+publication/build/runtime check is running before full SQLite acceptance.

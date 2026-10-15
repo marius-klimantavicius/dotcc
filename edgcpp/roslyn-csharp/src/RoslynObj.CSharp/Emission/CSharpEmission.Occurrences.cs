@@ -58,6 +58,15 @@ public sealed partial class CSharpEmitter
                 ExpressionStatementOccurrence(conversion.Operand, writer);
                 return;
             }
+            if (expression is ConstantOperation { Constant.Value: IntegerValue or FloatingValue }
+                && !expression.Details.VolatileFetch && expression.Operands.Count == 0)
+            {
+                // Validate the normal exact literal projection, then discard
+                // only this operand-free scalar constant. Reads, conversions,
+                // calls and all effectful plans keep their original execution.
+                _ = Expression(expression);
+                return;
+            }
             if (NeedsExpressionPlan(expression)) { EmitPlannedExpressionStatement(expression, writer); return; }
             var value = Expression(expression);
             if (expression is OperatorOperation op && IsStatementExpression(op.OperatorKind.Name) || expression is CallOperation)
