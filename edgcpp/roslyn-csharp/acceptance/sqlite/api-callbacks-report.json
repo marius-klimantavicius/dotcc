@@ -1,0 +1,1203 @@
+{
+  "gate": "T4-bounded-ownership-preupdate-session-backup",
+  "status": "passed",
+  "t4Complete": false,
+  "sourceCheckpoint": "bc5682b5c",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-source-2/source-snapshot.json",
+    "sha256": "f6616df940a1f3613ce94ffd6fb7f36ceaf15b009786b530af9672347db10999",
+    "bytes": 765
+  },
+  "sourceFreezeVerified": true,
+  "workload": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-source-2/workload.json",
+    "sha256": "b5d18a84906ae21cf2c75e04f9ade60cba35afcdbdd45e0f84d1970e68e7d8db",
+    "bytes": 1729
+  },
+  "nativeOracleBuild": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json",
+    "sha256": "c5d7e700950971126a1f6aa735fc205850d9563bca482b815715ed1353feb435",
+    "bytes": 2906
+  },
+  "nativeReference": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-1/native-api-callbacks.json",
+    "sha256": "2e4ec236e96a8d736b223ceedbe29e3749aef61410d760e38e24287e5b0b4674",
+    "bytes": 19088
+  },
+  "apiSurface": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/api-surface.json",
+    "sha256": "42af93c0bd2c91b59599285aeddb6a758b560e7cf436e3f6ecd2484f66c52e91",
+    "bytes": 55440
+  },
+  "surfaceValidatedApiCount": 51,
+  "callbackShapeCount": 4,
+  "surfaceValidationIsExecutionCoverage": false,
+  "productionCompletion": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+    "sha256": "2380b6aeab39408c31a2a0e6a4975910e50076e4123e211724630a251c16d476",
+    "bytes": 1159
+  },
+  "runtime": "snapshot-11 unchanged",
+  "nativeAotCompilerAndLinker": {
+    "path": "/usr/lib/llvm-18/bin/clang",
+    "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8",
+    "bytes": 136504
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49",
+    "bytes": 5505
+  },
+  "phases": [
+    {
+      "name": "native-api-callbacks-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-run-1/run.json",
+        "sha256": "cf44111ac7620d562fd31507fce6c1e7269e2dce175cec3f604259acc90e33ed",
+        "bytes": 1099
+      },
+      "status": "passed",
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteApiCallbacks/run-native.py",
+        "--build-receipt",
+        "edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json",
+        "--output",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-1/native-api-callbacks.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1006854820298031,
+      "sampledPeakProcessTreeRssBytes": 73728,
+      "waitedPeakProcessRssBytes": 21757952,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 250,
+          "sha256": "175c3e6138c1a33ddc2e782c04a02086fc64eb850df5547213e89363dd6c9b2b"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "api-callbacks-build-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-build-2/run.json",
+        "sha256": "b21265bd5180558bd1875972d68cf4c1b5cb3f46cdc6e719269f10dd95645eb0",
+        "bytes": 1567
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-source-2/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/Generated.csproj",
+        "-p:BaseApiReport=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+        "-p:ApiAliases=/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/ApiAliases.cs",
+        "-p:ApiReport=/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/api-surface.json",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-jit-2"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 26.165115277050063,
+      "sampledPeakProcessTreeRssBytes": 2774917120,
+      "waitedPeakProcessRssBytes": 2415898624,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 600.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 150369,
+          "sha256": "efe01050d47df42e1506f3d87ccecf8564b05a9ad038a28c76b8bf1e1737092f"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "api-callbacks-jit-run-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-jit-run-2/run.json",
+        "sha256": "814bd8abcff50c4495554e58ea2f7069cee7f653624e6a753da49c464d1d1d24",
+        "bytes": 1271
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-jit-2/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-source-2/workload.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-jit-result-2/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-1/native-api-callbacks.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/api-surface.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.5024514459073544,
+      "sampledPeakProcessTreeRssBytes": 157188096,
+      "waitedPeakProcessRssBytes": 170655744,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 235,
+          "sha256": "1e08d781d393b3376db8c8fc445c4976fc97802f55f4e2deffc4bb1839d70efe"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "api-callbacks-publish-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-publish-2/run.json",
+        "sha256": "ba597ad7bae13b89fb5aca188f6cefb61c78897d9ae10ab85cb4e88ff73809c2",
+        "bytes": 1714
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-source-2/Checks.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/Generated.csproj",
+        "-p:BaseApiReport=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+        "-p:ApiAliases=/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/ApiAliases.cs",
+        "-p:ApiReport=/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/api-surface.json",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-aot-2"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 71.92067777295597,
+      "sampledPeakProcessTreeRssBytes": 3339038720,
+      "waitedPeakProcessRssBytes": 2982850560,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 600.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 75900,
+          "sha256": "7620fd525a940cd2a352abd8e98c6299fa15df3d1553e23abc065d18f75d4278"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "api-callbacks-aot-run-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-aot-run-2/run.json",
+        "sha256": "97b10ddd596be5ba0aac0f0c6f8588bffee92d2f466a5436afd19e7a4e0b402d",
+        "bytes": 1249
+      },
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-aot-2/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-source-2/workload.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-aot-result-2/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-1/native-api-callbacks.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-metadata-2/api-surface.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10053438390605152,
+      "sampledPeakProcessTreeRssBytes": 77824,
+      "waitedPeakProcessRssBytes": 19398656,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 235,
+          "sha256": "8f7c7270d7381dbdcf7a93d1da09a1390af27c3734e1455b46a9d28df56a7763"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "runtime": "jit",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-jit-result-2/report.json",
+        "sha256": "491b4d8d2a61ef01f9cd42c04d4c9d60c9dbfda522588cff19ff2ffd44a1592b",
+        "bytes": 20790
+      },
+      "nativeReference": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-1/native-api-callbacks.json",
+        "sha256": "2e4ec236e96a8d736b223ceedbe29e3749aef61410d760e38e24287e5b0b4674",
+        "bytes": 19088
+      },
+      "nativeComparison": "exact-observations-equal",
+      "resourcesReleased": true,
+      "callbackErrors": [],
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-jit-2/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/dotnet/host/fxr/10.0.12/libhostfxr.so",
+          "sha256": "c8be9947baebf37e77ded4d82d069f403d362b9416a5e8502e9f66d948f5d52a",
+          "bytes": 324272
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Native.so",
+          "sha256": "def7465ab890653112d7d8bd48613f3bc33851d24b56b01c2ef2476ea3a3b3d4",
+          "bytes": 99072
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Security.Cryptography.Native.OpenSsl.so",
+          "sha256": "cc24903c414acdc9a6bb273c01a3c132ff3e95f211d09543836cd34329fd7896",
+          "bytes": 154632
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libclrjit.so",
+          "sha256": "2e1c701758638976d642351c50dbf26a88d7f18853848964824cbe3312a034a5",
+          "bytes": 3313648
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclr.so",
+          "sha256": "b5845ca190a41c502a96df196ea603b38d4893a022964fb55598ba6d07861f19",
+          "bytes": 7222960
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclrtraceptprovider.so",
+          "sha256": "738750a901bc137ac74f5277c402a13a9b3bf94e690de03706abcba025d83244",
+          "bytes": 634192
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libhostpolicy.so",
+          "sha256": "f59d12f0ae4fcb81be43fcf4470b0bc02f53b2f06767aa54d76e98303a0de6b1",
+          "bytes": 317504
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-common.so.1.0.0",
+          "sha256": "28c3025315634619a7d278fff9e5bfa85ef85a58db8a52ce3ecf0054093fe0be",
+          "bytes": 47800
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-tracepoint.so.1.0.0",
+          "sha256": "c5a75aea47fbfa1380e75fad869a00e225a947bbfa99edc6c62c2241959e1eb8",
+          "bytes": 51568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust.so.1.0.0",
+          "sha256": "3dda3aff8ce04c7a1d5f1c5f20bd725d63e686a2042ee4834d8c25cde288f27b",
+          "bytes": 500568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0",
+          "sha256": "02d7582c5d391e460e56aa67a414360e3183b968206645b9123f9dc7bff5d009",
+          "bytes": 52248
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8.0.1",
+          "sha256": "70a88c376a1aced719ca7bdcd5cdd6c5d3bdce44b99f5ab2037fdad096bbf03d",
+          "bytes": 67672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1",
+          "sha256": "28e77a498f2f17f8cb883c91303f9901343ea0d8e34959d138dd462fcc9b201f",
+          "bytes": 63776
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ]
+    },
+    {
+      "runtime": "aot",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-aot-result-2/report.json",
+        "sha256": "7c1ee19ca7fca846063e308b62c2688cfb7ae006a821b38817bb6d4a9def6b48",
+        "bytes": 18037
+      },
+      "nativeReference": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-api-callbacks-1/native-api-callbacks.json",
+        "sha256": "2e4ec236e96a8d736b223ceedbe29e3749aef61410d760e38e24287e5b0b4674",
+        "bytes": 19088
+      },
+      "nativeComparison": "exact-observations-equal",
+      "resourcesReleased": true,
+      "callbackErrors": [],
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-aot-2/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ]
+    }
+  ],
+  "observations": {
+    "ownership": {
+      "first": {
+        "columns": [
+          "payload"
+        ],
+        "rows": [
+          [
+            {
+              "type": "blob",
+              "bytes": 3,
+              "hex": "0100fe"
+            }
+          ]
+        ]
+      },
+      "second": {
+        "columns": [
+          "payload"
+        ],
+        "rows": [
+          [
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "0405"
+            }
+          ]
+        ]
+      },
+      "releaseCounts": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "destructorIds": [
+        101,
+        102,
+        103
+      ],
+      "ownersReleased": true
+    },
+    "preupdate": {
+      "initialPreviousNull": true,
+      "unregisteredContextMatches": true,
+      "events": [
+        {
+          "schema": "main",
+          "table": "changes",
+          "op": 18,
+          "columns": 4,
+          "depth": 0,
+          "newRowid": 1,
+          "new": [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "11"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 3,
+              "hex": "6f6e65"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "0001"
+            }
+          ]
+        },
+        {
+          "schema": "main",
+          "table": "changes",
+          "op": 18,
+          "columns": 4,
+          "depth": 0,
+          "newRowid": 2,
+          "new": [
+            {
+              "type": "integer",
+              "decimal": "2"
+            },
+            {
+              "type": "integer",
+              "decimal": "22"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "blob",
+              "bytes": 0,
+              "hex": ""
+            }
+          ]
+        },
+        {
+          "schema": "main",
+          "table": "changes",
+          "op": 23,
+          "columns": 4,
+          "depth": 0,
+          "oldRowid": 1,
+          "old": [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "11"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 3,
+              "hex": "6f6e65"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "0001"
+            }
+          ],
+          "newRowid": 1,
+          "new": [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "33"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 5,
+              "hex": "7468726565"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "ff00"
+            }
+          ]
+        },
+        {
+          "schema": "main",
+          "table": "changes",
+          "op": 9,
+          "columns": 4,
+          "depth": 0,
+          "oldRowid": 2,
+          "old": [
+            {
+              "type": "integer",
+              "decimal": "2"
+            },
+            {
+              "type": "integer",
+              "decimal": "22"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "blob",
+              "bytes": 0,
+              "hex": ""
+            }
+          ]
+        }
+      ],
+      "eventsAfterUnregister": 0,
+      "result": {
+        "columns": [
+          "id",
+          "n",
+          "t",
+          "b"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "33"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 5,
+              "hex": "7468726565"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "ff00"
+            }
+          ],
+          [
+            {
+              "type": "integer",
+              "decimal": "3"
+            },
+            {
+              "type": "integer",
+              "decimal": "44"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 4,
+              "hex": "666f7572"
+            },
+            {
+              "type": "blob",
+              "bytes": 1,
+              "hex": "04"
+            }
+          ]
+        ]
+      }
+    },
+    "session": {
+      "changesetBytes": 117,
+      "changesetHex": "5404010000006974656d00170001000000000000000101000000000000000a030462617365040201020001000000000000000b0307757064617465640402ff0009000100000000000000020100000000000000140304676f6e6504020304120001000000000000000301000000000000001e050400",
+      "changes": [
+        {
+          "table": "item",
+          "columns": 4,
+          "op": 23,
+          "indirect": 0,
+          "old": [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "10"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 4,
+              "hex": "62617365"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "0102"
+            }
+          ],
+          "new": [
+            {
+              "type": "undefined"
+            },
+            {
+              "type": "integer",
+              "decimal": "11"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 7,
+              "hex": "75706461746564"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "ff00"
+            }
+          ]
+        },
+        {
+          "table": "item",
+          "columns": 4,
+          "op": 9,
+          "indirect": 0,
+          "old": [
+            {
+              "type": "integer",
+              "decimal": "2"
+            },
+            {
+              "type": "integer",
+              "decimal": "20"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 4,
+              "hex": "676f6e65"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "0304"
+            }
+          ]
+        },
+        {
+          "table": "item",
+          "columns": 4,
+          "op": 18,
+          "indirect": 0,
+          "new": [
+            {
+              "type": "integer",
+              "decimal": "3"
+            },
+            {
+              "type": "integer",
+              "decimal": "30"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "blob",
+              "bytes": 0,
+              "hex": ""
+            }
+          ]
+        }
+      ],
+      "applyEvents": [
+        {
+          "pass": 1,
+          "kind": "filter",
+          "table": "item"
+        },
+        {
+          "pass": 2,
+          "kind": "filter",
+          "table": "item"
+        },
+        {
+          "pass": 2,
+          "kind": "conflict",
+          "reason": 1,
+          "change": {
+            "table": "item",
+            "columns": 4,
+            "op": 23,
+            "indirect": 0,
+            "old": [
+              {
+                "type": "integer",
+                "decimal": "1"
+              },
+              {
+                "type": "integer",
+                "decimal": "10"
+              },
+              {
+                "type": "text-utf8",
+                "bytes": 4,
+                "hex": "62617365"
+              },
+              {
+                "type": "blob",
+                "bytes": 2,
+                "hex": "0102"
+              }
+            ],
+            "new": [
+              {
+                "type": "undefined"
+              },
+              {
+                "type": "integer",
+                "decimal": "11"
+              },
+              {
+                "type": "text-utf8",
+                "bytes": 7,
+                "hex": "75706461746564"
+              },
+              {
+                "type": "blob",
+                "bytes": 2,
+                "hex": "ff00"
+              }
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "kind": "conflict",
+          "reason": 2,
+          "change": {
+            "table": "item",
+            "columns": 4,
+            "op": 9,
+            "indirect": 0,
+            "old": [
+              {
+                "type": "integer",
+                "decimal": "2"
+              },
+              {
+                "type": "integer",
+                "decimal": "20"
+              },
+              {
+                "type": "text-utf8",
+                "bytes": 4,
+                "hex": "676f6e65"
+              },
+              {
+                "type": "blob",
+                "bytes": 2,
+                "hex": "0304"
+              }
+            ]
+          }
+        },
+        {
+          "pass": 2,
+          "kind": "conflict",
+          "reason": 3,
+          "change": {
+            "table": "item",
+            "columns": 4,
+            "op": 18,
+            "indirect": 0,
+            "new": [
+              {
+                "type": "integer",
+                "decimal": "3"
+              },
+              {
+                "type": "integer",
+                "decimal": "30"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "type": "blob",
+                "bytes": 0,
+                "hex": ""
+              }
+            ]
+          }
+        }
+      ],
+      "source": {
+        "columns": [
+          "id",
+          "n",
+          "t",
+          "b"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "11"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 7,
+              "hex": "75706461746564"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "ff00"
+            }
+          ],
+          [
+            {
+              "type": "integer",
+              "decimal": "3"
+            },
+            {
+              "type": "integer",
+              "decimal": "30"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "blob",
+              "bytes": 0,
+              "hex": ""
+            }
+          ]
+        ]
+      },
+      "applied": [
+        {
+          "columns": [
+            "id",
+            "n",
+            "t",
+            "b"
+          ],
+          "rows": [
+            [
+              {
+                "type": "integer",
+                "decimal": "1"
+              },
+              {
+                "type": "integer",
+                "decimal": "11"
+              },
+              {
+                "type": "text-utf8",
+                "bytes": 7,
+                "hex": "75706461746564"
+              },
+              {
+                "type": "blob",
+                "bytes": 2,
+                "hex": "ff00"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "decimal": "3"
+              },
+              {
+                "type": "integer",
+                "decimal": "30"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "type": "blob",
+                "bytes": 0,
+                "hex": ""
+              }
+            ]
+          ]
+        },
+        {
+          "columns": [
+            "id",
+            "n",
+            "t",
+            "b"
+          ],
+          "rows": [
+            [
+              {
+                "type": "integer",
+                "decimal": "1"
+              },
+              {
+                "type": "integer",
+                "decimal": "11"
+              },
+              {
+                "type": "text-utf8",
+                "bytes": 7,
+                "hex": "75706461746564"
+              },
+              {
+                "type": "blob",
+                "bytes": 2,
+                "hex": "ff00"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "decimal": "3"
+              },
+              {
+                "type": "integer",
+                "decimal": "30"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "type": "blob",
+                "bytes": 0,
+                "hex": ""
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "backup": {
+      "steps": [
+        {
+          "code": 0,
+          "remaining": 1,
+          "pageCount": 2
+        },
+        {
+          "code": 101,
+          "remaining": 0,
+          "pageCount": 2
+        }
+      ],
+      "result": {
+        "columns": [
+          "id",
+          "n",
+          "t",
+          "b"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "11"
+            },
+            {
+              "type": "text-utf8",
+              "bytes": 7,
+              "hex": "75706461746564"
+            },
+            {
+              "type": "blob",
+              "bytes": 2,
+              "hex": "ff00"
+            }
+          ],
+          [
+            {
+              "type": "integer",
+              "decimal": "3"
+            },
+            {
+              "type": "integer",
+              "decimal": "30"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "type": "blob",
+              "bytes": 0,
+              "hex": ""
+            }
+          ]
+        ]
+      },
+      "integrity": {
+        "columns": [
+          "integrity_check"
+        ],
+        "rows": [
+          [
+            {
+              "type": "text-utf8",
+              "bytes": 2,
+              "hex": "6f6b"
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "preservedAttempt": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/api-callbacks-build-1/run.json",
+      "sha256": "9586599301cafa40967cd9d1e162514252b68badc4d4b96e5a900a9334759a94",
+      "bytes": 1666
+    },
+    "reason": "Validator path provenance was working-tree path while build invoked immutable copy, correctly rejected. Fresh metadata generated from frozen source-2. Snapshot-2 also clears finalizer handles before checking native result, avoiding cleanup retry on error."
+  },
+  "scope": [
+    "Blob destructor callbacks retain/reset/rebind/clear/finalize lifetime: releases 0/1/2/3, IDs 101/102/103",
+    "Four preupdate events copy defined old/new values and unregister context; no post-unregister callback",
+    "Changeset update/delete/insert, distinct undefined and SQL NULL, exact 117 bytes, successful first apply and repeat OMIT conflicts 1/2/3",
+    "Incremental in-memory backup steps remaining 1 to 0, exact rows and integrity; no concurrent writers"
+  ],
+  "remaining": [
+    "RBU staged update and completion",
+    "Snapshot/carray/normalize/column-metadata APIs",
+    "Cross-process locking, shared-cache/unlock-notify, tokenizer callback interfaces",
+    "Controlled allocation/I/O errors and broader recovery/provider contracts",
+    "Expanded configured SQL feature matrix, readability and restart/repeat evidence"
+  ]
+}

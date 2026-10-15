@@ -306,3 +306,10 @@ Translate overload, and built snapshot 12 successfully. Queue full-object
 BeforePublication cancellation then fresh-process restart from identical input
 and request, preserving incomplete staging and already-published production
 output. No partial-stage reuse is claimed. Runtime stays frozen snapshot 11.
+
+The API callback slice now passes native/JIT/NativeAOT: destructor counts and
+owner IDs, preupdate events/unregister, session changesets/apply/conflicts and
+incremental backup match exactly. Five phases and immutable source/API/provider
+identities are in `acceptance/sqlite/api-callbacks-report.json`. First metadata
+path mismatch is preserved. AOT explicitly pins clang 18. Emission worker now
+prepares NEW SqliteFeatureMatrix SQL workload; frozen API sources remain held.
