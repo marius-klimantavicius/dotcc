@@ -61,5 +61,38 @@ measure baseline and experimental protection separately, including allocation,
 nested native/managed callbacks and independent foreign pthread state. A benign
 baseline result cannot establish a general preservation guarantee.
 
-No generated SQLite emission or SQL execution has occurred. T2's aggregate
-boundary gate remains open; this provider work prepares later T3 implementation.
+The finite HostContracts preparation now passes 22 measured phases, with two
+JIT and two NativeAOT runs, each passing 58 named invariants. Its unchanged
+receipt is [committed here](../acceptance/host-contracts/host-contracts-receipt.json),
+SHA256 `8bdb05f885ad79756f94db632a354814134c87f1045a224ec8bda87d542daf15`.
+The four full observation reports are beside it. Source/toolchain/helper/loaded
+provider/dependency hashes and actual native constants/layouts are recorded.
+Each run observes later raw errno 20 after a failing open and GC, without
+requiring that equality. Separately, the protected native scope captures 20,
+observes nested callback modification to 4 and restores 20 before managed exit.
+Native pthread creation/join reaches nested managed UCO callbacks on a distinct
+thread with independent errno/marker TLS, and actual errorcheck-mutex return
+codes pass. This proves only the named finite host observations, with no product
+error bridge, general thread guarantee or generated application body.
+
+The first reproduction attempt passed JIT and stopped because the unversioned
+`clang` command was absent. It remains incomplete. The successful attempt uses
+the installed `clang-18` explicitly and records its identity and linker/ILC tools.
+Reproduce with a new artifact directory:
+
+```sh
+python3 edgcpp/roslyn-csharp/tests/HostContracts/run-host-contracts.py \
+  --aot-cc clang-18 --artifacts /mnt/storage/roslynobj-csharp-20261015/t3/NEW-HOST-PROBE
+```
+
+The approved production design will explicitly substitute one native TLS logical
+errno slot, synchronize it immediately around native calls and C callback
+entries, preserve application writes/success-without-error changes, and cover
+unknown indirect calls and foreign threads. Direct and indirect
+`__errno_location` must expose the same logical slot. Actual SQLite uses still
+need a public-operation escape/alias audit. This design is not implemented by
+the finite probe; `dlerror` requires its own snapshot/read-clear protocol.
+
+No generated SQLite SQL execution has occurred. T2's bounded fixture gate is
+closed; unchanged full-object emission diagnostics and actual provider/intrinsic
+implementation are the next T3 work.

@@ -1,0 +1,564 @@
+{
+  "schema": "roslynobj-host-contract-probe-v1",
+  "passed": true,
+  "runtime": ".NET 10.0.12",
+  "os": "Zorin OS 18.1",
+  "architecture": "X64",
+  "dynamicCodeSupported": false,
+  "executable": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot/HostContracts",
+  "nativeHelper": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+  "nativeHelperSha256": "b3e2e19e55a5c090aafd37c3ebdde55f3f32e8a8c4c2c32af90a8cb4ccca1553",
+  "scope": "Finite Linux x64 host observations; no product errno, threading, callback, or mutex implementation is claimed.",
+  "errnoLimit": "Managed-later reads are observations after transitions. No errno equality across those transitions is required. Restoration is checked only inside the protected native scope.",
+  "boundaryLimit": "Callbacks catch managed exceptions and report failure codes. No exception may cross a native boundary. Join failure intentionally retains callback context until process exit.",
+  "nativeAbi": {
+    "pointer_size": 8,
+    "int_size": 4,
+    "int64_size": 8,
+    "size_t_size": 8,
+    "pthread_mutex_size": 40,
+    "pthread_mutex_alignment": 8,
+    "pthread_mutexattr_size": 4,
+    "pthread_mutexattr_alignment": 4,
+    "O_RDONLY": 0,
+    "ENOTDIR": 20,
+    "EINTR": 4,
+    "ERANGE": 34,
+    "EBUSY": 16,
+    "EDEADLK": 35,
+    "EPERM": 1,
+    "PTHREAD_MUTEX_ERRORCHECK": 2,
+    "main_marker": 90133,
+    "worker_marker": 139285
+  },
+  "providers": [
+    {
+      "symbol": "hc_abi_count",
+      "address": "0x7909830e8380",
+      "moduleBase": "0x7909830e6000",
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+      "sha256": "b3e2e19e55a5c090aafd37c3ebdde55f3f32e8a8c4c2c32af90a8cb4ccca1553"
+    },
+    {
+      "symbol": "open",
+      "address": "0x790982d1b3f0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "__errno_location",
+      "address": "0x790982c2a6e0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_create",
+      "address": "0x790982c9cca0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_join",
+      "address": "0x790982c9e710",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutexattr_init",
+      "address": "0x790982ca1d50",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutexattr_settype",
+      "address": "0x790982ca1e90",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_init",
+      "address": "0x790982c9f7f0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_lock",
+      "address": "0x790982ca00d0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_trylock",
+      "address": "0x790982ca0fd0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_unlock",
+      "address": "0x790982ca1b50",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_destroy",
+      "address": "0x790982c9f7a0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutexattr_destroy",
+      "address": "0x790982ca1c60",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "calloc",
+      "address": "0x790982cae8a0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "free",
+      "address": "0x790982cade30",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "dladdr",
+      "address": "0x790982c979e0",
+      "moduleBase": "0x790982c00000",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    }
+  ],
+  "main": {
+    "errnoTls": "0x790982ff86a8",
+    "errnoLater": 0,
+    "nativeMarkerTls": "0x562b874f4660",
+    "nativeMarker": 90133,
+    "managedThreadId": 1
+  },
+  "directUnprotected": {
+    "rawManagedPInvokeOpenReturn": -1,
+    "managedLater": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 20,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    },
+    "managedAfterAllocationAndGc": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 20,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    },
+    "separateNativeInvocation": {
+      "openReturn": -1,
+      "errnoCapturedImmediatelyInC": 20,
+      "nativeErrnoTls": "0x790982ff86a8"
+    },
+    "managedAfterSeparateNativeReentry": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 20,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    }
+  },
+  "protectedNativeSnapshotRestore": {
+    "open_return": -1,
+    "native_errno_immediate": 20,
+    "native_errno_tls_before": 133081759450792,
+    "callback_return": 18967,
+    "native_errno_after_callback": 4,
+    "native_errno_restored": 20,
+    "native_errno_tls_after": 133081759450792,
+    "native_marker_tls_before": 94744953701984,
+    "native_marker_tls_after": 94744953701984
+  },
+  "protectedManagedLater": {
+    "errnoTls": "0x790982ff86a8",
+    "errnoLater": 20,
+    "nativeMarkerTls": "0x562b874f4660",
+    "nativeMarker": 90133,
+    "managedThreadId": 1
+  },
+  "protectedManagedCallback": {
+    "outerCount": 1,
+    "nestedCount": 1,
+    "outerCompleted": 1,
+    "nestedCompleted": 1,
+    "failure": null,
+    "outerBefore": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 20,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    },
+    "outerAfter": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 4,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    },
+    "nestedBefore": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 34,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    },
+    "nestedAfter": {
+      "errnoTls": "0x790982ff86a8",
+      "errnoLater": 20,
+      "nativeMarkerTls": "0x562b874f4660",
+      "nativeMarker": 90133,
+      "managedThreadId": 1
+    },
+    "nestedOpenReturn": -1,
+    "nestedImmediateNativeErrno": 20,
+    "nestedNativeErrnoTls": "0x790982ff86a8",
+    "reentryReturn": 0,
+    "nativeReentry": {
+      "native_errno_before_callback": 34,
+      "native_errno_tls_before": 133081759450792,
+      "callback_return": 11027,
+      "native_errno_after_callback": 4,
+      "native_errno_tls_after": 133081759450792
+    }
+  },
+  "foreignPthreadNative": {
+    "create_return": 0,
+    "join_return": 0,
+    "native_main_errno_tls_before": 133081759450792,
+    "native_main_errno_tls_after": 133081759450792,
+    "native_main_errno_before": 20,
+    "native_main_errno_after": 20,
+    "native_main_marker_tls_before": 94744953701984,
+    "native_main_marker_tls_after": 94744953701984,
+    "native_main_marker_before": 90133,
+    "native_main_marker_after": 90133,
+    "worker_entered": 1,
+    "worker_completed": 1,
+    "worker_errno_tls_before": 133081740604712,
+    "worker_errno_tls_after": 133081740604712,
+    "worker_errno_before_callback": 4,
+    "worker_errno_after_callback": 4,
+    "worker_marker_tls_before": 132810790669168,
+    "worker_marker_tls_after": 132810790669168,
+    "worker_marker_before": 139285,
+    "worker_marker_after": 139285,
+    "callback_return": 18967,
+    "callback_context_must_remain_live": 0
+  },
+  "foreign-pthreadManagedCallback": {
+    "outerCount": 1,
+    "nestedCount": 1,
+    "outerCompleted": 1,
+    "nestedCompleted": 1,
+    "failure": null,
+    "outerBefore": {
+      "errnoTls": "0x790981dff528",
+      "errnoLater": 4,
+      "nativeMarkerTls": "0x78ca6c000b70",
+      "nativeMarker": 139285,
+      "managedThreadId": 3
+    },
+    "outerAfter": {
+      "errnoTls": "0x790981dff528",
+      "errnoLater": 4,
+      "nativeMarkerTls": "0x78ca6c000b70",
+      "nativeMarker": 139285,
+      "managedThreadId": 3
+    },
+    "nestedBefore": {
+      "errnoTls": "0x790981dff528",
+      "errnoLater": 34,
+      "nativeMarkerTls": "0x78ca6c000b70",
+      "nativeMarker": 139285,
+      "managedThreadId": 3
+    },
+    "nestedAfter": {
+      "errnoTls": "0x790981dff528",
+      "errnoLater": 20,
+      "nativeMarkerTls": "0x78ca6c000b70",
+      "nativeMarker": 139285,
+      "managedThreadId": 3
+    },
+    "nestedOpenReturn": -1,
+    "nestedImmediateNativeErrno": 20,
+    "nestedNativeErrnoTls": "0x790981dff528",
+    "reentryReturn": 0,
+    "nativeReentry": {
+      "native_errno_before_callback": 34,
+      "native_errno_tls_before": 133081740604712,
+      "callback_return": 11027,
+      "native_errno_after_callback": 4,
+      "native_errno_tls_after": 133081740604712
+    }
+  },
+  "mutexReturnProtocol": {
+    "attr_init": 0,
+    "attr_settype": 0,
+    "mutex_init": 0,
+    "lock": 0,
+    "trylock_held": 16,
+    "lock_held_errorcheck": 35,
+    "unlock": 0,
+    "unlock_unowned": 1,
+    "mutex_destroy": 0,
+    "attr_destroy": 0
+  },
+  "checks": [
+    {
+      "name": "loaded_errno_symbol_matches_native_provider",
+      "passed": true
+    },
+    {
+      "name": "loaded_open_symbol_matches_native_provider",
+      "passed": true
+    },
+    {
+      "name": "loaded_helper_symbol_matches_native_provider",
+      "passed": true
+    },
+    {
+      "name": "provider_paths_exist",
+      "passed": true
+    },
+    {
+      "name": "raw_open_failed",
+      "passed": true
+    },
+    {
+      "name": "separate_native_open_failed",
+      "passed": true
+    },
+    {
+      "name": "separate_native_immediate_errno_is_ENOTDIR",
+      "passed": true
+    },
+    {
+      "name": "separate_native_tls_matches_main",
+      "passed": true
+    },
+    {
+      "name": "protected_helper_return",
+      "passed": true
+    },
+    {
+      "name": "protected_native_open_failed",
+      "passed": true
+    },
+    {
+      "name": "protected_native_immediate_errno_is_ENOTDIR",
+      "passed": true
+    },
+    {
+      "name": "protected_errno_restored_inside_native_scope",
+      "passed": true
+    },
+    {
+      "name": "protected_native_errno_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "protected_native_marker_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "protected_no_managed_exception",
+      "passed": true
+    },
+    {
+      "name": "protected_outer_and_nested_completed_once",
+      "passed": true
+    },
+    {
+      "name": "protected_native_callback_result",
+      "passed": true
+    },
+    {
+      "name": "protected_managed_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "protected_managed_marker_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "protected_nested_native_open_failed",
+      "passed": true
+    },
+    {
+      "name": "protected_nested_native_errno_tls_matches",
+      "passed": true
+    },
+    {
+      "name": "protected_native_reentry_complete",
+      "passed": true
+    },
+    {
+      "name": "protected_native_reentry_initial_errno_is_ERANGE",
+      "passed": true
+    },
+    {
+      "name": "pthread_helper_return",
+      "passed": true
+    },
+    {
+      "name": "pthread_create_return_zero",
+      "passed": true
+    },
+    {
+      "name": "pthread_join_return_zero",
+      "passed": true
+    },
+    {
+      "name": "pthread_callback_acquired_completion",
+      "passed": true
+    },
+    {
+      "name": "pthread_worker_entered_and_completed",
+      "passed": true
+    },
+    {
+      "name": "pthread_main_errno_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "pthread_worker_errno_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "pthread_errno_tls_distinct_from_main",
+      "passed": true
+    },
+    {
+      "name": "pthread_marker_tls_distinct_from_main",
+      "passed": true
+    },
+    {
+      "name": "pthread_main_marker_unchanged",
+      "passed": true
+    },
+    {
+      "name": "pthread_worker_marker_unchanged",
+      "passed": true
+    },
+    {
+      "name": "pthread_worker_managed_thread_distinct",
+      "passed": true
+    },
+    {
+      "name": "pthread_callback_native_errno_tls_matches",
+      "passed": true
+    },
+    {
+      "name": "pthread_callback_native_marker_tls_matches",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_no_managed_exception",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_outer_and_nested_completed_once",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_native_callback_result",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_managed_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_managed_marker_tls_stable",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_nested_native_open_failed",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_nested_native_errno_tls_matches",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_native_reentry_complete",
+      "passed": true
+    },
+    {
+      "name": "foreign-pthread_native_reentry_initial_errno_is_ERANGE",
+      "passed": true
+    },
+    {
+      "name": "mutex_helper_return",
+      "passed": true
+    },
+    {
+      "name": "mutex_attr_init_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_attr_settype_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_mutex_init_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_lock_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_unlock_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_mutex_destroy_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_attr_destroy_return_zero",
+      "passed": true
+    },
+    {
+      "name": "mutex_trylock_held_returns_EBUSY",
+      "passed": true
+    },
+    {
+      "name": "mutex_errorcheck_lock_held_returns_EDEADLK",
+      "passed": true
+    },
+    {
+      "name": "mutex_unlock_unowned_returns_EPERM",
+      "passed": true
+    },
+    {
+      "name": "main_marker_still_unchanged",
+      "passed": true
+    }
+  ]
+}

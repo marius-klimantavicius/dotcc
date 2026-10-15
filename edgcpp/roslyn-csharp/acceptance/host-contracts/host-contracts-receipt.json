@@ -1,0 +1,1201 @@
+{
+  "gate": "T3-preparation-finite-host-contract-probe",
+  "status": "passed-finite-host-probe",
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10047721699811518,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 53739520,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 9,
+          "sha256": "754d4ec29eaf73ed9f365df0dcc770212d046e7629c4d89ba54da43163a8c24d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "--info"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20076176803559065,
+      "sampledPeakProcessTreeRssBytes": 60153856,
+      "waitedPeakProcessRssBytes": 71434240,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1560,
+          "sha256": "3fe90a1bed55a6e53ce54d2616f9f3204f6611e50356b620fef360314cefd03d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-info",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10060676303692162,
+      "sampledPeakProcessTreeRssBytes": 94208,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "cc-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-print-prog-name=cc1"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10047940094955266,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 41,
+          "sha256": "a8081bc5652e2ec80147e680dfc24dd61f11820e2109d1e3b759d77c378583a9"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "cc-component-cc1",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-print-prog-name=collect2"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052239208016545,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 46,
+          "sha256": "c0b7638fa61ef43107d74ccefe76e6f9cd3c061bfee7d6ffd58a7b783012afed"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "cc-component-collect2",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-print-prog-name=as"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1005727689480409,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 3,
+          "sha256": "8b97bca79750847558d488e2ea4de79903c9c71c9af27ecf1b3dff5dba2abdd9"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "cc-component-as",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-print-prog-name=ld"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052193200681359,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 3,
+          "sha256": "3b6cb8ae51045d062a7c7de7cc488ad8785144cfbc0a7fc9546ed52429e0d97f"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "cc-component-ld",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "--list-sdks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10049059300217777,
+      "sampledPeakProcessTreeRssBytes": 163840,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 91,
+          "sha256": "d63b0eabce00f5f25cc383de5a99215fa5a27db42dcefd527615df65518ef0f7"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-sdks",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "-O2",
+        "-g",
+        "-fPIC",
+        "-shared",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/HostContracts/host-contracts.c",
+        "-ldl",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052313399501145,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 30670848,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-helper-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10053147003054619,
+      "sampledPeakProcessTreeRssBytes": 98304,
+      "waitedPeakProcessRssBytes": 256638976,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 657,
+          "sha256": "3b2f188d5ca198c24d600e5fb90db779ad2c05e9aadc65e1844df9182d70a3e7"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-helper-exports",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "readelf",
+        "-d",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10060915700159967,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1371,
+          "sha256": "e93ca8757c2f61cbca956814dc98ee150a677bac8cdc668bc49ad262b42fce98"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-helper-dynamic",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1006156699731946,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 155,
+          "sha256": "049446f02214b131f17122fc1c5c6b9c46465f21f25fffee2ef07509e1d84f24"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-helper-ldd",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/HostContracts/HostContracts.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.902267986908555,
+      "sampledPeakProcessTreeRssBytes": 166215680,
+      "waitedPeakProcessRssBytes": 166158336,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 269,
+          "sha256": "bddc6e9ce831263d345aadc49df52e6fea219115c9b035451ed48a2612e9128c"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "jit-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit/HostContracts.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit-first-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10044981702230871,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 40894464,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 122,
+          "sha256": "5eb5298605d20d9246e65eac6f1440ff5155d803a27d529b22987c54ce06d235"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "jit-first",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit/HostContracts.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit-repeat-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10050737590063363,
+      "sampledPeakProcessTreeRssBytes": 172032,
+      "waitedPeakProcessRssBytes": 40632320,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 123,
+          "sha256": "a12fa3f1bda183d5a9bbb3f3c5b0533acac26f3ec6faf3c264c4bf6d0b3e8114"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "jit-repeat",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/llvm-18/bin/clang",
+        "-print-prog-name=ld"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10050840897019953,
+      "sampledPeakProcessTreeRssBytes": 147456,
+      "waitedPeakProcessRssBytes": 69468160,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 12,
+          "sha256": "0fee318bca7611a664d1045f820ec79ffd7adf207e4348ec2f861cbe59503ccb"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-linker-path",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/llvm-18/bin/clang",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10045631998218596,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 69206016,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 169,
+          "sha256": "51cd702e6508d316164f136fb08142ba2dd4397751a3e82113b37c40cee2f007"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-cc-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/lib/dotnet/dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/HostContracts/HostContracts.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang",
+        "--nologo",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 3.109906840021722,
+      "sampledPeakProcessTreeRssBytes": 206372864,
+      "waitedPeakProcessRssBytes": 237776896,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 240.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 394,
+          "sha256": "13b154ed43dde7855def6bd5df97478dfcee037c3230df02368f5300e7fe494d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "readelf",
+        "-d",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot/HostContracts"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10060615791007876,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1701,
+          "sha256": "73be5506c7b3e150eb53867f07465d5feb132c189130c388e12eb572edfe0321"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-dynamic",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot/HostContracts"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1004404230043292,
+      "sampledPeakProcessTreeRssBytes": 208896,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "7234b8196fc07ff7a80d7f0242f8ad79fb5398e037e771aa1cb05041bb8769f6"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-ldd",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot/HostContracts",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot-first-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10051023494452238,
+      "sampledPeakProcessTreeRssBytes": 303104,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 122,
+          "sha256": "6fb0753ec06a6fe39a481b6d11495bfc5c6b382d2018f02983a7d3eb28a87f57"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-first",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot/HostContracts",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot-repeat-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1004118489800021,
+      "sampledPeakProcessTreeRssBytes": 86016,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 123,
+          "sha256": "63ad21f0073362d1fc6aff4c502c2389942988e315da08f7bd61893479301ee3"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot-repeat",
+      "expectedExitCode": 0
+    }
+  ],
+  "implementation": {
+    "Directory.Build.props": "d18b7a940248051441ae8bed845fa3e8b51338d16857af7f04919a4316d03b53",
+    "edgcpp/roslyn-csharp/Directory.Build.props": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec",
+    "edgcpp/roslyn-csharp/tests/Fixtures/HostContracts/host-contracts.c": "df4cf657d59283bf0ccebb788f8e28f8286975e3a1819cb82490133532319db3",
+    "edgcpp/roslyn-csharp/tests/HostContracts/HostContracts.csproj": "c23fa455877be60bf761e5d82534bedcaed18224c0b8525fd8193687a1f576d9",
+    "edgcpp/roslyn-csharp/tests/HostContracts/Program.cs": "a73aa38499ea0ed72f279beca6eda8b40fd3a3e1de300319a5116c2ebfd40c1c",
+    "edgcpp/roslyn-csharp/tests/HostContracts/README.md": "750c43d18fb14485e2c48c7d08fbf7704ecc94f75f3894f0dd7a49a710f75326",
+    "edgcpp/roslyn-csharp/tests/HostContracts/run-host-contracts.py": "7f3c806841daac11336b826064ba017090a25e9bddc551e0a8d0d1be00bfff4d",
+    "edgcpp/roslyn-csharp/tools/run-measured.py": "b4c89236a1717c1eb11588595509d41ad2bfa47cb0bd773d99305d6a9d4a986a",
+    "nuget.config": "0bc8b5cfba429bcbd0cb692405e3b6e504793c122350d6a8c95a69c2d718b472"
+  },
+  "removedEnvironmentVariables": [],
+  "productHostBridgeImplemented": false,
+  "readerDependency": false,
+  "nativeApplicationBodies": false,
+  "sqliteDependency": false,
+  "limits": [
+    "finite observations on the actual Linux x64 host and selected module hashes only",
+    "raw PInvoke managed-later errno has no paired immediate native snapshot for that same invocation",
+    "separate native open invocation supplies its own immediate errno baseline",
+    "protected experiment restores errno only inside its native scope around nested callbacks",
+    "managed allocation, GC, UCO and reentry observations do not establish universal preservation",
+    "one joined foreign pthread per run; no asynchronous callback lifetime or general thread model claim",
+    "opaque pthread mutex objects stay native; only native sizes/constants and return protocols are observed",
+    "no product host provider, TLS, mutex, errno or SQLite execution implementation accepted"
+  ],
+  "runs": [
+    {
+      "name": "jit-first",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit-first-report.json",
+        "sha256": "91e03a042db7e1d67a8d07afb852ef909302c2911b2023b8e3b96c9b25695da5",
+        "bytes": 15828
+      },
+      "checksPassed": 58,
+      "dynamicCodeSupported": true,
+      "rawPInvokeManagedLaterErrnoObservations": {
+        "managedLater": 20,
+        "managedAfterAllocationAndGc": 20,
+        "managedAfterSeparateNativeReentry": 20
+      },
+      "separateNativeInvocation": {
+        "openReturn": -1,
+        "errnoCapturedImmediatelyInC": 20,
+        "nativeErrnoTls": "0x7c34d80ef698"
+      },
+      "protectedNativeScope": {
+        "immediateErrno": 20,
+        "afterCallbackErrno": 4,
+        "restoredErrno": 20,
+        "callbackChangedErrnoObserved": true,
+        "managedLaterErrnoObservation": 20
+      },
+      "observationEqualityAcrossManagedTransitionsRequired": false
+    },
+    {
+      "name": "jit-repeat",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit-repeat-report.json",
+        "sha256": "f48382257012fddc5aa413fa6aa688fa8ffe14d4126d4878e40ece5966948117",
+        "bytes": 15828
+      },
+      "checksPassed": 58,
+      "dynamicCodeSupported": true,
+      "rawPInvokeManagedLaterErrnoObservations": {
+        "managedLater": 20,
+        "managedAfterAllocationAndGc": 20,
+        "managedAfterSeparateNativeReentry": 20
+      },
+      "separateNativeInvocation": {
+        "openReturn": -1,
+        "errnoCapturedImmediatelyInC": 20,
+        "nativeErrnoTls": "0x70f783cb8698"
+      },
+      "protectedNativeScope": {
+        "immediateErrno": 20,
+        "afterCallbackErrno": 4,
+        "restoredErrno": 20,
+        "callbackChangedErrnoObserved": true,
+        "managedLaterErrnoObservation": 20
+      },
+      "observationEqualityAcrossManagedTransitionsRequired": false
+    },
+    {
+      "name": "aot-first",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot-first-report.json",
+        "sha256": "1663f3bd43ee03a105cdcb6bad39f6a072f8e2cfbb1dfdeb1a1a6b0f8ff89d6e",
+        "bytes": 15896
+      },
+      "checksPassed": 58,
+      "dynamicCodeSupported": false,
+      "rawPInvokeManagedLaterErrnoObservations": {
+        "managedLater": 20,
+        "managedAfterAllocationAndGc": 20,
+        "managedAfterSeparateNativeReentry": 20
+      },
+      "separateNativeInvocation": {
+        "openReturn": -1,
+        "errnoCapturedImmediatelyInC": 20,
+        "nativeErrnoTls": "0x7daef749d6a8"
+      },
+      "protectedNativeScope": {
+        "immediateErrno": 20,
+        "afterCallbackErrno": 4,
+        "restoredErrno": 20,
+        "callbackChangedErrnoObserved": true,
+        "managedLaterErrnoObservation": 20
+      },
+      "observationEqualityAcrossManagedTransitionsRequired": false
+    },
+    {
+      "name": "aot-repeat",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot-repeat-report.json",
+        "sha256": "d0d6d80fe6f24840ba641b391a98b0103a86328f9c6edd493054f994c2f31c00",
+        "bytes": 15892
+      },
+      "checksPassed": 58,
+      "dynamicCodeSupported": false,
+      "rawPInvokeManagedLaterErrnoObservations": {
+        "managedLater": 20,
+        "managedAfterAllocationAndGc": 20,
+        "managedAfterSeparateNativeReentry": 20
+      },
+      "separateNativeInvocation": {
+        "openReturn": -1,
+        "errnoCapturedImmediatelyInC": 20,
+        "nativeErrnoTls": "0x790982ff86a8"
+      },
+      "protectedNativeScope": {
+        "immediateErrno": 20,
+        "afterCallbackErrno": 4,
+        "restoredErrno": 20,
+        "callbackChangedErrnoObserved": true,
+        "managedLaterErrnoObservation": 20
+      },
+      "observationEqualityAcrossManagedTransitionsRequired": false
+    }
+  ],
+  "dotnet": {
+    "executable": {
+      "path": "/usr/lib/dotnet/dotnet",
+      "sha256": "3c1b7fbe2bf2e3ae0952dfe9fb569f1facd81ddc965ece687294bab073095e76",
+      "bytes": 73016
+    },
+    "sdkVersion": "10.0.112",
+    "info": ".NET SDK:\n Version:           10.0.112\n Commit:            95017c711e\n Workload version:  10.0.100-manifests.b47d7e23\n MSBuild version:   18.0.11+95017c711\n\nRuntime Environment:\n OS Name:     zorin\n OS Version:  18\n OS Platform: Linux\n RID:         ubuntu.24.04-x64\n Base Path:   /usr/lib/dotnet/sdk/10.0.112/\n\n.NET workloads installed:\nThere are no installed workloads to display.\nConfigured to use workload sets when installing new manifests.\nNo workload sets are installed. Run \"dotnet workload restore\" to install a workload set.\n\nHost:\n  Version:      10.0.12\n  Architecture: x64\n  Commit:       95017c711e\n\n.NET SDKs installed:\n  8.0.131 [/usr/lib/dotnet/sdk]\n  9.0.120 [/usr/lib/dotnet/sdk]\n  10.0.112 [/usr/lib/dotnet/sdk]\n\n.NET runtimes installed:\n  Microsoft.AspNetCore.App 8.0.31 [/usr/lib/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 9.0.19 [/usr/lib/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.AspNetCore.App 10.0.12 [/usr/lib/dotnet/shared/Microsoft.AspNetCore.App]\n  Microsoft.NETCore.App 8.0.31 [/usr/lib/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 9.0.19 [/usr/lib/dotnet/shared/Microsoft.NETCore.App]\n  Microsoft.NETCore.App 10.0.12 [/usr/lib/dotnet/shared/Microsoft.NETCore.App]\n\nOther architectures found:\n  None\n\nEnvironment variables:\n  DOTNET_BUNDLE_EXTRACT_BASE_DIR           [/home/marius/.cache/dotnet_bundle_extract]\n  DOTNET_CLI_TELEMETRY_OPTOUT              [1]\n\nglobal.json file:\n  Not found\n\nLearn more:\n  https://aka.ms/dotnet/info\n\nDownload .NET:\n  https://aka.ms/dotnet/download",
+    "compilerFiles": [
+      {
+        "path": "/usr/lib/dotnet/sdk/10.0.112/Roslyn/bincore/csc.dll",
+        "sha256": "66fe274d5d4a4bafb60c51594e847cdd81c37de78804d21ed3cdefaaf247a0ab",
+        "bytes": 123904
+      },
+      {
+        "path": "/usr/lib/dotnet/sdk/10.0.112/MSBuild.dll",
+        "sha256": "9c73436fcfd500a2ec272722daf9a7a72fd99124f1e80202dad96e9936486df4",
+        "bytes": 876032
+      }
+    ]
+  },
+  "cCompiler": {
+    "executable": {
+      "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+      "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+      "bytes": 1023032
+    },
+    "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "components": [
+      {
+        "name": "cc1",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1",
+        "sha256": "5d1679131184e2de4435b426eb264bf13472fe026db8e5c6bc97445814e8e2f4",
+        "bytes": 30487984
+      },
+      {
+        "name": "collect2",
+        "path": "/usr/libexec/gcc/x86_64-linux-gnu/13/collect2",
+        "sha256": "4d1f341ae5b763b513258ee2812422a45e063c30a2f1924a0cf63d3699f3a158",
+        "bytes": 336056
+      },
+      {
+        "name": "as",
+        "path": "/usr/bin/x86_64-linux-gnu-as",
+        "sha256": "21aff249b692b5c31a44007491f922dcb49f41323e362c57d2ada3f52eddb7f0",
+        "bytes": 745768
+      },
+      {
+        "name": "ld",
+        "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+        "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+        "bytes": 1359128
+      }
+    ]
+  },
+  "nativeHelper": {
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+      "sha256": "b3e2e19e55a5c090aafd37c3ebdde55f3f32e8a8c4c2c32af90a8cb4ccca1553",
+      "bytes": 33944
+    },
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/HostContracts/host-contracts.c",
+      "sha256": "df4cf657d59283bf0ccebb788f8e28f8286975e3a1819cb82490133532319db3",
+      "bytes": 9934
+    },
+    "exports": "0000000000002380 T hc_abi_count\n0000000000002440 T hc_abi_name\n0000000000002480 T hc_abi_value\n0000000000002520 T hc_fail_capture\n0000000000002930 T hc_mutex_probe\n0000000000002620 T hc_protected_probe\n0000000000002af0 T hc_provider_address\n0000000000002b90 T hc_provider_base\n0000000000002aa0 T hc_provider_count\n0000000000002b20 T hc_provider_path\n0000000000002ab0 T hc_provider_symbol\n00000000000026e0 T hc_reentry_probe\n0000000000002560 T hc_report_count\n0000000000002580 T hc_report_name\n0000000000002510 T hc_set_errno\n0000000000002750 T hc_thread_probe\n00000000000024b0 T hc_tls_address\n00000000000024d0 T hc_tls_read\n00000000000024f0 T hc_tls_write",
+    "dependencies": {
+      "elfDynamic": "Dynamic section at offset 0x3de0 contains 25 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-x86-64.so.2]\n 0x000000000000000c (INIT)               0x2000\n 0x000000000000000d (FINI)               0x2c00\n 0x0000000000000019 (INIT_ARRAY)         0x49f0\n 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x49f8\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x328\n 0x0000000000000005 (STRTAB)             0x7b0\n 0x0000000000000006 (SYMTAB)             0x3d8\n 0x000000000000000a (STRSZ)              734 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x4fe8\n 0x0000000000000002 (PLTRELSZ)           480 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x1500\n 0x0000000000000007 (RELA)               0xb40\n 0x0000000000000008 (RELASZ)             2496 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffe (VERNEED)            0xae0\n 0x000000006fffffff (VERNEEDNUM)         2\n 0x000000006ffffff0 (VERSYM)             0xa8e\n 0x000000006ffffff9 (RELACOUNT)          83\n 0x0000000000000000 (NULL)               0x0",
+      "ldd": "linux-vdso.so.1 (0x00007ffe8178d000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000073c17cc00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000073c17ced7000)",
+      "resolvedFiles": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        }
+      ]
+    }
+  },
+  "jit": {
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit/HostContracts.dll",
+      "sha256": "bb5efca3e701067c55bdafb9b5fd770433c2b03150cd9cb78f45f62983f31f3c",
+      "bytes": 32768
+    },
+    "dependencies": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit/HostContracts.deps.json",
+      "sha256": "4455de7a8403e0fe06b038ee06f86adad049c07e1ffbd32cb21bba2e41d6a18a",
+      "bytes": 411
+    },
+    "runtimeConfig": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/jit/HostContracts.runtimeconfig.json",
+      "sha256": "52eccff0b97c55480c64b3a6d8dcb244f5fd098d0645dba8581d3e2190d4ea4a",
+      "bytes": 435
+    }
+  },
+  "aotNativeCompiler": {
+    "executable": {
+      "path": "/usr/lib/llvm-18/bin/clang",
+      "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8",
+      "bytes": 136504
+    },
+    "version": "Ubuntu clang version 18.1.8 (++20240731024944+3b5b5c1ec4a3-1~exp1~20240731145000.144)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/lib/llvm-18/bin",
+    "linker": {
+      "path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+      "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+      "bytes": 1359128
+    }
+  },
+  "aot": {
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/aot/HostContracts",
+      "sha256": "fecc0e38b6306fca844b3ef44f01a631ab377b3b0424d20efef4620a6a9f4bc3",
+      "bytes": 1840968
+    },
+    "dependencies": {
+      "elfDynamic": "Dynamic section at offset 0x1bd7d8 contains 31 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-x86-64.so.2]\n 0x000000000000000c (INIT)               0x7000\n 0x000000000000000d (FINI)               0x117b38\n 0x0000000000000019 (INIT_ARRAY)         0x1bd030\n 0x000000000000001b (INIT_ARRAYSZ)       56 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x1bd068\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x3d8\n 0x0000000000000005 (STRTAB)             0x13e0\n 0x0000000000000006 (SYMTAB)             0x408\n 0x000000000000000a (STRSZ)              2103 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000015 (DEBUG)              0x0\n 0x0000000000000003 (PLTGOT)             0x1bda08\n 0x0000000000000002 (PLTRELSZ)           3840 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x5158\n 0x0000000000000007 (RELA)               0x1ee8\n 0x0000000000000008 (RELASZ)             12912 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x1d70\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              BIND_NOW\n 0x000000006ffffffb (FLAGS_1)            Flags: NOW PIE\n 0x000000006ffffffe (VERNEED)            0x1da8\n 0x000000006fffffff (VERNEEDNUM)         3\n 0x000000006ffffff0 (VERSYM)             0x1c18\n 0x000000006ffffff9 (RELACOUNT)          532\n 0x0000000000000000 (NULL)               0x0",
+      "ldd": "linux-vdso.so.1 (0x00007ffc42d10000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f23c4117000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f23c3e00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f23c44cb000)",
+      "resolvedFiles": [
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        }
+      ]
+    },
+    "restoreAssets": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/HostContracts/obj/project.assets.json",
+      "sha256": "79f4a1de3887e5a5cfbd4531722755ebec281ed289f6a5cf609c3bca3cdbfcab",
+      "bytes": 25494
+    },
+    "compilerPackages": [
+      {
+        "name": "Microsoft.DotNet.ILCompiler/10.0.12",
+        "path": "/home/marius/.nuget/packages/microsoft.dotnet.ilcompiler/10.0.12",
+        "toolFiles": [
+          {
+            "path": "/home/marius/.nuget/packages/microsoft.dotnet.ilcompiler/10.0.12/tools/netstandard/ILCompiler.Build.Tasks.deps.json",
+            "sha256": "af1f353c0724dc9556316e2e75f81650eafe67186385eacb2863581add366281",
+            "bytes": 6252
+          },
+          {
+            "path": "/home/marius/.nuget/packages/microsoft.dotnet.ilcompiler/10.0.12/tools/netstandard/ILCompiler.Build.Tasks.dll",
+            "sha256": "dfecf883c50853d3ecdeb3bad0b4a2efd9cdc0a31333c4f71c58761f7fb6d637",
+            "bytes": 10752
+          }
+        ]
+      },
+      {
+        "name": "runtime.linux-x64.Microsoft.DotNet.ILCompiler/10.0.12",
+        "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12",
+        "toolFiles": [
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/ilc",
+            "sha256": "aff0fc8b87141f4e6f0db736bff841b18ce03a7a85a6fa171c7d0dc3ee001b99",
+            "bytes": 13497256
+          },
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/libclrjit_universal_arm64_x64.so",
+            "sha256": "34986376b045e9f569d39a47043e34adea7a85675251b0a1418b59de8e6e950e",
+            "bytes": 3254392
+          },
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/libclrjit_universal_arm_x64.so",
+            "sha256": "1f4608a3c5c31b053232408b36ac1be8305611445148d43f806764bacc17b169",
+            "bytes": 2580296
+          },
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/libclrjit_unix_x64_x64.so",
+            "sha256": "d45b269aa3324c972bb5f4b5c1eb56216ec3899b3d44bafc3583c025cd9602d5",
+            "bytes": 3323424
+          },
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/libclrjit_win_x64_x64.so",
+            "sha256": "60326706b28d7852f29411eafc95ed62f325725daabbfece62d30520e17ec551",
+            "bytes": 3305792
+          },
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/libclrjit_win_x86_x64.so",
+            "sha256": "a06b28d4704d59b280cd18b0bf91317f14397ececb703d216ca73f03d943291b",
+            "bytes": 3229080
+          },
+          {
+            "path": "/home/marius/.nuget/packages/runtime.linux-x64.microsoft.dotnet.ilcompiler/10.0.12/tools/libjitinterface_x64.so",
+            "sha256": "dc60902294e06f5030afc3f367969064cc8aecabc33ad1eb87b473ce36b68be9",
+            "bytes": 48560
+          }
+        ]
+      }
+    ]
+  },
+  "selectedProviderFiles": [
+    {
+      "symbol": "__errno_location",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "calloc",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "dladdr",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "free",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "hc_abi_count",
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/host-contracts-reproduction-2/libhost-contracts-probe.so",
+      "sha256": "b3e2e19e55a5c090aafd37c3ebdde55f3f32e8a8c4c2c32af90a8cb4ccca1553"
+    },
+    {
+      "symbol": "open",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_create",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_join",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_destroy",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_init",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_lock",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_trylock",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutex_unlock",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutexattr_destroy",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutexattr_init",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    },
+    {
+      "symbol": "pthread_mutexattr_settype",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+    }
+  ],
+  "sourceFreezeVerified": true
+}

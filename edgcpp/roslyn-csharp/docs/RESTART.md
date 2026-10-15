@@ -158,7 +158,13 @@ under `t3/host-contracts-first`: baseline later errno happens to remain 20;
 native protected scope observes deliberate callback clobber to 4 then restores
 20, distinct foreign-thread TLS, nested managed callbacks and native mutex return
 codes. This is preparation, not a production error-state implementation; see
-[SQLITE-PROVIDERS.md](SQLITE-PROVIDERS.md).
+[SQLITE-PROVIDERS.md](SQLITE-PROVIDERS.md). The formal receipt now passes 22
+phases and four JIT/AOT runs with all 58 checks; source/toolchain/provider hashes
+are committed at `acceptance/host-contracts/host-contracts-receipt.json`.
+The first formal attempt stopped at missing unversioned clang after passing JIT;
+the successful fresh attempt explicitly uses installed clang-18. Intrinsic
+worker is now preparing actual public call facts and lowering the 15 required
+builtins; no more broad host-probe matrix is needed.
 
 Preserve the original aggregate producer/native differential at
 `acceptance/semantic-differentials/aggregate.json` and its exact public trace:
