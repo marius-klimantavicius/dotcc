@@ -1,7 +1,7 @@
 namespace RoslynObj.CSharp.Runtime;
 
 /// <summary>Small target operations that have a different C# language contract.</summary>
-public static class TargetArithmetic
+public static partial class TargetArithmetic
 {
     public static int ShiftLeft(int value, int count) { CheckShift(count, 32); return unchecked(value << count); }
     public static uint ShiftLeft(uint value, int count) { CheckShift(count, 32); return value << count; }

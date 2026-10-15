@@ -8,7 +8,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | --- | --- | --- | --- |
 | T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | In progress | [Bounded assembly selection](T2-ASSEMBLY.md) passes 16 genuine inputs; storage physical JIT/NativeAOT slice passes pending final receipt | Integrated multi-unit emitted execution, callbacks, varargs, complete storage/ABI fixtures and provider contracts |
+| T2 | In progress | [Bounded assembly selection](T2-ASSEMBLY.md) passes 16 genuine inputs; [storage/callback slice](T2-STORAGE-CALLBACKS.md) passes 46 phases in JIT/NativeAOT | Integrated multi-unit emitted execution, variadics, effectful sequencing, aggregate native ABI and complete provider contracts |
 | T3 | Not implemented | Existing full-feature object is input evidence only | Complete SQLite emission, imports/providers, first SQL in JIT and NativeAOT |
 | T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
@@ -67,8 +67,8 @@ bootstrap outputs are retained separately and are not the final milestone.
 | Structured control flow | Exercised | For/while/if/return; switch/goto remain unsupported |
 | Concrete C++ instantiations | Exercised | Four EDG-selected signed/unsigned instances; no generic/type/overload reanalysis |
 | Other scalar operators | Implemented, partly unexercised | Shifts, logical operators and do-loops need their own activation before coverage claims |
-| T2 storage/calls | Unsupported | Globals/static/TLS, arrays/strings, aggregate copies, bitfields, function addresses/callbacks, native/hidden-ABI calls, variadics, multi-unit linking |
-| Broader scalar/C++ forms | Unsupported | Floating/extended values, reference adaptation, cleanup/EH, inheritance, richer initialization and effectful recorded right-to-left sequencing |
+| T2 storage/calls | Partly exercised | Single-TU stable globals, arrays/strings, aggregate copies, nonvolatile bitfields, canonical function addresses and scalar/pointer native callbacks pass the separate T2 receipt; TLS, dynamic initialization, hidden/native aggregate ABI, variadics and generated multi-unit execution remain open |
+| Broader scalar/C++ forms | Unsupported or unexercised | Basic floating representation code compiles but has no acceptance claim; extended values, reference adaptation, cleanup/EH, inheritance, richer initialization and effectful recorded right-to-left sequencing remain open |
 
 ## T0 focused evidence and open work
 
@@ -90,3 +90,15 @@ used as accepted evidence. The corrected full pass from `bcb86a08e` now closes
 T0: 97.00 seconds, zero diagnostics, all 4,212 executable bodies inventoried,
 2,226 required string values and 103 required imports/intrinsics. See
 [the inventory report](SQLITE-INVENTORY.md).
+
+## Bounded T2 storage and callback execution
+
+[The checkpoint report](../acceptance/storage-callbacks/report.json) records all
+46 phases, frozen source/build/input/provider hashes, deterministic output,
+physical storage observations and callback event order. Native/JIT/NativeAOT
+results are 147423/45/751 for storage/copy/callback fixtures. The separate
+[T1 regression](../acceptance/storage-callbacks/t1-regression.json) passes all
+23 phases after these emitter/runtime changes. Typed expression planning and
+SysV variadic cursor code are compiled baselines only: neither is integrated or
+execution-accepted. T2 remains open; see the explicit limits in
+[T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).

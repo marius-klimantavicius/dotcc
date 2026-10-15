@@ -6,10 +6,12 @@ The coordinator owns shared contracts, integration, serialized build/export
 scheduling, exact-path Git mutations and this ledger. Root supervises read-only.
 Two `gpt-6.1-sol` xhigh implementers have disjoint ownership:
 
-- `inventory`: `src/RoslynObj.CSharp/` excluding `Emission/`,
-  `src/RoslynObj.CSharp.Cli/`, and `tests/Inventory/`.
-- `emission`: `src/RoslynObj.CSharp/Emission/`, runtime/host projects, and other
-  `tests/` paths. Its first target is genuine C/C++ T1 fixtures.
+- `inventory`: the NEW typed planner files
+  `Emission/ExpressionPlan.cs` and `Emission/CSharpEmission.ExpressionPlans.cs`.
+  The completed inventory and semantic assembly files remain stable.
+- `emission`: existing Emission partials, runtime/host, Projection, T2 fixtures
+  and execution drivers. Next target: genuine SysV primitive variadics and
+  addressed variadic ABI adapters.
 
 The coordinator (`gpt-6.1-sol` high) owns root project configuration and docs.
 Workers must request build/export scheduling and must not mutate Git.
@@ -62,13 +64,12 @@ No additional full inventory repeat is needed absent semantic-dependency changes
 No inventory process is running now. The sparse frozen checkout preserves
 authoritative T0 binaries independently of current T2 edits; keep it available.
 
-Root authorized disjoint T2 implementation while that frozen binary runs.
-The inventory worker owns NEW `ProgramAssembly*`/`AbiCompatibility*` files (or
-`Assembly/`) plus `tests/Assembly`; the emitter worker owns its existing
-Emission/runtime/host/Projection paths and NEW T2 fixtures. Existing T0
-Inventory/Translator/Contracts/Translation files remain unchanged until
-integration. All builds/exports remain coordinator-scheduled. T2 representation
-directions and required evidence are recorded in [T2-CONTRACT.md](T2-CONTRACT.md).
+T2 bounded semantic assembly was verified and committed at
+`60e24dddbbef36cb6fd425d89733fa70ad47e22a`: 16 genuine inputs, C/C++ native
+oracles and explicit unsupported link-policy diagnostics. This does not yet
+provide generated cross-unit execution. See [T2-ASSEMBLY.md](T2-ASSEMBLY.md).
+All builds/exports remain coordinator-scheduled. Reviewed representation and ABI
+contracts are in [T2-CONTRACT.md](T2-CONTRACT.md).
 
 The coordinator's `acceptance/sqlite/prepare-native.py` built the separate
 full-feature native oracle under `sqlite/native-oracle`; its identity/recipe/
@@ -76,12 +77,35 @@ build report is committed at `acceptance/sqlite/native-oracle-build.json`.
 This is build-only evidence, with no SQL execution claimed. The oracle cannot
 be a generated-runtime provider.
 
-T2 genuine fixture objects/native oracles are under `t2/export`, `t2/native` and
-`t2/assembly-export`. First storage emission reached a compilable-projection
-stage then exposed narrow compound-assignment emission; the worker has a focused
-fix ready for next build. Native physical layout checks remain required. First
-assembly harness passed initial strong/local/opaque/qualifier/link diagnostics
-then exposed alias definitions without bodies; the corrected alias/ifunc logic
-and three extra ABI/inline fixtures await the next scheduled build. No T2 gate
-is closed. Next: complete these fixtures in JIT/NativeAOT and integrate selected
-program identities; then implement callbacks and variadics before SQLite T3.
+T2 storage/callback checkpoint passes all 46 phases at
+`t2/storage-callback-reproduction/t2-storage-callbacks-report.json`; a copy is
+committed at `acceptance/storage-callbacks/report.json`. Storage 147423,
+aggregate copy 45 and callbacks 751 match native in JIT and NativeAOT. All 32
+storage observations, real physical layout/alignment checks and exact seven
+callback events pass in both modes. Repeated generated files are identical;
+projects depend only on Generated and Runtime. The relevant T1 regression passes
+all 23 phases at `t2/t1-regression-storage-callbacks/t1-report.json`, also copied
+beside the checkpoint report. See [T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).
+
+Both workers were frozen throughout these receipts, including unhooked planner
+files compiled by the default project glob. The checkpoint includes the typed
+planner and SysV cursor baseline, but neither is integrated or execution-accepted.
+Known planner follow-up: reject partial/different-representation `eok_bassign`
+until its source-size/void-result contract is implemented. Native scalar ABI
+validation still needs explicit hidden-role and natural-alignment guards before
+broader boundaries are enabled. Current evidence is restricted to the genuine C
+scalar/pointer Cdecl fixtures.
+
+Next: release the freeze after this exact-path checkpoint commit; inventory
+worker tightens the unhooked planner and prepares genuine sequencing fixtures
+without changing existing emission. Emitter worker adds the captured-ABI guards,
+then primitive variadic calls/cursors and fixed-prefix incoming native adapters.
+Register exhaustion/interleaving, independent va_copy, borrowed native cursors,
+fixed-prefix occupancy and canonical address identity must pass JIT/NativeAOT.
+After coordinated planner integration, prove effectful ordering, branch-local
+prefixes and aggregate RHS snapshots. Generated multi-unit execution and native
+aggregate-by-value ABI remain open before T2 closure. SQLite T3/T4 has not run.
+
+Genuine fixture objects/native oracles remain under `t2/export`, `t2/native` and
+`t2/assembly-export`. Do not rebuild/re-export unchanged inputs for documentation
+changes. No process is left running by the checkpoint. Preserve all artifacts.

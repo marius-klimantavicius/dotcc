@@ -15,6 +15,7 @@ public sealed record CSharpEmissionOptions
     /// <summary>Acceptance harness only: print the selected entry value and exit zero.</summary>
     public bool PrintEntryResult { get; init; }
     public string RuntimeProjectPath { get; init; } = "";
+    public IReadOnlyList<CSharpExternalFunctionBinding> ExternalFunctions { get; init; } = [];
 }
 
 public sealed record CSharpEmissionResult(
@@ -24,7 +25,7 @@ public sealed record CSharpEmissionResult(
     int EmittedRecordCount);
 
 /// <summary>Projects public, already-resolved EDG objects to ordinary unsafe C#.</summary>
-public sealed class CSharpEmitter
+public sealed partial class CSharpEmitter
 {
     public CSharpEmissionResult Emit(IReadOnlyList<RoslynObject> inputs, CSharpEmissionOptions options)
     {
@@ -33,7 +34,7 @@ public sealed class CSharpEmitter
         return new Emission(inputs, options).Run();
     }
 
-    private sealed class Emission(IReadOnlyList<RoslynObject> inputs, CSharpEmissionOptions options)
+    private sealed partial class Emission(IReadOnlyList<RoslynObject> inputs, CSharpEmissionOptions options)
     {
         private readonly List<TranslationDiagnostic> diagnostics = [];
         private readonly Dictionary<SemanticEntity, string> names = [];
@@ -66,7 +67,10 @@ public sealed class CSharpEmitter
             var localStorage = input.TranslationUnit.Functions.Where(f => f.Body is not null).SelectMany(f => f.Body!.Locals).ToHashSet();
             foreach (var variable in input.TranslationUnit.Variables)
                 if (!variable.Details.IsParameter && !localStorage.Contains(variable))
-                    Add("CSHARP2007", $"Nonlocal storage '{variable.Name}' requires global allocation/definition planning; T1 cannot publish it.", variable.Name, "storage");
+                {
+                    try { AdmitGlobal(variable); }
+                    catch (Unsupported ex) { Add("CSHARP2007", ex.Message, variable.Name, ex.Family); }
+                }
             foreach (var function in input.TranslationUnit.Functions)
             {
                 if (function.BodyState.Name != "definition")
@@ -95,12 +99,31 @@ public sealed class CSharpEmitter
                 catch (Unsupported ex) { Add("CSHARP2100", ex.Message, function.Name, ex.Family); }
             }
             currentFunction = null;
+            var staticFields = new StringBuilder();
+            var staticInitialization = new CodeWriter();
+            try { EmitGlobalStorage(staticFields, staticInitialization); }
+            catch (Unsupported ex) { Add("CSHARP2300", ex.Message, null, ex.Family); }
+            try { EmitCallSupport(staticFields); }
+            catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
             var declarations = new StringBuilder();
-            // Type planning may discover field types while producing another record.
-            for (var i = 0; i < records.Count; ++i)
+            // Either kind can discover the other (record -> array -> record).
+            // Drain one joint worklist before publishing any declarations.
+            var recordIndex = 0;
+            var arrayIndex = 0;
+            while (recordIndex < records.Count || arrayIndex < arrays.Count)
             {
-                try { EmitRecord(records[i], declarations); }
-                catch (Unsupported ex) { Add("CSHARP2200", ex.Message, records[i].Name, ex.Family); }
+                if (recordIndex < records.Count)
+                {
+                    var record = records[recordIndex++];
+                    try { EmitRecord(record, declarations); }
+                    catch (Unsupported ex) { Add("CSHARP2200", ex.Message, record.Name, ex.Family); }
+                }
+                else
+                {
+                    var array = arrays[arrayIndex++];
+                    try { EmitArray(array, declarations); }
+                    catch (Unsupported ex) { Add("CSHARP2200", ex.Message, array.Name, ex.Family); }
+                }
             }
             var entry = functions.Where(f => f.Name == options.EntryPointName).ToArray();
             if (options.Executable && (entry.Length != 1 || entry[0].Parameters.Count != 0 || TypeName(entry[0].ReturnType) != "int"))
@@ -110,7 +133,10 @@ public sealed class CSharpEmitter
             source.Append("namespace ").Append(options.NamespaceName).AppendLine(";").AppendLine();
             source.Append(declarations);
             source.Append("public static unsafe class ").Append(options.ClassName).AppendLine("\n{");
-            source.Append("    static ").Append(options.ClassName).AppendLine("() => RuntimeContract.RequireLayout(8, true);").AppendLine();
+            source.Append(staticFields);
+            source.Append("    static ").Append(options.ClassName).AppendLine("()\n    {\n        RuntimeContract.RequireLayout(8, true);");
+            source.Append(staticInitialization.TextWithIndent(2));
+            source.AppendLine("    }").AppendLine();
             source.Append(methods);
             if (options.Executable)
             {
@@ -126,7 +152,9 @@ public sealed class CSharpEmitter
             source.AppendLine("}");
             var runtime = SecurityElement.Escape(Path.GetFullPath(options.RuntimeProjectPath));
             var project = $"<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <LangVersion>14</LangVersion>\n    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n    <Nullable>enable</Nullable>\n    <OutputType>{(options.Executable ? "Exe" : "Library")}</OutputType>\n    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>\n  </PropertyGroup>\n  <ItemGroup><ProjectReference Include=\"{runtime}\" /></ItemGroup>\n</Project>\n";
-            return new([new("Generated.cs", source.ToString()), new("Generated.csproj", project)], diagnostics, functions.Count, records.Count);
+            var files = new List<GeneratedSource> { new("Generated.cs", source.ToString()), new("Generated.csproj", project) };
+            if (nativeImports.Count > 0) files.Add(new("Generated.NativeImports.json", NativeImportReport()));
+            return new(files, diagnostics, functions.Count, records.Count);
         }
 
         private CSharpEmissionResult Failure(string code, string message)
@@ -163,7 +191,7 @@ public sealed class CSharpEmitter
             foreach (var variable in body.Locals)
             {
                 writer.Line($"{TypeName(variable.Type)} {names[variable]};");
-                if (Unwrap(variable.Type) is PointerType) writer.Line($"{names[variable]} = null;");
+                if (Unwrap(variable.Type) is PointerType) writer.Line($"{names[variable]} = {PointerZero(variable.Type)};");
                 else writer.Line($"Unsafe.SkipInit(out {names[variable]});");
             }
             if (body.Locals.Count > 0) writer.Line();
@@ -239,15 +267,26 @@ public sealed class CSharpEmitter
 
         private void Initialization(Initialization initialization, CodeWriter writer)
         {
-            if (initialization.Kind.Name is not ("dik_expression" or "dik_constant") ||
-                initialization.Details.IsConditional || initialization.Details.IsReusedValue || initialization.Details.IsPartialAggregate)
+            if (initialization.Kind.Name is not ("dik_expression" or "dik_constant" or "dik_bitwise_copy") ||
+                initialization.Details.IsConditional || initialization.Details.IsReusedValue ||
+                initialization.Details.IsPartialAggregate && (initialization.Kind.Name != "dik_constant" || initialization.Constant is null))
                 throw Limit($"Initialization '{initialization.Kind}' requires a richer storage/execution contract.", "initialization");
             if (initialization.Constructor is not null || initialization.Destructor is not null)
                 throw Limit("Constructor/destructor initialization is unsupported in T1.", "initialization");
             if (initialization.Target is not VariableSymbol variable || !names.ContainsKey(variable))
                 throw Limit("Initialization target is not selected local storage.", "initialization");
-            if (Unwrap(variable.Type) is RecordType)
-                throw Limit("Aggregate initialization/copy requires the T2 storage contract.", "initialization");
+            if (initialization.Kind.Name == "dik_bitwise_copy")
+            {
+                var source = initialization.BitwiseCopySource ?? throw Limit("A bitwise copy has no retained source.", "initialization");
+                writer.Line($"TargetStorage.Copy(ref {names[variable]}, ref {Expression(source)}, {StorageSize(variable.Type)});");
+                return;
+            }
+            if (Unwrap(variable.Type) is RecordType or ArrayType && initialization.Constant is { } aggregate)
+            {
+                writer.Line($"NativeMemory.Clear(&{names[variable]}, {StorageSize(variable.Type)});");
+                WriteConstant(variable.Type, $"(byte*)&{names[variable]}", aggregate.Value, writer, false);
+                return;
+            }
             var value = initialization.Expression is ExpressionOperation expression ? Expression(expression)
                 : initialization.Constant is { } constant ? Constant(constant)
                 : throw Limit($"Initialization '{initialization.Kind}' has no scalar value.", "initialization");
@@ -273,23 +312,15 @@ public sealed class CSharpEmitter
 
         private string Reference(ReferenceOperation reference)
         {
-            if (reference.Target is FunctionSymbol) throw Limit("A function address outside a proven direct call needs the T2 calling convention contract.", "function-pointer");
+            if (reference.Target is FunctionSymbol function) return FunctionAddress(function);
             if (reference.Target is FieldSymbol) throw Limit("A field reference requires its actual retained object operand.", "field");
-            if (reference.Target is { } target && names.TryGetValue(target, out var name)) return name;
+            if (reference.Target is { } target && names.TryGetValue(target, out var name)) return storage.ContainsKey(target) ? $"(*{OwnedName(target)})" : name;
             throw Limit($"Reference '{reference.Target?.Name}' has no selected function/local representation; globals and imports require T2.", "reference");
         }
 
         private string Call(CallOperation call)
         {
-            if (call.Callee is not ReferenceOperation { Target: FunctionSymbol calleeTarget })
-                throw Limit("Direct call projection requires the actual callee occurrence to be a routine reference; effectful/indirect callees need T2.", "call");
-            var target = call.TargetMethod ?? calleeTarget;
-            if (!target.Equals(calleeTarget)) throw Limit("Selected call target and actual callee reference require an explicit adapter.", "call");
-            if (target is null || !functions.Contains(target)) throw Limit($"Call target '{target?.Name}' is not a selected executable definition.", "call");
-            if (call.Receiver is not null || call.Call.ReturnSlot is not null) throw Limit("Hidden receiver/result-slot adaptation requires T2.", "call");
-            if (call.Operator.EvalRightToLeft && call.Arguments.Count > 1 && call.Arguments.Any(a => HasEffects(a.Value)))
-                throw Limit("A call with right-to-left evaluation and effectful arguments requires explicit sequencing temporaries.", "sequencing");
-            return $"{names[target]}({string.Join(", ", call.Arguments.Select(a => Expression(a.Value)))})";
+            return EmitCall(call);
         }
 
         private string Conversion(ConversionOperation conversion)
@@ -304,6 +335,7 @@ public sealed class CSharpEmitter
                 if (TypeName(conversion.SourceType) != TypeName(conversion.TargetType)) throw Limit("A lvalue adjustment changes the storage representation.", "conversion");
                 return value;
             }
+            if (kind == "eok_array_to_pointer") return $"(({TypeName(conversion.TargetType)})&({value}))";
             if (kind is not ("eok_cast" or "eok_lvalue_cast" or "eok_ref_cast")) throw Limit($"Conversion '{kind}' is unsupported.", "conversion");
             return $"unchecked(({TypeName(conversion.TargetType)})({value}))";
         }
@@ -313,12 +345,17 @@ public sealed class CSharpEmitter
             var kind = operation.OperatorKind.Name;
             var operands = operation.Operands;
             string A(int index) => Expression(operands[index]);
+            if ((AssignmentOperators.ContainsKey(kind) || kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr") &&
+                operands.Count > 0 && IsBitFieldPlace(operands[0]) && !operation.Details.ResultUnused)
+                throw Limit("A value-used bitfield store/update needs a normalized stored-value plan.", "bitfield");
             if (operation.Operator.EvalRightToLeft && operands.Count > 1 && operands.Any(HasEffects))
                 throw Limit($"Operator '{kind}' has effectful right-to-left operands and requires explicit sequencing temporaries.", "sequencing");
             switch (kind)
             {
                 case "eok_parens": return $"({A(0)})";
-                case "eok_address_of": case "eok_reference_to": return $"&({A(0)})";
+                case "eok_address_of": case "eok_reference_to":
+                    if (operands[0] is ReferenceOperation { Target: FunctionSymbol addressed }) return FunctionAddress(addressed);
+                    return $"&({A(0)})";
                 case "eok_indirect": case "eok_ref_indirect": return $"(*({A(0)}))";
                 case "eok_dot_field": case "eok_points_to_field":
                     if (operands[1] is not ReferenceOperation { Target: FieldSymbol field })
@@ -326,8 +363,23 @@ public sealed class CSharpEmitter
                     return $"({A(0)}){(kind == "eok_dot_field" ? "." : "->")}{FieldName(field)}";
                 case "eok_subscript":
                     if (operation.Operator.PointerOperandIsSecond)
-                        throw Limit("A subscript with its pointer second needs explicit operand evaluation planning.", "sequencing");
+                    {
+                        if (operands.Any(HasEffects)) throw Limit("An effectful pointer-second subscript requires explicit sequencing temporaries.", "sequencing");
+                        return $"({A(1)})[{A(0)}]";
+                    }
                     return $"({A(0)})[{A(1)}]";
+                case "eok_padd": case "eok_psubtract": case "eok_pdiff":
+                    if (operation.Operator.PointerOperandIsSecond)
+                    {
+                        if (operands.Any(HasEffects)) throw Limit("Effectful pointer-second arithmetic requires explicit sequencing temporaries.", "sequencing");
+                        return $"(({A(1)}) + ({A(0)}))";
+                    }
+                    return $"(({A(0)}) {(kind == "eok_padd" ? "+" : "-")} ({A(1)}))";
+                case "eok_question":
+                    if (operands.Any(HasEffects)) throw Limit("Effectful conditional branches require structured expression planning.", "sequencing");
+                    return $"({Truth(operands[0])} ? {A(1)} : {A(2)})";
+                case "eok_bassign":
+                    return $"TargetStorage.Copy(ref {A(0)}, ref {A(1)}, {StorageSize(operands[0].Type)})";
                 case "eok_not": return BoolValue($"!({Truth(operands[0])})", operation.Type);
                 case "eok_negate": return $"unchecked(({TypeName(operation.Type)})(-({A(0)})))";
                 case "eok_unary_plus": return $"unchecked(({TypeName(operation.Type)})(+({A(0)})))";
@@ -344,7 +396,21 @@ public sealed class CSharpEmitter
             if (ComparisonOperators.TryGetValue(kind, out var comparison)) return BoolValue($"({A(0)}) {comparison} ({A(1)})", operation.Type);
             if (AssignmentOperators.TryGetValue(kind, out var assignment))
             {
-                if (Unwrap(operands[0].Type) is RecordType) throw Limit("Aggregate assignment requires the T2 exact-storage copy contract.", "storage");
+                if (Unwrap(operands[0].Type) is RecordType or ArrayType)
+                    return $"TargetStorage.Copy(ref {A(0)}, ref {A(1)}, {StorageSize(operands[0].Type)})";
+                if (kind != "eok_assign" && TypeName(operands[0].Type) is "sbyte" or "byte" or "short" or "ushort" && TypeName(operands[1].Type) == "int")
+                {
+                    if (operands.Any(HasEffects)) throw Limit("Effectful narrow compound operands require explicit address/load/store planning.", "sequencing");
+                    if (operands[0] is OperatorOperation member && member.Operands.LastOrDefault() is ReferenceOperation { Target: FieldSymbol { Details.IsBitField: true } })
+                        throw Limit("A narrow bitfield compound operation needs a typed object setter helper.", "bitfield");
+                    var helper = kind switch
+                    {
+                        "eok_add_assign" => "Add", "eok_subtract_assign" => "Subtract", "eok_multiply_assign" => "Multiply", "eok_divide_assign" => "Divide",
+                        "eok_remainder_assign" => "Remainder", "eok_and_assign" => "And", "eok_or_assign" => "Or", "eok_xor_assign" => "Xor",
+                        _ => throw Limit("This narrow compound operation has no target helper.", "operator")
+                    };
+                    return $"TargetArithmetic.{helper}Assign(ref {A(0)}, {A(1)})";
+                }
                 return $"{A(0)} {assignment} {A(1)}";
             }
             if (BinaryOperators.TryGetValue(kind, out var binary))
@@ -362,7 +428,7 @@ public sealed class CSharpEmitter
         { ["eok_assign"] = "=", ["eok_add_assign"] = "+=", ["eok_subtract_assign"] = "-=", ["eok_multiply_assign"] = "*=", ["eok_divide_assign"] = "/=", ["eok_remainder_assign"] = "%=", ["eok_and_assign"] = "&=", ["eok_or_assign"] = "|=", ["eok_xor_assign"] = "^=" };
         private static readonly Dictionary<string, string> BinaryOperators = new()
         { ["eok_add"] = "+", ["eok_subtract"] = "-", ["eok_multiply"] = "*", ["eok_divide"] = "/", ["eok_remainder"] = "%", ["eok_and"] = "&", ["eok_or"] = "|", ["eok_xor"] = "^" };
-        private static bool IsStatementExpression(string kind) => AssignmentOperators.ContainsKey(kind) || kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr";
+        private static bool IsStatementExpression(string kind) => AssignmentOperators.ContainsKey(kind) || kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr" or "eok_bassign";
 
         private string Constant(Constant constant)
         {
@@ -374,6 +440,8 @@ public sealed class CSharpEmitter
                 var suffix = name switch { "uint" => "U", "long" => "L", "ulong" => "UL", _ => "" };
                 return name is "int" or "uint" or "long" or "ulong" ? value + suffix : $"({name}){value}";
             }
+            if (constant.Value is AddressValue address && constant.Type is { } addressType) return AddressExpression(address, addressType);
+            if (constant.Value is FloatingValue floating && constant.Type is { } floatingType) return FloatingLiteral(floating, floatingType);
             throw Limit($"Constant value '{constant.Value.Kind}' has no T1 exact-value projection.", "constant");
         }
 
@@ -392,16 +460,25 @@ public sealed class CSharpEmitter
             }
             return TruthValue(Expression(expression), expression.Type);
         }
-        private string TruthValue(string value, CppType type) => $"({value}) != {(Unwrap(type) is PointerType ? "null" : "0")}";
+        private string TruthValue(string value, CppType type) => $"({value}) != {(Unwrap(type) is PointerType ? PointerZero(type) : "0")}";
+        private static string PointerZero(CppType type) => Unwrap(type) is PointerType pointer && Unwrap(pointer.PointeeType) is not RoutineType ? "null" : "0";
         private string BoolValue(string comparison, CppType type) => $"(({comparison}) ? ({TypeName(type)})1 : ({TypeName(type)})0)";
 
         private string TypeName(CppType type)
         {
             type = Unwrap(type);
+            if (type.Details.IsAtomic) throw Limit("Atomic storage requires a target atomic projection.", "atomic");
             if (type.Kind.Name == "tk_void") return "void";
             if (type is ArithmeticType arithmetic)
             {
                 var detail = arithmetic.Arithmetic;
+                if (detail.ArithmeticKind.Name == "floating")
+                    return (detail.Bits, type.Size) switch
+                    {
+                        (32, var size) when size == 4 => "float",
+                        (64, var size) when size == 8 => "double",
+                        _ => throw Limit("Floating storage is not a supported IEEE binary32/binary64 representation.", "floating")
+                    };
                 if (detail.ArithmeticKind.Name is not ("signed_integer" or "unsigned_integer" or "character" or "boolean"))
                     throw Limit($"Arithmetic kind '{detail.ArithmeticKind}' has no T1 exact representation.", "type");
                 var bits = detail.Bits;
@@ -416,7 +493,7 @@ public sealed class CSharpEmitter
             if (type is PointerType pointer)
             {
                 if (pointer.IsReference) throw Limit("Reference storage adaptation has no exercised T1 contract.", "reference");
-                if (Unwrap(pointer.PointeeType) is RoutineType) throw Limit("Function addresses require the T2 calling convention contract.", "function-pointer");
+                if (Unwrap(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }
                 return TypeName(pointer.PointeeType) + "*";
             }
             if (type is RecordType record)
@@ -427,6 +504,19 @@ public sealed class CSharpEmitter
                     Name(record, record.Name ?? record.DeclarationSymbol?.Name ?? "Record", globalNames);
                 }
                 return names[record];
+            }
+            if (type is ArrayType array)
+            {
+                if (!planned.Contains(array))
+                {
+                    // Finish dependent representation planning before scheduling
+                    // a declaration; a diagnosed element must not leave an unnamed type.
+                    var elementName = TypeName(array.ElementType);
+                    Name(array, $"Array_{elementName}_{array.Bound}", globalNames);
+                    planned.Add(array);
+                    arrays.Add(array);
+                }
+                return names[array];
             }
             throw Limit($"Type '{type.Kind}' has no T1 representation.", "type");
         }
@@ -449,14 +539,21 @@ public sealed class CSharpEmitter
             if (record.Size is not { } size || size <= 0 || size > int.MaxValue || record.Alignment is not { } alignment || alignment < 1 || alignment > 8)
                 throw Limit("Record size/alignment has no T1 CLR layout representation.", "record");
             var fieldAlignment = layout.Fields.Count == 0 ? BigInteger.One : layout.Fields.Max(f => f.Field.Type.Alignment ?? BigInteger.Zero);
-            if (fieldAlignment == 0 || BigInteger.Min(fieldAlignment, alignment) != alignment)
+            if (fieldAlignment == 0)
                 throw Limit("Captured record alignment exceeds CLR field alignment; explicit offsets/Pack cannot increase alignment.", "record");
             output.Append("[StructLayout(LayoutKind.Explicit, Size = ").Append(size).Append(", Pack = ").Append(alignment).AppendLine(")]");
             output.Append("public unsafe struct ").Append(names[record]).AppendLine("\n{");
+            if (BigInteger.Min(fieldAlignment, alignment) != alignment || layout.Fields.All(f => f.Field.Details.IsBitField))
+                output.Append("    [FieldOffset(0)] public ").Append(AlignmentCarrier(alignment)).AppendLine(" __alignment;");
             foreach (var field in layout.Fields)
             {
-                if (field.Field.Details.IsBitField || field.Offset is not { } offset || offset < 0 || offset > int.MaxValue)
+                if (field.Offset is not { } offset || offset < 0 || offset > int.MaxValue)
                     throw Limit("Record field has a bitfield or unavailable storage offset.", "record");
+                if (field.Field.Details.IsBitField)
+                {
+                    EmitBitField(record, field, output);
+                    continue;
+                }
                 output.Append("    [FieldOffset(").Append(offset).Append(")] public ").Append(TypeName(field.Field.Type)).Append(' ').Append(FieldName(field.Field)).AppendLine(";");
             }
             output.AppendLine("}").AppendLine();
@@ -490,6 +587,13 @@ public sealed class CSharpEmitter
             CallOperation or TemporaryOperation or AllocationOperation or ThrowOperation => true,
             OperatorOperation op when IsStatementExpression(op.OperatorKind.Name) => true,
             _ => expression.Operands.Any(HasEffects)
+        };
+        private static bool IsBitFieldPlace(ExpressionOperation expression) => expression switch
+        {
+            ConversionOperation conversion => IsBitFieldPlace(conversion.Operand),
+            OperatorOperation member when member.OperatorKind.Name is "eok_dot_field" or "eok_points_to_field" =>
+                member.Operands.LastOrDefault() is ReferenceOperation { Target: FieldSymbol { Details.IsBitField: true } },
+            _ => false
         };
         private static ExpressionOperation Required(ExpressionOperation? expression) => expression ?? throw Limit("Required executable expression is absent.", "expression");
         private static Unsupported Limit(string message, string family) => new(message, family);

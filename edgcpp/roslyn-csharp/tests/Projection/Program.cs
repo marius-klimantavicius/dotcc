@@ -20,6 +20,21 @@ if (args[0] == "inspect")
     foreach (var type in input.TranslationUnit.Types.OfType<ArithmeticType>())
         Console.WriteLine($"TYPE {type.Name} {type.Kind} {type.Arithmetic.ArithmeticKind} bits={type.Arithmetic.Bits} signed={type.Arithmetic.Signed} size={type.Size}");
 }
+else if (args[0] == "inspect-storage")
+{
+    foreach (var variable in input.TranslationUnit.Variables.Where(v => !v.Details.IsParameter && v.SourceCorrespondence?.EnclosingRoutine is null))
+    {
+        Console.WriteLine($"STORAGE {variable.Name} type={variable.Type} size={variable.Type.Size} align={variable.Type.Alignment} storage={variable.SymbolDetails.Storage} init={variable.Initializer?.Kind}");
+        if (variable.ConstantInitializer is { } constant) InspectValue(constant.Value, "  ");
+        else if (variable.Initializer?.Constant is { } recipeConstant) InspectValue(recipeConstant.Value, "  ");
+    }
+    foreach (var record in input.TranslationUnit.Types.OfType<RecordType>().Where(t => t.Layout is not null))
+    {
+        Console.WriteLine($"RECORD {record.Name} size={record.Size} align={record.Alignment}");
+        foreach (var field in record.Layout!.Fields)
+            Console.WriteLine($"  FIELD {field.Field.Name} type={field.Field.Type} offset={field.Offset} bit={field.BitOffset} width={field.BitWidth} signed={field.Field.Details.BitFieldIsSigned} container={field.ContainerOffset}");
+    }
+}
 else if (args[0] == "verify")
 {
     var definitions = input.TranslationUnit.Functions.Where(f => f.BodyState.Name == "definition").ToArray();
@@ -61,7 +76,9 @@ else if (args[0] == "verify")
 }
 else if (args[0] == "emit")
 {
-    var result = new CSharpEmitter().Emit([input], new CSharpEmissionOptions { Executable = true, EntryPointName = "fixture", PrintEntryResult = true, RuntimeProjectPath = args[3] });
+    var bindings = args.Length > 4 ? JsonSerializer.Deserialize<CSharpExternalFunctionBinding[]>(File.ReadAllText(args[4])) ?? [] : [];
+    var result = new CSharpEmitter().Emit([input], new CSharpEmissionOptions { Executable = true, EntryPointName = "fixture", PrintEntryResult = true,
+        RuntimeProjectPath = args[3], ExternalFunctions = bindings });
     foreach (var diagnostic in result.Diagnostics) Console.WriteLine($"{diagnostic.Code}: {diagnostic.Message} [{diagnostic.Locator}]");
     if (result.Diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error)) return 1;
     Directory.CreateDirectory(args[2]);
@@ -79,6 +96,30 @@ static object ParameterContract(Parameter parameter)
     return new { name = parameter.Name, kind = type.Kind.Name, dependent = type.IsDependent,
         bits = arithmetic?.Bits, signed = arithmetic?.Signed,
         storageBytes = type.Size?.ToString(CultureInfo.InvariantCulture) };
+}
+
+static void InspectValue(ConstantValue value, string indent)
+{
+    switch (value)
+    {
+        case IntegerValue integer: Console.WriteLine($"{indent}INTEGER {integer.Value}"); break;
+        case AddressValue address:
+            Console.WriteLine($"{indent}ADDRESS base={address.BaseKind}/{address.BaseEntity?.Name} byteOffset={address.ByteOffset} onePast={address.OnePastEnd}");
+            if (address.SubobjectPath is { } path)
+                foreach (var step in path.Steps)
+                    Console.WriteLine($"{indent}  PATH {step.Kind} elementOffset={step.ElementOffset} field={step.Field?.Name} baseOffset={step.BaseSubobject?.Offset} converted={step.IsConverted}");
+            break;
+        case AggregateValue aggregate:
+            Console.WriteLine($"{indent}AGGREGATE {aggregate.Details.Type}");
+            foreach (var element in aggregate.Elements) InspectValue(element.Value, indent + "  ");
+            break;
+        case StringValue text: Console.WriteLine($"{indent}STRING {text.UnitKind} length={text.Length} units=[{string.Join(',', text.StorageUnits)}]"); break;
+        case ConstantValue<RepeatValueDetails> repeat:
+            Console.WriteLine($"{indent}REPEAT {repeat.Payload.Count}"); InspectValue(repeat.Payload.Value, indent + "  "); break;
+        case ConstantValue<DesignatorValueDetails> designator:
+            Console.WriteLine($"{indent}DESIGNATOR field={designator.Payload.Field?.Name} index={designator.Payload.IndexValue}"); break;
+        default: Console.WriteLine($"{indent}{value.Kind}"); break;
+    }
 }
 
 static void Inspect(SemanticNode node, string indent, HashSet<SemanticNode> path)
