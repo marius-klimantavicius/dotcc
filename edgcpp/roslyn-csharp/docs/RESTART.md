@@ -29,13 +29,23 @@ one logical-errno substitution, not raw libc accessor invocation; 71 selections
 remain untraced. Finite clock/random-buffer/allocator contracts pass. No claim
 covers every provider variant, actual OS/device failure, upstream suite or all SQL.
 
-Next approved T5 sequence: capture and inspect the concrete public roles and
+Active approved T5 sequence: capture and inspect the concrete public roles and
 normal lifetime/copy/return-temporary roots in the two prepared header-free
 candidates, prove normal native/JIT/AOT first, then bounded generated-only int
 throw/catch cleanup. Root reviewed and accepted this sequence without another
 approval round. Local candidate files are `tests/Fixtures/T5/normal-lifetime.cpp`
 and `exception-cleanup.cpp`; `docs/T5-INITIAL-SLICE.md` records public facts/guards.
-They have not been captured, built or executed. Keep native-boundary unwinding,
+Both captures and the separate native oracle now pass under `t5/capture` and
+`t5/native-*` in the campaign artifact directory. Exact source/object/tool hashes
+are in `t5/capture-provenance-1.json`. Each oracle runs twice: normal returns 26
+with 13 events; exceptional returns 11 with 14 events; both repeat complete
+observations with live/overflow zero. These are observations, not translation
+acceptance. Public inventory records 16 normal required definitions/no required
+imports and 13 exceptional definitions/one required EDG runtime helper
+`__destroy_exception_object`. Retained `_ZTIi` is not a required native import;
+actual type facts still govern exception matching. The focused public lifetime
+probe is being implemented; generated lifetime execution has not run.
+Keep native-boundary unwinding,
 lexical cleanup reconstruction and broader inheritance/TLS/arrays outside this
 first slice. EDG and its recorded execution remain authoritative.
 

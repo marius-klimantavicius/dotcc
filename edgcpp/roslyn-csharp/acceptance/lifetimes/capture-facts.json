@@ -1,0 +1,214 @@
+{
+  "status": "captured-public-facts-and-separate-native-observations",
+  "translationAccepted": false,
+  "milestone": "T5 initial bounded fixtures; T5 remains open",
+  "captureProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture-provenance-1.json",
+    "bytes": 5090,
+    "sha256": "2f74c3b0c65d721009f8117b344776849c7cab80b2d86320a6f7a0daab1fc60b"
+  },
+  "probeBuild": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-build-2/run.json",
+    "bytes": 1134,
+    "sha256": "f36bfff3f9784c7d7d61473999850ef9f570493a170bb69b696d49f3f38eeb8c"
+  },
+  "probeSourceFreezeVerified": true,
+  "probeSources": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/LifetimeFacts/LifetimeFacts.csproj",
+      "bytes": 214,
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/LifetimeFacts/Program.cs",
+      "bytes": 27473,
+      "sha256": "09b81b872ec577456b2cd1ef9779ee04dbb644e73d7df4a8d14f0eba7df7fe78"
+    }
+  ],
+  "rows": [
+    {
+      "fixture": "normal-lifetime",
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/normal-lifetime.roslynobj",
+        "bytes": 792576,
+        "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718"
+      },
+      "publicFacts": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-lifetime-facts-2.json",
+        "bytes": 661009,
+        "sha256": "f90a60ba401082eea8980d26b8885681bf19e18a430f23ef62b25bf91e4be72d"
+      },
+      "nativeObservations": {
+        "runs": [
+          {
+            "result": 26,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              11,
+              11,
+              2,
+              2,
+              14,
+              0,
+              12,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              211,
+              311,
+              211,
+              102,
+              302,
+              311,
+              301,
+              900,
+              101,
+              211,
+              311,
+              301
+            ]
+          },
+          {
+            "result": 26,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              11,
+              11,
+              2,
+              2,
+              14,
+              0,
+              12,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              211,
+              311,
+              211,
+              102,
+              302,
+              311,
+              301,
+              900,
+              101,
+              211,
+              311,
+              301
+            ]
+          }
+        ]
+      },
+      "nativeReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/run.json",
+        "bytes": 889,
+        "sha256": "9360401b2ababa3b1b931376c1eebfdc04af05e94c50ad834b510b6af3bea2a2"
+      },
+      "publicFactsReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-normal-run-2/run.json",
+        "bytes": 1065,
+        "sha256": "e739c9b09343c4b0913617d21faf29d5f9c70432ba69fe84358ae8db71c08d9b"
+      },
+      "nativeRepeatedObservationsEqual": true
+    },
+    {
+      "fixture": "exception-cleanup",
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup.roslynobj",
+        "bytes": 791552,
+        "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5"
+      },
+      "publicFacts": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/exception-cleanup-facts-2.json",
+        "bytes": 593488,
+        "sha256": "75d42131c496af3fb874a8b32771018bbda43a4e34832807679b7ec13940810f"
+      },
+      "nativeObservations": {
+        "runs": [
+          {
+            "result": 11,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              3,
+              0,
+              8,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              600,
+              302,
+              301,
+              900,
+              101,
+              102,
+              103,
+              507,
+              303,
+              302,
+              707,
+              301
+            ]
+          },
+          {
+            "result": 11,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              3,
+              0,
+              8,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              600,
+              302,
+              301,
+              900,
+              101,
+              102,
+              103,
+              507,
+              303,
+              302,
+              707,
+              301
+            ]
+          }
+        ]
+      },
+      "nativeReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/run.json",
+        "bytes": 892,
+        "sha256": "1622ffaa5d12dab0b70e80d9bd050664cc08a64d773af09615c63becadec3cbf"
+      },
+      "publicFactsReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-exception-run-2/run.json",
+        "bytes": 1070,
+        "sha256": "54dfcc033e541cc1b6f071ab59b3371948f065f9713cf7b3408c2138e6710928"
+      },
+      "nativeRepeatedObservationsEqual": true
+    }
+  ],
+  "preservedToolingAttempts": [
+    "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-harness-1/run.json",
+    "/mnt/storage/roslynobj-csharp-20261015/t5/facts-build-1/run.json"
+  ],
+  "limits": [
+    "Public structural paths are observations, not an execution schedule.",
+    "Normal generated execution must preserve explicit selected calls and validate retained EH state/lifetime profile before admission.",
+    "Exceptional throw/catch/cleanup runtime mapping is not implemented or accepted by these receipts.",
+    "Native observations do not override the retained EDG program."
+  ]
+}
