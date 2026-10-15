@@ -3,8 +3,9 @@ using RoslynObj;
 using RoslynObj.CSharp;
 
 var cleanupMode = args.FirstOrDefault() == "--cleanup";
-if (cleanupMode) args = args.Skip(1).ToArray();
-if (args.Length != 2) throw new ArgumentException("Usage: Inventory [--cleanup] INPUT.roslynobj OUTPUT_DIRECTORY");
+var addressMode = args.FirstOrDefault() == "--addresses";
+if (cleanupMode || addressMode) args = args.Skip(1).ToArray();
+if (args.Length != 2) throw new ArgumentException("Usage: Inventory [--cleanup|--addresses] INPUT.roslynobj OUTPUT_DIRECTORY");
 using var obj = RoslynObject.Open(args[0]);
 var manifest = obj.Manifest;
 var request = new TranslationRequest
@@ -21,6 +22,51 @@ var request = new TranslationRequest
 var translator = new Translator();
 var first = translator.Inventory(request);
 Require(first.Status == TranslationStatus.InventoryComplete, string.Join("\n", first.Diagnostics.Select(d => d.Message)));
+if (addressMode)
+{
+    ProgramManifest.WriteReport(args[1] + "-address-inventory.json", first.ProgramReport);
+    // Independently follow actual public constant/address relationships. No backing expression is evaluated.
+    var seen = new HashSet<SemanticEntity>();
+    var values = new HashSet<ConstantValue>();
+    long constantAddressBases = 0;
+    void Constant(Constant? constant)
+    {
+        if (constant is null || !seen.Add(constant)) return;
+        Value(constant.Value);
+        foreach (var component in constant.Components) Constant(component.Constant);
+    }
+    void Value(ConstantValue value)
+    {
+        if (!values.Add(value)) return;
+        switch (value)
+        {
+            case AddressValue address when address.BaseEntity is RoslynObj.Constant target:
+                constantAddressBases++; Constant(target); break;
+            case AddressValue address when address.BaseEntity is ConstantValue target: Value(target); break;
+            case AggregateValue aggregate: foreach (var element in aggregate.Elements) Value(element.Value); break;
+            case ConstantValue<RepeatValueDetails> repeat: Value(repeat.Payload.Value); break;
+        }
+    }
+    foreach (var variable in obj.TranslationUnit.Variables.Where(v => v.SymbolDetails.Storage?.Name != "sc_extern"))
+        Constant(variable.ConstantInitializer);
+    foreach (var function in obj.TranslationUnit.Functions.Where(f => f.BodyState.Name == "definition"))
+        foreach (var operation in function.Body!.DescendantOperations().OfType<ConstantOperation>()) Constant(operation.Constant);
+    Require(constantAddressBases >= 4, "genuine data must activate multiple address-to-constant bases");
+    Require(values.OfType<StringValue>().Count() >= 7, "genuine closure must retain all seven live string-storage values");
+    foreach (var family in values.GroupBy(v => v.Kind.Name))
+    {
+        var actual = first.ProgramReport.Families.Single(row => row.Family == "constant-value" && row.Form == family.Key);
+        Require(actual.RequiredCount >= family.LongCount(), $"required {family.Key} bytes/value closure is incomplete");
+    }
+    foreach (var function in obj.TranslationUnit.Functions.Where(f => f.BodyState.Name == "definition"))
+        Require(first.ProgramReport.Functions.Single(f => f.Name == function.Name).OperationCount == function.Body!.DescendantOperations().LongCount(),
+            "backing metadata must never add executable body operations");
+    var repeated = translator.Inventory(request);
+    Require(JsonSerializer.Serialize(first.ProgramReport, ProgramManifest.JsonOptions) == JsonSerializer.Serialize(repeated.ProgramReport, ProgramManifest.JsonOptions),
+        "cyclic address-storage inputs must terminate and inventory deterministically");
+    Console.WriteLine("Genuine address-to-constant/string/aggregate closure and cyclic-storage checks passed.");
+    return;
+}
 if (cleanupMode)
 {
     ProgramManifest.WriteReport(args[1] + "-cleanup-inventory.json", first.ProgramReport);

@@ -93,6 +93,8 @@ internal sealed partial class InventoryState
                 case AddressValue address:
                     Count("address-constant", address.BaseKind.Name, firstRequired, locator, firstRetained);
                     if (firstRequired) Use(address.BaseEntity, locator, address: true);
+                    if (address.BaseEntity is Constant baseConstant) VisitConstant(baseConstant, locator, required);
+                    else if (address.BaseEntity is ConstantValue baseValue) VisitValue(baseValue, locator, required);
                     break;
                 case AggregateValue aggregate:
                     foreach (var element in aggregate.Elements)
