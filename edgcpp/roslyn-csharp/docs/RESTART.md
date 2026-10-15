@@ -42,21 +42,46 @@ generated projects under `t1/final/generated-{c,cpp}` compile and execute 66/38 
 JIT and NativeAOT, matching the native oracles. Final measured attempts are under
 `t1/final/`; preliminary bootstrap outputs are separate retained artifacts.
 
+T1 milestone commit: `b5a096226e0e521a85f01e2f262bcf4b192c4b22`.
 T1 final reproduction passes all 23 phases with exact source/build hashes,
 deterministic repeat and public layout/template proof. Its immutable report is
 committed at `acceptance/t1/report.json`; root independently reviewed and accepted
 this first fixture gate. No more T1 reruns are needed absent relevant changes.
 
-The CLI/manifest and focused storage/cleanup-context tests pass. Two earlier
-SQLite attempts were gracefully cancelled for inventory-context corrections;
-their incomplete reports remain preserved. All T0/T1 source is now frozen.
-Next: build the CLI from this snapshot and complete the SQLite inventory under
-the pinned manifest budgets, then audit imports/forms to order T2 work. T0
-remains open; SQLite translation/execution is unimplemented.
+T0's corrected full SQLite inventory now passes from commit
+`bcb86a08e24d983cd654904c4833f46c62d15c87` in the sparse detached checkout
+`/mnt/storage/roslynobj-csharp-20261015/t0/verified-snapshot`. Its immutable report
+and build hashes are under `t0/sqlite-inventory-address-closure`; root accepted
+T0. It inventories 4,212 executable bodies/592,512 body operations and 103
+required external/intrinsic requirements, with no diagnostics. Constant-address
+closure now reaches 2,226 required strings. Two earlier context-fix attempts are
+cancelled/incomplete; the b5 pass is complete but superseded by this closure fix.
+See [SQLITE-INVENTORY.md](SQLITE-INVENTORY.md) and the compact committed audit.
+No additional full inventory repeat is needed absent semantic-dependency changes.
 
-The emitter implementer may draft NEW T2 C/C++ fixtures/native oracle sources
-without changing existing source/project files. Root reviewed the planned
-canonical-address wrappers, managed internal indirect calls, storage/fixups and
-SysV variadic packs. Incoming variadic native boundaries may use concrete
-fixed-prefix C wrappers limited to `va_*` capture and synchronous forwarding.
-All such capabilities require genuine JIT/NativeAOT evidence before acceptance.
+No inventory process is running now. The sparse frozen checkout preserves
+authoritative T0 binaries independently of current T2 edits; keep it available.
+
+Root authorized disjoint T2 implementation while that frozen binary runs.
+The inventory worker owns NEW `ProgramAssembly*`/`AbiCompatibility*` files (or
+`Assembly/`) plus `tests/Assembly`; the emitter worker owns its existing
+Emission/runtime/host/Projection paths and NEW T2 fixtures. Existing T0
+Inventory/Translator/Contracts/Translation files remain unchanged until
+integration. All builds/exports remain coordinator-scheduled. T2 representation
+directions and required evidence are recorded in [T2-CONTRACT.md](T2-CONTRACT.md).
+
+The coordinator's `acceptance/sqlite/prepare-native.py` built the separate
+full-feature native oracle under `sqlite/native-oracle`; its identity/recipe/
+build report is committed at `acceptance/sqlite/native-oracle-build.json`.
+This is build-only evidence, with no SQL execution claimed. The oracle cannot
+be a generated-runtime provider.
+
+T2 genuine fixture objects/native oracles are under `t2/export`, `t2/native` and
+`t2/assembly-export`. First storage emission reached a compilable-projection
+stage then exposed narrow compound-assignment emission; the worker has a focused
+fix ready for next build. Native physical layout checks remain required. First
+assembly harness passed initial strong/local/opaque/qualifier/link diagnostics
+then exposed alias definitions without bodies; the corrected alias/ifunc logic
+and three extra ABI/inline fixtures await the next scheduled build. No T2 gate
+is closed. Next: complete these fixtures in JIT/NativeAOT and integrate selected
+program identities; then implement callbacks and variadics before SQLite T3.

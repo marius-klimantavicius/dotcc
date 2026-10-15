@@ -35,6 +35,16 @@ The manifest additionally limits output to 512 MiB, opens one unit, and fixes
 reader caches to 4,096 rows/128 pages of 128. Measured process-tree RSS and waited
 process high-water RSS have different meanings; the receipt labels both.
 
-Providers and bindings are empty until the complete import inventory is audited.
-This is an inventory input, not a runnable SQLite configuration. T3/T4 execution
-is not implemented. See [coverage](../../docs/COVERAGE.md) for current evidence.
+The [complete inventory](../../docs/SQLITE-INVENTORY.md) passes and the
+[import audit](import-audit.json) lists all 103 requirements, including 15
+recorded compiler intrinsics. Candidate providers remain unimplemented;
+`input.json` has no executable bindings. This is an inventory input, not a
+runnable SQLite configuration. T3/T4 execution is not implemented.
+
+`prepare-native.py --attempt NEW_DIRECTORY` builds a separate native oracle
+from the exact unchanged source and all 19 feature definitions, after checking
+source/object/recipe identity. The [build receipt](native-oracle-build.json)
+records the successful build, not SQL execution. Its `nativeLibraries` field
+lists requested native link libraries, not a measured loaded-provider audit.
+The generated runtime must never load this SQLite library. See
+[coverage](../../docs/COVERAGE.md) for current evidence.

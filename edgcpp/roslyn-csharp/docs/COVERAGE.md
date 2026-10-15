@@ -6,9 +6,9 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 
 | Gate | Current state | Evidence | Remaining requirements |
 | --- | --- | --- | --- |
-| T0 | In progress | Public CLI/admission; genuine storage and cleanup-context fixtures pass | Complete required-family SQLite inventory and import audit from frozen implementation |
+| T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | Not implemented | None | Storage/layout, fixups, calls/callbacks, varargs and multi-unit contracts and executable fixtures |
+| T2 | In progress | Reviewed contracts; genuine input/native oracle fixtures; first assembly/storage implementations compile | Emitted physical layout/aliasing, callbacks, varargs and multi-unit JIT/NativeAOT evidence |
 | T3 | Not implemented | Existing full-feature object is input evidence only | Complete SQLite emission, imports/providers, first SQL in JIT and NativeAOT |
 | T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
@@ -86,5 +86,7 @@ SQLite runs were cancelled after review found context classification fixes;
 their reports explicitly retain `InventoryComplete=false` and
 `TranslationComplete=false` with ROC0002. The old tableless reader-development
 artifact was rejected by exact contract admission; it was never modified or
-used as accepted evidence. A complete pass from the now-frozen implementation
-is still required before T0 closes.
+used as accepted evidence. The corrected full pass from `bcb86a08e` now closes
+T0: 97.00 seconds, zero diagnostics, all 4,212 executable bodies inventoried,
+2,226 required string values and 103 required imports/intrinsics. See
+[the inventory report](SQLITE-INVENTORY.md).

@@ -1,8 +1,9 @@
 # RoslynObj C# translator
 
 Status: implementation approved on 2026-10-15 (design commit `e40280bea`).
-T1 genuine C/C++ fixtures pass native comparison, JIT, NativeAOT and deterministic
-emission. T0 complete SQLite inventory remains in progress. See the [coverage ledger](docs/COVERAGE.md) and
+T0 complete SQLite inventory and T1 genuine C/C++ fixtures pass their gates.
+The fixtures match native execution in JIT/NativeAOT with deterministic emission.
+T2 storage/calls implementation is in progress. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
 This separate consumer will translate a set of `.roslynobj` translation units

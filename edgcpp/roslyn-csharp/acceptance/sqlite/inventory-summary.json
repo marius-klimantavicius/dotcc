@@ -1,0 +1,3600 @@
+{
+  "gate": "T0",
+  "status": "passed-inventory-only",
+  "implementationCommit": "bcb86a08e24d983cd654904c4833f46c62d15c87",
+  "input": {
+    "ordinal": 1,
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "artifactIdentity": "9097468216bba3077ff4a24753d09245",
+    "formatMajor": 2,
+    "formatMinor": 0,
+    "producer": "roslyn_gen_be",
+    "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+    "edgVersion": "7.0",
+    "captureProfile": "native_lowered",
+    "languageMode": "c201710",
+    "capabilities": [
+      {
+        "name": "ALL_TEMPLATE_INFO_IN_IL",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "ASSIGNMENT_TO_THIS_ALLOWED",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "AUTOMATIC_TEMPLATE_INSTANTIATION",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "BACK_END_IS_CP_GEN_BE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "BACK_END_IS_C_GEN_BE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "BACK_END_SHOULD_BE_CALLED",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "CFRONT_2_1_OBJECT_CODE_COMPATIBILITY",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "CFRONT_3_0_OBJECT_CODE_COMPATIBILITY",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "CFRONT_OBJECT_CODE_COMPATIBILITY",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "CHECKING",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "COMPILE_MULTIPLE_TRANSLATION_UNITS",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "COROUTINE_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "CPPCLI_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "CPPCX_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "CREATE_LEXICAL_TYPEREFS",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "DEFAULT_EXPORT_TEMPLATE_ALLOWED",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "DEFAULT_RECORD_FORM_OF_NAME_REFERENCE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "DEFAULT_REMOVE_UNNEEDED_ENTITIES",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "DOING_SOURCE_ANALYSIS",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "DO_FULL_PORTABLE_EH_LOWERING",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "DO_IL_LOWERING",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "DO_UNORDERED_EH_PROCESSING",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "EXPORT_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "EXTRA_SOURCE_POSITIONS_IN_IL",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "FIXED_POINT_ALLOWED",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "FLOAT128_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "FLOAT80_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "FP_HAS_LONG_DOUBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "FULLY_RESOLVED_MACRO_POSITIONS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "GENERATE_EH_TABLES",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "GENERATE_SOURCE_SEQUENCE_LISTS",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "HANDLE_VIRTUAL_BASES_IN_COMPLETE_CTOR_DTORS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "HOST_FP_VALUE_IS_128BIT",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "HOST_HAS_FLOAT16_TYPE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "IA64_ABI",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "IL_SHOULD_BE_WRITTEN_TO_FILE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "IMPLEMENTATION_SUPPORTS_MULTIPLE_THREADS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "INCLUDE_EDG_TEST_NAMED_REGISTERS",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "INSTANTIATE_EXTERN_INLINE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "INSTANTIATE_INLINE_VARIABLES",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_CLASS_RVALUE_ADJUST",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_COMPLEX",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_DESIGNATED_INITIALIZERS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_EXTERN_INLINE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_FIXED_POINT",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_IFUNC",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_LVALUE_RETURNING_OPERATIONS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_MICROSOFT_NONCONSTANT_AGGREGATE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "LOWER_VARIABLE_LENGTH_ARRAYS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "MACRO_INVOCATION_TREE_IN_IL",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "MAINTAIN_CLASS_MEMBER_LIST",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "MAINTAIN_NEEDED_FLAGS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "MINIMAL_INLINING",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "NAMED_REGISTERS_ALLOWED",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "NEED_NAME_MANGLING",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "NEW_CAN_BE_FOLDED_INTO_CTOR",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "ONE_INSTANTIATION_PER_OBJECT",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "PROTOTYPE_INSTANTIATIONS_IN_IL",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "READ_CPPCLI_PORTABLE_ASSEMBLIES",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "RECOGNIZE_MICROSOFT_ATTRIBUTES",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "RECORD_BACKING_EXPRS_WITH_IL_LOWERING",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "RECORD_BIT_FIELD_CONTAINER_OFFSETS_IN_IL",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "RECORD_MACROS_IN_IL",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "RECORD_MACRO_ARGS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "RECORD_MACRO_INVOCATIONS",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "RECORD_UNRECOGNIZED_ATTRIBUTES",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "REFLECTION_ENABLING_POSSIBLE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "SUN_EXTENSIONS_ALLOWED",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "SUPPRESS_MICROSOFT_ATTRIBUTE_PROCESSING",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_win64",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_win64",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "TIE_DEFAULT_GNU_ABI_VERSION_TO_GNU_VERSION",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "USE_DOUBLE_FOR_HOST_FP_VALUE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "USE_FLOAT128_FOR_HOST_FP_VALUE",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "USE_LAZY_INITIALIZATION_FOR_THREAD_LOCAL_VARIABLES",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "USE_LONG_DOUBLE_FOR_HOST_FP_VALUE",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "USE_PATCH_INIT_STARTUP",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "USE_SOFTFLOAT",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "all_template_info_in_il",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "cfront_2_1_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "cfront_3_0_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "clang_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "cppcli_enabled",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "cppcx_enabled",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "exact_target_values_v1",
+        "value": "1",
+        "required": true,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "exceptions_enabled",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "export_template_allowed",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "gcc_mode",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "gnu_version",
+        "value": "130300",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "gpp_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.UCN_identifiers_used",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.any_templates_seen",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.clang_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.clang_version",
+        "value": "90100",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.default_max_member_alignment",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.default_nocommon",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.default_upc_strict_access",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.enum_type_is_integral",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.far_code_pointers",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.far_data_pointers",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.gcc_mode",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.gnu_c89_inlining",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.gnu_version",
+        "value": "130300",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.gpp_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.il_has_C_semantics",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.il_has_all_prototype_instantiations",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.near_and_far_are_enabled",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.pcc_compatibility_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.plain_chars_are_signed",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.prototype_instantiations_in_il",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.short_enums",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "il_header.target_configuration_index",
+        "value": "-1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "il_header.vla_used",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "instantiate_extern_inline",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "instantiate_inline_variables",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "instantiation_mode",
+        "value": "2",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "microsoft_mode",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "microsoft_version",
+        "value": "1926",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "normalized_semantic_graph_v1",
+        "value": "1",
+        "required": true,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "normalized_semantic_schema_v1",
+        "value": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+        "required": true,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "prototype_instantiations_in_il",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "record_form_of_name_reference",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "record_unrecognized_attributes",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "reflection_enabled",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "roslyn_build_profile",
+        "value": "native",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "targ_ldbl_mant_dig",
+        "value": "64",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "targ_microsoft_bit_field_allocation",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "targ_microsoft_ptr_to_member_sizing",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      },
+      {
+        "name": "target_configuration_index",
+        "value": "-1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "upc_dynamic_threads()",
+        "value": "1",
+        "required": false,
+        "enabled": true,
+        "state": "available"
+      },
+      {
+        "name": "upc_num_threads",
+        "value": "0",
+        "required": false,
+        "enabled": false,
+        "state": "available"
+      }
+    ],
+    "invocationArguments": [
+      "--clear_flag",
+      "use_predefined_macro_file",
+      "--timing",
+      "--gcc",
+      "--c17",
+      "--no_strict_gnu",
+      "--gnu_version",
+      "130300",
+      "-DSQLITE_THREADSAFE=1",
+      "-DSQLITE_ENABLE_FTS4=1",
+      "-DSQLITE_ENABLE_FTS5=1",
+      "-DSQLITE_ENABLE_RTREE=1",
+      "-DSQLITE_ENABLE_GEOPOLY=1",
+      "-DSQLITE_ENABLE_SESSION=1",
+      "-DSQLITE_ENABLE_PREUPDATE_HOOK=1",
+      "-DSQLITE_ENABLE_RBU=1",
+      "-DSQLITE_ENABLE_DBSTAT_VTAB=1",
+      "-DSQLITE_ENABLE_DBPAGE_VTAB=1",
+      "-DSQLITE_ENABLE_STMTVTAB=1",
+      "-DSQLITE_ENABLE_BYTECODE_VTAB=1",
+      "-DSQLITE_ENABLE_MATH_FUNCTIONS=1",
+      "-DSQLITE_ENABLE_COLUMN_METADATA=1",
+      "-DSQLITE_ENABLE_STAT4=1",
+      "-DSQLITE_ENABLE_SNAPSHOT=1",
+      "-DSQLITE_ENABLE_CARRAY=1",
+      "-DSQLITE_ENABLE_NORMALIZE=1",
+      "-DSQLITE_ENABLE_UNLOCK_NOTIFY=1",
+      "-D__DBL_MIN_EXP__=(-1021)",
+      "-D__UINT_LEAST16_MAX__=0xffff",
+      "-D__FLT16_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_ACQUIRE=2",
+      "-D__FLT128_MAX_10_EXP__=4932",
+      "-D__FLT_MIN__=1.17549435082228750796873653722224568e-38F",
+      "-D__UINT_LEAST8_TYPE__=unsigned char",
+      "-D__SIZEOF_FLOAT80__=16",
+      "-D__CHAR_BIT__=8",
+      "-D__UINT8_MAX__=0xff",
+      "-D__WINT_MAX__=0xffffffffU",
+      "-D__FLT32_MIN_EXP__=(-125)",
+      "-D__WCHAR_MAX__=0x7fffffff",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8=1",
+      "-D__GCC_ATOMIC_CHAR_LOCK_FREE=2",
+      "-D__FLT32X_DECIMAL_DIG__=17",
+      "-D__FLT_EVAL_METHOD__=0",
+      "-D__FLT64_DECIMAL_DIG__=17",
+      "-D__GCC_ATOMIC_CHAR32_T_LOCK_FREE=2",
+      "-D__UINT_FAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SIG_ATOMIC_TYPE__=int",
+      "-D__DBL_MIN_10_EXP__=(-307)",
+      "-D__FLT32X_MAX_EXP__=1024",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1=1",
+      "-D__FLT32_HAS_DENORM__=1",
+      "-D__UINT_FAST8_MAX__=0xff",
+      "-D__FLT32_MAX_10_EXP__=38",
+      "-D__DEC64_MAX_EXP__=385",
+      "-D__INT_LEAST8_WIDTH__=8",
+      "-D__UINT_LEAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SHRT_MAX__=0x7fff",
+      "-D__LDBL_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__FLT64X_MAX_10_EXP__=4932",
+      "-D__LDBL_IS_IEC_60559__=1",
+      "-D__FLT64X_HAS_QUIET_NAN__=1",
+      "-D__UINT_LEAST8_MAX__=0xff",
+      "-D__GCC_ATOMIC_BOOL_LOCK_FREE=2",
+      "-D__FLT128_DENORM_MIN__=6.47517511943802511092443895822764655e-4966F128",
+      "-D__UINTMAX_TYPE__=long unsigned int",
+      "-D__DEC32_EPSILON__=1E-6DF",
+      "-D__FLT_EVAL_METHOD_TS_18661_3__=0",
+      "-D__UINT32_MAX__=0xffffffffU",
+      "-D__DBL_DENORM_MIN__=((double)4.94065645841246544176568792868221372e-324L)",
+      "-D__FLT128_MIN_EXP__=(-16381)",
+      "-D__WINT_MIN__=0U",
+      "-D__FLT128_MIN_10_EXP__=(-4931)",
+      "-D__FLT32X_IS_IEC_60559__=1",
+      "-D__INT_LEAST16_WIDTH__=16",
+      "-D__SCHAR_MAX__=0x7f",
+      "-D__FLT128_MANT_DIG__=113",
+      "-D__WCHAR_MIN__=(-__WCHAR_MAX__ - 1)",
+      "-D__GCC_ATOMIC_POINTER_LOCK_FREE=2",
+      "-D__ATOMIC_SEQ_CST=5",
+      "-D__INT_LEAST64_MAX__=0x7fffffffffffffffL",
+      "-D__FLT32X_MANT_DIG__=53",
+      "-D__FLT64X_EPSILON__=1.08420217248550443400745280086994171e-19F64x",
+      "-D__DEC64_MIN_EXP__=(-382)",
+      "-D__DBL_DIG__=15",
+      "-D__FLT_EPSILON__=1.19209289550781250000000000000000000e-7F",
+      "-D__SHRT_WIDTH__=16",
+      "-D__FLT32_IS_IEC_60559__=1",
+      "-D__LDBL_MIN__=3.36210314311209350626267781732175260e-4932L",
+      "-D__DBL_IS_IEC_60559__=1",
+      "-D__DEC32_MAX__=9.999999E96DF",
+      "-D__FLT64X_DENORM_MIN__=3.64519953188247460252840593361941982e-4951F64x",
+      "-D__FLT32X_HAS_INFINITY__=1",
+      "-D__INT_WIDTH__=32",
+      "-D__DECIMAL_DIG__=21",
+      "-D__FLT64_EPSILON__=2.22044604925031308084726333618164062e-16F64",
+      "-D__FLT128_IS_IEC_60559__=1",
+      "-D__FLT64X_MIN_10_EXP__=(-4931)",
+      "-D__LDBL_HAS_QUIET_NAN__=1",
+      "-D__FLT16_MIN_EXP__=(-13)",
+      "-D__FLT64_MANT_DIG__=53",
+      "-D__FLT64X_MANT_DIG__=64",
+      "-D__pie__=2",
+      "-D__MMX__=1",
+      "-D__FLT_HAS_DENORM__=1",
+      "-D__SIZEOF_LONG_DOUBLE__=16",
+      "-D__BIGGEST_ALIGNMENT__=16",
+      "-D__FLT64_MAX_10_EXP__=308",
+      "-D__FLT16_MAX_10_EXP__=4",
+      "-D__DBL_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INT_FAST32_MAX__=0x7fffffffffffffffL",
+      "-D__DBL_HAS_INFINITY__=1",
+      "-D__INT64_MAX__=0x7fffffffffffffffL",
+      "-D__SIZEOF_FLOAT__=4",
+      "-D__DEC32_MIN_EXP__=(-94)",
+      "-D__INTPTR_WIDTH__=64",
+      "-D__UINT_LEAST32_MAX__=0xffffffffU",
+      "-D__FLT32X_HAS_DENORM__=1",
+      "-D__INT_FAST16_TYPE__=long int",
+      "-D__MMX_WITH_SSE__=1",
+      "-D__LDBL_HAS_DENORM__=1",
+      "-D__FLT128_HAS_INFINITY__=1",
+      "-D__DEC32_MIN__=1E-95DF",
+      "-D__DBL_MAX_EXP__=1024",
+      "-D__WCHAR_WIDTH__=32",
+      "-D__FLT32_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__DEC128_EPSILON__=1E-33DL",
+      "-D__FLT16_DECIMAL_DIG__=5",
+      "-D__SSE2_MATH__=1",
+      "-D__ATOMIC_HLE_RELEASE=131072",
+      "-D__PTRDIFF_MAX__=0x7fffffffffffffffL",
+      "-D__amd64=1",
+      "-D__ATOMIC_HLE_ACQUIRE=65536",
+      "-D__LONG_LONG_MAX__=0x7fffffffffffffffLL",
+      "-D__SIZEOF_SIZE_T__=8",
+      "-D__FLT64X_MIN_EXP__=(-16381)",
+      "-D__SIZEOF_WINT_T__=4",
+      "-D__LONG_LONG_WIDTH__=64",
+      "-D__FLT32_MAX_EXP__=128",
+      "-D__FLT_MIN_EXP__=(-125)",
+      "-D__INT16_MAX__=0x7fff",
+      "-D__x86_64=1",
+      "-D__INT_FAST64_TYPE__=long int",
+      "-D__FLT64_DENORM_MIN__=4.94065645841246544176568792868221372e-324F64",
+      "-D__FLT16_DENORM_MIN__=5.96046447753906250000000000000000000e-8F16",
+      "-D__FLT128_EPSILON__=1.92592994438723585305597794258492732e-34F128",
+      "-D__FLT64X_NORM_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__SIZEOF_POINTER__=8",
+      "-D__DBL_HAS_QUIET_NAN__=1",
+      "-D__FLT32X_EPSILON__=2.22044604925031308084726333618164062e-16F32x",
+      "-D__LDBL_MAX_EXP__=16384",
+      "-D__DECIMAL_BID_FORMAT__=1",
+      "-D__FLT64_MIN_EXP__=(-1021)",
+      "-D__FLT64_MIN_10_EXP__=(-307)",
+      "-D__FLT16_MIN_10_EXP__=(-4)",
+      "-D__FLT64X_DECIMAL_DIG__=21",
+      "-D__DEC128_MIN__=1E-6143DL",
+      "-D__UINT16_MAX__=0xffff",
+      "-D__DBL_HAS_DENORM__=1",
+      "-D__FLT32_MIN__=1.17549435082228750796873653722224568e-38F32",
+      "-D__UINT8_TYPE__=unsigned char",
+      "-D__FLT_DIG__=6",
+      "-D__DEC_EVAL_METHOD__=2",
+      "-D__FLT_MANT_DIG__=24",
+      "-D__LDBL_DECIMAL_DIG__=21",
+      "-D__INT_LEAST32_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_INT_LOCK_FREE=2",
+      "-D__FLT128_MAX_EXP__=16384",
+      "-D__FLT32_MANT_DIG__=24",
+      "-D__FLT32X_MIN_EXP__=(-1021)",
+      "-D__FLT128_HAS_DENORM__=1",
+      "-D__FLT32_DECIMAL_DIG__=9",
+      "-D__FLT128_DIG__=33",
+      "-D__DEC64_EPSILON__=1E-15DD",
+      "-D__DEC128_MIN_EXP__=(-6142)",
+      "-D__DEC128_MAX__=9.999999999999999999999999999999999E6144DL",
+      "-D__INT_FAST32_TYPE__=long int",
+      "-D__UINT_LEAST16_TYPE__=short unsigned int",
+      "-D__DEC128_MAX_EXP__=6145",
+      "-D__UINT64_MAX__=0xffffffffffffffffUL",
+      "-D__FLT_IS_IEC_60559__=1",
+      "-D__FLT64X_DIG__=18",
+      "-D__INT8_TYPE__=signed char",
+      "-D__UINT32_TYPE__=unsigned int",
+      "-D__FLT_RADIX__=2",
+      "-D__INT_LEAST16_TYPE__=short int",
+      "-D__LDBL_EPSILON__=1.08420217248550443400745280086994171e-19L",
+      "-D__FLT16_DIG__=3",
+      "-D__SSE_MATH__=1",
+      "-D__FLT32X_MIN__=2.22507385850720138309023271733240406e-308F32x",
+      "-D__SIG_ATOMIC_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_WCHAR_T_LOCK_FREE=2",
+      "-D__SIZEOF_PTRDIFF_T__=8",
+      "-D__FLT64X_HAS_INFINITY__=1",
+      "-D__FLT32_HAS_INFINITY__=1",
+      "-D__SIZEOF_LONG__=8",
+      "-D__LDBL_DIG__=18",
+      "-D__FLT64_IS_IEC_60559__=1",
+      "-D__x86_64__=1",
+      "-D__FLT16_IS_IEC_60559__=1",
+      "-D__FLT16_MAX_EXP__=16",
+      "-D__DEC32_SUBNORMAL_MIN__=0.000001E-95DF",
+      "-D__INT_FAST16_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_DIG__=15",
+      "-D__UINT_FAST32_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_LEAST64_TYPE__=long unsigned int",
+      "-D__FLT16_EPSILON__=9.76562500000000000000000000000000000e-4F16",
+      "-D__FLT_HAS_QUIET_NAN__=1",
+      "-D__FLT_MAX_10_EXP__=38",
+      "-D__LONG_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64X_HAS_DENORM__=1",
+      "-D__DEC128_SUBNORMAL_MIN__=0.000000000000000000000000000000001E-6143DL",
+      "-D__FLT_HAS_INFINITY__=1",
+      "-D__UINT_FAST16_TYPE__=long unsigned int",
+      "-D__DEC64_MAX__=9.999999999999999E384DD",
+      "-D__INT_FAST32_WIDTH__=64",
+      "-D__SIZE_WIDTH__=64",
+      "-D__INT_LEAST16_MAX__=0x7fff",
+      "-D__FLT16_NORM_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__DEC64_MANT_DIG__=16",
+      "-D__FLT32_DENORM_MIN__=1.40129846432481707092372958328991613e-45F32",
+      "-D__SIG_ATOMIC_WIDTH__=32",
+      "-D__INT_LEAST64_TYPE__=long int",
+      "-D__INT16_TYPE__=short int",
+      "-D__INT_LEAST8_TYPE__=signed char",
+      "-D__FLT16_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__FLT128_MIN__=3.36210314311209350626267781732175260e-4932F128",
+      "-D__SIZEOF_INT__=4",
+      "-D__DEC32_MAX_EXP__=97",
+      "-D__INT_FAST8_MAX__=0x7f",
+      "-D__FLT128_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__INTPTR_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_HAS_QUIET_NAN__=1",
+      "-D__FLT32_MIN_10_EXP__=(-37)",
+      "-D__FLT32X_DIG__=15",
+      "-D__PTRDIFF_WIDTH__=64",
+      "-D__LDBL_MANT_DIG__=64",
+      "-D__INT_FAST16_WIDTH__=64",
+      "-D__FLT64_HAS_INFINITY__=1",
+      "-D__FLT64X_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__FLT16_HAS_INFINITY__=1",
+      "-D__SIG_ATOMIC_MIN__=(-__SIG_ATOMIC_MAX__ - 1)",
+      "-D__GCC_ATOMIC_LONG_LOCK_FREE=2",
+      "-D__DEC32_MANT_DIG__=7",
+      "-D__FLT16_MANT_DIG__=11",
+      "-D__INTPTR_TYPE__=long int",
+      "-D__UINT16_TYPE__=short unsigned int",
+      "-D__WCHAR_TYPE__=int",
+      "-D__pic__=2",
+      "-D__UINTPTR_MAX__=0xffffffffffffffffUL",
+      "-D__INT_FAST64_WIDTH__=64",
+      "-D__LDBL_HAS_INFINITY__=1",
+      "-D__INT_FAST64_MAX__=0x7fffffffffffffffL",
+      "-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1",
+      "-D__FLT_NORM_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__FLT64X_MAX_EXP__=16384",
+      "-D__UINT_FAST64_TYPE__=long unsigned int",
+      "-D__INT_MAX__=0x7fffffff",
+      "-D__INT64_TYPE__=long int",
+      "-D__FLT_MAX_EXP__=128",
+      "-D__DBL_MANT_DIG__=53",
+      "-D__SIZEOF_FLOAT128__=16",
+      "-D__GCC_ATOMIC_CHAR16_T_LOCK_FREE=2",
+      "-D__DEC64_MIN__=1E-383DD",
+      "-D__WINT_TYPE__=unsigned int",
+      "-D__UINT_LEAST32_TYPE__=unsigned int",
+      "-D__SIZEOF_SHORT__=2",
+      "-D__FLT32_NORM_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__SSE__=1",
+      "-D__LDBL_MIN_EXP__=(-16381)",
+      "-D__FLT64_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__amd64__=1",
+      "-D__WINT_WIDTH__=32",
+      "-D__INT_LEAST8_MAX__=0x7f",
+      "-D__INT_LEAST64_WIDTH__=64",
+      "-D__FLT32X_MAX_10_EXP__=308",
+      "-D__SIZEOF_INT128__=16",
+      "-D__FLT16_MIN__=6.10351562500000000000000000000000000e-5F16",
+      "-D__FLT64X_IS_IEC_60559__=1",
+      "-D__LDBL_MAX_10_EXP__=4932",
+      "-D__ATOMIC_RELAXED=0",
+      "-D__DBL_EPSILON__=((double)2.22044604925031308084726333618164062e-16L)",
+      "-D__INT_LEAST32_TYPE__=int",
+      "-D__FLT64_MAX_EXP__=1024",
+      "-D__SIZEOF_WCHAR_T__=4",
+      "-D__UINT64_TYPE__=long unsigned int",
+      "-D__FLT128_NORM_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__FLT64_NORM_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__FLT128_HAS_QUIET_NAN__=1",
+      "-D__INTMAX_MAX__=0x7fffffffffffffffL",
+      "-D__INT_FAST8_TYPE__=signed char",
+      "-D__FLT64X_MIN__=3.36210314311209350626267781732175260e-4932F64x",
+      "-D__FLT64_HAS_DENORM__=1",
+      "-D__FLT32_EPSILON__=1.19209289550781250000000000000000000e-7F32",
+      "-D__FLT16_HAS_DENORM__=1",
+      "-D__DBL_DECIMAL_DIG__=17",
+      "-D__INT_FAST8_WIDTH__=8",
+      "-D__FXSR__=1",
+      "-D__FLT32X_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__DBL_NORM_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INTMAX_WIDTH__=64",
+      "-D__FLT32_DIG__=6",
+      "-D__FLT_DENORM_MIN__=1.40129846432481707092372958328991613e-45F",
+      "-D__INT8_MAX__=0x7f",
+      "-D__LONG_WIDTH__=64",
+      "-D__DBL_MIN__=((double)2.22507385850720138309023271733240406e-308L)",
+      "-D__PIC__=2",
+      "-D__INT32_MAX__=0x7fffffff",
+      "-D__UINT_FAST32_TYPE__=long unsigned int",
+      "-D__FLT32X_NORM_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__FLT_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__SSE2__=1",
+      "-D__INT32_TYPE__=int",
+      "-D__SIZEOF_DOUBLE__=8",
+      "-D__FLT_MIN_10_EXP__=(-37)",
+      "-D__FLT64_MIN__=2.22507385850720138309023271733240406e-308F64",
+      "-D__INT_LEAST32_WIDTH__=32",
+      "-D__INTMAX_TYPE__=long int",
+      "-D__FLT32X_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_CONSUME=1",
+      "-D__UINTMAX_MAX__=0xffffffffffffffffUL",
+      "-D__PIE__=2",
+      "-D__FLT32X_DENORM_MIN__=4.94065645841246544176568792868221372e-324F32x",
+      "-D__DBL_MAX_10_EXP__=308",
+      "-D__LDBL_DENORM_MIN__=3.64519953188247460252840593361941982e-4951L",
+      "-D__PTRDIFF_TYPE__=long int",
+      "-D__FLT32X_MIN_10_EXP__=(-307)",
+      "-D__UINTPTR_TYPE__=long unsigned int",
+      "-D__DEC64_SUBNORMAL_MIN__=0.000000000000001E-383DD",
+      "-D__DEC128_MANT_DIG__=34",
+      "-D__LDBL_MIN_10_EXP__=(-4931)",
+      "-D__SIZEOF_LONG_LONG__=8",
+      "-D__FLT128_DECIMAL_DIG__=36",
+      "-D__GCC_ATOMIC_LLONG_LOCK_FREE=2",
+      "-D__FLT32_HAS_QUIET_NAN__=1",
+      "-D__FLT_DECIMAL_DIG__=9",
+      "-D__UINT_FAST16_MAX__=0xffffffffffffffffUL",
+      "-D__LDBL_NORM_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__GCC_ATOMIC_SHORT_LOCK_FREE=2",
+      "-D__SIZE_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_FAST8_TYPE__=unsigned char",
+      "-D__ATOMIC_ACQ_REL=4",
+      "-D__ATOMIC_RELEASE=3",
+      "--sys_include",
+      "/usr/lib/gcc/x86_64-linux-gnu/13/include",
+      "--sys_include",
+      "/usr/local/include",
+      "--sys_include",
+      "/usr/include/x86_64-linux-gnu",
+      "--sys_include",
+      "/usr/include",
+      "/mnt/storage/roslynobj-sqlite-20261014/source/sqlite-amalgamation-3540000/sqlite3.c"
+    ]
+  },
+  "target": {
+    "abi": "itanium",
+    "addressableUnitBits": 8,
+    "endianness": "little",
+    "pointerBits": 64,
+    "pointerAlignment": 8,
+    "operatingSystem": "linux",
+    "architecture": "x64",
+    "libc": "glibc",
+    "outputRid": "linux-x64"
+  },
+  "budgets": {
+    "maximumWorkingSetBytes": 8589934592,
+    "maximumOperationsPerBody": 2000000,
+    "maximumOutputBytes": 536870912,
+    "maximumElapsedSeconds": 1800,
+    "maximumOpenUnits": 1,
+    "readerCachedRows": 4096,
+    "readerCachedPages": 128,
+    "readerPageSize": 128
+  },
+  "report": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t0/sqlite-inventory-address-closure/program-report.json",
+    "sha256": "f1b89135e2e37bb78fe175c49cbf0b14df9743f16a84bb7142df8291f72e7185",
+    "bytes": 36482699,
+    "inventoryComplete": true,
+    "translationComplete": false
+  },
+  "counts": {
+    "functions": 6552,
+    "executableBodies": 4212,
+    "bodyOperationIdentities": 592512,
+    "storage": 25623,
+    "types": 17003,
+    "importDeclarations": 2359,
+    "requiredImports": 103,
+    "requiredFamilies": 132,
+    "diagnostics": 0
+  },
+  "metrics": {
+    "elapsedSeconds": 97.0001089,
+    "peakWorkingSetBytes": 1964974080,
+    "readerCommands": 2561206,
+    "readerRowsRead": 3897892
+  },
+  "run": {
+    "status": "passed",
+    "command": [
+      "dotnet",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+      "inventory",
+      "edgcpp/roslyn-csharp/acceptance/sqlite/input.json",
+      "--report",
+      "/mnt/storage/roslynobj-csharp-20261015/t0/sqlite-inventory-address-closure/program-report.json",
+      "--metrics",
+      "/mnt/storage/roslynobj-csharp-20261015/t0/sqlite-inventory-address-closure/metrics.json"
+    ],
+    "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t0/verified-snapshot",
+    "exitCode": 0,
+    "elapsedSeconds": 97.81666101398878,
+    "sampledPeakProcessTreeRssBytes": 2224726016,
+    "waitedPeakProcessRssBytes": 2229796864,
+    "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+    "budgets": {
+      "timeoutSeconds": 1800.0,
+      "memoryBytes": 8589934592,
+      "logBytes": 67108864
+    },
+    "budgetViolation": null,
+    "logs": [
+      {
+        "path": "stdout.txt",
+        "bytes": 98,
+        "sha256": "61f6479b1ecde2a97e7f2c340234bec2ddc1b4f781342871191442bb568a4cac"
+      },
+      {
+        "path": "stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "sourceBuildReceipt": {
+    "commit": "bcb86a08e24d983cd654904c4833f46c62d15c87",
+    "worktree": "/mnt/storage/roslynobj-csharp-20261015/t0/verified-snapshot",
+    "sourceInputs": [
+      {
+        "path": "edgcpp/roslyn-csharp/Directory.Build.props",
+        "sha256": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/acceptance/sqlite/input.json",
+        "sha256": "015605898489fb0eb56a579a493f75c927cc9966608061059ba170cfcfabaebd"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/Program.cs",
+        "sha256": "d1aa89174ce10b1b06edc320d09d7dda540c8466cd2af433767e2465fc9be548"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+        "sha256": "37ba0980a83d81fc6b250c87ba8f1e84a48109d270d3e7bd8ed260e16de8239f"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime.Host/HostProvider.cs",
+        "sha256": "76bff695e02196e234486456b35f039366180640a9594b1158e48520f016d73e"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime.Host/RoslynObj.CSharp.Runtime.Host.csproj",
+        "sha256": "dc4f060e407ffe0f101d831afa7cb3d22a87f62d1822253a4fd243c7135e9c2a"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "sha256": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs",
+        "sha256": "d969b12adf995110ec6c1b2e0eac2d5a83a48c54fac7df830b51abb4b45276c9"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Contracts.cs",
+        "sha256": "2c576671bbbbd6a915be9358348e6f0a1673eac46ef849dba32c91a55b5898b5"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.cs",
+        "sha256": "be0723ebb067919face16faff9bb864313cc255de578785409dcf7cba8c18a4f"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Inventory.cs",
+        "sha256": "d6cd37026ac4013f1c95ffb620f6a0ab622fd3b10dd8037de574de37210314a4"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ProgramManifest.cs",
+        "sha256": "d90bc36f91976d44d3373af4e3d4558cbab62a12b547fa251ea70ce214d27c3a"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/RoslynObj.CSharp.csproj",
+        "sha256": "03e03192a4b03f0e5ab94844bf1f7fbfa0939da71052f9c7bd859e6f411bb514"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translation.cs",
+        "sha256": "67b5709fb68ad13afe8e25a381b2723f104d71ca4cac3944caf0f2298e00de45"
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translator.cs",
+        "sha256": "394f2a62d927b8aa8e52400a4a26c060c6f96e6cc62a42dffb15a7393e572fc2"
+      }
+    ],
+    "buildArtifacts": [
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/Microsoft.Data.Sqlite.dll",
+        "sha256": "b98d957462be432895b00dccca012d3c127e118d3d4262418014b92c7bbd66cf",
+        "bytes": 177464
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/RoslynObj.CSharp.dll",
+        "sha256": "42a9a1b43c32956841d6e13857b15615cc1a178f0d6881b1f30af43f79b6b8da",
+        "bytes": 192000
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/RoslynObj.dll",
+        "sha256": "a834fd727b2f97556594f5189dcda6f7b36d0dccf9eb3c78313ccc5d1a35ee07",
+        "bytes": 2629632
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/SQLitePCLRaw.batteries_v2.dll",
+        "sha256": "815ce410c9eab531dd219318e3ba16c5e38e83d361cfbbdbb4bbca222c497b0b",
+        "bytes": 5120
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/SQLitePCLRaw.core.dll",
+        "sha256": "af340ac9eb9195795660d7fc1114f486b6ab63998f33176e2f24c8e0acb9aa84",
+        "bytes": 51200
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/SQLitePCLRaw.provider.e_sqlite3.dll",
+        "sha256": "df996bcae63c2cabcfe8d4b9c5110eb39a2a4706178b07d875665391c6eb3995",
+        "bytes": 36864
+      },
+      {
+        "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "sha256": "e406a172a3856fd696dc8fe209cc3cd1f1c9662a4fdbe8ce758dba9c2cce4ee3",
+        "bytes": 17408
+      }
+    ]
+  },
+  "families": [
+    {
+      "family": "address-constant",
+      "form": "abk_constant",
+      "requiredCount": 2206,
+      "retainedCount": 2206,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000013",
+        "unit/0001/function/000016/operation/00000115",
+        "unit/0001/function/000019/operation/00000148"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "address-constant",
+      "form": "abk_routine",
+      "requiredCount": 1050,
+      "retainedCount": 1050,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000068",
+        "unit/0001/function/000086",
+        "unit/0001/function/000096"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "address-constant",
+      "form": "abk_variable",
+      "requiredCount": 138,
+      "retainedCount": 139,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000591",
+        "unit/0001/function/000019/operation/00000909/operation/00000003",
+        "unit/0001/function/000027/operation/00000034"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "body-state",
+      "form": "declaration_only",
+      "requiredCount": 0,
+      "retainedCount": 2340,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/000002",
+        "unit/0001/function/000003",
+        "unit/0001/function/000004"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "body-state",
+      "form": "definition",
+      "requiredCount": 4212,
+      "retainedCount": 4212,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001",
+        "unit/0001/function/000016",
+        "unit/0001/function/000017"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin-operation",
+      "form": "not-encountered",
+      "requiredCount": 0,
+      "retainedCount": 0,
+      "status": "notEncountered",
+      "examples": [
+        "program"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk__Exit",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004184"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk__exit",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/006095"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_abs",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004206"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_add_overflow",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/001415"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_load_1",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/002200"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_load_2",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000283"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_load_4",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000133"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_load_n",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004512"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_store_1",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000142"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_store_2",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000479"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_store_4",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000044"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_store_8",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000143"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_atomic_store_n",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004511"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_bswap16",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000274"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_bswap32",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000307"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_bswap64",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/001093"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_ceil",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/003692"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_clzll",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000582"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_free",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/003997"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_inff",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/000580"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_mul_overflow",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/001421"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_strlen",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/000022"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_sub_overflow",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/001419"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_sync_synchronize",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000065"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_va_arg",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004368"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_va_end",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004369"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "builtin",
+      "form": "bfk_va_start",
+      "requiredCount": 0,
+      "retainedCount": 1,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/004367"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "call",
+      "form": "direct",
+      "requiredCount": 22263,
+      "retainedCount": 22263,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000003",
+        "unit/0001/function/000016/operation/00000008",
+        "unit/0001/function/000016/operation/00000034"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "call",
+      "form": "indirect",
+      "requiredCount": 498,
+      "retainedCount": 498,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000031/operation/00000061",
+        "unit/0001/function/000032/operation/00000041",
+        "unit/0001/function/000032/operation/00000056"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "call",
+      "form": "variadic",
+      "requiredCount": 1043,
+      "retainedCount": 1043,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000003",
+        "unit/0001/function/000016/operation/00000008",
+        "unit/0001/function/000019/operation/00003819"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "cleanup-action",
+      "form": "not-encountered",
+      "requiredCount": 0,
+      "retainedCount": 0,
+      "status": "notEncountered",
+      "examples": [
+        "program"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "constant-metadata",
+      "form": "backing-expression",
+      "requiredCount": 0,
+      "retainedCount": 40462,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/000016/operation/00000004",
+        "unit/0001/function/000016/operation/00000013",
+        "unit/0001/function/000016/operation/00000053"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "constant-value",
+      "form": "ck_address",
+      "requiredCount": 3394,
+      "retainedCount": 3395,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000013",
+        "unit/0001/function/000016/operation/00000115",
+        "unit/0001/function/000019/operation/00000148"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "constant-value",
+      "form": "ck_aggregate",
+      "requiredCount": 1052,
+      "retainedCount": 1052,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000068",
+        "unit/0001/function/000071",
+        "unit/0001/function/000086"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "constant-value",
+      "form": "ck_float",
+      "requiredCount": 84,
+      "retainedCount": 99,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000554",
+        "unit/0001/function/000578/operation/00000021",
+        "unit/0001/function/000591/operation/00000006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "constant-value",
+      "form": "ck_integer",
+      "requiredCount": 4381,
+      "retainedCount": 4533,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000004",
+        "unit/0001/function/000016/operation/00000010",
+        "unit/0001/function/000016/operation/00000020"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "constant-value",
+      "form": "ck_string",
+      "requiredCount": 2226,
+      "retainedCount": 2230,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000013",
+        "unit/0001/function/000016/operation/00000115",
+        "unit/0001/function/000019/operation/00000148"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "dependency",
+      "form": "address",
+      "requiredCount": 1201,
+      "retainedCount": 1201,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000591",
+        "unit/0001/function/000019/operation/00000909/operation/00000003",
+        "unit/0001/function/000027/operation/00000034"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "dependency",
+      "form": "direct-call",
+      "requiredCount": 22263,
+      "retainedCount": 22263,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000003",
+        "unit/0001/function/000016/operation/00000008",
+        "unit/0001/function/000016/operation/00000034"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "dependency",
+      "form": "symbol-reference",
+      "requiredCount": 213634,
+      "retainedCount": 213634,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000004",
+        "unit/0001/function/000001/operation/00000005",
+        "unit/0001/function/000001/operation/00000006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "dynamic_init",
+      "form": "dik_constant",
+      "requiredCount": 5810,
+      "retainedCount": 5810,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000004/operation/00000001",
+        "unit/0001/function/000016/operation/00000005",
+        "unit/0001/function/000019/operation/00000017/operation/00000001"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "dynamic_init",
+      "form": "dik_expression",
+      "requiredCount": 9518,
+      "retainedCount": 9518,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000293/operation/00000001",
+        "unit/0001/function/000019/operation/00000294",
+        "unit/0001/function/000019/operation/00000859/operation/00000001"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "exception",
+      "form": "not-encountered",
+      "requiredCount": 0,
+      "retainedCount": 0,
+      "status": "notEncountered",
+      "examples": [
+        "program"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "expression",
+      "form": "enk_constant",
+      "requiredCount": 57226,
+      "retainedCount": 57226,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000010",
+        "unit/0001/function/000016/operation/00000013",
+        "unit/0001/function/000016/operation/00000020"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "expression",
+      "form": "enk_field",
+      "requiredCount": 50783,
+      "retainedCount": 50783,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000017/operation/00000044",
+        "unit/0001/function/000018/operation/00000006",
+        "unit/0001/function/000018/operation/00000012"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "expression",
+      "form": "enk_operation",
+      "requiredCount": 195148,
+      "retainedCount": 195148,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000003",
+        "unit/0001/function/000016/operation/00000008",
+        "unit/0001/function/000016/operation/00000011"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "expression",
+      "form": "enk_routine",
+      "requiredCount": 22276,
+      "retainedCount": 22276,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000004",
+        "unit/0001/function/000016/operation/00000009",
+        "unit/0001/function/000016/operation/00000035"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "expression",
+      "form": "enk_variable",
+      "requiredCount": 132924,
+      "retainedCount": 132924,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000005",
+        "unit/0001/function/000001/operation/00000006",
+        "unit/0001/function/000001/operation/00000007"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "extension",
+      "form": "volatile-fetch",
+      "requiredCount": 41,
+      "retainedCount": 41,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000282/operation/00000133",
+        "unit/0001/function/000440/operation/00000077",
+        "unit/0001/function/000445/operation/00000019"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "import",
+      "form": "function:unbound",
+      "requiredCount": 103,
+      "retainedCount": 2340,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000002",
+        "unit/0001/function/000003",
+        "unit/0001/function/000004"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "import",
+      "form": "variable:unbound",
+      "requiredCount": 0,
+      "retainedCount": 19,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/storage/000002",
+        "unit/0001/storage/000003",
+        "unit/0001/storage/000004"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "initialization-cleanup-dependency",
+      "form": "not-encountered",
+      "requiredCount": 0,
+      "retainedCount": 0,
+      "status": "notEncountered",
+      "examples": [
+        "program"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "initialization-metadata",
+      "form": "dik_constant",
+      "requiredCount": 0,
+      "retainedCount": 2905,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/storage/000058",
+        "unit/0001/storage/000084",
+        "unit/0001/storage/000092"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "initialization-metadata",
+      "form": "dik_expression",
+      "requiredCount": 0,
+      "retainedCount": 4759,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/storage/000099",
+        "unit/0001/storage/000105",
+        "unit/0001/storage/000107"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "initialization-root",
+      "form": "dik_constant",
+      "requiredCount": 2905,
+      "retainedCount": 2905,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000004",
+        "unit/0001/function/000019/operation/00000017",
+        "unit/0001/function/000019/operation/00000027"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "initialization-root",
+      "form": "dik_expression",
+      "requiredCount": 4759,
+      "retainedCount": 4759,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000293",
+        "unit/0001/function/000019/operation/00000859",
+        "unit/0001/function/000019/operation/00000909"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "initialization",
+      "form": "local-static-guard",
+      "requiredCount": 264,
+      "retainedCount": 264,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000068",
+        "unit/0001/function/000071",
+        "unit/0001/function/000086"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "layout",
+      "form": "bitfield",
+      "requiredCount": 11,
+      "retainedCount": 12,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000127",
+        "unit/0001/type/000134",
+        "unit/0001/type/000165"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "lifetime",
+      "form": "not-encountered",
+      "requiredCount": 0,
+      "retainedCount": 0,
+      "status": "notEncountered",
+      "examples": [
+        "program"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "link-policy",
+      "form": "alias-weak-ifunc-alternate-entry",
+      "requiredCount": 0,
+      "retainedCount": 4,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/function/000021",
+        "unit/0001/function/003691",
+        "unit/0001/function/004205"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "operator",
+      "form": "eok_add",
+      "requiredCount": 3941,
+      "retainedCount": 3941,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000318",
+        "unit/0001/function/000019/operation/00000495",
+        "unit/0001/function/000019/operation/00000805"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_add_assign",
+      "requiredCount": 875,
+      "retainedCount": 875,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000814",
+        "unit/0001/function/000019/operation/00001476",
+        "unit/0001/function/000019/operation/00002125"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_address_of",
+      "requiredCount": 4691,
+      "retainedCount": 4691,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000017/operation/00000015",
+        "unit/0001/function/000017/operation/00000029",
+        "unit/0001/function/000019/operation/00001209"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_and",
+      "requiredCount": 2819,
+      "retainedCount": 2819,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000046",
+        "unit/0001/function/000019/operation/00000330",
+        "unit/0001/function/000019/operation/00000514"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_and_assign",
+      "requiredCount": 237,
+      "retainedCount": 237,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000027/operation/00000024",
+        "unit/0001/function/000157/operation/00000034",
+        "unit/0001/function/000158/operation/00000234"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_array_to_pointer",
+      "requiredCount": 3656,
+      "retainedCount": 3656,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000011",
+        "unit/0001/function/000016/operation/00000024",
+        "unit/0001/function/000016/operation/00000037"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_assign",
+      "requiredCount": 25040,
+      "retainedCount": 25040,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000031",
+        "unit/0001/function/000016/operation/00000048",
+        "unit/0001/function/000016/operation/00000066"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_call",
+      "requiredCount": 22761,
+      "retainedCount": 22761,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000003",
+        "unit/0001/function/000016/operation/00000008",
+        "unit/0001/function/000016/operation/00000034"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_cast",
+      "requiredCount": 29817,
+      "retainedCount": 29817,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000022",
+        "unit/0001/function/000016/operation/00000033",
+        "unit/0001/function/000016/operation/00000036"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_comma",
+      "requiredCount": 421,
+      "retainedCount": 421,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00003216",
+        "unit/0001/function/000148/operation/00000003",
+        "unit/0001/function/000332/operation/00000003"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_complement",
+      "requiredCount": 43,
+      "retainedCount": 43,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000684",
+        "unit/0001/function/000339/operation/00000054",
+        "unit/0001/function/000578/operation/00000095"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_divide",
+      "requiredCount": 365,
+      "retainedCount": 365,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000817",
+        "unit/0001/function/000019/operation/00000873",
+        "unit/0001/function/000019/operation/00000942"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_divide_assign",
+      "requiredCount": 8,
+      "retainedCount": 8,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000181/operation/00000108",
+        "unit/0001/function/001104/operation/00000012",
+        "unit/0001/function/001409/operation/00002191"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_dot_field",
+      "requiredCount": 10746,
+      "retainedCount": 10746,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000017/operation/00000042",
+        "unit/0001/function/000019/operation/00000549",
+        "unit/0001/function/000019/operation/00000558"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_eq",
+      "requiredCount": 9130,
+      "retainedCount": 9130,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000100",
+        "unit/0001/function/000019/operation/00000126",
+        "unit/0001/function/000019/operation/00000135"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_ge",
+      "requiredCount": 1097,
+      "retainedCount": 1097,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000091",
+        "unit/0001/function/000016/operation/00000103",
+        "unit/0001/function/000019/operation/00000302"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_gt",
+      "requiredCount": 1544,
+      "retainedCount": 1544,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000018",
+        "unit/0001/function/000016/operation/00000043",
+        "unit/0001/function/000019/operation/00000924"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_indirect",
+      "requiredCount": 2744,
+      "retainedCount": 2744,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000098",
+        "unit/0001/function/000019/operation/00000074",
+        "unit/0001/function/000019/operation/00000128"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_land",
+      "requiredCount": 3800,
+      "retainedCount": 3800,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000017",
+        "unit/0001/function/000019/operation/00000183",
+        "unit/0001/function/000019/operation/00000301"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_le",
+      "requiredCount": 471,
+      "retainedCount": 471,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000017/operation/00000006",
+        "unit/0001/function/000019/operation/00000310",
+        "unit/0001/function/000019/operation/00000487"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_lor",
+      "requiredCount": 1598,
+      "retainedCount": 1598,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000546",
+        "unit/0001/function/000019/operation/00000867",
+        "unit/0001/function/000019/operation/00001399"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_lt",
+      "requiredCount": 2554,
+      "retainedCount": 2554,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000375",
+        "unit/0001/function/000019/operation/00000456",
+        "unit/0001/function/000019/operation/00000674"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_multiply",
+      "requiredCount": 1163,
+      "retainedCount": 1163,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000319",
+        "unit/0001/function/000019/operation/00000496",
+        "unit/0001/function/000019/operation/00000892"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_multiply_assign",
+      "requiredCount": 22,
+      "retainedCount": 22,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00002381",
+        "unit/0001/function/000521/operation/00000023",
+        "unit/0001/function/000800/operation/00000005"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_ne",
+      "requiredCount": 3015,
+      "retainedCount": 3015,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000021",
+        "unit/0001/function/000016/operation/00000057",
+        "unit/0001/function/000019/operation/00000045"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_negate",
+      "requiredCount": 53,
+      "retainedCount": 53,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000390",
+        "unit/0001/function/000019/operation/00000467",
+        "unit/0001/function/000019/operation/00001173"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_not",
+      "requiredCount": 1111,
+      "retainedCount": 1111,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000184",
+        "unit/0001/function/000019/operation/00001343",
+        "unit/0001/function/000019/operation/00001395"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_or",
+      "requiredCount": 334,
+      "retainedCount": 334,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00001585",
+        "unit/0001/function/000019/operation/00001586",
+        "unit/0001/function/000161/operation/00000084"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_or_assign",
+      "requiredCount": 542,
+      "retainedCount": 542,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00002498",
+        "unit/0001/function/000025/operation/00000210",
+        "unit/0001/function/000053/operation/00000041"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_padd",
+      "requiredCount": 2926,
+      "retainedCount": 2926,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000108",
+        "unit/0001/function/000019/operation/00000577",
+        "unit/0001/function/000019/operation/00000845"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_padd_assign",
+      "requiredCount": 289,
+      "retainedCount": 289,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00001710",
+        "unit/0001/function/000019/operation/00001734",
+        "unit/0001/function/000019/operation/00001790"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_pdiff",
+      "requiredCount": 198,
+      "retainedCount": 198,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000121",
+        "unit/0001/function/000019/operation/00000950",
+        "unit/0001/function/000019/operation/00001110"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_points_to_field",
+      "requiredCount": 40037,
+      "retainedCount": 40037,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000018/operation/00000004",
+        "unit/0001/function/000018/operation/00000010",
+        "unit/0001/function/000018/operation/00000016"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_post_decr",
+      "requiredCount": 436,
+      "retainedCount": 436,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000039",
+        "unit/0001/function/000019/operation/00000349",
+        "unit/0001/function/000019/operation/00001030"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_post_incr",
+      "requiredCount": 2903,
+      "retainedCount": 2903,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000687",
+        "unit/0001/function/000019/operation/00001057",
+        "unit/0001/function/000019/operation/00001104"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_pre_decr",
+      "requiredCount": 35,
+      "retainedCount": 35,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000524",
+        "unit/0001/function/000019/operation/00000886",
+        "unit/0001/function/000019/operation/00000899"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_pre_incr",
+      "requiredCount": 207,
+      "retainedCount": 207,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000140",
+        "unit/0001/function/000019/operation/00000191",
+        "unit/0001/function/000019/operation/00000258"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_psubtract",
+      "requiredCount": 23,
+      "retainedCount": 23,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000485/operation/00000207",
+        "unit/0001/function/001181/operation/00000245/operation/00000002",
+        "unit/0001/function/001181/operation/00000247"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_psubtract_assign",
+      "requiredCount": 9,
+      "retainedCount": 9,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000970",
+        "unit/0001/function/000019/operation/00001009",
+        "unit/0001/function/000495/operation/00000009"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_question",
+      "requiredCount": 1251,
+      "retainedCount": 1251,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000386",
+        "unit/0001/function/000019/operation/00000463",
+        "unit/0001/function/000019/operation/00001213"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_remainder",
+      "requiredCount": 163,
+      "retainedCount": 163,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000540",
+        "unit/0001/function/000019/operation/00000859/operation/00000003",
+        "unit/0001/function/000019/operation/00000862"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_remainder_assign",
+      "requiredCount": 4,
+      "retainedCount": 4,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00001991",
+        "unit/0001/function/001409/operation/00002215",
+        "unit/0001/function/001409/operation/00019006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_shiftl",
+      "requiredCount": 503,
+      "retainedCount": 503,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00002849",
+        "unit/0001/function/000109/operation/00000025",
+        "unit/0001/function/000170/operation/00000244"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_shiftl_assign",
+      "requiredCount": 5,
+      "retainedCount": 5,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/001047/operation/00000031",
+        "unit/0001/function/001133/operation/00000348",
+        "unit/0001/function/001148/operation/00001592"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_shiftr",
+      "requiredCount": 272,
+      "retainedCount": 272,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00002889",
+        "unit/0001/function/000170/operation/00000294",
+        "unit/0001/function/000170/operation/00000307"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_shiftr_assign",
+      "requiredCount": 14,
+      "retainedCount": 14,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/001047/operation/00000050",
+        "unit/0001/function/001099/operation/00000006",
+        "unit/0001/function/001409/operation/00002610"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_subscript",
+      "requiredCount": 8707,
+      "retainedCount": 8707,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000023",
+        "unit/0001/function/000016/operation/00000049",
+        "unit/0001/function/000016/operation/00000059"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_subtract",
+      "requiredCount": 2040,
+      "retainedCount": 2040,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000293/operation/00000003",
+        "unit/0001/function/000019/operation/00000296",
+        "unit/0001/function/000019/operation/00000317"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_subtract_assign",
+      "requiredCount": 161,
+      "retainedCount": 161,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00001714",
+        "unit/0001/function/000019/operation/00001794",
+        "unit/0001/function/000019/operation/00001848"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_va_arg",
+      "requiredCount": 134,
+      "retainedCount": 134,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000057",
+        "unit/0001/function/000019/operation/00000371",
+        "unit/0001/function/000019/operation/00000452"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_va_end",
+      "requiredCount": 37,
+      "retainedCount": 37,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000017/operation/00000035",
+        "unit/0001/function/000050/operation/00000037",
+        "unit/0001/function/000099/operation/00000022"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_va_start",
+      "requiredCount": 37,
+      "retainedCount": 37,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000017/operation/00000022",
+        "unit/0001/function/000050/operation/00000023",
+        "unit/0001/function/000099/operation/00000010"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_xor",
+      "requiredCount": 106,
+      "retainedCount": 106,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000593/operation/00000084",
+        "unit/0001/function/000621/operation/00000102",
+        "unit/0001/function/000621/operation/00000128"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "operator",
+      "form": "eok_xor_assign",
+      "requiredCount": 53,
+      "retainedCount": 53,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000347/operation/00000040",
+        "unit/0001/function/000347/operation/00000076",
+        "unit/0001/function/000347/operation/00000112"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "signature",
+      "form": "variadic",
+      "requiredCount": 37,
+      "retainedCount": 68,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000002",
+        "unit/0001/function/000009",
+        "unit/0001/function/000017"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_block",
+      "requiredCount": 47712,
+      "retainedCount": 47712,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000001",
+        "unit/0001/function/000016/operation/00000001",
+        "unit/0001/function/000016/operation/00000015"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_decl",
+      "requiredCount": 14269,
+      "retainedCount": 14269,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000002",
+        "unit/0001/function/000016/operation/00000003",
+        "unit/0001/function/000016/operation/00000006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_empty",
+      "requiredCount": 2435,
+      "retainedCount": 2435,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000029",
+        "unit/0001/function/000016/operation/00000095",
+        "unit/0001/function/000019/operation/00000325"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_end_test_while",
+      "requiredCount": 133,
+      "retainedCount": 133,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000182",
+        "unit/0001/function/000019/operation/00000923",
+        "unit/0001/function/000136/operation/00000123"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_expr",
+      "requiredCount": 44965,
+      "retainedCount": 44965,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000007",
+        "unit/0001/function/000016/operation/00000030",
+        "unit/0001/function/000016/operation/00000047"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_for",
+      "requiredCount": 1759,
+      "retainedCount": 1759,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000016",
+        "unit/0001/function/000019/operation/00000069",
+        "unit/0001/function/000019/operation/00001013"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_goto",
+      "requiredCount": 3401,
+      "retainedCount": 3401,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000132",
+        "unit/0001/function/000019/operation/00000150",
+        "unit/0001/function/000019/operation/00000204"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_if",
+      "requiredCount": 16353,
+      "retainedCount": 16353,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000042",
+        "unit/0001/function/000016/operation/00000056",
+        "unit/0001/function/000016/operation/00000090"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_init",
+      "requiredCount": 7664,
+      "retainedCount": 7664,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000016/operation/00000004",
+        "unit/0001/function/000019/operation/00000017",
+        "unit/0001/function/000019/operation/00000027"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_label",
+      "requiredCount": 1070,
+      "retainedCount": 1070,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000532",
+        "unit/0001/function/000019/operation/00002384",
+        "unit/0001/function/000019/operation/00002596"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_return",
+      "requiredCount": 7612,
+      "retainedCount": 7612,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000001/operation/00000002",
+        "unit/0001/function/000016/operation/00000107",
+        "unit/0001/function/000016/operation/00000109"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_switch",
+      "requiredCount": 177,
+      "retainedCount": 177,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000196",
+        "unit/0001/function/000019/operation/00000603",
+        "unit/0001/function/000071/operation/00000005"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_switch_case",
+      "requiredCount": 1981,
+      "retainedCount": 1981,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000199",
+        "unit/0001/function/000019/operation/00000205",
+        "unit/0001/function/000019/operation/00000211"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "statement",
+      "form": "stmk_while",
+      "requiredCount": 697,
+      "retainedCount": 697,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/function/000019/operation/00000300",
+        "unit/0001/function/000019/operation/00000482",
+        "unit/0001/function/000019/operation/00001880"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "storage-duration",
+      "form": "automatic",
+      "requiredCount": 14545,
+      "retainedCount": 14545,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000057",
+        "unit/0001/storage/000058",
+        "unit/0001/storage/000059"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "storage-duration",
+      "form": "parameter",
+      "requiredCount": 10785,
+      "retainedCount": 10785,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000054",
+        "unit/0001/storage/000055",
+        "unit/0001/storage/000056"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "storage-duration",
+      "form": "static",
+      "requiredCount": 274,
+      "retainedCount": 293,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000001",
+        "unit/0001/storage/000002",
+        "unit/0001/storage/000003"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "storage",
+      "form": "external-declaration-recorded",
+      "requiredCount": 0,
+      "retainedCount": 19,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/storage/000002",
+        "unit/0001/storage/000003",
+        "unit/0001/storage/000004"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "storage",
+      "form": "local-definition",
+      "requiredCount": 14689,
+      "retainedCount": 14689,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000057",
+        "unit/0001/storage/000058",
+        "unit/0001/storage/000059"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "storage",
+      "form": "parameter",
+      "requiredCount": 10785,
+      "retainedCount": 10785,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000054",
+        "unit/0001/storage/000055",
+        "unit/0001/storage/000056"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "storage",
+      "form": "storage-definition",
+      "requiredCount": 130,
+      "retainedCount": 130,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000001",
+        "unit/0001/storage/000005",
+        "unit/0001/storage/000006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "translation-unit-root",
+      "form": "resident_region",
+      "requiredCount": 0,
+      "retainedCount": 4213,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/root/resident_region/000000",
+        "unit/0001/root/resident_region/000001",
+        "unit/0001/root/resident_region/000002"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "translation-unit-root",
+      "form": "scope_orphan",
+      "requiredCount": 0,
+      "retainedCount": 135,
+      "status": "notEncountered",
+      "examples": [
+        "unit/0001/root/scope_orphan/000000",
+        "unit/0001/root/scope_orphan/000001",
+        "unit/0001/root/scope_orphan/000002"
+      ],
+      "note": "Retained metadata/declarations only; no required execution occurrence."
+    },
+    {
+      "family": "type",
+      "form": "builtin-va-list",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000011"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_array",
+      "requiredCount": 612,
+      "retainedCount": 683,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000012",
+        "unit/0001/type/000143",
+        "unit/0001/type/000157"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_float",
+      "requiredCount": 2,
+      "retainedCount": 12,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000002",
+        "unit/0001/type/000004",
+        "unit/0001/type/000006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_integer",
+      "requiredCount": 14,
+      "retainedCount": 59,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000008",
+        "unit/0001/type/000014",
+        "unit/0001/type/000016"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_pointer",
+      "requiredCount": 5598,
+      "retainedCount": 6430,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000009",
+        "unit/0001/type/000025",
+        "unit/0001/type/000029"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_routine",
+      "requiredCount": 5834,
+      "retainedCount": 8255,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000033",
+        "unit/0001/type/000042",
+        "unit/0001/type/000044"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_struct",
+      "requiredCount": 450,
+      "retainedCount": 511,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000007",
+        "unit/0001/type/000024",
+        "unit/0001/type/000027"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_typeref",
+      "requiredCount": 595,
+      "retainedCount": 1001,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000001",
+        "unit/0001/type/000003",
+        "unit/0001/type/000005"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_union",
+      "requiredCount": 42,
+      "retainedCount": 51,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000149",
+        "unit/0001/type/000150",
+        "unit/0001/type/000196"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "type",
+      "form": "tk_void",
+      "requiredCount": 1,
+      "retainedCount": 1,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/type/000010"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "variable-initialization",
+      "form": "initk_dynamic",
+      "requiredCount": 7664,
+      "retainedCount": 7664,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000058",
+        "unit/0001/storage/000084",
+        "unit/0001/storage/000092"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "variable-initialization",
+      "form": "initk_function_local",
+      "requiredCount": 132,
+      "retainedCount": 132,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000206",
+        "unit/0001/storage/000207",
+        "unit/0001/storage/000218"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "variable-initialization",
+      "form": "initk_none",
+      "requiredCount": 17672,
+      "retainedCount": 17691,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000002",
+        "unit/0001/storage/000003",
+        "unit/0001/storage/000004"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    },
+    {
+      "family": "variable-initialization",
+      "form": "initk_static",
+      "requiredCount": 136,
+      "retainedCount": 136,
+      "status": "unsupported",
+      "examples": [
+        "unit/0001/storage/000001",
+        "unit/0001/storage/000005",
+        "unit/0001/storage/000006"
+      ],
+      "note": "Inventoried requirement; emission/runtime acceptance is not established by inventory."
+    }
+  ],
+  "focusedEvidence": {
+    "storage": "/mnt/storage/roslynobj-csharp-20261015/t0/address-fix-storage-regression/run.json",
+    "cleanup": "/mnt/storage/roslynobj-csharp-20261015/t0/address-fix-cleanup-regression/run.json",
+    "constantAddresses": "/mnt/storage/roslynobj-csharp-20261015/t0/address-tests/run.json"
+  },
+  "remainingExecutionGates": [
+    "T2 storage/calls/varargs/linking and ABI adapters",
+    "T3 complete generated SQLite library and first SQL JIT/NativeAOT",
+    "T4 full configured workloads/import-provider audit",
+    "T5 broader C++",
+    "T6 portability/scale"
+  ],
+  "focusedFixtures": [
+    {
+      "source": "edgcpp/roslyn-csharp/tests/Inventory/storage.c",
+      "sourceSha256": "e00727a09729b36372df8f428062337831929a0e3962b0bdc0e6962ace6c8367",
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t0/export/storage.roslynobj",
+        "sha256": "f06679ee21edf8e474393cd7d10946f1942219b6eae84a715d22c8c82431d234",
+        "artifactIdentity": "48dc07a1aae9ab6cf499f407fe760569",
+        "producer": "roslyn_gen_be",
+        "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+        "edgVersion": "7.0",
+        "captureProfile": "native_lowered",
+        "requiredCapabilities": [
+          "normalized_semantic_schema_v1",
+          "exact_target_values_v1"
+        ]
+      },
+      "formatMajor": 2,
+      "formatMinor": 0,
+      "stage": "lowered",
+      "invocationArguments": [
+        "--clear_flag",
+        "use_predefined_macro_file",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "edgcpp/roslyn-csharp/tests/Inventory/storage.c"
+      ]
+    },
+    {
+      "source": "edgcpp/roslyn-csharp/tests/Inventory/cleanup.cpp",
+      "sourceSha256": "2c31dab5c8a7028ab5f1ec48aaa4cddd18f588435ca7e732d7efe4a76c0a1062",
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t0/export/cleanup.roslynobj",
+        "sha256": "f08b1bf7f8729e4b66e83923a531be199d5bbd5d985bd10bc8eb0cea741740da",
+        "artifactIdentity": "76a6117d1a51c2274afb72bb4c2c2bb2",
+        "producer": "roslyn_gen_be",
+        "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+        "edgVersion": "7.0",
+        "captureProfile": "native_lowered",
+        "requiredCapabilities": [
+          "normalized_semantic_schema_v1",
+          "exact_target_values_v1"
+        ]
+      },
+      "formatMajor": 2,
+      "formatMinor": 0,
+      "stage": "lowered",
+      "invocationArguments": [
+        "--clear_flag",
+        "use_predefined_macro_file",
+        "--c++20",
+        "--g++",
+        "--gnu_version",
+        "130000",
+        "--exceptions",
+        "edgcpp/roslyn-csharp/tests/Inventory/cleanup.cpp"
+      ]
+    },
+    {
+      "source": "edgcpp/roslyn-csharp/tests/Inventory/addresses.c",
+      "sourceSha256": "78f83d64065a6b73351fd2220bcbd8ea8b7b3561adc70f9c73a0043b0639aeeb",
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t0/export/addresses.roslynobj",
+        "sha256": "55a4d68125cb6f8078ae06c6c3f2907051b29d17c55ac69a27fb0469604bc26f",
+        "artifactIdentity": "1f8c39f582335e484dd096a82bc413f5",
+        "producer": "roslyn_gen_be",
+        "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+        "edgVersion": "7.0",
+        "captureProfile": "native_lowered",
+        "requiredCapabilities": [
+          "normalized_semantic_schema_v1",
+          "exact_target_values_v1"
+        ]
+      },
+      "formatMajor": 2,
+      "formatMinor": 0,
+      "stage": "lowered",
+      "invocationArguments": [
+        "--clear_flag",
+        "use_predefined_macro_file",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "edgcpp/roslyn-csharp/tests/Inventory/addresses.c"
+      ]
+    }
+  ],
+  "fixtureProducer": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+    "sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+    "driver": "edgcpp/roslyn/build/roslyn-cpfe.py",
+    "driverSha256": "67bd8496c5b9ad74fafeb1d52040020370d8e808bbc8219b8f824c44c696df17"
+  },
+  "focusedHarness": {
+    "source": "edgcpp/roslyn-csharp/tests/Inventory/Program.cs",
+    "sourceSha256": "9a589ddd3cf5826d2be7d905eca29a86deeb596088b90eb6abd6277a9cb4bb58",
+    "assemblySha256": "33e1312c42bea2ffc5ca844f0ef0c0a88ee833c104d628242933f1d4ad340158"
+  }
+}

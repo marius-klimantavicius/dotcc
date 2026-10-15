@@ -1,7 +1,7 @@
 # Translation milestones and acceptance
 
-Status: approved gates, with implementation in progress. T1's initial runnable
-fixture gate is closed; T0 remains open pending the complete SQLite inventory.
+Status: approved gates, with implementation in progress. T0's complete SQLite
+inventory and T1's initial runnable fixture gate are closed. T2 remains open.
 See [the design](PLAN.md) and [current evidence](COVERAGE.md).
 
 ## Milestones
