@@ -26,6 +26,9 @@ public static unsafe class SysVVariadic
 
     public static byte* Align16(byte* storage) => (byte*)(((nuint)storage + 15) & ~(nuint)15);
 
+    /// <summary>Force ABI admission before generated application execution.</summary>
+    public static void RequireAbi() { }
+
     public static void Start(void* destination, SysVVaList* arguments)
     {
         if (arguments == null) throw new InvalidOperationException("A translated variadic call has no argument pack.");

@@ -205,6 +205,8 @@ public sealed partial class CSharpEmitter
             CsExpression rightValue;
             CsVariable? oldValue = null;
             var compound = operation.OperatorKind.Name != "eok_assign";
+            if (compound && Unwrap(left.Type) is ArithmeticType { Arithmetic.IsBool: true })
+                throw Limit("Boolean compound assignment needs a selected normalization plan.", "compound-assignment");
             if (operation.Operator.EvalRightToLeft)
             {
                 prefix.AddRange(right.Prefix); rightValue = CaptureValue(right.Value, prefix);
@@ -238,15 +240,26 @@ public sealed partial class CSharpEmitter
         {
             var left = PlanExpression(operation.Operands[0]); var right = PlanExpression(operation.Operands[1]);
             if (left.Place is null || right.Place is null) throw Limit("Aggregate copy needs two selected storage places; return-value materialization is not implemented.", "aggregate");
+            var blockCopy = operation.OperatorKind.Name == "eok_bassign";
+            // The current Copy<T> runtime represents complete objects of one selected storage type.
+            // EDG block copies can instead use a smaller source to partially fill a destination.
+            if (StorageSize(left.Type) != StorageSize(right.Type) || TypeName(left.Type) != TypeName(right.Type))
+                throw Limit("Source-sized partial or differing-representation block copies need a separate native storage adapter.", "aggregate");
+            if (blockCopy && !IsVoid(CsType.Value(operation.Type)))
+                throw Limit("This selected block-copy result has no void execution plan.", "aggregate");
             var prefix = new List<CsPlanStatement>();
             LValuePlan destination; LValuePlan source;
             if (operation.Operator.EvalRightToLeft)
             {
                 prefix.AddRange(right.Prefix); source = CapturePlace(right.Place, prefix);
-                // The source value, not only its address, must be captured before left-side effects.
-                var snapshot = DeclareTemporary(CsType.Value(right.Type), new CsLeaf(CsType.Value(right.Type), "default", true), prefix);
-                var snapshotPlace = new LValuePlan(right.Type, LValueKind.Slot, snapshot);
-                prefix.Add(new CsCopy(snapshotPlace, source, right.Type)); source = snapshotPlace;
+                if (!blockCopy)
+                {
+                    // Value assignment captures RHS bytes; eok_bassign instead copies from the
+                    // selected source address after evaluating both memcpy address operands.
+                    var snapshot = DeclareTemporary(CsType.Value(right.Type), new CsLeaf(CsType.Value(right.Type), "default", true), prefix);
+                    var snapshotPlace = new LValuePlan(right.Type, LValueKind.Slot, snapshot);
+                    prefix.Add(new CsCopy(snapshotPlace, source, right.Type)); source = snapshotPlace;
+                }
                 prefix.AddRange(left.Prefix); destination = CapturePlace(left.Place, prefix);
             }
             else
@@ -254,8 +267,9 @@ public sealed partial class CSharpEmitter
                 prefix.AddRange(left.Prefix); destination = CapturePlace(left.Place, prefix);
                 prefix.AddRange(right.Prefix); source = CapturePlace(right.Place, prefix);
             }
-            prefix.Add(new CsCopy(destination, source, left.Type));
-            return new(operation.Type, operation.ValueCategory, prefix, new CsLoad(destination),
+            prefix.Add(new CsCopy(destination, source, right.Type));
+            CsExpression result = blockCopy ? new CsLeaf(CsType.Void, "", true) : new CsLoad(destination);
+            return new(operation.Type, operation.ValueCategory, prefix, result,
                 left.Effects | right.Effects | ExpressionEffects.ReadStorage | ExpressionEffects.WriteStorage,
                 operation.ValueCategory.Name is "lvalue" or "xvalue" ? destination : null);
         }
@@ -263,6 +277,8 @@ public sealed partial class CSharpEmitter
         private ExpressionPlan PlanIncrement(OperatorOperation operation)
         {
             var operand = PlanExpression(operation.Operands[0]);
+            if (Unwrap(operand.Type) is ArithmeticType { Arithmetic.IsBool: true })
+                throw Limit("Boolean increment/decrement needs a selected normalization plan.", "increment");
             var prefix = operand.Prefix.ToList();
             var place = CapturePlace(operand.Place ?? throw Limit("Increment needs an actual selected lvalue.", "lvalue"), prefix);
             var oldValue = DeclareTemporary(CsType.Value(operand.Type), new CsLoad(place), prefix);
@@ -334,9 +350,8 @@ public sealed partial class CSharpEmitter
         }
         private static ExpressionEffects Effects(IEnumerable<ExpressionPlan> plans) => plans.Aggregate(ExpressionEffects.None, (effects, plan) => effects | plan.Effects);
         private static CsExpression PlanTruth(CsExpression value, CppType type) => new CsTruth(value, type);
-        private CsExpression SourceBoolean(CppType type, CsExpression condition) => new CsChoice(CsType.Value(type), condition,
-            new CsCast(CsType.Value(type), new CsLeaf(CsType.Int32, "1", true)), new CsCast(CsType.Value(type), new CsLeaf(CsType.Int32, "0", true)));
-        private static bool IsVoid(CsType type) => type.Intrinsic == "void" || type.AddedPointerDepth == 0 && type.Captured?.Kind.Name == "tk_void";
+        private static CsExpression SourceBoolean(CppType type, CsExpression condition) => new CsSourceBoolean(CsType.Value(type), condition);
+        private static bool IsVoid(CsType type) => type.Intrinsic == "void" || type.AddedPointerDepth == 0 && type.Captured is { } captured && Unwrap(captured).Kind.Name == "tk_void";
 
         private string RenderType(CsType type) => type.Intrinsic ?? TypeName(type.Captured!) + new string('*', type.AddedPointerDepth);
         private string RenderPlanValue(ExpressionPlan plan) => RenderExpression(plan.Value);
@@ -352,7 +367,9 @@ public sealed partial class CSharpEmitter
             CsAddress address => RenderAddress(address.Place),
             CsPlannedCall call => RenderCall(call),
             CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
+            CsTruth { Value: CsSourceBoolean boolean } => RenderExpression(boolean.Condition),
             CsTruth truth => TruthValue(RenderExpression(truth.Value), truth.SourceType),
+            CsSourceBoolean boolean => $"({RenderExpression(boolean.Condition)} ? ({RenderType(boolean.Type)})1 : ({RenderType(boolean.Type)})0)",
             _ => throw Limit("Unknown typed C# expression node.", "expression-plan")
         };
         private string RenderPlace(LValuePlan place) => place.Kind switch

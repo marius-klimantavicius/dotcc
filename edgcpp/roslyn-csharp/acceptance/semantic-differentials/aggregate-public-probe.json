@@ -1,0 +1,444 @@
+{
+  "InventoryOnly": true,
+  "GeneratedExecutionAccepted": false,
+  "Artifact": "357b87c1351abb7dee43715ac8e41a84",
+  "Functions": [
+    {
+      "Locator": "function:1",
+      "Name": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b4markEii",
+      "Families": [
+        {
+          "Kind": "enk_variable",
+          "Count": 4
+        },
+        {
+          "Kind": "eok_array_to_pointer",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_assign",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_post_incr",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_subscript",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_expr",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [],
+      "Copies": [],
+      "Temporaries": []
+    },
+    {
+      "Locator": "function:2",
+      "Name": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b18select_destinationEv",
+      "Families": [
+        {
+          "Kind": "enk_constant",
+          "Count": 4
+        },
+        {
+          "Kind": "enk_field",
+          "Count": 2
+        },
+        {
+          "Kind": "enk_routine",
+          "Count": 1
+        },
+        {
+          "Kind": "enk_variable",
+          "Count": 3
+        },
+        {
+          "Kind": "eok_address_of",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_assign",
+          "Count": 2
+        },
+        {
+          "Kind": "eok_call",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_dot_field",
+          "Count": 2
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_expr",
+          "Count": 3
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [
+        {
+          "Locator": "function:2/call:1",
+          "Kind": "direct",
+          "LeftToRight": true,
+          "RightToLeft": false,
+          "CalleeKind": "enk_routine",
+          "Target": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b4markEii",
+          "RawOperands": 3,
+          "Arguments": 2,
+          "HasReceiver": false,
+          "HasReturnSlot": false,
+          "ArgumentsMatchRawOperands": true,
+          "CalleeNestedCalls": 0
+        }
+      ],
+      "Copies": [],
+      "Temporaries": []
+    },
+    {
+      "Locator": "function:3",
+      "Name": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b13select_sourceEv",
+      "Families": [
+        {
+          "Kind": "enk_constant",
+          "Count": 2
+        },
+        {
+          "Kind": "enk_routine",
+          "Count": 1
+        },
+        {
+          "Kind": "enk_variable",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_address_of",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_call",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_cast",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_expr",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [
+        {
+          "Locator": "function:3/call:1",
+          "Kind": "direct",
+          "LeftToRight": true,
+          "RightToLeft": false,
+          "CalleeKind": "enk_routine",
+          "Target": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b4markEii",
+          "RawOperands": 3,
+          "Arguments": 2,
+          "HasReceiver": false,
+          "HasReturnSlot": false,
+          "ArgumentsMatchRawOperands": true,
+          "CalleeNestedCalls": 0
+        }
+      ],
+      "Copies": [],
+      "Temporaries": []
+    },
+    {
+      "Locator": "function:4",
+      "Name": "sequence_count",
+      "Families": [
+        {
+          "Kind": "enk_variable",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [],
+      "Copies": [],
+      "Temporaries": []
+    },
+    {
+      "Locator": "function:5",
+      "Name": "sequence_event",
+      "Families": [
+        {
+          "Kind": "enk_variable",
+          "Count": 2
+        },
+        {
+          "Kind": "eok_array_to_pointer",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_subscript",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [],
+      "Copies": [],
+      "Temporaries": []
+    },
+    {
+      "Locator": "function:6",
+      "Name": "sequence_value",
+      "Families": [
+        {
+          "Kind": "enk_variable",
+          "Count": 2
+        },
+        {
+          "Kind": "eok_array_to_pointer",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_subscript",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [],
+      "Copies": [],
+      "Temporaries": []
+    },
+    {
+      "Locator": "function:7",
+      "Name": "fixture",
+      "Families": [
+        {
+          "Kind": "enk_constant",
+          "Count": 17
+        },
+        {
+          "Kind": "enk_field",
+          "Count": 10
+        },
+        {
+          "Kind": "enk_routine",
+          "Count": 4
+        },
+        {
+          "Kind": "enk_variable",
+          "Count": 27
+        },
+        {
+          "Kind": "eok_add",
+          "Count": 5
+        },
+        {
+          "Kind": "eok_array_to_pointer",
+          "Count": 12
+        },
+        {
+          "Kind": "eok_assign",
+          "Count": 15
+        },
+        {
+          "Kind": "eok_call",
+          "Count": 4
+        },
+        {
+          "Kind": "eok_comma",
+          "Count": 2
+        },
+        {
+          "Kind": "eok_dot_field",
+          "Count": 10
+        },
+        {
+          "Kind": "eok_indirect",
+          "Count": 4
+        },
+        {
+          "Kind": "eok_lvalue_adjust",
+          "Count": 1
+        },
+        {
+          "Kind": "eok_subscript",
+          "Count": 12
+        },
+        {
+          "Kind": "stmk_block",
+          "Count": 1
+        },
+        {
+          "Kind": "stmk_expr",
+          "Count": 13
+        },
+        {
+          "Kind": "stmk_return",
+          "Count": 1
+        }
+      ],
+      "Calls": [
+        {
+          "Locator": "function:7/call:1",
+          "Kind": "direct",
+          "LeftToRight": true,
+          "RightToLeft": false,
+          "CalleeKind": "enk_routine",
+          "Target": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b13select_sourceEv",
+          "RawOperands": 1,
+          "Arguments": 0,
+          "HasReceiver": false,
+          "HasReturnSlot": false,
+          "ArgumentsMatchRawOperands": true,
+          "CalleeNestedCalls": 0
+        },
+        {
+          "Locator": "function:7/call:2",
+          "Kind": "direct",
+          "LeftToRight": true,
+          "RightToLeft": false,
+          "CalleeKind": "enk_routine",
+          "Target": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b18select_destinationEv",
+          "RawOperands": 1,
+          "Arguments": 0,
+          "HasReceiver": false,
+          "HasReturnSlot": false,
+          "ArgumentsMatchRawOperands": true,
+          "CalleeNestedCalls": 0
+        },
+        {
+          "Locator": "function:7/call:3",
+          "Kind": "direct",
+          "LeftToRight": true,
+          "RightToLeft": false,
+          "CalleeKind": "enk_routine",
+          "Target": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b13select_sourceEv",
+          "RawOperands": 1,
+          "Arguments": 0,
+          "HasReceiver": false,
+          "HasReturnSlot": false,
+          "ArgumentsMatchRawOperands": true,
+          "CalleeNestedCalls": 0
+        },
+        {
+          "Locator": "function:7/call:4",
+          "Kind": "direct",
+          "LeftToRight": true,
+          "RightToLeft": false,
+          "CalleeKind": "enk_routine",
+          "Target": "_ZN35_INTERNAL_13_aggregate_cpp_fe55ed7b18select_destinationEv",
+          "RawOperands": 1,
+          "Arguments": 0,
+          "HasReceiver": false,
+          "HasReturnSlot": false,
+          "ArgumentsMatchRawOperands": true,
+          "CalleeNestedCalls": 0
+        }
+      ],
+      "Copies": [
+        {
+          "Kind": "eok_assign",
+          "LeftToRight": false,
+          "RightToLeft": true,
+          "ResultType": "tk_struct",
+          "LeftType": "tk_struct",
+          "RightType": "tk_struct",
+          "LeftSize": "8",
+          "RightSize": "8"
+        },
+        {
+          "Kind": "eok_assign",
+          "LeftToRight": false,
+          "RightToLeft": true,
+          "ResultType": "tk_struct",
+          "LeftType": "tk_struct",
+          "RightType": "tk_struct",
+          "LeftSize": "8",
+          "RightSize": "8"
+        },
+        {
+          "Kind": "eok_assign",
+          "LeftToRight": false,
+          "RightToLeft": true,
+          "ResultType": "tk_struct",
+          "LeftType": "tk_struct",
+          "RightType": "tk_struct",
+          "LeftSize": "8",
+          "RightSize": "8"
+        },
+        {
+          "Kind": "eok_assign",
+          "LeftToRight": false,
+          "RightToLeft": true,
+          "ResultType": "tk_struct",
+          "LeftType": "tk_struct",
+          "RightType": "tk_struct",
+          "LeftSize": "8",
+          "RightSize": "8"
+        }
+      ],
+      "Temporaries": []
+    }
+  ],
+  "OperandConstraints": [
+    {
+      "LeftToRight": false,
+      "RightToLeft": false,
+      "Count": 43
+    },
+    {
+      "LeftToRight": false,
+      "RightToLeft": true,
+      "Count": 18
+    },
+    {
+      "LeftToRight": true,
+      "RightToLeft": false,
+      "Count": 21
+    }
+  ],
+  "BitFields": []
+}

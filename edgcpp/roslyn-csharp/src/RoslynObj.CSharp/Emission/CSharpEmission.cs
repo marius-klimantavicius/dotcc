@@ -103,7 +103,9 @@ public sealed partial class CSharpEmitter
             var staticInitialization = new CodeWriter();
             try { EmitGlobalStorage(staticFields, staticInitialization); }
             catch (Unsupported ex) { Add("CSHARP2300", ex.Message, null, ex.Family); }
-            try { EmitCallSupport(staticFields); }
+            try { EmitVariadicSupport(); }
+            catch (Unsupported ex) { Add("CSHARP2401", ex.Message, null, ex.Family); }
+            try { EmitCallSupport(staticFields, staticInitialization); }
             catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
             var declarations = new StringBuilder();
             // Either kind can discover the other (record -> array -> record).
@@ -135,6 +137,8 @@ public sealed partial class CSharpEmitter
             source.Append("public static unsafe class ").Append(options.ClassName).AppendLine("\n{");
             source.Append(staticFields);
             source.Append("    static ").Append(options.ClassName).AppendLine("()\n    {\n        RuntimeContract.RequireLayout(8, true);");
+            if (variadicParameters.Count != 0 || variadicCalls.Count != 0)
+                source.Append("        ").Append(VaRuntime).AppendLine(".RequireAbi();");
             source.Append(staticInitialization.TextWithIndent(2));
             source.AppendLine("    }").AppendLine();
             source.Append(methods);
@@ -151,9 +155,10 @@ public sealed partial class CSharpEmitter
             }
             source.AppendLine("}");
             var runtime = SecurityElement.Escape(Path.GetFullPath(options.RuntimeProjectPath));
-            var project = $"<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <LangVersion>14</LangVersion>\n    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n    <Nullable>enable</Nullable>\n    <OutputType>{(options.Executable ? "Exe" : "Library")}</OutputType>\n    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>\n  </PropertyGroup>\n  <ItemGroup><ProjectReference Include=\"{runtime}\" /></ItemGroup>\n</Project>\n";
+            var project = $"<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <LangVersion>14</LangVersion>\n    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n    <Nullable>enable</Nullable>\n    <OutputType>{(options.Executable ? "Exe" : "Library")}</OutputType>\n    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>\n  </PropertyGroup>\n  <ItemGroup><ProjectReference Include=\"{runtime}\" /></ItemGroup>\n{NativeAbiProjectItems()}</Project>\n";
             var files = new List<GeneratedSource> { new("Generated.cs", source.ToString()), new("Generated.csproj", project) };
-            if (nativeImports.Count > 0) files.Add(new("Generated.NativeImports.json", NativeImportReport()));
+            if (generatedAbiLibrary is not null) files.Add(new("Generated.Abi.c", NativeAbiSource()));
+            if (nativeImports.Count > 0 || generatedAbiLibrary is not null) files.Add(new("Generated.NativeImports.json", NativeImportReport()));
             return new(files, diagnostics, functions.Count, records.Count);
         }
 
@@ -169,7 +174,10 @@ public sealed partial class CSharpEmitter
 
         private void EmitFunction(FunctionSymbol function)
         {
-            if (function.Signature.Routine.IsVariadic) throw Limit("Variadic routine definitions require the T2 argument-pack contract.", "varargs");
+            ValidateOrdinaryRoutineRoles(function.Signature);
+            if (function.Parameters.Any(p => p.Role.Name != "ordinary_parameter"))
+                throw Limit("An execution parameter has a hidden role requiring an exercised ABI adapter.", "parameter");
+            if (function.Signature.IsVariadic) ValidateNativeScalarSignature(function.Signature);
             var body = function.Body!;
             if (body.ExceptionHandling.CleanupRegions.Count != 0 || body.Lifetimes.Any(l => l.Cleanups.Count != 0))
                 throw Limit("This body has retained lifetime cleanup obligations; T1 does not implement C++ cleanup.", "lifetime");
@@ -186,7 +194,15 @@ public sealed partial class CSharpEmitter
                 Name(variable, variable.Name ?? "temporary", localNames);
             }
             var writer = new CodeWriter();
-            writer.Line($"public static {TypeName(function.ReturnType)} {names[function]}({string.Join(", ", function.Parameters.Select(p => $"{TypeName(p.Type)} {names[p.Symbol!]}"))})");
+            var parameters = function.Parameters.Select(p => $"{TypeName(p.Type)} {names[p.Symbol!]}").ToList();
+            if (function.Signature.IsVariadic)
+            {
+                var argumentPack = "__arguments";
+                while (!localNames.Add(argumentPack)) argumentPack += "_";
+                variadicParameters[function] = argumentPack;
+                parameters.Add($"{VaType}* {argumentPack}");
+            }
+            writer.Line($"public static {TypeName(function.ReturnType)} {names[function]}({string.Join(", ", parameters)})");
             writer.Open();
             foreach (var variable in body.Locals)
             {
@@ -352,6 +368,7 @@ public sealed partial class CSharpEmitter
                 throw Limit($"Operator '{kind}' has effectful right-to-left operands and requires explicit sequencing temporaries.", "sequencing");
             switch (kind)
             {
+                case "eok_va_start": case "eok_va_arg": case "eok_va_copy": case "eok_va_end": return VariadicOperator(operation);
                 case "eok_parens": return $"({A(0)})";
                 case "eok_address_of": case "eok_reference_to":
                     if (operands[0] is ReferenceOperation { Target: FunctionSymbol addressed }) return FunctionAddress(addressed);
@@ -428,7 +445,7 @@ public sealed partial class CSharpEmitter
         { ["eok_assign"] = "=", ["eok_add_assign"] = "+=", ["eok_subtract_assign"] = "-=", ["eok_multiply_assign"] = "*=", ["eok_divide_assign"] = "/=", ["eok_remainder_assign"] = "%=", ["eok_and_assign"] = "&=", ["eok_or_assign"] = "|=", ["eok_xor_assign"] = "^=" };
         private static readonly Dictionary<string, string> BinaryOperators = new()
         { ["eok_add"] = "+", ["eok_subtract"] = "-", ["eok_multiply"] = "*", ["eok_divide"] = "/", ["eok_remainder"] = "%", ["eok_and"] = "&", ["eok_or"] = "|", ["eok_xor"] = "^" };
-        private static bool IsStatementExpression(string kind) => AssignmentOperators.ContainsKey(kind) || kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr" or "eok_bassign";
+        private static bool IsStatementExpression(string kind) => AssignmentOperators.ContainsKey(kind) || kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr" or "eok_bassign" or "eok_va_start" or "eok_va_copy" or "eok_va_end";
 
         private string Constant(Constant constant)
         {
@@ -585,7 +602,7 @@ public sealed partial class CSharpEmitter
         private static bool HasEffects(ExpressionOperation expression) => expression switch
         {
             CallOperation or TemporaryOperation or AllocationOperation or ThrowOperation => true,
-            OperatorOperation op when IsStatementExpression(op.OperatorKind.Name) => true,
+            OperatorOperation op when IsStatementExpression(op.OperatorKind.Name) || op.OperatorKind.Name == "eok_va_arg" => true,
             _ => expression.Operands.Any(HasEffects)
         };
         private static bool IsBitFieldPlace(ExpressionOperation expression) => expression switch

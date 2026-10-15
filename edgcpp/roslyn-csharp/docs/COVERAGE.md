@@ -8,7 +8,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | --- | --- | --- | --- |
 | T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | In progress | [Bounded assembly selection](T2-ASSEMBLY.md) passes 16 genuine inputs; [storage/callback slice](T2-STORAGE-CALLBACKS.md) passes 46 phases in JIT/NativeAOT | Integrated multi-unit emitted execution, variadics, effectful sequencing, aggregate native ABI and complete provider contracts |
+| T2 | In progress | [Bounded assembly selection](T2-ASSEMBLY.md) passes 16 genuine inputs; [storage/callback slice](T2-STORAGE-CALLBACKS.md) passes 46 phases; [primitive variadics](T2-VARIADICS.md) passes62 phases in JIT/NativeAOT | Integrated multi-unit emitted execution, effectful sequencing, aggregate native ABI and complete provider contracts |
 | T3 | Not implemented | Existing full-feature object is input evidence only | Complete SQLite emission, imports/providers, first SQL in JIT and NativeAOT |
 | T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
@@ -98,9 +98,9 @@ T0: 97.00 seconds, zero diagnostics, all 4,212 executable bodies inventoried,
 physical storage observations and callback event order. Native/JIT/NativeAOT
 results are 147423/45/751 for storage/copy/callback fixtures. The separate
 [T1 regression](../acceptance/storage-callbacks/t1-regression.json) passes all
-23 phases after these emitter/runtime changes. Typed expression planning and
-SysV variadic cursor code are compiled baselines only: neither is integrated or
-execution-accepted. T2 remains open; see the explicit limits in
+23 phases after these emitter/runtime changes. At that checkpoint typed expression planning and
+SysV cursors were compiled baselines; subsequent primitive variadic acceptance is
+recorded below. Typed effect planning remains unintegrated/unaccepted. T2 remains open; see the explicit limits in
 [T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).
 
 The separate pinned native SQLite oracle passes 43 SQL statements across core
@@ -116,3 +116,11 @@ four expected configuration rejections, JIT/NativeAOT751 and exact seven events.
 Provider path/hash verification and complete declared contracts are distinct from
 this fixture's exercised native ABI. External data/intrinsic provider execution
 and the complete SQLite import audit remain open.
+
+[Primitive variadics](T2-VARIADICS.md) now pass62 phases: direct1870,
+interleaved314, addressed216 and unknown outbound627 match native in JIT and
+NativeAOT. Physical cursor/native borrowed entry/canonical identity and all ten
+outbound value pairs are exercised. Effective typeref alignment guard tightening
+remains pending before broader alias acceptance. Typed effect planning and
+multi-unit emitter integration remain unaccepted; the original aggregate fixture
+is preserved as an explicit producer/native differential, not forced to GCC.

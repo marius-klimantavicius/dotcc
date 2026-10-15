@@ -1,0 +1,590 @@
+FUNCTION operator new state=declaration_only defined=False instance=False
+  PARAM  tk_integer role=ordinary_parameter symbol=
+FUNCTION operator delete state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+FUNCTION operator delete state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+  PARAM  tk_integer role=ordinary_parameter symbol=
+FUNCTION operator new state=declaration_only defined=False instance=False
+  PARAM  tk_integer role=ordinary_parameter symbol=
+  PARAM  align_val_t role=ordinary_parameter symbol=
+FUNCTION operator delete state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+  PARAM  tk_integer role=ordinary_parameter symbol=
+  PARAM  align_val_t role=ordinary_parameter symbol=
+FUNCTION operator delete state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+  PARAM  align_val_t role=ordinary_parameter symbol=
+FUNCTION operator new[] state=declaration_only defined=False instance=False
+  PARAM  tk_integer role=ordinary_parameter symbol=
+FUNCTION operator delete[] state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+FUNCTION operator delete[] state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+  PARAM  tk_integer role=ordinary_parameter symbol=
+FUNCTION operator new[] state=declaration_only defined=False instance=False
+  PARAM  tk_integer role=ordinary_parameter symbol=
+  PARAM  align_val_t role=ordinary_parameter symbol=
+FUNCTION operator delete[] state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+  PARAM  tk_integer role=ordinary_parameter symbol=
+  PARAM  align_val_t role=ordinary_parameter symbol=
+FUNCTION operator delete[] state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+  PARAM  align_val_t role=ordinary_parameter symbol=
+FUNCTION mark state=definition defined=True instance=False
+  PARAM event tk_integer role=ordinary_parameter symbol=event
+  PARAM value tk_integer role=ordinary_parameter symbol=value
+  BlockOperation stmk_block
+    CHILD statement/0
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_variable
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_operation
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=events targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  OperatorOperation enk_operation eok_post_incr LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=event_count targetType=VariableSymbol type=tk_integer/tk_integer category=lvalue
+            CHILD operand/1
+              ReferenceOperation enk_variable target=event targetType=VariableSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/1
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          ReferenceOperation enk_variable target=value targetType=VariableSymbol type=tk_integer/tk_integer category=prvalue
+FUNCTION select_destination state=definition defined=True instance=False
+  BlockOperation stmk_block
+    CHILD statement/0
+      StatementOperation stmk_expr
+        CHILD operand/0
+          CallOperation enk_operation eok_call LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_routine
+            operand operand/1: enk_constant
+            operand operand/2: enk_constant
+            CHILD operand/0
+              ReferenceOperation enk_routine target=mark targetType=FunctionSymbol type=tk_pointer/tk_pointer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 2 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/2
+              ConstantOperation enk_constant value=ck_integer 0 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/1
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_constant
+            CHILD operand/0
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=first targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 99 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/2
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_constant
+            CHILD operand/0
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=second targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 101 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/3
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          OperatorOperation enk_operation eok_address_of LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+            operand operand/0: enk_variable
+            CHILD operand/0
+              ReferenceOperation enk_variable target=destination targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+FUNCTION select_source state=definition defined=True instance=False
+  BlockOperation stmk_block
+    CHILD statement/0
+      StatementOperation stmk_expr
+        CHILD operand/0
+          CallOperation enk_operation eok_call LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_routine
+            operand operand/1: enk_constant
+            operand operand/2: enk_constant
+            CHILD operand/0
+              ReferenceOperation enk_routine target=mark targetType=FunctionSymbol type=tk_pointer/tk_pointer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 1 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/2
+              ConstantOperation enk_constant value=ck_integer 0 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/1
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          ConversionOperation enk_operation eok_cast LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+            operand operand/0: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_address_of LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                operand operand/0: enk_variable
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+FUNCTION sequence_count state=definition defined=True instance=False
+  BlockOperation stmk_block
+    CHILD statement/0
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          ReferenceOperation enk_variable target=event_count targetType=VariableSymbol type=tk_integer/tk_integer category=prvalue
+FUNCTION sequence_event state=definition defined=True instance=False
+  PARAM index tk_integer role=ordinary_parameter symbol=index
+  BlockOperation stmk_block
+    CHILD statement/0
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_variable
+            CHILD operand/0
+              ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                operand operand/0: enk_variable
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=events targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+            CHILD operand/1
+              ReferenceOperation enk_variable target=index targetType=VariableSymbol type=tk_integer/tk_integer category=prvalue
+FUNCTION sequence_value state=definition defined=True instance=False
+  PARAM index tk_integer role=ordinary_parameter symbol=index
+  BlockOperation stmk_block
+    CHILD statement/0
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_variable
+            CHILD operand/0
+              ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                operand operand/0: enk_variable
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+            CHILD operand/1
+              ReferenceOperation enk_variable target=index targetType=VariableSymbol type=tk_integer/tk_integer category=prvalue
+FUNCTION fixture state=definition defined=True instance=False
+  LOCAL  Aggregate constant= init=
+  BlockOperation stmk_block
+    CHILD statement/0
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_variable
+            operand operand/1: enk_constant
+            CHILD operand/0
+              ReferenceOperation enk_variable target=event_count targetType=VariableSymbol type=tk_integer/tk_integer category=lvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 0 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/1
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_constant
+            CHILD operand/0
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=first targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 7 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/2
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_constant
+            CHILD operand/0
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=second targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 11 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/3
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_comma LTR=False RTL=False type=tk_struct/Aggregate category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_struct/Aggregate category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_operation
+                CHILD operand/0
+                  ReferenceOperation enk_variable target= targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  OperatorOperation enk_operation eok_indirect LTR=False RTL=False type=tk_struct/Aggregate category=prvalue
+                    operand operand/0: enk_operation
+                    CHILD operand/0
+                      CallOperation enk_operation eok_call LTR=True RTL=False type=tk_pointer/tk_pointer category=prvalue
+                        operand operand/0: enk_routine
+                        CHILD operand/0
+                          ReferenceOperation enk_routine target=select_source targetType=FunctionSymbol type=tk_pointer/tk_pointer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_struct/Aggregate category=prvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_variable
+                CHILD operand/0
+                  OperatorOperation enk_operation eok_indirect LTR=False RTL=False type=tk_struct/Aggregate category=lvalue
+                    operand operand/0: enk_operation
+                    CHILD operand/0
+                      CallOperation enk_operation eok_call LTR=True RTL=False type=tk_pointer/tk_pointer category=prvalue
+                        operand operand/0: enk_routine
+                        CHILD operand/0
+                          ReferenceOperation enk_routine target=select_destination targetType=FunctionSymbol type=tk_pointer/tk_pointer category=prvalue
+                CHILD operand/1
+                  ReferenceOperation enk_variable target= targetType=VariableSymbol type=tk_struct/Aggregate category=prvalue
+    CHILD statement/4
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 0 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=destination targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=first targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/5
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 1 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=destination targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=second targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/6
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_constant
+            CHILD operand/0
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=first targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 13 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/7
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_constant
+            CHILD operand/0
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=second targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              ConstantOperation enk_constant value=ck_integer 17 type=tk_integer/tk_integer category=prvalue
+    CHILD statement/8
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_comma LTR=False RTL=False type=tk_struct/Aggregate category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_struct/Aggregate category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_operation
+                CHILD operand/0
+                  ReferenceOperation enk_variable target= targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ConversionOperation enk_operation eok_lvalue_adjust LTR=False RTL=False type=tk_struct/Aggregate category=prvalue
+                    operand operand/0: enk_operation
+                    CHILD operand/0
+                      OperatorOperation enk_operation eok_indirect LTR=False RTL=False type=tk_typeref/tk_typeref category=lvalue
+                        operand operand/0: enk_operation
+                        CHILD operand/0
+                          CallOperation enk_operation eok_call LTR=True RTL=False type=tk_pointer/tk_pointer category=prvalue
+                            operand operand/0: enk_routine
+                            CHILD operand/0
+                              ReferenceOperation enk_routine target=select_source targetType=FunctionSymbol type=tk_pointer/tk_pointer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_struct/Aggregate category=prvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_variable
+                CHILD operand/0
+                  OperatorOperation enk_operation eok_indirect LTR=False RTL=False type=tk_struct/Aggregate category=lvalue
+                    operand operand/0: enk_operation
+                    CHILD operand/0
+                      CallOperation enk_operation eok_call LTR=True RTL=False type=tk_pointer/tk_pointer category=prvalue
+                        operand operand/0: enk_routine
+                        CHILD operand/0
+                          ReferenceOperation enk_routine target=select_destination targetType=FunctionSymbol type=tk_pointer/tk_pointer category=prvalue
+                CHILD operand/1
+                  ReferenceOperation enk_variable target= targetType=VariableSymbol type=tk_struct/Aggregate category=prvalue
+    CHILD statement/9
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 2 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=destination targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=first targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/10
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 3 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=destination targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=second targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/11
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 4 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=first targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/12
+      StatementOperation stmk_expr
+        CHILD operand/0
+          OperatorOperation enk_operation eok_assign LTR=False RTL=True type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=lvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 5 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_dot_field LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_variable
+                operand operand/1: enk_field
+                CHILD operand/0
+                  ReferenceOperation enk_variable target=source targetType=VariableSymbol type=tk_struct/Aggregate category=lvalue
+                CHILD operand/1
+                  ReferenceOperation enk_field target=second targetType=FieldSymbol type=tk_integer/tk_integer category=prvalue
+    CHILD statement/13
+      JumpOperation stmk_return jump=return target=
+        CHILD operand/0
+          OperatorOperation enk_operation eok_add LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+            operand operand/0: enk_operation
+            operand operand/1: enk_operation
+            CHILD operand/0
+              OperatorOperation enk_operation eok_add LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_operation
+                CHILD operand/0
+                  OperatorOperation enk_operation eok_add LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                    operand operand/0: enk_operation
+                    operand operand/1: enk_operation
+                    CHILD operand/0
+                      OperatorOperation enk_operation eok_add LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                        operand operand/0: enk_operation
+                        operand operand/1: enk_operation
+                        CHILD operand/0
+                          OperatorOperation enk_operation eok_add LTR=False RTL=False type=tk_integer/tk_integer category=prvalue
+                            operand operand/0: enk_operation
+                            operand operand/1: enk_operation
+                            CHILD operand/0
+                              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+                                operand operand/0: enk_operation
+                                operand operand/1: enk_constant
+                                CHILD operand/0
+                                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                                    operand operand/0: enk_variable
+                                    CHILD operand/0
+                                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                                CHILD operand/1
+                                  ConstantOperation enk_constant value=ck_integer 0 type=tk_integer/tk_integer category=prvalue
+                            CHILD operand/1
+                              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+                                operand operand/0: enk_operation
+                                operand operand/1: enk_constant
+                                CHILD operand/0
+                                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                                    operand operand/0: enk_variable
+                                    CHILD operand/0
+                                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                                CHILD operand/1
+                                  ConstantOperation enk_constant value=ck_integer 1 type=tk_integer/tk_integer category=prvalue
+                        CHILD operand/1
+                          OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+                            operand operand/0: enk_operation
+                            operand operand/1: enk_constant
+                            CHILD operand/0
+                              ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                                operand operand/0: enk_variable
+                                CHILD operand/0
+                                  ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                            CHILD operand/1
+                              ConstantOperation enk_constant value=ck_integer 2 type=tk_integer/tk_integer category=prvalue
+                    CHILD operand/1
+                      OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+                        operand operand/0: enk_operation
+                        operand operand/1: enk_constant
+                        CHILD operand/0
+                          ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                            operand operand/0: enk_variable
+                            CHILD operand/0
+                              ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                        CHILD operand/1
+                          ConstantOperation enk_constant value=ck_integer 3 type=tk_integer/tk_integer category=prvalue
+                CHILD operand/1
+                  OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+                    operand operand/0: enk_operation
+                    operand operand/1: enk_constant
+                    CHILD operand/0
+                      ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                        operand operand/0: enk_variable
+                        CHILD operand/0
+                          ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                    CHILD operand/1
+                      ConstantOperation enk_constant value=ck_integer 4 type=tk_integer/tk_integer category=prvalue
+            CHILD operand/1
+              OperatorOperation enk_operation eok_subscript LTR=True RTL=False type=tk_integer/tk_integer category=prvalue
+                operand operand/0: enk_operation
+                operand operand/1: enk_constant
+                CHILD operand/0
+                  ConversionOperation enk_operation eok_array_to_pointer LTR=False RTL=False type=tk_pointer/tk_pointer category=prvalue
+                    operand operand/0: enk_variable
+                    CHILD operand/0
+                      ReferenceOperation enk_variable target=values targetType=VariableSymbol type=tk_array/tk_array category=lvalue
+                CHILD operand/1
+                  ConstantOperation enk_constant value=ck_integer 5 type=tk_integer/tk_integer category=prvalue
+FUNCTION operator= state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=this_parameter symbol=
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+FUNCTION operator= state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=this_parameter symbol=
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+FUNCTION operator= state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=this_parameter symbol=
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+FUNCTION operator= state=declaration_only defined=False instance=False
+  PARAM  tk_pointer role=this_parameter symbol=
+  PARAM  tk_pointer role=ordinary_parameter symbol=
+TYPE  tk_float floating bits=16 signed= size=2
+TYPE  tk_float floating bits=128 signed= size=16
+TYPE  tk_float floating bits=128 signed= size=16
+TYPE  tk_integer unsigned_integer bits=32 signed=False size=4
+TYPE  tk_integer signed_integer bits=128 signed=True size=16
+TYPE  tk_integer unsigned_integer bits=128 signed=False size=16
+TYPE  tk_float floating bits=16 signed= size=2
+TYPE  tk_float floating bits=16 signed= size=2
+TYPE  tk_integer signed_integer bits=32 signed=True size=4
+TYPE align_val_t tk_integer unsigned_integer bits=64 signed=False size=8
+TYPE  tk_integer unsigned_integer bits=64 signed=False size=8

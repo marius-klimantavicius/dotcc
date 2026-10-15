@@ -7,8 +7,9 @@ scheduling, exact-path Git mutations and this ledger. Root supervises read-only.
 Two `gpt-6.1-sol` xhigh implementers have disjoint ownership:
 
 - `inventory`: the NEW typed planner files
-  `Emission/ExpressionPlan.cs` and `Emission/CSharpEmission.ExpressionPlans.cs`.
-  The completed inventory and semantic assembly files remain stable.
+  `Emission/ExpressionPlan.cs`, `Emission/CSharpEmission.ExpressionPlans.cs`,
+  NEW `Emission/CSharpEmission.Program.cs`, plus sequencing/program fixture
+  and checker paths. Completed inventory/semantic assembly files remain stable.
 - `emission`: existing Emission partials, runtime/host, Projection, T2 fixtures
   and execution drivers. Next target: genuine SysV primitive variadics and
   addressed variadic ABI adapters.
@@ -90,29 +91,6 @@ projects depend only on Generated and Runtime. The relevant T1 regression passes
 all 23 phases at `t2/t1-regression-storage-callbacks/t1-report.json`, also copied
 beside the checkpoint report. See [T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).
 
-Both workers were frozen throughout these receipts, including unhooked planner
-files compiled by the default project glob. The checkpoint includes the typed
-planner and SysV cursor baseline, but neither is integrated or execution-accepted.
-Known planner follow-up: reject partial/different-representation `eok_bassign`
-until its source-size/void-result contract is implemented. Native scalar ABI
-validation still needs explicit hidden-role and natural-alignment guards before
-broader boundaries are enabled. Current evidence is restricted to the genuine C
-scalar/pointer Cdecl fixtures.
-
-Next: release the freeze after this exact-path checkpoint commit; inventory
-worker tightens the unhooked planner and prepares genuine sequencing fixtures
-without changing existing emission. Emitter worker adds the captured-ABI guards,
-then primitive variadic calls/cursors and fixed-prefix incoming native adapters.
-Register exhaustion/interleaving, independent va_copy, borrowed native cursors,
-fixed-prefix occupancy and canonical address identity must pass JIT/NativeAOT.
-After coordinated planner integration, prove effectful ordering, branch-local
-prefixes and aggregate RHS snapshots. Generated multi-unit execution and native
-aggregate-by-value ABI remain open before T2 closure. SQLite T3/T4 has not run.
-
-Genuine fixture objects/native oracles remain under `t2/export`, `t2/native` and
-`t2/assembly-export`. Do not rebuild/re-export unchanged inputs for documentation
-changes. No process is left running by the checkpoint. Preserve all artifacts.
-
 Production CLI native-function bindings now pass the same genuine callback input
 via manifest/translate in a sparse isolated snapshot (`t2/manifest-bindings/verified-snapshot`).
 The final receipt is `acceptance/manifest-bindings/report.json`: nine successful
@@ -121,13 +99,29 @@ exact seven events. Bindings carry explicit provider path/hash and complete
 captured-signature/convention/ownership/error/thread/callback contracts; required
 data/intrinsic providers remain unsupported. See [MANIFEST-BINDINGS.md](MANIFEST-BINDINGS.md).
 
-Current uncommitted T2 progress: direct primitive variadics JIT/AOT1870;
-interleaved/fixed-prefix exhaustion JIT/AOT314; canonical addressed variadic
-fixture JIT/AOT216. Strong physical cursor/native entry/unknown outbound checks
-and reproducible provider/compiler receipts remain pending. Worker1's NEW
-`Emission/CSharpEmission.Program.cs` is ready but unintegrated, reusing accepted
-ProgramAssembly identities; new two-TU C/C++ fixtures await exports/execution.
-The original aggregate sequencing candidate is preserved as a producer/native
-differential: retained explicit comma roots predict248 while GCC observes600;
-initial430 prediction was wrong. A separate explicit named-local snapshot input
-has native248 and public roots; neither has generated acceptance yet.
+Typed planner and canonical Program helpers are compiled baselines, unintegrated
+and unaccepted. Planner now rejects partial/different-representation bassign,
+uses source size and void result, and distinguishes memcpy from value snapshots.
+Hidden native ABI-role and unwrapped natural-alignment guards are present;
+effective typeref admission tightening remains next.
+
+Latest verified checkpoint: primitive varargs final reproduction passes all62
+phases at `t2/variadic-reproduction/t2-variadics-report.json`, copied to
+`acceptance/variadics/report.json`; root accepted its bounded natural-layout scope.
+All four JIT/NativeAOT values1870/314/216/627, physical/native addressed checks and
+full unknown outbound observations pass. Compiler/C/SO/export/publish/dependency
+receipts are complete. Both workers remained fully frozen through attribution.
+
+Immediate next work after checkpoint: emitter applies paired effective/raw
+scalar alignment/size guards, integrates typed planner and canonical Program
+helpers through explicit hooks; inventory worker supports its two planner files
+and NEW Program.cs plus genuine sequencing/multiunit fixtures/checkers. Four
+program-assembly C/C++ candidate sources are ready but not yet exported; all
+sequencing candidate objects/native/public probes are at `t2/sequencing`.
+Preserve `acceptance/semantic-differentials/aggregate.json` and its public trace;
+never force GCC600 over retained roots. No process remains active at checkpoint.
+
+Genuine fixture objects/native oracles remain under `t2/export`, `t2/native`,
+`t2/assembly-export` and `t2/sequencing`. Do not rebuild unchanged inputs solely
+for documentation changes. Preserve all artifacts, including failed/incomplete
+attempts; no cleanup is authorized. T2 remains open and SQLite T3/T4 has not run.

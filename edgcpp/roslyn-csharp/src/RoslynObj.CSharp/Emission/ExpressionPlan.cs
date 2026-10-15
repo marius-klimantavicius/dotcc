@@ -26,6 +26,7 @@ internal sealed record CsPlannedCall(CsType ValueType, CallOperation Operation, 
     IReadOnlyList<CsExpression> Arguments) : CsExpression(ValueType);
 internal sealed record CsTargetShift(CsType ValueType, bool Right, CsExpression Left, CsExpression Count) : CsExpression(ValueType);
 internal sealed record CsTruth(CsExpression Value, CppType SourceType) : CsExpression(CsType.Boolean);
+internal sealed record CsSourceBoolean(CsType ValueType, CsExpression Condition) : CsExpression(ValueType);
 
 internal enum LValueKind { Slot, Address, Field }
 /// <summary>A storage location; a bitfield property has a receiver and no addressable field.</summary>

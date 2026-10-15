@@ -1,0 +1,96 @@
+{
+  "status": "unresolved-producer-native-semantic-differential",
+  "translatorExecutionAccepted": false,
+  "edgAuthoritative": true,
+  "initialSourcePrediction": {
+    "result": 430,
+    "status": "incorrect-discarded"
+  },
+  "retainedRootPrediction": {
+    "result": 248,
+    "values": [
+      7,
+      11,
+      13,
+      17,
+      99,
+      101
+    ],
+    "status": "inference-from-explicit-public-comma-and-assignment-roots-not-stock-generator-execution"
+  },
+  "nativeGccObservation": {
+    "result": 600,
+    "values": [
+      99,
+      101,
+      99,
+      101,
+      99,
+      101
+    ],
+    "events": [
+      1,
+      2,
+      1,
+      2
+    ]
+  },
+  "source": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate.cpp",
+    "sha256": "c26c2d2300333eec9379505082b9cbe3b3883874a2c306914e743d42b8290f47",
+    "bytes": 1400
+  },
+  "object": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate.roslynobj",
+    "sha256": "14ff1cacb1f8deb4f08253574e94a3852f2c5dd92d1f9b72d53e606c1bca1174",
+    "bytes": 731136
+  },
+  "publicTrace": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/semantic-differentials/aggregate-public-trace.txt",
+    "sha256": "a6cd889e27fa4709e10cfc7f0fbf26bef904a77413ff2ee7a00702bda032915c",
+    "bytes": 38373
+  },
+  "publicProbe": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/semantic-differentials/aggregate-public-probe.json",
+    "sha256": "ebc44369d2bfaa535d0e17c2adfaa97862c9929402d832014f741a8e46624627",
+    "bytes": 10009
+  },
+  "nativeRun": {
+    "status": "passed",
+    "command": [
+      "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/native/aggregate-native",
+      "6"
+    ],
+    "workingDirectory": "/home/marius/p/dotcc",
+    "exitCode": 0,
+    "elapsedSeconds": 0.10079336795024574,
+    "sampledPeakProcessTreeRssBytes": 237568,
+    "waitedPeakProcessRssBytes": 17825792,
+    "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+    "budgets": {
+      "timeoutSeconds": 120.0,
+      "memoryBytes": 2147483648,
+      "logBytes": 67108864
+    },
+    "budgetViolation": null,
+    "logs": [
+      {
+        "path": "stdout.txt",
+        "bytes": 129,
+        "sha256": "0f349fae82436754c66df3d33324f902a0ad8d2e6cdfcdd1c63c5d98cff2f561"
+      },
+      {
+        "path": "stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "nativeStdout": "result=600\nevents=4\nevent:0:1\nevent:1:2\nevent:2:1\nevent:3:2\nvalue:0:99\nvalue:1:101\nvalue:2:99\nvalue:3:101\nvalue:4:99\nvalue:5:101\n",
+  "producerInputReceipt": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/input-receipt.json",
+    "sha256": "776b95073c546860b81a86b53b5a4727768d81adc61d61a9a7a59211aa44f3fa",
+    "bytes": 7020
+  },
+  "decision": "Preserve both observations; never reorder retained EDG execution to force GCC600. Independent explicit named-local aggregate-snapshot candidate has native248 but generated execution remains open."
+}
