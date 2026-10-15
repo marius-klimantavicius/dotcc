@@ -1,0 +1,204 @@
+{
+  "workloadVersion": 1,
+  "scope": "Finite expanded successful-SQL matrix for the unchanged 19-feature SQLite configuration. Native typed observations are the oracle; these statements do not supply predicted results or complete API/provider acceptance.",
+  "cases": [
+    {
+      "name": "json-mutation-types-and-trees",
+      "statements": [
+        "SELECT json_insert('{\"a\":1}', '$.a', 9, '$.b', 2) AS inserted,json_replace('{\"a\":1}', '$.a', 7, '$.missing', 8) AS replaced",
+        "SELECT json_set('{\"a\":[1,2]}', '$.a[#]', 3, '$.label', 'x') AS appended",
+        "SELECT json_remove('{\"a\":[1,2,3],\"b\":9}', '$.a[1]', '$.b') AS removed",
+        "SELECT json_patch('{\"a\":1,\"nested\":{\"x\":2,\"y\":3}}', '{\"a\":null,\"nested\":{\"x\":4}}') AS patched",
+        "SELECT json_type('{\"n\":null,\"b\":false,\"s\":\"x\"}', '$.n') AS nullType,json_type('{\"n\":null}', '$.missing') AS missingType,json_extract('{\"n\":null}', '$.n') AS sqlNull",
+        "SELECT '{\"n\":7,\"s\":\"x\"}' -> '$.s' AS jsonText,'{\"n\":7,\"s\":\"x\"}' ->> '$.s' AS scalarText,'{\"n\":7}' ->> '$.n' AS scalarInteger",
+        "SELECT key,type,value,atom,typeof(atom) AS atomStorage FROM json_each('{\"a\":[1,2],\"b\":null,\"c\":false,\"d\":\"x\"}') ORDER BY key",
+        "SELECT fullkey,path,key,type,atom FROM json_tree('{\"a\":[1,{\"b\":true}],\"n\":null,\"s\":\"value\"}') WHERE type NOT IN ('object','array') ORDER BY fullkey",
+        "SELECT json_valid('{broken') AS invalidText,json_valid('{\"a\":}') AS invalidValue,json_valid('{\"a\":1}') AS validText",
+        "SELECT json_valid('{x:1}',2) AS json5,json_valid('{x:1}',1) AS strictJson,json_valid(x'ff',8) AS invalidBinary"
+      ]
+    },
+    {
+      "name": "jsonb-mutation-and-table-values",
+      "statements": [
+        "SELECT typeof(jsonb('{\"a\":[1,2],\"n\":null}')) AS storage,json(jsonb('{\"a\":[1,2],\"n\":null}')) AS roundTrip",
+        "SELECT json(jsonb_set(jsonb('{\"a\":[1,2]}'), '$.a[#]', 3)) AS appended,json(jsonb_insert(jsonb('{\"a\":1}'), '$.b', 2)) AS inserted",
+        "SELECT json(jsonb_replace(jsonb('{\"a\":1,\"b\":2}'), '$.a', 9)) AS replaced,json(jsonb_remove(jsonb('{\"a\":1,\"b\":2}'), '$.b')) AS removed",
+        "SELECT json(jsonb_patch(jsonb('{\"a\":1,\"b\":2}'), jsonb('{\"a\":null,\"c\":[3]}'))) AS patched",
+        "SELECT json_valid(jsonb('{\"x\":[1,2]}'),4) AS superficiallyValid,json_valid(jsonb('{\"x\":[1,2]}'),8) AS deeplyValid",
+        "SELECT key,value,type FROM json_each(jsonb('[1,null,\"text\",true]')) ORDER BY key"
+      ]
+    },
+    {
+      "name": "fts3-porter-tokenization-lifecycle",
+      "statements": [
+        "CREATE VIRTUAL TABLE search3 USING fts3(content,tokenize=porter)",
+        "INSERT INTO search3(docid,content) VALUES(1,'running runner run'),(2,'jumping jumps'),(3,'sqlite engine')",
+        "SELECT docid,content,offsets(search3) AS tokenOffsets,snippet(search3,'[',']','...',-1,8) AS excerpt FROM search3 WHERE search3 MATCH 'run' ORDER BY docid",
+        "SELECT docid,length(matchinfo(search3,'pcx')) AS matchBytes,hex(matchinfo(search3,'pcx')) AS matchDetails FROM search3 WHERE search3 MATCH 'run' ORDER BY docid",
+        "UPDATE search3 SET content='running fast' WHERE docid=2",
+        "SELECT docid,content FROM search3 WHERE search3 MATCH 'run' ORDER BY docid",
+        "DELETE FROM search3 WHERE docid=1",
+        "SELECT docid,snippet(search3,'[',']','...',-1,8) AS excerpt FROM search3 WHERE search3 MATCH 'run' ORDER BY docid"
+      ]
+    },
+    {
+      "name": "fts4-unicode-tokenization-lifecycle",
+      "statements": [
+        "CREATE VIRTUAL TABLE search4 USING fts4(content,tokenize=unicode61)",
+        "INSERT INTO search4(docid,content) VALUES(1,'café au lait'),(2,'cafe sqlite'),(3,'mañana search')",
+        "SELECT docid,content,offsets(search4) AS tokenOffsets,snippet(search4,'[',']','...',-1,8) AS excerpt FROM search4 WHERE search4 MATCH 'cafe' ORDER BY docid",
+        "UPDATE search4 SET content='changed café text' WHERE docid=2",
+        "DELETE FROM search4 WHERE docid=1",
+        "SELECT docid,content FROM search4 WHERE search4 MATCH 'cafe' ORDER BY docid",
+        "INSERT INTO search4(search4) VALUES('rebuild')",
+        "SELECT docid,length(matchinfo(search4,'pcx')) AS matchBytes FROM search4 WHERE search4 MATCH 'cafe' ORDER BY docid"
+      ]
+    },
+    {
+      "name": "fts5-ranking-highlight-and-lifecycle",
+      "statements": [
+        "CREATE VIRTUAL TABLE search5 USING fts5(title,body,tokenize='unicode61 remove_diacritics 2')",
+        "INSERT INTO search5(rowid,title,body) VALUES(1,'SQLite search','small café full text engine'),(2,'Other topic','text search SQLite SQLite'),(3,'Notes','unrelated marker')",
+        "SELECT rowid,bm25(search5) AS score,highlight(search5,0,'[',']') AS title,snippet(search5,1,'[',']','...',8) AS excerpt FROM search5 WHERE search5 MATCH 'sqlite' ORDER BY rowid",
+        "SELECT rowid FROM search5 WHERE search5 MATCH 'NEAR(sqlite search, 3)' ORDER BY rowid",
+        "SELECT rowid FROM search5 WHERE search5 MATCH 'sql*' ORDER BY rowid",
+        "SELECT rowid,highlight(search5,1,'[',']') AS body FROM search5 WHERE search5 MATCH 'cafe' ORDER BY rowid",
+        "UPDATE search5 SET body='changed café text' WHERE rowid=2",
+        "SELECT rowid,bm25(search5) AS score FROM search5 WHERE search5 MATCH 'sqlite' ORDER BY rowid",
+        "DELETE FROM search5 WHERE rowid=1",
+        "INSERT INTO search5(search5) VALUES('optimize')",
+        "SELECT rowid,title,body FROM search5 WHERE search5 MATCH 'cafe' ORDER BY rowid"
+      ]
+    },
+    {
+      "name": "rtree-update-delete-and-intersection",
+      "statements": [
+        "CREATE VIRTUAL TABLE bounds USING rtree(id,minx,maxx,miny,maxy)",
+        "INSERT INTO bounds VALUES(1,0,2,0,2),(2,1,4,1,4),(3,-4,-2,-4,-2)",
+        "SELECT id FROM bounds WHERE minx<=3 AND maxx>=1 AND miny<=3 AND maxy>=1 ORDER BY id",
+        "UPDATE bounds SET minx=10,maxx=12,miny=10,maxy=12 WHERE id=2",
+        "SELECT id FROM bounds WHERE minx<=3 AND maxx>=1 AND miny<=3 AND maxy>=1 ORDER BY id",
+        "DELETE FROM bounds WHERE id=1",
+        "SELECT id,minx,maxx,miny,maxy FROM bounds ORDER BY id",
+        "SELECT rtreecheck('bounds') AS integrity"
+      ]
+    },
+    {
+      "name": "geopoly-update-delete-and-spatial-predicates",
+      "statements": [
+        "CREATE VIRTUAL TABLE polygons USING geopoly(label)",
+        "INSERT INTO polygons(rowid,_shape,label) VALUES(1,'[[0,0],[4,0],[4,4],[0,4],[0,0]]','first'),(2,'[[2,2],[6,2],[6,6],[2,6],[2,2]]','second')",
+        "SELECT rowid,label,abs(geopoly_area(_shape)) AS area,geopoly_contains_point(_shape,1,1) AS containsPoint FROM polygons ORDER BY rowid",
+        "SELECT rowid,label FROM polygons WHERE geopoly_overlap(_shape,'[[1,1],[3,1],[3,3],[1,3],[1,1]]') ORDER BY rowid",
+        "SELECT geopoly_within('[[1,1],[2,1],[2,2],[1,2],[1,1]]','[[0,0],[4,0],[4,4],[0,4],[0,0]]') AS nested,geopoly_overlap('[[0,0],[4,0],[4,4],[0,4],[0,0]]','[[2,2],[6,2],[6,6],[2,6],[2,2]]') AS overlap",
+        "UPDATE polygons SET _shape='[[10,10],[12,10],[12,12],[10,12],[10,10]]',label='moved' WHERE rowid=2",
+        "SELECT rowid,label FROM polygons WHERE geopoly_overlap(_shape,'[[1,1],[3,1],[3,3],[1,3],[1,1]]') ORDER BY rowid",
+        "DELETE FROM polygons WHERE rowid=1",
+        "SELECT rowid,label,json_valid(geopoly_json(_shape)) AS validShape,typeof(geopoly_blob(_shape)) AS shapeStorage,abs(geopoly_area(_shape)) AS area FROM polygons ORDER BY rowid"
+      ]
+    },
+    {
+      "name": "inspection-deterministic-invariants",
+      "statements": [
+        "PRAGMA page_size=4096",
+        "CREATE TABLE inspected(id INTEGER PRIMARY KEY,v TEXT)",
+        "INSERT INTO inspected VALUES(1,'one'),(2,'two'),(3,'three')",
+        "SELECT count(*)>0 AS hasPages,min(pageno)>0 AS positivePages,min(pgsize)=4096 AND max(pgsize)=4096 AS fixedPageSize,sum(ncell)>0 AS hasCells FROM dbstat WHERE name='inspected'",
+        "SELECT pgno,length(data)=4096 AS fixedPageSize,hex(substr(data,1,16)) AS formatHeader FROM sqlite_dbpage WHERE pgno=1",
+        "SELECT count(*)>0 AS hasStatements,min(ncol)>=0 AS nonnegativeColumns,min(ro)>=0 AND max(ro)<=1 AS booleanReadonly,min(busy)>=0 AND max(busy)<=1 AS booleanBusy FROM sqlite_stmt",
+        "SELECT count(*)>0 AS hasBytecode,min(addr)>=0 AS nonnegativeOffsets FROM bytecode('SELECT 40+2')",
+        "SELECT count(*)>0 AS hasVariable FROM bytecode('SELECT ?1') WHERE opcode='Variable'"
+      ]
+    },
+    {
+      "name": "math-values-and-domain-results",
+      "statements": [
+        "SELECT sqrt(9) AS squareRoot,log2(8) AS baseTwo,log10(1000) AS baseTen,round(sin(pi()/2),12) AS sine",
+        "SELECT trunc(-3.75) AS truncated,floor(-3.25) AS floored,ceil(-3.25) AS ceiling,mod(-7,3) AS remainder",
+        "SELECT sqrt(-1) IS NULL AS squareRootDomain,ln(-1) IS NULL AS logDomain,log(0) IS NULL AS zeroLogDomain,acos(2) IS NULL AS acosDomain,pow(-2,0.5) IS NULL AS powerDomain",
+        "SELECT round(degrees(radians(90)),12) AS degrees,round(atan2(1,1),12) AS angle,round(exp(1),12) AS exponential,round(pow(2,10),12) AS power",
+        "SELECT sqlite_compileoption_used('ENABLE_MATH_FUNCTIONS') AS mathEnabled,typeof(sqrt(4)) AS resultStorage"
+      ]
+    },
+    {
+      "name": "sql-schema-metadata-pragmas",
+      "statements": [
+        "PRAGMA foreign_keys=ON",
+        "CREATE TABLE meta(id INTEGER PRIMARY KEY,name TEXT NOT NULL COLLATE NOCASE DEFAULT 'x',price REAL CHECK(price>=0),label TEXT GENERATED ALWAYS AS(name||':'||id) STORED)",
+        "CREATE UNIQUE INDEX meta_name ON meta(name)",
+        "CREATE TABLE meta_child(id INTEGER PRIMARY KEY,parent_id REFERENCES meta(id) ON DELETE SET NULL)",
+        "INSERT INTO meta(id,name,price) VALUES(1,'alpha',2.5),(2,'beta',NULL)",
+        "PRAGMA table_xinfo(meta)",
+        "PRAGMA index_xinfo(meta_name)",
+        "PRAGMA foreign_key_list(meta_child)",
+        "SELECT name,origin,partial FROM pragma_index_list('meta') ORDER BY name",
+        "SELECT id,name,price,label FROM meta ORDER BY id"
+      ]
+    },
+    {
+      "name": "stat4-histogram-invariants-and-results",
+      "statements": [
+        "CREATE TABLE histogram(id INTEGER PRIMARY KEY,k INTEGER,payload TEXT)",
+        "WITH RECURSIVE numbers(v) AS (VALUES(1) UNION ALL SELECT v+1 FROM numbers WHERE v<128) INSERT INTO histogram SELECT v,v%7,printf('row-%03d',v) FROM numbers",
+        "CREATE INDEX histogram_k ON histogram(k,id)",
+        "ANALYZE",
+        "SELECT count(*)>0 AS hasSamples,count(*)<=64 AS boundedSamples,min(length(sample))>0 AS nonemptySamples,min(typeof(sample)='blob') AS binarySamples FROM sqlite_stat4 WHERE tbl='histogram' AND idx='histogram_k'",
+        "SELECT min(CAST(neq AS INTEGER))>0 AS positiveEqualCounts,min(CAST(nlt AS INTEGER))>=0 AS nonnegativeLessCounts,min(CAST(ndlt AS INTEGER))>=0 AS nonnegativeDistinctCounts,max(CAST(nlt AS INTEGER))<(SELECT count(*) FROM histogram) AS boundedLessCounts FROM sqlite_stat4 WHERE tbl='histogram' AND idx='histogram_k'",
+        "SELECT tbl,idx,CAST(stat AS INTEGER)=(SELECT count(*) FROM histogram) AS accurateRowEstimate FROM sqlite_stat1 WHERE tbl='histogram' ORDER BY idx",
+        "SELECT k,count(*) AS rows,sum(id) AS sumIds FROM histogram GROUP BY k ORDER BY k",
+        "SELECT id,payload FROM histogram WHERE k=3 ORDER BY id LIMIT 5"
+      ]
+    },
+    {
+      "name": "constraints-savepoints-and-successful-recovery",
+      "statements": [
+        "PRAGMA foreign_keys=ON",
+        "CREATE TABLE parent(id INTEGER PRIMARY KEY,name TEXT UNIQUE NOT NULL,n INTEGER CHECK(n>=0))",
+        "CREATE TABLE child(id INTEGER PRIMARY KEY,parent_id INTEGER NOT NULL REFERENCES parent(id) ON DELETE CASCADE)",
+        "CREATE TABLE audit(parent_id INTEGER,old_n INTEGER,new_n INTEGER)",
+        "CREATE TRIGGER record_parent_update AFTER UPDATE OF n ON parent BEGIN INSERT INTO audit VALUES(old.id,old.n,new.n); END",
+        "INSERT INTO parent VALUES(1,'alpha',10),(2,'beta',20)",
+        "INSERT INTO child VALUES(1,1)",
+        "INSERT OR IGNORE INTO parent VALUES(1,'ignored',99)",
+        "SELECT changes() AS ignoredPrimaryKey",
+        "INSERT OR IGNORE INTO parent VALUES(3,'gamma',-1)",
+        "SELECT changes() AS ignoredCheck",
+        "BEGIN",
+        "SAVEPOINT outer_case",
+        "UPDATE parent SET n=n+5 WHERE id=1",
+        "SAVEPOINT inner_case",
+        "DELETE FROM parent WHERE id=1",
+        "SELECT (SELECT count(*) FROM parent) AS parents,(SELECT count(*) FROM child) AS children,(SELECT count(*) FROM audit) AS auditRows",
+        "ROLLBACK TO inner_case",
+        "RELEASE inner_case",
+        "SELECT id,name,n FROM parent ORDER BY id",
+        "ROLLBACK TO outer_case",
+        "RELEASE outer_case",
+        "COMMIT",
+        "SELECT (SELECT count(*) FROM child) AS children,(SELECT count(*) FROM audit) AS auditRows",
+        "INSERT INTO parent(id,name,n) VALUES(3,'alpha',99) ON CONFLICT(name) DO UPDATE SET n=excluded.n",
+        "INSERT OR REPLACE INTO child VALUES(1,2)",
+        "SELECT id,name,n FROM parent ORDER BY id",
+        "SELECT id,parent_id FROM child ORDER BY id",
+        "SAVEPOINT recovery",
+        "INSERT INTO parent VALUES(3,'gamma',30)",
+        "ROLLBACK TO recovery",
+        "RELEASE recovery",
+        "INSERT INTO parent VALUES(3,'gamma',30)",
+        "SELECT id,name,n FROM parent ORDER BY id",
+        "SELECT parent_id,old_n,new_n FROM audit ORDER BY parent_id,old_n,new_n",
+        "PRAGMA foreign_key_check",
+        "PRAGMA integrity_check"
+      ]
+    }
+  ],
+  "remainingT4Areas": [
+    "SQL-only observations do not complete callback/tokenizer interfaces or broader ownership/destructor/error APIs",
+    "carray bindings, normalized-SQL API and snapshot lifecycle require separate API workloads",
+    "RBU staged update and completion remain a separate API slice",
+    "threading, shared-cache and unlock-notify callback/concurrency cases remain separate",
+    "controlled allocation/I/O failure and recovery are not replaced by successful SQL conflict policies",
+    "broader provider ABI/error/thread/lifetime and NativeAOT coverage remains separate",
+    "full upstream suites, broader SQL programs and remaining configured behavior are not implied by this finite matrix"
+  ]
+}

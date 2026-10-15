@@ -170,3 +170,19 @@ or establish every native provider contract. The generated process
 records loaded native library hashes and rejects a loaded native SQLite library.
 The shared workload's remaining T4 areas stay open, including persistence/WAL,
 concurrency, sessions/RBU, fault recovery, and broader API/destructor behavior.
+
+
+The test harness also accepts a fifth argument for `sql-smoke` only:
+`SQL_ADMISSION_JSON`, after the separate native observation path. Admission
+version 1 pins `workloadSha256`, `caseCount` and `statementCount`; all must match
+the executed input. This explicit mode records its admission file identity and
+uses `passed-generated-admitted-sql-matrix`. The original three/four-argument
+mode retains the pinned five-case/43-statement workload and result status.
+The separate native report must match the selected workload and exact typed
+observations in either mode. This is test tooling, not generated application
+behavior or an acceptance claim by itself.
+
+`SqliteSurfaceValidator` is an optional project property selecting the exact
+validator path recorded by the reused API receipt. It defaults to this project's
+`SurfaceValidator.py`. Frozen copies must retain the actual provenance path;
+changing validator paths silently is rejected by API verification.

@@ -239,7 +239,7 @@ internal static unsafe class GeneratedSqliteChecks
         if (empty.Rows.Count != 1 || !empty.Rows[0].SequenceEqual(expectedEmpty)) throw new InvalidOperationException("Empty bound text/blob values changed storage class.");
         return [new("bound-values-reset-clear", [first, cleared, empty])];
     }
-    private static List<CaseObservation> SqlSmoke(JsonElement workload)
+    private static List<CaseObservation> SqlSmoke(JsonElement workload, int expectedCases, int expectedStatements)
     {
         var result = new List<CaseObservation>();
         var statements = 0;
@@ -255,18 +255,36 @@ internal static unsafe class GeneratedSqliteChecks
                 ++statements;
             }
         }
-        if (result.Count != 5 || statements != 43) throw new InvalidOperationException("The accepted five-case/43-statement workload was changed or reduced.");
+        if (result.Count != expectedCases || statements != expectedStatements)
+            throw new InvalidOperationException("The admitted SQL workload was changed or reduced.");
         return result;
     }
     private static int Main(string[] args)
     {
-        if (args.Length is not (3 or 4) || args[0] is not ("bind-smoke" or "sql-smoke"))
-            throw new ArgumentException("SqliteGenerated bind-smoke|sql-smoke WORKLOAD_JSON NEW_REPORT [SEPARATE_NATIVE_OBSERVATIONS]");
+        if (args.Length is not (3 or 4 or 5) || args[0] is not ("bind-smoke" or "sql-smoke") ||
+            (args.Length == 5 && args[0] != "sql-smoke"))
+            throw new ArgumentException("SqliteGenerated bind-smoke|sql-smoke WORKLOAD_JSON NEW_REPORT [SEPARATE_NATIVE_OBSERVATIONS [SQL_ADMISSION_JSON]]");
         var reportPath = Path.GetFullPath(args[2]);
         if (File.Exists(reportPath)) throw new ArgumentException("Use a fresh execution report path.");
         var workloadReceipt = Receipt(args[1]);
-        if (workloadReceipt["sha256"]!.GetValue<string>() != WorkloadSha256)
-            throw new ArgumentException("The accepted 43-statement workload identity changed.");
+        var expectedWorkload = WorkloadSha256;
+        var expectedCases = 5;
+        var expectedStatements = 43;
+        if (args.Length == 5)
+        {
+            using var admission = JsonDocument.Parse(File.ReadAllText(args[4]));
+            var selected = admission.RootElement;
+            if (selected.GetProperty("admissionVersion").GetInt32() != 1)
+                throw new ArgumentException("Unsupported SQL admission version.");
+            expectedWorkload = selected.GetProperty("workloadSha256").GetString()!;
+            expectedCases = selected.GetProperty("caseCount").GetInt32();
+            expectedStatements = selected.GetProperty("statementCount").GetInt32();
+            if (expectedWorkload.Length != 64 || !expectedWorkload.All(char.IsAsciiHexDigitLower) ||
+                expectedCases <= 0 || expectedStatements < expectedCases)
+                throw new ArgumentException("SQL admission must pin a SHA256 and positive case/statement counts.");
+        }
+        if (workloadReceipt["sha256"]!.GetValue<string>() != expectedWorkload)
+            throw new ArgumentException("The admitted SQL workload identity changed.");
         using var workload = JsonDocument.Parse(File.ReadAllText(args[1]));
         if (workload.RootElement.GetProperty("workloadVersion").GetInt32() != 1) throw new ArgumentException("Unsupported workload version.");
         var report = new JsonObject
@@ -275,21 +293,22 @@ internal static unsafe class GeneratedSqliteChecks
             ["nativeApplicationFallbackPermitted"] = false, ["mode"] = args[0], ["workload"] = workloadReceipt,
             ["remainingT4Areas"] = JsonNode.Parse(workload.RootElement.GetProperty("remainingT4Areas").GetRawText())
         };
+        if (args.Length == 5) report["sqlAdmission"] = Receipt(args[4]);
         try
         {
             var version = Api.sqlite3_libversion_number();
             report["sqliteVersion"] = Text(Api.sqlite3_libversion());
             report["sqliteVersionNumber"] = version;
             if (version != 3054000) throw new InvalidOperationException("Expected the pinned generated SQLite3.54.0 application.");
-            var cases = args[0] == "bind-smoke" ? BindSmoke() : SqlSmoke(workload.RootElement);
+            var cases = args[0] == "bind-smoke" ? BindSmoke() : SqlSmoke(workload.RootElement, expectedCases, expectedStatements);
             report["cases"] = CaseNodes(cases);
-            if (args.Length == 4)
+            if (args.Length >= 4)
             {
                 var oracle = JsonNode.Parse(File.ReadAllText(args[3]))!;
                 if (oracle["role"]?.GetValue<string>() != "separate-native-test-oracle-only" ||
                     oracle["status"]?.GetValue<string>() != "passed-native-oracle-only" ||
                     oracle["sqliteVersionNumber"]?.GetValue<int>() != 3054000 ||
-                    oracle["workload"]?["sha256"]?.GetValue<string>() != WorkloadSha256 ||
+                    oracle["workload"]?["sha256"]?.GetValue<string>() != expectedWorkload ||
                     !JsonNode.DeepEquals(report["cases"], oracle["cases"]))
                     throw new InvalidOperationException("Typed generated observations differ from the separate native oracle.");
                 report["nativeComparison"] = "exact-typed-cases-equal";
@@ -303,7 +322,8 @@ internal static unsafe class GeneratedSqliteChecks
             var libraries = new JsonArray();
             foreach (var path in paths) libraries.Add((JsonNode)Receipt(path));
             report["loadedLibraries"] = libraries;
-            report["status"] = args[0] == "bind-smoke" ? "passed-generated-bind-smoke" : "passed-generated-initial-43-statement-smoke";
+            report["status"] = args[0] == "bind-smoke" ? "passed-generated-bind-smoke" :
+                args.Length == 5 ? "passed-generated-admitted-sql-matrix" : "passed-generated-initial-43-statement-smoke";
             Console.WriteLine(new JsonObject { ["status"] = report["status"]!.GetValue<string>(), ["cases"] = cases.Count,
                 ["statements"] = cases.Sum(item => item.Statements.Count) }.ToJsonString());
             return 0;

@@ -1,0 +1,7 @@
+{
+  "admissionVersion": 1,
+  "scope": "Expanded configured SQL feature matrix, distinct from initial 43-statement proof",
+  "workloadSha256": "2abaf5bcd0d933561d251747c4cc1658f79014fb16a6ddf41d164af9e9a46b99",
+  "caseCount": 12,
+  "statementCount": 129
+}

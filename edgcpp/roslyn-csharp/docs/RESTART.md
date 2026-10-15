@@ -2,6 +2,65 @@
 
 Updated 2026-10-15. Approved plan commit: `e40280bea`.
 
+Current prior committed checkpoint: `4ae336d95`; prior stateful checkpoint
+`bc5682b5c`. T0/T1/T2 fixture gates and T3 full production SQLite publication and
+first JIT/NativeAOT execution are closed. T4 is active; broader C++ and scale
+remain later plan milestones. No user pause is pending.
+
+The immutable production output is
+`/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1`.
+Its actual CLI completion/report and JIT/NativeAOT proof are pinned in
+`acceptance/sqlite/production-audit.json` and `generated-production-report.json`.
+All 4,212 bodies/486 records emit; source builds and executes the enabled library
+with no native SQLite application library in generated processes. Runtime and
+product implementation used for this proof remain immutable snapshot 11.
+
+Accepted T4 slices:
+
+- `acceptance/sqlite/stateful-report.json`: all 15 measured phases, native/JIT/AOT
+  40-action snapshot/BUSY/rollback/checkpoint/persistence; both closed-file
+  interchange directions for each runtime, 13 append / 5 verify actions.
+- `acceptance/sqlite/api-callbacks-report.json`: all five phases, exact native
+  destructor/preupdate/session/conflict/backup observations under JIT/AOT,
+  resources released and no callback error. AOT explicitly pins clang 18.
+
+Current work: coordinator added a compatibility-preserving synchronous
+TranslationPhase observer overload; product snapshot 12 builds. The frozen
+`tests/SqliteRestart/run-restart.py` campaign is RUNNING at
+`t4/restart-reproduction-1`: SDK/build and both small genuine phase cancellations
+pass; full unchanged SQLite BeforePublication cancellation is running, followed
+by a new-process restart from the identical request. It verifies staged marker
+cleanup, retained incomplete staging, unchanged prior publication and direct
+four-file deterministic comparison. This is recomputation from input, not
+partial-stage reuse. Do not edit SqliteRestart files or immutable product/runtime
+snapshots until its receipt closes. Runtime project stays snapshot 11.
+
+Ownership: coordinator owns Git and all serialized builds/exports; root reviews
+read-only. Emission worker owns NEW SqliteFeatureMatrix SQL workload/docs.
+Inventory worker owns NEW SqliteExtendedApis fixture/validator/docs for available
+carray/normalization/column metadata and extended-error recovery. Its public
+availability audit confirms snapshot and all 14 RBU API definitions actually
+exist; their finite lifecycle/staged-update workloads remain next. Workers do
+not build/run/export or mutate Git.
+
+The expanded configured SQL matrix now passes native/JIT/AOT, all 12 cases /
+129 statements; compact receipt is `acceptance/sqlite/sql-features-report.json`.
+Its six phases include original 43-statement JIT compatibility. Native maintenance
+snapshot/RBU oracle passes at `t4/native-maintenance-1/native-maintenance.json`;
+generated counterpart remains in progress.
+
+Remaining T4: snapshot/carray/normalize and
+metadata APIs; RBU; cross-process locking/shared-cache/unlock-notify and tokenizer
+interfaces; controlled allocation/I/O errors and recovery; wider provider/error
+contracts; full SQLite readability and restart/repeat evidence. Keep each row
+explicit; no finite slice closes the entire matrix.
+
+Preserve all artifacts and failed/incomplete attempts. Never modify EDG core,
+re-export/reduce pinned SQLite, consult dotobj campaigns or stage unrelated files.
+No new full inventory is needed absent semantic-dependency changes.
+
+## Earlier checkpoint history
+
 Earlier checkpoint `59d06b51d` uses exact snapshot 4 product files.
 Subsequent immutable source snapshots 6–9, build receipts and fixtures are under
 `/mnt/storage/roslynobj-csharp-20261015/t3/value-storage`.
@@ -60,8 +119,6 @@ and address-view fixes are frozen pending integration. Full SQLite pass 6 is run
 budget, report `t3/emission-diagnostics-6-report.json`, candidate
 `t3/sqlite-emission-6-candidate`. Its immediate next stage is attributable compile. Root supervises read-only. Preserve all failed attempts
 and immutable snapshots. No new full T0 inventory is needed.
-
-## Earlier checkpoint history
 
 The coordinator owns shared contracts, integration, serialized build/export
 scheduling, exact-path Git mutations and this ledger. Root supervises read-only.

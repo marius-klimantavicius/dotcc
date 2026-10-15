@@ -1,0 +1,632 @@
+{
+  "gate": "T4-expanded-configured-SQL-features",
+  "status": "passed",
+  "t4Complete": false,
+  "sourceCheckpoint": "4ae336d95",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/source-snapshot.json",
+    "sha256": "20f6607caa148096902a87f533d242158362eab95c82c4fd2b0e3d06088c7c7d",
+    "bytes": 782
+  },
+  "sourceFreezeVerified": true,
+  "workload": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/sql-features.json",
+    "sha256": "2abaf5bcd0d933561d251747c4cc1658f79014fb16a6ddf41d164af9e9a46b99",
+    "bytes": 14205
+  },
+  "admission": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/admission.json",
+    "sha256": "29764cfc0e6fec70194cbb19eeaf1a98523e19e2c895f08e0de03154b9cffe24",
+    "bytes": 255
+  },
+  "nativeOracleBuild": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json",
+    "sha256": "c5d7e700950971126a1f6aa735fc205850d9563bca482b815715ed1353feb435",
+    "bytes": 2906
+  },
+  "nativeReference": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-result-1/report.json",
+    "sha256": "2f016c241789dde0794d3d3921a8e13be1ace0e8e80ecd4b63f639013cbdb075",
+    "bytes": 74038
+  },
+  "productionCompletion": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+    "sha256": "2380b6aeab39408c31a2a0e6a4975910e50076e4123e211724630a251c16d476",
+    "bytes": 1159
+  },
+  "apiSurface": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+    "sha256": "150a45222a957c3f50ee23b13feadae374091b6e8caf1f67f57e1c3a1ce4b09a",
+    "bytes": 114581
+  },
+  "nativeAotCompilerAndLinker": {
+    "path": "/usr/lib/llvm-18/bin/clang",
+    "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8",
+    "bytes": 136504
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49",
+    "bytes": 5505
+  },
+  "phases": [
+    {
+      "name": "sql-features-native-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-run-1/run.json",
+        "sha256": "803e4f5d0916bd7579394b97c14950f0d9eb683b315e7ebaa9675fc16da3d26a",
+        "bytes": 1221
+      },
+      "status": "passed",
+      "command": [
+        "python3",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-1/run-native-sql.py",
+        "--build-receipt",
+        "edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-1/sql-features.json",
+        "--output",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-result-1/report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052482201717794,
+      "sampledPeakProcessTreeRssBytes": 380928,
+      "waitedPeakProcessRssBytes": 27455488,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 1073741824,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 72,
+          "sha256": "78ba8ff78f78751b86d62454df514de4e54ce3ffcda8f81ec77b9b008808444d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "sql-features-build-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-build-2/run.json",
+        "sha256": "dc6b5e0f870adeb11f9fce2f55bd42bdeb0051e14d2bc5494a498eb6357f0d9d",
+        "bytes": 1795
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/SqliteGenerated.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/Generated.csproj",
+        "-p:CandidateReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+        "-p:SqliteApiAliases=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/CapturedAliases.cs",
+        "-p:SqliteApiReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+        "-p:SqliteSurfaceValidator=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/harness-source/edgcpp/roslyn-csharp/tests/SqliteGenerated/SurfaceValidator.py",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-2"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 26.797076593968086,
+      "sampledPeakProcessTreeRssBytes": 2776100864,
+      "waitedPeakProcessRssBytes": 2417152000,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 600.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 150360,
+          "sha256": "8c0d7f228f61101ed3f7851a46c30cf830d62391ed0a9787961e3f4f47a75834"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "sql-features-jit-run-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-run-2/run.json",
+        "sha256": "5f46e42484d8020efd9fecfebd2417a45a10fc20e9aba04cce5e9ece3d634879",
+        "bytes": 1284
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-2/SqliteGenerated.dll",
+        "sql-smoke",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/sql-features.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-result-2/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-result-1/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/admission.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.6025141999125481,
+      "sampledPeakProcessTreeRssBytes": 155766784,
+      "waitedPeakProcessRssBytes": 169091072,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 78,
+          "sha256": "f64e4b83de7540c0147af1187b2a703a562d8345d7f4b785f6aebad0fe2de738"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "sql-features-initial-mode-regression-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-initial-mode-regression-2/run.json",
+        "sha256": "a4dc621bc7767a3b5b282bd8ef2373280333d4705c11bb5e189a0f70b5d8962a",
+        "bytes": 1285
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-2/SqliteGenerated.dll",
+        "sql-smoke",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/harness-source/edgcpp/roslyn-csharp/acceptance/sqlite/sql-smoke.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-initial-mode-result-2/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/native-sql-smoke.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.6033050410915166,
+      "sampledPeakProcessTreeRssBytes": 155590656,
+      "waitedPeakProcessRssBytes": 169680896,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 83,
+          "sha256": "11f63e28ec29731277641ce5f29ec239f8a16bd2a924300a4b98dda60679048b"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "sql-features-publish-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-publish-2/run.json",
+        "sha256": "9c316e1b1a391c5f45a0350b1de4f38af1be472f0673f3ef6780e69dbf1d19ca",
+        "bytes": 1942
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/SqliteGenerated.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/Generated.csproj",
+        "-p:CandidateReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+        "-p:SqliteApiAliases=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/CapturedAliases.cs",
+        "-p:SqliteApiReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+        "-p:SqliteSurfaceValidator=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/harness-source/edgcpp/roslyn-csharp/tests/SqliteGenerated/SurfaceValidator.py",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-aot-2"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 72.30384347005747,
+      "sampledPeakProcessTreeRssBytes": 3347726336,
+      "waitedPeakProcessRssBytes": 2993623040,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 600.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 75901,
+          "sha256": "c8d943be890b7bcf13c5bcfb1ed75219c31fe8a3e11be34a10b005a9af329453"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "sql-features-aot-run-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-aot-run-2/run.json",
+        "sha256": "d2ac03c7a891e0f15afffe14d4192e9e7c4c16880b9c1c7b5d97d022dfd80e1b",
+        "bytes": 1262
+      },
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-aot-2/SqliteGenerated",
+        "sql-smoke",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/sql-features.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-aot-result-2/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-result-1/report.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-source-2/admission.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10050322895403951,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 20447232,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 78,
+          "sha256": "f64e4b83de7540c0147af1187b2a703a562d8345d7f4b785f6aebad0fe2de738"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "runtime": "jit",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-result-2/report.json",
+        "sha256": "aa987ce02d9f51e3be8525f49bdabcd79d55761477dba8d4417b82834b321480",
+        "bytes": 77876
+      },
+      "nativeReference": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-result-1/report.json",
+        "sha256": "2f016c241789dde0794d3d3921a8e13be1ace0e8e80ecd4b63f639013cbdb075",
+        "bytes": 74038
+      },
+      "nativeComparison": "exact-typed-cases-equal",
+      "caseCount": 12,
+      "statementCount": 129,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-jit-2/libRoslynObj.Generated.Abi.so",
+          "bytes": 726648,
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea"
+        },
+        {
+          "path": "/usr/lib/dotnet/host/fxr/10.0.12/libhostfxr.so",
+          "bytes": 324272,
+          "sha256": "c8be9947baebf37e77ded4d82d069f403d362b9416a5e8502e9f66d948f5d52a"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Native.so",
+          "bytes": 99072,
+          "sha256": "def7465ab890653112d7d8bd48613f3bc33851d24b56b01c2ef2476ea3a3b3d4"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Security.Cryptography.Native.OpenSsl.so",
+          "bytes": 154632,
+          "sha256": "cc24903c414acdc9a6bb273c01a3c132ff3e95f211d09543836cd34329fd7896"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libclrjit.so",
+          "bytes": 3313648,
+          "sha256": "2e1c701758638976d642351c50dbf26a88d7f18853848964824cbe3312a034a5"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclr.so",
+          "bytes": 7222960,
+          "sha256": "b5845ca190a41c502a96df196ea603b38d4893a022964fb55598ba6d07861f19"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclrtraceptprovider.so",
+          "bytes": 634192,
+          "sha256": "738750a901bc137ac74f5277c402a13a9b3bf94e690de03706abcba025d83244"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libhostpolicy.so",
+          "bytes": 317504,
+          "sha256": "f59d12f0ae4fcb81be43fcf4470b0bc02f53b2f06767aa54d76e98303a0de6b1"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "bytes": 236616,
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "bytes": 2129424,
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "bytes": 5309400,
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "bytes": 183024,
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "bytes": 30795392,
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "bytes": 3455304,
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "bytes": 2140336,
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-common.so.1.0.0",
+          "bytes": 47800,
+          "sha256": "28c3025315634619a7d278fff9e5bfa85ef85a58db8a52ce3ecf0054093fe0be"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-tracepoint.so.1.0.0",
+          "bytes": 51568,
+          "sha256": "c5a75aea47fbfa1380e75fad869a00e225a947bbfa99edc6c62c2241959e1eb8"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust.so.1.0.0",
+          "bytes": 500568,
+          "sha256": "3dda3aff8ce04c7a1d5f1c5f20bd725d63e686a2042ee4834d8c25cde288f27b"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "bytes": 202904,
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "bytes": 952616,
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0",
+          "bytes": 52248,
+          "sha256": "02d7582c5d391e460e56aa67a414360e3183b968206645b9123f9dc7bff5d009"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "bytes": 696512,
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "bytes": 2592224,
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8.0.1",
+          "bytes": 67672,
+          "sha256": "70a88c376a1aced719ca7bdcd5cdd6c5d3bdce44b99f5ab2037fdad096bbf03d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1",
+          "bytes": 63776,
+          "sha256": "28e77a498f2f17f8cb883c91303f9901343ea0d8e34959d138dd462fcc9b201f"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "bytes": 129256,
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547"
+        }
+      ]
+    },
+    {
+      "runtime": "aot",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-aot-result-2/report.json",
+        "sha256": "241a4b7f0cbb2666bff8191cba8a2a8522b46b7f9686bb7aef6f7aed68ff314c",
+        "bytes": 75123
+      },
+      "nativeReference": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-native-result-1/report.json",
+        "sha256": "2f016c241789dde0794d3d3921a8e13be1ace0e8e80ecd4b63f639013cbdb075",
+        "bytes": 74038
+      },
+      "nativeComparison": "exact-typed-cases-equal",
+      "caseCount": 12,
+      "statementCount": 129,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-aot-2/libRoslynObj.Generated.Abi.so",
+          "bytes": 726648,
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "bytes": 236616,
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "bytes": 2129424,
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "bytes": 5309400,
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "bytes": 183024,
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "bytes": 30795392,
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "bytes": 3455304,
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "bytes": 2140336,
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "bytes": 952616,
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "bytes": 696512,
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "bytes": 2592224,
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "bytes": 129256,
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547"
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "json-mutation-types-and-trees",
+      "statements": 10
+    },
+    {
+      "name": "jsonb-mutation-and-table-values",
+      "statements": 6
+    },
+    {
+      "name": "fts3-porter-tokenization-lifecycle",
+      "statements": 8
+    },
+    {
+      "name": "fts4-unicode-tokenization-lifecycle",
+      "statements": 8
+    },
+    {
+      "name": "fts5-ranking-highlight-and-lifecycle",
+      "statements": 11
+    },
+    {
+      "name": "rtree-update-delete-and-intersection",
+      "statements": 8
+    },
+    {
+      "name": "geopoly-update-delete-and-spatial-predicates",
+      "statements": 9
+    },
+    {
+      "name": "inspection-deterministic-invariants",
+      "statements": 8
+    },
+    {
+      "name": "math-values-and-domain-results",
+      "statements": 5
+    },
+    {
+      "name": "sql-schema-metadata-pragmas",
+      "statements": 10
+    },
+    {
+      "name": "stat4-histogram-invariants-and-results",
+      "statements": 9
+    },
+    {
+      "name": "constraints-savepoints-and-successful-recovery",
+      "statements": 37
+    }
+  ],
+  "caseCount": 12,
+  "statementCount": 129,
+  "initialModeRegression": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-initial-mode-result-2/report.json",
+      "sha256": "8a6979b4f8141ccb4c5d6041dc6944f4cfe9716cdb4069e29a20fd5c4b9d8526",
+      "bytes": 21397
+    },
+    "caseCount": 5,
+    "statementCount": 43,
+    "nativeComparison": "exact-typed-cases-equal"
+  },
+  "preservedAttempt": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sql-features-build-1/run.json",
+      "sha256": "d7d7b439c0f95c62dc255d28742d934880fc24dcb0dade69d5c4d75a4d8eff90",
+      "bytes": 1790
+    },
+    "reason": "Frozen shared project expected adjacent validator absent in selected minimal snapshot. Optional SqliteSurfaceValidator property now defaults to previous path and permits exact already-recorded production validator; fresh build succeeds. No translator/application changes."
+  },
+  "remaining": [
+    "Carray/normalized-SQL/column-metadata/extended errors API slice in progress",
+    "Snapshot lifecycle and RBU staged update/save/reopen/completion slice in progress",
+    "Concurrent processes, shared-cache/unlock-notify, fixture tokenizer callback interface",
+    "Controlled allocation/I/O failure cleanup/recovery and selected provider contracts",
+    "Full-input restart/determinism evidence running and representative SQLite readability review"
+  ]
+}
