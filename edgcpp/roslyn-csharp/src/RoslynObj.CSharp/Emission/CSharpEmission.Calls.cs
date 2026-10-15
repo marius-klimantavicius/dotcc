@@ -20,7 +20,7 @@ public sealed partial class CSharpEmitter
         private readonly Dictionary<RoutineType, string> indirectCalls = [];
 
         private string Owner => $"global::{options.NamespaceName}.{options.ClassName}";
-        private string OwnedName(SemanticEntity entity) => Owner + "." + names[entity];
+        private string OwnedName(SemanticEntity entity) => Owner + "." + names[CanonicalEntity(entity)];
 
         private string InternalName(string proposed)
         {
@@ -58,7 +58,7 @@ public sealed partial class CSharpEmitter
             if (raw.Kind.Name == "tk_void" && allowVoid) return;
             if (raw is PointerType)
             {
-                if (raw.Size != 8 || raw.Alignment != 8)
+                if (type.Size != 8 || type.Alignment != 8 || raw.Size != 8 || raw.Alignment != 8)
                     throw Limit("Native pointers require the captured natural 8-byte scalar representation.", "native-abi");
                 _ = TypeName(type);
                 return;
@@ -70,12 +70,13 @@ public sealed partial class CSharpEmitter
                 "long" or "ulong" or "double" => 8,
                 _ => throw Limit("The scalar native representation is unsupported.", "native-abi")
             };
-            if (raw.Size != size || raw.Alignment != size)
+            if (type.Size != size || type.Alignment != size || raw.Size != size || raw.Alignment != size)
                 throw Limit("Native arithmetic scalars require their captured natural size and alignment.", "native-abi");
         }
 
         private void RequireCallable(FunctionSymbol function)
         {
+            function = CanonicalFunction(function);
             if (functions.Contains(function) || nativeImports.Any(i => i.Function.Equals(function))) return;
             var linkageName = function.GnuSupplement?.AssemblyName ?? function.CurrentName;
             var bindings = options.ExternalFunctions.Where(b => b.LinkageName == linkageName).ToArray();
@@ -95,6 +96,7 @@ public sealed partial class CSharpEmitter
 
         private string FunctionAddress(FunctionSymbol function)
         {
+            function = CanonicalFunction(function);
             var existing = functionAddresses.FirstOrDefault(a => a.Function.Equals(function));
             if (existing is not null) return Owner + "." + existing.Field;
             RequireCallable(function);
@@ -128,11 +130,15 @@ public sealed partial class CSharpEmitter
             var arguments = string.Join(", ", argumentValues);
             if (call.Callee is ReferenceOperation { Target: FunctionSymbol callee })
             {
-                if (call.TargetMethod is { } selected && !selected.Equals(callee))
+                callee = CanonicalFunction(callee);
+                if (call.TargetMethod is { } selected && !CanonicalFunction(selected).Equals(callee))
                     throw Limit("Selected call target and actual routine operand need an explicit adapter.", "call");
                 RequireCallable(callee);
                 if (callee.Signature.IsVariadic) return VariadicCall(callee.Signature, callee, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues);
-                return $"{OwnedName(callee)}({arguments})";
+                if (callee.Signature.Parameters.Count != call.Arguments.Count)
+                    throw Limit("A selected fixed call needs explicit parameter adaptation.", "call");
+                arguments = string.Join(", ", argumentValues.Select((value, i) => ProgramArgumentView(call.Arguments[i].Value.Type, callee.Signature.Parameters[i].Type, value)));
+                return ProgramResultView(callee.ReturnType, call.Type, $"{OwnedName(callee)}({arguments})");
             }
             var type = Unwrap(call.Call.FunctionType ?? call.Callee.Type);
             if (type is PointerType pointer) type = Unwrap(pointer.PointeeType);
@@ -150,7 +156,8 @@ public sealed partial class CSharpEmitter
                 indirectCalls.Add(signature, helper = InternalName($"__Invoke_{indirectCalls.Count + 1}"));
             var addressExpression = call.Callee is OperatorOperation { OperatorKind.Name: "eok_indirect" } indirect
                 ? Expression(indirect.Operands[0]) : Expression(call.Callee);
-            return $"{Owner}.{helper}({addressExpression}{(arguments.Length == 0 ? "" : ", " + arguments)})";
+            arguments = string.Join(", ", argumentValues.Select((value, i) => ProgramArgumentView(call.Arguments[i].Value.Type, signature.Parameters[i].Type, value)));
+            return ProgramResultView(signature.ReturnType, call.Type, $"{Owner}.{helper}({addressExpression}{(arguments.Length == 0 ? "" : ", " + arguments)})");
         }
 
         private string FunctionPointerType(RoutineType signature) => "delegate* unmanaged[Cdecl]<" +
@@ -166,6 +173,7 @@ public sealed partial class CSharpEmitter
 
         private bool SameScalar(CppType left, CppType right)
         {
+            if (TryProgramPointerRepresentation(left, right, out var pointerCompatible)) return pointerCompatible;
             left = Unwrap(left);
             right = Unwrap(right);
             return TypeName(left) == TypeName(right) && left.Size == right.Size && left.Alignment == right.Alignment &&
@@ -222,7 +230,10 @@ public sealed partial class CSharpEmitter
                 foreach (var address in functionAddresses.Where(a => a.Wrapper is not null && SameRepresentation(a.Function.Signature, signature)))
                 {
                     methods.Append("        if (address == ").Append(Owner).Append('.').Append(address.Field).AppendLine(")").AppendLine("        {");
-                    methods.Append("            ").Append(resultType == "void" ? "" : "return ").Append(OwnedName(address.Function)).Append('(').Append(arguments).AppendLine(");");
+                    var selectedSignature = address.Function.Signature;
+                    var selectedArguments = string.Join(", ", signature.Parameters.Select((p, i) => ProgramArgumentView(p.Type, selectedSignature.Parameters[i].Type, $"argument{i}")));
+                    var selectedCall = ProgramResultView(address.Function.ReturnType, signature.ReturnType, $"{OwnedName(address.Function)}({selectedArguments})");
+                    methods.Append("            ").Append(resultType == "void" ? "" : "return ").Append(selectedCall).AppendLine(";");
                     if (resultType == "void") methods.AppendLine("            return;");
                     methods.AppendLine("        }");
                 }

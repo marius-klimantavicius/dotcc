@@ -99,29 +99,46 @@ exact seven events. Bindings carry explicit provider path/hash and complete
 captured-signature/convention/ownership/error/thread/callback contracts; required
 data/intrinsic providers remain unsupported. See [MANIFEST-BINDINGS.md](MANIFEST-BINDINGS.md).
 
-Typed planner and canonical Program helpers are compiled baselines, unintegrated
-and unaccepted. Planner now rejects partial/different-representation bassign,
-uses source size and void result, and distinguishes memcpy from value snapshots.
-Hidden native ABI-role and unwrapped natural-alignment guards are present;
-effective typeref admission tightening remains next.
+Typed sequencing now passes its frozen 54-outcome receipt at
+`t2/sequencing-reproduction/t2-sequencing-report.json`, copied to
+`acceptance/sequencing/report.json`. All four native/JIT/NativeAOT results
+41/15/18/248 and every event/value match, each generated checker twice. The
+effective typeref 4/16 versus unwrapped 4/4 fixture rejects before output.
+Root accepted this bounded gate; ordinary callback regression passes 751 and
+seven exact events. See [T2-SEQUENCING.md](T2-SEQUENCING.md).
 
-Latest verified checkpoint: primitive varargs final reproduction passes all62
-phases at `t2/variadic-reproduction/t2-variadics-report.json`, copied to
-`acceptance/variadics/report.json`; root accepted its bounded natural-layout scope.
-All four JIT/NativeAOT values1870/314/216/627, physical/native addressed checks and
-full unknown outbound observations pass. Compiler/C/SO/export/publish/dependency
-receipts are complete. Both workers remained fully frozen through attribution.
+Two-unit direct and production CLI execution now pass the frozen 51-outcome
+receipt at `t2/program-reproduction-2/t2-program-report.json`, copied to
+`acceptance/program/report.json`. C 1150/all ten observations and C++ 1212/all
+eight match native in direct and CLI JIT/NativeAOT checkers, twice each. Exact
+canonical allocation/address selection, deterministic emission, completion
+hashes, budget rejection and dependencies pass. First `program-reproduction`
+remains incomplete from a harness artifact-path assumption, corrected without
+semantic changes. Root accepted this bounded self-contained scalar/pointer
+slice. See [T2-PROGRAM.md](T2-PROGRAM.md).
 
-Immediate next work after checkpoint: emitter applies paired effective/raw
-scalar alignment/size guards, integrates typed planner and canonical Program
-helpers through explicit hooks; inventory worker supports its two planner files
-and NEW Program.cs plus genuine sequencing/multiunit fixtures/checkers. Four
-program-assembly C/C++ candidate sources are ready but not yet exported; all
-sequencing candidate objects/native/public probes are at `t2/sequencing`.
-Preserve `acceptance/semantic-differentials/aggregate.json` and its public trace;
-never force GCC600 over retained roots. No process remains active at checkpoint.
+Primitive variadic evidence remains `acceptance/variadics/report.json` (62 phases,
+1870/314/216/627 plus physical/native entry and complete outbound observations).
+The formerly pending effective/raw guard is now implemented and exercised by
+the rejection above. No additional full T0 inventory repeat was needed.
+
+Both workers were completely frozen through the integration receipts. After
+this checkpoint, release the freeze: emitter owns pure native aggregate ABI
+mirrors/wrappers and new aggregate fixtures; inventory worker owns narrow typed
+planner readability changes (Boolean literal seeds, discarded stable-local
+increments) and their relevant sequencing validation. Runtime has not changed
+since the primitive varargs checkpoint. Aggregate fixtures are prepared under
+`tests/Fixtures/T2/aggregate-abi`, but require frozen exports/public role/layout
+inspection before implementation and genuine JIT/NativeAOT proof. Packing/unions
+and each ordinary shape remain separately gated. See [T2-REMAINING.md](T2-REMAINING.md).
+
+Preserve the original aggregate producer/native differential at
+`acceptance/semantic-differentials/aggregate.json` and its exact public trace:
+retained roots predict 248, GCC observes 600; initial 430 prediction was wrong.
+Never force GCC's result over retained execution. The separate explicit named
+snapshot is the accepted 248 input. No process remains active at checkpoint.
 
 Genuine fixture objects/native oracles remain under `t2/export`, `t2/native`,
-`t2/assembly-export` and `t2/sequencing`. Do not rebuild unchanged inputs solely
-for documentation changes. Preserve all artifacts, including failed/incomplete
-attempts; no cleanup is authorized. T2 remains open and SQLite T3/T4 has not run.
+`t2/assembly-export`, `t2/sequencing` and `t2/program-execution`. Preserve all
+artifacts, including failed/incomplete attempts; no cleanup is authorized.
+T2 remains open for native aggregate boundary/readability; SQLite T3/T4 has not run.

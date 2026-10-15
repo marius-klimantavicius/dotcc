@@ -8,7 +8,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | --- | --- | --- | --- |
 | T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | In progress | [Bounded assembly selection](T2-ASSEMBLY.md) passes 16 genuine inputs; [storage/callback slice](T2-STORAGE-CALLBACKS.md) passes 46 phases; [primitive variadics](T2-VARIADICS.md) passes62 phases in JIT/NativeAOT | Integrated multi-unit emitted execution, effectful sequencing, aggregate native ABI and complete provider contracts |
+| T2 | In progress | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md) and [two-unit CLI execution](T2-PROGRAM.md) pass their bounded receipts | Native aggregate boundary and source readability; broader provider contracts remain T3 work |
 | T3 | Not implemented | Existing full-feature object is input evidence only | Complete SQLite emission, imports/providers, first SQL in JIT and NativeAOT |
 | T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
@@ -67,8 +67,8 @@ bootstrap outputs are retained separately and are not the final milestone.
 | Structured control flow | Exercised | For/while/if/return; switch/goto remain unsupported |
 | Concrete C++ instantiations | Exercised | Four EDG-selected signed/unsigned instances; no generic/type/overload reanalysis |
 | Other scalar operators | Implemented, partly unexercised | Shifts, logical operators and do-loops need their own activation before coverage claims |
-| T2 storage/calls | Partly exercised | Single-TU stable globals, arrays/strings, aggregate copies, nonvolatile bitfields, canonical function addresses and scalar/pointer native callbacks pass the separate T2 receipt; TLS, dynamic initialization, hidden/native aggregate ABI, variadics and generated multi-unit execution remain open |
-| Broader scalar/C++ forms | Unsupported or unexercised | Basic floating representation code compiles but has no acceptance claim; extended values, reference adaptation, cleanup/EH, inheritance, richer initialization and effectful recorded right-to-left sequencing remain open |
+| T2 storage/calls | Partly exercised | Single-TU stable globals, arrays/strings, aggregate copies, nonvolatile bitfields, canonical function addresses and scalar/pointer native callbacks pass the separate T2 receipt; Primitive variadics and bounded self-contained two-unit execution now pass separate receipts; TLS, dynamic initialization and hidden/native aggregate ABI remain open |
+| Broader scalar/C++ forms | Unsupported or unexercised | Primitive double behavior and selected effectful sequencing are exercised by later fixtures; full floating/extended values, reference adaptation, cleanup/EH, inheritance and richer initialization remain open |
 
 ## T0 focused evidence and open work
 
@@ -100,7 +100,7 @@ results are 147423/45/751 for storage/copy/callback fixtures. The separate
 [T1 regression](../acceptance/storage-callbacks/t1-regression.json) passes all
 23 phases after these emitter/runtime changes. At that checkpoint typed expression planning and
 SysV cursors were compiled baselines; subsequent primitive variadic acceptance is
-recorded below. Typed effect planning remains unintegrated/unaccepted. T2 remains open; see the explicit limits in
+recorded below. Later sequencing/program receipts establish their bounded integration. T2 remains open; see the explicit limits in
 [T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).
 
 The separate pinned native SQLite oracle passes 43 SQL statements across core
@@ -120,7 +120,15 @@ and the complete SQLite import audit remain open.
 [Primitive variadics](T2-VARIADICS.md) now pass62 phases: direct1870,
 interleaved314, addressed216 and unknown outbound627 match native in JIT and
 NativeAOT. Physical cursor/native borrowed entry/canonical identity and all ten
-outbound value pairs are exercised. Effective typeref alignment guard tightening
-remains pending before broader alias acceptance. Typed effect planning and
-multi-unit emitter integration remain unaccepted; the original aggregate fixture
+outbound value pairs are exercised. The subsequently exercised effective/raw typeref guard rejects unsupported
+alignment. Typed effect planning and bounded multi-unit execution pass the later
+receipts below; the original aggregate fixture
 is preserved as an explicit producer/native differential, not forced to GCC.
+
+[Typed sequencing](T2-SEQUENCING.md) passes 54 expected outcomes with exact
+41/15/18/248 native/JIT/NativeAOT traces and exercised effective-alignment
+rejection. [Two-unit execution and production CLI](T2-PROGRAM.md) pass 51 expected
+outcomes, C 1150 and C++ 1212 with complete observations in direct/CLI JIT/AOT.
+Canonical selected identities, one shared external allocation, separate internal
+names and address identity are exercised. Native aggregate boundary and narrowed
+readability improvements remain T2 work; later unsupported forms remain explicit.

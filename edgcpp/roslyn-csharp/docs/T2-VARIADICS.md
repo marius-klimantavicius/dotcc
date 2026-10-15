@@ -1,7 +1,7 @@
 # Primitive SysV variadic execution
 
 T2 remains open. [The immutable receipt](../acceptance/variadics/report.json)
-passes all62 phases from a complete freeze of50 implementation inputs. SHA256:
+passes all 62 phases from a complete freeze of 50 implementation inputs. SHA256:
 `32976461fe72821a2cdc560188315477df2d31d0d1b8c4867e9e2bc9e6e761b2`.
 Artifacts are under `/mnt/storage/roslynobj-csharp-20261015/t2/variadic-reproduction`.
 
@@ -9,8 +9,8 @@ Artifacts are under `/mnt/storage/roslynobj-csharp-20261015/t2/variadic-reproduc
 | --- | --- | --- |
 | variadics | 1870 | Promoted integer/double/pointer tails, GP/SSE overflow, nested forwarding and independent va_copy cursors |
 | interleaved | 314 | Independent interleaved GP/SSE exhaustion; fixed prefix consumes six GP/eight SSE registers plus two named stack slots; discarded pointer va_arg advances cursor |
-| addressed | 216 | Canonical entry address/echo/managed dispatch, native borrowed va_list reentry returning55/120, identity1; actual generated/runtime cursor size24, alignment8 and offsets0/4/8/16 |
-| outbound | 627 | Unknown native indirect and explicit direct variadic provider calls; all ten integer11..20/double10.5..19.5 observations match after register/overflow exhaustion |
+| addressed | 216 | Canonical entry address/echo/managed dispatch, native borrowed va_list reentry returning 55/120, identity 1; actual generated/runtime cursor size 24, alignment 8 and offsets 0/4/8/16 |
+| outbound | 627 | Unknown native indirect and explicit direct variadic provider calls; all ten integer 11..20/double 10.5..19.5 observations match after register/overflow exhaustion |
 
 Application bodies stay ordinary translated C#. Concrete helper packs use the
 already-selected promoted argument types and pinned SysV GP/SSE/overflow storage;
@@ -54,8 +54,8 @@ Typed planning and ProgramAssembly emitter helpers compile but are still
 unintegrated in this checkpoint. Genuine sequencing inputs/native traces are
 ready; the original aggregate candidate is preserved as an unresolved
 [semantic differential](../acceptance/semantic-differentials/aggregate.json),
-including its exact public trace. Retained roots predict248 while GCC observes600;
-the initial430 source prediction was wrong. This is not classified as translator
+including its exact public trace. Retained roots predict 248 while GCC observes 600;
+the initial 430 source prediction was wrong. This is not classified as translator
 success or failure from GCC alone. A separate explicit named-local snapshot input
-has native248 and awaits generated execution. Generated multi-unit execution and
+has native 248 and awaits generated execution. Generated multi-unit execution and
 native aggregate-by-value ABI likewise remain open.

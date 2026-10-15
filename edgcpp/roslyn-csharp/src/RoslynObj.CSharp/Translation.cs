@@ -19,12 +19,14 @@ public sealed partial class Translator
             var report = inventory.ProgramReport with { Diagnostics = diagnostics.ToArray() };
             return inventory with { Status = TranslationStatus.Failed, Diagnostics = report.Diagnostics, ProgramReport = report };
         }
-        if (inventory.ProgramReport.Inputs.Count != 1)
-            return Failure("ROC1203", "Multi-unit representation and binding are inventoried but have no accepted emission implementation.");
+        if (inventory.ProgramReport.Inputs.Count > 2 || inventory.ProgramReport.Inputs.Count > request.Budgets.MaximumOpenUnits)
+            return Failure("ROC1203", "Emission admits at most two units within the explicit simultaneous open-unit budget.");
         if (request.Roots.Exports.Length != 0)
             return Failure("ROC1205", "Explicit native export wrappers require an accepted export ABI implementation.");
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
-        foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required))
+        // Multi-unit execution is initially self-contained. Only ProgramAssembly
+        // may fulfill its cross-unit declarations; no name-based import filtering.
+        foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required && inventory.ProgramReport.Inputs.Count == 1))
         {
             var binding = request.Runtime.Bindings.SingleOrDefault(binding =>
                 binding.Kind == import.Kind && binding.LinkageName == import.LinkageName);
@@ -40,6 +42,7 @@ public sealed partial class Translator
         if (string.IsNullOrWhiteSpace(request.Output.Directory) || System.IO.Directory.Exists(request.Output.Directory)
             || File.Exists(request.Output.Directory))
             return Failure("ROC1500", "Translation output must be a new directory so existing artifacts cannot be overwritten.");
+        var openedInputs = new List<RoslynObject>();
         try
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -50,19 +53,28 @@ public sealed partial class Translator
                     || !HashFile(binding.LibraryPath!, cancellationToken).Equals(binding.LibrarySha256, StringComparison.OrdinalIgnoreCase))
                     return Failure("ROC1301", $"Native provider for '{binding.LinkageName}' differs from its pinned absolute file/hash contract.");
             }
-            var input = inventory.ProgramReport.Inputs[0];
-            if (HashFile(input.Path, cancellationToken) != input.Sha256)
-                return Failure("ROC1002", "Input bytes changed after admission.");
-            using var obj = RoslynObject.Open(input.Path, new ReadOptions
+            foreach (var input in inventory.ProgramReport.Inputs)
             {
-                CachedRowCount = request.Budgets.ReaderCachedRows, CachedPageCount = request.Budgets.ReaderCachedPages,
-                PageSize = request.Budgets.ReaderPageSize
-            });
-            var emission = new CSharpEmitter().Emit([obj], new()
+                cancellationToken.ThrowIfCancellationRequested();
+                if (HashFile(input.Path, cancellationToken) != input.Sha256)
+                    return Failure("ROC1002", "Input bytes changed after admission.");
+                openedInputs.Add(RoslynObject.Open(input.Path, new ReadOptions
+                {
+                    CachedRowCount = request.Budgets.ReaderCachedRows, CachedPageCount = request.Budgets.ReaderCachedPages,
+                    PageSize = request.Budgets.ReaderPageSize
+                }));
+            }
+            var emission = new CSharpEmitter().Emit(openedInputs, new()
             {
                 NamespaceName = request.Output.NamespaceName, ClassName = request.Output.ClassName,
                 Executable = request.Roots.Mode == "executable", EntryPointName = request.Roots.EntryPoint,
-                RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings
+                RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings,
+                ProgramAssembly = openedInputs.Count == 1 ? null : new ProgramAssemblyOptions
+                {
+                    MaximumOpenUnits = request.Budgets.MaximumOpenUnits,
+                    DeduplicateIdenticalArtifacts = request.Link.DeduplicateIdenticalArtifacts,
+                    InputSha256 = inventory.ProgramReport.Inputs.Select(input => input.Sha256).ToArray()
+                }
             });
             diagnostics.AddRange(emission.Diagnostics);
             if (diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
@@ -127,8 +139,8 @@ public sealed partial class Translator
                 }
             }
             return new(TranslationStatus.TranslationComplete, completed.Diagnostics, generated, completed,
-                new(watch.Elapsed.TotalSeconds, peak, inventory.Metrics.ReaderCommands + obj.Statistics.Commands,
-                    inventory.Metrics.ReaderRowsRead + obj.Statistics.RowsRead));
+                new(watch.Elapsed.TotalSeconds, peak, inventory.Metrics.ReaderCommands + openedInputs.Sum(obj => obj.Statistics.Commands),
+                    inventory.Metrics.ReaderRowsRead + openedInputs.Sum(obj => obj.Statistics.RowsRead)));
         }
         catch (OperationCanceledException)
         {
@@ -137,5 +149,9 @@ public sealed partial class Translator
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException)
         { return Failure("ROC1502", exception.Message); }
+        finally
+        {
+            foreach (var obj in openedInputs) obj.Dispose();
+        }
     }
 }

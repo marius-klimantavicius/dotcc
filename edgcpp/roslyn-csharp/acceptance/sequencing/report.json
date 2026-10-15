@@ -1,0 +1,2598 @@
+{
+  "gate": "T2-partial-typed-sequencing",
+  "status": "passed-partial-contracts",
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10068450402468443,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 54788096,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 9,
+          "sha256": "754d4ec29eaf73ed9f365df0dcc770212d046e7629c4d89ba54da43163a8c24d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1005029579391703,
+      "sampledPeakProcessTreeRssBytes": 290816,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "gcc-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055658093187958,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "39553616934606f58b27c04bed0cdbbe5b00c92c831a9aaadebd7ceda61d1334"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "gpp-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/Projection.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.5039002780104056,
+      "sampledPeakProcessTreeRssBytes": 187850752,
+      "waitedPeakProcessRssBytes": 184418304,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 494,
+          "sha256": "55fa5bae5f5ee777a579d0090b4235e745a297c5cbd1ff6f8ff3fcaf484edb7a"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build-projection",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "-c",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/native-oracle.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/oracle.o"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055120103061199,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 20971520,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build-native-oracle",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/branches.c",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/oracle.o",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/branches"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1005835309624672,
+      "sampledPeakProcessTreeRssBytes": 151552,
+      "waitedPeakProcessRssBytes": 21495808,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-native-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/branches",
+        "1"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10049989307299256,
+      "sampledPeakProcessTreeRssBytes": 114688,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 264,
+          "sha256": "dd215ceae9ee281f8aa1dae77bfbbf5fd412dd46c558509d9309aa0dba089599"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-native-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/branches.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20075000007636845,
+      "sampledPeakProcessTreeRssBytes": 74424320,
+      "waitedPeakProcessRssBytes": 76546048,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 34587,
+          "sha256": "88accf273d5d7e34f5ff1c44ed6c06217e611f1623d7ab6f85c0bf431bb6d079"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-public-operations",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect-storage",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/branches.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.2008513230830431,
+      "sampledPeakProcessTreeRssBytes": 74387456,
+      "waitedPeakProcessRssBytes": 73138176,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 524,
+          "sha256": "fb258757e4b4e4067089b5503c08c1baeb2afc67851eca777cea5a4eb2e16a75"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-public-storage",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/branches.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-generated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.30103273992426693,
+      "sampledPeakProcessTreeRssBytes": 77193216,
+      "waitedPeakProcessRssBytes": 76546048,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "365339a6540f764516d79ea69d2a5df260cd284852180c8733af163fde8eea56"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/branches.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-repeated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.3010247549973428,
+      "sampledPeakProcessTreeRssBytes": 77484032,
+      "waitedPeakProcessRssBytes": 76021760,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "365339a6540f764516d79ea69d2a5df260cd284852180c8733af163fde8eea56"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-repeat-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-generated/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.6044041579589248,
+      "sampledPeakProcessTreeRssBytes": 196362240,
+      "waitedPeakProcessRssBytes": 191897600,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 767,
+          "sha256": "73796b370101ad4ab4358f8923b7c80c70efecb1a011db16c245a75b5a6f65aa"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-checker-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-checker/GeneratedChecks.dll",
+        "branches"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10059050505515188,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 30146560,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 264,
+          "sha256": "dd215ceae9ee281f8aa1dae77bfbbf5fd412dd46c558509d9309aa0dba089599"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-checker-jit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-generated/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 4.0095970899565145,
+      "sampledPeakProcessTreeRssBytes": 209416192,
+      "waitedPeakProcessRssBytes": 204709888,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 952,
+          "sha256": "7fa1b04f1610f19e1e57c769990888d7b09e10ebab89aa3cfbf77bf71678d6aa"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-checker-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-nativeaot/GeneratedChecks",
+        "branches"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055976593866944,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 264,
+          "sha256": "dd215ceae9ee281f8aa1dae77bfbbf5fd412dd46c558509d9309aa0dba089599"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-checker-aot",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-nativeaot/GeneratedChecks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10050645505543798,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "35b4874de8124fc870098e760814b9b82aab67120a42c9d6d45f325919270524"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "branches-aot-dependencies",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/places.cpp",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/oracle.o",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/places"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.100472800899297,
+      "sampledPeakProcessTreeRssBytes": 102400,
+      "waitedPeakProcessRssBytes": 24903680,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-native-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/places",
+        "11"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10054976702667773,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 288,
+          "sha256": "93c639f8362d4fd5b4ba2de368c90e8fb652c9faa4d79d861326f94fd8cf0fb1"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-native-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/places.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.3010497319046408,
+      "sampledPeakProcessTreeRssBytes": 76935168,
+      "waitedPeakProcessRssBytes": 75759616,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 47974,
+          "sha256": "7d7e10d54f95af69aabe2292d758ac650eaf9f9d2a449a1afe84481d558446cc"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-public-operations",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect-storage",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/places.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20088615908753127,
+      "sampledPeakProcessTreeRssBytes": 74248192,
+      "waitedPeakProcessRssBytes": 73924608,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 938,
+          "sha256": "7564e98084a905520372bbf3b21b0768b6acdb103d7269c7fc3565d998bb95b0"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-public-storage",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/places.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-generated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.30103872099425644,
+      "sampledPeakProcessTreeRssBytes": 77758464,
+      "waitedPeakProcessRssBytes": 76283904,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "849781b2f986c899f40b473d5b65dcbb61b26fc4d08aa62618b2ec65618202af"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/places.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-repeated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.3010677659185603,
+      "sampledPeakProcessTreeRssBytes": 77631488,
+      "waitedPeakProcessRssBytes": 76283904,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "849781b2f986c899f40b473d5b65dcbb61b26fc4d08aa62618b2ec65618202af"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-repeat-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-generated/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.7046809039311484,
+      "sampledPeakProcessTreeRssBytes": 197791744,
+      "waitedPeakProcessRssBytes": 191488000,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 839,
+          "sha256": "e71ff12f0fb985156fc9cc7f58a0da84b6131493b8cc9c3265f9d09812946112"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-checker-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-checker/GeneratedChecks.dll",
+        "places"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10062078200280666,
+      "sampledPeakProcessTreeRssBytes": 28672,
+      "waitedPeakProcessRssBytes": 29884416,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 288,
+          "sha256": "93c639f8362d4fd5b4ba2de368c90e8fb652c9faa4d79d861326f94fd8cf0fb1"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-checker-jit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-generated/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 4.211294826003723,
+      "sampledPeakProcessTreeRssBytes": 206852096,
+      "waitedPeakProcessRssBytes": 200073216,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 946,
+          "sha256": "8359e39f86cd8ed8efe137e5bbdac89c0efff62da3960282b021dcafe8dab8ca"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-checker-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-nativeaot/GeneratedChecks",
+        "places"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10050206701271236,
+      "sampledPeakProcessTreeRssBytes": 86016,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 288,
+          "sha256": "93c639f8362d4fd5b4ba2de368c90e8fb652c9faa4d79d861326f94fd8cf0fb1"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-checker-aot",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-nativeaot/GeneratedChecks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10056640894617885,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "5b1758a9da87b354c2f37e007a5a66156e39c79a24147a17471aa567a5c84217"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "places-aot-dependencies",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/callee.cpp",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/oracle.o",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/callee"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10047799104359001,
+      "sampledPeakProcessTreeRssBytes": 102400,
+      "waitedPeakProcessRssBytes": 23592960,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-native-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/callee",
+        "1"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10042300599161536,
+      "sampledPeakProcessTreeRssBytes": 90112,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 89,
+          "sha256": "56b3975b3cb12e0ae1426c87761cc44cfceac810c41b6161de753fc28fb8bb31"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-native-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/callee.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.2008453010348603,
+      "sampledPeakProcessTreeRssBytes": 74403840,
+      "waitedPeakProcessRssBytes": 76021760,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 15053,
+          "sha256": "3d7d4a465355b85c9f98cd1ad2800be97ad5442a532226b26d0557dab181359c"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-public-operations",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect-storage",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/callee.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20075154199730605,
+      "sampledPeakProcessTreeRssBytes": 74428416,
+      "waitedPeakProcessRssBytes": 74186752,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 553,
+          "sha256": "4618a7a8067efdfe51c202c825d94bf53bf82d03707121d2d35abb7e6887d005"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-public-storage",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/callee.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-generated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20080444298218936,
+      "sampledPeakProcessTreeRssBytes": 74420224,
+      "waitedPeakProcessRssBytes": 75235328,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "43540310cff16dd262ad49cb2deefe186d08c903a5c77dc925ae5c56c4710649"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/callee.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-repeated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20079534500837326,
+      "sampledPeakProcessTreeRssBytes": 74276864,
+      "waitedPeakProcessRssBytes": 76283904,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "43540310cff16dd262ad49cb2deefe186d08c903a5c77dc925ae5c56c4710649"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-repeat-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-generated/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.6043297920841724,
+      "sampledPeakProcessTreeRssBytes": 198221824,
+      "waitedPeakProcessRssBytes": 192864256,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 839,
+          "sha256": "2fac9d9672b9939201af96d32e3401ef1ee75d812edce4c8a788f481f05270b3"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-checker-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-checker/GeneratedChecks.dll",
+        "callee"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1006125760031864,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 29622272,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 89,
+          "sha256": "56b3975b3cb12e0ae1426c87761cc44cfceac810c41b6161de753fc28fb8bb31"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-checker-jit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-generated/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 4.308678527944721,
+      "sampledPeakProcessTreeRssBytes": 207417344,
+      "waitedPeakProcessRssBytes": 201723904,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 946,
+          "sha256": "fef0a109d3643db62d0a7c4de545ca2fd9d2906b0e7bf67f7e313ac1b9119e0d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-checker-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-nativeaot/GeneratedChecks",
+        "callee"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10042126197367907,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 89,
+          "sha256": "56b3975b3cb12e0ae1426c87761cc44cfceac810c41b6161de753fc28fb8bb31"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-checker-aot",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-nativeaot/GeneratedChecks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10061903903260827,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "65f3c9a016407b715835d2cf85b210c31bc7195648763058648fc4997266eba3"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "callee-aot-dependencies",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate-snapshot.cpp",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/oracle.o",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/aggregate-snapshot"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1005193799501285,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 23855104,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-native-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/aggregate-snapshot",
+        "6"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10038299998268485,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 126,
+          "sha256": "7bf2340906f1c6792766ead7fcc94f38c7e15a473ae55744b25ccbcb9efaf368"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-native-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate-snapshot.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20081631594803184,
+      "sampledPeakProcessTreeRssBytes": 74424320,
+      "waitedPeakProcessRssBytes": 74711040,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 39374,
+          "sha256": "19cc5fa1f8ea4d49d6dcc7a927fec95f2799661e9ca44fa727e06a0f1d1ea3b4"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-public-operations",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect-storage",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate-snapshot.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20071378001011908,
+      "sampledPeakProcessTreeRssBytes": 74395648,
+      "waitedPeakProcessRssBytes": 74448896,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 940,
+          "sha256": "c948624ba2c84ba0173988f8671d61b060f04bb209040ac7a0d695eb10659197"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-public-storage",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate-snapshot.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-generated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.3010227100457996,
+      "sampledPeakProcessTreeRssBytes": 77557760,
+      "waitedPeakProcessRssBytes": 76021760,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "50487db04cf4d2c53af6d96f96a1185cceb9ac4509483b5360df76ecec6f2ab2"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate-snapshot.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-repeated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.30105205497238785,
+      "sampledPeakProcessTreeRssBytes": 77529088,
+      "waitedPeakProcessRssBytes": 76808192,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "50487db04cf4d2c53af6d96f96a1185cceb9ac4509483b5360df76ecec6f2ab2"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-repeat-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-generated/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.6039509490365162,
+      "sampledPeakProcessTreeRssBytes": 198209536,
+      "waitedPeakProcessRssBytes": 192225280,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 887,
+          "sha256": "2aff2b5da80fed24fb93d6003b875ac9fd6130615641b8d37915907963e9507a"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-checker-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-checker/GeneratedChecks.dll",
+        "aggregate-snapshot"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10065849404782057,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 30146560,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 126,
+          "sha256": "7bf2340906f1c6792766ead7fcc94f38c7e15a473ae55744b25ccbcb9efaf368"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-checker-jit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Sequencing/GeneratedChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-generated/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 4.008274057996459,
+      "sampledPeakProcessTreeRssBytes": 207921152,
+      "waitedPeakProcessRssBytes": 204746752,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 982,
+          "sha256": "3557cc5061768f76f8612b46cee09a389bea874bac49dd16037071cee7a01708"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-checker-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-nativeaot/GeneratedChecks",
+        "aggregate-snapshot"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10051320702768862,
+      "sampledPeakProcessTreeRssBytes": 57344,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 126,
+          "sha256": "7bf2340906f1c6792766ead7fcc94f38c7e15a473ae55744b25ccbcb9efaf368"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-checker-aot",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-nativeaot/GeneratedChecks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055479605216533,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "9ac3b31c9ed756c544cc4b3875301c8c0b5b2c0cef191cc2be080d3aca811810"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-snapshot-aot-dependencies",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "-std=c++20",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate.cpp",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/oracle.o",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/aggregate-excluded"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10044252197258174,
+      "sampledPeakProcessTreeRssBytes": 94208,
+      "waitedPeakProcessRssBytes": 23068672,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-excluded-native-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/aggregate-excluded",
+        "6"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10044631001073867,
+      "sampledPeakProcessTreeRssBytes": 90112,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 129,
+          "sha256": "0f349fae82436754c66df3d33324f902a0ad8d2e6cdfcdd1c63c5d98cff2f561"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-excluded-native-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.2007873000111431,
+      "sampledPeakProcessTreeRssBytes": 74289152,
+      "waitedPeakProcessRssBytes": 75235328,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 38373,
+          "sha256": "a6cd889e27fa4709e10cfc7f0fbf26bef904a77413ff2ee7a00702bda032915c"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aggregate-excluded-public-operations",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "verify-abi-rejection",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/export/over-aligned-variadic.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.2008518629008904,
+      "sampledPeakProcessTreeRssBytes": 74358784,
+      "waitedPeakProcessRssBytes": 77594624,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 281,
+          "sha256": "cf6bd48cc2fe6b435afe415ba62965778045e3594e2c02c480073a564eabf4a8"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "over-aligned-public-facts",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "failed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/export/over-aligned-variadic.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/must-not-publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 1,
+      "elapsedSeconds": 0.20088818098884076,
+      "sampledPeakProcessTreeRssBytes": 74510336,
+      "waitedPeakProcessRssBytes": 76021760,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 244,
+          "sha256": "8cdb60cc3d79973c6eb333998220c8c350105d408bd405aa1b195adfc97e6233"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "over-aligned-rejection",
+      "expectedExitCode": 1
+    }
+  ],
+  "nativeApplicationFallback": false,
+  "producerSha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+  "implementation": [
+    {
+      "path": "Directory.Build.props",
+      "sha256": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/AbiCompatibility.cs",
+      "sha256": "b9f3a80ceb96125cb58c0c744b4786599f58b7b8fbb3f7792f999e3ea1a4eab2"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Contracts.cs",
+      "sha256": "cdc3a0aded03d04ffd09837b70cfdebd2c3ee845740454a008ac8ebb319fbf96"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Calls.cs",
+      "sha256": "edcbb3d6014ee969014b8cd171a612add53f60805635e5c38a3d0007c27f2133"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.ExpressionPlans.cs",
+      "sha256": "819c04ff06039944ca6b9eef710dad190b38b601f7e7bfcaa15649bad8668f49"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Floating.cs",
+      "sha256": "890b3f5b3ec6362a4c32a824003a2cd968ea590c3e0343a442be8fc03454eead"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.NativeAbi.cs",
+      "sha256": "d62c4eb7cadc8a848aa4a44d6b4169f7af77d3267c975d01e805bc2c3469f4a1"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Occurrences.cs",
+      "sha256": "563558d4d19321cc423411d3909d490a5304e38c23fb8c1f735dee206bdb8268"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Program.cs",
+      "sha256": "dce60bdaa75d91078712a0fed8f5370495bc11dc5f548ad1a0c8abd7294921a1"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs",
+      "sha256": "e751f14d0abb8af4487159f4fe20231aa3032e1d6f3da3640713dc96defe057c"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Variadics.cs",
+      "sha256": "8233ef4a21c8a942ef2e6b59cd19ee90ed9f0afd6953d8f6d2ecd535c18a5fa0"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.cs",
+      "sha256": "bd92629d4dd11b0522d8b5666ff47b5b7e1fbc0b8974399ac13b44b96540f458"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/ExpressionPlan.cs",
+      "sha256": "8a917c8d107a981530c35b256ee4908198b44a12583ac7d9e083ef81d89d5a41"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Inventory.cs",
+      "sha256": "d6cd37026ac4013f1c95ffb620f6a0ab622fd3b10dd8037de574de37210314a4"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramAssembler.cs",
+      "sha256": "9ad0f09b4dbe1959dcab5f74835a2f340a9834fca2c134253002cfef3f604fa3"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramAssembly.cs",
+      "sha256": "1249c8690302b3ce9418adb229634bccf39a5aaced16e24f4d3a8ae2ebc824fd"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramManifest.cs",
+      "sha256": "01a6f48dddc4f68fe0270efc7f708a59163c77b4a70443096f9c94fdd4192568"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/RoslynObj.CSharp.csproj",
+      "sha256": "03e03192a4b03f0e5ab94844bf1f7fbfa0939da71052f9c7bd859e6f411bb514"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Translation.cs",
+      "sha256": "f3118fc51f86711fbd45d8613b6561453559b043ee4fe8bb0e991ff460799a12"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Translator.cs",
+      "sha256": "441d3a9ea2168dfcfbe3fdb99f2196384cf9e0ef2b13e301758a08757faabb12"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Cli/Program.cs",
+      "sha256": "d1aa89174ce10b1b06edc320d09d7dda540c8466cd2af433767e2465fc9be548"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+      "sha256": "37ba0980a83d81fc6b250c87ba8f1e84a48109d270d3e7bd8ed260e16de8239f"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+      "sha256": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/SysVVariadic.cs",
+      "sha256": "a89af15ca238f49ad746aaed3d7e8cd188f1de31a194293a78a3ef327c60f132"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetArithmetic.Assignments.cs",
+      "sha256": "b8d5276f437769f7e1ce73e7e201d88e97ed4becdc98e503113dcf2d675d736e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs",
+      "sha256": "3ce3d29eaa1df00564ce104e2341664bb3515d9adf9189526cb661b97cbb6e2a"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetStorage.cs",
+      "sha256": "5cb2fe3ea3dd235812bc8b5a40becf9efc7f358db06df75c8514f29482dd01f8"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime.Host/HostProvider.cs",
+      "sha256": "76bff695e02196e234486456b35f039366180640a9594b1158e48520f016d73e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime.Host/RoslynObj.CSharp.Runtime.Host.csproj",
+      "sha256": "dc4f060e407ffe0f101d831afa7cb3d22a87f62d1822253a4fd243c7135e9c2a"
+    },
+    {
+      "path": "tests/Assembly/Assembly.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Assembly/Program.cs",
+      "sha256": "c21d379abf5c8781696ac6eab346728f1fcf3b95aa4a38a048b0250364ad502f"
+    },
+    {
+      "path": "tests/Callbacks/Callbacks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/Callbacks/Program.cs",
+      "sha256": "1391444ac631e5b91b42121908a22db397b6ca78a809c9e62feb83f6dd339711"
+    },
+    {
+      "path": "tests/Inventory/Inventory.csproj",
+      "sha256": "6d92bc9639f4d2a32c1040632677679a34f423489d599341f981bd86c77a51ab"
+    },
+    {
+      "path": "tests/Inventory/Program.cs",
+      "sha256": "9a589ddd3cf5826d2be7d905eca29a86deeb596088b90eb6abd6277a9cb4bb58"
+    },
+    {
+      "path": "tests/ProgramProjection/GeneratedChecks.cs",
+      "sha256": "5899c9e3301ee2e23efbe2394fe68209ee72bab1800da5ee5e17cc17ec43df8e"
+    },
+    {
+      "path": "tests/ProgramProjection/GeneratedChecks.csproj",
+      "sha256": "6af2d88ddc63ac3b77f7ee50de83d717c1aeb0a9411fdafc877aab720969bbde"
+    },
+    {
+      "path": "tests/ProgramProjection/Program.cs",
+      "sha256": "c940ea80edbfcfae15e439398b6b665087a362ebcffe22a9831547865b41f59f"
+    },
+    {
+      "path": "tests/ProgramProjection/Projection.csproj",
+      "sha256": "7a451631a06e8d1cc644efacf92e578ed96a63321a0d5e8d51aaf5a370f149e5"
+    },
+    {
+      "path": "tests/Projection/Program.cs",
+      "sha256": "fe2c07953046f3077951f40050f6f839f506c579b7fa58e4513972cd6bd8dcf3"
+    },
+    {
+      "path": "tests/Projection/Projection.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Sequencing/GeneratedChecks.cs",
+      "sha256": "359d880dd83d68bf62ecd53132127eef25c2a8e44659ff79004de85f7c8a00a5"
+    },
+    {
+      "path": "tests/Sequencing/GeneratedChecks.csproj",
+      "sha256": "6af2d88ddc63ac3b77f7ee50de83d717c1aeb0a9411fdafc877aab720969bbde"
+    },
+    {
+      "path": "tests/Sequencing/Probe.cs",
+      "sha256": "714f0ed9f60ba30442d3ebdf2cdc2021d2d7a6869860a3d8adbc514c9ee818df"
+    },
+    {
+      "path": "tests/Sequencing/Probe.csproj",
+      "sha256": "2f1e8867a9c4bd350246aae6053bee871f1fd2c3cbf5629f37964576bdfc38ab"
+    },
+    {
+      "path": "tests/Storage/Program.cs",
+      "sha256": "fb19e46a251a747681386a343f17aebfa92d88a95883e4ffe9007673beddf6f4"
+    },
+    {
+      "path": "tests/Storage/Storage.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/Variadics/Addressed.csproj",
+      "sha256": "613242da70e0fa6aba9d9780e34867cdcea34bf130701aa04125a5c5d28195ef"
+    },
+    {
+      "path": "tests/Variadics/AddressedChecks.cs",
+      "sha256": "f9a8f41e5b89a1712ee96e54883c9cb6bc1e19f2f23b5a7e6585d49b251cd459"
+    },
+    {
+      "path": "tests/Variadics/Outbound.csproj",
+      "sha256": "71f4f838e5d0f04f408047d6a0f4e01bef62230b48d46b217ec7058682baa098"
+    },
+    {
+      "path": "tests/Variadics/OutboundChecks.cs",
+      "sha256": "df5d825df9eec9451add832e608240e5c496f2e2768a51897fd043f30506cf2e"
+    },
+    {
+      "path": "tests/run-t2-sequencing.py",
+      "sha256": "b214e7ce16f72a1c14974389c0c44e030c838605374994f0f1499940c592b955"
+    },
+    {
+      "path": "tools/run-measured.py",
+      "sha256": "b4c89236a1717c1eb11588595509d41ad2bfa47cb0bd773d99305d6a9d4a986a"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "branches",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/branches.c",
+        "sha256": "3c688b9450c15b2259c42b8ebe4315d2a7fad9d4cd5c69a4ae128d43a3c5ae47",
+        "bytes": 979
+      },
+      "input": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/branches.roslynobj",
+        "sha256": "c5f63763aec23b59e15c6d5f3207c355aa5c1120003e22740265aee6b4395bde",
+        "bytes": 686080
+      },
+      "nativeOutput": "result=41\nevents=21\nevent:0:1\nevent:1:2\nevent:2:3\nevent:3:4\nevent:4:5\nevent:5:6\nevent:6:7\nevent:7:8\nevent:8:9\nevent:9:10\nevent:10:11\nevent:11:12\nevent:12:13\nevent:13:20\nevent:14:30\nevent:15:21\nevent:16:31\nevent:17:22\nevent:18:32\nevent:19:23\nevent:20:40\nvalue:0:21",
+      "jitOutput": "result=41\nevents=21\nevent:0:1\nevent:1:2\nevent:2:3\nevent:3:4\nevent:4:5\nevent:5:6\nevent:6:7\nevent:7:8\nevent:8:9\nevent:9:10\nevent:10:11\nevent:11:12\nevent:12:13\nevent:13:20\nevent:14:30\nevent:15:21\nevent:16:31\nevent:17:22\nevent:18:32\nevent:19:23\nevent:20:40\nvalue:0:21",
+      "nativeAotOutput": "result=41\nevents=21\nevent:0:1\nevent:1:2\nevent:2:3\nevent:3:4\nevent:4:5\nevent:5:6\nevent:6:7\nevent:7:8\nevent:8:9\nevent:9:10\nevent:10:11\nevent:11:12\nevent:12:13\nevent:13:20\nevent:14:30\nevent:15:21\nevent:16:31\nevent:17:22\nevent:18:32\nevent:19:23\nevent:20:40\nvalue:0:21",
+      "checkerInvocations": 2,
+      "emissionCounts": "Emitted 5 functions, 0 records.",
+      "generatedDependencies": [
+        "GeneratedChecks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "nativeAotSystemDependencies": "linux-vdso.so.1 (0x00007fff70566000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007c7bf5528000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007c7bf5200000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007c7bf57a2000)",
+      "deterministic": true,
+      "generatedFiles": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-generated/Generated.cs",
+          "sha256": "c9b5225c6da1b5eb12d9150d1fae82e68fa932585f1b8bc0aa9eb813c73ea332",
+          "bytes": 5185
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-generated/Generated.csproj",
+          "sha256": "223b4e50cd0818480aaec6ce865ee2b6399dad5b6761ced5ddeee7cd35cecedb",
+          "bytes": 500
+        }
+      ],
+      "builtArtifacts": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-checker/GeneratedChecks.dll",
+          "sha256": "27216b3ee229f4e095c232d1c985eec5747b83e6029fad8117c6ea1946ea64c1",
+          "bytes": 8192
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-checker/Generated.dll",
+          "sha256": "a91fa71d2b1a491133fadf644f9f13c9f89facf48d73094dfaad8a856cb9e996",
+          "bytes": 6144
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-checker/RoslynObj.CSharp.Runtime.dll",
+          "sha256": "8a99137935beb56c6096f545dd2fe3372effc700bb5693dc796e3ba7d26b738d",
+          "bytes": 10752
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-checker/GeneratedChecks.deps.json",
+          "sha256": "0025de103ef756dc77d4b284d33d061f399aee08a490b284a4b72464b7c04f04",
+          "bytes": 1195
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/branches",
+          "sha256": "b4b1d1dec34f2b670912897f6704650775f0c323b6dff6e02a0c96a5b75c722e",
+          "bytes": 16288
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/branches-nativeaot/GeneratedChecks",
+          "sha256": "7244e87dd65a7fb69ce82efc74255a908903d6765d704da334044250fa261e40",
+          "bytes": 1283112
+        }
+      ]
+    },
+    {
+      "name": "places",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/places.cpp",
+        "sha256": "43cab033b8a5d8345ffaa20fb90d39de97fe3667c02c8dd043578a4eb39c0206",
+        "bytes": 1428
+      },
+      "input": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/places.roslynobj",
+        "sha256": "e444e3f497ec3e1b805169f21cb1426110f5d5d9f720e683a8da8987c4bd3390",
+        "bytes": 751616
+      },
+      "nativeOutput": "result=15\nevents=14\nevent:0:2\nevent:1:1\nevent:2:5\nevent:3:6\nevent:4:6\nevent:5:6\nevent:6:7\nevent:7:6\nevent:8:6\nevent:9:6\nevent:10:9\nevent:11:8\nevent:12:11\nevent:13:10\nvalue:0:23\nvalue:1:-14\nvalue:2:-13\nvalue:3:-13\nvalue:4:15\nvalue:5:0\nvalue:6:0\nvalue:7:6\nvalue:8:22\nvalue:9:-12\nvalue:10:1",
+      "jitOutput": "result=15\nevents=14\nevent:0:2\nevent:1:1\nevent:2:5\nevent:3:6\nevent:4:6\nevent:5:6\nevent:6:7\nevent:7:6\nevent:8:6\nevent:9:6\nevent:10:9\nevent:11:8\nevent:12:11\nevent:13:10\nvalue:0:23\nvalue:1:-14\nvalue:2:-13\nvalue:3:-13\nvalue:4:15\nvalue:5:0\nvalue:6:0\nvalue:7:6\nvalue:8:22\nvalue:9:-12\nvalue:10:1",
+      "nativeAotOutput": "result=15\nevents=14\nevent:0:2\nevent:1:1\nevent:2:5\nevent:3:6\nevent:4:6\nevent:5:6\nevent:6:7\nevent:7:6\nevent:8:6\nevent:9:6\nevent:10:9\nevent:11:8\nevent:12:11\nevent:13:10\nvalue:0:23\nvalue:1:-14\nvalue:2:-13\nvalue:3:-13\nvalue:4:15\nvalue:5:0\nvalue:6:0\nvalue:7:6\nvalue:8:22\nvalue:9:-12\nvalue:10:1",
+      "checkerInvocations": 2,
+      "emissionCounts": "Emitted 8 functions, 1 records.",
+      "generatedDependencies": [
+        "GeneratedChecks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "nativeAotSystemDependencies": "linux-vdso.so.1 (0x00007fff586c6000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000707eb0d71000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000707eb0a00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000707eb0feb000)",
+      "deterministic": true,
+      "generatedFiles": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-generated/Generated.cs",
+          "sha256": "a7df865b49b1fee6009f62029811f26caff9774f20b16f572d134198cd8ec46d",
+          "bytes": 10571
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-generated/Generated.csproj",
+          "sha256": "223b4e50cd0818480aaec6ce865ee2b6399dad5b6761ced5ddeee7cd35cecedb",
+          "bytes": 500
+        }
+      ],
+      "builtArtifacts": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-checker/GeneratedChecks.dll",
+          "sha256": "d3f8728e1c56b18592994578b2bd494586b2d1592dfde9c5a83dc9f4ffcc1208",
+          "bytes": 8192
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-checker/Generated.dll",
+          "sha256": "f054fc8a493722adb37c717423f436682b1135334fc0624b36ab2760cc39b6ed",
+          "bytes": 7168
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-checker/RoslynObj.CSharp.Runtime.dll",
+          "sha256": "8a99137935beb56c6096f545dd2fe3372effc700bb5693dc796e3ba7d26b738d",
+          "bytes": 10752
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-checker/GeneratedChecks.deps.json",
+          "sha256": "0025de103ef756dc77d4b284d33d061f399aee08a490b284a4b72464b7c04f04",
+          "bytes": 1195
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/places",
+          "sha256": "6feb8e41e546c7dd8407106099a009c766802fee5785d7e0a967d260fb41be4e",
+          "bytes": 16544
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/places-nativeaot/GeneratedChecks",
+          "sha256": "16fbfbec07c231f1f6cef1b7aff0b53dc9b8ec36033f225d5b8d346c529135f8",
+          "bytes": 1283112
+        }
+      ]
+    },
+    {
+      "name": "callee",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/callee.cpp",
+        "sha256": "68216e9fa90b7d3a3bdd8aef32b92d62d8c1d7db584dc38b356b2e0bcea2a190",
+        "bytes": 846
+      },
+      "input": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/callee.roslynobj",
+        "sha256": "91ca2e04db48143f1e21e4cad1970ee03c7374d14f579590dc731dee5c2b664b",
+        "bytes": 688128
+      },
+      "nativeOutput": "result=18\nevents=6\nevent:0:1\nevent:1:2\nevent:2:3\nevent:3:1\nevent:4:2\nevent:5:3\nvalue:0:6",
+      "jitOutput": "result=18\nevents=6\nevent:0:1\nevent:1:2\nevent:2:3\nevent:3:1\nevent:4:2\nevent:5:3\nvalue:0:6",
+      "nativeAotOutput": "result=18\nevents=6\nevent:0:1\nevent:1:2\nevent:2:3\nevent:3:1\nevent:4:2\nevent:5:3\nvalue:0:6",
+      "checkerInvocations": 2,
+      "emissionCounts": "Emitted 7 functions, 0 records.",
+      "generatedDependencies": [
+        "GeneratedChecks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "nativeAotSystemDependencies": "linux-vdso.so.1 (0x00007fff84533000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000782eb8b2a000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000782eb8800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000782eb8da3000)",
+      "deterministic": true,
+      "generatedFiles": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-generated/Generated.cs",
+          "sha256": "adfa06b74d344372b39c5cd6ebcbaef79827fa40a47659b72e330bc77e7d7dd3",
+          "bytes": 3400
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-generated/Generated.csproj",
+          "sha256": "223b4e50cd0818480aaec6ce865ee2b6399dad5b6761ced5ddeee7cd35cecedb",
+          "bytes": 500
+        }
+      ],
+      "builtArtifacts": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-checker/GeneratedChecks.dll",
+          "sha256": "ebe5e3088b53db69793dce017ad7a672440daf41761b54f55aabf7dad951cb19",
+          "bytes": 8192
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-checker/Generated.dll",
+          "sha256": "599f720c2ddc3ae4f2c9d6b57e5c2c363edbdf857558807e0da3a2e66a107624",
+          "bytes": 6144
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-checker/RoslynObj.CSharp.Runtime.dll",
+          "sha256": "8a99137935beb56c6096f545dd2fe3372effc700bb5693dc796e3ba7d26b738d",
+          "bytes": 10752
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-checker/GeneratedChecks.deps.json",
+          "sha256": "0025de103ef756dc77d4b284d33d061f399aee08a490b284a4b72464b7c04f04",
+          "bytes": 1195
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/callee",
+          "sha256": "f750661788c56c96c8fb03294869b4eaf97209b1820cc818764c2b5a1ff17bde",
+          "bytes": 16360
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/callee-nativeaot/GeneratedChecks",
+          "sha256": "ba1d4f226b98743a87ba778e677c67bb51fc95b4e4b99cf7c8b15da4afa1b338",
+          "bytes": 1279016
+        }
+      ]
+    },
+    {
+      "name": "aggregate-snapshot",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate-snapshot.cpp",
+        "sha256": "de61ad6a720d33d910fa4daac0ad423dac9f449e96aecbc6c861efcda0fd38e8",
+        "bytes": 1362
+      },
+      "input": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate-snapshot.roslynobj",
+        "sha256": "d8b4211ceaef1a99daa46e0125b1251f3f5e634aa584600643a13147f341abe0",
+        "bytes": 733184
+      },
+      "nativeOutput": "result=248\nevents=4\nevent:0:1\nevent:1:2\nevent:2:1\nevent:3:2\nvalue:0:7\nvalue:1:11\nvalue:2:13\nvalue:3:17\nvalue:4:99\nvalue:5:101",
+      "jitOutput": "result=248\nevents=4\nevent:0:1\nevent:1:2\nevent:2:1\nevent:3:2\nvalue:0:7\nvalue:1:11\nvalue:2:13\nvalue:3:17\nvalue:4:99\nvalue:5:101",
+      "nativeAotOutput": "result=248\nevents=4\nevent:0:1\nevent:1:2\nevent:2:1\nevent:3:2\nvalue:0:7\nvalue:1:11\nvalue:2:13\nvalue:3:17\nvalue:4:99\nvalue:5:101",
+      "checkerInvocations": 2,
+      "emissionCounts": "Emitted 7 functions, 1 records.",
+      "generatedDependencies": [
+        "GeneratedChecks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "nativeAotSystemDependencies": "linux-vdso.so.1 (0x00007fff7e8b1000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f23c4930000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f23c4600000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f23c4baa000)",
+      "deterministic": true,
+      "generatedFiles": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-generated/Generated.cs",
+          "sha256": "f333c4d72208baed4a7202d7c4d52436cc56ff930a9b6b3aa865cacd3d7f89d7",
+          "bytes": 6538
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-generated/Generated.csproj",
+          "sha256": "223b4e50cd0818480aaec6ce865ee2b6399dad5b6761ced5ddeee7cd35cecedb",
+          "bytes": 500
+        }
+      ],
+      "builtArtifacts": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-checker/GeneratedChecks.dll",
+          "sha256": "9448bc9a5ff7fd822aa05f9cf3b5baf12606053da7575d0663687b55279dfa4c",
+          "bytes": 8192
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-checker/Generated.dll",
+          "sha256": "47d1964d2f3cad2834e73ffaa585d6659f4a552a65985b47f22a4395366ecfa3",
+          "bytes": 6656
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-checker/RoslynObj.CSharp.Runtime.dll",
+          "sha256": "8a99137935beb56c6096f545dd2fe3372effc700bb5693dc796e3ba7d26b738d",
+          "bytes": 10752
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-checker/GeneratedChecks.deps.json",
+          "sha256": "0025de103ef756dc77d4b284d33d061f399aee08a490b284a4b72464b7c04f04",
+          "bytes": 1195
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/aggregate-snapshot",
+          "sha256": "538115659e749c6e4bd70ed2c12d92c52cb4aa64dfe2180e476f564ec49a8c63",
+          "bytes": 16552
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/aggregate-snapshot-nativeaot/GeneratedChecks",
+          "sha256": "e409b2a05b465096d4f3014c99f5dbe0e53f958e0e410c52fd805b6fb89363dc",
+          "bytes": 1283112
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "single-unit sequencing fixtures; bounded multi-unit proof is separate",
+    "nonvolatile nonatomic places; hidden lifetime/EH obligations rejected",
+    "planned va_* combinations remain unsupported",
+    "conditional bitfield lvalues, partial/differing-representation aggregate copies unsupported",
+    "general goto/switch and large-method execution remain open",
+    "original aggregate.cpp discrepancy excluded without schedule rewriting"
+  ],
+  "dotnetSdk": "10.0.112",
+  "nativeCompilers": [
+    {
+      "executable": {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+        "bytes": 1023032
+      },
+      "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    },
+    {
+      "executable": {
+        "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+        "bytes": 1027128
+      },
+      "version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    }
+  ],
+  "excludedDifferential": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate.cpp",
+      "sha256": "c26c2d2300333eec9379505082b9cbe3b3883874a2c306914e743d42b8290f47",
+      "bytes": 1400
+    },
+    "input": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing/export/aggregate.roslynobj",
+      "sha256": "14ff1cacb1f8deb4f08253574e94a3852f2c5dd92d1f9b72d53e606c1bca1174",
+      "bytes": 731136
+    },
+    "native": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/sequencing-reproduction/native/aggregate-excluded",
+      "sha256": "5e03988443779e37ce350a56748ea6e95f15e7c7ff6ba549909491b0554e8b3c",
+      "bytes": 16496
+    },
+    "nativeOutput": "result=600\nevents=4\nevent:0:1\nevent:1:2\nevent:2:1\nevent:3:2\nvalue:0:99\nvalue:1:101\nvalue:2:99\nvalue:3:101\nvalue:4:99\nvalue:5:101",
+    "generatedExecutionAccepted": false,
+    "retainedGraphPrediction": 248,
+    "predictionKind": "inference from explicit retained comma/local-copy ordering; see public operation dump",
+    "policy": "preserve selected graph; no schedule rewrite to reproduce native600"
+  },
+  "rejectionProof": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/abi-admission/over-aligned-variadic.c",
+      "sha256": "97e76502056a1b91a4098a43b28df865b811767432ea4f177ccbdc8caeb84ac5",
+      "bytes": 441
+    },
+    "input": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/export/over-aligned-variadic.roslynobj",
+      "sha256": "945bb47332eed1d7264f7de4e84ad060b5d4222359ca401aa74cea265d493535",
+      "bytes": 616448
+    },
+    "publicFacts": {
+      "artifact": "6a03f5f3170abf15ebd7a30e6faec929",
+      "selectedFunction": "consume",
+      "effective": {
+        "kind": "tk_typeref",
+        "size": "4",
+        "alignment": "16"
+      },
+      "unwrapped": {
+        "kind": "tk_integer",
+        "size": "4",
+        "alignment": "4"
+      },
+      "supported": false
+    },
+    "diagnostics": "CSHARP2100: Native arithmetic scalars require their captured natural size and alignment. [function/1:consume/operation/0]\nCSHARP2100: Native arithmetic scalars require their captured natural size and alignment. [function/2:fixture/operation/6]",
+    "published": false
+  },
+  "inputs": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+      "sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+      "bytes": 115573480
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "sha256": "67bd8496c5b9ad74fafeb1d52040020370d8e808bbc8219b8f824c44c696df17",
+      "bytes": 1268
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/abi-admission/over-aligned-variadic.c",
+      "sha256": "97e76502056a1b91a4098a43b28df865b811767432ea4f177ccbdc8caeb84ac5",
+      "bytes": 441
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/README.md",
+      "sha256": "2950c982e544fe134ab6a469fcfb53d1630c7d36cc941b16f99c3931584e98ea",
+      "bytes": 2224
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate-snapshot.cpp",
+      "sha256": "de61ad6a720d33d910fa4daac0ad423dac9f449e96aecbc6c861efcda0fd38e8",
+      "bytes": 1362
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/aggregate.cpp",
+      "sha256": "c26c2d2300333eec9379505082b9cbe3b3883874a2c306914e743d42b8290f47",
+      "bytes": 1400
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/branches.c",
+      "sha256": "3c688b9450c15b2259c42b8ebe4315d2a7fad9d4cd5c69a4ae128d43a3c5ae47",
+      "bytes": 979
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/callee.cpp",
+      "sha256": "68216e9fa90b7d3a3bdd8aef32b92d62d8c1d7db584dc38b356b2e0bcea2a190",
+      "bytes": 846
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/native-oracle.c",
+      "sha256": "ae82e72d4d77715770d480b95142d9d7d79f3e26bbf5ee315e6f3157b5d9083d",
+      "bytes": 657
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T2/sequencing/places.cpp",
+      "sha256": "43cab033b8a5d8345ffaa20fb90d39de97fe3667c02c8dd043578a4eb39c0206",
+      "bytes": 1428
+    }
+  ],
+  "buildArtifacts": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+      "sha256": "49b487967c890c82e21cc8fcb5d9b4e1665f0a42019d3ef8ab3af4e822a57313",
+      "bytes": 39936
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/RoslynObj.CSharp.dll",
+      "sha256": "27047b8896ac1edbe5cdcc4b045a2bc935fe49c15672588cc9afb38a6abac4c1",
+      "bytes": 389632
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/RoslynObj.dll",
+      "sha256": "2fe8217dc602b9f07dcfb9f0780fcbabb7238a8ca8147c5101b7f5d0b7121d9d",
+      "bytes": 2629632
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/bin/Release/net10.0/RoslynObj.CSharp.Runtime.dll",
+      "sha256": "8a99137935beb56c6096f545dd2fe3372effc700bb5693dc796e3ba7d26b738d",
+      "bytes": 10752
+    }
+  ]
+}

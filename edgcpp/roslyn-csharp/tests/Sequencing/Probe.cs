@@ -17,6 +17,19 @@ Console.WriteLine(JsonSerializer.Serialize(new
     InventoryOnly = true,
     GeneratedExecutionAccepted = false,
     Artifact = input.Manifest.ArtifactIdentity,
+    Signatures = input.TranslationUnit.Functions.Select((function, ordinal) => new
+    {
+        Locator = $"signature:{ordinal + 1}",
+        Name = function.CurrentName,
+        Variadic = function.Signature.IsVariadic,
+        Return = TypeFacts(function.ReturnType),
+        Parameters = function.Parameters.Select(parameter => new
+        {
+            parameter.Ordinal, parameter.Name,
+            Role = parameter.Role.Name,
+            Type = TypeFacts(parameter.Type)
+        })
+    }),
     Functions = bodies.Select(body => new
     {
         body.Locator, body.Name,
@@ -73,3 +86,38 @@ Console.WriteLine(JsonSerializer.Serialize(new
             BitWidth = field.BitWidth?.ToString(CultureInfo.InvariantCulture)
         })
 }, new JsonSerializerOptions { WriteIndented = true }));
+
+static object TypeFacts(CppType type)
+{
+    var references = new List<object>();
+    var seen = new HashSet<CppType>();
+    var current = type;
+    while (current is TypeReference reference && seen.Add(current))
+    {
+        references.Add(Dimensions(current));
+        current = reference.UnderlyingType;
+    }
+    return new
+    {
+        Effective = Dimensions(type),
+        TypeReferenceChain = references,
+        Unwrapped = Dimensions(current),
+        ReferenceCycle = current is TypeReference,
+        Arithmetic = current is ArithmeticType arithmetic ? new
+        {
+            Kind = arithmetic.Arithmetic.ArithmeticKind.Name,
+            arithmetic.Arithmetic.Bits,
+            arithmetic.Arithmetic.Signed,
+            arithmetic.Arithmetic.IsBool
+        } : null
+    };
+}
+
+static object Dimensions(CppType type) => new
+{
+    Kind = type.Kind.Name,
+    Size = type.Size?.ToString(CultureInfo.InvariantCulture),
+    Alignment = type.Alignment?.ToString(CultureInfo.InvariantCulture),
+    DescriptorSize = type.Details.DescriptorSize?.ToString(CultureInfo.InvariantCulture),
+    DescriptorAlignment = type.Details.DescriptorAlignment?.ToString(CultureInfo.InvariantCulture)
+};

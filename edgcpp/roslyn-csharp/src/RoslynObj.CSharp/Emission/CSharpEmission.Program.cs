@@ -18,6 +18,10 @@ public sealed partial class CSharpEmitter
             if (!result.Success) return false;
             selectedProgram = result.Program!;
             programOpenUnitLimit = assemblyOptions.MaximumOpenUnits;
+            foreach (var declaration in selectedProgram.Report.Declarations.Where(declaration => declaration.Required && declaration.SelectedDefinition is null))
+                diagnostics.Add(new("CSHARP2501", DiagnosticSeverity.Error,
+                    "Initial multi-unit execution requires a selected program definition; native provider contract integration remains unsupported.",
+                    inputs[declaration.UnitOrdinal - 1].Manifest.ArtifactIdentity, declaration.Locator, "program-provider"));
             foreach (var function in selectedProgram.Functions)
             {
                 try
@@ -111,6 +115,8 @@ public sealed partial class CSharpEmitter
                     throw Limit("This selected boundary qualifier needs a separate native representation adapter.", "program-abi");
             var raw = Unwrap(type);
             if (raw.Kind.Name == "tk_void") return;
+            if (type.Size != raw.Size || type.Alignment != raw.Alignment)
+                throw Limit("An effective boundary size/alignment differs from its underlying scalar representation; no adapter is selected.", "program-abi");
             if (raw is PointerType pointer) { ValidateProgramPointer(pointer); return; }
             if (raw is ArithmeticType && raw.Size is { } scalarSize && scalarSize > 0 && scalarSize <= 8) return;
             throw Limit("Initial multi-unit emission supports fixed scalar/pointer function boundaries; aggregate and extended-value adapters remain unsupported.", "program-abi");
@@ -120,11 +126,31 @@ public sealed partial class CSharpEmitter
             => ProgramPointerView(actualType, formalType, value);
         private string ProgramResultView(CppType selectedReturnType, CppType occurrenceType, string value)
             => ProgramPointerView(selectedReturnType, occurrenceType, value);
+        private bool TryProgramPointerRepresentation(CppType left, CppType right, out bool compatible)
+        {
+            compatible = false;
+            if (selectedProgram is null) return false;
+            var leftType = Unwrap(left); var rightType = Unwrap(right);
+            if (leftType is not PointerType && rightType is not PointerType) return false;
+            if (leftType is not PointerType leftPointer || rightType is not PointerType rightPointer) return true;
+            ValidateProgramPointer(leftPointer); ValidateProgramPointer(rightPointer);
+            if (left.Size != leftType.Size || left.Alignment != leftType.Alignment
+                || right.Size != rightType.Size || right.Alignment != rightType.Alignment)
+                throw Limit("Function address dispatch requires undecorated effective pointer size/alignment.", "program-pointer");
+            var comparison = new AbiCompatibility().CompareTypes(left, right);
+            if (comparison.Status == AbiCompatibilityStatus.Unsupported)
+                throw Limit($"Function address dispatch has no selected pointer ABI adapter at {comparison.Path}: {comparison.Reason}", "program-pointer");
+            compatible = comparison.Compatible;
+            return true;
+        }
         private string ProgramPointerView(CppType actualType, CppType expectedType, string value)
         {
             if (selectedProgram is null) return value;
             var actual = Unwrap(actualType); var expected = Unwrap(expectedType);
             if (actual is not PointerType actualPointer || expected is not PointerType expectedPointer) return value;
+            if (actualType.Size != actual.Size || actualType.Alignment != actual.Alignment
+                || expectedType.Size != expected.Size || expectedType.Alignment != expected.Alignment)
+                throw Limit("An effective pointer view has unsupported size/alignment decoration.", "program-pointer");
             ValidateProgramPointer(actualPointer); ValidateProgramPointer(expectedPointer);
             var comparison = new AbiCompatibility().CompareTypes(actualType, expectedType);
             if (!comparison.Compatible)

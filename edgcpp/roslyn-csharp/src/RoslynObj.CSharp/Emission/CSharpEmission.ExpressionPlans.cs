@@ -387,13 +387,17 @@ public sealed partial class CSharpEmitter
         private string RenderCall(CsPlannedCall plannedCall)
         {
             var call = plannedCall.Operation;
-            var arguments = string.Join(", ", plannedCall.Arguments.Select(RenderExpression));
             if (call.Callee is ReferenceOperation { Target: FunctionSymbol function })
             {
-                if (call.TargetMethod is { } selected && !selected.Equals(function)) throw Limit("Selected callee needs an explicit ABI adapter.", "call");
+                function = CanonicalFunction(function);
+                if (call.TargetMethod is { } selected && !CanonicalFunction(selected).Equals(function)) throw Limit("Selected callee needs an explicit ABI adapter.", "call");
                 RequireCallable(function);
                 if (function.Signature.IsVariadic) throw Limit("Variadic calls need the selected argument-pack ABI.", "varargs");
-                return $"{OwnedName(function)}({arguments})";
+                if (function.Signature.Parameters.Count != plannedCall.Arguments.Count)
+                    throw Limit("A selected fixed call needs explicit parameter adaptation.", "call");
+                var arguments = string.Join(", ", plannedCall.Arguments.Select((value, index) =>
+                    ProgramArgumentView(call.Arguments[index].Value.Type, function.Signature.Parameters[index].Type, RenderExpression(value))));
+                return ProgramResultView(function.ReturnType, call.Type, $"{OwnedName(function)}({arguments})");
             }
             var type = Unwrap(call.Call.FunctionType ?? call.Callee.Type);
             if (type is PointerType pointer) type = Unwrap(pointer.PointeeType);
@@ -403,7 +407,10 @@ public sealed partial class CSharpEmitter
             ValidateNativeScalarSignature(signature);
             if (signature.Parameters.Count != plannedCall.Arguments.Count) throw Limit("Indirect call parameter adaptation is unsupported.", "call");
             if (!indirectCalls.TryGetValue(signature, out var helper)) indirectCalls.Add(signature, helper = InternalName($"__Invoke_{indirectCalls.Count + 1}"));
-            return $"{Owner}.{helper}({RenderExpression(plannedCall.Callee)}{(arguments.Length == 0 ? "" : ", " + arguments)})";
+            var indirectArguments = string.Join(", ", plannedCall.Arguments.Select((value, index) =>
+                ProgramArgumentView(call.Arguments[index].Value.Type, signature.Parameters[index].Type, RenderExpression(value))));
+            return ProgramResultView(signature.ReturnType, call.Type,
+                $"{Owner}.{helper}({RenderExpression(plannedCall.Callee)}{(indirectArguments.Length == 0 ? "" : ", " + indirectArguments)})");
         }
         private void EmitPlanPrefix(ExpressionPlan plan, CodeWriter writer) => EmitPlanStatements(plan.Prefix, writer);
         private void EmitPlanStatements(IEnumerable<CsPlanStatement> statements, CodeWriter writer)

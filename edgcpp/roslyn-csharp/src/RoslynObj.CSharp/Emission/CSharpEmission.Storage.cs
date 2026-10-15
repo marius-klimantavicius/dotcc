@@ -45,7 +45,7 @@ public sealed partial class CSharpEmitter
             {
                 var item = storageOrder[index];
                 if (item.Initializer is { } constant)
-                    WriteConstant(item.Type, $"(byte*){names[item.Entity]}", constant.Value, initialization, true);
+                    WriteConstant(item.Type, $"(byte*){OwnedName(item.Entity)}", constant.Value, initialization, true);
             }
             // Constant processing can discover a literal storage occurrence. All allocations
             // are field initializers, so every address exists before these fixups execute.
@@ -168,6 +168,7 @@ public sealed partial class CSharpEmitter
                     entity = constant;
                 }
             }
+            entity = CanonicalEntity(entity);
             if (!storage.ContainsKey(entity)) throw Limit($"Address base '{entity.Name}' has no selected storage.", "constant-address");
             return $"({TypeName(type)})((byte*){OwnedName(entity)} + ({address.ByteOffset.ToString(CultureInfo.InvariantCulture)}))";
         }

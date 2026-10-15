@@ -161,10 +161,10 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
         if (request.Output.NamePolicy != "source-stable" || request.Output.FilePolicy != "declaration-size")
             Error("ROC1202", "Requested source-name or file policy is unsupported.");
         var budgets = request.Budgets;
-        if (budgets.MaximumOpenUnits != 1 || budgets.MaximumWorkingSetBytes <= 0 || budgets.MaximumOperationsPerBody <= 0
+        if (budgets.MaximumOpenUnits is < 1 or > 2 || budgets.MaximumWorkingSetBytes <= 0 || budgets.MaximumOperationsPerBody <= 0
             || budgets.MaximumOutputBytes <= 0 || budgets.MaximumElapsedSeconds <= 0 || budgets.ReaderCachedRows < 1
             || budgets.ReaderCachedPages < 1 || budgets.ReaderPageSize is < 1 or > 4096)
-            Error("ROC0003", "Resource budgets must be positive; admission and inventory open exactly one unit at a time.");
+            Error("ROC0003", "Resource budgets must be positive; inventory opens one unit at a time and selected program emission admits at most two simultaneous units.");
         foreach (var binding in request.Runtime.Bindings)
         {
             if (string.IsNullOrWhiteSpace(binding.LinkageName) || string.IsNullOrWhiteSpace(binding.Provider)

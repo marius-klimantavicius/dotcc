@@ -74,6 +74,23 @@ else if (args[0] == "verify")
         semanticInput = "public RoslynObj only; source files are never passed to the emitter"
     }, new JsonSerializerOptions { WriteIndented = true }));
 }
+else if (args[0] == "verify-abi-rejection")
+{
+    var function = input.TranslationUnit.Functions.Single(f => f.Name == "consume" && f.BodyState.Name == "definition");
+    var effective = function.Parameters[0].Type;
+    var raw = effective;
+    while (raw is TypeReference reference) raw = reference.UnderlyingType;
+    if (effective is not TypeReference || effective.Size != 4 || effective.Alignment != 16 || raw.Size != 4 || raw.Alignment != 4)
+        throw new InvalidOperationException("Expected a genuine effective-alignment16/raw-alignment4 variadic prefix.");
+    Console.WriteLine(JsonSerializer.Serialize(new
+    {
+        artifact = input.Manifest.ArtifactIdentity,
+        selectedFunction = function.Name,
+        effective = new { kind = effective.Kind.Name, size = effective.Size?.ToString(CultureInfo.InvariantCulture), alignment = effective.Alignment?.ToString(CultureInfo.InvariantCulture) },
+        unwrapped = new { kind = raw.Kind.Name, size = raw.Size?.ToString(CultureInfo.InvariantCulture), alignment = raw.Alignment?.ToString(CultureInfo.InvariantCulture) },
+        supported = false
+    }, new JsonSerializerOptions { WriteIndented = true }));
+}
 else if (args[0] == "emit")
 {
     var bindings = args.Length > 4 ? JsonSerializer.Deserialize<CSharpExternalFunctionBinding[]>(File.ReadAllText(args[4])) ?? [] : [];

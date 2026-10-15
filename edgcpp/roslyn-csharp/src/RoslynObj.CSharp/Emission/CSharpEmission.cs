@@ -16,6 +16,8 @@ public sealed record CSharpEmissionOptions
     public bool PrintEntryResult { get; init; }
     public string RuntimeProjectPath { get; init; } = "";
     public IReadOnlyList<CSharpExternalFunctionBinding> ExternalFunctions { get; init; } = [];
+    /// <summary>Opt in to bounded selected-program assembly. Null keeps legacy single-unit admission.</summary>
+    public ProgramAssemblyOptions? ProgramAssembly { get; init; }
 }
 
 public sealed record CSharpEmissionResult(
@@ -50,28 +52,33 @@ public sealed partial class CSharpEmitter
 
         public CSharpEmissionResult Run()
         {
-            if (inputs.Count != 1)
-                return Failure("CSHARP2001", "T1 emission requires exactly one translation unit; multi-unit binding has no implementation yet.");
-            var input = inputs[0];
+            if (options.ProgramAssembly is { } assemblyOptions)
+            {
+                if (!InitializeProgramAssembly(assemblyOptions)) return new([], diagnostics, 0, 0);
+            }
+            else if (inputs.Count != 1)
+                return Failure("CSHARP2001", "Multiple translation units require explicit bounded program assembly options.");
             globalNames.Add(options.ClassName);
             if (options.Executable) globalNames.Add("Main");
-            var target = input.Manifest.Target;
-            if (target.Abi != "itanium" || target.AddressableUnitBits != 8 || target.PointerBits != 64 || target.PointerAlignment != 8 || target.Endianness != "little")
-                return Failure("CSHARP2002", "T1 emission requires the captured 8-bit-unit, little-endian 64-bit pointer profile.");
             if (string.IsNullOrWhiteSpace(options.RuntimeProjectPath))
                 return Failure("CSHARP2005", "An explicit generated-code runtime project path is required.");
-            if (input.TranslationUnit.FileScopeInitializationRoutines.Count != 0 || input.TranslationUnit.GlobalScope.DynamicInitializations.Count != 0 ||
-                input.TranslationUnit.Roots.Any(r => r.Kind.Name is "file_scope_statement" or "file_initializer") ||
-                input.TranslationUnit.GlobalScope.Lifetime?.Cleanups.Count > 0)
-                Add("CSHARP2006", "The unit has file initialization or teardown obligations; T1 cannot publish it.", null, "initialization");
-            var localStorage = input.TranslationUnit.Functions.Where(f => f.Body is not null).SelectMany(f => f.Body!.Locals).ToHashSet();
-            foreach (var variable in input.TranslationUnit.Variables)
-                if (!variable.Details.IsParameter && !localStorage.Contains(variable))
-                {
-                    try { AdmitGlobal(variable); }
-                    catch (Unsupported ex) { Add("CSHARP2007", ex.Message, variable.Name, ex.Family); }
-                }
-            foreach (var function in input.TranslationUnit.Functions)
+            for (var unit = 0; unit < inputs.Count; ++unit)
+            {
+                var input = inputs[unit];
+                var target = input.Manifest.Target;
+                if (target.Abi != "itanium" || target.AddressableUnitBits != 8 || target.PointerBits != 64 || target.PointerAlignment != 8 || target.Endianness != "little")
+                    diagnostics.Add(new("CSHARP2002", DiagnosticSeverity.Error, "Emission requires the captured 8-bit-unit, little-endian 64-bit pointer profile.", input.Manifest.ArtifactIdentity, $"unit/{unit + 1}", "profile"));
+                if (input.TranslationUnit.FileScopeInitializationRoutines.Count != 0 || input.TranslationUnit.GlobalScope.DynamicInitializations.Count != 0 ||
+                    input.TranslationUnit.Roots.Any(r => r.Kind.Name is "file_scope_statement" or "file_initializer") ||
+                    input.TranslationUnit.GlobalScope.Lifetime?.Cleanups.Count > 0)
+                    diagnostics.Add(new("CSHARP2006", DiagnosticSeverity.Error, "The unit has file initialization or teardown obligations; no initialization schedule is implemented.", input.Manifest.ArtifactIdentity, $"unit/{unit + 1}", "initialization"));
+            }
+            foreach (var variable in SelectedStorage())
+            {
+                try { AdmitGlobal(variable); }
+                catch (Unsupported ex) { Add("CSHARP2007", ex.Message, variable.Name, ex.Family); }
+            }
+            foreach (var function in SelectedFunctions())
             {
                 if (function.BodyState.Name != "definition")
                 {
@@ -159,6 +166,7 @@ public sealed partial class CSharpEmitter
             var files = new List<GeneratedSource> { new("Generated.cs", source.ToString()), new("Generated.csproj", project) };
             if (generatedAbiLibrary is not null) files.Add(new("Generated.Abi.c", NativeAbiSource()));
             if (nativeImports.Count > 0 || generatedAbiLibrary is not null) files.Add(new("Generated.NativeImports.json", NativeImportReport()));
+            if (selectedProgram is not null) files.Add(new("Generated.ProgramAssembly.json", ProgramAssemblyReport()));
             return new(files, diagnostics, functions.Count, records.Count);
         }
 
@@ -169,7 +177,7 @@ public sealed partial class CSharpEmitter
         }
 
         private void Add(string code, string message, string? name, string family) => diagnostics.Add(new(code, DiagnosticSeverity.Error,
-            message, inputs.FirstOrDefault()?.Manifest.ArtifactIdentity,
+            message, CurrentArtifactIdentity(),
             $"function/{functionOrdinal}:{name ?? currentFunction?.Name ?? "program"}/operation/{operationOrdinal}", family));
 
         private void EmitFunction(FunctionSymbol function)
@@ -193,6 +201,12 @@ public sealed partial class CSharpEmitter
                     throw Limit("Static/thread local storage requires the T2 initialization contract.", "storage");
                 Name(variable, variable.Name ?? "temporary", localNames);
             }
+            continuedLabels.Clear();
+            retainedLabels.Clear();
+            referencedContinuations.Clear();
+            if (body.Root is StatementOperation rootStatement) CollectContinueTargets(rootStatement, localNames);
+            if (continuedLabels.Any(label => !retainedLabels.Contains(label)))
+                throw Limit("A continue has no retained target label in this execution body.", "loop");
             var writer = new CodeWriter();
             var parameters = function.Parameters.Select(p => $"{TypeName(p.Type)} {names[p.Symbol!]}").ToList();
             if (function.Signature.IsVariadic)
@@ -237,38 +251,40 @@ public sealed partial class CSharpEmitter
                     Initialization(initialization.Initialization, writer);
                     return;
                 case ConditionalOperation conditional:
-                    writer.Line($"if ({Truth(Required(conditional.Condition))})");
+                    writer.Line($"if ({ConditionOccurrence(Required(conditional.Condition), writer)})");
                     Embedded(conditional.Then, writer);
                     if (conditional.Else is not null) { writer.Line("else"); Embedded(conditional.Else, writer); }
                     return;
                 case LoopOperation loop:
-                    if (loop.Kind.Name == "stmk_end_test_while")
-                    {
-                        writer.Line("do"); Embedded(loop.Body, writer); writer.Line($"while ({Truth(Required(loop.Condition))});"); return;
-                    }
-                    if (loop.Kind.Name is not ("stmk_for" or "stmk_while")) throw Limit($"Loop '{loop.Kind}' is unsupported.", "loop");
-                    if (loop.Initialization is not null) Statement(loop.Initialization, writer);
-                    if (loop.Kind.Name == "stmk_for")
-                        writer.Line($"for (; {(loop.Condition is null ? "true" : Truth(loop.Condition))}; {(loop.Increment is null ? "" : Expression(loop.Increment))})");
-                    else writer.Line($"while ({Truth(Required(loop.Condition))})");
-                    Embedded(loop.Body, writer);
+                    EmitLoop(loop, writer);
+                    return;
+                case LabelOperation label:
+                    if (continuedLabels.Contains(label.Label)) writer.Line(names[label.Label] + ":;");
                     return;
                 case JumpOperation jump:
                     switch (jump.JumpKind.Name)
                     {
-                        case "return": writer.Line(jump.Value is null ? "return;" : $"return {Expression(jump.Value)};"); return;
+                        case "return":
+                            if (jump.Value is null) writer.Line("return;");
+                            else if (Unwrap(jump.Value.Type).Kind.Name == "tk_void") { ExpressionStatementOccurrence(jump.Value, writer); writer.Line("return;"); }
+                            else writer.Line($"return {ValueOccurrence(jump.Value, writer)};");
+                            return;
                         case "break": writer.Line("break;"); return;
-                        case "continue": writer.Line("continue;"); return;
+                        case "continue":
+                            if (jump.Target is { } target) writer.Line("goto " + names[target] + ";");
+                            else if (loopContinueLabels.TryPeek(out var continuation) && continuation is not null)
+                            {
+                                referencedContinuations.Add(continuation); writer.Line("goto " + continuation + ";");
+                            }
+                            else writer.Line("continue;");
+                            return;
                         default: throw Limit($"Jump '{jump.JumpKind}' requires label/cleanup handling.", "jump");
                     }
                 default:
                     if (statement.Kind.Name == "stmk_empty") { writer.Line(";"); return; }
                     if (statement.Kind.Name == "stmk_expr" && statement.Expression is { } expression)
                     {
-                        var value = Expression(expression);
-                        if (expression is OperatorOperation op && IsStatementExpression(op.OperatorKind.Name)) writer.Line(value + ";");
-                        else if (expression is CallOperation) writer.Line(value + ";");
-                        else writer.Line("_ = " + value + ";");
+                        ExpressionStatementOccurrence(expression, writer);
                         return;
                     }
                     throw Limit($"Statement '{statement.Kind}' has no T1 projection.", statement.Kind.Name);
@@ -294,7 +310,7 @@ public sealed partial class CSharpEmitter
             if (initialization.Kind.Name == "dik_bitwise_copy")
             {
                 var source = initialization.BitwiseCopySource ?? throw Limit("A bitwise copy has no retained source.", "initialization");
-                writer.Line($"TargetStorage.Copy(ref {names[variable]}, ref {Expression(source)}, {StorageSize(variable.Type)});");
+                writer.Line($"TargetStorage.Copy(ref {names[variable]}, ref {ValueOccurrence(source, writer)}, {StorageSize(variable.Type)});");
                 return;
             }
             if (Unwrap(variable.Type) is RecordType or ArrayType && initialization.Constant is { } aggregate)
@@ -303,7 +319,7 @@ public sealed partial class CSharpEmitter
                 WriteConstant(variable.Type, $"(byte*)&{names[variable]}", aggregate.Value, writer, false);
                 return;
             }
-            var value = initialization.Expression is ExpressionOperation expression ? Expression(expression)
+            var value = initialization.Expression is ExpressionOperation expression ? ValueOccurrence(expression, writer)
                 : initialization.Constant is { } constant ? Constant(constant)
                 : throw Limit($"Initialization '{initialization.Kind}' has no scalar value.", "initialization");
             writer.Line($"{names[variable]} = {value};");
@@ -328,6 +344,7 @@ public sealed partial class CSharpEmitter
 
         private string Reference(ReferenceOperation reference)
         {
+            if (TryProgramReference(reference, out var programReference)) return programReference;
             if (reference.Target is FunctionSymbol function) return FunctionAddress(function);
             if (reference.Target is FieldSymbol) throw Limit("A field reference requires its actual retained object operand.", "field");
             if (reference.Target is { } target && names.TryGetValue(target, out var name)) return storage.ContainsKey(target) ? $"(*{OwnedName(target)})" : name;
@@ -511,6 +528,7 @@ public sealed partial class CSharpEmitter
             {
                 if (pointer.IsReference) throw Limit("Reference storage adaptation has no exercised T1 contract.", "reference");
                 if (Unwrap(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }
+                if (TryProgramPointerType(pointer, out var pointerView)) return pointerView;
                 return TypeName(pointer.PointeeType) + "*";
             }
             if (type is RecordType record)
