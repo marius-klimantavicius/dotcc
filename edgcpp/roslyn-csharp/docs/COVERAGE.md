@@ -22,7 +22,7 @@ The pinned SQLite input is immutable:
 `/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj`, SHA256
 `e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c`.
 Generated outputs and long logs use `/mnt/storage/roslynobj-csharp-20261015`.
-No generated application currently loads native SQLite, and no SQLite execution
+No generated application currently loads native SQLite, and no generated SQLite execution
 has been claimed.
 
 ## First T1 execution evidence
@@ -102,3 +102,10 @@ results are 147423/45/751 for storage/copy/callback fixtures. The separate
 SysV variadic cursor code are compiled baselines only: neither is integrated or
 execution-accepted. T2 remains open; see the explicit limits in
 [T2-STORAGE-CALLBACKS.md](T2-STORAGE-CALLBACKS.md).
+
+The separate pinned native SQLite oracle passes 43 SQL statements across core
+values/transactions, JSON/JSONB, FTS3/4/5, RTree/Geopoly and selected inspection,
+math and STAT4 observations. Two runs produce identical typed observations;
+[the native-only receipt](../acceptance/sqlite/native-sql-smoke.json) records
+all providers and leaves the broader T4 API/persistence/concurrency/failure rows
+open. This is future comparison evidence, not generated execution.

@@ -1,0 +1,84 @@
+{
+  "workloadVersion": 1,
+  "scope": "Initial deterministic SQL oracle observations; not the complete T4 matrix.",
+  "cases": [
+    {
+      "name": "core-types-transactions",
+      "statements": [
+        "CREATE TABLE sample(id INTEGER PRIMARY KEY, n INTEGER, r REAL, t TEXT, b BLOB, missing)",
+        "INSERT INTO sample VALUES(1, -9223372036854775807, 3.25, 'hello', x'0001FEFF', NULL)",
+        "INSERT INTO sample VALUES(2, 42, -0.5, 'a' || char(0) || 'z', x'', NULL)",
+        "SELECT id,n,r,t,b,missing FROM sample ORDER BY id",
+        "BEGIN",
+        "UPDATE sample SET n=43 WHERE id=2",
+        "SAVEPOINT inner_save",
+        "DELETE FROM sample WHERE id=1",
+        "ROLLBACK TO inner_save",
+        "RELEASE inner_save",
+        "COMMIT",
+        "SELECT count(*),sum(id),max(n),length(b) FROM sample WHERE id=2",
+        "CREATE INDEX sample_n ON sample(n)",
+        "SELECT a.id,b.n FROM sample AS a JOIN sample AS b ON a.id=b.id ORDER BY a.id"
+      ]
+    },
+    {
+      "name": "json-jsonb",
+      "statements": [
+        "SELECT json_extract('{\"a\":[1,2],\"n\":null}', '$.a[1]'),json_type('{\"n\":null}', '$.n')",
+        "SELECT json_set('{\"a\":1}', '$.b', 2),json(jsonb('{\"a\":[1,2]}'))",
+        "SELECT key,value,type FROM json_each('{\"a\":1,\"b\":null}') ORDER BY key",
+        "SELECT json_valid('{broken'),json_valid('{\"ok\":true}')"
+      ]
+    },
+    {
+      "name": "fts3-fts4-fts5",
+      "statements": [
+        "CREATE VIRTUAL TABLE search3 USING fts3(content)",
+        "INSERT INTO search3(rowid,content) VALUES(1,'small sqlite engine'),(2,'other document')",
+        "SELECT rowid,content FROM search3 WHERE search3 MATCH 'sqlite' ORDER BY rowid",
+        "CREATE VIRTUAL TABLE search4 USING fts4(content)",
+        "INSERT INTO search4(rowid,content) VALUES(1,'full text sqlite'),(2,'other document')",
+        "SELECT rowid,content FROM search4 WHERE search4 MATCH 'sqlite' ORDER BY rowid",
+        "CREATE VIRTUAL TABLE search5 USING fts5(content)",
+        "INSERT INTO search5(rowid,content) VALUES(1,'modern sqlite search'),(2,'other document')",
+        "SELECT rowid,highlight(search5,0,'[',']') FROM search5 WHERE search5 MATCH 'sqlite' ORDER BY rowid"
+      ]
+    },
+    {
+      "name": "rtree-geopoly",
+      "statements": [
+        "CREATE VIRTUAL TABLE spatial USING rtree(id,minx,maxx,miny,maxy)",
+        "INSERT INTO spatial VALUES(1,0,2,0,2),(2,10,12,10,12)",
+        "SELECT id FROM spatial WHERE minx<=1 AND maxx>=1 AND miny<=1 AND maxy>=1 ORDER BY id",
+        "CREATE VIRTUAL TABLE polygons USING geopoly",
+        "INSERT INTO polygons(rowid,_shape) VALUES(1,'[[0,0],[2,0],[2,2],[0,2],[0,0]]')",
+        "SELECT rowid,abs(geopoly_area(_shape)) FROM polygons ORDER BY rowid"
+      ]
+    },
+    {
+      "name": "inspection-math-stat4",
+      "statements": [
+        "CREATE TABLE inspected(id INTEGER PRIMARY KEY,v INTEGER)",
+        "WITH RECURSIVE numbers(v) AS (VALUES(1) UNION ALL SELECT v+1 FROM numbers WHERE v<100) INSERT INTO inspected SELECT v,v%9 FROM numbers",
+        "CREATE INDEX inspected_v ON inspected(v)",
+        "ANALYZE",
+        "SELECT count(*)>0 FROM sqlite_stat4 WHERE tbl='inspected'",
+        "SELECT count(*)>0 FROM dbstat WHERE name='inspected'",
+        "SELECT pgno,length(data),hex(substr(data,1,16)) FROM sqlite_dbpage WHERE pgno=1",
+        "SELECT count(*)>0 FROM sqlite_stmt",
+        "SELECT count(*)>0 FROM bytecode('SELECT 1') WHERE opcode='Integer'",
+        "SELECT sqrt(9),log2(8),round(sin(pi()/2),9)"
+      ]
+    }
+  ],
+  "remainingT4Areas": [
+    "bind/reset/destructor ownership and extended errors",
+    "persistence and native/generated database interchange",
+    "WAL locking/concurrency/checkpoints/busy handling",
+    "preupdate/session/changesets/conflicts/RBU/backup API",
+    "column metadata/snapshot/carray/normalized SQL APIs",
+    "threading/unlock notify/callback tokenizer interfaces",
+    "controlled allocation/I/O failure and recovery",
+    "NativeAOT generated execution and import/provider audit"
+  ]
+}

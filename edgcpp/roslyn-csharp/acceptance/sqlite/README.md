@@ -48,3 +48,26 @@ records the successful build, not SQL execution. Its `nativeLibraries` field
 lists requested native link libraries, not a measured loaded-provider audit.
 The generated runtime must never load this SQLite library. See
 [coverage](../../docs/COVERAGE.md) for current evidence.
+
+The separate native oracle now passes the initial 43-statement deterministic
+SQL workload twice. [The receipt](native-sql-smoke.json) records exact loaded
+libraries, typed rows (including embedded-NUL text/blob bytes and binary64 bits),
+source/tool hashes and measured process high-water RSS. This is native-only
+baseline evidence; no generated SQLite execution or T3/T4 gate is claimed.
+`sql-smoke.json` is the shared workload definition, with the remaining T4 areas
+listed explicitly. Bind/ownership APIs, persistence/WAL, concurrency and failure
+paths are not replaced by this SQL-only baseline.
+
+Run this driver only as a separate native-reference process:
+
+```sh
+python3 edgcpp/roslyn-csharp/acceptance/sqlite/run-native-sql.py \
+  --build-receipt edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json \
+  --output /mnt/storage/roslynobj-csharp-20261015/sqlite/NEW-OBSERVATIONS.json
+```
+
+The driver validates the exact oracle library hash and SQLite version before
+execution, opens a fresh in-memory database for each case, and refuses to
+overwrite evidence. The first development workload attempt failed because
+Geopoly provides `_shape` implicitly; its preserved failure is recorded in the
+final receipt. The source/object/configuration stayed unchanged.

@@ -74,8 +74,11 @@ contracts are in [T2-CONTRACT.md](T2-CONTRACT.md).
 The coordinator's `acceptance/sqlite/prepare-native.py` built the separate
 full-feature native oracle under `sqlite/native-oracle`; its identity/recipe/
 build report is committed at `acceptance/sqlite/native-oracle-build.json`.
-This is build-only evidence, with no SQL execution claimed. The oracle cannot
-be a generated-runtime provider.
+The build receipt remains build-only. The separate native-only SQL runner now
+passes 43 statements twice with identical typed observations; its receipt is
+`acceptance/sqlite/native-sql-smoke.json`. This baseline does not cover all T4
+rows or prove generated execution. The oracle cannot be a generated-runtime
+provider.
 
 T2 storage/callback checkpoint passes all 46 phases at
 `t2/storage-callback-reproduction/t2-storage-callbacks-report.json`; a copy is
