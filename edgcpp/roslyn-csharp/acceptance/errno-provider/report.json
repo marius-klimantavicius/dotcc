@@ -1,0 +1,2425 @@
+{
+  "gate": "T3-partial-linux-x64-logical-errno",
+  "status": "passed-partial-contract",
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10061598906759173,
+      "sampledPeakProcessTreeRssBytes": 176128,
+      "waitedPeakProcessRssBytes": 53215232,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 9,
+          "sha256": "754d4ec29eaf73ed9f365df0dcc770212d046e7629c4d89ba54da43163a8c24d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10048466792795807,
+      "sampledPeakProcessTreeRssBytes": 118784,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "gcc-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052568709943444,
+      "sampledPeakProcessTreeRssBytes": 86016,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "abi-compiler-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "-pthread",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/errno-thread.c",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-oracle.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/errno-thread"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10051870404276997,
+      "sampledPeakProcessTreeRssBytes": 98304,
+      "waitedPeakProcessRssBytes": 24903680,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-oracle-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/errno-thread"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10049732297193259,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 158,
+          "sha256": "208a5ef1b902406d112d446a909d6c76cf4741386ddd2e2511fd29cb77e3cd4b"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-oracle-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "-fPIC",
+        "-shared",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-raw-errno.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/libraw-errno.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10053716797847301,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 20185088,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "interference-helper-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/libraw-errno.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055564402136952,
+      "sampledPeakProcessTreeRssBytes": 200704,
+      "waitedPeakProcessRssBytes": 256376832,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 106,
+          "sha256": "aa34702c07f76ce9662c66ebfb403f305d3c4443b09613a80372a4a329d38378"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "interference-helper-exports",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/NativeProviders/Emit.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 2.8058688699966297,
+      "sampledPeakProcessTreeRssBytes": 200761344,
+      "waitedPeakProcessRssBytes": 193613824,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 584,
+          "sha256": "3b126a2dc9d7acccda0281208aed95f85c9b62ca1d36f33c63c57a7d7602a351"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build-emitter",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter/Emit.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/errno-thread.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.5015031180810183,
+      "sampledPeakProcessTreeRssBytes": 96477184,
+      "waitedPeakProcessRssBytes": 94371840,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 122,
+          "sha256": "2acec470ae71d44cdb66dfe0efd68c6204395b62e00cf64b68419971c0063afe"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter/Emit.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/errno-thread.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/repeated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.5018908140482381,
+      "sampledPeakProcessTreeRssBytes": 96964608,
+      "waitedPeakProcessRssBytes": 94109696,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 122,
+          "sha256": "2acec470ae71d44cdb66dfe0efd68c6204395b62e00cf64b68419971c0063afe"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "repeat-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/NativeProviders/ErrnoChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.csproj",
+        "-p:RoslynObjAbiCompiler=/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.6041880929842591,
+      "sampledPeakProcessTreeRssBytes": 193527808,
+      "waitedPeakProcessRssBytes": 191639552,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 820,
+          "sha256": "55f263443f4a24d9f6dbc8dcb7ef64675af8307af553a2a56bca2f9b13de3949"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker/ErrnoChecks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/libraw-errno.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10067906195763499,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 30670848,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 163,
+          "sha256": "1f9c88f97a4efd2f41f8c521356611a6ce60582fc22dc3ed734a42bae591d3b3"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-jit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/libRoslynObj.Generated.Abi.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1005893419496715,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 256376832,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 837,
+          "sha256": "c84c1464835ee2049f1907e409b6e587b1fb06dc61a70abad0782a59acf88835"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "generated-abi-exports",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/libRoslynObj.Generated.Abi.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10061188507825136,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 155,
+          "sha256": "b6d5cbd47bb8d46c9472eaafaf73fe5adbc9a4e0331e2865c31e09968ef9ef94"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "generated-abi-dependencies",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/NativeProviders/ErrnoChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.csproj",
+        "-p:RoslynObjAbiCompiler=/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 3.5095833119703457,
+      "sampledPeakProcessTreeRssBytes": 215977984,
+      "waitedPeakProcessRssBytes": 248623104,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 921,
+          "sha256": "2f6a792cec4bbbaf454aede3b5560edd041b122df13e62f645929b4b662c7f8a"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/nativeaot/ErrnoChecks",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/libraw-errno.so"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10051882290281355,
+      "sampledPeakProcessTreeRssBytes": 212992,
+      "waitedPeakProcessRssBytes": 17301504,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 163,
+          "sha256": "1f9c88f97a4efd2f41f8c521356611a6ce60582fc22dc3ed734a42bae591d3b3"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-aot",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/nativeaot/ErrnoChecks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055119497701526,
+      "sampledPeakProcessTreeRssBytes": 180224,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "a4bf1ed1412390e1a511c6de1e16e676aa35dcc810a03efba14ed8da7a0662b2"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "nativeaot-dependencies",
+      "expectedExitCode": 0
+    }
+  ],
+  "nativeApplicationFallback": false,
+  "implementation": [
+    {
+      "path": "Directory.Build.props",
+      "sha256": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/AbiCompatibility.cs",
+      "sha256": "b9f3a80ceb96125cb58c0c744b4786599f58b7b8fbb3f7792f999e3ea1a4eab2"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Contracts.cs",
+      "sha256": "b2bac091e1253900befbdc63812c34678ba5428c8d8a795c707eaedab37103fb"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.AggregateAbi.cs",
+      "sha256": "9d46f7054e6d414a7056aa2fd3c50c5165bdc41133dc433abbf2c43f42d57ddc"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Calls.cs",
+      "sha256": "0977f8990beb5ddc50c095482c6c108970ff72f6188d73f3af2312d41a577ffb"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.ExpressionPlans.cs",
+      "sha256": "270f9d3e47b1df9cdc8c4e85feb3a469c5603a8923f45c68cf1886bbdaa782dd"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Floating.cs",
+      "sha256": "890b3f5b3ec6362a4c32a824003a2cd968ea590c3e0343a442be8fc03454eead"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.HostLayouts.cs",
+      "sha256": "a628e8578df39c2cb4b22f174c30ba817613bac8c18da4e540caf46e8ca889ba"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.HostProtocol.cs",
+      "sha256": "1fd8479900d26f69656f08c599a9ed547ae502e4633eacf2f9c350f770fbd663"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Intrinsics.cs",
+      "sha256": "7447051ad50cfd0069d792abfc3ea7be373539e155c84cf295e22b1438f8e5a9"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.NativeAbi.cs",
+      "sha256": "e91fede9ba93facefa755f77c09a34c87115e221a9d287d7a9d3e12df6c2a0c0"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Occurrences.cs",
+      "sha256": "f9ed6afea04e8fa4df5c0f5b357d5f3b96af63f6204fb6d7739bef0eaf039645"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Program.cs",
+      "sha256": "d9e9101d00508e5fe17ff1c4b602a9de5fa79e666b64bdcd550608770a39de3d"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Statements.cs",
+      "sha256": "f808cf61803f93c5b738af761753b38b304431e956a74620724dbb18c339c130"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs",
+      "sha256": "e751f14d0abb8af4487159f4fe20231aa3032e1d6f3da3640713dc96defe057c"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Types.cs",
+      "sha256": "8df207146a5375463828068af360ed3702fa4423799a23df86ebbd5109d7bdc4"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Variadics.cs",
+      "sha256": "8233ef4a21c8a942ef2e6b59cd19ee90ed9f0afd6953d8f6d2ecd535c18a5fa0"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.cs",
+      "sha256": "cf3cf0bd5ed5a5eaccedfbad00e67a73878dfc2483cc7b58f77a005fe924a73c"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/ExpressionPlan.cs",
+      "sha256": "41c1d425c1590d50912f6223f572d6ccb8e201d2b34a477110cb48ccfd9ee151"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Inventory.cs",
+      "sha256": "d6cd37026ac4013f1c95ffb620f6a0ab622fd3b10dd8037de574de37210314a4"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramAssembler.cs",
+      "sha256": "9ad0f09b4dbe1959dcab5f74835a2f340a9834fca2c134253002cfef3f604fa3"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramAssembly.cs",
+      "sha256": "1249c8690302b3ce9418adb229634bccf39a5aaced16e24f4d3a8ae2ebc824fd"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramManifest.cs",
+      "sha256": "01a6f48dddc4f68fe0270efc7f708a59163c77b4a70443096f9c94fdd4192568"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/RoslynObj.CSharp.csproj",
+      "sha256": "03e03192a4b03f0e5ab94844bf1f7fbfa0939da71052f9c7bd859e6f411bb514"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Translation.cs",
+      "sha256": "2d962b17a6849fbc0c9c9973c74a3caa676455201d4993ff7bb6460de6182f4c"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Translator.cs",
+      "sha256": "441d3a9ea2168dfcfbe3fdb99f2196384cf9e0ef2b13e301758a08757faabb12"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Cli/Program.cs",
+      "sha256": "d1aa89174ce10b1b06edc320d09d7dda540c8466cd2af433767e2465fc9be548"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+      "sha256": "37ba0980a83d81fc6b250c87ba8f1e84a48109d270d3e7bd8ed260e16de8239f"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+      "sha256": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/SysVVariadic.cs",
+      "sha256": "a89af15ca238f49ad746aaed3d7e8cd188f1de31a194293a78a3ef327c60f132"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetArithmetic.Assignments.cs",
+      "sha256": "b8d5276f437769f7e1ce73e7e201d88e97ed4becdc98e503113dcf2d675d736e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs",
+      "sha256": "3ce3d29eaa1df00564ce104e2341664bb3515d9adf9189526cb661b97cbb6e2a"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetIntrinsics.cs",
+      "sha256": "1fe7342b36b67e5983033c71addb538a2611854b218918a0870737fc7c86378f"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetStorage.cs",
+      "sha256": "5cb2fe3ea3dd235812bc8b5a40becf9efc7f358db06df75c8514f29482dd01f8"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime.Host/HostProvider.cs",
+      "sha256": "76bff695e02196e234486456b35f039366180640a9594b1158e48520f016d73e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime.Host/RoslynObj.CSharp.Runtime.Host.csproj",
+      "sha256": "dc4f060e407ffe0f101d831afa7cb3d22a87f62d1822253a4fd243c7135e9c2a"
+    },
+    {
+      "path": "tests/AggregateAbi/IntegerChecks.cs",
+      "sha256": "eb3978eb28e8b3c7e8b645d313472570852394a09890e166803aa4e2967b6fdf"
+    },
+    {
+      "path": "tests/AggregateAbi/IntegerChecks.csproj",
+      "sha256": "c125ae91b277e44f373851616339792cc67d78409cc52bbd7596d4d24ffeb14d"
+    },
+    {
+      "path": "tests/AggregateAbi/ShapeChecks.cs",
+      "sha256": "256a540caaa41ca58c965a01801de6f97f4deff140eb265f46a07de9a0fc5182"
+    },
+    {
+      "path": "tests/AggregateAbi/ShapeChecks.csproj",
+      "sha256": "843ff838943b921ddb2ac0d32cfb670615bb3ec0bc8225441fcfd35d547561d4"
+    },
+    {
+      "path": "tests/Assembly/Assembly.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Assembly/Program.cs",
+      "sha256": "c21d379abf5c8781696ac6eab346728f1fcf3b95aa4a38a048b0250364ad502f"
+    },
+    {
+      "path": "tests/Callbacks/Callbacks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/Callbacks/Program.cs",
+      "sha256": "1391444ac631e5b91b42121908a22db397b6ca78a809c9e62feb83f6dd339711"
+    },
+    {
+      "path": "tests/ControlFlow/Checks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/ControlFlow/Program.cs",
+      "sha256": "d45a0b351fe76cdb9914adf5fef95601336e4890e2871b341d1d1e0bdba58174"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/errno-thread.c",
+      "sha256": "4e87daf838fc51b1322d39379b4e48b7c89462bf6ab10cfb0c4f8ba2a30ed1a9"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/native-oracle.c",
+      "sha256": "9cdad8565ee8cea81c11e5536d6cd8060586bc4e25643afbb00050991b3bdb5b"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/native-raw-errno.c",
+      "sha256": "a446056506077160d7650b20c23c6cc325431933150757d3ef2ffc03a3b44ca2"
+    },
+    {
+      "path": "tests/HostContracts/HostContracts.csproj",
+      "sha256": "c23fa455877be60bf761e5d82534bedcaed18224c0b8525fd8193687a1f576d9"
+    },
+    {
+      "path": "tests/HostContracts/Program.cs",
+      "sha256": "a73aa38499ea0ed72f279beca6eda8b40fd3a3e1de300319a5116c2ebfd40c1c"
+    },
+    {
+      "path": "tests/IntrinsicFacts/IntrinsicFacts.csproj",
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "tests/IntrinsicFacts/Program.cs",
+      "sha256": "1d061c23dc3c05132eefedf6380dee8369646abb53fb7f8667eef9a5f95f6f0f"
+    },
+    {
+      "path": "tests/Intrinsics/Checks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/Intrinsics/Program.cs",
+      "sha256": "458dbdc191f14e1188a2ca70ff54f2cdb0f9964d7f568e8809ddfed37cb49777"
+    },
+    {
+      "path": "tests/Inventory/Inventory.csproj",
+      "sha256": "6d92bc9639f4d2a32c1040632677679a34f423489d599341f981bd86c77a51ab"
+    },
+    {
+      "path": "tests/Inventory/Program.cs",
+      "sha256": "9a589ddd3cf5826d2be7d905eca29a86deeb596088b90eb6abd6277a9cb4bb58"
+    },
+    {
+      "path": "tests/NativeProviders/Emit.cs",
+      "sha256": "ad484ccef3d5c535c56d2f40e997b2d3073f68ecfc1950215878cc914e261b5a"
+    },
+    {
+      "path": "tests/NativeProviders/Emit.csproj",
+      "sha256": "414392223a091d8802d6c739a8fb7ba9838f9e4cc5c5466cb1da9affbd34668b"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoChecks.cs",
+      "sha256": "7057abb7795b3715168ddcfd296bd19a4534254bb30681ebf792f9fc1af6e080"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoChecks.csproj",
+      "sha256": "b44a9873c76ab739544b877527e6ddcf42cd92e19b31f8d99366d59eedf5c7a1"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoUseAudit.cs",
+      "sha256": "5292d572332b980fdd7d6f8624bf5a8026a49981bc12f6ebadbfddfe426c3db4"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoUseAudit.csproj",
+      "sha256": "5c8a09a0c5534bfb78f9f0cc832b720445acb0027bb12888ab6daa452c1d1fc3"
+    },
+    {
+      "path": "tests/OperatorFacts/OperatorFacts.csproj",
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "tests/OperatorFacts/Program.cs",
+      "sha256": "ac2b9f06f761bba9c78f6277a2f2667c07b7f79f43e4dcfd2569bf0a47e1c3e6"
+    },
+    {
+      "path": "tests/ProgramProjection/GeneratedChecks.cs",
+      "sha256": "5899c9e3301ee2e23efbe2394fe68209ee72bab1800da5ee5e17cc17ec43df8e"
+    },
+    {
+      "path": "tests/ProgramProjection/GeneratedChecks.csproj",
+      "sha256": "6af2d88ddc63ac3b77f7ee50de83d717c1aeb0a9411fdafc877aab720969bbde"
+    },
+    {
+      "path": "tests/ProgramProjection/Program.cs",
+      "sha256": "c940ea80edbfcfae15e439398b6b665087a362ebcffe22a9831547865b41f59f"
+    },
+    {
+      "path": "tests/ProgramProjection/Projection.csproj",
+      "sha256": "7a451631a06e8d1cc644efacf92e578ed96a63321a0d5e8d51aaf5a370f149e5"
+    },
+    {
+      "path": "tests/Projection/Program.cs",
+      "sha256": "fe2c07953046f3077951f40050f6f839f506c579b7fa58e4513972cd6bd8dcf3"
+    },
+    {
+      "path": "tests/Projection/Projection.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Sequencing/GeneratedChecks.cs",
+      "sha256": "359d880dd83d68bf62ecd53132127eef25c2a8e44659ff79004de85f7c8a00a5"
+    },
+    {
+      "path": "tests/Sequencing/GeneratedChecks.csproj",
+      "sha256": "6af2d88ddc63ac3b77f7ee50de83d717c1aeb0a9411fdafc877aab720969bbde"
+    },
+    {
+      "path": "tests/Sequencing/Probe.cs",
+      "sha256": "bfaab72efaf601a16b9ec12b836b21de6f5555a827a79b6c4efcd720f0c9c26f"
+    },
+    {
+      "path": "tests/Sequencing/Probe.csproj",
+      "sha256": "2f1e8867a9c4bd350246aae6053bee871f1fd2c3cbf5629f37964576bdfc38ab"
+    },
+    {
+      "path": "tests/SqliteEmissionProbe/Program.cs",
+      "sha256": "44cb3161520aa00739500fc26b768595030c9093ffee0940a24f28f664fd829b"
+    },
+    {
+      "path": "tests/SqliteEmissionProbe/SqliteEmissionProbe.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Storage/Program.cs",
+      "sha256": "fb19e46a251a747681386a343f17aebfa92d88a95883e4ffe9007673beddf6f4"
+    },
+    {
+      "path": "tests/Storage/Storage.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/StorageFacts/Program.cs",
+      "sha256": "95716be6e562cc7f0f22e11b8f04f3c34a2d865ab6fd909f9c46f183b88c7f32"
+    },
+    {
+      "path": "tests/StorageFacts/StorageFacts.csproj",
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "tests/Variadics/Addressed.csproj",
+      "sha256": "613242da70e0fa6aba9d9780e34867cdcea34bf130701aa04125a5c5d28195ef"
+    },
+    {
+      "path": "tests/Variadics/AddressedChecks.cs",
+      "sha256": "f9a8f41e5b89a1712ee96e54883c9cb6bc1e19f2f23b5a7e6585d49b251cd459"
+    },
+    {
+      "path": "tests/Variadics/Outbound.csproj",
+      "sha256": "71f4f838e5d0f04f408047d6a0f4e01bef62230b48d46b217ec7058682baa098"
+    },
+    {
+      "path": "tests/Variadics/OutboundChecks.cs",
+      "sha256": "df5d825df9eec9451add832e608240e5c496f2e2768a51897fd043f30506cf2e"
+    },
+    {
+      "path": "tests/run-t3-errno-provider.py",
+      "sha256": "e669bb37461c2deff53277f89a608151e56cd2529e42c37fc7a2d5f1b1f98e33"
+    },
+    {
+      "path": "tools/run-measured.py",
+      "sha256": "b4c89236a1717c1eb11588595509d41ad2bfa47cb0bd773d99305d6a9d4a986a"
+    }
+  ],
+  "limits": [
+    "Explicit Linux x64/glibc logical errno substitution; not raw libc slot/address identity",
+    "This receipt exercises fourteen exact imports, not all 88 SQLite native requirements",
+    "Incoming scalar/pointer qsort/pthread callbacks and two-fixed-argument open gateway only",
+    "Protocol code also protects enabled unknown variadic/aggregate gateways; this fixture does not establish those combinations",
+    "dlerror snapshot/read-clear, loader/buffer ownership and the remaining native contracts are open",
+    "No general errno alias analysis, nonlocal jumps, cancellation or native C++ exception propagation claim"
+  ],
+  "errnoUseAudit": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-public-use-audit-2.json",
+      "sha256": "c41c292517d8451118a92d598f4bc02bd5993f92706e1483870a05fb7022262a",
+      "bytes": 32268
+    },
+    "input": {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+      "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+      "bytes": 297556992
+    },
+    "uniqueCalls": 28,
+    "uniqueCalleeReferences": 28,
+    "terminalCounts": {
+      "ordinary-int32-call-argument": 10,
+      "int32-local-initializer-value": 3,
+      "int32-equality-value": 7,
+      "int32-assignment-rhs-value": 5,
+      "int32-inequality-value": 2,
+      "int32-return-value": 1
+    },
+    "initializerRootOverlapOccurrences": 3,
+    "bodyPlusExplicitInitializerRootOccurrences": 31,
+    "scope": "Only exact signed32 prvalue dereferences with whitelisted terminal value consumers establish this selected no-escape pattern. Lvalue/ref/comma/conditional forwarding is unclassified; no general alias-analysis claim.",
+    "occurrenceExplanation": "Body traversal deduplicates public node identity; explicit initialization roots revisit the same reported initializer call identities. Counts are inventory contexts, never an execution schedule.",
+    "proofSource": "Immutable public reader audit; no source parsing or general alias-analysis claim"
+  },
+  "export": {
+    "recipe": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export-errno-thread-2/run.json",
+      "sha256": "5245f79e783a4821ad1c5f76dda3926ba8501dd8aeb272d5de4d6158624f6991",
+      "bytes": 14032
+    },
+    "frozenHostFlags": [
+      "--gcc",
+      "--c17",
+      "--no_strict_gnu",
+      "--gnu_version",
+      "130300",
+      "-D__DBL_MIN_EXP__=(-1021)",
+      "-D__UINT_LEAST16_MAX__=0xffff",
+      "-D__FLT16_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_ACQUIRE=2",
+      "-D__FLT128_MAX_10_EXP__=4932",
+      "-D__FLT_MIN__=1.17549435082228750796873653722224568e-38F",
+      "-D__UINT_LEAST8_TYPE__=unsigned char",
+      "-D__SIZEOF_FLOAT80__=16",
+      "-D__CHAR_BIT__=8",
+      "-D__UINT8_MAX__=0xff",
+      "-D__WINT_MAX__=0xffffffffU",
+      "-D__FLT32_MIN_EXP__=(-125)",
+      "-D__WCHAR_MAX__=0x7fffffff",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8=1",
+      "-D__GCC_ATOMIC_CHAR_LOCK_FREE=2",
+      "-D__FLT32X_DECIMAL_DIG__=17",
+      "-D__FLT_EVAL_METHOD__=0",
+      "-D__FLT64_DECIMAL_DIG__=17",
+      "-D__GCC_ATOMIC_CHAR32_T_LOCK_FREE=2",
+      "-D__UINT_FAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SIG_ATOMIC_TYPE__=int",
+      "-D__DBL_MIN_10_EXP__=(-307)",
+      "-D__FLT32X_MAX_EXP__=1024",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1=1",
+      "-D__FLT32_HAS_DENORM__=1",
+      "-D__UINT_FAST8_MAX__=0xff",
+      "-D__FLT32_MAX_10_EXP__=38",
+      "-D__DEC64_MAX_EXP__=385",
+      "-D__INT_LEAST8_WIDTH__=8",
+      "-D__UINT_LEAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SHRT_MAX__=0x7fff",
+      "-D__LDBL_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__FLT64X_MAX_10_EXP__=4932",
+      "-D__LDBL_IS_IEC_60559__=1",
+      "-D__FLT64X_HAS_QUIET_NAN__=1",
+      "-D__UINT_LEAST8_MAX__=0xff",
+      "-D__GCC_ATOMIC_BOOL_LOCK_FREE=2",
+      "-D__FLT128_DENORM_MIN__=6.47517511943802511092443895822764655e-4966F128",
+      "-D__UINTMAX_TYPE__=long unsigned int",
+      "-D__DEC32_EPSILON__=1E-6DF",
+      "-D__FLT_EVAL_METHOD_TS_18661_3__=0",
+      "-D__UINT32_MAX__=0xffffffffU",
+      "-D__DBL_DENORM_MIN__=((double)4.94065645841246544176568792868221372e-324L)",
+      "-D__FLT128_MIN_EXP__=(-16381)",
+      "-D__WINT_MIN__=0U",
+      "-D__FLT128_MIN_10_EXP__=(-4931)",
+      "-D__FLT32X_IS_IEC_60559__=1",
+      "-D__INT_LEAST16_WIDTH__=16",
+      "-D__SCHAR_MAX__=0x7f",
+      "-D__FLT128_MANT_DIG__=113",
+      "-D__WCHAR_MIN__=(-__WCHAR_MAX__ - 1)",
+      "-D__GCC_ATOMIC_POINTER_LOCK_FREE=2",
+      "-D__ATOMIC_SEQ_CST=5",
+      "-D__INT_LEAST64_MAX__=0x7fffffffffffffffL",
+      "-D__FLT32X_MANT_DIG__=53",
+      "-D__FLT64X_EPSILON__=1.08420217248550443400745280086994171e-19F64x",
+      "-D__DEC64_MIN_EXP__=(-382)",
+      "-D__DBL_DIG__=15",
+      "-D__FLT_EPSILON__=1.19209289550781250000000000000000000e-7F",
+      "-D__SHRT_WIDTH__=16",
+      "-D__FLT32_IS_IEC_60559__=1",
+      "-D__LDBL_MIN__=3.36210314311209350626267781732175260e-4932L",
+      "-D__DBL_IS_IEC_60559__=1",
+      "-D__DEC32_MAX__=9.999999E96DF",
+      "-D__FLT64X_DENORM_MIN__=3.64519953188247460252840593361941982e-4951F64x",
+      "-D__FLT32X_HAS_INFINITY__=1",
+      "-D__INT_WIDTH__=32",
+      "-D__DECIMAL_DIG__=21",
+      "-D__FLT64_EPSILON__=2.22044604925031308084726333618164062e-16F64",
+      "-D__FLT128_IS_IEC_60559__=1",
+      "-D__FLT64X_MIN_10_EXP__=(-4931)",
+      "-D__LDBL_HAS_QUIET_NAN__=1",
+      "-D__FLT16_MIN_EXP__=(-13)",
+      "-D__FLT64_MANT_DIG__=53",
+      "-D__FLT64X_MANT_DIG__=64",
+      "-D__pie__=2",
+      "-D__MMX__=1",
+      "-D__FLT_HAS_DENORM__=1",
+      "-D__SIZEOF_LONG_DOUBLE__=16",
+      "-D__BIGGEST_ALIGNMENT__=16",
+      "-D__FLT64_MAX_10_EXP__=308",
+      "-D__FLT16_MAX_10_EXP__=4",
+      "-D__DBL_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INT_FAST32_MAX__=0x7fffffffffffffffL",
+      "-D__DBL_HAS_INFINITY__=1",
+      "-D__INT64_MAX__=0x7fffffffffffffffL",
+      "-D__SIZEOF_FLOAT__=4",
+      "-D__DEC32_MIN_EXP__=(-94)",
+      "-D__INTPTR_WIDTH__=64",
+      "-D__UINT_LEAST32_MAX__=0xffffffffU",
+      "-D__FLT32X_HAS_DENORM__=1",
+      "-D__INT_FAST16_TYPE__=long int",
+      "-D__MMX_WITH_SSE__=1",
+      "-D__LDBL_HAS_DENORM__=1",
+      "-D__FLT128_HAS_INFINITY__=1",
+      "-D__DEC32_MIN__=1E-95DF",
+      "-D__DBL_MAX_EXP__=1024",
+      "-D__WCHAR_WIDTH__=32",
+      "-D__FLT32_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__DEC128_EPSILON__=1E-33DL",
+      "-D__FLT16_DECIMAL_DIG__=5",
+      "-D__SSE2_MATH__=1",
+      "-D__ATOMIC_HLE_RELEASE=131072",
+      "-D__PTRDIFF_MAX__=0x7fffffffffffffffL",
+      "-D__amd64=1",
+      "-D__ATOMIC_HLE_ACQUIRE=65536",
+      "-D__LONG_LONG_MAX__=0x7fffffffffffffffLL",
+      "-D__SIZEOF_SIZE_T__=8",
+      "-D__FLT64X_MIN_EXP__=(-16381)",
+      "-D__SIZEOF_WINT_T__=4",
+      "-D__LONG_LONG_WIDTH__=64",
+      "-D__FLT32_MAX_EXP__=128",
+      "-D__FLT_MIN_EXP__=(-125)",
+      "-D__INT16_MAX__=0x7fff",
+      "-D__x86_64=1",
+      "-D__INT_FAST64_TYPE__=long int",
+      "-D__FLT64_DENORM_MIN__=4.94065645841246544176568792868221372e-324F64",
+      "-D__FLT16_DENORM_MIN__=5.96046447753906250000000000000000000e-8F16",
+      "-D__FLT128_EPSILON__=1.92592994438723585305597794258492732e-34F128",
+      "-D__FLT64X_NORM_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__SIZEOF_POINTER__=8",
+      "-D__DBL_HAS_QUIET_NAN__=1",
+      "-D__FLT32X_EPSILON__=2.22044604925031308084726333618164062e-16F32x",
+      "-D__LDBL_MAX_EXP__=16384",
+      "-D__DECIMAL_BID_FORMAT__=1",
+      "-D__FLT64_MIN_EXP__=(-1021)",
+      "-D__FLT64_MIN_10_EXP__=(-307)",
+      "-D__FLT16_MIN_10_EXP__=(-4)",
+      "-D__FLT64X_DECIMAL_DIG__=21",
+      "-D__DEC128_MIN__=1E-6143DL",
+      "-D__UINT16_MAX__=0xffff",
+      "-D__DBL_HAS_DENORM__=1",
+      "-D__FLT32_MIN__=1.17549435082228750796873653722224568e-38F32",
+      "-D__UINT8_TYPE__=unsigned char",
+      "-D__FLT_DIG__=6",
+      "-D__DEC_EVAL_METHOD__=2",
+      "-D__FLT_MANT_DIG__=24",
+      "-D__LDBL_DECIMAL_DIG__=21",
+      "-D__INT_LEAST32_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_INT_LOCK_FREE=2",
+      "-D__FLT128_MAX_EXP__=16384",
+      "-D__FLT32_MANT_DIG__=24",
+      "-D__FLT32X_MIN_EXP__=(-1021)",
+      "-D__FLT128_HAS_DENORM__=1",
+      "-D__FLT32_DECIMAL_DIG__=9",
+      "-D__FLT128_DIG__=33",
+      "-D__DEC64_EPSILON__=1E-15DD",
+      "-D__DEC128_MIN_EXP__=(-6142)",
+      "-D__DEC128_MAX__=9.999999999999999999999999999999999E6144DL",
+      "-D__INT_FAST32_TYPE__=long int",
+      "-D__UINT_LEAST16_TYPE__=short unsigned int",
+      "-D__DEC128_MAX_EXP__=6145",
+      "-D__UINT64_MAX__=0xffffffffffffffffUL",
+      "-D__FLT_IS_IEC_60559__=1",
+      "-D__FLT64X_DIG__=18",
+      "-D__INT8_TYPE__=signed char",
+      "-D__UINT32_TYPE__=unsigned int",
+      "-D__FLT_RADIX__=2",
+      "-D__INT_LEAST16_TYPE__=short int",
+      "-D__LDBL_EPSILON__=1.08420217248550443400745280086994171e-19L",
+      "-D__FLT16_DIG__=3",
+      "-D__SSE_MATH__=1",
+      "-D__FLT32X_MIN__=2.22507385850720138309023271733240406e-308F32x",
+      "-D__SIG_ATOMIC_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_WCHAR_T_LOCK_FREE=2",
+      "-D__SIZEOF_PTRDIFF_T__=8",
+      "-D__FLT64X_HAS_INFINITY__=1",
+      "-D__FLT32_HAS_INFINITY__=1",
+      "-D__SIZEOF_LONG__=8",
+      "-D__LDBL_DIG__=18",
+      "-D__FLT64_IS_IEC_60559__=1",
+      "-D__x86_64__=1",
+      "-D__FLT16_IS_IEC_60559__=1",
+      "-D__FLT16_MAX_EXP__=16",
+      "-D__DEC32_SUBNORMAL_MIN__=0.000001E-95DF",
+      "-D__INT_FAST16_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_DIG__=15",
+      "-D__UINT_FAST32_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_LEAST64_TYPE__=long unsigned int",
+      "-D__FLT16_EPSILON__=9.76562500000000000000000000000000000e-4F16",
+      "-D__FLT_HAS_QUIET_NAN__=1",
+      "-D__FLT_MAX_10_EXP__=38",
+      "-D__LONG_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64X_HAS_DENORM__=1",
+      "-D__DEC128_SUBNORMAL_MIN__=0.000000000000000000000000000000001E-6143DL",
+      "-D__FLT_HAS_INFINITY__=1",
+      "-D__UINT_FAST16_TYPE__=long unsigned int",
+      "-D__DEC64_MAX__=9.999999999999999E384DD",
+      "-D__INT_FAST32_WIDTH__=64",
+      "-D__SIZE_WIDTH__=64",
+      "-D__INT_LEAST16_MAX__=0x7fff",
+      "-D__FLT16_NORM_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__DEC64_MANT_DIG__=16",
+      "-D__FLT32_DENORM_MIN__=1.40129846432481707092372958328991613e-45F32",
+      "-D__SIG_ATOMIC_WIDTH__=32",
+      "-D__INT_LEAST64_TYPE__=long int",
+      "-D__INT16_TYPE__=short int",
+      "-D__INT_LEAST8_TYPE__=signed char",
+      "-D__FLT16_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__FLT128_MIN__=3.36210314311209350626267781732175260e-4932F128",
+      "-D__SIZEOF_INT__=4",
+      "-D__DEC32_MAX_EXP__=97",
+      "-D__INT_FAST8_MAX__=0x7f",
+      "-D__FLT128_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__INTPTR_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_HAS_QUIET_NAN__=1",
+      "-D__FLT32_MIN_10_EXP__=(-37)",
+      "-D__FLT32X_DIG__=15",
+      "-D__PTRDIFF_WIDTH__=64",
+      "-D__LDBL_MANT_DIG__=64",
+      "-D__INT_FAST16_WIDTH__=64",
+      "-D__FLT64_HAS_INFINITY__=1",
+      "-D__FLT64X_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__FLT16_HAS_INFINITY__=1",
+      "-D__SIG_ATOMIC_MIN__=(-__SIG_ATOMIC_MAX__ - 1)",
+      "-D__GCC_ATOMIC_LONG_LOCK_FREE=2",
+      "-D__DEC32_MANT_DIG__=7",
+      "-D__FLT16_MANT_DIG__=11",
+      "-D__INTPTR_TYPE__=long int",
+      "-D__UINT16_TYPE__=short unsigned int",
+      "-D__WCHAR_TYPE__=int",
+      "-D__pic__=2",
+      "-D__UINTPTR_MAX__=0xffffffffffffffffUL",
+      "-D__INT_FAST64_WIDTH__=64",
+      "-D__LDBL_HAS_INFINITY__=1",
+      "-D__INT_FAST64_MAX__=0x7fffffffffffffffL",
+      "-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1",
+      "-D__FLT_NORM_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__FLT64X_MAX_EXP__=16384",
+      "-D__UINT_FAST64_TYPE__=long unsigned int",
+      "-D__INT_MAX__=0x7fffffff",
+      "-D__INT64_TYPE__=long int",
+      "-D__FLT_MAX_EXP__=128",
+      "-D__DBL_MANT_DIG__=53",
+      "-D__SIZEOF_FLOAT128__=16",
+      "-D__GCC_ATOMIC_CHAR16_T_LOCK_FREE=2",
+      "-D__DEC64_MIN__=1E-383DD",
+      "-D__WINT_TYPE__=unsigned int",
+      "-D__UINT_LEAST32_TYPE__=unsigned int",
+      "-D__SIZEOF_SHORT__=2",
+      "-D__FLT32_NORM_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__SSE__=1",
+      "-D__LDBL_MIN_EXP__=(-16381)",
+      "-D__FLT64_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__amd64__=1",
+      "-D__WINT_WIDTH__=32",
+      "-D__INT_LEAST8_MAX__=0x7f",
+      "-D__INT_LEAST64_WIDTH__=64",
+      "-D__FLT32X_MAX_10_EXP__=308",
+      "-D__SIZEOF_INT128__=16",
+      "-D__FLT16_MIN__=6.10351562500000000000000000000000000e-5F16",
+      "-D__FLT64X_IS_IEC_60559__=1",
+      "-D__LDBL_MAX_10_EXP__=4932",
+      "-D__ATOMIC_RELAXED=0",
+      "-D__DBL_EPSILON__=((double)2.22044604925031308084726333618164062e-16L)",
+      "-D__INT_LEAST32_TYPE__=int",
+      "-D__FLT64_MAX_EXP__=1024",
+      "-D__SIZEOF_WCHAR_T__=4",
+      "-D__UINT64_TYPE__=long unsigned int",
+      "-D__FLT128_NORM_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__FLT64_NORM_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__FLT128_HAS_QUIET_NAN__=1",
+      "-D__INTMAX_MAX__=0x7fffffffffffffffL",
+      "-D__INT_FAST8_TYPE__=signed char",
+      "-D__FLT64X_MIN__=3.36210314311209350626267781732175260e-4932F64x",
+      "-D__FLT64_HAS_DENORM__=1",
+      "-D__FLT32_EPSILON__=1.19209289550781250000000000000000000e-7F32",
+      "-D__FLT16_HAS_DENORM__=1",
+      "-D__DBL_DECIMAL_DIG__=17",
+      "-D__INT_FAST8_WIDTH__=8",
+      "-D__FXSR__=1",
+      "-D__FLT32X_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__DBL_NORM_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INTMAX_WIDTH__=64",
+      "-D__FLT32_DIG__=6",
+      "-D__FLT_DENORM_MIN__=1.40129846432481707092372958328991613e-45F",
+      "-D__INT8_MAX__=0x7f",
+      "-D__LONG_WIDTH__=64",
+      "-D__DBL_MIN__=((double)2.22507385850720138309023271733240406e-308L)",
+      "-D__PIC__=2",
+      "-D__INT32_MAX__=0x7fffffff",
+      "-D__UINT_FAST32_TYPE__=long unsigned int",
+      "-D__FLT32X_NORM_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__FLT_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__SSE2__=1",
+      "-D__INT32_TYPE__=int",
+      "-D__SIZEOF_DOUBLE__=8",
+      "-D__FLT_MIN_10_EXP__=(-37)",
+      "-D__FLT64_MIN__=2.22507385850720138309023271733240406e-308F64",
+      "-D__INT_LEAST32_WIDTH__=32",
+      "-D__INTMAX_TYPE__=long int",
+      "-D__FLT32X_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_CONSUME=1",
+      "-D__UINTMAX_MAX__=0xffffffffffffffffUL",
+      "-D__PIE__=2",
+      "-D__FLT32X_DENORM_MIN__=4.94065645841246544176568792868221372e-324F32x",
+      "-D__DBL_MAX_10_EXP__=308",
+      "-D__LDBL_DENORM_MIN__=3.64519953188247460252840593361941982e-4951L",
+      "-D__PTRDIFF_TYPE__=long int",
+      "-D__FLT32X_MIN_10_EXP__=(-307)",
+      "-D__UINTPTR_TYPE__=long unsigned int",
+      "-D__DEC64_SUBNORMAL_MIN__=0.000000000000001E-383DD",
+      "-D__DEC128_MANT_DIG__=34",
+      "-D__LDBL_MIN_10_EXP__=(-4931)",
+      "-D__SIZEOF_LONG_LONG__=8",
+      "-D__FLT128_DECIMAL_DIG__=36",
+      "-D__GCC_ATOMIC_LLONG_LOCK_FREE=2",
+      "-D__FLT32_HAS_QUIET_NAN__=1",
+      "-D__FLT_DECIMAL_DIG__=9",
+      "-D__UINT_FAST16_MAX__=0xffffffffffffffffUL",
+      "-D__LDBL_NORM_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__GCC_ATOMIC_SHORT_LOCK_FREE=2",
+      "-D__SIZE_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_FAST8_TYPE__=unsigned char",
+      "-D__ATOMIC_ACQ_REL=4",
+      "-D__ATOMIC_RELEASE=3",
+      "--sys_include",
+      "/usr/lib/gcc/x86_64-linux-gnu/13/include",
+      "--sys_include",
+      "/usr/local/include",
+      "--sys_include",
+      "/usr/include/x86_64-linux-gnu",
+      "--sys_include",
+      "/usr/include"
+    ],
+    "command": [
+      "/usr/bin/python3",
+      "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "--gcc",
+      "--c17",
+      "--no_strict_gnu",
+      "--gnu_version",
+      "130300",
+      "-D__DBL_MIN_EXP__=(-1021)",
+      "-D__UINT_LEAST16_MAX__=0xffff",
+      "-D__FLT16_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_ACQUIRE=2",
+      "-D__FLT128_MAX_10_EXP__=4932",
+      "-D__FLT_MIN__=1.17549435082228750796873653722224568e-38F",
+      "-D__UINT_LEAST8_TYPE__=unsigned char",
+      "-D__SIZEOF_FLOAT80__=16",
+      "-D__CHAR_BIT__=8",
+      "-D__UINT8_MAX__=0xff",
+      "-D__WINT_MAX__=0xffffffffU",
+      "-D__FLT32_MIN_EXP__=(-125)",
+      "-D__WCHAR_MAX__=0x7fffffff",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8=1",
+      "-D__GCC_ATOMIC_CHAR_LOCK_FREE=2",
+      "-D__FLT32X_DECIMAL_DIG__=17",
+      "-D__FLT_EVAL_METHOD__=0",
+      "-D__FLT64_DECIMAL_DIG__=17",
+      "-D__GCC_ATOMIC_CHAR32_T_LOCK_FREE=2",
+      "-D__UINT_FAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SIG_ATOMIC_TYPE__=int",
+      "-D__DBL_MIN_10_EXP__=(-307)",
+      "-D__FLT32X_MAX_EXP__=1024",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1=1",
+      "-D__FLT32_HAS_DENORM__=1",
+      "-D__UINT_FAST8_MAX__=0xff",
+      "-D__FLT32_MAX_10_EXP__=38",
+      "-D__DEC64_MAX_EXP__=385",
+      "-D__INT_LEAST8_WIDTH__=8",
+      "-D__UINT_LEAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SHRT_MAX__=0x7fff",
+      "-D__LDBL_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__FLT64X_MAX_10_EXP__=4932",
+      "-D__LDBL_IS_IEC_60559__=1",
+      "-D__FLT64X_HAS_QUIET_NAN__=1",
+      "-D__UINT_LEAST8_MAX__=0xff",
+      "-D__GCC_ATOMIC_BOOL_LOCK_FREE=2",
+      "-D__FLT128_DENORM_MIN__=6.47517511943802511092443895822764655e-4966F128",
+      "-D__UINTMAX_TYPE__=long unsigned int",
+      "-D__DEC32_EPSILON__=1E-6DF",
+      "-D__FLT_EVAL_METHOD_TS_18661_3__=0",
+      "-D__UINT32_MAX__=0xffffffffU",
+      "-D__DBL_DENORM_MIN__=((double)4.94065645841246544176568792868221372e-324L)",
+      "-D__FLT128_MIN_EXP__=(-16381)",
+      "-D__WINT_MIN__=0U",
+      "-D__FLT128_MIN_10_EXP__=(-4931)",
+      "-D__FLT32X_IS_IEC_60559__=1",
+      "-D__INT_LEAST16_WIDTH__=16",
+      "-D__SCHAR_MAX__=0x7f",
+      "-D__FLT128_MANT_DIG__=113",
+      "-D__WCHAR_MIN__=(-__WCHAR_MAX__ - 1)",
+      "-D__GCC_ATOMIC_POINTER_LOCK_FREE=2",
+      "-D__ATOMIC_SEQ_CST=5",
+      "-D__INT_LEAST64_MAX__=0x7fffffffffffffffL",
+      "-D__FLT32X_MANT_DIG__=53",
+      "-D__FLT64X_EPSILON__=1.08420217248550443400745280086994171e-19F64x",
+      "-D__DEC64_MIN_EXP__=(-382)",
+      "-D__DBL_DIG__=15",
+      "-D__FLT_EPSILON__=1.19209289550781250000000000000000000e-7F",
+      "-D__SHRT_WIDTH__=16",
+      "-D__FLT32_IS_IEC_60559__=1",
+      "-D__LDBL_MIN__=3.36210314311209350626267781732175260e-4932L",
+      "-D__DBL_IS_IEC_60559__=1",
+      "-D__DEC32_MAX__=9.999999E96DF",
+      "-D__FLT64X_DENORM_MIN__=3.64519953188247460252840593361941982e-4951F64x",
+      "-D__FLT32X_HAS_INFINITY__=1",
+      "-D__INT_WIDTH__=32",
+      "-D__DECIMAL_DIG__=21",
+      "-D__FLT64_EPSILON__=2.22044604925031308084726333618164062e-16F64",
+      "-D__FLT128_IS_IEC_60559__=1",
+      "-D__FLT64X_MIN_10_EXP__=(-4931)",
+      "-D__LDBL_HAS_QUIET_NAN__=1",
+      "-D__FLT16_MIN_EXP__=(-13)",
+      "-D__FLT64_MANT_DIG__=53",
+      "-D__FLT64X_MANT_DIG__=64",
+      "-D__pie__=2",
+      "-D__MMX__=1",
+      "-D__FLT_HAS_DENORM__=1",
+      "-D__SIZEOF_LONG_DOUBLE__=16",
+      "-D__BIGGEST_ALIGNMENT__=16",
+      "-D__FLT64_MAX_10_EXP__=308",
+      "-D__FLT16_MAX_10_EXP__=4",
+      "-D__DBL_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INT_FAST32_MAX__=0x7fffffffffffffffL",
+      "-D__DBL_HAS_INFINITY__=1",
+      "-D__INT64_MAX__=0x7fffffffffffffffL",
+      "-D__SIZEOF_FLOAT__=4",
+      "-D__DEC32_MIN_EXP__=(-94)",
+      "-D__INTPTR_WIDTH__=64",
+      "-D__UINT_LEAST32_MAX__=0xffffffffU",
+      "-D__FLT32X_HAS_DENORM__=1",
+      "-D__INT_FAST16_TYPE__=long int",
+      "-D__MMX_WITH_SSE__=1",
+      "-D__LDBL_HAS_DENORM__=1",
+      "-D__FLT128_HAS_INFINITY__=1",
+      "-D__DEC32_MIN__=1E-95DF",
+      "-D__DBL_MAX_EXP__=1024",
+      "-D__WCHAR_WIDTH__=32",
+      "-D__FLT32_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__DEC128_EPSILON__=1E-33DL",
+      "-D__FLT16_DECIMAL_DIG__=5",
+      "-D__SSE2_MATH__=1",
+      "-D__ATOMIC_HLE_RELEASE=131072",
+      "-D__PTRDIFF_MAX__=0x7fffffffffffffffL",
+      "-D__amd64=1",
+      "-D__ATOMIC_HLE_ACQUIRE=65536",
+      "-D__LONG_LONG_MAX__=0x7fffffffffffffffLL",
+      "-D__SIZEOF_SIZE_T__=8",
+      "-D__FLT64X_MIN_EXP__=(-16381)",
+      "-D__SIZEOF_WINT_T__=4",
+      "-D__LONG_LONG_WIDTH__=64",
+      "-D__FLT32_MAX_EXP__=128",
+      "-D__FLT_MIN_EXP__=(-125)",
+      "-D__INT16_MAX__=0x7fff",
+      "-D__x86_64=1",
+      "-D__INT_FAST64_TYPE__=long int",
+      "-D__FLT64_DENORM_MIN__=4.94065645841246544176568792868221372e-324F64",
+      "-D__FLT16_DENORM_MIN__=5.96046447753906250000000000000000000e-8F16",
+      "-D__FLT128_EPSILON__=1.92592994438723585305597794258492732e-34F128",
+      "-D__FLT64X_NORM_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__SIZEOF_POINTER__=8",
+      "-D__DBL_HAS_QUIET_NAN__=1",
+      "-D__FLT32X_EPSILON__=2.22044604925031308084726333618164062e-16F32x",
+      "-D__LDBL_MAX_EXP__=16384",
+      "-D__DECIMAL_BID_FORMAT__=1",
+      "-D__FLT64_MIN_EXP__=(-1021)",
+      "-D__FLT64_MIN_10_EXP__=(-307)",
+      "-D__FLT16_MIN_10_EXP__=(-4)",
+      "-D__FLT64X_DECIMAL_DIG__=21",
+      "-D__DEC128_MIN__=1E-6143DL",
+      "-D__UINT16_MAX__=0xffff",
+      "-D__DBL_HAS_DENORM__=1",
+      "-D__FLT32_MIN__=1.17549435082228750796873653722224568e-38F32",
+      "-D__UINT8_TYPE__=unsigned char",
+      "-D__FLT_DIG__=6",
+      "-D__DEC_EVAL_METHOD__=2",
+      "-D__FLT_MANT_DIG__=24",
+      "-D__LDBL_DECIMAL_DIG__=21",
+      "-D__INT_LEAST32_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_INT_LOCK_FREE=2",
+      "-D__FLT128_MAX_EXP__=16384",
+      "-D__FLT32_MANT_DIG__=24",
+      "-D__FLT32X_MIN_EXP__=(-1021)",
+      "-D__FLT128_HAS_DENORM__=1",
+      "-D__FLT32_DECIMAL_DIG__=9",
+      "-D__FLT128_DIG__=33",
+      "-D__DEC64_EPSILON__=1E-15DD",
+      "-D__DEC128_MIN_EXP__=(-6142)",
+      "-D__DEC128_MAX__=9.999999999999999999999999999999999E6144DL",
+      "-D__INT_FAST32_TYPE__=long int",
+      "-D__UINT_LEAST16_TYPE__=short unsigned int",
+      "-D__DEC128_MAX_EXP__=6145",
+      "-D__UINT64_MAX__=0xffffffffffffffffUL",
+      "-D__FLT_IS_IEC_60559__=1",
+      "-D__FLT64X_DIG__=18",
+      "-D__INT8_TYPE__=signed char",
+      "-D__UINT32_TYPE__=unsigned int",
+      "-D__FLT_RADIX__=2",
+      "-D__INT_LEAST16_TYPE__=short int",
+      "-D__LDBL_EPSILON__=1.08420217248550443400745280086994171e-19L",
+      "-D__FLT16_DIG__=3",
+      "-D__SSE_MATH__=1",
+      "-D__FLT32X_MIN__=2.22507385850720138309023271733240406e-308F32x",
+      "-D__SIG_ATOMIC_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_WCHAR_T_LOCK_FREE=2",
+      "-D__SIZEOF_PTRDIFF_T__=8",
+      "-D__FLT64X_HAS_INFINITY__=1",
+      "-D__FLT32_HAS_INFINITY__=1",
+      "-D__SIZEOF_LONG__=8",
+      "-D__LDBL_DIG__=18",
+      "-D__FLT64_IS_IEC_60559__=1",
+      "-D__x86_64__=1",
+      "-D__FLT16_IS_IEC_60559__=1",
+      "-D__FLT16_MAX_EXP__=16",
+      "-D__DEC32_SUBNORMAL_MIN__=0.000001E-95DF",
+      "-D__INT_FAST16_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_DIG__=15",
+      "-D__UINT_FAST32_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_LEAST64_TYPE__=long unsigned int",
+      "-D__FLT16_EPSILON__=9.76562500000000000000000000000000000e-4F16",
+      "-D__FLT_HAS_QUIET_NAN__=1",
+      "-D__FLT_MAX_10_EXP__=38",
+      "-D__LONG_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64X_HAS_DENORM__=1",
+      "-D__DEC128_SUBNORMAL_MIN__=0.000000000000000000000000000000001E-6143DL",
+      "-D__FLT_HAS_INFINITY__=1",
+      "-D__UINT_FAST16_TYPE__=long unsigned int",
+      "-D__DEC64_MAX__=9.999999999999999E384DD",
+      "-D__INT_FAST32_WIDTH__=64",
+      "-D__SIZE_WIDTH__=64",
+      "-D__INT_LEAST16_MAX__=0x7fff",
+      "-D__FLT16_NORM_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__DEC64_MANT_DIG__=16",
+      "-D__FLT32_DENORM_MIN__=1.40129846432481707092372958328991613e-45F32",
+      "-D__SIG_ATOMIC_WIDTH__=32",
+      "-D__INT_LEAST64_TYPE__=long int",
+      "-D__INT16_TYPE__=short int",
+      "-D__INT_LEAST8_TYPE__=signed char",
+      "-D__FLT16_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__FLT128_MIN__=3.36210314311209350626267781732175260e-4932F128",
+      "-D__SIZEOF_INT__=4",
+      "-D__DEC32_MAX_EXP__=97",
+      "-D__INT_FAST8_MAX__=0x7f",
+      "-D__FLT128_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__INTPTR_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_HAS_QUIET_NAN__=1",
+      "-D__FLT32_MIN_10_EXP__=(-37)",
+      "-D__FLT32X_DIG__=15",
+      "-D__PTRDIFF_WIDTH__=64",
+      "-D__LDBL_MANT_DIG__=64",
+      "-D__INT_FAST16_WIDTH__=64",
+      "-D__FLT64_HAS_INFINITY__=1",
+      "-D__FLT64X_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__FLT16_HAS_INFINITY__=1",
+      "-D__SIG_ATOMIC_MIN__=(-__SIG_ATOMIC_MAX__ - 1)",
+      "-D__GCC_ATOMIC_LONG_LOCK_FREE=2",
+      "-D__DEC32_MANT_DIG__=7",
+      "-D__FLT16_MANT_DIG__=11",
+      "-D__INTPTR_TYPE__=long int",
+      "-D__UINT16_TYPE__=short unsigned int",
+      "-D__WCHAR_TYPE__=int",
+      "-D__pic__=2",
+      "-D__UINTPTR_MAX__=0xffffffffffffffffUL",
+      "-D__INT_FAST64_WIDTH__=64",
+      "-D__LDBL_HAS_INFINITY__=1",
+      "-D__INT_FAST64_MAX__=0x7fffffffffffffffL",
+      "-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1",
+      "-D__FLT_NORM_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__FLT64X_MAX_EXP__=16384",
+      "-D__UINT_FAST64_TYPE__=long unsigned int",
+      "-D__INT_MAX__=0x7fffffff",
+      "-D__INT64_TYPE__=long int",
+      "-D__FLT_MAX_EXP__=128",
+      "-D__DBL_MANT_DIG__=53",
+      "-D__SIZEOF_FLOAT128__=16",
+      "-D__GCC_ATOMIC_CHAR16_T_LOCK_FREE=2",
+      "-D__DEC64_MIN__=1E-383DD",
+      "-D__WINT_TYPE__=unsigned int",
+      "-D__UINT_LEAST32_TYPE__=unsigned int",
+      "-D__SIZEOF_SHORT__=2",
+      "-D__FLT32_NORM_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__SSE__=1",
+      "-D__LDBL_MIN_EXP__=(-16381)",
+      "-D__FLT64_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__amd64__=1",
+      "-D__WINT_WIDTH__=32",
+      "-D__INT_LEAST8_MAX__=0x7f",
+      "-D__INT_LEAST64_WIDTH__=64",
+      "-D__FLT32X_MAX_10_EXP__=308",
+      "-D__SIZEOF_INT128__=16",
+      "-D__FLT16_MIN__=6.10351562500000000000000000000000000e-5F16",
+      "-D__FLT64X_IS_IEC_60559__=1",
+      "-D__LDBL_MAX_10_EXP__=4932",
+      "-D__ATOMIC_RELAXED=0",
+      "-D__DBL_EPSILON__=((double)2.22044604925031308084726333618164062e-16L)",
+      "-D__INT_LEAST32_TYPE__=int",
+      "-D__FLT64_MAX_EXP__=1024",
+      "-D__SIZEOF_WCHAR_T__=4",
+      "-D__UINT64_TYPE__=long unsigned int",
+      "-D__FLT128_NORM_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__FLT64_NORM_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__FLT128_HAS_QUIET_NAN__=1",
+      "-D__INTMAX_MAX__=0x7fffffffffffffffL",
+      "-D__INT_FAST8_TYPE__=signed char",
+      "-D__FLT64X_MIN__=3.36210314311209350626267781732175260e-4932F64x",
+      "-D__FLT64_HAS_DENORM__=1",
+      "-D__FLT32_EPSILON__=1.19209289550781250000000000000000000e-7F32",
+      "-D__FLT16_HAS_DENORM__=1",
+      "-D__DBL_DECIMAL_DIG__=17",
+      "-D__INT_FAST8_WIDTH__=8",
+      "-D__FXSR__=1",
+      "-D__FLT32X_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__DBL_NORM_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INTMAX_WIDTH__=64",
+      "-D__FLT32_DIG__=6",
+      "-D__FLT_DENORM_MIN__=1.40129846432481707092372958328991613e-45F",
+      "-D__INT8_MAX__=0x7f",
+      "-D__LONG_WIDTH__=64",
+      "-D__DBL_MIN__=((double)2.22507385850720138309023271733240406e-308L)",
+      "-D__PIC__=2",
+      "-D__INT32_MAX__=0x7fffffff",
+      "-D__UINT_FAST32_TYPE__=long unsigned int",
+      "-D__FLT32X_NORM_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__FLT_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__SSE2__=1",
+      "-D__INT32_TYPE__=int",
+      "-D__SIZEOF_DOUBLE__=8",
+      "-D__FLT_MIN_10_EXP__=(-37)",
+      "-D__FLT64_MIN__=2.22507385850720138309023271733240406e-308F64",
+      "-D__INT_LEAST32_WIDTH__=32",
+      "-D__INTMAX_TYPE__=long int",
+      "-D__FLT32X_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_CONSUME=1",
+      "-D__UINTMAX_MAX__=0xffffffffffffffffUL",
+      "-D__PIE__=2",
+      "-D__FLT32X_DENORM_MIN__=4.94065645841246544176568792868221372e-324F32x",
+      "-D__DBL_MAX_10_EXP__=308",
+      "-D__LDBL_DENORM_MIN__=3.64519953188247460252840593361941982e-4951L",
+      "-D__PTRDIFF_TYPE__=long int",
+      "-D__FLT32X_MIN_10_EXP__=(-307)",
+      "-D__UINTPTR_TYPE__=long unsigned int",
+      "-D__DEC64_SUBNORMAL_MIN__=0.000000000000001E-383DD",
+      "-D__DEC128_MANT_DIG__=34",
+      "-D__LDBL_MIN_10_EXP__=(-4931)",
+      "-D__SIZEOF_LONG_LONG__=8",
+      "-D__FLT128_DECIMAL_DIG__=36",
+      "-D__GCC_ATOMIC_LLONG_LOCK_FREE=2",
+      "-D__FLT32_HAS_QUIET_NAN__=1",
+      "-D__FLT_DECIMAL_DIG__=9",
+      "-D__UINT_FAST16_MAX__=0xffffffffffffffffUL",
+      "-D__LDBL_NORM_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__GCC_ATOMIC_SHORT_LOCK_FREE=2",
+      "-D__SIZE_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_FAST8_TYPE__=unsigned char",
+      "-D__ATOMIC_ACQ_REL=4",
+      "-D__ATOMIC_RELEASE=3",
+      "--sys_include",
+      "/usr/lib/gcc/x86_64-linux-gnu/13/include",
+      "--sys_include",
+      "/usr/local/include",
+      "--sys_include",
+      "/usr/include/x86_64-linux-gnu",
+      "--sys_include",
+      "/usr/include",
+      "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/errno-thread.c",
+      "-o",
+      "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/errno-thread.roslynobj"
+    ],
+    "reusedObject": true,
+    "scope": "Recorded GNU 13.3 host predefines/include paths; no SQLite defines or timing flags"
+  },
+  "inputs": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+      "sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+      "bytes": 115573480
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "sha256": "67bd8496c5b9ad74fafeb1d52040020370d8e808bbc8219b8f824c44c696df17",
+      "bytes": 1268
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+      "bytes": 2129424
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/errno-thread.c",
+      "sha256": "4e87daf838fc51b1322d39379b4e48b7c89462bf6ab10cfb0c4f8ba2a30ed1a9",
+      "bytes": 4012
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-oracle.c",
+      "sha256": "9cdad8565ee8cea81c11e5536d6cd8060586bc4e25643afbb00050991b3bdb5b",
+      "bytes": 473
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-raw-errno.c",
+      "sha256": "a446056506077160d7650b20c23c6cc325431933150757d3ef2ffc03a3b44ca2",
+      "bytes": 361
+    }
+  ],
+  "dotnetSdk": "10.0.112",
+  "nativeCompilers": [
+    {
+      "role": "independent native oracle/helper",
+      "executable": {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+        "bytes": 1023032
+      },
+      "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    },
+    {
+      "role": "generated ABI gateway",
+      "executable": {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+        "bytes": 1023032
+      },
+      "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    }
+  ],
+  "object": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/errno-thread.roslynobj",
+    "sha256": "4947423ad150b67d75c1860118642c5973bededf3dc324295aaf8675f3168979",
+    "bytes": 4021248
+  },
+  "nativeOracle": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/errno-thread.c",
+      "sha256": "4e87daf838fc51b1322d39379b4e48b7c89462bf6ab10cfb0c4f8ba2a30ed1a9",
+      "bytes": 4012
+    },
+    "harness": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-oracle.c",
+      "sha256": "9cdad8565ee8cea81c11e5536d6cd8060586bc4e25643afbb00050991b3bdb5b",
+      "bytes": 473
+    },
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/errno-thread",
+      "sha256": "231c577ddce753eb6fb3cb1b1d7920a297d7c6da633aa0f401aef6d7f3403603",
+      "bytes": 17744
+    },
+    "output": "result=6223\nobservations=24\n0:1201\n1:1201\n2:-1\n3:20\n4:1\n5:555\n6:777\n7:777\n8:444\n9:333\n10:2\n11:9\n12:0\n13:0\n14:0\n15:0\n16:0\n17:0\n18:0\n19:0\n20:1\n21:1\n22:901\n23:1",
+    "role": "Separate native semantic oracle; never a generated dependency"
+  },
+  "interferenceHelper": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-raw-errno.c",
+      "sha256": "a446056506077160d7650b20c23c6cc325431933150757d3ef2ffc03a3b44ca2",
+      "bytes": 361
+    },
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/native/libraw-errno.so",
+      "sha256": "e2836725b47a0054dffca7926d91a4f2ceb6a996e805cbc5ab7b6c734295448a",
+      "bytes": 15584
+    },
+    "exports": "0000000000001146 T raw_errno_address\n0000000000001135 T raw_errno_read\n0000000000001119 T raw_errno_write",
+    "role": "Checker-only raw TLS interference; no application binding/body"
+  },
+  "emission": {
+    "counts": {
+      "functions": 17,
+      "records": 5,
+      "files": [
+        "Generated.cs",
+        "Generated.csproj",
+        "Generated.Abi.c",
+        "Generated.NativeImports.json"
+      ]
+    },
+    "deterministic": true,
+    "files": [
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.Abi.c",
+        "sha256": "db67a7f582a6f4d0119e75c4f575e1353d75260f3261613b46f2b678c77a5cdd",
+        "bytes": 17488
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.NativeImports.json",
+        "sha256": "f181be478d6b9adc9ddaeaa19dabdf6f6c03d89a443bf01df2e31a7809efb265",
+        "bytes": 8735
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.cs",
+        "sha256": "63a252a1f63986841eb4f504e1f774e163a733ad9af401c95e5a9732f4055d09",
+        "bytes": 29954
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.csproj",
+        "sha256": "834cffe4f552cd66023bce0f7ec62cb43964518c7ae617ef0a576fe64c5fd0de",
+        "bytes": 1402
+      }
+    ]
+  },
+  "nativeImports": {
+    "providerContract": "explicit native ABI bindings; no native application bodies",
+    "nativeErrorProtocol": "LinuxX64LogicalErrno",
+    "imports": [
+      {
+        "linkageName": "__errno_location",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "__errno_location",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": true,
+        "returnType": "int*",
+        "parameters": []
+      },
+      {
+        "linkageName": "open",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "open",
+        "callingConvention": "cdecl",
+        "isVariadic": true,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "sbyte*",
+          "int"
+        ]
+      },
+      {
+        "linkageName": "qsort",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "qsort",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "void",
+        "parameters": [
+          "void*",
+          "ulong",
+          "ulong",
+          "nint"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutexattr_init",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutexattr_init",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record*"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutexattr_settype",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutexattr_settype",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record*",
+          "int"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutex_init",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutex_init",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record__2*",
+          "Record*"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutex_lock",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutex_lock",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record__2*"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutex_trylock",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutex_trylock",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record__2*"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutex_unlock",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutex_unlock",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record__2*"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutex_destroy",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutex_destroy",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record__2*"
+        ]
+      },
+      {
+        "linkageName": "pthread_mutexattr_destroy",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_mutexattr_destroy",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "Record*"
+        ]
+      },
+      {
+        "linkageName": "pthread_create",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_create",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "ulong*",
+          "pthread_attr_t*",
+          "nint",
+          "void*"
+        ]
+      },
+      {
+        "linkageName": "pthread_join",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "pthread_join",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": [
+          "ulong",
+          "void**"
+        ]
+      },
+      {
+        "linkageName": "getpid",
+        "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+        "entryPoint": "getpid",
+        "callingConvention": "cdecl",
+        "isVariadic": false,
+        "aggregateGateway": false,
+        "logicalErrnoProvider": false,
+        "returnType": "int",
+        "parameters": []
+      }
+    ],
+    "generatedAbi": {
+      "library": "RoslynObj.Generated.Abi",
+      "source": "Generated.Abi.c",
+      "contract": "concrete SysV AMD64 ABI forwarding only; application bodies remain C#",
+      "logicalErrno": {
+        "protocol": "linux-x64-logical-errno-v1",
+        "entry": "__roslynobj_application_errno_location",
+        "addressContract": "native thread-local application slot; distinct from raw libc errno; coherent direct/indirect/address-exposed entry"
+      },
+      "hostEntries": [
+        {
+          "linkageName": "inner_compare",
+          "entry": "__host_entry_inner_compare",
+          "registration": "__register_host_inner_compare",
+          "bridge": "__native_inner_compare"
+        },
+        {
+          "linkageName": "outer_compare",
+          "entry": "__host_entry_outer_compare",
+          "registration": "__register_host_outer_compare",
+          "bridge": "__native_outer_compare"
+        },
+        {
+          "linkageName": "worker",
+          "entry": "__host_entry_worker",
+          "registration": "__register_host_worker",
+          "bridge": "__native_worker"
+        }
+      ],
+      "hostOutboundShapes": [
+        {
+          "entry": "__host_call_1",
+          "parameters": [
+            "void*",
+            "ulong",
+            "ulong",
+            "nint"
+          ],
+          "returnType": "void"
+        },
+        {
+          "entry": "__host_call_2",
+          "parameters": [
+            "Record*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_3",
+          "parameters": [
+            "Record*",
+            "int"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_4",
+          "parameters": [
+            "Record__2*",
+            "Record*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_5",
+          "parameters": [
+            "Record__2*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_6",
+          "parameters": [
+            "Record__2*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_7",
+          "parameters": [
+            "Record__2*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_8",
+          "parameters": [
+            "Record__2*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_9",
+          "parameters": [
+            "Record*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_10",
+          "parameters": [
+            "ulong*",
+            "pthread_attr_t*",
+            "nint",
+            "void*"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_11",
+          "parameters": [
+            "ulong",
+            "void**"
+          ],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_12",
+          "parameters": [],
+          "returnType": "int"
+        },
+        {
+          "entry": "__host_call_13",
+          "parameters": [],
+          "returnType": "int*"
+        },
+        {
+          "entry": "__host_call_14",
+          "parameters": [],
+          "returnType": "int"
+        }
+      ],
+      "entries": [],
+      "aggregateEntries": [],
+      "aggregateLayouts": [],
+      "aggregateOutboundShapes": [],
+      "outboundShapes": [
+        {
+          "entry": "__outbound_variadic_1",
+          "fixedParameterCount": 2,
+          "arguments": [
+            "sbyte*",
+            "int"
+          ],
+          "returnType": "int"
+        }
+      ]
+    }
+  },
+  "canonicalAddressAudit": {
+    "firstUseConstantAddresses": [
+      "errno_address",
+      "process_id"
+    ],
+    "exactlyOneCanonicalFieldPerEntry": true,
+    "rawLibcErrnoAddressExposed": false,
+    "logicalAccessor": {
+      "protocol": "linux-x64-logical-errno-v1",
+      "entry": "__roslynobj_application_errno_location",
+      "addressContract": "native thread-local application slot; distinct from raw libc errno; coherent direct/indirect/address-exposed entry"
+    },
+    "fields": [
+      {
+        "field": "__address___errno_location",
+        "libraryField": "__generatedAbiLibrary",
+        "entryPoint": "__roslynobj_application_errno_location"
+      },
+      {
+        "field": "__address_open",
+        "libraryField": "__library_2",
+        "entryPoint": "open"
+      },
+      {
+        "field": "__address_inner_compare",
+        "libraryField": "__generatedAbiLibrary",
+        "entryPoint": "__host_entry_inner_compare"
+      },
+      {
+        "field": "__address_qsort",
+        "libraryField": "__library_2",
+        "entryPoint": "qsort"
+      },
+      {
+        "field": "__address_outer_compare",
+        "libraryField": "__generatedAbiLibrary",
+        "entryPoint": "__host_entry_outer_compare"
+      },
+      {
+        "field": "__address_pthread_mutexattr_init",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutexattr_init"
+      },
+      {
+        "field": "__address_pthread_mutexattr_settype",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutexattr_settype"
+      },
+      {
+        "field": "__address_pthread_mutex_init",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutex_init"
+      },
+      {
+        "field": "__address_pthread_mutex_lock",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutex_lock"
+      },
+      {
+        "field": "__address_pthread_mutex_trylock",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutex_trylock"
+      },
+      {
+        "field": "__address_pthread_mutex_unlock",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutex_unlock"
+      },
+      {
+        "field": "__address_pthread_mutex_destroy",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutex_destroy"
+      },
+      {
+        "field": "__address_pthread_mutexattr_destroy",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_mutexattr_destroy"
+      },
+      {
+        "field": "__address_worker",
+        "libraryField": "__generatedAbiLibrary",
+        "entryPoint": "__host_entry_worker"
+      },
+      {
+        "field": "__address_pthread_create",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_create"
+      },
+      {
+        "field": "__address_pthread_join",
+        "libraryField": "__library_2",
+        "entryPoint": "pthread_join"
+      },
+      {
+        "field": "__address_getpid",
+        "libraryField": "__library_2",
+        "entryPoint": "getpid"
+      }
+    ]
+  },
+  "selectedNativeLayouts": {
+    "sizeAlignment": {
+      "pthread_mutexattr_t": {
+        "bytes": 4,
+        "alignmentBytes": 4
+      },
+      "pthread_mutex_t": {
+        "bytes": 40,
+        "alignmentBytes": 8
+      },
+      "pthread_t": {
+        "bytes": 8,
+        "alignmentBytes": 8
+      },
+      "pthread_attr_t": {
+        "bytes": 56,
+        "alignmentBytes": 8
+      }
+    },
+    "compiledChecks": [
+      "_Static_assert(sizeof(void *) == 8, \"64-bit native pointers required\");",
+      "_Static_assert(sizeof(va_list) == 24 && _Alignof(va_list) == 8, \"SysV AMD64 cursor storage required\");",
+      "_Static_assert(sizeof(int) == 4 && _Alignof(int) == 4, \"logical errno int ABI\");",
+      "_Static_assert(sizeof(pthread_mutexattr_t) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(pthread_mutexattr_t) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_mutexattr_t, __size) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_mutexattr_t *)0)->__size)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_mutexattr_t *)0)->__size)) == 1, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_mutexattr_t, __align) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_mutexattr_t *)0)->__align)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_mutexattr_t *)0)->__align)) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(sizeof(pthread_mutex_t) == 40, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(pthread_mutex_t) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_mutex_t, __data) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_mutex_t *)0)->__data)) == 40, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_mutex_t *)0)->__data)) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __lock) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__lock)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__lock)) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __count) == 4, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__count)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__count)) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __owner) == 8, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__owner)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__owner)) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __nusers) == 12, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__nusers)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__nusers)) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __kind) == 16, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__kind)) == 4, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__kind)) == 4, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __spins) == 20, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__spins)) == 2, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__spins)) == 2, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __elision) == 22, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__elision)) == 2, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__elision)) == 2, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((pthread_mutex_t *)0)->__data), __list) == 24, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list)) == 16, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list)) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list), __prev) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list) *)0)->__prev)) == 8, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list) *)0)->__prev)) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list), __next) == 8, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list) *)0)->__next)) == 8, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((__typeof__(((__typeof__(((pthread_mutex_t *)0)->__data) *)0)->__list) *)0)->__next)) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_mutex_t, __size) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_mutex_t *)0)->__size)) == 40, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_mutex_t *)0)->__size)) == 1, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_mutex_t, __align) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_mutex_t *)0)->__align)) == 8, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_mutex_t *)0)->__align)) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(sizeof(pthread_t) == 8, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(pthread_t) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(sizeof(pthread_attr_t) == 56, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(pthread_attr_t) == 8, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_attr_t, __size) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_attr_t *)0)->__size)) == 56, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_attr_t *)0)->__size)) == 1, \"captured provider storage alignment\");",
+      "_Static_assert(offsetof(pthread_attr_t, __align) == 0, \"captured provider member offset\");",
+      "_Static_assert(sizeof(__typeof__(((pthread_attr_t *)0)->__align)) == 8, \"captured provider storage size\");",
+      "_Static_assert(_Alignof(__typeof__(((pthread_attr_t *)0)->__align)) == 8, \"captured provider storage alignment\");"
+    ],
+    "scope": "Retained layouts/member offsets checked against native headers; generated recursive-mutex/thread workflow exercises actual storage"
+  },
+  "generatedAbi": {
+    "source": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/Generated.Abi.c",
+      "sha256": "db67a7f582a6f4d0119e75c4f575e1353d75260f3261613b46f2b678c77a5cdd",
+      "bytes": 17488
+    },
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/generated/libRoslynObj.Generated.Abi.so",
+      "sha256": "984c3673042a456624af0776736f6cde7a82acf210ad9e8fec80dba56bc2b329",
+      "bytes": 16968
+    },
+    "outputCopy": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker/libRoslynObj.Generated.Abi.so",
+      "sha256": "984c3673042a456624af0776736f6cde7a82acf210ad9e8fec80dba56bc2b329",
+      "bytes": 16968
+    },
+    "exports": "0000000000001200 T __host_call_1\n0000000000001480 T __host_call_10\n00000000000014e0 T __host_call_11\n0000000000001530 T __host_call_12\n0000000000001560 T __host_call_13\n0000000000001590 T __host_call_14\n0000000000001260 T __host_call_2\n00000000000012a0 T __host_call_3\n00000000000012f0 T __host_call_4\n0000000000001340 T __host_call_5\n0000000000001380 T __host_call_6\n00000000000013c0 T __host_call_7\n0000000000001400 T __host_call_8\n0000000000001440 T __host_call_9\n00000000000015d0 T __host_entry_inner_compare\n0000000000001630 T __host_entry_outer_compare\n0000000000001690 T __host_entry_worker\n00000000000011b0 T __outbound_variadic_1\n00000000000015c0 T __register_host_inner_compare\n0000000000001620 T __register_host_outer_compare\n0000000000001680 T __register_host_worker\n0000000000001190 T __roslynobj_application_errno_location",
+    "dependencies": "linux-vdso.so.1 (0x0000706f5df42000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000706f5dc00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000706f5df44000)",
+    "role": "Concrete typed call forwarding, native logical TLS and immediate native errno synchronization; no application algorithms",
+    "publishedCopy": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/nativeaot/libRoslynObj.Generated.Abi.so",
+      "sha256": "984c3673042a456624af0776736f6cde7a82acf210ad9e8fec80dba56bc2b329",
+      "bytes": 16968
+    }
+  },
+  "nativeAotDependencies": "linux-vdso.so.1 (0x00007fffe79c5000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007b3f0f63e000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007b3f0f000000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007b3f0f756000)",
+  "execution": {
+    "nativeOutput": "result=6223\nobservations=24\n0:1201\n1:1201\n2:-1\n3:20\n4:1\n5:555\n6:777\n7:777\n8:444\n9:333\n10:2\n11:9\n12:0\n13:0\n14:0\n15:0\n16:0\n17:0\n18:0\n19:0\n20:1\n21:1\n22:901\n23:1",
+    "jitOutput": "result=6223\nobservations=1201,1201,-1,20,1,555,777,777,444,333,2,9,0,0,0,0,0,0,0,0,1,1,901,1\nlogical-errno-interference=passed\nnested-qsort-foreign-pthread=passed",
+    "nativeAotOutput": "result=6223\nobservations=1201,1201,-1,20,1,555,777,777,444,333,2,9,0,0,0,0,0,0,0,0,1,1,901,1\nlogical-errno-interference=passed\nnested-qsort-foreign-pthread=passed",
+    "applicationInvocationsPerChecker": 2,
+    "observationsPerInvocation": 24,
+    "additionalChecks": [
+      "logical/raw TLS address distinction",
+      "stable direct/indirect logical accessor",
+      "application pointer stores",
+      "unrelated raw overwrite and CLR allocation/GC",
+      "success leaving errno unchanged",
+      "immediate failure snapshot",
+      "nested qsort error propagation",
+      "foreign pthread initial value, TLS separation and join completion"
+    ]
+  },
+  "buildArtifacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter/Emit.dll",
+      "sha256": "f8e353c29e13f72ff234dddb004eaf283bc622a601b9b620ed4fc9171e66093f",
+      "bytes": 14848
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter/Emit.deps.json",
+      "sha256": "b9e0f1c97375ac9677a0ad626596de0899cb34d944c1b495157d7f1fe2ba5dea",
+      "bytes": 8763
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter/RoslynObj.CSharp.dll",
+      "sha256": "7e2b3982cadbc0516b1645770dccfca8d0a65443f3cc9bfe5ce655a3e51bf333",
+      "bytes": 470528
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/emitter/RoslynObj.dll",
+      "sha256": "f0371e43f241a57fb6d7c4d6abca5288a7b67cdd4af50747b7ccee0d4b52df51",
+      "bytes": 2629632
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker/ErrnoChecks.dll",
+      "sha256": "9c8f7cf8aa353b770e3fb7e0571ad454202e1967874f2dc99b9608138506c8d3",
+      "bytes": 8704
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker/Generated.dll",
+      "sha256": "38e999ab3db58257e4d97c184cab616d166110ae9d513fa2f81745352a6a75ba",
+      "bytes": 14336
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker/RoslynObj.CSharp.Runtime.dll",
+      "sha256": "2a4f371406116ab0bbc9e812c54c8c33899f487e71000198a2427aa7f235fcfd",
+      "bytes": 13312
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/checker/ErrnoChecks.deps.json",
+      "sha256": "407ed9edd58eea26654480b98c7633eda399f39ff294d0b271dfbbda2a6c49bb",
+      "bytes": 1183
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/errno-provider-reproduction/nativeaot/ErrnoChecks",
+      "sha256": "657244d48c658551f4498f62d5b82425da3af27c778fe5e44ecf51b8e6e8b09c",
+      "bytes": 1836792
+    }
+  ]
+}

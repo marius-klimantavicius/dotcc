@@ -231,7 +231,7 @@ public sealed partial class CSharpEmitter
                 writer.Open();
                 var arguments = signature.Parameters.Select((p, i) => (Unwrap(p.Type) is RecordType ? "*" : "") + $"argument{i}");
                 var invocation = $"{OwnedName(address.Function)}({string.Join(", ", arguments)})";
-                writer.Line(Unwrap(signature.ReturnType) is RecordType ? $"*result = {invocation};" : $"{(TypeName(signature.ReturnType) == "void" ? "" : "return ")}{invocation};");
+                EmitBoundaryBody(writer, AggregateBridgeReturn(signature), () => writer.Line(Unwrap(signature.ReturnType) is RecordType ? $"*result = {invocation};" : $"{(TypeName(signature.ReturnType) == "void" ? "" : "return ")}{invocation};"));
                 writer.Close();
                 methods.Append(writer.TextWithIndent(1)).AppendLine();
                 initialization.Line($"{Owner}.{address.AggregateRegistration}(({pointerType})&{address.AggregateBridge});");
@@ -273,11 +273,13 @@ public sealed partial class CSharpEmitter
                     .Append("    ").Append(bridge).AppendLine("_callback = callback;\n}");
                 source.Append("ABI_EXPORT ").Append(NativeAggregateType(signature.ReturnType)).Append(' ').Append(address.AggregateEntry).Append('(')
                     .Append(string.Join(", ", signature.Parameters.Select((p, i) => $"{NativeAggregateType(p.Type)} argument{i}").DefaultIfEmpty("void"))).AppendLine(") {");
+                AppendHostIncomingStart(source);
                 source.Append("    if (!").Append(bridge).AppendLine("_callback) abort();");
                 if (aggregateResult) source.Append("    ").Append(NativeAggregateType(signature.ReturnType)).AppendLine(" result;");
                 source.Append("    ").Append(aggregateResult || NativeScalarReturnIsVoid(signature) ? "" : "return ").Append(bridge).Append("_callback(")
                     .Append(string.Join(", ", (aggregateResult ? new[] { "(void *)&result" } : []).Concat(signature.Parameters.Select((p, i) =>
                         (Unwrap(p.Type) is RecordType ? "(void *)&" : "") + $"argument{i}")))).AppendLine(");");
+                AppendHostIncomingEnd(source);
                 if (aggregateResult) source.AppendLine("    return result;");
                 source.AppendLine("}\n");
             }
@@ -293,9 +295,20 @@ public sealed partial class CSharpEmitter
                 foreach (var parameter in signature.Parameters.Select((p, i) => (p, i)))
                     source.Append(", ").Append(NativeAggregateBridgeType(parameter.p.Type)).Append(" argument").Append(parameter.i);
                 source.AppendLine(") {");
-                source.Append("    ").Append(aggregateResult ? $"*({NativeAggregateType(signature.ReturnType)} *)result = " : NativeScalarReturnIsVoid(signature) ? "" : "return ")
-                    .Append("((").Append(typeName).Append(")address)(")
-                    .Append(string.Join(", ", signature.Parameters.Select((p, i) => Unwrap(p.Type) is RecordType ? $"*({NativeAggregateType(p.Type)} *)argument{i}" : $"argument{i}"))).AppendLine(");\n}\n");
+                if (HostProtocolEnabled)
+                {
+                    AppendHostOutgoingStart(source);
+                    source.Append("    ").Append(NativeAggregateType(signature.ReturnType)).Append(" native_result = ((").Append(typeName).Append(")address)(")
+                        .Append(string.Join(", ", signature.Parameters.Select((p, i) => Unwrap(p.Type) is RecordType ? $"*({NativeAggregateType(p.Type)} *)argument{i}" : $"argument{i}"))).AppendLine(");");
+                    AppendHostOutgoingEnd(source);
+                    source.Append("    *(").Append(NativeAggregateType(signature.ReturnType)).AppendLine(" *)result = native_result;\n}\n");
+                }
+                else
+                {
+                    source.Append("    ").Append(aggregateResult ? $"*({NativeAggregateType(signature.ReturnType)} *)result = " : NativeScalarReturnIsVoid(signature) ? "" : "return ")
+                        .Append("((").Append(typeName).Append(")address)(")
+                        .Append(string.Join(", ", signature.Parameters.Select((p, i) => Unwrap(p.Type) is RecordType ? $"*({NativeAggregateType(p.Type)} *)argument{i}" : $"argument{i}"))).AppendLine(");\n}\n");
+                }
             }
         }
 

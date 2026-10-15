@@ -39,6 +39,13 @@ public sealed partial class CSharpEmitter
             if (conversion.Operator.RequiresRuntimeCastCheck || kind is "eok_dynamic_cast" or "eok_ref_dynamic_cast" or "eok_base_class_cast" or "eok_derived_class_cast")
                 throw Limit("Conversion requires a selected C++ object-model adapter.", "conversion");
             var operand = PlanExpression(conversion.Operand);
+            if (kind == "eok_cast" && IsVoid(CsType.Value(conversion.TargetType)))
+            {
+                var prefix = operand.Prefix.ToList();
+                prefix.Add(new CsEvaluate(operand.Value));
+                return new(conversion.Type, conversion.ValueCategory, prefix,
+                    new CsLeaf(CsType.Void, "", true), operand.Effects);
+            }
             CsExpression value;
             LValuePlan? place = null;
             if (kind == "eok_bool_cast") value = SourceBoolean(conversion.Type, PlanTruth(operand.Value, operand.Type));
@@ -393,6 +400,7 @@ public sealed partial class CSharpEmitter
             {
                 function = CanonicalFunction(function);
                 if (call.TargetMethod is { } selected && !CanonicalFunction(selected).Equals(function)) throw Limit("Selected callee needs an explicit ABI adapter.", "call");
+                if (TryIntrinsicCall(call, plannedCall.Arguments.Select(RenderExpression).ToArray(), out var intrinsic)) return intrinsic;
                 RequireCallable(function);
                 if (function.Signature.IsVariadic) throw Limit("Variadic calls need the selected argument-pack ABI.", "varargs");
                 if (function.Signature.Parameters.Count != plannedCall.Arguments.Count)

@@ -69,6 +69,7 @@ public sealed partial class Translator
                 NamespaceName = request.Output.NamespaceName, ClassName = request.Output.ClassName,
                 Executable = request.Roots.Mode == "executable", EntryPointName = request.Roots.EntryPoint,
                 RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings,
+                NativeErrorProtocol = request.Runtime.NativeErrorProtocol,
                 ProgramAssembly = openedInputs.Count == 1 ? null : new ProgramAssemblyOptions
                 {
                     MaximumOpenUnits = request.Budgets.MaximumOpenUnits,

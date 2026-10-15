@@ -1,0 +1,2671 @@
+{
+  "status": "diagnostics-incomplete-translation",
+  "scope": "Unchanged full-object library emission diagnostic only; candidate export bindings are not production ABI/error/thread validation.",
+  "input": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "bytes": 297556992
+  },
+  "providerPlan": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/provider-plan.json",
+    "sha256": "82980f8840bac35976d06d79daf4e733a945ee5dc774b656551677c5b2626060",
+    "candidateBindings": 88
+  },
+  "build": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-2-bin/RoslynObj.CSharp.dll",
+      "sha256": "7e2b3982cadbc0516b1645770dccfca8d0a65443f3cc9bfe5ce655a3e51bf333",
+      "bytes": 470528
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-2-bin/RoslynObj.dll",
+      "sha256": "f0371e43f241a57fb6d7c4d6abca5288a7b67cdd4af50747b7ccee0d4b52df51",
+      "bytes": 2629632
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-2-bin/SqliteEmissionProbe.dll",
+      "sha256": "6cb4af297adeced30acc8e7809b3e8ae9b8edf666522a65561ad68e2bc005771",
+      "bytes": 31744
+    }
+  ],
+  "nativeErrorProtocol": "LinuxX64LogicalErrno",
+  "intrinsicAdmission": "Recorded builtin kinds and actual operands are checked by the bounded emitter/runtime implementation; this probe does not execute them.",
+  "providerAdmission": "All 88 bindings are candidates from the export audit; focused provider fixture evidence does not establish every SQLite provider contract.",
+  "artifact": "9097468216bba3077ff4a24753d09245",
+  "translationComplete": false,
+  "outputPublished": false,
+  "emittedFunctions": 0,
+  "emittedRecords": 0,
+  "returnedFiles": 0,
+  "elapsedSeconds": 298.3512179,
+  "diagnosticCount": 313,
+  "errorCount": 313,
+  "families": [
+    {
+      "family": "eok_padd_assign",
+      "count": 118,
+      "messages": [
+        {
+          "message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+          "count": 109
+        },
+        {
+          "message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+          "count": 9
+        }
+      ]
+    },
+    {
+      "family": "storage",
+      "count": 104,
+      "messages": [
+        {
+          "message": "Static/thread local storage requires the T2 initialization contract.",
+          "count": 104
+        }
+      ]
+    },
+    {
+      "family": "volatile",
+      "count": 35,
+      "messages": [
+        {
+          "message": "Volatile qualified storage is unsupported.",
+          "count": 28
+        },
+        {
+          "message": "Volatile fetches require a target memory-order projection.",
+          "count": 6
+        },
+        {
+          "message": "Volatile evaluation needs a target memory-order plan.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "family": "array",
+      "count": 26,
+      "messages": [
+        {
+          "message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+          "count": 26
+        }
+      ]
+    },
+    {
+      "family": "constant",
+      "count": 12,
+      "messages": [
+        {
+          "message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+          "count": 9
+        },
+        {
+          "message": "Constant value \u0027ck_aggregate\u0027 has no T1 exact-value projection.",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "family": "eok_psubtract_assign",
+      "count": 6,
+      "messages": [
+        {
+          "message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "family": "eok_shiftr_assign",
+      "count": 6,
+      "messages": [
+        {
+          "message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "family": "varargs",
+      "count": 2,
+      "messages": [
+        {
+          "message": "Variadic calls need the selected argument-pack ABI.",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "family": "type",
+      "count": 2,
+      "messages": [
+        {
+          "message": "Arithmetic storage width \u0027128\u0027 is unsupported.",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "family": "eok_shiftl_assign",
+      "count": 2,
+      "messages": [
+        {
+          "message": "Operator \u0027eok_shiftl_assign\u0027 has no typed execution plan.",
+          "count": 1
+        },
+        {
+          "message": "Operator \u0027eok_shiftl_assign\u0027 has no T1 projection.",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/5:sqlite3_str_vappendf/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/48:sqlite3DefaultMutex/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/51:pthreadMutexAlloc/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/57:sqlite3NoopMutex/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/67:sqlite3MemSetDefault/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/77:sqlite3_config/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/81:sqlite3PCacheSetDefault/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/103:pcache1InitBulk/operation/154",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Variadic calls need the selected argument-pack ABI.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/110:sqlite3ReportError/operation/9",
+      "Family": "varargs"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/111:sqlite3_sourceid/operation/4",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/112:sqlite3RegisterBuiltinFunctions/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/149:sqlite3LoadExtension/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/192:sqlite3_value_type/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/197:sqliteDefaultBusyCallback/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/239:accessPayload/operation/121",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile fetches require a target memory-order projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/244:walFindFrame/operation/109",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/246:walHashGet/operation/16",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/247:walIndexPage/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/248:walIndexPageRealloc/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/286:memjrnlRead/operation/118",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/287:memjrnlWrite/operation/187",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/306:sqlite3_randomness/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/359:zeroJournalHdr/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/391:pager_delsuper/operation/280",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile fetches require a target memory-order projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/398:walCleanupHash/operation/65",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/402:walIndexHdr/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile fetches require a target memory-order projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/403:walFramePgno/operation/14",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/424:walIndexClose/operation/36",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile fetches require a target memory-order projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/426:sqlite3WalCheckpoint/operation/213",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/429:walIndexReadHdr/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/430:walIndexTryHdr/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/433:walChecksumBytes/operation/117",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/434:walIndexRecover/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile fetches require a target memory-order projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/436:walIndexAppend/operation/59",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/438:walIndexWriteHdr/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/439:walCkptInfo/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/441:walCheckpoint/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile fetches require a target memory-order projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/442:walIteratorInit/operation/284",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/447:walRestartHdr/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/452:freeTempSpace/operation/7",
+      "Family": "eok_psubtract_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/477:findElementWithHash/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/511:columnNullValue/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Arithmetic storage width \u0027128\u0027 is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/536:sqlite3Multiply128/operation/0",
+      "Family": "type"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/539:powerOfTen/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Arithmetic storage width \u0027128\u0027 is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/540:sqlite3Multiply160/operation/0",
+      "Family": "type"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/548:sqlite3Atoi64/operation/76",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/564:sqlite3_incomplete/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/570:sqlite3FindCollSeq/operation/22",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/586:sqlite3_declare_vtab/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/589:sqlite3RunParser/operation/149",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/603:yy_reduce/operation/8731",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/616:sqlite3VdbeGetOp/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/629:sqlite3ExprCodeTarget/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/649:exprDup/operation/271",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/671:sqlite3GetInt32/operation/65",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/688:synthCollSeq/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_aggregate\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/752:sqlite3ExprListAppend/operation/41",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_aggregate\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/753:sqlite3ExprListAppendNew/operation/43",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_aggregate\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/754:sqlite3ExprListAppendGrow/operation/58",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/854:explainIndexColumnName/operation/17",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/887:sqlite3OpenTempDatabase/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/890:sqlite3PagerFilename/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/921:sqlite3PagerOpen/operation/184",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/926:uriParameter/operation/2",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/928:getSafetyLevel/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/940:walRestartLog/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/941:walTryBeginRead/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/942:walBeginShmUnreliable/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/944:syncJournal/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1001:sqlite3LogEst/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1005:sqlite3LogEstAdd/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1021:sqlite3ExprIsLikeOperator/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1045:sqlite3VdbeSerialGet/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1052:sqlite3VarintLen/operation/8",
+      "Family": "eok_shiftr_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1067:sqlite3ErrStr/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1075:wherePathSolver/operation/183",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftl_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1086:computeMxChoice/operation/285",
+      "Family": "eok_shiftl_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1092:sqlite3AllocateIndexObject/operation/68",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1101:sqlite3WhereCodeOneLoopStart/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1104:codeINTerm/operation/306",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1130:exprAnalyze/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1196:windowCheckValue/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1244:vdbeCommit/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1339:walBeginReadTransaction/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1358:sqlite3VdbeDisplayP4/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1359:sqlite3OpcodeName/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1361:sqlite3VdbeExec/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1402:vdbeRecordCompareInt/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1405:vdbeMemTypeName/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1407:putVarint64/operation/17",
+      "Family": "eok_shiftr_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1420:allocateTempSpace/operation/48",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1436:sqlite3BtreeFakeValidCursor/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1452:fillInCell/operation/330",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1459:defragmentPage/operation/331",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1466:rebuildPage/operation/194",
+      "Family": "eok_psubtract_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1468:balance_nonroot/operation/703",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1473:pageInsertArray/operation/106",
+      "Family": "eok_psubtract_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1476:sqlite3BtreeTransferRow/operation/33",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1489:vdbeSorterCompareInt/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1549:sqlite3DefaultRowEst/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1554:patternCompare/operation/239",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1558:loadStatTbl/operation/198",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1563:corruptSchema/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1572:checkTreePage/operation/380",
+      "Family": "eok_psubtract_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1600:sqlite3JournalModename/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1618:sqlite3VdbeExpandSql/operation/112",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1619:findNextHostParameter/operation/43",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1625:sqlite3RunVacuum/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1663:sqlite3JsonVtabRegister/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1700:jsonLabelCompareEscaped/operation/51",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1703:jsonCreateEditSubstructure/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1706:jsonBlobOverwrite/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1729:jsonTranslateBlobToText/operation/439",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1733:jsonAppendControlChar/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1736:jsonAppendString/operation/195",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1763:carrayColumn/operation/128",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1785:sqlite3MatchEName/operation/66",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1791:sqlite3ProcessJoin/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Variadic calls need the selected argument-pack ABI.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1843:sqlite3GenerateColumnNames/operation/247",
+      "Family": "varargs"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1886:sqlite3AutoincrementBegin/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1895:sqlite3Savepoint/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1896:sqlite3StartTable/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1909:createTableStmt/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1920:resizeIndexObject/operation/65",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1921:sqlite3CreateIndex/operation/631",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1957:sqlite3CreateForeignKey/operation/213",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2030:autoIncrementEnd/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2052:sqlite3CreateView/operation/157",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2064:sqlite3JoinType/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2079:sqlite3Pragma/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2101:sqlite3PreferredTableName/operation/21",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2103:pragmaFunclistLine/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2141:sqlite3Attach/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2144:sqlite3ParseUri/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2151:sqlite3Detach/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2172:statInit/operation/285",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2176:openStatTable/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2211:getToken/operation/10",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2220:sqlite3_errmsg16/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2238:sqlite3Fts3UnicodeTokenizer/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2241:sqlite3FtsUnicodeIsalnum/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2249:sqlite3FtsUnicodeFold/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2251:sqlite3Fts3InitAux/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2297:sqlite3_blob_open/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2299:fts3ScanInteriorNode/operation/21",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2303:fts3SegReaderNext/operation/291",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2318:sqlite3Fts3DoclistPrev/operation/39",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2321:fts3PoslistCopy/operation/55",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2324:fts3ColumnFilter/operation/108",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2325:sqlite3Fts3VarintLen/operation/10",
+      "Family": "eok_shiftr_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2326:sqlite3Fts3PutVarint/operation/24",
+      "Family": "eok_shiftr_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2327:sqlite3Fts3FirstFilter/operation/61",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2328:fts3ColumnlistCopy/operation/54",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2346:porter_stemmer/operation/555",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2368:sqlite3_db_config/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2376:fts3InitVtab/operation/854",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2378:sqlite3Fts3IsIdChar/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2381:fts3ContentColumns/operation/159",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2383:fts3GobbleInt/operation/36",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2385:fts3ReadExprList/operation/71",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2415:fts3ExprParse/operation/253",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2417:getNextNode/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2419:getNextString/operation/312",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2435:fts3PutDeltaVarint3/operation/38",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2436:fts3PoslistMerge/operation/156",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2438:fts3GetDeltaVarint/operation/3",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2439:fts3PutDeltaVarint/operation/12",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2440:fts3ReadNextPos/operation/37",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2441:fts3GetDeltaVarint3/operation/15",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2445:fts3PoslistPhraseMerge/operation/53",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2448:fts3EvalAverageDocsize/operation/57",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2480:fts3EvalDlPhraseNext/operation/45",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2487:sqlite3_vtab_on_conflict/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2527:fts3ChecksumIndex/operation/101",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2574:fts3GetDeltaPosition/operation/28",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2581:sqlite3Fts3EvalPhrasePoslist/operation/460",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2582:sqlite3Fts3DoclistNext/operation/23",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2605:fts3MatchinfoValues/operation/139",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2606:fts3MatchinfoSelectDoctotal/operation/57",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2610:fts3LcsIteratorAdvance/operation/18",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2613:fts3ExprLHits/operation/145",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2619:fts3EvalUpdateCounts/operation/121",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2626:fts3ShadowName/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2630:sqlite3Fts3InitTok/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2633:fts3tokDequoteArray/operation/111",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2645:fts5Init/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2690:sqlite3Fts5UnicodeFold/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2699:fts5TriTokenize/operation/475",
+      "Family": "eok_psubtract_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2718:sqlite3Fts5VocabInit/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2741:fts5PutVarint64/operation/17",
+      "Family": "eok_shiftr_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2763:fts5WriteFlushLeaf/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_psubtract_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2780:sqlite3Fts5GetVarint32/operation/103",
+      "Family": "eok_psubtract_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2850:fts5IndexExtractColset/operation/205",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2886:fts5ConfigSkipLiteral/operation/184",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2897:fts5WriteAppendPoslistData/operation/76",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2926:sqlite3Fts5PoslistSafeAppend/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2941:fts5DoclistIterNext/operation/27",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2958:fts5LocaleFunc/operation/115",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2965:fts5ConfigParseSpecial/operation/324",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2990:sqlite3Fts5ConfigDeclareVtab/operation/57",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2993:fts5BestIndexMethod/operation/254",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3036:fts5yy_reduce/operation/734",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3108:fts5SorterNext/operation/88",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3168:fts5ApiPhraseNext/operation/21",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3169:fts5ApiPhraseFirstColumn/operation/172",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3170:fts5ApiPhraseNextColumn/operation/33",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3180:fts5ContentlessUpdate/operation/77",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3246:fts5ShadowName/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3250:rtreeInit/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3254:rtreeSqlInit/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3285:rtreeStepToLeaf/operation/176",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3286:rtreeCallbackConstraint/operation/33",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3288:rtreeLeafConstraint/operation/5",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3289:rtreeNonleafConstraint/operation/3",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3311:nodeGetCell/operation/52",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3312:nodeOverwriteCell/operation/15",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3339:rtreeShadowName/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3354:sqlite3_geopoly_init/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3360:geopolyParseNumber/operation/216",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3393:sqlite3DbpageRegister/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3411:sqlite3DbstatRegister/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3463:sqlite3Utf16ByteLen/operation/37",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3489:sqlite3_test_control/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3501:sqlite3_compileoption_used/operation/19",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3539:sqlite3_uri_key/operation/16",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3541:sqlite3_filename_journal/operation/14",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3542:sqlite3_filename_wal/operation/11",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3543:sqlite3_create_filename/operation/64",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3568:sqlite3_carray_bind_v2/operation/242",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3572:trimFunc/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3581:typeofFunc/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3615:sumStep/operation/46",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3616:kahanBabuskaNeumaierStepInt64/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3617:kahanBabuskaNeumaierStep/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3618:kahanBabuskaNeumaierInit/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3621:sumInverse/operation/72",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3641:sqlite3AlterFunctions/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3661:dropColumnFunc/operation/165",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3675:sqlite3WindowFunctions/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3700:sqlite3RegisterDateTimeFunctions/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3709:parseYyyyMmDd/operation/38",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3710:getDigits/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3711:parseHhMmSs/operation/18",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3712:parseTimezone/operation/94",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3716:parseModifier/operation/86",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3736:sqlite3RegisterJsonFunctions/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3745:jsonSetFunc/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3748:jsonFunctionArgToBlob/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3765:jsonArrayCompute/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3770:jsonObjectCompute/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3774:sqlite3_os_init/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3817:unixShmMap/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3856:unixCurrentTimeInt64/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftl_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3866:sqlite3FpDecode/operation/128",
+      "Family": "eok_shiftl_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_shiftr_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3867:sqlite3Fp2Convert10/operation/38",
+      "Family": "eok_shiftr_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3887:sqlite3WalSnapshotGet/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3892:walSnapshotRecover/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile evaluation needs a target memory-order plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3894:sqlite3WalSnapshotCheck/operation/36",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3917:rbuDeltaGetInt/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3918:rbuDeltaApply/operation/130",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3950:rbuCreateImposterTable2/operation/171",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3951:rbuCreateImposterTable/operation/25",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Constant value \u0027ck_string\u0027 has no T1 exact-value projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3955:rbuObjIterPrepareAll/operation/106",
+      "Family": "constant"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3962:rbuShmChecksum/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3977:sqlite3rbu_step/operation/0",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3982:sqlite3rbu_create_vfs/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Static/thread local storage requires the T2 initialization contract.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3983:rbuVfsOpen/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4023:openRbuHandle/operation/85",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4053:sessionChangeHash/operation/67",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4054:sessionChangeEqual/operation/54",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4055:sessionMergeRecord/operation/47",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4057:sessionMergeUpdate/operation/104",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4058:sessionPreupdateEqual/operation/50",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4060:sessionTableInfo/operation/337",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4074:sessionUpdateMaxSize/operation/100",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4107:sessionAppendUpdate/operation/248",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4108:sessionAppendDelete/operation/69",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4112:sessionSelectBind/operation/58",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4132:sessionSkipRecord/operation/32",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4177:sessionChangeMerge/operation/139",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4196:sessionAppendRecordMerge/operation/89",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4197:sessionAppendPartialUpdate/operation/117",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4206:checkChangeParams/operation/64",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_padd_assign\u0027 has no T1 projection.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:sqlite3changegroup_change_finish/operation/287",
+      "Family": "eok_padd_assign"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:Wal/operation/287",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:WalHashLoc/operation/287",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Incomplete, zero-sized and variable-length arrays require a separate storage representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/287",
+      "Family": "array"
+    }
+  ]
+}

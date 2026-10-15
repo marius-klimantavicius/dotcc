@@ -3,6 +3,8 @@ namespace RoslynObj.CSharp;
 public enum DiagnosticSeverity { Info, Warning, Error }
 public enum TranslationStatus { InventoryComplete, TranslationComplete, Failed, Cancelled }
 public enum CapabilityStatus { Unsupported, Implemented, Exercised, NotEncountered }
+/// <summary>Explicit application-visible native error-state provider contract.</summary>
+public enum NativeErrorProtocol { None, LinuxX64LogicalErrno }
 
 public sealed record TranslationDiagnostic(string Code, DiagnosticSeverity Severity, string Message,
     string? Input = null, string? Locator = null, string? Family = null);
@@ -58,6 +60,7 @@ public sealed record RuntimeConfiguration
     public string[] Providers { get; init; } = [];
     public ExternalBinding[] Bindings { get; init; } = [];
     public string? RuntimeProjectPath { get; init; }
+    public NativeErrorProtocol NativeErrorProtocol { get; init; }
 }
 public sealed record ProgramRoots
 {

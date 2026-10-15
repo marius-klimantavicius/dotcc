@@ -15,7 +15,8 @@ public sealed partial class CSharpEmitter
         private sealed record NativeImport(FunctionSymbol Function, CSharpExternalFunctionBinding Binding, string LibraryField);
         private sealed record FunctionAddressItem(FunctionSymbol Function, string Field, string? Wrapper,
             string? VariadicEntry = null, string? VariadicBridge = null, string? VariadicRegistration = null,
-            string? AggregateEntry = null, string? AggregateBridge = null, string? AggregateRegistration = null);
+            string? AggregateEntry = null, string? AggregateBridge = null, string? AggregateRegistration = null,
+            string? HostEntry = null, string? HostRegistration = null, bool LogicalErrnoProvider = false);
         private readonly List<NativeImport> nativeImports = [];
         private readonly Dictionary<string, string> nativeLibraries = new(StringComparer.Ordinal);
         private readonly List<FunctionAddressItem> functionAddresses = [];
@@ -79,6 +80,7 @@ public sealed partial class CSharpEmitter
         private void RequireCallable(FunctionSymbol function)
         {
             function = CanonicalFunction(function);
+            if (IsIntrinsicRoutine(function)) throw Limit("A retained compiler intrinsic has no native provider fallback.", "intrinsic");
             if (functions.Contains(function) || nativeImports.Any(i => i.Function.Equals(function))) return;
             var linkageName = function.GnuSupplement?.AssemblyName ?? function.CurrentName;
             var bindings = options.ExternalFunctions.Where(b => b.LinkageName == linkageName).ToArray();
@@ -95,19 +97,31 @@ public sealed partial class CSharpEmitter
                 nativeLibraries.Add(binding.LibraryPath, library = InternalName($"__library_{nativeLibraries.Count + 1}"));
             Name(function, function.Name ?? "import", globalNames);
             nativeImports.Add(new(function, binding, library));
+            if (HostProtocolEnabled) RequireHostLayouts(nativeImports[^1]);
+            if (HostProtocolEnabled && !function.Signature.IsVariadic && !HasAggregateSignature(function.Signature))
+            {
+                if (!IsLogicalErrnoProvider(function)) _ = RequireHostNativeCall(function.Signature);
+                _ = FunctionAddress(function);
+            }
         }
 
         private string FunctionAddress(FunctionSymbol function)
         {
             function = CanonicalFunction(function);
+            if (IsIntrinsicRoutine(function)) throw Limit("A retained compiler intrinsic has no native callable address.", "intrinsic");
             var existing = functionAddresses.FirstOrDefault(a => a.Function.Equals(function));
             if (existing is not null) return Owner + "." + existing.Field;
             RequireCallable(function);
+            // Import registration may have allocated its protocol address.
+            existing = functionAddresses.FirstOrDefault(a => a.Function.Equals(function));
+            if (existing is not null) return Owner + "." + existing.Field;
             ValidateCallingConvention(function.Signature);
             if (HasAggregateSignature(function.Signature)) ValidateNativeAggregateSignature(function.Signature);
             else ValidateNativeScalarSignature(function.Signature);
             FunctionAddressItem address;
-            if (HasAggregateSignature(function.Signature) && functions.Contains(function))
+            if (!functions.Contains(function) && IsLogicalErrnoProvider(function))
+                address = new(function, InternalName("__address_" + names[function].TrimStart('@')), null, LogicalErrnoProvider: true);
+            else if (HasAggregateSignature(function.Signature) && functions.Contains(function))
             {
                 _ = RequireGeneratedAbiLibrary();
                 var stem = names[function].TrimStart('@');
@@ -123,6 +137,12 @@ public sealed partial class CSharpEmitter
                 var stem = names[function].TrimStart('@');
                 address = new(function, InternalName("__address_" + stem), null,
                     InternalName("__variadic_entry_" + stem), InternalName("__variadic_bridge_" + stem), InternalName("__register_variadic_" + stem));
+            }
+            else if (HostProtocolEnabled && functions.Contains(function))
+            {
+                var stem = names[function].TrimStart('@');
+                address = new(function, InternalName("__address_" + stem), InternalName("__native_" + stem),
+                    HostEntry: InternalName("__host_entry_" + stem), HostRegistration: InternalName("__register_host_" + stem));
             }
             else address = new(function, InternalName("__address_" + names[function].TrimStart('@')),
                 functions.Contains(function) ? InternalName("__native_" + names[function].TrimStart('@')) : null);
@@ -145,6 +165,7 @@ public sealed partial class CSharpEmitter
                 callee = CanonicalFunction(callee);
                 if (call.TargetMethod is { } selected && !CanonicalFunction(selected).Equals(callee))
                     throw Limit("Selected call target and actual routine operand need an explicit adapter.", "call");
+                if (TryIntrinsicCall(call, argumentValues, out var intrinsic)) return intrinsic;
                 RequireCallable(callee);
                 if (callee.Signature.IsVariadic) return VariadicCall(callee.Signature, callee, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues);
                 if (callee.Signature.Parameters.Count != call.Arguments.Count)
@@ -211,7 +232,11 @@ public sealed partial class CSharpEmitter
             foreach (var address in functionAddresses)
             {
                 fields.Append("    private static readonly nint ").Append(address.Field).Append(" = ");
-                if (address.AggregateEntry is not null)
+                if (address.LogicalErrnoProvider)
+                    fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(logicalErrnoEntry)).AppendLine(");");
+                else if (address.HostEntry is not null)
+                    fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(address.HostEntry)).AppendLine(");");
+                else if (address.AggregateEntry is not null)
                     fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(address.AggregateEntry)).AppendLine(");");
                 else if (address.VariadicEntry is not null)
                     fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(address.VariadicEntry)).AppendLine(");");
@@ -228,6 +253,7 @@ public sealed partial class CSharpEmitter
             {
                 var signature = import.Function.Signature;
                 if (signature.IsVariadic || HasAggregateSignature(signature)) continue; // Only concrete scalar/pointer gateways may call these native signatures.
+                if (HostProtocolEnabled) { EmitHostImport(import); continue; }
                 methods.Append("    [DllImport(").Append(JsonSerializer.Serialize(import.Binding.LibraryPath))
                     .Append(", EntryPoint = ").Append(JsonSerializer.Serialize(import.Binding.EntryPoint)).AppendLine(", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]");
                 methods.Append("    private static extern ").Append(TypeName(signature.ReturnType)).Append(' ').Append(names[import.Function]).Append('(')
@@ -236,6 +262,18 @@ public sealed partial class CSharpEmitter
             foreach (var address in functionAddresses.Where(a => a.Wrapper is not null))
             {
                 var signature = address.Function.Signature;
+                if (HostProtocolEnabled)
+                {
+                    var writer = new CodeWriter();
+                    var resultType = TypeName(signature.ReturnType);
+                    writer.Line("[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]");
+                    writer.Line($"private static {resultType} {address.Wrapper}({string.Join(", ", signature.Parameters.Select((p, i) => $"{TypeName(p.Type)} argument{i}"))})");
+                    writer.Open();
+                    EmitBoundaryBody(writer, resultType, () => writer.Line($"{(resultType == "void" ? "" : "return ")}{OwnedName(address.Function)}({string.Join(", ", signature.Parameters.Select((_, i) => $"argument{i}"))});"));
+                    writer.Close();
+                    methods.Append(writer.TextWithIndent(1)).AppendLine();
+                    continue;
+                }
                 methods.AppendLine("    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]");
                 methods.Append("    private static ").Append(TypeName(signature.ReturnType)).Append(' ').Append(address.Wrapper).Append('(')
                     .Append(string.Join(", ", signature.Parameters.Select((p, i) => $"{TypeName(p.Type)} argument{i}"))).AppendLine(")").AppendLine("    {");
@@ -259,26 +297,41 @@ public sealed partial class CSharpEmitter
                     if (resultType == "void") methods.AppendLine("            return;");
                     methods.AppendLine("        }");
                 }
-                methods.Append("        ").Append(resultType == "void" ? "" : "return ").Append("((").Append(FunctionPointerType(signature)).Append(")address)(").Append(arguments).AppendLine(");");
+                if (HostProtocolEnabled)
+                    methods.Append("        ").Append(resultType == "void" ? "" : "return ").Append(HostNativeCallExpression(signature, "address", signature.Parameters.Select((_, i) => $"argument{i}"))).AppendLine(";");
+                else
+                    methods.Append("        ").Append(resultType == "void" ? "" : "return ").Append("((").Append(FunctionPointerType(signature)).Append(")address)(").Append(arguments).AppendLine(");");
                 methods.AppendLine("    }").AppendLine();
             }
             EmitVariadicEntryBridges(initialization);
             EmitAggregateSupport(initialization);
+            EmitHostCallSupport(initialization);
         }
 
         private string NativeImportReport() => JsonSerializer.Serialize(new
         {
             providerContract = "explicit native ABI bindings; no native application bodies",
+            nativeErrorProtocol = options.NativeErrorProtocol.ToString(),
             imports = nativeImports.Select(i => new { linkageName = i.Function.GnuSupplement?.AssemblyName ?? i.Function.CurrentName,
                 library = i.Binding.LibraryPath, entryPoint = i.Binding.EntryPoint, callingConvention = "cdecl",
                 isVariadic = i.Function.Signature.IsVariadic,
                 aggregateGateway = HasAggregateSignature(i.Function.Signature),
+                logicalErrnoProvider = HostProtocolEnabled && (i.Function.GnuSupplement?.AssemblyName ?? i.Function.CurrentName) == "__errno_location",
                 returnType = TypeName(i.Function.ReturnType), parameters = i.Function.Parameters.Select(p => TypeName(p.Type)) }),
             generatedAbi = generatedAbiLibrary is null ? null : new
             {
                 library = NativeAbiLibraryName,
                 source = "Generated.Abi.c",
                 contract = "concrete SysV AMD64 ABI forwarding only; application bodies remain C#",
+                logicalErrno = HostProtocolEnabled ? new { protocol = "linux-x64-logical-errno-v1", entry = logicalErrnoEntry,
+                    addressContract = "native thread-local application slot; distinct from raw libc errno; coherent direct/indirect/address-exposed entry" } : null,
+                hostEntries = functionAddresses.Where(a => a.HostEntry is not null).Select(a => new
+                {
+                    linkageName = a.Function.GnuSupplement?.AssemblyName ?? a.Function.CurrentName,
+                    entry = a.HostEntry, registration = a.HostRegistration, bridge = a.Wrapper
+                }),
+                hostOutboundShapes = hostNativeCalls.Select(c => new { entry = c.Adapter,
+                    parameters = c.Signature.Parameters.Select(p => TypeName(p.Type)), returnType = TypeName(c.Signature.ReturnType) }),
                 entries = functionAddresses.Where(a => a.VariadicEntry is not null).Select(a => new
                 {
                     linkageName = a.Function.GnuSupplement?.AssemblyName ?? a.Function.CurrentName,

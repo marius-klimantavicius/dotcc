@@ -16,6 +16,7 @@ public sealed record CSharpEmissionOptions
     public bool PrintEntryResult { get; init; }
     public string RuntimeProjectPath { get; init; } = "";
     public IReadOnlyList<CSharpExternalFunctionBinding> ExternalFunctions { get; init; } = [];
+    public NativeErrorProtocol NativeErrorProtocol { get; init; }
     /// <summary>Opt in to bounded selected-program assembly. Null keeps legacy single-unit admission.</summary>
     public ProgramAssemblyOptions? ProgramAssembly { get; init; }
 }
@@ -60,6 +61,7 @@ public sealed partial class CSharpEmitter
                 return Failure("CSHARP2001", "Multiple translation units require explicit bounded program assembly options.");
             globalNames.Add(options.ClassName);
             if (options.Executable) globalNames.Add("Main");
+            if (!ValidateNativeErrorProtocol()) return new([], diagnostics, 0, 0);
             if (string.IsNullOrWhiteSpace(options.RuntimeProjectPath))
                 return Failure("CSHARP2005", "An explicit generated-code runtime project path is required.");
             for (var unit = 0; unit < inputs.Count; ++unit)
@@ -204,7 +206,10 @@ public sealed partial class CSharpEmitter
             continuedLabels.Clear();
             retainedLabels.Clear();
             referencedContinuations.Clear();
-            if (body.Root is StatementOperation rootStatement) CollectContinueTargets(rootStatement, localNames);
+            var flatStatements = body.Root is StatementOperation root && NeedsFlatStatements(root);
+            targetStatements = flatStatements;
+            if (flatStatements) PrepareFlatStatements((StatementOperation)body.Root, localNames);
+            else if (body.Root is StatementOperation rootStatement) CollectContinueTargets(rootStatement, localNames);
             if (continuedLabels.Any(label => !retainedLabels.Contains(label)))
                 throw Limit("A continue has no retained target label in this execution body.", "loop");
             var writer = new CodeWriter();
@@ -225,7 +230,8 @@ public sealed partial class CSharpEmitter
                 else writer.Line($"Unsafe.SkipInit(out {names[variable]});");
             }
             if (body.Locals.Count > 0) writer.Line();
-            if (body.Root is BlockOperation block) foreach (var statement in block.Statements) Statement(statement, writer);
+            if (flatStatements) FlatStatement((StatementOperation)body.Root, writer);
+            else if (body.Root is BlockOperation block) foreach (var statement in block.Statements) Statement(statement, writer);
             else if (body.Root is StatementOperation statement) Statement(statement, writer);
             else throw Limit($"Body root '{body.Root.Kind}' has no T1 statement projection.", body.Root.Kind.Name);
             writer.Close();
@@ -235,6 +241,7 @@ public sealed partial class CSharpEmitter
         private void Statement(StatementOperation statement, CodeWriter writer)
         {
             ++operationOrdinal;
+            if (TryTargetStatement(statement, writer)) return;
             switch (statement)
             {
                 case BlockOperation block:
@@ -293,7 +300,8 @@ public sealed partial class CSharpEmitter
 
         private void Embedded(StatementOperation? statement, CodeWriter writer)
         {
-            if (statement is BlockOperation block) Statement(block, writer);
+            if (targetStatements) { writer.Open(); if (statement is not null) Statement(statement, writer); writer.Close(); }
+            else if (statement is BlockOperation block) Statement(block, writer);
             else { writer.Open(); if (statement is not null) Statement(statement, writer); writer.Close(); }
         }
 
@@ -527,6 +535,7 @@ public sealed partial class CSharpEmitter
             if (type is PointerType pointer)
             {
                 if (pointer.IsReference) throw Limit("Reference storage adaptation has no exercised T1 contract.", "reference");
+                if (TryVoidPointerType(pointer, out var voidPointer)) return voidPointer;
                 if (Unwrap(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }
                 if (TryProgramPointerType(pointer, out var pointerView)) return pointerView;
                 return TypeName(pointer.PointeeType) + "*";

@@ -1,0 +1,432 @@
+{
+  "status": "passed-bounded-retained-control-flow",
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/python3",
+        "edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/control-flow/control-flow.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/control-flow-cross-arm.roslynobj"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10049414704553783,
+      "sampledPeakProcessTreeRssBytes": 69632,
+      "waitedPeakProcessRssBytes": 30408704,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 573,
+          "sha256": "a486f4343f8bc116c0a15e19e7502e9e0c34b8b71d5fb2c8364530f5a2185f6e"
+        }
+      ],
+      "phase": "export-cross-arm",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "gcc",
+        "-std=gnu17",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/control-flow/control-flow.c",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/control-flow/native-oracle.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/native-cross-arm"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10056822700425982,
+      "sampledPeakProcessTreeRssBytes": 212992,
+      "waitedPeakProcessRssBytes": 22282240,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-cross-arm-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/native-cross-arm"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1005563250510022,
+      "sampledPeakProcessTreeRssBytes": 98304,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 155,
+          "sha256": "8039a024bbd5bddcc5d28b95016cbf216173adbd2f6e44b0cfe04b2481114808"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-cross-arm-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/providers/emitter-bin-3/Emit.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/control-flow-cross-arm.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.30092666402924806,
+      "sampledPeakProcessTreeRssBytes": 76939264,
+      "waitedPeakProcessRssBytes": 78643200,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 121,
+          "sha256": "63acd79b65fb3a4ace7d56c6bda418a4da6af9720a7e988703572680ec16c33e"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "emit-4",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/ControlFlow/Checks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/checker-4",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.703745297039859,
+      "sampledPeakProcessTreeRssBytes": 192573440,
+      "waitedPeakProcessRssBytes": 190873600,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 2894,
+          "sha256": "3ff31f375728590b2a883cf28b9730609ca6f81efc721d04788354cce3debeba"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-build-4",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/checker-4/Checks.dll"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10060912498738617,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 30932992,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 155,
+          "sha256": "8039a024bbd5bddcc5d28b95016cbf216173adbd2f6e44b0cfe04b2481114808"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-jit-4",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/ControlFlow/Checks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/aot-4",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 3.6094350189669058,
+      "sampledPeakProcessTreeRssBytes": 206401536,
+      "waitedPeakProcessRssBytes": 234532864,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1918,
+          "sha256": "cb8b7e5291d0139e9eed880afcdd02f88c51b3f067b4bfd53f25a4238ec7da59"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-publish-4",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/statements/aot-4/Checks"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10040679108351469,
+      "sampledPeakProcessTreeRssBytes": 86016,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 155,
+          "sha256": "8039a024bbd5bddcc5d28b95016cbf216173adbd2f6e44b0cfe04b2481114808"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-aot-4",
+      "expectedExitCode": 0
+    }
+  ],
+  "observations": "result=23\nobservations=23\n0:10\n1:20\n2:20\n3:30\n4:31\n5:32\n6:33\n7:40\n8:50\n9:51\n10:60\n11:41\n12:51\n13:60\n14:42\n15:43\n16:53\n17:72\n18:73\n19:90\n20:102\n21:76\n22:80\n",
+  "checkerInvocationsEach": 2,
+  "translationInput": "public RoslynObj statement roots, selected labels/case associations; no source semantic analysis",
+  "nativeErrorProtocol": "LinuxX64LogicalErrno explicitly selected, but this fixture has no host import and claims no provider coverage",
+  "producerSha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+  "input": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/control-flow-cross-arm.roslynobj",
+    "sha256": "f695f9028143bb88a6f4453052f790f41be058ab78ca75003f9bfc56ffe74d75",
+    "bytes": 676864
+  },
+  "implementation": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.cs",
+      "sha256": "cf3cf0bd5ed5a5eaccedfbad00e67a73878dfc2483cc7b58f77a005fe924a73c",
+      "bytes": 43562
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Statements.cs",
+      "sha256": "f808cf61803f93c5b738af761753b38b304431e956a74620724dbb18c339c130",
+      "bytes": 12672
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Occurrences.cs",
+      "sha256": "f9ed6afea04e8fa4df5c0f5b357d5f3b96af63f6204fb6d7739bef0eaf039645",
+      "bytes": 7017
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Program.cs",
+      "sha256": "d9e9101d00508e5fe17ff1c4b602a9de5fa79e666b64bdcd550608770a39de3d",
+      "bytes": 11957
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Types.cs",
+      "sha256": "8df207146a5375463828068af360ed3702fa4423799a23df86ebbd5109d7bdc4",
+      "bytes": 1720
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/ControlFlow/Program.cs",
+      "sha256": "d45a0b351fe76cdb9914adf5fef95601336e4890e2871b341d1d1e0bdba58174",
+      "bytes": 610
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/ControlFlow/Checks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3",
+      "bytes": 183
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/control-flow/native-oracle.c",
+      "sha256": "d62f1703be3b0b4a6177470cd688959eccedb0c754e90489da0ecaa4cb734752",
+      "bytes": 361
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T3/control-flow/control-flow.c",
+      "sha256": "44826e4275337de3a36e2d2e8befab856102aa3cdcbccf9740ffc87b97024310",
+      "bytes": 1439
+    }
+  ],
+  "translatorBuild": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/emitter-bin-3/Emit.dll",
+      "sha256": "f8e353c29e13f72ff234dddb004eaf283bc622a601b9b620ed4fc9171e66093f",
+      "bytes": 14848
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/emitter-bin-3/RoslynObj.CSharp.dll",
+      "sha256": "7e2b3982cadbc0516b1645770dccfca8d0a65443f3cc9bfe5ce655a3e51bf333",
+      "bytes": 470528
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/emitter-bin-3/RoslynObj.dll",
+      "sha256": "f0371e43f241a57fb6d7c4d6abca5288a7b67cdd4af50747b7ccee0d4b52df51",
+      "bytes": 2629632
+    }
+  ],
+  "generatedFiles": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/Generated.cs",
+      "sha256": "1e7ffb7622775a887159ffcc55f9cca88d23c325b52130fbd5838655c8d5dfa1",
+      "bytes": 4689
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/Generated.NativeImports.json",
+      "sha256": "adf05dca162f790f9e804127ae6c90437237dc62ef4d4c5201782459e9b0fbcd",
+      "bytes": 806
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/libRoslynObj.Generated.Abi.so",
+      "sha256": "e0b36ea53432bf50c673f5318b92e36ee49b54bc29286e77242823e1ebd06687",
+      "bytes": 15632
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/Generated.Abi.c",
+      "sha256": "0d0006a74e02198c2d4aae96587bf5c57707ceeaedcbe9b72cd85e848d9bb26e",
+      "bytes": 777
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/generated-4/Generated.csproj",
+      "sha256": "834cffe4f552cd66023bce0f7ec62cb43964518c7ae617ef0a576fe64c5fd0de",
+      "bytes": 1402
+    }
+  ],
+  "checkerBuild": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/checker-4/Checks.dll",
+      "sha256": "f5997f79457d95261cd6231215277d9bd6b0acca4bc3f982d2af849d4b2c5de6",
+      "bytes": 6144
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/checker-4/Generated.dll",
+      "sha256": "03f47ad0f620525911d264fef0a214bbdb55a7da82aa8cc1a21b93f77a2dbdee",
+      "bytes": 6144
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/checker-4/RoslynObj.CSharp.Runtime.dll",
+      "sha256": "2a4f371406116ab0bbc9e812c54c8c33899f487e71000198a2427aa7f235fcfd",
+      "bytes": 13312
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/statements/aot-4/Checks",
+      "sha256": "6a5a61dc63f34690a5a9cbd9025defbbcf40633b2226b31237a4ba2a15788723",
+      "bytes": 1819696
+    }
+  ],
+  "scope": [
+    "nested and cross-arm goto preserves skipped initialization",
+    "switch selector once, ordinary fallthrough, no-match, default and retained integer range",
+    "continue through for increment and end-tested loop condition",
+    "flatten only scopes entered by a retained cross-scope/arm target; ordinary for/do/if retained",
+    "C++ cleanup/return initialization obligations remain unsupported"
+  ],
+  "attemptHistory": "Original fixture 20 events passes JIT/AOT after correcting discarded void cast. Cross-arm activation extends it to23 events; original source and failed build artifacts retained."
+}

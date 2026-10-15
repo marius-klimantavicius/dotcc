@@ -6,14 +6,15 @@ The coordinator owns shared contracts, integration, serialized build/export
 scheduling, exact-path Git mutations and this ledger. Root supervises read-only.
 Two `gpt-6.1-sol` xhigh implementers have disjoint ownership:
 
-- `inventory`: finish the disjoint `tests/HostContracts` reproduction receipt,
-  then implement the 15 required recorded compiler intrinsics in new emitter/
-  runtime files and its typed-planner hook. Completed program/inventory/assembly
-  files remain stable.
+- `inventory`: bounded intrinsic receipt passes. Next: actual pointer compounds,
+  shifts, planned varargs and volatile memory execution, using its ready narrow
+  20-body OperatorFacts probe. Coordinate core type hooks through coordinator.
 - `emission`: existing Emission partials, runtime/host, Projection, T2 fixtures
   and execution drivers. The aggregate gate passes; next target is production
-  Linux x64 provider ABI/error/TLS/callback handling, beginning the explicit
-  protocol design. Do not edit the intrinsic worker's planner/new intrinsic files.
+  Linux x64 provider ABI/error/TLS/callback proof passes. Next: ordinary static
+  locals and expression constants in Storage.cs plus remaining loader/provider
+  needs. Coordinator integrates small core/SelectedStorage hooks. Do not edit
+  the intrinsic worker's planner/new intrinsic files.
 
 The coordinator (`gpt-6.1-sol` high) owns root project configuration and docs.
 Workers must request build/export scheduling and must not mutate Git.
@@ -175,7 +176,24 @@ snapshot is the accepted 248 input. No process remains active at checkpoint.
 Genuine fixture objects/native oracles remain under `t2/export`, `t2/native`,
 `t2/assembly-export`, `t2/sequencing` and `t2/program-execution`. Preserve all
 artifacts, including failed/incomplete attempts; no cleanup is authorized.
-Next coordinator task is the unchanged full-object library emission diagnostic
-pass, with frozen budgets, exact candidate bindings and no output publication.
-Then resolve actual diagnostics alongside intrinsic/provider implementation.
-SQLite T3/T4 execution has not run.
+The first full-object diagnostic pass reports 596 first blockers; the second,
+with the explicit logical errno profile and bounded intrinsics, reports 313 in
+298.35 seconds, no output publication or budget violation. The reports and
+current exact ownership are in [T3-PROGRESS.md](T3-PROGRESS.md). Counts are not
+exhaustive unsupported families or a completion percentage. All 88 host bindings
+remain candidates; the bounded provider fixture does not prove every contract.
+
+Current checkpoint has accepted native/JIT/AOT statements 23/all 23 events,
+intrinsics 34/all 34 plus 1000 exact handoffs (27 expected outcomes), and errno/
+qsort/pthread 6223/all 24 with forced raw interference (17 phases). Frozen
+receipts are under `acceptance/{statements,intrinsics,errno-provider}`. Product
+sources remained held through these receipts; no additional baseline rerun is
+needed absent relevant changes. Public CLI still rejects required intrinsic
+imports and needs coordinator fulfillment/report integration.
+
+Coordinator next: flexible-tail address representation, value-only unsigned128
+with guarded addressable alignment, CLI intrinsic fulfillment and checkpoint
+integration. Reader-only StorageFacts reports all 132 constant static recipes,
+26 actual SQLite flexible tails and the two actual unsigned128 locals. Preserve
+`t3/statement-snapshot` and all incomplete attempts. No build/process remains
+running at this checkpoint. SQLite T3/T4 SQL execution has not run.

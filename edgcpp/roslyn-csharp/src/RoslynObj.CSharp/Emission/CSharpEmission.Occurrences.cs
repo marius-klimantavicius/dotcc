@@ -48,6 +48,11 @@ public sealed partial class CSharpEmitter
 
         private void ExpressionStatementOccurrence(ExpressionOperation expression, CodeWriter writer)
         {
+            if (expression is ConversionOperation conversion && Unwrap(conversion.TargetType).Kind.Name == "tk_void")
+            {
+                ExpressionStatementOccurrence(conversion.Operand, writer);
+                return;
+            }
             if (NeedsExpressionPlan(expression)) { EmitPlannedExpressionStatement(expression, writer); return; }
             var value = Expression(expression);
             if (expression is OperatorOperation op && IsStatementExpression(op.OperatorKind.Name) || expression is CallOperation)

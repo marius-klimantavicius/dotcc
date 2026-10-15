@@ -37,7 +37,7 @@ public sealed partial class CSharpEmitter
                 writer.Line($"private static {TypeName(signature.ReturnType)} {address.VariadicBridge}({string.Join(", ", formals)})");
                 writer.Open();
                 var arguments = signature.Parameters.Select((_, i) => $"argument{i}").Append("cursor");
-                writer.Line($"{(TypeName(signature.ReturnType) == "void" ? "" : "return ")}{OwnedName(address.Function)}({string.Join(", ", arguments)});");
+                EmitBoundaryBody(writer, TypeName(signature.ReturnType), () => writer.Line($"{(TypeName(signature.ReturnType) == "void" ? "" : "return ")}{OwnedName(address.Function)}({string.Join(", ", arguments)});"));
                 writer.Close();
                 methods.Append(writer.TextWithIndent(1)).AppendLine();
                 initialization.Line($"{Owner}.{address.VariadicRegistration}(({bridgeType})&{address.VariadicBridge});");
@@ -47,6 +47,7 @@ public sealed partial class CSharpEmitter
         private string NativeAbiSource()
         {
             var source = new StringBuilder("/* Generated concrete ABI forwarding only. Application bodies remain C#. */\n#include <stdarg.h>\n#include <stddef.h>\n#include <stdint.h>\n#include <stdlib.h>\n\n#if !defined(__linux__) || !defined(__x86_64__)\n#error This ABI provider requires Linux x64.\n#endif\n_Static_assert(sizeof(void *) == 8, \"64-bit native pointers required\");\n_Static_assert(sizeof(va_list) == 24 && _Alignof(va_list) == 8, \"SysV AMD64 cursor storage required\");\n#define ABI_EXPORT __attribute__((visibility(\"default\")))\n\n");
+            AppendHostProtocolPreamble(source);
             foreach (var address in functionAddresses.Where(a => a.VariadicEntry is not null))
             {
                 var signature = address.Function.Signature;
@@ -61,12 +62,14 @@ public sealed partial class CSharpEmitter
                     .Append("    ").Append(bridge).AppendLine("_callback = callback;\n}");
                 source.Append("ABI_EXPORT ").Append(result).Append(' ').Append(address.VariadicEntry).Append('(')
                     .Append(string.Join(", ", formals)).AppendLine(", ...) {");
+                AppendHostIncomingStart(source);
                 source.Append("    if (!").Append(bridge).AppendLine("_callback) abort();");
                 source.Append("    va_list cursor;\n    va_start(cursor, argument").Append(formals.Length - 1).AppendLine(");");
                 source.Append("    ");
                 if (result != "void") source.Append(result).Append(" result = ");
                 source.Append(bridge).Append("_callback(").Append(string.Join(", ", signature.Parameters.Select((_, i) => $"argument{i}").Append("(void *)&cursor"))).AppendLine(");");
                 source.AppendLine("    va_end(cursor);");
+                AppendHostIncomingEnd(source);
                 if (result != "void") source.AppendLine("    return result;");
                 source.AppendLine("}\n");
             }
@@ -78,10 +81,20 @@ public sealed partial class CSharpEmitter
                 source.Append("typedef ").Append(result).Append(" (*").Append(type).Append(")(").Append(string.Join(", ", prefix)).AppendLine(", ...);");
                 source.Append("ABI_EXPORT ").Append(result).Append(' ').Append(call.NativeAdapter).Append("(void *address")
                     .Append(string.Concat(call.ArgumentTypes.Select((t, i) => $", {NativeScalarType(t)} argument{i}"))).AppendLine(") {");
-                source.Append("    ").Append(result == "void" ? "" : "return ").Append("((").Append(type).Append(")address)(")
+                if (HostProtocolEnabled)
+                {
+                    AppendHostOutgoingStart(source);
+                    source.Append("    ").Append(result == "void" ? "" : result + " result = ").Append("((").Append(type).Append(")address)(")
+                        .Append(string.Join(", ", call.ArgumentTypes.Select((_, i) => $"argument{i}"))).AppendLine(");");
+                    AppendHostOutgoingEnd(source);
+                    if (result != "void") source.AppendLine("    return result;");
+                    source.AppendLine("}\n");
+                }
+                else source.Append("    ").Append(result == "void" ? "" : "return ").Append("((").Append(type).Append(")address)(")
                     .Append(string.Join(", ", call.ArgumentTypes.Select((_, i) => $"argument{i}"))).AppendLine(");\n}\n");
             }
             AppendAggregateNativeSource(source);
+            AppendHostNativeCalls(source);
             return source.ToString();
         }
 
