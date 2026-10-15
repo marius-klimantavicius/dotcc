@@ -12,6 +12,8 @@ public sealed partial class CSharpEmitter
         private readonly HashSet<LoweredEhOperation> normalCleanupMarkers = [];
         private readonly HashSet<LifetimeOperation> normalLifetimeExpressions = [];
         private readonly Dictionary<FunctionSymbol, VariableSymbol> omittedNormalRegionTables = [];
+        private sealed record ReceiverMemberCleanup(FunctionSymbol Function, Initialization Recipe, VariableSymbol Receiver, FieldSymbol Field, RecordType MemberType);
+        private readonly Dictionary<CleanupAction, ReceiverMemberCleanup> receiverMemberCleanups = [];
 
         private void RequireNormalLifetimeProfile()
         {
@@ -89,7 +91,7 @@ public sealed partial class CSharpEmitter
                 }
                 if (function.ConstructorOrDestructorKind?.Name == "cdk_subobject")
                     ValidateGeneratedAlternateBody(function);
-                else if (signature.Routine.ExceptionSpecification?.NoexceptEffective != true)
+                else if (signature.Routine.ExceptionSpecification?.NoexceptEffective != true && !validatedThrowingConstructors.Contains(function))
                     throw Limit("The first generated constructor/destructor adapter requires the retained noexcept specification.", "lifetime");
             }
             else if (signature.ReturnsValueAsParameter == true)
@@ -144,9 +146,12 @@ public sealed partial class CSharpEmitter
         {
             var primary = function.PrimaryEntry;
             if (primary is null || !functions.Contains(primary) || !primary.AlternateEntryPoints.Contains(function) ||
-                primary.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true || primary.SpecialFunctionKind != function.SpecialFunctionKind)
-                throw Limit("The generated alternate entry requires its actual defined noexcept primary entry and reciprocal retained association.", "lifetime-entry");
-            EnsureGeneratedNoThrow(primary);
+                primary.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true && !validatedThrowingConstructors.Contains(primary) ||
+                primary.SpecialFunctionKind != function.SpecialFunctionKind)
+                throw Limit("The generated alternate entry requires its actual defined noexcept or validated throwing-constructor primary and reciprocal retained association.", "lifetime-entry");
+            if (primary.Signature.ExceptionSpecification?.NoexceptEffective == true) EnsureGeneratedNoThrow(primary);
+            else if (function.SpecialFunctionKind?.Name != "sfk_constructor")
+                throw Limit("Only the selected throwing constructor has an exercised generated forwarding entry.", "lifetime-entry");
             var calls = NormalLifetimeNodes(function.Body!.Root).OfType<CallOperation>().ToArray();
             if (calls.Length != 1 || calls[0].Callee is not ReferenceOperation { Target: FunctionSymbol target } || !target.Equals(primary) ||
                 calls[0].TargetMethod is null || !calls[0].TargetMethod!.Equals(primary) || calls[0].Arguments.Count != function.Parameters.Count)
@@ -206,6 +211,88 @@ public sealed partial class CSharpEmitter
                 throw Limit("Receiver/result facets must alias the already retained execution argument; no argument is synthesized.", "lifetime-call");
         }
 
+        private ReceiverMemberCleanup ValidateReceiverMemberCleanup(FunctionSymbol function, CleanupAction action,
+            IReadOnlyList<Initialization> recipes, IReadOnlyList<SemanticNode> nodes, bool normalDestructor)
+        {
+            if (receiverMemberCleanups.TryGetValue(action, out var existing)) return existing;
+            var body = function.Body!;
+            if (action.Storage is not { Kind.Name: "receiver_relative", UsesThisParameterOffset: true, IsIndirect: false } location ||
+                location.Variable is not null || location.Details.BaseEntity is not null || location.Offset < 0 ||
+                !function.Signature.HasThisParameter || function.Parameters.Count == 0 || function.Parameters[0].Role.Name != "this_parameter" ||
+                function.Parameters[0].Symbol is not { } receiver || function.SpecialFunctionKind?.Name != (normalDestructor ? "sfk_destructor" : "sfk_constructor") ||
+                function.ConstructorOrDestructorKind?.Name != "cdk_complete" || action.TargetMethod is not { } destructor ||
+                destructor.SpecialFunctionKind?.Name != "sfk_destructor" || destructor.Parameters.Count != 1)
+                throw Limit("The member cleanup requires its selected complete constructor/destructor receiver and direct this-relative storage.", "lifetime-member");
+            var whole = GeneratedRecordPointer(function.Parameters[0].Type, false);
+            var member = GeneratedRecordPointer(destructor.Parameters[0].Type, false);
+            if (whole.Layout is not { } layout || whole.Kind.Name is not ("tk_struct" or "tk_class") || whole.IsPacked || member.IsPacked || whole.Bases.Count != 0 ||
+                whole.HasVirtualBases || whole.HasVirtualFunctions || whole.Size is null || member.Size is null || member.Alignment is null ||
+                whole.Alignment is null || member.Alignment <= 0 || whole.Alignment < member.Alignment ||
+                location.Offset + member.Size > whole.Size || location.Offset % member.Alignment != 0)
+                throw Limit("The receiver-relative member needs a complete ordinary in-bounds captured layout.", "lifetime-member");
+            var members = layout.Fields.Where(layoutField => layoutField.Offset == location.Offset && layoutField.BitWidth is null &&
+                MemoryRepresentationType(layoutField.Field.Type).Equals(member)).ToArray();
+            if (members.Length != 1)
+                throw Limit("The member cleanup displacement must identify one exact captured nonbitfield record field.", "lifetime-member");
+            var field = members[0].Field;
+            ValidateAggregateQualifiers(field.Type);
+            var matches = recipes.Where(candidate => candidate.Target is null && candidate.Details.Type is null && candidate.Destructor?.Equals(destructor) == true &&
+                candidate.Details.IsConstructorInitialization && candidate.Lifetime?.BoundEntity?.Equals(body.Scope) == true).ToArray();
+            if (matches.Length != 1)
+                throw Limit("The this-relative member cleanup must have one scope-bound retained subobject destruction recipe.", "lifetime-member");
+            var recipe = matches[0];
+            ValidateExceptionMetadataRecipe(recipe, false, true);
+            ValidateGeneratedLifetimeRoutine(destructor);
+            EnsureGeneratedNoThrow(destructor);
+            var calls = nodes.OfType<CallOperation>().Where(call => call.Receiver is { } address && IsAddressOfReceiverField(address, receiver, field)).ToArray();
+            if (normalDestructor)
+            {
+                if (body.Scope?.ConstructorInitializers.Count(initializer => initializer.Kind.Name == "cik_field" && initializer.Field?.Equals(field) == true &&
+                    initializer.Initialization?.Equals(recipe) == true) != 1 ||
+                    calls.Count(call => call.TargetMethod?.Equals(destructor) == true) != 1)
+                    throw Limit("The noexcept member destruction requires its retained field recipe and one explicit normal destructor call.", "lifetime-member");
+            }
+            else
+            {
+                if (body.Scope is null || body.Scope.ConstructorInitializers.Count != 0)
+                    throw Limit("This constructor slice requires already-lowered member calls, without replaying initializer recipes.", "lifetime-member");
+                var completed = calls.Where(call => call.TargetMethod is { } constructor && constructor.SpecialFunctionKind?.Name == "sfk_constructor" &&
+                    constructor.ConstructorOrDestructorKind?.Name == "cdk_complete" && constructor.ContainingType?.Equals(member) == true &&
+                    constructor.Signature.ExceptionSpecification?.NoexceptEffective == true && HasImmediateCompletionState(nodes, call, action.Details.Region)).ToArray();
+                if (completed.Length != 1)
+                    throw Limit("The member cleanup must be armed by the actual retained state immediately after its selected successful constructor call.", "lifetime-member");
+                ValidateGeneratedLifetimeRoutine(completed[0].TargetMethod!);
+                EnsureGeneratedNoThrow(completed[0].TargetMethod!);
+            }
+            var result = new ReceiverMemberCleanup(function, recipe, receiver, field, member);
+            receiverMemberCleanups.Add(action, result);
+            return result;
+        }
+
+        private static bool IsAddressOfReceiverField(ExpressionOperation expression, VariableSymbol receiver, FieldSymbol field) => expression is
+            OperatorOperation { OperatorKind.Name: "eok_address_of" } address && address.Operands.Count == 1 &&
+            address.Operands[0] is OperatorOperation { OperatorKind.Name: "eok_points_to_field" } selected && selected.Operands.Count == 2 &&
+            selected.Operands[0] is ReferenceOperation { Target: VariableSymbol actualReceiver } && actualReceiver.Equals(receiver) &&
+            selected.Operands[1] is ReferenceOperation { Target: FieldSymbol actualField } && actualField.Equals(field);
+
+        private static bool HasImmediateCompletionState(IReadOnlyList<SemanticNode> nodes, CallOperation constructor, CleanupRegion region)
+        {
+            foreach (var block in nodes.OfType<BlockOperation>())
+            {
+                var statements = block.Statements;
+                for (var index = 0; index + 1 < statements.Count; ++index)
+                    if (statements[index].Expression?.Equals(constructor) == true &&
+                        statements[index + 1].Expression is CleanupStateOperation { IsUnreachable: false } state &&
+                        state.Region?.Equals(region) == true && state.StateNumber == region.Ordinal) return true;
+            }
+            return false;
+        }
+
+        private bool IsReceiverMemberRecipe(Initialization recipe) => receiverMemberCleanups.Values.Any(member => member.Recipe.Equals(recipe));
+        private bool MatchesLifetimeCleanupRecipe(CleanupAction action, Initialization recipe) => receiverMemberCleanups.TryGetValue(action, out var member)
+            ? member.Recipe.Equals(recipe)
+            : action.Storage?.Variable?.Equals(recipe.Target) == true && action.TargetMethod?.Equals(recipe.Destructor) == true;
+
         private void ValidateNormalCleanupBody(FunctionSymbol function)
         {
             var body = function.Body!;
@@ -254,14 +341,21 @@ public sealed partial class CSharpEmitter
                 var flags = action.Details;
                 if (action.Kind.Name != "destructor" || flags.Ordinal != 0 || !flags.Region.Equals(region) || action.Array is not null || action.AbiDetail is not null ||
                     flags.IsArray || flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
-                    action.Storage is not { } storage || storage.Kind.Name != "direct_variable" || storage.Variable is not { } variable ||
-                    !body.Locals.Contains(variable) || storage.Offset != 0 || storage.IsIndirect || storage.UsesThisParameterOffset ||
-                    action.TargetMethod is not { } destructor || destructor.SpecialFunctionKind?.Name != "sfk_destructor" ||
-                    destructor.Parameters.Count != 1 || !GeneratedRecordPointer(destructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(variable.Type)))
-                    throw Limit("Normal cleanup metadata requires one direct local destructor without conditions, arrays or ABI side actions.", "lifetime");
-                ValidateGeneratedLifetimeRoutine(destructor);
-                if (!calls.Any(call => call.TargetMethod?.Equals(destructor) == true && call.Receiver is { } receiver && IsAddressOfLocal(receiver, variable)))
-                    throw Limit("A normal destructor metadata action has no matching retained explicit call receiver.", "lifetime");
+                    action.Storage is not { } storage)
+                    throw Limit("Normal cleanup metadata requires one validated local/member destructor without conditions, arrays or ABI side actions.", "lifetime");
+                if (storage.Kind.Name == "receiver_relative")
+                    ValidateReceiverMemberCleanup(function, action, recipes.Select(recipe => recipe.Cleanup.Initialization).ToArray(), nodes, true);
+                else
+                {
+                    if (storage.Kind.Name != "direct_variable" || storage.Variable is not { } variable || !body.Locals.Contains(variable) ||
+                        storage.Offset != 0 || storage.IsIndirect || storage.UsesThisParameterOffset || storage.Details.BaseEntity is not null ||
+                        action.TargetMethod is not { } destructor || destructor.SpecialFunctionKind?.Name != "sfk_destructor" ||
+                        destructor.Parameters.Count != 1 || !GeneratedRecordPointer(destructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(variable.Type)))
+                        throw Limit("The normal local cleanup storage has no exercised representation.", "lifetime");
+                    ValidateGeneratedLifetimeRoutine(destructor);
+                    if (!calls.Any(call => call.TargetMethod?.Equals(destructor) == true && call.Receiver is { } receiver && IsAddressOfLocal(receiver, variable)))
+                        throw Limit("A normal destructor metadata action has no matching retained explicit call receiver.", "lifetime");
+                }
                 actions.Add(action);
             }
             foreach (var (lifetime, cleanup) in recipes)
@@ -272,17 +366,17 @@ public sealed partial class CSharpEmitter
                     recipe.Constructor is not null || recipe.Expression is not null || recipe.Constant is not null || recipe.Operands.Count != 0 ||
                     recipe.Master is not null || recipe.OverlappingLifetime is not null || recipe.InitExpressionLifetime is not null ||
                     flags.IsConditional || flags.IsUnordered || flags.IsReusedValue || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary ||
-                    flags.IsPartialAggregate || flags.IsPartialInitialization || flags.IsConstructorInitialization || flags.FreesStorage || flags.FreesArray ||
+                    flags.IsPartialAggregate || flags.IsPartialInitialization || flags.IsConstructorInitialization != IsReceiverMemberRecipe(recipe) || flags.FreesStorage || flags.FreesArray ||
                     flags.IsConditionalGuard || flags.IsVlaDeallocation || flags.IsFreeingOfExceptionObject || flags.CreatesInitializerList || flags.IsInitializerListArray ||
                     recipe.NextInDestructionList is { } next && !recipes.Any(other => other.Cleanup.Initialization.Equals(next)) ||
-                    actions.Count(action => action.Storage?.Variable?.Equals(recipe.Target) == true && action.TargetMethod?.Equals(recipe.Destructor) == true) != 1)
+                    actions.Count(action => MatchesLifetimeCleanupRecipe(action, recipe)) != 1)
                     throw Limit("Lifetime cleanup recipes must only describe the already retained simple destructor actions.", "lifetime");
                 if (lifetime.BoundEntity is Scope scope ? body.Scope?.Equals(scope) != true && !nodes.OfType<BlockOperation>().Any(block => block.Scope?.Equals(scope) == true)
                     : lifetime.BoundEntity is not LifetimeOperation wrapper || !nodes.Contains(wrapper) || wrapper.Lifetime?.Equals(lifetime) != true)
                     throw Limit("A reachable cleanup lifetime is not bound to an admitted body block or full-expression wrapper.", "lifetime");
             }
             if (actions.Count != recipes.Length || actions.Any(action => recipes.Count(recipe =>
-                action.Storage?.Variable?.Equals(recipe.Cleanup.Initialization.Target) == true && action.TargetMethod?.Equals(recipe.Cleanup.Destructor) == true) != 1))
+                MatchesLifetimeCleanupRecipe(action, recipe.Cleanup.Initialization)) != 1))
                 throw Limit("Cleanup actions and metadata destruction recipes do not have a unique matching association.", "lifetime");
             foreach (var marker in nodes.OfType<LoweredEhOperation>()) ValidateNormalCleanupMarker(marker, function, regions);
             if (!nodes.Contains(details.Prologue) || eh.Epilogues.Any(epilogue => !nodes.Contains(epilogue)))

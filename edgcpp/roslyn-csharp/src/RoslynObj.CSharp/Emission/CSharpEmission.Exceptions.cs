@@ -18,6 +18,7 @@ public sealed partial class CSharpEmitter
         private readonly List<SemanticRuntimeFunctionImplementation> semanticRuntimeFunctions = [];
         private readonly HashSet<FunctionSymbol> validatedNoThrowFunctions = [];
         private readonly HashSet<FunctionSymbol> exceptionParticipants = [];
+        private readonly HashSet<FunctionSymbol> validatedThrowingConstructors = [];
         private CppType? exceptionIntType;
         private ThrowOperation? selectedIntegerThrow;
         private string? exceptionTypeToken;
@@ -101,6 +102,10 @@ public sealed partial class CSharpEmitter
             {
                 var nodes = graph[function];
                 ValidateExceptionFunction(function, nodes, tryPlan);
+                if (function.Equals(throwingFunction) && function.SpecialFunctionKind?.Name == "sfk_constructor" &&
+                    function.ConstructorOrDestructorKind?.Name == "cdk_complete" &&
+                    receiverMemberCleanups.Values.Count(member => member.Function.Equals(function)) == 1)
+                    validatedThrowingConstructors.Add(function);
                 var eh = function.Body!.ExceptionHandling;
                 exceptionFunctions.Add(function, new(function, eh.RegionTable!, eh.CleanupRegions,
                     ExceptionLocal("__cleanup_state"), ExceptionLocal("__unwinding_cpp"), ExceptionLocal("__observed_cpp"), ExceptionLocal("__active_caught_cpp")));
@@ -129,8 +134,8 @@ public sealed partial class CSharpEmitter
                     initializer.Initialization is not null || initializer.Constant is not null || initializer.Lifetime is not null))
                 throw Limit("The EH table must be its exact metadata projection with no application value reference or initializer.", "exception");
             var recipes = body.Lifetimes.SelectMany(lifetime => lifetime.Cleanups.Select(cleanup => cleanup.Initialization)).ToArray();
-            foreach (var recipe in recipes) ValidateExceptionMetadataRecipe(recipe, recipe.IsFreeingOfExceptionObject);
             var actions = new List<CleanupAction>();
+            var matchedRecipes = new HashSet<Initialization>();
             foreach (var region in eh.CleanupRegions)
             {
                 if (region.Ordinal is < 0 or > int.MaxValue or 65535 || region.Condition is not null || region.Details.IsSupplement || region.Details.SupplementOwner is not null ||
@@ -141,45 +146,57 @@ public sealed partial class CSharpEmitter
                 var flags = action.Details;
                 if (!flags.Region.Equals(region) || flags.Ordinal != 0 || action.Kind.Name != "destructor" || action.Array is not null || action.AbiDetail is not null ||
                     flags.IsArray || flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
-                    action.Storage is not { } storage || storage.Offset != 0 || storage.IsIndirect || storage.UsesThisParameterOffset || storage.Details.BaseEntity is not null)
+                    action.Storage is not { } storage || storage.IsIndirect || storage.Details.BaseEntity is not null)
                     throw Limit("The bounded EH action has an unsupported condition, array, storage offset or ABI side effect.", "exception-cleanup");
                 if (storage.Kind.Name == "direct_variable")
                 {
-                    if (storage.Variable is not { } variable || !body.Locals.Contains(variable) || action.TargetMethod is not { } destructor ||
+                    if (storage.Offset != 0 || storage.UsesThisParameterOffset || storage.Variable is not { } variable || !body.Locals.Contains(variable) || action.TargetMethod is not { } destructor ||
                         destructor.SpecialFunctionKind?.Name != "sfk_destructor" || destructor.Parameters.Count != 1 ||
                         !GeneratedRecordPointer(destructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(variable.Type)) ||
                         recipes.Count(recipe => recipe.Target?.Equals(variable) == true && recipe.Destructor?.Equals(destructor) == true && !recipe.IsFreeingOfExceptionObject) != 1)
                         throw Limit("A direct-variable EH action must match one retained local destructor recipe.", "exception-cleanup");
+                    var selectedRecipe = recipes.Single(recipe => recipe.Target?.Equals(variable) == true && recipe.Destructor?.Equals(destructor) == true && !recipe.IsFreeingOfExceptionObject);
+                    ValidateExceptionMetadataRecipe(selectedRecipe, false);
+                    if (!matchedRecipes.Add(selectedRecipe)) throw Limit("Two EH actions unexpectedly share one destruction recipe.", "exception-cleanup");
                     ValidateGeneratedLifetimeRoutine(destructor);
                     EnsureGeneratedNoThrow(destructor);
                 }
+                else if (storage.Kind.Name == "receiver_relative")
+                {
+                    var member = ValidateReceiverMemberCleanup(function, action, recipes, nodes, false);
+                    if (!matchedRecipes.Add(member.Recipe)) throw Limit("Two member actions unexpectedly share one destruction recipe.", "exception-cleanup");
+                }
                 else if (storage.Kind.Name == "no_object")
                 {
-                    if (storage.Variable is not null || !nodes.Contains(tryPlan.Operation) ||
+                    if (storage.Offset != 0 || storage.UsesThisParameterOffset || storage.Variable is not null || !nodes.Contains(tryPlan.Operation) ||
                         recipes.Count(recipe => recipe.IsFreeingOfExceptionObject && recipe.Target is null && recipe.Destructor is null &&
                             tryPlan.Handler.Body is BlockOperation handlerBlock && handlerBlock.Scope?.Equals(recipe.Lifetime?.BoundEntity) == true) != 1 ||
                         action.TargetMethod is not { } release)
                         throw Limit("The no-object EH action must have the retained exception-owner release recipe in its handler function.", "exception-runtime");
+                    var selectedRecipe = recipes.Single(recipe => recipe.IsFreeingOfExceptionObject && recipe.Target is null && recipe.Destructor is null &&
+                        tryPlan.Handler.Body is BlockOperation handlerBlock && handlerBlock.Scope?.Equals(recipe.Lifetime?.BoundEntity) == true);
+                    ValidateExceptionMetadataRecipe(selectedRecipe, true);
+                    if (!matchedRecipes.Add(selectedRecipe)) throw Limit("Two no-object actions unexpectedly share one release recipe.", "exception-cleanup");
                     ValidateExceptionReleaseRoutine(release);
                 }
-                else throw Limit("The integer EH adapter supports only direct-variable and no-object cleanup storage.", "exception-cleanup");
+                else throw Limit("The integer EH adapter supports only validated direct-variable, receiver-relative member and no-object cleanup storage.", "exception-cleanup");
                 actions.Add(action);
             }
-            if (actions.Count != recipes.Length || recipes.Any(recipe => recipe.NextInDestructionList is not null))
+            if (actions.Count != recipes.Length || matchedRecipes.Count != recipes.Length || recipes.Any(recipe => recipe.NextInDestructionList is not null))
                 throw Limit("The first integer EH slice requires one matching metadata recipe for each action, without a second destruction schedule.", "exception-cleanup");
             foreach (var marker in nodes.OfType<LoweredEhOperation>()) ValidateExceptionMarker(marker, function, tryPlan);
             if (eh.Epilogues.Any(epilogue => !nodes.Contains(epilogue)))
                 throw Limit("An actual EH epilogue is absent from the typed function body.", "exception");
         }
 
-        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing)
+        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing, bool constructorMember = false)
         {
             var flags = recipe.Details;
             if (recipe.Kind.Name != "dik_none" || recipe.Operation?.RepresentationRole.Name != "metadata" || recipe.Expression is not null ||
                 recipe.Constructor is not null || recipe.Constant is not null || recipe.Operands.Count != 0 || recipe.Master is not null ||
                 recipe.OverlappingLifetime is not null || recipe.InitExpressionLifetime is not null || flags.IsFreeingOfExceptionObject != freeing ||
                 flags.IsUnordered || flags.IsConditional || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary || flags.IsPartialAggregate ||
-                flags.IsPartialInitialization || flags.HasTemporaryLifetime || flags.IsConstructorInitialization || flags.IsConditionalGuard || flags.IsVlaDeallocation ||
+                flags.IsPartialInitialization || flags.HasTemporaryLifetime || flags.IsConstructorInitialization != constructorMember || flags.IsConditionalGuard || flags.IsVlaDeallocation ||
                 flags.CreatesInitializerList || flags.IsInitializerListArray || flags.IsReusedValue || flags.IsQuestionResult || flags.IsCommaResult ||
                 flags.ConstructorCopyImpliedSource || flags.ConstructorImplicitCopy || flags.ConstructorValueInitialization || flags.ConstructorSequencedArguments ||
                 flags.ConstructorArrayCopy || flags.FreesStorage || flags.FreesArray)
@@ -334,6 +351,8 @@ public sealed partial class CSharpEmitter
                 var action = region.Actions[0];
                 if (action.Storage!.Kind.Name == "direct_variable")
                     writer.Line($"    {OwnedName(action.TargetMethod!)}(&{names[action.Storage.Variable!]});");
+                else if (receiverMemberCleanups.TryGetValue(action, out var member))
+                    writer.Line($"    {OwnedName(action.TargetMethod!)}(({TypeName(member.MemberType)}*)((byte*){names[member.Receiver]} + {action.Storage.Offset.ToString(CultureInfo.InvariantCulture)}));");
                 else
                 {
                     var handler = exceptionTries.Values.Single();

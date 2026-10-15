@@ -265,3 +265,10 @@ release action is inspected but not activated: a new throw from the handler is
 unsupported, as are pending initialization failure, rethrow, termination, class
 payloads, partial construction/arrays and native unwinding. Existing const-record
 reference limits remain. This checkpoint does not close broader T5 or T6.
+
+
+The subsequent [constructor-body failure proof](T5-CONSTRUCTOR-FAILURE.md) extends
+this bounded adapter to one matched receiver-relative completed member and a
+validated throwing constructor/forwarding entry. Its own receipt separates that
+new activation from the original integer fixture's limits above. Arrays,
+failed-member construction, native unwinding and broader EH remain open.

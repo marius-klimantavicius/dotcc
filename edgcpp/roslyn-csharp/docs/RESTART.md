@@ -64,10 +64,37 @@ release is exercised; exceptional no-object release and pending initialization
 failure are not. Native unwinding, new throw/rethrow from handler, termination,
 class payloads, constructor failure/arrays, inheritance/dispatch/RTTI/member
 pointers, local-static guards/TLS and broader ABI/scale remain open. See
-[T5 contract and proof](T5-EH-CONTRACT.md). Inventory worker is preparing the
-next bounded constructor-failure/partial-construction slice read-only; no product
-expansion or new capture has begun. Proceed with that concrete public-fact capture
-after this EH checkpoint, preserving EDG authority and the current guards.
+[T5 contract and proof](T5-EH-CONTRACT.md). EH checkpoint is `0628a20d2`. The next constructor-body failure slice now passes
+from immutable `t5/constructor-source-1` (201 files). Production output is
+`t5/constructor-cli-generated-1`; the [constructor receipt](../acceptance/lifetimes/constructor-report.json)
+SHA-256 `e720a0d6826db048f6645e999df287ae356e50b26a4e2d809fb225c4467d3ff7`
+records 20 expected outcomes (17 successful phases, three intended rejections),
+with no budget violations/retries. Whole size 8/alignment 4 has a scalar canary
+at 0 and Member at 4. Its throwing C1 and noexcept D1 retain member cleanup at
+receiver value + captured offset 4; IsIndirect=false and Variable/BaseEntity=null.
+The matched constructor-initialization metadata recipes never replay. Caller
+arms Whole cleanup only after C1 returns; the try saves null entry state 65535.
+One throw/one try/two throwing cleanup functions and actual C2 forwarding remain.
+All 16 bodies publish. Native/JIT/AOT repeat result 79233, five values and 16
+events with zero live/overflow; failure destroys only the completed member.
+Each fixture invocation balances one payload with selection before cleanup.
+Two cleanup assertions include an empty handler-boundary walk, not two destructor
+actions. Runtime/checker are unchanged. Prior normal and int-EH CLI/JIT/AOT pass
+with byte-identical application source; all three unsupported admission guards
+still reject before publication. Completion hashes, repeat bytes and six pinned
+inputs/source freeze pass. All builders are finished.
+
+See [constructor facts and proof](T5-CONSTRUCTOR-FAILURE.md). Failed-member
+construction, multiple completed members, conditions/bases, partial arrays,
+vector helper/count contracts, native unwinding, rethrow/termination and broader
+T5/T6 remain open. Next approved slice is genuine automatic partial-array
+capture: three elements, success and failure on the second, per-element ids and
+prior-live detection. Keep one int payload/handler. Establish actual helper
+signatures, completion-count storage/state writes, captured stride/action/region
+contracts and normal cleanup through public facts and pristine runtime before
+implementation. No source-derived count or destructor-loop reconstruction.
+Array preparation is read-only until this constructor checkpoint is saved.
+
 
 Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
 Root supervises read-only. Two gpt-6.1-sol xhigh workers remain assigned: inventory owns

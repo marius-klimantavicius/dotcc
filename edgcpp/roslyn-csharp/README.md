@@ -16,6 +16,8 @@ The first [normal C++ lifetime slice](docs/T5-NORMAL-LIFETIMES.md) also passes
 production CLI and native/JIT/NativeAOT observations. The bounded
 [generated-only integer exception slice](docs/T5-EH-CONTRACT.md) also passes,
 including handler selection before cleanup and balanced payload ownership.
+[Constructor-body failure](docs/T5-CONSTRUCTOR-FAILURE.md) now also preserves
+completed-member cleanup through its captured nonzero receiver offset.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
