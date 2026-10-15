@@ -1,0 +1,65 @@
+{
+  "manifestVersion": 1,
+  "translatorVersion": "0.1.0",
+  "inputs": [
+    {
+      "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+      "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+      "artifactIdentity": "9097468216bba3077ff4a24753d09245",
+      "producer": "roslyn_gen_be",
+      "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+      "edgVersion": "7.0",
+      "captureProfile": "native_lowered",
+      "requiredCapabilities": [
+        "normalized_semantic_schema_v1",
+        "exact_target_values_v1"
+      ]
+    }
+  ],
+  "target": {
+    "abi": "itanium",
+    "addressableUnitBits": 8,
+    "endianness": "little",
+    "pointerBits": 64,
+    "pointerAlignment": 8,
+    "operatingSystem": "linux",
+    "architecture": "x64",
+    "libc": "glibc",
+    "outputRid": "linux-x64"
+  },
+  "runtime": {
+    "version": "0.1.0",
+    "providers": [],
+    "bindings": [],
+    "runtimeProjectPath": "../../src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+  },
+  "roots": {
+    "mode": "library",
+    "exports": [],
+    "retainAllDefinitions": true
+  },
+  "output": {
+    "directory": "/mnt/storage/roslynobj-csharp-20261015/sqlite/generated",
+    "projectName": "SQLite",
+    "namespaceName": "SQLite",
+    "className": "Database",
+    "namePolicy": "source-stable",
+    "filePolicy": "declaration-size"
+  },
+  "link": {
+    "definitionSelection": "strong-only",
+    "deduplicateIdenticalArtifacts": false,
+    "initializationOrder": "manifest-order",
+    "globalState": "process"
+  },
+  "budgets": {
+    "maximumWorkingSetBytes": 8589934592,
+    "maximumOperationsPerBody": 2000000,
+    "maximumOutputBytes": 536870912,
+    "maximumOpenUnits": 1,
+    "maximumElapsedSeconds": 1800,
+    "readerCachedRows": 4096,
+    "readerCachedPages": 128,
+    "readerPageSize": 128
+  }
+}

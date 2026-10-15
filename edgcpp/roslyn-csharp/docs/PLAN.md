@@ -1,6 +1,8 @@
 # Readable unsafe C# translation plan
 
-Status: proposed, awaiting implementation approval. Updated 2026-10-15.
+Status: approved for implementation on 2026-10-15 (design commit `e40280bea`).
+Implementation and evidence are tracked in [COVERAGE.md](COVERAGE.md) and
+[RESTART.md](RESTART.md); approval does not close any acceptance gate.
 
 ## Decisions and boundaries
 

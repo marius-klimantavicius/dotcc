@@ -1,6 +1,8 @@
 # Translation milestones and acceptance
 
-Status: proposed gates, not completed work. See [the design](PLAN.md).
+Status: approved gates, with implementation in progress. T1's initial runnable
+fixture gate is closed; T0 remains open pending the complete SQLite inventory.
+See [the design](PLAN.md) and [current evidence](COVERAGE.md).
 
 ## Milestones
 

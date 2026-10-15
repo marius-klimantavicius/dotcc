@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup><ProjectReference Include="../RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj" /></ItemGroup>
+</Project>
