@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <SqliteSurfaceValidator Condition="'$(SqliteSurfaceValidator)' == ''">$(MSBuildThisFileDirectory)SurfaceValidator.py</SqliteSurfaceValidator>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="$(SqliteApiAliases)" />
+    <ProjectReference Include="$(GeneratedProject)" />
+  </ItemGroup>
+  <Target Name="ValidateCapturedExtendedSqliteApi" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(GeneratedProject)') Or !Exists('$(CandidateReceipt)') Or !Exists('$(SqliteApiAliases)') Or !Exists('$(SqliteApiReceipt)') Or !Exists('$(SqliteSurfaceValidator)')" Text="Provide actual CLI source/completion and aliases/receipt from the extended production SurfaceValidator.py." />
+    <Exec Command="python3 &quot;$(SqliteSurfaceValidator)&quot; --generated-project &quot;$(GeneratedProject)&quot; --candidate-receipt &quot;$(CandidateReceipt)&quot; --aliases &quot;$(SqliteApiAliases)&quot; --report &quot;$(SqliteApiReceipt)&quot; --verify-only" />
+  </Target>
+</Project>

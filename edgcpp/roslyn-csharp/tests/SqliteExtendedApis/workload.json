@@ -1,0 +1,195 @@
+{
+  "workloadVersion": 1,
+  "name": "carray-normalize-metadata-extended-errors",
+  "sqliteVersionNumber": 3054000,
+  "carraySql": "SELECT value FROM carray(?1) ORDER BY rowid",
+  "staticInt32": [
+    7,
+    -3,
+    42
+  ],
+  "transientInt64": [
+    -9223372036854775807,
+    4294967297,
+    9
+  ],
+  "transientMutation": [
+    11,
+    12,
+    13
+  ],
+  "ownedFirst": [
+    4,
+    8,
+    15,
+    16
+  ],
+  "ownedSecond": [
+    23,
+    42
+  ],
+  "callbackExpectedEvents": [
+    1,
+    2,
+    3
+  ],
+  "normalizedSql": [
+    "SELECT 17 AS n,'alpha' AS t,?1 AS bound",
+    "SELECT 23 AS n,'beta' AS t,?1 AS bound"
+  ],
+  "normalizedExpectedRows": [
+    [
+      [
+        {
+          "type": "integer",
+          "decimal": "17"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 5,
+          "hex": "616c706861"
+        },
+        {
+          "type": "integer",
+          "decimal": "9"
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "type": "integer",
+          "decimal": "23"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 4,
+          "hex": "62657461"
+        },
+        {
+          "type": "integer",
+          "decimal": "9"
+        }
+      ]
+    ]
+  ],
+  "schemaSql": "CREATE TABLE meta(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT COLLATE NOCASE NOT NULL UNIQUE,score REAL DEFAULT 0)",
+  "metadata": [
+    {
+      "column": "id",
+      "code": 0,
+      "declaredType": "INTEGER",
+      "collation": "BINARY",
+      "notNull": 0,
+      "primaryKey": 1,
+      "autoIncrement": 1
+    },
+    {
+      "column": "name",
+      "code": 0,
+      "declaredType": "TEXT",
+      "collation": "NOCASE",
+      "notNull": 1,
+      "primaryKey": 0,
+      "autoIncrement": 0
+    },
+    {
+      "column": "score",
+      "code": 0,
+      "declaredType": "REAL",
+      "collation": "BINARY",
+      "notNull": 0,
+      "primaryKey": 0,
+      "autoIncrement": 0
+    }
+  ],
+  "missingColumn": "absent",
+  "expectedMissingMetadataCode": 1,
+  "errorSql": [
+    {
+      "label": "seed",
+      "sql": "INSERT INTO meta(name,score) VALUES('one',1.5)",
+      "stepCode": 101,
+      "finalizeCode": 0
+    },
+    {
+      "label": "unique-primary",
+      "sql": "INSERT INTO meta(name,score) VALUES('one',2.5)",
+      "stepCode": 19,
+      "finalizeCode": 19,
+      "errorCode": 19,
+      "extendedErrorCode": 2067
+    },
+    {
+      "label": "notnull-extended",
+      "sql": "INSERT INTO meta(name,score) VALUES(NULL,3.5)",
+      "stepCode": 1299,
+      "finalizeCode": 1299,
+      "errorCode": 1299,
+      "extendedErrorCode": 1299
+    },
+    {
+      "label": "transaction-begin",
+      "sql": "BEGIN",
+      "stepCode": 101,
+      "finalizeCode": 0
+    },
+    {
+      "label": "tentative-insert",
+      "sql": "INSERT INTO meta(name,score) VALUES('two',4.5)",
+      "stepCode": 101,
+      "finalizeCode": 0
+    },
+    {
+      "label": "transaction-unique",
+      "sql": "INSERT INTO meta(name,score) VALUES('one',8.5)",
+      "stepCode": 19,
+      "finalizeCode": 19,
+      "errorCode": 19,
+      "extendedErrorCode": 2067
+    },
+    {
+      "label": "transaction-rollback",
+      "sql": "ROLLBACK",
+      "stepCode": 101,
+      "finalizeCode": 0
+    },
+    {
+      "label": "recovered-insert",
+      "sql": "INSERT INTO meta(name,score) VALUES('three',6.25)",
+      "stepCode": 101,
+      "finalizeCode": 0
+    }
+  ],
+  "recoverySql": "SELECT name,score FROM meta ORDER BY id",
+  "recoveryExpectedRows": [
+    [
+      {
+        "type": "text-utf8",
+        "bytes": 3,
+        "hex": "6f6e65"
+      },
+      {
+        "type": "real",
+        "binary64Hex": "3ff8000000000000"
+      }
+    ],
+    [
+      {
+        "type": "text-utf8",
+        "bytes": 5,
+        "hex": "7468726565"
+      },
+      {
+        "type": "real",
+        "binary64Hex": "4019000000000000"
+      }
+    ]
+  ],
+  "remainingT4Areas": [
+    "snapshot get/open/cmp/free/recover execution and invalidation lifecycle",
+    "RBU staged on-disk update/step/close/resume, target must not use WAL",
+    "session/preupdate/changeset/backup interactions",
+    "other unclosed T4 rows remain unchanged"
+  ]
+}

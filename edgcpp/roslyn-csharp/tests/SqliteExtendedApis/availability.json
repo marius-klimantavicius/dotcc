@@ -1,0 +1,931 @@
+{
+  "status": "public-definition-and-generated-declaration-inspection-only",
+  "executionAccepted": false,
+  "nativeExportsProbed": false,
+  "inventory": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t0/sqlite-inventory-address-closure/program-report.json",
+    "sha256": "f1b89135e2e37bb78fe175c49cbf0b14df9743f16a84bb7142df8291f72e7185"
+  },
+  "header": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/source/sqlite-amalgamation-3540000/sqlite3.h",
+    "sha256": "cd20a2877bc82b94e36c1093b727dd87cfa3c1d581aac6e240925535cbd90166"
+  },
+  "source": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/source/sqlite-amalgamation-3540000/sqlite3.c",
+    "sha256": "2da161e310ef0aba3465f22a4d12b8a43723236f0942fa76e8aac523c3317243"
+  },
+  "sourceObjectSha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+  "functions": [
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/002275",
+      "currentName": "sqlite3_errcode",
+      "linkageName": "sqlite3_errcode",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/002618",
+      "currentName": "sqlite3_table_column_metadata",
+      "linkageName": "sqlite3_table_column_metadata",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter,unit/0001/type/000029 ordinary_parameter,unit/0001/type/000029 ordinary_parameter,unit/0001/type/000029 ordinary_parameter,unit/0001/type/000185 ordinary_parameter,unit/0001/type/000185 ordinary_parameter,unit/0001/type/000065 ordinary_parameter,unit/0001/type/000065 ordinary_parameter,unit/0001/type/000065 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zDbName",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "zTableName",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 3,
+            "name": "zColumnName",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 4,
+            "name": "pzDataType",
+            "type": "unit/0001/type/000185",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 5,
+            "name": "pzCollSeq",
+            "type": "unit/0001/type/000185",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 6,
+            "name": "pNotNull",
+            "type": "unit/0001/type/000065",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 7,
+            "name": "pPrimaryKey",
+            "type": "unit/0001/type/000065",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 8,
+            "name": "pAutoinc",
+            "type": "unit/0001/type/000065",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/003553",
+      "currentName": "sqlite3_extended_result_codes",
+      "linkageName": "sqlite3_extended_result_codes",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter,unit/0001/type/000028 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "onoff",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/003567",
+      "currentName": "sqlite3_extended_errcode",
+      "linkageName": "sqlite3_extended_errcode",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/003592",
+      "currentName": "sqlite3_normalized_sql",
+      "linkageName": "sqlite3_normalized_sql",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000029(unit/0001/type/000675 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000029",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pStmt",
+            "type": "unit/0001/type/000675",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/003625",
+      "currentName": "sqlite3_carray_bind",
+      "linkageName": "sqlite3_carray_bind",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000675 ordinary_parameter,unit/0001/type/000028 ordinary_parameter,unit/0001/type/000009 ordinary_parameter,unit/0001/type/000028 ordinary_parameter,unit/0001/type/000028 ordinary_parameter,unit/0001/type/012752 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pStmt",
+            "type": "unit/0001/type/000675",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "idx",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "aData",
+            "type": "unit/0001/type/000009",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 3,
+            "name": "nData",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 4,
+            "name": "mFlags",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 5,
+            "name": "xDestroy",
+            "type": "unit/0001/type/012752",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "first-slice",
+      "locator": "unit/0001/function/003626",
+      "currentName": "sqlite3_carray_bind_v2",
+      "linkageName": "sqlite3_carray_bind_v2",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000675 ordinary_parameter,unit/0001/type/000028 ordinary_parameter,unit/0001/type/000009 ordinary_parameter,unit/0001/type/000028 ordinary_parameter,unit/0001/type/000028 ordinary_parameter,unit/0001/type/012756 ordinary_parameter,unit/0001/type/000009 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pStmt",
+            "type": "unit/0001/type/000675",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "idx",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "aData",
+            "type": "unit/0001/type/000009",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 3,
+            "name": "nData",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 4,
+            "name": "mFlags",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 5,
+            "name": "xDestroy",
+            "type": "unit/0001/type/012756",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 6,
+            "name": "pDestroy",
+            "type": "unit/0001/type/000009",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "snapshot-lifecycle-pending",
+      "locator": "unit/0001/function/006223",
+      "currentName": "sqlite3_snapshot_cmp",
+      "linkageName": "sqlite3_snapshot_cmp",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/016223 ordinary_parameter,unit/0001/type/016223 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "p1",
+            "type": "unit/0001/type/016223",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "p2",
+            "type": "unit/0001/type/016223",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "snapshot-lifecycle-pending",
+      "locator": "unit/0001/function/006234",
+      "currentName": "sqlite3_snapshot_get",
+      "linkageName": "sqlite3_snapshot_get",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter,unit/0001/type/000029 ordinary_parameter,unit/0001/type/016222 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zDb",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "ppSnapshot",
+            "type": "unit/0001/type/016222",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "snapshot-lifecycle-pending",
+      "locator": "unit/0001/function/006235",
+      "currentName": "sqlite3_snapshot_open",
+      "linkageName": "sqlite3_snapshot_open",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter,unit/0001/type/000029 ordinary_parameter,unit/0001/type/016223 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zDb",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "pSnapshot",
+            "type": "unit/0001/type/016223",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "snapshot-lifecycle-pending",
+      "locator": "unit/0001/function/006236",
+      "currentName": "sqlite3_snapshot_recover",
+      "linkageName": "sqlite3_snapshot_recover",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000128 ordinary_parameter,unit/0001/type/000029 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "db",
+            "type": "unit/0001/type/000128",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zDb",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "snapshot-lifecycle-pending",
+      "locator": "unit/0001/function/006237",
+      "currentName": "sqlite3_snapshot_free",
+      "linkageName": "sqlite3_snapshot_free",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000010(unit/0001/type/016223 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000010",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pSnapshot",
+            "type": "unit/0001/type/016223",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006305",
+      "currentName": "sqlite3rbu_step",
+      "linkageName": "sqlite3rbu_step",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/002630 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "p",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006310",
+      "currentName": "sqlite3rbu_create_vfs",
+      "linkageName": "sqlite3rbu_create_vfs",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/000029 ordinary_parameter,unit/0001/type/000029 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "zName",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zParent",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006348",
+      "currentName": "sqlite3rbu_destroy_vfs",
+      "linkageName": "sqlite3rbu_destroy_vfs",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000010(unit/0001/type/000029 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000010",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "zName",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006352",
+      "currentName": "sqlite3rbu_rename_handler",
+      "linkageName": "sqlite3rbu_rename_handler",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000010(unit/0001/type/002630 ordinary_parameter,unit/0001/type/000009 ordinary_parameter,unit/0001/type/016535 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000010",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pRbu",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "pArg",
+            "type": "unit/0001/type/000009",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "xRename",
+            "type": "unit/0001/type/016535",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006355",
+      "currentName": "sqlite3rbu_open",
+      "linkageName": "sqlite3rbu_open",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/002630(unit/0001/type/000029 ordinary_parameter,unit/0001/type/000029 ordinary_parameter,unit/0001/type/000029 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/002630",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "zTarget",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zRbu",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "zState",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006356",
+      "currentName": "sqlite3rbu_vacuum",
+      "linkageName": "sqlite3rbu_vacuum",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/002630(unit/0001/type/000029 ordinary_parameter,unit/0001/type/000029 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/002630",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "zTarget",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "zState",
+            "type": "unit/0001/type/000029",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006357",
+      "currentName": "sqlite3rbu_db",
+      "linkageName": "sqlite3rbu_db",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000128(unit/0001/type/002630 ordinary_parameter,unit/0001/type/000028 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000128",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pRbu",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "bRbu",
+            "type": "unit/0001/type/000028",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006359",
+      "currentName": "sqlite3rbu_close",
+      "linkageName": "sqlite3rbu_close",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/002630 ordinary_parameter,unit/0001/type/000221 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "p",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "pzErrmsg",
+            "type": "unit/0001/type/000221",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006360",
+      "currentName": "sqlite3rbu_progress",
+      "linkageName": "sqlite3rbu_progress",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000045(unit/0001/type/002630 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000045",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pRbu",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006361",
+      "currentName": "sqlite3rbu_bp_progress",
+      "linkageName": "sqlite3rbu_bp_progress",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000010(unit/0001/type/002630 ordinary_parameter,unit/0001/type/000065 ordinary_parameter,unit/0001/type/000065 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000010",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "p",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "pnOne",
+            "type": "unit/0001/type/000065",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "pnTwo",
+            "type": "unit/0001/type/000065",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006362",
+      "currentName": "sqlite3rbu_state",
+      "linkageName": "sqlite3rbu_state",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/002630 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "p",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006363",
+      "currentName": "sqlite3rbu_savestate",
+      "linkageName": "sqlite3rbu_savestate",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000028(unit/0001/type/002630 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000028",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "p",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006364",
+      "currentName": "sqlite3rbu_temp_size_limit",
+      "linkageName": "sqlite3rbu_temp_size_limit",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000045(unit/0001/type/002630 ordinary_parameter,unit/0001/type/000045 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000045",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pRbu",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "n",
+            "type": "unit/0001/type/000045",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    },
+    {
+      "group": "rbu-staged-update-pending",
+      "locator": "unit/0001/function/006365",
+      "currentName": "sqlite3rbu_temp_size",
+      "linkageName": "sqlite3rbu_temp_size",
+      "bodyState": "definition",
+      "requiredBody": true,
+      "signature": {
+        "display": "unit/0001/type/000045(unit/0001/type/002630 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+        "returnType": "unit/0001/type/000045",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "pRbu",
+            "type": "unit/0001/type/002630",
+            "role": "ordinary_parameter"
+          }
+        ],
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_external",
+        "variadic": false,
+        "hasPrototype": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false
+      }
+    }
+  ],
+  "rbuFinding": "14 required sqlite3rbu_* bodies and generated declarations are present; the pinned amalgamation includes the RBU extension, not only internal hooks.",
+  "snapshotPreconditions": [
+    "non-autocommit WAL connection; no open write transaction; committed transaction in current existing WAL",
+    "snapshot_open requires no active statements in an existing read transaction and prior connection I/O establishing WAL mode",
+    "snapshot_cmp only same database and handles obtained since the same WAL identity was last deleted; retain history without checkpoint invalidation",
+    "every successful get requires free; recover requires retained WAL and no active read transaction"
+  ],
+  "remaining": [
+    "snapshot get/open/cmp/free/recover execution and invalidation lifecycle",
+    "RBU staged on-disk update/step/close/resume, target must not use WAL",
+    "session/preupdate/changeset/backup interactions",
+    "other unclosed T4 rows remain unchanged"
+  ]
+}

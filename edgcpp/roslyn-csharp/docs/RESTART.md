@@ -38,7 +38,8 @@ Readability-only product snapshot 13 contains the same phase hook plus guarded
 scalar switch dispatch and proven pure/null statement suppression. Focused
 control/extrema proof then a new full CLI publication/build/runtime are next;
 use that new artifact for downstream remaining T4 workloads. Extended API
-native/JIT/AOT execution now passes; compact checkpoint is being recorded.
+native/JIT/AOT execution now passes; compact receipt is
+`acceptance/sqlite/extended-apis-report.json`.
 
 Ownership: coordinator owns Git and all serialized builds/exports; root reviews
 read-only. Emission worker owns NEW SqliteFeatureMatrix SQL workload/docs.
@@ -51,12 +52,11 @@ not build/run/export or mutate Git.
 The expanded configured SQL matrix now passes native/JIT/AOT, all 12 cases /
 129 statements; compact receipt is `acceptance/sqlite/sql-features-report.json`.
 Its six phases include original 43-statement JIT compatibility. Snapshot/RBU lifecycle now passes native/JIT/AOT, all five phases, in
-`acceptance/sqlite/maintenance-report.json`. Extended API JIT passes; AOT is
-running. Readability scalar-switch/pure-discard changes are frozen in snapshot13,
+`acceptance/sqlite/maintenance-report.json`. Extended API JIT/NativeAOT passes, all five phases, in
+`acceptance/sqlite/extended-apis-report.json`. Readability scalar-switch/pure-discard changes are frozen in snapshot13,
 focused proof then new complete publication/build/runtime are queued.
 
-Remaining T4: snapshot/carray/normalize and
-metadata APIs; RBU; cross-process locking/shared-cache/unlock-notify and tokenizer
+Remaining T4: cross-process locking/shared-cache/unlock-notify and tokenizer
 interfaces; controlled allocation/I/O errors and recovery; wider provider/error
 contracts; full SQLite readability and restart/repeat evidence. Keep each row
 explicit; no finite slice closes the entire matrix.
