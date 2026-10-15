@@ -257,3 +257,21 @@ integration. Reader-only StorageFacts reports all 132 constant static recipes,
 26 actual SQLite flexible tails and the two actual unsigned128 locals. Preserve
 `t3/statement-snapshot` and all incomplete attempts. No build/process remains
 running at this checkpoint. SQLite T3/T4 SQL execution has not run.
+
+
+Latest execution evidence: full pass 6 candidate builds with zero C# errors and
+passes all 19 initial SQL phases in JIT/NativeAOT, receipt
+`t3/sqlite-generated-candidate-run-2/generated-sqlite-report.json` SHA
+`8609110735c363217ad59a3c5194009cacafdafbaba181991c65e54cf6f143de`.
+Attempt 1 is preserved: both JIT modes passed; harness-only generic JsonArray Add
+calls blocked AOT. Attempt 2 corrects those overloads and all-thread memory sampling.
+The actual generated application source remains unchanged.
+Production CLI translation is now running from snapshot 11:
+`t3/sqlite-production-cli-translate-2`, manifest
+`t3/sqlite-production-preparation-1/manifest.json`, output
+`t3/sqlite-production-generated-1`. The immediate wrong-DLL-path invocation is
+preserved as a tooling attempt, not a translator failure. Source publication and
+production execution verification are next, followed by remaining T4.
+Emission worker owns explicit production validation mode in harness metadata;
+inventory worker owns NEW finite stateful WAL/locking/interchange workload and
+native oracle paths. No product source changes are in flight.

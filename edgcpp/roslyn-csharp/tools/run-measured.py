@@ -30,8 +30,15 @@ def process_tree_rss(root_pid: int) -> int:
                 if line.startswith("VmRSS:"):
                     total += int(line.split()[1]) * 1024
                     break
-            children = Path(f"/proc/{pid}/task/{pid}/children").read_text()
-            pending.extend(map(int, children.split()))
+            # Linux records children under the particular creating thread.
+            # .NET can spawn compilers from a worker thread rather than the
+            # thread-group leader, so enumerate every task before recursing.
+            for task in Path(f"/proc/{pid}/task").iterdir():
+                try:
+                    children = (task / "children").read_text()
+                    pending.extend(map(int, children.split()))
+                except (FileNotFoundError, ProcessLookupError, PermissionError):
+                    pass
         except (FileNotFoundError, ProcessLookupError, PermissionError):
             pass
     return total
@@ -103,7 +110,7 @@ def main() -> int:
         "elapsedSeconds": elapsed,
         "sampledPeakProcessTreeRssBytes": peak,
         "waitedPeakProcessRssBytes": waited_peak,
-        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
         "budgets": {"timeoutSeconds": args.timeout_seconds, "memoryBytes": args.memory_bytes, "logBytes": args.log_bytes},
         "budgetViolation": violation,
         "logs": logs,

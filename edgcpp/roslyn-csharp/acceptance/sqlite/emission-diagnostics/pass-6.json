@@ -1,0 +1,71 @@
+{
+  "status": "emission-returned-without-diagnostics-unpublished",
+  "scope": "Unchanged full-object library emission diagnostic only; candidate export bindings are not production ABI/error/thread validation.",
+  "input": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "bytes": 297556992
+  },
+  "providerPlan": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/provider-preparation-3/provider-plan.json",
+    "sha256": "82980f8840bac35976d06d79daf4e733a945ee5dc774b656551677c5b2626060",
+    "candidateBindings": 88
+  },
+  "build": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-6-bin/RoslynObj.CSharp.dll",
+      "sha256": "ec98cdff0ba75812c2afcf339b4441cc7c23d7110e03106eb7c403c5121aade5",
+      "bytes": 517120
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-6-bin/RoslynObj.dll",
+      "sha256": "d71f6bbbe9139e95df622dcb4af4e2a53385437af53b51731fe4d01142d46553",
+      "bytes": 2629120
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-6-bin/SqliteEmissionProbe.dll",
+      "sha256": "3dad383189f7b77cd5de758b8b1e360597d80352b5f91095e1de440824997144",
+      "bytes": 35328
+    }
+  ],
+  "nativeErrorProtocol": "LinuxX64LogicalErrno",
+  "intrinsicAdmission": "Recorded builtin kinds and actual operands are checked by the bounded emitter/runtime implementation; this probe does not execute them.",
+  "providerAdmission": "All 88 bindings are candidates from the export audit; focused provider fixture evidence does not establish every SQLite provider contract.",
+  "artifact": "9097468216bba3077ff4a24753d09245",
+  "translationComplete": false,
+  "outputPublished": false,
+  "productionPublished": false,
+  "candidateGenerated": true,
+  "buildable": null,
+  "diagnosticCandidate": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-emission-6-candidate",
+  "candidateFiles": [
+    {
+      "RelativePath": "Generated.cs",
+      "sha256": "51b4fa27fe60bc0a2a378b680805e55df99770971288797906efcf11ea77fdf5",
+      "bytes": 18518886
+    },
+    {
+      "RelativePath": "Generated.csproj",
+      "sha256": "c6cbf98d50f4aa823054efafb45d1c75e00909aeb08c5cdf1b91d8bef1c3f195",
+      "bytes": 1449
+    },
+    {
+      "RelativePath": "Generated.Abi.c",
+      "sha256": "3b02d6e5d476b6da28c43c4981ba0f668d3a227248872c1e44a629309c5caf7a",
+      "bytes": 1193040
+    },
+    {
+      "RelativePath": "Generated.NativeImports.json",
+      "sha256": "a050e7fa3c7bb6fb53b395585cc759b2a8321468e263d887d50262d43887e3bc",
+      "bytes": 320995
+    }
+  ],
+  "emittedFunctions": 4212,
+  "emittedRecords": 486,
+  "returnedFiles": 4,
+  "elapsedSeconds": 350.4282604,
+  "diagnosticCount": 0,
+  "errorCount": 0,
+  "families": [],
+  "diagnostics": []
+}

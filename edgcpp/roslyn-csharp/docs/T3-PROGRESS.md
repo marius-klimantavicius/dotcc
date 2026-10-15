@@ -124,3 +124,11 @@ and materializes the selected conditional record prvalue for exact `eok_assign`.
 The separate native constant/address proof passes nine phases and all five
 observations. Full pass 6 is regenerating the unchanged object from frozen
 snapshot 11; full build and SQL outcomes remain open.
+
+
+The complete candidate now passes the [first SQL execution proof](SQLITE-EXECUTION.md):
+all 19 measured phases, exact typed native/JIT/NativeAOT bind/reset/clear and
+five-case/43-statement observations, reader-independent runtime dependencies and
+no native SQLite application loaded. Corrected all-thread descendant measurement
+covers the full managed build and AOT compiler within budgets. Production CLI
+translation/publication is running; T3 completion and broader T4 remain open.

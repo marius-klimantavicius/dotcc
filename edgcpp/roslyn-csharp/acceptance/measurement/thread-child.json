@@ -1,0 +1,47 @@
+{
+  "status": "passed-worker-thread-descendant-budget-activation",
+  "expectedRunnerExit": 124,
+  "runner": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/measurement-runner-all-threads.py",
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49",
+    "bytes": 5505
+  },
+  "fixture": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/measurement-thread-child.py",
+    "sha256": "776193ff5c8fedc096de4b56e9d3070c48bf7ebd1061ae51c356ef33dd705d7f",
+    "bytes": 245
+  },
+  "result": {
+    "status": "budget-exceeded",
+    "command": [
+      "python3",
+      "/mnt/storage/roslynobj-csharp-20261015/t3/measurement-thread-child.py"
+    ],
+    "workingDirectory": "/home/marius/p/dotcc",
+    "exitCode": -15,
+    "elapsedSeconds": 0.10190520307514817,
+    "sampledPeakProcessTreeRssBytes": 123486208,
+    "waitedPeakProcessRssBytes": 18087936,
+    "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+    "budgets": {
+      "timeoutSeconds": 20.0,
+      "memoryBytes": 67108864,
+      "logBytes": 67108864
+    },
+    "budgetViolation": "process-tree-rss",
+    "logs": [
+      {
+        "path": "stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "meaning": "A grandchild spawned by a non-leader Python thread allocates96MiB; corrected sampler detects live descendants and terminates the group against64MiB before its10secondhold.",
+  "limits": "100ms sampling can miss short peaks; shared pages may be counted more than once; waited peak process rusage is separate."
+}
