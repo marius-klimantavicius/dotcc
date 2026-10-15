@@ -15,6 +15,7 @@ public sealed partial class CSharpEmitter
         // selected branch effects or a captured place use only the typed plan.
         private bool NeedsExpressionPlan(ExpressionOperation expression)
         {
+            if (NeedsPlannedCompoundConversion(expression) || NeedsPlannedAggregateConditional(expression)) return true;
             if (NeedsPlannedMemoryAccess(expression)) return true;
             if (NeedsPlannedCompoundOperation(expression)) return true;
             if (NeedsFlexibleTailPlan(expression)) return true;

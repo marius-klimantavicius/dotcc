@@ -190,6 +190,16 @@ public sealed partial class CSharpEmitter
             {
                 var value = DeclareTemporary(CsType.Value(operation.Type), null, prefix);
                 whenTrue.Add(new CsSetVariable(value, yes.Value)); whenFalse.Add(new CsSetVariable(value, no.Value)); result = value;
+                if (MemoryRepresentationType(operation.Type) is RecordType record)
+                {
+                    if (IsVolatileObjectType(operation.Type) || yes.Place?.VolatileTarget == true || no.Place?.VolatileTarget == true ||
+                        !MemoryRepresentationType(yes.Type).Equals(record) || !MemoryRepresentationType(no.Type).Equals(record) ||
+                        yes.Type.Size != operation.Type.Size || no.Type.Size != operation.Type.Size ||
+                        yes.Type.Alignment != operation.Type.Alignment || no.Type.Alignment != operation.Type.Alignment)
+                        throw Limit("A conditional record value needs identical selected ordinary storage representations.", "aggregate");
+                    resultPlace = MemoryPlace(operation.Type, LValueKind.Slot, value);
+                    result = new CsLoad(resultPlace);
+                }
             }
             prefix.Add(new CsIf(PlanTruth(condition.Value, condition.Type), whenTrue, whenFalse));
             return new(operation.Type, operation.ValueCategory, prefix, result, condition.Effects | yes.Effects | no.Effects, resultPlace);
@@ -245,10 +255,15 @@ public sealed partial class CSharpEmitter
                         new CsTargetShift(CsType.Value(left.Type), operation.OperatorKind.Name == "eok_shiftr_assign", oldValue!, rightValue))));
                 else
                 {
-                    var leftName = TypeName(left.Type); var rightName = TypeName(right.Type);
-                    if (leftName != rightName && !(leftName is "sbyte" or "byte" or "short" or "ushort" && rightName == "int"))
-                        throw Limit("Mixed compound arithmetic requires an explicit selected computation-type adapter.", "compound-assignment");
-                    prefix.Add(new CsModifyVariable(oldValue!, AssignmentOperators[operation.OperatorKind.Name], rightValue));
+                    if (TryPlanCompoundConversion(operation, oldValue!, rightValue, out var converted))
+                        prefix.Add(new CsSetVariable(oldValue!, converted));
+                    else
+                    {
+                        var leftName = TypeName(left.Type); var rightName = TypeName(right.Type);
+                        if (leftName != rightName && !(leftName is "sbyte" or "byte" or "short" or "ushort" && rightName == "int"))
+                            throw Limit("Mixed compound arithmetic requires an explicit selected computation-type adapter.", "compound-assignment");
+                        prefix.Add(new CsModifyVariable(oldValue!, AssignmentOperators[operation.OperatorKind.Name], rightValue));
+                    }
                 }
                 stored = oldValue!;
             }

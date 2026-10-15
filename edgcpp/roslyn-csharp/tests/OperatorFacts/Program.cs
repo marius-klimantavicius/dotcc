@@ -40,7 +40,9 @@ string[] selectedNames = ["pcache1InitBulk", "accessPayload", "freeTempSpace", "
 if (diagnosticReport is not null)
     selectedNames = selectedDiagnostics.Select(diagnostic => diagnostic.Function).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
 else if (explicitNames is not null) selectedNames = explicitNames;
-string[] compoundKinds = ["eok_padd_assign", "eok_psubtract_assign", "eok_shiftl_assign", "eok_shiftr_assign"];
+string[] compoundKinds = ["eok_padd_assign", "eok_psubtract_assign", "eok_shiftl_assign", "eok_shiftr_assign",
+    "eok_add_assign", "eok_subtract_assign", "eok_multiply_assign", "eok_divide_assign", "eok_remainder_assign",
+    "eok_and_assign", "eok_or_assign", "eok_xor_assign"];
 var functions = input.TranslationUnit.Functions.Where(function => selectedNames.Contains(function.CurrentName, StringComparer.Ordinal)).ToArray();
 if (representationDiagnostics.Count != 0 && input.TranslationUnit.Functions.Any(function => function.CurrentName == "program"))
     throw new InvalidOperationException("The explicit program representation locator is ambiguous with an actual current function name; no body is guessed.");
@@ -93,6 +95,13 @@ foreach (var function in functions)
         StoreFamiliesWithVolatileRelatedOperand = operators.Where(operation => IsStoreFamily(operation.OperatorKind.Name) && operation.Operands.Any(operand =>
             operand.Details.VolatileFetch || TypeContainsVolatile(operand.Type))).Select(OperationFacts).ToArray(),
         CompoundOperations = operators.Where(operation => compoundKinds.Contains(operation.OperatorKind.Name, StringComparer.Ordinal)).Select(OperationFacts).ToArray(),
+        AggregateAssignments = operators.Where(operation => operation.Operands.Count == 2 &&
+            (operation.OperatorKind.Name == "eok_bassign" || operation.OperatorKind.Name == "eok_assign" && IsAggregateType(operation.Operands[0].Type)))
+            .Select(operation => new
+            {
+                Operation = OperationFacts(operation),
+                ConditionalSource = ConditionalSourceFacts(operation.Operands[1])
+            }).ToArray(),
         CursorOperations = operators.Where(operation => operation.OperatorKind.Name is "eok_va_start" or "eok_va_arg" or "eok_va_copy" or "eok_va_end").Select(operation => new
         {
             Operation = OperationFacts(operation),
@@ -184,6 +193,30 @@ static bool IsInteger128(CppType type)
     return type is ArithmeticType arithmetic && arithmetic.Arithmetic.Bits == 128;
 }
 static FunctionSymbol? SelectedRoutine(CallOperation call) => (call.Callee as ReferenceOperation)?.Target as FunctionSymbol ?? call.TargetMethod;
+static bool IsAggregateType(CppType type)
+{
+    var seen = new HashSet<CppType>();
+    while (type is TypeReference reference && seen.Add(type)) type = reference.UnderlyingType;
+    return type is RecordType or ArrayType;
+}
+static object? ConditionalSourceFacts(ExpressionOperation expression)
+{
+    var seen = new HashSet<SemanticNode>();
+    while (seen.Add(expression))
+    {
+        if (expression is ConversionOperation conversion) expression = conversion.Operand;
+        else if (expression is OperatorOperation { OperatorKind.Name: "eok_parens", Operands.Count: 1 } parentheses)
+            expression = parentheses.Operands[0];
+        else break;
+    }
+    return expression is OperatorOperation { OperatorKind.Name: "eok_question", Operands.Count: 3 } conditional ? new
+    {
+        Result = TypeFacts(conditional.Type), ValueCategory = conditional.ValueCategory.Name,
+        conditional.Operator.EvalLeftToRight, conditional.Operator.EvalRightToLeft,
+        Condition = OperandFacts(conditional.Operands[0]),
+        Then = OperandFacts(conditional.Operands[1]), Else = OperandFacts(conditional.Operands[2])
+    } : null;
+}
 static bool IsStoreFamily(string kind) => kind is "eok_assign" or "eok_bassign" or "eok_add_assign" or "eok_subtract_assign" or
     "eok_multiply_assign" or "eok_divide_assign" or "eok_remainder_assign" or "eok_shiftl_assign" or "eok_shiftr_assign" or
     "eok_and_assign" or "eok_or_assign" or "eok_xor_assign" or "eok_padd_assign" or "eok_psubtract_assign" or
@@ -222,8 +255,27 @@ static object OperandFacts(ExpressionOperation operand) => new
     ReferencedName = (operand as ReferenceOperation)?.Target?.Name,
     ReferencedDeclarationType = operand is ReferenceOperation { Target: VariableSymbol variable } ? TypeFacts(variable.Type) : null,
     ReferencedField = FieldFacts(operand),
+    ConversionChain = ConversionChainFacts(operand),
     Integer = operand is ConstantOperation { Constant.Value: IntegerValue integer } ? integer.Value.ToString(CultureInfo.InvariantCulture) : null
 };
+static IReadOnlyList<object> ConversionChainFacts(ExpressionOperation expression)
+{
+    var rows = new List<object>();
+    var seen = new HashSet<SemanticNode>();
+    while (seen.Add(expression))
+    {
+        if (expression is ConversionOperation conversion)
+        {
+            rows.Add(new { Kind = conversion.OperatorKind.Name, Source = TypeFacts(conversion.SourceType), Target = TypeFacts(conversion.TargetType),
+                OperandType = TypeFacts(conversion.Operand.Type), ValueCategory = conversion.ValueCategory.Name });
+            expression = conversion.Operand;
+        }
+        else if (expression is OperatorOperation { OperatorKind.Name: "eok_parens", Operands.Count: 1 } parentheses)
+            expression = parentheses.Operands[0];
+        else break;
+    }
+    return rows;
+}
 static object? FieldFacts(ExpressionOperation expression)
 {
     if (expression is not ReferenceOperation { Target: FieldSymbol field }) return null;
@@ -263,7 +315,7 @@ static object TypeFacts(CppType type, int pointerDepth = 0)
             BitWidth = field.BitWidth?.ToString(CultureInfo.InvariantCulture), Type = TypeFacts(field.Field.Type, pointerDepth: 2)
         }).ToArray() : null,
         Arithmetic = raw is ArithmeticType arithmetic ? new
-        { Kind = arithmetic.Arithmetic.ArithmeticKind.Name, arithmetic.Arithmetic.Bits, arithmetic.Arithmetic.Signed, arithmetic.Arithmetic.IsBool,
+        { Kind = arithmetic.Arithmetic.ArithmeticKind.Name, arithmetic.Arithmetic.Bits, arithmetic.Arithmetic.Signed, arithmetic.Arithmetic.IsBool, arithmetic.Arithmetic.IsSaturating,
           IntegerKind = arithmetic.Arithmetic.EdgIntegerKind?.Name } : null,
         Pointee = pointerDepth < 2 && raw is PointerType pointer ? TypeFacts(pointer.PointeeType, pointerDepth + 1) : null,
         Element = pointerDepth < 2 && raw is ArrayType array ? TypeFacts(array.ElementType, pointerDepth + 1) : null

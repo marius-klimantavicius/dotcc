@@ -1,0 +1,446 @@
+{
+  "gate": "T3-partial-native-constant-address-projection",
+  "status": "passed-bounded-native-constants",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-10/source-snapshot.json",
+    "sha256": "b7fea12e9858b186a9949d3384153a5d2fb190bafd9c54d4cb9ba6a8c8e446d4",
+    "bytes": 63930
+  },
+  "checkerSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-source-10/source-snapshot.json",
+    "sha256": "9c7b6d9551e16c193e59d5a9ffef71574d933530f2b3c9e3bd82d42d53a34307",
+    "bytes": 398
+  },
+  "input": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-10.roslynobj",
+    "sha256": "303cd57088eb3645d3dbaa1fab6b50d8f853a213c83c2eca68851d12533bbb4c",
+    "bytes": 646144
+  },
+  "phases": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-build-10/run.json",
+        "sha256": "ac1ba866b80d54c9571a6b74f93fcb3911006210795507f7f5575bf40f5ef871",
+        "bytes": 1175
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-10/edgcpp/roslyn-csharp/tests/Projection/Projection.csproj",
+          "-c",
+          "Release",
+          "--disable-build-servers",
+          "-p:UseSharedCompilation=false",
+          "-nodeReuse:false",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-emitter-bin-10"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 7.821363119990565,
+        "sampledPeakProcessTreeRssBytes": 209891328,
+        "waitedPeakProcessRssBytes": 263376896,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 885,
+            "sha256": "82d302645043d6fecf2accbb697ccddd0a4a8c42f8eb3984c3f075c4976e68bc"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-aot-run-10/run.json",
+        "sha256": "9349b49868dd9e43c837590fd070cba575e326137e9889b068e8c957c55ca6fe",
+        "bytes": 891
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-aot-10/Checks"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10051566699985415,
+        "sampledPeakProcessTreeRssBytes": 90112,
+        "waitedPeakProcessRssBytes": 17563648,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 30.0,
+          "memoryBytes": 1073741824,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 120,
+            "sha256": "35415884d9bbc83878dc390b0e74f0b691b5de49c1e41dc10fefacda79d767c8"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-build-10/run.json",
+        "sha256": "751b161bac296567421935acf0d22eb61614f005ccc6ee7baec4b2be4c8c61cc",
+        "bytes": 1260
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-source-10/Checks/Checks.csproj",
+          "-c",
+          "Release",
+          "--disable-build-servers",
+          "-p:UseSharedCompilation=false",
+          "-nodeReuse:false",
+          "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-generated-10/Generated.csproj",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-bin-10"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 5.81501064193435,
+        "sampledPeakProcessTreeRssBytes": 219312128,
+        "waitedPeakProcessRssBytes": 214138880,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 844,
+            "sha256": "1b34f5cde6b2f4713767f74aa295d61679126f885fd8abab4c2352b075c3c9c2"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-jit-10/run.json",
+        "sha256": "c1bbed05221472e4e9212cf45c6a665a957c32c3e77c0729d62fcb38272319e2",
+        "bytes": 908
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-bin-10/Checks.dll"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.1005632869200781,
+        "sampledPeakProcessTreeRssBytes": 28672,
+        "waitedPeakProcessRssBytes": 29884416,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 30.0,
+          "memoryBytes": 1073741824,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 120,
+            "sha256": "35415884d9bbc83878dc390b0e74f0b691b5de49c1e41dc10fefacda79d767c8"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-publish-10/run.json",
+        "sha256": "8947ad0ffcaf4189af2e3b86167350169d77add8131af902c97c53a758e08004",
+        "bytes": 1347
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "env",
+          "CC=clang-18",
+          "dotnet",
+          "publish",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-source-10/Checks/Checks.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "--disable-build-servers",
+          "-p:UseSharedCompilation=false",
+          "-nodeReuse:false",
+          "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-generated-10/Generated.csproj",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-check-aot-10"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 9.318562514032237,
+        "sampledPeakProcessTreeRssBytes": 216158208,
+        "waitedPeakProcessRssBytes": 211181568,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 1017,
+            "sha256": "27710e0148326b5b52167270d7c2531301bb49140301d03831474b3a35801a58"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-emit-10/run.json",
+        "sha256": "4fe3dc1e793211a2447ff0a96ccc13291d0deaabb9195fdbc9441938d720e6c5",
+        "bytes": 1244
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-emitter-bin-10/Projection.dll",
+          "emit",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-10.roslynobj",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-generated-10",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-10/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.3012614109320566,
+        "sampledPeakProcessTreeRssBytes": 77852672,
+        "waitedPeakProcessRssBytes": 76021760,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 32,
+            "sha256": "8c2c50839d79772cfafd6d1c68bd2fdcf2e0938a26b650a2654a5a5888e0c9c7"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-export-10/run.json",
+        "sha256": "1dc46b4b768252d9caa769405e98499a1380feaca6268c7941d261c3ff1da8eb",
+        "bytes": 1342
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "env",
+          "ROSLYNOBJ_COMPILER=/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+          "python3",
+          "edgcpp/roslyn/build/roslyn-cpfe.py",
+          "--gcc",
+          "--c17",
+          "--gnu_version",
+          "130300",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-10/edgcpp/roslyn-csharp/tests/Fixtures/T3/native-constants/native-constants.c",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-10.roslynobj"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.20093917299527675,
+        "sampledPeakProcessTreeRssBytes": 44507136,
+        "waitedPeakProcessRssBytes": 30932992,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 121,
+            "sha256": "7bac2859441b94b80fd9c27fac4752bb604aa6f9fb2a32462321d9921a612778"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-native-build-10/run.json",
+        "sha256": "6274ef4e9b10ce5ce042f960da949728c852b67788b8e44649c71ee2333008bb",
+        "bytes": 1215
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "gcc",
+          "-std=c17",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-10/edgcpp/roslyn-csharp/tests/Fixtures/T3/native-constants/native-constants.c",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-10/edgcpp/roslyn-csharp/tests/Fixtures/T3/native-constants/native-oracle.c",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-native-10"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10070540593005717,
+        "sampledPeakProcessTreeRssBytes": 294912,
+        "waitedPeakProcessRssBytes": 22544384,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 1073741824,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-native-run-10/run.json",
+        "sha256": "1bc3905714d26cfd171f2ba8a32baae412393e7316f445fbe8ce268c36667ec3",
+        "bytes": 880
+      },
+      "result": {
+        "status": "passed",
+        "command": [
+          "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-native-10"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10048100899439305,
+        "sampledPeakProcessTreeRssBytes": 94208,
+        "waitedPeakProcessRssBytes": 18087936,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 30.0,
+          "memoryBytes": 1073741824,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 96,
+            "sha256": "ab575237b17bd7e62f96dff9b50894dd247c7b42c2ac8190077c6ab762d851f3"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    }
+  ],
+  "nativeStdout": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-native-run-10/stdout.txt",
+    "sha256": "ab575237b17bd7e62f96dff9b50894dd247c7b42c2ac8190077c6ab762d851f3",
+    "bytes": 96
+  },
+  "observations": [
+    1,
+    1,
+    1,
+    1,
+    42
+  ],
+  "result": 57,
+  "generatedFiles": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-generated-10/Generated.cs",
+      "sha256": "c3ae32f424b832708c89b524e33daa6a006e6eaf20403c92dc12de05cb3f9f1e",
+      "bytes": 3861
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/native-constants-generated-10/Generated.csproj",
+      "sha256": "5af8a275ff6a186e22a9de7b237116e5af2afdc9bd2546a8a5b229c6d5b0df84",
+      "bytes": 547
+    }
+  ],
+  "checks": [
+    "Captured 64-bit all-ones routine-pointer constant compiles with explicit unchecked conversion",
+    "Canonical function address keeps captured void* or nint destination view",
+    "Direct, stored data-pointer and stored routine-pointer calls execute generated application body",
+    "Both address views and all five observations agree with separate native oracle",
+    "Native wrapper calls and canonical identity survive GC in JIT and NativeAOT"
+  ],
+  "sourceFreezeVerified": true,
+  "limits": [
+    "Ordinary selected Linux x64 pointer representations only",
+    "This does not establish full SQLite buildability or SQL execution"
+  ]
+}

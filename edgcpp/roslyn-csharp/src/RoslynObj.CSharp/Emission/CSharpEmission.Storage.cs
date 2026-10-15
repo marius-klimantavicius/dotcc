@@ -160,7 +160,9 @@ public sealed partial class CSharpEmitter
             if (entity is FunctionSymbol function)
             {
                 if (!address.ByteOffset.IsZero) throw Limit("A function address has a nonzero retained byte displacement.", "function-pointer");
-                return FunctionAddress(function);
+                var canonicalAddress = FunctionAddress(function);
+                var destinationType = TypeName(type);
+                return destinationType == "nint" ? canonicalAddress : $"unchecked(({destinationType})({canonicalAddress}))";
             }
             if (entity is Constant constant)
             {

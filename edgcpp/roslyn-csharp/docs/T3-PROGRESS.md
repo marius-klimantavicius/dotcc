@@ -115,3 +115,12 @@ static strings and the ordinary zero record produce 208/217 with physical bytes
 and persistent mutations checked. These are bounded additions, not whole-provider
 acceptance. Readability review remains open for redundant casts and temporaries
 in large bodies; it does not delay the compiler corrections.
+
+
+The [compiler-fix activation](T3-COMPILER-FIXES.md) now passes 11 measured phases,
+with byte-identical native/JIT/NativeAOT result 22 and all 22 observations. It uses
+the stock EDG rule that ordinary compound RHS already has the computation type,
+and materializes the selected conditional record prvalue for exact `eok_assign`.
+The separate native constant/address proof passes nine phases and all five
+observations. Full pass 6 is regenerating the unchanged object from frozen
+snapshot 11; full build and SQL outcomes remain open.

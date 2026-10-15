@@ -2,7 +2,7 @@
 
 Updated 2026-10-15. Approved plan commit: `e40280bea`.
 
-Current checkpoint is `59d06b51d`, using exact snapshot 4 product files.
+Earlier checkpoint `59d06b51d` uses exact snapshot 4 product files.
 Subsequent immutable source snapshots 6–9, build receipts and fixtures are under
 `/mnt/storage/roslynobj-csharp-20261015/t3/value-storage`.
 
@@ -43,11 +43,23 @@ identities and leaves 15 intrinsics to the recorded runtime lowerings. All 88
 bindings remain candidates, not accepted whole-provider coverage. T3/T4 generated
 SQL execution has not run.
 
+Latest committed checkpoint is `40a0803c8`: complete diagnostic emission and
+focused width/cursor/static proofs, with first compiler failure preserved.
+Subsequent pointer fixes pass native/JIT/NativeAOT result 57 and all five exact
+observations, including canonical void*/routine-pointer identity and native
+wrapper calls. Receipt is `t3/native-constants-receipt.json`, source snapshot 10.
+These changes are not yet committed with the next compiler slice.
+
 Ownership: coordinator integrates, schedules all builds/exports and owns Git.
-The inventory worker documents the focused accepted width/cursor evidence; the
-emission worker reviews the actual candidate read-only, then will take concrete
-compiler blockers. Root supervises read-only. Preserve all failed attempts and
-immutable snapshots. No new full T0 inventory is needed.
+The inventory worker implements mixed integer compound conversions and the
+conditional aggregate-prvalue assignment. Its public facts are
+`t3/compiler5-operator-facts.json` (46 exact bodies). Stock EDG
+`il.c:18042–18107` selects the already-converted RHS type for ordinary compounds;
+no usual-arithmetic analysis is repeated. The emission worker's pointer constant
+and address-view fixes are frozen pending integration. Full SQLite pass 6 is running from immutable snapshot 11 with a 900-second/8-GiB
+budget, report `t3/emission-diagnostics-6-report.json`, candidate
+`t3/sqlite-emission-6-candidate`. Its immediate next stage is attributable compile. Root supervises read-only. Preserve all failed attempts
+and immutable snapshots. No new full T0 inventory is needed.
 
 ## Earlier checkpoint history
 

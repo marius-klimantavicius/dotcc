@@ -445,6 +445,8 @@ public sealed partial class CSharpEmitter
             if (ComparisonOperators.TryGetValue(kind, out var comparison)) return BoolValue($"({A(0)}) {comparison} ({A(1)})", operation.Type);
             if (AssignmentOperators.TryGetValue(kind, out var assignment))
             {
+                if (NeedsPlannedCompoundConversion(operation) || NeedsPlannedAggregateConditional(operation))
+                    throw Limit("This compound/conditional-record occurrence requires its typed value/place conversion plan.", "sequencing");
                 if (Unwrap(operands[0].Type) is RecordType or ArrayType)
                     return $"TargetStorage.Copy(ref {A(0)}, ref {A(1)}, {StorageSize(operands[0].Type)})";
                 if (kind != "eok_assign" && TypeName(operands[0].Type) is "sbyte" or "byte" or "short" or "ushort" && TypeName(operands[1].Type) == "int")
@@ -485,11 +487,7 @@ public sealed partial class CSharpEmitter
             if (constant.Value is IntegerValue integer)
             {
                 var type = constant.Type ?? throw Limit("Integer constant has no recorded type.", "constant");
-                if (TryWideIntegerLiteral(integer.Value, type, out var wide)) return wide;
-                var name = TypeName(type);
-                var value = integer.Value.ToString(CultureInfo.InvariantCulture);
-                var suffix = name switch { "uint" => "U", "long" => "L", "ulong" => "UL", _ => "" };
-                return name is "int" or "uint" or "long" or "ulong" ? value + suffix : $"({name}){value}";
+                return IntegerLiteral(integer.Value, type);
             }
             if (constant.Value is AddressValue address && constant.Type is { } addressType) return AddressExpression(address, addressType);
             if (constant.Value is FloatingValue floating && constant.Type is { } floatingType) return FloatingLiteral(floating, floatingType);
