@@ -48,7 +48,7 @@ public sealed partial class CSharpEmitter
         private static void ValidateOrdinaryRoutineRoles(RoutineType signature)
         {
             if (signature.HasThisParameter || signature.ReturnsValueAsParameter == true || signature.ReturnsValueViaCopyConstructor ||
-                signature.Parameters.Any(p => p.Role.Name != "ordinary_parameter"))
+                signature.Parameters.Any(p => p.Role.Name != "ordinary_parameter" || p.Descriptor.Details.PassedViaCopyConstructor))
                 throw Limit("Hidden this/result/other parameter roles require an exercised selected ABI adapter.", "native-abi");
         }
 

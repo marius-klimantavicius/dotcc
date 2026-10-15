@@ -22,11 +22,23 @@ Console.WriteLine(JsonSerializer.Serialize(new
         Locator = $"signature:{ordinal + 1}",
         Name = function.CurrentName,
         Variadic = function.Signature.IsVariadic,
+        function.Signature.HasPrototype,
+        function.Signature.HasThisParameter,
+        function.Signature.ReturnsValueAsParameter,
+        function.Signature.ReturnsValueViaCopyConstructor,
+        SelectedSignatureParameters = function.Signature.Parameters.Select(parameter => new
+        {
+            parameter.Ordinal,
+            Role = parameter.Role.Name,
+            parameter.Descriptor.Details.PassedViaCopyConstructor,
+            Type = TypeFacts(parameter.Type)
+        }),
         Return = TypeFacts(function.ReturnType),
         Parameters = function.Parameters.Select(parameter => new
         {
             parameter.Ordinal, parameter.Name,
             Role = parameter.Role.Name,
+            parameter.Descriptor.Details.PassedViaCopyConstructor,
             Type = TypeFacts(parameter.Type)
         })
     }),

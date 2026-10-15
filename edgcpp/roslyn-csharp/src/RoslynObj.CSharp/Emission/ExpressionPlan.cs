@@ -14,6 +14,7 @@ internal sealed record CsType(CppType? Captured, int AddedPointerDepth = 0, stri
 }
 
 internal abstract record CsExpression(CsType Type);
+internal sealed record CsBooleanLiteral(bool Value) : CsExpression(CsType.Boolean);
 internal sealed record CsLeaf(CsType ValueType, string Text, bool Stable) : CsExpression(ValueType);
 internal sealed record CsVariable(CsType ValueType, string Name) : CsExpression(ValueType);
 internal sealed record CsUnary(CsType ValueType, string Operator, CsExpression Operand) : CsExpression(ValueType);

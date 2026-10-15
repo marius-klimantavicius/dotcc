@@ -123,13 +123,17 @@ The formerly pending effective/raw guard is now implemented and exercised by
 the rejection above. No additional full T0 inventory repeat was needed.
 
 Both workers were completely frozen through the integration receipts. After
-this checkpoint, release the freeze: emitter owns pure native aggregate ABI
-mirrors/wrappers and new aggregate fixtures; inventory worker owns narrow typed
-planner readability changes (Boolean literal seeds, discarded stable-local
-increments) and their relevant sequencing validation. Runtime has not changed
-since the primitive varargs checkpoint. Aggregate fixtures are prepared under
-`tests/Fixtures/T2/aggregate-abi`, but require frozen exports/public role/layout
-inspection before implementation and genuine JIT/NativeAOT proof. Packing/unions
+this checkpoint, emitter owns pure native aggregate ABI mirrors/wrappers and
+new aggregate fixtures; inventory worker supports planner integration. The narrow
+readability improvement now passes all 54 expected outcomes at
+`t2/sequencing-readability`, copied to `acceptance/readability/report.json`.
+Only branches changes (161 to 155 lines); other accepted C# examples are
+byte-identical, with all JIT/AOT observations preserved. Runtime has not changed
+since the primitive varargs checkpoint. Aggregate fixtures under `tests/Fixtures/T2/aggregate-abi` are now exported and
+native-verified under `t2/aggregate-abi`; public probes show ordinary signatures,
+no explicit ReturnSlot/hidden/copy parameters, including memory return 24/8.
+Host hidden sret remains a native wrapper detail. Generated execution and
+physical ABI proof are still required. Packing/unions
 and each ordinary shape remain separately gated. See [T2-REMAINING.md](T2-REMAINING.md).
 
 Preserve the original aggregate producer/native differential at

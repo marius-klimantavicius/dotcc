@@ -186,7 +186,7 @@ public sealed partial class CSharpEmitter
             var left = PlanExpression(operation.Operands[0]); var right = PlanExpression(operation.Operands[1]);
             var isAnd = operation.OperatorKind.Name == "eok_land";
             var prefix = left.Prefix.ToList();
-            var result = DeclareTemporary(CsType.Value(operation.Type), SourceBoolean(operation.Type, new CsLeaf(CsType.Boolean, isAnd ? "false" : "true", true)), prefix);
+            var result = DeclareTemporary(CsType.Value(operation.Type), SourceBoolean(operation.Type, new CsBooleanLiteral(!isAnd)), prefix);
             var branch = right.Prefix.ToList();
             branch.Add(new CsSetVariable(result, SourceBoolean(operation.Type, PlanTruth(right.Value, right.Type))));
             var test = PlanTruth(left.Value, left.Type);
@@ -357,6 +357,7 @@ public sealed partial class CSharpEmitter
         private string RenderPlanValue(ExpressionPlan plan) => RenderExpression(plan.Value);
         private string RenderExpression(CsExpression expression) => expression switch
         {
+            CsBooleanLiteral literal => literal.Value ? "true" : "false",
             CsLeaf leaf => leaf.Text,
             CsVariable variable => variable.Name,
             CsUnary unary => $"({unary.Operator}({RenderExpression(unary.Operand)}))",
@@ -369,6 +370,7 @@ public sealed partial class CSharpEmitter
             CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
             CsTruth { Value: CsSourceBoolean boolean } => RenderExpression(boolean.Condition),
             CsTruth truth => TruthValue(RenderExpression(truth.Value), truth.SourceType),
+            CsSourceBoolean { Condition: CsBooleanLiteral literal } boolean => $"(({RenderType(boolean.Type)}){(literal.Value ? "1" : "0")})",
             CsSourceBoolean boolean => $"({RenderExpression(boolean.Condition)} ? ({RenderType(boolean.Type)})1 : ({RenderType(boolean.Type)})0)",
             _ => throw Limit("Unknown typed C# expression node.", "expression-plan")
         };
@@ -450,7 +452,67 @@ public sealed partial class CSharpEmitter
         }
         private void EmitPlannedExpressionStatement(ExpressionOperation expression, CodeWriter writer)
         {
-            var plan = PlanExpression(expression); EmitPlanPrefix(plan, writer); EmitPlanStatements([new CsEvaluate(plan.Value)], writer);
+            EmitPlanStatements(PlanDiscardedExpression(expression), writer);
+        }
+
+        private IReadOnlyList<CsPlanStatement> PlanDiscardedExpression(ExpressionOperation expression)
+        {
+            if (!expression.Details.VolatileFetch && expression is OperatorOperation operation
+                && !(operation.Operator.EvalLeftToRight && operation.Operator.EvalRightToLeft))
+            {
+                if (operation.OperatorKind.Name == "eok_comma" && operation.Operands.Count == 2 && !operation.Operator.EvalRightToLeft)
+                {
+                    ++operationOrdinal;
+                    return PlanDiscardedExpression(operation.Operands[0]).Concat(PlanDiscardedExpression(operation.Operands[1])).ToArray();
+                }
+                if (operation.OperatorKind.Name is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr"
+                    && TryDiscardedLocalUpdate(operation, out var local))
+                {
+                    operationOrdinal += 2; // The selected unary occurrence and its exact reference operand.
+                    var increment = operation.OperatorKind.Name is "eok_pre_incr" or "eok_post_incr";
+                    return [new CsModifyVariable(local, increment ? "++" : "--", null)];
+                }
+            }
+            var plan = PlanExpression(expression);
+            return plan.Prefix.Append(new CsEvaluate(plan.Value)).ToArray();
+        }
+
+        private bool TryDiscardedLocalUpdate(OperatorOperation operation, out CsVariable local)
+        {
+            local = null!;
+            if (operation.Operands.Count != 1 || operation.Operands[0] is not ReferenceOperation { Target: VariableSymbol variable } reference
+                || reference.Details.VolatileFetch || currentFunction is null || !names.TryGetValue(variable, out var name)) return false;
+            var ownLocal = currentFunction.Body?.Locals.Contains(variable) == true
+                || currentFunction.Parameters.Any(parameter => parameter.Symbol?.Equals(variable) == true);
+            if (!ownLocal || variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0
+                || variable.Details.StorageDuration?.Name is "static" or "thread") return false;
+            if (!OrdinaryLocalUpdateType(variable.Type) || !OrdinaryLocalUpdateType(reference.Type)) return false;
+            var type = Unwrap(reference.Type);
+            if (!Unwrap(variable.Type).Equals(type) || type is not ArithmeticType arithmetic
+                || arithmetic.Arithmetic.ArithmeticKind.Name is not ("signed_integer" or "unsigned_integer")
+                || arithmetic.Arithmetic.IsBool || arithmetic.Arithmetic.IsSaturating
+                || arithmetic.Arithmetic.Bits is not (32 or 64)) return false;
+            var naturalSize = arithmetic.Arithmetic.Bits == 32 ? 4 : 8;
+            if (type.Size != naturalSize || type.Alignment != naturalSize
+                || reference.Type.Size != type.Size || reference.Type.Alignment != type.Alignment
+                || variable.Type.Size != type.Size || variable.Type.Alignment != type.Alignment) return false;
+            local = new(CsType.Value(reference.Type), name);
+            return true;
+        }
+
+        private static bool OrdinaryLocalUpdateType(CppType type)
+        {
+            var seen = new HashSet<CppType>();
+            while (true)
+            {
+                if (!seen.Add(type) || type.Details.IsAtomic) return false;
+                if (type is QualifiedType qualified && (qualified.IsVolatile || qualified.IsConst || qualified.Qualification.IsAtomic
+                    || qualified.Qualification.AddressSpace is not (null or 0) || qualified.Qualification.IsShared
+                    || qualified.Qualification.IsNear || qualified.Qualification.IsFar
+                    || qualified.Qualification.IsUpcStrict || qualified.Qualification.IsUpcRelaxed)) return false;
+                if (type is not TypeReference reference) return true;
+                type = reference.UnderlyingType;
+            }
         }
     }
 }

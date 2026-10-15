@@ -8,7 +8,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | --- | --- | --- | --- |
 | T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | In progress | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md) and [two-unit CLI execution](T2-PROGRAM.md) pass their bounded receipts | Native aggregate boundary and source readability; broader provider contracts remain T3 work |
+| T2 | In progress | [Assembly](T2-ASSEMBLY.md), [storage/callbacks](T2-STORAGE-CALLBACKS.md), [variadics](T2-VARIADICS.md), [sequencing](T2-SEQUENCING.md) and [two-unit CLI execution](T2-PROGRAM.md) pass their bounded receipts | Native aggregate boundary including its source review; broader provider contracts remain T3 work |
 | T3 | Not implemented | Existing full-feature object is input evidence only | Complete SQLite emission, imports/providers, first SQL in JIT and NativeAOT |
 | T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |
@@ -132,3 +132,8 @@ outcomes, C 1150 and C++ 1212 with complete observations in direct/CLI JIT/AOT.
 Canonical selected identities, one shared external allocation, separate internal
 names and address identity are exercised. Native aggregate boundary and narrowed
 readability improvements remain T2 work; later unsupported forms remain explicit.
+
+The [initial readability review](READABILITY.md) passes the relevant 54-outcome
+sequencing revalidation. Only branches changes (six fewer lines, 407 fewer bytes),
+with direct discarded local increment and typed Boolean seeds. Other places and
+value-used effects retain full plans. Native aggregate output remains to review.
