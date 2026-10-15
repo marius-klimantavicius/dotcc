@@ -79,16 +79,42 @@ payloads, native unwinding, inheritance/dispatch/RTTI/member pointers, static gu
 TLS and broader ABI/scale remain open. Read [rethrow proof](T5-RETHROW.md), the
 [coverage ledger](COVERAGE.md) and earlier slice receipts before changing guards.
 
-Next approved T5 obligation is termination: READ-ONLY pristine-runtime contract
-and genuine uncaught-int and/or noexcept-boundary capture proposal first. Observe
-subprocess event prefix and determine termination versus unwinding from actual
-EDG facts/runtime, not GCC alone. Default/custom termination scope must be explicit;
-no native unwind or arbitrary callback expansion in the first slice.
+The default noexcept-termination slice now passes. Rethrow parent checkpoint is
+`9c27f3b2b`; the [termination receipt](../acceptance/lifetimes/termination-report.json),
+SHA-256 `4924dac4bfa200d7d7a30f7ddac5830eb08dbb23ec60ce00be3e7139bc8ba11a`,
+records all 38 expected outcomes: 32 normal successes, two intended SIGABRTs and
+four unsupported-case rejections. No budget violations or unexpected outcomes.
+Immutable source is `t5/termination-source-1` (212 files); production output is
+`t5/termination-cli-generated-1`. All eight bodies and one actual semantic
+runtime selection publish; explicit enum and report record selected TRUE policy,
+default Environment.FailFast mapping/version and exact diagnostic marker.
+
+Actual leaf/boundary each have a direct-local cleanup region. First-pass terminal
+destination selects before leaf2 then boundary3 cleanup, preserving caller outer1.
+JIT/NativeAOT raising modes prove SIGABRT plus exact marker and seven-event map,
+live1/result0/overflow0/unused0. GCC raising aborts without cleanup; preserve that
+policy differential, never claim raising native equality. Normal mode matches
+all 11 native events and live0/result1. Process still owns payload at abort;
+no fake caught transition or release. Test-only inherited core limit is 0.
+
+Five prior CLI/JIT/AOT lifetime regressions pass with byte-identical application
+sources. Repeat source/project/normalized report, all completion hashes,
+11 objects and source freeze verify. All four admission negatives remain
+unpublished. No builder/translator remains active. Captures, mapped files, logs,
+policy source provenance and prior baseline rejection remain in `t5/`;
+no cleanup is authorized. Read [termination contract](T5-TERMINATION.md).
+
+Broader T5 remains open: program-uncaught entry policy, custom terminate, further
+rethrow chains, class/pointer payloads, failed members/full-array exceptional
+activation, native unwinding, inheritance/dispatch/RTTI/member pointers and static
+guards/TLS remain separately unsupported/unexercised. T6 remains open.
 
 Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
-Root supervises read-only. Both gpt-6.1-sol xhigh workers have frozen their verified
-rethrow changes. Inventory now prepares read-only termination facts/proposal;
-emission remains held. No worker builds/exports or edits product during freeze.
+Root supervises read-only. Both gpt-6.1-sol xhigh workers are held after verified termination edits. Inventory
+owned additive Runtime destination APIs and NEW TerminationLifetime child harness;
+emission owned Exceptions and NEW Termination partial. Coordinator owns semantic
+contract/report integration and all serialized executions. No worker builds,
+exports or mutates Git. Await next bounded public-model/stock-contract preparation.
 Never modify EDG core, use raw model bypass, recover source semantics or consult
 dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.
 

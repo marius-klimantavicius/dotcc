@@ -62,3 +62,13 @@ completed elements. See [the array proof](../../../docs/T5-PARTIAL-ARRAY.md).
 Original source/capture/native evidence is preserved separately. The genuine
 `ordinary-vector-names.cpp` negative has no array cleanup context and remains
 unsupported despite its import spellings.
+
+`noexcept-termination.cpp` is a separate default-termination candidate. Its
+borrowed 68-int shared map records outer object 1, boundary-local object 3 and
+throwing-leaf object 2. A normal mode shares the same bodies; raising mode must
+stop at the captured noexcept boundary rather than reach the caller's typed
+catch. Capture/public facts and native observations are recorded. The selected
+pristine runtime policy unwinds before terminating, while the separate GCC
+observation does not unwind; preserve that differential. Production CLI/JIT/NativeAOT now prove the selected cleanup/signal/marker
+contract. See [the selected contract](../../../docs/T5-TERMINATION.md). Uncaught
+program-entry policy, custom handlers and native unwinding remain separate.

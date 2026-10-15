@@ -1,0 +1,2433 @@
+{
+  "reportVersion": 1,
+  "milestone": "T5 bounded default termination at explicit noexcept boundary",
+  "status": "passed-bounded-slice",
+  "broaderT5Complete": false,
+  "parentCheckpoint": "9c27f3b2b",
+  "artifactRoot": "/mnt/storage/roslynobj-csharp-20261015/t5",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-source-1/source-snapshot.json",
+    "bytes": 36248,
+    "sha256": "c677246768db7b53cdcf5cca166bcc1dacd55323ffa930c6b123e699303c7bdf"
+  },
+  "sourceFileCount": 212,
+  "sourceFreezeVerified": true,
+  "inputsUnchanged": true,
+  "inputs": {
+    "noexcept-termination": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/noexcept-termination.roslynobj",
+      "bytes": 763904,
+      "sha256": "a8b29c975a6caeeae547a77b4202a3750cb6876aecec4a188eb19bffa06a776e",
+      "artifactIdentity": "15b5fed759712d0491e29d02a7dffde0"
+    },
+    "integer-rethrow": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/integer-rethrow.roslynobj",
+      "bytes": 784384,
+      "sha256": "ec81c83cf8473f1d5d0930472144b2b49667de652a8e56446a203f70786e15f5",
+      "artifactIdentity": "d387338e93da0ff11d69456ccdb8439a"
+    },
+    "partial-array": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array.roslynobj",
+      "bytes": 808960,
+      "sha256": "96cac6df29a417cc4f9c853ae2ef877fc6c6af665ccacdded4cbd50677cb7b62",
+      "artifactIdentity": "27c6a1ba22805582da0b7674a5261e81"
+    },
+    "partial-array-prefixes": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array-prefixes.roslynobj",
+      "bytes": 822272,
+      "sha256": "6a9ddfd3dab932b17d98f1d254c3def8b6081b67a3e8dc33988ff29a8ed360a5",
+      "artifactIdentity": "7fcb9fa025a5bd7bcd2dece2798c5c1e"
+    },
+    "constructor-failure": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/constructor-failure.roslynobj",
+      "bytes": 814080,
+      "sha256": "5c55f685b8f6650002d1c0e086eba814cfd0260998e7664692707c3dd633b428",
+      "artifactIdentity": "b4e822a94dab346596f2aa44191d81c9"
+    },
+    "exception-cleanup": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup.roslynobj",
+      "bytes": 791552,
+      "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5",
+      "artifactIdentity": "4a64e02f20ffe2715ecc5b7ad5e90d74"
+    },
+    "normal-lifetime": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/normal-lifetime.roslynobj",
+      "bytes": 792576,
+      "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718",
+      "artifactIdentity": "ddf0d46f1dd43d55b64a93e2dbea9489"
+    },
+    "ordinary-runtime-name": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-runtime-name.roslynobj",
+      "bytes": 652288,
+      "sha256": "3e0c00a038086af7ed3e907d46d38e5fc8a198d5b2092acc84f509b8fab71aab",
+      "artifactIdentity": "b532f16476f6ee486e808fda8422dda2"
+    },
+    "ordinary-vector-names": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-vector-names.roslynobj",
+      "bytes": 659456,
+      "sha256": "c570ee248b3b7af59abd41597904ad95b55e710e59c63a6c62cfd59388f2c809",
+      "artifactIdentity": "22277a765be68465d19d199f42c2cc1f"
+    },
+    "exception-handler-call": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-handler-call.roslynobj",
+      "bytes": 727040,
+      "sha256": "39fd34545d8b5c4e18fabac8aaf9b970718d63661053f337559117789aa1b6a4",
+      "artifactIdentity": "d177ce9b54ce803490944cb3083cdbfc"
+    },
+    "exception-noexcept-call": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-noexcept-call.roslynobj",
+      "bytes": 732160,
+      "sha256": "e492a79982eca38cf276cc60ea0b1f22d81496f7e67382216fd0d795a6e5f9af",
+      "artifactIdentity": "18a6ca41a9d65020fc8fbe6e5ad17531"
+    }
+  },
+  "captureProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-capture-provenance-1.json",
+    "bytes": 5123,
+    "sha256": "fd31ceb8f2010326a7e531236129c06dda5cad81e27cbf0b90a6aba2614851de"
+  },
+  "publicFacts": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/noexcept-termination-facts-6.json",
+    "bytes": 529081,
+    "sha256": "2c26b1a1df00159be507c6980b76246920ad573a34c3b241fba784fd035373e4"
+  },
+  "selectedRuntimePolicyProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-contract-source-1/provenance.json",
+    "bytes": 2968,
+    "sha256": "d65b67152c1632604b5ee3ad2c9f03ce51fe0a852f2581be22905ced98a7d863"
+  },
+  "selectedRuntimePolicy": {
+    "version": "managed-cpp-int32-noexcept-unwind-true-failfast-owner-v1",
+    "enum": "ManagedCppTerminationPolicy.UnwindBeforeTerminateDefaultFailFastV1",
+    "UNWIND_STACK_BEFORE_CALLING_TERMINATE": true,
+    "isCapturedCapability": false,
+    "defaultOnly": true,
+    "hostMapping": "Environment.FailFast on pinned Linux/.NET host; actual SIGABRT proved in JIT/NativeAOT",
+    "marker": "RoslynObj.CSharp.ManagedCppException:default-noexcept-termination:unwind-true:failfast-v1",
+    "destination": "Distinct noexcept token, selected during first pass before leaf/boundary cleanup; source outer handler/caller cleanup is outside destination",
+    "ownership": "Process ends owning committed int payload; no synthetic MarkCaught, ReleaseCaught or physical payload free"
+  },
+  "phaseCount": 38,
+  "normalSuccessfulPhaseCount": 32,
+  "expectedSigabrtPhaseCount": 2,
+  "expectedRejectionPhaseCount": 4,
+  "unexpectedOutcomes": 0,
+  "budgetViolations": 0,
+  "phases": [
+    {
+      "name": "termination-cli-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-build-1/run.json",
+        "bytes": 1259,
+        "sha256": "a4172d57ae9bd6dfea9c7382c7ea8ceb75f2da82285c900a7f627c963fc0850a"
+      },
+      "elapsedSeconds": 8.861383426003158,
+      "sampledPeakProcessTreeRssBytes": 634535936,
+      "waitedPeakProcessRssBytes": 276099072,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-cli-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-translate-1/run.json",
+        "bytes": 1187,
+        "sha256": "22e8f26fba1835bd57efecd99540990e36794ab6442e4336cde9cce2d65a6696"
+      },
+      "elapsedSeconds": 0.5024266430409625,
+      "sampledPeakProcessTreeRssBytes": 102854656,
+      "waitedPeakProcessRssBytes": 104595456,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-cli-repeat-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-repeat-1/run.json",
+        "bytes": 1181,
+        "sha256": "018b60ac433ce7d717ca2142a17390206a0e2d44ceb27514d6ad3fd4b0df456f"
+      },
+      "elapsedSeconds": 0.5017913009505719,
+      "sampledPeakProcessTreeRssBytes": 102752256,
+      "waitedPeakProcessRssBytes": 104595456,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-build-1/run.json",
+        "bytes": 1360,
+        "sha256": "eead491a0df9e040bba5a26b0e09cdd3f6c3e90592f1b4b8081a7eb6af279c7b"
+      },
+      "elapsedSeconds": 5.704542350023985,
+      "sampledPeakProcessTreeRssBytes": 512090112,
+      "waitedPeakProcessRssBytes": 213094400,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-jit-mode0-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-mode0-run-1/run.json",
+        "bytes": 1012,
+        "sha256": "a82c45426373df6c474f1c9a06e3c2de735562714c6f2b7354483f28836bca9a"
+      },
+      "elapsedSeconds": 0.10060372203588486,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 34603008,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-jit-mode1-run-1",
+      "expectedExitCode": -6,
+      "actualExitCode": -6,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-mode1-run-1/run.json",
+        "bytes": 1014,
+        "sha256": "b00b00fa4eb1f527c2339e26a55420029a7ac43b04196271ec8ec71a745414f5"
+      },
+      "elapsedSeconds": 0.10062156594358385,
+      "sampledPeakProcessTreeRssBytes": 65536,
+      "waitedPeakProcessRssBytes": 27787264,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-publish-1/run.json",
+        "bytes": 1473,
+        "sha256": "3f6e8dae68fe0c3aba878b0dcc44d916f307a4d265e0946cd552b7ab8afad44a"
+      },
+      "elapsedSeconds": 8.970010362914763,
+      "sampledPeakProcessTreeRssBytes": 657100800,
+      "waitedPeakProcessRssBytes": 228016128,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-aot-mode0-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-mode0-run-1/run.json",
+        "bytes": 993,
+        "sha256": "0813a11d300f77604990eceddb425fdf4b80b30c8ec88d585060270b2b172d13"
+      },
+      "elapsedSeconds": 0.1005614569876343,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18087936,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-aot-mode1-run-1",
+      "expectedExitCode": -6,
+      "actualExitCode": -6,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-mode1-run-1/run.json",
+        "bytes": 996,
+        "sha256": "ea4f998f0bb9fe47bf7f9fdbef56aab2d8337dd9058c33b082b5a59cb1f25074"
+      },
+      "elapsedSeconds": 0.10055874101817608,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 18350080,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-rethrow-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-translate-1/run.json",
+        "bytes": 1217,
+        "sha256": "74e1844d6c8c27a9b0864508c1c2be0df90dd340d8fb819ff2855baf813512c0"
+      },
+      "elapsedSeconds": 0.6027607569703832,
+      "sampledPeakProcessTreeRssBytes": 103583744,
+      "waitedPeakProcessRssBytes": 105119744,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-rethrow-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-jit-build-1/run.json",
+        "bytes": 1409,
+        "sha256": "f79b331b0109ce86739f98b067464b7866af6c94cd880d2602480df83dabf6af"
+      },
+      "elapsedSeconds": 5.904311721911654,
+      "sampledPeakProcessTreeRssBytes": 517267456,
+      "waitedPeakProcessRssBytes": 215068672,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-rethrow-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-jit-run-1/run.json",
+        "bytes": 1016,
+        "sha256": "29426c22d985bb7d73bb10bfc577a120153bb193da7cd5c307dcb5875430886d"
+      },
+      "elapsedSeconds": 0.10066983907017857,
+      "sampledPeakProcessTreeRssBytes": 106496,
+      "waitedPeakProcessRssBytes": 35913728,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-rethrow-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-aot-publish-1/run.json",
+        "bytes": 1523,
+        "sha256": "72c2fa554a171a61f9d50fcafc495f3af41d312d86128c7d3768955655a51bc1"
+      },
+      "elapsedSeconds": 8.964578407001682,
+      "sampledPeakProcessTreeRssBytes": 695705600,
+      "waitedPeakProcessRssBytes": 267743232,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-rethrow-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-aot-run-1/run.json",
+        "bytes": 998,
+        "sha256": "3e225a7d6559b84bb83f16af6bf854ae70cec130bea06699ab7d629b0f825032"
+      },
+      "elapsedSeconds": 0.10050582105759531,
+      "sampledPeakProcessTreeRssBytes": 102400,
+      "waitedPeakProcessRssBytes": 18087936,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-array-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-translate-1/run.json",
+        "bytes": 1213,
+        "sha256": "63228e0ca268a63506cbc4ec83d09cdb61282e8c22c846115c3c5f3646bfe5dd"
+      },
+      "elapsedSeconds": 0.6028204569593072,
+      "sampledPeakProcessTreeRssBytes": 107171840,
+      "waitedPeakProcessRssBytes": 110100480,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-array-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-jit-build-1/run.json",
+        "bytes": 1405,
+        "sha256": "de34959512788af6dbc9fdd0792d397fdbc5c1274191a4ab63872f4c389b90d8"
+      },
+      "elapsedSeconds": 5.798799908021465,
+      "sampledPeakProcessTreeRssBytes": 515723264,
+      "waitedPeakProcessRssBytes": 213049344,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-array-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-jit-run-1/run.json",
+        "bytes": 1039,
+        "sha256": "c78329794e2744aa09b362c765529cbba6f9affccd4ca7bc00a2d65435e95ab3"
+      },
+      "elapsedSeconds": 0.10057905700523406,
+      "sampledPeakProcessTreeRssBytes": 167936,
+      "waitedPeakProcessRssBytes": 36962304,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-array-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-aot-publish-1/run.json",
+        "bytes": 1519,
+        "sha256": "6887caa9cd41d7dd7e14ba5e19ac8df2d4eae7a4bd0733ff30049e6c3f8ddc81"
+      },
+      "elapsedSeconds": 8.960126697900705,
+      "sampledPeakProcessTreeRssBytes": 698032128,
+      "waitedPeakProcessRssBytes": 269647872,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-array-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-aot-run-1/run.json",
+        "bytes": 1020,
+        "sha256": "956979bc7e95ce995179c1de8c4bd9980a98ddcd7cc62cbbe0f53ddc244631a2"
+      },
+      "elapsedSeconds": 0.10054708109237254,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18350080,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-constructor-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-translate-1/run.json",
+        "bytes": 1225,
+        "sha256": "73563f22411f34df52a38f35129c52045d4ca51a49b1cd3a8628a5f2131205de"
+      },
+      "elapsedSeconds": 0.6025970779592171,
+      "sampledPeakProcessTreeRssBytes": 106766336,
+      "waitedPeakProcessRssBytes": 111411200,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-constructor-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-jit-build-1/run.json",
+        "bytes": 1423,
+        "sha256": "933c80a24e571bc3831715f9a200ca55063a6808d1e6527d6f7d729f4b61e890"
+      },
+      "elapsedSeconds": 5.799153416999616,
+      "sampledPeakProcessTreeRssBytes": 515309568,
+      "waitedPeakProcessRssBytes": 214188032,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-constructor-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-jit-run-1/run.json",
+        "bytes": 1022,
+        "sha256": "d26650236c158f90d20ed218aea4f67338b18c033f2aecc55abf25b2ed3ba68e"
+      },
+      "elapsedSeconds": 0.10066395998001099,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 35651584,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-constructor-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-aot-publish-1/run.json",
+        "bytes": 1537,
+        "sha256": "8a1463af2eb03443b998080a3cd8e0b889e4caed922ca7c1c93883b05e5cb729"
+      },
+      "elapsedSeconds": 8.960910120047629,
+      "sampledPeakProcessTreeRssBytes": 692170752,
+      "waitedPeakProcessRssBytes": 261271552,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-constructor-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-aot-run-1/run.json",
+        "bytes": 1004,
+        "sha256": "570f6e8dc6ea67696c59c25347483fc6efaeaae42dea1f311597a78244d53473"
+      },
+      "elapsedSeconds": 0.10044722200836986,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18087936,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-eh-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-translate-1/run.json",
+        "bytes": 1207,
+        "sha256": "9a663c0899c574625102139d683bf79ed14c79d97fa8805646acc418faace8dc"
+      },
+      "elapsedSeconds": 0.6030993439489976,
+      "sampledPeakProcessTreeRssBytes": 102703104,
+      "waitedPeakProcessRssBytes": 104857600,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-eh-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-jit-build-1/run.json",
+        "bytes": 1396,
+        "sha256": "394972fbbaeec6abb4fa908791587ecd162059aaf26783f2109b1963854a5678"
+      },
+      "elapsedSeconds": 5.798217275063507,
+      "sampledPeakProcessTreeRssBytes": 515108864,
+      "waitedPeakProcessRssBytes": 212975616,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-eh-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-jit-run-1/run.json",
+        "bytes": 1010,
+        "sha256": "f1bd511f9336137ff3eca22d84c39ad306782b67f90384e32d8052ab9dc14c07"
+      },
+      "elapsedSeconds": 0.1005706429714337,
+      "sampledPeakProcessTreeRssBytes": 40960,
+      "waitedPeakProcessRssBytes": 36962304,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-eh-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-aot-publish-1/run.json",
+        "bytes": 1510,
+        "sha256": "92f11448186135a10b61ce07c831791fb7e3fc0183e97e52dcf0948357366466"
+      },
+      "elapsedSeconds": 8.968134199967608,
+      "sampledPeakProcessTreeRssBytes": 680132608,
+      "waitedPeakProcessRssBytes": 251564032,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-eh-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-aot-run-1/run.json",
+        "bytes": 993,
+        "sha256": "c025cbae599f04b898a20724ffc6e01811ea27a13aa371f85360563ef890ed80"
+      },
+      "elapsedSeconds": 0.10047617903910577,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 18350080,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-normal-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-translate-1/run.json",
+        "bytes": 1215,
+        "sha256": "4f0878197f2acb8b6cd8a5c9c70aa6f40d92504fe574f240bac0277953a2f204"
+      },
+      "elapsedSeconds": 0.6030395999550819,
+      "sampledPeakProcessTreeRssBytes": 105451520,
+      "waitedPeakProcessRssBytes": 103284736,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-normal-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-jit-build-1/run.json",
+        "bytes": 1405,
+        "sha256": "30c7f8aa09bbf31a362e7d9697ca81a937a2d35650249a92a426474f6d5a7a6c"
+      },
+      "elapsedSeconds": 5.799803953967057,
+      "sampledPeakProcessTreeRssBytes": 514584576,
+      "waitedPeakProcessRssBytes": 212250624,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-normal-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-jit-run-1/run.json",
+        "bytes": 1014,
+        "sha256": "a0a41707c1a42028a9585b013b4106dc7e005e507b9776960fa5ba679e27d849"
+      },
+      "elapsedSeconds": 0.10062439797911793,
+      "sampledPeakProcessTreeRssBytes": 135168,
+      "waitedPeakProcessRssBytes": 35389440,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-normal-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-aot-publish-1/run.json",
+        "bytes": 1519,
+        "sha256": "12ebd14a0a430a418301913e9452ec593fdb80befc0b22cd84d2b262ca5d9dde"
+      },
+      "elapsedSeconds": 8.962929667090066,
+      "sampledPeakProcessTreeRssBytes": 680357888,
+      "waitedPeakProcessRssBytes": 252145664,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-normal-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-aot-run-1/run.json",
+        "bytes": 996,
+        "sha256": "610607c1d68ddb59a41b535a797d01711bcb3b8df85285a24adb83d3eed3bd5c"
+      },
+      "elapsedSeconds": 0.10048447700683028,
+      "sampledPeakProcessTreeRssBytes": 245760,
+      "waitedPeakProcessRssBytes": 17301504,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-reject-ordinary-runtime-name-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-reject-ordinary-runtime-name-1/run.json",
+        "bytes": 1217,
+        "sha256": "ea4100aff032ec20d901c8d65b224e120db2543f1febeb0040014d01d4a35600"
+      },
+      "elapsedSeconds": 0.3011330980807543,
+      "sampledPeakProcessTreeRssBytes": 93331456,
+      "waitedPeakProcessRssBytes": 95682560,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-reject-ordinary-vector-names-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-reject-ordinary-vector-names-1/run.json",
+        "bytes": 1218,
+        "sha256": "2f7af6151b4ffb3da230db7bf592f324ed0db4bd495bd8e30f6ed37954154c8c"
+      },
+      "elapsedSeconds": 0.40163665206637233,
+      "sampledPeakProcessTreeRssBytes": 93278208,
+      "waitedPeakProcessRssBytes": 95944704,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-reject-exception-handler-call-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-reject-exception-handler-call-1/run.json",
+        "bytes": 1219,
+        "sha256": "523c2c33e4c3e20454134f4f24b5c2c34cf1936c46fcbb9a991767e3cb679c1e"
+      },
+      "elapsedSeconds": 0.4018921268871054,
+      "sampledPeakProcessTreeRssBytes": 95768576,
+      "waitedPeakProcessRssBytes": 99614720,
+      "budgetViolation": null
+    },
+    {
+      "name": "termination-reject-exception-noexcept-call-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-reject-exception-noexcept-call-1/run.json",
+        "bytes": 1222,
+        "sha256": "836ea9b17c2018acdd51d76d5188fa5b521595bcc402525044704a34b062bc67"
+      },
+      "elapsedSeconds": 0.4016320010414347,
+      "sampledPeakProcessTreeRssBytes": 96636928,
+      "waitedPeakProcessRssBytes": 100663296,
+      "budgetViolation": null
+    }
+  ],
+  "coreDumpLimitBytes": 0,
+  "coreLimitScope": "Inherited isolated test driver setup; no product behavior change",
+  "measurement": "All-thread Linux descendant RSS sampled every 100 ms; shared pages can count repeatedly and short peaks can be missed. Waited high-water RSS separate. Tiny sampled runs do not establish startup peak.",
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "bytes": 5505,
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+  },
+  "driver": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-termination-final-1.py",
+    "bytes": 6691,
+    "sha256": "0d9670f1ed8ce7b7a63d7e8cca3c558597ef4528d52f204c5be8ee71af7c8df4"
+  },
+  "publications": {
+    "termination-cli-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "283efccf88a03655818ef318ea470ef4eec8d5ecc50dac45626909bcde013a82"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "f07e3ba1ec80d680fc4a17978667a3ab6ee8d37b02fda97221f2d60296abea2a",
+          "sizeBytes": 12476
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "4b05b7462fc29bf1fe75f718b209a9175065e374095a186279612384f1c30fc2",
+          "sizeBytes": 176884
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "a8b29c975a6caeeae547a77b4202a3750cb6876aecec4a188eb19bffa06a776e",
+          "artifactIdentity": "15b5fed759712d0491e29d02a7dffde0"
+        }
+      ]
+    },
+    "termination-cli-generated-repeat-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-generated-repeat-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-cli-generated-repeat-1/completion.json",
+        "bytes": 811,
+        "sha256": "02c404352f1af1d8275305f79eb4f7604690a2a49272b832049d8b181a536a4e"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "f07e3ba1ec80d680fc4a17978667a3ab6ee8d37b02fda97221f2d60296abea2a",
+          "sizeBytes": 12476
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "61fe93dc03cc0bae6037cc2650bc7f6f1a84f4437ee74ee0b48c5ca39344c574",
+          "sizeBytes": 176891
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "a8b29c975a6caeeae547a77b4202a3750cb6876aecec4a188eb19bffa06a776e",
+          "artifactIdentity": "15b5fed759712d0491e29d02a7dffde0"
+        }
+      ]
+    },
+    "termination-rethrow-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "e9173fcb239c39fef659f8b63d5f45730ad630702c213a5f0108705172caf34a"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "a2dc85a624ec728d23e836111485ec5e615a9ec0db73c7d18db4a410af4849e8",
+          "sizeBytes": 15785
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "a527b582d36d02b5aad5dffea231f12e40c203002aa46bcbea1c68202045b291",
+          "sizeBytes": 189375
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "ec81c83cf8473f1d5d0930472144b2b49667de652a8e56446a203f70786e15f5",
+          "artifactIdentity": "d387338e93da0ff11d69456ccdb8439a"
+        }
+      ]
+    },
+    "termination-array-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "016b4d81335a98eab1a0aea40544a2c59472a91f21eb32fdc4488c435d750eaa"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48",
+          "sizeBytes": 15996
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "195a3213d47d9856467e28fbae3e9dd0d52d1dc660de1b9bf32db7fd1bcb4023",
+          "sizeBytes": 196684
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "6a9ddfd3dab932b17d98f1d254c3def8b6081b67a3e8dc33988ff29a8ed360a5",
+          "artifactIdentity": "7fcb9fa025a5bd7bcd2dece2798c5c1e"
+        }
+      ]
+    },
+    "termination-constructor-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "907955eae6f3a915ce6b8bc7356536765b308ce6b23eb5f2b9803ef1c717e3c4"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c",
+          "sizeBytes": 14327
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "09c0a1b2845701b6d478808883ad3000ba16a63f2baf25079f32b7198a7c29a4",
+          "sizeBytes": 207141
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "5c55f685b8f6650002d1c0e086eba814cfd0260998e7664692707c3dd633b428",
+          "artifactIdentity": "b4e822a94dab346596f2aa44191d81c9"
+        }
+      ]
+    },
+    "termination-eh-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "6256be085b2b6903116ae34d4113a9408fb3ea73ad81c7a8f45eb39952a3eeb8"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce",
+          "sizeBytes": 13895
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "3ce23ff429dbf1a9379eb65d298b3224dabee9c9a996f90069ce8202b0f3f20e",
+          "sizeBytes": 187863
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5",
+          "artifactIdentity": "4a64e02f20ffe2715ecc5b7ad5e90d74"
+        }
+      ]
+    },
+    "termination-normal-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-generated-1/completion.json",
+        "bytes": 810,
+        "sha256": "980f9fb39298bb67883c09dc0dfad31fa3dab65dbc09ebdcc12e0e4b0045a770"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969",
+          "sizeBytes": 8880
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "b967317448082ff398fc198db55dede9559160142bb81de9a6192d0bbcb8de1c",
+          "sizeBytes": 546
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "9c03f35d8e4e587e3e449d7976f5469a856d60025ffa1ef3e81c2521adacf330",
+          "sizeBytes": 170049
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718",
+          "artifactIdentity": "ddf0d46f1dd43d55b64a93e2dbea9489"
+        }
+      ]
+    }
+  },
+  "repeat": {
+    "sourceByteIdentical": true,
+    "projectByteIdentical": true,
+    "programReportEqualAfterOutputDirectoryNormalization": true
+  },
+  "requiredBodies": 8,
+  "semanticRuntimeSelections": [
+    {
+      "locator": "unit/0001/function/000019",
+      "kind": "function",
+      "name": "__destroy_exception_object",
+      "linkageName": "__destroy_exception_object",
+      "signature": "unit/0001/type/000029() cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+      "callingConvention": "cc_default",
+      "required": true,
+      "directCalls": 1,
+      "addressReferences": 0,
+      "addressExposed": true,
+      "provider": "RoslynObj.CSharp.Runtime.ManagedCppException",
+      "providerSymbol": null,
+      "bindingSignature": null,
+      "bindingCallingConvention": null,
+      "ownership": "The validated managed-cpp-int32-noexcept-unwind-true-failfast-owner-v1 contract preserves explicit handler ownership for retained catch paths. On the selected noexcept termination path the process retains the payload; no caught transition or synthetic release occurs.",
+      "errorContract": "Selected runtime policy ManagedCppTerminationPolicy.UnwindBeforeTerminateDefaultFailFastV1: UNWIND_STACK_BEFORE_CALLING_TERMINATE=TRUE, default-only Environment.FailFast mapping on Linux/.NET, nonreturning SIGABRT. This is provider policy, not a captured capability. The distinct termination destination is selected before actual leaf/boundary cleanup; the caller handler is not selected. FailFast marker: RoslynObj.CSharp.ManagedCppException:default-noexcept-termination:unwind-true:failfast-v1. Custom terminate, program-uncaught policy, native C++ unwinding and CLR-error conversion are unsupported.",
+      "threadContract": "The payload and explicit boundary token remain on their creating managed thread; no ambient termination handler, thread-local current payload or cross-thread transfer is supplied.",
+      "callbackContract": "No native entry, observer or custom termination callback is supplied. Default FailFast occurs after the captured cleanup chain reaches the selected noexcept boundary.",
+      "bindingStatus": "generated-noexcept-termination-owner-contract-selected"
+    }
+  ],
+  "nativeImports": [],
+  "nativeOracle": {
+    "observations": {
+      "source": "Separate GCC native observation; not EDG runtime-policy authority",
+      "coreDumpLimitBytes": 0,
+      "phases": [
+        {
+          "name": "native-noexcept-termination-harness-1",
+          "expectedExitCode": 0
+        },
+        {
+          "name": "native-noexcept-termination-build-1",
+          "expectedExitCode": 0
+        },
+        {
+          "name": "native-noexcept-termination-mode0-1",
+          "expectedExitCode": 0
+        },
+        {
+          "name": "native-noexcept-termination-mode1-1",
+          "expectedExitCode": -6
+        }
+      ],
+      "modes": {
+        "0": {
+          "file": "/mnt/storage/roslynobj-csharp-20261015/t5/native/noexcept-termination/mode-0.mapped",
+          "count": 11,
+          "overflow": 0,
+          "live": 0,
+          "resultMarker": 1,
+          "events": [
+            101,
+            103,
+            800,
+            102,
+            507,
+            508,
+            302,
+            801,
+            303,
+            900,
+            301
+          ],
+          "unusedEventStorage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "1": {
+          "file": "/mnt/storage/roslynobj-csharp-20261015/t5/native/noexcept-termination/mode-1.mapped",
+          "count": 5,
+          "overflow": 0,
+          "live": 3,
+          "resultMarker": 0,
+          "events": [
+            101,
+            103,
+            800,
+            102,
+            507
+          ],
+          "unusedEventStorage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/noexcept-native-observations-1.json",
+      "bytes": 2492,
+      "sha256": "36d16fb77a8412ee682394d9d8322bfa7f740d3769d5183eeb78271af8d78bcd"
+    },
+    "scope": "Normal mode exact comparison; raising GCC no-unwind prefix is preserved as explicit policy differential, not generated expected equality."
+  },
+  "generatedModes": {
+    "jit": {
+      "0": {
+        "observation": {
+          "count": 11,
+          "overflow": 0,
+          "live": 0,
+          "resultMarker": 1,
+          "events": [
+            101,
+            103,
+            800,
+            102,
+            507,
+            508,
+            302,
+            801,
+            303,
+            900,
+            301
+          ],
+          "unusedEventStorage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "mappedFile": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/jit-mode0.mapped",
+          "bytes": 272,
+          "sha256": "c3a8538fe2d2abb3251feee706b62b0e7b44b198efa58ca718339dddc5d677b3"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-mode0-run-1/stdout.txt",
+          "bytes": 72,
+          "sha256": "d4bfc2f53c17d501384cc698d65158a2bb993c611cc03ecaa7501bac51aece48"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-mode0-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expectedExitCode": 0,
+        "versionedFailFastMarkerRequired": false
+      },
+      "1": {
+        "observation": {
+          "count": 7,
+          "overflow": 0,
+          "live": 1,
+          "resultMarker": 0,
+          "events": [
+            101,
+            103,
+            800,
+            102,
+            507,
+            302,
+            303
+          ],
+          "unusedEventStorage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "mappedFile": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/jit-mode1.mapped",
+          "bytes": 272,
+          "sha256": "2630a40141ee5099338cc483108a0bc9ff183ee5852df5fabb47b82c70b4e974"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-mode1-run-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-mode1-run-1/stderr.txt",
+          "bytes": 725,
+          "sha256": "3ba0469f179cad0e421e948fc4dc8199c1595bd7af629c74985a58dad37aa9a6"
+        },
+        "expectedExitCode": -6,
+        "versionedFailFastMarkerRequired": true
+      },
+      "binary": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-jit-bin-1/Checks.dll",
+        "bytes": 7168,
+        "sha256": "f0a016371a8ee3d3b40b1be6e2039381d597c35c4a577a7d6385a78e49ee0ab9"
+      },
+      "dependencies": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ]
+    },
+    "aot": {
+      "0": {
+        "observation": {
+          "count": 11,
+          "overflow": 0,
+          "live": 0,
+          "resultMarker": 1,
+          "events": [
+            101,
+            103,
+            800,
+            102,
+            507,
+            508,
+            302,
+            801,
+            303,
+            900,
+            301
+          ],
+          "unusedEventStorage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "mappedFile": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/aot-mode0.mapped",
+          "bytes": 272,
+          "sha256": "c3a8538fe2d2abb3251feee706b62b0e7b44b198efa58ca718339dddc5d677b3"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-mode0-run-1/stdout.txt",
+          "bytes": 72,
+          "sha256": "d4bfc2f53c17d501384cc698d65158a2bb993c611cc03ecaa7501bac51aece48"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-mode0-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expectedExitCode": 0,
+        "versionedFailFastMarkerRequired": false
+      },
+      "1": {
+        "observation": {
+          "count": 7,
+          "overflow": 0,
+          "live": 1,
+          "resultMarker": 0,
+          "events": [
+            101,
+            103,
+            800,
+            102,
+            507,
+            302,
+            303
+          ],
+          "unusedEventStorage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "mappedFile": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/aot-mode1.mapped",
+          "bytes": 272,
+          "sha256": "2630a40141ee5099338cc483108a0bc9ff183ee5852df5fabb47b82c70b4e974"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-mode1-run-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-mode1-run-1/stderr.txt",
+          "bytes": 374,
+          "sha256": "2613131ec086162386c81ae3bf3b740191c51b511ec5c57637e9d5197c1d0e29"
+        },
+        "expectedExitCode": -6,
+        "versionedFailFastMarkerRequired": true
+      },
+      "binary": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-aot-bin-1/Checks",
+        "bytes": 1790992,
+        "sha256": "bf1e8c55f8ed6a99e7fd2cb3863c7a11a12e7269a00eda8811d2039b0b06ab6f"
+      }
+    }
+  },
+  "normalNativeEquality": true,
+  "raisingSelectedEdgPolicySatisfied": true,
+  "raisingNativePolicyDifferential": true,
+  "regressions": {
+    "rethrow": {
+      "currentSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-generated-1/Generated.cs",
+        "bytes": 15785,
+        "sha256": "a2dc85a624ec728d23e836111485ec5e615a9ec0db73c7d18db4a410af4849e8"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-generated-1/Generated.cs",
+        "bytes": 15785,
+        "sha256": "a2dc85a624ec728d23e836111485ec5e615a9ec0db73c7d18db4a410af4849e8"
+      },
+      "byteIdentical": true,
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-integer-rethrow-run-1/stdout.txt",
+        "bytes": 219,
+        "sha256": "99395ba23f2b41ab8fc880b8a151eecf0a67053b1b5cc4fd05f7361628282860"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 7,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              7,
+              99,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              507,
+              302,
+              699,
+              103,
+              303,
+              707,
+              301
+            ]
+          },
+          {
+            "result": 7,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              7,
+              99,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              507,
+              302,
+              699,
+              103,
+              303,
+              707,
+              301
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-jit-run-1/stdout.txt",
+            "bytes": 1045,
+            "sha256": "02e1025ecfae11f96524156b659cb3b23cd553543a52e922a9554109b61a2f47"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 1,
+                "rethrownPrimaryOwner": 1,
+                "releasedPrimaryOwner": 1,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 5,
+                "firstCleanupSequence": 6,
+                "releaseSequence": 7
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 2,
+                "rethrownPrimaryOwner": 2,
+                "releasedPrimaryOwner": 2,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 12,
+                "firstCleanupSequence": 13,
+                "releaseSequence": 14
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-rethrow-regression-aot-run-1/stdout.txt",
+            "bytes": 1045,
+            "sha256": "02e1025ecfae11f96524156b659cb3b23cd553543a52e922a9554109b61a2f47"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 1,
+                "rethrownPrimaryOwner": 1,
+                "releasedPrimaryOwner": 1,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 5,
+                "firstCleanupSequence": 6,
+                "releaseSequence": 7
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 2,
+                "rethrownPrimaryOwner": 2,
+                "releasedPrimaryOwner": 2,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 12,
+                "firstCleanupSequence": 13,
+                "releaseSequence": 14
+              }
+            ]
+          }
+        }
+      }
+    },
+    "array": {
+      "currentSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-generated-1/Generated.cs",
+        "bytes": 15996,
+        "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/Generated.cs",
+        "bytes": 15996,
+        "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48"
+      },
+      "byteIdentical": true,
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-partial-array-prefixes-run-1/stdout.txt",
+        "bytes": 433,
+        "sha256": "c9725e72040b0049b779ca21435aaa9e3a8ccd7a3a9ddcdf59c8ed9a1fe542e1"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 144,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              123,
+              0,
+              7,
+              0,
+              7,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              201,
+              102,
+              202,
+              103,
+              203,
+              601,
+              612,
+              623,
+              303,
+              302,
+              301,
+              900,
+              101,
+              501,
+              707,
+              901,
+              101,
+              201,
+              102,
+              502,
+              301,
+              707,
+              902,
+              101,
+              201,
+              102,
+              202,
+              103,
+              503,
+              302,
+              301,
+              707
+            ]
+          },
+          {
+            "result": 144,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              123,
+              0,
+              7,
+              0,
+              7,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              201,
+              102,
+              202,
+              103,
+              203,
+              601,
+              612,
+              623,
+              303,
+              302,
+              301,
+              900,
+              101,
+              501,
+              707,
+              901,
+              101,
+              201,
+              102,
+              502,
+              301,
+              707,
+              902,
+              101,
+              201,
+              102,
+              202,
+              103,
+              503,
+              302,
+              301,
+              707
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-jit-run-1/stdout.txt",
+            "bytes": 1008,
+            "sha256": "64b93a65595446a2d9c56c4eabccbec9a3f94cc2ab760053ef387ce73e7e55e2"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 10,
+                "firstCleanupSequence": 11,
+                "releaseSequence": 12
+              },
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 22,
+                "firstCleanupSequence": 23,
+                "releaseSequence": 24
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-array-regression-aot-run-1/stdout.txt",
+            "bytes": 1008,
+            "sha256": "64b93a65595446a2d9c56c4eabccbec9a3f94cc2ab760053ef387ce73e7e55e2"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 10,
+                "firstCleanupSequence": 11,
+                "releaseSequence": 12
+              },
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 22,
+                "firstCleanupSequence": 23,
+                "releaseSequence": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    "constructor": {
+      "currentSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-generated-1/Generated.cs",
+        "bytes": 14327,
+        "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constructor-cli-generated-1/Generated.cs",
+        "bytes": 14327,
+        "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+      },
+      "byteIdentical": true,
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-constructor-failure-run-1/stdout.txt",
+        "bytes": 305,
+        "sha256": "0dd31221419e5b6b87e8a4416eb4bf153b287d0af8c39bb9a4dac6745f003833"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 79233,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              79226,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              200,
+              79225,
+              201,
+              500,
+              79227,
+              400,
+              79226,
+              301,
+              900,
+              101,
+              200,
+              79225,
+              507,
+              301,
+              707
+            ]
+          },
+          {
+            "result": 79233,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              79226,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              200,
+              79225,
+              201,
+              500,
+              79227,
+              400,
+              79226,
+              301,
+              900,
+              101,
+              200,
+              79225,
+              507,
+              301,
+              707
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-jit-run-1/stdout.txt",
+            "bytes": 874,
+            "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-constructor-regression-aot-run-1/stdout.txt",
+            "bytes": 874,
+            "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    "eh": {
+      "currentSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-generated-1/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "byteIdentical": true,
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt",
+        "bytes": 259,
+        "sha256": "89dd333a482f01178e0f0ff3e630b95ace30767d416c1e18cc902966533a6d5c"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 11,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              3,
+              0,
+              8,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              600,
+              302,
+              301,
+              900,
+              101,
+              102,
+              103,
+              507,
+              303,
+              302,
+              707,
+              301
+            ]
+          },
+          {
+            "result": 11,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              3,
+              0,
+              8,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              600,
+              302,
+              301,
+              900,
+              101,
+              102,
+              103,
+              507,
+              303,
+              302,
+              707,
+              301
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-jit-run-1/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-eh-regression-aot-run-1/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    "normal": {
+      "currentSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-generated-1/Generated.cs",
+        "bytes": 8880,
+        "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-cli-generated-3/Generated.cs",
+        "bytes": 8880,
+        "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+      },
+      "byteIdentical": true,
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt",
+        "bytes": 275,
+        "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 26,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              11,
+              11,
+              2,
+              2,
+              14,
+              0,
+              12,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              211,
+              311,
+              211,
+              102,
+              302,
+              311,
+              301,
+              900,
+              101,
+              211,
+              311,
+              301
+            ]
+          },
+          {
+            "result": 26,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              11,
+              11,
+              2,
+              2,
+              14,
+              0,
+              12,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              211,
+              311,
+              211,
+              102,
+              302,
+              311,
+              301,
+              900,
+              101,
+              211,
+              311,
+              301
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-jit-run-1/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "ownership": null
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-normal-regression-aot-run-1/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "ownership": null
+        }
+      }
+    }
+  },
+  "rejections": {
+    "ordinary-runtime-name": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/termination-reject-ordinary-runtime-name-1-report.json",
+        "bytes": 91283,
+        "sha256": "f249e99c2ddeab841d441f74bbd0a3b3270bcfd779256e5e0367d76011e31eaf"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__destroy_exception_object' requires one explicit binding for captured linkage '__destroy_exception_object'.",
+          "input": "b532f16476f6ee486e808fda8422dda2",
+          "locator": "function/1:fixture/operation/2",
+          "family": "external-function"
+        }
+      ],
+      "outputPublished": false
+    },
+    "ordinary-vector-names": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/termination-reject-ordinary-vector-names-1-report.json",
+        "bytes": 99864,
+        "sha256": "40633401eed692343eacd7bc14c522dc4b3d04e32843ec2dc1cd52309afd0181"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__cxa_vec_ctor' requires one explicit binding for captured linkage '__cxa_vec_ctor'.",
+          "input": "22277a765be68465d19d199f42c2cc1f",
+          "locator": "function/1:fixture/operation/7",
+          "family": "external-function"
+        }
+      ],
+      "outputPublished": false
+    },
+    "exception-handler-call": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/termination-reject-exception-handler-call-1-report.json",
+        "bytes": 161749,
+        "sha256": "9b5773f74879d9fd766b16b060f87f67d12a45937475cac54d8fa3a6974fe82c"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "d177ce9b54ce803490944cb3083cdbfc",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "outputPublished": false
+    },
+    "exception-noexcept-call": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/termination-final-preparation-1/termination-reject-exception-noexcept-call-1-report.json",
+        "bytes": 167903,
+        "sha256": "e40347f7696138b24049488febc1bafca7b563b1490fb40a292b5978fba2c566"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "The termination slice requires separate leaf, noexcept-boundary and outer-handler cleanup frames.",
+          "input": "18a6ca41a9d65020fc8fbe6e5ad17531",
+          "locator": "function/0:program/operation/0",
+          "family": "exception-termination"
+        }
+      ],
+      "outputPublished": false
+    }
+  },
+  "aotDynamicDependencies": [
+    "\tlinux-vdso.so.1 (0x00007ffcab5ea000)",
+    "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007ed122913000)",
+    "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007ed122600000)",
+    "\t/lib64/ld-linux-x86-64.so.2 (0x00007ed122c20000)"
+  ],
+  "preservedBaseline": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/noexcept-baseline-cli-1/run.json",
+      "bytes": 1135,
+      "sha256": "13d20c94ef060bf4c889b94c987524b5246297469effc188993d05b96ac07b90"
+    },
+    "expectedExitCode": 1,
+    "explanation": "Accepted rethrow CLI rejects new boundary before implementation; retained unsupported-admission baseline, not a final-product failure."
+  },
+  "noexceptKindAdmission": {
+    "producerMapping": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/backend/roslyn_type_support.h",
+      "bytes": 2304,
+      "sha256": "6bf8babe0c7d76faf40465837609c678533a0617da7931817b6f6661c7a07fbd"
+    },
+    "explanation": "noexcept_effective is populated only for p->is_noexcept with resolved, nondependent, noncached argument; dynamic specifications retain null. Thus true excludes dynamic throw()/unexpected without a new inferred semantic rule. Pristine il_def.h7130\u20137132 defines this bit as C++11 noexcept."
+  },
+  "limits": [
+    "One exact signed-int32 throw, one selected ordinary true-noexcept boundary, separate leaf/boundary direct-local frames and one retained outer typed try; generated fixed direct graph only.",
+    "Only explicit default unwind-before-terminate policy and Environment.FailFast host mapping. No installed custom terminate, returning/throwing callbacks, destructor throws, native C++ unwinding or class/pointer payloads.",
+    "No program-uncaught inference at an arbitrary library entry; executable/main boundary policy remains separate.",
+    "Payload remains process-owned at abort; this proof is not a normal catch/release or zero-live-runtime-owner claim. Source outer object remains live as required by stop boundary.",
+    "Prior SQLite publications/runtime evidence keep their immutable attribution; no SQLite regeneration or broader ABI/scale claim."
+  ]
+}

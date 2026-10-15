@@ -22,6 +22,8 @@ completed-member cleanup through its captured nonzero receiver offset.
 callback execution and completed-prefix cleanup.
 [Integer rethrow](docs/T5-RETHROW.md) now also preserves the original payload
 through two handler entries and frees it once.
+[Default noexcept termination](docs/T5-TERMINATION.md) also passes its explicit
+unwind policy and isolated JIT/NativeAOT SIGABRT evidence.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

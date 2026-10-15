@@ -55,6 +55,7 @@ public sealed partial class CSharpEmitter
                 InitializeBoundedRethrow(graph, candidates, throws, tries);
                 return;
             }
+            if (TryInitializeNoexceptTermination(graph, candidates, throws, tries)) return;
             if (throws.Length != 1 || tries.Length != 1 || candidates.Length is not (1 or 2))
                 throw Limit("The bounded generated exception slice requires one integer throw, one typed try and their retained cleanup functions.", "exception");
             var throwing = throws[0];
@@ -266,11 +267,11 @@ public sealed partial class CSharpEmitter
         {
             var body = function.Body!;
             var eh = body.ExceptionHandling;
-            if (function.Signature.ExceptionSpecification?.NoexceptEffective == true || eh.Details is not { } details ||
+            if (function.Signature.ExceptionSpecification?.NoexceptEffective == true && noexceptTermination?.Function.Equals(function) != true || eh.Details is not { } details ||
                 eh.RegionTable is not { } table || !body.Locals.Contains(table) ||
                 (automaticArray?.Function.Equals(function) != true && (eh.ArrayTable is not null || eh.Arrays.Count != 0)) ||
                 details.InitialState != 65535 || details.NullState != 65535 || details.Prologue is null || !nodes.Contains(details.Prologue))
-                throw Limit("The integer EH function requires its actual cleanup table, null state and prologue without a noexcept boundary.", "exception");
+                throw Limit("The integer EH function requires its actual cleanup table, null state and prologue with any noexcept boundary separately validated.", "exception");
             if (table.ExceptionTable is not { } projection || projection.Kind.Name != "cleanup" || !projection.Owner.Equals(table) ||
                 !projection.FunctionEh.Routine.Equals(function) || projection.FunctionEh.RegionTable?.Equals(table) != true ||
                 nodes.OfType<ReferenceOperation>().Any(reference => reference.Target?.Equals(table) == true) ||
@@ -386,7 +387,8 @@ public sealed partial class CSharpEmitter
                 signature.LanguageLinkage?.Name != "nlk_cplusplus_external" || options.ExternalFunctions.Any(binding => binding.LinkageName == release.CurrentName))
                 throw Limit("The selected no-object cleanup target does not match the bounded generated exception-owner runtime contract.", "exception-runtime");
             ValidateCallingConvention(signature);
-            var contract = boundedRethrow ? SemanticRuntimeFunctionImplementation.Int32RethrowOwnerContract : SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract;
+            var contract = noexceptTermination is not null ? SemanticRuntimeFunctionImplementation.Int32NoexceptTerminationOwnerContract :
+                boundedRethrow ? SemanticRuntimeFunctionImplementation.Int32RethrowOwnerContract : SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract;
             if (!semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release)))
                 semanticRuntimeFunctions.Add(new(release, contract));
             else if (semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release) && implementation.Contract != contract))
@@ -482,6 +484,7 @@ public sealed partial class CSharpEmitter
         {
             if (!exceptionFunctions.TryGetValue(function, out var plan)) return;
             localNames.UnionWith([plan.State, plan.Observed, plan.ObservedParameter, plan.Caught]);
+            if (noexceptTermination?.Function.Equals(function) == true) localNames.Add(noexceptTermination.Carrier);
             foreach (var selectedTry in exceptionTries.Values.Where(selectedTry => selectedTry.Function.Equals(function)))
                 localNames.UnionWith([selectedTry.SavedState, selectedTry.Carrier]);
         }
@@ -492,6 +495,7 @@ public sealed partial class CSharpEmitter
             fields.Append("    private static readonly object ").Append(exceptionTypeToken).AppendLine(" = new();");
             foreach (var plan in exceptionTries.Values)
                 fields.Append("    private static readonly object ").Append(plan.Token).AppendLine(" = new();");
+            EmitNoexceptTerminationField(fields);
             fields.AppendLine();
         }
 
@@ -502,6 +506,7 @@ public sealed partial class CSharpEmitter
             writer.Line($"{ExceptionCarrierType}? {plan.Observed} = null;");
             if (exceptionTries.Values.Any(selectedTry => selectedTry.Function.Equals(currentFunction)))
                 writer.Line($"{ExceptionCarrierType}? {plan.Caught} = null;");
+            BeginNoexceptTerminationBoundary(writer);
             writer.Line("try"); writer.Open();
         }
 
@@ -513,9 +518,10 @@ public sealed partial class CSharpEmitter
             writer.Open(); writer.Line("throw;"); writer.Close();
             writer.Line("finally"); writer.Open();
             writer.Line($"if ({plan.Observed} is not null)"); writer.Open();
-            writer.Line($"{plan.Observed}.RequireSelectedHandler();");
+            writer.Line($"{plan.Observed}.{SelectedExceptionDestinationAssertion}();");
             EmitExceptionCleanup(plan, "65535", writer);
             writer.Close(); writer.Close();
+            EndNoexceptTerminationBoundary(writer);
         }
 
         private void EmitExceptionCleanup(ExceptionFunction plan, string stop, CodeWriter writer)
@@ -556,7 +562,7 @@ public sealed partial class CSharpEmitter
             writer.Line("try"); Embedded(selectedTry.Body, writer);
             writer.Line($"catch ({ExceptionCarrierType} {plan.Carrier}) when ({plan.Carrier}.SelectHandler({Owner}.{exceptionTypeToken}, {Owner}.{plan.Token}))");
             writer.Open();
-            writer.Line($"{plan.Carrier}.RequireSelectedHandler();");
+            writer.Line($"{plan.Carrier}.{SelectedExceptionDestinationAssertion}();");
             EmitExceptionCleanup(function, plan.SavedState, writer);
             writer.Line($"{function.Caught} = {plan.Carrier};");
             var previous = emittingExceptionHandler;

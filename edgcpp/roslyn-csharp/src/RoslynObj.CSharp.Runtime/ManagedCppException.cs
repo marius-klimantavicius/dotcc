@@ -1,7 +1,13 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace RoslynObj.CSharp.Runtime;
+
+public enum ManagedCppTerminationPolicy
+{
+    UnwindBeforeTerminateDefaultFailFastV1 = 1
+}
 
 /// <summary>
 /// A generated-only exception carrier for the admitted exact signed-32-bit
@@ -10,7 +16,10 @@ namespace RoslynObj.CSharp.Runtime;
 /// </summary>
 public sealed unsafe class ManagedCppException : Exception
 {
-    private enum EntryState { Pending, Committed, Selected, Caught, Released }
+    private enum EntryState { Pending, Committed, Selected, Caught, Released, NoexceptSelected }
+
+    public const string DefaultNoexceptTerminationMarker =
+        "RoslynObj.CSharp.ManagedCppException:default-noexcept-termination:unwind-true:failfast-v1";
 
     private sealed class PrimaryOwner
     {
@@ -45,6 +54,8 @@ public sealed unsafe class ManagedCppException : Exception
     private EntryState state;
     private bool addressRequested;
     private object? selectedHandler;
+    private object? selectedNoexceptBoundary;
+    private ManagedCppTerminationPolicy selectedTerminationPolicy;
     private long committedSequence, selectedSequence, firstCleanupSequence;
 
     private static long created, committed, selected, caught, released, pendingReleased, liveOwners;
@@ -152,6 +163,23 @@ public sealed unsafe class ManagedCppException : Exception
     }
 
     /// <summary>
+    /// First-pass selection of the admitted source noexcept boundary. This is
+    /// a termination destination, not a typed catch or payload-release action.
+    /// </summary>
+    public bool SelectNoexceptBoundary(object boundaryToken, ManagedCppTerminationPolicy policy)
+    {
+        RequireThread(); RequireState(EntryState.Committed);
+        RequireTerminationPolicy(policy);
+        if (boundaryToken is null || predecessor is not null || rethrowChild is not null || owner.References != 1)
+            Reject("The bounded noexcept destination requires one original committed throw and an exact boundary token.");
+        selectedNoexceptBoundary = boundaryToken;
+        selectedTerminationPolicy = policy;
+        selectedSequence = Interlocked.Increment(ref sequence);
+        state = EntryState.NoexceptSelected;
+        return true;
+    }
+
+    /// <summary>
     /// A function's false filter records the actual carrier without catching,
     /// selecting, cleaning or releasing it. Its finally executes after first-pass selection.
     /// </summary>
@@ -174,6 +202,43 @@ public sealed unsafe class ManagedCppException : Exception
             Reject("Exceptional cleanup preceded handler selection.");
         Interlocked.Increment(ref cleanupAssertions);
         Interlocked.Increment(ref selectionBeforeCleanupAssertions);
+    }
+
+    /// <summary>
+    /// Cleanup assertion for the explicitly admitted termination profile.
+    /// Existing typed-handler assertions keep their original behavior.
+    /// </summary>
+    public void RequireSelectedDestination()
+    {
+        if (state == EntryState.Selected)
+        {
+            RequireSelectedHandler();
+            return;
+        }
+        RequireThread(); RequireState(EntryState.NoexceptSelected);
+        RequireTerminationPolicy(selectedTerminationPolicy);
+        if (selectedNoexceptBoundary is null || selectedSequence <= committedSequence || selectedSequence == 0)
+            Reject("Exceptional cleanup requires a noexcept destination selected during the first pass.");
+        if (firstCleanupSequence == 0) firstCleanupSequence = Interlocked.Increment(ref sequence);
+        if (firstCleanupSequence <= selectedSequence)
+            Reject("Exceptional cleanup preceded noexcept destination selection.");
+        Interlocked.Increment(ref cleanupAssertions);
+        Interlocked.Increment(ref selectionBeforeCleanupAssertions);
+    }
+
+    /// <summary>
+    /// Performs the selected default-only host termination after encoded
+    /// unwind cleanup. The process still owns the committed integer payload.
+    /// </summary>
+    [DoesNotReturn]
+    public void TerminateNoexceptBoundary(object boundaryToken, ManagedCppTerminationPolicy policy)
+    {
+        RequireThread(); RequireState(EntryState.NoexceptSelected);
+        RequireTerminationPolicy(policy);
+        if (boundaryToken is null || !ReferenceEquals(selectedNoexceptBoundary, boundaryToken) ||
+            selectedTerminationPolicy != policy || firstCleanupSequence <= selectedSequence || firstCleanupSequence == 0)
+            Reject("Noexcept termination requires its exact selected boundary/policy after encoded cleanup.");
+        Environment.FailFast(DefaultNoexceptTerminationMarker);
     }
 
     /// <summary>Stable source of this handler's explicit retained parameter copy, before MarkCaught.</summary>
@@ -235,6 +300,12 @@ public sealed unsafe class ManagedCppException : Exception
     {
         Interlocked.Increment(ref protocolRejections);
         throw new InvalidOperationException(message);
+    }
+
+    private static void RequireTerminationPolicy(ManagedCppTerminationPolicy policy)
+    {
+        if (policy != ManagedCppTerminationPolicy.UnwindBeforeTerminateDefaultFailFastV1)
+            Reject("The generated noexcept termination policy is unsupported.");
     }
 
     private void RetireReference(bool handled)
