@@ -1,0 +1,656 @@
+{
+  "status": "passed-production-cli-bindings",
+  "scope": "production manifest/CLI binding integration, existing callback semantics",
+  "nativeApplicationFallback": false,
+  "implementation": {
+    "src/RoslynObj.CSharp/AbiCompatibility.cs": "b9f3a80ceb96125cb58c0c744b4786599f58b7b8fbb3f7792f999e3ea1a4eab2",
+    "src/RoslynObj.CSharp/Contracts.cs": "cdc3a0aded03d04ffd09837b70cfdebd2c3ee845740454a008ac8ebb319fbf96",
+    "src/RoslynObj.CSharp/Emission/CSharpEmission.Calls.cs": "b9b60fcb5b260fb821ad61e1b563e4936deb203d424b1c46daed4a39521c3dab",
+    "src/RoslynObj.CSharp/Emission/CSharpEmission.ExpressionPlans.cs": "e6546b91b022ded68b59ec0384977e9be4462e09d621521e9f51401a651b7d9d",
+    "src/RoslynObj.CSharp/Emission/CSharpEmission.Floating.cs": "890b3f5b3ec6362a4c32a824003a2cd968ea590c3e0343a442be8fc03454eead",
+    "src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs": "9ec651fc7f02ad6c487d8788ba52fecab4ba0cb7ce889fce2a6c3a44aa0493bd",
+    "src/RoslynObj.CSharp/Emission/CSharpEmission.cs": "0d7dd9471c5baa9e9b23dbf4f7534c690f98c6453bc879dd9cbb5b0fe66c60c4",
+    "src/RoslynObj.CSharp/Emission/ExpressionPlan.cs": "8d1ce054ec3045514f32f010b699a1073ed5b4a2e938f0b414cf8a20ba9edd79",
+    "src/RoslynObj.CSharp/Inventory.cs": "d6cd37026ac4013f1c95ffb620f6a0ab622fd3b10dd8037de574de37210314a4",
+    "src/RoslynObj.CSharp/ProgramAssembler.cs": "9ad0f09b4dbe1959dcab5f74835a2f340a9834fca2c134253002cfef3f604fa3",
+    "src/RoslynObj.CSharp/ProgramAssembly.cs": "1249c8690302b3ce9418adb229634bccf39a5aaced16e24f4d3a8ae2ebc824fd",
+    "src/RoslynObj.CSharp/ProgramManifest.cs": "01a6f48dddc4f68fe0270efc7f708a59163c77b4a70443096f9c94fdd4192568",
+    "src/RoslynObj.CSharp/RoslynObj.CSharp.csproj": "03e03192a4b03f0e5ab94844bf1f7fbfa0939da71052f9c7bd859e6f411bb514",
+    "src/RoslynObj.CSharp/Translation.cs": "f3e653fe151bf253dbb09904b2e3c4a867f8f5cc45254fb5868ed72bb8216c3a",
+    "src/RoslynObj.CSharp/Translator.cs": "394f2a62d927b8aa8e52400a4a26c060c6f96e6cc62a42dffb15a7393e572fc2",
+    "src/RoslynObj.CSharp.Cli/Program.cs": "d1aa89174ce10b1b06edc320d09d7dda540c8466cd2af433767e2465fc9be548",
+    "src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj": "37ba0980a83d81fc6b250c87ba8f1e84a48109d270d3e7bd8ed260e16de8239f",
+    "src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3",
+    "src/RoslynObj.CSharp.Runtime/SysVVariadic.cs": "ef28230b83037149f83d1c6014b313402f93de3e7408e10cd8376d2cc03f5b6f",
+    "src/RoslynObj.CSharp.Runtime/TargetArithmetic.Assignments.cs": "b8d5276f437769f7e1ce73e7e201d88e97ed4becdc98e503113dcf2d675d736e",
+    "src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs": "3ce3d29eaa1df00564ce104e2341664bb3515d9adf9189526cb661b97cbb6e2a",
+    "src/RoslynObj.CSharp.Runtime/TargetStorage.cs": "5cb2fe3ea3dd235812bc8b5a40becf9efc7f358db06df75c8514f29482dd01f8",
+    "src/RoslynObj.CSharp.Runtime.Host/HostProvider.cs": "76bff695e02196e234486456b35f039366180640a9594b1158e48520f016d73e",
+    "src/RoslynObj.CSharp.Runtime.Host/RoslynObj.CSharp.Runtime.Host.csproj": "dc4f060e407ffe0f101d831afa7cb3d22a87f62d1822253a4fd243c7135e9c2a",
+    "tests/Assembly/Assembly.csproj": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e",
+    "tests/Assembly/Program.cs": "c21d379abf5c8781696ac6eab346728f1fcf3b95aa4a38a048b0250364ad502f",
+    "tests/Callbacks/Callbacks.csproj": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3",
+    "tests/Callbacks/Program.cs": "1391444ac631e5b91b42121908a22db397b6ca78a809c9e62feb83f6dd339711",
+    "tests/Inventory/Inventory.csproj": "6d92bc9639f4d2a32c1040632677679a34f423489d599341f981bd86c77a51ab",
+    "tests/Inventory/Program.cs": "9a589ddd3cf5826d2be7d905eca29a86deeb596088b90eb6abd6277a9cb4bb58",
+    "tests/Projection/Program.cs": "8719d3a338b795050a61b47fa7b7cefd333b8e7d2dde4497bb6703263b125318",
+    "tests/Projection/Projection.csproj": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e",
+    "tests/Storage/Program.cs": "fb19e46a251a747681386a343f17aebfa92d88a95883e4ffe9007673beddf6f4",
+    "tests/Storage/Storage.csproj": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3",
+    "Directory.Build.props": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec",
+    "tests/run-manifest-bindings.py": "0ae6eeafb76fda811c0e72a212ecfb19121d725be0eaff624cd21a37ff782fbd",
+    "tools/run-measured.py": "b4c89236a1717c1eb11588595509d41ad2bfa47cb0bd773d99305d6a9d4a986a"
+  },
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 4.216837681015022,
+      "sampledPeakProcessTreeRssBytes": 200486912,
+      "waitedPeakProcessRssBytes": 195072000,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1141,
+          "sha256": "5381f3cc018d797b88613e11c27534fb4e37ad8daf6657237692c1739e4f2c43"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build-cli"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/export/callbacks.roslynobj",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/inspected.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 0.3013879850041121,
+      "sampledPeakProcessTreeRssBytes": 84422656,
+      "waitedPeakProcessRssBytes": 80740352,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "inspect"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-shared",
+        "-fPIC",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/tests/Fixtures/T2/function-addresses/native-adapters.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10080642509274185,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 20185088,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build-provider"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "inventory",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/request.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/inventory.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 0.5021578210871667,
+      "sampledPeakProcessTreeRssBytes": 89210880,
+      "waitedPeakProcessRssBytes": 91226112,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 92,
+          "sha256": "6bfdf3699636f839901446d1e7397e369462ca6f697d6e91a5337372838d331d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "inventory"
+    },
+    {
+      "status": "failed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/signature-mismatch.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/signature-mismatch-report.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 1,
+      "elapsedSeconds": 0.4017582089873031,
+      "sampledPeakProcessTreeRssBytes": 89268224,
+      "waitedPeakProcessRssBytes": 89915392,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 81,
+          "sha256": "69875ca89136af6f1aaa880e48ffa4a7be004fe0a3aa1fafc28c267df8cd8430"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 198,
+          "sha256": "3a3fcbba136311b6ad097050e52c9a657cd05a53b1a567b33bcbf499dcafad58"
+        }
+      ],
+      "phase": "signature-mismatch"
+    },
+    {
+      "status": "failed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/missing-ownership.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/missing-ownership-report.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 1,
+      "elapsedSeconds": 0.5021147970110178,
+      "sampledPeakProcessTreeRssBytes": 93544448,
+      "waitedPeakProcessRssBytes": 89915392,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 81,
+          "sha256": "69875ca89136af6f1aaa880e48ffa4a7be004fe0a3aa1fafc28c267df8cd8430"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 198,
+          "sha256": "3a3fcbba136311b6ad097050e52c9a657cd05a53b1a567b33bcbf499dcafad58"
+        }
+      ],
+      "phase": "missing-ownership"
+    },
+    {
+      "status": "failed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/provider-hash-mismatch.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/provider-hash-mismatch-report.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 1,
+      "elapsedSeconds": 0.4017580980435014,
+      "sampledPeakProcessTreeRssBytes": 89288704,
+      "waitedPeakProcessRssBytes": 91488256,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 81,
+          "sha256": "039787143d73b120045b5a0cbb2319b91bb2f904c02a3df83633ee56c900e0e5"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 110,
+          "sha256": "76906ffbaec0b9d0f455c495b69132888fc8e53780545239550432e1d3daee08"
+        }
+      ],
+      "phase": "provider-hash-mismatch"
+    },
+    {
+      "status": "failed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/missing-binding.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/missing-binding-report.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 1,
+      "elapsedSeconds": 0.40165209502447397,
+      "sampledPeakProcessTreeRssBytes": 89153536,
+      "waitedPeakProcessRssBytes": 88866816,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 81,
+          "sha256": "69875ca89136af6f1aaa880e48ffa4a7be004fe0a3aa1fafc28c267df8cd8430"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 205,
+          "sha256": "f843f3ef923b1704b3db7849c0203b87b0aefab817dc9c64732687c284eddd38"
+        }
+      ],
+      "phase": "missing-binding"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/request.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/program-report.json"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 0.5019312660442665,
+      "sampledPeakProcessTreeRssBytes": 93564928,
+      "waitedPeakProcessRssBytes": 92798976,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 94,
+          "sha256": "8c1492bed72734209d428fcdea2c6f4c12716042c06283a8f26d3ecb00ea22cb"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "translate"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/tests/Callbacks/Callbacks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/generated/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 2.408199507975951,
+      "sampledPeakProcessTreeRssBytes": 196116480,
+      "waitedPeakProcessRssBytes": 185597952,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 958,
+          "sha256": "306097262e6cb95857e013a911680d2d130a0c0a48fb2edde9451911c285c6b8"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-build"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/checker/Callbacks.dll"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10080245602875948,
+      "sampledPeakProcessTreeRssBytes": 299008,
+      "waitedPeakProcessRssBytes": 26476544,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 55,
+          "sha256": "ed56f9fdbe49103e4444d776ac759f1e53e17a1bc213654ca4a3cce423136a84"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-jit"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/tests/Callbacks/Callbacks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/generated/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/checker-nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 5.518466290086508,
+      "sampledPeakProcessTreeRssBytes": 217460736,
+      "waitedPeakProcessRssBytes": 208052224,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1164,
+          "sha256": "058c01fabcb8d4775f3712a5ecfcb02a38f255f1f4e4af6be786fbc19985aec6"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-publish"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/checker-nativeaot/Callbacks"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10072339395992458,
+      "sampledPeakProcessTreeRssBytes": 212992,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 55,
+          "sha256": "ed56f9fdbe49103e4444d776ac759f1e53e17a1bc213654ca4a3cce423136a84"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-aot"
+    }
+  ],
+  "jitOutput": "result=751\nevents=7\n0:21\n1:11\n2:21\n3:31\n4:21\n5:11\n6:41",
+  "nativeAotOutput": "result=751\nevents=7\n0:21\n1:11\n2:21\n3:31\n4:21\n5:11\n6:41",
+  "runtimeDependencies": [
+    "Generated/1.0.0",
+    "RoslynObj.CSharp.Runtime/1.0.0"
+  ],
+  "provider": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+    "sha256": "a81717fe5088b7868e3995cc25e16cb0193d6b99747200224c5c51cd94b54862",
+    "source": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/tests/Fixtures/T2/function-addresses/native-adapters.c",
+    "sourceSha256": "790df0f1552bb30e708c8a53fe994cb276438a8296c686c00b1b5efdaa668190"
+  },
+  "input": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t2/export/callbacks.roslynobj",
+    "sha256": "bc9f7c9848602ea9119da7d3a6c93666e006b95263a145643b8b1251eb38d70d"
+  },
+  "completion": {
+    "manifestVersion": 1,
+    "translatorVersion": "0.1.0",
+    "runtimeVersion": "0.1.0",
+    "complete": true,
+    "inputs": [
+      {
+        "ordinal": 1,
+        "sha256": "bc9f7c9848602ea9119da7d3a6c93666e006b95263a145643b8b1251eb38d70d",
+        "artifactIdentity": "6c40b8e2da123f67f2f9d5a13c585c24"
+      }
+    ],
+    "files": [
+      {
+        "relativePath": "Generated.cs",
+        "sha256": "44e2b5a85bce0fae0e31a0a7750bc2aa4ac744694f94e85ad363b2bcf5381287",
+        "sizeBytes": 7812
+      },
+      {
+        "relativePath": "Generated.csproj",
+        "sha256": "421b4790fc48e64931cd1308bbbb8109e180dcae71b96514f0b91ea096e3eef0",
+        "sizeBytes": 561
+      },
+      {
+        "relativePath": "Generated.NativeImports.json",
+        "sha256": "e0034340bee3a41bf098cf206acb300df66d11157ced8aa5be1c82d8090a26f2",
+        "sizeBytes": 2427
+      },
+      {
+        "relativePath": "program-report.json",
+        "sha256": "f79764fd8493af9324bcf077b77e2cb25300554c1541fd984670b0f7e7f542e7",
+        "sizeBytes": 112927
+      }
+    ]
+  },
+  "nativeImports": {
+    "providerContract": "explicit native ABI bindings; no native application bodies",
+    "imports": [
+      {
+        "linkageName": "native_mark_event",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_mark_event",
+        "callingConvention": "cdecl",
+        "returnType": "void",
+        "parameters": [
+          "int"
+        ]
+      },
+      {
+        "linkageName": "native_invoke_callback",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_invoke_callback",
+        "callingConvention": "cdecl",
+        "returnType": "int",
+        "parameters": [
+          "nint",
+          "int"
+        ]
+      },
+      {
+        "linkageName": "native_reset_events",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_reset_events",
+        "callingConvention": "cdecl",
+        "returnType": "void",
+        "parameters": []
+      },
+      {
+        "linkageName": "native_echo_callback",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_echo_callback",
+        "callingConvention": "cdecl",
+        "returnType": "nint",
+        "parameters": [
+          "nint"
+        ]
+      },
+      {
+        "linkageName": "native_callback_provider",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_callback_provider",
+        "callingConvention": "cdecl",
+        "returnType": "nint",
+        "parameters": []
+      },
+      {
+        "linkageName": "native_event_count",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_event_count",
+        "callingConvention": "cdecl",
+        "returnType": "int",
+        "parameters": []
+      },
+      {
+        "linkageName": "native_event_at",
+        "library": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/native/libcallbacks-adapter.so",
+        "entryPoint": "native_event_at",
+        "callingConvention": "cdecl",
+        "returnType": "int",
+        "parameters": [
+          "int"
+        ]
+      }
+    ]
+  },
+  "buildArtifacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/roslynobj-csharp.dll",
+      "sha256": "57c7d8e2531d617675f19ab8463413ee887b1157bffe31e055169733a1f4841e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/RoslynObj.CSharp.dll",
+      "sha256": "687b25bef5dcc3940c8f59c5968e45904ca2aab8dfa58c76a683b5a04b205116"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/verified-snapshot/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/bin/Release/net10.0/RoslynObj.dll",
+      "sha256": "552cd1d243f8b6261c973cfc436bb3f075cd6e84dfb38771a5439538db85c4e7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/manifest-bindings/final-reproduction/checker-nativeaot/Callbacks",
+      "sha256": "743a152ac043a35431f7f50a7a386a3f1454d9ea3a9b45d3bd1255e149cc291d"
+    }
+  ]
+}

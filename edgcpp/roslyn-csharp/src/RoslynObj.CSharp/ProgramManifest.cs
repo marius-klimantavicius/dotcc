@@ -28,7 +28,11 @@ public static class ProgramManifest
             Output = request.Output with { Directory = Resolve(request.Output.Directory) },
             Runtime = request.Runtime with
             {
-                RuntimeProjectPath = request.Runtime.RuntimeProjectPath is { } runtime ? Resolve(runtime) : null
+                RuntimeProjectPath = request.Runtime.RuntimeProjectPath is { } runtime ? Resolve(runtime) : null,
+                Bindings = request.Runtime.Bindings.Select(binding => binding with
+                {
+                    LibraryPath = binding.LibraryPath is { } library ? Resolve(library) : null
+                }).ToArray()
             }
         };
     }

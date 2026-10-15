@@ -112,3 +112,22 @@ aggregate-by-value ABI remain open before T2 closure. SQLite T3/T4 has not run.
 Genuine fixture objects/native oracles remain under `t2/export`, `t2/native` and
 `t2/assembly-export`. Do not rebuild/re-export unchanged inputs for documentation
 changes. No process is left running by the checkpoint. Preserve all artifacts.
+
+Production CLI native-function bindings now pass the same genuine callback input
+via manifest/translate in a sparse isolated snapshot (`t2/manifest-bindings/verified-snapshot`).
+The final receipt is `acceptance/manifest-bindings/report.json`: nine successful
+phases plus four expected fail-closed configuration rejections, JIT/AOT751 and
+exact seven events. Bindings carry explicit provider path/hash and complete
+captured-signature/convention/ownership/error/thread/callback contracts; required
+data/intrinsic providers remain unsupported. See [MANIFEST-BINDINGS.md](MANIFEST-BINDINGS.md).
+
+Current uncommitted T2 progress: direct primitive variadics JIT/AOT1870;
+interleaved/fixed-prefix exhaustion JIT/AOT314; canonical addressed variadic
+fixture JIT/AOT216. Strong physical cursor/native entry/unknown outbound checks
+and reproducible provider/compiler receipts remain pending. Worker1's NEW
+`Emission/CSharpEmission.Program.cs` is ready but unintegrated, reusing accepted
+ProgramAssembly identities; new two-TU C/C++ fixtures await exports/execution.
+The original aggregate sequencing candidate is preserved as a producer/native
+differential: retained explicit comma roots predict248 while GCC observes600;
+initial430 prediction was wrong. A separate explicit named-local snapshot input
+has native248 and public roots; neither has generated acceptance yet.

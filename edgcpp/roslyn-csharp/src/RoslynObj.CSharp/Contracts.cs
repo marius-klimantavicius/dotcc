@@ -41,6 +41,9 @@ public sealed record ExternalBinding
     public string Kind { get; init; } = "function";
     public string Provider { get; init; } = "";
     public string Symbol { get; init; } = "";
+    /// <summary>Exact native provider file; executable binding never uses ambient library lookup.</summary>
+    public string? LibraryPath { get; init; }
+    public string? LibrarySha256 { get; init; }
     public string Signature { get; init; } = "";
     public string CallingConvention { get; init; } = "";
     public string Ownership { get; init; } = "";

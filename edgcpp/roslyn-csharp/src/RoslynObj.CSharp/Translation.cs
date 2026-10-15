@@ -23,8 +23,18 @@ public sealed partial class Translator
             return Failure("ROC1203", "Multi-unit representation and binding are inventoried but have no accepted emission implementation.");
         if (request.Roots.Exports.Length != 0)
             return Failure("ROC1205", "Explicit native export wrappers require an accepted export ABI implementation.");
-        if (inventory.ProgramReport.Imports.Any(import => import.Required))
-            return Failure("ROC1301", "Required imports have no verified executable runtime-provider implementation; inspect the import report.");
+        var nativeBindings = new List<CSharpExternalFunctionBinding>();
+        foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required))
+        {
+            var binding = request.Runtime.Bindings.SingleOrDefault(binding =>
+                binding.Kind == import.Kind && binding.LinkageName == import.LinkageName);
+            if (import.Kind != "function" || inventory.ProgramReport.Functions.Any(function => function.Locator == import.Locator && function.Builtin is not null)
+                || binding is null || import.BindingStatus != "declared-unverified"
+                || string.IsNullOrWhiteSpace(binding.Symbol) || string.IsNullOrWhiteSpace(binding.LibraryPath)
+                || binding.LibrarySha256 is not { Length: 64 } || !binding.LibrarySha256.All(Uri.IsHexDigit))
+                return Failure("ROC1301", $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature native function binding and pinned provider file; variables and intrinsic providers are not implemented here.");
+            nativeBindings.Add(new(binding.LinkageName, binding.LibraryPath, binding.Symbol));
+        }
         if (inventory.ProgramReport.Families.Any(f => f.Family == "link-policy" && f.RequiredCount > 0))
             return Failure("ROC1204", "Required weak/common/alias/ifunc/alternate-entry selection has no accepted implementation.");
         if (string.IsNullOrWhiteSpace(request.Output.Directory) || System.IO.Directory.Exists(request.Output.Directory)
@@ -33,6 +43,13 @@ public sealed partial class Translator
         try
         {
             cancellationToken.ThrowIfCancellationRequested();
+            foreach (var binding in request.Runtime.Bindings.Where(binding => binding.Kind == "function" && nativeBindings.Any(native =>
+                native.LinkageName == binding.LinkageName)))
+            {
+                if (!Path.IsPathFullyQualified(binding.LibraryPath!) || !File.Exists(binding.LibraryPath)
+                    || !HashFile(binding.LibraryPath!, cancellationToken).Equals(binding.LibrarySha256, StringComparison.OrdinalIgnoreCase))
+                    return Failure("ROC1301", $"Native provider for '{binding.LinkageName}' differs from its pinned absolute file/hash contract.");
+            }
             var input = inventory.ProgramReport.Inputs[0];
             if (HashFile(input.Path, cancellationToken) != input.Sha256)
                 return Failure("ROC1002", "Input bytes changed after admission.");
@@ -45,7 +62,7 @@ public sealed partial class Translator
             {
                 NamespaceName = request.Output.NamespaceName, ClassName = request.Output.ClassName,
                 Executable = request.Roots.Mode == "executable", EntryPointName = request.Roots.EntryPoint,
-                RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? ""
+                RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings
             });
             diagnostics.AddRange(emission.Diagnostics);
             if (diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))

@@ -109,3 +109,10 @@ math and STAT4 observations. Two runs produce identical typed observations;
 [the native-only receipt](../acceptance/sqlite/native-sql-smoke.json) records
 all providers and leaves the broader T4 API/persistence/concurrency/failure rows
 open. This is future comparison evidence, not generated execution.
+
+[Production manifest bindings](MANIFEST-BINDINGS.md) are exercised through the
+public CLI with the same genuine callback fixture: nine successful phases,
+four expected configuration rejections, JIT/NativeAOT751 and exact seven events.
+Provider path/hash verification and complete declared contracts are distinct from
+this fixture's exercised native ABI. External data/intrinsic provider execution
+and the complete SQLite import audit remain open.
