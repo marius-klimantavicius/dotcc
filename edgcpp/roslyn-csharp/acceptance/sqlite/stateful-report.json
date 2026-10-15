@@ -1,0 +1,2046 @@
+{
+  "gate": "T4-bounded-stateful-persistence-and-interchange",
+  "status": "passed",
+  "t4Complete": false,
+  "sourceCheckpoint": "1c9a4a659",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/source-snapshot.json",
+    "sha256": "1832d471ac49f50e50133f6aa21f5b729f8dc9b4b450ef3c9269bd79b0baddbb",
+    "bytes": 771
+  },
+  "sourceFreezeVerified": true,
+  "workload": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+    "sha256": "8f9cdc8262ac0c8b29f73fd6a375fd693abf0311dfc4335493b8e5c02ef75a8a",
+    "bytes": 28777
+  },
+  "nativeOracleBuild": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json",
+    "sha256": "c5d7e700950971126a1f6aa735fc205850d9563bca482b815715ed1353feb435",
+    "bytes": 2906
+  },
+  "productionCompletion": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+    "sha256": "2380b6aeab39408c31a2a0e6a4975910e50076e4123e211724630a251c16d476",
+    "bytes": 1159
+  },
+  "productionApiReceipt": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+    "sha256": "150a45222a957c3f50ee23b13feadae374091b6e8caf1f67f57e1c3a1ce4b09a",
+    "bytes": 114581
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49",
+    "bytes": 5505
+  },
+  "phases": [
+    {
+      "name": "native-stateful-run-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-run-2/run.json",
+        "sha256": "30ea1a306f4574282a97b338bf72b335dfc3a58dacf620d3d35bc3199f63baab",
+        "bytes": 1016
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "stateful",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2"
+      ],
+      "elapsedSeconds": 0.20079412404447794,
+      "sampledPeakProcessTreeRssBytes": 21094400,
+      "waitedPeakProcessRssBytes": 20709376,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "native-append-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-run-1/run.json",
+        "sha256": "24d184639009fda9a63c70e7d4918d91a6880f77debfed7db6101448f03f3aaf",
+        "bytes": 1130
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "interchange-append",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1"
+      ],
+      "elapsedSeconds": 0.1006388389505446,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 20709376,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "native-verify-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-run-1/run.json",
+        "sha256": "eeeea0c019d3115d74898a814ee23e93b30947f396b95116c2d73a5891ba5ca0",
+        "bytes": 1129
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "interchange-verify",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful-report.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-1"
+      ],
+      "elapsedSeconds": 0.10061781900003552,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 20971520,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "stateful-build-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-build-1/run.json",
+        "sha256": "803534ffc2c1dd828375b5eeb16bb964435ccf8c4822e0bd5675ae271e3c0861",
+        "bytes": 1777
+      },
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/Generated.csproj",
+        "-p:CandidateReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+        "-p:SqliteApiAliases=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/CapturedAliases.cs",
+        "-p:SqliteApiReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+        "-p:SqliteSurfaceValidator=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/harness-source/edgcpp/roslyn-csharp/tests/SqliteGenerated/SurfaceValidator.py",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1"
+      ],
+      "elapsedSeconds": 25.86511403496843,
+      "sampledPeakProcessTreeRssBytes": 2737577984,
+      "waitedPeakProcessRssBytes": 2380468224,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "generated-jit-stateful-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-stateful-run-1/run.json",
+        "sha256": "819328070bbf5da069f9be779a0ffe7488ed3fc24500e7d48e4561c95bede2ed",
+        "bytes": 1236
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1/Checks.dll",
+        "--mode",
+        "stateful",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-stateful-1",
+        "--native-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json"
+      ],
+      "elapsedSeconds": 0.6030476529849693,
+      "sampledPeakProcessTreeRssBytes": 136278016,
+      "waitedPeakProcessRssBytes": 174678016,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "generated-jit-append-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-run-1/run.json",
+        "sha256": "0f310f7e8268181abc17cf7fe0be715a226e0f0810ee136ab0281272135fc92e",
+        "bytes": 1352
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1/Checks.dll",
+        "--mode",
+        "interchange-append",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-1",
+        "--native-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful-report.json",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json"
+      ],
+      "elapsedSeconds": 0.5022917529568076,
+      "sampledPeakProcessTreeRssBytes": 134127616,
+      "waitedPeakProcessRssBytes": 176467968,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "native-verify-jit-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-jit-run-1/run.json",
+        "sha256": "e30ab03af9a580243295ed8b36bed04094bc057a8d3f3634d6ae5b6a78d664a1",
+        "bytes": 1140
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "interchange-verify",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-1/stateful-report.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-jit-1"
+      ],
+      "elapsedSeconds": 0.10063626803457737,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 20971520,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "native-append-jit-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-run-1/run.json",
+        "sha256": "a2bfe89cea2cbe41efb9f486fd7dbe3fbae4ba026724f6c1720f24bb6a025150",
+        "bytes": 1142
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "interchange-append",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-stateful-1/stateful-report.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-1"
+      ],
+      "elapsedSeconds": 0.10068147501442581,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 20447232,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "generated-jit-verify-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-verify-run-1/run.json",
+        "sha256": "2f532885ca04fe0760456db5788ab4b07c557616d0423dc26bc4abd22efcff83",
+        "bytes": 1353
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1/Checks.dll",
+        "--mode",
+        "interchange-verify",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-verify-1",
+        "--native-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-1/stateful-report.json",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-1/stateful-report.json"
+      ],
+      "elapsedSeconds": 0.503044173005037,
+      "sampledPeakProcessTreeRssBytes": 157908992,
+      "waitedPeakProcessRssBytes": 175415296,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "stateful-publish-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-publish-1/run.json",
+        "sha256": "af9f8b6ee8e8f29e5fa287fdf67d27ccc354e7d6c0560720285a024a74222414",
+        "bytes": 1862
+      },
+      "command": [
+        "env",
+        "CC=clang-18",
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/Checks.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/Generated.csproj",
+        "-p:CandidateReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1/completion.json",
+        "-p:SqliteApiAliases=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/CapturedAliases.cs",
+        "-p:SqliteApiReceipt=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/api-surface.json",
+        "-p:SqliteSurfaceValidator=/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-generated-production-run-1/harness-source/edgcpp/roslyn-csharp/tests/SqliteGenerated/SurfaceValidator.py",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1"
+      ],
+      "elapsedSeconds": 71.21346145204734,
+      "sampledPeakProcessTreeRssBytes": 3304505344,
+      "waitedPeakProcessRssBytes": 2945540096,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 900.0,
+        "memoryBytes": 17179869184,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "generated-aot-stateful-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-stateful-run-1/run.json",
+        "sha256": "965d47217cfeef84efb7c20c9e3862396d80da5d35b733bae4cabf0416751919",
+        "bytes": 1216
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1/Checks",
+        "--mode",
+        "stateful",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-stateful-1",
+        "--native-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json"
+      ],
+      "elapsedSeconds": 0.2009638809831813,
+      "sampledPeakProcessTreeRssBytes": 19140608,
+      "waitedPeakProcessRssBytes": 19660800,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "generated-aot-append-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-run-1/run.json",
+        "sha256": "c4e1d2d9eaa6b6d446644dafbfdc44ba4e6d080f77d6db408d0472f5d386813b",
+        "bytes": 1330
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1/Checks",
+        "--mode",
+        "interchange-append",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-1",
+        "--native-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful-report.json",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json"
+      ],
+      "elapsedSeconds": 0.10056613106280565,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 19136512,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "native-verify-aot-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-aot-run-1/run.json",
+        "sha256": "cbbc08b6b27a3438ab33fb291d23bf688e2caeeb2cfa31850da65dabf0da18ca",
+        "bytes": 1140
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "interchange-verify",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-1/stateful-report.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-aot-1"
+      ],
+      "elapsedSeconds": 0.10065531102009118,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 20185088,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "native-append-aot-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-run-1/run.json",
+        "sha256": "e7830f543442400a058012c67b82ade2de37941f58f78138d7420b5dfcabe0c0",
+        "bytes": 1142
+      },
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteStateful/run-native-stateful.py",
+        "--mode",
+        "interchange-append",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-stateful-1/stateful-report.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-1"
+      ],
+      "elapsedSeconds": 0.10063564300071448,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 20709376,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    },
+    {
+      "name": "generated-aot-verify-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-verify-run-1/run.json",
+        "sha256": "aea9ae00a73ef695f8d4caba5533ccb3f4175d335e2fcc64e5057a645e3d9e7c",
+        "bytes": 1332
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1/Checks",
+        "--mode",
+        "interchange-verify",
+        "--workload",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-source-1/workload.json",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-verify-1",
+        "--native-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-1/stateful-report.json",
+        "--input-report",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-1/stateful-report.json"
+      ],
+      "elapsedSeconds": 0.10053745598997921,
+      "sampledPeakProcessTreeRssBytes": 81920,
+      "waitedPeakProcessRssBytes": 18874368,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null
+    }
+  ],
+  "reports": [
+    {
+      "name": "native-stateful-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json",
+        "sha256": "6de1a3e922e81a9a5681a18e44c5432c528444d36c99b95bb2bce723bad3cb59",
+        "bytes": 26848
+      },
+      "mode": "stateful",
+      "observations": 40,
+      "observationsSha256": "965eccc9e4bc3357083350683182754b1d215ebb55c5b8bac06df6874d0d5d6f",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ]
+    },
+    {
+      "name": "native-append-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful-report.json",
+        "sha256": "e1a36c3bd2a016eb57e1c6e2f0e66d98e48b73584c6f6dd4908bebb8b811794e",
+        "bytes": 16619
+      },
+      "mode": "interchange-append",
+      "observations": 13,
+      "observationsSha256": "6d793c6752242b97af551ecf7ece9a0861f32cfb03a0ff393d4d9f1016da4cf4",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json",
+          "sha256": "6de1a3e922e81a9a5681a18e44c5432c528444d36c99b95bb2bce723bad3cb59",
+          "bytes": 26848
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "native-verify-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-1/stateful-report.json",
+        "sha256": "b5919a283ae031c37e4c9d1dff9e2d968b5cb4d42499125dd4260754bdc4320d",
+        "bytes": 10793
+      },
+      "mode": "interchange-verify",
+      "observations": 5,
+      "observationsSha256": "e3fe154f932ac0fc02c319d0a41a22694e213630708b66b9dcd388309b861f2c",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful-report.json",
+          "sha256": "e1a36c3bd2a016eb57e1c6e2f0e66d98e48b73584c6f6dd4908bebb8b811794e",
+          "bytes": 16619
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "generated-jit-stateful-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-stateful-1/stateful-report.json",
+        "sha256": "f6670be6a05322fa6a2ccbac1bf06ab27bdc92d82bb711fd62c1072ab8173599",
+        "bytes": 28037
+      },
+      "mode": "stateful",
+      "observations": 40,
+      "observationsSha256": "965eccc9e4bc3357083350683182754b1d215ebb55c5b8bac06df6874d0d5d6f",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": "exact-typed-action-array-equal",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/dotnet/host/fxr/10.0.12/libhostfxr.so",
+          "sha256": "c8be9947baebf37e77ded4d82d069f403d362b9416a5e8502e9f66d948f5d52a",
+          "bytes": 324272
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Native.so",
+          "sha256": "def7465ab890653112d7d8bd48613f3bc33851d24b56b01c2ef2476ea3a3b3d4",
+          "bytes": 99072
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Security.Cryptography.Native.OpenSsl.so",
+          "sha256": "cc24903c414acdc9a6bb273c01a3c132ff3e95f211d09543836cd34329fd7896",
+          "bytes": 154632
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libclrjit.so",
+          "sha256": "2e1c701758638976d642351c50dbf26a88d7f18853848964824cbe3312a034a5",
+          "bytes": 3313648
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclr.so",
+          "sha256": "b5845ca190a41c502a96df196ea603b38d4893a022964fb55598ba6d07861f19",
+          "bytes": 7222960
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclrtraceptprovider.so",
+          "sha256": "738750a901bc137ac74f5277c402a13a9b3bf94e690de03706abcba025d83244",
+          "bytes": 634192
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libhostpolicy.so",
+          "sha256": "f59d12f0ae4fcb81be43fcf4470b0bc02f53b2f06767aa54d76e98303a0de6b1",
+          "bytes": 317504
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-common.so.1.0.0",
+          "sha256": "28c3025315634619a7d278fff9e5bfa85ef85a58db8a52ce3ecf0054093fe0be",
+          "bytes": 47800
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-tracepoint.so.1.0.0",
+          "sha256": "c5a75aea47fbfa1380e75fad869a00e225a947bbfa99edc6c62c2241959e1eb8",
+          "bytes": 51568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust.so.1.0.0",
+          "sha256": "3dda3aff8ce04c7a1d5f1c5f20bd725d63e686a2042ee4834d8c25cde288f27b",
+          "bytes": 500568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0",
+          "sha256": "02d7582c5d391e460e56aa67a414360e3183b968206645b9123f9dc7bff5d009",
+          "bytes": 52248
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8.0.1",
+          "sha256": "70a88c376a1aced719ca7bdcd5cdd6c5d3bdce44b99f5ab2037fdad096bbf03d",
+          "bytes": 67672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1",
+          "sha256": "28e77a498f2f17f8cb883c91303f9901343ea0d8e34959d138dd462fcc9b201f",
+          "bytes": 63776
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ]
+    },
+    {
+      "name": "generated-jit-append-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-1/stateful-report.json",
+        "sha256": "291598ccfffcc16bec637f6cfaf45b1ae91a739b83a6830f03ae4320daea5679",
+        "bytes": 17753
+      },
+      "mode": "interchange-append",
+      "observations": 13,
+      "observationsSha256": "6d793c6752242b97af551ecf7ece9a0861f32cfb03a0ff393d4d9f1016da4cf4",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": "exact-typed-action-array-equal",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/dotnet/host/fxr/10.0.12/libhostfxr.so",
+          "sha256": "c8be9947baebf37e77ded4d82d069f403d362b9416a5e8502e9f66d948f5d52a",
+          "bytes": 324272
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Native.so",
+          "sha256": "def7465ab890653112d7d8bd48613f3bc33851d24b56b01c2ef2476ea3a3b3d4",
+          "bytes": 99072
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Security.Cryptography.Native.OpenSsl.so",
+          "sha256": "cc24903c414acdc9a6bb273c01a3c132ff3e95f211d09543836cd34329fd7896",
+          "bytes": 154632
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libclrjit.so",
+          "sha256": "2e1c701758638976d642351c50dbf26a88d7f18853848964824cbe3312a034a5",
+          "bytes": 3313648
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclr.so",
+          "sha256": "b5845ca190a41c502a96df196ea603b38d4893a022964fb55598ba6d07861f19",
+          "bytes": 7222960
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclrtraceptprovider.so",
+          "sha256": "738750a901bc137ac74f5277c402a13a9b3bf94e690de03706abcba025d83244",
+          "bytes": 634192
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libhostpolicy.so",
+          "sha256": "f59d12f0ae4fcb81be43fcf4470b0bc02f53b2f06767aa54d76e98303a0de6b1",
+          "bytes": 317504
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-common.so.1.0.0",
+          "sha256": "28c3025315634619a7d278fff9e5bfa85ef85a58db8a52ce3ecf0054093fe0be",
+          "bytes": 47800
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-tracepoint.so.1.0.0",
+          "sha256": "c5a75aea47fbfa1380e75fad869a00e225a947bbfa99edc6c62c2241959e1eb8",
+          "bytes": 51568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust.so.1.0.0",
+          "sha256": "3dda3aff8ce04c7a1d5f1c5f20bd725d63e686a2042ee4834d8c25cde288f27b",
+          "bytes": 500568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0",
+          "sha256": "02d7582c5d391e460e56aa67a414360e3183b968206645b9123f9dc7bff5d009",
+          "bytes": 52248
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8.0.1",
+          "sha256": "70a88c376a1aced719ca7bdcd5cdd6c5d3bdce44b99f5ab2037fdad096bbf03d",
+          "bytes": 67672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1",
+          "sha256": "28e77a498f2f17f8cb883c91303f9901343ea0d8e34959d138dd462fcc9b201f",
+          "bytes": 63776
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json",
+          "sha256": "6de1a3e922e81a9a5681a18e44c5432c528444d36c99b95bb2bce723bad3cb59",
+          "bytes": 26848
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "native-verify-jit-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-jit-1/stateful-report.json",
+        "sha256": "f1e1ac4b4539a75b7a11e7afef9ccaf9e9c910c9319d620a388de57ab52f3587",
+        "bytes": 10815
+      },
+      "mode": "interchange-verify",
+      "observations": 5,
+      "observationsSha256": "e3fe154f932ac0fc02c319d0a41a22694e213630708b66b9dcd388309b861f2c",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-1/stateful-report.json",
+          "sha256": "291598ccfffcc16bec637f6cfaf45b1ae91a739b83a6830f03ae4320daea5679",
+          "bytes": 17753
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-append-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-jit-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "native-append-jit-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-1/stateful-report.json",
+        "sha256": "68f7ec0bbd9d3ef4d6c52a7706ebde4f772ec27282126e58c7f7cd9a39db41a2",
+        "bytes": 16641
+      },
+      "mode": "interchange-append",
+      "observations": 13,
+      "observationsSha256": "6d793c6752242b97af551ecf7ece9a0861f32cfb03a0ff393d4d9f1016da4cf4",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-stateful-1/stateful-report.json",
+          "sha256": "f6670be6a05322fa6a2ccbac1bf06ab27bdc92d82bb711fd62c1072ab8173599",
+          "bytes": 28037
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-stateful-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "generated-jit-verify-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-verify-1/stateful-report.json",
+        "sha256": "a469d26099752236664bbbe1ef49f9c136ae20e6955cb38c1008412916717619",
+        "bytes": 11915
+      },
+      "mode": "interchange-verify",
+      "observations": 5,
+      "observationsSha256": "e3fe154f932ac0fc02c319d0a41a22694e213630708b66b9dcd388309b861f2c",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": "exact-typed-action-array-equal",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-jit-1/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/dotnet/host/fxr/10.0.12/libhostfxr.so",
+          "sha256": "c8be9947baebf37e77ded4d82d069f403d362b9416a5e8502e9f66d948f5d52a",
+          "bytes": 324272
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Native.so",
+          "sha256": "def7465ab890653112d7d8bd48613f3bc33851d24b56b01c2ef2476ea3a3b3d4",
+          "bytes": 99072
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Security.Cryptography.Native.OpenSsl.so",
+          "sha256": "cc24903c414acdc9a6bb273c01a3c132ff3e95f211d09543836cd34329fd7896",
+          "bytes": 154632
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libclrjit.so",
+          "sha256": "2e1c701758638976d642351c50dbf26a88d7f18853848964824cbe3312a034a5",
+          "bytes": 3313648
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclr.so",
+          "sha256": "b5845ca190a41c502a96df196ea603b38d4893a022964fb55598ba6d07861f19",
+          "bytes": 7222960
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclrtraceptprovider.so",
+          "sha256": "738750a901bc137ac74f5277c402a13a9b3bf94e690de03706abcba025d83244",
+          "bytes": 634192
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libhostpolicy.so",
+          "sha256": "f59d12f0ae4fcb81be43fcf4470b0bc02f53b2f06767aa54d76e98303a0de6b1",
+          "bytes": 317504
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-common.so.1.0.0",
+          "sha256": "28c3025315634619a7d278fff9e5bfa85ef85a58db8a52ce3ecf0054093fe0be",
+          "bytes": 47800
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-tracepoint.so.1.0.0",
+          "sha256": "c5a75aea47fbfa1380e75fad869a00e225a947bbfa99edc6c62c2241959e1eb8",
+          "bytes": 51568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust.so.1.0.0",
+          "sha256": "3dda3aff8ce04c7a1d5f1c5f20bd725d63e686a2042ee4834d8c25cde288f27b",
+          "bytes": 500568
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0",
+          "sha256": "02d7582c5d391e460e56aa67a414360e3183b968206645b9123f9dc7bff5d009",
+          "bytes": 52248
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8.0.1",
+          "sha256": "70a88c376a1aced719ca7bdcd5cdd6c5d3bdce44b99f5ab2037fdad096bbf03d",
+          "bytes": 67672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1",
+          "sha256": "28e77a498f2f17f8cb883c91303f9901343ea0d8e34959d138dd462fcc9b201f",
+          "bytes": 63776
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-1/stateful-report.json",
+          "sha256": "68f7ec0bbd9d3ef4d6c52a7706ebde4f772ec27282126e58c7f7cd9a39db41a2",
+          "bytes": 16641
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-jit-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-jit-verify-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "generated-aot-stateful-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-stateful-1/stateful-report.json",
+        "sha256": "9bf11c4aea25d16afb34bac50114b90f1b22d0ddaec48c563c91f13734c0f63f",
+        "bytes": 25284
+      },
+      "mode": "stateful",
+      "observations": 40,
+      "observationsSha256": "965eccc9e4bc3357083350683182754b1d215ebb55c5b8bac06df6874d0d5d6f",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": "exact-typed-action-array-equal",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ]
+    },
+    {
+      "name": "generated-aot-append-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-1/stateful-report.json",
+        "sha256": "fe3732b127ab6a3b440e1a5acda69f984d7c21f1820ba5e5cfa924044b8ba87e",
+        "bytes": 15000
+      },
+      "mode": "interchange-append",
+      "observations": 13,
+      "observationsSha256": "6d793c6752242b97af551ecf7ece9a0861f32cfb03a0ff393d4d9f1016da4cf4",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": "exact-typed-action-array-equal",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful-report.json",
+          "sha256": "6de1a3e922e81a9a5681a18e44c5432c528444d36c99b95bb2bce723bad3cb59",
+          "bytes": 26848
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-2/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "native-verify-aot-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-aot-1/stateful-report.json",
+        "sha256": "b4bd44068e99390e8f7fd276b72663807042057b21af65e1087ee3c0f7107277",
+        "bytes": 10815
+      },
+      "mode": "interchange-verify",
+      "observations": 5,
+      "observationsSha256": "e3fe154f932ac0fc02c319d0a41a22694e213630708b66b9dcd388309b861f2c",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-1/stateful-report.json",
+          "sha256": "fe3732b127ab6a3b440e1a5acda69f984d7c21f1820ba5e5cfa924044b8ba87e",
+          "bytes": 15000
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-append-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-verify-aot-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "native-append-aot-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-1/stateful-report.json",
+        "sha256": "37c4346b8ad55f6b888bb273317b3d076d145e84def1eaf7617cf0f33417de32",
+        "bytes": 16641
+      },
+      "mode": "interchange-append",
+      "observations": 13,
+      "observationsSha256": "6d793c6752242b97af551ecf7ece9a0861f32cfb03a0ff393d4d9f1016da4cf4",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": null,
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/sqlite/native-oracle/libsqlite3-native-oracle.so",
+          "sha256": "39d00f19c6778ab90a51bdfdb8e6f13db6d733482112e8587c0e30eccb284c6a",
+          "bytes": 2163560
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_bz2.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "eff8df23cdc54d38ce9ca600d07c21ccfd7f22bd52a0720e599e6828d3e2eb76",
+          "bytes": 32112
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_ctypes.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "aad3e24f186e6c0a1c7efa8f16004f951f527db86f6451d30118657384a456c1",
+          "bytes": 137968
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_hashlib.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "8dc6cda6dd9495b95a2bfb5b26e8cf06b72f36dc0213d958b9277a958287f0fe",
+          "bytes": 64368
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "ca8e35c58f7bc8e27258c4af43651c941413bc6318903621253485b0395758a3",
+          "bytes": 48952
+        },
+        {
+          "path": "/usr/lib/python3.12/lib-dynload/_lzma.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "cb298120e40f064dc047e638d911f8b3b0abf625bf1d6bd07902b46efd820fd7",
+          "bytes": 49256
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4",
+          "sha256": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "bytes": 78944
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1",
+          "sha256": "286682ecbc5e59a638963b1a4e6351e65eb32fcf4bdcb9cb7569b6a61fe06a8d",
+          "bytes": 186624
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.4",
+          "sha256": "00f593fe192f2851b8ce23b25cec2488d769beb5a8f63e8c9e563071e1075153",
+          "bytes": 47672
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "bytes": 202904
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libz.so.1.3",
+          "sha256": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "bytes": 113000
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-stateful-1/stateful-report.json",
+          "sha256": "9bf11c4aea25d16afb34bac50114b90f1b22d0ddaec48c563c91f13734c0f63f",
+          "bytes": 25284
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-stateful-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-1/stateful.db",
+          "sha256": "9bdc1c7d6cbb7712b49c36fccf9321b680edd2bddd4e8d574a964a976827e1dc",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    },
+    {
+      "name": "generated-aot-verify-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-verify-1/stateful-report.json",
+        "sha256": "2ad0c2ec57731aa0f8c8415a1dbf4d568ce5df66ccc76f3ed7bbe2ba81519a2e",
+        "bytes": 9162
+      },
+      "mode": "interchange-verify",
+      "observations": 5,
+      "observationsSha256": "e3fe154f932ac0fc02c319d0a41a22694e213630708b66b9dcd388309b861f2c",
+      "connectionsClosed": true,
+      "pinnedFilesUnchanged": true,
+      "nativeComparison": "exact-typed-action-array-equal",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-aot-1/libRoslynObj.Generated.Abi.so",
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea",
+          "bytes": 726648
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+          "bytes": 236616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+          "bytes": 2129424
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a",
+          "bytes": 5309400
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+          "bytes": 183024
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e",
+          "bytes": 30795392
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b",
+          "bytes": 3455304
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901",
+          "bytes": 2140336
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0",
+          "bytes": 952616
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624",
+          "bytes": 696512
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+          "bytes": 2592224
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547",
+          "bytes": 129256
+        }
+      ],
+      "incomingTransfer": {
+        "report": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-1/stateful-report.json",
+          "sha256": "37c4346b8ad55f6b888bb273317b3d076d145e84def1eaf7617cf0f33417de32",
+          "bytes": 16641
+        },
+        "database": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-append-aot-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "copiedDatabase": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/generated-aot-verify-1/stateful.db",
+          "sha256": "f100fe3c212f105d7c07ba174f58f1f4b8e7416f07c7bfecd807bac12ec77dc1",
+          "bytes": 8192
+        },
+        "closedStateEvidence": "prior report and absent sidecars; producing process exit required externally"
+      }
+    }
+  ],
+  "interchangeProtocol": "Each producing measured process exited before its consumer started. Both closed-file transfer directions ran separately for JIT and NativeAOT. Exact incoming hashes and absent sidecars checked before fresh-directory copies. Acceptance compares typed SQL results, not database byte equality.",
+  "nativeAotToolchainAttribution": {
+    "sdk": "10.0.112",
+    "ilCompilerPackage": "10.0.12",
+    "ccEnvironment": "clang-18",
+    "explicitCppCompilerAndLinker": false,
+    "actualLinkCommandCaptured": false,
+    "limit": "CC alone does not select SDK linker. SDK defaults to clang then gcc fallback; unversioned clang absent, gcc 13 present. No pinned clang-18 link claim. Future necessary builds explicitly set CppCompilerAndLinker."
+  },
+  "preservedAttempts": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-1/stateful-report.json",
+        "sha256": "142b73627377401d5d263ac5dabd3db4e869d251b811155d39ad304c62e73ce2",
+        "bytes": 23555
+      },
+      "reason": "All 40 actions matched, but final read-only open left WAL/SHM and strict transfer guard failed. Final verification now readwrite without create, retaining normal SQLite cleanup and no manual deletion.",
+      "exactSource": "/mnt/storage/roslynobj-csharp-20261015/t4/native-stateful-1/exact-source"
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/stateful-linker-selection-1/run.json",
+        "sha256": "b84e8c64c32b1abe745197a37ed309a97743b5deeca61d505b354e0373df18ae",
+        "bytes": 1303
+      },
+      "reason": "Standalone SDK metadata probe lacked ResolvedILCompilerPack; not application execution."
+    }
+  ],
+  "remaining": [
+    "Simultaneous cross-process WAL contention, active-reader checkpoints and busy callbacks",
+    "Broader API ownership/extended errors, configured enabled-feature matrix, controlled failures and provider contracts",
+    "Readability and full-input repeat/cancellation/restart gate"
+  ]
+}

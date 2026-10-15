@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <InventoryReport Condition="'$(InventoryReport)' == ''">/mnt/storage/roslynobj-csharp-20261015/t0/sqlite-inventory-address-closure/program-report.json</InventoryReport>
+    <SqliteSurfaceValidator Condition="'$(SqliteSurfaceValidator)' == ''">$(MSBuildThisFileDirectory)../SqliteGenerated/SurfaceValidator.py</SqliteSurfaceValidator>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="$(SqliteApiAliases)" />
+    <ProjectReference Include="$(GeneratedProject)" />
+  </ItemGroup>
+  <Target Name="ValidateCapturedSqliteApi" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(GeneratedProject)') Or !Exists('$(CandidateReceipt)') Or !Exists('$(SqliteApiAliases)') Or !Exists('$(SqliteApiReceipt)') Or !Exists('$(SqliteSurfaceValidator)')" Text="Provide the actual CLI GeneratedProject/completion CandidateReceipt and the existing validated production aliases/API receipt." />
+    <Error Condition="$([System.IO.Path]::GetFileName('$(CandidateReceipt)')) != 'completion.json'" Text="CandidateReceipt must name the actual CLI completion.json for this production-only stateful harness." />
+    <Exec Command="python3 &quot;$(SqliteSurfaceValidator)&quot; --generated-project &quot;$(GeneratedProject)&quot; --candidate-receipt &quot;$(CandidateReceipt)&quot; --inventory &quot;$(InventoryReport)&quot; --aliases &quot;$(SqliteApiAliases)&quot; --report &quot;$(SqliteApiReceipt)&quot; --verify-only" />
+  </Target>
+</Project>

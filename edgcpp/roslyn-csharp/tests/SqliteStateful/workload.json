@@ -1,0 +1,1119 @@
+{
+  "workloadVersion": 1,
+  "name": "bounded-persistence-wal-locking-interchange",
+  "status": "prepared-not-executed",
+  "databaseFileName": "stateful.db",
+  "sourceObjectSha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+  "sqliteVersionNumber": 3054000,
+  "apiScope": "subset of the existing 23 scalar/pointer APIs; no callbacks or additional exports",
+  "limits": {
+    "maximumActionsPerMode": 64,
+    "maximumRowsPerStatement": 32,
+    "maximumColumns": 8,
+    "maximumColumnBytes": 1048576,
+    "busyTimeoutMilliseconds": 0
+  },
+  "rowSets": {
+    "seed": [
+      [
+        {
+          "type": "integer",
+          "decimal": "1"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 5,
+          "hex": "616c706861"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "3ff8000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 3,
+          "hex": "0001fe"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      [
+        {
+          "type": "integer",
+          "decimal": "2"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 4,
+          "hex": "62657461"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "c002000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 0,
+          "hex": ""
+        },
+        {
+          "type": "integer",
+          "decimal": "7"
+        }
+      ]
+    ],
+    "base": [
+      [
+        {
+          "type": "integer",
+          "decimal": "1"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 5,
+          "hex": "616c706861"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "3ff8000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 3,
+          "hex": "0001fe"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      [
+        {
+          "type": "integer",
+          "decimal": "2"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 4,
+          "hex": "62657461"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "c002000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 0,
+          "hex": ""
+        },
+        {
+          "type": "integer",
+          "decimal": "7"
+        }
+      ],
+      [
+        {
+          "type": "integer",
+          "decimal": "3"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 5,
+          "hex": "67616d6d61"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "4010000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 2,
+          "hex": "ff00"
+        },
+        {
+          "type": "integer",
+          "decimal": "-9"
+        }
+      ]
+    ],
+    "interchanged": [
+      [
+        {
+          "type": "integer",
+          "decimal": "1"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 5,
+          "hex": "616c706861"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "3ff8000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 3,
+          "hex": "0001fe"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      [
+        {
+          "type": "integer",
+          "decimal": "2"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 4,
+          "hex": "62657461"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "c002000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 0,
+          "hex": ""
+        },
+        {
+          "type": "integer",
+          "decimal": "7"
+        }
+      ],
+      [
+        {
+          "type": "integer",
+          "decimal": "3"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 5,
+          "hex": "67616d6d61"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "4010000000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 2,
+          "hex": "ff00"
+        },
+        {
+          "type": "integer",
+          "decimal": "-9"
+        }
+      ],
+      [
+        {
+          "type": "integer",
+          "decimal": "4"
+        },
+        {
+          "type": "text-utf8",
+          "bytes": 11,
+          "hex": "696e7465726368616e6765"
+        },
+        {
+          "type": "real",
+          "binary64Hex": "4030800000000000"
+        },
+        {
+          "type": "blob",
+          "bytes": 3,
+          "hex": "102030"
+        },
+        {
+          "type": "integer",
+          "decimal": "42"
+        }
+      ]
+    ]
+  },
+  "modes": {
+    "stateful": {
+      "inputState": null,
+      "outputState": "base",
+      "actions": [
+        {
+          "id": "open-new",
+          "action": "open",
+          "connection": "writer",
+          "flags": 6,
+          "expectedCode": 0
+        },
+        {
+          "id": "enable-wal",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA journal_mode=WAL",
+          "expected": {
+            "columns": [
+              "journal_mode"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "text-utf8",
+                  "bytes": 3,
+                  "hex": "77616c"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "writer-no-wait",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA busy_timeout=0",
+          "expected": {
+            "columns": [
+              "timeout"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "disable-auto-checkpoint",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA wal_autocheckpoint=0",
+          "expected": {
+            "columns": [
+              "wal_autocheckpoint"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "schema",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "CREATE TABLE entries(id INTEGER PRIMARY KEY,note TEXT NOT NULL,amount REAL NOT NULL,payload BLOB,nullable INTEGER)",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "seed-begin",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "BEGIN IMMEDIATE",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "seed-insert",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "INSERT INTO entries VALUES(1,'alpha',1.5,X'0001FE',NULL),(2,'beta',-2.25,X'',7)",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "seed-commit",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "COMMIT",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "close-seed",
+          "action": "close",
+          "connection": "writer",
+          "expectedCode": 0
+        },
+        {
+          "id": "reopen-writer",
+          "action": "open",
+          "connection": "writer",
+          "flags": 2,
+          "expectedCode": 0
+        },
+        {
+          "id": "reopened-seed",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "seed"
+          }
+        },
+        {
+          "id": "reopened-writer-no-wait",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA busy_timeout=0",
+          "expected": {
+            "columns": [
+              "timeout"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "reopened-disable-auto-checkpoint",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA wal_autocheckpoint=0",
+          "expected": {
+            "columns": [
+              "wal_autocheckpoint"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "open-reader",
+          "action": "open",
+          "connection": "reader",
+          "flags": 2,
+          "expectedCode": 0
+        },
+        {
+          "id": "reader-no-wait",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "PRAGMA busy_timeout=0",
+          "expected": {
+            "columns": [
+              "timeout"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "reader-begin",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "BEGIN",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-establish-snapshot",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "seed"
+          }
+        },
+        {
+          "id": "writer-new-begin",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "BEGIN IMMEDIATE",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "writer-new-insert",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "INSERT INTO entries VALUES(3,'gamma',4.0,X'FF00',-9)",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "writer-new-commit",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "COMMIT",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-keeps-snapshot",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "seed"
+          }
+        },
+        {
+          "id": "writer-sees-new-row",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "base"
+          }
+        },
+        {
+          "id": "reader-end-snapshot",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "ROLLBACK",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "writer-lock-begin",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "BEGIN IMMEDIATE",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "writer-tentative-update",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "UPDATE entries SET note='tentative',amount=99.0 WHERE id=2",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-lock-busy",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "BEGIN IMMEDIATE",
+          "expected": {
+            "columns": [],
+            "stepCode": 5,
+            "finalizeCode": 5,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-excludes-uncommitted",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "base"
+          }
+        },
+        {
+          "id": "writer-discard-update",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "ROLLBACK",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-lock-after-release",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "BEGIN IMMEDIATE",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-tentative-insert",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "INSERT INTO entries VALUES(4,'rolled-back',8.0,NULL,0)",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-discard-insert",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "ROLLBACK",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "reader-rollback-state",
+          "action": "sql",
+          "connection": "reader",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "base"
+          }
+        },
+        {
+          "id": "checkpoint-unlocked",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA wal_checkpoint(TRUNCATE)",
+          "expected": {
+            "columns": [
+              "busy",
+              "log",
+              "checkpointed"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                },
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                },
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "close-reader",
+          "action": "close",
+          "connection": "reader",
+          "expectedCode": 0
+        },
+        {
+          "id": "close-writer",
+          "action": "close",
+          "connection": "writer",
+          "expectedCode": 0
+        },
+        {
+          "id": "open-persisted",
+          "action": "open",
+          "connection": "verify",
+          "flags": 2,
+          "expectedCode": 0
+        },
+        {
+          "id": "persisted-wal",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "PRAGMA journal_mode",
+          "expected": {
+            "columns": [
+              "journal_mode"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "text-utf8",
+                  "bytes": 3,
+                  "hex": "77616c"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "persisted-rows",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "base"
+          }
+        },
+        {
+          "id": "persisted-integrity",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "PRAGMA integrity_check",
+          "expected": {
+            "columns": [
+              "integrity_check"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "text-utf8",
+                  "bytes": 2,
+                  "hex": "6f6b"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "close-persisted",
+          "action": "close",
+          "connection": "verify",
+          "expectedCode": 0
+        }
+      ]
+    },
+    "interchange-append": {
+      "inputState": "base",
+      "outputState": "interchanged",
+      "actions": [
+        {
+          "id": "open-transferred",
+          "action": "open",
+          "connection": "writer",
+          "flags": 2,
+          "expectedCode": 0
+        },
+        {
+          "id": "transfer-no-wait",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA busy_timeout=0",
+          "expected": {
+            "columns": [
+              "timeout"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "transfer-wal",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA journal_mode",
+          "expected": {
+            "columns": [
+              "journal_mode"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "text-utf8",
+                  "bytes": 3,
+                  "hex": "77616c"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "transfer-base-rows",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "base"
+          }
+        },
+        {
+          "id": "transfer-begin",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "BEGIN IMMEDIATE",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "transfer-append",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "INSERT INTO entries VALUES(4,'interchange',16.5,X'102030',42)",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "transfer-commit",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "COMMIT",
+          "expected": {
+            "columns": [],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": []
+          }
+        },
+        {
+          "id": "transfer-appended-rows",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "interchanged"
+          }
+        },
+        {
+          "id": "transfer-checkpoint",
+          "action": "sql",
+          "connection": "writer",
+          "sql": "PRAGMA wal_checkpoint(TRUNCATE)",
+          "expected": {
+            "columns": [
+              "busy",
+              "log",
+              "checkpointed"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                },
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                },
+                {
+                  "type": "integer",
+                  "decimal": "0"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "close-transfer-writer",
+          "action": "close",
+          "connection": "writer",
+          "expectedCode": 0
+        },
+        {
+          "id": "reopen-transferred",
+          "action": "open",
+          "connection": "verify",
+          "flags": 2,
+          "expectedCode": 0
+        },
+        {
+          "id": "transferred-persisted-rows",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "interchanged"
+          }
+        },
+        {
+          "id": "close-transferred-verifier",
+          "action": "close",
+          "connection": "verify",
+          "expectedCode": 0
+        }
+      ]
+    },
+    "interchange-verify": {
+      "inputState": "interchanged",
+      "outputState": "interchanged",
+      "actions": [
+        {
+          "id": "open-returned",
+          "action": "open",
+          "connection": "verify",
+          "flags": 2,
+          "expectedCode": 0
+        },
+        {
+          "id": "returned-wal",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "PRAGMA journal_mode",
+          "expected": {
+            "columns": [
+              "journal_mode"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "text-utf8",
+                  "bytes": 3,
+                  "hex": "77616c"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "returned-rows",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "SELECT id,note,amount,payload,nullable FROM entries ORDER BY id",
+          "expected": {
+            "columns": [
+              "id",
+              "note",
+              "amount",
+              "payload",
+              "nullable"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rowsRef": "interchanged"
+          }
+        },
+        {
+          "id": "returned-integrity",
+          "action": "sql",
+          "connection": "verify",
+          "sql": "PRAGMA integrity_check",
+          "expected": {
+            "columns": [
+              "integrity_check"
+            ],
+            "stepCode": 101,
+            "finalizeCode": 0,
+            "rows": [
+              [
+                {
+                  "type": "text-utf8",
+                  "bytes": 2,
+                  "hex": "6f6b"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "id": "close-returned",
+          "action": "close",
+          "connection": "verify",
+          "expectedCode": 0
+        }
+      ]
+    }
+  },
+  "invariants": [
+    "Each SQL action prepares exactly one statement, consumes it to the expected terminal step code, and finalizes it before the next action.",
+    "The BUSY action requires step=5 and finalize=5; no busy handler, sleeping, retries, or time-based assertion is used.",
+    "The reader transaction establishes its snapshot before the writer commits row3; visibility and write-lock ownership are checked with two live connections.",
+    "Successful TRUNCATE checkpoint expects busy/log/checkpointed=0/0/0 only after all selected transactions and statements have ended; record actual tuple before assertion.",
+    "Transfer a closed checkpointed database only after its producing process exits; copy its exact hashed file into a fresh receiving artifact directory.",
+    "Database file hashes identify transfer artifacts; acceptance compares typed SQL observations rather than arbitrary file-byte equality.",
+    "Final verification opens use readwrite without create and execute read-only SQL; SQLite performs its normal last-close WAL/shared-memory cleanup. The runner never deletes or ignores sidecars."
+  ],
+  "remainingT4Areas": [
+    "Separate-process simultaneous WAL contention, broader reader/writer schedules, busy callbacks and checkpoint-with-active-reader cases",
+    "Snapshot extension API lifecycle and configured shared-cache/unlock-notify/threading callback behavior",
+    "Core API destructor callbacks, broader ownership/lifetime and extended-error handling",
+    "Broader SQL constraints/savepoints/statement-reuse and transaction error recovery",
+    "JSON/JSONB full mutation, table-valued, invalid-input and round-trip matrix beyond initial smoke",
+    "FTS3/4/5 full tokenizer/ranking/highlight/callback matrix beyond initial smoke",
+    "RTree/Geopoly full update/spatial matrix beyond initial smoke",
+    "Preupdate/session/changeset/conflict/RBU/backup API interactions",
+    "dbstat/dbpage/stmt/bytecode inspection invariants beyond initial smoke",
+    "Math/column-metadata/STAT4 acceptance beyond initial smoke",
+    "carray binding/ownership and normalized-SQL API acceptance",
+    "Controlled allocation and I/O failures, ownership cleanup, rollback and recovery",
+    "Broader runtime provider/error/TLS/time/randomness callback contracts",
+    "Generated JIT/NativeAOT execution of this workload, both interchange directions, provider audit, readability/resource/restart evidence"
+  ]
+}

@@ -49,6 +49,11 @@ review, never as translator input or a way to replace untranslated bodies.
 Use separate processes/artifacts so native SQLite cannot service translated
 workloads accidentally. Record the exact providers loaded by the generated app.
 
+The initial T4 stateful slice passes JIT/NativeAOT two-connection snapshot, BUSY,
+rollback, checkpoint and close/reopen checks, plus both closed-file interchange
+directions. See [bounded evidence](../acceptance/sqlite/stateful-report.json).
+The broader matrix below remains required.
+
 ## Required runtime workloads
 
 | Area | Required observable behavior |

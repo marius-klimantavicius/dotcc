@@ -290,3 +290,19 @@ preserved; final verification uses readwrite open without create, no deletion.
 Emission worker production validator/driver is frozen pending checkpoint.
 Next: compile generated stateful counterpart against actual production output,
 run JIT/AOT snapshot/BUSY/persistence and both closed-file interchange directions.
+
+
+T4 stateful persistence slice now passes all 15 phases: JIT/NativeAOT each match
+40 native snapshot/BUSY/rollback/checkpoint actions, plus both closed-file
+interchange chains (13 append / 5 verify actions). Compact evidence is
+`acceptance/sqlite/stateful-report.json`; broader simultaneous cross-process
+locking, ownership/error/failure and enabled-feature rows remain open.
+Emission worker owns NEW SqliteApiCallbacks harness/validator; native oracle
+passes destructor/preupdate/session/conflict/backup observations. Coordinator
+is building its frozen counterpart against unchanged production output.
+Inventory worker owns NEW SqliteRestart harness/driver. Coordinator added the
+minimal synchronous TranslationPhase observer overload, preserved existing
+Translate overload, and built snapshot 12 successfully. Queue full-object
+BeforePublication cancellation then fresh-process restart from identical input
+and request, preserving incomplete staging and already-published production
+output. No partial-stage reuse is claimed. Runtime stays frozen snapshot 11.
