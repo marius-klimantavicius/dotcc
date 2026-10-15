@@ -5,6 +5,7 @@ namespace RoslynObj.CSharp;
 internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Function, string Contract)
 {
     internal const string Int32ExceptionOwnerContract = "managed-cpp-int32-exception-owner-v1";
+    internal const string Int32RethrowOwnerContract = "managed-cpp-int32-rethrow-owner-v1";
     internal const string GeneratedVectorConstructorContract = "generated-cpp-vector-constructor-v1";
     internal const string GeneratedVectorDestructorContract = "generated-cpp-vector-destructor-v1";
 
@@ -18,6 +19,10 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
         _ => null
     };
 
+    internal static bool IsAdmittedContract(string? linkageName, string contract) =>
+        CandidateContract(linkageName) == contract ||
+        linkageName == "__destroy_exception_object" && contract == Int32RethrowOwnerContract;
+
     internal ImportReport Describe(ImportReport import) => Contract switch
     {
         Int32ExceptionOwnerContract => import with
@@ -28,6 +33,15 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
             ErrorContract = "Only the admitted generated exception carrier participates; native C++ unwinding and CLR-error conversion are unsupported.",
             ThreadContract = "The payload belongs to its carrier and selected handler; no ambient thread-local exception pointer is substituted.",
             CallbackContract = "No native entry or callback is supplied for this generated cleanup action."
+        },
+        Int32RethrowOwnerContract => import with
+        {
+            Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",
+            BindingStatus = "generated-rethrow-owner-contract-selected",
+            Ownership = "The validated managed-cpp-int32-rethrow-owner-v1 contract retains one primary payload across two explicit propagation/handling entries. Each eligible handler entry releases once; only the final reference frees the original payload.",
+            ErrorContract = "Only the admitted generated integer throw/rethrow carriers participate. Outer handler selection precedes inner cleanup; new throws from handlers, termination, native C++ unwinding and CLR-error conversion are unsupported.",
+            ThreadContract = "The primary owner and propagation entries remain on their creating managed thread; no ambient current-handler registry or thread-local exception pointer is substituted.",
+            CallbackContract = "No native entry or callback is supplied; actual handler-context tokens select the retained handling entry."
         },
         GeneratedVectorConstructorContract or GeneratedVectorDestructorContract => import with
         {

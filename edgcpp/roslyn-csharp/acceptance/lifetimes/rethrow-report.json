@@ -1,0 +1,1858 @@
+{
+  "reportVersion": 1,
+  "milestone": "T5 bounded generated-only int rethrow",
+  "status": "passed-bounded-slice",
+  "broaderT5Complete": false,
+  "parentCheckpoint": "ddcba5ee4",
+  "artifactRoot": "/mnt/storage/roslynobj-csharp-20261015/t5",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-source-1/source-snapshot.json",
+    "bytes": 35536,
+    "sha256": "2098f46489677bd729d3af88f2f9fbc87bc0350aa577c1658c1ab74a96cd1bd2"
+  },
+  "sourceFileCount": 208,
+  "sourceFreezeVerified": true,
+  "inputsUnchanged": true,
+  "inputs": {
+    "integer-rethrow": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/integer-rethrow.roslynobj",
+      "bytes": 784384,
+      "sha256": "ec81c83cf8473f1d5d0930472144b2b49667de652a8e56446a203f70786e15f5",
+      "artifactIdentity": "d387338e93da0ff11d69456ccdb8439a",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/integer-rethrow-inspect.json",
+        "bytes": 21725,
+        "sha256": "2315f7e0de33401f2f4c9cabe087f2d3bc9ba2e204a1441d08779031557b1103"
+      }
+    },
+    "partial-array": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array.roslynobj",
+      "bytes": 808960,
+      "sha256": "96cac6df29a417cc4f9c853ae2ef877fc6c6af665ccacdded4cbd50677cb7b62",
+      "artifactIdentity": "27c6a1ba22805582da0b7674a5261e81",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array-inspect.json",
+        "bytes": 21721,
+        "sha256": "96a6d203ff83d5826bcc2e407cd731c872180a9815d04fd0c3d77922c50a4b52"
+      }
+    },
+    "partial-array-prefixes": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array-prefixes.roslynobj",
+      "bytes": 822272,
+      "sha256": "6a9ddfd3dab932b17d98f1d254c3def8b6081b67a3e8dc33988ff29a8ed360a5",
+      "artifactIdentity": "7fcb9fa025a5bd7bcd2dece2798c5c1e",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array-prefixes-inspect.json",
+        "bytes": 21739,
+        "sha256": "d352e9fcda8e5fe3527def39ab69f8f57da7b6d831e35885d155843bdb16b43f"
+      }
+    },
+    "constructor-failure": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/constructor-failure.roslynobj",
+      "bytes": 814080,
+      "sha256": "5c55f685b8f6650002d1c0e086eba814cfd0260998e7664692707c3dd633b428",
+      "artifactIdentity": "b4e822a94dab346596f2aa44191d81c9",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/constructor-failure-inspect.json",
+        "bytes": 21733,
+        "sha256": "184dfc25b289e5ca5f18b638caf9c28c5347a46ebf9668439c9a4a659672b496"
+      }
+    },
+    "exception-cleanup": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup.roslynobj",
+      "bytes": 791552,
+      "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5",
+      "artifactIdentity": "4a64e02f20ffe2715ecc5b7ad5e90d74",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup-inspect.json",
+        "bytes": 21729,
+        "sha256": "fb631ea5c49405c76f174ef4980f3165decab8f09e4edce513ad9a02155eba8b"
+      }
+    },
+    "normal-lifetime": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/normal-lifetime.roslynobj",
+      "bytes": 792576,
+      "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718",
+      "artifactIdentity": "ddf0d46f1dd43d55b64a93e2dbea9489",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/normal-lifetime-inspect.json",
+        "bytes": 21725,
+        "sha256": "250413fb35f180044b54882172c9866eef6f8031f34917c068cc0ef424b07f94"
+      }
+    },
+    "ordinary-runtime-name": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-runtime-name.roslynobj",
+      "bytes": 652288,
+      "sha256": "3e0c00a038086af7ed3e907d46d38e5fc8a198d5b2092acc84f509b8fab71aab",
+      "artifactIdentity": "b532f16476f6ee486e808fda8422dda2",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-runtime-name-inspect.json",
+        "bytes": 21595,
+        "sha256": "c69b2e8178770ce914b362ad76038959661ab8526ec74925ef0ae0f04db1bc42"
+      }
+    },
+    "ordinary-vector-names": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-vector-names.roslynobj",
+      "bytes": 659456,
+      "sha256": "c570ee248b3b7af59abd41597904ad95b55e710e59c63a6c62cfd59388f2c809",
+      "artifactIdentity": "22277a765be68465d19d199f42c2cc1f",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-vector-names-inspect.json",
+        "bytes": 21595,
+        "sha256": "32287da4c7da1193f2db46eaf7fa37a8a56a2f9b35989e3ea2761115f8838ce2"
+      }
+    },
+    "exception-handler-call": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-handler-call.roslynobj",
+      "bytes": 727040,
+      "sha256": "39fd34545d8b5c4e18fabac8aaf9b970718d63661053f337559117789aa1b6a4",
+      "artifactIdentity": "d177ce9b54ce803490944cb3083cdbfc",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/exception-handler-call-inspect.json",
+        "bytes": 21739,
+        "sha256": "81fc97215c868f43f754c91aa2d2797bc05dbad07dad11e02ca2c03e45cf42c9"
+      }
+    },
+    "exception-noexcept-call": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-noexcept-call.roslynobj",
+      "bytes": 732160,
+      "sha256": "e492a79982eca38cf276cc60ea0b1f22d81496f7e67382216fd0d795a6e5f9af",
+      "artifactIdentity": "18a6ca41a9d65020fc8fbe6e5ad17531",
+      "inspect": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/exception-noexcept-call-inspect.json",
+        "bytes": 21741,
+        "sha256": "652ee000f614ad9e2cf2b426816b01812318be80d8c20abcfe97ec00042fc359"
+      }
+    }
+  },
+  "captureProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-capture-provenance-1.json",
+    "bytes": 5724,
+    "sha256": "8e0d938504a9729f40f2530f2d60c9a9c3285b53fc017cb4996e4cd724864012"
+  },
+  "publicFacts": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/integer-rethrow-facts-6.json",
+    "bytes": 598970,
+    "sha256": "386bed0daf0a47dd79c178bc8d97826d4155224d86b88ddaafa2fbd08a211164"
+  },
+  "runtimeContractProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/runtime-contract-source-1/provenance.json",
+    "bytes": 2468,
+    "sha256": "ce89615062702b146cf235a6b9894d273e45d68d0dd7f519e3b783e58df8c480"
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "bytes": 5505,
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+  },
+  "driver": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-rethrow-final-1.py",
+    "bytes": 4856,
+    "sha256": "5c53e81850cd7a2d09510766d97662f6609babb3cf62facfa0a99395b2f199ad"
+  },
+  "phaseCount": 31,
+  "successfulPhaseCount": 27,
+  "expectedRejectionPhaseCount": 4,
+  "unexpectedOutcomes": 0,
+  "budgetViolations": 0,
+  "measurement": "Linux all-thread descendant RSS sampled every 100 ms; shared pages may be counted repeatedly and short peaks missed. Waited process RSS is separate. Tiny sampled runs do not establish startup peak.",
+  "phases": [
+    {
+      "name": "rethrow-cli-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-build-1/run.json",
+        "bytes": 1247,
+        "sha256": "b93bb61536f6b6fe4e7181f87697764ecf3d5ada4d8c33b7566d35b6785d4293"
+      },
+      "elapsedSeconds": 8.052717223996297,
+      "sampledPeakProcessTreeRssBytes": 606208000,
+      "waitedPeakProcessRssBytes": 258555904,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-cli-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-translate-1/run.json",
+        "bytes": 1167,
+        "sha256": "603d546edc971b531c0fc59084274f0349ba2bdf1e8b414c58260ae0a62bbb03"
+      },
+      "elapsedSeconds": 0.6031826710095629,
+      "sampledPeakProcessTreeRssBytes": 104587264,
+      "waitedPeakProcessRssBytes": 104857600,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-cli-repeat-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-repeat-1/run.json",
+        "bytes": 1161,
+        "sha256": "687e525114ad2d1b8adb22301b8b7fe33ca1de404249eea06e8768f09896bce6"
+      },
+      "elapsedSeconds": 0.6030135200126097,
+      "sampledPeakProcessTreeRssBytes": 106225664,
+      "waitedPeakProcessRssBytes": 105381888,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-jit-build-1/run.json",
+        "bytes": 1340,
+        "sha256": "4a8d0c51fb6b09849933b749736ed91000c082b62e3c216173f433e7068d366f"
+      },
+      "elapsedSeconds": 5.904219329007901,
+      "sampledPeakProcessTreeRssBytes": 514134016,
+      "waitedPeakProcessRssBytes": 212414464,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-jit-run-1/run.json",
+        "bytes": 992,
+        "sha256": "167455da8ba115be15c6c7954dbff857acf32978d5a5dbe3ae3cfc55beb55a23"
+      },
+      "elapsedSeconds": 0.10063456301577389,
+      "sampledPeakProcessTreeRssBytes": 77824,
+      "waitedPeakProcessRssBytes": 36438016,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-aot-publish-1/run.json",
+        "bytes": 1452,
+        "sha256": "a324496976c21738af09d98803f33d8f3376356c57ea775a46f404e392ebe93c"
+      },
+      "elapsedSeconds": 9.07031004410237,
+      "sampledPeakProcessTreeRssBytes": 697270272,
+      "waitedPeakProcessRssBytes": 267116544,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-aot-run-1/run.json",
+        "bytes": 974,
+        "sha256": "092b627ce17043764da30ca564fc657b0772e1fa24e2b5f5722678c7d98c9b0f"
+      },
+      "elapsedSeconds": 0.10049601888749748,
+      "sampledPeakProcessTreeRssBytes": 94208,
+      "waitedPeakProcessRssBytes": 17563648,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-array-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-translate-1/run.json",
+        "bytes": 1193,
+        "sha256": "0160bdad91f5aee3c6324c01292dcabda5a445c9caa175aa44b030f7ebff75d9"
+      },
+      "elapsedSeconds": 0.6020230029243976,
+      "sampledPeakProcessTreeRssBytes": 107560960,
+      "waitedPeakProcessRssBytes": 110624768,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-array-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-jit-build-1/run.json",
+        "bytes": 1389,
+        "sha256": "1fd889af68ad1097a36a613b4df9ff33b9f98136a6cd78d990ef240b19723a6c"
+      },
+      "elapsedSeconds": 5.895597871975042,
+      "sampledPeakProcessTreeRssBytes": 515321856,
+      "waitedPeakProcessRssBytes": 213475328,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-array-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-jit-run-1/run.json",
+        "bytes": 1035,
+        "sha256": "a63325c02d3a8c1e64344a272ceb051c912e48077916bb037e70af2e5ca4780d"
+      },
+      "elapsedSeconds": 0.10059262299910188,
+      "sampledPeakProcessTreeRssBytes": 212992,
+      "waitedPeakProcessRssBytes": 36700160,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-array-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-aot-publish-1/run.json",
+        "bytes": 1503,
+        "sha256": "b1d6cdea236d1a532b1978631371c1150fa80ae068810967a851b4d1d3b991c8"
+      },
+      "elapsedSeconds": 8.860257389955223,
+      "sampledPeakProcessTreeRssBytes": 667459584,
+      "waitedPeakProcessRssBytes": 239992832,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-array-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-aot-run-1/run.json",
+        "bytes": 1016,
+        "sha256": "260257f1a8959c4cf92fb4fecb5c021c62a2955e234e9ee7aae247b82611f88c"
+      },
+      "elapsedSeconds": 0.1004999759607017,
+      "sampledPeakProcessTreeRssBytes": 143360,
+      "waitedPeakProcessRssBytes": 18087936,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-constructor-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-translate-1/run.json",
+        "bytes": 1205,
+        "sha256": "9b26312f39cd35c8ce2801355dce63929e0b44091ad2e02d9416012b6e9d73df"
+      },
+      "elapsedSeconds": 0.6027795500122011,
+      "sampledPeakProcessTreeRssBytes": 108027904,
+      "waitedPeakProcessRssBytes": 111411200,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-constructor-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-jit-build-1/run.json",
+        "bytes": 1407,
+        "sha256": "8c7101f97b6f747dac75f868e92362695ec0814a4cf493f18d8669e4ecbf4e3e"
+      },
+      "elapsedSeconds": 5.694180599995889,
+      "sampledPeakProcessTreeRssBytes": 515248128,
+      "waitedPeakProcessRssBytes": 213725184,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-constructor-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-jit-run-1/run.json",
+        "bytes": 1019,
+        "sha256": "9048b9b93f49a6d24c0bb56286d6f4cee55cc712b278af59d827caf034dfa512"
+      },
+      "elapsedSeconds": 0.10071023495402187,
+      "sampledPeakProcessTreeRssBytes": 172032,
+      "waitedPeakProcessRssBytes": 36438016,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-constructor-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-aot-publish-1/run.json",
+        "bytes": 1521,
+        "sha256": "142774d83a7bc2d89fab9298249e77bbff9cccfee8efe02187b762994443fbc8"
+      },
+      "elapsedSeconds": 8.856835336075164,
+      "sampledPeakProcessTreeRssBytes": 693366784,
+      "waitedPeakProcessRssBytes": 263696384,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-constructor-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-aot-run-1/run.json",
+        "bytes": 1000,
+        "sha256": "cd968c621b2974836427b80cdcd680033f967f513674efafe2c00ce9efff8aad"
+      },
+      "elapsedSeconds": 0.10050232009962201,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-eh-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-translate-1/run.json",
+        "bytes": 1187,
+        "sha256": "8aa391e9de2d06946ca8370117124012d937e8aec8f8076b2caa90a2c197a6b7"
+      },
+      "elapsedSeconds": 0.6031009079888463,
+      "sampledPeakProcessTreeRssBytes": 105930752,
+      "waitedPeakProcessRssBytes": 104071168,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-eh-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-jit-build-1/run.json",
+        "bytes": 1380,
+        "sha256": "02a9cdf0ea9e1f2f04195a7205c8c2dccf31e6d5595817da5c18645e6d306869"
+      },
+      "elapsedSeconds": 5.701146197039634,
+      "sampledPeakProcessTreeRssBytes": 514719744,
+      "waitedPeakProcessRssBytes": 213606400,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-eh-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-jit-run-1/run.json",
+        "bytes": 1007,
+        "sha256": "07f903a663a22cbb876e55b519e596f8cae0b5747037cfa8e82b1498aa4d8da6"
+      },
+      "elapsedSeconds": 0.10058231197763234,
+      "sampledPeakProcessTreeRssBytes": 94208,
+      "waitedPeakProcessRssBytes": 35389440,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-eh-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-aot-publish-1/run.json",
+        "bytes": 1494,
+        "sha256": "30d9aa6dab18f75980aa9a930087367944051324158ca1fee276935d2b022bfc"
+      },
+      "elapsedSeconds": 8.860691529000178,
+      "sampledPeakProcessTreeRssBytes": 686845952,
+      "waitedPeakProcessRssBytes": 257630208,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-eh-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-aot-run-1/run.json",
+        "bytes": 988,
+        "sha256": "8b55ffe2e262003ba83ccf0829039d397c82d785b76a461714e3ae80ff798e21"
+      },
+      "elapsedSeconds": 0.1004913590149954,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 18612224,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-normal-regression-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-translate-1/run.json",
+        "bytes": 1195,
+        "sha256": "7f958e90815b7fd2678b966b98c457165fbcf856ce2b2db3119fdcdcf6d7bbe6"
+      },
+      "elapsedSeconds": 0.6033831919776276,
+      "sampledPeakProcessTreeRssBytes": 105848832,
+      "waitedPeakProcessRssBytes": 104857600,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-normal-regression-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-jit-build-1/run.json",
+        "bytes": 1389,
+        "sha256": "7bd154391eee6343e7c260687173b12eeb720787e5a0f0459369d1575634f2c8"
+      },
+      "elapsedSeconds": 5.697908118017949,
+      "sampledPeakProcessTreeRssBytes": 514797568,
+      "waitedPeakProcessRssBytes": 214409216,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-normal-regression-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-jit-run-1/run.json",
+        "bytes": 1009,
+        "sha256": "282f049b2ce829c1831057e883ef96b903259cac7818d5816f996f2a05853820"
+      },
+      "elapsedSeconds": 0.10054899903479964,
+      "sampledPeakProcessTreeRssBytes": 90112,
+      "waitedPeakProcessRssBytes": 35389440,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-normal-regression-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-aot-publish-1/run.json",
+        "bytes": 1503,
+        "sha256": "b5f351a2f2558338fb26155fea7c5f50da351162566add47a7b3bb9e174e6b8c"
+      },
+      "elapsedSeconds": 8.961498350952752,
+      "sampledPeakProcessTreeRssBytes": 681742336,
+      "waitedPeakProcessRssBytes": 254734336,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-normal-regression-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-aot-run-1/run.json",
+        "bytes": 992,
+        "sha256": "4281a069c67ff5b607f654c14ea5089d2f36e0e968506e8be28ef822389d0e7a"
+      },
+      "elapsedSeconds": 0.10047272394876927,
+      "sampledPeakProcessTreeRssBytes": 139264,
+      "waitedPeakProcessRssBytes": 18087936,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-reject-ordinary-runtime-name-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-reject-ordinary-runtime-name-1/run.json",
+        "bytes": 1198,
+        "sha256": "e9c4861df497150b67c92024913f95d940aaecedaa4ff77a65f39cfb903039a5"
+      },
+      "elapsedSeconds": 0.30154741602018476,
+      "sampledPeakProcessTreeRssBytes": 92966912,
+      "waitedPeakProcessRssBytes": 93847552,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-reject-ordinary-vector-names-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-reject-ordinary-vector-names-1/run.json",
+        "bytes": 1197,
+        "sha256": "b2d10221a9dc306371634e447cab353abf43abff57c90c76c65c4bc428aea318"
+      },
+      "elapsedSeconds": 0.3017445100704208,
+      "sampledPeakProcessTreeRssBytes": 93536256,
+      "waitedPeakProcessRssBytes": 94896128,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-reject-exception-handler-call-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-reject-exception-handler-call-1/run.json",
+        "bytes": 1199,
+        "sha256": "fb298ffed5df13c8c89b355c12d765f98ce8c99b1d25cc7da15759f1a463db8e"
+      },
+      "elapsedSeconds": 0.4018796409945935,
+      "sampledPeakProcessTreeRssBytes": 95760384,
+      "waitedPeakProcessRssBytes": 99614720,
+      "budgetViolation": null
+    },
+    {
+      "name": "rethrow-reject-exception-noexcept-call-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-reject-exception-noexcept-call-1/run.json",
+        "bytes": 1202,
+        "sha256": "ff110ab14aa4083f1ec738485a8e2ed44e32ca25e5c5bc3c6e5baff1390ea63b"
+      },
+      "elapsedSeconds": 0.40198531304486096,
+      "sampledPeakProcessTreeRssBytes": 95670272,
+      "waitedPeakProcessRssBytes": 99876864,
+      "budgetViolation": null
+    }
+  ],
+  "publications": {
+    "rethrow-cli-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "49668ccf3a62f2426c0485471c7e91b0fcd05ce1d5b656060c05b949d698d0b5"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "a2dc85a624ec728d23e836111485ec5e615a9ec0db73c7d18db4a410af4849e8",
+          "sizeBytes": 15785
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "a991b2c166b2da63f2e0e103f81290f7af399783eb2d4c683a489deeecff2100",
+          "sizeBytes": 542
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "ccf257ac98ef09fc7acd70df70f376242bf509bad04de5530d47c8a9ff01b38f",
+          "sizeBytes": 189352
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "ec81c83cf8473f1d5d0930472144b2b49667de652a8e56446a203f70786e15f5",
+          "artifactIdentity": "d387338e93da0ff11d69456ccdb8439a"
+        }
+      ]
+    },
+    "rethrow-cli-generated-repeat-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-generated-repeat-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-cli-generated-repeat-1/completion.json",
+        "bytes": 811,
+        "sha256": "a51b0ab99b5304a4dcfb16dcba7cd07153d15458a887c8675a584d50a3dcfe2e"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "a2dc85a624ec728d23e836111485ec5e615a9ec0db73c7d18db4a410af4849e8",
+          "sizeBytes": 15785
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "a991b2c166b2da63f2e0e103f81290f7af399783eb2d4c683a489deeecff2100",
+          "sizeBytes": 542
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "ae33cc6b6cd64577e56d551a71bfb1970fdd8988cc6635441e123d188103a6be",
+          "sizeBytes": 189359
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "ec81c83cf8473f1d5d0930472144b2b49667de652a8e56446a203f70786e15f5",
+          "artifactIdentity": "d387338e93da0ff11d69456ccdb8439a"
+        }
+      ]
+    },
+    "rethrow-array-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "c6e9f7c242a8a49f4c71fe12bb92d5af14e26d3829493974680621023f178e3c"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48",
+          "sizeBytes": 15996
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "a991b2c166b2da63f2e0e103f81290f7af399783eb2d4c683a489deeecff2100",
+          "sizeBytes": 542
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "6c8c2b7f414ad3826933a472eafd25322a7e7f2992b98c898e49046f83685eb8",
+          "sizeBytes": 196676
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "6a9ddfd3dab932b17d98f1d254c3def8b6081b67a3e8dc33988ff29a8ed360a5",
+          "artifactIdentity": "7fcb9fa025a5bd7bcd2dece2798c5c1e"
+        }
+      ]
+    },
+    "rethrow-constructor-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "d4ce704f718300f71ff7781f5a130f7e0a65674eaab2ba2532748c6c5126982b"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c",
+          "sizeBytes": 14327
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "a991b2c166b2da63f2e0e103f81290f7af399783eb2d4c683a489deeecff2100",
+          "sizeBytes": 542
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "06303c5c4b921cdf1a10a8bc1311ea1563c56c827a1f0323274985373c41559d",
+          "sizeBytes": 207133
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "5c55f685b8f6650002d1c0e086eba814cfd0260998e7664692707c3dd633b428",
+          "artifactIdentity": "b4e822a94dab346596f2aa44191d81c9"
+        }
+      ]
+    },
+    "rethrow-eh-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "4cf428cff1425b0236fe34e59d40eab4a2291d85b57fb7cdcf0394bbd48a45be"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce",
+          "sizeBytes": 13895
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "a991b2c166b2da63f2e0e103f81290f7af399783eb2d4c683a489deeecff2100",
+          "sizeBytes": 542
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "7ad7ee1f42fafce2ae2f1daa0eac6f3cbff70478098812d94b68e1f84fe5f948",
+          "sizeBytes": 187855
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5",
+          "artifactIdentity": "4a64e02f20ffe2715ecc5b7ad5e90d74"
+        }
+      ]
+    },
+    "rethrow-normal-regression-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-generated-1/completion.json",
+        "bytes": 810,
+        "sha256": "cdec582a298efb11566fb7c2cfba0d274c6c53199ba8b709e426501a88982bfe"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969",
+          "sizeBytes": 8880
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "a991b2c166b2da63f2e0e103f81290f7af399783eb2d4c683a489deeecff2100",
+          "sizeBytes": 542
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "4ba2dbad4fa9b8ac3967b1c7dbd2f5c9a616ef24f35639ac086cdaf6494ecec4",
+          "sizeBytes": 170041
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718",
+          "artifactIdentity": "ddf0d46f1dd43d55b64a93e2dbea9489"
+        }
+      ]
+    }
+  },
+  "repeat": {
+    "generatedSourceByteIdentical": true,
+    "projectByteIdentical": true,
+    "programReportEqualAfterOutputDirectoryNormalization": true
+  },
+  "requiredBodies": 13,
+  "semanticRuntimeSelections": [
+    {
+      "locator": "unit/0001/function/000017",
+      "kind": "function",
+      "name": "__destroy_exception_object",
+      "linkageName": "__destroy_exception_object",
+      "signature": "unit/0001/type/000029() cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+      "callingConvention": "cc_default",
+      "required": true,
+      "directCalls": 2,
+      "addressReferences": 0,
+      "addressExposed": true,
+      "provider": "RoslynObj.CSharp.Runtime.ManagedCppException",
+      "providerSymbol": null,
+      "bindingSignature": null,
+      "bindingCallingConvention": null,
+      "ownership": "The validated managed-cpp-int32-rethrow-owner-v1 contract retains one primary payload across two explicit propagation/handling entries. Each eligible handler entry releases once; only the final reference frees the original payload.",
+      "errorContract": "Only the admitted generated integer throw/rethrow carriers participate. Outer handler selection precedes inner cleanup; new throws from handlers, termination, native C++ unwinding and CLR-error conversion are unsupported.",
+      "threadContract": "The primary owner and propagation entries remain on their creating managed thread; no ambient current-handler registry or thread-local exception pointer is substituted.",
+      "callbackContract": "No native entry or callback is supplied; actual handler-context tokens select the retained handling entry.",
+      "bindingStatus": "generated-rethrow-owner-contract-selected"
+    }
+  ],
+  "nativeImports": [],
+  "runs": {
+    "rethrow": {
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-integer-rethrow-run-1/stdout.txt",
+        "bytes": 219,
+        "sha256": "99395ba23f2b41ab8fc880b8a151eecf0a67053b1b5cc4fd05f7361628282860"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 7,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              7,
+              99,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              507,
+              302,
+              699,
+              103,
+              303,
+              707,
+              301
+            ]
+          },
+          {
+            "result": 7,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              7,
+              99,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              507,
+              302,
+              699,
+              103,
+              303,
+              707,
+              301
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-jit-run-1/stdout.txt",
+            "bytes": 1045,
+            "sha256": "02e1025ecfae11f96524156b659cb3b23cd553543a52e922a9554109b61a2f47"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 1,
+                "rethrownPrimaryOwner": 1,
+                "releasedPrimaryOwner": 1,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 5,
+                "firstCleanupSequence": 6,
+                "releaseSequence": 7
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 2,
+                "rethrownPrimaryOwner": 2,
+                "releasedPrimaryOwner": 2,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 12,
+                "firstCleanupSequence": 13,
+                "releaseSequence": 14
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-jit-bin-1/Checks.dll",
+            "bytes": 9728,
+            "sha256": "c8b17a3ce19cd8e8b8601f712015c548d6ceb0b90db9defac7beaa7666f08ad5"
+          },
+          "dependencies": [
+            "Checks/1.0.0",
+            "Generated/1.0.0",
+            "RoslynObj.CSharp.Runtime/1.0.0"
+          ]
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-aot-run-1/stdout.txt",
+            "bytes": 1045,
+            "sha256": "02e1025ecfae11f96524156b659cb3b23cd553543a52e922a9554109b61a2f47"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 1,
+                "rethrownPrimaryOwner": 1,
+                "releasedPrimaryOwner": 1,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 5,
+                "firstCleanupSequence": 6,
+                "releaseSequence": 7
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 2,
+                "caught": 2,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "rethrown": 1,
+                "handlingEntriesReleased": 2,
+                "liveReferences": 0,
+                "primaryOwner": 2,
+                "rethrownPrimaryOwner": 2,
+                "releasedPrimaryOwner": 2,
+                "unwindObservations": 1,
+                "cleanupAssertions": 3,
+                "selectionBeforeCleanupAssertions": 3,
+                "protocolRejections": 0,
+                "selectionSequence": 12,
+                "firstCleanupSequence": 13,
+                "releaseSequence": 14
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-aot-bin-1/Checks",
+            "bytes": 2049472,
+            "sha256": "86a68199ba107c332a1cf14ee93706f5b83aef8f68095d17f4c12a1d877bf20d"
+          }
+        }
+      }
+    },
+    "rethrow-array-regression": {
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-partial-array-prefixes-run-1/stdout.txt",
+        "bytes": 433,
+        "sha256": "c9725e72040b0049b779ca21435aaa9e3a8ccd7a3a9ddcdf59c8ed9a1fe542e1"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 144,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              123,
+              0,
+              7,
+              0,
+              7,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              201,
+              102,
+              202,
+              103,
+              203,
+              601,
+              612,
+              623,
+              303,
+              302,
+              301,
+              900,
+              101,
+              501,
+              707,
+              901,
+              101,
+              201,
+              102,
+              502,
+              301,
+              707,
+              902,
+              101,
+              201,
+              102,
+              202,
+              103,
+              503,
+              302,
+              301,
+              707
+            ]
+          },
+          {
+            "result": 144,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              123,
+              0,
+              7,
+              0,
+              7,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              201,
+              102,
+              202,
+              103,
+              203,
+              601,
+              612,
+              623,
+              303,
+              302,
+              301,
+              900,
+              101,
+              501,
+              707,
+              901,
+              101,
+              201,
+              102,
+              502,
+              301,
+              707,
+              902,
+              101,
+              201,
+              102,
+              202,
+              103,
+              503,
+              302,
+              301,
+              707
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-jit-run-1/stdout.txt",
+            "bytes": 1008,
+            "sha256": "64b93a65595446a2d9c56c4eabccbec9a3f94cc2ab760053ef387ce73e7e55e2"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 10,
+                "firstCleanupSequence": 11,
+                "releaseSequence": 12
+              },
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 22,
+                "firstCleanupSequence": 23,
+                "releaseSequence": 24
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-jit-bin-1/Checks.dll",
+            "bytes": 9728,
+            "sha256": "b0567f38841a77d31abc7625201fdd7efff9838282a57095e66ba701a362a2f4"
+          },
+          "dependencies": [
+            "Checks/1.0.0",
+            "Generated/1.0.0",
+            "RoslynObj.CSharp.Runtime/1.0.0"
+          ]
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-aot-run-1/stdout.txt",
+            "bytes": 1008,
+            "sha256": "64b93a65595446a2d9c56c4eabccbec9a3f94cc2ab760053ef387ce73e7e55e2"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 10,
+                "firstCleanupSequence": 11,
+                "releaseSequence": 12
+              },
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 22,
+                "firstCleanupSequence": 23,
+                "releaseSequence": 24
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-aot-bin-1/Checks",
+            "bytes": 2049456,
+            "sha256": "b685697f55eb3d9e640328e557133217aaeefbf2dafdb622d23980a37c66ede8"
+          }
+        }
+      }
+    },
+    "rethrow-constructor-regression": {
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-constructor-failure-run-1/stdout.txt",
+        "bytes": 305,
+        "sha256": "0dd31221419e5b6b87e8a4416eb4bf153b287d0af8c39bb9a4dac6745f003833"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 79233,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              79226,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              200,
+              79225,
+              201,
+              500,
+              79227,
+              400,
+              79226,
+              301,
+              900,
+              101,
+              200,
+              79225,
+              507,
+              301,
+              707
+            ]
+          },
+          {
+            "result": 79233,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              79226,
+              0,
+              7,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              200,
+              79225,
+              201,
+              500,
+              79227,
+              400,
+              79226,
+              301,
+              900,
+              101,
+              200,
+              79225,
+              507,
+              301,
+              707
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-jit-run-1/stdout.txt",
+            "bytes": 874,
+            "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-jit-bin-1/Checks.dll",
+            "bytes": 9728,
+            "sha256": "4a641ef86d35156c840d1e2f0a7e1942cea62382e6286e09cc62937a6b7be1d7"
+          },
+          "dependencies": [
+            "Checks/1.0.0",
+            "Generated/1.0.0",
+            "RoslynObj.CSharp.Runtime/1.0.0"
+          ]
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-aot-run-1/stdout.txt",
+            "bytes": 874,
+            "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-aot-bin-1/Checks",
+            "bytes": 2049456,
+            "sha256": "cc160a7b7e441b8d6a8b6396306bdea7b95ecc718a1e89a53deb507ba1a3d5f2"
+          }
+        }
+      }
+    },
+    "rethrow-eh-regression": {
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt",
+        "bytes": 259,
+        "sha256": "89dd333a482f01178e0f0ff3e630b95ace30767d416c1e18cc902966533a6d5c"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 11,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              3,
+              0,
+              8,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              600,
+              302,
+              301,
+              900,
+              101,
+              102,
+              103,
+              507,
+              303,
+              302,
+              707,
+              301
+            ]
+          },
+          {
+            "result": 11,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              3,
+              0,
+              8,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              102,
+              600,
+              302,
+              301,
+              900,
+              101,
+              102,
+              103,
+              507,
+              303,
+              302,
+              707,
+              301
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-jit-run-1/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-jit-bin-1/Checks.dll",
+            "bytes": 9728,
+            "sha256": "303d3c9d64c92b7ad86e00af5deb6a3d1035ce1694f3089ce76283832f296b97"
+          },
+          "dependencies": [
+            "Checks/1.0.0",
+            "Generated/1.0.0",
+            "RoslynObj.CSharp.Runtime/1.0.0"
+          ]
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-aot-run-1/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          },
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-aot-bin-1/Checks",
+            "bytes": 2049456,
+            "sha256": "b2d3b62e4abd1a2d8f301c50ac543bc7ab73903b1299771fee135cfe00de0173"
+          }
+        }
+      }
+    },
+    "rethrow-normal-regression": {
+      "oracle": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt",
+        "bytes": 275,
+        "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+      },
+      "observations": {
+        "runs": [
+          {
+            "result": 26,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              11,
+              11,
+              2,
+              2,
+              14,
+              0,
+              12,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              211,
+              311,
+              211,
+              102,
+              302,
+              311,
+              301,
+              900,
+              101,
+              211,
+              311,
+              301
+            ]
+          },
+          {
+            "result": 26,
+            "overflow": 0,
+            "live": 0,
+            "values": [
+              11,
+              11,
+              2,
+              2,
+              14,
+              0,
+              12,
+              0,
+              0
+            ],
+            "events": [
+              101,
+              211,
+              311,
+              211,
+              102,
+              302,
+              311,
+              301,
+              900,
+              101,
+              211,
+              311,
+              301
+            ]
+          }
+        ]
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-jit-run-1/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "ownership": null,
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-jit-bin-1/Checks.dll",
+            "bytes": 6656,
+            "sha256": "26c5a4b5b537fcdacbda3c5e2d8655765b0a25bf64292fc9ad293990ac4678b6"
+          },
+          "dependencies": [
+            "Checks/1.0.0",
+            "Generated/1.0.0",
+            "RoslynObj.CSharp.Runtime/1.0.0"
+          ]
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-aot-run-1/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "ownership": null,
+          "binary": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-aot-bin-1/Checks",
+            "bytes": 2033024,
+            "sha256": "b904f7e84b50a88de894088f93646046c46fad3b8fc95b64e3f7b3dfcf478d28"
+          }
+        }
+      }
+    }
+  },
+  "priorApplicationSourceComparisons": {
+    "rethrow-array-regression": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-array-regression-generated-1/Generated.cs",
+        "bytes": 15996,
+        "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/Generated.cs",
+        "bytes": 15996,
+        "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48"
+      },
+      "byteIdentical": true
+    },
+    "rethrow-constructor-regression": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-constructor-regression-generated-1/Generated.cs",
+        "bytes": 14327,
+        "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constructor-cli-generated-1/Generated.cs",
+        "bytes": 14327,
+        "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+      },
+      "byteIdentical": true
+    },
+    "rethrow-eh-regression": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-eh-regression-generated-1/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "byteIdentical": true
+    },
+    "rethrow-normal-regression": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-normal-regression-generated-1/Generated.cs",
+        "bytes": 8880,
+        "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-cli-generated-3/Generated.cs",
+        "bytes": 8880,
+        "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+      },
+      "byteIdentical": true
+    }
+  },
+  "rejections": {
+    "ordinary-runtime-name": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-final-preparation-1/rethrow-reject-ordinary-runtime-name-1-report.json",
+        "bytes": 91275,
+        "sha256": "802161dfe6932db8a7958a3e935ff9490ebf96167284c4fd2a473c2ac1c95351"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__destroy_exception_object' requires one explicit binding for captured linkage '__destroy_exception_object'.",
+          "input": "b532f16476f6ee486e808fda8422dda2",
+          "locator": "function/1:fixture/operation/2",
+          "family": "external-function"
+        }
+      ],
+      "outputPublished": false
+    },
+    "ordinary-vector-names": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-final-preparation-1/rethrow-reject-ordinary-vector-names-1-report.json",
+        "bytes": 99856,
+        "sha256": "0fcafc18c15e61be31beafd032d5e64f7bb7ac7375ed5b947ac94310495d5198"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__cxa_vec_ctor' requires one explicit binding for captured linkage '__cxa_vec_ctor'.",
+          "input": "22277a765be68465d19d199f42c2cc1f",
+          "locator": "function/1:fixture/operation/7",
+          "family": "external-function"
+        }
+      ],
+      "outputPublished": false
+    },
+    "exception-handler-call": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-final-preparation-1/rethrow-reject-exception-handler-call-1-report.json",
+        "bytes": 161741,
+        "sha256": "0f99c9a97196b556a4a1abf4f42f44ac5805e0a0ff6e45ac7a3bebb82a9e1d77"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "d177ce9b54ce803490944cb3083cdbfc",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "outputPublished": false
+    },
+    "exception-noexcept-call": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-final-preparation-1/rethrow-reject-exception-noexcept-call-1-report.json",
+        "bytes": 167855,
+        "sha256": "0bccd5a13910c8649163d20778524089234129ee2783de89d9b4396af8c30aef"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "18a6ca41a9d65020fc8fbe6e5ad17531",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "outputPublished": false
+    }
+  },
+  "aotDynamicDependencies": [
+    "\tlinux-vdso.so.1 (0x00007ffce7369000)",
+    "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000076fdc58f9000)",
+    "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000076fdc5200000)",
+    "\t/lib64/ld-linux-x86-64.so.2 (0x000076fdc5a11000)"
+  ],
+  "preservedAttempts": [
+    {
+      "name": "rethrow-runtime-build-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-runtime-build-1/run.json",
+        "bytes": 1272,
+        "sha256": "7bd44dbb09680c8814761513b85254a514e3e96e9d64df120629ac5e8b781aeb"
+      },
+      "explanation": "Coordinator isolated snapshot omitted subtree Directory.Build.props; standalone runtime failed unsafe compilation. Product source unchanged."
+    },
+    {
+      "name": "rethrow-runtime-build-2",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-runtime-build-2/run.json",
+        "bytes": 1270,
+        "sha256": "d4a0c41beca2e4b114dcf0d46ae0c0d6177bfb4a03d72df21891c25df68a77f8"
+      },
+      "explanation": "Corrected complete configuration snapshot passed; not included in final 31-phase campaign."
+    },
+    {
+      "name": "rethrow-baseline-cli-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/rethrow-baseline-cli-1/run.json",
+        "bytes": 1134,
+        "sha256": "d0950dfef3a898dae09d231c0bf1641fd7ae5393d53c4c91fbbd022093ca8262"
+      },
+      "explanation": "Earlier accepted array CLI rejects new genuine input before implementation; retained baseline, not a final-product failure."
+    }
+  ],
+  "ownershipContract": {
+    "primaryAllocationCommitFree": [
+      1,
+      1,
+      1
+    ],
+    "selectedCaughtHandlingRetirements": [
+      2,
+      2,
+      2
+    ],
+    "rethrowPropagations": 1,
+    "finalReferences": 0,
+    "wrapperIdentity": "Distinct propagation wrapper sharing primary payload/type/thread; modified catch copy is never payload source.",
+    "selectionOrdering": "Outer filter selects child before inner finally destroys handler-local and retires original caught entry; child is caught only after predecessor retires.",
+    "diagnostics": "Released retains physical payload-free meaning. Shared IDs are observational only. Latest sequence fields describe final propagation, not both complete histories."
+  },
+  "limits": [
+    "One initial exact signed-int32 payload, one operandless rethrow from the original caught entry, two selected typed tries in separate functions and this captured cleanup profile.",
+    "No rethrow-of-rethrow, additional active eligibility stacks, new throw from handler, class/pointer payload, termination, native C++ unwinding or cross-thread transfer.",
+    "Existing normal, constructor and automatic-array slices remain separately bounded. Full-array exceptional action remains unactivated by its fixture.",
+    "Runtime uses explicit owner/context tokens; no ambient handler lookup, native C++ runtime or application fallback.",
+    "SQLite T0\u2013T4 remains tied to its immutable earlier publications/runtime; this isolated C++ extension does not relabel or regenerate that evidence."
+  ]
+}

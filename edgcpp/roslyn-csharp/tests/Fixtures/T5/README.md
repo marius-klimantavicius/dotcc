@@ -44,6 +44,17 @@ Actual capture/native comparison and generated JIT/NativeAOT now establish empty
 one-element and two-element completed prefixes with reverse partial cleanup. The shared
 exception checker takes explicit counts `9 3` for this variant.
 
+`integer-rethrow.cpp` exercises a separate bounded ownership activation. One
+initial integer throw reaches an inner typed handler; changing that handler's
+copied parameter to 99 precedes an operandless rethrow to an outer typed handler.
+Five values record the inner original, copied mutation, outer original, final
+live count and prior live count. Distinct tracked objects surround the first
+throw, inner handler and outer try. The source records application observations
+only; one primary payload, handling-entry ownership and final release require
+separate captured/runtime evidence. Capture, production CLI and native/JIT/NativeAOT
+execution now pass; see [the rethrow proof](../../../docs/T5-RETHROW.md). This does not activate a new exception thrown from a handler, class
+payloads or native unwinding.
+
 
 The prefix variant now passes production CLI and native/JIT/NativeAOT complete
 observations, including zero completed elements and reverse destruction of two

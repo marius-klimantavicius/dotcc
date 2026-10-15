@@ -29,120 +29,68 @@ one logical-errno substitution, not raw libc accessor invocation; 71 selections
 remain untraced. Finite clock/random-buffer/allocator contracts pass. No claim
 covers every provider variant, actual OS/device failure, upstream suite or all SQL.
 
-T5 remains open. Normal checkpoint `f5c0f255a` passes production CLI and complete
-native/JIT/AOT observations twice. Actual selected receiver/hidden-result/copy
-roles and explicit destruction are preserved; const-record references alone are
-admitted in this slice. C2/D2 bodies are separately emitted/compiled but not
-runtime-activated by its C1/D1 fixture. The normal receipt remains at
-`acceptance/lifetimes/normal-report.json`.
+T5 remains open. Verified bounded slices are:
 
-The approved bounded generated-only int EH implementation now passes from
-immutable `t5/eh-source-3` (200 files). Production output is
-`t5/eh-cli-generated-3`; [exception receipt](../acceptance/lifetimes/exception-report.json)
-SHA-256 `df4f593ffd5d9cdd7c4b19783f3b08a3f5df8b62239fb4516ebd6993b24e0960`
-records 17 expected phase outcomes: 14 successes and three expected rejections.
-Result 11, five scalar values and all 14 lifetime events match the native oracle
-twice in JIT and NativeAOT. Each invocation owns/releases one int payload, with
-handler selection before both cleanup assertions and zero live owners/protocol
-rejections. The runtime is reader-independent; typed throw operands run once,
-false filters observe escaping carriers, selecting filters choose the actual
-handler before finally cleanup, and cleanup follows captured stop-exclusive
-region links. No lexical cleanup reconstruction or native C++ runtime is used.
+- Normal lifetimes (`f5c0f255a`): exact hidden result/receiver/copy roles,
+  const-record references and explicit normal destruction. C2/D2 bodies emit
+  independently; that fixture activates complete C1/D1 entries.
+- Initial generated-only int EH (`0628a20d2`): typed filters select before
+  captured stop-exclusive cleanup, explicit caught copies and one owned payload.
+- Constructor-body failure (`0d650faba`): completed Member at receiver offset 4
+  is destroyed; containing Whole cleanup arms only after C1 returns.
+- Automatic partial arrays (`ddcba5ee4`): selected generated C1/D1 callbacks,
+  completed count after successful construction, reverse prefixes 0/1/2 and
+  normal full destruction. Full-array exceptional dispatch remains unactivated.
+- Integer rethrow (latest verified checkpoint): distinct propagation wrapper
+  shares the primary payload/type/thread while inner and outer handling entries
+  retire separately. Modified catch local 99 leaves primary value 7 unchanged.
 
-The actual helper identity must be selected by the emitter before CLI publication;
-ordinary same-spelled calls remain unsupported. Genuine handler-new-throw and
-noexcept-wrapper paths reject before publication. Normal CLI/JIT/AOT regression
-passes with byte-identical application source. EH repeat source/project bytes and
-all completion hashes/input/source freezes pass. One inspect-option typo is
-preserved separately and retried; it is excluded from accepted phase totals.
-Source snapshots 1/2, their direct/JIT evidence and the unused-local warning are
-retained. No builder or translation process remains active.
+The new [rethrow receipt](../acceptance/lifetimes/rethrow-report.json), SHA-256
+`f18edb73404faa0ff31e74c590bd5385d21f5ebd87b170cc485bb6d9c47b5296`, records
+31 expected outcomes: 27 successful phases and four intended unsupported-case
+rejections. No budget violation or unexpected outcome. Immutable source is
+`t5/rethrow-source-1` (208 files); production output is
+`t5/rethrow-cli-generated-1`. Native/JIT/NativeAOT each repeat result 7,
+values [7,99,7,0,0] and all nine lifetime events. Per invocation: one primary
+allocation/commit/free, two selected/caught entries and reference retirements,
+one rethrow, zero live references/owners and protocol rejections. Final-owner
+selection precedes cleanup/free; sequence fields do not represent every entry.
 
-Admission stays one exact int throw/type/handler, one try, two cleanup-bearing
-functions and the actual nonportable table-based Itanium profile. Catch normal
-release is exercised; exceptional no-object release and pending initialization
-failure are not. Native unwinding, new throw/rethrow from handler, termination,
-class payloads, constructor failure/arrays, inheritance/dispatch/RTTI/member
-pointers, local-static guards/TLS and broader ABI/scale remain open. See
-[T5 contract and proof](T5-EH-CONTRACT.md). EH checkpoint is `0628a20d2`. The next constructor-body failure slice now passes
-from immutable `t5/constructor-source-1` (201 files). Production output is
-`t5/constructor-cli-generated-1`; the [constructor receipt](../acceptance/lifetimes/constructor-report.json)
-SHA-256 `e720a0d6826db048f6645e999df287ae356e50b26a4e2d809fb225c4467d3ff7`
-records 20 expected outcomes (17 successful phases, three intended rejections),
-with no budget violations/retries. Whole size 8/alignment 4 has a scalar canary
-at 0 and Member at 4. Its throwing C1 and noexcept D1 retain member cleanup at
-receiver value + captured offset 4; IsIndirect=false and Variable/BaseEntity=null.
-The matched constructor-initialization metadata recipes never replay. Caller
-arms Whole cleanup only after C1 returns; the try saves null entry state 65535.
-One throw/one try/two throwing cleanup functions and actual C2 forwarding remain.
-All 16 bodies publish. Native/JIT/AOT repeat result 79233, five values and 16
-events with zero live/overflow; failure destroys only the completed member.
-Each fixture invocation balances one payload with selection before cleanup.
-Two cleanup assertions include an empty handler-boundary walk, not two destructor
-actions. Runtime/checker are unchanged. Prior normal and int-EH CLI/JIT/AOT pass
-with byte-identical application source; all three unsupported admission guards
-still reject before publication. Completion hashes, repeat bytes and six pinned
-inputs/source freeze pass. All builders are finished.
+All 13 required bodies publish, with one actual public-identity selection under
+`managed-cpp-int32-rethrow-owner-v1`. No native C++ runtime/import/helper executes.
+First-pass outer selection precedes inner finally, which destroys handler-local
+then releases the OLD inner carrier/token. Outer caught copy uses shared payload.
+There is no synthetic inner epilogue. No ambient handler lookup/TLS/GC cleanup.
+Runtime diagnostics preserve old Created/Committed/Released meanings and add a
+separate rethrow/reference snapshot; IDs are observational only.
 
-See [constructor facts and proof](T5-CONSTRUCTOR-FAILURE.md). Failed-member
-construction, multiple completed members, conditions/bases, partial arrays,
-vector helper/count contracts, native unwinding, rethrow/termination and broader
-T5/T6 remain open. Next approved slice is genuine automatic partial-array
-capture: three elements, success and failure on the second, per-element ids and
-prior-live detection. Keep one int payload/handler. Establish actual helper
-signatures, completion-count storage/state writes, captured stride/action/region
-contracts and normal cleanup through public facts and pristine runtime before
-implementation. No source-derived count or destructor-loop reconstruction.
-Constructor checkpoint is `0d650faba`. The automatic partial-array slice now
-passes from immutable `t5/array-source-3` (205 files). Production output is
-`t5/array-cli-generated-3`; [array receipt](../acceptance/lifetimes/array-report.json)
-SHA-256 `1967d9cce8818d122798dc2a630f4a110bfbeb79f0086a3d916f3c28d0687897`
-records 26 expected outcomes (22 successful phases, four intended rejections).
-All 12 bodies/three semantic requirements publish with completion/input/source
-freezes and deterministic source/project bytes. Stronger prefix fixture returns
-144 with nine values/all 33 events twice in JIT/NativeAOT; success and failures
-at elements 1/2/3 cover completed prefixes 0/1/2 and reverse destruction 2 then 1.
-Each fixture balances three payloads; all six cleanup assertions follow selection.
-Last sequence fields describe only the final owner, not all owners/destructors.
+All prior four lifetime CLI/JIT/AOT regressions pass with byte-identical
+application sources. Repeat source/project and normalized reports agree; all
+completion hashes, 10 retained objects and source freeze verify. Ordinary runtime
+and vector names, handler-new-throw and noexcept boundary candidates reject with
+no publication. Preliminary isolated runtime configuration omission and corrected
+retry, plus prior baseline rejection, remain outside final accepted phases.
+No builder or translator is active; frozen snapshots and incomplete attempts stay.
 
-Actual vector ABI arguments/signatures/roles/pure callback references, count 3,
-stride 4, direct items handle offset 0 and linked full/partial metadata recipes
-are jointly validated. Generated-only helpers call selected C1/D1 directly,
-advance completed only after constructor return, observe with false filters and
-reverse-clean the completed prefix after outer selection. No UCO/native callback,
-allocation/cookie/free or runtime API was added. C1 has no table/frame; numeric
-state writes with absent Region facets match actual decoded region ordinals.
-CLI reconciles actual helper identities with versioned Generated ctor/dtor
-contracts separately from Runtime's owner contract. Same-spelled ordinary vector
-calls remain unsupported. Runtime unchanged; checker accepts explicit9/3 while
-prior5/1 defaults still pass. Normal/int-EH/member-constructor CLI/JIT/AOT regressions
-pass with byte-identical application sources. All nine pinned objects are unchanged.
+Current scope remains exact signed-int32 and matched original/rethrow/array
+profiles with const references. Further rethrow chains, termination, failed member
+construction, full-array exceptional activation, heap/new[], class/pointer
+payloads, native unwinding, inheritance/dispatch/RTTI/member pointers, static guards/
+TLS and broader ABI/scale remain open. Read [rethrow proof](T5-RETHROW.md), the
+[coverage ledger](COVERAGE.md) and earlier slice receipts before changing guards.
 
-Preserve original failure-2 source/capture/native evidence. Initial nullable build,
-normal-dtor pointer-to-array admission failure and pre-snapshot coordinator path
-typo are retained outside final accepted phases. No builder/process remains active.
-Full-array exceptional dispatch is generated/reviewed but not activated; normal
-full destruction and helper partial cleanup are the executed paths. Heap/new[],
-nonconstant/multidimensional arrays, conditions/bases/throwing dtors, native unwind,
-class payloads and broader T5/T6 remain open. See [array proof](T5-PARTIAL-ARRAY.md).
-
-Next approved T5 slice is simple generated-only integer rethrow/ownership capture
-with pristine runtime contract first. Preserve identity/ownership from inner catch
-through rethrow to outer handler and release once; no native unwind/class payload.
-Inventory worker is preparing this proposal read-only until array checkpoint saves.
-Proceed genuine capture/public facts before implementation; no lexical cleanup or
-ambient-current-owner inference.
-
+Next approved T5 obligation is termination: READ-ONLY pristine-runtime contract
+and genuine uncaught-int and/or noexcept-boundary capture proposal first. Observe
+subprocess event prefix and determine termination versus unwinding from actual
+EDG facts/runtime, not GCC alone. Default/custom termination scope must be explicit;
+no native unwind or arbitrary callback expansion in the first slice.
 
 Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
-Root supervises read-only. Two gpt-6.1-sol xhigh workers remain assigned: inventory owns
-the reader-independent payload/carrier runtime, ExceptionLifetime checker and
-read-only rethrow preparation; emission owns typed throw/try/state/cleanup and
-generated-array projection and is held after final verified edits. The coordinator owns
-shared selection contracts, Translation.cs integration and serialized builds.
-No worker may modify EDG core, use
-raw model bypass, recover source semantics or consult dotobj campaigns. Leave all
-unrelated dirty user paths and excluded pause/restart files untouched.
+Root supervises read-only. Both gpt-6.1-sol xhigh workers have frozen their verified
+rethrow changes. Inventory now prepares read-only termination facts/proposal;
+emission remains held. No worker builds/exports or edits product during freeze.
+Never modify EDG core, use raw model bypass, recover source semantics or consult
+dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.
 
 ## Earlier checkpoint history
 

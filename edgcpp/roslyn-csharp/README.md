@@ -20,6 +20,8 @@ including handler selection before cleanup and balanced payload ownership.
 completed-member cleanup through its captured nonzero receiver offset.
 [Automatic partial arrays](docs/T5-PARTIAL-ARRAY.md) also pass with direct generated
 callback execution and completed-prefix cleanup.
+[Integer rethrow](docs/T5-RETHROW.md) now also preserves the original payload
+through two handler entries and frees it once.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

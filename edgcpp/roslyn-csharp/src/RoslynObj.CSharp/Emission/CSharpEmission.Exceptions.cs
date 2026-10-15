@@ -15,6 +15,8 @@ public sealed partial class CSharpEmitter
         private readonly Dictionary<FunctionSymbol, ExceptionFunction> exceptionFunctions = [];
         private readonly Dictionary<TryOperation, ExceptionTry> exceptionTries = [];
         private readonly Dictionary<LoweredEhOperation, FunctionSymbol> exceptionMarkers = [];
+        private readonly Dictionary<ThrowOperation, ExceptionTry> selectedRethrows = [];
+        private readonly Dictionary<CleanupAction, ExceptionTry> exceptionReleaseHandlers = [];
         private readonly List<SemanticRuntimeFunctionImplementation> semanticRuntimeFunctions = [];
         private readonly HashSet<FunctionSymbol> validatedNoThrowFunctions = [];
         private readonly HashSet<FunctionSymbol> exceptionParticipants = [];
@@ -25,6 +27,7 @@ public sealed partial class CSharpEmitter
         private string? exceptionTypeToken;
         private string? pendingThrowOwner;
         private ExceptionTry? emittingExceptionHandler;
+        private bool boundedRethrow;
 
         private string ExceptionLocal(string stem)
         {
@@ -47,6 +50,11 @@ public sealed partial class CSharpEmitter
             var graph = functions.ToDictionary(function => function, function => ExceptionExecutionNodes(function.Body!.Root).ToArray());
             var throws = graph.Values.SelectMany(nodes => nodes.OfType<ThrowOperation>()).ToArray();
             var tries = graph.Values.SelectMany(nodes => nodes.OfType<TryOperation>()).ToArray();
+            if (throws.Any(throwing => throwing.IsRethrow))
+            {
+                InitializeBoundedRethrow(graph, candidates, throws, tries);
+                return;
+            }
             if (throws.Length != 1 || tries.Length != 1 || candidates.Length is not (1 or 2))
                 throw Limit("The bounded generated exception slice requires one integer throw, one typed try and their retained cleanup functions.", "exception");
             var throwing = throws[0];
@@ -130,6 +138,130 @@ public sealed partial class CSharpEmitter
                 if (FunctionReachesException(function, graph, [])) exceptionParticipants.Add(function);
         }
 
+        private void InitializeBoundedRethrow(IReadOnlyDictionary<FunctionSymbol, SemanticNode[]> graph,
+            IReadOnlyList<FunctionSymbol> candidates, IReadOnlyList<ThrowOperation> throws, IReadOnlyList<TryOperation> tries)
+        {
+            if (throws.Count != 2 || throws.Count(throwing => throwing.IsRethrow) != 1 || tries.Count != 2 || candidates.Count != 2 ||
+                functions.Any(function => function.Body!.ExceptionHandling.Arrays.Count != 0 || function.Body!.ExceptionHandling.ArrayTable is not null))
+                throw Limit("The bounded rethrow requires one primary throw, one operandless restart and two separate typed handlers without arrays.", "exception-rethrow");
+            var throwing = throws.Single(throwing => !throwing.IsRethrow);
+            var rethrowing = throws.Single(throwing => throwing.IsRethrow);
+            if (throwing.ThrownType is not { } thrownType || throwing.Initialization is not null || throwing.Destructor is not null ||
+                throwing.AccessibleBases.Count != 0 || throwing.Operands.Count != 0 || throwing.Operand is null ||
+                throwing.ValueCategory.Name != "prvalue" || MemoryRepresentationType(throwing.Type).Kind.Name != "tk_void")
+                throw Limit("The primary rethrow owner requires its retained lowered integer initializer.", "exception-rethrow");
+            ValidateGeneratedInt32(thrownType);
+            if (throwing.Operand is not OperatorOperation { OperatorKind.Name: "eok_assign" } assignment || !assignment.Operator.EvalRightToLeft ||
+                assignment.Operands.Count != 2 || !assignment.Operands[1].Type.Equals(thrownType) ||
+                assignment.Operands[0] is not OperatorOperation { OperatorKind.Name: "eok_indirect" } destination || !destination.Type.Equals(thrownType) ||
+                destination.Operands.Count != 1 || destination.Operands[0] is not ConversionOperation { OperatorKind.Name: "eok_cast" } cast ||
+                MemoryRepresentationType(cast.Type) is not PointerType { IsReference: false } payloadPointer || !payloadPointer.PointeeType.Equals(thrownType) ||
+                cast.Operand is not LoweredEhOperation { ExceptionKind.Name: "leck_thrown_object_address" } ||
+                rethrowing.ThrownType is not null || rethrowing.Operand is not null || rethrowing.Initialization is not null || rethrowing.Destructor is not null ||
+                rethrowing.AccessibleBases.Count != 0 || rethrowing.Operands.Count != 0 || rethrowing.ValueCategory.Name != "prvalue" ||
+                MemoryRepresentationType(rethrowing.Type).Kind.Name != "tk_void")
+                throw Limit("The selected restart must remain operandless and typeless; it cannot initialize a second exception object.", "exception-rethrow");
+            var innerCandidates = tries.Where(selectedTry => ExceptionExecutionNodes(selectedTry.Body).Contains(throwing)).ToArray();
+            if (innerCandidates.Length != 1)
+                throw Limit("The primary throw must occur inside one actual selected inner try body.", "exception-rethrow");
+            var innerTry = innerCandidates[0];
+            var outerTry = tries.Single(selectedTry => !selectedTry.Equals(innerTry));
+            var innerFunction = graph.Single(pair => pair.Value.Contains(innerTry)).Key;
+            var outerFunction = graph.Single(pair => pair.Value.Contains(outerTry)).Key;
+            if (innerFunction.Equals(outerFunction) || !candidates.Contains(innerFunction) || !candidates.Contains(outerFunction) ||
+                !graph[innerFunction].Contains(throwing) || !graph[innerFunction].Contains(rethrowing) ||
+                !IsStandaloneThrow(innerFunction.Body!.Root, throwing) || !IsStandaloneThrow(innerFunction.Body!.Root, rethrowing))
+                throw Limit("The rethrow slice requires distinct selected inner and outer cleanup functions.", "exception-rethrow");
+            foreach (var selectedTry in new[] { innerTry, outerTry })
+            {
+                if (selectedTry.Definition.IsFunctionTry || selectedTry.Handlers.Count != 1 ||
+                    selectedTry.Handlers[0].CaughtType?.Equals(thrownType) != true ||
+                    selectedTry.Handlers[0].Parameter is not { } parameter || !parameter.Type.Equals(thrownType) ||
+                    selectedTry.Handlers[0].ParameterInitialization is not { } recipe || recipe.Target?.Equals(parameter) != true ||
+                    recipe.Destructor is not null || recipe.Lifetime is not null)
+                    throw Limit("Both rethrow handlers require their distinct retained parameters of the exact primary integer type.", "exception-rethrow");
+                ValidateExceptionMetadataRecipe(recipe, false);
+            }
+            var innerHandler = innerTry.Handlers[0];
+            var outerHandler = outerTry.Handlers[0];
+            var innerHandlerNodes = ExceptionExecutionNodes(innerHandler.Body).ToArray();
+            var outerHandlerNodes = ExceptionExecutionNodes(outerHandler.Body).ToArray();
+            if (!innerHandlerNodes.Contains(rethrowing) || innerHandlerNodes.OfType<ThrowOperation>().Any(throwing => !throwing.Equals(rethrowing)) ||
+                innerHandlerNodes.Any(node => node is TryOperation) ||
+                outerHandlerNodes.Any(node => node is ThrowOperation or TryOperation) ||
+                innerHandler.Parameter!.Equals(outerHandler.Parameter) ||
+                ExceptionExecutionNodes(innerHandler.Body).OfType<LoweredEhOperation>().Any(marker => marker.ExceptionKind.Name == "leck_catch_epilogue") ||
+                innerFunction.Body!.ExceptionHandling.Epilogues.Count != 0 ||
+                outerHandlerNodes.OfType<LoweredEhOperation>().Count(marker => marker.ExceptionKind.Name == "leck_catch_epilogue") != 1 ||
+                !IsTerminatingRethrowHandler(innerHandler.Body, rethrowing, innerFunction.Body!.ExceptionHandling.Details?.NullState))
+                throw Limit("Only the actual operandless inner-handler restart is admitted; no normal inner release or function epilogue is synthesized.", "exception-rethrow");
+            var outerCalls = ExceptionExecutionNodes(outerTry.Body).OfType<CallOperation>().Where(call =>
+                call.Callee is ReferenceOperation { Target: FunctionSymbol target } && target.Equals(innerFunction) && call.TargetMethod?.Equals(target) == true).ToArray();
+            if (outerCalls.Length != 1)
+                throw Limit("The outer try must contain the actual selected call into the inner rethrow function.", "exception-rethrow");
+            foreach (var nodes in graph.Values)
+                foreach (var call in nodes.OfType<CallOperation>())
+                    if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(target) ||
+                        call.TargetMethod?.Equals(target) != true || target.Signature.IsVariadic)
+                        throw Limit("The rethrow slice has only selected fixed direct managed calls; native unwinding is unsupported.", "exception-boundary");
+            foreach (var function in functions.Where(function => function.Signature.ExceptionSpecification?.NoexceptEffective == true))
+                EnsureGeneratedNoThrow(function);
+            foreach (var handler in new[] { innerHandler, outerHandler })
+                foreach (var call in ExceptionExecutionNodes(handler.Body).OfType<CallOperation>())
+                {
+                    if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target })
+                        throw Limit("A rethrow handler cannot invoke an indirect throwing helper.", "exception-handler");
+                    EnsureGeneratedNoThrow(target);
+                }
+
+            boundedRethrow = true;
+            exceptionIntType = thrownType;
+            selectedIntegerThrow = throwing;
+            selectedIntegerThrowFunction = innerFunction;
+            exceptionTypeToken = InternalName("__cpp_int32_type");
+            var inner = new ExceptionTry(innerFunction, innerTry, innerHandler, InternalName("__cpp_handler"), ExceptionLocal("__try_entry_state"), ExceptionLocal("__caught_cpp"));
+            var outer = new ExceptionTry(outerFunction, outerTry, outerHandler, InternalName("__cpp_handler"), ExceptionLocal("__try_entry_state"), ExceptionLocal("__caught_cpp"));
+            exceptionTries.Add(innerTry, inner);
+            exceptionTries.Add(outerTry, outer);
+            selectedRethrows.Add(rethrowing, inner);
+            foreach (var plan in new[] { inner, outer })
+            {
+                var function = plan.Function;
+                var nodes = graph[function];
+                ValidateExceptionFunction(function, nodes, plan);
+                var eh = function.Body!.ExceptionHandling;
+                exceptionFunctions.Add(function, new(function, eh.RegionTable!, eh.CleanupRegions,
+                    ExceptionLocal("__cleanup_state"), ExceptionLocal("__unwinding_cpp"), ExceptionLocal("__observed_cpp"), ExceptionLocal("__active_caught_cpp")));
+                foreach (var marker in nodes.OfType<LoweredEhOperation>()) exceptionMarkers.Add(marker, function);
+            }
+            if (exceptionReleaseHandlers.Count != 2 || exceptionReleaseHandlers.Values.Count(plan => plan.Equals(inner)) != 1 ||
+                exceptionReleaseHandlers.Values.Count(plan => plan.Equals(outer)) != 1 || semanticRuntimeFunctions.Count != 1 ||
+                semanticRuntimeFunctions[0].Contract != SemanticRuntimeFunctionImplementation.Int32RethrowOwnerContract)
+                throw Limit("Both retained handler contexts must select the same validated rethrow-owner helper identity once.", "exception-runtime");
+            var innerActions = innerFunction.Body!.ExceptionHandling.CleanupRegions.SelectMany(region => region.Actions).ToArray();
+            var innerRelease = exceptionReleaseHandlers.Single(pair => pair.Value.Equals(inner)).Key;
+            var innerRecipes = innerFunction.Body!.Lifetimes.SelectMany(lifetime => lifetime.Cleanups.Select(cleanup => cleanup.Initialization)).ToArray();
+            var links = innerRecipes.Where(recipe => recipe.NextInDestructionList is not null).ToArray();
+            if (innerActions.Length != 3 || outerFunction.Body!.ExceptionHandling.CleanupRegions.Count != 2 ||
+                innerRelease.Details.Region.NextRegion is not null || links.Length != 1 || !IsRethrowHandlerDestructionLink(links[0], inner, innerActions) ||
+                innerHandler.Body is not BlockOperation handlerBlock || handlerBlock.Statements.Count < 3 ||
+                handlerBlock.Statements[^3].Expression is not CleanupStateOperation { IsUnreachable: false } active ||
+                innerActions.Single(action => action.Storage?.Variable?.Equals(links[0].Target) == true).Details.Region is not { } activeRegion ||
+                active.StateNumber != activeRegion.Ordinal || active.Region is { } associated && !associated.Equals(activeRegion))
+                throw Limit("The restart must retain the exact handler-local to inner-owner cleanup chain and its active state before rethrow.", "exception-rethrow");
+            foreach (var function in functions)
+                if (FunctionReachesException(function, graph, [])) exceptionParticipants.Add(function);
+        }
+
+        private static bool IsTerminatingRethrowHandler(StatementOperation body, ThrowOperation rethrowing, System.Numerics.BigInteger? nullState)
+        {
+            if (body is not BlockOperation block || block.Statements.Count < 2 || block.Statements[^2].Expression?.Equals(rethrowing) != true ||
+                block.Statements[^1].Expression is not CleanupStateOperation { IsUnreachable: true } unreachable ||
+                unreachable.Region is not null || unreachable.StateNumber != nullState) return false;
+            return block.Statements.Take(block.Statements.Count - 2).All(statement => statement is DeclarationOperation ||
+                statement.Kind.Name == "stmk_expr" && statement.Expression is not null);
+        }
+
         private void ValidateExceptionFunction(FunctionSymbol function, IReadOnlyList<SemanticNode> nodes, ExceptionTry tryPlan)
         {
             var body = function.Body!;
@@ -199,6 +331,7 @@ public sealed partial class CSharpEmitter
                         tryPlan.Handler.Body is BlockOperation handlerBlock && handlerBlock.Scope?.Equals(recipe.Lifetime?.BoundEntity) == true);
                     ValidateExceptionMetadataRecipe(selectedRecipe, true);
                     if (!matchedRecipes.Add(selectedRecipe)) throw Limit("Two no-object actions unexpectedly share one release recipe.", "exception-cleanup");
+                    exceptionReleaseHandlers.Add(action, tryPlan);
                     ValidateExceptionReleaseRoutine(release);
                 }
                 else throw Limit("The integer EH adapter supports only validated direct-variable, receiver-relative member and no-object cleanup storage.", "exception-cleanup");
@@ -206,11 +339,24 @@ public sealed partial class CSharpEmitter
             }
             if (actions.Count + (automaticArray?.Function.Equals(function) == true ? 1 : 0) != recipes.Length || matchedRecipes.Count != recipes.Length ||
                 recipes.Any(recipe => recipe.NextInDestructionList is not null &&
-                    (automaticArray is null || !recipe.Equals(automaticArray.FullRecipe) || !recipe.NextInDestructionList.Equals(automaticArray.PartialRecipe))))
+                    (automaticArray is null || !recipe.Equals(automaticArray.FullRecipe) || !recipe.NextInDestructionList.Equals(automaticArray.PartialRecipe)) &&
+                    !IsRethrowHandlerDestructionLink(recipe, tryPlan, actions)))
                 throw Limit("The first integer EH slice requires one matching metadata recipe for each action, without a second destruction schedule.", "exception-cleanup");
             foreach (var marker in nodes.OfType<LoweredEhOperation>()) ValidateExceptionMarker(marker, function, tryPlan);
             if (eh.Epilogues.Any(epilogue => !nodes.Contains(epilogue)))
                 throw Limit("An actual EH epilogue is absent from the typed function body.", "exception");
+        }
+
+        private bool IsRethrowHandlerDestructionLink(Initialization recipe, ExceptionTry plan, IReadOnlyList<CleanupAction> actions)
+        {
+            if (!boundedRethrow || !selectedRethrows.Values.Contains(plan) || recipe.NextInDestructionList is not { } freeing ||
+                !freeing.IsFreeingOfExceptionObject || freeing.Target is not null || freeing.Details.Type is not null || freeing.Destructor is not null ||
+                freeing.NextInDestructionList is not null || recipe.Target is not { } variable || recipe.Destructor is not { } destructor ||
+                plan.Handler.Body is not BlockOperation handlerBlock || handlerBlock.Scope?.Equals(recipe.Lifetime?.BoundEntity) != true ||
+                !Equals(recipe.Lifetime, freeing.Lifetime)) return false;
+            var locals = actions.Where(action => action.Storage?.Variable?.Equals(variable) == true && action.TargetMethod?.Equals(destructor) == true).ToArray();
+            var releases = actions.Where(action => exceptionReleaseHandlers.TryGetValue(action, out var handler) && handler.Equals(plan)).ToArray();
+            return locals.Length == 1 && releases.Length == 1 && locals[0].Details.Region.NextRegion?.Equals(releases[0].Details.Region) == true;
         }
 
         private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing, bool constructorMember = false, bool arrayPartial = false)
@@ -240,8 +386,11 @@ public sealed partial class CSharpEmitter
                 signature.LanguageLinkage?.Name != "nlk_cplusplus_external" || options.ExternalFunctions.Any(binding => binding.LinkageName == release.CurrentName))
                 throw Limit("The selected no-object cleanup target does not match the bounded generated exception-owner runtime contract.", "exception-runtime");
             ValidateCallingConvention(signature);
+            var contract = boundedRethrow ? SemanticRuntimeFunctionImplementation.Int32RethrowOwnerContract : SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract;
             if (!semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release)))
-                semanticRuntimeFunctions.Add(new(release, SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract));
+                semanticRuntimeFunctions.Add(new(release, contract));
+            else if (semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release) && implementation.Contract != contract))
+                throw Limit("One exception cleanup identity cannot select conflicting generated ownership contracts.", "exception-runtime");
         }
 
         private void ValidateExceptionMarker(LoweredEhOperation marker, FunctionSymbol function, ExceptionTry plan)
@@ -385,7 +534,8 @@ public sealed partial class CSharpEmitter
                     writer.Line($"    {OwnedName(action.TargetMethod!)}(({TypeName(member.MemberType)}*)((byte*){names[member.Receiver]} + {action.Storage.Offset.ToString(CultureInfo.InvariantCulture)}));");
                 else
                 {
-                    var handler = exceptionTries.Values.Single();
+                    if (!exceptionReleaseHandlers.TryGetValue(action, out var handler) || !handler.Function.Equals(plan.Function))
+                        throw Limit("The no-object cleanup lost its exact handler-scope ownership association.", "exception-runtime");
                     writer.Line($"    if ({plan.Caught} is null) throw new InvalidOperationException(\"No eligible caught exception owner for the retained cleanup action.\");");
                     writer.Line($"    {plan.Caught}.ReleaseCaught({Owner}.{handler.Token});");
                     writer.Line($"    {plan.Caught} = null;");
@@ -420,6 +570,14 @@ public sealed partial class CSharpEmitter
         private bool TryEmitExceptionExpressionStatement(ExpressionOperation expression, CodeWriter writer)
         {
             if (expression is not ThrowOperation throwing) return false;
+            if (throwing.IsRethrow)
+            {
+                if (!selectedRethrows.TryGetValue(throwing, out var handler) || !handler.Equals(emittingExceptionHandler) ||
+                    currentFunction is null || !handler.Function.Equals(currentFunction))
+                    throw Limit("An operandless rethrow must occur in its exact selected active handler context.", "exception-rethrow");
+                writer.Line($"throw {handler.Carrier}.CreateRethrow({Owner}.{handler.Token});");
+                return true;
+            }
             if (!throwing.Equals(selectedIntegerThrow) || throwing.ThrownType?.Equals(exceptionIntType) != true || currentFunction is null || !currentFunction.Equals(selectedIntegerThrowFunction))
                 throw Limit("This throw has no selected bounded integer transfer adapter.", "exception");
             var owner = ExceptionLocal("__throw_owner");

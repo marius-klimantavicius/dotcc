@@ -121,7 +121,7 @@ public sealed partial class Translator
                 {
                     if (!publicFunctions.TryGetValue(implementation.Function, out var locator)
                         || !semanticRuntimeCandidates.Any(candidate => candidate.Locator == locator
-                            && SemanticRuntimeFunctionImplementation.CandidateContract(candidate.LinkageName) == implementation.Contract)
+                            && SemanticRuntimeFunctionImplementation.IsAdmittedContract(candidate.LinkageName, implementation.Contract))
                         || !semanticRuntimeImplementations.TryAdd(locator, implementation))
                         return Failure("ROC1301", "A semantic runtime selection does not match one required public input function and its admitted contract.");
                 }
