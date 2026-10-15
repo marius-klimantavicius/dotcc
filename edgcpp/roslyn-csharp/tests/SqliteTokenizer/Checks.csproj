@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup><Compile Include="Program.cs" /><Compile Include="$(ApiAliases)" /><ProjectReference Include="$(GeneratedProject)" /></ItemGroup>
+  <Target Name="ValidateTokenizerSurface" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(BaseApiReport)') Or !Exists('$(ApiAliases)') Or !Exists('$(ApiReport)')" Text="Validate this genuine CLI API surface before building." />
+    <Exec Command="python3 &quot;$(MSBuildThisFileDirectory)ValidateApi.py&quot; --generated-project &quot;$(GeneratedProject)&quot; --base-api-report &quot;$(BaseApiReport)&quot; --aliases &quot;$(ApiAliases)&quot; --report &quot;$(ApiReport)&quot; --verify-only" />
+  </Target>
+</Project>

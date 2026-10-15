@@ -1,11 +1,12 @@
 # Translation milestones and acceptance
 
-Status: approved gates, with implementation in progress. T0 inventory, T1 initial
-fixtures, T2 bounded storage/calls/program contracts and T3 complete unchanged
-SQLite source publication plus first JIT/NativeAOT execution are closed. The
-[explicit limits](T2-REMAINING.md) remain. T4 configured behavioral/readability
-acceptance is active; broader C++ and scale remain later gates.
-See [the design](PLAN.md) and [current evidence](COVERAGE.md).
+Status: approved gates T0–T4 are CLOSED for the documented finite Linux x64
+SQLite profile. The unchanged full-feature library publishes, builds and passes
+JIT/NativeAOT configured workloads, provider audit, readability and restart gates.
+[Consolidated T4 evidence](../acceptance/sqlite/t4-acceptance.json) and the
+[current row table](T4-PROGRESS.md) preserve publication attribution and limits.
+T5 broader C++ and T6 portability/scale remain open; SQLite does not prove them.
+See [the design](PLAN.md) and [coverage](COVERAGE.md).
 
 ## Milestones
 
@@ -49,13 +50,11 @@ review, never as translator input or a way to replace untranslated bodies.
 Use separate processes/artifacts so native SQLite cannot service translated
 workloads accidentally. Record the exact providers loaded by the generated app.
 
-The initial T4 stateful slice passes JIT/NativeAOT two-connection snapshot, BUSY,
-rollback, checkpoint and close/reopen checks, plus both closed-file interchange
-directions. See [bounded evidence](../acceptance/sqlite/stateful-report.json).
-Ownership/preupdate/session/backup and the expanded configured SQL feature
-matrix also pass JIT/NativeAOT. [T4-PROGRESS.md](T4-PROGRESS.md) distinguishes
-completed finite rows from remaining API/concurrency/failure/readability work.
-The broader matrix below remains required.
+The configured finite matrix below now passes. Earlier persistence/API/maintenance
+receipts retain their original publication identity; the final readable source
+has fresh JIT/AOT initial and expanded SQL runs plus concurrency/failure/tokenizer/
+provider proofs. Scope is finite configured behavior, not the upstream suite,
+every input/API/provider variant or actual device failure.
 
 ## Required runtime workloads
 

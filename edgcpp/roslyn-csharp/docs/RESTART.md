@@ -1,78 +1,50 @@
 # Implementation restart state
 
-Updated 2026-10-16. Approved plan commit: `e40280bea`.
+Updated 2026-10-16. Approved plan: `e40280bea`. Verified product source:
+`04c11ce0d` / immutable snapshot 13. T0–T4 are CLOSED for the configured finite
+Linux x64 SQLite acceptance. [Consolidated receipt](../acceptance/sqlite/t4-acceptance.json)
+and [row table](T4-PROGRESS.md) are authoritative current status. T5/T6 remain open.
 
-Current prior committed checkpoint: `a5b586f19`; prior stateful checkpoint
-`bc5682b5c`. T0/T1/T2 fixture gates and T3 full production SQLite publication and
-first JIT/NativeAOT execution are closed. T4 is active; broader C++ and scale
-remain later plan milestones. No user pause is pending.
+The final readable publication is
+`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1`.
+Fresh production execution/API baseline is `t4/sqlite-readable-production-run-1`;
+all 19 phases and final 129-statement JIT/AOT regression pass. All 4,212 required
+bodies/103 imports remain; 177 scalar switch dispatches replace comparison chains,
+6,660 pure zero discards disappear. Project/ABI/import-manifest sources match the
+original publication. Runtime remains immutable snapshot 11; no generated project
+requires reader SQLite or native SQLite application code.
 
-The immutable production output is
-`/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1`.
-Its actual CLI completion/report and JIT/NativeAOT proof are pinned in
-`acceptance/sqlite/production-audit.json` and `generated-production-report.json`.
-All 4,212 bodies/486 records emit; source builds and executes the enabled library
-with no native SQLite application library in generated processes. Runtime and
-product implementation used for this proof remain immutable snapshot 11.
+Earlier source-11 persistence/interchange/API/maintenance/extended receipts retain
+their exact original attribution. Source-12 real cancellation/fresh-process restart
+passes with no stage reuse. Source-13 concurrency/failure/tokenizer/provider
+native/JIT/AOT gates all pass. All four serialized AOT jobs finished; no builder
+or translation process remains active. Compact receipts are under
+`acceptance/sqlite`; immutable snapshots/logs/artifacts remain under
+`/mnt/storage/roslynobj-csharp-20261015`. Preserve failed attempts and incomplete
+stages; no cleanup is authorized.
 
-Accepted T4 slices:
+Provider audit reconciles 88 pinned native selections and 15 runtime intrinsics,
+with all nine exact aliases. Exact focused evidence covers 16 host targets plus
+one logical-errno substitution, not raw libc accessor invocation; 71 selections
+remain untraced. Finite clock/random-buffer/allocator contracts pass. No claim
+covers every provider variant, actual OS/device failure, upstream suite or all SQL.
 
-- `acceptance/sqlite/stateful-report.json`: all 15 measured phases, native/JIT/AOT
-  40-action snapshot/BUSY/rollback/checkpoint/persistence; both closed-file
-  interchange directions for each runtime, 13 append / 5 verify actions.
-- `acceptance/sqlite/api-callbacks-report.json`: all five phases, exact native
-  destructor/preupdate/session/conflict/backup observations under JIT/AOT,
-  resources released and no callback error. AOT explicitly pins clang 18.
+Next approved T5 sequence: capture and inspect the concrete public roles and
+normal lifetime/copy/return-temporary roots in the two prepared header-free
+candidates, prove normal native/JIT/AOT first, then bounded generated-only int
+throw/catch cleanup. Root reviewed and accepted this sequence without another
+approval round. Local candidate files are `tests/Fixtures/T5/normal-lifetime.cpp`
+and `exception-cleanup.cpp`; `docs/T5-INITIAL-SLICE.md` records public facts/guards.
+They have not been captured, built or executed. Keep native-boundary unwinding,
+lexical cleanup reconstruction and broader inheritance/TLS/arrays outside this
+first slice. EDG and its recorded execution remain authoritative.
 
-Current phase-hook gate is CLOSED: coordinator added a compatibility-preserving
-synchronous TranslationPhase observer overload; frozen product snapshot 12
-passes eight phases at `t4/restart-reproduction-1/restart-receipt.json`, committed
-as `acceptance/sqlite/restart-report.json`. Full BeforePublication cancellation
-observes/removes the real completion marker, preserves incomplete files and
-leaves requested output unpublished; a separate process recomputes the identical
-request, publishes atomically and directly compares all four sources to the
-actual CLI baseline. Existing publication, stage and inputs remain unchanged.
-This is restart from input, not partial-stage reuse. Runtime stays snapshot 11.
-
-Readability-only product snapshot 13 now PASSES complete CLI publication and
-fresh 19-phase production JIT/NativeAOT execution, plus the 129-statement matrix
-against both built final binaries. Compact audit:
-`acceptance/sqlite/readable-production-audit.json`; full output:
-`t4/sqlite-readable-generated-1`; fresh API baseline:
-`t4/sqlite-readable-production-run-1/api-surface.json`. All 4,212 bodies and
-103 imports remain, reports differ only by output.directory. The code has 177
-C# switch dispatches and removes 6,660 pure zero discards. Root accepts bounded
-readability; no further cosmetic regeneration is requested.
-
-Concurrency, failure, tokenizer and time/random/allocation provider harnesses
-all pass JIT against this exact final publication. Their four NativeAOT gates
-are running serialized in `t4/downstream-aot-driver-1.py`. Frozen sources and
-API metadata are `t4/{concurrency,failures,tokenizer,provider-contracts}-source-1`
-and corresponding `-metadata-1` directories. No builder may overlap this driver.
-
-Ownership: coordinator owns Git and all serialized builds/exports; root reviews
-read-only. Emission worker owns NEW SqliteFeatureMatrix SQL workload/docs.
-Inventory worker owns NEW SqliteExtendedApis fixture/validator/docs for available
-carray/normalization/column metadata and extended-error recovery. Its public
-availability audit confirms snapshot and all 14 RBU API definitions actually
-exist; their finite lifecycle/staged-update workloads remain next. Workers do
-not build/run/export or mutate Git.
-
-The expanded configured SQL matrix now passes native/JIT/AOT, all 12 cases /
-129 statements; compact receipt is `acceptance/sqlite/sql-features-report.json`.
-Its six phases include original 43-statement JIT compatibility. Snapshot/RBU lifecycle now passes native/JIT/AOT, all five phases, in
-`acceptance/sqlite/maintenance-report.json`. Extended API JIT/NativeAOT passes, all five phases, in
-`acceptance/sqlite/extended-apis-report.json`. Readability scalar-switch/pure-discard changes are frozen in snapshot13,
-focused proof then new complete publication/build/runtime are queued.
-
-Remaining T4: cross-process locking/shared-cache/unlock-notify and tokenizer
-interfaces; controlled allocation/I/O errors and recovery; wider provider/error
-contracts; full SQLite readability and restart/repeat evidence. Keep each row
-explicit; no finite slice closes the entire matrix.
-
-Preserve all artifacts and failed/incomplete attempts. Never modify EDG core,
-re-export/reduce pinned SQLite, consult dotobj campaigns or stage unrelated files.
-No new full inventory is needed absent semantic-dependency changes.
+Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
+Root supervises read-only. Two gpt-6.1-sol xhigh workers are available: inventory
+for exact public selected lifetime/EH facts; emission for disjoint normal-lifetime
+projection after actual capture inspection. No worker may modify EDG core, use
+raw model bypass, recover source semantics or consult dotobj campaigns. Leave all
+unrelated dirty user paths and excluded pause/restart files untouched.
 
 ## Earlier checkpoint history
 

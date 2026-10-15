@@ -8,7 +8,11 @@ proved native aggregate boundaries. The unchanged full SQLite object now emits a
 bind/reset/clear and 43-statement SQL workload match native in JIT/NativeAOT.
 Production CLI source publication and its fresh JIT/NativeAOT execution proof
 pass the T3 gate.
-Broader SQLite T4 and C++ execution remain open. See the [coverage ledger](docs/COVERAGE.md) and
+T4 configured SQLite acceptance now passes: persistence/interchange, WAL/process
+locking, enabled SQL features, ownership/callbacks, snapshot/RBU, carray/normalize,
+threading/unlock notification, controlled failure recovery, provider audit and
+readability/restart evidence in JIT/NativeAOT. See the [consolidated receipt](acceptance/sqlite/t4-acceptance.json).
+Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
 This separate consumer will translate a set of `.roslynobj` translation units

@@ -1,0 +1,32 @@
+{
+  "workloadVersion": 1,
+  "name": "finite-time-randomness-allocation-contracts",
+  "sqliteVersionNumber": 3054000,
+  "time": {
+    "sql": "SELECT unixepoch('now'),julianday('now')",
+    "toleranceSeconds": 0.002,
+    "unixEpochJulianDay": 2440587.5,
+    "secondsPerDay": 86400
+  },
+  "randomness": {
+    "requestedBytes": 64,
+    "guardBytes": 16,
+    "prefixByte": 165,
+    "suffixByte": 90,
+    "initialInteriorByte": 204
+  },
+  "allocation": {
+    "initialBytes": 32,
+    "grownBytes": 96,
+    "prefixMultiplier": 37,
+    "prefixAddend": 11,
+    "tailMultiplier": 17,
+    "tailAddend": 3
+  },
+  "remainingScope": [
+    "Finite clock endpoint bounds do not establish monotonic wall time or behavior under arbitrary intermediate clock adjustments",
+    "Randomness buffer observations do not establish distribution, statistical quality, entropy or security",
+    "Positive allocation preservation does not cover every size, zero-size variant or failure schedule",
+    "Selected native provider exports are not evidence of individual invocation by these three API cases"
+  ]
+}

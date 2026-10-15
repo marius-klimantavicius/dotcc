@@ -1,0 +1,243 @@
+{
+  "gate": "T4-configured-SQLite-acceptance",
+  "status": "passed",
+  "configuredSQLiteAcceptanceComplete": true,
+  "translatorPlanComplete": false,
+  "sourcePublished": true,
+  "jitPassed": true,
+  "nativeAotPassed": true,
+  "nativeApplicationFallbackPermitted": false,
+  "generatedReaderSqliteDependency": false,
+  "immutableInput": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "artifactIdentity": "9097468216bba3077ff4a24753d09245",
+    "sqliteVersion": "3.54.0",
+    "featureReduction": false
+  },
+  "profile": {
+    "operatingSystem": "linux",
+    "architecture": "x64",
+    "abi": "itanium/GNU C SysV",
+    "endianness": "little",
+    "pointerBits": 64,
+    "sdk": "10.0.112",
+    "runtime": "10.0.12",
+    "language": "C#14",
+    "runtimeProject": "immutable snapshot11"
+  },
+  "publications": {
+    "original": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-production-generated-1",
+    "readable": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1",
+    "readableTranslatorSourceCheckpoint": "04c11ce0d",
+    "readableSourceSnapshot": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-13/source-snapshot.json",
+    "restartTranslator": "snapshot12; recomputation from input, no partial-stage reuse",
+    "attribution": "Earlier persistence/API/maintenance/extended proofs retain original source11 output attribution. Final readable source13 passes fresh initialSQL+129matrix and concurrency/failure/tokenizer/provider proofs; no blanket relabeling."
+  },
+  "rows": {
+    "core-api": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "production-audit.json",
+        "api-callbacks-report.json",
+        "extended-apis-report.json",
+        "failures-report.json"
+      ]
+    },
+    "sql-transactions": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "sql-features-report.json",
+        "readable-production-audit.json"
+      ]
+    },
+    "persistence-interchange": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "stateful-report.json",
+        "concurrency-report.json"
+      ]
+    },
+    "wal-locking": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "stateful-report.json",
+        "maintenance-report.json",
+        "concurrency-report.json"
+      ]
+    },
+    "json-jsonb": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "sql-features-report.json",
+        "readable-production-audit.json"
+      ]
+    },
+    "fts3-4-5-tokenizer": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "sql-features-report.json",
+        "readable-production-audit.json",
+        "tokenizer-report.json"
+      ]
+    },
+    "rtree-geopoly": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "sql-features-report.json",
+        "readable-production-audit.json"
+      ]
+    },
+    "session-preupdate-rbu-backup": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "api-callbacks-report.json",
+        "maintenance-report.json"
+      ]
+    },
+    "inspection": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "sql-features-report.json",
+        "readable-production-audit.json"
+      ]
+    },
+    "math-metadata-stat4": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "sql-features-report.json",
+        "extended-apis-report.json",
+        "readable-production-audit.json"
+      ]
+    },
+    "snapshot-carray-normalize": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "maintenance-report.json",
+        "extended-apis-report.json"
+      ]
+    },
+    "threading-unlock-notify": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "concurrency-report.json"
+      ]
+    },
+    "runtime-providers": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "provider-contract-audit.json",
+        "provider-contracts-report.json"
+      ]
+    },
+    "controlled-failure-recovery": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "failures-report.json"
+      ]
+    },
+    "repeat-restart": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "restart-report.json"
+      ]
+    },
+    "readability-resources": {
+      "status": "passed-finite-configured-row",
+      "evidence": [
+        "readability-focused-report.json",
+        "readable-production-audit.json"
+      ]
+    }
+  },
+  "evidence": {
+    "production-audit.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/production-audit.json",
+      "sha256": "585a91706905be9c84827174c66fb189b3d5db7253203764dc05ab4e1b895bed",
+      "bytes": 3985
+    },
+    "stateful-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/stateful-report.json",
+      "sha256": "feb0da4851399a6b2843fd14abf29d959be4e7f42b0a35a74bda83537dd95172",
+      "bytes": 86304
+    },
+    "api-callbacks-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/api-callbacks-report.json",
+      "sha256": "f69ee86511a76857bee340baeb2c3a26289a16defd605ca23f6fbc05aa32eab2",
+      "bytes": 36243
+    },
+    "sql-features-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/sql-features-report.json",
+      "sha256": "efef67adc6492c7b78b2683196b07b13daf249b8b0e4129671a641cbfa8156c3",
+      "bytes": 25280
+    },
+    "maintenance-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/maintenance-report.json",
+      "sha256": "ed557ec3cd36b557c170d14b733ec4d800542f5cdd4cf30f67996c4225b42d3c",
+      "bytes": 34980
+    },
+    "extended-apis-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/extended-apis-report.json",
+      "sha256": "b82785169a8cb0253f51ef3990b8c4cabd829678e67ead5dde98a808d37a656a",
+      "bytes": 29933
+    },
+    "restart-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/restart-report.json",
+      "sha256": "640fa5ddeae10f431150c156431c56e35da3958cb60ee03927ce7cc244429366",
+      "bytes": 42012
+    },
+    "readability-focused-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/readability-focused-report.json",
+      "sha256": "ec90c432b244ff4351f474f394af487a8a2dbb4d4f98e8c38502417166b5042c",
+      "bytes": 26141
+    },
+    "readable-production-audit.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/readable-production-audit.json",
+      "sha256": "46af3e63b39aabcaa65ea961a7ae44fbc8c1aba69c4ea0bd0cb72880e415e066",
+      "bytes": 6006
+    },
+    "concurrency-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/concurrency-report.json",
+      "sha256": "599276fd56d2b07a1bfd38e1391f1c7016936af93093d3eb340d445ff9dee889",
+      "bytes": 32075
+    },
+    "failures-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/failures-report.json",
+      "sha256": "6e84f892350302a185ef422921e22c2b5190eed13b98795f0ce3443b7a128099",
+      "bytes": 28636
+    },
+    "tokenizer-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/tokenizer-report.json",
+      "sha256": "8193f3eac8f8091baea2d886c49c5d8604a54d6ae5f4036398240d3885aa7227",
+      "bytes": 36842
+    },
+    "provider-contracts-report.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/provider-contracts-report.json",
+      "sha256": "05ce1818e1a5ddb71cb120d8c37c4c0957afc849d6e72bdbab9252dbce7d24bd",
+      "bytes": 24669
+    },
+    "provider-contract-audit.json": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/provider-contract-audit.json",
+      "sha256": "0341cb51ac81017b214626c669549beaee5847cd293cc56dcf78ef0eab85b220",
+      "bytes": 385439
+    }
+  },
+  "providerScope": {
+    "requiredSelections": 103,
+    "nativeBindings": 88,
+    "runtimeIntrinsics": 15,
+    "explicitAliases": 9,
+    "exactFocusedHostTargets": 16,
+    "logicalErrnoSubstitutions": 1,
+    "otherNativeSelectionsWithoutExactInvocationClaim": 71,
+    "wholeProviderCoverageAccepted": false
+  },
+  "limits": [
+    "Finite configured matrix, not entire upstream test suite or every SQL input/API/provider variant.",
+    "NativeAOT linker explicitly pinned clang18 in final gates; original stateful linker selection attribution remains limited as recorded, without relabeling.",
+    "Injected pager commit IOERR and heap refusal do not claim actual OS/device failure or exhaustive allocation schedules.",
+    "Random quality, arbitrary clock changes, other concurrency/deadlock schedules, wider carray/tokenizer/RBU/snapshot variants remain outside finite proof.",
+    "T5 broader C++ lifetime/EH/inheritance/RTTI/static guards/TLS and T6 portability/large multiunit closure remain open.",
+    "No EDG core changes, semantic reanalysis, raw-reader bypass, corruption tests or native SQLite/application body fallback."
+  ]
+}

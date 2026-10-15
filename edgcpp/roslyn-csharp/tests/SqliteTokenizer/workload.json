@@ -1,0 +1,25 @@
+{
+  "workloadVersion": 1,
+  "scope": "finite legacy FTS5 custom tokenizer callback interface",
+  "tokenizerName": "testspace",
+  "maximumInputBytes": 64,
+  "maximumEvents": 256,
+  "statements": [
+    "CREATE VIRTUAL TABLE docs USING fts5(body,tokenize='testspace')",
+    "INSERT INTO docs(rowid,body) VALUES(1,'red  blue'),(2,'blue green'),(3,'red green blue')",
+    "SELECT rowid,highlight(docs,0,'[',']') AS marked FROM docs WHERE docs MATCH 'red' ORDER BY rowid",
+    "SELECT rowid,snippet(docs,0,'[',']','...',8) AS excerpt FROM docs WHERE docs MATCH 'bl*' ORDER BY rowid",
+    "UPDATE docs SET body='green blue' WHERE rowid=1",
+    "SELECT rowid,body FROM docs WHERE docs MATCH 'red' ORDER BY rowid",
+    "DELETE FROM docs WHERE rowid=2",
+    "SELECT rowid,highlight(docs,0,'[',']') AS marked FROM docs WHERE docs MATCH 'green' ORDER BY rowid"
+  ],
+  "limits": [
+    "One in-memory connection, legacy fts5_tokenizer registration, fixed lowercase ASCII words split only on byte 0x20.",
+    "Original input byte slices and offsets are passed to the engine xToken callback synchronously; no borrowed input/context survives the callback.",
+    "Tokenizer owners are released once through xDelete; registration context/event counters remain alive until sqlite3_close returns.",
+    "Exact rows, callback flags, token offsets, callback order and owner/destructor counts come from the separate pinned native oracle.",
+    "A nonzero engine xToken result is propagated immediately; this successful SQL slice does not force an engine callback error.",
+    "Locale/v2 tokenizer, synonyms, Unicode rules, custom auxiliary functions, FTS3 tokenizer interfaces and broader failure/ownership cases remain separate."
+  ]
+}

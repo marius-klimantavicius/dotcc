@@ -1,39 +1,42 @@
-T4 is active. The unchanged full-feature SQLite object has production publication,
-JIT and NativeAOT evidence; no native SQLite application serves generated calls.
-The required matrix is in [ACCEPTANCE.md](ACCEPTANCE.md). Current finite evidence:
+T4 is CLOSED for the finite configured SQLite acceptance matrix on the pinned
+Linux x64 GNU/Itanium/glibc profile, .NET 10/C# 14, JIT and NativeAOT.
+[Consolidated acceptance](../acceptance/sqlite/t4-acceptance.json) records exact
+input/publication provenance, every row and explicit limits. T5/T6 remain open.
 
-| Acceptance row | Verified execution | Concrete work remaining |
+| Required row | Passing finite evidence | Publication attribution |
 | --- | --- | --- |
-| Core API | Open/close, prepared values, bind/reset/clear/finalize; exact blob destructor releases | Immediate primary/extended errors and rollback/recovery pass; controlled failure proof remains |
-| SQL/transactions | Original 43 SQL statements plus expanded constraints, cascade, triggers, savepoints, UPSERT and rollback | Controlled failure recovery in separate fixture |
-| Persistence | Close/reopen and both native/generated closed-file interchange directions in JIT/AOT | Broader failure/recovery is separate |
-| WAL/locking | Two live connections: pinned reader, writer commit, BUSY, rollback, checkpoint | Explicit two-process WAL/BUSY/checkpoint/visibility and snapshot APIs also pass JIT/AOT |
-| JSON/JSONB | Mutation, remove/patch, table traversal, NULL/missing/types, validity and binary round trips | No additional SQL prerequisite; wider behavior is outside finite proof |
-| FTS3/4/5 | Tokenization/stemming/diacritics, matching/ranking/snippet/highlight, update/delete/rebuild/optimize | Fixture tokenizer/callback API interface |
-| RTree/Geopoly | Spatial insert/update/delete/predicates and integrity | No additional prerequisite for finite SQL row |
-| Session/preupdate/RBU | Preupdate old/new/order/unregister; changeset apply/OMIT conflicts; incremental backup | RBU save/close/reopen/completion passes native/JIT/AOT; failure variants are separate |
-| Inspection | dbstat/dbpage/stmt/bytecode deterministic invariants | No additional prerequisite for finite SQL row |
-| Math/metadata/STAT4 | Exact math/domain values, metadata pragmas, histogram/count invariants | Column-metadata C API also passes JIT/AOT |
-| Snapshot/carray/normalize | Snapshot same-WAL lifecycle, carray/normalize APIs pass native/JIT/AOT | Wider carray datatype/ownership variants outside finite proof |
-| Threading/unlock notify | Bounded host foreign-thread/reentry protocol proof | SQLite shared-cache/unlock-notify and two barrier-controlled threaded readers also pass JIT/AOT |
-| Runtime boundaries | 103 exact required selections: 88 hash-pinned candidate host bindings + 15 runtime intrinsics; targeted errno/loader/callback/vararg/storage proofs | Complete selected-provider audit against exercised T4 paths and explicit remaining variants |
-| Failure paths | Constraint/rollback native proof and expected BUSY finalize behavior | Controlled heap-refusal/pager-IOERR native proof passes; generated proof next |
-| Repeat/restart | Original deterministic fixture generation; production/candidate four sources identical | Full input real cancellation and same-request fresh-process restart pass; all four source files byte-identical |
-| Readability | T2 narrow review passes; full SQLite names/structure reviewed provisionally | Bounded full SQLite readability review passes focused and full new publication/JIT/AOT plus129SQL regression; cosmetic debt documented |
+| Core API | Open/close, typed prepared values, bind/reset/clear/finalize, destructor ownership, immediate primary/extended errors and recovery | Original production; extended errors also source 11; controlled failures source 13 |
+| SQL/transactions | Original 43 statements and expanded constraints/cascade/triggers/savepoints/UPSERT/rollback | Fresh source-13 JIT/AOT reruns include all 129 expanded statements |
+| Persistence | Close/reopen and both native/generated closed-file interchange directions | Original source 11; source-13 concurrency adds close/reopen |
+| WAL/locking | Two-connection snapshots/BUSY; real two-process writer contention, busy callback, pinned-reader checkpoints and visibility | Original stateful source 11; process concurrency source 13 |
+| JSON/JSONB | Mutation/remove/patch, traversal, null/missing/types, validity and binary round trips | Original and readable source-13 JIT/AOT matrix |
+| FTS3/4/5 | Tokenization/stemming/diacritics, ranking/snippet/highlight, lifecycle; custom FTS5 callbacks | SQL source 11 and 13; exact 84-event tokenizer source 13 |
+| RTree/Geopoly | Insert/update/delete, spatial predicates and integrity | Original and readable source-13 matrix |
+| Session/preupdate/RBU | Preupdate values/order/unregister, changesets/apply/conflicts, incremental backup; RBU save/close/reopen/completion | Original source 11 |
+| Inspection | dbstat/dbpage/stmt/bytecode deterministic invariants | Original and readable source-13 matrix |
+| Math/metadata/STAT4 | Math domains/values, metadata pragmas/C API, histogram/count invariants | SQL source 11 and 13; metadata C API source 11 |
+| Snapshot/carray/normalize | Same-WAL snapshot get/open/cmp/recover/free; integer carray ownership/transient copy; normalized statement execution | Original source 11 |
+| Threading/unlock notify | Actual shared-cache LOCKED/notification/retry; two barrier-controlled separate threaded connections | Readable source 13 |
+| Runtime boundaries | Exact 103 selections: 88 pinned native bindings + 15 runtime intrinsics; focused errno/loader/callback/ABI proofs; finite clock/random-buffer/allocator contracts | Original focused receipts plus source-13 provider contracts |
+| Failure paths | Heap-limit refusal with explicit rollback; injected pager commit IOERR with automatic rollback; cleanup, recovery and reopen | Readable source 13 |
+| Repeat/restart | Real prepublication cancellation, retained incomplete stage, fresh-process same-request restart and four-file byte equality | Frozen translator source 12, original output format; no stage reuse |
+| Readability/resources | Guarded scalar switch dispatch, pure discard removal, selected source review, frozen budgets and separate phase measurements | Focused and full readable source 13 |
 
-Frozen receipts:
+Source 11 means the original accepted production output. Source 13 is the final
+readable publication at `t4/sqlite-readable-generated-1`; its project/native ABI/
+import-manifest bytes match the original. The runtime project remains immutable
+snapshot 11. Earlier source-11 tests are not relabeled as source-13 runs.
 
-- [Production execution](../acceptance/sqlite/generated-production-report.json)
-- [Persistence and interchange](../acceptance/sqlite/stateful-report.json)
-- [Ownership, preupdate, session and backup](../acceptance/sqlite/api-callbacks-report.json)
-- [Expanded SQL features](../acceptance/sqlite/sql-features-report.json)
-- [Snapshot and RBU lifecycles](../acceptance/sqlite/maintenance-report.json)
-- [Repeat generation and cancellation/restart](../acceptance/sqlite/restart-report.json)
-- [Carray, normalization, metadata and extended errors](../acceptance/sqlite/extended-apis-report.json)
-- [Readable complete publication and final SQL regression](../acceptance/sqlite/readable-production-audit.json)
-- [Cross-process WAL, unlock notification and threaded reads](../acceptance/sqlite/concurrency-report.json)
+Finite limits remain explicit: no upstream-suite/all-SQL/all-provider-variant
+claim; 16 host targets plus one logical-errno substitution have exact focused
+implementation evidence, while 71 other native selections are not individually
+traced. Every selection and its contracts/provider/hash are reconciled. Random
+quality, arbitrary clock adjustments, every allocator schedule, actual device
+failure, other lock schedules, invalidated snapshots and wider carray/tokenizer/
+RBU variants are outside this proof. Barrier-controlled threads permit overlap
+without proving simultaneous in-engine execution on every scheduler run.
 
-Controlled failure and concurrency native-only proofs are preparatory; their
-generated evidence remains required. Successful finite rows do not establish
-the entire upstream suite or every input/provider variant. Keep remaining work
-specific rather than relabeling completed execution as an open generic matrix.
+The fault-400 test injects existing pager commit IOERR and does not corrupt
+objects or simulate an OS device. Generated applications depend on Generated and
+Runtime, exclude the reader SQLite package and load no native SQLite application.
+No cleanup of failed attempts, immutable inputs or incomplete stages is authorized.

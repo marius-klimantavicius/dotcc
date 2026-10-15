@@ -1,0 +1,853 @@
+{
+  "gate": "T4-bounded-failures",
+  "status": "passed",
+  "t4Complete": false,
+  "sourceCheckpoint": "04c11ce0d",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-source-1/source-snapshot.json",
+    "sha256": "1c61ab7729d90999efc13aa739671a498700b6aa29b38cc7e66c17098cd79d20",
+    "bytes": 894
+  },
+  "sourceFreezeVerified": true,
+  "workload": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-source-1/workload.json",
+    "sha256": "f1cfaffcc508d27de1c7aedca10744b15a04300d06a25911e70666533a83d6bf",
+    "bytes": 1890
+  },
+  "nativeOracleBuild": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/native-oracle-build.json",
+    "sha256": "c5d7e700950971126a1f6aa735fc205850d9563bca482b815715ed1353feb435",
+    "bytes": 2906
+  },
+  "nativeReference": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-failures-1/failures-report.json",
+    "sha256": "9389da20b10cb2670577adcbb8054f63627a2640a9c8b50097c68b4155770905",
+    "bytes": 12366
+  },
+  "apiSurface": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-metadata-1/api-surface.json",
+    "sha256": "6a1dd063addcd93d3d874f819a231f966d10ec9ae018b76cb895619658dc3e4e",
+    "bytes": 41626
+  },
+  "productionCompletion": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/completion.json",
+    "sha256": "9c0c8f3473589e05ff52847a21e8c3040ebcce42d3819ecaf0c765ca368261c6",
+    "bytes": 1159
+  },
+  "readableProductionAudit": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/readable-production-audit.json",
+    "sha256": "46af3e63b39aabcaa65ea961a7ae44fbc8c1aba69c4ea0bd0cb72880e415e066",
+    "bytes": 6006
+  },
+  "nativeAotCompilerAndLinker": {
+    "path": "/usr/lib/llvm-18/bin/clang",
+    "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8",
+    "bytes": 136504
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49",
+    "bytes": 5505
+  },
+  "phases": [
+    {
+      "name": "native-failures-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/native-failures-run-1/run.json",
+        "sha256": "4014c7f76608d779302a4900bf9f043178372d21aa393ec9ff3433ebab6050a6",
+        "bytes": 974
+      },
+      "status": "passed",
+      "command": [
+        "python3",
+        "edgcpp/roslyn-csharp/tests/SqliteFailures/run-native.py",
+        "--artifacts",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-failures-1"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.200966656091623,
+      "sampledPeakProcessTreeRssBytes": 21327872,
+      "waitedPeakProcessRssBytes": 20447232,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 1073741824,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 60,
+          "sha256": "f2fece82e3815927a2c712130c3199ecb82a7aa70c324060aee227d71cbc4c98"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "failures-build-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-build-1/run.json",
+        "sha256": "0c7f4fa3c2029e5ed3091a5431300232bb818135ede87ba3e05d786ae387e798",
+        "bytes": 1559
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-source-1/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.csproj",
+        "-p:CandidateReceipt=/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/completion.json",
+        "-p:SqliteApiAliases=/mnt/storage/roslynobj-csharp-20261015/t4/failures-metadata-1/CapturedAliases.cs",
+        "-p:SqliteApiReceipt=/mnt/storage/roslynobj-csharp-20261015/t4/failures-metadata-1/api-surface.json",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-1"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 24.636599033954553,
+      "sampledPeakProcessTreeRssBytes": 2852020224,
+      "waitedPeakProcessRssBytes": 2503217152,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 600.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 146923,
+          "sha256": "7ae0830351ad804c52b64b3085241fecd97c4fb7584dabca6478d2164c481850"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "failures-jit-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-run-1/run.json",
+        "sha256": "46efa7736fd294bc995e53e725d7df36d50ccf8b84bda452214b91d4aedd3d16",
+        "bytes": 1142
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-1/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-source-1/workload.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-result-1",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-failures-1/failures-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.6027618900407106,
+      "sampledPeakProcessTreeRssBytes": 161259520,
+      "waitedPeakProcessRssBytes": 175058944,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 60,
+          "sha256": "6f7541f860b224ff4d8ffbf50b9ca668e465afb8c40aa2d63fc11ec29121efa8"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "failures-publish-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-publish-1/run.json",
+        "sha256": "0d79952cef838cd2e9213c8459d03ba43f5f51b024ef0b67be9ac7f96be40d20",
+        "bytes": 1703
+      },
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-source-1/Checks.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "-nodeReuse:false",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.csproj",
+        "-p:CandidateReceipt=/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/completion.json",
+        "-p:SqliteApiAliases=/mnt/storage/roslynobj-csharp-20261015/t4/failures-metadata-1/CapturedAliases.cs",
+        "-p:SqliteApiReceipt=/mnt/storage/roslynobj-csharp-20261015/t4/failures-metadata-1/api-surface.json",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-aot-1"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 47.65200969099533,
+      "sampledPeakProcessTreeRssBytes": 1102946304,
+      "waitedPeakProcessRssBytes": 689963008,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 600.0,
+        "memoryBytes": 8589934592,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 781,
+          "sha256": "ebbbebd2086901522c7f78c2311b7ade73ba6d43a2f5ac89c946b25c29f6c402"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "name": "failures-aot-run-1",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-aot-run-1/run.json",
+        "sha256": "21b0529514d3291a8342e93800ad8be8eddeaf67a0f4fdd1ee56b0c37d1dbf57",
+        "bytes": 1123
+      },
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-aot-1/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-source-1/workload.json",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/failures-aot-result-1",
+        "/mnt/storage/roslynobj-csharp-20261015/t4/native-failures-1/failures-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.20076536806300282,
+      "sampledPeakProcessTreeRssBytes": 18440192,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc all-thread descendant RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 60,
+          "sha256": "6f7541f860b224ff4d8ffbf50b9ca668e465afb8c40aa2d63fc11ec29121efa8"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "runtime": "jit",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-result-1/failures-report.json",
+        "sha256": "5e684021732c31f94e0143214c23d9224a3a7d78f47ebd14663b433ffaeafa4c",
+        "bytes": 13383
+      },
+      "nativeComparison": "exact-typed-cases-equal-audit-accounting-separate",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-1/libRoslynObj.Generated.Abi.so",
+          "bytes": 726648,
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea"
+        },
+        {
+          "path": "/usr/lib/dotnet/host/fxr/10.0.12/libhostfxr.so",
+          "bytes": 324272,
+          "sha256": "c8be9947baebf37e77ded4d82d069f403d362b9416a5e8502e9f66d948f5d52a"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Native.so",
+          "bytes": 99072,
+          "sha256": "def7465ab890653112d7d8bd48613f3bc33851d24b56b01c2ef2476ea3a3b3d4"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libSystem.Security.Cryptography.Native.OpenSsl.so",
+          "bytes": 154632,
+          "sha256": "cc24903c414acdc9a6bb273c01a3c132ff3e95f211d09543836cd34329fd7896"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libclrjit.so",
+          "bytes": 3313648,
+          "sha256": "2e1c701758638976d642351c50dbf26a88d7f18853848964824cbe3312a034a5"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclr.so",
+          "bytes": 7222960,
+          "sha256": "b5845ca190a41c502a96df196ea603b38d4893a022964fb55598ba6d07861f19"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libcoreclrtraceptprovider.so",
+          "bytes": 634192,
+          "sha256": "738750a901bc137ac74f5277c402a13a9b3bf94e690de03706abcba025d83244"
+        },
+        {
+          "path": "/usr/lib/dotnet/shared/Microsoft.NETCore.App/10.0.12/libhostpolicy.so",
+          "bytes": 317504,
+          "sha256": "f59d12f0ae4fcb81be43fcf4470b0bc02f53b2f06767aa54d76e98303a0de6b1"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "bytes": 236616,
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "bytes": 2129424,
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "bytes": 5309400,
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "bytes": 183024,
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "bytes": 30795392,
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "bytes": 3455304,
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "bytes": 2140336,
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-common.so.1.0.0",
+          "bytes": 47800,
+          "sha256": "28c3025315634619a7d278fff9e5bfa85ef85a58db8a52ce3ecf0054093fe0be"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust-tracepoint.so.1.0.0",
+          "bytes": 51568,
+          "sha256": "c5a75aea47fbfa1380e75fad869a00e225a947bbfa99edc6c62c2241959e1eb8"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblttng-ust.so.1.0.0",
+          "bytes": 500568,
+          "sha256": "3dda3aff8ce04c7a1d5f1c5f20bd725d63e686a2042ee4834d8c25cde288f27b"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5",
+          "bytes": 202904,
+          "sha256": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "bytes": 952616,
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0",
+          "bytes": 52248,
+          "sha256": "02d7582c5d391e460e56aa67a414360e3183b968206645b9123f9dc7bff5d009"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "bytes": 696512,
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "bytes": 2592224,
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind-x86_64.so.8.0.1",
+          "bytes": 67672,
+          "sha256": "70a88c376a1aced719ca7bdcd5cdd6c5d3bdce44b99f5ab2037fdad096bbf03d"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1",
+          "bytes": 63776,
+          "sha256": "28e77a498f2f17f8cb883c91303f9901343ea0d8e34959d138dd462fcc9b201f"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "bytes": 129256,
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547"
+        }
+      ],
+      "dependencies": {
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-1/Checks.deps.json",
+          "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae",
+          "bytes": 1168
+        },
+        "libraries": {
+          "Checks/1.0.0": {
+            "type": "project",
+            "serviceable": false,
+            "sha512": ""
+          },
+          "Generated/1.0.0": {
+            "type": "project",
+            "serviceable": false,
+            "sha512": ""
+          },
+          "RoslynObj.CSharp.Runtime/1.0.0": {
+            "type": "project",
+            "serviceable": false,
+            "sha512": ""
+          }
+        }
+      },
+      "state": {
+        "connectionsClosed": true,
+        "faultHookUninstalled": true,
+        "pinnedFilesUnchanged": true
+      }
+    },
+    {
+      "runtime": "aot",
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-aot-result-1/failures-report.json",
+        "sha256": "92403da0fe1835f61144db25c704d90c0c761d39b62f5649ad077898c85fc4a3",
+        "bytes": 10630
+      },
+      "nativeComparison": "exact-typed-cases-equal-audit-accounting-separate",
+      "loadedLibraries": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-aot-1/libRoslynObj.Generated.Abi.so",
+          "bytes": 726648,
+          "sha256": "c21c3e7525fd05ad9476ab65f1ca0d79a19108189db40bb97e207a4103416fea"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "bytes": 236616,
+          "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "bytes": 2129424,
+          "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libcrypto.so.3",
+          "bytes": 5309400,
+          "sha256": "6866ed711dab8927e1bf82bf1cd30e828bdfc34f3cc1e83b1c9eb01ce6c37d9a"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+          "bytes": 183024,
+          "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicudata.so.74.2",
+          "bytes": 30795392,
+          "sha256": "ddbb3718b8bd9cbd780e5ab08b4503c30a6c4fa0706ebe5d074ed6b596c1714e"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicui18n.so.74.2",
+          "bytes": 3455304,
+          "sha256": "3550b194eb2cf2e6f798f033eb9ca279d498c21296b4a18790ce158d2023e47b"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libicuuc.so.74.2",
+          "bytes": 2140336,
+          "sha256": "7560aadde38e5f4237a47a1ddd5891f9b36768a77a60faae30beee003ac01901"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+          "bytes": 952616,
+          "sha256": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libssl.so.3",
+          "bytes": 696512,
+          "sha256": "a40e7b67489bbd257e432c700ff8f6a1ad796425b5eccecdc2930127fdd86624"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33",
+          "bytes": 2592224,
+          "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+        },
+        {
+          "path": "/usr/lib/x86_64-linux-gnu/ossl-modules/legacy.so",
+          "bytes": 129256,
+          "sha256": "e639c7121825222dc720bd38aa1fca3ddcedd7d1213dc72ce006b8ccf541b547"
+        }
+      ],
+      "dependencies": {
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t4/failures-jit-1/Checks.deps.json",
+          "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae",
+          "bytes": 1168
+        },
+        "libraries": {
+          "Checks/1.0.0": {
+            "type": "project",
+            "serviceable": false,
+            "sha512": ""
+          },
+          "Generated/1.0.0": {
+            "type": "project",
+            "serviceable": false,
+            "sha512": ""
+          },
+          "RoslynObj.CSharp.Runtime/1.0.0": {
+            "type": "project",
+            "serviceable": false,
+            "sha512": ""
+          }
+        }
+      },
+      "state": {
+        "connectionsClosed": true,
+        "faultHookUninstalled": true,
+        "pinnedFilesUnchanged": true
+      }
+    }
+  ],
+  "cases": [
+    {
+      "name": "controlled-hard-heap-nomem",
+      "setup": [
+        {
+          "sql": "CREATE TABLE recoverable(id INTEGER PRIMARY KEY,v INTEGER NOT NULL)",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "INSERT INTO recoverable VALUES(1,10)",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "BEGIN",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "UPDATE recoverable SET v=99 WHERE id=1",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        }
+      ],
+      "openCode": 0,
+      "failure": {
+        "sql": "SELECT length(randomblob(1048576)) AS n",
+        "columns": [
+          "n"
+        ],
+        "rows": [],
+        "stepCode": 7,
+        "error": {
+          "errorCode": 7,
+          "extendedErrorCode": 7,
+          "message": "out of memory"
+        },
+        "finalizeCode": 7
+      },
+      "autocommitAfterFinalize": 0,
+      "rollback": {
+        "sql": "ROLLBACK",
+        "columns": [],
+        "rows": [],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "unchanged": {
+        "sql": "SELECT id,v FROM recoverable ORDER BY id",
+        "columns": [
+          "id",
+          "v"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "10"
+            }
+          ]
+        ],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "recoveryWrite": {
+        "sql": "INSERT INTO recoverable VALUES(2,20)",
+        "columns": [],
+        "rows": [],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "recovered": {
+        "sql": "SELECT id,v FROM recoverable ORDER BY id",
+        "columns": [
+          "id",
+          "v"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "10"
+            }
+          ],
+          [
+            {
+              "type": "integer",
+              "decimal": "2"
+            },
+            {
+              "type": "integer",
+              "decimal": "20"
+            }
+          ]
+        ],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "closeCode": 0
+    },
+    {
+      "name": "injected-pager-commit-ioerr",
+      "setup": [
+        {
+          "sql": "PRAGMA journal_mode=DELETE",
+          "columns": [
+            "journal_mode"
+          ],
+          "rows": [
+            [
+              {
+                "type": "text-utf8",
+                "bytes": 6,
+                "hex": "64656c657465"
+              }
+            ]
+          ],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "CREATE TABLE recoverable(id INTEGER PRIMARY KEY,v INTEGER NOT NULL)",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "INSERT INTO recoverable VALUES(1,30)",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "BEGIN IMMEDIATE",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "UPDATE recoverable SET v=300 WHERE id=1",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        }
+      ],
+      "openCode": 0,
+      "installCode": 0,
+      "failure": {
+        "sql": "COMMIT",
+        "columns": [],
+        "rows": [],
+        "stepCode": 10,
+        "error": {
+          "errorCode": 10,
+          "extendedErrorCode": 10,
+          "message": "disk I/O error"
+        },
+        "finalizeCode": 10
+      },
+      "uninstallCode": 0,
+      "callback": {
+        "probe0Calls": 1,
+        "activated400": 1,
+        "callbackFailed": false
+      },
+      "autocommitAfterFinalize": 1,
+      "rollback": null,
+      "unchanged": {
+        "sql": "SELECT id,v FROM recoverable ORDER BY id",
+        "columns": [
+          "id",
+          "v"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "30"
+            }
+          ]
+        ],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "recovery": [
+        {
+          "sql": "BEGIN IMMEDIATE",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "UPDATE recoverable SET v=31 WHERE id=1",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        },
+        {
+          "sql": "COMMIT",
+          "columns": [],
+          "rows": [],
+          "stepCode": 101,
+          "finalizeCode": 0
+        }
+      ],
+      "recovered": {
+        "sql": "SELECT id,v FROM recoverable ORDER BY id",
+        "columns": [
+          "id",
+          "v"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "31"
+            }
+          ]
+        ],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "closeCode": 0,
+      "reopenCode": 0,
+      "persisted": {
+        "sql": "SELECT id,v FROM recoverable ORDER BY id",
+        "columns": [
+          "id",
+          "v"
+        ],
+        "rows": [
+          [
+            {
+              "type": "integer",
+              "decimal": "1"
+            },
+            {
+              "type": "integer",
+              "decimal": "31"
+            }
+          ]
+        ],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "integrity": {
+        "sql": "PRAGMA integrity_check",
+        "columns": [
+          "integrity_check"
+        ],
+        "rows": [
+          [
+            {
+              "type": "text-utf8",
+              "bytes": 2,
+              "hex": "6f6b"
+            }
+          ]
+        ],
+        "stepCode": 101,
+        "finalizeCode": 0
+      },
+      "finalCloseCode": 0
+    }
+  ],
+  "scope": [
+    "Prepared 1 MiB allocation demand under liveUsed + 64 KiB hard heap cap: NOMEM step/finalize 7 leaves the transaction active; restore the prior limit, explicitly roll back to row 10 and prove valid subsequent work.",
+    "Inject existing pager commit FaultSim 400 through public test_control with a caught Cdecl callback: probe 0 unarmed, one 400 activation, immediate IOERR step/finalize 10 automatically rolls back to row 30; uninstall and verify row 31 after recovery/reopen/integrity.",
+    "Live-memory/cap audits stay separate from exact semantic comparison; the selected variadic pack uses GP 8 / FP 48 and its pointer slot."
+  ],
+  "limits": [
+    "Allocation refusal and injected pager commit IOERR are finite test-hook paths, not exhaustive allocator schedules or actual OS/device failure coverage",
+    "No source object/database corruption or native application forwarding"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "workloadVersion": 1,
+  "name": "controlled-hard-heap-and-pager-commit-failures",
+  "sqliteVersionNumber": 3054000,
+  "allocation": {
+    "memoryHeadroomBytes": 65536,
+    "blobBytes": 1048576,
+    "schema": "CREATE TABLE recoverable(id INTEGER PRIMARY KEY,v INTEGER NOT NULL)",
+    "seed": "INSERT INTO recoverable VALUES(1,10)",
+    "begin": "BEGIN",
+    "tentative": "UPDATE recoverable SET v=99 WHERE id=1",
+    "demand": "SELECT length(randomblob(1048576)) AS n",
+    "verify": "SELECT id,v FROM recoverable ORDER BY id",
+    "recovery": "INSERT INTO recoverable VALUES(2,20)",
+    "expectedBeforeRecovery": [
+      [
+        1,
+        10
+      ]
+    ],
+    "expectedAfterRecovery": [
+      [
+        1,
+        10
+      ],
+      [
+        2,
+        20
+      ]
+    ],
+    "expectedFailure": 7
+  },
+  "io": {
+    "fileName": "io-failure.db",
+    "journalMode": "PRAGMA journal_mode=DELETE",
+    "schema": "CREATE TABLE recoverable(id INTEGER PRIMARY KEY,v INTEGER NOT NULL)",
+    "seed": "INSERT INTO recoverable VALUES(1,30)",
+    "begin": "BEGIN IMMEDIATE",
+    "tentative": "UPDATE recoverable SET v=300 WHERE id=1",
+    "commit": "COMMIT",
+    "verify": "SELECT id,v FROM recoverable ORDER BY id",
+    "recoveryBegin": "BEGIN IMMEDIATE",
+    "recoveryUpdate": "UPDATE recoverable SET v=31 WHERE id=1",
+    "recoveryCommit": "COMMIT",
+    "expectedBeforeRecovery": [
+      [
+        1,
+        30
+      ]
+    ],
+    "expectedAfterRecovery": [
+      [
+        1,
+        31
+      ]
+    ],
+    "expectedFailure": 10,
+    "faultInstallOperation": 9,
+    "faultSite": 400
+  },
+  "remainingT4Areas": [
+    "Actual OS/device/VFS failures beyond the documented injected pager-commit IOERR site",
+    "Broader allocation failure points, callbacks, multiple connections and failure schedules",
+    "Unclosed snapshot/RBU/session/feature/provider acceptance rows remain unchanged"
+  ]
+}

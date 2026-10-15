@@ -1,7 +1,8 @@
 # Readable unsafe C# translation plan
 
 Status: approved for implementation on 2026-10-15 (design commit `e40280bea`).
-Implementation and evidence are tracked in [COVERAGE.md](COVERAGE.md) and
+The finite configured SQLite T0–T4 gates now pass; broader C++ T5 and portability/
+scale T6 remain open. Implementation and evidence are tracked in [COVERAGE.md](COVERAGE.md) and
 [RESTART.md](RESTART.md); approval does not close any acceptance gate.
 
 ## Decisions and boundaries
