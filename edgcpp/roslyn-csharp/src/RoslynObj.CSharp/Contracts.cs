@@ -2,6 +2,8 @@ namespace RoslynObj.CSharp;
 
 public enum DiagnosticSeverity { Info, Warning, Error }
 public enum TranslationStatus { InventoryComplete, TranslationComplete, Failed, Cancelled }
+/// <summary>Synchronous build-tool boundaries; observers may request cancellation.</summary>
+public enum TranslationPhase { InventoryCompleted, EmissionCompleted, BeforePublication }
 public enum CapabilityStatus { Unsupported, Implemented, Exercised, NotEncountered }
 /// <summary>Explicit application-visible native error-state provider contract.</summary>
 public enum NativeErrorProtocol { None, LinuxX64LogicalErrno }

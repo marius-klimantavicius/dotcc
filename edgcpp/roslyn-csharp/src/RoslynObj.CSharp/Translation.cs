@@ -8,6 +8,11 @@ namespace RoslynObj.CSharp;
 public sealed partial class Translator
 {
     public TranslationResult Translate(TranslationRequest request, CancellationToken cancellationToken = default)
+        => Translate(request, cancellationToken, null);
+
+    /// <summary>Notifies the caller synchronously at real build-tool boundaries, before cancellation checks.</summary>
+    public TranslationResult Translate(TranslationRequest request, CancellationToken cancellationToken,
+        Action<TranslationPhase>? phaseObserver)
     {
         var watch = Stopwatch.StartNew();
         var inventory = Inventory(request, cancellationToken);
@@ -56,6 +61,7 @@ public sealed partial class Translator
         var openedInputs = new List<RoslynObject>();
         try
         {
+            phaseObserver?.Invoke(TranslationPhase.InventoryCompleted);
             cancellationToken.ThrowIfCancellationRequested();
             foreach (var binding in request.Runtime.Bindings.Where(binding => binding.Kind == "function" && nativeBindings.Any(native =>
                 native.LinkageName == binding.LinkageName)))
@@ -94,6 +100,7 @@ public sealed partial class Translator
                 var report = inventory.ProgramReport with { Diagnostics = diagnostics.ToArray() };
                 return inventory with { Status = TranslationStatus.Failed, Diagnostics = report.Diagnostics, ProgramReport = report };
             }
+            phaseObserver?.Invoke(TranslationPhase.EmissionCompleted);
             cancellationToken.ThrowIfCancellationRequested();
             using var process = Process.GetCurrentProcess();
             process.Refresh();
@@ -141,6 +148,7 @@ public sealed partial class Translator
                 if (bytes + Encoding.UTF8.GetByteCount(completion) > request.Budgets.MaximumOutputBytes)
                     return Failure("ROC0003", "Completion manifest exceeds the output budget.");
                 File.WriteAllText(System.IO.Path.Combine(staging, "completion.json"), completion, new UTF8Encoding(false));
+                phaseObserver?.Invoke(TranslationPhase.BeforePublication);
                 cancellationToken.ThrowIfCancellationRequested();
                 System.IO.Directory.Move(staging, output);
             }

@@ -2,7 +2,7 @@
 
 Updated 2026-10-15. Approved plan commit: `e40280bea`.
 
-Current prior committed checkpoint: `4ae336d95`; prior stateful checkpoint
+Current prior committed checkpoint: `a5b586f19`; prior stateful checkpoint
 `bc5682b5c`. T0/T1/T2 fixture gates and T3 full production SQLite publication and
 first JIT/NativeAOT execution are closed. T4 is active; broader C++ and scale
 remain later plan milestones. No user pause is pending.
@@ -24,16 +24,21 @@ Accepted T4 slices:
   destructor/preupdate/session/conflict/backup observations under JIT/AOT,
   resources released and no callback error. AOT explicitly pins clang 18.
 
-Current work: coordinator added a compatibility-preserving synchronous
-TranslationPhase observer overload; product snapshot 12 builds. The frozen
-`tests/SqliteRestart/run-restart.py` campaign is RUNNING at
-`t4/restart-reproduction-1`: SDK/build and both small genuine phase cancellations
-pass; full unchanged SQLite BeforePublication cancellation is running, followed
-by a new-process restart from the identical request. It verifies staged marker
-cleanup, retained incomplete staging, unchanged prior publication and direct
-four-file deterministic comparison. This is recomputation from input, not
-partial-stage reuse. Do not edit SqliteRestart files or immutable product/runtime
-snapshots until its receipt closes. Runtime project stays snapshot 11.
+Current phase-hook gate is CLOSED: coordinator added a compatibility-preserving
+synchronous TranslationPhase observer overload; frozen product snapshot 12
+passes eight phases at `t4/restart-reproduction-1/restart-receipt.json`, committed
+as `acceptance/sqlite/restart-report.json`. Full BeforePublication cancellation
+observes/removes the real completion marker, preserves incomplete files and
+leaves requested output unpublished; a separate process recomputes the identical
+request, publishes atomically and directly compares all four sources to the
+actual CLI baseline. Existing publication, stage and inputs remain unchanged.
+This is restart from input, not partial-stage reuse. Runtime stays snapshot 11.
+
+Readability-only product snapshot 13 contains the same phase hook plus guarded
+scalar switch dispatch and proven pure/null statement suppression. Focused
+control/extrema proof then a new full CLI publication/build/runtime are next;
+use that new artifact for downstream remaining T4 workloads. Extended API
+native/JIT/AOT execution now passes; compact checkpoint is being recorded.
 
 Ownership: coordinator owns Git and all serialized builds/exports; root reviews
 read-only. Emission worker owns NEW SqliteFeatureMatrix SQL workload/docs.

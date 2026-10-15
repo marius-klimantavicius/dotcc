@@ -18,7 +18,7 @@ The required matrix is in [ACCEPTANCE.md](ACCEPTANCE.md). Current finite evidenc
 | Threading/unlock notify | Bounded host foreign-thread/reentry protocol proof | SQLite shared-cache/unlock-notify and permitted concurrent API use |
 | Runtime boundaries | 103 exact required selections: 88 hash-pinned candidate host bindings + 15 runtime intrinsics; targeted errno/loader/callback/vararg/storage proofs | Complete selected-provider audit against exercised T4 paths and explicit remaining variants |
 | Failure paths | Constraint/rollback native proof and expected BUSY finalize behavior | Generated extended errors; controlled allocation/I/O failure cleanup and recovery |
-| Repeat/restart | Original deterministic fixture generation; production/candidate four sources identical | Full input real prepublication cancellation passes; same-request fresh-process comparison running |
+| Repeat/restart | Original deterministic fixture generation; production/candidate four sources identical | Full input real cancellation and same-request fresh-process restart pass; all four source files byte-identical |
 | Readability | T2 narrow review passes; full SQLite names/structure reviewed provisionally | Representative full output review and any necessary narrow cleanup |
 
 Frozen receipts:
@@ -28,6 +28,7 @@ Frozen receipts:
 - [Ownership, preupdate, session and backup](../acceptance/sqlite/api-callbacks-report.json)
 - [Expanded SQL features](../acceptance/sqlite/sql-features-report.json)
 - [Snapshot and RBU lifecycles](../acceptance/sqlite/maintenance-report.json)
+- [Repeat generation and cancellation/restart](../acceptance/sqlite/restart-report.json)
 
 Extended-API NativeAOT work remains in progress; native/JIT results alone do not
 close that deployment gate. Successful finite rows do not establish
