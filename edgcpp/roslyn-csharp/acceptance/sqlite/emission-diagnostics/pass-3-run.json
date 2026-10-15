@@ -1,0 +1,35 @@
+{
+  "status": "failed",
+  "command": [
+    "dotnet",
+    "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-3-bin/SqliteEmissionProbe.dll",
+    "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "/mnt/storage/roslynobj-csharp-20261015/t3/provider-preparation-3/provider-plan.json",
+    "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-3/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+    "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-3-report.json"
+  ],
+  "workingDirectory": "/home/marius/p/dotcc",
+  "exitCode": 1,
+  "elapsedSeconds": 341.0166158559732,
+  "sampledPeakProcessTreeRssBytes": 1023598592,
+  "waitedPeakProcessRssBytes": 1019080704,
+  "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+  "budgets": {
+    "timeoutSeconds": 900.0,
+    "memoryBytes": 8589934592,
+    "logBytes": 67108864
+  },
+  "budgetViolation": null,
+  "logs": [
+    {
+      "path": "stdout.txt",
+      "bytes": 202,
+      "sha256": "e31f28b58ffcf447420052dcfe5788995486d8e80d749010af787c172ea6f4a2"
+    },
+    {
+      "path": "stderr.txt",
+      "bytes": 84,
+      "sha256": "546ebabe7c8535d7bb61198276e4fb9cd3ef631be3e7cf207280e1c7aeff213a"
+    }
+  ]
+}

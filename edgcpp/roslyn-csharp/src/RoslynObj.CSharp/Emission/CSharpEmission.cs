@@ -185,6 +185,8 @@ public sealed partial class CSharpEmitter
         private void EmitFunction(FunctionSymbol function)
         {
             ValidateOrdinaryRoutineRoles(function.Signature);
+            if (IsUInt128Value(function.ReturnType) || function.Parameters.Any(parameter => IsUInt128Value(parameter.Type)))
+                throw Limit("Unsigned 128-bit execution parameters/results require a separately exercised call representation.", "integer128-call");
             if (function.Parameters.Any(p => p.Role.Name != "ordinary_parameter"))
                 throw Limit("An execution parameter has a hidden role requiring an exercised ABI adapter.", "parameter");
             if (function.Signature.IsVariadic) ValidateNativeScalarSignature(function.Signature);
@@ -199,6 +201,7 @@ public sealed partial class CSharpEmitter
             }
             foreach (var variable in body.Locals)
             {
+                if (TryAdmitStaticLocal(variable)) continue;
                 if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0 || variable.Details.StorageDuration?.Name is "static" or "thread")
                     throw Limit("Static/thread local storage requires the T2 initialization contract.", "storage");
                 Name(variable, variable.Name ?? "temporary", localNames);
@@ -225,8 +228,9 @@ public sealed partial class CSharpEmitter
             writer.Open();
             foreach (var variable in body.Locals)
             {
+                if (IsAllocatedStaticLocal(variable)) continue;
                 writer.Line($"{TypeName(variable.Type)} {names[variable]};");
-                if (Unwrap(variable.Type) is PointerType) writer.Line($"{names[variable]} = {PointerZero(variable.Type)};");
+                if (MemoryRepresentationType(variable.Type) is PointerType) writer.Line($"{names[variable]} = {PointerZero(variable.Type)};");
                 else writer.Line($"Unsafe.SkipInit(out {names[variable]});");
             }
             if (body.Locals.Count > 0) writer.Line();
@@ -252,7 +256,7 @@ public sealed partial class CSharpEmitter
                 case DeclarationOperation declaration:
                     // Storage declarations are emitted at method scope. Initializers execute only
                     // at their explicit retained statement/expression occurrences.
-                    if (declaration.HasStaticOrThreadVariable) throw Limit("Static declaration statements are unsupported.", "storage");
+                    ValidateStaticDeclaration(declaration);
                     return;
                 case InitializationStatementOperation initialization:
                     Initialization(initialization.Initialization, writer);
@@ -307,6 +311,7 @@ public sealed partial class CSharpEmitter
 
         private void Initialization(Initialization initialization, CodeWriter writer)
         {
+            if (TryStaticInitialization(initialization)) return;
             if (initialization.Kind.Name is not ("dik_expression" or "dik_constant" or "dik_bitwise_copy") ||
                 initialization.Details.IsConditional || initialization.Details.IsReusedValue ||
                 initialization.Details.IsPartialAggregate && (initialization.Kind.Name != "dik_constant" || initialization.Constant is null))
@@ -397,6 +402,7 @@ public sealed partial class CSharpEmitter
                 case "eok_parens": return $"({A(0)})";
                 case "eok_address_of": case "eok_reference_to":
                     if (operands[0] is ReferenceOperation { Target: FunctionSymbol addressed }) return FunctionAddress(addressed);
+                    ValidateValueAddress(operands[0].Type);
                     return $"&({A(0)})";
                 case "eok_indirect": case "eok_ref_indirect": return $"(*({A(0)}))";
                 case "eok_dot_field": case "eok_points_to_field":
@@ -474,9 +480,11 @@ public sealed partial class CSharpEmitter
 
         private string Constant(Constant constant)
         {
+            if (TryStoredConstant(constant, out var stored)) return stored;
             if (constant.Value is IntegerValue integer)
             {
                 var type = constant.Type ?? throw Limit("Integer constant has no recorded type.", "constant");
+                if (TryWideIntegerLiteral(integer.Value, type, out var wide)) return wide;
                 var name = TypeName(type);
                 var value = integer.Value.ToString(CultureInfo.InvariantCulture);
                 var suffix = name switch { "uint" => "U", "long" => "L", "ulong" => "UL", _ => "" };
@@ -503,11 +511,13 @@ public sealed partial class CSharpEmitter
             return TruthValue(Expression(expression), expression.Type);
         }
         private string TruthValue(string value, CppType type) => $"({value}) != {(Unwrap(type) is PointerType ? PointerZero(type) : "0")}";
-        private static string PointerZero(CppType type) => Unwrap(type) is PointerType pointer && Unwrap(pointer.PointeeType) is not RoutineType ? "null" : "0";
+        private static string PointerZero(CppType type) => MemoryRepresentationType(type) is PointerType pointer && MemoryRepresentationType(pointer.PointeeType) is not RoutineType ? "null" : "0";
         private string BoolValue(string comparison, CppType type) => $"(({comparison}) ? ({TypeName(type)})1 : ({TypeName(type)})0)";
 
         private string TypeName(CppType type)
         {
+            if (IsRawUInt128(type)) { ValidateUInt128Value(type); return "UInt128"; }
+            if (TryVolatileStorageRepresentation(type, out var representation)) type = representation;
             type = Unwrap(type);
             if (type.Details.IsAtomic) throw Limit("Atomic storage requires a target atomic projection.", "atomic");
             if (type.Kind.Name == "tk_void") return "void";
@@ -535,8 +545,9 @@ public sealed partial class CSharpEmitter
             if (type is PointerType pointer)
             {
                 if (pointer.IsReference) throw Limit("Reference storage adaptation has no exercised T1 contract.", "reference");
+                ValidateValueAddress(pointer.PointeeType);
                 if (TryVoidPointerType(pointer, out var voidPointer)) return voidPointer;
-                if (Unwrap(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }
+                if (MemoryRepresentationType(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }
                 if (TryProgramPointerType(pointer, out var pointerView)) return pointerView;
                 return TypeName(pointer.PointeeType) + "*";
             }
@@ -591,6 +602,7 @@ public sealed partial class CSharpEmitter
                 output.Append("    [FieldOffset(0)] public ").Append(AlignmentCarrier(alignment)).AppendLine(" __alignment;");
             foreach (var field in layout.Fields)
             {
+                ValidateValueAddress(field.Field.Type);
                 if (field.Offset is not { } offset || offset < 0 || offset > int.MaxValue)
                     throw Limit("Record field has a bitfield or unavailable storage offset.", "record");
                 if (field.Field.Details.IsBitField)
@@ -598,6 +610,7 @@ public sealed partial class CSharpEmitter
                     EmitBitField(record, field, output);
                     continue;
                 }
+                if (TryEmitFlexibleTail(field.Field, output)) continue;
                 output.Append("    [FieldOffset(").Append(offset).Append(")] public ").Append(TypeName(field.Field.Type)).Append(' ').Append(FieldName(field.Field)).AppendLine(";");
             }
             output.AppendLine("}").AppendLine();

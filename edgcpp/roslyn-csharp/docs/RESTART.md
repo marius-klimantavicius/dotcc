@@ -2,6 +2,41 @@
 
 Updated 2026-10-15. Approved plan commit: `e40280bea`.
 
+Current state: frozen source snapshots 1–5 and exact build/command receipts are
+under `/mnt/storage/roslynobj-csharp-20261015/t3/value-storage`. The staged
+checkpoint uses snapshot 4 product files; subsequent working changes are kept
+separate. The full SQLite pass 3 has 57 first blockers, not complete emission:
+30 compound count/offset, 20 volatile, five static forms and two shift widths.
+See [T3-PROGRESS.md](T3-PROGRESS.md) and its committed reports.
+
+Verified new bounded evidence: production CLI intrinsic fulfillment (18 expected
+outcomes), memory plans (21), selected glibc loader (21), static state 306/313,
+allocated flexible tails including header padding, value-only unsigned128 and
+C aggregate constant-prvalue copying. The static checker 406/413 prediction was
+wrong; native and generated 306/313 plus exact observations are authoritative.
+
+Next work is driven by public facts, not a broader prerequisite campaign:
+
+- Inventory/planner worker: actual natural signed/unsigned pointer offsets,
+  unsigned32/64 shifts, signed32/binary64 volatile fetch/store/local-init forms.
+  Facts are `t3/sqlite-operator-facts-3.json` (51 bodies plus a separately retained
+  representation diagnostic). The earlier probe missing a body named program
+  is preserved; that representation diagnostic was never assigned a guessed body.
+- Storage/provider worker: four direct `initk_static` strings and one `initk_none`
+  zero record, plus clearing the matching cached native loader TLS pointer before
+  release. These changes and their new activation fixture are outside frozen 4.
+- Coordinator: core explicit local-init and pure representation hooks, serialized
+  focused proofs, then the next unchanged full SQLite emit/build diagnostic path.
+  The main execution Unwrap remains guarded; no volatile read is inferred from
+  a pointer/type view. No new full T0 inventory is needed.
+
+All 88 host bindings remain diagnostic candidates; bounded provider receipts do
+not prove every contract. SQLite T3/T4 SQL execution has not run. At checkpoint
+assembly no full-object process remains active; follow the live coordinator for
+currently scheduled focused builds/probes. Preserve every failed attempt.
+
+## Earlier checkpoint history
+
 The coordinator owns shared contracts, integration, serialized build/export
 scheduling, exact-path Git mutations and this ledger. Root supervises read-only.
 Two `gpt-6.1-sol` xhigh implementers have disjoint ownership:
@@ -188,8 +223,7 @@ intrinsics 34/all 34 plus 1000 exact handoffs (27 expected outcomes), and errno/
 qsort/pthread 6223/all 24 with forced raw interference (17 phases). Frozen
 receipts are under `acceptance/{statements,intrinsics,errno-provider}`. Product
 sources remained held through these receipts; no additional baseline rerun is
-needed absent relevant changes. Public CLI still rejects required intrinsic
-imports and needs coordinator fulfillment/report integration.
+needed absent relevant changes. Public CLI intrinsic fulfillment was subsequently verified; see current state above.
 
 Coordinator next: flexible-tail address representation, value-only unsigned128
 with guarded addressable alignment, CLI intrinsic fulfillment and checkpoint

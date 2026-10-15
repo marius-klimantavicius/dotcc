@@ -7,10 +7,12 @@ public static partial class TargetArithmetic
     public static uint ShiftLeft(uint value, int count) { CheckShift(count, 32); return value << count; }
     public static long ShiftLeft(long value, int count) { CheckShift(count, 64); return unchecked(value << count); }
     public static ulong ShiftLeft(ulong value, int count) { CheckShift(count, 64); return value << count; }
+    public static UInt128 ShiftLeft(UInt128 value, int count) { CheckShift(count, 128); return value << count; }
     public static int ShiftRight(int value, int count) { CheckShift(count, 32); return value >> count; }
     public static uint ShiftRight(uint value, int count) { CheckShift(count, 32); return value >> count; }
     public static long ShiftRight(long value, int count) { CheckShift(count, 64); return value >> count; }
     public static ulong ShiftRight(ulong value, int count) { CheckShift(count, 64); return value >> count; }
+    public static UInt128 ShiftRight(UInt128 value, int count) { CheckShift(count, 128); return value >> count; }
 
     private static void CheckShift(int count, int bits)
     {

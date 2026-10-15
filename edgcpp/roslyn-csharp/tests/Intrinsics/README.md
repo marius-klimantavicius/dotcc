@@ -45,3 +45,26 @@ source/runtime/tool/build/object/public-fact hashes, deterministic repeated
 emission, JIT/AOT exact output twice, dependencies, resources, and both expected
 unsupported outcomes. Public descendant traversal is identity-deduplicated
 inventory only and supplies no execution schedule.
+
+The separate coordinator-only production CLI integration driver reuses those
+accepted objects and the existing checker. It accepts an isolated project root:
+
+```sh
+python3 edgcpp/roslyn-csharp/tests/Intrinsics/run-cli-intrinsics.py \
+  --project-root /absolute/snapshot/edgcpp/roslyn-csharp \
+  --objects /mnt/storage/roslynobj-csharp-20261015/t3/intrinsics-reproduction/export \
+  --aot-cc clang-18 --artifacts /absolute/new/cli-intrinsics-artifacts
+```
+
+It checks public CLI inspection against the accepted object hashes/provenance,
+derives a bounded library request from the selected snapshot's SQLite manifest,
+and runs inventory plus translation with empty native bindings/providers. The
+completed report must select exactly the15 required recorded builtin imports
+through `RoslynObj.CSharp.Runtime.TargetIntrinsics`, each with binding status
+`recorded-intrinsic-lowering-selected`. Completion hashes cover the exact
+generated file set. Generated dependencies remain Generated plus Runtime.
+JIT and NativeAOT run the exact34observations, trace and1000handoffs checker once
+each against the previously accepted independent native output hash. Both
+genuine unsupported objects must fail before output publication. This driver
+performs no export or native application build; its receipt establishes CLI
+integration of the existing bounded slice, without a full SQLite claim.

@@ -19,6 +19,7 @@ public sealed partial class CSharpEmitter
         {
             if (variable.Details.IsNonreal || variable.Details.IsPrototypeInstantiation || variable.Details.IsTemplateVariable) return;
             if (variable.SymbolDetails.Storage?.Name == "sc_extern") return;
+            if (TryAdmitStaticLocal(variable)) return;
             if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0)
                 throw Limit($"Storage '{variable.Name}' requires thread/local-static initialization support.", "storage");
             if (variable.Details.IsWeak || variable.Details.IsCommon || variable.Details.IsGnuAlias || variable.Details.IsWeakref || variable.Details.AliasedVariable is not null)
@@ -31,6 +32,7 @@ public sealed partial class CSharpEmitter
         private void AddStorage(SemanticEntity entity, CppType type, Constant? initializer, string candidate)
         {
             if (storage.ContainsKey(entity)) return;
+            ValidateValueAddress(type);
             _ = TypeName(type);
             _ = StorageSize(type);
             Name(entity, candidate, globalNames);
@@ -72,7 +74,8 @@ public sealed partial class CSharpEmitter
             {
                 if (text.UnitKind.Name != "target_bytes" || text.StorageUnitBits != 8)
                     throw Limit("String materialization requires exact target-byte units.", "constant");
-                if (text.Length > StorageSize(type)) throw Limit("String target bytes exceed selected storage.", "constant");
+                if (text.Length != text.StorageUnits.Count || text.Length > StorageSize(type) || text.StorageUnits.Any(unit => unit > byte.MaxValue))
+                    throw Limit("String target units do not exactly match the retained length/storage.", "constant");
                 for (var index = 0; index < text.StorageUnits.Count; ++index)
                     writer.Line($"({destination})[{index}] = {text.StorageUnits[index]};");
                 return;
@@ -175,6 +178,7 @@ public sealed partial class CSharpEmitter
 
         private string IntegerLiteral(BigInteger value, CppType type)
         {
+            if (TryWideIntegerLiteral(value, type, out var wide)) return wide;
             var name = TypeName(type);
             var text = value.ToString(CultureInfo.InvariantCulture);
             var suffix = name switch { "uint" => "U", "long" => "L", "ulong" => "UL", _ => "" };
@@ -186,6 +190,7 @@ public sealed partial class CSharpEmitter
 
         private void EmitArray(ArrayType array, StringBuilder output)
         {
+            ValidateValueAddress(array.ElementType);
             if (array.Bound is not { } bound || bound <= 0 || array.VlaDimension is not null)
                 throw Limit("Incomplete, zero-sized and variable-length arrays require a separate storage representation.", "array");
             if (array.Alignment is not { } alignment || alignment < 1 || alignment > 8)

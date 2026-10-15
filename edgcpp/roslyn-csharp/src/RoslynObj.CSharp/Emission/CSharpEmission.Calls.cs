@@ -16,7 +16,7 @@ public sealed partial class CSharpEmitter
         private sealed record FunctionAddressItem(FunctionSymbol Function, string Field, string? Wrapper,
             string? VariadicEntry = null, string? VariadicBridge = null, string? VariadicRegistration = null,
             string? AggregateEntry = null, string? AggregateBridge = null, string? AggregateRegistration = null,
-            string? HostEntry = null, string? HostRegistration = null, bool LogicalErrnoProvider = false);
+            string? HostEntry = null, string? HostRegistration = null, bool LogicalErrnoProvider = false, bool LogicalDlerrorProvider = false);
         private readonly List<NativeImport> nativeImports = [];
         private readonly Dictionary<string, string> nativeLibraries = new(StringComparer.Ordinal);
         private readonly List<FunctionAddressItem> functionAddresses = [];
@@ -97,10 +97,10 @@ public sealed partial class CSharpEmitter
                 nativeLibraries.Add(binding.LibraryPath, library = InternalName($"__library_{nativeLibraries.Count + 1}"));
             Name(function, function.Name ?? "import", globalNames);
             nativeImports.Add(new(function, binding, library));
-            if (HostProtocolEnabled) RequireHostLayouts(nativeImports[^1]);
+            if (HostProtocolEnabled) { RequireHostLayouts(nativeImports[^1]); RequireHostLoaderImport(nativeImports[^1]); }
             if (HostProtocolEnabled && !function.Signature.IsVariadic && !HasAggregateSignature(function.Signature))
             {
-                if (!IsLogicalErrnoProvider(function)) _ = RequireHostNativeCall(function.Signature);
+                if (!IsLogicalErrnoProvider(function) && !IsLogicalDlerrorProvider(function)) _ = RequireHostNativeCall(function.Signature);
                 _ = FunctionAddress(function);
             }
         }
@@ -121,6 +121,8 @@ public sealed partial class CSharpEmitter
             FunctionAddressItem address;
             if (!functions.Contains(function) && IsLogicalErrnoProvider(function))
                 address = new(function, InternalName("__address_" + names[function].TrimStart('@')), null, LogicalErrnoProvider: true);
+            else if (!functions.Contains(function) && IsLogicalDlerrorProvider(function))
+                address = new(function, InternalName("__address_" + names[function].TrimStart('@')), null, LogicalDlerrorProvider: true);
             else if (HasAggregateSignature(function.Signature) && functions.Contains(function))
             {
                 _ = RequireGeneratedAbiLibrary();
@@ -234,6 +236,8 @@ public sealed partial class CSharpEmitter
                 fields.Append("    private static readonly nint ").Append(address.Field).Append(" = ");
                 if (address.LogicalErrnoProvider)
                     fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(logicalErrnoEntry)).AppendLine(");");
+                else if (address.LogicalDlerrorProvider)
+                    fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(logicalDlerrorEntry)).AppendLine(");");
                 else if (address.HostEntry is not null)
                     fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(address.HostEntry)).AppendLine(");");
                 else if (address.AggregateEntry is not null)
@@ -317,6 +321,7 @@ public sealed partial class CSharpEmitter
                 isVariadic = i.Function.Signature.IsVariadic,
                 aggregateGateway = HasAggregateSignature(i.Function.Signature),
                 logicalErrnoProvider = HostProtocolEnabled && (i.Function.GnuSupplement?.AssemblyName ?? i.Function.CurrentName) == "__errno_location",
+                logicalDlerrorProvider = IsLogicalDlerrorProvider(i.Function),
                 returnType = TypeName(i.Function.ReturnType), parameters = i.Function.Parameters.Select(p => TypeName(p.Type)) }),
             generatedAbi = generatedAbiLibrary is null ? null : new
             {
@@ -325,6 +330,12 @@ public sealed partial class CSharpEmitter
                 contract = "concrete SysV AMD64 ABI forwarding only; application bodies remain C#",
                 logicalErrno = HostProtocolEnabled ? new { protocol = "linux-x64-logical-errno-v1", entry = logicalErrnoEntry,
                     addressContract = "native thread-local application slot; distinct from raw libc errno; coherent direct/indirect/address-exposed entry" } : null,
+                logicalDlerror = HostLoaderEnabled ? new { protocol = "linux-x64-glibc-logical-dlerror-v1", entry = logicalDlerrorEntry,
+                    registration = loaderRegistrationEntry,
+                    pendingContract = "each selected loader call replaces pending error, including success clearing; NULL result alone is not error",
+                    storageContract = "native per-thread owned byte snapshot; read-clear keeps returned buffer alive until next selected loader call; pthread destructor releases storage" } : null,
+                loaderProviders = nativeLoaderImports.Select(i => new { linkageName = i.Function.GnuSupplement?.AssemblyName ?? i.Function.CurrentName,
+                    library = i.Binding.LibraryPath, entryPoint = i.Binding.EntryPoint }),
                 hostEntries = functionAddresses.Where(a => a.HostEntry is not null).Select(a => new
                 {
                     linkageName = a.Function.GnuSupplement?.AssemblyName ?? a.Function.CurrentName,

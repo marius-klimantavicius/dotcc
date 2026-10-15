@@ -1,0 +1,557 @@
+{
+  "status": "diagnostics-incomplete-translation",
+  "scope": "Unchanged full-object library emission diagnostic only; candidate export bindings are not production ABI/error/thread validation.",
+  "input": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "bytes": 297556992
+  },
+  "providerPlan": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/provider-preparation-3/provider-plan.json",
+    "sha256": "82980f8840bac35976d06d79daf4e733a945ee5dc774b656551677c5b2626060",
+    "candidateBindings": 88
+  },
+  "build": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-3-bin/RoslynObj.CSharp.dll",
+      "sha256": "ffbc1d9cfbdac9eb2530323759d8249a64baab746467e1ea6d8ab882f7a958f4",
+      "bytes": 492032
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-3-bin/RoslynObj.dll",
+      "sha256": "ba9852e0927454973731684497cf6cbbd42ad75ca5d6129b9bcdba82a1343915",
+      "bytes": 2629120
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-3-bin/SqliteEmissionProbe.dll",
+      "sha256": "edc49f3f201e1c1cbe1381ab20ba2827a3d0d835b11c8ac93f3e3d32d8b3df52",
+      "bytes": 31744
+    }
+  ],
+  "nativeErrorProtocol": "LinuxX64LogicalErrno",
+  "intrinsicAdmission": "Recorded builtin kinds and actual operands are checked by the bounded emitter/runtime implementation; this probe does not execute them.",
+  "providerAdmission": "All 88 bindings are candidates from the export audit; focused provider fixture evidence does not establish every SQLite provider contract.",
+  "artifact": "9097468216bba3077ff4a24753d09245",
+  "translationComplete": false,
+  "outputPublished": false,
+  "emittedFunctions": 0,
+  "emittedRecords": 0,
+  "returnedFiles": 0,
+  "elapsedSeconds": 340.6184115,
+  "diagnosticCount": 57,
+  "errorCount": 57,
+  "families": [
+    {
+      "family": "compound-assignment",
+      "count": 30,
+      "messages": [
+        {
+          "message": "This compound offset/count requires the exercised captured signed32 representation.",
+          "count": 30
+        }
+      ]
+    },
+    {
+      "family": "volatile",
+      "count": 20,
+      "messages": [
+        {
+          "message": "Volatile qualified storage is unsupported.",
+          "count": 19
+        },
+        {
+          "message": "Only captured naturally aligned unsigned16/unsigned32 volatile value accesses are exercised.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "family": "initialization",
+      "count": 4,
+      "messages": [
+        {
+          "message": "A recipe-free local static requires its retained integer constant initializer.",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "family": "shift",
+      "count": 2,
+      "messages": [
+        {
+          "message": "Compound shifts require the exercised unsigned64 or selected unsigned128 value representation.",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "family": "storage",
+      "count": 1,
+      "messages": [
+        {
+          "message": "A local-static recipe lacks the captured static-duration/function-local association.",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "A recipe-free local static requires its retained integer constant initializer.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/5:sqlite3_str_vappendf/operation/0",
+      "Family": "initialization"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/31:sqlite3OomFault/operation/31",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/174:sqlite3OomClear/operation/22",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/306:sqlite3_randomness/operation/155",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/441:walCheckpoint/operation/312",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/586:sqlite3_declare_vtab/operation/34",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/589:sqlite3RunParser/operation/43",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "A local-static recipe lacks the captured static-duration/function-local association.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/616:sqlite3VdbeGetOp/operation/0",
+      "Family": "storage"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "A recipe-free local static requires its retained integer constant initializer.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/629:sqlite3ExprCodeTarget/operation/0",
+      "Family": "initialization"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/878:sqlite3ProgressCheck/operation/14",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/921:sqlite3PagerOpen/operation/184",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "A recipe-free local static requires its retained integer constant initializer.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/928:getSafetyLevel/operation/0",
+      "Family": "initialization"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1092:sqlite3AllocateIndexObject/operation/68",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Compound shifts require the exercised unsigned64 or selected unsigned128 value representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1101:sqlite3WhereCodeOneLoopStart/operation/1272",
+      "Family": "shift"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1354:sqlite3Step/operation/68",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1357:sqlite3VdbeList/operation/107",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1361:sqlite3VdbeExec/operation/119",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1410:sqlite3BtreeCount/operation/35",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1466:rebuildPage/operation/194",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1554:patternCompare/operation/239",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1558:loadStatTbl/operation/198",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1568:checkProgress/operation/14",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1618:sqlite3VdbeExpandSql/operation/112",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1619:findNextHostParameter/operation/43",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1700:jsonLabelCompareEscaped/operation/75",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Compound shifts require the exercised unsigned64 or selected unsigned128 value representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1706:jsonBlobOverwrite/operation/186",
+      "Family": "shift"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1729:jsonTranslateBlobToText/operation/439",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1736:jsonAppendString/operation/195",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1763:carrayColumn/operation/128",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1920:resizeIndexObject/operation/65",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/1957:sqlite3CreateForeignKey/operation/213",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2052:sqlite3CreateView/operation/157",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "A recipe-free local static requires its retained integer constant initializer.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2064:sqlite3JoinType/operation/0",
+      "Family": "initialization"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2118:sqlite3_wal_checkpoint_v2/operation/118",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2172:statInit/operation/285",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2211:getToken/operation/10",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2226:sqlite3_interrupt/operation/9",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2605:fts3MatchinfoValues/operation/383",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2699:fts5TriTokenize/operation/475",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2941:fts5DoclistIterNext/operation/27",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2958:fts5LocaleFunc/operation/127",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2965:fts5ConfigParseSpecial/operation/324",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/2993:fts5BestIndexMethod/operation/254",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3285:rtreeStepToLeaf/operation/176",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3489:sqlite3_test_control/operation/177",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3560:sqlite3_is_interrupted/operation/11",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3568:sqlite3_carray_bind_v2/operation/242",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3572:trimFunc/operation/271",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3615:sumStep/operation/61",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3616:kahanBabuskaNeumaierStepInt64/operation/25",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3617:kahanBabuskaNeumaierStep/operation/2",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Only captured naturally aligned unsigned16/unsigned32 volatile value accesses are exercised.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3618:kahanBabuskaNeumaierInit/operation/20",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3621:sumInverse/operation/117",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3918:rbuDeltaApply/operation/130",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4023:openRbuHandle/operation/85",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "This compound offset/count requires the exercised captured signed32 representation.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4060:sessionTableInfo/operation/370",
+      "Family": "compound-assignment"
+    },
+    {
+      "Code": "CSHARP2200",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/4212:program/operation/457",
+      "Family": "volatile"
+    }
+  ]
+}

@@ -69,9 +69,9 @@ public sealed partial class CSharpEmitter
             var signature = import.Function.Signature;
             var resultType = TypeName(signature.ReturnType);
             var formals = signature.Parameters.Select((p, i) => $"{TypeName(p.Type)} argument{i}");
-            if (IsLogicalErrnoProvider(import.Function))
+            if (IsLogicalErrnoProvider(import.Function) || IsLogicalDlerrorProvider(import.Function))
             {
-                methods.Append("    [DllImport(\"").Append(NativeAbiLibraryName).Append("\", EntryPoint = \"").Append(logicalErrnoEntry)
+                methods.Append("    [DllImport(\"").Append(NativeAbiLibraryName).Append("\", EntryPoint = \"").Append(IsLogicalDlerrorProvider(import.Function) ? logicalDlerrorEntry : logicalErrnoEntry)
                     .AppendLine("\", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]");
                 methods.Append("    private static extern ").Append(resultType).Append(' ').Append(names[import.Function]).AppendLine("();").AppendLine();
                 return;
@@ -88,6 +88,7 @@ public sealed partial class CSharpEmitter
         {
             if (!HostProtocolEnabled) return;
             initialization.Line("if (!OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64) throw new PlatformNotSupportedException(\"The selected logical errno provider requires Linux x64.\");");
+            EmitHostLoaderSupport(initialization);
             foreach (var call in hostNativeCalls)
             {
                 var signature = call.Signature;
@@ -130,14 +131,16 @@ public sealed partial class CSharpEmitter
         {
             if (!HostProtocolEnabled) return;
             source.Append("    int *const __application_error = ").Append(logicalErrnoEntry).AppendLine("();")
-                .AppendLine("    int *const __native_error = __errno_location();")
-                .AppendLine("    *__native_error = *__application_error;");
+                .AppendLine("    int *const __native_error = __errno_location();");
+            AppendHostLoaderOutgoingStart(source);
+            source.AppendLine("    *__native_error = *__application_error;");
         }
         private void AppendHostOutgoingEnd(StringBuilder source)
         {
             if (!HostProtocolEnabled) return;
             source.AppendLine("    int const __captured_error = *__native_error;")
                 .AppendLine("    *__application_error = __captured_error;");
+            AppendHostLoaderOutgoingEnd(source);
         }
         private void AppendHostIncomingStart(StringBuilder source)
         {

@@ -24,17 +24,28 @@ public sealed partial class Translator
         if (request.Roots.Exports.Length != 0)
             return Failure("ROC1205", "Explicit native export wrappers require an accepted export ABI implementation.");
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
+        var intrinsicImports = inventory.ProgramReport.Functions.Where(function => function.Builtin is not null)
+            .Select(function => function.Locator).ToHashSet(StringComparer.Ordinal);
         // Multi-unit execution is initially self-contained. Only ProgramAssembly
         // may fulfill its cross-unit declarations; no name-based import filtering.
         foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required && inventory.ProgramReport.Inputs.Count == 1))
         {
+            // Recorded compiler intrinsics are lowered from their actual call
+            // occurrences. They never fall back to a similarly named host export.
+            // The emitter still validates each selected signature/order/operand.
+            if (import.Kind == "function" && intrinsicImports.Contains(import.Locator))
+            {
+                if (request.Runtime.Bindings.Any(binding => binding.Kind == import.Kind && binding.LinkageName == import.LinkageName))
+                    return Failure("ROC1301", $"Recorded intrinsic '{import.LinkageName}' cannot be replaced by a native function binding.");
+                continue;
+            }
             var binding = request.Runtime.Bindings.SingleOrDefault(binding =>
                 binding.Kind == import.Kind && binding.LinkageName == import.LinkageName);
-            if (import.Kind != "function" || inventory.ProgramReport.Functions.Any(function => function.Locator == import.Locator && function.Builtin is not null)
+            if (import.Kind != "function"
                 || binding is null || import.BindingStatus != "declared-unverified"
                 || string.IsNullOrWhiteSpace(binding.Symbol) || string.IsNullOrWhiteSpace(binding.LibraryPath)
                 || binding.LibrarySha256 is not { Length: 64 } || !binding.LibrarySha256.All(Uri.IsHexDigit))
-                return Failure("ROC1301", $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature native function binding and pinned provider file; variables and intrinsic providers are not implemented here.");
+                return Failure("ROC1301", $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature native function binding and pinned provider file; native variable providers are not implemented here.");
             nativeBindings.Add(new(binding.LinkageName, binding.LibraryPath, binding.Symbol));
         }
         if (inventory.ProgramReport.Families.Any(f => f.Family == "link-policy" && f.RequiredCount > 0))
@@ -92,6 +103,9 @@ public sealed partial class Translator
             var completed = inventory.ProgramReport with
             {
                 TranslationComplete = true, Diagnostics = diagnostics.ToArray(),
+                Imports = inventory.ProgramReport.Imports.Select(import => import.Required && intrinsicImports.Contains(import.Locator)
+                    ? import with { Provider = "RoslynObj.CSharp.Runtime.TargetIntrinsics", BindingStatus = "recorded-intrinsic-lowering-selected" }
+                    : import).ToArray(),
                 Families = inventory.ProgramReport.Families.Select(f => f.RequiredCount == 0 ? f : f with
                 {
                     Status = CapabilityStatus.Implemented,

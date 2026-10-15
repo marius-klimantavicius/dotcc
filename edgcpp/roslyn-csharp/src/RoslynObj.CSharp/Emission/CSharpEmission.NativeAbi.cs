@@ -48,6 +48,7 @@ public sealed partial class CSharpEmitter
         {
             var source = new StringBuilder("/* Generated concrete ABI forwarding only. Application bodies remain C#. */\n#include <stdarg.h>\n#include <stddef.h>\n#include <stdint.h>\n#include <stdlib.h>\n\n#if !defined(__linux__) || !defined(__x86_64__)\n#error This ABI provider requires Linux x64.\n#endif\n_Static_assert(sizeof(void *) == 8, \"64-bit native pointers required\");\n_Static_assert(sizeof(va_list) == 24 && _Alignof(va_list) == 8, \"SysV AMD64 cursor storage required\");\n#define ABI_EXPORT __attribute__((visibility(\"default\")))\n\n");
             AppendHostProtocolPreamble(source);
+            AppendHostLoaderPreamble(source);
             foreach (var address in functionAddresses.Where(a => a.VariadicEntry is not null))
             {
                 var signature = address.Function.Signature;

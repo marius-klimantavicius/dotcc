@@ -1,7 +1,7 @@
 namespace RoslynObj.CSharp;
 
 [Flags]
-internal enum ExpressionEffects { None = 0, ReadStorage = 1, WriteStorage = 2, Call = 4, MayThrow = 8 }
+internal enum ExpressionEffects { None = 0, ReadStorage = 1, WriteStorage = 2, Call = 4, MayThrow = 8, VolatileRead = 16, VolatileWrite = 32 }
 
 /// <summary>A build-time C# type, including synthetic pointer temporaries and C# Boolean conditions.</summary>
 internal sealed record CsType(CppType? Captured, int AddedPointerDepth = 0, string? Intrinsic = null)
@@ -21,7 +21,7 @@ internal sealed record CsUnary(CsType ValueType, string Operator, CsExpression O
 internal sealed record CsBinary(CsType ValueType, string Operator, CsExpression Left, CsExpression Right) : CsExpression(ValueType);
 internal sealed record CsCast(CsType ValueType, CsExpression Operand) : CsExpression(ValueType);
 internal sealed record CsChoice(CsType ValueType, CsExpression Condition, CsExpression Then, CsExpression Else) : CsExpression(ValueType);
-internal sealed record CsLoad(LValuePlan Place) : CsExpression(CsType.Value(Place.Type));
+internal sealed record CsLoad(LValuePlan Place, bool VolatileFetch = false) : CsExpression(CsType.Value(Place.Type));
 internal sealed record CsAddress(CsType ValueType, LValuePlan Place) : CsExpression(ValueType);
 internal sealed record CsPlannedCall(CsType ValueType, CallOperation Operation, CsExpression? Callee,
     IReadOnlyList<CsExpression> Arguments) : CsExpression(ValueType);
@@ -31,7 +31,8 @@ internal sealed record CsSourceBoolean(CsType ValueType, CsExpression Condition)
 
 internal enum LValueKind { Slot, Address, Field }
 /// <summary>A storage location; a bitfield property has a receiver and no addressable field.</summary>
-internal sealed record LValuePlan(CppType Type, LValueKind Kind, CsExpression Operand, FieldSymbol? Field = null)
+internal sealed record LValuePlan(CppType Type, LValueKind Kind, CsExpression Operand, FieldSymbol? Field = null, bool VolatileTarget = false,
+    VariableSymbol? Variable = null)
 {
     internal bool IsBitField => Field?.Details.IsBitField == true;
 }

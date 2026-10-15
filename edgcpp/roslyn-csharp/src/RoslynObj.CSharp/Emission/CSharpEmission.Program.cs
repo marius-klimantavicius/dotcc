@@ -89,7 +89,7 @@ public sealed partial class CSharpEmitter
         private bool TryProgramPointerType(PointerType pointer, out string representation)
         {
             representation = "";
-            if (Unwrap(pointer.PointeeType) is not RecordType record || !record.IsIncomplete && record.Layout is not null && record.Size is not null)
+            if (MemoryRepresentationType(pointer.PointeeType) is not RecordType record || !record.IsIncomplete && record.Layout is not null && record.Size is not null)
                 return false;
             ValidateProgramPointer(pointer);
             representation = "void*";

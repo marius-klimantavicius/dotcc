@@ -9,16 +9,21 @@ public sealed partial class CSharpEmitter
         private ExpressionPlan PlanExpression(ExpressionOperation expression)
         {
             ++operationOrdinal;
-            if (expression.Details.VolatileFetch) throw Limit("Volatile evaluation needs a target memory-order plan.", "volatile");
+            return ApplyRecordedVolatileFetch(expression, PlanExpressionCore(expression));
+        }
+
+        private ExpressionPlan PlanExpressionCore(ExpressionOperation expression)
+        {
             var type = CsType.Value(expression.Type);
             switch (expression)
             {
                 case ConstantOperation constant:
+                    if (TryPlanStoredConstant(constant, out var storedConstant)) return storedConstant;
                     return new(expression.Type, expression.ValueCategory, [], new CsLeaf(type, Constant(constant.Constant), true), ExpressionEffects.None);
                 case ReferenceOperation reference:
                 {
                     var value = new CsLeaf(type, Reference(reference), reference.Target is FunctionSymbol);
-                    var place = reference.Target is VariableSymbol ? new LValuePlan(expression.Type, LValueKind.Slot, value) : null;
+                    var place = reference.Target is VariableSymbol variable ? MemoryPlace(expression.Type, LValueKind.Slot, value, variable: variable) : null;
                     return new(expression.Type, expression.ValueCategory, [], place is null ? value : new CsLoad(place),
                         place is null ? ExpressionEffects.None : ExpressionEffects.ReadStorage, place);
                 }
@@ -51,7 +56,8 @@ public sealed partial class CSharpEmitter
             if (kind == "eok_bool_cast") value = SourceBoolean(conversion.Type, PlanTruth(operand.Value, operand.Type));
             else if (kind is "eok_lvalue_adjust" or "eok_class_rvalue_adjust")
             {
-                if (TypeName(conversion.SourceType) != TypeName(conversion.TargetType)) throw Limit("Lvalue adjustment changes its selected storage representation.", "conversion");
+                if (!conversion.SourceType.Equals(conversion.TargetType) && TypeName(conversion.SourceType) != TypeName(conversion.TargetType))
+                    throw Limit("Lvalue adjustment changes its selected storage representation.", "conversion");
                 value = operand.Value; place = operand.Place;
             }
             else if (kind == "eok_array_to_pointer")
@@ -75,7 +81,7 @@ public sealed partial class CSharpEmitter
             if (kind == "eok_question") return PlanConditional(operation);
             if (kind is "eok_land" or "eok_lor") return PlanShortCircuit(operation);
             if (kind == "eok_bassign") return PlanAggregateAssignment(operation);
-            if (AssignmentOperators.ContainsKey(kind)) return PlanAssignment(operation);
+            if (AssignmentOperators.ContainsKey(kind) || NeedsPlannedCompoundOperation(operation)) return PlanAssignment(operation);
             if (kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr") return PlanIncrement(operation);
             if (kind is "eok_dot_field" or "eok_points_to_field") return PlanField(operation);
             if (kind is "eok_address_of" or "eok_reference_to")
@@ -90,7 +96,7 @@ public sealed partial class CSharpEmitter
             if (kind is "eok_indirect" or "eok_ref_indirect")
             {
                 var operand = PlanExpression(operands[0]);
-                var place = new LValuePlan(operation.Type, LValueKind.Address, operand.Value);
+                var place = MemoryPlace(operation.Type, LValueKind.Address, operand.Value);
                 return new(operation.Type, operation.ValueCategory, operand.Prefix, new CsLoad(place), operand.Effects | ExpressionEffects.ReadStorage, place);
             }
             if (kind is "eok_subscript" or "eok_padd" or "eok_psubtract" or "eok_pdiff")
@@ -102,7 +108,7 @@ public sealed partial class CSharpEmitter
                 if (kind == "eok_subscript")
                 {
                     var address = new CsBinary(CsType.Address(operation.Type), "+", pointer, index);
-                    var place = new LValuePlan(operation.Type, LValueKind.Address, address);
+                    var place = MemoryPlace(operation.Type, LValueKind.Address, address);
                     return new(operation.Type, operation.ValueCategory, prefix, new CsLoad(place), Effects(plans) | ExpressionEffects.ReadStorage, place);
                 }
                 return new(operation.Type, operation.ValueCategory, prefix,
@@ -142,7 +148,7 @@ public sealed partial class CSharpEmitter
                 }
                 receiver = new CsAddress(CsType.Address(owner.Type), place);
             }
-            var member = new LValuePlan(operation.Type, LValueKind.Field, receiver, field);
+            var member = MemoryPlace(operation.Type, LValueKind.Field, receiver, field);
             return new(operation.Type, operation.ValueCategory, prefix, new CsLoad(member), owner.Effects | ExpressionEffects.ReadStorage, member);
         }
 
@@ -172,7 +178,7 @@ public sealed partial class CSharpEmitter
                 var address = DeclareTemporary(CsType.Address(operation.Type), null, prefix);
                 whenTrue.Add(new CsSetVariable(address, new CsAddress(address.Type, yes.Place)));
                 whenFalse.Add(new CsSetVariable(address, new CsAddress(address.Type, no.Place)));
-                resultPlace = new(operation.Type, LValueKind.Address, address); result = new CsLoad(resultPlace);
+                resultPlace = MemoryPlace(operation.Type, LValueKind.Address, address); result = new CsLoad(resultPlace);
             }
             else if (IsVoid(CsType.Value(operation.Type)))
             {
@@ -204,7 +210,8 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanAssignment(OperatorOperation operation)
         {
-            if (Unwrap(operation.Operands[0].Type) is RecordType or ArrayType) return PlanAggregateAssignment(operation);
+            ValidatePlannedCompound(operation);
+            if (MemoryRepresentationType(operation.Operands[0].Type) is RecordType or ArrayType) return PlanAggregateAssignment(operation);
             var left = PlanExpression(operation.Operands[0]); var right = PlanExpression(operation.Operands[1]);
             var originalPlace = left.Place ?? throw Limit("Assignment needs an actual selected lvalue.", "lvalue");
             var prefix = new List<CsPlanStatement>();
@@ -212,34 +219,45 @@ public sealed partial class CSharpEmitter
             CsExpression rightValue;
             CsVariable? oldValue = null;
             var compound = operation.OperatorKind.Name != "eok_assign";
-            if (compound && Unwrap(left.Type) is ArithmeticType { Arithmetic.IsBool: true })
+            if (compound && MemoryRepresentationType(left.Type) is ArithmeticType { Arithmetic.IsBool: true })
                 throw Limit("Boolean compound assignment needs a selected normalization plan.", "compound-assignment");
             if (operation.Operator.EvalRightToLeft)
             {
                 prefix.AddRange(right.Prefix); rightValue = CaptureValue(right.Value, prefix);
                 prefix.AddRange(left.Prefix); place = CapturePlace(originalPlace, prefix);
-                if (compound) oldValue = DeclareTemporary(CsType.Value(left.Type), new CsLoad(place), prefix);
+                if (compound) oldValue = DeclareTemporary(CsType.Value(left.Type), ReadSelectedPlace(place), prefix);
             }
             else
             {
                 prefix.AddRange(left.Prefix); place = CapturePlace(originalPlace, prefix);
-                if (compound) oldValue = DeclareTemporary(CsType.Value(left.Type), new CsLoad(place), prefix);
+                if (compound) oldValue = DeclareTemporary(CsType.Value(left.Type), ReadSelectedPlace(place), prefix);
                 prefix.AddRange(right.Prefix); rightValue = CaptureValue(right.Value, prefix);
             }
             CsExpression stored;
             if (compound)
             {
-                var leftName = TypeName(left.Type); var rightName = TypeName(right.Type);
-                if (leftName != rightName && !(leftName is "sbyte" or "byte" or "short" or "ushort" && rightName == "int"))
-                    throw Limit("Mixed compound arithmetic requires an explicit selected computation-type adapter.", "compound-assignment");
-                prefix.Add(new CsModifyVariable(oldValue!, AssignmentOperators[operation.OperatorKind.Name], rightValue)); stored = oldValue!;
+                if (operation.OperatorKind.Name is "eok_padd_assign" or "eok_psubtract_assign")
+                    prefix.Add(new CsSetVariable(oldValue!, new CsBinary(CsType.Value(left.Type),
+                        operation.OperatorKind.Name == "eok_padd_assign" ? "+" : "-", oldValue!, rightValue)));
+                else if (operation.OperatorKind.Name is "eok_shiftl_assign" or "eok_shiftr_assign")
+                    prefix.Add(new CsSetVariable(oldValue!, new CsCast(CsType.Value(left.Type),
+                        new CsTargetShift(CsType.Value(left.Type), operation.OperatorKind.Name == "eok_shiftr_assign", oldValue!, rightValue))));
+                else
+                {
+                    var leftName = TypeName(left.Type); var rightName = TypeName(right.Type);
+                    if (leftName != rightName && !(leftName is "sbyte" or "byte" or "short" or "ushort" && rightName == "int"))
+                        throw Limit("Mixed compound arithmetic requires an explicit selected computation-type adapter.", "compound-assignment");
+                    prefix.Add(new CsModifyVariable(oldValue!, AssignmentOperators[operation.OperatorKind.Name], rightValue));
+                }
+                stored = oldValue!;
             }
             else stored = new CsCast(CsType.Value(left.Type), rightValue);
             prefix.Add(new CsStore(place, stored));
             // Reading through the selected getter observes signedness/truncation after a bitfield store.
-            var result = DeclareTemporary(CsType.Value(operation.Type), new CsCast(CsType.Value(operation.Type), new CsLoad(place)), prefix);
+            var observed = place.VolatileTarget ? stored : new CsLoad(place);
+            var result = DeclareTemporary(CsType.Value(operation.Type), new CsCast(CsType.Value(operation.Type), observed), prefix);
             return new(operation.Type, operation.ValueCategory, prefix, result,
-                left.Effects | right.Effects | ExpressionEffects.ReadStorage | ExpressionEffects.WriteStorage,
+                left.Effects | right.Effects | ExpressionEffects.ReadStorage | StoreEffects(place),
                 operation.ValueCategory.Name is "lvalue" or "xvalue" ? place : null);
         }
 
@@ -247,6 +265,8 @@ public sealed partial class CSharpEmitter
         {
             var left = PlanExpression(operation.Operands[0]); var right = PlanExpression(operation.Operands[1]);
             if (left.Place is null || right.Place is null) throw Limit("Aggregate copy needs two selected storage places; return-value materialization is not implemented.", "aggregate");
+            if (left.Place.VolatileTarget || right.Place.VolatileTarget || operation.Details.VolatileFetch)
+                throw Limit("Volatile aggregate copies require an exercised explicit access plan.", "volatile");
             var blockCopy = operation.OperatorKind.Name == "eok_bassign";
             // The current Copy<T> runtime represents complete objects of one selected storage type.
             // EDG block copies can instead use a smaller source to partially fill a destination.
@@ -284,18 +304,18 @@ public sealed partial class CSharpEmitter
         private ExpressionPlan PlanIncrement(OperatorOperation operation)
         {
             var operand = PlanExpression(operation.Operands[0]);
-            if (Unwrap(operand.Type) is ArithmeticType { Arithmetic.IsBool: true })
+            if (MemoryRepresentationType(operand.Type) is ArithmeticType { Arithmetic.IsBool: true })
                 throw Limit("Boolean increment/decrement needs a selected normalization plan.", "increment");
             var prefix = operand.Prefix.ToList();
             var place = CapturePlace(operand.Place ?? throw Limit("Increment needs an actual selected lvalue.", "lvalue"), prefix);
-            var oldValue = DeclareTemporary(CsType.Value(operand.Type), new CsLoad(place), prefix);
+            var oldValue = DeclareTemporary(CsType.Value(operand.Type), ReadSelectedPlace(place), prefix);
             var computed = DeclareTemporary(CsType.Value(operand.Type), oldValue, prefix);
             var increment = operation.OperatorKind.Name is "eok_pre_incr" or "eok_post_incr";
             prefix.Add(new CsModifyVariable(computed, increment ? "++" : "--", null));
             prefix.Add(new CsStore(place, computed));
             var post = operation.OperatorKind.Name is "eok_post_incr" or "eok_post_decr";
-            CsExpression result = post ? oldValue : DeclareTemporary(CsType.Value(operation.Type), new CsCast(CsType.Value(operation.Type), new CsLoad(place)), prefix);
-            return new(operation.Type, operation.ValueCategory, prefix, result, operand.Effects | ExpressionEffects.WriteStorage | ExpressionEffects.ReadStorage,
+            CsExpression result = post ? oldValue : DeclareTemporary(CsType.Value(operation.Type), new CsCast(CsType.Value(operation.Type), place.VolatileTarget ? computed : new CsLoad(place)), prefix);
+            return new(operation.Type, operation.ValueCategory, prefix, result, operand.Effects | StoreEffects(place) | ExpressionEffects.ReadStorage,
                 operation.ValueCategory.Name is "lvalue" or "xvalue" ? place : null);
         }
 
@@ -340,13 +360,14 @@ public sealed partial class CSharpEmitter
             => value is CsVariable or CsLeaf { Stable: true } || IsVoid(value.Type) ? value : DeclareTemporary(value.Type, value, prefix);
         private LValuePlan CapturePlace(LValuePlan place, List<CsPlanStatement> prefix)
         {
+            if (IsRawUInt128(place.Type) && IsStableUInt128LocalPlace(place)) return place;
             if (place.IsBitField)
             {
                 var receiver = DeclareTemporary(CsType.Address(place.Field!.ContainingType), place.Operand, prefix);
                 return place with { Operand = receiver };
             }
             var address = DeclareTemporary(CsType.Address(place.Type), new CsAddress(CsType.Address(place.Type), place), prefix);
-            return new(place.Type, LValueKind.Address, address);
+            return new(place.Type, LValueKind.Address, address, VolatileTarget: place.VolatileTarget);
         }
         private CsVariable DeclareTemporary(CsType type, CsExpression? initializer, List<CsPlanStatement> prefix)
         {
@@ -358,7 +379,7 @@ public sealed partial class CSharpEmitter
         private static ExpressionEffects Effects(IEnumerable<ExpressionPlan> plans) => plans.Aggregate(ExpressionEffects.None, (effects, plan) => effects | plan.Effects);
         private static CsExpression PlanTruth(CsExpression value, CppType type) => new CsTruth(value, type);
         private static CsExpression SourceBoolean(CppType type, CsExpression condition) => new CsSourceBoolean(CsType.Value(type), condition);
-        private static bool IsVoid(CsType type) => type.Intrinsic == "void" || type.AddedPointerDepth == 0 && type.Captured is { } captured && Unwrap(captured).Kind.Name == "tk_void";
+        private static bool IsVoid(CsType type) => type.Intrinsic == "void" || type.AddedPointerDepth == 0 && type.Captured is { } captured && MemoryRepresentationType(captured).Kind.Name == "tk_void";
 
         private string RenderType(CsType type) => type.Intrinsic ?? TypeName(type.Captured!) + new string('*', type.AddedPointerDepth);
         private string RenderPlanValue(ExpressionPlan plan) => RenderExpression(plan.Value);
@@ -371,7 +392,7 @@ public sealed partial class CSharpEmitter
             CsBinary binary => $"unchecked(({RenderExpression(binary.Left)}) {binary.Operator} ({RenderExpression(binary.Right)}))",
             CsCast cast => $"unchecked(({RenderType(cast.Type)})({RenderExpression(cast.Operand)}))",
             CsChoice choice => $"({RenderExpression(choice.Condition)} ? {RenderExpression(choice.Then)} : {RenderExpression(choice.Else)})",
-            CsLoad load => RenderPlace(load.Place),
+            CsLoad load => RenderMemoryLoad(load),
             CsAddress address => RenderAddress(address.Place),
             CsPlannedCall call => RenderCall(call),
             CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
@@ -385,12 +406,16 @@ public sealed partial class CSharpEmitter
         {
             LValueKind.Slot => RenderExpression(place.Operand),
             LValueKind.Address => $"(*({RenderExpression(place.Operand)}))",
+            LValueKind.Field when IsFlexibleTailField(place.Field!) => throw Limit("A flexible tail has an address and no ordinary array value.", "array"),
             LValueKind.Field => $"({RenderExpression(place.Operand)})->{FieldName(place.Field!)}",
             _ => throw Limit("Unknown selected storage place.", "lvalue")
         };
         private string RenderAddress(LValuePlan place)
         {
+            ValidateValueAddress(place.Type);
             if (place.IsBitField) throw Limit("Bitfield properties have no native field address.", "bitfield");
+            if (place.Kind == LValueKind.Field && IsFlexibleTailField(place.Field!))
+                return FlexibleTailAddress(place.Field!, RenderExpression(place.Operand));
             return place.Kind == LValueKind.Address ? RenderExpression(place.Operand) : $"&({RenderPlace(place)})";
         }
         private string RenderCall(CsPlannedCall plannedCall)
@@ -402,7 +427,9 @@ public sealed partial class CSharpEmitter
                 if (call.TargetMethod is { } selected && !CanonicalFunction(selected).Equals(function)) throw Limit("Selected callee needs an explicit ABI adapter.", "call");
                 if (TryIntrinsicCall(call, plannedCall.Arguments.Select(RenderExpression).ToArray(), out var intrinsic)) return intrinsic;
                 RequireCallable(function);
-                if (function.Signature.IsVariadic) throw Limit("Variadic calls need the selected argument-pack ABI.", "varargs");
+                if (function.Signature.IsVariadic)
+                    return ProgramResultView(function.ReturnType, call.Type, VariadicCall(function.Signature, function,
+                        call.Arguments.Select(argument => argument.Value.Type).ToArray(), plannedCall.Arguments.Select(RenderExpression).ToArray()));
                 if (function.Signature.Parameters.Count != plannedCall.Arguments.Count)
                     throw Limit("A selected fixed call needs explicit parameter adaptation.", "call");
                 if (HasAggregateSignature(function.Signature) && !functions.Contains(function))
@@ -414,8 +441,12 @@ public sealed partial class CSharpEmitter
             }
             var type = Unwrap(call.Call.FunctionType ?? call.Callee.Type);
             if (type is PointerType pointer) type = Unwrap(pointer.PointeeType);
-            if (type is not RoutineType signature || plannedCall.Callee is null || signature.IsVariadic)
-                throw Limit("Indirect call needs a selected fixed signature and function-address representation.", "call");
+            if (type is not RoutineType signature || plannedCall.Callee is null)
+                throw Limit("Indirect call needs a selected signature and function-address representation.", "call");
+            if (signature.IsVariadic)
+                return ProgramResultView(signature.ReturnType, call.Type, VariadicCall(signature, null,
+                    call.Arguments.Select(argument => argument.Value.Type).ToArray(), plannedCall.Arguments.Select(RenderExpression).ToArray(),
+                    RenderExpression(plannedCall.Callee)));
             if (HasAggregateSignature(signature))
                 return AggregateCall(signature, null, call.Arguments.Select(argument => argument.Value.Type).ToArray(),
                     plannedCall.Arguments.Select(RenderExpression).ToArray(), RenderExpression(plannedCall.Callee));
@@ -438,7 +469,7 @@ public sealed partial class CSharpEmitter
                         writer.Line(RenderType(declaration.Variable.Type) + " " + declaration.Variable.Name
                             + (declaration.Initializer is null ? ";" : " = " + RenderExpression(declaration.Initializer) + ";")); break;
                     case CsSetVariable assignment: writer.Line(assignment.Variable.Name + " = " + RenderExpression(assignment.Value) + ";"); break;
-                    case CsStore store: writer.Line(RenderPlace(store.Place) + " = " + RenderExpression(store.Value) + ";"); break;
+                    case CsStore store: EmitMemoryStore(store, writer); break;
                     case CsCopy copy: writer.Line($"TargetStorage.Copy(ref {RenderPlace(copy.Destination)}, ref {RenderPlace(copy.Source)}, {StorageSize(copy.StorageType)});"); break;
                     case CsModifyVariable modify:
                         if (modify.Right is not null && RenderType(modify.Variable.Type) is "sbyte" or "byte" or "short" or "ushort")

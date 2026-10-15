@@ -1,0 +1,2758 @@
+{
+  "gate": "T3-partial-selected-glibc-loader",
+  "status": "passed-partial-contract",
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "--version"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10062200704123825,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 53723136,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 9,
+          "sha256": "754d4ec29eaf73ed9f365df0dcc770212d046e7629c4d89ba54da43163a8c24d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10055003105662763,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "gcc-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052404191810638,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "abi-compiler-version",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "-fPIC",
+        "-shared",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-loader-zero.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10054428107105196,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "zero-symbol-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10068293299991637,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 256114688,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 38,
+          "sha256": "280ff880f2d5fe89df85768500168a8d4bf10991a3d9db6544bf04e98243ee7b"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "zero-symbol-exports",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-baseline.c",
+        "-ldl",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/loader-baseline"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10058394505176693,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 23592960,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-baseline-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/loader-baseline",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10047851596027613,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 242,
+          "sha256": "10823ea594fcadbd6c030ed394c71b06eca562f8eab0388e95b45f5d699e7b8c"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-baseline-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-state.c",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-native-oracle.c",
+        "-ldl",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/loader-state"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10048290493432432,
+      "sampledPeakProcessTreeRssBytes": 147456,
+      "waitedPeakProcessRssBytes": 22282240,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-application-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/loader-state",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10061240999493748,
+      "sampledPeakProcessTreeRssBytes": 151552,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 85,
+          "sha256": "bf0a37d962494a71b569ea153dd75f9a407c90e6c4d96ee195874d84b5b99ff2"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-application-run",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-std=c17",
+        "-fPIC",
+        "-shared",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-loader-interference.c",
+        "-ldl",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libraw-loader.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10053599602542818,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 19398656,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "raw-interference-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libraw-loader.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10053813096601516,
+      "sampledPeakProcessTreeRssBytes": 131072,
+      "waitedPeakProcessRssBytes": 256376832,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 42,
+          "sha256": "cfef9943abb8299fd3b9c71930e582f5408c624b1fafd18847e7ffd0a0916dfb"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "raw-interference-exports",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/NativeProviders/LoaderEmit.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter",
+        "--nologo"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 3.4091336359269917,
+      "sampledPeakProcessTreeRssBytes": 204558336,
+      "waitedPeakProcessRssBytes": 202817536,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 902,
+          "sha256": "44fd89bc4c800f80d3974fb3a4ddd295969e429017afc060a96fd9e08f9e64df"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "emitter-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter/LoaderEmit.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/loader-state.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.30114884907379746,
+      "sampledPeakProcessTreeRssBytes": 77049856,
+      "waitedPeakProcessRssBytes": 81002496,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 121,
+          "sha256": "65855ef56a23f5709d869fd60aefa692b8d0859839ab8980c890744a94945340"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter/LoaderEmit.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/loader-state.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/repeated",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.3011883369181305,
+      "sampledPeakProcessTreeRssBytes": 77086720,
+      "waitedPeakProcessRssBytes": 81264640,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 121,
+          "sha256": "65855ef56a23f5709d869fd60aefa692b8d0859839ab8980c890744a94945340"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "repeat-emit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/NativeProviders/LoaderChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.csproj",
+        "-p:RoslynObjAbiCompiler=/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker",
+        "--nologo"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 1.6042834809049964,
+      "sampledPeakProcessTreeRssBytes": 193110016,
+      "waitedPeakProcessRssBytes": 190615552,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 919,
+          "sha256": "8e4cff4260d43c4ef8645a409816eeee7cc18ee12398fc242f01be770d6be6e8"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-build",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker/LoaderChecks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libraw-loader.so",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10066318197641522,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 30670848,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 145,
+          "sha256": "906da762ec78ffd50258e91eb1da1472679565c0e6a352642014d5c64ad062d0"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-jit",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "nm",
+        "-D",
+        "--defined-only",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/libRoslynObj.Generated.Abi.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10061503201723099,
+      "sampledPeakProcessTreeRssBytes": 200704,
+      "waitedPeakProcessRssBytes": 256638976,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 395,
+          "sha256": "1ed9901678d6df416a8205a04b1305bab6bc731e87771b050eac48b58b7aaf70"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "generated-abi-exports",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/libRoslynObj.Generated.Abi.so"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10060626594349742,
+      "sampledPeakProcessTreeRssBytes": 12288,
+      "waitedPeakProcessRssBytes": 17825792,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 155,
+          "sha256": "b4a26fe65686a514eb05c0629ec6c1f49ddf6089c405a676641aca32402fd85a"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "generated-abi-dependencies",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/NativeProviders/LoaderChecks.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.csproj",
+        "-p:RoslynObjAbiCompiler=/usr/bin/x86_64-linux-gnu-gcc-13",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/nativeaot",
+        "--nologo"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 4.712576269987039,
+      "sampledPeakProcessTreeRssBytes": 219303936,
+      "waitedPeakProcessRssBytes": 237359104,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 1112,
+          "sha256": "9cfea2b1949e22f537a81304ea78e9759e14a2dcc51fa308dc42275692378c53"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-publish",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/nativeaot/LoaderChecks",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libraw-loader.so",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052760108374059,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 145,
+          "sha256": "906da762ec78ffd50258e91eb1da1472679565c0e6a352642014d5c64ad062d0"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "checker-aot",
+      "expectedExitCode": 0
+    },
+    {
+      "status": "passed",
+      "command": [
+        "ldd",
+        "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/nativeaot/LoaderChecks"
+      ],
+      "workingDirectory": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10065653605852276,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 222,
+          "sha256": "0bf8ad9cacabaa25c47049a75d22fdae2a1cf7e6058b5708480aa7bfe7523d46"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "nativeaot-dependencies",
+      "expectedExitCode": 0
+    }
+  ],
+  "nativeApplicationFallback": false,
+  "implementation": [
+    {
+      "path": "Directory.Build.props",
+      "sha256": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/AbiCompatibility.cs",
+      "sha256": "b9f3a80ceb96125cb58c0c744b4786599f58b7b8fbb3f7792f999e3ea1a4eab2"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Contracts.cs",
+      "sha256": "b2bac091e1253900befbdc63812c34678ba5428c8d8a795c707eaedab37103fb"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.AggregateAbi.cs",
+      "sha256": "9d46f7054e6d414a7056aa2fd3c50c5165bdc41133dc433abbf2c43f42d57ddc"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Calls.cs",
+      "sha256": "eb8388589ec5706588c3912ceb652e209bc69f1c9f36ad6b2e9562428b4b6638"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.CompoundPlans.cs",
+      "sha256": "759ce7384b8252e82845a4a3700f1893d9bf8c90a001537419d109eaa7b99730"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Constants.cs",
+      "sha256": "7f4d86267e6bd71ca774d61c3a22190933309753be67f636aef8dbc44f4870e9"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.ExpressionPlans.cs",
+      "sha256": "b68f2bfff35c8e497849e87126418d384564d12c20c972a5176365461e87ca4e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.FlexibleArrays.cs",
+      "sha256": "57b6d6221c48a2544f04eb83c692d5efab721515e69420a4271c027dc2c3fe83"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Floating.cs",
+      "sha256": "890b3f5b3ec6362a4c32a824003a2cd968ea590c3e0343a442be8fc03454eead"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.HostLayouts.cs",
+      "sha256": "a628e8578df39c2cb4b22f174c30ba817613bac8c18da4e540caf46e8ca889ba"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.HostLoader.cs",
+      "sha256": "9265441c32ee24b2be7ebb6acc7147b5b5d43251e85ae8bede437c8e67285314"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.HostProtocol.cs",
+      "sha256": "f44b8b5032e62a2db429d1ddb75c0e24d4c0b6d398bb40b35644e43cd838a9e4"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Intrinsics.cs",
+      "sha256": "7447051ad50cfd0069d792abfc3ea7be373539e155c84cf295e22b1438f8e5a9"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.MemoryPlans.cs",
+      "sha256": "8bbc7b539e1f473cda6b0896e269c3faf98edd8b6bf47540d3277220f6d78a55"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.NativeAbi.cs",
+      "sha256": "6958bc2e5c54925caf7d9f2e1823517f658875941d34b52c4bb96a7e235f6835"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Occurrences.cs",
+      "sha256": "39758a6dd5e2268bfdbc58fc279e59deb9f8497fe67ac2183c9ce71879b64830"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Program.cs",
+      "sha256": "48332f2277c7f40189f512136bf2cfbf9d3f9ed9d7ecae275969fff15e371023"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Statements.cs",
+      "sha256": "f808cf61803f93c5b738af761753b38b304431e956a74620724dbb18c339c130"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.Initialization.cs",
+      "sha256": "bf400d02666ee7fe8f215c3bc3c1e3743a222d985de6edf6ecaf66f041a36a7f"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs",
+      "sha256": "cb8e43ca66296e4340e1146182218ba320363ac1e42d73534c79b863d0401ab0"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Types.cs",
+      "sha256": "8df207146a5375463828068af360ed3702fa4423799a23df86ebbd5109d7bdc4"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.UInt128.cs",
+      "sha256": "e3a50514b345491c3d1d4367d736ff6e55a92d269328ad7f416ea4470e91a528"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.Variadics.cs",
+      "sha256": "8233ef4a21c8a942ef2e6b59cd19ee90ed9f0afd6953d8f6d2ecd535c18a5fa0"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/CSharpEmission.cs",
+      "sha256": "8a74995319fe10627ea0c5127c9995f380b73f6febaee26852b17efcdd465c90"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Emission/ExpressionPlan.cs",
+      "sha256": "3549d311774d1e7c8acfe8995327782c00e12bd3b1e47c307e676a0a3af104ca"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Inventory.cs",
+      "sha256": "d6cd37026ac4013f1c95ffb620f6a0ab622fd3b10dd8037de574de37210314a4"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramAssembler.cs",
+      "sha256": "9ad0f09b4dbe1959dcab5f74835a2f340a9834fca2c134253002cfef3f604fa3"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramAssembly.cs",
+      "sha256": "1249c8690302b3ce9418adb229634bccf39a5aaced16e24f4d3a8ae2ebc824fd"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/ProgramManifest.cs",
+      "sha256": "01a6f48dddc4f68fe0270efc7f708a59163c77b4a70443096f9c94fdd4192568"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/RoslynObj.CSharp.csproj",
+      "sha256": "03e03192a4b03f0e5ab94844bf1f7fbfa0939da71052f9c7bd859e6f411bb514"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Translation.cs",
+      "sha256": "f8b8ef953b46999b5046ab4e76424a6d05120bd8de4c7f03a76e11cc917bfb44"
+    },
+    {
+      "path": "src/RoslynObj.CSharp/Translator.cs",
+      "sha256": "441d3a9ea2168dfcfbe3fdb99f2196384cf9e0ef2b13e301758a08757faabb12"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Cli/Program.cs",
+      "sha256": "d1aa89174ce10b1b06edc320d09d7dda540c8466cd2af433767e2465fc9be548"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+      "sha256": "37ba0980a83d81fc6b250c87ba8f1e84a48109d270d3e7bd8ed260e16de8239f"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+      "sha256": "8d654c44b7bebb6b31a9f2f606927f45b5072193adc4eef8cce3f3cf3b278df3"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/SysVVariadic.cs",
+      "sha256": "a89af15ca238f49ad746aaed3d7e8cd188f1de31a194293a78a3ef327c60f132"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetArithmetic.Assignments.cs",
+      "sha256": "b8d5276f437769f7e1ce73e7e201d88e97ed4becdc98e503113dcf2d675d736e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs",
+      "sha256": "06ea9b832b6c147696e07d54a7a79a6afa1c16cc77123d8995e89146dcb7d873"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetIntrinsics.cs",
+      "sha256": "1fe7342b36b67e5983033c71addb538a2611854b218918a0870737fc7c86378f"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetStorage.cs",
+      "sha256": "5cb2fe3ea3dd235812bc8b5a40becf9efc7f358db06df75c8514f29482dd01f8"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime/TargetVolatileMemory.cs",
+      "sha256": "64cb035f408a348fede4b5381f84bb499b17046322f1c4e50dde431fda4bd135"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime.Host/HostProvider.cs",
+      "sha256": "76bff695e02196e234486456b35f039366180640a9594b1158e48520f016d73e"
+    },
+    {
+      "path": "src/RoslynObj.CSharp.Runtime.Host/RoslynObj.CSharp.Runtime.Host.csproj",
+      "sha256": "dc4f060e407ffe0f101d831afa7cb3d22a87f62d1822253a4fd243c7135e9c2a"
+    },
+    {
+      "path": "tests/AggregateAbi/IntegerChecks.cs",
+      "sha256": "eb3978eb28e8b3c7e8b645d313472570852394a09890e166803aa4e2967b6fdf"
+    },
+    {
+      "path": "tests/AggregateAbi/IntegerChecks.csproj",
+      "sha256": "c125ae91b277e44f373851616339792cc67d78409cc52bbd7596d4d24ffeb14d"
+    },
+    {
+      "path": "tests/AggregateAbi/ShapeChecks.cs",
+      "sha256": "256a540caaa41ca58c965a01801de6f97f4deff140eb265f46a07de9a0fc5182"
+    },
+    {
+      "path": "tests/AggregateAbi/ShapeChecks.csproj",
+      "sha256": "843ff838943b921ddb2ac0d32cfb670615bb3ec0bc8225441fcfd35d547561d4"
+    },
+    {
+      "path": "tests/Assembly/Assembly.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Assembly/Program.cs",
+      "sha256": "c21d379abf5c8781696ac6eab346728f1fcf3b95aa4a38a048b0250364ad502f"
+    },
+    {
+      "path": "tests/Callbacks/Callbacks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/Callbacks/Program.cs",
+      "sha256": "1391444ac631e5b91b42121908a22db397b6ca78a809c9e62feb83f6dd339711"
+    },
+    {
+      "path": "tests/ControlFlow/Checks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/ControlFlow/Program.cs",
+      "sha256": "d45a0b351fe76cdb9914adf5fef95601336e4890e2871b341d1d1e0bdba58174"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/errno-thread.c",
+      "sha256": "4e87daf838fc51b1322d39379b4e48b7c89462bf6ab10cfb0c4f8ba2a30ed1a9"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/loader-baseline.c",
+      "sha256": "c0105f78b61cac59ba4c3d54993771be415a96fe8d907a23487fd389c5a9f143"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/loader-native-oracle.c",
+      "sha256": "83282c2f98b946224ecd8fcc6df06c0ddd750d0fd5fc6ab3a4bf5ae1178199d3"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/loader-state.c",
+      "sha256": "457bb537ea17b206d9052084df6617bccfb637d4a2b76fd0837400c167eb9187"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/native-loader-interference.c",
+      "sha256": "39411a0176b9f2d43ea8f90cc83394bc956a6f5cf2aec3d8fb79b60fb29d8ccf"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/native-loader-zero.c",
+      "sha256": "6a8986b465eee52180fce54edccaafce06689bdddc1c05abde1d28f5a28b5697"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/native-oracle.c",
+      "sha256": "9cdad8565ee8cea81c11e5536d6cd8060586bc4e25643afbb00050991b3bdb5b"
+    },
+    {
+      "path": "tests/Fixtures/T3/providers/native-raw-errno.c",
+      "sha256": "a446056506077160d7650b20c23c6cc325431933150757d3ef2ffc03a3b44ca2"
+    },
+    {
+      "path": "tests/HostContracts/HostContracts.csproj",
+      "sha256": "c23fa455877be60bf761e5d82534bedcaed18224c0b8525fd8193687a1f576d9"
+    },
+    {
+      "path": "tests/HostContracts/Program.cs",
+      "sha256": "a73aa38499ea0ed72f279beca6eda8b40fd3a3e1de300319a5116c2ebfd40c1c"
+    },
+    {
+      "path": "tests/IntrinsicFacts/IntrinsicFacts.csproj",
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "tests/IntrinsicFacts/Program.cs",
+      "sha256": "1d061c23dc3c05132eefedf6380dee8369646abb53fb7f8667eef9a5f95f6f0f"
+    },
+    {
+      "path": "tests/Intrinsics/Checks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/Intrinsics/Program.cs",
+      "sha256": "458dbdc191f14e1188a2ca70ff54f2cdb0f9964d7f568e8809ddfed37cb49777"
+    },
+    {
+      "path": "tests/Inventory/Inventory.csproj",
+      "sha256": "6d92bc9639f4d2a32c1040632677679a34f423489d599341f981bd86c77a51ab"
+    },
+    {
+      "path": "tests/Inventory/Program.cs",
+      "sha256": "9a589ddd3cf5826d2be7d905eca29a86deeb596088b90eb6abd6277a9cb4bb58"
+    },
+    {
+      "path": "tests/MemoryPlans/Checks.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/MemoryPlans/Program.cs",
+      "sha256": "6930e9f68f69122c8e400a79cf98972127561135e22cd27b92d97012dc3e6ae4"
+    },
+    {
+      "path": "tests/NativeProviders/Emit.cs",
+      "sha256": "ad484ccef3d5c535c56d2f40e997b2d3073f68ecfc1950215878cc914e261b5a"
+    },
+    {
+      "path": "tests/NativeProviders/Emit.csproj",
+      "sha256": "414392223a091d8802d6c739a8fb7ba9838f9e4cc5c5466cb1da9affbd34668b"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoChecks.cs",
+      "sha256": "7057abb7795b3715168ddcfd296bd19a4534254bb30681ebf792f9fc1af6e080"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoChecks.csproj",
+      "sha256": "b44a9873c76ab739544b877527e6ddcf42cd92e19b31f8d99366d59eedf5c7a1"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoUseAudit.cs",
+      "sha256": "5292d572332b980fdd7d6f8624bf5a8026a49981bc12f6ebadbfddfe426c3db4"
+    },
+    {
+      "path": "tests/NativeProviders/ErrnoUseAudit.csproj",
+      "sha256": "5c8a09a0c5534bfb78f9f0cc832b720445acb0027bb12888ab6daa452c1d1fc3"
+    },
+    {
+      "path": "tests/NativeProviders/LoaderChecks.cs",
+      "sha256": "0c1324a1a1c2647b27993b742bcd3eff39ac9721158e6a09f34d7ebcc52d42da"
+    },
+    {
+      "path": "tests/NativeProviders/LoaderChecks.csproj",
+      "sha256": "9a241010e27a95a6d47dec8a01639e3d28a8e4fded322eecb9ca25a38ba3bb10"
+    },
+    {
+      "path": "tests/NativeProviders/LoaderEmit.cs",
+      "sha256": "33ff3f80f8b8e55bfca369bcb18f1231b49b12a0b206bb8140d59fcb9de57867"
+    },
+    {
+      "path": "tests/NativeProviders/LoaderEmit.csproj",
+      "sha256": "b716fcc62fd1571f5a6d6dea790c2a80392cf93e7fac181e10e74df1a23848b7"
+    },
+    {
+      "path": "tests/NativeProviders/LoaderUseAudit.cs",
+      "sha256": "018103660babde3237dc1266be1dae2f907812b89946dea2ccc67c55bbb004fa"
+    },
+    {
+      "path": "tests/NativeProviders/LoaderUseAudit.csproj",
+      "sha256": "8ad8a2759fd5e3bf64b7dd478483a894ce21a0ae89bb42980686cb02e66ee17b"
+    },
+    {
+      "path": "tests/OperatorFacts/OperatorFacts.csproj",
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "tests/OperatorFacts/Program.cs",
+      "sha256": "442601b3a2793c732db5ef56a20ca22e77111c9d5ba72b0e7b9407f3379b9275"
+    },
+    {
+      "path": "tests/ProgramProjection/GeneratedChecks.cs",
+      "sha256": "5899c9e3301ee2e23efbe2394fe68209ee72bab1800da5ee5e17cc17ec43df8e"
+    },
+    {
+      "path": "tests/ProgramProjection/GeneratedChecks.csproj",
+      "sha256": "6af2d88ddc63ac3b77f7ee50de83d717c1aeb0a9411fdafc877aab720969bbde"
+    },
+    {
+      "path": "tests/ProgramProjection/Program.cs",
+      "sha256": "c940ea80edbfcfae15e439398b6b665087a362ebcffe22a9831547865b41f59f"
+    },
+    {
+      "path": "tests/ProgramProjection/Projection.csproj",
+      "sha256": "7a451631a06e8d1cc644efacf92e578ed96a63321a0d5e8d51aaf5a370f149e5"
+    },
+    {
+      "path": "tests/Projection/Program.cs",
+      "sha256": "fe2c07953046f3077951f40050f6f839f506c579b7fa58e4513972cd6bd8dcf3"
+    },
+    {
+      "path": "tests/Projection/Projection.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Sequencing/GeneratedChecks.cs",
+      "sha256": "359d880dd83d68bf62ecd53132127eef25c2a8e44659ff79004de85f7c8a00a5"
+    },
+    {
+      "path": "tests/Sequencing/GeneratedChecks.csproj",
+      "sha256": "6af2d88ddc63ac3b77f7ee50de83d717c1aeb0a9411fdafc877aab720969bbde"
+    },
+    {
+      "path": "tests/Sequencing/Probe.cs",
+      "sha256": "bfaab72efaf601a16b9ec12b836b21de6f5555a827a79b6c4efcd720f0c9c26f"
+    },
+    {
+      "path": "tests/Sequencing/Probe.csproj",
+      "sha256": "2f1e8867a9c4bd350246aae6053bee871f1fd2c3cbf5629f37964576bdfc38ab"
+    },
+    {
+      "path": "tests/SqliteEmissionProbe/Program.cs",
+      "sha256": "44cb3161520aa00739500fc26b768595030c9093ffee0940a24f28f664fd829b"
+    },
+    {
+      "path": "tests/SqliteEmissionProbe/SqliteEmissionProbe.csproj",
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "tests/Storage/Program.cs",
+      "sha256": "fb19e46a251a747681386a343f17aebfa92d88a95883e4ffe9007673beddf6f4"
+    },
+    {
+      "path": "tests/Storage/Storage.csproj",
+      "sha256": "103a0d6018de0eab8ee323871824b2e24a5def013d057505bb07f4510949eec3"
+    },
+    {
+      "path": "tests/StorageConstants/Checks.cs",
+      "sha256": "60e21443272bdfb6e6a76c07954214c74faddf0e59bdb58df36f5d49f1289fa3"
+    },
+    {
+      "path": "tests/StorageConstants/Checks.csproj",
+      "sha256": "973952bc1f7f676eeb050b84de955fd6344e228a5c92916779401b82a7fed911"
+    },
+    {
+      "path": "tests/StorageConstants/Probe.cs",
+      "sha256": "8c61b9c60486c42a1ea2916abca1fdcc71eaec165ff294e81572eaae2c4bce4a"
+    },
+    {
+      "path": "tests/StorageConstants/Probe.csproj",
+      "sha256": "90225f5b3e7b3b43b99e0a7c8ee727ab7c8b680d6789b3b0a4cdb51c7afb195a"
+    },
+    {
+      "path": "tests/StorageFacts/Program.cs",
+      "sha256": "95716be6e562cc7f0f22e11b8f04f3c34a2d865ab6fd909f9c46f183b88c7f32"
+    },
+    {
+      "path": "tests/StorageFacts/StorageFacts.csproj",
+      "sha256": "d52807bcff5326732a5a354c4b9ffb0c39af8f0b20a726d1c4100516ca52cdb1"
+    },
+    {
+      "path": "tests/ValueStorage/FlexibleChecks.cs",
+      "sha256": "38b76b55cd700a2998233680f62430053329c4aad4681399a4b76fbdf73c1c1b"
+    },
+    {
+      "path": "tests/ValueStorage/FlexibleChecks.csproj",
+      "sha256": "e4ea0f391979d9aef6df7c25d91d54b23b1d97dc9701d927021e7ef5428a0097"
+    },
+    {
+      "path": "tests/ValueStorage/UInt128Checks.cs",
+      "sha256": "3a1afca8886f386d0b58b494a3b238a59e0c4783d31bee1868b928d3e9e27932"
+    },
+    {
+      "path": "tests/ValueStorage/UInt128Checks.csproj",
+      "sha256": "6a7b3e7b2890bdd6bf05830905761774b4e342ba7cee93417eb3f328d9d7f5ed"
+    },
+    {
+      "path": "tests/Variadics/Addressed.csproj",
+      "sha256": "613242da70e0fa6aba9d9780e34867cdcea34bf130701aa04125a5c5d28195ef"
+    },
+    {
+      "path": "tests/Variadics/AddressedChecks.cs",
+      "sha256": "f9a8f41e5b89a1712ee96e54883c9cb6bc1e19f2f23b5a7e6585d49b251cd459"
+    },
+    {
+      "path": "tests/Variadics/Outbound.csproj",
+      "sha256": "71f4f838e5d0f04f408047d6a0f4e01bef62230b48d46b217ec7058682baa098"
+    },
+    {
+      "path": "tests/Variadics/OutboundChecks.cs",
+      "sha256": "df5d825df9eec9451add832e608240e5c496f2e2768a51897fd043f30506cf2e"
+    },
+    {
+      "path": "tests/run-t3-errno-provider.py",
+      "sha256": "e669bb37461c2deff53277f89a608151e56cd2529e42c37fc7a2d5f1b1f98e33"
+    },
+    {
+      "path": "tests/run-t3-loader-provider.py",
+      "sha256": "543391dc47783fbfbdf21b46b01af75c48054213598ec6b7fd77bb48cd479c12"
+    },
+    {
+      "path": "tools/run-measured.py",
+      "sha256": "b4c89236a1717c1eb11588595509d41ad2bfa47cb0bd773d99305d6a9d4a986a"
+    }
+  ],
+  "limits": [
+    "Five exact selected libc imports; not all 88 SQLite provider contracts",
+    "Ordinary captured Linux x64 scalar/pointer loader signatures only",
+    "Selected registered loader/error addresses share the proven provider contract; no arbitrary loader interposition",
+    "Read-clear preserves returned bytes until next selected loader call; native pthread destructor owns cleanup",
+    "This fixture does not prove incoming raw loader-error state from arbitrary foreign native application bodies",
+    "No SQLite execution, native extension algorithm fallback, cancellation or native C++ exception propagation claim"
+  ],
+  "publicUseAudit": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/sqlite-loader-use-audit-1.json",
+      "sha256": "4a648ed17fdcb1fe7b3389bc2c942df6e839e9106b1827192a74fe285e3f4c0a",
+      "bytes": 44617
+    },
+    "input": {
+      "Path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+      "Sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+      "Bytes": 297556992
+    },
+    "signatures": [
+      {
+        "Entry": "dlopen",
+        "HasPrototype": true,
+        "HasThisParameter": false,
+        "ReturnsValueAsParameter": false,
+        "ReturnsValueViaCopyConstructor": false,
+        "Return": {
+          "Kind": "tk_pointer",
+          "Size": "8",
+          "Alignment": "8",
+          "Raw": "tk_pointer",
+          "Bits": null,
+          "Signed": null,
+          "Pointee": {
+            "Kind": "tk_void",
+            "Size": null,
+            "Alignment": null,
+            "Raw": "tk_void",
+            "Bits": null,
+            "Signed": null,
+            "Pointee": null
+          }
+        },
+        "Parameters": [
+          {
+            "Type": {
+              "Kind": "tk_pointer",
+              "Size": "8",
+              "Alignment": "8",
+              "Raw": "tk_pointer",
+              "Bits": null,
+              "Signed": null,
+              "Pointee": {
+                "Kind": "tk_typeref",
+                "Size": "1",
+                "Alignment": "1",
+                "Raw": "tk_integer",
+                "Bits": 8,
+                "Signed": true,
+                "Pointee": null
+              }
+            },
+            "Role": "ordinary_parameter"
+          },
+          {
+            "Type": {
+              "Kind": "tk_integer",
+              "Size": "4",
+              "Alignment": "4",
+              "Raw": "tk_integer",
+              "Bits": 32,
+              "Signed": true,
+              "Pointee": null
+            },
+            "Role": "ordinary_parameter"
+          }
+        ]
+      },
+      {
+        "Entry": "dlerror",
+        "HasPrototype": true,
+        "HasThisParameter": false,
+        "ReturnsValueAsParameter": false,
+        "ReturnsValueViaCopyConstructor": false,
+        "Return": {
+          "Kind": "tk_pointer",
+          "Size": "8",
+          "Alignment": "8",
+          "Raw": "tk_pointer",
+          "Bits": null,
+          "Signed": null,
+          "Pointee": {
+            "Kind": "tk_integer",
+            "Size": "1",
+            "Alignment": "1",
+            "Raw": "tk_integer",
+            "Bits": 8,
+            "Signed": true,
+            "Pointee": null
+          }
+        },
+        "Parameters": []
+      },
+      {
+        "Entry": "dlsym",
+        "HasPrototype": true,
+        "HasThisParameter": false,
+        "ReturnsValueAsParameter": false,
+        "ReturnsValueViaCopyConstructor": false,
+        "Return": {
+          "Kind": "tk_pointer",
+          "Size": "8",
+          "Alignment": "8",
+          "Raw": "tk_pointer",
+          "Bits": null,
+          "Signed": null,
+          "Pointee": {
+            "Kind": "tk_void",
+            "Size": null,
+            "Alignment": null,
+            "Raw": "tk_void",
+            "Bits": null,
+            "Signed": null,
+            "Pointee": null
+          }
+        },
+        "Parameters": [
+          {
+            "Type": {
+              "Kind": "tk_typeref",
+              "Size": "8",
+              "Alignment": "8",
+              "Raw": "tk_pointer",
+              "Bits": null,
+              "Signed": null,
+              "Pointee": {
+                "Kind": "tk_void",
+                "Size": null,
+                "Alignment": null,
+                "Raw": "tk_void",
+                "Bits": null,
+                "Signed": null,
+                "Pointee": null
+              }
+            },
+            "Role": "ordinary_parameter"
+          },
+          {
+            "Type": {
+              "Kind": "tk_typeref",
+              "Size": "8",
+              "Alignment": "8",
+              "Raw": "tk_pointer",
+              "Bits": null,
+              "Signed": null,
+              "Pointee": {
+                "Kind": "tk_typeref",
+                "Size": "1",
+                "Alignment": "1",
+                "Raw": "tk_integer",
+                "Bits": 8,
+                "Signed": true,
+                "Pointee": null
+              }
+            },
+            "Role": "ordinary_parameter"
+          }
+        ]
+      },
+      {
+        "Entry": "dlclose",
+        "HasPrototype": true,
+        "HasThisParameter": false,
+        "ReturnsValueAsParameter": false,
+        "ReturnsValueViaCopyConstructor": false,
+        "Return": {
+          "Kind": "tk_integer",
+          "Size": "4",
+          "Alignment": "4",
+          "Raw": "tk_integer",
+          "Bits": 32,
+          "Signed": true,
+          "Pointee": null
+        },
+        "Parameters": [
+          {
+            "Type": {
+              "Kind": "tk_pointer",
+              "Size": "8",
+              "Alignment": "8",
+              "Raw": "tk_pointer",
+              "Bits": null,
+              "Signed": null,
+              "Pointee": {
+                "Kind": "tk_void",
+                "Size": null,
+                "Alignment": null,
+                "Raw": "tk_void",
+                "Bits": null,
+                "Signed": null,
+                "Pointee": null
+              }
+            },
+            "Role": "ordinary_parameter"
+          }
+        ]
+      }
+    ],
+    "referenceUses": [
+      {
+        "Function": "unixDlOpen",
+        "Entry": "dlopen",
+        "CalleeOnly": true,
+        "Parents": [
+          {
+            "Kind": "eok_call",
+            "Type": {
+              "Kind": "tk_pointer",
+              "Size": "8",
+              "Alignment": "8",
+              "Raw": "tk_pointer",
+              "Bits": null,
+              "Signed": null,
+              "Pointee": {
+                "Kind": "tk_void",
+                "Size": null,
+                "Alignment": null,
+                "Raw": "tk_void",
+                "Bits": null,
+                "Signed": null,
+                "Pointee": null
+              }
+            },
+            "Category": "prvalue",
+            "Reference": null,
+            "Call": "dlopen",
+            "Arguments": [
+              {
+                "Ordinal": 0,
+                "Role": "ordinary_parameter",
+                "Type": {
+                  "Kind": "tk_pointer",
+                  "Size": "8",
+                  "Alignment": "8",
+                  "Raw": "tk_pointer",
+                  "Bits": null,
+                  "Signed": null,
+                  "Pointee": {
+                    "Kind": "tk_typeref",
+                    "Size": "1",
+                    "Alignment": "1",
+                    "Raw": "tk_integer",
+                    "Bits": 8,
+                    "Signed": true,
+                    "Pointee": null
+                  }
+                },
+                "Reference": "zFilename"
+              },
+              {
+                "Ordinal": 1,
+                "Role": "ordinary_parameter",
+                "Type": {
+                  "Kind": "tk_integer",
+                  "Size": "4",
+                  "Alignment": "4",
+                  "Raw": "tk_integer",
+                  "Bits": 32,
+                  "Signed": true,
+                  "Pointee": null
+                },
+                "Reference": null
+              }
+            ],
+            "Target": null,
+            "Jump": null
+          }
+        ]
+      },
+      {
+        "Function": "unixDlError",
+        "Entry": "dlerror",
+        "CalleeOnly": true,
+        "Parents": [
+          {
+            "Kind": "eok_call",
+            "Type": {
+              "Kind": "tk_pointer",
+              "Size": "8",
+              "Alignment": "8",
+              "Raw": "tk_pointer",
+              "Bits": null,
+              "Signed": null,
+              "Pointee": {
+                "Kind": "tk_integer",
+                "Size": "1",
+                "Alignment": "1",
+                "Raw": "tk_integer",
+                "Bits": 8,
+                "Signed": true,
+                "Pointee": null
+              }
+            },
+            "Category": "prvalue",
+            "Reference": null,
+            "Call": "dlerror",
+            "Arguments": [],
+            "Target": null,
+            "Jump": null
+          }
+        ]
+      },
+      {
+        "Function": "unixDlClose",
+        "Entry": "dlclose",
+        "CalleeOnly": true,
+        "Parents": [
+          {
+            "Kind": "eok_call",
+            "Type": {
+              "Kind": "tk_integer",
+              "Size": "4",
+              "Alignment": "4",
+              "Raw": "tk_integer",
+              "Bits": 32,
+              "Signed": true,
+              "Pointee": null
+            },
+            "Category": "prvalue",
+            "Reference": null,
+            "Call": "dlclose",
+            "Arguments": [
+              {
+                "Ordinal": 0,
+                "Role": "ordinary_parameter",
+                "Type": {
+                  "Kind": "tk_pointer",
+                  "Size": "8",
+                  "Alignment": "8",
+                  "Raw": "tk_pointer",
+                  "Bits": null,
+                  "Signed": null,
+                  "Pointee": {
+                    "Kind": "tk_void",
+                    "Size": null,
+                    "Alignment": null,
+                    "Raw": "tk_void",
+                    "Bits": null,
+                    "Signed": null,
+                    "Pointee": null
+                  }
+                },
+                "Reference": "pHandle"
+              }
+            ],
+            "Target": null,
+            "Jump": null
+          }
+        ]
+      }
+    ],
+    "addressConstants": [
+      {
+        "Entry": "dlsym",
+        "Displacement": "0",
+        "Type": {
+          "Kind": "tk_pointer",
+          "Size": "8",
+          "Alignment": "8",
+          "Raw": "tk_pointer",
+          "Bits": null,
+          "Signed": null,
+          "Pointee": {
+            "Kind": "tk_routine",
+            "Size": null,
+            "Alignment": null,
+            "Raw": "tk_routine",
+            "Bits": null,
+            "Signed": null,
+            "Pointee": null
+          }
+        }
+      }
+    ],
+    "scope": "unixDlError casts dlerror result to local const-byte pointer, tests it, then passes it to translated sqlite3_snprintf before leaving mutex; no general alias-analysis claim"
+  },
+  "export": {
+    "recipe": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export-errno-thread-2/run.json",
+      "sha256": "5245f79e783a4821ad1c5f76dda3926ba8501dd8aeb272d5de4d6158624f6991",
+      "bytes": 14032
+    },
+    "frozenHostFlags": [
+      "--gcc",
+      "--c17",
+      "--no_strict_gnu",
+      "--gnu_version",
+      "130300",
+      "-D__DBL_MIN_EXP__=(-1021)",
+      "-D__UINT_LEAST16_MAX__=0xffff",
+      "-D__FLT16_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_ACQUIRE=2",
+      "-D__FLT128_MAX_10_EXP__=4932",
+      "-D__FLT_MIN__=1.17549435082228750796873653722224568e-38F",
+      "-D__UINT_LEAST8_TYPE__=unsigned char",
+      "-D__SIZEOF_FLOAT80__=16",
+      "-D__CHAR_BIT__=8",
+      "-D__UINT8_MAX__=0xff",
+      "-D__WINT_MAX__=0xffffffffU",
+      "-D__FLT32_MIN_EXP__=(-125)",
+      "-D__WCHAR_MAX__=0x7fffffff",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8=1",
+      "-D__GCC_ATOMIC_CHAR_LOCK_FREE=2",
+      "-D__FLT32X_DECIMAL_DIG__=17",
+      "-D__FLT_EVAL_METHOD__=0",
+      "-D__FLT64_DECIMAL_DIG__=17",
+      "-D__GCC_ATOMIC_CHAR32_T_LOCK_FREE=2",
+      "-D__UINT_FAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SIG_ATOMIC_TYPE__=int",
+      "-D__DBL_MIN_10_EXP__=(-307)",
+      "-D__FLT32X_MAX_EXP__=1024",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1=1",
+      "-D__FLT32_HAS_DENORM__=1",
+      "-D__UINT_FAST8_MAX__=0xff",
+      "-D__FLT32_MAX_10_EXP__=38",
+      "-D__DEC64_MAX_EXP__=385",
+      "-D__INT_LEAST8_WIDTH__=8",
+      "-D__UINT_LEAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SHRT_MAX__=0x7fff",
+      "-D__LDBL_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__FLT64X_MAX_10_EXP__=4932",
+      "-D__LDBL_IS_IEC_60559__=1",
+      "-D__FLT64X_HAS_QUIET_NAN__=1",
+      "-D__UINT_LEAST8_MAX__=0xff",
+      "-D__GCC_ATOMIC_BOOL_LOCK_FREE=2",
+      "-D__FLT128_DENORM_MIN__=6.47517511943802511092443895822764655e-4966F128",
+      "-D__UINTMAX_TYPE__=long unsigned int",
+      "-D__DEC32_EPSILON__=1E-6DF",
+      "-D__FLT_EVAL_METHOD_TS_18661_3__=0",
+      "-D__UINT32_MAX__=0xffffffffU",
+      "-D__DBL_DENORM_MIN__=((double)4.94065645841246544176568792868221372e-324L)",
+      "-D__FLT128_MIN_EXP__=(-16381)",
+      "-D__WINT_MIN__=0U",
+      "-D__FLT128_MIN_10_EXP__=(-4931)",
+      "-D__FLT32X_IS_IEC_60559__=1",
+      "-D__INT_LEAST16_WIDTH__=16",
+      "-D__SCHAR_MAX__=0x7f",
+      "-D__FLT128_MANT_DIG__=113",
+      "-D__WCHAR_MIN__=(-__WCHAR_MAX__ - 1)",
+      "-D__GCC_ATOMIC_POINTER_LOCK_FREE=2",
+      "-D__ATOMIC_SEQ_CST=5",
+      "-D__INT_LEAST64_MAX__=0x7fffffffffffffffL",
+      "-D__FLT32X_MANT_DIG__=53",
+      "-D__FLT64X_EPSILON__=1.08420217248550443400745280086994171e-19F64x",
+      "-D__DEC64_MIN_EXP__=(-382)",
+      "-D__DBL_DIG__=15",
+      "-D__FLT_EPSILON__=1.19209289550781250000000000000000000e-7F",
+      "-D__SHRT_WIDTH__=16",
+      "-D__FLT32_IS_IEC_60559__=1",
+      "-D__LDBL_MIN__=3.36210314311209350626267781732175260e-4932L",
+      "-D__DBL_IS_IEC_60559__=1",
+      "-D__DEC32_MAX__=9.999999E96DF",
+      "-D__FLT64X_DENORM_MIN__=3.64519953188247460252840593361941982e-4951F64x",
+      "-D__FLT32X_HAS_INFINITY__=1",
+      "-D__INT_WIDTH__=32",
+      "-D__DECIMAL_DIG__=21",
+      "-D__FLT64_EPSILON__=2.22044604925031308084726333618164062e-16F64",
+      "-D__FLT128_IS_IEC_60559__=1",
+      "-D__FLT64X_MIN_10_EXP__=(-4931)",
+      "-D__LDBL_HAS_QUIET_NAN__=1",
+      "-D__FLT16_MIN_EXP__=(-13)",
+      "-D__FLT64_MANT_DIG__=53",
+      "-D__FLT64X_MANT_DIG__=64",
+      "-D__pie__=2",
+      "-D__MMX__=1",
+      "-D__FLT_HAS_DENORM__=1",
+      "-D__SIZEOF_LONG_DOUBLE__=16",
+      "-D__BIGGEST_ALIGNMENT__=16",
+      "-D__FLT64_MAX_10_EXP__=308",
+      "-D__FLT16_MAX_10_EXP__=4",
+      "-D__DBL_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INT_FAST32_MAX__=0x7fffffffffffffffL",
+      "-D__DBL_HAS_INFINITY__=1",
+      "-D__INT64_MAX__=0x7fffffffffffffffL",
+      "-D__SIZEOF_FLOAT__=4",
+      "-D__DEC32_MIN_EXP__=(-94)",
+      "-D__INTPTR_WIDTH__=64",
+      "-D__UINT_LEAST32_MAX__=0xffffffffU",
+      "-D__FLT32X_HAS_DENORM__=1",
+      "-D__INT_FAST16_TYPE__=long int",
+      "-D__MMX_WITH_SSE__=1",
+      "-D__LDBL_HAS_DENORM__=1",
+      "-D__FLT128_HAS_INFINITY__=1",
+      "-D__DEC32_MIN__=1E-95DF",
+      "-D__DBL_MAX_EXP__=1024",
+      "-D__WCHAR_WIDTH__=32",
+      "-D__FLT32_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__DEC128_EPSILON__=1E-33DL",
+      "-D__FLT16_DECIMAL_DIG__=5",
+      "-D__SSE2_MATH__=1",
+      "-D__ATOMIC_HLE_RELEASE=131072",
+      "-D__PTRDIFF_MAX__=0x7fffffffffffffffL",
+      "-D__amd64=1",
+      "-D__ATOMIC_HLE_ACQUIRE=65536",
+      "-D__LONG_LONG_MAX__=0x7fffffffffffffffLL",
+      "-D__SIZEOF_SIZE_T__=8",
+      "-D__FLT64X_MIN_EXP__=(-16381)",
+      "-D__SIZEOF_WINT_T__=4",
+      "-D__LONG_LONG_WIDTH__=64",
+      "-D__FLT32_MAX_EXP__=128",
+      "-D__FLT_MIN_EXP__=(-125)",
+      "-D__INT16_MAX__=0x7fff",
+      "-D__x86_64=1",
+      "-D__INT_FAST64_TYPE__=long int",
+      "-D__FLT64_DENORM_MIN__=4.94065645841246544176568792868221372e-324F64",
+      "-D__FLT16_DENORM_MIN__=5.96046447753906250000000000000000000e-8F16",
+      "-D__FLT128_EPSILON__=1.92592994438723585305597794258492732e-34F128",
+      "-D__FLT64X_NORM_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__SIZEOF_POINTER__=8",
+      "-D__DBL_HAS_QUIET_NAN__=1",
+      "-D__FLT32X_EPSILON__=2.22044604925031308084726333618164062e-16F32x",
+      "-D__LDBL_MAX_EXP__=16384",
+      "-D__DECIMAL_BID_FORMAT__=1",
+      "-D__FLT64_MIN_EXP__=(-1021)",
+      "-D__FLT64_MIN_10_EXP__=(-307)",
+      "-D__FLT16_MIN_10_EXP__=(-4)",
+      "-D__FLT64X_DECIMAL_DIG__=21",
+      "-D__DEC128_MIN__=1E-6143DL",
+      "-D__UINT16_MAX__=0xffff",
+      "-D__DBL_HAS_DENORM__=1",
+      "-D__FLT32_MIN__=1.17549435082228750796873653722224568e-38F32",
+      "-D__UINT8_TYPE__=unsigned char",
+      "-D__FLT_DIG__=6",
+      "-D__DEC_EVAL_METHOD__=2",
+      "-D__FLT_MANT_DIG__=24",
+      "-D__LDBL_DECIMAL_DIG__=21",
+      "-D__INT_LEAST32_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_INT_LOCK_FREE=2",
+      "-D__FLT128_MAX_EXP__=16384",
+      "-D__FLT32_MANT_DIG__=24",
+      "-D__FLT32X_MIN_EXP__=(-1021)",
+      "-D__FLT128_HAS_DENORM__=1",
+      "-D__FLT32_DECIMAL_DIG__=9",
+      "-D__FLT128_DIG__=33",
+      "-D__DEC64_EPSILON__=1E-15DD",
+      "-D__DEC128_MIN_EXP__=(-6142)",
+      "-D__DEC128_MAX__=9.999999999999999999999999999999999E6144DL",
+      "-D__INT_FAST32_TYPE__=long int",
+      "-D__UINT_LEAST16_TYPE__=short unsigned int",
+      "-D__DEC128_MAX_EXP__=6145",
+      "-D__UINT64_MAX__=0xffffffffffffffffUL",
+      "-D__FLT_IS_IEC_60559__=1",
+      "-D__FLT64X_DIG__=18",
+      "-D__INT8_TYPE__=signed char",
+      "-D__UINT32_TYPE__=unsigned int",
+      "-D__FLT_RADIX__=2",
+      "-D__INT_LEAST16_TYPE__=short int",
+      "-D__LDBL_EPSILON__=1.08420217248550443400745280086994171e-19L",
+      "-D__FLT16_DIG__=3",
+      "-D__SSE_MATH__=1",
+      "-D__FLT32X_MIN__=2.22507385850720138309023271733240406e-308F32x",
+      "-D__SIG_ATOMIC_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_WCHAR_T_LOCK_FREE=2",
+      "-D__SIZEOF_PTRDIFF_T__=8",
+      "-D__FLT64X_HAS_INFINITY__=1",
+      "-D__FLT32_HAS_INFINITY__=1",
+      "-D__SIZEOF_LONG__=8",
+      "-D__LDBL_DIG__=18",
+      "-D__FLT64_IS_IEC_60559__=1",
+      "-D__x86_64__=1",
+      "-D__FLT16_IS_IEC_60559__=1",
+      "-D__FLT16_MAX_EXP__=16",
+      "-D__DEC32_SUBNORMAL_MIN__=0.000001E-95DF",
+      "-D__INT_FAST16_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_DIG__=15",
+      "-D__UINT_FAST32_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_LEAST64_TYPE__=long unsigned int",
+      "-D__FLT16_EPSILON__=9.76562500000000000000000000000000000e-4F16",
+      "-D__FLT_HAS_QUIET_NAN__=1",
+      "-D__FLT_MAX_10_EXP__=38",
+      "-D__LONG_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64X_HAS_DENORM__=1",
+      "-D__DEC128_SUBNORMAL_MIN__=0.000000000000000000000000000000001E-6143DL",
+      "-D__FLT_HAS_INFINITY__=1",
+      "-D__UINT_FAST16_TYPE__=long unsigned int",
+      "-D__DEC64_MAX__=9.999999999999999E384DD",
+      "-D__INT_FAST32_WIDTH__=64",
+      "-D__SIZE_WIDTH__=64",
+      "-D__INT_LEAST16_MAX__=0x7fff",
+      "-D__FLT16_NORM_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__DEC64_MANT_DIG__=16",
+      "-D__FLT32_DENORM_MIN__=1.40129846432481707092372958328991613e-45F32",
+      "-D__SIG_ATOMIC_WIDTH__=32",
+      "-D__INT_LEAST64_TYPE__=long int",
+      "-D__INT16_TYPE__=short int",
+      "-D__INT_LEAST8_TYPE__=signed char",
+      "-D__FLT16_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__FLT128_MIN__=3.36210314311209350626267781732175260e-4932F128",
+      "-D__SIZEOF_INT__=4",
+      "-D__DEC32_MAX_EXP__=97",
+      "-D__INT_FAST8_MAX__=0x7f",
+      "-D__FLT128_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__INTPTR_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_HAS_QUIET_NAN__=1",
+      "-D__FLT32_MIN_10_EXP__=(-37)",
+      "-D__FLT32X_DIG__=15",
+      "-D__PTRDIFF_WIDTH__=64",
+      "-D__LDBL_MANT_DIG__=64",
+      "-D__INT_FAST16_WIDTH__=64",
+      "-D__FLT64_HAS_INFINITY__=1",
+      "-D__FLT64X_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__FLT16_HAS_INFINITY__=1",
+      "-D__SIG_ATOMIC_MIN__=(-__SIG_ATOMIC_MAX__ - 1)",
+      "-D__GCC_ATOMIC_LONG_LOCK_FREE=2",
+      "-D__DEC32_MANT_DIG__=7",
+      "-D__FLT16_MANT_DIG__=11",
+      "-D__INTPTR_TYPE__=long int",
+      "-D__UINT16_TYPE__=short unsigned int",
+      "-D__WCHAR_TYPE__=int",
+      "-D__pic__=2",
+      "-D__UINTPTR_MAX__=0xffffffffffffffffUL",
+      "-D__INT_FAST64_WIDTH__=64",
+      "-D__LDBL_HAS_INFINITY__=1",
+      "-D__INT_FAST64_MAX__=0x7fffffffffffffffL",
+      "-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1",
+      "-D__FLT_NORM_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__FLT64X_MAX_EXP__=16384",
+      "-D__UINT_FAST64_TYPE__=long unsigned int",
+      "-D__INT_MAX__=0x7fffffff",
+      "-D__INT64_TYPE__=long int",
+      "-D__FLT_MAX_EXP__=128",
+      "-D__DBL_MANT_DIG__=53",
+      "-D__SIZEOF_FLOAT128__=16",
+      "-D__GCC_ATOMIC_CHAR16_T_LOCK_FREE=2",
+      "-D__DEC64_MIN__=1E-383DD",
+      "-D__WINT_TYPE__=unsigned int",
+      "-D__UINT_LEAST32_TYPE__=unsigned int",
+      "-D__SIZEOF_SHORT__=2",
+      "-D__FLT32_NORM_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__SSE__=1",
+      "-D__LDBL_MIN_EXP__=(-16381)",
+      "-D__FLT64_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__amd64__=1",
+      "-D__WINT_WIDTH__=32",
+      "-D__INT_LEAST8_MAX__=0x7f",
+      "-D__INT_LEAST64_WIDTH__=64",
+      "-D__FLT32X_MAX_10_EXP__=308",
+      "-D__SIZEOF_INT128__=16",
+      "-D__FLT16_MIN__=6.10351562500000000000000000000000000e-5F16",
+      "-D__FLT64X_IS_IEC_60559__=1",
+      "-D__LDBL_MAX_10_EXP__=4932",
+      "-D__ATOMIC_RELAXED=0",
+      "-D__DBL_EPSILON__=((double)2.22044604925031308084726333618164062e-16L)",
+      "-D__INT_LEAST32_TYPE__=int",
+      "-D__FLT64_MAX_EXP__=1024",
+      "-D__SIZEOF_WCHAR_T__=4",
+      "-D__UINT64_TYPE__=long unsigned int",
+      "-D__FLT128_NORM_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__FLT64_NORM_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__FLT128_HAS_QUIET_NAN__=1",
+      "-D__INTMAX_MAX__=0x7fffffffffffffffL",
+      "-D__INT_FAST8_TYPE__=signed char",
+      "-D__FLT64X_MIN__=3.36210314311209350626267781732175260e-4932F64x",
+      "-D__FLT64_HAS_DENORM__=1",
+      "-D__FLT32_EPSILON__=1.19209289550781250000000000000000000e-7F32",
+      "-D__FLT16_HAS_DENORM__=1",
+      "-D__DBL_DECIMAL_DIG__=17",
+      "-D__INT_FAST8_WIDTH__=8",
+      "-D__FXSR__=1",
+      "-D__FLT32X_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__DBL_NORM_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INTMAX_WIDTH__=64",
+      "-D__FLT32_DIG__=6",
+      "-D__FLT_DENORM_MIN__=1.40129846432481707092372958328991613e-45F",
+      "-D__INT8_MAX__=0x7f",
+      "-D__LONG_WIDTH__=64",
+      "-D__DBL_MIN__=((double)2.22507385850720138309023271733240406e-308L)",
+      "-D__PIC__=2",
+      "-D__INT32_MAX__=0x7fffffff",
+      "-D__UINT_FAST32_TYPE__=long unsigned int",
+      "-D__FLT32X_NORM_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__FLT_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__SSE2__=1",
+      "-D__INT32_TYPE__=int",
+      "-D__SIZEOF_DOUBLE__=8",
+      "-D__FLT_MIN_10_EXP__=(-37)",
+      "-D__FLT64_MIN__=2.22507385850720138309023271733240406e-308F64",
+      "-D__INT_LEAST32_WIDTH__=32",
+      "-D__INTMAX_TYPE__=long int",
+      "-D__FLT32X_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_CONSUME=1",
+      "-D__UINTMAX_MAX__=0xffffffffffffffffUL",
+      "-D__PIE__=2",
+      "-D__FLT32X_DENORM_MIN__=4.94065645841246544176568792868221372e-324F32x",
+      "-D__DBL_MAX_10_EXP__=308",
+      "-D__LDBL_DENORM_MIN__=3.64519953188247460252840593361941982e-4951L",
+      "-D__PTRDIFF_TYPE__=long int",
+      "-D__FLT32X_MIN_10_EXP__=(-307)",
+      "-D__UINTPTR_TYPE__=long unsigned int",
+      "-D__DEC64_SUBNORMAL_MIN__=0.000000000000001E-383DD",
+      "-D__DEC128_MANT_DIG__=34",
+      "-D__LDBL_MIN_10_EXP__=(-4931)",
+      "-D__SIZEOF_LONG_LONG__=8",
+      "-D__FLT128_DECIMAL_DIG__=36",
+      "-D__GCC_ATOMIC_LLONG_LOCK_FREE=2",
+      "-D__FLT32_HAS_QUIET_NAN__=1",
+      "-D__FLT_DECIMAL_DIG__=9",
+      "-D__UINT_FAST16_MAX__=0xffffffffffffffffUL",
+      "-D__LDBL_NORM_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__GCC_ATOMIC_SHORT_LOCK_FREE=2",
+      "-D__SIZE_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_FAST8_TYPE__=unsigned char",
+      "-D__ATOMIC_ACQ_REL=4",
+      "-D__ATOMIC_RELEASE=3",
+      "--sys_include",
+      "/usr/lib/gcc/x86_64-linux-gnu/13/include",
+      "--sys_include",
+      "/usr/local/include",
+      "--sys_include",
+      "/usr/include/x86_64-linux-gnu",
+      "--sys_include",
+      "/usr/include"
+    ],
+    "command": [
+      "/usr/bin/python3",
+      "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "--gcc",
+      "--c17",
+      "--no_strict_gnu",
+      "--gnu_version",
+      "130300",
+      "-D__DBL_MIN_EXP__=(-1021)",
+      "-D__UINT_LEAST16_MAX__=0xffff",
+      "-D__FLT16_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_ACQUIRE=2",
+      "-D__FLT128_MAX_10_EXP__=4932",
+      "-D__FLT_MIN__=1.17549435082228750796873653722224568e-38F",
+      "-D__UINT_LEAST8_TYPE__=unsigned char",
+      "-D__SIZEOF_FLOAT80__=16",
+      "-D__CHAR_BIT__=8",
+      "-D__UINT8_MAX__=0xff",
+      "-D__WINT_MAX__=0xffffffffU",
+      "-D__FLT32_MIN_EXP__=(-125)",
+      "-D__WCHAR_MAX__=0x7fffffff",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4=1",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8=1",
+      "-D__GCC_ATOMIC_CHAR_LOCK_FREE=2",
+      "-D__FLT32X_DECIMAL_DIG__=17",
+      "-D__FLT_EVAL_METHOD__=0",
+      "-D__FLT64_DECIMAL_DIG__=17",
+      "-D__GCC_ATOMIC_CHAR32_T_LOCK_FREE=2",
+      "-D__UINT_FAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SIG_ATOMIC_TYPE__=int",
+      "-D__DBL_MIN_10_EXP__=(-307)",
+      "-D__FLT32X_MAX_EXP__=1024",
+      "-D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1=1",
+      "-D__FLT32_HAS_DENORM__=1",
+      "-D__UINT_FAST8_MAX__=0xff",
+      "-D__FLT32_MAX_10_EXP__=38",
+      "-D__DEC64_MAX_EXP__=385",
+      "-D__INT_LEAST8_WIDTH__=8",
+      "-D__UINT_LEAST64_MAX__=0xffffffffffffffffUL",
+      "-D__SHRT_MAX__=0x7fff",
+      "-D__LDBL_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__FLT64X_MAX_10_EXP__=4932",
+      "-D__LDBL_IS_IEC_60559__=1",
+      "-D__FLT64X_HAS_QUIET_NAN__=1",
+      "-D__UINT_LEAST8_MAX__=0xff",
+      "-D__GCC_ATOMIC_BOOL_LOCK_FREE=2",
+      "-D__FLT128_DENORM_MIN__=6.47517511943802511092443895822764655e-4966F128",
+      "-D__UINTMAX_TYPE__=long unsigned int",
+      "-D__DEC32_EPSILON__=1E-6DF",
+      "-D__FLT_EVAL_METHOD_TS_18661_3__=0",
+      "-D__UINT32_MAX__=0xffffffffU",
+      "-D__DBL_DENORM_MIN__=((double)4.94065645841246544176568792868221372e-324L)",
+      "-D__FLT128_MIN_EXP__=(-16381)",
+      "-D__WINT_MIN__=0U",
+      "-D__FLT128_MIN_10_EXP__=(-4931)",
+      "-D__FLT32X_IS_IEC_60559__=1",
+      "-D__INT_LEAST16_WIDTH__=16",
+      "-D__SCHAR_MAX__=0x7f",
+      "-D__FLT128_MANT_DIG__=113",
+      "-D__WCHAR_MIN__=(-__WCHAR_MAX__ - 1)",
+      "-D__GCC_ATOMIC_POINTER_LOCK_FREE=2",
+      "-D__ATOMIC_SEQ_CST=5",
+      "-D__INT_LEAST64_MAX__=0x7fffffffffffffffL",
+      "-D__FLT32X_MANT_DIG__=53",
+      "-D__FLT64X_EPSILON__=1.08420217248550443400745280086994171e-19F64x",
+      "-D__DEC64_MIN_EXP__=(-382)",
+      "-D__DBL_DIG__=15",
+      "-D__FLT_EPSILON__=1.19209289550781250000000000000000000e-7F",
+      "-D__SHRT_WIDTH__=16",
+      "-D__FLT32_IS_IEC_60559__=1",
+      "-D__LDBL_MIN__=3.36210314311209350626267781732175260e-4932L",
+      "-D__DBL_IS_IEC_60559__=1",
+      "-D__DEC32_MAX__=9.999999E96DF",
+      "-D__FLT64X_DENORM_MIN__=3.64519953188247460252840593361941982e-4951F64x",
+      "-D__FLT32X_HAS_INFINITY__=1",
+      "-D__INT_WIDTH__=32",
+      "-D__DECIMAL_DIG__=21",
+      "-D__FLT64_EPSILON__=2.22044604925031308084726333618164062e-16F64",
+      "-D__FLT128_IS_IEC_60559__=1",
+      "-D__FLT64X_MIN_10_EXP__=(-4931)",
+      "-D__LDBL_HAS_QUIET_NAN__=1",
+      "-D__FLT16_MIN_EXP__=(-13)",
+      "-D__FLT64_MANT_DIG__=53",
+      "-D__FLT64X_MANT_DIG__=64",
+      "-D__pie__=2",
+      "-D__MMX__=1",
+      "-D__FLT_HAS_DENORM__=1",
+      "-D__SIZEOF_LONG_DOUBLE__=16",
+      "-D__BIGGEST_ALIGNMENT__=16",
+      "-D__FLT64_MAX_10_EXP__=308",
+      "-D__FLT16_MAX_10_EXP__=4",
+      "-D__DBL_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INT_FAST32_MAX__=0x7fffffffffffffffL",
+      "-D__DBL_HAS_INFINITY__=1",
+      "-D__INT64_MAX__=0x7fffffffffffffffL",
+      "-D__SIZEOF_FLOAT__=4",
+      "-D__DEC32_MIN_EXP__=(-94)",
+      "-D__INTPTR_WIDTH__=64",
+      "-D__UINT_LEAST32_MAX__=0xffffffffU",
+      "-D__FLT32X_HAS_DENORM__=1",
+      "-D__INT_FAST16_TYPE__=long int",
+      "-D__MMX_WITH_SSE__=1",
+      "-D__LDBL_HAS_DENORM__=1",
+      "-D__FLT128_HAS_INFINITY__=1",
+      "-D__DEC32_MIN__=1E-95DF",
+      "-D__DBL_MAX_EXP__=1024",
+      "-D__WCHAR_WIDTH__=32",
+      "-D__FLT32_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__DEC128_EPSILON__=1E-33DL",
+      "-D__FLT16_DECIMAL_DIG__=5",
+      "-D__SSE2_MATH__=1",
+      "-D__ATOMIC_HLE_RELEASE=131072",
+      "-D__PTRDIFF_MAX__=0x7fffffffffffffffL",
+      "-D__amd64=1",
+      "-D__ATOMIC_HLE_ACQUIRE=65536",
+      "-D__LONG_LONG_MAX__=0x7fffffffffffffffLL",
+      "-D__SIZEOF_SIZE_T__=8",
+      "-D__FLT64X_MIN_EXP__=(-16381)",
+      "-D__SIZEOF_WINT_T__=4",
+      "-D__LONG_LONG_WIDTH__=64",
+      "-D__FLT32_MAX_EXP__=128",
+      "-D__FLT_MIN_EXP__=(-125)",
+      "-D__INT16_MAX__=0x7fff",
+      "-D__x86_64=1",
+      "-D__INT_FAST64_TYPE__=long int",
+      "-D__FLT64_DENORM_MIN__=4.94065645841246544176568792868221372e-324F64",
+      "-D__FLT16_DENORM_MIN__=5.96046447753906250000000000000000000e-8F16",
+      "-D__FLT128_EPSILON__=1.92592994438723585305597794258492732e-34F128",
+      "-D__FLT64X_NORM_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__SIZEOF_POINTER__=8",
+      "-D__DBL_HAS_QUIET_NAN__=1",
+      "-D__FLT32X_EPSILON__=2.22044604925031308084726333618164062e-16F32x",
+      "-D__LDBL_MAX_EXP__=16384",
+      "-D__DECIMAL_BID_FORMAT__=1",
+      "-D__FLT64_MIN_EXP__=(-1021)",
+      "-D__FLT64_MIN_10_EXP__=(-307)",
+      "-D__FLT16_MIN_10_EXP__=(-4)",
+      "-D__FLT64X_DECIMAL_DIG__=21",
+      "-D__DEC128_MIN__=1E-6143DL",
+      "-D__UINT16_MAX__=0xffff",
+      "-D__DBL_HAS_DENORM__=1",
+      "-D__FLT32_MIN__=1.17549435082228750796873653722224568e-38F32",
+      "-D__UINT8_TYPE__=unsigned char",
+      "-D__FLT_DIG__=6",
+      "-D__DEC_EVAL_METHOD__=2",
+      "-D__FLT_MANT_DIG__=24",
+      "-D__LDBL_DECIMAL_DIG__=21",
+      "-D__INT_LEAST32_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_INT_LOCK_FREE=2",
+      "-D__FLT128_MAX_EXP__=16384",
+      "-D__FLT32_MANT_DIG__=24",
+      "-D__FLT32X_MIN_EXP__=(-1021)",
+      "-D__FLT128_HAS_DENORM__=1",
+      "-D__FLT32_DECIMAL_DIG__=9",
+      "-D__FLT128_DIG__=33",
+      "-D__DEC64_EPSILON__=1E-15DD",
+      "-D__DEC128_MIN_EXP__=(-6142)",
+      "-D__DEC128_MAX__=9.999999999999999999999999999999999E6144DL",
+      "-D__INT_FAST32_TYPE__=long int",
+      "-D__UINT_LEAST16_TYPE__=short unsigned int",
+      "-D__DEC128_MAX_EXP__=6145",
+      "-D__UINT64_MAX__=0xffffffffffffffffUL",
+      "-D__FLT_IS_IEC_60559__=1",
+      "-D__FLT64X_DIG__=18",
+      "-D__INT8_TYPE__=signed char",
+      "-D__UINT32_TYPE__=unsigned int",
+      "-D__FLT_RADIX__=2",
+      "-D__INT_LEAST16_TYPE__=short int",
+      "-D__LDBL_EPSILON__=1.08420217248550443400745280086994171e-19L",
+      "-D__FLT16_DIG__=3",
+      "-D__SSE_MATH__=1",
+      "-D__FLT32X_MIN__=2.22507385850720138309023271733240406e-308F32x",
+      "-D__SIG_ATOMIC_MAX__=0x7fffffff",
+      "-D__GCC_ATOMIC_WCHAR_T_LOCK_FREE=2",
+      "-D__SIZEOF_PTRDIFF_T__=8",
+      "-D__FLT64X_HAS_INFINITY__=1",
+      "-D__FLT32_HAS_INFINITY__=1",
+      "-D__SIZEOF_LONG__=8",
+      "-D__LDBL_DIG__=18",
+      "-D__FLT64_IS_IEC_60559__=1",
+      "-D__x86_64__=1",
+      "-D__FLT16_IS_IEC_60559__=1",
+      "-D__FLT16_MAX_EXP__=16",
+      "-D__DEC32_SUBNORMAL_MIN__=0.000001E-95DF",
+      "-D__INT_FAST16_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_DIG__=15",
+      "-D__UINT_FAST32_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_LEAST64_TYPE__=long unsigned int",
+      "-D__FLT16_EPSILON__=9.76562500000000000000000000000000000e-4F16",
+      "-D__FLT_HAS_QUIET_NAN__=1",
+      "-D__FLT_MAX_10_EXP__=38",
+      "-D__LONG_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64X_HAS_DENORM__=1",
+      "-D__DEC128_SUBNORMAL_MIN__=0.000000000000000000000000000000001E-6143DL",
+      "-D__FLT_HAS_INFINITY__=1",
+      "-D__UINT_FAST16_TYPE__=long unsigned int",
+      "-D__DEC64_MAX__=9.999999999999999E384DD",
+      "-D__INT_FAST32_WIDTH__=64",
+      "-D__SIZE_WIDTH__=64",
+      "-D__INT_LEAST16_MAX__=0x7fff",
+      "-D__FLT16_NORM_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__DEC64_MANT_DIG__=16",
+      "-D__FLT32_DENORM_MIN__=1.40129846432481707092372958328991613e-45F32",
+      "-D__SIG_ATOMIC_WIDTH__=32",
+      "-D__INT_LEAST64_TYPE__=long int",
+      "-D__INT16_TYPE__=short int",
+      "-D__INT_LEAST8_TYPE__=signed char",
+      "-D__FLT16_MAX__=6.55040000000000000000000000000000000e+4F16",
+      "-D__FLT128_MIN__=3.36210314311209350626267781732175260e-4932F128",
+      "-D__SIZEOF_INT__=4",
+      "-D__DEC32_MAX_EXP__=97",
+      "-D__INT_FAST8_MAX__=0x7f",
+      "-D__FLT128_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__INTPTR_MAX__=0x7fffffffffffffffL",
+      "-D__FLT64_HAS_QUIET_NAN__=1",
+      "-D__FLT32_MIN_10_EXP__=(-37)",
+      "-D__FLT32X_DIG__=15",
+      "-D__PTRDIFF_WIDTH__=64",
+      "-D__LDBL_MANT_DIG__=64",
+      "-D__INT_FAST16_WIDTH__=64",
+      "-D__FLT64_HAS_INFINITY__=1",
+      "-D__FLT64X_MAX__=1.18973149535723176502126385303097021e+4932F64x",
+      "-D__FLT16_HAS_INFINITY__=1",
+      "-D__SIG_ATOMIC_MIN__=(-__SIG_ATOMIC_MAX__ - 1)",
+      "-D__GCC_ATOMIC_LONG_LOCK_FREE=2",
+      "-D__DEC32_MANT_DIG__=7",
+      "-D__FLT16_MANT_DIG__=11",
+      "-D__INTPTR_TYPE__=long int",
+      "-D__UINT16_TYPE__=short unsigned int",
+      "-D__WCHAR_TYPE__=int",
+      "-D__pic__=2",
+      "-D__UINTPTR_MAX__=0xffffffffffffffffUL",
+      "-D__INT_FAST64_WIDTH__=64",
+      "-D__LDBL_HAS_INFINITY__=1",
+      "-D__INT_FAST64_MAX__=0x7fffffffffffffffL",
+      "-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1",
+      "-D__FLT_NORM_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__FLT64X_MAX_EXP__=16384",
+      "-D__UINT_FAST64_TYPE__=long unsigned int",
+      "-D__INT_MAX__=0x7fffffff",
+      "-D__INT64_TYPE__=long int",
+      "-D__FLT_MAX_EXP__=128",
+      "-D__DBL_MANT_DIG__=53",
+      "-D__SIZEOF_FLOAT128__=16",
+      "-D__GCC_ATOMIC_CHAR16_T_LOCK_FREE=2",
+      "-D__DEC64_MIN__=1E-383DD",
+      "-D__WINT_TYPE__=unsigned int",
+      "-D__UINT_LEAST32_TYPE__=unsigned int",
+      "-D__SIZEOF_SHORT__=2",
+      "-D__FLT32_NORM_MAX__=3.40282346638528859811704183484516925e+38F32",
+      "-D__SSE__=1",
+      "-D__LDBL_MIN_EXP__=(-16381)",
+      "-D__FLT64_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__amd64__=1",
+      "-D__WINT_WIDTH__=32",
+      "-D__INT_LEAST8_MAX__=0x7f",
+      "-D__INT_LEAST64_WIDTH__=64",
+      "-D__FLT32X_MAX_10_EXP__=308",
+      "-D__SIZEOF_INT128__=16",
+      "-D__FLT16_MIN__=6.10351562500000000000000000000000000e-5F16",
+      "-D__FLT64X_IS_IEC_60559__=1",
+      "-D__LDBL_MAX_10_EXP__=4932",
+      "-D__ATOMIC_RELAXED=0",
+      "-D__DBL_EPSILON__=((double)2.22044604925031308084726333618164062e-16L)",
+      "-D__INT_LEAST32_TYPE__=int",
+      "-D__FLT64_MAX_EXP__=1024",
+      "-D__SIZEOF_WCHAR_T__=4",
+      "-D__UINT64_TYPE__=long unsigned int",
+      "-D__FLT128_NORM_MAX__=1.18973149535723176508575932662800702e+4932F128",
+      "-D__FLT64_NORM_MAX__=1.79769313486231570814527423731704357e+308F64",
+      "-D__FLT128_HAS_QUIET_NAN__=1",
+      "-D__INTMAX_MAX__=0x7fffffffffffffffL",
+      "-D__INT_FAST8_TYPE__=signed char",
+      "-D__FLT64X_MIN__=3.36210314311209350626267781732175260e-4932F64x",
+      "-D__FLT64_HAS_DENORM__=1",
+      "-D__FLT32_EPSILON__=1.19209289550781250000000000000000000e-7F32",
+      "-D__FLT16_HAS_DENORM__=1",
+      "-D__DBL_DECIMAL_DIG__=17",
+      "-D__INT_FAST8_WIDTH__=8",
+      "-D__FXSR__=1",
+      "-D__FLT32X_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__DBL_NORM_MAX__=((double)1.79769313486231570814527423731704357e+308L)",
+      "-D__INTMAX_WIDTH__=64",
+      "-D__FLT32_DIG__=6",
+      "-D__FLT_DENORM_MIN__=1.40129846432481707092372958328991613e-45F",
+      "-D__INT8_MAX__=0x7f",
+      "-D__LONG_WIDTH__=64",
+      "-D__DBL_MIN__=((double)2.22507385850720138309023271733240406e-308L)",
+      "-D__PIC__=2",
+      "-D__INT32_MAX__=0x7fffffff",
+      "-D__UINT_FAST32_TYPE__=long unsigned int",
+      "-D__FLT32X_NORM_MAX__=1.79769313486231570814527423731704357e+308F32x",
+      "-D__FLT_MAX__=3.40282346638528859811704183484516925e+38F",
+      "-D__SSE2__=1",
+      "-D__INT32_TYPE__=int",
+      "-D__SIZEOF_DOUBLE__=8",
+      "-D__FLT_MIN_10_EXP__=(-37)",
+      "-D__FLT64_MIN__=2.22507385850720138309023271733240406e-308F64",
+      "-D__INT_LEAST32_WIDTH__=32",
+      "-D__INTMAX_TYPE__=long int",
+      "-D__FLT32X_HAS_QUIET_NAN__=1",
+      "-D__ATOMIC_CONSUME=1",
+      "-D__UINTMAX_MAX__=0xffffffffffffffffUL",
+      "-D__PIE__=2",
+      "-D__FLT32X_DENORM_MIN__=4.94065645841246544176568792868221372e-324F32x",
+      "-D__DBL_MAX_10_EXP__=308",
+      "-D__LDBL_DENORM_MIN__=3.64519953188247460252840593361941982e-4951L",
+      "-D__PTRDIFF_TYPE__=long int",
+      "-D__FLT32X_MIN_10_EXP__=(-307)",
+      "-D__UINTPTR_TYPE__=long unsigned int",
+      "-D__DEC64_SUBNORMAL_MIN__=0.000000000000001E-383DD",
+      "-D__DEC128_MANT_DIG__=34",
+      "-D__LDBL_MIN_10_EXP__=(-4931)",
+      "-D__SIZEOF_LONG_LONG__=8",
+      "-D__FLT128_DECIMAL_DIG__=36",
+      "-D__GCC_ATOMIC_LLONG_LOCK_FREE=2",
+      "-D__FLT32_HAS_QUIET_NAN__=1",
+      "-D__FLT_DECIMAL_DIG__=9",
+      "-D__UINT_FAST16_MAX__=0xffffffffffffffffUL",
+      "-D__LDBL_NORM_MAX__=1.18973149535723176502126385303097021e+4932L",
+      "-D__GCC_ATOMIC_SHORT_LOCK_FREE=2",
+      "-D__SIZE_MAX__=0xffffffffffffffffUL",
+      "-D__UINT_FAST8_TYPE__=unsigned char",
+      "-D__ATOMIC_ACQ_REL=4",
+      "-D__ATOMIC_RELEASE=3",
+      "--sys_include",
+      "/usr/lib/gcc/x86_64-linux-gnu/13/include",
+      "--sys_include",
+      "/usr/local/include",
+      "--sys_include",
+      "/usr/include/x86_64-linux-gnu",
+      "--sys_include",
+      "/usr/include",
+      "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-state.c",
+      "-o",
+      "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/loader-state.roslynobj"
+    ],
+    "reusedObject": true
+  },
+  "inputs": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+      "sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4",
+      "bytes": 115573480
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "sha256": "67bd8496c5b9ad74fafeb1d52040020370d8e808bbc8219b8f824c44c696df17",
+      "bytes": 1268
+    },
+    {
+      "path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+      "bytes": 2129424
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/errno-thread.c",
+      "sha256": "4e87daf838fc51b1322d39379b4e48b7c89462bf6ab10cfb0c4f8ba2a30ed1a9",
+      "bytes": 4012
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-baseline.c",
+      "sha256": "c0105f78b61cac59ba4c3d54993771be415a96fe8d907a23487fd389c5a9f143",
+      "bytes": 2036
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-native-oracle.c",
+      "sha256": "83282c2f98b946224ecd8fcc6df06c0ddd750d0fd5fc6ab3a4bf5ae1178199d3",
+      "bytes": 531
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/loader-state.c",
+      "sha256": "457bb537ea17b206d9052084df6617bccfb637d4a2b76fd0837400c167eb9187",
+      "bytes": 2270
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-loader-interference.c",
+      "sha256": "39411a0176b9f2d43ea8f90cc83394bc956a6f5cf2aec3d8fb79b60fb29d8ccf",
+      "bytes": 200
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-loader-zero.c",
+      "sha256": "6a8986b465eee52180fce54edccaafce06689bdddc1c05abde1d28f5a28b5697",
+      "bytes": 212
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-oracle.c",
+      "sha256": "9cdad8565ee8cea81c11e5536d6cd8060586bc4e25643afbb00050991b3bdb5b",
+      "bytes": 473
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-raw-errno.c",
+      "sha256": "a446056506077160d7650b20c23c6cc325431933150757d3ef2ffc03a3b44ca2",
+      "bytes": 361
+    }
+  ],
+  "dotnetSdk": "10.0.112",
+  "nativeCompilers": [
+    {
+      "role": "native oracle/helper",
+      "binary": {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+        "bytes": 1023032
+      },
+      "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    },
+    {
+      "role": "generated ABI provider",
+      "binary": {
+        "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+        "bytes": 1023032
+      },
+      "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    }
+  ],
+  "object": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/providers/export/loader-state.roslynobj",
+    "sha256": "6d1642b64eb629a1bd6896b8ce5847e556565deebdd89f16c18850d503210d1c",
+    "bytes": 987136
+  },
+  "nativeEvidence": {
+    "baseline": {
+      "binary": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/loader-baseline",
+        "sha256": "8d9e7a965546523f9bd2f99b753dd9c81ca7ea01ecb052590d5090ee52b0d4c4",
+        "bytes": 16408
+      },
+      "output": "pending-error-after-successful-dlopen=0\ndlerror-read-clear=0\npending-error-after-successful-dlsym=0\npending-error-after-successful-dlclose=0\nnull-symbol-value=1\nnull-symbol-error=0\nborrowed-message-copy=1\nread-clear-next=0\ndlerror-errno=2721"
+    },
+    "oracle": {
+      "binary": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/loader-state",
+        "sha256": "42afff16f0dd9ee4030429d222b3743a59f2840f05975f237fb7446bf8b49699",
+        "bytes": 16824
+      },
+      "output": "result=17\n0:1\n1:1\n2:1\n3:1\n4:1\n5:1\n6:1\n7:1\n8:1\n9:1\n10:1\n11:1\n12:1\n13:1\n14:1\n15:1\n16:1",
+      "role": "Independent native application oracle; never generated dependency"
+    },
+    "zeroSymbolProvider": {
+      "binary": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libloader-zero.so",
+        "sha256": "5522587b8bd8b12f7a2713b1cface8e7a196f01e5555f2937bbb6d065aa75c19",
+        "bytes": 15016
+      },
+      "source": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-loader-zero.c",
+        "sha256": "6a8986b465eee52180fce54edccaafce06689bdddc1c05abde1d28f5a28b5697",
+        "bytes": 212
+      },
+      "exports": "0000000000000000 A native_loader_zero",
+      "role": "ABI-only absolute NULL-valued symbol; no executable native application body"
+    },
+    "interferenceHelper": {
+      "binary": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/native/libraw-loader.so",
+        "sha256": "d12c20482c41027ae5bc01449130fb3011b62b357c27cca4c56c8a51f7803fd6",
+        "bytes": 15584
+      },
+      "source": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-5/edgcpp/roslyn-csharp/tests/Fixtures/T3/providers/native-loader-interference.c",
+        "sha256": "39411a0176b9f2d43ea8f90cc83394bc956a6f5cf2aec3d8fb79b60fb29d8ccf",
+        "bytes": 200
+      },
+      "exports": "0000000000001119 T native_loader_raw_fail",
+      "role": "Checker-only raw loader interference; no application binding"
+    }
+  },
+  "emission": {
+    "counts": {
+      "functions": 7,
+      "records": 0,
+      "files": [
+        "Generated.cs",
+        "Generated.csproj",
+        "Generated.Abi.c",
+        "Generated.NativeImports.json"
+      ]
+    },
+    "deterministic": true,
+    "files": [
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.Abi.c",
+        "sha256": "d1007829594f1c8ef2f7dff8c21f8a772dd897bfa4337c6f9be1385746b03f4d",
+        "bytes": 9632
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.NativeImports.json",
+        "sha256": "d349213a1c173e673052e476afadc7d9ecfd4afa956b601f0541411df6557ccc",
+        "bytes": 4785
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.cs",
+        "sha256": "be1c37de96a29d1b40436d39e1a45075bc5b9df41727bb8c20f1edc16764faf3",
+        "bytes": 21565
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.csproj",
+        "sha256": "ea1f27805df7b2640f2be7d6b069ae97a10dd01294a05c8b66971cd4674cdf03",
+        "bytes": 1448
+      }
+    ],
+    "nativeImports": {
+      "providerContract": "explicit native ABI bindings; no native application bodies",
+      "nativeErrorProtocol": "LinuxX64LogicalErrno",
+      "imports": [
+        {
+          "linkageName": "dlopen",
+          "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "entryPoint": "dlopen",
+          "callingConvention": "cdecl",
+          "isVariadic": false,
+          "aggregateGateway": false,
+          "logicalErrnoProvider": false,
+          "logicalDlerrorProvider": false,
+          "returnType": "void*",
+          "parameters": [
+            "sbyte*",
+            "int"
+          ]
+        },
+        {
+          "linkageName": "dlerror",
+          "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "entryPoint": "dlerror",
+          "callingConvention": "cdecl",
+          "isVariadic": false,
+          "aggregateGateway": false,
+          "logicalErrnoProvider": false,
+          "logicalDlerrorProvider": true,
+          "returnType": "sbyte*",
+          "parameters": []
+        },
+        {
+          "linkageName": "dlsym",
+          "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "entryPoint": "dlsym",
+          "callingConvention": "cdecl",
+          "isVariadic": false,
+          "aggregateGateway": false,
+          "logicalErrnoProvider": false,
+          "logicalDlerrorProvider": false,
+          "returnType": "void*",
+          "parameters": [
+            "void*",
+            "sbyte*"
+          ]
+        },
+        {
+          "linkageName": "dlclose",
+          "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "entryPoint": "dlclose",
+          "callingConvention": "cdecl",
+          "isVariadic": false,
+          "aggregateGateway": false,
+          "logicalErrnoProvider": false,
+          "logicalDlerrorProvider": false,
+          "returnType": "int",
+          "parameters": [
+            "void*"
+          ]
+        },
+        {
+          "linkageName": "__errno_location",
+          "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+          "entryPoint": "__errno_location",
+          "callingConvention": "cdecl",
+          "isVariadic": false,
+          "aggregateGateway": false,
+          "logicalErrnoProvider": true,
+          "logicalDlerrorProvider": false,
+          "returnType": "int*",
+          "parameters": []
+        }
+      ],
+      "generatedAbi": {
+        "library": "RoslynObj.Generated.Abi",
+        "source": "Generated.Abi.c",
+        "contract": "concrete SysV AMD64 ABI forwarding only; application bodies remain C#",
+        "logicalErrno": {
+          "protocol": "linux-x64-logical-errno-v1",
+          "entry": "__roslynobj_application_errno_location",
+          "addressContract": "native thread-local application slot; distinct from raw libc errno; coherent direct/indirect/address-exposed entry"
+        },
+        "logicalDlerror": {
+          "protocol": "linux-x64-glibc-logical-dlerror-v1",
+          "entry": "__roslynobj_application_dlerror",
+          "registration": "__roslynobj_register_loader_entries",
+          "pendingContract": "each selected loader call replaces pending error, including success clearing; NULL result alone is not error",
+          "storageContract": "native per-thread owned byte snapshot; read-clear keeps returned buffer alive until next selected loader call; pthread destructor releases storage"
+        },
+        "loaderProviders": [
+          {
+            "linkageName": "dlopen",
+            "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+            "entryPoint": "dlopen"
+          },
+          {
+            "linkageName": "dlerror",
+            "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+            "entryPoint": "dlerror"
+          },
+          {
+            "linkageName": "dlsym",
+            "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+            "entryPoint": "dlsym"
+          },
+          {
+            "linkageName": "dlclose",
+            "library": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+            "entryPoint": "dlclose"
+          }
+        ],
+        "hostEntries": [],
+        "hostOutboundShapes": [
+          {
+            "entry": "__host_call_1",
+            "parameters": [
+              "sbyte*",
+              "int"
+            ],
+            "returnType": "void*"
+          },
+          {
+            "entry": "__host_call_2",
+            "parameters": [
+              "void*",
+              "sbyte*"
+            ],
+            "returnType": "void*"
+          },
+          {
+            "entry": "__host_call_3",
+            "parameters": [
+              "void*"
+            ],
+            "returnType": "int"
+          },
+          {
+            "entry": "__host_call_4",
+            "parameters": [],
+            "returnType": "sbyte*"
+          },
+          {
+            "entry": "__host_call_5",
+            "parameters": [
+              "sbyte*",
+              "int"
+            ],
+            "returnType": "void*"
+          },
+          {
+            "entry": "__host_call_6",
+            "parameters": [
+              "void*",
+              "sbyte*"
+            ],
+            "returnType": "void*"
+          },
+          {
+            "entry": "__host_call_7",
+            "parameters": [
+              "void*"
+            ],
+            "returnType": "int"
+          }
+        ],
+        "entries": [],
+        "aggregateEntries": [],
+        "aggregateLayouts": [],
+        "aggregateOutboundShapes": [],
+        "outboundShapes": []
+      }
+    },
+    "canonicalFields": [
+      [
+        "__address_dlopen",
+        "__library_2",
+        "dlopen"
+      ],
+      [
+        "__address_dlerror",
+        "__generatedAbiLibrary",
+        "__roslynobj_application_dlerror"
+      ],
+      [
+        "__address_dlsym",
+        "__library_2",
+        "dlsym"
+      ],
+      [
+        "__address_dlclose",
+        "__library_2",
+        "dlclose"
+      ],
+      [
+        "__address___errno_location",
+        "__generatedAbiLibrary",
+        "__roslynobj_application_errno_location"
+      ]
+    ],
+    "rawErrorProvider": "registered explicitly bound address; no linked-name fallback"
+  },
+  "generatedAbi": {
+    "source": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/Generated.Abi.c",
+      "sha256": "d1007829594f1c8ef2f7dff8c21f8a772dd897bfa4337c6f9be1385746b03f4d",
+      "bytes": 9632
+    },
+    "binary": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/generated/libRoslynObj.Generated.Abi.so",
+      "sha256": "b0d328ec7c9dfab87466ff4a584ea7ebbba13c8e692b2f1b9bb1c31bf545b588",
+      "bytes": 17448
+    },
+    "outputCopy": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker/libRoslynObj.Generated.Abi.so",
+      "sha256": "b0d328ec7c9dfab87466ff4a584ea7ebbba13c8e692b2f1b9bb1c31bf545b588",
+      "bytes": 17448
+    },
+    "exports": "00000000000014c0 T __host_call_1\n00000000000015a0 T __host_call_2\n0000000000001680 T __host_call_3\n0000000000001750 T __host_call_4\n0000000000001820 T __host_call_5\n0000000000001830 T __host_call_6\n0000000000001840 T __host_call_7\n0000000000001290 T __roslynobj_application_dlerror\n0000000000001470 T __roslynobj_application_errno_location\n0000000000001490 T __roslynobj_register_loader_entries",
+    "dependencies": "linux-vdso.so.1 (0x00007ffdec155000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f7887800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f7887ad1000)",
+    "publishedCopy": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/nativeaot/libRoslynObj.Generated.Abi.so",
+      "sha256": "b0d328ec7c9dfab87466ff4a584ea7ebbba13c8e692b2f1b9bb1c31bf545b588",
+      "bytes": 17448
+    }
+  },
+  "nativeAotDependencies": "linux-vdso.so.1 (0x00007fff96536000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007e2d54a8b000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007e2d54400000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007e2d54ba3000)",
+  "execution": {
+    "jitOutput": "result=17\nobservations=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\nloader-snapshot-read-clear-lifetime=passed\nloader-canonical-and-unknown-indirect=passed",
+    "nativeAotOutput": "result=17\nobservations=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\nloader-snapshot-read-clear-lifetime=passed\nloader-canonical-and-unknown-indirect=passed",
+    "applicationInvocationsPerChecker": 2,
+    "observationsPerInvocation": 17,
+    "generatedDependencies": [
+      "LoaderChecks/1.0.0",
+      "Generated/1.0.0",
+      "RoslynObj.CSharp.Runtime/1.0.0"
+    ],
+    "checks": [
+      "success clears unread errors",
+      "NULL value without error",
+      "read-clear",
+      "borrowed bytes survive read-clear/raw/GC",
+      "direct/canonical function-address identity",
+      "known selected provider address through unknown indirect gateway",
+      "errno bookkeeping"
+    ]
+  },
+  "buildArtifacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter/LoaderEmit.dll",
+      "sha256": "286db1ec3f461fd97340917802f43c5de5197332375f757e9a366004bced4d22",
+      "bytes": 14336
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter/LoaderEmit.deps.json",
+      "sha256": "f194bf300261dba76bbefe86338486358f144e30f8ca89cb8b48acd259349bec",
+      "bytes": 8781
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter/RoslynObj.CSharp.dll",
+      "sha256": "4afd6af6652039df5f15d46edc36779266fda9c48bc33d490443bb7782d98c1d",
+      "bytes": 508416
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/emitter/RoslynObj.dll",
+      "sha256": "e405789780e24f591c1c8f4bd8dd40da7f5369bf5bb75e61798c83b3b4475c47",
+      "bytes": 2629120
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker/LoaderChecks.dll",
+      "sha256": "f0efd59bc62ce6e5d165990c9bc435b22f3ec44bac655ea81d39df1fea468715",
+      "bytes": 8704
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker/LoaderChecks.deps.json",
+      "sha256": "2afcc4b4699f85a451c4419fab3e9af3ddcde225c81f33041d8281377de1f4e4",
+      "bytes": 1186
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker/Generated.dll",
+      "sha256": "f52e325510c3d68d3cdb34e1e47c9d79bbc888c0516b345e9bbab8e5e8c9b882",
+      "bytes": 10752
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/checker/RoslynObj.CSharp.Runtime.dll",
+      "sha256": "7a0db62dacf3c57b38a8854710d1881fa86818f76f8ac7b4ac0aafcb392f0708",
+      "bytes": 13824
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/loader-provider-reproduction/nativeaot/LoaderChecks",
+      "sha256": "14c81da89bae0f7cb3c5674f52fb31571767380c0aea2481e8dddc545f4d7370",
+      "bytes": 1832456
+    }
+  ]
+}
