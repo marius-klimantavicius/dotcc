@@ -1,0 +1,1166 @@
+{
+  "reportVersion": 1,
+  "status": "passed-bounded-generated-int32-eh",
+  "gate": "T5 partial; broader C++ remains open",
+  "sourceCommitBase": "f5c0f255a",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-3/source-snapshot.json",
+    "bytes": 34142,
+    "sha256": "be8d4bcceb0b808c27c1e91f44807009323635affdcd472ea79809ceb1628f03"
+  },
+  "sourceInputCount": 200,
+  "sourceFreezeVerified": true,
+  "inputHashesReverified": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/normal-lifetime.roslynobj",
+      "bytes": 792576,
+      "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup.roslynobj",
+      "bytes": 791552,
+      "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-runtime-name.roslynobj",
+      "bytes": 652288,
+      "sha256": "3e0c00a038086af7ed3e907d46d38e5fc8a198d5b2092acc84f509b8fab71aab"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-handler-call.roslynobj",
+      "bytes": 727040,
+      "sha256": "39fd34545d8b5c4e18fabac8aaf9b970718d63661053f337559117789aa1b6a4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-noexcept-call.roslynobj",
+      "bytes": 732160,
+      "sha256": "e492a79982eca38cf276cc60ea0b1f22d81496f7e67382216fd0d795a6e5f9af"
+    }
+  ],
+  "toolchain": {
+    "sdk": "10.0.112",
+    "nativeAotCompiler": {
+      "path": "/usr/lib/llvm-18/bin/clang",
+      "bytes": 136504,
+      "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8"
+    },
+    "runner": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+      "bytes": 5505,
+      "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+    },
+    "driverAttempt1": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-eh-final-attempt1.py",
+      "bytes": 5033,
+      "sha256": "c4090960bf98e36a77aa01aaebb3af23e2bbee9cafac405892553082d681df52"
+    },
+    "driverContinuation": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-eh-final.py",
+      "bytes": 5341,
+      "sha256": "7eca365c4a2453bc1cffcb71e6b7da9cebb056c0c92e6411e41cea163e149767"
+    },
+    "budgets": "Each accepted phase freezes timeout/memory/log budgets in its hashed receipt; no violations. AOT uses clang 18 explicitly."
+  },
+  "acceptedPhaseCount": 17,
+  "successfulPhaseCount": 14,
+  "expectedRejectionPhaseCount": 3,
+  "phases": [
+    {
+      "name": "eh-cli-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-build-3/run.json",
+        "bytes": 1231,
+        "sha256": "e2a8232899261453458b88550a252f59ec810822e0d4586e9658a339f908ae4e"
+      },
+      "elapsedSeconds": 7.74539034999907,
+      "sampledPeakProcessTreeRssBytes": 595632128,
+      "waitedPeakProcessRssBytes": 251080704,
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-3/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3"
+      ]
+    },
+    {
+      "name": "eh-cli-translate-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-translate-3/run.json",
+        "bytes": 1137,
+        "sha256": "1eb550325d5dea849f9bcd0fa0a732806209b9bcc8d452fd98d5f068751119b3"
+      },
+      "elapsedSeconds": 0.603033100022003,
+      "sampledPeakProcessTreeRssBytes": 102699008,
+      "waitedPeakProcessRssBytes": 103546880,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-cli-translate-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-cli-translate-3-report.json"
+      ]
+    },
+    {
+      "name": "eh-cli-repeat-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-repeat-3/run.json",
+        "bytes": 1132,
+        "sha256": "9983376a05cc60d7d719a84d20e4b720cbd238444be49b0e032c6f0a804a966f"
+      },
+      "elapsedSeconds": 0.5023047649301589,
+      "sampledPeakProcessTreeRssBytes": 102621184,
+      "waitedPeakProcessRssBytes": 104857600,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-cli-repeat-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-cli-repeat-3-report.json"
+      ]
+    },
+    {
+      "name": "eh-checker-jit-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-build-3/run.json",
+        "bytes": 1338,
+        "sha256": "dd53df041ee54d1eb20ecaba6931447349286b2fb529d2f62a9e76e7f1b112b6"
+      },
+      "elapsedSeconds": 5.903888823930174,
+      "sampledPeakProcessTreeRssBytes": 514785280,
+      "waitedPeakProcessRssBytes": 211800064,
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.csproj"
+      ]
+    },
+    {
+      "name": "eh-checker-jit-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-run-3/run.json",
+        "bytes": 995,
+        "sha256": "3c634d90757d46a313a02e0881b3e7250370bad047dcd3f0da22f4d8655570db"
+      },
+      "elapsedSeconds": 0.1006126319989562,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 34865152,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt"
+      ]
+    },
+    {
+      "name": "eh-checker-aot-publish-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-publish-3/run.json",
+        "bytes": 1451,
+        "sha256": "16fdfc02c28450ad37c8208dc52c5d4842e130d11cce7309c49ed693d2e675bb"
+      },
+      "elapsedSeconds": 8.452008700929582,
+      "sampledPeakProcessTreeRssBytes": 671633408,
+      "waitedPeakProcessRssBytes": 253911040,
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang"
+      ]
+    },
+    {
+      "name": "eh-checker-aot-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-run-3/run.json",
+        "bytes": 979,
+        "sha256": "eb758900d9b9a555b698b79497a4be088693f15fd49c30807b8b80162d64a129"
+      },
+      "elapsedSeconds": 0.10040877002757043,
+      "sampledPeakProcessTreeRssBytes": 135168,
+      "waitedPeakProcessRssBytes": 18087936,
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-bin-3/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt"
+      ]
+    },
+    {
+      "name": "eh-reject-ordinary-runtime-name-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-reject-ordinary-runtime-name-3/run.json",
+        "bytes": 1168,
+        "sha256": "e75715f216ee1eaa7b3f73c126f11e3ec5a4b200aa9e5b9ec1128d7a4b9f19f0"
+      },
+      "elapsedSeconds": 0.3016015770845115,
+      "sampledPeakProcessTreeRssBytes": 93462528,
+      "waitedPeakProcessRssBytes": 95420416,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-ordinary-runtime-name-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-ordinary-runtime-name-3-report.json"
+      ]
+    },
+    {
+      "name": "eh-inspect-exception-handler-call-retry-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-inspect-exception-handler-call-retry-3/run.json",
+        "bytes": 1135,
+        "sha256": "0a6c1353ad6cb4ef751d967819bc8c2ff531cd8ff7eefd45f009f6af65979946"
+      },
+      "elapsedSeconds": 0.20114750997163355,
+      "sampledPeakProcessTreeRssBytes": 74903552,
+      "waitedPeakProcessRssBytes": 83623936,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-handler-call.roslynobj",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/exception-handler-call-inspect.json"
+      ]
+    },
+    {
+      "name": "eh-reject-exception-handler-call-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-reject-exception-handler-call-3/run.json",
+        "bytes": 1172,
+        "sha256": "b6ae3a2ae9141aa4f6afc6be9c8e1da958305692e7408c5b49d3bd20cf821832"
+      },
+      "elapsedSeconds": 0.40221289405599236,
+      "sampledPeakProcessTreeRssBytes": 95137792,
+      "waitedPeakProcessRssBytes": 100401152,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-exception-handler-call-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-exception-handler-call-3-report.json"
+      ]
+    },
+    {
+      "name": "eh-inspect-exception-noexcept-call-retry-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-inspect-exception-noexcept-call-retry-3/run.json",
+        "bytes": 1137,
+        "sha256": "ca77d195d1e14656ba2e364ceca8a0fe6e7d048262967a774cb48c0d4bbe7f1c"
+      },
+      "elapsedSeconds": 0.20110496901907027,
+      "sampledPeakProcessTreeRssBytes": 78049280,
+      "waitedPeakProcessRssBytes": 82575360,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-noexcept-call.roslynobj",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/exception-noexcept-call-inspect.json"
+      ]
+    },
+    {
+      "name": "eh-reject-exception-noexcept-call-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-reject-exception-noexcept-call-3/run.json",
+        "bytes": 1173,
+        "sha256": "fd4d1e4984fd3cc477432859b6c1602b5c7d3d520d318741cb85405f9a2ca1dc"
+      },
+      "elapsedSeconds": 0.40194112493190914,
+      "sampledPeakProcessTreeRssBytes": 95391744,
+      "waitedPeakProcessRssBytes": 98041856,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-exception-noexcept-call-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-exception-noexcept-call-3-report.json"
+      ]
+    },
+    {
+      "name": "eh-normal-cli-translate-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-translate-3/run.json",
+        "bytes": 1152,
+        "sha256": "f2bbf473bdf8dad19cf0ca3b062e491f1f253decd648e5f74b279ca1d2517335"
+      },
+      "elapsedSeconds": 0.6037426779512316,
+      "sampledPeakProcessTreeRssBytes": 105078784,
+      "waitedPeakProcessRssBytes": 104071168,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-normal-cli-translate-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-normal-cli-translate-3-report.json"
+      ]
+    },
+    {
+      "name": "eh-normal-checker-jit-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-build-3/run.json",
+        "bytes": 1356,
+        "sha256": "61f7d310240f6f2bdc51a79eb581a88cd0843b8e4f13384beb7bab725b789293"
+      },
+      "elapsedSeconds": 5.698092000093311,
+      "sampledPeakProcessTreeRssBytes": 514252800,
+      "waitedPeakProcessRssBytes": 213086208,
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-3/edgcpp/roslyn-csharp/tests/NormalLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-generated-3/Generated.csproj"
+      ]
+    },
+    {
+      "name": "eh-normal-checker-jit-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-run-3/run.json",
+        "bytes": 1001,
+        "sha256": "bccbb25f6cebf52fc71ace6bd4489309a41ab7599b8745b496b54b9014ede042"
+      },
+      "elapsedSeconds": 0.10060630994848907,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 35389440,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt"
+      ]
+    },
+    {
+      "name": "eh-normal-checker-aot-publish-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-publish-3/run.json",
+        "bytes": 1469,
+        "sha256": "ba82b2d1d8b26c78f9788058688cc1d345b16d2d97eec63d71462666f1df10e8"
+      },
+      "elapsedSeconds": 8.457784661091864,
+      "sampledPeakProcessTreeRssBytes": 676904960,
+      "waitedPeakProcessRssBytes": 248111104,
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-3/edgcpp/roslyn-csharp/tests/NormalLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-generated-3/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang"
+      ]
+    },
+    {
+      "name": "eh-normal-checker-aot-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-run-3/run.json",
+        "bytes": 984,
+        "sha256": "fdb224b247aa0a6a5113fcfab50a79322d82c29549b57b95f5f92aee39006395"
+      },
+      "elapsedSeconds": 0.10049160895869136,
+      "sampledPeakProcessTreeRssBytes": 126976,
+      "waitedPeakProcessRssBytes": 18087936,
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-bin-3/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt"
+      ]
+    }
+  ],
+  "preservedToolingAttempt": [
+    {
+      "name": "eh-inspect-exception-handler-call-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 2,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-inspect-exception-handler-call-3/run.json",
+        "bytes": 1133,
+        "sha256": "449ecc427835c0fab0b8b99bbceabae3c375908d61bb82ec4e3ee8e483466bcb"
+      },
+      "elapsedSeconds": 0.10052914905827492,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 34078720,
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+        "inspect",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-handler-call.roslynobj",
+        "--output",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/exception-handler-call-inspect.json"
+      ],
+      "cause": "Coordinator inspect used unsupported --output option; corrected to --report in fresh retry directory without product changes."
+    }
+  ],
+  "priorAttempts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-1",
+      "status": "Combined translator build and direct emission passed; no generated runtime proof claimed."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-source-2",
+      "status": "Production/JIT passed with one unused-local warning. Final snapshot 3 removes the unused caught slot and qualifies runtime names."
+    }
+  ],
+  "publication": {
+    "eh-cli-generated-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/completion.json",
+        "bytes": 811,
+        "sha256": "7a73cfc0dc31b9aeda75d5f716cdd562eda6a360f13499b9a022e2b6646c921a"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.cs",
+          "bytes": 13895,
+          "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.csproj",
+          "bytes": 537,
+          "sha256": "184e52a9668b94d0691b28a8034cdc16d93fb6eb55995aecf9c9c94211cd1a89"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/program-report.json",
+          "bytes": 187835,
+          "sha256": "78b9dbe094fdc785ab3a27484c693bb5b035d2250d50436ef5822dab3c89bc7f"
+        }
+      ]
+    },
+    "eh-cli-generated-repeat-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-repeat-3/completion.json",
+        "bytes": 811,
+        "sha256": "80e6b766d3a8de8f8e5a1510daa5a1208200f1db90ab3fa09dbbd36b57ff160c"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-repeat-3/Generated.cs",
+          "bytes": 13895,
+          "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-repeat-3/Generated.csproj",
+          "bytes": 537,
+          "sha256": "184e52a9668b94d0691b28a8034cdc16d93fb6eb55995aecf9c9c94211cd1a89"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-repeat-3/program-report.json",
+          "bytes": 187842,
+          "sha256": "a36ec9c7159ae72e48a2821ad9ac4dd893d83f88894c4b7b159c6bf8457dff17"
+        }
+      ]
+    },
+    "eh-normal-cli-generated-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-generated-3/completion.json",
+        "bytes": 810,
+        "sha256": "33f3d9c2a34e544b3c319482789212fbb0671c93b206b0224651eec10b4dcf14"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-generated-3/Generated.cs",
+          "bytes": 8880,
+          "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-generated-3/Generated.csproj",
+          "bytes": 537,
+          "sha256": "184e52a9668b94d0691b28a8034cdc16d93fb6eb55995aecf9c9c94211cd1a89"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-cli-generated-3/program-report.json",
+          "bytes": 170024,
+          "sha256": "6ec216f1e72c35d586112eaa4f3aa5ffd75575359688f5170be2689b1c313b0d"
+        }
+      ]
+    }
+  },
+  "deterministicSourceAndProject": true,
+  "deterministicProgramReportAfterOutputPathNormalization": true,
+  "normalApplicationSourceByteIdentical": true,
+  "selectedSemanticRuntimeImport": {
+    "locator": "unit/0001/function/000018",
+    "kind": "function",
+    "name": "__destroy_exception_object",
+    "linkageName": "__destroy_exception_object",
+    "signature": "unit/0001/type/000029() cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+    "callingConvention": "cc_default",
+    "required": true,
+    "directCalls": 1,
+    "addressReferences": 0,
+    "addressExposed": true,
+    "provider": "RoslynObj.CSharp.Runtime.ManagedCppException",
+    "providerSymbol": null,
+    "bindingSignature": null,
+    "bindingCallingConvention": null,
+    "ownership": "The validated managed-cpp-int32-exception-owner-v1 contract releases the selected handler's explicit payload owner once; no ambient current pointer or native application implementation is used.",
+    "errorContract": "Only the admitted generated exception carrier participates; native C++ unwinding and CLR-error conversion are unsupported.",
+    "threadContract": "The payload belongs to its carrier and selected handler; no ambient thread-local exception pointer is substituted.",
+    "callbackContract": "No native entry or callback is supplied for this generated cleanup action.",
+    "bindingStatus": "generated-exception-owner-contract-selected"
+  },
+  "requiredBodyCount": 13,
+  "observations": {
+    "eh": {
+      "nativeStdout": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt",
+        "bytes": 259,
+        "sha256": "89dd333a482f01178e0f0ff3e630b95ace30767d416c1e18cc902966533a6d5c"
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-run-3/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              },
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-run-3/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              },
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    "eh-normal": {
+      "nativeStdout": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt",
+        "bytes": 275,
+        "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-run-3/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              },
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-run-3/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              },
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "negativeAdmission": [
+    {
+      "name": "ordinary-runtime-name",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-ordinary-runtime-name-3-report.json",
+        "bytes": 91265,
+        "sha256": "d8d7ae61db2eaa848887536b746d65c055a2f5cf01a4e46a8c513e7f412cc9d8"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__destroy_exception_object' requires one explicit binding for captured linkage '__destroy_exception_object'.",
+          "input": "b532f16476f6ee486e808fda8422dda2",
+          "locator": "function/1:fixture/operation/2",
+          "family": "external-function"
+        }
+      ],
+      "publishedOutputExists": false
+    },
+    {
+      "name": "exception-handler-call",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-exception-handler-call-3-report.json",
+        "bytes": 161731,
+        "sha256": "a3dabc0a64f60aa3e50793cde33769e2e4b7c9223ca87180bfbbd049c734691d"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "d177ce9b54ce803490944cb3083cdbfc",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "publishedOutputExists": false
+    },
+    {
+      "name": "exception-noexcept-call",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-preparation-3/eh-reject-exception-noexcept-call-3-report.json",
+        "bytes": 167845,
+        "sha256": "18a0e716714bb6a50fd4387e45bc08920f77d842f18db71dc95605c0882ccf49"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "18a6ca41a9d65020fc8fbe6e5ad17531",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "publishedOutputExists": false
+    }
+  ],
+  "negativePublicFacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/exception-handler-call-facts-1.json",
+      "bytes": 391273,
+      "sha256": "69e33965958eb85e8f0eed2873df3e27040adbf08f7af8facc6d154d63661c1e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/exception-noexcept-call-facts-1.json",
+      "bytes": 414448,
+      "sha256": "6e7a7b60a64a9a6e4eb722f0b2e19127f5d41aaac671a73f4a937b607d927444"
+    }
+  ],
+  "dependencies": {
+    "eh": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3/Checks.deps.json",
+        "bytes": 1168,
+        "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae"
+      },
+      "libraries": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "aotElfDependencies": [
+        "\tlinux-vdso.so.1 (0x00007e9ac49aa000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007e9ac488e000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007e9ac4200000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x00007e9ac49ac000)"
+      ]
+    },
+    "eh-normal": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3/Checks.deps.json",
+        "bytes": 1168,
+        "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae"
+      },
+      "libraries": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "aotElfDependencies": [
+        "\tlinux-vdso.so.1 (0x00007ffeecdcc000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007a2fed517000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007a2fed200000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x00007a2fed8ed000)"
+      ]
+    }
+  },
+  "builtArtifacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/Microsoft.Data.Sqlite.dll",
+      "bytes": 177464,
+      "sha256": "b98d957462be432895b00dccca012d3c127e118d3d4262418014b92c7bbd66cf"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/RoslynObj.CSharp.dll",
+      "bytes": 590336,
+      "sha256": "2d7ca443f3f9235160c78d64176100c0f435fd7db2794489b2f4832324e6eb19"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/RoslynObj.dll",
+      "bytes": 2629120,
+      "sha256": "1e82bf7cb0a970c4832ba9a99dfcb78f1cd5c4359d63dfb1dda8522e85cc2f9a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/SQLitePCLRaw.batteries_v2.dll",
+      "bytes": 5120,
+      "sha256": "815ce410c9eab531dd219318e3ba16c5e38e83d361cfbbdbb4bbca222c497b0b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/SQLitePCLRaw.core.dll",
+      "bytes": 51200,
+      "sha256": "af340ac9eb9195795660d7fc1114f486b6ab63998f33176e2f24c8e0acb9aa84"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/SQLitePCLRaw.provider.e_sqlite3.dll",
+      "bytes": 36864,
+      "sha256": "df996bcae63c2cabcfe8d4b9c5110eb39a2a4706178b07d875665391c6eb3995"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-bin-3/roslynobj-csharp.dll",
+      "bytes": 16896,
+      "sha256": "8fdd0df091f795a1f3fd1884a0439d2446f9c5c86266e4c42d09a981c2d6b321"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3/Checks",
+      "bytes": 79832,
+      "sha256": "f04e74ec324dd35f96e51e749498b0dbe93c499106373f38710d88b8b87ff63b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3/Checks.dll",
+      "bytes": 9216,
+      "sha256": "0caf1852d916a6a0b7996345e80e2f59191845b395cb930ff0c4ea37b716d406"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3/Generated.dll",
+      "bytes": 7680,
+      "sha256": "d8ce8f8fbb1ea1169f25fa110d44dbf92326e255bd74d44b701649ee523094d6"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-jit-bin-3/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 24064,
+      "sha256": "1b485e18590fd05a347b961ea87e18f8ddb05a87346873f1853e35a128ef3f36"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-checker-aot-bin-3/Checks",
+      "bytes": 2045360,
+      "sha256": "aec63281c5e38ecf3a8a7656c3db08d341a37142bf8c86e090f9ce307c59a4e7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3/Checks",
+      "bytes": 79832,
+      "sha256": "f04e74ec324dd35f96e51e749498b0dbe93c499106373f38710d88b8b87ff63b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3/Checks.dll",
+      "bytes": 6656,
+      "sha256": "3a33ab8988a4345c6ad59a587be7cb688b066078f45572c348a3c2287d2f5d1d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3/Generated.dll",
+      "bytes": 6656,
+      "sha256": "52896b750c0e9dad80671f25453474d545cb51c99e4c7c4d7dc355ffc1244ace"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-jit-bin-3/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 24064,
+      "sha256": "d98c03d39926d8bf9cfb7837cd0f2ad8e86828c0d1ad3b88758270b0c53d4f5b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-normal-checker-aot-bin-3/Checks",
+      "bytes": 2033024,
+      "sha256": "207dd98d9366e9023e34fc857641fa183192c8c08baa38a76aff34f8051c6766"
+    }
+  ],
+  "runtimeContractProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/runtime-contract-source-1/provenance.json",
+    "bytes": 2468,
+    "sha256": "ce89615062702b146cf235a6b9894d273e45d68d0dd7f519e3b783e58df8c480"
+  },
+  "limits": [
+    "Only the actual single-unit native_lowered nonportable Itanium profile and one exact captured signed int32 thrown/caught identity are admitted.",
+    "One throw, one typed handler and their two cleanup-bearing functions; only captured unconditional direct-local/no-object action chains.",
+    "No native boundary unwinding, arbitrary CLR-to-C++ exception conversion, rethrow, nested/new throw from handler, termination, class payloads or constructor failure.",
+    "Source noexcept paths and handler selected callees require closed generated no-throw capability; genuine unsupported variants reject before publication.",
+    "Handler normal catch release is exercised. Exceptional new-throw no-object release and pending initialization-failure release are guarded/unexercised.",
+    "Normal alternate C2/D2 bodies remain separately emitted; current normal fixture selects C1/D1 at runtime.",
+    "No EDG core/reader changes, native application provider, native C++ runtime implementation, GC/finalizer application cleanup or source reconstruction.",
+    "Sampling can miss short startup peaks and double-count shared pages; waited high-water RSS is separately reported.",
+    "Broader T5 constructor failure/arrays, inheritance/thunks/RTTI/member pointers, local-static guards/TLS and T6 portability/scale remain open."
+  ]
+}

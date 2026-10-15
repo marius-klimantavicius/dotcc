@@ -110,6 +110,8 @@ public sealed partial class CSharpEmitter
         private string FunctionAddress(FunctionSymbol function)
         {
             function = CanonicalFunction(function);
+            if (IsGeneratedExceptionParticipant(function))
+                throw Limit("Generated exception participants have no native callable-address or unwinding contract.", "exception-boundary");
             if (IsIntrinsicRoutine(function)) throw Limit("A retained compiler intrinsic has no native callable address.", "intrinsic");
             var existing = functionAddresses.FirstOrDefault(a => a.Function.Equals(function));
             if (existing is not null) return Owner + "." + existing.Field;

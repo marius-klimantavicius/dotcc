@@ -29,42 +29,53 @@ one logical-errno substitution, not raw libc accessor invocation; 71 selections
 remain untraced. Finite clock/random-buffer/allocator contracts pass. No claim
 covers every provider variant, actual OS/device failure, upstream suite or all SQL.
 
-Active approved T5 sequence: capture and inspect the concrete public roles and
-normal lifetime/copy/return-temporary roots in the two prepared header-free
-candidates, prove normal native/JIT/AOT first, then bounded generated-only int
-throw/catch cleanup. Root reviewed and accepted this sequence without another
-approval round. Local candidate files are `tests/Fixtures/T5/normal-lifetime.cpp`
-and `exception-cleanup.cpp`; `docs/T5-INITIAL-SLICE.md` records public facts/guards.
-Both captures and the separate native oracle now pass under `t5/capture` and
-`t5/native-*` in the campaign artifact directory. Exact source/object/tool hashes
-are in `t5/capture-provenance-1.json`. Each oracle runs twice: normal returns 26
-with 13 events; exceptional returns 11 with 14 events; both repeat complete
-observations with live/overflow zero. These are observations, not translation
-acceptance. Public inventory records 16 normal required definitions/no required
-imports and 13 exceptional definitions/one required EDG runtime helper
-`__destroy_exception_object`. Retained `_ZTIi` is not a required native import;
-actual type facts still govern exception matching. The focused public lifetime
-probe passes; facts 4 disclose the actual compiler-table projection and empty
-static descriptors. The bounded normal adapter now passes production CLI,
-native/JIT/NativeAOT complete observations twice from immutable
-`t5/normal-source-3`; [normal receipt](../acceptance/lifetimes/normal-report.json)
-records all 15 expected phase outcomes, source/input freezes and deterministic
-publication. Output is `t5/normal-cli-generated-3`. All 16 definitions are
-represented; C2/D2 bodies are separate and C#-compiled, not runtime-activated by
-this fixture. Expected weak and exceptional rejection checks pass. The unused
-alias negative-test expectation was corrected and preserved, not turned into
-an alias execution claim. No builder remains active.
-Keep native-boundary unwinding,
-lexical cleanup reconstruction and broader inheritance/TLS/arrays outside this
-first slice. EDG and its recorded execution remain authoritative. Next is the
-approved generated-only integer [EH contract](T5-EH-CONTRACT.md): destination
-search must precede cleanup and payload ownership follows the selected handler.
-Normal emitter/checker files are frozen for checkpoint; runtime has not changed.
+T5 remains open. Normal checkpoint `f5c0f255a` passes production CLI and complete
+native/JIT/AOT observations twice. Actual selected receiver/hidden-result/copy
+roles and explicit destruction are preserved; const-record references alone are
+admitted in this slice. C2/D2 bodies are separately emitted/compiled but not
+runtime-activated by its C1/D1 fixture. The normal receipt remains at
+`acceptance/lifetimes/normal-report.json`.
+
+The approved bounded generated-only int EH implementation now passes from
+immutable `t5/eh-source-3` (200 files). Production output is
+`t5/eh-cli-generated-3`; [exception receipt](../acceptance/lifetimes/exception-report.json)
+SHA-256 `df4f593ffd5d9cdd7c4b19783f3b08a3f5df8b62239fb4516ebd6993b24e0960`
+records 17 expected phase outcomes: 14 successes and three expected rejections.
+Result 11, five scalar values and all 14 lifetime events match the native oracle
+twice in JIT and NativeAOT. Each invocation owns/releases one int payload, with
+handler selection before both cleanup assertions and zero live owners/protocol
+rejections. The runtime is reader-independent; typed throw operands run once,
+false filters observe escaping carriers, selecting filters choose the actual
+handler before finally cleanup, and cleanup follows captured stop-exclusive
+region links. No lexical cleanup reconstruction or native C++ runtime is used.
+
+The actual helper identity must be selected by the emitter before CLI publication;
+ordinary same-spelled calls remain unsupported. Genuine handler-new-throw and
+noexcept-wrapper paths reject before publication. Normal CLI/JIT/AOT regression
+passes with byte-identical application source. EH repeat source/project bytes and
+all completion hashes/input/source freezes pass. One inspect-option typo is
+preserved separately and retried; it is excluded from accepted phase totals.
+Source snapshots 1/2, their direct/JIT evidence and the unused-local warning are
+retained. No builder or translation process remains active.
+
+Admission stays one exact int throw/type/handler, one try, two cleanup-bearing
+functions and the actual nonportable table-based Itanium profile. Catch normal
+release is exercised; exceptional no-object release and pending initialization
+failure are not. Native unwinding, new throw/rethrow from handler, termination,
+class payloads, constructor failure/arrays, inheritance/dispatch/RTTI/member
+pointers, local-static guards/TLS and broader ABI/scale remain open. See
+[T5 contract and proof](T5-EH-CONTRACT.md). Inventory worker is preparing the
+next bounded constructor-failure/partial-construction slice read-only; no product
+expansion or new capture has begun. Proceed with that concrete public-fact capture
+after this EH checkpoint, preserving EDG authority and the current guards.
 
 Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
-Root supervises read-only. Two gpt-6.1-sol xhigh workers are available: inventory
-for exact public selected lifetime/EH facts; emission for disjoint normal-lifetime
-projection after actual capture inspection. No worker may modify EDG core, use
+Root supervises read-only. Two gpt-6.1-sol xhigh workers remain assigned: inventory owns
+the reader-independent payload/carrier runtime, ExceptionLifetime checker and
+read-only next-slice preparation; emission owns typed throw/try/state/cleanup
+projection and is held after final verified edits. The coordinator owns
+shared selection contracts, Translation.cs integration and serialized builds.
+No worker may modify EDG core, use
 raw model bypass, recover source semantics or consult dotobj campaigns. Leave all
 unrelated dirty user paths and excluded pause/restart files untouched.
 

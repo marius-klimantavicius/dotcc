@@ -1,7 +1,9 @@
-This is interpretation and a bounded adapter proposal for the genuine
+This records interpretation and the agreed bounded adapter contract for the genuine
 [exception-cleanup.cpp](../tests/Fixtures/T5/exception-cleanup.cpp) capture.
-It changes no emitter/runtime behavior. Normal lifetime execution remains the
-first gate; exceptional generated execution is not accepted by this document.
+Normal lifetime milestone `f5c0f255a` is accepted. The bounded generated-only
+integer EH adapter now passes production CLI publication and complete native /
+JIT / NativeAOT observations; the [verified receipt](../acceptance/lifetimes/exception-report.json)
+records the execution boundary and remaining unsupported forms.
 
 The public report is
 `/mnt/storage/roslynobj-csharp-20261015/t5/exception-cleanup-facts-3.json`,
@@ -113,9 +115,9 @@ The C generator's lowered-EH printer is a debug printer and supplies no
 implementation semantics here. The native oracle is an observation source;
 the retained EDG execution and stock contracts remain authoritative.
 
-## Bounded generated-only adapter proposal
+## Agreed bounded generated-only adapter
 
-This proposal is for subsequent implementation after the normal slice. Admit
+The normal slice precedes this exceptional implementation. Admit
 only the actual table-based profile, one exact integer thrown/caught type,
 the observed unconditional direct-variable destructor actions and the specific
 no-object release action. Reject unproved conditions/arrays/indirect storage,
@@ -165,9 +167,101 @@ cannot replace the runtime's eligible-entry/use-count rules with free(current).
 No GC/finalizer or blanket using performs application destruction. Automatic
 objects continue to use their actual normal calls or exceptional region actions.
 
-The next proof should compare the existing native event/value arrays in JIT and
-NativeAOT, twice, with no live objects or event overflow. Also observe balanced
-internal exception-payload ownership after each fixture invocation. No native
-application or native C++ exception implementation may satisfy generated calls.
-These observations close only this finite integer throw/catch slice; the broader
-[T5 acceptance rows](ACCEPTANCE.md) remain separate.
+The verified proof compares the complete native event/value arrays in JIT and
+NativeAOT twice, with no live objects or event overflow and balanced internal
+payload ownership. No native application or native C++ exception implementation
+satisfies generated calls. This closes only this finite integer throw/catch slice;
+the broader [T5 acceptance rows](ACCEPTANCE.md) remain open.
+
+## Runtime and checker integration
+
+The agreed public surface in
+[ManagedCppException.cs](../src/RoslynObj.CSharp.Runtime/ManagedCppException.cs)
+is reader-independent and has these explicit states: pending, committed,
+selected, caught, released. Ownership is entirely per carrier, with no ambient
+current-owner registry or TLS lookup. Multiple-owner eligibility, nested/rethrow
+patterns and native unwinding are not implemented by pretending this is a
+general exception stack; the emitter's bounded admission rejects those forms.
+
+| API | Bounded responsibility |
+| --- | --- |
+| CreateInt32(object exactTypeToken) → ManagedCppException | Allocate a naturally aligned 4-byte pending payload; the generated token represents actual captured type identity |
+| ObjectAddress → void* | Pending-only destination for the retained throw-initialization expression |
+| CommitThrow() → void | One pending-to-committed transition after the retained operand completes, followed by throwing the carrier |
+| ReleaseUncommitted() → void | Preparation-finally release if transfer did not occur; never free an already committed owner |
+| SelectHandler(object exactTypeToken, object handlerToken) → bool | CLR first-pass identity filter, choosing the one destination without cleanup or release |
+| ObserveUnwind(ManagedCppException, ref ManagedCppException?) → bool | Store the actual carrier and return false, allowing handler search to continue before function finally cleanup |
+| RequireSelectedHandler() → void | Reject exceptional cleanup before destination selection and record the first-cleanup ordering assertion |
+| CaughtObjectAddress(object handlerToken) → void* | Stable payload address for the exact selected handler, including the explicit copy before MarkCaught |
+| MarkCaught(object handlerToken) → void | Actual retained point after parameter copying |
+| ReleaseCaught(object handlerToken) → void | Release the eligible selected owner once, with identity/state checks and no native pointer argument |
+
+False observation filters do not catch/clean/rethrow. A true typed-try filter
+selects the matching handler before CLR unwinding executes the observed
+function's inline region cleanup. The handler prelude stops at its saved entry
+state. Every encoded unwind site asserts selected ownership first. The runtime
+does not map arbitrary CLR exceptions to C++ int exceptions.
+
+The no-argument EDG helper remains a semantic action: its emitter projection
+supplies validated carrier/handler context to ReleaseCaught. This consumer
+context is not an invented native call signature or a libc binding. Normal
+catch_epilogue uses the same eligible owner; a second release is rejected.
+Application automatic objects still use explicit normal calls or decoded EH
+actions, not GC/finalizers. Only the internal payload uses NativeMemory, with
+ownership cleared before Free.
+
+GetDiagnostics returns process-wide Interlocked counters and the most recently
+released owner's selection/first-cleanup/release sequence. They observe resource
+balance and selection-before-cleanup; they never select the owner. The
+[ExceptionLifetime checker](../tests/ExceptionLifetime/README.md) preserves the
+native two-run JSON and separately requires one created/committed/selected/
+caught/released owner per fixture call, zero live owners/protocol rejections,
+and ordered selection, first cleanup and release. The fixture does not activate
+pending initialization failure, new throw from catch, rethrow or class-payload
+failure; those remain unverified variants rather than inferred successful tests.
+
+
+## Verified execution checkpoint
+
+Immutable source snapshot `t5/eh-source-3` freezes 200 implementation, reader,
+configuration and fixture files. Production output is
+`/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3`:
+13 required bodies and one record, with the exact required runtime helper
+fulfilled only by the validated `managed-cpp-int32-exception-owner-v1` selection.
+The CLI reconciles that selection against the actual public function identity;
+an ordinary same-spelled declaration call is rejected before publication.
+Generated dependencies are only Checks, Generated and RoslynObj.CSharp.Runtime;
+NativeAOT ELF dependencies are libc, libm and the host loader. No native C++
+application/provider or reader dependency supplies execution.
+
+The [compact receipt](../acceptance/lifetimes/exception-report.json), SHA-256
+`df4f593ffd5d9cdd7c4b19783f3b08a3f5df8b62239fb4516ebd6993b24e0960`,
+records 17 accepted phase outcomes: 14 successful phases and three expected
+exit-1 admission rejections. Both JIT and explicitly clang-18 NativeAOT produce
+result 11, values `[3,0,8,0,0]` and all 14 ordered lifetime events on each of two
+invocations. Each invocation creates, commits, selects, catches and releases one
+payload, with zero live owners, pending releases or protocol rejections. Two
+cleanup assertions occur after handler selection and before release. These
+counters observe ownership; they do not choose the owner or schedule cleanup.
+
+A genuine handler calling the sole throwing helper and a genuine noexcept
+wrapper with no cleanup regions calling that helper both reject through the
+closed generated no-throw capability guard. Their public traces retain one
+throw/one try, so rejection does not depend on a second source throw. Normal
+production CLI/JIT/AOT regression also passes, and its application source is
+byte-identical to the accepted normal milestone. Repeat EH source/project bytes
+are identical; program reports differ only by output directory. Every completion
+file hash and input/source freeze is verified.
+
+The initial direct emission, warning-bearing JIT snapshot and one coordinator
+inspect-option typo remain preserved. The typo was retried with the correct
+`--report` option against unchanged product source; it is an additional tooling
+failure, excluded from the 17 accepted outcomes. Generated source 3 has zero
+compiler warnings/errors. These small-fixture runs use frozen per-phase budgets;
+RSS sampling and waited high-water measurements remain separately labeled.
+
+Handler normal catch release is exercised. The generated no-object exceptional
+release action is inspected but not activated: a new throw from the handler is
+unsupported, as are pending initialization failure, rethrow, termination, class
+payloads, partial construction/arrays and native unwinding. Existing const-record
+reference limits remain. This checkpoint does not close broader T5 or T6.

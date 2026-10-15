@@ -1,0 +1,477 @@
+using System.Globalization;
+using System.Text;
+using RoslynObj;
+
+namespace RoslynObj.CSharp;
+
+public sealed partial class CSharpEmitter
+{
+    private sealed partial class Emission
+    {
+        private const string ExceptionCarrierType = "global::RoslynObj.CSharp.Runtime.ManagedCppException";
+        private sealed record ExceptionFunction(FunctionSymbol Function, VariableSymbol RegionTable,
+            IReadOnlyList<CleanupRegion> Regions, string State, string Observed, string ObservedParameter, string Caught);
+        private sealed record ExceptionTry(FunctionSymbol Function, TryOperation Operation, ExceptionHandler Handler, string Token, string SavedState, string Carrier);
+        private readonly Dictionary<FunctionSymbol, ExceptionFunction> exceptionFunctions = [];
+        private readonly Dictionary<TryOperation, ExceptionTry> exceptionTries = [];
+        private readonly Dictionary<LoweredEhOperation, FunctionSymbol> exceptionMarkers = [];
+        private readonly List<SemanticRuntimeFunctionImplementation> semanticRuntimeFunctions = [];
+        private readonly HashSet<FunctionSymbol> validatedNoThrowFunctions = [];
+        private readonly HashSet<FunctionSymbol> exceptionParticipants = [];
+        private CppType? exceptionIntType;
+        private ThrowOperation? selectedIntegerThrow;
+        private string? exceptionTypeToken;
+        private string? pendingThrowOwner;
+        private ExceptionTry? emittingExceptionHandler;
+
+        private string ExceptionLocal(string stem)
+        {
+            string name;
+            do { name = InternalName(stem + "_" + ++expressionTemporaryOrdinal); }
+            while (names.Values.Contains(name, StringComparer.Ordinal) || names.Values.Contains("@" + name, StringComparer.Ordinal));
+            return name;
+        }
+
+        private void InitializeBoundedExceptions()
+        {
+            var candidates = functions.Where(function => function.Body!.ExceptionHandling.CleanupRegions.Count != 0 &&
+                function.Signature.ExceptionSpecification?.NoexceptEffective != true).ToArray();
+            if (candidates.Length == 0) return;
+            RequireNormalLifetimeProfile();
+            var capabilities = inputs[0].TranslationUnit.Capabilities;
+            foreach (var capability in new[] { ("DO_IL_LOWERING", "1"), ("DO_FULL_PORTABLE_EH_LOWERING", "0"), ("GENERATE_EH_TABLES", "1"), ("IA64_ABI", "1") })
+                if (!capabilities.Any(actual => actual.Name == capability.Item1 && actual.Value == capability.Item2))
+                    throw Limit("The bounded integer exception adapter requires the actual nonportable table-based Itanium lowering capabilities.", "exception-profile");
+            var graph = functions.ToDictionary(function => function, function => ExceptionExecutionNodes(function.Body!.Root).ToArray());
+            var throws = graph.Values.SelectMany(nodes => nodes.OfType<ThrowOperation>()).ToArray();
+            var tries = graph.Values.SelectMany(nodes => nodes.OfType<TryOperation>()).ToArray();
+            if (throws.Length != 1 || tries.Length != 1 || candidates.Length != 2)
+                throw Limit("The first generated exception slice requires one integer throw, one typed try and their two cleanup-bearing functions.", "exception");
+            var throwing = throws[0];
+            var selectedTry = tries[0];
+            if (throwing.IsRethrow || throwing.ThrownType is not { } thrownType || throwing.Initialization is not null ||
+                throwing.Destructor is not null || throwing.AccessibleBases.Count != 0 || throwing.Operands.Count != 0 || throwing.Operand is null ||
+                throwing.ValueCategory.Name != "prvalue" || MemoryRepresentationType(throwing.Type).Kind.Name != "tk_void")
+                throw Limit("The bounded throw requires its already-lowered integer operand, without rethrow, payload constructor or base matching.", "exception");
+            ValidateGeneratedInt32(thrownType);
+            if (throwing.Operand is not OperatorOperation { OperatorKind.Name: "eok_assign" } assignment || !assignment.Operator.EvalRightToLeft ||
+                assignment.Operands.Count != 2 || !assignment.Operands[1].Type.Equals(thrownType) ||
+                assignment.Operands[0] is not OperatorOperation { OperatorKind.Name: "eok_indirect" } destination || !destination.Type.Equals(thrownType) ||
+                destination.Operands.Count != 1 || destination.Operands[0] is not ConversionOperation { OperatorKind.Name: "eok_cast" } cast ||
+                MemoryRepresentationType(cast.Type) is not PointerType { IsReference: false } payloadPointer || !payloadPointer.PointeeType.Equals(thrownType) ||
+                cast.Operand is not LoweredEhOperation { ExceptionKind.Name: "leck_thrown_object_address" })
+                throw Limit("The captured integer throw operand must already assign its value once to the lowered thrown-object destination.", "exception");
+            if (selectedTry.Definition.IsFunctionTry || selectedTry.Handlers.Count != 1 ||
+                selectedTry.Handlers[0].CaughtType is not { } caughtType || !caughtType.Equals(thrownType))
+                throw Limit("The selected handler must catch the identical retained integer semantic type.", "exception-type");
+            var handler = selectedTry.Handlers[0];
+            if (handler.Parameter is not { } parameter || !parameter.Type.Equals(thrownType) ||
+                handler.ParameterInitialization is not { } parameterRecipe || parameterRecipe.Target?.Equals(parameter) != true)
+                throw Limit("The bounded integer handler requires its retained parameter and metadata initialization association.", "exception-handler");
+            ValidateExceptionMetadataRecipe(parameterRecipe, false);
+            if (parameterRecipe.Destructor is not null || parameterRecipe.Lifetime is not null)
+                throw Limit("The handler parameter recipe adds an unimplemented cleanup obligation.", "exception-handler");
+            var throwingFunction = graph.Single(pair => pair.Value.Contains(throwing)).Key;
+            var catchingFunction = graph.Single(pair => pair.Value.Contains(selectedTry)).Key;
+            if (throwingFunction.Equals(catchingFunction) || !candidates.Contains(throwingFunction) || !candidates.Contains(catchingFunction) ||
+                !IsStandaloneThrow(throwingFunction.Body!.Root, throwing) ||
+                ExceptionExecutionNodes(handler.Body).Any(node => node is ThrowOperation or TryOperation))
+                throw Limit("The first integer exception transfer requires separate throwing/catching functions and no nested handler throw/try.", "exception");
+            // All active execution remains generated. Catalog-only declarations
+            // do not add calls, and the no-object cleanup target is handled below.
+            foreach (var pair in graph)
+                foreach (var call in pair.Value.OfType<CallOperation>())
+                    if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(target) ||
+                        call.TargetMethod is null || !call.TargetMethod.Equals(target) || target.Signature.IsVariadic)
+                        throw Limit("The first generated integer EH program has only selected fixed direct calls; native/indirect unwinding is unsupported.", "exception-boundary");
+            foreach (var function in functions.Where(function => function.Signature.ExceptionSpecification?.NoexceptEffective == true))
+                EnsureGeneratedNoThrow(function);
+            foreach (var call in ExceptionExecutionNodes(handler.Body).OfType<CallOperation>())
+            {
+                if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target })
+                    throw Limit("A selected integer handler cannot propagate through an indirect call.", "exception-handler");
+                EnsureGeneratedNoThrow(target);
+            }
+            exceptionIntType = thrownType;
+            selectedIntegerThrow = throwing;
+            exceptionTypeToken = InternalName("__cpp_int32_type");
+            var tryPlan = new ExceptionTry(catchingFunction, selectedTry, handler, InternalName("__cpp_handler"), ExceptionLocal("__try_entry_state"), ExceptionLocal("__caught_cpp"));
+            exceptionTries.Add(selectedTry, tryPlan);
+            foreach (var function in candidates)
+            {
+                var nodes = graph[function];
+                ValidateExceptionFunction(function, nodes, tryPlan);
+                var eh = function.Body!.ExceptionHandling;
+                exceptionFunctions.Add(function, new(function, eh.RegionTable!, eh.CleanupRegions,
+                    ExceptionLocal("__cleanup_state"), ExceptionLocal("__unwinding_cpp"), ExceptionLocal("__observed_cpp"), ExceptionLocal("__active_caught_cpp")));
+                foreach (var marker in nodes.OfType<LoweredEhOperation>()) exceptionMarkers.Add(marker, function);
+            }
+            if (semanticRuntimeFunctions.Count != 1)
+                throw Limit("The bounded integer EH program requires exactly its selected no-object exception release contract.", "exception-runtime");
+            foreach (var function in functions)
+                if (FunctionReachesException(function, graph, [])) exceptionParticipants.Add(function);
+        }
+
+        private void ValidateExceptionFunction(FunctionSymbol function, IReadOnlyList<SemanticNode> nodes, ExceptionTry tryPlan)
+        {
+            var body = function.Body!;
+            var eh = body.ExceptionHandling;
+            if (function.Signature.ExceptionSpecification?.NoexceptEffective == true || eh.Details is not { } details ||
+                eh.RegionTable is not { } table || !body.Locals.Contains(table) || eh.ArrayTable is not null || eh.Arrays.Count != 0 ||
+                details.InitialState != 65535 || details.NullState != 65535 || details.Prologue is null || !nodes.Contains(details.Prologue))
+                throw Limit("The integer EH function requires its actual cleanup table, null state and prologue without a noexcept boundary.", "exception");
+            if (table.ExceptionTable is not { } projection || projection.Kind.Name != "cleanup" || !projection.Owner.Equals(table) ||
+                !projection.FunctionEh.Routine.Equals(function) || projection.FunctionEh.RegionTable?.Equals(table) != true ||
+                nodes.OfType<ReferenceOperation>().Any(reference => reference.Target?.Equals(table) == true) ||
+                nodes.OfType<ConstantOperation>().Any(constant => constant.Constant.Value is not IntegerValue) ||
+                table.Initializer is not null || table.ConstantInitializer is not null ||
+                table.LocalStaticInitializations.Any(initializer => !initializer.Variable.Equals(table) || initializer.Kind.Name != "initk_static" ||
+                    initializer.Initialization is not null || initializer.Constant is not null || initializer.Lifetime is not null))
+                throw Limit("The EH table must be its exact metadata projection with no application value reference or initializer.", "exception");
+            var recipes = body.Lifetimes.SelectMany(lifetime => lifetime.Cleanups.Select(cleanup => cleanup.Initialization)).ToArray();
+            foreach (var recipe in recipes) ValidateExceptionMetadataRecipe(recipe, recipe.IsFreeingOfExceptionObject);
+            var actions = new List<CleanupAction>();
+            foreach (var region in eh.CleanupRegions)
+            {
+                if (region.Ordinal is < 0 or > int.MaxValue or 65535 || region.Condition is not null || region.Details.IsSupplement || region.Details.SupplementOwner is not null ||
+                    !region.Details.FunctionEh.Routine.Equals(function) || region.Actions.Count != 1 ||
+                    region.NextRegion is { } next && (!eh.CleanupRegions.Contains(next) || next.Ordinal >= region.Ordinal))
+                    throw Limit("The bounded exception region chain requires one unconditional retained action and an acyclic next link.", "exception-cleanup");
+                var action = region.Actions[0];
+                var flags = action.Details;
+                if (!flags.Region.Equals(region) || flags.Ordinal != 0 || action.Kind.Name != "destructor" || action.Array is not null || action.AbiDetail is not null ||
+                    flags.IsArray || flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
+                    action.Storage is not { } storage || storage.Offset != 0 || storage.IsIndirect || storage.UsesThisParameterOffset || storage.Details.BaseEntity is not null)
+                    throw Limit("The bounded EH action has an unsupported condition, array, storage offset or ABI side effect.", "exception-cleanup");
+                if (storage.Kind.Name == "direct_variable")
+                {
+                    if (storage.Variable is not { } variable || !body.Locals.Contains(variable) || action.TargetMethod is not { } destructor ||
+                        destructor.SpecialFunctionKind?.Name != "sfk_destructor" || destructor.Parameters.Count != 1 ||
+                        !GeneratedRecordPointer(destructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(variable.Type)) ||
+                        recipes.Count(recipe => recipe.Target?.Equals(variable) == true && recipe.Destructor?.Equals(destructor) == true && !recipe.IsFreeingOfExceptionObject) != 1)
+                        throw Limit("A direct-variable EH action must match one retained local destructor recipe.", "exception-cleanup");
+                    ValidateGeneratedLifetimeRoutine(destructor);
+                    EnsureGeneratedNoThrow(destructor);
+                }
+                else if (storage.Kind.Name == "no_object")
+                {
+                    if (storage.Variable is not null || !nodes.Contains(tryPlan.Operation) ||
+                        recipes.Count(recipe => recipe.IsFreeingOfExceptionObject && recipe.Target is null && recipe.Destructor is null &&
+                            tryPlan.Handler.Body is BlockOperation handlerBlock && handlerBlock.Scope?.Equals(recipe.Lifetime?.BoundEntity) == true) != 1 ||
+                        action.TargetMethod is not { } release)
+                        throw Limit("The no-object EH action must have the retained exception-owner release recipe in its handler function.", "exception-runtime");
+                    ValidateExceptionReleaseRoutine(release);
+                }
+                else throw Limit("The integer EH adapter supports only direct-variable and no-object cleanup storage.", "exception-cleanup");
+                actions.Add(action);
+            }
+            if (actions.Count != recipes.Length || recipes.Any(recipe => recipe.NextInDestructionList is not null))
+                throw Limit("The first integer EH slice requires one matching metadata recipe for each action, without a second destruction schedule.", "exception-cleanup");
+            foreach (var marker in nodes.OfType<LoweredEhOperation>()) ValidateExceptionMarker(marker, function, tryPlan);
+            if (eh.Epilogues.Any(epilogue => !nodes.Contains(epilogue)))
+                throw Limit("An actual EH epilogue is absent from the typed function body.", "exception");
+        }
+
+        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing)
+        {
+            var flags = recipe.Details;
+            if (recipe.Kind.Name != "dik_none" || recipe.Operation?.RepresentationRole.Name != "metadata" || recipe.Expression is not null ||
+                recipe.Constructor is not null || recipe.Constant is not null || recipe.Operands.Count != 0 || recipe.Master is not null ||
+                recipe.OverlappingLifetime is not null || recipe.InitExpressionLifetime is not null || flags.IsFreeingOfExceptionObject != freeing ||
+                flags.IsUnordered || flags.IsConditional || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary || flags.IsPartialAggregate ||
+                flags.IsPartialInitialization || flags.HasTemporaryLifetime || flags.IsConstructorInitialization || flags.IsConditionalGuard || flags.IsVlaDeallocation ||
+                flags.CreatesInitializerList || flags.IsInitializerListArray || flags.IsReusedValue || flags.IsQuestionResult || flags.IsCommaResult ||
+                flags.ConstructorCopyImpliedSource || flags.ConstructorImplicitCopy || flags.ConstructorValueInitialization || flags.ConstructorSequencedArguments ||
+                flags.ConstructorArrayCopy || flags.FreesStorage || flags.FreesArray)
+                throw Limit("The integer EH cleanup/parameter recipe must be metadata-only with its exact retained ownership role.", "exception-cleanup");
+        }
+
+        private void ValidateExceptionReleaseRoutine(FunctionSymbol release)
+        {
+            var signature = release.Signature;
+            // Recognition needs the actual no-object action, freeing recipe and
+            // lowering profile above, in addition to this exact helper contract.
+            if (release.CurrentName != "__destroy_exception_object" || release.BodyState.Name != "declaration_only" || release.Body is not null ||
+                release.PrimaryEntry is not null || release.AlternateEntryPoints.Count != 0 || release.Details.IsWeak == true || release.Details.IsAliasEntry == true ||
+                release.Details.IsWeakref == true || release.Details.IsGnuAlias == true || release.Details.IsIfunc == true ||
+                !signature.HasPrototype || signature.IsVariadic || signature.HasThisParameter || signature.ReturnsValueAsParameter == true || signature.ReturnsValueViaCopyConstructor ||
+                signature.Parameters.Count != 0 || MemoryRepresentationType(signature.ReturnType).Kind.Name != "tk_void" ||
+                signature.LanguageLinkage?.Name != "nlk_cplusplus_external" || options.ExternalFunctions.Any(binding => binding.LinkageName == release.CurrentName))
+                throw Limit("The selected no-object cleanup target does not match the bounded generated exception-owner runtime contract.", "exception-runtime");
+            ValidateCallingConvention(signature);
+            if (!semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release)))
+                semanticRuntimeFunctions.Add(new(release, SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract));
+        }
+
+        private void ValidateExceptionMarker(LoweredEhOperation marker, FunctionSymbol function, ExceptionTry plan)
+        {
+            var eh = function.Body!.ExceptionHandling;
+            var payload = marker.ExceptionOperation;
+            if (marker.RepresentationRole.Name != "execution" || marker.ValueCategory.Name != "prvalue" || marker.Operands.Count != 0 || marker.Details.VolatileFetch ||
+                payload.FunctionEh?.Routine.Equals(function) != true || payload.Initialization is not null || payload.TryExpression is not null || payload.CatchExpression is not null)
+                throw Limit("A lowered integer EH marker has additional execution associations.", "exception");
+            if (marker is CleanupStateOperation state)
+            {
+                if (marker.ExceptionKind.Name != (state.IsUnreachable ? "leck_unreachable_cleanup_state" : "leck_cleanup_state") ||
+                    !Equals(payload.Region, state.Region) || payload.StateNumber != state.StateNumber || payload.Routine is not null || payload.Handler is not null || payload.TryBlock is not null ||
+                    (state.Region is { } region ? !eh.CleanupRegions.Contains(region) || state.StateNumber != region.Ordinal : state.StateNumber != eh.Details!.NullState) ||
+                    MemoryRepresentationType(marker.Type).Kind.Name != "tk_void")
+                    throw Limit("The cleanup state must name its actual region or captured null state.", "exception-cleanup");
+                return;
+            }
+            if (payload.Region is not null || payload.StateNumber is not null) throw Limit("An EH marker unexpectedly selects a cleanup state.", "exception");
+            var kind = marker.ExceptionKind.Name;
+            if (kind is "leck_thrown_object_address" or "leck_caught_object_address")
+            {
+                ValidateNativeScalarType(marker.Type, false);
+                if (MemoryRepresentationType(marker.Type) is not PointerType { IsReference: false } pointer || MemoryRepresentationType(pointer.PointeeType).Kind.Name != "tk_void" ||
+                    payload.Routine is not null || payload.TryBlock is not null ||
+                    (kind == "leck_thrown_object_address" ? payload.Handler is not null || !ExceptionExecutionNodes(selectedIntegerThrow!.Operand!).Contains(marker)
+                        : payload.Handler?.Equals(plan.Handler) != true || !ExceptionExecutionNodes(plan.Handler.Body).Contains(marker)))
+                    throw Limit("An exception payload-address marker is not associated with its retained throw or handler.", "exception");
+                return;
+            }
+            if (MemoryRepresentationType(marker.Type).Kind.Name != "tk_void") throw Limit("This lowered EH marker must be a void operation.", "exception");
+            var valid = kind switch
+            {
+                "leck_function_prologue" => marker.Equals(eh.Details!.Prologue) && payload.Routine is null && payload.Handler is null && payload.TryBlock is null,
+                "leck_function_epilogue" => eh.Epilogues.Contains(marker) && payload.Routine?.Equals(function) == true && payload.Handler is null && payload.TryBlock is null,
+                "leck_try_epilogue" => payload.TryBlock?.Equals(plan.Operation.Definition) == true && payload.Handler is null && payload.Routine is null,
+                "leck_exception_caught" => payload.Handler is null && payload.TryBlock is null && payload.Routine is null && ExceptionExecutionNodes(plan.Handler.Body).Contains(marker),
+                "leck_catch_epilogue" => payload.Handler?.Equals(plan.Handler) == true && payload.TryBlock is null && payload.Routine is null && ExceptionExecutionNodes(plan.Handler.Body).Contains(marker),
+                _ => false
+            };
+            if (!valid) throw Limit($"Lowered EH operation '{kind}' is outside the selected integer exception contract.", "exception");
+        }
+
+        private void EnsureGeneratedNoThrow(FunctionSymbol function)
+        {
+            Check(function, []);
+            void Check(FunctionSymbol current, HashSet<FunctionSymbol> active)
+            {
+                if (validatedNoThrowFunctions.Contains(current) || !active.Add(current)) return;
+                if (!functions.Contains(current) || current.Body is null || current.Signature.ExceptionSpecification?.NoexceptEffective != true)
+                    throw Limit("Normal marker omission requires a closed selected noexcept call graph.", "lifetime");
+                var nodes = ExceptionExecutionNodes(current.Body.Root).ToArray();
+                if (nodes.Any(node => node is ThrowOperation or TryOperation))
+                    throw Limit("Normal-only lifetime marker omission cannot admit a live throw/try, including through noexcept calls.", "lifetime");
+                foreach (var call in nodes.OfType<CallOperation>())
+                {
+                    if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || call.TargetMethod?.Equals(target) != true || target.Signature.IsVariadic)
+                        throw Limit("Normal marker omission cannot hide indirect/native/variadic exception propagation.", "lifetime");
+                    Check(target, active);
+                }
+                active.Remove(current);
+                validatedNoThrowFunctions.Add(current);
+            }
+        }
+
+        private static bool FunctionReachesException(FunctionSymbol function, IReadOnlyDictionary<FunctionSymbol, SemanticNode[]> graph, HashSet<FunctionSymbol> active)
+        {
+            if (!active.Add(function)) return false;
+            try
+            {
+                var nodes = graph[function];
+                return nodes.Any(node => node is ThrowOperation or TryOperation) || nodes.OfType<CallOperation>().Any(call =>
+                    call.Callee is ReferenceOperation { Target: FunctionSymbol target } && graph.ContainsKey(target) && FunctionReachesException(target, graph, active));
+            }
+            finally { active.Remove(function); }
+        }
+
+        private bool IsOmittedExceptionRegionTable(VariableSymbol variable) => currentFunction is { } function &&
+            exceptionFunctions.TryGetValue(function, out var plan) && plan.RegionTable.Equals(variable);
+
+        private bool IsGeneratedExceptionParticipant(FunctionSymbol function) => exceptionParticipants.Contains(function) ||
+            semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(function));
+
+        private void ReserveExceptionLocals(FunctionSymbol function, HashSet<string> localNames)
+        {
+            if (!exceptionFunctions.TryGetValue(function, out var plan)) return;
+            localNames.UnionWith([plan.State, plan.Observed, plan.ObservedParameter, plan.Caught]);
+            foreach (var selectedTry in exceptionTries.Values.Where(selectedTry => selectedTry.Function.Equals(function)))
+                localNames.UnionWith([selectedTry.SavedState, selectedTry.Carrier]);
+        }
+
+        private void EmitExceptionFields(StringBuilder fields)
+        {
+            if (exceptionTypeToken is null) return;
+            fields.Append("    private static readonly object ").Append(exceptionTypeToken).AppendLine(" = new();");
+            foreach (var plan in exceptionTries.Values)
+                fields.Append("    private static readonly object ").Append(plan.Token).AppendLine(" = new();");
+            fields.AppendLine();
+        }
+
+        private void BeginExceptionFunction(CodeWriter writer)
+        {
+            if (currentFunction is null || !exceptionFunctions.TryGetValue(currentFunction, out var plan)) return;
+            writer.Line($"int {plan.State} = 65535;");
+            writer.Line($"{ExceptionCarrierType}? {plan.Observed} = null;");
+            if (exceptionTries.Values.Any(selectedTry => selectedTry.Function.Equals(currentFunction)))
+                writer.Line($"{ExceptionCarrierType}? {plan.Caught} = null;");
+            writer.Line("try"); writer.Open();
+        }
+
+        private void EndExceptionFunction(CodeWriter writer)
+        {
+            if (currentFunction is null || !exceptionFunctions.TryGetValue(currentFunction, out var plan)) return;
+            writer.Close();
+            writer.Line($"catch ({ExceptionCarrierType} {plan.ObservedParameter}) when ({ExceptionCarrierType}.ObserveUnwind({plan.ObservedParameter}, ref {plan.Observed}))");
+            writer.Open(); writer.Line("throw;"); writer.Close();
+            writer.Line("finally"); writer.Open();
+            writer.Line($"if ({plan.Observed} is not null)"); writer.Open();
+            writer.Line($"{plan.Observed}.RequireSelectedHandler();");
+            EmitExceptionCleanup(plan, "65535", writer);
+            writer.Close(); writer.Close();
+        }
+
+        private void EmitExceptionCleanup(ExceptionFunction plan, string stop, CodeWriter writer)
+        {
+            writer.Line($"while ({plan.State} != {stop})"); writer.Open();
+            writer.Line($"switch ({plan.State})"); writer.Open();
+            foreach (var region in plan.Regions)
+            {
+                writer.Line($"case {region.Ordinal.ToString(CultureInfo.InvariantCulture)}:");
+                var action = region.Actions[0];
+                if (action.Storage!.Kind.Name == "direct_variable")
+                    writer.Line($"    {OwnedName(action.TargetMethod!)}(&{names[action.Storage.Variable!]});");
+                else
+                {
+                    var handler = exceptionTries.Values.Single();
+                    writer.Line($"    if ({plan.Caught} is null) throw new InvalidOperationException(\"No eligible caught exception owner for the retained cleanup action.\");");
+                    writer.Line($"    {plan.Caught}.ReleaseCaught({Owner}.{handler.Token});");
+                    writer.Line($"    {plan.Caught} = null;");
+                }
+                writer.Line($"    {plan.State} = {(region.NextRegion is { } next ? next.Ordinal.ToString(CultureInfo.InvariantCulture) : "65535")};");
+                writer.Line("    break;");
+            }
+            writer.Line("default: throw new InvalidOperationException(\"The captured cleanup chain did not reach its saved stop state.\");");
+            writer.Close(); writer.Close();
+        }
+
+        private bool TryEmitExceptionStatement(StatementOperation statement, CodeWriter writer)
+        {
+            if (statement is not TryOperation selectedTry || !exceptionTries.TryGetValue(selectedTry, out var plan)) return false;
+            if (currentFunction is null || !exceptionFunctions.TryGetValue(currentFunction, out var function))
+                throw Limit("The typed exception try has no selected cleanup-function adapter.", "exception");
+            writer.Line($"int {plan.SavedState} = {function.State};");
+            writer.Line("try"); Embedded(selectedTry.Body, writer);
+            writer.Line($"catch ({ExceptionCarrierType} {plan.Carrier}) when ({plan.Carrier}.SelectHandler({Owner}.{exceptionTypeToken}, {Owner}.{plan.Token}))");
+            writer.Open();
+            writer.Line($"{plan.Carrier}.RequireSelectedHandler();");
+            EmitExceptionCleanup(function, plan.SavedState, writer);
+            writer.Line($"{function.Caught} = {plan.Carrier};");
+            var previous = emittingExceptionHandler;
+            emittingExceptionHandler = plan;
+            try { Statement(plan.Handler.Body, writer); }
+            finally { emittingExceptionHandler = previous; }
+            writer.Close();
+            return true;
+        }
+
+        private bool TryEmitExceptionExpressionStatement(ExpressionOperation expression, CodeWriter writer)
+        {
+            if (expression is not ThrowOperation throwing) return false;
+            if (!throwing.Equals(selectedIntegerThrow) || throwing.ThrownType?.Equals(exceptionIntType) != true || currentFunction is null || !exceptionFunctions.ContainsKey(currentFunction))
+                throw Limit("This throw has no selected bounded integer transfer adapter.", "exception");
+            var owner = ExceptionLocal("__throw_owner");
+            writer.Line($"{ExceptionCarrierType} {owner} = {ExceptionCarrierType}.CreateInt32({Owner}.{exceptionTypeToken});");
+            writer.Line("try"); writer.Open();
+            var previous = pendingThrowOwner;
+            pendingThrowOwner = owner;
+            try { EmitPlannedExpressionStatement(throwing.Operand!, writer); }
+            finally { pendingThrowOwner = previous; }
+            writer.Line($"{owner}.CommitThrow();"); writer.Line($"throw {owner};"); writer.Close();
+            writer.Line("finally"); writer.Open(); writer.Line($"{owner}.ReleaseUncommitted();"); writer.Close();
+            return true;
+        }
+
+        private bool NeedsExceptionExpressionPlan(ExpressionOperation expression) => expression is LoweredEhOperation marker && exceptionMarkers.ContainsKey(marker);
+
+        private bool TryPlanExceptionExpression(ExpressionOperation expression, out ExpressionPlan plan)
+        {
+            plan = null!;
+            if (expression is not LoweredEhOperation marker || !exceptionMarkers.TryGetValue(marker, out var function) || !function.Equals(currentFunction)) return false;
+            var adapter = exceptionFunctions[function];
+            var kind = marker.ExceptionKind.Name;
+            var prefix = new List<CsPlanStatement>();
+            CsExpression value = new CsLeaf(CsType.Void, "", true);
+            var effects = ExpressionEffects.None;
+            if (marker is CleanupStateOperation state)
+            {
+                if (!state.IsUnreachable)
+                {
+                    prefix.Add(new CsSetVariable(new(CsType.Int32, adapter.State), new CsLeaf(CsType.Int32, state.StateNumber!.Value.ToString(CultureInfo.InvariantCulture), true)));
+                    effects = ExpressionEffects.WriteStorage;
+                }
+            }
+            else if (kind == "leck_thrown_object_address")
+            {
+                if (pendingThrowOwner is null) throw Limit("The thrown-object address escaped its retained pending initialization.", "exception-owner");
+                value = new CsLeaf(CsType.Value(marker.Type), pendingThrowOwner + ".ObjectAddress", true);
+            }
+            else if (kind is "leck_caught_object_address" or "leck_exception_caught" or "leck_catch_epilogue")
+            {
+                var handler = emittingExceptionHandler ?? throw Limit("The caught-object operation is outside its actual selected handler occurrence.", "exception-owner");
+                if (kind == "leck_caught_object_address")
+                    value = new CsLeaf(CsType.Value(marker.Type), $"{handler.Carrier}.CaughtObjectAddress({Owner}.{handler.Token})", true);
+                else if (kind == "leck_exception_caught")
+                {
+                    value = new CsLeaf(CsType.Void, $"{handler.Carrier}.MarkCaught({Owner}.{handler.Token})", false);
+                    effects = ExpressionEffects.WriteStorage | ExpressionEffects.MayThrow;
+                }
+                else
+                {
+                    prefix.Add(new CsEvaluate(new CsLeaf(CsType.Void, $"{handler.Carrier}.ReleaseCaught({Owner}.{handler.Token})", false)));
+                    prefix.Add(new CsSetVariable(new(new(null, Intrinsic: ExceptionCarrierType + "?"), adapter.Caught), new CsLeaf(new(null, Intrinsic: ExceptionCarrierType + "?"), "null", true)));
+                    effects = ExpressionEffects.WriteStorage | ExpressionEffects.MayThrow;
+                }
+            }
+            plan = new(marker.Type, marker.ValueCategory, prefix, value, effects);
+            return true;
+        }
+
+        private static bool IsStandaloneThrow(SemanticNode root, ThrowOperation throwing) => ExceptionExecutionNodes(root).OfType<StatementOperation>().Any(statement =>
+            statement.Expression?.Equals(throwing) == true || statement.Expression is ConversionOperation conversion &&
+            MemoryRepresentationType(conversion.Type).Kind.Name == "tk_void" && conversion.Operand.Equals(throwing));
+
+        // Validation only: typed execution facets expose repeated occurrences.
+        // Structural child order, metadata recipes and generic descendants do
+        // not choose application execution or destruction order.
+        private static IEnumerable<SemanticNode> ExceptionExecutionNodes(SemanticNode root)
+        {
+            return Walk(root, [], 0);
+            static IEnumerable<SemanticNode> Walk(SemanticNode node, HashSet<SemanticNode> active, int depth)
+            {
+                if (depth > 256 || !active.Add(node)) throw Limit("The bounded integer EH validation graph is cyclic or too deep.", "exception");
+                try
+                {
+                    if (node.RepresentationRole.Name == "metadata") throw Limit("A typed integer EH execution occurrence names metadata.", "exception");
+                    yield return node;
+                    IEnumerable<SemanticNode> children = node switch
+                    {
+                        BlockOperation block => block.Statements,
+                        ConditionalOperation conditional => new SemanticNode?[] { conditional.Condition, conditional.Then, conditional.Else }.OfType<SemanticNode>(),
+                        LoopOperation loop => new SemanticNode?[] { loop.Initialization, loop.Condition, loop.Increment, loop.Body }.OfType<SemanticNode>(),
+                        TryOperation selectedTry => new[] { selectedTry.Body }.Concat(selectedTry.Handlers.Select(handler => handler.Body)),
+                        JumpOperation { JumpKind.Name: "return" } jump => jump.Value is { } value ? [value] : [],
+                        DeclarationOperation => [],
+                        InitializationStatementOperation initialization => initialization.Initialization.Expression is { } value ? [value] : [],
+                        LifetimeOperation lifetime => [lifetime.Value],
+                        ConditionOperation { Initialization: null, DynamicInitialization: null, Value: { } value } => [value],
+                        ThrowOperation throwing => throwing.Operand is { } value ? [value] : [],
+                        CallOperation call => call.Operands,
+                        LoweredEhOperation marker => marker.Operands,
+                        ReferenceOperation or ConstantOperation => [],
+                        OperatorOperation operation => operation.Operands,
+                        StatementOperation { Kind.Name: "stmk_expr", Expression: { } value } => [value],
+                        StatementOperation { Kind.Name: "stmk_empty" } => [],
+                        _ => throw Limit($"Execution form '{node.Kind}' is outside the bounded integer exception adapter.", "exception")
+                    };
+                    foreach (var child in children)
+                        foreach (var descendant in Walk(child, active, depth + 1)) yield return descendant;
+                }
+                finally { active.Remove(node); }
+            }
+        }
+    }
+}

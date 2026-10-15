@@ -25,7 +25,10 @@ public sealed record CSharpEmissionResult(
     IReadOnlyList<GeneratedSource> Files,
     IReadOnlyList<TranslationDiagnostic> Diagnostics,
     int EmittedFunctionCount,
-    int EmittedRecordCount);
+    int EmittedRecordCount)
+{
+    internal IReadOnlyList<SemanticRuntimeFunctionImplementation> SemanticRuntimeFunctions { get; init; } = [];
+}
 
 /// <summary>Projects public, already-resolved EDG objects to ordinary unsafe C#.</summary>
 public sealed partial class CSharpEmitter
@@ -99,6 +102,8 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
+            try { InitializeBoundedExceptions(); }
+            catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {
                 currentFunction = function;
@@ -109,6 +114,7 @@ public sealed partial class CSharpEmitter
             }
             currentFunction = null;
             var staticFields = new StringBuilder();
+            EmitExceptionFields(staticFields);
             var staticInitialization = new CodeWriter();
             try { EmitGlobalStorage(staticFields, staticInitialization); }
             catch (Unsupported ex) { Add("CSHARP2300", ex.Message, null, ex.Family); }
@@ -169,7 +175,7 @@ public sealed partial class CSharpEmitter
             if (generatedAbiLibrary is not null) files.Add(new("Generated.Abi.c", NativeAbiSource()));
             if (nativeImports.Count > 0 || generatedAbiLibrary is not null) files.Add(new("Generated.NativeImports.json", NativeImportReport()));
             if (selectedProgram is not null) files.Add(new("Generated.ProgramAssembly.json", ProgramAssemblyReport()));
-            return new(files, diagnostics, functions.Count, records.Count);
+            return new(files, diagnostics, functions.Count, records.Count) { SemanticRuntimeFunctions = semanticRuntimeFunctions.ToArray() };
         }
 
         private CSharpEmissionResult Failure(string code, string message)
@@ -189,8 +195,9 @@ public sealed partial class CSharpEmitter
                 throw Limit("Unsigned 128-bit execution parameters/results require a separately exercised call representation.", "integer128-call");
             if (function.Signature.IsVariadic) ValidateNativeScalarSignature(function.Signature);
             var body = function.Body!;
-            ValidateNormalCleanupBody(function);
+            if (!exceptionFunctions.ContainsKey(function)) ValidateNormalCleanupBody(function);
             var localNames = new HashSet<string>(StringComparer.Ordinal);
+            ReserveExceptionLocals(function, localNames);
             foreach (var parameter in function.Parameters)
             {
                 if (parameter.Symbol is null) throw Limit("A selected execution parameter has no retained variable symbol.", "parameter");
@@ -198,7 +205,7 @@ public sealed partial class CSharpEmitter
             }
             foreach (var variable in body.Locals)
             {
-                if (IsOmittedNormalRegionTable(variable)) continue;
+                if (IsOmittedNormalRegionTable(variable) || IsOmittedExceptionRegionTable(variable)) continue;
                 if (TryAdmitStaticLocal(variable)) continue;
                 if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0 || variable.Details.StorageDuration?.Name is "static" or "thread")
                     throw Limit("Static/thread local storage requires the T2 initialization contract.", "storage");
@@ -226,17 +233,19 @@ public sealed partial class CSharpEmitter
             writer.Open();
             foreach (var variable in body.Locals)
             {
-                if (IsOmittedNormalRegionTable(variable)) continue;
+                if (IsOmittedNormalRegionTable(variable) || IsOmittedExceptionRegionTable(variable)) continue;
                 if (IsAllocatedStaticLocal(variable)) continue;
                 writer.Line($"{TypeName(variable.Type)} {names[variable]};");
                 if (MemoryRepresentationType(variable.Type) is PointerType) writer.Line($"{names[variable]} = {PointerZero(variable.Type)};");
                 else writer.Line($"Unsafe.SkipInit(out {names[variable]});");
             }
             if (body.Locals.Count > 0) writer.Line();
+            BeginExceptionFunction(writer);
             if (flatStatements) FlatStatement((StatementOperation)body.Root, writer);
             else if (body.Root is BlockOperation block) foreach (var statement in block.Statements) Statement(statement, writer);
             else if (body.Root is StatementOperation statement) Statement(statement, writer);
             else throw Limit($"Body root '{body.Root.Kind}' has no T1 statement projection.", body.Root.Kind.Name);
+            EndExceptionFunction(writer);
             writer.Close();
             methods.Append(writer.TextWithIndent(1)).AppendLine();
         }
@@ -244,6 +253,7 @@ public sealed partial class CSharpEmitter
         private void Statement(StatementOperation statement, CodeWriter writer)
         {
             ++operationOrdinal;
+            if (TryEmitExceptionStatement(statement, writer)) return;
             if (TryTargetStatement(statement, writer)) return;
             switch (statement)
             {

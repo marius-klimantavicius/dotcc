@@ -16,6 +16,7 @@ public sealed partial class CSharpEmitter
         private bool NeedsExpressionPlan(ExpressionOperation expression)
         {
             if (NeedsNormalLifetimePlan(expression)) return true;
+            if (NeedsExceptionExpressionPlan(expression)) return true;
             if (NeedsPlannedCompoundConversion(expression) || NeedsPlannedAggregateConditional(expression)) return true;
             if (NeedsPlannedMemoryAccess(expression)) return true;
             if (NeedsPlannedCompoundOperation(expression)) return true;
@@ -59,6 +60,7 @@ public sealed partial class CSharpEmitter
                 ExpressionStatementOccurrence(conversion.Operand, writer);
                 return;
             }
+            if (TryEmitExceptionExpressionStatement(expression, writer)) return;
             if (expression is ConstantOperation { Constant.Value: IntegerValue or FloatingValue }
                 && !expression.Details.VolatileFetch && expression.Operands.Count == 0)
             {

@@ -29,6 +29,7 @@ public sealed partial class Translator
         if (request.Roots.Exports.Length != 0)
             return Failure("ROC1205", "Explicit native export wrappers require an accepted export ABI implementation.");
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
+        var semanticRuntimeCandidates = new List<ImportReport>();
         var intrinsicImports = inventory.ProgramReport.Functions.Where(function => function.Builtin is not null)
             .Select(function => function.Locator).ToHashSet(StringComparer.Ordinal);
         // Multi-unit execution is initially self-contained. Only ProgramAssembly
@@ -42,6 +43,15 @@ public sealed partial class Translator
             {
                 if (request.Runtime.Bindings.Any(binding => binding.Kind == import.Kind && binding.LinkageName == import.LinkageName))
                     return Failure("ROC1301", $"Recorded intrinsic '{import.LinkageName}' cannot be replaced by a native function binding.");
+                continue;
+            }
+            // This spelling only defers admission. Successful fulfillment must
+            // come from the emitter's actual validated cleanup-action identity.
+            if (import.Kind == "function" && import.LinkageName == "__destroy_exception_object")
+            {
+                if (request.Runtime.Bindings.Any(binding => binding.Kind == import.Kind && binding.LinkageName == import.LinkageName))
+                    return Failure("ROC1301", "The generated exception-owner helper cannot be replaced by a native binding.");
+                semanticRuntimeCandidates.Add(import);
                 continue;
             }
             var binding = request.Runtime.Bindings.SingleOrDefault(binding =>
@@ -100,6 +110,24 @@ public sealed partial class Translator
                 var report = inventory.ProgramReport with { Diagnostics = diagnostics.ToArray() };
                 return inventory with { Status = TranslationStatus.Failed, Diagnostics = report.Diagnostics, ProgramReport = report };
             }
+            var semanticRuntimeImplementations = new Dictionary<string, SemanticRuntimeFunctionImplementation>(StringComparer.Ordinal);
+            if (semanticRuntimeCandidates.Count != 0 || emission.SemanticRuntimeFunctions.Count != 0)
+            {
+                var publicFunctions = openedInputs.SelectMany((input, unitIndex) => input.TranslationUnit.Functions
+                    .Select((function, functionIndex) => (Function: function,
+                        Locator: $"unit/{unitIndex + 1:D4}/function/{functionIndex + 1:D6}")))
+                    .ToDictionary(item => item.Function, item => item.Locator);
+                foreach (var implementation in emission.SemanticRuntimeFunctions)
+                {
+                    if (implementation.Contract != SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract
+                        || !publicFunctions.TryGetValue(implementation.Function, out var locator)
+                        || !semanticRuntimeCandidates.Any(candidate => candidate.Locator == locator)
+                        || !semanticRuntimeImplementations.TryAdd(locator, implementation))
+                        return Failure("ROC1301", "A semantic runtime selection does not match one required public input function and its admitted contract.");
+                }
+                if (semanticRuntimeCandidates.Any(candidate => !semanticRuntimeImplementations.ContainsKey(candidate.Locator)))
+                    return Failure("ROC1301", "A deferred exception-owner import has no validated generated cleanup implementation.");
+            }
             phaseObserver?.Invoke(TranslationPhase.EmissionCompleted);
             cancellationToken.ThrowIfCancellationRequested();
             using var process = Process.GetCurrentProcess();
@@ -112,7 +140,17 @@ public sealed partial class Translator
                 TranslationComplete = true, Diagnostics = diagnostics.ToArray(),
                 Imports = inventory.ProgramReport.Imports.Select(import => import.Required && intrinsicImports.Contains(import.Locator)
                     ? import with { Provider = "RoslynObj.CSharp.Runtime.TargetIntrinsics", BindingStatus = "recorded-intrinsic-lowering-selected" }
-                    : import).ToArray(),
+                    : semanticRuntimeImplementations.ContainsKey(import.Locator)
+                        ? import with
+                        {
+                            Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",
+                            BindingStatus = "generated-exception-owner-contract-selected",
+                            Ownership = "The validated managed-cpp-int32-exception-owner-v1 contract releases the selected handler's explicit payload owner once; no ambient current pointer or native application implementation is used.",
+                            ErrorContract = "Only the admitted generated exception carrier participates; native C++ unwinding and CLR-error conversion are unsupported.",
+                            ThreadContract = "The payload belongs to its carrier and selected handler; no ambient thread-local exception pointer is substituted.",
+                            CallbackContract = "No native entry or callback is supplied for this generated cleanup action."
+                        }
+                        : import).ToArray(),
                 Families = inventory.ProgramReport.Families.Select(f => f.RequiredCount == 0 ? f : f with
                 {
                     Status = CapabilityStatus.Implemented,

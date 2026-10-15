@@ -15,6 +15,7 @@ public sealed partial class CSharpEmitter
         private ExpressionPlan PlanExpressionCore(ExpressionOperation expression)
         {
             if (TryPlanNormalLifetime(expression, out var normalLifetime)) return normalLifetime;
+            if (TryPlanExceptionExpression(expression, out var exceptionExpression)) return exceptionExpression;
             var type = CsType.Value(expression.Type);
             switch (expression)
             {

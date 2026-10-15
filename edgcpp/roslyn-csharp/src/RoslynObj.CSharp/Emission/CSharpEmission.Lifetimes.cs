@@ -114,6 +114,7 @@ public sealed partial class CSharpEmitter
                 references.Add((PointerType)MemoryRepresentationType(parameters[0].Type));
             }
             foreach (var reference in references) generatedReferenceTypes.Add(reference);
+            if (signature.ExceptionSpecification?.NoexceptEffective == true) EnsureGeneratedNoThrow(function);
             generatedLifetimeRoutines.Add(function);
         }
 
@@ -145,6 +146,7 @@ public sealed partial class CSharpEmitter
             if (primary is null || !functions.Contains(primary) || !primary.AlternateEntryPoints.Contains(function) ||
                 primary.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true || primary.SpecialFunctionKind != function.SpecialFunctionKind)
                 throw Limit("The generated alternate entry requires its actual defined noexcept primary entry and reciprocal retained association.", "lifetime-entry");
+            EnsureGeneratedNoThrow(primary);
             var calls = NormalLifetimeNodes(function.Body!.Root).OfType<CallOperation>().ToArray();
             if (calls.Length != 1 || calls[0].Callee is not ReferenceOperation { Target: FunctionSymbol target } || !target.Equals(primary) ||
                 calls[0].TargetMethod is null || !calls[0].TargetMethod!.Equals(primary) || calls[0].Arguments.Count != function.Parameters.Count)
@@ -210,6 +212,7 @@ public sealed partial class CSharpEmitter
             var eh = body.ExceptionHandling;
             if (eh.CleanupRegions.Count == 0 && !body.Lifetimes.Any(lifetime => lifetime.Cleanups.Count != 0)) return;
             RequireNormalLifetimeProfile();
+            EnsureGeneratedNoThrow(function);
             if (function.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true || eh.Details is not { } details ||
                 eh.RegionTable is not { } table || !body.Locals.Contains(table) || eh.ArrayTable is not null || eh.Arrays.Count != 0 ||
                 details.InitialState != details.NullState || details.NullState != 65535 || details.Prologue is null || eh.Epilogues.Count == 0)

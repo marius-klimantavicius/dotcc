@@ -13,7 +13,10 @@ locking, enabled SQL features, ownership/callbacks, snapshot/RBU, carray/normali
 threading/unlock notification, controlled failure recovery, provider audit and
 readability/restart evidence in JIT/NativeAOT. See the [consolidated receipt](acceptance/sqlite/t4-acceptance.json).
 The first [normal C++ lifetime slice](docs/T5-NORMAL-LIFETIMES.md) also passes
-production CLI and native/JIT/NativeAOT observations. Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
+production CLI and native/JIT/NativeAOT observations. The bounded
+[generated-only integer exception slice](docs/T5-EH-CONTRACT.md) also passes,
+including handler selection before cleanup and balanced payload ownership.
+Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
 This separate consumer will translate a set of `.roslynobj` translation units
