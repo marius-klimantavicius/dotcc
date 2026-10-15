@@ -8,7 +8,7 @@ EDG is the semantic authority. No prior dotobj implementation or evidence is use
 | --- | --- | --- | --- |
 | T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | All required executable providers/projections remain T2/T3 work |
 | T1 | Closed for first fixture slice | [Reproduced report](../acceptance/t1/report.json): 23 phases pass; native/JIT/NativeAOT 66/38; deterministic repeat; public layout/template and source review | Broader forms remain explicit below and under T2/T5 |
-| T2 | In progress | Reviewed contracts; genuine input/native oracle fixtures; first assembly/storage implementations compile | Emitted physical layout/aliasing, callbacks, varargs and multi-unit JIT/NativeAOT evidence |
+| T2 | In progress | [Bounded assembly selection](T2-ASSEMBLY.md) passes 16 genuine inputs; storage physical JIT/NativeAOT slice passes pending final receipt | Integrated multi-unit emitted execution, callbacks, varargs, complete storage/ABI fixtures and provider contracts |
 | T3 | Not implemented | Existing full-feature object is input evidence only | Complete SQLite emission, imports/providers, first SQL in JIT and NativeAOT |
 | T4 | Not implemented | None | All configured workload rows, differential execution, resource/restart and readability evidence |
 | T5 | Not implemented | None | Broader C++ lifetime/EH/dispatch/RTTI/initialization/TLS fixtures |

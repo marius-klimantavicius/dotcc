@@ -1,0 +1,1255 @@
+{
+  "gate": "T2-program-assembly-partial",
+  "status": "passed-semantic-assembly-only",
+  "semanticAssemblyOnly": true,
+  "generatedMultiUnitExecution": false,
+  "scaleAcceptance": false,
+  "maximumOpenUnits": 2,
+  "producer": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+    "bytes": 115573480,
+    "sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4"
+  },
+  "reusedGenuineObjects": true,
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.2011175260413438,
+      "sampledPeakProcessTreeRssBytes": 55435264,
+      "waitedPeakProcessRssBytes": 53420032,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 9,
+          "sha256": "754d4ec29eaf73ed9f365df0dcc770212d046e7629c4d89ba54da43163a8c24d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "dotnet-version"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10076360707171261,
+      "sampledPeakProcessTreeRssBytes": 212992,
+      "waitedPeakProcessRssBytes": 18087936,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "ae487f55927d605284a32711e4ecf6bc3be2bcd5a9de414ace0936264b741f85"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "gcc-version"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/usr/bin/x86_64-linux-gnu-g++-13",
+        "--version"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10070941399317235,
+      "sampledPeakProcessTreeRssBytes": 86016,
+      "waitedPeakProcessRssBytes": 17301504,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 266,
+          "sha256": "39553616934606f58b27c04bed0cdbbe5b00c92c831a9aaadebd7ceda61d1334"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "g++-version"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/Assembly.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 2.7105297750094905,
+      "sampledPeakProcessTreeRssBytes": 193519616,
+      "waitedPeakProcessRssBytes": 182632448,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 488,
+          "sha256": "62e18245c0ea5d00d223709948beeb2e9fba84cb078b6980f8f080de481ae2cc"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build-assembly-harness"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-a.c",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-b.c",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/native-main.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/assembly-native"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1009399020113051,
+      "sampledPeakProcessTreeRssBytes": 188416,
+      "waitedPeakProcessRssBytes": 20447232,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-c-build"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/assembly-native"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10065995098557323,
+      "sampledPeakProcessTreeRssBytes": 135168,
+      "waitedPeakProcessRssBytes": 17301504,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 3,
+          "sha256": "2115cdb6bfcfb008eb2bab2bb79347cb064a48e4e7c4115ccbe4469c787bb6c4"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-c-run"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "g++",
+        "-std=c++20",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-a.cpp",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-b.cpp",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/native-cpp-main.cpp",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/assembly-cpp-native"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.1010475279763341,
+      "sampledPeakProcessTreeRssBytes": 253952,
+      "waitedPeakProcessRssBytes": 22544384,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-cpp-build"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/assembly-cpp-native"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10069969692267478,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 5,
+          "sha256": "c4e65daf26cac1a52d45b50aaf184f92ed6c177ffb6510bde996b7d657a256c9"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "native-cpp-run"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/bin/Release/net10.0/Assembly.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/program-assembly.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.5024910180363804,
+      "sampledPeakProcessTreeRssBytes": 84557824,
+      "waitedPeakProcessRssBytes": 84148224,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 194,
+          "sha256": "78f774885f47edd1484724a30d44706708cf011dddfee003c6aa464a07537dd7"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "assembly-harness"
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/marius/p/dotcc/Directory.Build.props",
+      "bytes": 2201,
+      "sha256": "d18b7a940248051441ae8bed845fa3e8b51338d16857af7f04919a4316d03b53"
+    },
+    {
+      "path": "/home/marius/p/dotcc/Directory.Packages.props",
+      "bytes": 1862,
+      "sha256": "9e09b454b75eae30c31a5581284b1e091f1c34d4e410b016573aae556b963a47"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+      "bytes": 1268,
+      "sha256": "67bd8496c5b9ad74fafeb1d52040020370d8e808bbc8219b8f824c44c696df17"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/Directory.Build.props",
+      "bytes": 361,
+      "sha256": "4ae72f2ebec6b48ca81c966adda8498f7c277e81db6015496c2b1874d6ed4fe8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/Directory.Packages.props",
+      "bytes": 234,
+      "sha256": "82c359f103b1c63c00299f3d0e00df79740df0c2c8f0fadc8ead334c152af60a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/AddressMetadata.cs",
+      "bytes": 1502,
+      "sha256": "6f993f3e0e0a7e227a93f50f450dc1ce2d207ee1566ba133ed076894a034f78f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Attributes.cs",
+      "bytes": 4068,
+      "sha256": "763c356fb091486397893b24d114267bcb99783144455e3e08b209d790298e57"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/BoundedCache.cs",
+      "bytes": 1104,
+      "sha256": "5df4b4349933b42efbb791b78a64cd3dced65279343f96ccdd751965956d9f41"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/CommonMetadata.cs",
+      "bytes": 4211,
+      "sha256": "0b3f036d42a878685bacc0d0a4754a70a75a69125ca9a427496d77ea483dba67"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ControlFlow.cs",
+      "bytes": 11577,
+      "sha256": "3b1f2fce321dbe90742813b9f3a78ba31cd8fb2db5dd32af39bf7737f31ac9bf"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ExactValues.cs",
+      "bytes": 1615,
+      "sha256": "2331c86a87a61058042dfb7d1c40b5520e63b24cdff5fb379bf53f530967f712"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ExecutionMetadata.cs",
+      "bytes": 3010,
+      "sha256": "bc2c49ac1a4410ff430596afafd48a39548ce0ff6f97fcd91bf0cd602244f1a3"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ExtendedOperations.cs",
+      "bytes": 15062,
+      "sha256": "904873d254f27514f6599b8021e32a8a7775b8486e0e592308b06a76114679b7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/LayoutMetadata.cs",
+      "bytes": 7608,
+      "sha256": "c987c7ef9f93baae27171f9408808c2b8cf85300380c28c8860614effbe0431f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/LifetimeDescriptors.cs",
+      "bytes": 3158,
+      "sha256": "b66df2c54b54c6da63c57fcf7df6d1bfa04bae7456143c773e9ed7d521f5d89f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Lifetimes.cs",
+      "bytes": 9310,
+      "sha256": "55ce31ad77c52895714fada4e35e93a40fd89253d53daaf17d419c35575ff5bb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Modules.cs",
+      "bytes": 1312,
+      "sha256": "24f0e06e6d453d64b3af0c0cf042c9a2562a1480d6aab8e6aba70745fa7272bf"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/NameReferences.cs",
+      "bytes": 1868,
+      "sha256": "780be7b31a7f5c348810a367d19f2a8cda60cf5ca9c393068b25f9d8c8e66951"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/NativeAttributes.cs",
+      "bytes": 2141,
+      "sha256": "e6b35611311b341fa9044120709db68b05bf8b5335eb7ad278d17c7641582277"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Operations.cs",
+      "bytes": 17774,
+      "sha256": "ae5e9095d5e7caf032e3930f97a9286a43d2a97e90d2845b9187d61feb73bcaf"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/PagedList.cs",
+      "bytes": 2228,
+      "sha256": "521ef9b1d239589784fbe8f2b853f836d0f185e88ce9ed4320a33ca80383fb54"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/PhysicalSource.cs",
+      "bytes": 3008,
+      "sha256": "9ed293732a7009a8382c9a16f2789d48b7ccf6f118d45231618951c0de87021b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ProjectedList.cs",
+      "bytes": 453,
+      "sha256": "e3ce7c3527183169c0830d6181765b5efcf11620eed8f11c4950fff1e580e486"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Provenance.cs",
+      "bytes": 4095,
+      "sha256": "ad0f4ca12098cf04b5f6874b0c4921a9eb672dd5a6d61461a193a1197c3ae2e8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/ReadOptions.cs",
+      "bytes": 1199,
+      "sha256": "751635233358746d9e5f9737716682779ee8b66ab2f2ed1b78fa09f6d53b73dd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObj.csproj",
+      "bytes": 454,
+      "sha256": "fe0d93826f8c16bd9cb00643babf1c8f59ad2b9da497bf20da40700eca6f0804"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObject.Factories.cs",
+      "bytes": 24736,
+      "sha256": "f80f8e4d9d1d6fb31986c94c7654bbacab36b1d1b5f9f6a1a61ae14304d67990"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObject.Foundation.cs",
+      "bytes": 3676,
+      "sha256": "10540e913736672043eba362b02d491f4025189f63d8cb3b1a33ae07ed4fecad"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynObject.Open.cs",
+      "bytes": 5413,
+      "sha256": "b01003b3d8684ce3bc02390e6fd80782118beee03d81116b5dcdfaa54301659e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoslynWorkspace.cs",
+      "bytes": 1043,
+      "sha256": "192ac1128c8314ca138bf81fc0c4e33f93abb8b3aa22229ed0b64a9367fb0f06"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/RoutineMetadata.cs",
+      "bytes": 8902,
+      "sha256": "74907c6faf597795f748ca03d9fd18ee49ed1d1ff135431864dfd8a75ab82da1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SchemaContract.g.cs",
+      "bytes": 354,
+      "sha256": "1ae1fb656b687d5b17d73f1ac79da497370945c89e50c940e9806b92ccbcfe42"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SchemaDetails.g.cs",
+      "bytes": 241333,
+      "sha256": "c6e90d154bb2a889acaeab507d68ef251245fa0f88743b19dc59d9783b8bca7d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SemanticDetail.cs",
+      "bytes": 1072,
+      "sha256": "52b0d4d0b8203ca320bf081cc4b5623994a7c9b0d8446a3ebe59ebacb914ee7b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SemanticModel.cs",
+      "bytes": 8358,
+      "sha256": "295519a49faf01524550ba64f34afa8fa6c1614f83201236fe629fbdcdcadb79"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SnapshotStore.cs",
+      "bytes": 17658,
+      "sha256": "54a3bff74f71aa50995eca8a3a881918f1f52387f04250e5f381388fc4afe864"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/SourceSequences.cs",
+      "bytes": 6698,
+      "sha256": "3360298102c28ddf196802bfe17e251e6c7a7c3edb9fe0028ed1aa8b3a862811"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/StaticAssertion.cs",
+      "bytes": 571,
+      "sha256": "fae8421f85ee7d208d7b3a4983e9456fb65ef5cc09d838eca51428da2c6324b2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Symbols.cs",
+      "bytes": 23510,
+      "sha256": "5d111fe1c0af65525feae5e879111ebd00f60d9f79583fa33586ed2bd07e74ac"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Templates.cs",
+      "bytes": 10173,
+      "sha256": "9dc930e98273adc84f195ff1c09206c6f07efa78ef551d44836f0f4c24e6b81d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/TestAccess.cs",
+      "bytes": 82,
+      "sha256": "e38f6fe99039352abf6164fd72091959039511db6ebff37cf10cfc9e88171880"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Types.cs",
+      "bytes": 13814,
+      "sha256": "d7b023fcfe684200c6ba4aa5d91265cf770152d61bbaf38da6ad01a6a815d956"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Values.cs",
+      "bytes": 7726,
+      "sha256": "726b886a35b11db4be740ee9a7f7ccc671137b7b4e642a0dac547159a186a6c2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/managed/RoslynObj/Visitors.cs",
+      "bytes": 3975,
+      "sha256": "920eb1418912ab9bcc951c700212263f2a623b3e6a08b0083a0013d7320e0976"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/schema/kinds.tsv",
+      "bytes": 2013176,
+      "sha256": "2fa863d7f2fa540af174622a69bb45a80836882eda7c2e19f4c95960a8864142"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/Directory.Build.props",
+      "bytes": 409,
+      "sha256": "af6bf151fd74e117c2094dafaab96ddcdd8fe3faeb41c1844cd8e811bc2d97ec"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/AbiCompatibility.cs",
+      "bytes": 12323,
+      "sha256": "b9f3a80ceb96125cb58c0c744b4786599f58b7b8fbb3f7792f999e3ea1a4eab2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Contracts.cs",
+      "bytes": 9574,
+      "sha256": "2c576671bbbbd6a915be9358348e6f0a1673eac46ef849dba32c91a55b5898b5"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Calls.cs",
+      "bytes": 13639,
+      "sha256": "b9b60fcb5b260fb821ad61e1b563e4936deb203d424b1c46daed4a39521c3dab"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Floating.cs",
+      "bytes": 4483,
+      "sha256": "890b3f5b3ec6362a4c32a824003a2cd968ea590c3e0343a442be8fc03454eead"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs",
+      "bytes": 14070,
+      "sha256": "9ec651fc7f02ad6c487d8788ba52fecab4ba0cb7ce889fce2a6c3a44aa0493bd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.cs",
+      "bytes": 39197,
+      "sha256": "d83b402abfbc55d469c23f589240db4d3b7e3dd5b7c681c60de62d2b57755123"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Inventory.cs",
+      "bytes": 35667,
+      "sha256": "d6cd37026ac4013f1c95ffb620f6a0ab622fd3b10dd8037de574de37210314a4"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ProgramAssembler.cs",
+      "bytes": 21670,
+      "sha256": "9ad0f09b4dbe1959dcab5f74835a2f340a9834fca2c134253002cfef3f604fa3"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ProgramAssembly.cs",
+      "bytes": 2856,
+      "sha256": "1249c8690302b3ce9418adb229634bccf39a5aaced16e24f4d3a8ae2ebc824fd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ProgramManifest.cs",
+      "bytes": 1847,
+      "sha256": "d90bc36f91976d44d3373af4e3d4558cbab62a12b547fa251ea70ce214d27c3a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/RoslynObj.CSharp.csproj",
+      "bytes": 293,
+      "sha256": "03e03192a4b03f0e5ab94844bf1f7fbfa0939da71052f9c7bd859e6f411bb514"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translation.cs",
+      "bytes": 8133,
+      "sha256": "67b5709fb68ad13afe8e25a381b2723f104d71ca4cac3944caf0f2298e00de45"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translator.cs",
+      "bytes": 14316,
+      "sha256": "394f2a62d927b8aa8e52400a4a26c060c6f96e6cc62a42dffb15a7393e572fc2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/Assembly.csproj",
+      "bytes": 214,
+      "sha256": "c39c0ab5c3c88fb1c6631363beb38b56e4297747d791fbc42016dc5438cc039e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/Program.cs",
+      "bytes": 7596,
+      "sha256": "c21d379abf5c8781696ac6eab346728f1fcf3b95aa4a38a048b0250364ad502f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/abi-a.c",
+      "bytes": 81,
+      "sha256": "03fde19ec1ff74103bec8c995bc305d743b5be78b536cdbc577058046c748238"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/abi-b.c",
+      "bytes": 50,
+      "sha256": "9cd229657a24e84128738375d389805e8e3e552b883b20ff454c6dd1f487b152"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/alias.c",
+      "bytes": 99,
+      "sha256": "3e72b7e07dc0af8558094c1ad70ab0a6a327ea7e41b503dc41c83eff8a9865ad"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/category-a.c",
+      "bytes": 43,
+      "sha256": "35fe801cdadaf9005eacb4fc76559bccdf478e15075e94d358d53ff44d02d5c2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/category-b.c",
+      "bytes": 28,
+      "sha256": "7d37efc6e2658fc971481e0af204ab71535b1c8b3d0c77d34f60ed53c5720e88"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/comdat.cpp",
+      "bytes": 171,
+      "sha256": "7ac9afb20ac0ab0ddf4ad299891de58c008511d362d3db9772e5d84a7db71df1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/common.c",
+      "bytes": 47,
+      "sha256": "5b10171978521b87e0b6ba38090b9627b9548ace3ac88aa4703ceb6fc604d5f7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/duplicate-a.c",
+      "bytes": 67,
+      "sha256": "016a39bb39ed31def6d8951a4117dcf5bd8db646dd371b9cd3b336c27e8a4603"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/duplicate-b.c",
+      "bytes": 67,
+      "sha256": "960266ace22ffedc9c0f3da016f1c9083962fb341f6f7c59fa864465d34feb97"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/ifunc.c",
+      "bytes": 167,
+      "sha256": "6654fc98c879232629436fd55ab3668aef1107fb1b6ffa77235ef5deecc41252"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-a.cpp",
+      "bytes": 525,
+      "sha256": "aef98b2f5a9729798f5f7fc3238bd00a32a97a7c21d604fc3785d065ecc18957"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-b.cpp",
+      "bytes": 470,
+      "sha256": "d7df06f64a2e8ccf601042c12a5e6767657613495c66797942858ed62ef501f7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/native-cpp-main.cpp",
+      "bytes": 268,
+      "sha256": "804f407fd62d08dcf2b2e8bc82c3e4389d97051e204c9f3ca71b1c8d411fb90b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/native-main.c",
+      "bytes": 149,
+      "sha256": "cca38066d13cd29c94d7c5764b0a3e6b802765a6d48e5dbf47791e7ea64e2dd6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/run-assembly.py",
+      "bytes": 7801,
+      "sha256": "3cd5eb50a227c499a2ade016e31efe878ba05f143d257da06c592f77e88a10bb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-a.c",
+      "bytes": 460,
+      "sha256": "28541968ebb9c1acf0f1981776c4616957b6b9595a60b9d700d42c2b4a56b6ff"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-b.c",
+      "bytes": 478,
+      "sha256": "77f1134f2fafed90020c255cb0f53486ae203917ec6c53d03ae7fff99c16c7ba"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unresolved.c",
+      "bytes": 99,
+      "sha256": "b1034babb0c1a6ce8c16b12d782ea6d4b1ebdd8ddde232681df1ef0614f17efd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/weak.c",
+      "bytes": 89,
+      "sha256": "62e167d1ebe50b0a356ef5af06ef672547cc0da9ace31390523fc9ef14bf6948"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+      "bytes": 5090,
+      "sha256": "b4c89236a1717c1eb11588595509d41ad2bfa47cb0bd773d99305d6a9d4a986a"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "unit-a",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-a.c",
+        "bytes": 460,
+        "sha256": "28541968ebb9c1acf0f1981776c4616957b6b9595a60b9d700d42c2b4a56b6ff"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/unit-a.roslynobj",
+        "bytes": 618496,
+        "sha256": "6853f543c681ab49637539c8a59e5cf4fa257d1d02069beaf79e8c05d5d080c1"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-a.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/unit-a.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "unit-b",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-b.c",
+        "bytes": 478,
+        "sha256": "77f1134f2fafed90020c255cb0f53486ae203917ec6c53d03ae7fff99c16c7ba"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/unit-b.roslynobj",
+        "bytes": 617472,
+        "sha256": "ff98264f1ed7aeeed36ddf8193ed55e0b33a440a2408ae5891ab812c59a8cdbb"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unit-b.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/unit-b.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "duplicate-a",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/duplicate-a.c",
+        "bytes": 67,
+        "sha256": "016a39bb39ed31def6d8951a4117dcf5bd8db646dd371b9cd3b336c27e8a4603"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/duplicate-a.roslynobj",
+        "bytes": 603136,
+        "sha256": "c150c82c1b105f9eacd81aedd510bca60bf8dc6fcb0d0d4ba07f81ff0e096df7"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/duplicate-a.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/duplicate-a.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "duplicate-b",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/duplicate-b.c",
+        "bytes": 67,
+        "sha256": "960266ace22ffedc9c0f3da016f1c9083962fb341f6f7c59fa864465d34feb97"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/duplicate-b.roslynobj",
+        "bytes": 603136,
+        "sha256": "1fe482a066368c06268d615857df3c76beb3e9f458a3237f99a10ec33f4562e4"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/duplicate-b.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/duplicate-b.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "category-a",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/category-a.c",
+        "bytes": 43,
+        "sha256": "35fe801cdadaf9005eacb4fc76559bccdf478e15075e94d358d53ff44d02d5c2"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/category-a.roslynobj",
+        "bytes": 602112,
+        "sha256": "378e39fc8bf8ae6428dca923b9ca3114b385a170c67b5d675b33b50a39c9e0a1"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/category-a.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/category-a.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "category-b",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/category-b.c",
+        "bytes": 28,
+        "sha256": "7d37efc6e2658fc971481e0af204ab71535b1c8b3d0c77d34f60ed53c5720e88"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/category-b.roslynobj",
+        "bytes": 599040,
+        "sha256": "edaac9cea2bbd0f3fdc330ed53fe62678eae3c6d704156738c8b689960a7b437"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/category-b.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/category-b.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "unresolved",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unresolved.c",
+        "bytes": 99,
+        "sha256": "b1034babb0c1a6ce8c16b12d782ea6d4b1ebdd8ddde232681df1ef0614f17efd"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/unresolved.roslynobj",
+        "bytes": 605184,
+        "sha256": "7d826a1a48c88cc53ea6d4ed241cbb76328f4eb3761cf85d0f441c99f3f9151b"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/unresolved.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/unresolved.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "weak",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/weak.c",
+        "bytes": 89,
+        "sha256": "62e167d1ebe50b0a356ef5af06ef672547cc0da9ace31390523fc9ef14bf6948"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/weak.roslynobj",
+        "bytes": 603136,
+        "sha256": "8b9cf7481b7cec7df8c9ad2939b20d2437e45178eb0e2c7d43363abd3ba7dcf6"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/weak.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/weak.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "common",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/common.c",
+        "bytes": 47,
+        "sha256": "5b10171978521b87e0b6ba38090b9627b9548ace3ac88aa4703ceb6fc604d5f7"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/common.roslynobj",
+        "bytes": 600064,
+        "sha256": "8b5731c61246f7b753e00015d8c88ca9711d004c30e73ff10e0e18ebca2a0e79"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/common.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/common.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "alias",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/alias.c",
+        "bytes": 99,
+        "sha256": "3e72b7e07dc0af8558094c1ad70ab0a6a327ea7e41b503dc41c83eff8a9865ad"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/alias.roslynobj",
+        "bytes": 605184,
+        "sha256": "277b5a67479674329143a224a6959cbcc1df3fcf142788d29011dd928db9589f"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/alias.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/alias.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "ifunc",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/ifunc.c",
+        "bytes": 167,
+        "sha256": "6654fc98c879232629436fd55ab3668aef1107fb1b6ffa77235ef5deecc41252"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/ifunc.roslynobj",
+        "bytes": 608256,
+        "sha256": "11bd2662a70ebd59981dc861d5d037db232abd639ac25b37f2ef94c09f1b1420"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/ifunc.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/ifunc.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "abi-a",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/abi-a.c",
+        "bytes": 81,
+        "sha256": "03fde19ec1ff74103bec8c995bc305d743b5be78b536cdbc577058046c748238"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/abi-a.roslynobj",
+        "bytes": 605184,
+        "sha256": "7337df501566744012ab622ee22334c2b8c36fc0c8481c9d2242442507405f57"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/abi-a.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/abi-a.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "abi-b",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/abi-b.c",
+        "bytes": 50,
+        "sha256": "9cd229657a24e84128738375d389805e8e3e552b883b20ff454c6dd1f487b152"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/abi-b.roslynobj",
+        "bytes": 603136,
+        "sha256": "4ab418a0ced33c49dcc48d5706925e2fe0252c91e9b4d8dba1b98a8fbda9b4e8"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--gcc",
+        "--c17",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/abi-b.c",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/abi-b.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "names-a",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-a.cpp",
+        "bytes": 525,
+        "sha256": "aef98b2f5a9729798f5f7fc3238bd00a32a97a7c21d604fc3785d065ecc18957"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/names-a.roslynobj",
+        "bytes": 675840,
+        "sha256": "f53c02b2bf19089924540e6f57ab4de6f99c8b0c5f6a99aecb4ddf16f04c20d9"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--g++",
+        "--c++20",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-a.cpp",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/names-a.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "names-b",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-b.cpp",
+        "bytes": 470,
+        "sha256": "d7df06f64a2e8ccf601042c12a5e6767657613495c66797942858ed62ef501f7"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/names-b.roslynobj",
+        "bytes": 673792,
+        "sha256": "c2b9c1ab46029955d5c505ca60e7fa9d5e6b51a3aacc710098e27f3160ef1c74"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--g++",
+        "--c++20",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/names-b.cpp",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/names-b.roslynobj"
+      ],
+      "exportReexecuted": false
+    },
+    {
+      "name": "comdat",
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/comdat.cpp",
+        "bytes": 171,
+        "sha256": "7ac9afb20ac0ab0ddf4ad299891de58c008511d362d3db9772e5d84a7db71df1"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/comdat.roslynobj",
+        "bytes": 659456,
+        "sha256": "75c3c5353d33fa915823aaa0e0e275f62cd567f03438a2781ec0b679df730e7b"
+      },
+      "exportCommand": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+        "--g++",
+        "--c++20",
+        "--gnu_version",
+        "130300",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/comdat.cpp",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export/comdat.roslynobj"
+      ],
+      "exportReexecuted": false
+    }
+  ],
+  "dotnetSdk": "10.0.112",
+  "gcc": {
+    "path": "/usr/bin/x86_64-linux-gnu-gcc-13",
+    "bytes": 1023032,
+    "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+    "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "g++": {
+    "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "bytes": 1027128,
+    "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+    "version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "harnessOutput": "Concrete template selection activated: COMDAT=True, inline=True\nGenuine cross-unit strong function/data, local identity, opaque-pointer, qualifier, C++ naming and link-diagnostic checks passed.",
+  "nativeObservations": {
+    "c": "32",
+    "cpp": "75 8"
+  },
+  "programAssemblyReport": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/program-assembly.json",
+    "bytes": 37390,
+    "sha256": "430558c19ca7f0aa29f7a1c08e27eeab7ac60c0335a1277c1f753baf4ea92848"
+  },
+  "builtArtifacts": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/bin/Release/net10.0/Assembly.dll",
+      "bytes": 25600,
+      "sha256": "4e8c715834dccd4ad8d71e2617c56e8f984f350b87b79dcd8b11f9b2eac860f8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/bin/Release/net10.0/RoslynObj.CSharp.dll",
+      "bytes": 273920,
+      "sha256": "650a7e9dae63e1e510b506067569ee03203e6221a415572be7321ab3800fdb0c"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/bin/Release/net10.0/RoslynObj.dll",
+      "bytes": 2629632,
+      "sha256": "b28f4983a435cce2cf2c62f4d94a42452ebcea095661a25495e41f4e46910d81"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Assembly/bin/Release/net10.0/Assembly.deps.json",
+      "bytes": 8775,
+      "sha256": "bbc438b2ce51df906391076522ac7efacf6c1a7e44056d9fb56b5e7b7af5d0d8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/assembly-native",
+      "bytes": 16456,
+      "sha256": "df0acc2242436662d480731d5d1ac39311c978f246216d880a543c7fd0d80dea"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-reproduction/assembly-cpp-native",
+      "bytes": 16496,
+      "sha256": "9d26cca00fdea8117e3e58741172117eeff2fe9ed3182fa0c029f62ff6731a4a"
+    }
+  ],
+  "subsetIsolation": {
+    "purpose": "Prove assembly files compile/run without active uncommitted emitter/runtime work.",
+    "project": "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-subset/AssemblySubset.csproj",
+    "projectSha256": "14db6ba1e8d92e14ece8c2ac7ab0a9e9aece8094cab409949ad04261f67d344b",
+    "buildReceipt": {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-subset/AssemblySubset.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 2.2078174309572205,
+      "sampledPeakProcessTreeRssBytes": 189358080,
+      "waitedPeakProcessRssBytes": 185257984,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 4294967296,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 482,
+          "sha256": "33279c35c57c92741e64eb21a3766a7adb2720d8f19eca15fdf70cdb978ceea8"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "runReceipt": {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-subset/bin/Release/net10.0/AssemblySubset.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-export",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/assembly-subset-report.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.40175167797133327,
+      "sampledPeakProcessTreeRssBytes": 83075072,
+      "waitedPeakProcessRssBytes": 185257984,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 194,
+          "sha256": "78f774885f47edd1484724a30d44706708cf011dddfee003c6aa464a07537dd7"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  }
+}
