@@ -1,8 +1,9 @@
 # Remaining T2 integration
 
-Updated 2026-10-15 after frozen sequencing and two-unit execution receipts.
-T2 remains open. Existing receipts prove bounded semantic assembly, physical
-single-TU storage, scalar/pointer callbacks and ordinary primitive SysV variadics.
+Updated 2026-10-15 after the frozen native aggregate receipt.
+T2's bounded fixture gate is closed. Existing receipts prove semantic assembly,
+physical single-TU storage, scalar/pointer callbacks, primitive SysV variadics,
+typed sequencing, two-unit execution and six concrete native aggregate layouts.
 Their completed bounded rows and remaining requirements are listed below.
 
 | Requirement | Current evidence | Required next proof |
@@ -11,8 +12,8 @@ Their completed bounded rows and remaining requirements are listed below.
 | Typed expression execution | Closed for exercised slice: exact four native/JIT/AOT event/value traces pass | Unsupported partial copies, return materialization and combined planned variadic forms remain explicit |
 | Selected multi-unit emission | Closed for bounded self-contained two-unit slice: C/C++ direct JIT/AOT observations and canonical allocation/address audits pass | General pointer callbacks, aggregate/variadic boundaries, native providers and scale remain unaccepted |
 | Production multi-unit CLI | Closed for bounded self-contained pairs: CLI C/C++ JIT/AOT observations, budget rejection and completion hashes pass | Cross-unit native provider reconciliation remains unsupported |
-| Native aggregate boundary | Internal storage/copies are physically exercised; native by-value aggregates remain guarded | Genuine selected ABI aggregate call/return and callback behavior, exact physical storage and JIT/NativeAOT native adapter observations before enabling the boundary |
-| Readable source | Initial bounded review passes: captured names, loop/branch structure and narrow stable-local/Boolean simplification preserve all sequencing observations | Native aggregate gateway output still needs review; SQLite and broader cleanup/EH readability remain later gates |
+| Native aggregate boundary | Closed for six concrete layouts/signatures: native/JIT/AOT observations, canonical callbacks, exact physical storage and unsupported-layout rejection pass | Other layouts/signature combinations, nontrivial/hidden roles, aggregate variadics and multi-unit aggregate views remain unsupported/unaccepted |
+| Readable source | Bounded review passes: captured names, ordinary application aggregate methods, loop/branch structure and narrow stable-local/Boolean simplification | SQLite and broader cleanup/EH readability remain later gates |
 
 The original aggregate sequencing candidate is an unresolved producer/native
 comparison: retained explicit comma roots predict 248, GCC observes 600, and the

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using RoslynObj;
@@ -13,7 +14,8 @@ public sealed partial class CSharpEmitter
     {
         private sealed record NativeImport(FunctionSymbol Function, CSharpExternalFunctionBinding Binding, string LibraryField);
         private sealed record FunctionAddressItem(FunctionSymbol Function, string Field, string? Wrapper,
-            string? VariadicEntry = null, string? VariadicBridge = null, string? VariadicRegistration = null);
+            string? VariadicEntry = null, string? VariadicBridge = null, string? VariadicRegistration = null,
+            string? AggregateEntry = null, string? AggregateBridge = null, string? AggregateRegistration = null);
         private readonly List<NativeImport> nativeImports = [];
         private readonly Dictionary<string, string> nativeLibraries = new(StringComparer.Ordinal);
         private readonly List<FunctionAddressItem> functionAddresses = [];
@@ -82,7 +84,8 @@ public sealed partial class CSharpEmitter
             var bindings = options.ExternalFunctions.Where(b => b.LinkageName == linkageName).ToArray();
             if (bindings.Length != 1) throw Limit($"Function '{function.Name}' requires one explicit binding for captured linkage '{linkageName}'.", "external-function");
             ValidateCallingConvention(function.Signature);
-            ValidateNativeScalarSignature(function.Signature);
+            if (HasAggregateSignature(function.Signature)) ValidateNativeAggregateSignature(function.Signature);
+            else ValidateNativeScalarSignature(function.Signature);
             _ = TypeName(function.ReturnType);
             foreach (var parameter in function.Signature.Parameters) _ = TypeName(parameter.Type);
             var binding = bindings[0];
@@ -101,9 +104,18 @@ public sealed partial class CSharpEmitter
             if (existing is not null) return Owner + "." + existing.Field;
             RequireCallable(function);
             ValidateCallingConvention(function.Signature);
-            ValidateNativeScalarSignature(function.Signature);
+            if (HasAggregateSignature(function.Signature)) ValidateNativeAggregateSignature(function.Signature);
+            else ValidateNativeScalarSignature(function.Signature);
             FunctionAddressItem address;
-            if (function.Signature.IsVariadic && functions.Contains(function))
+            if (HasAggregateSignature(function.Signature) && functions.Contains(function))
+            {
+                _ = RequireGeneratedAbiLibrary();
+                var stem = names[function].TrimStart('@');
+                address = new(function, InternalName("__address_" + stem), null,
+                    AggregateEntry: InternalName("__aggregate_entry_" + stem), AggregateBridge: InternalName("__aggregate_bridge_" + stem),
+                    AggregateRegistration: InternalName("__register_aggregate_" + stem));
+            }
+            else if (function.Signature.IsVariadic && functions.Contains(function))
             {
                 if (function.Signature.Parameters.Count == 0)
                     throw Limit("A native variadic entry requires at least one captured fixed parameter for the C17 ABI wrapper.", "varargs");
@@ -137,6 +149,8 @@ public sealed partial class CSharpEmitter
                 if (callee.Signature.IsVariadic) return VariadicCall(callee.Signature, callee, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues);
                 if (callee.Signature.Parameters.Count != call.Arguments.Count)
                     throw Limit("A selected fixed call needs explicit parameter adaptation.", "call");
+                if (HasAggregateSignature(callee.Signature) && !functions.Contains(callee))
+                    return AggregateCall(callee.Signature, callee, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues);
                 arguments = string.Join(", ", argumentValues.Select((value, i) => ProgramArgumentView(call.Arguments[i].Value.Type, callee.Signature.Parameters[i].Type, value)));
                 return ProgramResultView(callee.ReturnType, call.Type, $"{OwnedName(callee)}({arguments})");
             }
@@ -148,6 +162,12 @@ public sealed partial class CSharpEmitter
                 var calleeAddress = call.Callee is OperatorOperation { OperatorKind.Name: "eok_indirect" } variadicIndirect
                     ? Expression(variadicIndirect.Operands[0]) : Expression(call.Callee);
                 return VariadicCall(signature, null, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues, calleeAddress);
+            }
+            if (HasAggregateSignature(signature))
+            {
+                var aggregateAddress = call.Callee is OperatorOperation { OperatorKind.Name: "eok_indirect" } aggregateIndirect
+                    ? Expression(aggregateIndirect.Operands[0]) : Expression(call.Callee);
+                return AggregateCall(signature, null, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues, aggregateAddress);
             }
             ValidateCallingConvention(signature);
             ValidateNativeScalarSignature(signature);
@@ -191,7 +211,9 @@ public sealed partial class CSharpEmitter
             foreach (var address in functionAddresses)
             {
                 fields.Append("    private static readonly nint ").Append(address.Field).Append(" = ");
-                if (address.VariadicEntry is not null)
+                if (address.AggregateEntry is not null)
+                    fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(address.AggregateEntry)).AppendLine(");");
+                else if (address.VariadicEntry is not null)
                     fields.Append("NativeLibrary.GetExport(").Append(RequireGeneratedAbiLibrary()).Append(", ").Append(JsonSerializer.Serialize(address.VariadicEntry)).AppendLine(");");
                 else if (address.Wrapper is not null)
                     fields.Append("(nint)(").Append(FunctionPointerType(address.Function.Signature)).Append(")&").Append(address.Wrapper).AppendLine(";");
@@ -205,7 +227,7 @@ public sealed partial class CSharpEmitter
             foreach (var import in nativeImports)
             {
                 var signature = import.Function.Signature;
-                if (signature.IsVariadic) continue; // Only concrete outbound shape wrappers may call it.
+                if (signature.IsVariadic || HasAggregateSignature(signature)) continue; // Only concrete scalar/pointer gateways may call these native signatures.
                 methods.Append("    [DllImport(").Append(JsonSerializer.Serialize(import.Binding.LibraryPath))
                     .Append(", EntryPoint = ").Append(JsonSerializer.Serialize(import.Binding.EntryPoint)).AppendLine(", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]");
                 methods.Append("    private static extern ").Append(TypeName(signature.ReturnType)).Append(' ').Append(names[import.Function]).Append('(')
@@ -241,6 +263,7 @@ public sealed partial class CSharpEmitter
                 methods.AppendLine("    }").AppendLine();
             }
             EmitVariadicEntryBridges(initialization);
+            EmitAggregateSupport(initialization);
         }
 
         private string NativeImportReport() => JsonSerializer.Serialize(new
@@ -249,6 +272,7 @@ public sealed partial class CSharpEmitter
             imports = nativeImports.Select(i => new { linkageName = i.Function.GnuSupplement?.AssemblyName ?? i.Function.CurrentName,
                 library = i.Binding.LibraryPath, entryPoint = i.Binding.EntryPoint, callingConvention = "cdecl",
                 isVariadic = i.Function.Signature.IsVariadic,
+                aggregateGateway = HasAggregateSignature(i.Function.Signature),
                 returnType = TypeName(i.Function.ReturnType), parameters = i.Function.Parameters.Select(p => TypeName(p.Type)) }),
             generatedAbi = generatedAbiLibrary is null ? null : new
             {
@@ -259,6 +283,23 @@ public sealed partial class CSharpEmitter
                 {
                     linkageName = a.Function.GnuSupplement?.AssemblyName ?? a.Function.CurrentName,
                     entry = a.VariadicEntry, registration = a.VariadicRegistration, bridge = a.VariadicBridge
+                }),
+                aggregateEntries = functionAddresses.Where(a => a.AggregateEntry is not null).Select(a => new
+                {
+                    linkageName = a.Function.GnuSupplement?.AssemblyName ?? a.Function.CurrentName,
+                    entry = a.AggregateEntry, registration = a.AggregateRegistration, bridge = a.AggregateBridge
+                }),
+                aggregateLayouts = aggregateLayouts.Select(a => new
+                {
+                    type = TypeName(a.Type), nativeType = a.NativeName, shape = a.Shape,
+                    size = a.Type.Size?.ToString(CultureInfo.InvariantCulture), alignment = a.Type.Alignment?.ToString(CultureInfo.InvariantCulture),
+                    fields = a.Fields.Select(f => new { type = TypeName(f.Field.Type), offset = f.Offset?.ToString(CultureInfo.InvariantCulture) })
+                }),
+                aggregateOutboundShapes = aggregateInvocations.Select(a => new
+                {
+                    entry = a.Adapter, parameters = a.Signature.Parameters.Select(p => TypeName(p.Type)), returnType = TypeName(a.Signature.ReturnType),
+                    selectedReturnSlot = a.Signature.ReturnsValueAsParameter == true, selectedCopyConstructorReturn = a.Signature.ReturnsValueViaCopyConstructor,
+                    parameterRoles = a.Signature.Parameters.Select(p => p.Role.Name)
                 }),
                 outboundShapes = variadicCalls.Where(c => c.NativeAdapter is not null).Select(c => new
                 {

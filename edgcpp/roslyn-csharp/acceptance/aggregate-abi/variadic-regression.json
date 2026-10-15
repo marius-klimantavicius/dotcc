@@ -1,0 +1,235 @@
+{
+  "status": "passed-relevant-addressed-variadic-regression",
+  "limits": "Initial harness path collision and missing checker-only native provider copy preserved; production generated binding already resolved absolute provider. Corrected runs copy the existing accepted provider as the original full driver does.",
+  "phases": [
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/Projection.dll",
+        "emit",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/export/addressed.roslynobj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/variadic-reproduction/addressed-bindings.json"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.30106641503516585,
+      "sampledPeakProcessTreeRssBytes": 80187392,
+      "waitedPeakProcessRssBytes": 79429632,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 32,
+          "sha256": "da154828b81ae61d0c0a254435772779638f77f12a76e9bac2b2316e13b8529c"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "emit"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Variadics/Addressed.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/Generated.csproj",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/jit",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 1.604544745059684,
+      "sampledPeakProcessTreeRssBytes": 195887104,
+      "waitedPeakProcessRssBytes": 189337600,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 732,
+          "sha256": "5c0b31bdf42ce5245ab79653c69b1183d1f6042c2c0bf7b0914d926cb0e58add"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "build"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/jit/Addressed.dll"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10063555801752955,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 30408704,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 85,
+          "sha256": "fdc9185e5246e7219ac18dcd6ad515013de09f78ac358b0fc03d4b05c55de557"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "jit-corrected"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Variadics/Addressed.csproj",
+        "-c",
+        "Release",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/aot",
+        "--nologo"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 4.512238177005202,
+      "sampledPeakProcessTreeRssBytes": 213004288,
+      "waitedPeakProcessRssBytes": 242417664,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 300.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 917,
+          "sha256": "af0e2bf4743460c6739557145272637068b05c5168e3f65013413f5cc944b24d"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "publish"
+    },
+    {
+      "status": "passed",
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/aot/Addressed"
+      ],
+      "workingDirectory": "/home/marius/p/dotcc",
+      "exitCode": 0,
+      "elapsedSeconds": 0.10052244400139898,
+      "sampledPeakProcessTreeRssBytes": 28672,
+      "waitedPeakProcessRssBytes": 17563648,
+      "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+      "budgets": {
+        "timeoutSeconds": 120.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "budgetViolation": null,
+      "logs": [
+        {
+          "path": "stdout.txt",
+          "bytes": 85,
+          "sha256": "fdc9185e5246e7219ac18dcd6ad515013de09f78ac358b0fc03d4b05c55de557"
+        },
+        {
+          "path": "stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "phase": "aot"
+    }
+  ],
+  "jit": "result=216\nentry-integer=55\nentry-double=120\nentry-identity=1\nphysical-cursor=passed\n",
+  "aot": "result=216\nentry-integer=55\nentry-double=120\nentry-identity=1\nphysical-cursor=passed\n",
+  "provider": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t2/variadic-reproduction/native/libvariadic-adapter.so",
+    "sha256": "76fcd95d8643c5bce4de0182245cdc3066b351007c54ff7fcae2308bbd3d779a"
+  },
+  "providerCopies": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/jit/libvariadic-adapter.so",
+      "sha256": "76fcd95d8643c5bce4de0182245cdc3066b351007c54ff7fcae2308bbd3d779a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/aot/libvariadic-adapter.so",
+      "sha256": "76fcd95d8643c5bce4de0182245cdc3066b351007c54ff7fcae2308bbd3d779a"
+    }
+  ],
+  "generatedFiles": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/Generated.cs",
+      "sha256": "ae2f7e13d7f904354126e5e326f1eb7d846853ab5cad62798cdc389a71db80ea"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/Generated.NativeImports.json",
+      "sha256": "6aa8787d45698ac85a780b21cae460393aab8d67316f03672126d2e39933d836"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/libRoslynObj.Generated.Abi.so",
+      "sha256": "84a74e90d0d849783475bcd8de5acbb61ab54cb33790b0a4112adb405c58ccce"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/Generated.Abi.c",
+      "sha256": "ed1f30572a203d02abb517eac74d9907d1f2839f11347ccbd6bf512e2cb8294b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t2/aggregate-variadic-regression-2/generated/Generated.csproj",
+      "sha256": "0cd7fec2d39044830a42d79eff681c972b41c8f16dbca6106010c9357d6ac46a"
+    }
+  ],
+  "previousAcceptedReceipt": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/variadics/report.json",
+    "sha256": "32976461fe72821a2cdc560188315477df2d31d0d1b8c4867e9e2bc9e6e761b2"
+  },
+  "build": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Projection/bin/Release/net10.0/RoslynObj.CSharp.dll",
+    "sha256": "5b1f919f84144c3bb9b90d55d2bd043206c849f5db611ad814ef5c5c97632d26"
+  }
+}

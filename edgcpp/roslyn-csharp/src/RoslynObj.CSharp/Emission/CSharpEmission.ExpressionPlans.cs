@@ -397,6 +397,9 @@ public sealed partial class CSharpEmitter
                 if (function.Signature.IsVariadic) throw Limit("Variadic calls need the selected argument-pack ABI.", "varargs");
                 if (function.Signature.Parameters.Count != plannedCall.Arguments.Count)
                     throw Limit("A selected fixed call needs explicit parameter adaptation.", "call");
+                if (HasAggregateSignature(function.Signature) && !functions.Contains(function))
+                    return AggregateCall(function.Signature, function, call.Arguments.Select(argument => argument.Value.Type).ToArray(),
+                        plannedCall.Arguments.Select(RenderExpression).ToArray());
                 var arguments = string.Join(", ", plannedCall.Arguments.Select((value, index) =>
                     ProgramArgumentView(call.Arguments[index].Value.Type, function.Signature.Parameters[index].Type, RenderExpression(value))));
                 return ProgramResultView(function.ReturnType, call.Type, $"{OwnedName(function)}({arguments})");
@@ -405,6 +408,9 @@ public sealed partial class CSharpEmitter
             if (type is PointerType pointer) type = Unwrap(pointer.PointeeType);
             if (type is not RoutineType signature || plannedCall.Callee is null || signature.IsVariadic)
                 throw Limit("Indirect call needs a selected fixed signature and function-address representation.", "call");
+            if (HasAggregateSignature(signature))
+                return AggregateCall(signature, null, call.Arguments.Select(argument => argument.Value.Type).ToArray(),
+                    plannedCall.Arguments.Select(RenderExpression).ToArray(), RenderExpression(plannedCall.Callee));
             ValidateCallingConvention(signature);
             ValidateNativeScalarSignature(signature);
             if (signature.Parameters.Count != plannedCall.Arguments.Count) throw Limit("Indirect call parameter adaptation is unsupported.", "call");

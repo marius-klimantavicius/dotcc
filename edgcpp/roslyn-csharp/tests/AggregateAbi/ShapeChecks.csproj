@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);AGGREGATE_$(AggregateShape)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup><Compile Include="ShapeChecks.cs" /><ProjectReference Include="$(GeneratedProject)" /></ItemGroup>
+</Project>

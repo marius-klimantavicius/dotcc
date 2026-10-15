@@ -6,13 +6,14 @@ The coordinator owns shared contracts, integration, serialized build/export
 scheduling, exact-path Git mutations and this ledger. Root supervises read-only.
 Two `gpt-6.1-sol` xhigh implementers have disjoint ownership:
 
-- `inventory`: the NEW typed planner files
-  `Emission/ExpressionPlan.cs`, `Emission/CSharpEmission.ExpressionPlans.cs`,
-  NEW `Emission/CSharpEmission.Program.cs`, plus sequencing/program fixture
-  and checker paths. Completed inventory/semantic assembly files remain stable.
+- `inventory`: finish the disjoint `tests/HostContracts` reproduction receipt,
+  then implement the 15 required recorded compiler intrinsics in new emitter/
+  runtime files and its typed-planner hook. Completed program/inventory/assembly
+  files remain stable.
 - `emission`: existing Emission partials, runtime/host, Projection, T2 fixtures
-  and execution drivers. Next target: genuine SysV primitive variadics and
-  addressed variadic ABI adapters.
+  and execution drivers. The aggregate gate passes; next target is production
+  Linux x64 provider ABI/error/TLS/callback handling, beginning the explicit
+  protocol design. Do not edit the intrinsic worker's planner/new intrinsic files.
 
 The coordinator (`gpt-6.1-sol` high) owns root project configuration and docs.
 Workers must request build/export scheduling and must not mutate Git.
@@ -134,7 +135,30 @@ native-verified under `t2/aggregate-abi`; public probes show ordinary signatures
 no explicit ReturnSlot/hidden/copy parameters, including memory return 24/8.
 Host hidden sret remains a native wrapper detail. Generated execution and
 physical ABI proof are still required. Packing/unions
-and each ordinary shape remain separately gated. See [T2-REMAINING.md](T2-REMAINING.md).
+and each ordinary shape are separately gated. The final frozen aggregate receipt
+passes 97 expected outcomes: six layouts native/JIT/AOT 36/94/76/161/364/11,
+all observations, twice-run physical/canonical checks, deterministic emission,
+exact ABI-only exports/copies and three expected unsupported-input rejections.
+Report SHA256 is
+`9ed9392f61c17f1b779c922c27ea351900d5cd9e70d5e26e1a0de7c5f70e7f1b`.
+The relevant addressed-varargs JIT/AOT regression preserves 216 and all accepted
+physical/canonical/borrowed-cursor observations. Its harness-only phase-directory
+and missing checker-provider-copy mistakes are preserved in
+`t2/aggregate-variadic-regression{,-2}`. See [T2-AGGREGATE-ABI.md](T2-AGGREGATE-ABI.md).
+Root accepted the bounded aggregate gate and directed continued production T3.
+T2's fixture gate is closed with explicit limits in [T2-REMAINING.md](T2-REMAINING.md).
+
+Coordinator preparation resolves all 88 candidate system exports while retaining
+15 builtins as implementation requirements. Exact aliases/signatures, provider
+file hashes and proposed per-function contracts are under
+`t3/provider-preparation-3/provider-plan.json`. `time`/`gettimeofday` resolve to
+kernel vDSO images, explicitly not hash-pinned files. No production binding is
+enabled. First finite HostContracts native/JIT/AOT probe passes 58 checks each
+under `t3/host-contracts-first`: baseline later errno happens to remain 20;
+native protected scope observes deliberate callback clobber to 4 then restores
+20, distinct foreign-thread TLS, nested managed callbacks and native mutex return
+codes. This is preparation, not a production error-state implementation; see
+[SQLITE-PROVIDERS.md](SQLITE-PROVIDERS.md).
 
 Preserve the original aggregate producer/native differential at
 `acceptance/semantic-differentials/aggregate.json` and its exact public trace:
@@ -145,4 +169,7 @@ snapshot is the accepted 248 input. No process remains active at checkpoint.
 Genuine fixture objects/native oracles remain under `t2/export`, `t2/native`,
 `t2/assembly-export`, `t2/sequencing` and `t2/program-execution`. Preserve all
 artifacts, including failed/incomplete attempts; no cleanup is authorized.
-T2 remains open for native aggregate boundary/readability; SQLite T3/T4 has not run.
+Next coordinator task is the unchanged full-object library emission diagnostic
+pass, with frozen budgets, exact candidate bindings and no output publication.
+Then resolve actual diagnostics alongside intrinsic/provider implementation.
+SQLite T3/T4 execution has not run.
