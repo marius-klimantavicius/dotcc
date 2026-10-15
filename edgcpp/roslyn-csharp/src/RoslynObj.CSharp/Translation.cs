@@ -46,11 +46,11 @@ public sealed partial class Translator
                 continue;
             }
             // This spelling only defers admission. Successful fulfillment must
-            // come from the emitter's actual validated cleanup-action identity.
-            if (import.Kind == "function" && import.LinkageName == "__destroy_exception_object")
+            // come from the emitter's actual validated execution/action identity.
+            if (import.Kind == "function" && SemanticRuntimeFunctionImplementation.CandidateContract(import.LinkageName) is not null)
             {
                 if (request.Runtime.Bindings.Any(binding => binding.Kind == import.Kind && binding.LinkageName == import.LinkageName))
-                    return Failure("ROC1301", "The generated exception-owner helper cannot be replaced by a native binding.");
+                    return Failure("ROC1301", "A selected generated semantic helper cannot be replaced by a native binding.");
                 semanticRuntimeCandidates.Add(import);
                 continue;
             }
@@ -119,14 +119,14 @@ public sealed partial class Translator
                     .ToDictionary(item => item.Function, item => item.Locator);
                 foreach (var implementation in emission.SemanticRuntimeFunctions)
                 {
-                    if (implementation.Contract != SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract
-                        || !publicFunctions.TryGetValue(implementation.Function, out var locator)
-                        || !semanticRuntimeCandidates.Any(candidate => candidate.Locator == locator)
+                    if (!publicFunctions.TryGetValue(implementation.Function, out var locator)
+                        || !semanticRuntimeCandidates.Any(candidate => candidate.Locator == locator
+                            && SemanticRuntimeFunctionImplementation.CandidateContract(candidate.LinkageName) == implementation.Contract)
                         || !semanticRuntimeImplementations.TryAdd(locator, implementation))
                         return Failure("ROC1301", "A semantic runtime selection does not match one required public input function and its admitted contract.");
                 }
                 if (semanticRuntimeCandidates.Any(candidate => !semanticRuntimeImplementations.ContainsKey(candidate.Locator)))
-                    return Failure("ROC1301", "A deferred exception-owner import has no validated generated cleanup implementation.");
+                    return Failure("ROC1301", "A deferred semantic helper import has no validated generated implementation.");
             }
             phaseObserver?.Invoke(TranslationPhase.EmissionCompleted);
             cancellationToken.ThrowIfCancellationRequested();
@@ -140,16 +140,8 @@ public sealed partial class Translator
                 TranslationComplete = true, Diagnostics = diagnostics.ToArray(),
                 Imports = inventory.ProgramReport.Imports.Select(import => import.Required && intrinsicImports.Contains(import.Locator)
                     ? import with { Provider = "RoslynObj.CSharp.Runtime.TargetIntrinsics", BindingStatus = "recorded-intrinsic-lowering-selected" }
-                    : semanticRuntimeImplementations.ContainsKey(import.Locator)
-                        ? import with
-                        {
-                            Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",
-                            BindingStatus = "generated-exception-owner-contract-selected",
-                            Ownership = "The validated managed-cpp-int32-exception-owner-v1 contract releases the selected handler's explicit payload owner once; no ambient current pointer or native application implementation is used.",
-                            ErrorContract = "Only the admitted generated exception carrier participates; native C++ unwinding and CLR-error conversion are unsupported.",
-                            ThreadContract = "The payload belongs to its carrier and selected handler; no ambient thread-local exception pointer is substituted.",
-                            CallbackContract = "No native entry or callback is supplied for this generated cleanup action."
-                        }
+                    : semanticRuntimeImplementations.TryGetValue(import.Locator, out var implementation)
+                        ? implementation.Describe(import)
                         : import).ToArray(),
                 Families = inventory.ProgramReport.Families.Select(f => f.RequiredCount == 0 ? f : f with
                 {

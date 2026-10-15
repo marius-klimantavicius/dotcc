@@ -158,6 +158,12 @@ public sealed partial class CSharpEmitter
 
         private string EmitCall(CallOperation call)
         {
+            if (TryPlanAutomaticArrayCall(call, out var automaticArrayCall))
+            {
+                if (automaticArrayCall.Prefix.Count != 0)
+                    throw Limit("An automatic-array call with value prefixes requires its typed statement occurrence.", "array-lifetime");
+                return RenderPlanValue(automaticArrayCall);
+            }
             ValidateGeneratedCallRoles(call);
             if (call.Operator.EvalRightToLeft && call.Arguments.Count > 1 && call.Arguments.Any(a => HasEffects(a.Value)))
                 throw Limit("A call with right-to-left evaluation and effectful arguments requires explicit sequencing temporaries.", "sequencing");

@@ -339,6 +339,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanCall(CallOperation call)
         {
+            if (TryPlanAutomaticArrayCall(call, out var automaticArrayCall)) return automaticArrayCall;
             ValidateGeneratedCallRoles(call);
             if (call.Operator.EvalLeftToRight && call.Operator.EvalRightToLeft)
                 throw Limit("This retained combination of call constraints has no selected plan.", "sequencing");
@@ -413,6 +414,7 @@ public sealed partial class CSharpEmitter
             CsLoad load => RenderMemoryLoad(load),
             CsAddress address => RenderAddress(address.Place),
             CsPlannedCall call => RenderCall(call),
+            CsAutomaticArrayCall call => RenderAutomaticArrayCall(call),
             CsVariadicArgument argument => VariadicOperator(argument.Operation, [RenderExpression(argument.Cursor)]),
             CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
             CsTruth { Value: CsSourceBoolean boolean } => RenderExpression(boolean.Condition),

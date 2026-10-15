@@ -62,7 +62,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
         }).ToArray();
         while (pending.TryDequeue(out var entity)) entities.Add(Describe(entity));
         var manifest = input.Manifest;
-        return Row(("ProbeVersion", 3), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
+        return Row(("ProbeVersion", 5), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
             ("Semantics", "Local locators use only public semantic equality. Public structural paths preserve parent/role/ordinal and repeated identities; they are not an execution schedule, reachability proof or inferred ownership. Metadata boundaries are recorded without executing or expanding them into body occurrences. Typed facets independently record actual call/initialization/control relationships; matching facets can alias a single operand and must not be replayed."),
             ("Bounds", new { MaximumEntities, MaximumOccurrences, MaximumDepth, CachedRows = 4096, CachedPages = 128, PageSize = 128 }),
             ("Provenance", new { manifest.FormatMajor, manifest.FormatMinor, manifest.ArtifactIdentity, manifest.Producer,
@@ -110,6 +110,25 @@ internal sealed class LifetimeProbe(RoslynObject input)
         ("ReturnsValueViaCopyConstructor", signature.ReturnsValueViaCopyConstructor),
         ("SelectedParameters", signature.Parameters.Select(Parameter).ToArray()),
         ("NoexceptEffective", signature.Routine.ExceptionSpecification?.NoexceptEffective));
+
+    private Dictionary<string, object?> CleanupHandleValue(Constant constant)
+    {
+        var value = constant.Value;
+        var row = Row(("Type", Ref(constant.Type)), ("OriginalType", Ref(constant.OriginalType)),
+            ("ValueKind", value.Kind.Name));
+        if (value is IntegerValue integer) row["IntegerValue"] = Number(integer.Value);
+        if (value is ConstantValue<StackOffsetValueDetails> stack)
+            row["StackOffset"] = new { Variable = Ref(stack.Payload.Variable), Offset = Number(stack.Payload.Offset) };
+        if (value is AddressValue address)
+            row["Address"] = new
+            {
+                BaseKind = address.BaseKind.Name, BaseEntity = Ref(address.BaseEntity),
+                ByteOffset = Number(address.ByteOffset), address.OnePastEnd,
+                SubobjectPath = Ref(address.SubobjectPath), address.Details.IsObjectReflection,
+                address.Details.ParameterNumber
+            };
+        return row;
+    }
 
     private Dictionary<string, object?> Describe(SemanticEntity entity)
     {
@@ -239,6 +258,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 row["Storage"] = Ref(condition.Storage); row["ComparisonValue"] = Number(condition.Details.ComparisonValue); break;
             case CleanupArray array:
                 row["EntityKind"] = "cleanup-array"; row["HandleConstant"] = Ref(array.HandleConstant);
+                row["HandleValue"] = CleanupHandleValue(array.HandleConstant);
                 row["ElementSize"] = Number(array.ElementSize); row["ElementCount"] = Number(array.ElementCount);
                 row["IsNonarraySize"] = array.Details.IsNonarraySize;
                 row["StorageLocations"] = array.StorageLocations.Select(location => Ref(location)).ToArray();

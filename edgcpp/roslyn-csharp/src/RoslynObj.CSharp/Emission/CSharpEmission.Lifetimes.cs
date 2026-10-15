@@ -73,9 +73,10 @@ public sealed partial class CSharpEmitter
                 if (!record.Equals(MemoryRepresentationType(signature.ThisClass)) || !record.Equals(MemoryRepresentationType(function.ContainingType)))
                     throw Limit("The selected receiver pointer does not refer to its retained containing record.", "lifetime-parameter");
                 var destructor = function.SpecialFunctionKind?.Name == "sfk_destructor";
-                if (destructor ? parameters.Count != 1 : parameters.Count != 2)
+                var arrayConstructor = automaticArrayConstructors.Contains(function) || function.PrimaryEntry is { } arrayPrimary && automaticArrayConstructors.Contains(arrayPrimary);
+                if (destructor ? parameters.Count != 1 : parameters.Count != (arrayConstructor ? 1 : 2))
                     throw Limit("The exercised generated constructor/destructor has one receiver and at most one source argument.", "lifetime-parameter");
-                if (!destructor)
+                if (!destructor && !arrayConstructor)
                 {
                     var source = parameters[1];
                     var alternate = function.ConstructorOrDestructorKind?.Name == "cdk_subobject";

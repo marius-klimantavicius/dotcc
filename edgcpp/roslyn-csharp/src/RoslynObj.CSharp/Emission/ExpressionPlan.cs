@@ -25,6 +25,8 @@ internal sealed record CsLoad(LValuePlan Place, bool VolatileFetch = false) : Cs
 internal sealed record CsAddress(CsType ValueType, LValuePlan Place) : CsExpression(ValueType);
 internal sealed record CsPlannedCall(CsType ValueType, CallOperation Operation, CsExpression? Callee,
     IReadOnlyList<CsExpression> Arguments) : CsExpression(ValueType);
+internal sealed record CsAutomaticArrayCall(CsType ValueType, CallOperation Operation,
+    IReadOnlyList<CsExpression> Arguments) : CsExpression(ValueType);
 internal sealed record CsVariadicArgument(CsType ValueType, OperatorOperation Operation, CsExpression Cursor) : CsExpression(ValueType);
 internal sealed record CsTargetShift(CsType ValueType, bool Right, CsExpression Left, CsExpression Count) : CsExpression(ValueType);
 internal sealed record CsTruth(CsExpression Value, CppType SourceType) : CsExpression(CsType.Boolean);

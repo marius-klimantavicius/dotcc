@@ -113,6 +113,8 @@ public sealed partial class CSharpEmitter
                 catch (Unsupported ex) { Add("CSHARP2100", ex.Message, function.Name, ex.Family); }
             }
             currentFunction = null;
+            try { EmitAutomaticArraySupport(); }
+            catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); }
             var staticFields = new StringBuilder();
             EmitExceptionFields(staticFields);
             var staticInitialization = new CodeWriter();

@@ -1,4 +1,4 @@
-This checker exercises only the existing genuine
+By default this checker exercises the existing genuine
 [exception-cleanup.cpp](../Fixtures/T5/exception-cleanup.cpp) through generated
 scalar fixture/lifetime observation functions. The bounded normal milestone
 `f5c0f255a` is accepted; exceptional generated execution remains a separate gate.
@@ -14,20 +14,29 @@ without predicting a different cleanup order from the C++ source. EDG's retained
 execution and current stock contracts remain authoritative.
 
 [Program.cs](Program.cs) calls the generated fixture twice, checks event bounds,
-live/overflow and prior-run live zero, and copies all five values and every
+live/overflow and prior-run live zero, and copies all selected values and every
 event. It then requires exact native JSON agreement. All JsonArray additions
 explicitly select JsonNode for NativeAOT. The native-compatible observation is
 the first output line. The second line records independent exception-ownership
 diagnostics, which the native application does not expose.
 
-After each invocation, exactly one payload owner must have been created,
-committed, selected, marked caught and released; no live owner, pending release
+After each invocation, the selected number of payload owners must have been
+created, committed, selected, marked caught and released; no live owner, pending release
 or protocol rejection may remain. Every exceptional-cleanup assertion must
 observe prior handler selection. The recorded sequence must satisfy selection
 before first cleanup before release. Counts are process-wide diagnostics for
 this serial checker, not a registry for resolving exception ownership. The
 native event comparison still establishes the actual application cleanup;
 the diagnostic assertions alone are not an event-order proof.
+
+Invocation remains `Checks NATIVE_OBSERVATIONS_JSON` for the existing five-value,
+one-payload fixtures. Optional explicit positional `VALUE_COUNT
+EXPECTED_PAYLOAD_COUNT` must be supplied together; each is a positive integer
+no greater than 64. The prior-live slot is the last selected value. The new
+[partial-array-prefixes.cpp](../Fixtures/T5/partial-array-prefixes.cpp) candidate
+uses `Checks NATIVE_OBSERVATIONS_JSON 9 3`, requiring all three finite payload
+lifecycles per invocation and complete native observation agreement. This
+parameterization adds no emitter/runtime capability or execution claim.
 
 The new [ManagedCppException runtime](../../src/RoslynObj.CSharp.Runtime/ManagedCppException.cs)
 owns a naturally aligned 4-byte payload explicitly. Its opaque tokens are

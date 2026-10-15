@@ -24,3 +24,30 @@ completed member when the containing constructor fails, without invoking the
 incomplete containing object's destructor. Arrays, failed-member
 construction, inheritance, allocation, rethrow and native unwinding remain
 outside this candidate.
+
+`partial-array.cpp` is the preserved first array candidate, with an automatic
+`ArrayElement items[3]`. Its default constructor records an attempted id, throws
+only for the selected failure id, and records live ownership/completion only
+after that check. The fixture runs success first and then failure at id 2,
+retaining the same five-value protocol, 64-event buffer and prior-live evidence.
+The successful body observes all three element ids. Capture/public facts and
+independent native observations are recorded separately; actual helper signatures,
+completion counts, cleanup arrays and state writes govern the projection. This adds no heap allocation, inheritance, nested throw,
+class exception payload or native unwinding.
+
+`partial-array-prefixes.cpp` preserves the original element definitions and
+`array_path`, extending only the observation plumbing and fixture sequence to
+success and failures at ids 1, 2 and 3. Markers 900, 901 and 902 separate those
+paths. Nine values record each result/live pair and prior live count last.
+The original `partial-array.cpp` and its capture/evidence remain unchanged.
+Actual capture/native comparison and generated JIT/NativeAOT now establish empty,
+one-element and two-element completed prefixes with reverse partial cleanup. The shared
+exception checker takes explicit counts `9 3` for this variant.
+
+
+The prefix variant now passes production CLI and native/JIT/NativeAOT complete
+observations, including zero completed elements and reverse destruction of two
+completed elements. See [the array proof](../../../docs/T5-PARTIAL-ARRAY.md).
+Original source/capture/native evidence is preserved separately. The genuine
+`ordinary-vector-names.cpp` negative has no array cleanup context and remains
+unsupported despite its import spellings.

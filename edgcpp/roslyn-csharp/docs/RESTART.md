@@ -93,14 +93,52 @@ prior-live detection. Keep one int payload/handler. Establish actual helper
 signatures, completion-count storage/state writes, captured stride/action/region
 contracts and normal cleanup through public facts and pristine runtime before
 implementation. No source-derived count or destructor-loop reconstruction.
-Array preparation is read-only until this constructor checkpoint is saved.
+Constructor checkpoint is `0d650faba`. The automatic partial-array slice now
+passes from immutable `t5/array-source-3` (205 files). Production output is
+`t5/array-cli-generated-3`; [array receipt](../acceptance/lifetimes/array-report.json)
+SHA-256 `1967d9cce8818d122798dc2a630f4a110bfbeb79f0086a3d916f3c28d0687897`
+records 26 expected outcomes (22 successful phases, four intended rejections).
+All 12 bodies/three semantic requirements publish with completion/input/source
+freezes and deterministic source/project bytes. Stronger prefix fixture returns
+144 with nine values/all 33 events twice in JIT/NativeAOT; success and failures
+at elements 1/2/3 cover completed prefixes 0/1/2 and reverse destruction 2 then 1.
+Each fixture balances three payloads; all six cleanup assertions follow selection.
+Last sequence fields describe only the final owner, not all owners/destructors.
+
+Actual vector ABI arguments/signatures/roles/pure callback references, count 3,
+stride 4, direct items handle offset 0 and linked full/partial metadata recipes
+are jointly validated. Generated-only helpers call selected C1/D1 directly,
+advance completed only after constructor return, observe with false filters and
+reverse-clean the completed prefix after outer selection. No UCO/native callback,
+allocation/cookie/free or runtime API was added. C1 has no table/frame; numeric
+state writes with absent Region facets match actual decoded region ordinals.
+CLI reconciles actual helper identities with versioned Generated ctor/dtor
+contracts separately from Runtime's owner contract. Same-spelled ordinary vector
+calls remain unsupported. Runtime unchanged; checker accepts explicit9/3 while
+prior5/1 defaults still pass. Normal/int-EH/member-constructor CLI/JIT/AOT regressions
+pass with byte-identical application sources. All nine pinned objects are unchanged.
+
+Preserve original failure-2 source/capture/native evidence. Initial nullable build,
+normal-dtor pointer-to-array admission failure and pre-snapshot coordinator path
+typo are retained outside final accepted phases. No builder/process remains active.
+Full-array exceptional dispatch is generated/reviewed but not activated; normal
+full destruction and helper partial cleanup are the executed paths. Heap/new[],
+nonconstant/multidimensional arrays, conditions/bases/throwing dtors, native unwind,
+class payloads and broader T5/T6 remain open. See [array proof](T5-PARTIAL-ARRAY.md).
+
+Next approved T5 slice is simple generated-only integer rethrow/ownership capture
+with pristine runtime contract first. Preserve identity/ownership from inner catch
+through rethrow to outer handler and release once; no native unwind/class payload.
+Inventory worker is preparing this proposal read-only until array checkpoint saves.
+Proceed genuine capture/public facts before implementation; no lexical cleanup or
+ambient-current-owner inference.
 
 
 Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
 Root supervises read-only. Two gpt-6.1-sol xhigh workers remain assigned: inventory owns
 the reader-independent payload/carrier runtime, ExceptionLifetime checker and
-read-only next-slice preparation; emission owns typed throw/try/state/cleanup
-projection and is held after final verified edits. The coordinator owns
+read-only rethrow preparation; emission owns typed throw/try/state/cleanup and
+generated-array projection and is held after final verified edits. The coordinator owns
 shared selection contracts, Translation.cs integration and serialized builds.
 No worker may modify EDG core, use
 raw model bypass, recover source semantics or consult dotobj campaigns. Leave all

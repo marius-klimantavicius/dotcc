@@ -1,8 +1,16 @@
+using System.Globalization;
 using System.Text.Json.Nodes;
 using RoslynObj.CSharp.Runtime;
 using Application = Translated.Program;
 
-if (args.Length != 1) throw new InvalidOperationException("Checks NATIVE_OBSERVATIONS_JSON");
+if (args.Length is not (1 or 3))
+    throw new InvalidOperationException("Checks NATIVE_OBSERVATIONS_JSON [VALUE_COUNT EXPECTED_PAYLOAD_COUNT]");
+var valueCount = 5;
+var expectedPayloadCount = 1;
+if (args.Length == 3 &&
+    (!int.TryParse(args[1], NumberStyles.None, CultureInfo.InvariantCulture, out valueCount) || valueCount is < 1 or > 64 ||
+     !int.TryParse(args[2], NumberStyles.None, CultureInfo.InvariantCulture, out expectedPayloadCount) || expectedPayloadCount is < 1 or > 64))
+    throw new InvalidOperationException("Explicit value and payload counts must be positive integers no greater than 64");
 var native = JsonNode.Parse(File.ReadAllText(args[0])) ?? throw new InvalidOperationException("Missing native observations");
 var runs = new JsonArray();
 var ownership = new JsonArray();
@@ -18,17 +26,18 @@ for (var run = 0; run < 2; ++run)
     if (count is < 0 or > 64 || overflow != 0 || live != 0)
         throw new InvalidOperationException("Exceptional lifetime event bounds or live/overflow invariant failed");
     var values = new JsonArray();
-    for (var index = 0; index < 5; ++index) values.Add((JsonNode?)JsonValue.Create(Application.lifetime_value(index)));
-    if (Application.lifetime_value(4) != 0) throw new InvalidOperationException("Fixture entered with leaked prior-run objects");
+    for (var index = 0; index < valueCount; ++index) values.Add((JsonNode?)JsonValue.Create(Application.lifetime_value(index)));
+    if (Application.lifetime_value(valueCount - 1) != 0) throw new InvalidOperationException("Fixture entered with leaked prior-run objects");
     var events = new JsonArray();
     for (var index = 0; index < count; ++index) events.Add((JsonNode?)JsonValue.Create(Application.lifetime_event(index)));
     runs.Add((JsonNode)new JsonObject { ["result"] = result, ["overflow"] = overflow, ["live"] = live, ["values"] = values, ["events"] = events });
-    if (after.Created - before.Created != 1 || after.Committed - before.Committed != 1 || after.Selected - before.Selected != 1 ||
-        after.Caught - before.Caught != 1 || after.Released - before.Released != 1 || after.LiveOwners != 0 ||
+    if (after.Created - before.Created != expectedPayloadCount || after.Committed - before.Committed != expectedPayloadCount ||
+        after.Selected - before.Selected != expectedPayloadCount || after.Caught - before.Caught != expectedPayloadCount ||
+        after.Released - before.Released != expectedPayloadCount || after.LiveOwners != 0 ||
         after.PendingReleased != before.PendingReleased || after.ProtocolRejections != before.ProtocolRejections)
-        throw new InvalidOperationException("The finite throw did not create, commit, select, catch and release exactly one payload owner");
+        throw new InvalidOperationException("The finite throws did not create, commit, select, catch and release the expected payload owners");
     var assertions = after.CleanupAssertions - before.CleanupAssertions;
-    if (assertions <= 0 || after.SelectionBeforeCleanupAssertions - before.SelectionBeforeCleanupAssertions != assertions ||
+    if (assertions < expectedPayloadCount || after.SelectionBeforeCleanupAssertions - before.SelectionBeforeCleanupAssertions != assertions ||
         after.LastSelectedSequence <= 0 || after.LastFirstCleanupSequence <= after.LastSelectedSequence ||
         after.LastReleasedSequence <= after.LastFirstCleanupSequence)
         throw new InvalidOperationException("First-pass handler selection was not observed before exceptional cleanup and release");

@@ -179,3 +179,9 @@ No failed-member constructor, multiple completed members, bases, arrays,
 conditions, vector helper/count protocol, heap construction, rethrow, termination
 or native unwinding is enabled by this proof. Catch normal release is exercised;
 new-throw no-object release and pending initialization failure remain inactive.
+
+
+The later [automatic partial-array proof](T5-PARTIAL-ARRAY.md) closes its own
+bounded success/zero/one/two-prefix cases with generated-only vector helpers.
+This does not extend the member-layout proof to failed-member construction,
+heap arrays, inheritance or native unwinding.

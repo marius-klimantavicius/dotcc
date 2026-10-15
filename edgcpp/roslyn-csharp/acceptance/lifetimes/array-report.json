@@ -1,0 +1,2139 @@
+{
+  "reportVersion": 1,
+  "status": "passed-bounded-automatic-partial-array",
+  "gate": "T5 partial; broader EH/C++ open",
+  "sourceCommitBase": "0d650faba",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/source-snapshot.json",
+    "bytes": 35030,
+    "sha256": "195851d70a4a15488272ab6c103668eb598b47444541227554d980e56607f62b"
+  },
+  "sourceInputCount": 205,
+  "sourceFreezeVerified": true,
+  "inputsReverified": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array.roslynobj",
+      "bytes": 808960,
+      "sha256": "96cac6df29a417cc4f9c853ae2ef877fc6c6af665ccacdded4cbd50677cb7b62"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/partial-array-prefixes.roslynobj",
+      "bytes": 822272,
+      "sha256": "6a9ddfd3dab932b17d98f1d254c3def8b6081b67a3e8dc33988ff29a8ed360a5"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/constructor-failure.roslynobj",
+      "bytes": 814080,
+      "sha256": "5c55f685b8f6650002d1c0e086eba814cfd0260998e7664692707c3dd633b428"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup.roslynobj",
+      "bytes": 791552,
+      "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/normal-lifetime.roslynobj",
+      "bytes": 792576,
+      "sha256": "4704fcfeb821ca3119ac883d9323203a7d529bba5d0147b7205e941ffa751718"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-runtime-name.roslynobj",
+      "bytes": 652288,
+      "sha256": "3e0c00a038086af7ed3e907d46d38e5fc8a198d5b2092acc84f509b8fab71aab"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/ordinary-vector-names.roslynobj",
+      "bytes": 659456,
+      "sha256": "c570ee248b3b7af59abd41597904ad95b55e710e59c63a6c62cfd59388f2c809"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-handler-call.roslynobj",
+      "bytes": 727040,
+      "sha256": "39fd34545d8b5c4e18fabac8aaf9b970718d63661053f337559117789aa1b6a4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-noexcept-call.roslynobj",
+      "bytes": 732160,
+      "sha256": "e492a79982eca38cf276cc60ea0b1f22d81496f7e67382216fd0d795a6e5f9af"
+    }
+  ],
+  "originalCaptureProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-capture-provenance-1.json",
+    "bytes": 5842,
+    "sha256": "2ddd6d84421bb59631b2740133962189cccb76e280f96ddb1d3c6df7a2971d45"
+  },
+  "prefixCaptureProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-prefixes-capture-provenance-1.json",
+    "bytes": 6080,
+    "sha256": "611388fd66799f3691872f94775b72fbf351343d1ded763fc575ec088f8b2b1d"
+  },
+  "vectorStockProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/runtime-array-contract-source-1/provenance.json",
+    "bytes": 966,
+    "sha256": "80810fa94255450739592994c74b34a3575c4060a26b0882a3b6257069b2ebfd"
+  },
+  "publicFacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/partial-array-facts-6.json",
+      "bytes": 663739,
+      "sha256": "f8cba6d279777b146a12c5f0dd1feaf5ecdbf5d684c5cd6b41c639ff36a985dd"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/partial-array-prefixes-facts-6.json",
+      "bytes": 720551,
+      "sha256": "9cd3a315b9755c15a2f027452b6b5ad7887cf1eb20e0eee24b9b22e94b3a48fa"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/ordinary-vector-names-facts-6.json",
+      "bytes": 150535,
+      "sha256": "f7086fe120da64277737d1965e5bebfdf924124b85d6b20bd4b5a46bcf969e93"
+    }
+  ],
+  "acceptedPhaseCount": 26,
+  "successfulPhaseCount": 22,
+  "expectedRejectionPhaseCount": 4,
+  "phases": [
+    {
+      "name": "array-cli-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-build-3/run.json",
+        "bytes": 1241,
+        "sha256": "6ecd950e588f9fd6e5cb34cd7c931270e29fd299fb75fc981eb9cccca2e199c4"
+      },
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Cli/RoslynObj.CSharp.Cli.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3"
+      ],
+      "elapsedSeconds": 7.855293974978849,
+      "sampledPeakProcessTreeRssBytes": 597315584,
+      "waitedPeakProcessRssBytes": 253218816
+    },
+    {
+      "name": "array-cli-translate-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-translate-3/run.json",
+        "bytes": 1157,
+        "sha256": "9bb15dffbdccd9c30ec02640d13cd81d499022438afbe04fbd9feab97b0e7bc9"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-cli-translate-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-cli-translate-3-report.json"
+      ],
+      "elapsedSeconds": 0.6027258869726211,
+      "sampledPeakProcessTreeRssBytes": 107102208,
+      "waitedPeakProcessRssBytes": 109051904
+    },
+    {
+      "name": "array-cli-repeat-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-repeat-3/run.json",
+        "bytes": 1151,
+        "sha256": "32cea4d9b13860e7876f1a71a882f18afec8f7860332cddab9870da8c6997a76"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-cli-repeat-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-cli-repeat-3-report.json"
+      ],
+      "elapsedSeconds": 0.6026140030007809,
+      "sampledPeakProcessTreeRssBytes": 107548672,
+      "waitedPeakProcessRssBytes": 109051904
+    },
+    {
+      "name": "array-jit-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-build-3/run.json",
+        "bytes": 1334,
+        "sha256": "e1c96a07813fc56e12335044f332083508ea6afa9d42dc8db90a16ce1770ee6d"
+      },
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/Generated.csproj"
+      ],
+      "elapsedSeconds": 5.805475188069977,
+      "sampledPeakProcessTreeRssBytes": 515420160,
+      "waitedPeakProcessRssBytes": 213790720
+    },
+    {
+      "name": "array-jit-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-run-3/run.json",
+        "bytes": 1014,
+        "sha256": "7ec9f7a7f81e399cd42c83b1ee22f78394a2f26f02473a081ecd021ce2348c03"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-partial-array-prefixes-run-1/stdout.txt",
+        "9",
+        "3"
+      ],
+      "elapsedSeconds": 0.1006644710432738,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 35913728
+    },
+    {
+      "name": "array-aot-publish-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-publish-3/run.json",
+        "bytes": 1446,
+        "sha256": "ac8207955583d7a46f5369abc6dc7a658373fbdfbdb4401d685ab2c95b1910dd"
+      },
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang"
+      ],
+      "elapsedSeconds": 8.86151834600605,
+      "sampledPeakProcessTreeRssBytes": 678367232,
+      "waitedPeakProcessRssBytes": 249794560
+    },
+    {
+      "name": "array-aot-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-run-3/run.json",
+        "bytes": 997,
+        "sha256": "8dfe951b06d5e78eb7bcc14699eb76d0dcb5910fc63e65ac5cf203f82577bcba"
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-bin-3/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-partial-array-prefixes-run-1/stdout.txt",
+        "9",
+        "3"
+      ],
+      "elapsedSeconds": 0.10044101404491812,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 17563648
+    },
+    {
+      "name": "array-constructor-regression-translate-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-translate-3/run.json",
+        "bytes": 1195,
+        "sha256": "66b817ad38a7e6e04454db4367f91971285ea24bd8d97a1cc8e16b490dd0411c"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-constructor-regression-translate-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-constructor-regression-translate-3-report.json"
+      ],
+      "elapsedSeconds": 0.6036006780341268,
+      "sampledPeakProcessTreeRssBytes": 107765760,
+      "waitedPeakProcessRssBytes": 110624768
+    },
+    {
+      "name": "array-constructor-regression-jit-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-build-3/run.json",
+        "bytes": 1399,
+        "sha256": "53740863a9bf63ebb3eb2d009ecd82c9f6a840dfcc0bae5c61aed006ea04d57b"
+      },
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/Generated.csproj"
+      ],
+      "elapsedSeconds": 5.802627219003625,
+      "sampledPeakProcessTreeRssBytes": 517304320,
+      "waitedPeakProcessRssBytes": 214568960
+    },
+    {
+      "name": "array-constructor-regression-jit-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-run-3/run.json",
+        "bytes": 1016,
+        "sha256": "82f49ca200f84882063cf9d8616b4113923b6c57a3cc07051bcad0473f7dae08"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-constructor-failure-run-1/stdout.txt"
+      ],
+      "elapsedSeconds": 0.10061188694089651,
+      "sampledPeakProcessTreeRssBytes": 90112,
+      "waitedPeakProcessRssBytes": 35913728
+    },
+    {
+      "name": "array-constructor-regression-aot-publish-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-publish-3/run.json",
+        "bytes": 1513,
+        "sha256": "9d097789b779afd531add641af13ab020ec4486b1a3a9bc42d2485eac3bc5d9c"
+      },
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang"
+      ],
+      "elapsedSeconds": 8.967463729903102,
+      "sampledPeakProcessTreeRssBytes": 682471424,
+      "waitedPeakProcessRssBytes": 255868928
+    },
+    {
+      "name": "array-constructor-regression-aot-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-run-3/run.json",
+        "bytes": 998,
+        "sha256": "23a295335f307678c45940dc262b021a72a2b587923cac808d4cf19f82fc823e"
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-bin-3/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-constructor-failure-run-1/stdout.txt"
+      ],
+      "elapsedSeconds": 0.10049439198337495,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080
+    },
+    {
+      "name": "array-eh-regression-translate-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-translate-3/run.json",
+        "bytes": 1177,
+        "sha256": "eb99c159442dac97590f3ccafb9771c76c4fed54a2c862fd90cae00e35a184db"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-eh-regression-translate-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-eh-regression-translate-3-report.json"
+      ],
+      "elapsedSeconds": 0.6024056159658358,
+      "sampledPeakProcessTreeRssBytes": 102756352,
+      "waitedPeakProcessRssBytes": 105119744
+    },
+    {
+      "name": "array-eh-regression-jit-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-build-3/run.json",
+        "bytes": 1372,
+        "sha256": "5e1ed0bb3d10e4e2bc9aa2d825991830d0858b60f65bfe5578065925ab71506c"
+      },
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/Generated.csproj"
+      ],
+      "elapsedSeconds": 5.797697545029223,
+      "sampledPeakProcessTreeRssBytes": 514818048,
+      "waitedPeakProcessRssBytes": 212656128
+    },
+    {
+      "name": "array-eh-regression-jit-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-run-3/run.json",
+        "bytes": 1005,
+        "sha256": "6002ae931a4151f1ae06b23481f1b1474004f19b35645aa8dcd7cc16ff8d77d9"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt"
+      ],
+      "elapsedSeconds": 0.10067125700879842,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 36175872
+    },
+    {
+      "name": "array-eh-regression-aot-publish-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-publish-3/run.json",
+        "bytes": 1485,
+        "sha256": "fbcdf8a151b5e43fdffdb27cd19073c4ad52734031e62780cda38574d3e2875b"
+      },
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/ExceptionLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang"
+      ],
+      "elapsedSeconds": 8.669693985022604,
+      "sampledPeakProcessTreeRssBytes": 684830720,
+      "waitedPeakProcessRssBytes": 262594560
+    },
+    {
+      "name": "array-eh-regression-aot-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-run-3/run.json",
+        "bytes": 988,
+        "sha256": "44b7e80801069265e5a08c1111de69490cd7b7ce201da47766895abf7d7b8add"
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-bin-3/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt"
+      ],
+      "elapsedSeconds": 0.10056458204053342,
+      "sampledPeakProcessTreeRssBytes": 102400,
+      "waitedPeakProcessRssBytes": 18350080
+    },
+    {
+      "name": "array-normal-regression-translate-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-translate-3/run.json",
+        "bytes": 1185,
+        "sha256": "42e73a8b9d00c57d0e3330e0aa0534073634a4d8bcb8511e33fdcfb7ea03a862"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-normal-regression-translate-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-normal-regression-translate-3-report.json"
+      ],
+      "elapsedSeconds": 0.6028919799719006,
+      "sampledPeakProcessTreeRssBytes": 103051264,
+      "waitedPeakProcessRssBytes": 104071168
+    },
+    {
+      "name": "array-normal-regression-jit-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-build-3/run.json",
+        "bytes": 1381,
+        "sha256": "a732640e6eeb86f487712a8b133834e1cc8034b6f8b237fea6c86a7850150d7a"
+      },
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/NormalLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/Generated.csproj"
+      ],
+      "elapsedSeconds": 5.701905461959541,
+      "sampledPeakProcessTreeRssBytes": 515641344,
+      "waitedPeakProcessRssBytes": 212369408
+    },
+    {
+      "name": "array-normal-regression-jit-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-run-3/run.json",
+        "bytes": 1006,
+        "sha256": "509df3ba9579a2663c8267f488fa60a5c5e3a163af6bfc0cf8283f9b7e0b3c2b"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3/Checks.dll",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt"
+      ],
+      "elapsedSeconds": 0.100589798996225,
+      "sampledPeakProcessTreeRssBytes": 106496,
+      "waitedPeakProcessRssBytes": 36175872
+    },
+    {
+      "name": "array-normal-regression-aot-publish-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-publish-3/run.json",
+        "bytes": 1495,
+        "sha256": "e394fe9cbea8e3efbdb40420536bc77716cc2ae686a9fe74b8ab0e8a86a7dd58"
+      },
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-source-3/edgcpp/roslyn-csharp/tests/NormalLifetime/Checks.csproj",
+        "-c",
+        "Release",
+        "--disable-build-servers",
+        "-p:UseSharedCompilation=false",
+        "--artifacts-path",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-artifacts-3",
+        "-o",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-bin-3",
+        "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/Generated.csproj",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:CppCompilerAndLinker=/usr/lib/llvm-18/bin/clang"
+      ],
+      "elapsedSeconds": 8.860632807016373,
+      "sampledPeakProcessTreeRssBytes": 692621312,
+      "waitedPeakProcessRssBytes": 264368128
+    },
+    {
+      "name": "array-normal-regression-aot-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-run-3/run.json",
+        "bytes": 989,
+        "sha256": "7ee0dadca2b73a2f5cb5eb4f34b32a8c7a7880858ec13847013062da182cefd7"
+      },
+      "command": [
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-bin-3/Checks",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt"
+      ],
+      "elapsedSeconds": 0.10045835701748729,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 18087936
+    },
+    {
+      "name": "array-reject-ordinary-runtime-name-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-reject-ordinary-runtime-name-3/run.json",
+        "bytes": 1188,
+        "sha256": "43c54271f5d85d1616c1a41e9cd010d1fc1b22a1e2d0587a6a04bc5ce4b14879"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-ordinary-runtime-name-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-ordinary-runtime-name-3-report.json"
+      ],
+      "elapsedSeconds": 0.40167949500028044,
+      "sampledPeakProcessTreeRssBytes": 93237248,
+      "waitedPeakProcessRssBytes": 95420416
+    },
+    {
+      "name": "array-reject-ordinary-vector-names-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-reject-ordinary-vector-names-3/run.json",
+        "bytes": 1187,
+        "sha256": "6f4fcbb8e202e272e044f66606eee6b924a1e0b9692b5fe16925738b4d49b0c5"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-ordinary-vector-names-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-ordinary-vector-names-3-report.json"
+      ],
+      "elapsedSeconds": 0.4022791750030592,
+      "sampledPeakProcessTreeRssBytes": 96264192,
+      "waitedPeakProcessRssBytes": 96468992
+    },
+    {
+      "name": "array-reject-exception-handler-call-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-reject-exception-handler-call-3/run.json",
+        "bytes": 1190,
+        "sha256": "8f6f41ab7f3e7ddda2b52c21c98a424039e2756c21e686b477b136f4da42354a"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-exception-handler-call-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-exception-handler-call-3-report.json"
+      ],
+      "elapsedSeconds": 0.40230468299705535,
+      "sampledPeakProcessTreeRssBytes": 95682560,
+      "waitedPeakProcessRssBytes": 98828288
+    },
+    {
+      "name": "array-reject-exception-noexcept-call-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-reject-exception-noexcept-call-3/run.json",
+        "bytes": 1193,
+        "sha256": "d3078654a882695ab0f22fff84ee5169e6e5196f33d3c3526a17f51240569d7d"
+      },
+      "command": [
+        "dotnet",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-bin-3/roslynobj-csharp.dll",
+        "translate",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-exception-noexcept-call-3.json",
+        "--report",
+        "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-exception-noexcept-call-3-report.json"
+      ],
+      "elapsedSeconds": 0.40178234898485243,
+      "sampledPeakProcessTreeRssBytes": 95289344,
+      "waitedPeakProcessRssBytes": 100401152
+    }
+  ],
+  "publication": {
+    "array-cli-generated-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/completion.json",
+        "bytes": 811,
+        "sha256": "daa49f3cb4a9efa623aac5266ad76208227e6168a88191b884577402cbdc6a0a"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/Generated.cs",
+          "bytes": 15996,
+          "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/Generated.csproj",
+          "bytes": 540,
+          "sha256": "85619bd87c51fc4644bb5c466ae79e202fc6d421ff1b6edecca5a0572780b345"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-3/program-report.json",
+          "bytes": 196659,
+          "sha256": "96a22b5ba540a68a6a7027917591e3766d39a93a84819f5c9dde92e6695c3ae4"
+        }
+      ]
+    },
+    "array-cli-generated-repeat-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-repeat-3/completion.json",
+        "bytes": 811,
+        "sha256": "5fb87d91f6410abc11dcafc301bc5853df3f7990545f5d8d6f419d011de0170e"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-repeat-3/Generated.cs",
+          "bytes": 15996,
+          "sha256": "c5132235ce639062eeda9d6d1812af9312e60f5566c82d8f9e724b4e9fc45a48"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-repeat-3/Generated.csproj",
+          "bytes": 540,
+          "sha256": "85619bd87c51fc4644bb5c466ae79e202fc6d421ff1b6edecca5a0572780b345"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-generated-repeat-3/program-report.json",
+          "bytes": 196666,
+          "sha256": "2867590ec5064d3450c0dec6aad65a1357980842bff86c64e6a08564a885a162"
+        }
+      ]
+    },
+    "array-constructor-regression-generated-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/completion.json",
+        "bytes": 811,
+        "sha256": "9aed76c7ea2fc8b0e27c283c12585f0f42b62ed7b203c30babf0bc3251b947a9"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/Generated.cs",
+          "bytes": 14327,
+          "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/Generated.csproj",
+          "bytes": 540,
+          "sha256": "85619bd87c51fc4644bb5c466ae79e202fc6d421ff1b6edecca5a0572780b345"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/program-report.json",
+          "bytes": 207129,
+          "sha256": "d6c174d6b3e58116fa8b52758802f54bdb97b215095ad386e772ab122b2b9b86"
+        }
+      ]
+    },
+    "array-eh-regression-generated-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/completion.json",
+        "bytes": 811,
+        "sha256": "696a9841572093124ea36c2b90d9988db6ef18f66e292a15e9b220c55ccebdfe"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/Generated.cs",
+          "bytes": 13895,
+          "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/Generated.csproj",
+          "bytes": 540,
+          "sha256": "85619bd87c51fc4644bb5c466ae79e202fc6d421ff1b6edecca5a0572780b345"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/program-report.json",
+          "bytes": 187851,
+          "sha256": "3ef52913d67e799951422d5fd32a0511e6adda4b0ec46bc80c5e88504badadfc"
+        }
+      ]
+    },
+    "array-normal-regression-generated-3": {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/completion.json",
+        "bytes": 810,
+        "sha256": "170ef3abf00a55b852e90902fd2ff91ea227b2dfb37e507b8876a571f02ecc34"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/Generated.cs",
+          "bytes": 8880,
+          "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/Generated.csproj",
+          "bytes": 540,
+          "sha256": "85619bd87c51fc4644bb5c466ae79e202fc6d421ff1b6edecca5a0572780b345"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/program-report.json",
+          "bytes": 170037,
+          "sha256": "6a34506d4fa8d22792da98c30d3191301826dc7f8d688b47e54ab3ccc22344ae"
+        }
+      ]
+    }
+  },
+  "deterministicSourceAndProject": true,
+  "deterministicReportAfterOutputDirectoryNormalization": true,
+  "requiredBodyCount": 12,
+  "requiredSemanticImplementations": [
+    {
+      "locator": "unit/0001/function/000015",
+      "kind": "function",
+      "name": "__cxa_vec_ctor",
+      "linkageName": "__cxa_vec_ctor",
+      "signature": "unit/0001/type/000029(unit/0001/type/000041 abi_parameter,unit/0001/type/000030 abi_parameter,unit/0001/type/000030 abi_parameter,unit/0001/type/000080 abi_parameter,unit/0001/type/000082 abi_parameter) cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+      "callingConvention": "cc_default",
+      "required": true,
+      "directCalls": 1,
+      "addressReferences": 0,
+      "addressExposed": false,
+      "provider": "Generated.AutomaticArrayHelpers",
+      "providerSymbol": null,
+      "bindingSignature": null,
+      "bindingCallingConvention": null,
+      "ownership": "The validated generated-cpp-vector-constructor-v1 contract borrows automatic storage and advances completed count only after the selected constructor returns; failure destroys only the completed prefix in reverse. No allocation, cookie management or free occurs.",
+      "errorContract": "Only the admitted generated exception carrier participates. Handler search precedes completed-prefix cleanup; native C++ unwinding, destructor failure and CLR-error conversion are unsupported.",
+      "threadContract": "Completion state is local to the synchronous generated helper invocation; no ambient vector-construction stack or thread-local count is substituted.",
+      "callbackContract": "Captured constructor/destructor identities become direct managed calls inside the validated helper context; no native UCO entry, callback address or native application implementation is supplied.",
+      "bindingStatus": "generated-vector-constructor-contract-selected"
+    },
+    {
+      "locator": "unit/0001/function/000018",
+      "kind": "function",
+      "name": "__cxa_vec_dtor",
+      "linkageName": "__cxa_vec_dtor",
+      "signature": "unit/0001/type/000029(unit/0001/type/000041 abi_parameter,unit/0001/type/000030 abi_parameter,unit/0001/type/000030 abi_parameter,unit/0001/type/000082 abi_parameter) cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+      "callingConvention": "cc_default",
+      "required": true,
+      "directCalls": 1,
+      "addressReferences": 0,
+      "addressExposed": false,
+      "provider": "Generated.AutomaticArrayHelpers",
+      "providerSymbol": null,
+      "bindingSignature": null,
+      "bindingCallingConvention": null,
+      "ownership": "The validated generated-cpp-vector-destructor-v1 contract borrows automatic storage and invokes the selected no-throw destructor in reverse for the validated element range. No allocation, cookie management or free occurs.",
+      "errorContract": "Only the admitted generated exception carrier participates. Handler search precedes completed-prefix cleanup; native C++ unwinding, destructor failure and CLR-error conversion are unsupported.",
+      "threadContract": "Completion state is local to the synchronous generated helper invocation; no ambient vector-construction stack or thread-local count is substituted.",
+      "callbackContract": "Captured constructor/destructor identities become direct managed calls inside the validated helper context; no native UCO entry, callback address or native application implementation is supplied.",
+      "bindingStatus": "generated-vector-destructor-contract-selected"
+    },
+    {
+      "locator": "unit/0001/function/000019",
+      "kind": "function",
+      "name": "__destroy_exception_object",
+      "linkageName": "__destroy_exception_object",
+      "signature": "unit/0001/type/000029() cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+      "callingConvention": "cc_default",
+      "required": true,
+      "directCalls": 1,
+      "addressReferences": 0,
+      "addressExposed": true,
+      "provider": "RoslynObj.CSharp.Runtime.ManagedCppException",
+      "providerSymbol": null,
+      "bindingSignature": null,
+      "bindingCallingConvention": null,
+      "ownership": "The validated managed-cpp-int32-exception-owner-v1 contract releases the selected handler's explicit payload owner once; no ambient current pointer or native application implementation is used.",
+      "errorContract": "Only the admitted generated exception carrier participates; native C++ unwinding and CLR-error conversion are unsupported.",
+      "threadContract": "The payload belongs to its carrier and selected handler; no ambient thread-local exception pointer is substituted.",
+      "callbackContract": "No native entry or callback is supplied for this generated cleanup action.",
+      "bindingStatus": "generated-exception-owner-contract-selected"
+    }
+  ],
+  "runtimeUnchanged": true,
+  "checker": "ExceptionLifetime keeps defaults5/1; prefix variant explicitly supplies value-count9/expected-owner-count3. Prior defaults pass JIT/AOT regressions.",
+  "unchangedRegressionApplicationSources": {
+    "array-constructor-regression-generated-3": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-generated-3/Generated.cs",
+        "bytes": 14327,
+        "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constructor-cli-generated-1/Generated.cs",
+        "bytes": 14327,
+        "sha256": "da1f98228782514284824c57b1863b463f7355f3fa6ad074529e3d8a0035d15c"
+      },
+      "byteIdentical": true
+    },
+    "array-eh-regression-generated-3": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-generated-3/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "byteIdentical": true
+    },
+    "array-normal-regression-generated-3": {
+      "current": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-generated-3/Generated.cs",
+        "bytes": 8880,
+        "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+      },
+      "prior": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-cli-generated-3/Generated.cs",
+        "bytes": 8880,
+        "sha256": "831a38eb238d5377d36ead9d803028acd75f863680cda2b1b42fb474e40e6969"
+      },
+      "byteIdentical": true
+    }
+  },
+  "observations": {
+    "array": {
+      "nativeStdout": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-partial-array-prefixes-run-1/stdout.txt",
+        "bytes": 433,
+        "sha256": "c9725e72040b0049b779ca21435aaa9e3a8ccd7a3a9ddcdf59c8ed9a1fe542e1"
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-run-3/stdout.txt",
+            "bytes": 1008,
+            "sha256": "64b93a65595446a2d9c56c4eabccbec9a3f94cc2ab760053ef387ce73e7e55e2"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 144,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  123,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  203,
+                  601,
+                  612,
+                  623,
+                  303,
+                  302,
+                  301,
+                  900,
+                  101,
+                  501,
+                  707,
+                  901,
+                  101,
+                  201,
+                  102,
+                  502,
+                  301,
+                  707,
+                  902,
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  503,
+                  302,
+                  301,
+                  707
+                ]
+              },
+              {
+                "result": 144,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  123,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  203,
+                  601,
+                  612,
+                  623,
+                  303,
+                  302,
+                  301,
+                  900,
+                  101,
+                  501,
+                  707,
+                  901,
+                  101,
+                  201,
+                  102,
+                  502,
+                  301,
+                  707,
+                  902,
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  503,
+                  302,
+                  301,
+                  707
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 10,
+                "firstCleanupSequence": 11,
+                "releaseSequence": 12
+              },
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 22,
+                "firstCleanupSequence": 23,
+                "releaseSequence": 24
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-run-3/stdout.txt",
+            "bytes": 1008,
+            "sha256": "64b93a65595446a2d9c56c4eabccbec9a3f94cc2ab760053ef387ce73e7e55e2"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 144,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  123,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  203,
+                  601,
+                  612,
+                  623,
+                  303,
+                  302,
+                  301,
+                  900,
+                  101,
+                  501,
+                  707,
+                  901,
+                  101,
+                  201,
+                  102,
+                  502,
+                  301,
+                  707,
+                  902,
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  503,
+                  302,
+                  301,
+                  707
+                ]
+              },
+              {
+                "result": 144,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  123,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  203,
+                  601,
+                  612,
+                  623,
+                  303,
+                  302,
+                  301,
+                  900,
+                  101,
+                  501,
+                  707,
+                  901,
+                  101,
+                  201,
+                  102,
+                  502,
+                  301,
+                  707,
+                  902,
+                  101,
+                  201,
+                  102,
+                  202,
+                  103,
+                  503,
+                  302,
+                  301,
+                  707
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 10,
+                "firstCleanupSequence": 11,
+                "releaseSequence": 12
+              },
+              {
+                "created": 3,
+                "committed": 3,
+                "selected": 3,
+                "caught": 3,
+                "released": 3,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 3,
+                "cleanupAssertions": 6,
+                "selectionBeforeCleanupAssertions": 6,
+                "protocolRejections": 0,
+                "selectionSequence": 22,
+                "firstCleanupSequence": 23,
+                "releaseSequence": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    "array-constructor-regression": {
+      "nativeStdout": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-constructor-failure-run-1/stdout.txt",
+        "bytes": 305,
+        "sha256": "0dd31221419e5b6b87e8a4416eb4bf153b287d0af8c39bb9a4dac6745f003833"
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-run-3/stdout.txt",
+            "bytes": 874,
+            "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 79233,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  79226,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  200,
+                  79225,
+                  201,
+                  500,
+                  79227,
+                  400,
+                  79226,
+                  301,
+                  900,
+                  101,
+                  200,
+                  79225,
+                  507,
+                  301,
+                  707
+                ]
+              },
+              {
+                "result": 79233,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  79226,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  200,
+                  79225,
+                  201,
+                  500,
+                  79227,
+                  400,
+                  79226,
+                  301,
+                  900,
+                  101,
+                  200,
+                  79225,
+                  507,
+                  301,
+                  707
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-run-3/stdout.txt",
+            "bytes": 874,
+            "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 79233,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  79226,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  200,
+                  79225,
+                  201,
+                  500,
+                  79227,
+                  400,
+                  79226,
+                  301,
+                  900,
+                  101,
+                  200,
+                  79225,
+                  507,
+                  301,
+                  707
+                ]
+              },
+              {
+                "result": 79233,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  79226,
+                  0,
+                  7,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  200,
+                  79225,
+                  201,
+                  500,
+                  79227,
+                  400,
+                  79226,
+                  301,
+                  900,
+                  101,
+                  200,
+                  79225,
+                  507,
+                  301,
+                  707
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    "array-eh-regression": {
+      "nativeStdout": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-exception-cleanup-run-1/stdout.txt",
+        "bytes": 259,
+        "sha256": "89dd333a482f01178e0f0ff3e630b95ace30767d416c1e18cc902966533a6d5c"
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-run-3/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              },
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-run-3/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              },
+              {
+                "result": 11,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  3,
+                  0,
+                  8,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  102,
+                  600,
+                  302,
+                  301,
+                  900,
+                  101,
+                  102,
+                  103,
+                  507,
+                  303,
+                  302,
+                  707,
+                  301
+                ]
+              }
+            ]
+          },
+          "ownership": {
+            "exceptionOwnership": [
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 2,
+                "firstCleanupSequence": 3,
+                "releaseSequence": 4
+              },
+              {
+                "created": 1,
+                "committed": 1,
+                "selected": 1,
+                "caught": 1,
+                "released": 1,
+                "pendingReleased": 0,
+                "liveOwners": 0,
+                "unwindObservations": 1,
+                "cleanupAssertions": 2,
+                "selectionBeforeCleanupAssertions": 2,
+                "protocolRejections": 0,
+                "selectionSequence": 6,
+                "firstCleanupSequence": 7,
+                "releaseSequence": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    "array-normal-regression": {
+      "nativeStdout": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-normal-lifetime-run-1/stdout.txt",
+        "bytes": 275,
+        "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+      },
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-run-3/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              },
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              }
+            ]
+          }
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-run-3/stdout.txt",
+            "bytes": 275,
+            "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+          },
+          "observations": {
+            "runs": [
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              },
+              {
+                "result": 26,
+                "overflow": 0,
+                "live": 0,
+                "values": [
+                  11,
+                  11,
+                  2,
+                  2,
+                  14,
+                  0,
+                  12,
+                  0,
+                  0
+                ],
+                "events": [
+                  101,
+                  211,
+                  311,
+                  211,
+                  102,
+                  302,
+                  311,
+                  301,
+                  900,
+                  101,
+                  211,
+                  311,
+                  301
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "array": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3/Checks.deps.json",
+        "bytes": 1168,
+        "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae"
+      },
+      "libraries": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "aotElfDependencies": [
+        "\tlinux-vdso.so.1 (0x00007ffdd27ed000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f9fbeb0a000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9fbe400000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x00007f9fbec22000)"
+      ]
+    },
+    "array-constructor-regression": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3/Checks.deps.json",
+        "bytes": 1168,
+        "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae"
+      },
+      "libraries": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "aotElfDependencies": [
+        "\tlinux-vdso.so.1 (0x00007ffef71f1000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fb562eec000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb562800000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x00007fb563004000)"
+      ]
+    },
+    "array-eh-regression": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3/Checks.deps.json",
+        "bytes": 1168,
+        "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae"
+      },
+      "libraries": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "aotElfDependencies": [
+        "\tlinux-vdso.so.1 (0x00007ffedfd52000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007d5011c56000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007d5011600000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x00007d5011d6e000)"
+      ]
+    },
+    "array-normal-regression": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3/Checks.deps.json",
+        "bytes": 1168,
+        "sha256": "7bf4932c23b1fa25e37cd9fac60184402853cda76c4f7f3a1bea269667d5fbae"
+      },
+      "libraries": [
+        "Checks/1.0.0",
+        "Generated/1.0.0",
+        "RoslynObj.CSharp.Runtime/1.0.0"
+      ],
+      "aotElfDependencies": [
+        "\tlinux-vdso.so.1 (0x00007fff60bbe000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000799a416fd000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000799a41000000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x0000799a41815000)"
+      ]
+    }
+  },
+  "builtArtifacts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3/Checks",
+      "bytes": 79832,
+      "sha256": "f04e74ec324dd35f96e51e749498b0dbe93c499106373f38710d88b8b87ff63b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3/Checks.dll",
+      "bytes": 9728,
+      "sha256": "d9966386f84441d52b5c3a690aeec48ead0701cfc226ef3680cdde03979cab00"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3/Generated.dll",
+      "bytes": 8192,
+      "sha256": "65fdecebfdb52be3033233408e9533a47baf7bc8b535a02c9ae5b7f3d2f29bee"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-jit-bin-3/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 24064,
+      "sha256": "d7fee9a6c96d424148246d17e8733fbaa4872b90521695c30f83f34f2e06708c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-aot-bin-3/Checks",
+      "bytes": 2049456,
+      "sha256": "0253f5ae8fe99a81fc01d2715084ccca8f5c378cc5e9364d63c0766c4de95e20"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3/Checks",
+      "bytes": 79832,
+      "sha256": "f04e74ec324dd35f96e51e749498b0dbe93c499106373f38710d88b8b87ff63b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3/Checks.dll",
+      "bytes": 9728,
+      "sha256": "408173f774abe69b733d3b0d02871d51658b263c0a720a099e36e24014ebce8e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3/Generated.dll",
+      "bytes": 8192,
+      "sha256": "68e5f6e65c3d16ce2e0c411ee11d232d322fb52d156224073de4a26925465edb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-jit-bin-3/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 24064,
+      "sha256": "fd9f1e38e51c298623eb4ace367a10f37a4fe792133625f332e54ec43c07ae20"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-constructor-regression-aot-bin-3/Checks",
+      "bytes": 2049456,
+      "sha256": "961896781a0a2d75ddbb222a2e4b9190cd4e6fff440246e7238b91eaddcf26d9"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3/Checks",
+      "bytes": 79832,
+      "sha256": "f04e74ec324dd35f96e51e749498b0dbe93c499106373f38710d88b8b87ff63b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3/Checks.dll",
+      "bytes": 9728,
+      "sha256": "a469490421b7e3178b432775b13b5f365768abb3ffa42cb35a5cbd9a3e28752b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3/Generated.dll",
+      "bytes": 7680,
+      "sha256": "325c695c508274b140c7288eeaa1231572c5ab65ee9da45717f3d923511bd485"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-jit-bin-3/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 24064,
+      "sha256": "41a3ee8c46c5d1aa35407a4c1d89aaae9c04a74dadd3b95dccbde57864127c06"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-eh-regression-aot-bin-3/Checks",
+      "bytes": 2045360,
+      "sha256": "bdfc00fe9c3da529360294239d7cdc2b5668350673a4a5fb86ae6dcfa68d6f8e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3/Checks",
+      "bytes": 79832,
+      "sha256": "f04e74ec324dd35f96e51e749498b0dbe93c499106373f38710d88b8b87ff63b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3/Checks.dll",
+      "bytes": 6656,
+      "sha256": "ae9f2c9f79cc1ea14d2d77fde465e6fec47e39ff88413123643151d6ad3233ee"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3/Generated.dll",
+      "bytes": 6656,
+      "sha256": "e01aa99a4f4c5ebe8c2db11fb8a3e6f4e40cde6de62841778d8bb14328d46fd0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-jit-bin-3/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 24064,
+      "sha256": "ebce4dd359ae005891e93b3849966430081bb4a60567673dc46afb314db9d588"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-normal-regression-aot-bin-3/Checks",
+      "bytes": 2033024,
+      "sha256": "b9b9b74c7977c60fce4458416aa719bb83cdcc666e691b34d5cdb907c2799437"
+    }
+  ],
+  "negativeAdmission": [
+    {
+      "name": "ordinary-runtime-name",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-ordinary-runtime-name-3-report.json",
+        "bytes": 91271,
+        "sha256": "37543b7e334f3fb69d3b1e926a32b19fbd6108e8bf0c5cf51e035428b9f5d1ef"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__destroy_exception_object' requires one explicit binding for captured linkage '__destroy_exception_object'.",
+          "input": "b532f16476f6ee486e808fda8422dda2",
+          "locator": "function/1:fixture/operation/2",
+          "family": "external-function"
+        }
+      ],
+      "outputPublished": false
+    },
+    {
+      "name": "ordinary-vector-names",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-ordinary-vector-names-3-report.json",
+        "bytes": 99852,
+        "sha256": "b0d16d9d52d15894f83db8ed7152183ab609cf14f884b2936bf763fae937124d"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2100",
+          "severity": "error",
+          "message": "Function '__cxa_vec_ctor' requires one explicit binding for captured linkage '__cxa_vec_ctor'.",
+          "input": "22277a765be68465d19d199f42c2cc1f",
+          "locator": "function/1:fixture/operation/7",
+          "family": "external-function"
+        }
+      ],
+      "outputPublished": false
+    },
+    {
+      "name": "exception-handler-call",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-exception-handler-call-3-report.json",
+        "bytes": 161737,
+        "sha256": "92e403d5e4e8ea5ab550163c79bdde77abe50b4931908bf15babe915c0d9cbb9"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "d177ce9b54ce803490944cb3083cdbfc",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "outputPublished": false
+    },
+    {
+      "name": "exception-noexcept-call",
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-final-preparation-3/array-reject-exception-noexcept-call-3-report.json",
+        "bytes": 167851,
+        "sha256": "47ab3cc5da59052e5ab77f685e1a87a78f1892b2d7c28d31889407699db88c4e"
+      },
+      "diagnostics": [
+        {
+          "code": "CSHARP2502",
+          "severity": "error",
+          "message": "Normal marker omission requires a closed selected noexcept call graph.",
+          "input": "18a6ca41a9d65020fc8fbe6e5ad17531",
+          "locator": "function/0:program/operation/0",
+          "family": "lifetime"
+        }
+      ],
+      "outputPublished": false
+    }
+  ],
+  "toolchain": {
+    "sdk": "10.0.112",
+    "nativeAotCompiler": {
+      "path": "/usr/lib/llvm-18/bin/clang",
+      "bytes": 136504,
+      "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8"
+    },
+    "runner": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+      "bytes": 5505,
+      "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+    },
+    "driver": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-array-final-3.py",
+      "bytes": 4636,
+      "sha256": "d7e8ce646ef274f12d1408176b3e536a47fb15019b267dc18ddae90b5642e608"
+    }
+  },
+  "preservedAttempts": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-build-1/run.json",
+        "bytes": 1242,
+        "sha256": "2f84aba787ed9fefd7a94c3ff3251a99b1d4b19a3a0e3524e6a2c35d07d165e7"
+      },
+      "outcome": "Product build failed on two nullable admission checks; explicit type/layout guards corrected before next snapshot."
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-cli-translate-2/run.json",
+        "bytes": 1159,
+        "sha256": "ce78070b063d17f4d8548d09a653aed368a4063c2188ff78cdf96a456b3436ad"
+      },
+      "outcome": "Product build passed, but emission rejected exact normal-dtor address-of-array view. Narrow typed base-view guard corrected from public facts; no output published."
+    },
+    {
+      "note": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/array-driver-path-attempt-3.json",
+        "bytes": 438,
+        "sha256": "fd085d81a2437be328e97cc8f4dc706865373e1266628493ced53a77b3a80a8a"
+      },
+      "driver": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-array-final-3-path-attempt.py",
+        "bytes": 4636,
+        "sha256": "5baaa3c9b4694a75275138b74e8fd50dd5823f59d3d44b89967d830b33d22b95"
+      },
+      "outcome": "Coordinator suffix replacement changed campaign-year path; failed before snapshot creation, corrected without product changes. Outside accepted semantic phase count."
+    }
+  ],
+  "limits": [
+    "Fixed automatic array, ordinary single-int record, actual table-based native_lowered Itanium profile and exact captured helper ABI roles/signatures/pure callback casts.",
+    "Only exact validated helper call occurrences resolve selected constructor/destructor identities to direct managed calls. Other address-taking remains under existing native/receiver guards; no UCO/native callback materialization.",
+    "Construction completed count advances only after selected C1 returns; false observer filter permits outer handler search before reverse completed-prefix cleanup. Count/stride come from actual retained operands matched to array/storage/action, never source bounds alone.",
+    "Success and failures at elements1/2/3 exercise completed prefixes0/1/2. All33 ordered events and nine values repeat with no leaks. Normal full-array destruction is exercised.",
+    "Full-array exceptional region dispatch is generated/inspected but not dynamically activated by this fixture; no later-throw-after-complete-array execution claim.",
+    "Per-invocation lifecycle counters cover three owners and six selection-before-cleanup assertions. Last sequences describe only final released owner; assertion count is not destructor count.",
+    "Original failure2 fixture/source/object/native receipts are preserved and are not relabeled as final-prefix execution.",
+    "Runtime unchanged; no allocation/cookies/free/vector native library or native application implementation. Linked partial-aggregate recipe is validated metadata, never replayed or used to invent count state.",
+    "No heap/new[], multidimensional/nonconstant arrays, conditions/bases, throwing destructors, rethrow/termination, class payloads, native unwinding, guard/TLS, RTTI/member pointers or other broader T5/T6 claim.",
+    "C2/D2 remain separate emitted forwarding bodies; current callbacks select C1/D1.",
+    "Sampled RSS can miss short peaks and double-count shared pages; waited high-water RSS is separately recorded."
+  ]
+}

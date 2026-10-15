@@ -21,6 +21,7 @@ public sealed partial class CSharpEmitter
         private readonly HashSet<FunctionSymbol> validatedThrowingConstructors = [];
         private CppType? exceptionIntType;
         private ThrowOperation? selectedIntegerThrow;
+        private FunctionSymbol? selectedIntegerThrowFunction;
         private string? exceptionTypeToken;
         private string? pendingThrowOwner;
         private ExceptionTry? emittingExceptionHandler;
@@ -46,8 +47,8 @@ public sealed partial class CSharpEmitter
             var graph = functions.ToDictionary(function => function, function => ExceptionExecutionNodes(function.Body!.Root).ToArray());
             var throws = graph.Values.SelectMany(nodes => nodes.OfType<ThrowOperation>()).ToArray();
             var tries = graph.Values.SelectMany(nodes => nodes.OfType<TryOperation>()).ToArray();
-            if (throws.Length != 1 || tries.Length != 1 || candidates.Length != 2)
-                throw Limit("The first generated exception slice requires one integer throw, one typed try and their two cleanup-bearing functions.", "exception");
+            if (throws.Length != 1 || tries.Length != 1 || candidates.Length is not (1 or 2))
+                throw Limit("The bounded generated exception slice requires one integer throw, one typed try and their retained cleanup functions.", "exception");
             var throwing = throws[0];
             var selectedTry = tries[0];
             if (throwing.IsRethrow || throwing.ThrownType is not { } thrownType || throwing.Initialization is not null ||
@@ -74,15 +75,19 @@ public sealed partial class CSharpEmitter
                 throw Limit("The handler parameter recipe adds an unimplemented cleanup obligation.", "exception-handler");
             var throwingFunction = graph.Single(pair => pair.Value.Contains(throwing)).Key;
             var catchingFunction = graph.Single(pair => pair.Value.Contains(selectedTry)).Key;
-            if (throwingFunction.Equals(catchingFunction) || !candidates.Contains(throwingFunction) || !candidates.Contains(catchingFunction) ||
+            if (throwingFunction.Equals(catchingFunction) || !candidates.Contains(catchingFunction) ||
                 !IsStandaloneThrow(throwingFunction.Body!.Root, throwing) ||
                 ExceptionExecutionNodes(handler.Body).Any(node => node is ThrowOperation or TryOperation))
                 throw Limit("The first integer exception transfer requires separate throwing/catching functions and no nested handler throw/try.", "exception");
+            if (candidates.Length == 1)
+                InitializeAutomaticArray(graph, throwingFunction, catchingFunction);
+            else if (!candidates.Contains(throwingFunction))
+                throw Limit("The throwing function has no validated cleanup frame or automatic-array constructor role.", "exception");
             // All active execution remains generated. Catalog-only declarations
             // do not add calls, and the no-object cleanup target is handled below.
             foreach (var pair in graph)
                 foreach (var call in pair.Value.OfType<CallOperation>())
-                    if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(target) ||
+                    if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(target) && !automaticArrayCalls.ContainsKey(call) ||
                         call.TargetMethod is null || !call.TargetMethod.Equals(target) || target.Signature.IsVariadic)
                         throw Limit("The first generated integer EH program has only selected fixed direct calls; native/indirect unwinding is unsupported.", "exception-boundary");
             foreach (var function in functions.Where(function => function.Signature.ExceptionSpecification?.NoexceptEffective == true))
@@ -95,6 +100,7 @@ public sealed partial class CSharpEmitter
             }
             exceptionIntType = thrownType;
             selectedIntegerThrow = throwing;
+            selectedIntegerThrowFunction = throwingFunction;
             exceptionTypeToken = InternalName("__cpp_int32_type");
             var tryPlan = new ExceptionTry(catchingFunction, selectedTry, handler, InternalName("__cpp_handler"), ExceptionLocal("__try_entry_state"), ExceptionLocal("__caught_cpp"));
             exceptionTries.Add(selectedTry, tryPlan);
@@ -111,8 +117,15 @@ public sealed partial class CSharpEmitter
                     ExceptionLocal("__cleanup_state"), ExceptionLocal("__unwinding_cpp"), ExceptionLocal("__observed_cpp"), ExceptionLocal("__active_caught_cpp")));
                 foreach (var marker in nodes.OfType<LoweredEhOperation>()) exceptionMarkers.Add(marker, function);
             }
-            if (semanticRuntimeFunctions.Count != 1)
-                throw Limit("The bounded integer EH program requires exactly its selected no-object exception release contract.", "exception-runtime");
+            if (automaticArray is not null)
+                foreach (var marker in graph[throwingFunction].OfType<LoweredEhOperation>())
+                {
+                    ValidateExceptionMarker(marker, throwingFunction, tryPlan);
+                    exceptionMarkers.Add(marker, throwingFunction);
+                }
+            if (semanticRuntimeFunctions.Count != (automaticArray is null ? 1 : 3) ||
+                semanticRuntimeFunctions.Count(implementation => implementation.Contract == SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract) != 1)
+                throw Limit("The bounded integer EH program requires its exact validated exception-owner and optional automatic-array contracts.", "exception-runtime");
             foreach (var function in functions)
                 if (FunctionReachesException(function, graph, [])) exceptionParticipants.Add(function);
         }
@@ -122,7 +135,8 @@ public sealed partial class CSharpEmitter
             var body = function.Body!;
             var eh = body.ExceptionHandling;
             if (function.Signature.ExceptionSpecification?.NoexceptEffective == true || eh.Details is not { } details ||
-                eh.RegionTable is not { } table || !body.Locals.Contains(table) || eh.ArrayTable is not null || eh.Arrays.Count != 0 ||
+                eh.RegionTable is not { } table || !body.Locals.Contains(table) ||
+                (automaticArray?.Function.Equals(function) != true && (eh.ArrayTable is not null || eh.Arrays.Count != 0)) ||
                 details.InitialState != 65535 || details.NullState != 65535 || details.Prologue is null || !nodes.Contains(details.Prologue))
                 throw Limit("The integer EH function requires its actual cleanup table, null state and prologue without a noexcept boundary.", "exception");
             if (table.ExceptionTable is not { } projection || projection.Kind.Name != "cleanup" || !projection.Owner.Equals(table) ||
@@ -133,6 +147,7 @@ public sealed partial class CSharpEmitter
                 table.LocalStaticInitializations.Any(initializer => !initializer.Variable.Equals(table) || initializer.Kind.Name != "initk_static" ||
                     initializer.Initialization is not null || initializer.Constant is not null || initializer.Lifetime is not null))
                 throw Limit("The EH table must be its exact metadata projection with no application value reference or initializer.", "exception");
+            if (automaticArray?.Function.Equals(function) == true) ValidateAutomaticArrayTable(function, nodes);
             var recipes = body.Lifetimes.SelectMany(lifetime => lifetime.Cleanups.Select(cleanup => cleanup.Initialization)).ToArray();
             var actions = new List<CleanupAction>();
             var matchedRecipes = new HashSet<Initialization>();
@@ -144,11 +159,18 @@ public sealed partial class CSharpEmitter
                     throw Limit("The bounded exception region chain requires one unconditional retained action and an acyclic next link.", "exception-cleanup");
                 var action = region.Actions[0];
                 var flags = action.Details;
-                if (!flags.Region.Equals(region) || flags.Ordinal != 0 || action.Kind.Name != "destructor" || action.Array is not null || action.AbiDetail is not null ||
-                    flags.IsArray || flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
+                var arrayAction = automaticArray?.Cleanup.Equals(action) == true;
+                if (!flags.Region.Equals(region) || flags.Ordinal != 0 || action.Kind.Name != "destructor" ||
+                    (!arrayAction && (action.Array is not null || flags.IsArray)) || action.AbiDetail is not null ||
+                    flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
                     action.Storage is not { } storage || storage.IsIndirect || storage.Details.BaseEntity is not null)
                     throw Limit("The bounded EH action has an unsupported condition, array, storage offset or ABI side effect.", "exception-cleanup");
-                if (storage.Kind.Name == "direct_variable")
+                if (arrayAction)
+                {
+                    if (!matchedRecipes.Add(automaticArray!.FullRecipe) || !matchedRecipes.Add(automaticArray.PartialRecipe))
+                        throw Limit("The automatic-array cleanup shares a metadata recipe with another action.", "array-lifetime");
+                }
+                else if (storage.Kind.Name == "direct_variable")
                 {
                     if (storage.Offset != 0 || storage.UsesThisParameterOffset || storage.Variable is not { } variable || !body.Locals.Contains(variable) || action.TargetMethod is not { } destructor ||
                         destructor.SpecialFunctionKind?.Name != "sfk_destructor" || destructor.Parameters.Count != 1 ||
@@ -182,20 +204,22 @@ public sealed partial class CSharpEmitter
                 else throw Limit("The integer EH adapter supports only validated direct-variable, receiver-relative member and no-object cleanup storage.", "exception-cleanup");
                 actions.Add(action);
             }
-            if (actions.Count != recipes.Length || matchedRecipes.Count != recipes.Length || recipes.Any(recipe => recipe.NextInDestructionList is not null))
+            if (actions.Count + (automaticArray?.Function.Equals(function) == true ? 1 : 0) != recipes.Length || matchedRecipes.Count != recipes.Length ||
+                recipes.Any(recipe => recipe.NextInDestructionList is not null &&
+                    (automaticArray is null || !recipe.Equals(automaticArray.FullRecipe) || !recipe.NextInDestructionList.Equals(automaticArray.PartialRecipe))))
                 throw Limit("The first integer EH slice requires one matching metadata recipe for each action, without a second destruction schedule.", "exception-cleanup");
             foreach (var marker in nodes.OfType<LoweredEhOperation>()) ValidateExceptionMarker(marker, function, tryPlan);
             if (eh.Epilogues.Any(epilogue => !nodes.Contains(epilogue)))
                 throw Limit("An actual EH epilogue is absent from the typed function body.", "exception");
         }
 
-        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing, bool constructorMember = false)
+        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing, bool constructorMember = false, bool arrayPartial = false)
         {
             var flags = recipe.Details;
             if (recipe.Kind.Name != "dik_none" || recipe.Operation?.RepresentationRole.Name != "metadata" || recipe.Expression is not null ||
                 recipe.Constructor is not null || recipe.Constant is not null || recipe.Operands.Count != 0 || recipe.Master is not null ||
                 recipe.OverlappingLifetime is not null || recipe.InitExpressionLifetime is not null || flags.IsFreeingOfExceptionObject != freeing ||
-                flags.IsUnordered || flags.IsConditional || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary || flags.IsPartialAggregate ||
+                flags.IsUnordered || flags.IsConditional || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary || flags.IsPartialAggregate != arrayPartial ||
                 flags.IsPartialInitialization || flags.HasTemporaryLifetime || flags.IsConstructorInitialization != constructorMember || flags.IsConditionalGuard || flags.IsVlaDeallocation ||
                 flags.CreatesInitializerList || flags.IsInitializerListArray || flags.IsReusedValue || flags.IsQuestionResult || flags.IsCommaResult ||
                 flags.ConstructorCopyImpliedSource || flags.ConstructorImplicitCopy || flags.ConstructorValueInitialization || flags.ConstructorSequencedArguments ||
@@ -225,13 +249,16 @@ public sealed partial class CSharpEmitter
             var eh = function.Body!.ExceptionHandling;
             var payload = marker.ExceptionOperation;
             if (marker.RepresentationRole.Name != "execution" || marker.ValueCategory.Name != "prvalue" || marker.Operands.Count != 0 || marker.Details.VolatileFetch ||
-                payload.FunctionEh?.Routine.Equals(function) != true || payload.Initialization is not null || payload.TryExpression is not null || payload.CatchExpression is not null)
+                (payload.FunctionEh is { } owner ? !owner.Routine.Equals(function) :
+                    automaticArray?.Constructor.Equals(function) != true || marker.ExceptionKind.Name != "leck_thrown_object_address") ||
+                payload.Initialization is not null || payload.TryExpression is not null || payload.CatchExpression is not null)
                 throw Limit("A lowered integer EH marker has additional execution associations.", "exception");
             if (marker is CleanupStateOperation state)
             {
                 if (marker.ExceptionKind.Name != (state.IsUnreachable ? "leck_unreachable_cleanup_state" : "leck_cleanup_state") ||
                     !Equals(payload.Region, state.Region) || payload.StateNumber != state.StateNumber || payload.Routine is not null || payload.Handler is not null || payload.TryBlock is not null ||
-                    (state.Region is { } region ? !eh.CleanupRegions.Contains(region) || state.StateNumber != region.Ordinal : state.StateNumber != eh.Details!.NullState) ||
+                    (state.Region is { } region ? !eh.CleanupRegions.Contains(region) || state.StateNumber != region.Ordinal :
+                        state.StateNumber != eh.Details!.NullState && !eh.CleanupRegions.Any(region => state.StateNumber == region.Ordinal)) ||
                     MemoryRepresentationType(marker.Type).Kind.Name != "tk_void")
                     throw Limit("The cleanup state must name its actual region or captured null state.", "exception-cleanup");
                 return;
@@ -296,7 +323,8 @@ public sealed partial class CSharpEmitter
         }
 
         private bool IsOmittedExceptionRegionTable(VariableSymbol variable) => currentFunction is { } function &&
-            exceptionFunctions.TryGetValue(function, out var plan) && plan.RegionTable.Equals(variable);
+            exceptionFunctions.TryGetValue(function, out var plan) && (plan.RegionTable.Equals(variable) ||
+                automaticArray?.Function.Equals(function) == true && function.Body!.ExceptionHandling.ArrayTable?.Equals(variable) == true);
 
         private bool IsGeneratedExceptionParticipant(FunctionSymbol function) => exceptionParticipants.Contains(function) ||
             semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(function));
@@ -349,7 +377,9 @@ public sealed partial class CSharpEmitter
             {
                 writer.Line($"case {region.Ordinal.ToString(CultureInfo.InvariantCulture)}:");
                 var action = region.Actions[0];
-                if (action.Storage!.Kind.Name == "direct_variable")
+                if (automaticArray?.Cleanup.Equals(action) == true)
+                    writer.Line($"    {Owner}.{automaticArray.DestroyMethod}((void*)(&{names[automaticArray.Variable]}), {automaticArray.Type.Bound!.Value.ToString(CultureInfo.InvariantCulture)}UL, {automaticArray.Element.Size!.Value.ToString(CultureInfo.InvariantCulture)}UL);");
+                else if (action.Storage!.Kind.Name == "direct_variable")
                     writer.Line($"    {OwnedName(action.TargetMethod!)}(&{names[action.Storage.Variable!]});");
                 else if (receiverMemberCleanups.TryGetValue(action, out var member))
                     writer.Line($"    {OwnedName(action.TargetMethod!)}(({TypeName(member.MemberType)}*)((byte*){names[member.Receiver]} + {action.Storage.Offset.ToString(CultureInfo.InvariantCulture)}));");
@@ -390,7 +420,7 @@ public sealed partial class CSharpEmitter
         private bool TryEmitExceptionExpressionStatement(ExpressionOperation expression, CodeWriter writer)
         {
             if (expression is not ThrowOperation throwing) return false;
-            if (!throwing.Equals(selectedIntegerThrow) || throwing.ThrownType?.Equals(exceptionIntType) != true || currentFunction is null || !exceptionFunctions.ContainsKey(currentFunction))
+            if (!throwing.Equals(selectedIntegerThrow) || throwing.ThrownType?.Equals(exceptionIntType) != true || currentFunction is null || !currentFunction.Equals(selectedIntegerThrowFunction))
                 throw Limit("This throw has no selected bounded integer transfer adapter.", "exception");
             var owner = ExceptionLocal("__throw_owner");
             writer.Line($"{ExceptionCarrierType} {owner} = {ExceptionCarrierType}.CreateInt32({Owner}.{exceptionTypeToken});");
@@ -404,13 +434,14 @@ public sealed partial class CSharpEmitter
             return true;
         }
 
-        private bool NeedsExceptionExpressionPlan(ExpressionOperation expression) => expression is LoweredEhOperation marker && exceptionMarkers.ContainsKey(marker);
+        private bool NeedsExceptionExpressionPlan(ExpressionOperation expression) =>
+            expression is LoweredEhOperation marker && exceptionMarkers.ContainsKey(marker) || expression is CallOperation call && automaticArrayCalls.ContainsKey(call);
 
         private bool TryPlanExceptionExpression(ExpressionOperation expression, out ExpressionPlan plan)
         {
             plan = null!;
             if (expression is not LoweredEhOperation marker || !exceptionMarkers.TryGetValue(marker, out var function) || !function.Equals(currentFunction)) return false;
-            var adapter = exceptionFunctions[function];
+            exceptionFunctions.TryGetValue(function, out var adapter);
             var kind = marker.ExceptionKind.Name;
             var prefix = new List<CsPlanStatement>();
             CsExpression value = new CsLeaf(CsType.Void, "", true);
@@ -419,6 +450,7 @@ public sealed partial class CSharpEmitter
             {
                 if (!state.IsUnreachable)
                 {
+                    if (adapter is null) throw Limit("A table-free constructor cannot acquire a fabricated cleanup state.", "array-lifetime");
                     prefix.Add(new CsSetVariable(new(CsType.Int32, adapter.State), new CsLeaf(CsType.Int32, state.StateNumber!.Value.ToString(CultureInfo.InvariantCulture), true)));
                     effects = ExpressionEffects.WriteStorage;
                 }
@@ -441,7 +473,7 @@ public sealed partial class CSharpEmitter
                 else
                 {
                     prefix.Add(new CsEvaluate(new CsLeaf(CsType.Void, $"{handler.Carrier}.ReleaseCaught({Owner}.{handler.Token})", false)));
-                    prefix.Add(new CsSetVariable(new(new(null, Intrinsic: ExceptionCarrierType + "?"), adapter.Caught), new CsLeaf(new(null, Intrinsic: ExceptionCarrierType + "?"), "null", true)));
+                    prefix.Add(new CsSetVariable(new(new(null, Intrinsic: ExceptionCarrierType + "?"), adapter!.Caught), new CsLeaf(new(null, Intrinsic: ExceptionCarrierType + "?"), "null", true)));
                     effects = ExpressionEffects.WriteStorage | ExpressionEffects.MayThrow;
                 }
             }

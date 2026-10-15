@@ -18,6 +18,8 @@ production CLI and native/JIT/NativeAOT observations. The bounded
 including handler selection before cleanup and balanced payload ownership.
 [Constructor-body failure](docs/T5-CONSTRUCTOR-FAILURE.md) now also preserves
 completed-member cleanup through its captured nonzero receiver offset.
+[Automatic partial arrays](docs/T5-PARTIAL-ARRAY.md) also pass with direct generated
+callback execution and completed-prefix cleanup.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

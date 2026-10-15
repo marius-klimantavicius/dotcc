@@ -272,3 +272,9 @@ this bounded adapter to one matched receiver-relative completed member and a
 validated throwing constructor/forwarding entry. Its own receipt separates that
 new activation from the original integer fixture's limits above. Arrays,
 failed-member construction, native unwinding and broader EH remain open.
+
+
+The [automatic partial-array checkpoint](T5-PARTIAL-ARRAY.md) subsequently adds
+selected generated vector-helper contracts, exact zero-table throwing-constructor
+participation and helper-owned completed-prefix cleanup. That separate receipt
+does not enable native callbacks/unwinding or general partial aggregate execution.
