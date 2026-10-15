@@ -90,3 +90,28 @@ The initial discarded-void-cast build failure, intrinsic argument-role rejection
 missing fixture header/macro invocations and earlier exploratory proofs remain
 preserved. No producer/core changes, SQLite re-export, feature reduction or
 native application fallback was used.
+
+
+## Complete diagnostic emission, compilation open
+
+Pass 5 emits all 4,212 bodies and 486 records from the unchanged full object with
+zero diagnostics in 344.39 seconds. It retains four unpublished candidate files:
+18,388,059 bytes of C#, 1,193,040 bytes of ABI-only C, project and native-import
+report. [Exact receipt](../acceptance/sqlite/emission-diagnostics/pass-5.json)
+and [measured run](../acceptance/sqlite/emission-diagnostics/pass-5-run.json)
+preserve source/build/input and file identities. Translation remains incomplete.
+
+The first attributable full build compiled the native ABI forwarding code, then
+reported 169 C# errors in 22.65 seconds without a budget violation. The errors
+are native-pointer constant/global-address view casts, mixed-width assignments/compounds and
+one ref-place projection. See [compiler observations](../acceptance/sqlite/emission-diagnostics/pass-5-compiler.json)
+and [build receipt](../acceptance/sqlite/emission-diagnostics/pass-5-build-run.json).
+The candidate is immutable; emitter fixes must regenerate it. All 23 SQL harness
+API signatures validate against actual generated declarations and public facts.
+No generated SQLite SQL execution or production completion is claimed.
+
+Focused width and typed-cursor proofs now pass in native/JIT/NativeAOT; direct
+static strings and the ordinary zero record produce 208/217 with physical bytes
+and persistent mutations checked. These are bounded additions, not whole-provider
+acceptance. Readability review remains open for redundant casts and temporaries
+in large bodies; it does not delay the compiler corrections.

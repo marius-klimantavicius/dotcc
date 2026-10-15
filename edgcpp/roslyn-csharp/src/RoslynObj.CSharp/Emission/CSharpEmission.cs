@@ -320,6 +320,7 @@ public sealed partial class CSharpEmitter
                 throw Limit("Constructor/destructor initialization is unsupported in T1.", "initialization");
             if (initialization.Target is not VariableSymbol variable || !names.ContainsKey(variable))
                 throw Limit("Initialization target is not selected local storage.", "initialization");
+            if (TryEmitVolatileLocalInitialization(initialization, variable, writer)) return;
             if (initialization.Kind.Name == "dik_bitwise_copy")
             {
                 var source = initialization.BitwiseCopySource ?? throw Limit("A bitwise copy has no retained source.", "initialization");

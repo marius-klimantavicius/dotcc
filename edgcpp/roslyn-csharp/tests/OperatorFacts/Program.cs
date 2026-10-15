@@ -2,9 +2,12 @@ using System.Globalization;
 using System.Text.Json;
 using RoslynObj;
 
-if (args.Length is not (2 or 4) || args.Length == 4 && args[2] != "--diagnostics")
-    throw new ArgumentException("Expected OBJECT OUTPUT_JSON [--diagnostics FIRST_BLOCKER_REPORT].");
-string? diagnosticReport = args.Length == 4 ? Path.GetFullPath(args[3]) : null;
+if (args.Length is not (2 or 4) || args.Length == 4 && args[2] is not ("--diagnostics" or "--names"))
+    throw new ArgumentException("Expected OBJECT OUTPUT_JSON [--diagnostics FIRST_BLOCKER_REPORT | --names EXACT_CURRENT_NAMES_COMMA_SEPARATED].");
+string? diagnosticReport = args.Length == 4 && args[2] == "--diagnostics" ? Path.GetFullPath(args[3]) : null;
+string[]? explicitNames = args.Length == 4 && args[2] == "--names"
+    ? args[3].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray() : null;
+if (explicitNames is { Length: 0 }) throw new ArgumentException("The exact current-name selection cannot be empty.");
 var selectedDiagnostics = new List<(string Function, string Family, string Message, string Locator)>();
 var representationDiagnostics = new List<(string Family, string Message, string Locator)>();
 if (diagnosticReport is not null)
@@ -13,7 +16,7 @@ if (diagnosticReport is not null)
     foreach (var diagnostic in document.RootElement.GetProperty("diagnostics").EnumerateArray())
     {
         var family = diagnostic.GetProperty("Family").GetString();
-        if (family is not ("compound-assignment" or "volatile" or "shift")) continue;
+        if (family is not ("compound-assignment" or "volatile" or "shift" or "eok_va_arg")) continue;
         var locator = diagnostic.GetProperty("Locator").GetString() ?? throw new InvalidOperationException("A selected diagnostic has no public function locator.");
         var separator = locator.IndexOf(':');
         if (!locator.StartsWith("function/", StringComparison.Ordinal) || separator < 0)
@@ -26,7 +29,7 @@ if (diagnosticReport is not null)
         }
         selectedDiagnostics.Add((name, family, diagnostic.GetProperty("Message").GetString()!, locator));
     }
-    if (selectedDiagnostics.Count == 0) throw new InvalidOperationException("The selected report has no compound/volatile/shift first blockers.");
+    if (selectedDiagnostics.Count == 0) throw new InvalidOperationException("The selected report has no compound/volatile/shift/va_arg first blockers.");
 }
 using var input = RoslynObject.Open(args[0], new ReadOptions { CachedRowCount = 4096, CachedPageCount = 128, PageSize = 128 });
 string[] selectedNames = ["pcache1InitBulk", "accessPayload", "freeTempSpace", "wherePathSolver",
@@ -36,6 +39,7 @@ string[] selectedNames = ["pcache1InitBulk", "accessPayload", "freeTempSpace", "
     "walIndexPage", "walIndexHdr"];
 if (diagnosticReport is not null)
     selectedNames = selectedDiagnostics.Select(diagnostic => diagnostic.Function).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+else if (explicitNames is not null) selectedNames = explicitNames;
 string[] compoundKinds = ["eok_padd_assign", "eok_psubtract_assign", "eok_shiftl_assign", "eok_shiftr_assign"];
 var functions = input.TranslationUnit.Functions.Where(function => selectedNames.Contains(function.CurrentName, StringComparer.Ordinal)).ToArray();
 if (representationDiagnostics.Count != 0 && input.TranslationUnit.Functions.Any(function => function.CurrentName == "program"))
@@ -89,6 +93,32 @@ foreach (var function in functions)
         StoreFamiliesWithVolatileRelatedOperand = operators.Where(operation => IsStoreFamily(operation.OperatorKind.Name) && operation.Operands.Any(operand =>
             operand.Details.VolatileFetch || TypeContainsVolatile(operand.Type))).Select(OperationFacts).ToArray(),
         CompoundOperations = operators.Where(operation => compoundKinds.Contains(operation.OperatorKind.Name, StringComparer.Ordinal)).Select(OperationFacts).ToArray(),
+        CursorOperations = operators.Where(operation => operation.OperatorKind.Name is "eok_va_start" or "eok_va_arg" or "eok_va_copy" or "eok_va_end").Select(operation => new
+        {
+            Operation = OperationFacts(operation),
+            DirectOperandConsumers = operators.Where(consumer => consumer.Operands.Contains(operation)).Select(consumer => new
+            {
+                Kind = consumer.OperatorKind.Name, consumer.Details.VolatileFetch,
+                consumer.Operator.EvalLeftToRight, consumer.Operator.EvalRightToLeft,
+                Type = TypeFacts(consumer.Type), ValueCategory = consumer.ValueCategory.Name,
+                OperandIndices = consumer.Operands.Select((operand, index) => (operand, index))
+                    .Where(pair => pair.operand.Equals(operation)).Select(pair => pair.index).ToArray()
+            }).ToArray()
+        }).ToArray(),
+        VolatileRelatedCalls = operations.OfType<CallOperation>().Where(call => SelectedRoutine(call) is { } selected &&
+            (TypeContainsVolatile(selected.ReturnType) || selected.Signature.Parameters.Any(parameter => TypeContainsVolatile(parameter.Type)))).Select(call =>
+        {
+            var selected = SelectedRoutine(call)!;
+            return new
+            {
+                TargetName = selected.CurrentName, Result = TypeFacts(call.Type), SelectedResult = TypeFacts(selected.ReturnType),
+                call.Operator.EvalLeftToRight, call.Operator.EvalRightToLeft,
+                Parameters = selected.Signature.Parameters.Select(parameter => new
+                { parameter.Ordinal, Role = parameter.Role.Name, Type = TypeFacts(parameter.Type) }).ToArray(),
+                Arguments = call.Arguments.Select(argument => new
+                { argument.Ordinal, Role = argument.Role?.Name, Value = OperandFacts(argument.Value) }).ToArray()
+            };
+        }).ToArray(),
         VariadicCalls = operations.OfType<CallOperation>().Where(call =>
             ((call.Callee as ReferenceOperation)?.Target as FunctionSymbol ?? call.TargetMethod)?.Signature.IsVariadic == true).Select(call =>
         {
@@ -138,7 +168,8 @@ Directory.CreateDirectory(Path.GetDirectoryName(output)!);
 using (var stream = new FileStream(output, FileMode.CreateNew, FileAccess.Write)) JsonSerializer.Serialize(stream, new
 {
     InventoryOnly = true, ExecutionOrderAccepted = false, ReachabilityAccepted = false,
-    Selection = diagnosticReport is null ? "original-twenty-body-selection" : "exact-first-blocker-function-selection",
+    Selection = diagnosticReport is not null ? "exact-first-blocker-function-selection"
+        : explicitNames is not null ? "explicit-exact-current-name-selection" : "original-twenty-body-selection",
     DiagnosticReport = diagnosticReport,
     DiagnosticReportSha256 = diagnosticReport is null ? null : Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(diagnosticReport))),
     RepresentationDiagnostics = representationDiagnostics.Select(diagnostic => new
@@ -152,6 +183,7 @@ static bool IsInteger128(CppType type)
     while (type is TypeReference reference) type = reference.UnderlyingType;
     return type is ArithmeticType arithmetic && arithmetic.Arithmetic.Bits == 128;
 }
+static FunctionSymbol? SelectedRoutine(CallOperation call) => (call.Callee as ReferenceOperation)?.Target as FunctionSymbol ?? call.TargetMethod;
 static bool IsStoreFamily(string kind) => kind is "eok_assign" or "eok_bassign" or "eok_add_assign" or "eok_subtract_assign" or
     "eok_multiply_assign" or "eok_divide_assign" or "eok_remainder_assign" or "eok_shiftl_assign" or "eok_shiftr_assign" or
     "eok_and_assign" or "eok_or_assign" or "eok_xor_assign" or "eok_padd_assign" or "eok_psubtract_assign" or
@@ -223,6 +255,13 @@ static object TypeFacts(CppType type, int pointerDepth = 0)
     return new
     {
         Effective = Dimensions(type), Wrappers = wrappers, Raw = Dimensions(raw), raw.IsIncomplete, raw.Details.IsAtomic,
+        BuiltinVaListTag = raw is RecordType { Record.IsVaListTag: true },
+        VaListFields = raw is RecordType { Record.IsVaListTag: true } cursor ? cursor.Layout?.Fields.Select(field => new
+        {
+            field.Field.Name, Offset = field.Offset?.ToString(CultureInfo.InvariantCulture),
+            BitOffset = field.BitOffset?.ToString(CultureInfo.InvariantCulture),
+            BitWidth = field.BitWidth?.ToString(CultureInfo.InvariantCulture), Type = TypeFacts(field.Field.Type, pointerDepth: 2)
+        }).ToArray() : null,
         Arithmetic = raw is ArithmeticType arithmetic ? new
         { Kind = arithmetic.Arithmetic.ArithmeticKind.Name, arithmetic.Arithmetic.Bits, arithmetic.Arithmetic.Signed, arithmetic.Arithmetic.IsBool,
           IntegerKind = arithmetic.Arithmetic.EdgIntegerKind?.Name } : null,

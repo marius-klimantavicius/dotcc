@@ -48,12 +48,16 @@ public sealed partial class CSharpEmitter
                 throw Limit("A variadic tail lacks the already-selected default-promoted argument representation.", "varargs");
         }
 
-        private string VariadicOperator(OperatorOperation operation)
+        private string VariadicOperator(OperatorOperation operation) => VariadicOperator(operation, null);
+
+        private string VariadicOperator(OperatorOperation operation, IReadOnlyList<string>? plannedOperands)
         {
             var operands = operation.Operands;
             if (operands.Count == 0) throw Limit("A variadic operator has no retained cursor operand.", "varargs");
+            if (plannedOperands is not null && plannedOperands.Count != operands.Count)
+                throw Limit("A planned variadic cursor operation needs every actual retained operand once.", "varargs");
             ValidateVaCursor(operands[0].Type);
-            var cursor = Expression(operands[0]);
+            var cursor = plannedOperands?[0] ?? Expression(operands[0]);
             switch (operation.OperatorKind.Name)
             {
                 case "eok_va_start":
@@ -66,7 +70,7 @@ public sealed partial class CSharpEmitter
                 case "eok_va_copy":
                     if (operands.Count != 2) throw Limit("va_copy requires two retained cursor operands.", "varargs");
                     ValidateVaCursor(operands[1].Type);
-                    return $"{VaRuntime}.Copy({cursor}, {Expression(operands[1])})";
+                    return $"{VaRuntime}.Copy({cursor}, {plannedOperands?[1] ?? Expression(operands[1])})";
                 case "eok_va_end":
                     if (operands.Count != 1) throw Limit("va_end has an unsupported operand shape.", "varargs");
                     return $"{VaRuntime}.End({cursor})";

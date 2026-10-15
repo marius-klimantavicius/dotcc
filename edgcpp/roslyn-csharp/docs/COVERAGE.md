@@ -145,3 +145,9 @@ native in JIT/NativeAOT with all observations, canonical callback identities,
 physical size/offset/alignment/native-byte checks and deterministic output.
 The relevant existing addressed-variadic regression also preserves all accepted
 JIT/AOT observations after the shared native-ABI hook changes.
+
+
+T3 diagnostic emission now reaches all 4,212 full SQLite bodies with zero emitter
+diagnostics. This is emission evidence only: the first full C# build has 169
+projection errors, and generated SQL execution and production publication remain
+open. See [the exact progress and compiler evidence](T3-PROGRESS.md).

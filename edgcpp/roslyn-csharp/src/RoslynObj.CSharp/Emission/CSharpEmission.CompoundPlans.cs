@@ -16,9 +16,10 @@ public sealed partial class CSharpEmitter
                 throw Limit("A selected compound location requires its ordinary left-place/right-value operands.", "compound-assignment");
             var left = operation.Operands[0].Type;
             var right = operation.Operands[1].Type;
-            if (!IsNaturalSignedInt32(right))
-                throw Limit("This compound offset/count requires the exercised captured signed32 representation.", "compound-assignment");
-            if (operation.OperatorKind.Name is "eok_padd_assign" or "eok_psubtract_assign")
+            var pointerCompound = operation.OperatorKind.Name is "eok_padd_assign" or "eok_psubtract_assign";
+            if (!IsNaturalCompoundInteger(right, shiftCount: !pointerCompound))
+                throw Limit("This compound offset/count lacks the exercised natural integer representation.", "compound-assignment");
+            if (pointerCompound)
             {
                 if (MemoryRepresentationType(left) is not PointerType pointer || pointer.IsReference ||
                     left.Size != 8 || left.Alignment != 8 || pointer.Size != 8 || pointer.Alignment != 8)
@@ -40,16 +41,22 @@ public sealed partial class CSharpEmitter
                 var raw = MemoryRepresentationType(left);
                 if (IsUInt128Value(left)) ValidateUInt128Value(left);
                 else if (raw is not ArithmeticType arithmetic || arithmetic.Arithmetic.ArithmeticKind.Name != "unsigned_integer" ||
-                    arithmetic.Arithmetic.Signed != false || arithmetic.Arithmetic.Bits != 64 || arithmetic.Arithmetic.IsBool ||
-                    left.Size != 8 || left.Alignment != 8 || raw.Size != 8 || raw.Alignment != 8)
-                    throw Limit("Compound shifts require the exercised unsigned64 or selected unsigned128 value representation.", "shift");
+                    arithmetic.Arithmetic.Signed != false || arithmetic.Arithmetic.Bits is not (32 or 64) || arithmetic.Arithmetic.IsBool || arithmetic.Arithmetic.IsSaturating ||
+                    left.Size != arithmetic.Arithmetic.Bits / 8 || left.Alignment != left.Size || raw.Size != left.Size || raw.Alignment != left.Alignment)
+                    throw Limit("Compound shifts require the exercised unsigned32/unsigned64 or selected unsigned128 value representation.", "shift");
             }
         }
 
-        private static bool IsNaturalSignedInt32(CppType type) => MemoryRepresentationType(type) is ArithmeticType arithmetic &&
-            arithmetic.Arithmetic.ArithmeticKind.Name == "signed_integer" && arithmetic.Arithmetic.Signed == true &&
-            arithmetic.Arithmetic.Bits == 32 && !arithmetic.Arithmetic.IsBool &&
-            type.Size == 4 && type.Alignment == 4 && arithmetic.Size == 4 && arithmetic.Alignment == 4;
+        private static bool IsNaturalCompoundInteger(CppType type, bool shiftCount)
+        {
+            if (MemoryRepresentationType(type) is not ArithmeticType arithmetic || arithmetic.Arithmetic.IsBool || arithmetic.Arithmetic.IsSaturating)
+                return false;
+            var detail = arithmetic.Arithmetic;
+            var selected = detail.ArithmeticKind.Name == "signed_integer" && detail.Signed == true && detail.Bits is 32 or 64 ||
+                !shiftCount && detail.ArithmeticKind.Name == "unsigned_integer" && detail.Signed == false && detail.Bits is 8 or 16 or 32 or 64;
+            return selected && type.Size == detail.Bits / 8 && type.Alignment == type.Size &&
+                arithmetic.Size == type.Size && arithmetic.Alignment == type.Alignment;
+        }
 
         // A CLR value local needs no native address to retain its identity.
         // This exception does not admit addresses, static allocations, fields,

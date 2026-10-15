@@ -22,15 +22,26 @@ public sealed partial class CSharpEmitter
             if (variable.IsThreadLocal || variable.StandardThreadLocalEffective || variable.ExtensionThreadLocal ||
                 variable.Details.StorageDuration?.Name == "thread")
                 throw Limit("Thread-local storage requires its selected thread initialization contract.", "storage");
-            if (variable.Details.StorageDuration?.Name != "static" || variable.InitializationKind.Name is not ("initk_function_local" or "initk_static"))
+            if (variable.Details.StorageDuration?.Name != "static" || variable.InitializationKind.Name is not ("initk_function_local" or "initk_static" or "initk_none"))
                 throw Limit("A local-static recipe lacks the captured static-duration/function-local association.", "storage");
             if (variable.CleanupRoutine is not null || variable.Details.IsWeak || variable.Details.IsCommon ||
                 variable.Details.IsGnuAlias || variable.Details.IsWeakref || variable.Details.AliasedVariable is not null)
                 throw Limit("A local static has cleanup or unresolved weak/common/alias obligations.", "storage");
+            if (variable.LocalStaticInitializations.Count == 0 && variable.InitializationKind.Name == "initk_none")
+            {
+                if (variable.SymbolDetails.Storage?.Name != "sc_static" || variable.Details.Initializer is not null ||
+                    variable.Details.ConstantInitializer is not null || Unwrap(variable.Type) is not RecordType)
+                    throw Limit("An initializer-free local static requires its captured ordinary static record storage.", "initialization");
+                AddStorage(variable, variable.Type, null, variable.Name ?? "static_local");
+                staticLocals.Add(variable);
+                return true;
+            }
             if (variable.LocalStaticInitializations.Count == 0 && variable.InitializationKind.Name == "initk_static")
             {
-                if (variable.Details.Initializer is not null || variable.Details.ConstantInitializer?.Value is not IntegerValue)
-                    throw Limit("A recipe-free local static requires its retained integer constant initializer.", "initialization");
+                var constant = variable.Details.ConstantInitializer;
+                var acceptedValue = constant?.Value is IntegerValue || constant?.Value is StringValue && Unwrap(variable.Type) is ArrayType;
+                if (variable.Details.Initializer is not null || !acceptedValue)
+                    throw Limit("A recipe-free local static requires its retained integer or target-byte array constant initializer.", "initialization");
                 AddStorage(variable, variable.Type, variable.Details.ConstantInitializer, variable.Name ?? "static_local");
                 staticLocals.Add(variable);
                 return true;

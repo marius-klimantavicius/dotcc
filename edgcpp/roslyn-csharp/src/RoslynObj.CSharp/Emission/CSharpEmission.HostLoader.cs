@@ -106,6 +106,7 @@ static pthread_once_t __roslynobj_loader_once = PTHREAD_ONCE_INIT;
 static pthread_key_t __roslynobj_loader_key;
 static void __roslynobj_loader_destroy(void *value) {
     struct __roslynobj_loader_state *state = value;
+    if (__roslynobj_loader_tls == state) __roslynobj_loader_tls = NULL;
     free(state->bytes);
     free(state);
 }

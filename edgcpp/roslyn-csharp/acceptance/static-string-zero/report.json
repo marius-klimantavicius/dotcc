@@ -1,0 +1,331 @@
+{
+  "gate": "T3-partial-static-string-zero",
+  "status": "passed-bounded-static-storage",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-6/source-snapshot.json",
+    "sha256": "867e832c52a0a1170d21ae6444ded15c47f4814433c67cc108ef6cc05a5393ea"
+  },
+  "phases": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-aot-run-6/run.json",
+      "sha256": "9f99bf1a06e0847318f1b5326b5a0fd5edc24c262f0b08ffd503ece508409d61",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-aot-6/StringZeroChecks"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10051771404687315,
+        "sampledPeakProcessTreeRssBytes": 86016,
+        "waitedPeakProcessRssBytes": 18087936,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 51,
+            "sha256": "92ac48ddb6c0c8dbb86c26bff1ce5ff23988883381f167527db37c8a3eaae3c3"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-build-6/run.json",
+      "sha256": "b6d0b1710621d064c85c438330cff9d2aa2ea9a6695dfa1f8f397b72dba1c963",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-6/edgcpp/roslyn-csharp/tests/StorageConstants/StringZeroChecks.csproj",
+          "-c",
+          "Release",
+          "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-generated-6/Generated.csproj",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-6",
+          "--nologo"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 1.604283737950027,
+        "sampledPeakProcessTreeRssBytes": 191528960,
+        "waitedPeakProcessRssBytes": 191574016,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 830,
+            "sha256": "3c41925eb2fe75c6ee2a309e24129feefa02489da4cc84925ff14d43067fec66"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-jit-6/run.json",
+      "sha256": "89ebed1835090d9d9f600f453fc974a62218664669748874ed56832b550a64cf",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-6/StringZeroChecks.dll"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10060354601591825,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "waitedPeakProcessRssBytes": 29884416,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 51,
+            "sha256": "92ac48ddb6c0c8dbb86c26bff1ce5ff23988883381f167527db37c8a3eaae3c3"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-publish-6/run.json",
+      "sha256": "3a246df375156964f8242786fb825f378e3a79c5678f71195a9919ed935ebc1f",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-6/edgcpp/roslyn-csharp/tests/StorageConstants/StringZeroChecks.csproj",
+          "-c",
+          "Release",
+          "-p:GeneratedProject=/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-generated-6/Generated.csproj",
+          "-r",
+          "linux-x64",
+          "--self-contained",
+          "true",
+          "-p:PublishAot=true",
+          "-p:CppCompilerAndLinker=clang-18",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-checker-aot-6",
+          "--nologo"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 5.510679551982321,
+        "sampledPeakProcessTreeRssBytes": 211595264,
+        "waitedPeakProcessRssBytes": 205377536,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 300.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 1033,
+            "sha256": "c870f8dbdac85bb5182b338d4e39c9e959117cf1de4d3368f26b5bd79d51ca30"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-emit-6/run.json",
+      "sha256": "be20b73038116bffa21329aea994344d394ac77fb85f98ac3f051ed2daf6cfa2",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "dotnet",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/emitter-bin-6/Projection.dll",
+          "emit",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero.roslynobj",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-generated-6",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-6/edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.3010565680451691,
+        "sampledPeakProcessTreeRssBytes": 77803520,
+        "waitedPeakProcessRssBytes": 73924608,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 32,
+            "sha256": "69816860c1ef564c8b50a4483bb831a1f22aabd366a68b7970db2f40c21d7834"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-export-6/run.json",
+      "sha256": "8ebcfc0064a0d529d2842e89d4e328b06bc8c74679c46c0084fdd45bc4d4d120",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "env",
+          "ROSLYNOBJ_COMPILER=/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+          "python3",
+          "edgcpp/roslyn/build/roslyn-cpfe.py",
+          "--gcc",
+          "--c17",
+          "--gnu_version",
+          "130300",
+          "edgcpp/roslyn-csharp/tests/Fixtures/T3/storage-constants/static-string-zero.c",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero.roslynobj"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.1006001610076055,
+        "sampledPeakProcessTreeRssBytes": 86016,
+        "waitedPeakProcessRssBytes": 29884416,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 134,
+            "sha256": "d55b352fb4b7a9d5a630d2a27fc57d4eb1b89506d0e178efde8cfd751ce8907e"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-native-build-6/run.json",
+      "sha256": "945d9d6e3b32ce53d29f60b714176c8f6d3d8212f3721b6235f5dfbdcacbb2b0",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "gcc",
+          "-std=c17",
+          "-O2",
+          "edgcpp/roslyn-csharp/tests/Fixtures/T3/storage-constants/static-string-zero.c",
+          "edgcpp/roslyn-csharp/tests/Fixtures/T3/storage-constants/static-string-zero-oracle.c",
+          "-o",
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-native-6"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10054354392923415,
+        "sampledPeakProcessTreeRssBytes": 212992,
+        "waitedPeakProcessRssBytes": 22282240,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-native-run-6/run.json",
+      "sha256": "d29ada6856907c0549e56e2804c959ca444f93a2ab44929c361bef903eb55232",
+      "receipt": {
+        "status": "passed",
+        "command": [
+          "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/static-string-zero-native-6"
+        ],
+        "workingDirectory": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.10052822495345026,
+        "sampledPeakProcessTreeRssBytes": 86016,
+        "waitedPeakProcessRssBytes": 18350080,
+        "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+        "budgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null,
+        "logs": [
+          {
+            "path": "stdout.txt",
+            "bytes": 8,
+            "sha256": "abcf6acb1f0bbe5ae5eac44b5bd0d90c250628bc1f7c5482311da36215744953"
+          },
+          {
+            "path": "stderr.txt",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      }
+    }
+  ],
+  "observations": "Native and generated JIT/NativeAOT calls return 208 then 217; physical zero record size 24/offset 8 and all 24 zero bytes, target string bytes and persistent static mutations checked.",
+  "limits": [
+    "Ordinary process static storage only; no TLS or guarded dynamic initialization.",
+    "Loader cached-pointer release correction has a separate normal-path regression; native TLS destructor reentry is unexercised."
+  ]
+}

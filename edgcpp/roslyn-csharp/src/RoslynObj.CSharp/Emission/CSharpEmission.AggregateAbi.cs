@@ -13,8 +13,10 @@ public sealed partial class CSharpEmitter
         private readonly List<AggregateLayout> aggregateLayouts = [];
         private readonly List<AggregateInvocation> aggregateInvocations = [];
 
-        private static bool HasAggregateSignature(RoutineType signature) => Unwrap(signature.ReturnType) is RecordType ||
-            signature.Parameters.Any(p => Unwrap(p.Type) is RecordType);
+        // Calling-shape classification does not fetch a qualified parameter.
+        // The selected ordinary body or native gateway validates actual access.
+        private static bool HasAggregateSignature(RoutineType signature) => MemoryRepresentationType(signature.ReturnType) is RecordType ||
+            signature.Parameters.Any(p => MemoryRepresentationType(p.Type) is RecordType);
 
         private void ValidateNativeAggregateSignature(RoutineType signature)
         {

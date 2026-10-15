@@ -1,0 +1,104 @@
+{
+  "status": "diagnostics-incomplete-translation",
+  "scope": "Unchanged full-object library emission diagnostic only; candidate export bindings are not production ABI/error/thread validation.",
+  "input": {
+    "path": "/mnt/storage/roslynobj-sqlite-20261014/export/sqlite3.roslynobj",
+    "sha256": "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c",
+    "bytes": 297556992
+  },
+  "providerPlan": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/provider-preparation-3/provider-plan.json",
+    "sha256": "82980f8840bac35976d06d79daf4e733a945ee5dc774b656551677c5b2626060",
+    "candidateBindings": 88
+  },
+  "build": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-4-bin/RoslynObj.CSharp.dll",
+      "sha256": "5d253b85ff6f63190becb5196c0398658024d8b3021ac6dbcc37d763e4e66fd5",
+      "bytes": 510976
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-4-bin/RoslynObj.dll",
+      "sha256": "b34ebb5892a9b549d9bf34460c71bfaaa120eec7fb5793c2d2c57cb8bde409b8",
+      "bytes": 2629120
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t3/emission-diagnostics-4-bin/SqliteEmissionProbe.dll",
+      "sha256": "c95775de5a2d320552acf6c09c409b167a53e965cf644693c3622912ed99880e",
+      "bytes": 35328
+    }
+  ],
+  "nativeErrorProtocol": "LinuxX64LogicalErrno",
+  "intrinsicAdmission": "Recorded builtin kinds and actual operands are checked by the bounded emitter/runtime implementation; this probe does not execute them.",
+  "providerAdmission": "All 88 bindings are candidates from the export audit; focused provider fixture evidence does not establish every SQLite provider contract.",
+  "artifact": "9097468216bba3077ff4a24753d09245",
+  "translationComplete": false,
+  "outputPublished": false,
+  "productionPublished": false,
+  "candidateGenerated": false,
+  "buildable": null,
+  "diagnosticCandidate": "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-emission-4-candidate",
+  "candidateFiles": [],
+  "emittedFunctions": 0,
+  "emittedRecords": 0,
+  "returnedFiles": 0,
+  "elapsedSeconds": 346.9605359,
+  "diagnosticCount": 4,
+  "errorCount": 4,
+  "families": [
+    {
+      "family": "volatile",
+      "count": 3,
+      "messages": [
+        {
+          "message": "Volatile qualified storage is unsupported.",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "family": "eok_va_arg",
+      "count": 1,
+      "messages": [
+        {
+          "message": "Operator \u0027eok_va_arg\u0027 has no typed execution plan.",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Operator \u0027eok_va_arg\u0027 has no typed execution plan.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3489:sqlite3_test_control/operation/392",
+      "Family": "eok_va_arg"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3615:sumStep/operation/61",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3616:kahanBabuskaNeumaierStepInt64/operation/25",
+      "Family": "volatile"
+    },
+    {
+      "Code": "CSHARP2100",
+      "Severity": 2,
+      "Message": "Volatile qualified storage is unsupported.",
+      "Input": "9097468216bba3077ff4a24753d09245",
+      "Locator": "function/3621:sumInverse/operation/117",
+      "Family": "volatile"
+    }
+  ]
+}

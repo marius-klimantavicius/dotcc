@@ -76,11 +76,33 @@ public sealed partial class CSharpEmitter
         {
             if (place.IsBitField) throw Limit("Volatile bitfield access requires an exercised exact-span plan.", "volatile");
             var raw = MemoryRepresentationType(type);
-            if (raw is not ArithmeticType arithmetic || arithmetic.Arithmetic.ArithmeticKind.Name != "unsigned_integer" ||
-                arithmetic.Arithmetic.Signed != false || arithmetic.Arithmetic.IsBool || arithmetic.Arithmetic.Bits is not (16 or 32) ||
+            if (raw is not ArithmeticType arithmetic || arithmetic.Arithmetic.IsBool || arithmetic.Arithmetic.IsSaturating ||
                 type.Size != raw.Size || type.Alignment != raw.Alignment || raw.Size != arithmetic.Arithmetic.Bits / 8 || raw.Alignment != raw.Size)
-                throw Limit("Only captured naturally aligned unsigned16/unsigned32 volatile value accesses are exercised.", "volatile");
-            return arithmetic.Arithmetic.Bits == 16 ? "UInt16" : "UInt32";
+                throw Limit("A volatile value access lacks the captured natural primitive representation.", "volatile");
+            return (arithmetic.Arithmetic.ArithmeticKind.Name, arithmetic.Arithmetic.Bits, arithmetic.Arithmetic.Signed) switch
+            {
+                ("unsigned_integer", 16, false) => "UInt16",
+                ("unsigned_integer", 32, false) => "UInt32",
+                ("signed_integer", 32, true) => "Int32",
+                ("floating", 64, null) => "Double",
+                _ => throw Limit("Only captured naturally aligned unsigned16/unsigned32/signed32/binary64 volatile value accesses are exercised.", "volatile")
+            };
+        }
+
+        private bool TryEmitVolatileLocalInitialization(Initialization initialization, VariableSymbol variable, CodeWriter writer)
+        {
+            if (!IsVolatileObjectType(variable.Type)) return false;
+            if (currentFunction?.Body?.Locals.Contains(variable) != true || variable.IsThreadLocal ||
+                variable.Details.StorageDuration?.Name is "static" or "thread" ||
+                initialization.Kind.Name is not ("dik_expression" or "dik_constant") || initialization.Details.IsPartialAggregate)
+                throw Limit("Volatile initialization needs an exercised ordinary local scalar recipe.", "volatile");
+            var place = MemoryPlace(variable.Type, LValueKind.Slot, new CsLeaf(CsType.Value(variable.Type), names[variable], false), variable: variable);
+            _ = RequireVolatilePrimitive(variable.Type, place);
+            var value = initialization.Expression is ExpressionOperation expression ? ValueOccurrence(expression, writer)
+                : initialization.Constant is { } constant ? Constant(constant)
+                : throw Limit("A volatile scalar initialization lacks its captured value.", "volatile");
+            EmitMemoryStore(new CsStore(place, new CsCast(CsType.Value(variable.Type), new CsLeaf(CsType.Value(variable.Type), value, false))), writer);
+            return true;
         }
 
         private string RenderMemoryLoad(CsLoad load)

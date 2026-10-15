@@ -1,0 +1,39 @@
+{
+  "status": "failed",
+  "command": [
+    "dotnet",
+    "build",
+    "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-emission-5-candidate/Generated.csproj",
+    "-c",
+    "Release",
+    "--disable-build-servers",
+    "-p:UseSharedCompilation=false",
+    "-nodeReuse:false",
+    "-o",
+    "/mnt/storage/roslynobj-csharp-20261015/t3/sqlite-emission-5-build-output"
+  ],
+  "workingDirectory": "/home/marius/p/dotcc",
+  "exitCode": 1,
+  "elapsedSeconds": 22.6498945960775,
+  "sampledPeakProcessTreeRssBytes": 212922368,
+  "waitedPeakProcessRssBytes": 2341642240,
+  "measurement": "Linux /proc live process-tree RSS sampled every 100ms; shared pages may count more than once; short peaks may be missed",
+  "budgets": {
+    "timeoutSeconds": 300.0,
+    "memoryBytes": 8589934592,
+    "logBytes": 536870912
+  },
+  "budgetViolation": null,
+  "logs": [
+    {
+      "path": "stdout.txt",
+      "bytes": 248113,
+      "sha256": "e8311cf5502ad915e6008c69aca5f3efc442da029248439aa3f2fd8f85f53e31"
+    },
+    {
+      "path": "stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

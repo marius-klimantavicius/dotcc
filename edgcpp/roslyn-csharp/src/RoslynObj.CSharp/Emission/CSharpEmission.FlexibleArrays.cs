@@ -13,7 +13,9 @@ public sealed partial class CSharpEmitter
         {
             if (!flexibleFields.TryGetValue(field, out var retained))
             {
-                var raw = Unwrap(field.Type);
+                // This is field representation classification, not a fetch.
+                // Retain volatile access handling at its recorded occurrence.
+                var raw = MemoryRepresentationType(field.Type);
                 retained = null;
                 if (raw is ArrayType candidate && candidate.Array.BoundKind.Name == "incomplete")
                 {

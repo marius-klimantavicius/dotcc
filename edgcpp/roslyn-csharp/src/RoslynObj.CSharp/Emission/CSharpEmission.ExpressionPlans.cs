@@ -80,6 +80,7 @@ public sealed partial class CSharpEmitter
             if (kind == "eok_comma") return PlanComma(operation);
             if (kind == "eok_question") return PlanConditional(operation);
             if (kind is "eok_land" or "eok_lor") return PlanShortCircuit(operation);
+            if (kind == "eok_va_arg") return PlanVariadicArgument(operation);
             if (kind == "eok_bassign") return PlanAggregateAssignment(operation);
             if (AssignmentOperators.ContainsKey(kind) || NeedsPlannedCompoundOperation(operation)) return PlanAssignment(operation);
             if (kind is "eok_pre_incr" or "eok_pre_decr" or "eok_post_incr" or "eok_post_decr") return PlanIncrement(operation);
@@ -395,6 +396,7 @@ public sealed partial class CSharpEmitter
             CsLoad load => RenderMemoryLoad(load),
             CsAddress address => RenderAddress(address.Place),
             CsPlannedCall call => RenderCall(call),
+            CsVariadicArgument argument => VariadicOperator(argument.Operation, [RenderExpression(argument.Cursor)]),
             CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
             CsTruth { Value: CsSourceBoolean boolean } => RenderExpression(boolean.Condition),
             CsTruth truth => TruthValue(RenderExpression(truth.Value), truth.SourceType),

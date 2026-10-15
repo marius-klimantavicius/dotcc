@@ -1,0 +1,3416 @@
+{
+  "inputCandidateReceipt": "emission-diagnostics-5-report.json",
+  "buildReceipt": "sqlite-emission-5-build/run.json",
+  "productionPublished": false,
+  "diagnostics": [
+    {
+      "line": 5479,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'bytecodevtab' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 3436,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'iovec' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 5612,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'tm' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 5662,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'stat' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 5682,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'flock' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 5728,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'timeval' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 5752,
+      "column": 22,
+      "kind": "warning",
+      "code": "CS8981",
+      "message": "The type name 'timespec' only contains lower-cased ascii characters. Such names may become reserved for the language."
+    },
+    {
+      "line": 86196,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86199,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86202,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86205,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86218,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86221,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86224,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86227,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86230,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86233,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86236,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86239,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86242,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86245,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86248,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86251,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86254,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86257,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86260,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86263,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86266,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86269,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86272,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 86275,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'nint' to 'void*'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 89131,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'uint'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 88532,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 89727,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 88532,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 89727,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 89774,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'uint'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 91014,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 91014,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 91455,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 91455,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 92622,
+      "column": 54,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 92641,
+      "column": 28,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 92997,
+      "column": 54,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 93016,
+      "column": 28,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 93852,
+      "column": 105,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 94332,
+      "column": 62,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 94862,
+      "column": 119,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 94866,
+      "column": 125,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 94871,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 94871,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 99687,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 108301,
+      "column": 43,
+      "kind": "warning",
+      "code": "CS0675",
+      "message": "Bitwise-or operator used on a sign-extended operand; consider casting to a smaller unsigned type first"
+    },
+    {
+      "line": 108272,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 108287,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 108272,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 108287,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 108691,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 108691,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 109741,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 109741,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 110649,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 110649,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 112438,
+      "column": 65,
+      "kind": "error",
+      "code": "CS1510",
+      "message": "A ref or out value must be an assignable variable"
+    },
+    {
+      "line": 112816,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 112816,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 114526,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 114526,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 115475,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 117075,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 119459,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 119459,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 121930,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 121930,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 124675,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 124675,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 125022,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 125022,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 127391,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 127391,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 127661,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 127661,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 128582,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 129793,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 129793,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 132307,
+      "column": 46,
+      "kind": "warning",
+      "code": "CS0675",
+      "message": "Bitwise-or operator used on a sign-extended operand; consider casting to a smaller unsigned type first"
+    },
+    {
+      "line": 138127,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 138127,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 139752,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 139752,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 140621,
+      "column": 9,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 145759,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 145759,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 149697,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 149697,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 150189,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 150189,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 150841,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 150841,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 151932,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 151932,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 152061,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 152089,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 152061,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 152089,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 157189,
+      "column": 33,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 157737,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 157737,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 158402,
+      "column": 122,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 161107,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 162747,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 162755,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 162801,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 163910,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 164223,
+      "column": 29,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 164554,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 165162,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 167615,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 162747,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 162801,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 163741,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 163910,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 167615,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 167787,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 171893,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 177792,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 178174,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 181439,
+      "column": 21,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 181444,
+      "column": 13,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 185037,
+      "column": 179,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 185165,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 185165,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 186135,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 186135,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 186283,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 186283,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 187315,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 187315,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 187471,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 187471,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 187534,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'ulong' to 'uint'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 188642,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'uint'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 188643,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 188708,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 188708,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 189248,
+      "column": 187,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189252,
+      "column": 187,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189303,
+      "column": 121,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189308,
+      "column": 128,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189311,
+      "column": 130,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189316,
+      "column": 145,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189320,
+      "column": 111,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189323,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 189323,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 189497,
+      "column": 172,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189578,
+      "column": 154,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 189587,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 189587,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 189937,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 190024,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 189937,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 190024,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 190418,
+      "column": 137,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 190550,
+      "column": 36,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 191172,
+      "column": 109,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 191191,
+      "column": 138,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 191194,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 191195,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 191194,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 191195,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 191953,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 191953,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 193745,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'byte'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 193752,
+      "column": 21,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'byte'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 193757,
+      "column": 21,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 193757,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0675",
+      "message": "Bitwise-or operator used on a sign-extended operand; consider casting to a smaller unsigned type first"
+    },
+    {
+      "line": 196325,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 196325,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 196940,
+      "column": 111,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 196976,
+      "column": 126,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 197112,
+      "column": 84,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 197113,
+      "column": 85,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 197114,
+      "column": 85,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 197115,
+      "column": 82,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 197553,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 197553,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 198911,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 198911,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 199893,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 199893,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 200108,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 200108,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 200714,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 200714,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 201701,
+      "column": 33,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 206655,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 206655,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 209668,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 210030,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 210253,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 209668,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 210030,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 210253,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 210673,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 211742,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 215204,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 215204,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 215896,
+      "column": 119,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 215979,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 216190,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 216986,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 217611,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 217629,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 217903,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 217903,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 218551,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 218551,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 222200,
+      "column": 151,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 222222,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 222222,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 222263,
+      "column": 135,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 222353,
+      "column": 9,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 222357,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 229127,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 229127,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 230183,
+      "column": 119,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 230205,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 230205,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 231963,
+      "column": 125,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 232072,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 232072,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 232575,
+      "column": 25,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 232575,
+      "column": 25,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 233043,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 233106,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 234701,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 235175,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 238163,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 238163,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 238724,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 238724,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 239209,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 239209,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 242160,
+      "column": 41,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 245823,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 245823,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 246140,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 246140,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 246399,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 246399,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 247758,
+      "column": 103,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 247761,
+      "column": 94,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 247773,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 247773,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 248288,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 248661,
+      "column": 107,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 249144,
+      "column": 123,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 249436,
+      "column": 80,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 249714,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249755,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249781,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249807,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249853,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249884,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249910,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249915,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 249714,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249755,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249781,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249807,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249853,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249884,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249910,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 249915,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 250299,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 250314,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 253687,
+      "column": 57,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 254319,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 254938,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 255485,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 255655,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 256280,
+      "column": 33,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 256348,
+      "column": 41,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 256397,
+      "column": 65,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 256403,
+      "column": 49,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 256404,
+      "column": 49,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 256973,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '-=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 257019,
+      "column": 13,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 257212,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 258966,
+      "column": 37,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 260924,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 260924,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 261105,
+      "column": 33,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 261106,
+      "column": 33,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 263591,
+      "column": 76,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 263742,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 264008,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 264373,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 264373,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 264556,
+      "column": 123,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 264634,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 264634,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 264681,
+      "column": 130,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 264717,
+      "column": 102,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 266289,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 266289,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 267344,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 267344,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 268041,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 268041,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 268188,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 268272,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 268272,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 268464,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 268464,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 268989,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 268989,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 271460,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 271460,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 271585,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 271585,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 271941,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 271941,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 272183,
+      "column": 124,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 272282,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 272282,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 273187,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 273187,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 276565,
+      "column": 132,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 276570,
+      "column": 141,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 277312,
+      "column": 9,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 277683,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 277683,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 279430,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 279430,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 280684,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 280719,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 280818,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 280818,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 280903,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 280903,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 282109,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 282129,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 283555,
+      "column": 197,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 284224,
+      "column": 167,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 284277,
+      "column": 167,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 285006,
+      "column": 167,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 285063,
+      "column": 167,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 285126,
+      "column": 168,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 285208,
+      "column": 167,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 285811,
+      "column": 168,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 286163,
+      "column": 162,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 286172,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 286172,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 286959,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 286959,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 287343,
+      "column": 101,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 287348,
+      "column": 105,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 287396,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 287396,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 287699,
+      "column": 108,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 288469,
+      "column": 126,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 289156,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 289156,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 289574,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 289575,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 289576,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 289577,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 289578,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'int' and 'ulong'"
+    },
+    {
+      "line": 289655,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 290308,
+      "column": 85,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 290437,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 290437,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 290684,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 291659,
+      "column": 28,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 291678,
+      "column": 13,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '*=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 291681,
+      "column": 13,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '*=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 291693,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 291704,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 291778,
+      "column": 58,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 291683,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 291683,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 292055,
+      "column": 135,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 292348,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 292348,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 292396,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 292396,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 292679,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 292679,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 293430,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 293430,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 293526,
+      "column": 106,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 293863,
+      "column": 154,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 293883,
+      "column": 154,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 294550,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 294550,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 294584,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 294607,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 294626,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 294584,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 294607,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 294626,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 295583,
+      "column": 101,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 296200,
+      "column": 96,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 296226,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 296238,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 296574,
+      "column": 108,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 296744,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 296882,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 297390,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 297390,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 298889,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 298889,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 299187,
+      "column": 125,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 299191,
+      "column": 135,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 299242,
+      "column": 116,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 299315,
+      "column": 124,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 299319,
+      "column": 153,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 299540,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 299540,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 299663,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 299717,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 300106,
+      "column": 139,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 300225,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 300225,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 300453,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 300453,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 301333,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 301333,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 301519,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 301519,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 301613,
+      "column": 187,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 301618,
+      "column": 161,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 301952,
+      "column": 179,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 301957,
+      "column": 153,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 302796,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 303010,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 303010,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 303314,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 303314,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 307439,
+      "column": 13,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'uint' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 307452,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 307452,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 310076,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 310076,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 310678,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 310678,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 311216,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 311216,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 313122,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 313424,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 313424,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 313451,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 313462,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '-=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 314432,
+      "column": 9,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 314437,
+      "column": 17,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 314627,
+      "column": 33,
+      "kind": "error",
+      "code": "CS0034",
+      "message": "Operator '+=' is ambiguous on operands of type 'long' and 'ulong'"
+    },
+    {
+      "line": 314796,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 314844,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 314796,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 314844,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 315298,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 315298,
+      "column": 21,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 316370,
+      "column": 25,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    },
+    {
+      "line": 316647,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 316757,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 316757,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 316992,
+      "column": 146,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 317013,
+      "column": 127,
+      "kind": "error",
+      "code": "CS0221",
+      "message": "Constant value '18446744073709551615' cannot be converted to a 'nint' (use 'unchecked' syntax to override)"
+    },
+    {
+      "line": 317023,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 317023,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 317383,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 318473,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 318473,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 319181,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 319181,
+      "column": 13,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 319731,
+      "column": 25,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 319731,
+      "column": 25,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 320878,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 320878,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 321362,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 321362,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 321918,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 321918,
+      "column": 17,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 322081,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0162",
+      "message": "Unreachable code detected"
+    },
+    {
+      "line": 322081,
+      "column": 9,
+      "kind": "warning",
+      "code": "CS0164",
+      "message": "This label has not been referenced"
+    },
+    {
+      "line": 322301,
+      "column": 9,
+      "kind": "error",
+      "code": "CS0266",
+      "message": "Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?)"
+    }
+  ]
+}

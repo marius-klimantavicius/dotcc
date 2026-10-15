@@ -2,38 +2,52 @@
 
 Updated 2026-10-15. Approved plan commit: `e40280bea`.
 
-Current state: frozen source snapshots 1–5 and exact build/command receipts are
-under `/mnt/storage/roslynobj-csharp-20261015/t3/value-storage`. The staged
-checkpoint uses snapshot 4 product files; subsequent working changes are kept
-separate. The full SQLite pass 3 has 57 first blockers, not complete emission:
-30 compound count/offset, 20 volatile, five static forms and two shift widths.
-See [T3-PROGRESS.md](T3-PROGRESS.md) and its committed reports.
+Current checkpoint is `59d06b51d`, using exact snapshot 4 product files.
+Subsequent immutable source snapshots 6–9, build receipts and fixtures are under
+`/mnt/storage/roslynobj-csharp-20261015/t3/value-storage`.
 
-Verified new bounded evidence: production CLI intrinsic fulfillment (18 expected
-outcomes), memory plans (21), selected glibc loader (21), static state 306/313,
-allocated flexible tails including header padding, value-only unsigned128 and
-C aggregate constant-prvalue copying. The static checker 406/413 prediction was
-wrong; native and generated 306/313 plus exact observations are authoritative.
+The working source now has passing bounded native/JIT/NativeAOT evidence for
+natural-width pointer compounds and shifts, signed32/binary64 volatile memory,
+four direct static strings and one zero static record, and typed scalar `va_arg`.
+The last-four fixture passes all 13 observations and six events twice in JIT/AOT:
+`t3/last-four-reproduction/last-four-receipt.json`. Width proof has 23 expected
+phase outcomes at `t3/memory-widths-reproduction/memory-widths-receipt.json`.
+These extend the accepted checkpoint; they do not establish SQLite execution.
+A normal loader regression includes clearing the cached native TLS pointer before
+release; destructor reentry remains unexercised.
 
-Next work is driven by public facts, not a broader prerequisite campaign:
+Full SQLite pass 4 has four first blockers after 346.96 seconds: three uses of a
+top-level volatile formal hit a representation classifier, and one function needs
+typed `va_arg`. Public facts are `t3/sqlite-operator-facts-4.json`; all 38 actual
+`va_arg` identities are prvalues using the already admitted scalar cursor.
+The classifier now inspects representation without fetching a value; execution
+and native-boundary volatile guards remain. The typed plan captures its cursor
+once and reuses the existing scalar adapter.
 
-- Inventory/planner worker: actual natural signed/unsigned pointer offsets,
-  unsigned32/64 shifts, signed32/binary64 volatile fetch/store/local-init forms.
-  Facts are `t3/sqlite-operator-facts-3.json` (51 bodies plus a separately retained
-  representation diagnostic). The earlier probe missing a body named program
-  is preserved; that representation diagnostic was never assigned a guessed body.
-- Storage/provider worker: four direct `initk_static` strings and one `initk_none`
-  zero record, plus clearing the matching cached native loader TLS pointer before
-  release. These changes and their new activation fixture are outside frozen 4.
-- Coordinator: core explicit local-init and pure representation hooks, serialized
-  focused proofs, then the next unchanged full SQLite emit/build diagnostic path.
-  The main execution Unwrap remains guarded; no volatile read is inferred from
-  a pointer/type view. No new full T0 inventory is needed.
+Full-object pass 5 completed from frozen snapshot 8: zero emitter errors, all
+4,212 bodies and 486 records, 344.39 seconds. It retains the exact four-file
+unpublished `t3/sqlite-emission-5-candidate`. First measured build took 22.65
+seconds, compiled native ABI C and reported 169 C# errors: pointer constant and
+global-address view casts, mixed-width assignments/compounds, and one ref-place projection.
+No budget violation. Exact diagnostics are
+`t3/sqlite-emission-5-compiler-diagnostics.json`, logs/receipt under
+`t3/sqlite-emission-5-build`. All 23 harness API surfaces validate. The next
+critical work is emitter correction followed by a new immutable generation/build.
+No candidate file may be hand-edited to establish product acceptance.
 
-All 88 host bindings remain diagnostic candidates; bounded provider receipts do
-not prove every contract. SQLite T3/T4 SQL execution has not run. At checkpoint
-assembly no full-object process remains active; follow the live coordinator for
-currently scheduled focused builds/probes. Preserve every failed attempt.
+The generated SQLite harness and explicit candidate manifest tooling are ready
+under `tests/SqliteGenerated` and `acceptance/sqlite`. Their C# has not yet been
+compiled against a buildable candidate. The preparation manifest is under
+`t3/sqlite-generated-preparation`; it preserves all 88 explicit native binding
+identities and leaves 15 intrinsics to the recorded runtime lowerings. All 88
+bindings remain candidates, not accepted whole-provider coverage. T3/T4 generated
+SQL execution has not run.
+
+Ownership: coordinator integrates, schedules all builds/exports and owns Git.
+The inventory worker documents the focused accepted width/cursor evidence; the
+emission worker reviews the actual candidate read-only, then will take concrete
+compiler blockers. Root supervises read-only. Preserve all failed attempts and
+immutable snapshots. No new full T0 inventory is needed.
 
 ## Earlier checkpoint history
 

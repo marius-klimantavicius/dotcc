@@ -4,12 +4,15 @@ using System.Text.Json;
 using RoslynObj;
 using RoslynObj.CSharp;
 
-if (args.Length != 4)
-    throw new ArgumentException("SqliteEmissionProbe PINNED_OBJECT PROVIDER_PLAN RUNTIME_PROJECT NEW_REPORT");
+if (args.Length is not (4 or 5))
+    throw new ArgumentException("SqliteEmissionProbe PINNED_OBJECT PROVIDER_PLAN RUNTIME_PROJECT NEW_REPORT [NEW_DIAGNOSTIC_CANDIDATE_DIRECTORY]");
 var inputPath = Path.GetFullPath(args[0]);
 var providerPlanPath = Path.GetFullPath(args[1]);
 var reportPath = Path.GetFullPath(args[3]);
 if (File.Exists(reportPath)) throw new ArgumentException("Report path must be new.");
+var candidatePath = args.Length == 5 ? Path.GetFullPath(args[4]) : null;
+if (candidatePath is not null && (Directory.Exists(candidatePath) || File.Exists(candidatePath)))
+    throw new ArgumentException("Diagnostic candidate output must be a new directory.");
 const string expectedObjectSha = "e26d8937c94f5ccc9e3fca7915f53c4a31a1bb63432419a847d99394ab06bb1c";
 var inputSha = Hash(inputPath);
 if (inputSha != expectedObjectSha) throw new ArgumentException("Pinned full-feature SQLite object identity mismatch.");
@@ -42,6 +45,22 @@ try
     var result = new CSharpEmitter().Emit([input], emissionOptions);
     Console.Error.WriteLine("stage=diagnostic-report");
     var errors = result.Diagnostics.Count(d => d.Severity == DiagnosticSeverity.Error);
+    var candidateFiles = new List<object>();
+    if (errors == 0 && candidatePath is not null)
+    {
+        Console.Error.WriteLine("stage=diagnostic-candidate-files");
+        Directory.CreateDirectory(candidatePath);
+        foreach (var file in result.Files)
+        {
+            var path = Path.GetFullPath(file.RelativePath, candidatePath);
+            if (!path.StartsWith(candidatePath + Path.DirectorySeparatorChar, StringComparison.Ordinal)
+                || Path.GetFileName(path) == "completion.json")
+                throw new InvalidOperationException("An emitted diagnostic file escaped its output or claimed production completion.");
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.WriteAllText(path, file.Content);
+            candidateFiles.Add(new { file.RelativePath, sha256 = Hash(path), bytes = new FileInfo(path).Length });
+        }
+    }
     report = new
     {
         status = errors == 0 ? "emission-returned-without-diagnostics-unpublished" : "diagnostics-incomplete-translation",
@@ -55,6 +74,11 @@ try
         artifact = input.Manifest.ArtifactIdentity,
         translationComplete = false,
         outputPublished = false,
+        productionPublished = false,
+        candidateGenerated = errors == 0 && candidatePath is not null,
+        buildable = (bool?)null,
+        diagnosticCandidate = candidatePath,
+        candidateFiles,
         emittedFunctions = result.EmittedFunctionCount,
         emittedRecords = result.EmittedRecordCount,
         returnedFiles = result.Files.Count,

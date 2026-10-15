@@ -9,10 +9,18 @@ public static unsafe class TargetVolatileMemory
     { RequireAddress(address, 2); return Volatile.Read(ref *(ushort*)address); }
     public static uint LoadUInt32(void* address)
     { RequireAddress(address, 4); return Volatile.Read(ref *(uint*)address); }
+    public static int LoadInt32(void* address)
+    { RequireAddress(address, 4); return Volatile.Read(ref *(int*)address); }
+    public static double LoadDouble(void* address)
+    { RequireAddress(address, 8); return Volatile.Read(ref *(double*)address); }
     public static void StoreUInt16(void* address, ushort value)
     { RequireAddress(address, 2); Volatile.Write(ref *(ushort*)address, value); }
     public static void StoreUInt32(void* address, uint value)
     { RequireAddress(address, 4); Volatile.Write(ref *(uint*)address, value); }
+    public static void StoreInt32(void* address, int value)
+    { RequireAddress(address, 4); Volatile.Write(ref *(int*)address, value); }
+    public static void StoreDouble(void* address, double value)
+    { RequireAddress(address, 8); Volatile.Write(ref *(double*)address, value); }
 
     private static void RequireAddress(void* address, uint width)
     {
