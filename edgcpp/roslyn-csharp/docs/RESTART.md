@@ -1,6 +1,6 @@
 # Implementation restart state
 
-Updated 2026-10-15. Approved plan commit: `e40280bea`.
+Updated 2026-10-16. Approved plan commit: `e40280bea`.
 
 Current prior committed checkpoint: `a5b586f19`; prior stateful checkpoint
 `bc5682b5c`. T0/T1/T2 fixture gates and T3 full production SQLite publication and
@@ -34,12 +34,21 @@ request, publishes atomically and directly compares all four sources to the
 actual CLI baseline. Existing publication, stage and inputs remain unchanged.
 This is restart from input, not partial-stage reuse. Runtime stays snapshot 11.
 
-Readability-only product snapshot 13 contains the same phase hook plus guarded
-scalar switch dispatch and proven pure/null statement suppression. Focused
-control/extrema proof then a new full CLI publication/build/runtime are next;
-use that new artifact for downstream remaining T4 workloads. Extended API
-native/JIT/AOT execution now passes; compact receipt is
-`acceptance/sqlite/extended-apis-report.json`.
+Readability-only product snapshot 13 now PASSES complete CLI publication and
+fresh 19-phase production JIT/NativeAOT execution, plus the 129-statement matrix
+against both built final binaries. Compact audit:
+`acceptance/sqlite/readable-production-audit.json`; full output:
+`t4/sqlite-readable-generated-1`; fresh API baseline:
+`t4/sqlite-readable-production-run-1/api-surface.json`. All 4,212 bodies and
+103 imports remain, reports differ only by output.directory. The code has 177
+C# switch dispatches and removes 6,660 pure zero discards. Root accepts bounded
+readability; no further cosmetic regeneration is requested.
+
+Concurrency, failure, tokenizer and time/random/allocation provider harnesses
+all pass JIT against this exact final publication. Their four NativeAOT gates
+are running serialized in `t4/downstream-aot-driver-1.py`. Frozen sources and
+API metadata are `t4/{concurrency,failures,tokenizer,provider-contracts}-source-1`
+and corresponding `-metadata-1` directories. No builder may overlap this driver.
 
 Ownership: coordinator owns Git and all serialized builds/exports; root reviews
 read-only. Emission worker owns NEW SqliteFeatureMatrix SQL workload/docs.

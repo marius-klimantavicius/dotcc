@@ -47,3 +47,14 @@ The complete source-13 CLI publication is currently running under the unchanged
 1800-second / 8-GiB budget at `t4/readability-production-translate-1`, output
 `t4/sqlite-readable-generated-1`. Full publication/build/runtime evidence is
 still required before closing the full SQLite readability gate.
+
+
+Full source-13 publication and fresh production execution now PASS. The compact
+[audit](../acceptance/sqlite/readable-production-audit.json) pins the exact
+completion, request, 19-phase JIT/AOT receipt and final 129-statement matrix runs.
+All 4,212 required bodies/103 imports remain; reports differ from the previous
+publication only by output.directory. Generated.cs is 18,360,179 bytes, with
+177 actual C# switch dispatches and zero standalone `_ = 0;` statements. The
+project/native ABI/import-manifest sources are byte-identical to the previous
+publication. Root accepted the bounded full SQLite readability review; remaining
+parentheses/volatile verbosity are documented debt, not another cleanup gate.

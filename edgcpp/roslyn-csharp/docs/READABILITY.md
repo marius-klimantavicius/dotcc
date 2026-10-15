@@ -32,26 +32,29 @@ to later supported C++ execution. The later [native aggregate proof](T2-AGGREGAT
 review and execution evidence.
 
 
-## Full SQLite review remains open
+## Full SQLite bounded review
 
-Read-only samples of pass 6 retain recognizable `sqlite3Strlen30`,
-`sqlite3VdbeMemGrow` and Kahan helper names, ordinary branches/loops, pointer fields
-and ownership calls. The current full output still has excess parentheses and
-global qualification, repeated same-type casts/unchecked wrappers, discarded
-result temporaries, emitted null `_ = 0;` statements and redundant braces.
-The 317 compile warnings include unreachable/unreferenced labels and reserved-name
-noise. These are concrete T4 review items; the initial JIT/AOT smoke is execution
-evidence rather than full readability acceptance.
+The final source-13 review passes with fresh production JIT/NativeAOT execution.
+[The compact audit](../acceptance/sqlite/readable-production-audit.json) records
+complete publication, the 19 initial execution phases and a cheap final-source
+12-case/129-statement regression in both runtimes. The exact unchanged input
+retains all 4,212 required bodies and 103 required imports. Program reports are
+identical to the prior publication after removing only output.directory.
 
-Any cleanup must use retained pure/null operations, selected types and proven
-stable places, preserving branch-local effects and memory access counts. It must
-not reconstruct source syntax or alter captured ordering/materialization. Review
-representative full SQLite C# after production execution and the stateful checks;
-do not introduce a broad simplification gate ahead of those tests.
+Read samples retain recognizable sqlite3Strlen30, sqlite3VdbeMemGrow,
+sqlite3VdbeExec, sqlite3InvokeBusyHandler, sqlite3MPrintf and Kahan helper names,
+pointer fields, ownership calls, ordinary branches/loops, callback identities and
+explicit va_list/volatile accesses. The narrow cleanup emits 177 C# switch
+dispatches to existing labels and removes all 6,660 standalone `_ = 0;` statements.
+Generated.cs shrinks from 18,518,886 to 18,360,179 bytes; native ABI C, import
+manifest and project files remain byte-identical. Selector occurrence, labels,
+fallthrough and GNU range fallback retain their captured execution behavior.
+The focused [14-phase proof](READABILITY-DISPATCH.md) preserves native/JIT/AOT
+21/23-event transcripts, including signed/unsigned extrema and selector effects.
 
-The narrow scalar-dispatch cleanup passes its focused 14-phase native/JIT/AOT
-gate: [details](READABILITY-DISPATCH.md). It replaces only admitted scalar case
-comparisons with C# switch dispatch to retained labels and omits validated pure
-scalar discard statements. Source correspondence remains explicit; other casts,
-volatile helper accesses and braces are retained. A new complete source-13 CLI
-publication/build/runtime check is running before full SQLite acceptance.
+Root independently accepted this bounded readability review after execution.
+Parentheses, redundant braces/semicolons, some cast/discard temporaries and verbose
+explicit volatile helpers remain documented debt. No source reconstruction,
+load/store folding or algebraic cast campaign was introduced. Those cosmetic
+items do not require another regeneration before completing the remaining T4
+contracts. Broader C++ cleanup/EH review belongs to later supported execution.

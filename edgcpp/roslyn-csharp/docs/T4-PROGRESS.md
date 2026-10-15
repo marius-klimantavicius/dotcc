@@ -19,7 +19,7 @@ The required matrix is in [ACCEPTANCE.md](ACCEPTANCE.md). Current finite evidenc
 | Runtime boundaries | 103 exact required selections: 88 hash-pinned candidate host bindings + 15 runtime intrinsics; targeted errno/loader/callback/vararg/storage proofs | Complete selected-provider audit against exercised T4 paths and explicit remaining variants |
 | Failure paths | Constraint/rollback native proof and expected BUSY finalize behavior | Controlled heap-refusal/pager-IOERR native proof passes; generated proof next |
 | Repeat/restart | Original deterministic fixture generation; production/candidate four sources identical | Full input real cancellation and same-request fresh-process restart pass; all four source files byte-identical |
-| Readability | T2 narrow review passes; full SQLite names/structure reviewed provisionally | Scalar switch/pure-discard cleanup passes focused 21/23-event JIT/AOT proof; full new publication/runtime running |
+| Readability | T2 narrow review passes; full SQLite names/structure reviewed provisionally | Bounded full SQLite readability review passes focused and full new publication/JIT/AOT plus129SQL regression; cosmetic debt documented |
 
 Frozen receipts:
 
@@ -30,6 +30,7 @@ Frozen receipts:
 - [Snapshot and RBU lifecycles](../acceptance/sqlite/maintenance-report.json)
 - [Repeat generation and cancellation/restart](../acceptance/sqlite/restart-report.json)
 - [Carray, normalization, metadata and extended errors](../acceptance/sqlite/extended-apis-report.json)
+- [Readable complete publication and final SQL regression](../acceptance/sqlite/readable-production-audit.json)
 
 Controlled failure and concurrency native-only proofs are preparatory; their
 generated evidence remains required. Successful finite rows do not establish

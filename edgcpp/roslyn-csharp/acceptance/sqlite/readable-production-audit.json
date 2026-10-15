@@ -1,0 +1,136 @@
+{
+  "gate": "T4-readable-full-SQLite-publication-and-execution",
+  "status": "passed",
+  "t4Complete": false,
+  "sourceCheckpoint": "04c11ce0d",
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t3/value-storage/snapshot-13/source-snapshot.json",
+    "sha256": "b9ba333648ce3aa9534b9c01fa82aa73a0df0093e5608341e07e94f037c97c4f",
+    "bytes": 60925
+  },
+  "request": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readability-production-preparation-1/manifest.json",
+    "sha256": "28ade56893a559b3f6e00e016f4cdc6473b0297e9323594221e8d585aa476481",
+    "bytes": 99152
+  },
+  "requestDifferenceFromPrevious": "only output.directory",
+  "translation": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readability-production-translate-1/run.json",
+    "sha256": "15631b2e70a074916d765cc5f46bc3236d96ee30d154ae57abc60260553687e2",
+    "bytes": 1163
+  },
+  "metrics": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readability-production-translate-1/metrics.json",
+    "sha256": "322b1958819226d4a41df94f1e2421072a17a97fd836c90ae9f84d3e838f3011",
+    "bytes": 131
+  },
+  "completion": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/completion.json",
+    "sha256": "9c0c8f3473589e05ff52847a21e8c3040ebcce42d3819ecaf0c765ca368261c6",
+    "bytes": 1159
+  },
+  "programReport": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/program-report.json",
+    "sha256": "ff09c57be595d77460bcdbb49f325adcdf720e6c075ef1015409c4a46b8b0045",
+    "bytes": 36639941
+  },
+  "programReportDifferenceFromPrevious": "only output.directory",
+  "generatedFiles": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs",
+      "sha256": "4daa4ca81064f26f31a954a8275da11684d0ac22b975b95cd8c6137cd5f44dbd",
+      "bytes": 18360179
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.csproj",
+      "sha256": "c6cbf98d50f4aa823054efafb45d1c75e00909aeb08c5cdf1b91d8bef1c3f195",
+      "bytes": 1449
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.Abi.c",
+      "sha256": "3b02d6e5d476b6da28c43c4981ba0f668d3a227248872c1e44a629309c5caf7a",
+      "bytes": 1193040
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.NativeImports.json",
+      "sha256": "a050e7fa3c7bb6fb53b395585cc759b2a8321468e263d887d50262d43887e3bc",
+      "bytes": 320995
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/program-report.json",
+      "sha256": "ff09c57be595d77460bcdbb49f325adcdf720e6c075ef1015409c4a46b8b0045",
+      "bytes": 36639941
+    }
+  ],
+  "unchangedNativeAndProjectSources": {
+    "Generated.csproj": true,
+    "Generated.Abi.c": true,
+    "Generated.NativeImports.json": true
+  },
+  "readability": {
+    "oldBytes": 18518886,
+    "newBytes": 18360179,
+    "oldScalarSwitchDispatches": 0,
+    "newScalarSwitchDispatches": 177,
+    "oldStandaloneZeroDiscards": 6660,
+    "newStandaloneZeroDiscards": 0
+  },
+  "retainedBodyCount": 4212,
+  "requiredImports": 103,
+  "focusedProof": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/sqlite/readability-focused-report.json",
+    "sha256": "ec90c432b244ff4351f474f394af487a8a2dbb4d4f98e8c38502417166b5042c",
+    "bytes": 26141
+  },
+  "initialExecution": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-production-run-1/generated-sqlite-report.json",
+      "sha256": "aad6124458e36e0f535e697038a3aafd8129569847ade1d420657abdfae11c5c",
+      "bytes": 290785
+    },
+    "phases": 19,
+    "sourcePublished": true,
+    "scope": "Fresh production JIT/AOT bind/reset/clear plus original43SQL statements",
+    "dependencies": "Generated+Runtime+test harness only, no public reader SQLite package or native SQLite application"
+  },
+  "finalFeatureMatrix": [
+    {
+      "runtime": "jit",
+      "observations": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readable-sql-features-jit-result-1/report.json",
+        "sha256": "f26381e7de10f698d36b9d32b0e2f9fa2bbd52b715ba3d5e9bf7f15198df7a93",
+        "bytes": 77894
+      },
+      "measured": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readable-sql-features-jit-run-1/run.json",
+        "sha256": "cca981ead0cdb7e11cfe6a1a02c71471c5e75051da81fe0a01b83922da304f5a",
+        "bytes": 1311
+      },
+      "caseCount": 12,
+      "statementCount": 129,
+      "nativeComparison": "exact-typed-cases-equal"
+    },
+    {
+      "runtime": "aot",
+      "observations": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readable-sql-features-aot-result-1/report.json",
+        "sha256": "628a77bf5a199b300318717df9d82f8de4ca5f501a8ba92b9523cfd629e90e34",
+        "bytes": 75141
+      },
+      "measured": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t4/readable-sql-features-aot-run-1/run.json",
+        "sha256": "2107620732fbf62e0b31547e15993e8a44724c45704120d2a404f56a91c62938",
+        "bytes": 1290
+      },
+      "caseCount": 12,
+      "statementCount": 129,
+      "nativeComparison": "exact-typed-cases-equal"
+    }
+  ],
+  "review": "Root reviewed ordinary names/branches, pointer ownership, explicit va_list, callbacks and volatile helpers; new VdbeExec scalar switch preserves retained labels. Bounded readability accepted; extra parentheses/braces/volatile helper verbosity remain documented debt.",
+  "scopeLimits": [
+    "Earlier persistence/API/maintenance proofs retain their actual source11 provenance; not relabeled source13 runs",
+    "Downstream concurrency/failure/tokenizer/provider gates target this exact source13 publication",
+    "Existing full-input cancellation/restart proof remains tied to frozen source12; this change only affects admitted scalar dispatch/pure discard output style, focused and full execution revalidated"
+  ]
+}
