@@ -8,8 +8,8 @@ configured finite Linux x64 acceptance; source remains
 with original source 13/runtime 11 attribution. Broader C++ T5 and portability/
 scale T6 remain open. This section overrides historical state below.
 
-The latest verified product milestone is the cohesive borrowed-member Boolean
-conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,
+The latest verified product milestone is `16a07ae6b`, the cohesive borrowed-member
+Boolean conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,
 `c64ab5dec`, `303cbaf90`. Compact receipt:
 `acceptance/lifetimes/boolean-call-chain-report.json`, SHA-256
 `c9204394017d2120258c9b1f85f6e0f5b328bbd1c5545f624b7168fc99a2786c`.
@@ -67,23 +67,46 @@ adds explicit RoutineType discrimination. Do not rerun successful proof for docs
 Six product paths are complete: new OrdinaryMethodGraphs partial and narrow main,
 Lifetimes, OrdinaryMethods, Calls and ExpressionPlans hooks. Coordinator
 (gpt-6.1-sol high) alone owns Git/shared integration and serialized builds/exports;
-implementers remain gpt-6.1-sol xhigh, root GPT-6-Astra supervises read-only. Emission
-holds product files; inventory completed checker/fixtures/proof note. Preserve all
+implementers remain gpt-6.1-sol xhigh, root GPT-6-Astra supervises read-only. Product files are frozen. Emission owns the additive DuckdbSliceFacts tool mode;
+inventory owns read-only selector-context inspection and later measured note. Preserve all
 immutable snapshots, attempts and the two unrelated pre-existing T3 aggregate
 fixtures. Exact paths only; never stage all or clean unrelated user files.
 
-Next root-requested step after saving this milestone: propose one bounded tool-only
-batch for the two remaining actual direct targets in the retained Vector accessor:
-pointer-returning operator-arrow and inner byte-returning accessor. Select anew
-through current public call/callee/TargetMethod identities and existing And→accessor
-provenance; names/old locators are display labels only. Trace each actual body once
-under explicit per-body limits, no recursive helper or layout expansion. Record
-pointer result/receiver/value views, Boolean/enum/scalar distinctions, actual order
-flags (including operator-call exceptions) and dependencies honestly. Results must
-establish the next concrete gap before product scope. Current address-only pointer
-profile grants no returned-pointer/dereference/virtual/full DuckDB closure. Existing
-accessor evidence is partial related metadata; borrowed return, Boolean bodies and
-receiver layouts are complete only within their separate bounded scopes.
+The additive `accessor-tail` tool-only batch now passes two measured phases with
+zero issues. Receipt `acceptance/duckdb/accessor-tail-trace-report.json` has SHA-256
+`5e69d607e9ae3e64c5728e721ca07823144c1205015fb30aba6e79bc730c5461`.
+Frozen `t5/duckdb-accessor-tail-source-1` contains 48 code/reader/build inputs;
+Program.cs SHA-256 is
+`3d41ef1355526226a7dce1202d7d5b4d981ed12d6b598ccc80936f8abf90a270`.
+Both source inventories and unchanged pinned entry 316 hash verify. Build/trace
+elapsed 6.602/0.904 seconds, sampled tree RSS 449,318,912/91,926,528 bytes,
+within 600-second/4-GiB and 120-second/1-GiB budgets. No process remains active.
+
+Two newly selected bodies contain 5/35 typed identities and occurrences, with
+59 combined shallow types and three untraversed one-hop dependencies. Actual
+inner VectorBuffer getter returns its unsigned-byte enum-associated field at
++24 in a captured complete polymorphic 56/8 receiver; current address-only
+pointer admission does not permit that dereference. Source noexcept is null. Actual pointer-returning operator retains the constant-1
+if, pointer-local executable initialization through selected get(), selected
+AssertNotNull(bool !ptr), return ptr, and else branch calling selected std
+operator-arrow through the captured base receiver. No pointer shortcut, guard
+elimination or source-name behavior is authorized. Parent arrow call retains
+both order flags false; declared reference GetBufferRef is excluded despite its
+ordinary pointer expression result. Parent 22/receiver 4 selection identities are
+outside target-body counters. All translation/link/generated/full-related-type/
+closed-no-throw flags remain false. See [the scoped facts](DUCKDB-ACCESSOR-TAIL.md).
+
+Next authorized work after this tool/evidence checkpoint: inspect the three
+actual selected dependencies in one bounded tool-only batch, reusing actual-target
+selection/traversal rather than a large special-case selector. Preserve exact
+source/execution signatures, pointer-local initializer relationships, guard/throw/
+EH obligations and nullable noexcept. Body-bound hits remain partial. No product
+scope is authorized until these facts establish the cohesive requirement. Product
+remains `16a07ae6b`; coordinator schedules immutable freeze/build/trace and Git,
+emission owns additive tool code, inventory owns read-only measured notes.
+Current address-only pointer capability grants no returned-pointer/dereference/
+virtual/full DuckDB closure. Existing accessor metadata evidence remains partial;
+other scoped bodies/layout facts retain original completion/attribution limits.
 
 ## Earlier accepted checkpoint history
 
