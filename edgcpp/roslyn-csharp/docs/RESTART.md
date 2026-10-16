@@ -62,7 +62,7 @@ partial and main/Lifetimes/OrdinaryMethods hooks). Inventory owns completed chec
 three genuine fixtures and proof note. Exact paths only when committing; preserve
 the two unrelated pre-existing T3 aggregate fixtures and all failed artifacts.
 
-Current tool-only Boolean conversion inspection passes within its declared
+Tool/evidence checkpoint `0f4849b67` saves the Boolean conversion inspection, which passes within its declared
 one-body/shallow-type scope. Compact receipt
 `acceptance/duckdb/boolean-conversion-trace-report.json`, SHA-256
 `190389570907e489242aba5128410b35a4b791e3d096c7412ee4403c9486a1e1`,
@@ -84,14 +84,35 @@ base and other record association edges remain explicitly unexpanded. All
 translator/link/generated-execution/full-closure flags are false. Read
 [the bounded facts](DUCKDB-BOOLEAN-CONVERSION.md).
 
-Next proposed read-only step: reproduce the same current-input selector, then
-follow the selected body's sole actual direct-call callee/TargetMethod equality
-and trace only that dependency body under the same 64-operation/256-occurrence/
-depth 32, 16-dependency/64-shallow-type limits. Do not invent a pointer-test adapter
-from a name, use old locators as handles, scan unrelated units or expand full
-metadata closure. Root reviews actual findings before product scope. Emission owns
-the tool, inventory owns the bounded note, coordinator alone schedules frozen
-builds/runs/Git. Product remains de39c8bb9; no Runtime/provider changes.
+The next selected callee inspection also passes within its separate one-body/
+shallow scope. Receipt `acceptance/duckdb/boolean-callee-trace-report.json`, SHA-256
+`656dc52a2fe233c94b510dba83193b27fd4657fcb257e1e0a115ab0a5a3981b4`,
+records two successful measured phases, 48 frozen source/build files, unchanged
+input, 13 identities/occurrences, 40 shallow types and no dependencies/issues.
+Full facts: `t5/duckdb-boolean-callee-facts-1.json`; source:
+`t5/duckdb-boolean-callee-source-1`. No active builder/export/test remains.
+
+Actual selected body assigns a Boolean local from the retained cast of pointer
+field inequality against exact same-pointer-type integer zero, then returns that
+local. No calls or EH/lifetime associations occur. At the selected parent call,
+actual/formal receiver type 61 and const pointee 70 are identical; execution
+symbol 82 has its own const-pointer-object wrapper 98. Parent receiver expression
+is actual address→generated base field 80 at offset 0→internal field 79 at offset
+0, with exact public identities and layouts, no synthesized adjustment. Root
+record 69's nonvirtual base 110/subobject 111, refcount field type 109 and other
+base/partner/table associations remain explicitly unexpanded. Empty-base storage,
+ownership, full metadata closure and NoThrow/product admission are not proven.
+
+After saving the scoped checkpoint, root requested the next cohesive reusable
+implementation proposal toward the actual accessor chain: ordinary managed const
+receivers, selected Boolean conversion roles, captured pointer-test/local/call
+operations and receiver alias/field/base relationships. Identify the specific
+actual layout/base facts still required and propose genuine capture fixtures;
+do not add another one-body trace without a concrete adapter gap. No product
+edits before facts/proposal review, no name-based shared_ptr behavior, no NoThrow
+cache widening or DuckDB execution claim. Emission prepares the proposal,
+inventory maintains the scoped notes, and coordinator owns builds/runs/Git.
+Product remains de39c8bb9; Runtime/providers remain unchanged.
 
 ## Earlier accepted checkpoint history
 

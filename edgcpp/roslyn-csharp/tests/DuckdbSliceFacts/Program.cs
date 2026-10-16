@@ -10,9 +10,9 @@ const string pinnedSha256 = "cf385364234784aa0d748781d06f74161ad51d28a6a34215449
 var arguments = args.Chunk(2).ToArray();
 if (arguments.Any(pair => pair.Length != 2 || pair[0] is not ("--input" or "--output" or "--mode")) ||
     arguments.Select(pair => pair[0]).Distinct().Count() != arguments.Length || !arguments.Any(pair => pair[0] == "--output"))
-    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor|buffer-ref|boolean-conversion] --output NEW_REPORT.json");
+    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor|buffer-ref|boolean-conversion|boolean-callee] --output NEW_REPORT.json");
 var mode = arguments.FirstOrDefault(pair => pair[0] == "--mode")?[1] ?? "four-roots";
-if (mode is not ("four-roots" or "accessor" or "buffer-ref" or "boolean-conversion")) throw new ArgumentException("Unknown explicit root-selection mode.");
+if (mode is not ("four-roots" or "accessor" or "buffer-ref" or "boolean-conversion" or "boolean-callee")) throw new ArgumentException("Unknown explicit root-selection mode.");
 var inputPath = Path.GetFullPath(arguments.FirstOrDefault(pair => pair[0] == "--input")?[1] ?? pinnedPath);
 var outputPath = Path.GetFullPath(arguments.Single(pair => pair[0] == "--output")[1]);
 if (File.Exists(outputPath)) throw new ArgumentException("The evidence report must have a fresh path.");
@@ -20,7 +20,7 @@ var watch = Stopwatch.StartNew();
 var before = Hash(inputPath);
 if (before != pinnedSha256) throw new InvalidDataException("This bounded trace accepts only the frozen core entry 316 content hash.");
 using var input = RoslynObject.Open(inputPath, new ReadOptions { CachedRowCount = 4096, CachedPageCount = 128, PageSize = 128 });
-var probe = new SliceProbe(input, mode != "four-roots", mode == "buffer-ref", mode == "boolean-conversion");
+var probe = new SliceProbe(input, mode != "four-roots", mode == "buffer-ref", mode is "boolean-conversion" or "boolean-callee", mode == "boolean-callee");
 var report = probe.Build();
 var after = Hash(inputPath);
 report["input"] = new { path = inputPath, sha256 = before, bytes = new FileInfo(inputPath).Length, afterSha256 = after, unchanged = before == after };
@@ -34,7 +34,7 @@ return report["traceComplete"] is true ? 0 : 3;
 
 static string Hash(string path) { using var stream = File.OpenRead(path); return Convert.ToHexStringLower(SHA256.HashData(stream)); }
 
-internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, bool bufferReferenceRoot = false, bool booleanConversionRoot = false)
+internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, bool bufferReferenceRoot = false, bool booleanConversionRoot = false, bool booleanCalleeRoot = false)
 {
     private const int NameLimit = 64, SymbolsPerKey = 4, ConstantUnits = 256;
     private int RootLimit => accessorRoot ? 1 : 4;
@@ -63,6 +63,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
     private const int BufferParentOperationLimit = 64;
     private Dictionary<string, object?>? bufferReferenceSelection;
     private Dictionary<string, object?>? booleanConversionSelection;
+    private Dictionary<string, object?>? booleanCalleeSelection;
     private string? currentRoot;
     private string? currentPath;
     private HashSet<VariableSymbol> rootStorage = [];
@@ -124,7 +125,8 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                     selector["definedCandidates"] = functions.Select(Ref).ToArray();
                     var target = SelectAccessorDependency(functions);
                     selector["selected"] = new[] { Ref(target) };
-                    selected.Add(bufferReferenceRoot ? SelectBufferReferenceInitializer(target) : booleanConversionRoot ? SelectBooleanConversion(target) : target);
+                    var bodyTarget = bufferReferenceRoot ? SelectBufferReferenceInitializer(target) : booleanConversionRoot ? SelectBooleanConversion(target) : target;
+                    selected.Add(booleanCalleeRoot ? SelectBooleanCallee(bodyTarget) : bodyTarget);
                     continue;
                 }
                 if (!accessorRoot && functions.Length != 2) AddIssue("selection-count", "The accepted sample had exactly two defined functions for this retained name.");
@@ -135,6 +137,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             {
                 TraceRoot(function);
                 if (bufferReferenceRoot) roots[^1]["referenceReturnFactsNotAdmission"] = ReferenceReturnFacts(function);
+                else if (booleanCalleeRoot) roots[^1]["selectedCalleeFactsNotAdmission"] = BooleanConversionFacts(function);
                 else if (booleanConversionRoot) roots[^1]["booleanConversionFactsNotAdmission"] = BooleanConversionFacts(function);
                 else if (accessorRoot) roots[^1]["accessorFactsNotAdmission"] = AccessorFacts(function);
             }
@@ -145,9 +148,11 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
         catch (TraceBound error) { AddIssue("truncation-or-bound", error.Message); }
         catch (Exception error) { AddIssue("reader-or-trace-failure", error.Message); }
         var manifest = input.Manifest; var statistics = input.Statistics;
-        var result = Row(("probeVersion", booleanConversionRoot ? 5 : bufferReferenceRoot ? 4 : accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
+        var result = Row(("probeVersion", booleanCalleeRoot ? 6 : booleanConversionRoot ? 5 : bufferReferenceRoot ? 4 : accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
             ("inventoryOnly", true), ("translatorAccepted", false), ("linkClosureComplete", false), ("generatedExecutionAccepted", false),
-            ("scope", booleanConversionRoot
+            ("scope", booleanCalleeRoot
+                ? "One actual sole executable direct-call target body selected from the reproduced Boolean conversion. And, accessor, conversion and nested receiver inventories are selection-only, outside target-body counts. Shallow types only; no callee recursion, full metadata closure, ownership, closed no-throw or translator admission."
+                : booleanConversionRoot
                 ? "One actual Boolean conversion callee body selected from the typed negated direct-call condition in the reproduced Vector accessor. And and parent identities are selection-only. Types are shallow facts with unexpanded associations; no callee recursion, translation, closed no-throw or ownership admission."
                 : bufferReferenceRoot
                 ? "One actual direct callee body selected from the reciprocally owned executable local-reference initializer in the reproduced Vector accessor. Parent and And identities are selection-only; no callee-body recursion. Types are explicit shallow facts with unexpanded associations, not metadata/ownership closure or translator admission."
@@ -167,7 +172,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             ("statistics", new { statistics.Commands, statistics.RowsRead, statistics.CachedRows, statistics.CachedPages, statistics.MaximumBatchSize }));
         if (accessorRoot)
         {
-            result["rootSelectionMode"] = booleanConversionRoot ? "boolean-conversion" : bufferReferenceRoot ? "buffer-ref" : "accessor";
+            result["rootSelectionMode"] = booleanCalleeRoot ? "boolean-callee" : booleanConversionRoot ? "boolean-conversion" : bufferReferenceRoot ? "buffer-ref" : "accessor";
             result["accessorSelectionIdentityInventoryNotSchedule"] = accessorSelectionInventory;
             result["accessorSelectionBounds"] = new { AccessorSelectionRoots, AccessorSelectionOperationsPerRoot, AccessorSelectionCalls,
                 NameLimit, SymbolsPerKey, includedInTargetBodyCounters = false,
@@ -186,6 +191,14 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                 result["booleanConversionSelectionBounds"] = new { ParentOperationLimit = BufferParentOperationLimit,
                     selectedTargetCount = 1, includesParentInTargetBodyCounters = false };
                 result["relatedTypeScope"] = "Shallow actual/formal receiver, result, execution-symbol and body types; explicit wrapper/pointee/signature chains only. Other record associations stay unexpanded; no full type or no-throw closure is claimed.";
+            }
+            if (booleanCalleeRoot)
+            {
+                result["closedNoThrowBodyProof"] = false;
+                result["booleanCalleeParentSelectionNotBodyTrace"] = booleanCalleeSelection;
+                result["booleanCalleeSelectionBounds"] = new { ParentOperationLimit = BufferParentOperationLimit,
+                    ReceiverExpressionIdentityLimit = BufferParentOperationLimit, ReceiverDepthLimit = DepthLimit,
+                    selectedTargetCount = 1, includesParentOrReceiverInventoryInTargetBodyCounters = false };
             }
         }
         return result;
@@ -319,6 +332,77 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
         CheckResources(); currentRoot = null;
         if (selected.Count != 1) throw new TraceBound("The retained typed negated condition does not select one unique defined Boolean conversion target.");
         return selected.Single();
+    }
+
+    private FunctionSymbol SelectBooleanCallee(FunctionSymbol parent)
+    {
+        currentRoot = Ref(parent); currentPath = "selection/conversion-sole-executable-direct-call";
+        var body = parent.Body ?? throw new TraceBound("The reproduced Boolean conversion body is absent.");
+        var operations = Bounded(body.DescendantOperations(), BufferParentOperationLimit, "Conversion parent operation identities");
+        var calls = operations.OfType<CallOperation>().Where(candidate => candidate.RepresentationRole.Name == "execution").ToArray();
+        booleanCalleeSelection = Row(("parent", Function(parent)), ("operationIdentityCount", operations.Length),
+            ("executableCallIdentityCount", calls.Length), ("identityInventoryNotSchedule", true));
+        if (calls.Length != 1) throw new TraceBound("The conversion parent does not retain one sole executable call identity.");
+        var call = calls[0];
+        if (call.CallKind.Name != "direct" || call.Callee is not ReferenceOperation { Target: FunctionSymbol target } callee ||
+            callee.RepresentationRole.Name != "execution" || call.TargetMethod?.Equals(target) != true ||
+            !target.IsDefined || target.BodyState.Name != "definition" || target.Body is null || call.Call.FunctionType?.Equals(target.Signature) != true)
+            throw new TraceBound("The sole conversion call does not name the same actual defined direct callee and selected signature.");
+        var receiverParameters = Bounded(target.Signature.Parameters, ParameterLimit, "Selected callee formal receiver parameters")
+            .Where(parameter => parameter.Role.Name == "this_parameter").ToArray();
+        var formalReceiver = receiverParameters.Length == 1 ? receiverParameters[0] : null;
+        var formalPointer = formalReceiver is null ? null : TypeLeaf(formalReceiver.Type) as PointerType;
+        var actualPointer = call.Receiver is { } receiver ? TypeLeaf(receiver.Type) as PointerType : null;
+        booleanCalleeSelection["selectedCall"] = DescribeNode(call);
+        booleanCalleeSelection["calleeReference"] = DescribeNode(callee);
+        booleanCalleeSelection["selectedTarget"] = Ref(target);
+        booleanCalleeSelection["selectedSignature"] = Signature(target.Signature);
+        booleanCalleeSelection["formalReceiver"] = formalReceiver is null ? null : Parameter(formalReceiver);
+        booleanCalleeSelection["formalReceiverType"] = TypeRef(formalReceiver?.Type);
+        booleanCalleeSelection["formalPointee"] = TypeRef(formalPointer?.PointeeType);
+        booleanCalleeSelection["actualReceiverType"] = TypeRef(call.Receiver?.Type);
+        booleanCalleeSelection["actualPointee"] = TypeRef(actualPointer?.PointeeType);
+        booleanCalleeSelection["sameReceiverTypeIdentity"] = formalReceiver?.Type.Equals(call.Receiver?.Type) == true;
+        booleanCalleeSelection["samePointeeIdentity"] = formalPointer is not null && actualPointer is not null && formalPointer.PointeeType.Equals(actualPointer.PointeeType);
+        booleanCalleeSelection["noIdentityNormalization"] = true;
+        booleanCalleeSelection["actualReceiverExpressionInventoryNotSchedule"] = call.Receiver is { } actualReceiver ? SelectionReceiverInventory(actualReceiver) : null;
+        CheckResources(); currentRoot = null;
+        return target;
+    }
+
+    private List<Dictionary<string, object?>> SelectionReceiverInventory(ExpressionOperation root)
+    {
+        var result = new List<Dictionary<string, object?>>(); var seen = new HashSet<ExpressionOperation>(); var active = new HashSet<ExpressionOperation>();
+        Walk(root, 0);
+        return result;
+        void Walk(ExpressionOperation expression, int depth)
+        {
+            if (depth > DepthLimit || result.Count == BufferParentOperationLimit) throw new TraceBound("Selection receiver expression depth/identity bound exceeded.");
+            if (active.Contains(expression)) { AddIssue("receiver-operand-cycle", "The actual receiver operand inventory cycles; no execution schedule was inferred.", expression); return; }
+            if (!seen.Add(expression)) return;
+            active.Add(expression);
+            try
+            {
+                var row = DescribeNode(expression); result.Add(row);
+                if (expression.RepresentationRole.Name != "execution")
+                {
+                    row["metadataBoundary"] = true;
+                    AddIssue("receiver-metadata-boundary", "The actual receiver operand inventory reaches a non-execution occurrence.", expression);
+                    return;
+                }
+                if (expression is ReferenceOperation { Target: FieldSymbol field })
+                {
+                    var layout = field.ContainingType?.Layout;
+                    row["selectedFieldFactsNotAdjustmentInference"] = new { locator = Ref(field), field.Name, type = TypeRef(field.Type),
+                        ownerType = TypeRef(field.ContainingType), field.IsGeneratedBase, field.IsGeneratedVirtualPointer, field.IsBitField, field.IsMutable,
+                        layouts = layout is null ? null : Bounded(layout.Fields, FieldsPerType, "Receiver field owner layout")
+                            .Where(entry => entry.Field.Equals(field)).Select(entry => new { entry.Ordinal, offset = Number(entry.Offset),
+                                bitOffset = Number(entry.BitOffset), bitWidth = Number(entry.BitWidth), containerOffset = Number(entry.ContainerOffset) }).ToArray() };
+                }
+                foreach (var operand in Bounded(expression.Operands, FacetsPerNode, "Selection receiver raw operand identities")) Walk(operand, depth + 1);
+            }
+            finally { active.Remove(expression); }
+        }
     }
 
     private Dictionary<string, object?> Parameter(SignatureParameter parameter) => Row(("ordinal", parameter.Ordinal), ("role", parameter.Role.Name),
