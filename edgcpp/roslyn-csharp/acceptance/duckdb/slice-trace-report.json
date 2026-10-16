@@ -1,0 +1,4041 @@
+{
+  "reportVersion": 1,
+  "status": "passed-bounded-public-trace",
+  "parentCheckpoint": "2afdba68c",
+  "inventoryOnly": true,
+  "translatorAccepted": false,
+  "linkClosureComplete": false,
+  "generatedExecutionAccepted": false,
+  "scope": "Exactly four retained core-entry-316 And/Or root bodies; one-hop call, cleanup and storage declaration dependencies only. No callee bodies or other translation units are traversed. Trace completeness concerns bounded typed containment, not complete metadata or dependency closure.",
+  "semantics": "Local locators use public semantic equality. Typed containment paths preserve repeated operation identities and retained operands; they are not an evaluation schedule. Call receiver/result/argument facets alias raw operands and add no evaluation. Structural relations are audited independently, never used as a fallback traversal. Metadata associations are deduplicated without inventing ownership or execution; their ordinary cycles do not fail the trace.",
+  "input": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+    "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+    "bytes": 156354560,
+    "afterSha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+    "unchanged": true
+  },
+  "fullTrace": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-facts-3.json",
+    "bytes": 787829,
+    "sha256": "c4e89c8346ecda3abe07f000391e5c68da4e22ecc97c6a75527492d556cf81b8"
+  },
+  "sourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-source-3/source-snapshot.json",
+    "bytes": 7799,
+    "sha256": "32b62a4ce09bc70e50c0c2ac32ac6efa1e4568c9b2ce19c36699aa6cacba741e"
+  },
+  "frozenSnapshotFiles": 49,
+  "snapshotUnchanged": true,
+  "currentExecutableSourceFilesUnchanged": 48,
+  "documentationAttribution": "Frozen manifest includes the pre-run note. Executable/build sources are unchanged; current note is updated after the measured trace and attributed separately. No rerun is needed for documentation.",
+  "currentNote": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/docs/DUCKDB-SLICE-TRACE.md",
+    "bytes": 6840,
+    "sha256": "f0aff897608df72104fb1accbad86e0d42360075b7d0e35fefa7a5c29607762b"
+  },
+  "toolBinary": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-bin-3/DuckdbSliceFacts.dll",
+    "bytes": 135680,
+    "sha256": "0ccfa4431a808994eb785f38bb8bf7fcf1d391fd9142c399484bbb69c1ff558b"
+  },
+  "driver": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-duckdb-slice-trace-3.py",
+    "bytes": 2781,
+    "sha256": "a0906a74e32972fa7dbb0e318ef5ff625b0ecd533bf88ad19a1b664bc3a63a79"
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "bytes": 5505,
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+  },
+  "measurement": "Linux all-thread descendant RSS sampled every 100 ms; shared pages can count repeatedly and short peaks can be missed. Waited process RSS is separate.",
+  "phases": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-build-3/run.json",
+        "bytes": 1248,
+        "sha256": "122931b259e5574f121965ccdd82f3d1062acb852e7df96b9f30a5198d1813d1"
+      },
+      "expectedExitCode": 0,
+      "elapsedSeconds": 5.176335676922463,
+      "sampledPeakProcessTreeRssBytes": 460627968,
+      "waitedPeakProcessRssBytes": 268222464,
+      "budgetViolation": null
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-trace-3/run.json",
+        "bytes": 1099,
+        "sha256": "9864b0204e909753eacb429b933ba15ba5e6440e95d993dc057d9219b6eaeb12"
+      },
+      "expectedExitCode": 0,
+      "elapsedSeconds": 1.206251992029138,
+      "sampledPeakProcessTreeRssBytes": 98287616,
+      "waitedPeakProcessRssBytes": 97779712,
+      "budgetViolation": null
+    }
+  ],
+  "bounds": {
+    "NameLimit": 64,
+    "SymbolsPerKey": 4,
+    "RootLimit": 4,
+    "OperationsPerRoot": 256,
+    "OccurrencesPerRoot": 4096,
+    "DepthLimit": 128,
+    "DependencyLimit": 256,
+    "TypeLimit": 256,
+    "FieldsPerType": 64,
+    "ParameterLimit": 32,
+    "ConstantUnits": 256,
+    "LocalsPerRoot": 128,
+    "RegionsPerRoot": 64,
+    "CleanupActionsPerRoot": 128,
+    "RecipesPerRoot": 128,
+    "FacetsPerNode": 64,
+    "EntityLimit": 8192,
+    "CommandLimit": 20000,
+    "RowLimit": 100000,
+    "CachedRows": 4096,
+    "CachedPages": 128,
+    "PageSize": 128,
+    "MaximumBatch": 900,
+    "NameQueryCaveat": "Take bounds materialization; a paged public name query can still inspect underlying rows. Wall/RSS are controlled separately by the coordinator."
+  },
+  "statistics": {
+    "Commands": 4750,
+    "RowsRead": 6519,
+    "CachedRows": 4096,
+    "CachedPages": 128,
+    "MaximumBatchSize": 10
+  },
+  "manifest": {
+    "ArtifactIdentity": "b59fc07a2aa9718e152076f3287b3d09",
+    "FormatMajor": 2,
+    "FormatMinor": 0,
+    "Producer": "roslyn_gen_be",
+    "EdgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+    "CaptureProfile": "native_lowered",
+    "Stage": "lowered",
+    "target": {
+      "Abi": "itanium",
+      "AddressableUnitBits": 8,
+      "Endianness": "little",
+      "pointerBits": "64",
+      "pointerAlignment": "8"
+    }
+  },
+  "selectors": [
+    {
+      "retainedName": "And",
+      "matches": 2,
+      "selected": [
+        "entity/000001",
+        "entity/000002"
+      ],
+      "selectionOnly": "Exact public retained-name and function-kind selection; no source overload lookup or rebinding."
+    },
+    {
+      "retainedName": "Or",
+      "matches": 2,
+      "selected": [
+        "entity/000003",
+        "entity/000004"
+      ],
+      "selectionOnly": "Exact public retained-name and function-kind selection; no source overload lookup or rebinding."
+    }
+  ],
+  "rootCount": 4,
+  "operationIdentityCount": 404,
+  "callIdentityCount": 40,
+  "oneHopFunctionDependencyCount": 13,
+  "oneHopStorageDependencyCount": 0,
+  "relatedTypeCount": 193,
+  "issues": [],
+  "roots": [
+    {
+      "locator": "entity/000001",
+      "retainedName": "And",
+      "currentName": "_ZN6duckdb16VectorOperations3AndERKNS_6VectorES3_RS1_",
+      "signature": {
+        "type": "entity/000005",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000008",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000009",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000011",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000008",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000012",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000009",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000013",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000011",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000014",
+          "isSourceParameter": true
+        }
+      ],
+      "operationIdentityCount": 117,
+      "typedOccurrenceCount": 117,
+      "operatorIdentityCounts": {
+        "dik_expression": 2,
+        "enk_constant": 3,
+        "enk_lowered_eh_construct": 7,
+        "enk_object_lifetime": 1,
+        "enk_routine": 12,
+        "enk_throw": 1,
+        "enk_variable": 27,
+        "eok_address_of": 8,
+        "eok_assign": 5,
+        "eok_call": 12,
+        "eok_cast": 4,
+        "eok_comma": 13,
+        "eok_eq": 2,
+        "eok_land": 2,
+        "eok_lvalue_adjust": 2,
+        "eok_ne": 1,
+        "eok_not": 2,
+        "stmk_block": 3,
+        "stmk_decl": 2,
+        "stmk_expr": 4,
+        "stmk_if": 1,
+        "stmk_init": 2,
+        "stmk_return": 1
+      },
+      "throw": {
+        "IsRethrow": false,
+        "operand": "entity/000107",
+        "thrownType": "entity/000101",
+        "initialization": null,
+        "destructor": "entity/000098"
+      },
+      "throwType": {
+        "locator": "entity/000101",
+        "kind": "tk_struct",
+        "name": "InternalException",
+        "size": "16",
+        "alignment": "8",
+        "isIncomplete": false,
+        "isDependent": false,
+        "typeinfoVariableAssociation": "entity/000677",
+        "record": {
+          "IsPacked": false,
+          "HasVirtualBases": false,
+          "HasVirtualFunctions": true,
+          "subobjectPartner": "entity/000101",
+          "virtualTableAssociation": "entity/000678",
+          "vttAssociation": null
+        },
+        "fields": [
+          {
+            "locator": "entity/000679",
+            "Name": "__b_N6duckdb9ExceptionE",
+            "type": "entity/000680",
+            "IsGeneratedBase": true,
+            "IsGeneratedVirtualPointer": null,
+            "IsBitField": false
+          }
+        ],
+        "layout": {
+          "size": "16",
+          "alignment": "8",
+          "nonvirtualSize": "16",
+          "nonvirtualAlignment": "8",
+          "fields": [
+            {
+              "Ordinal": 0,
+              "field": "entity/000679",
+              "offset": "0",
+              "bitOffset": "0",
+              "bitWidth": null,
+              "containerOffset": null
+            }
+          ]
+        },
+        "directBasesNotLookup": [
+          {
+            "Ordinal": 0,
+            "type": "entity/000680",
+            "IsVirtual": false,
+            "subobject": "entity/000681"
+          }
+        ],
+        "baseSubobjectsNotLookup": [
+          {
+            "locator": "entity/000681",
+            "type": "entity/000680",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": true,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000682",
+            "type": "entity/000683",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000684",
+            "type": "entity/000685",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          }
+        ]
+      },
+      "selectedPayloadDestructor": {
+        "locator": "entity/000098",
+        "name": "~InternalException",
+        "currentName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "sourceNameForDisplayOnly": "~InternalException",
+        "capturedLinkageName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "bodyState": "definition",
+        "isDefined": true,
+        "specialFunctionKind": "sfk_destructor",
+        "entryKind": "cdk_complete",
+        "primaryEntry": null,
+        "alternateEntries": [
+          "entity/000099",
+          "entity/000100"
+        ],
+        "containingType": "entity/000101",
+        "builtinKind": null,
+        "signature": {
+          "type": "entity/000102",
+          "returnType": "entity/000006",
+          "thisClass": "entity/000101",
+          "hasPrototype": true,
+          "isVariadic": false,
+          "hasThisParameter": true,
+          "returnsValueAsParameter": false,
+          "returnsValueViaCopyConstructor": false,
+          "returnValueParameterFollowsThis": false,
+          "callingConvention": "cc_default",
+          "languageLinkage": "nlk_cplusplus_external",
+          "noexceptEffective": true,
+          "parameters": [
+            {
+              "ordinal": 0,
+              "role": "this_parameter",
+              "type": "entity/000103",
+              "declaredType": null,
+              "descriptor": "entity/000104",
+              "passedViaCopyConstructor": false,
+              "baseSubobject": null,
+              "variable": null,
+              "isSourceParameter": null
+            }
+          ]
+        },
+        "executionParameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000104",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": "entity/000105",
+            "isSourceParameter": false
+          }
+        ],
+        "bodyRootAssociationNotTraversal": "entity/000106",
+        "contexts": [
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000096",
+            "root": "entity/000001",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000298",
+            "root": "entity/000002",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000457",
+            "root": "entity/000003",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000590",
+            "root": "entity/000004",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          }
+        ]
+      },
+      "exceptionAndLifetimeMetadataNotNormalExecution": {
+        "regionTable": "entity/000023",
+        "arrayTable": null,
+        "initialState": "65535",
+        "nullState": "65535",
+        "prologue": "entity/000046",
+        "epilogues": [
+          "entity/000247"
+        ],
+        "regions": [
+          {
+            "locator": "entity/000174",
+            "Ordinal": 0,
+            "nextRegion": null,
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000248",
+                "kind": "destructor",
+                "target": "entity/000208",
+                "storage": {
+                  "locator": "entity/000249",
+                  "kind": "direct_variable",
+                  "variable": "entity/000016",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          },
+          {
+            "locator": "entity/000180",
+            "Ordinal": 1,
+            "nextRegion": "entity/000174",
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000250",
+                "kind": "destructor",
+                "target": "entity/000197",
+                "storage": {
+                  "locator": "entity/000251",
+                  "kind": "direct_variable",
+                  "variable": "entity/000018",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          }
+        ],
+        "reachableLifetimesNotOwnership": [
+          {
+            "locator": "entity/000252",
+            "kind": "olk_block",
+            "boundEntity": "entity/000037",
+            "parent": "entity/000253",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000254",
+            "kind": "olk_block",
+            "boundEntity": "entity/000255",
+            "parent": "entity/000252",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000088",
+            "kind": "olk_expr_temporary",
+            "boundEntity": "entity/000087",
+            "parent": "entity/000254",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": [
+              {
+                "Ordinal": 0,
+                "initialization": "entity/000256",
+                "destructor": "entity/000197",
+                "IsConditional": false,
+                "IsUnordered": false
+              },
+              {
+                "Ordinal": 1,
+                "initialization": "entity/000257",
+                "destructor": "entity/000208",
+                "IsConditional": false,
+                "IsUnordered": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000002",
+      "retainedName": "And",
+      "currentName": "_ZN6duckdb16VectorOperations3AndERKNS_6VectorES3_RS1_m",
+      "signature": {
+        "type": "entity/000258",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000259",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000260",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000261",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 3,
+            "role": "ordinary_parameter",
+            "type": "entity/000021",
+            "declaredType": "entity/000021",
+            "descriptor": "entity/000262",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000259",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000263",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000260",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000264",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000261",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000265",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 3,
+          "role": "ordinary_parameter",
+          "type": "entity/000021",
+          "declaredType": "entity/000021",
+          "descriptor": "entity/000262",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000266",
+          "isSourceParameter": true
+        }
+      ],
+      "operationIdentityCount": 85,
+      "typedOccurrenceCount": 85,
+      "operatorIdentityCounts": {
+        "enk_constant": 1,
+        "enk_lowered_eh_construct": 7,
+        "enk_object_lifetime": 1,
+        "enk_routine": 8,
+        "enk_throw": 1,
+        "enk_variable": 21,
+        "eok_address_of": 8,
+        "eok_assign": 4,
+        "eok_call": 8,
+        "eok_cast": 2,
+        "eok_comma": 12,
+        "eok_lvalue_adjust": 2,
+        "eok_ne": 1,
+        "stmk_block": 3,
+        "stmk_expr": 4,
+        "stmk_if": 1,
+        "stmk_return": 1
+      },
+      "throw": {
+        "IsRethrow": false,
+        "operand": "entity/000300",
+        "thrownType": "entity/000101",
+        "initialization": null,
+        "destructor": "entity/000098"
+      },
+      "throwType": {
+        "locator": "entity/000101",
+        "kind": "tk_struct",
+        "name": "InternalException",
+        "size": "16",
+        "alignment": "8",
+        "isIncomplete": false,
+        "isDependent": false,
+        "typeinfoVariableAssociation": "entity/000677",
+        "record": {
+          "IsPacked": false,
+          "HasVirtualBases": false,
+          "HasVirtualFunctions": true,
+          "subobjectPartner": "entity/000101",
+          "virtualTableAssociation": "entity/000678",
+          "vttAssociation": null
+        },
+        "fields": [
+          {
+            "locator": "entity/000679",
+            "Name": "__b_N6duckdb9ExceptionE",
+            "type": "entity/000680",
+            "IsGeneratedBase": true,
+            "IsGeneratedVirtualPointer": null,
+            "IsBitField": false
+          }
+        ],
+        "layout": {
+          "size": "16",
+          "alignment": "8",
+          "nonvirtualSize": "16",
+          "nonvirtualAlignment": "8",
+          "fields": [
+            {
+              "Ordinal": 0,
+              "field": "entity/000679",
+              "offset": "0",
+              "bitOffset": "0",
+              "bitWidth": null,
+              "containerOffset": null
+            }
+          ]
+        },
+        "directBasesNotLookup": [
+          {
+            "Ordinal": 0,
+            "type": "entity/000680",
+            "IsVirtual": false,
+            "subobject": "entity/000681"
+          }
+        ],
+        "baseSubobjectsNotLookup": [
+          {
+            "locator": "entity/000681",
+            "type": "entity/000680",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": true,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000682",
+            "type": "entity/000683",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000684",
+            "type": "entity/000685",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          }
+        ]
+      },
+      "selectedPayloadDestructor": {
+        "locator": "entity/000098",
+        "name": "~InternalException",
+        "currentName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "sourceNameForDisplayOnly": "~InternalException",
+        "capturedLinkageName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "bodyState": "definition",
+        "isDefined": true,
+        "specialFunctionKind": "sfk_destructor",
+        "entryKind": "cdk_complete",
+        "primaryEntry": null,
+        "alternateEntries": [
+          "entity/000099",
+          "entity/000100"
+        ],
+        "containingType": "entity/000101",
+        "builtinKind": null,
+        "signature": {
+          "type": "entity/000102",
+          "returnType": "entity/000006",
+          "thisClass": "entity/000101",
+          "hasPrototype": true,
+          "isVariadic": false,
+          "hasThisParameter": true,
+          "returnsValueAsParameter": false,
+          "returnsValueViaCopyConstructor": false,
+          "returnValueParameterFollowsThis": false,
+          "callingConvention": "cc_default",
+          "languageLinkage": "nlk_cplusplus_external",
+          "noexceptEffective": true,
+          "parameters": [
+            {
+              "ordinal": 0,
+              "role": "this_parameter",
+              "type": "entity/000103",
+              "declaredType": null,
+              "descriptor": "entity/000104",
+              "passedViaCopyConstructor": false,
+              "baseSubobject": null,
+              "variable": null,
+              "isSourceParameter": null
+            }
+          ]
+        },
+        "executionParameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000104",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": "entity/000105",
+            "isSourceParameter": false
+          }
+        ],
+        "bodyRootAssociationNotTraversal": "entity/000106",
+        "contexts": [
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000096",
+            "root": "entity/000001",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000298",
+            "root": "entity/000002",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000457",
+            "root": "entity/000003",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000590",
+            "root": "entity/000004",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          }
+        ]
+      },
+      "exceptionAndLifetimeMetadataNotNormalExecution": {
+        "regionTable": "entity/000271",
+        "arrayTable": null,
+        "initialState": "65535",
+        "nullState": "65535",
+        "prologue": "entity/000281",
+        "epilogues": [
+          "entity/000380"
+        ],
+        "regions": [
+          {
+            "locator": "entity/000338",
+            "Ordinal": 0,
+            "nextRegion": null,
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000381",
+                "kind": "destructor",
+                "target": "entity/000208",
+                "storage": {
+                  "locator": "entity/000382",
+                  "kind": "direct_variable",
+                  "variable": "entity/000268",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          },
+          {
+            "locator": "entity/000343",
+            "Ordinal": 1,
+            "nextRegion": "entity/000338",
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000383",
+                "kind": "destructor",
+                "target": "entity/000197",
+                "storage": {
+                  "locator": "entity/000384",
+                  "kind": "direct_variable",
+                  "variable": "entity/000269",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          }
+        ],
+        "reachableLifetimesNotOwnership": [
+          {
+            "locator": "entity/000385",
+            "kind": "olk_block",
+            "boundEntity": "entity/000276",
+            "parent": "entity/000253",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000386",
+            "kind": "olk_block",
+            "boundEntity": "entity/000387",
+            "parent": "entity/000385",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000290",
+            "kind": "olk_expr_temporary",
+            "boundEntity": "entity/000289",
+            "parent": "entity/000386",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": [
+              {
+                "Ordinal": 0,
+                "initialization": "entity/000388",
+                "destructor": "entity/000197",
+                "IsConditional": false,
+                "IsUnordered": false
+              },
+              {
+                "Ordinal": 1,
+                "initialization": "entity/000389",
+                "destructor": "entity/000208",
+                "IsConditional": false,
+                "IsUnordered": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000003",
+      "retainedName": "Or",
+      "currentName": "_ZN6duckdb16VectorOperations2OrERKNS_6VectorES3_RS1_",
+      "signature": {
+        "type": "entity/000390",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000391",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000392",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000393",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000391",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000394",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000392",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000395",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000393",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000396",
+          "isSourceParameter": true
+        }
+      ],
+      "operationIdentityCount": 117,
+      "typedOccurrenceCount": 117,
+      "operatorIdentityCounts": {
+        "dik_expression": 2,
+        "enk_constant": 3,
+        "enk_lowered_eh_construct": 7,
+        "enk_object_lifetime": 1,
+        "enk_routine": 12,
+        "enk_throw": 1,
+        "enk_variable": 27,
+        "eok_address_of": 8,
+        "eok_assign": 5,
+        "eok_call": 12,
+        "eok_cast": 4,
+        "eok_comma": 13,
+        "eok_eq": 2,
+        "eok_land": 2,
+        "eok_lvalue_adjust": 2,
+        "eok_ne": 1,
+        "eok_not": 2,
+        "stmk_block": 3,
+        "stmk_decl": 2,
+        "stmk_expr": 4,
+        "stmk_if": 1,
+        "stmk_init": 2,
+        "stmk_return": 1
+      },
+      "throw": {
+        "IsRethrow": false,
+        "operand": "entity/000459",
+        "thrownType": "entity/000101",
+        "initialization": null,
+        "destructor": "entity/000098"
+      },
+      "throwType": {
+        "locator": "entity/000101",
+        "kind": "tk_struct",
+        "name": "InternalException",
+        "size": "16",
+        "alignment": "8",
+        "isIncomplete": false,
+        "isDependent": false,
+        "typeinfoVariableAssociation": "entity/000677",
+        "record": {
+          "IsPacked": false,
+          "HasVirtualBases": false,
+          "HasVirtualFunctions": true,
+          "subobjectPartner": "entity/000101",
+          "virtualTableAssociation": "entity/000678",
+          "vttAssociation": null
+        },
+        "fields": [
+          {
+            "locator": "entity/000679",
+            "Name": "__b_N6duckdb9ExceptionE",
+            "type": "entity/000680",
+            "IsGeneratedBase": true,
+            "IsGeneratedVirtualPointer": null,
+            "IsBitField": false
+          }
+        ],
+        "layout": {
+          "size": "16",
+          "alignment": "8",
+          "nonvirtualSize": "16",
+          "nonvirtualAlignment": "8",
+          "fields": [
+            {
+              "Ordinal": 0,
+              "field": "entity/000679",
+              "offset": "0",
+              "bitOffset": "0",
+              "bitWidth": null,
+              "containerOffset": null
+            }
+          ]
+        },
+        "directBasesNotLookup": [
+          {
+            "Ordinal": 0,
+            "type": "entity/000680",
+            "IsVirtual": false,
+            "subobject": "entity/000681"
+          }
+        ],
+        "baseSubobjectsNotLookup": [
+          {
+            "locator": "entity/000681",
+            "type": "entity/000680",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": true,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000682",
+            "type": "entity/000683",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000684",
+            "type": "entity/000685",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          }
+        ]
+      },
+      "selectedPayloadDestructor": {
+        "locator": "entity/000098",
+        "name": "~InternalException",
+        "currentName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "sourceNameForDisplayOnly": "~InternalException",
+        "capturedLinkageName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "bodyState": "definition",
+        "isDefined": true,
+        "specialFunctionKind": "sfk_destructor",
+        "entryKind": "cdk_complete",
+        "primaryEntry": null,
+        "alternateEntries": [
+          "entity/000099",
+          "entity/000100"
+        ],
+        "containingType": "entity/000101",
+        "builtinKind": null,
+        "signature": {
+          "type": "entity/000102",
+          "returnType": "entity/000006",
+          "thisClass": "entity/000101",
+          "hasPrototype": true,
+          "isVariadic": false,
+          "hasThisParameter": true,
+          "returnsValueAsParameter": false,
+          "returnsValueViaCopyConstructor": false,
+          "returnValueParameterFollowsThis": false,
+          "callingConvention": "cc_default",
+          "languageLinkage": "nlk_cplusplus_external",
+          "noexceptEffective": true,
+          "parameters": [
+            {
+              "ordinal": 0,
+              "role": "this_parameter",
+              "type": "entity/000103",
+              "declaredType": null,
+              "descriptor": "entity/000104",
+              "passedViaCopyConstructor": false,
+              "baseSubobject": null,
+              "variable": null,
+              "isSourceParameter": null
+            }
+          ]
+        },
+        "executionParameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000104",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": "entity/000105",
+            "isSourceParameter": false
+          }
+        ],
+        "bodyRootAssociationNotTraversal": "entity/000106",
+        "contexts": [
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000096",
+            "root": "entity/000001",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000298",
+            "root": "entity/000002",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000457",
+            "root": "entity/000003",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000590",
+            "root": "entity/000004",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          }
+        ]
+      },
+      "exceptionAndLifetimeMetadataNotNormalExecution": {
+        "regionTable": "entity/000402",
+        "arrayTable": null,
+        "initialState": "65535",
+        "nullState": "65535",
+        "prologue": "entity/000422",
+        "epilogues": [
+          "entity/000540"
+        ],
+        "regions": [
+          {
+            "locator": "entity/000483",
+            "Ordinal": 0,
+            "nextRegion": null,
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000541",
+                "kind": "destructor",
+                "target": "entity/000208",
+                "storage": {
+                  "locator": "entity/000542",
+                  "kind": "direct_variable",
+                  "variable": "entity/000398",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          },
+          {
+            "locator": "entity/000488",
+            "Ordinal": 1,
+            "nextRegion": "entity/000483",
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000543",
+                "kind": "destructor",
+                "target": "entity/000197",
+                "storage": {
+                  "locator": "entity/000544",
+                  "kind": "direct_variable",
+                  "variable": "entity/000399",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          }
+        ],
+        "reachableLifetimesNotOwnership": [
+          {
+            "locator": "entity/000545",
+            "kind": "olk_block",
+            "boundEntity": "entity/000413",
+            "parent": "entity/000253",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000546",
+            "kind": "olk_block",
+            "boundEntity": "entity/000547",
+            "parent": "entity/000545",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000449",
+            "kind": "olk_expr_temporary",
+            "boundEntity": "entity/000448",
+            "parent": "entity/000546",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": [
+              {
+                "Ordinal": 0,
+                "initialization": "entity/000548",
+                "destructor": "entity/000197",
+                "IsConditional": false,
+                "IsUnordered": false
+              },
+              {
+                "Ordinal": 1,
+                "initialization": "entity/000549",
+                "destructor": "entity/000208",
+                "IsConditional": false,
+                "IsUnordered": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000004",
+      "retainedName": "Or",
+      "currentName": "_ZN6duckdb16VectorOperations2OrERKNS_6VectorES3_RS1_m",
+      "signature": {
+        "type": "entity/000550",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000551",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000552",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000553",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 3,
+            "role": "ordinary_parameter",
+            "type": "entity/000021",
+            "declaredType": "entity/000021",
+            "descriptor": "entity/000554",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000551",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000555",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000552",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000556",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000553",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000557",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 3,
+          "role": "ordinary_parameter",
+          "type": "entity/000021",
+          "declaredType": "entity/000021",
+          "descriptor": "entity/000554",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000558",
+          "isSourceParameter": true
+        }
+      ],
+      "operationIdentityCount": 85,
+      "typedOccurrenceCount": 85,
+      "operatorIdentityCounts": {
+        "enk_constant": 1,
+        "enk_lowered_eh_construct": 7,
+        "enk_object_lifetime": 1,
+        "enk_routine": 8,
+        "enk_throw": 1,
+        "enk_variable": 21,
+        "eok_address_of": 8,
+        "eok_assign": 4,
+        "eok_call": 8,
+        "eok_cast": 2,
+        "eok_comma": 12,
+        "eok_lvalue_adjust": 2,
+        "eok_ne": 1,
+        "stmk_block": 3,
+        "stmk_expr": 4,
+        "stmk_if": 1,
+        "stmk_return": 1
+      },
+      "throw": {
+        "IsRethrow": false,
+        "operand": "entity/000592",
+        "thrownType": "entity/000101",
+        "initialization": null,
+        "destructor": "entity/000098"
+      },
+      "throwType": {
+        "locator": "entity/000101",
+        "kind": "tk_struct",
+        "name": "InternalException",
+        "size": "16",
+        "alignment": "8",
+        "isIncomplete": false,
+        "isDependent": false,
+        "typeinfoVariableAssociation": "entity/000677",
+        "record": {
+          "IsPacked": false,
+          "HasVirtualBases": false,
+          "HasVirtualFunctions": true,
+          "subobjectPartner": "entity/000101",
+          "virtualTableAssociation": "entity/000678",
+          "vttAssociation": null
+        },
+        "fields": [
+          {
+            "locator": "entity/000679",
+            "Name": "__b_N6duckdb9ExceptionE",
+            "type": "entity/000680",
+            "IsGeneratedBase": true,
+            "IsGeneratedVirtualPointer": null,
+            "IsBitField": false
+          }
+        ],
+        "layout": {
+          "size": "16",
+          "alignment": "8",
+          "nonvirtualSize": "16",
+          "nonvirtualAlignment": "8",
+          "fields": [
+            {
+              "Ordinal": 0,
+              "field": "entity/000679",
+              "offset": "0",
+              "bitOffset": "0",
+              "bitWidth": null,
+              "containerOffset": null
+            }
+          ]
+        },
+        "directBasesNotLookup": [
+          {
+            "Ordinal": 0,
+            "type": "entity/000680",
+            "IsVirtual": false,
+            "subobject": "entity/000681"
+          }
+        ],
+        "baseSubobjectsNotLookup": [
+          {
+            "locator": "entity/000681",
+            "type": "entity/000680",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": true,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000682",
+            "type": "entity/000683",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          },
+          {
+            "locator": "entity/000684",
+            "type": "entity/000685",
+            "offset": "0",
+            "IsVirtual": false,
+            "IsDirect": false,
+            "vbaseOffsetIndex": null,
+            "constructionTableIndex": "0",
+            "constructionSubarrayIndex": "0"
+          }
+        ]
+      },
+      "selectedPayloadDestructor": {
+        "locator": "entity/000098",
+        "name": "~InternalException",
+        "currentName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "sourceNameForDisplayOnly": "~InternalException",
+        "capturedLinkageName": "_ZN6duckdb17InternalExceptionD1Ev",
+        "bodyState": "definition",
+        "isDefined": true,
+        "specialFunctionKind": "sfk_destructor",
+        "entryKind": "cdk_complete",
+        "primaryEntry": null,
+        "alternateEntries": [
+          "entity/000099",
+          "entity/000100"
+        ],
+        "containingType": "entity/000101",
+        "builtinKind": null,
+        "signature": {
+          "type": "entity/000102",
+          "returnType": "entity/000006",
+          "thisClass": "entity/000101",
+          "hasPrototype": true,
+          "isVariadic": false,
+          "hasThisParameter": true,
+          "returnsValueAsParameter": false,
+          "returnsValueViaCopyConstructor": false,
+          "returnValueParameterFollowsThis": false,
+          "callingConvention": "cc_default",
+          "languageLinkage": "nlk_cplusplus_external",
+          "noexceptEffective": true,
+          "parameters": [
+            {
+              "ordinal": 0,
+              "role": "this_parameter",
+              "type": "entity/000103",
+              "declaredType": null,
+              "descriptor": "entity/000104",
+              "passedViaCopyConstructor": false,
+              "baseSubobject": null,
+              "variable": null,
+              "isSourceParameter": null
+            }
+          ]
+        },
+        "executionParameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000104",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": "entity/000105",
+            "isSourceParameter": false
+          }
+        ],
+        "bodyRootAssociationNotTraversal": "entity/000106",
+        "contexts": [
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000096",
+            "root": "entity/000001",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000298",
+            "root": "entity/000002",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000457",
+            "root": "entity/000003",
+            "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          },
+          {
+            "kind": "retained-throw-payload-destructor-no-body-traversal",
+            "owner": "entity/000590",
+            "root": "entity/000004",
+            "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+          }
+        ]
+      },
+      "exceptionAndLifetimeMetadataNotNormalExecution": {
+        "regionTable": "entity/000563",
+        "arrayTable": null,
+        "initialState": "65535",
+        "nullState": "65535",
+        "prologue": "entity/000573",
+        "epilogues": [
+          "entity/000658"
+        ],
+        "regions": [
+          {
+            "locator": "entity/000616",
+            "Ordinal": 0,
+            "nextRegion": null,
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000659",
+                "kind": "destructor",
+                "target": "entity/000208",
+                "storage": {
+                  "locator": "entity/000660",
+                  "kind": "direct_variable",
+                  "variable": "entity/000560",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          },
+          {
+            "locator": "entity/000621",
+            "Ordinal": 1,
+            "nextRegion": "entity/000616",
+            "IsSupplement": false,
+            "supplementOwner": null,
+            "condition": null,
+            "actions": [
+              {
+                "locator": "entity/000661",
+                "kind": "destructor",
+                "target": "entity/000197",
+                "storage": {
+                  "locator": "entity/000662",
+                  "kind": "direct_variable",
+                  "variable": "entity/000561",
+                  "baseEntity": null,
+                  "offset": "0",
+                  "IsIndirect": false,
+                  "UsesThisParameterOffset": false
+                },
+                "flags": {
+                  "IsArray": false,
+                  "IsIndirect": false,
+                  "IsConditional": false,
+                  "IsBaseSubobject": false,
+                  "IsVla": false,
+                  "IsDeallocation": false,
+                  "IsLocalStaticGuard": false
+                },
+                "array": null,
+                "abi": null
+              }
+            ]
+          }
+        ],
+        "reachableLifetimesNotOwnership": [
+          {
+            "locator": "entity/000663",
+            "kind": "olk_block",
+            "boundEntity": "entity/000568",
+            "parent": "entity/000253",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000664",
+            "kind": "olk_block",
+            "boundEntity": "entity/000665",
+            "parent": "entity/000663",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": []
+          },
+          {
+            "locator": "entity/000582",
+            "kind": "olk_expr_temporary",
+            "boundEntity": "entity/000581",
+            "parent": "entity/000664",
+            "parentCheckpoint": null,
+            "HasImplicitChild": false,
+            "HasBlockAfterLabelChild": false,
+            "recipesNotSchedule": [
+              {
+                "Ordinal": 0,
+                "initialization": "entity/000666",
+                "destructor": "entity/000197",
+                "IsConditional": false,
+                "IsUnordered": false
+              },
+              {
+                "Ordinal": 1,
+                "initialization": "entity/000667",
+                "destructor": "entity/000208",
+                "IsConditional": false,
+                "IsUnordered": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "oneHopFunctions": [
+    {
+      "locator": "entity/000052",
+      "name": "GetVectorType",
+      "currentName": "_ZNK6duckdb6Vector13GetVectorTypeEv",
+      "sourceNameForDisplayOnly": "GetVectorType",
+      "capturedLinkageName": "_ZNK6duckdb6Vector13GetVectorTypeEv",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": "entity/000053",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000054",
+        "returnType": "entity/000055",
+        "thisClass": "entity/000053",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000026",
+            "declaredType": null,
+            "descriptor": "entity/000056",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000026",
+          "declaredType": null,
+          "descriptor": "entity/000056",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000057",
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000058",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000050",
+          "root": "entity/000001",
+          "path": "body/statement[2]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000059",
+          "root": "entity/000001",
+          "path": "body/statement[2]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000064",
+          "root": "entity/000001",
+          "path": "body/statement[4]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000066",
+          "root": "entity/000001",
+          "path": "body/statement[4]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000424",
+          "root": "entity/000003",
+          "path": "body/statement[2]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000426",
+          "root": "entity/000003",
+          "path": "body/statement[2]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000429",
+          "root": "entity/000003",
+          "path": "body/statement[4]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000431",
+          "root": "entity/000003",
+          "path": "body/statement[4]/initialization[0]/initializer-expression[0]/operand[0]/operand[0]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000078",
+      "name": "size",
+      "currentName": "_ZNK6duckdb6Vector4sizeEv",
+      "sourceNameForDisplayOnly": "size",
+      "capturedLinkageName": "_ZNK6duckdb6Vector4sizeEv",
+      "bodyState": "declaration_only",
+      "isDefined": false,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": "entity/000053",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000079",
+        "returnType": "entity/000021",
+        "thisClass": "entity/000053",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000026",
+            "declaredType": null,
+            "descriptor": "entity/000080",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000026",
+          "declaredType": null,
+          "descriptor": "entity/000080",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": null,
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": null,
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000076",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000081",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000077",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000084",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000186",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000187",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000193",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000194",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000285",
+          "root": "entity/000002",
+          "path": "body/statement[1]/condition[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000286",
+          "root": "entity/000002",
+          "path": "body/statement[1]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000349",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000350",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000441",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000443",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000442",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000445",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000493",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000494",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000500",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000501",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000577",
+          "root": "entity/000004",
+          "path": "body/statement[1]/condition[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000578",
+          "root": "entity/000004",
+          "path": "body/statement[1]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000627",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000628",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000098",
+      "name": "~InternalException",
+      "currentName": "_ZN6duckdb17InternalExceptionD1Ev",
+      "sourceNameForDisplayOnly": "~InternalException",
+      "capturedLinkageName": "_ZN6duckdb17InternalExceptionD1Ev",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_destructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000099",
+        "entity/000100"
+      ],
+      "containingType": "entity/000101",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000102",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000101",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": true,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000104",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000103",
+          "declaredType": null,
+          "descriptor": "entity/000104",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000105",
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000106",
+      "contexts": [
+        {
+          "kind": "retained-throw-payload-destructor-no-body-traversal",
+          "owner": "entity/000096",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "retained-throw-payload-destructor-no-body-traversal",
+          "owner": "entity/000298",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "retained-throw-payload-destructor-no-body-traversal",
+          "owner": "entity/000457",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "retained-throw-payload-destructor-no-body-traversal",
+          "owner": "entity/000590",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000108",
+      "name": "InternalException",
+      "currentName": "_ZN6duckdb17InternalExceptionC1IJmmEEERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEDpOT_",
+      "sourceNameForDisplayOnly": "InternalException",
+      "capturedLinkageName": "_ZN6duckdb17InternalExceptionC1IJmmEEERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEDpOT_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_constructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000109"
+      ],
+      "containingType": "entity/000101",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000110",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000101",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000111",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000112",
+            "declaredType": "entity/000112",
+            "descriptor": "entity/000113",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000114",
+            "declaredType": "entity/000114",
+            "descriptor": "entity/000115",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 3,
+            "role": "ordinary_parameter",
+            "type": "entity/000114",
+            "declaredType": "entity/000114",
+            "descriptor": "entity/000116",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000103",
+          "declaredType": null,
+          "descriptor": "entity/000111",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000117",
+          "isSourceParameter": false
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000112",
+          "declaredType": "entity/000112",
+          "descriptor": "entity/000113",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000118",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000114",
+          "declaredType": "entity/000114",
+          "descriptor": "entity/000115",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000119",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 3,
+          "role": "ordinary_parameter",
+          "type": "entity/000114",
+          "declaredType": "entity/000114",
+          "descriptor": "entity/000116",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000120",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000121",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000107",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000122",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000459",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000460",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000133",
+      "name": "basic_string",
+      "currentName": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1IS3_EEPKcRKS3_",
+      "sourceNameForDisplayOnly": "basic_string",
+      "capturedLinkageName": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1IS3_EEPKcRKS3_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_constructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000134"
+      ],
+      "containingType": "entity/000135",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000136",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000135",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000137",
+            "declaredType": null,
+            "descriptor": "entity/000138",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000139",
+            "declaredType": "entity/000139",
+            "descriptor": "entity/000140",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000141",
+            "declaredType": "entity/000141",
+            "descriptor": "entity/000142",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000137",
+          "declaredType": null,
+          "descriptor": "entity/000138",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000143",
+          "isSourceParameter": false
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000139",
+          "declaredType": "entity/000139",
+          "descriptor": "entity/000140",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000144",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000141",
+          "declaredType": "entity/000141",
+          "descriptor": "entity/000142",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000145",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000146",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000131",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000147",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000321",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000323",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000466",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000468",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000599",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000601",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000161",
+      "name": "allocator",
+      "currentName": "_ZNSaIcEC1Ev",
+      "sourceNameForDisplayOnly": "allocator",
+      "capturedLinkageName": "_ZNSaIcEC1Ev",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_constructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000162"
+      ],
+      "containingType": "entity/000017",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000163",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000017",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": true,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000164",
+            "declaredType": null,
+            "descriptor": "entity/000165",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000164",
+          "declaredType": null,
+          "descriptor": "entity/000165",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000166",
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000167",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000159",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000168",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000331",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000333",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000476",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000478",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000609",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000611",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[2]/operand[0]/operand[3]/operand[0]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000197",
+      "name": "~basic_string",
+      "currentName": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev",
+      "sourceNameForDisplayOnly": "~basic_string",
+      "capturedLinkageName": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_destructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000198"
+      ],
+      "containingType": "entity/000135",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000199",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000135",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": true,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000137",
+            "declaredType": null,
+            "descriptor": "entity/000200",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000137",
+          "declaredType": null,
+          "descriptor": "entity/000200",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000201",
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000202",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000095",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000203",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000250",
+          "root": "entity/000001",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000256",
+          "root": "entity/000001",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000297",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000353",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000383",
+          "root": "entity/000002",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000388",
+          "root": "entity/000002",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000456",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000504",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000543",
+          "root": "entity/000003",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000548",
+          "root": "entity/000003",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000589",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000631",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000661",
+          "root": "entity/000004",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000666",
+          "root": "entity/000004",
+          "path": "metadata/exception-and-lifetime"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000208",
+      "name": "~allocator",
+      "currentName": "_ZNSaIcED1Ev",
+      "sourceNameForDisplayOnly": "~allocator",
+      "capturedLinkageName": "_ZNSaIcED1Ev",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_destructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000209"
+      ],
+      "containingType": "entity/000017",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000210",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000017",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": true,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000164",
+            "declaredType": null,
+            "descriptor": "entity/000211",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000164",
+          "declaredType": null,
+          "descriptor": "entity/000211",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000212",
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000213",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000091",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000214",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000248",
+          "root": "entity/000001",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000257",
+          "root": "entity/000001",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000293",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000357",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000381",
+          "root": "entity/000002",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000389",
+          "root": "entity/000002",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000452",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000508",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000541",
+          "root": "entity/000003",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000549",
+          "root": "entity/000003",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000585",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000635",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "exception-cleanup-selected-action",
+          "owner": "entity/000659",
+          "root": "entity/000004",
+          "path": "metadata/exception-and-lifetime"
+        },
+        {
+          "kind": "destruction-recipe-association-not-normal-call",
+          "owner": "entity/000667",
+          "root": "entity/000004",
+          "path": "metadata/exception-and-lifetime"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000231",
+      "name": "TemplatedBooleanNullmask",
+      "currentName": "_ZN43_INTERNAL_21_boolean_operators_cpp_93b9c6946duckdb45_GLOBAL__N__21_boolean_operators_cpp_93b9c69424TemplatedBooleanNullmaskINS1_10TernaryAndEEEvRKNS0_6VectorES6_RS4_",
+      "sourceNameForDisplayOnly": "TemplatedBooleanNullmask",
+      "capturedLinkageName": "_ZN43_INTERNAL_21_boolean_operators_cpp_93b9c6946duckdb45_GLOBAL__N__21_boolean_operators_cpp_93b9c69424TemplatedBooleanNullmaskINS1_10TernaryAndEEEvRKNS0_6VectorES6_RS4_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": null,
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000232",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000233",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000234",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000235",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000233",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000236",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000234",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000237",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000235",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000238",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000239",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000220",
+          "root": "entity/000001",
+          "path": "body/statement[6]/expression[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000240",
+          "root": "entity/000001",
+          "path": "body/statement[6]/expression[0]/operand[1]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000301",
+      "name": "InternalException",
+      "currentName": "_ZN6duckdb17InternalExceptionC1IJRmmEEERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEDpOT_",
+      "sourceNameForDisplayOnly": "InternalException",
+      "capturedLinkageName": "_ZN6duckdb17InternalExceptionC1IJRmmEEERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEDpOT_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_constructor",
+      "entryKind": "cdk_complete",
+      "primaryEntry": null,
+      "alternateEntries": [
+        "entity/000302"
+      ],
+      "containingType": "entity/000101",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000303",
+        "returnType": "entity/000006",
+        "thisClass": "entity/000101",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000103",
+            "declaredType": null,
+            "descriptor": "entity/000304",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000112",
+            "declaredType": "entity/000112",
+            "descriptor": "entity/000305",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000306",
+            "declaredType": "entity/000306",
+            "descriptor": "entity/000307",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 3,
+            "role": "ordinary_parameter",
+            "type": "entity/000114",
+            "declaredType": "entity/000114",
+            "descriptor": "entity/000308",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000103",
+          "declaredType": null,
+          "descriptor": "entity/000304",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000309",
+          "isSourceParameter": false
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000112",
+          "declaredType": "entity/000112",
+          "descriptor": "entity/000305",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000310",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000306",
+          "declaredType": "entity/000306",
+          "descriptor": "entity/000307",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000311",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 3,
+          "role": "ordinary_parameter",
+          "type": "entity/000114",
+          "declaredType": "entity/000114",
+          "descriptor": "entity/000308",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000312",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000313",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000300",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000314",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000592",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000593",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000001",
+      "name": "And",
+      "currentName": "_ZN6duckdb16VectorOperations3AndERKNS_6VectorES3_RS1_",
+      "sourceNameForDisplayOnly": "And",
+      "capturedLinkageName": "_ZN6duckdb16VectorOperations3AndERKNS_6VectorES3_RS1_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": null,
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000005",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000008",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000009",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000011",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000008",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000012",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000009",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000013",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000011",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000014",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000015",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000362",
+          "root": "entity/000002",
+          "path": "body/statement[2]/expression[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000373",
+          "root": "entity/000002",
+          "path": "body/statement[2]/expression[0]/operand[1]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000524",
+      "name": "TemplatedBooleanNullmask",
+      "currentName": "_ZN43_INTERNAL_21_boolean_operators_cpp_93b9c6946duckdb45_GLOBAL__N__21_boolean_operators_cpp_93b9c69424TemplatedBooleanNullmaskINS1_9TernaryOrEEEvRKNS0_6VectorES6_RS4_",
+      "sourceNameForDisplayOnly": "TemplatedBooleanNullmask",
+      "capturedLinkageName": "_ZN43_INTERNAL_21_boolean_operators_cpp_93b9c6946duckdb45_GLOBAL__N__21_boolean_operators_cpp_93b9c69424TemplatedBooleanNullmaskINS1_9TernaryOrEEEvRKNS0_6VectorES6_RS4_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": null,
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000525",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000526",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000527",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000528",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000526",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000529",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000527",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000530",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000528",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000531",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000532",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000513",
+          "root": "entity/000003",
+          "path": "body/statement[6]/expression[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000533",
+          "root": "entity/000003",
+          "path": "body/statement[6]/expression[0]/operand[1]/operand[0]"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000003",
+      "name": "Or",
+      "currentName": "_ZN6duckdb16VectorOperations2OrERKNS_6VectorES3_RS1_",
+      "sourceNameForDisplayOnly": "Or",
+      "capturedLinkageName": "_ZN6duckdb16VectorOperations2OrERKNS_6VectorES3_RS1_",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": null,
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000390",
+        "returnType": "entity/000006",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000391",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000007",
+            "declaredType": "entity/000007",
+            "descriptor": "entity/000392",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000010",
+            "declaredType": "entity/000010",
+            "descriptor": "entity/000393",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000391",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000394",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 1,
+          "role": "ordinary_parameter",
+          "type": "entity/000007",
+          "declaredType": "entity/000007",
+          "descriptor": "entity/000392",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000395",
+          "isSourceParameter": true
+        },
+        {
+          "ordinal": 2,
+          "role": "ordinary_parameter",
+          "type": "entity/000010",
+          "declaredType": "entity/000010",
+          "descriptor": "entity/000393",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000396",
+          "isSourceParameter": true
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000397",
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000640",
+          "root": "entity/000004",
+          "path": "body/statement[2]/expression[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000651",
+          "root": "entity/000004",
+          "path": "body/statement[2]/expression[0]/operand[1]/operand[0]"
+        }
+      ]
+    }
+  ],
+  "retainedThrowTypes": [
+    {
+      "locator": "entity/000101",
+      "kind": "tk_struct",
+      "name": "InternalException",
+      "size": "16",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": "entity/000677",
+      "record": {
+        "IsPacked": false,
+        "HasVirtualBases": false,
+        "HasVirtualFunctions": true,
+        "subobjectPartner": "entity/000101",
+        "virtualTableAssociation": "entity/000678",
+        "vttAssociation": null
+      },
+      "fields": [
+        {
+          "locator": "entity/000679",
+          "Name": "__b_N6duckdb9ExceptionE",
+          "type": "entity/000680",
+          "IsGeneratedBase": true,
+          "IsGeneratedVirtualPointer": null,
+          "IsBitField": false
+        }
+      ],
+      "layout": {
+        "size": "16",
+        "alignment": "8",
+        "nonvirtualSize": "16",
+        "nonvirtualAlignment": "8",
+        "fields": [
+          {
+            "Ordinal": 0,
+            "field": "entity/000679",
+            "offset": "0",
+            "bitOffset": "0",
+            "bitWidth": null,
+            "containerOffset": null
+          }
+        ]
+      },
+      "directBasesNotLookup": [
+        {
+          "Ordinal": 0,
+          "type": "entity/000680",
+          "IsVirtual": false,
+          "subobject": "entity/000681"
+        }
+      ],
+      "baseSubobjectsNotLookup": [
+        {
+          "locator": "entity/000681",
+          "type": "entity/000680",
+          "offset": "0",
+          "IsVirtual": false,
+          "IsDirect": true,
+          "vbaseOffsetIndex": null,
+          "constructionTableIndex": "0",
+          "constructionSubarrayIndex": "0"
+        },
+        {
+          "locator": "entity/000682",
+          "type": "entity/000683",
+          "offset": "0",
+          "IsVirtual": false,
+          "IsDirect": false,
+          "vbaseOffsetIndex": null,
+          "constructionTableIndex": "0",
+          "constructionSubarrayIndex": "0"
+        },
+        {
+          "locator": "entity/000684",
+          "type": "entity/000685",
+          "offset": "0",
+          "IsVirtual": false,
+          "IsDirect": false,
+          "vbaseOffsetIndex": null,
+          "constructionTableIndex": "0",
+          "constructionSubarrayIndex": "0"
+        }
+      ]
+    }
+  ],
+  "declarationOnlyFunctions": [
+    {
+      "locator": "entity/000078",
+      "name": "size",
+      "currentName": "_ZNK6duckdb6Vector4sizeEv",
+      "sourceNameForDisplayOnly": "size",
+      "capturedLinkageName": "_ZNK6duckdb6Vector4sizeEv",
+      "bodyState": "declaration_only",
+      "isDefined": false,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": "entity/000053",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000079",
+        "returnType": "entity/000021",
+        "thisClass": "entity/000053",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000026",
+            "declaredType": null,
+            "descriptor": "entity/000080",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000026",
+          "declaredType": null,
+          "descriptor": "entity/000080",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": null,
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": null,
+      "contexts": [
+        {
+          "kind": "direct-call",
+          "owner": "entity/000076",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000081",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000077",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000084",
+          "root": "entity/000001",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000186",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000187",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000193",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000194",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000285",
+          "root": "entity/000002",
+          "path": "body/statement[1]/condition[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000286",
+          "root": "entity/000002",
+          "path": "body/statement[1]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000349",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000350",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000441",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000443",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[0]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000442",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000445",
+          "root": "entity/000003",
+          "path": "body/statement[5]/condition[0]/operand[1]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000493",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000494",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[3]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000500",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000501",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000577",
+          "root": "entity/000004",
+          "path": "body/statement[1]/condition[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000578",
+          "root": "entity/000004",
+          "path": "body/statement[1]/condition[0]/operand[1]/operand[0]"
+        },
+        {
+          "kind": "direct-call",
+          "owner": "entity/000627",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]"
+        },
+        {
+          "kind": "routine-reference-no-invocation-claim",
+          "owner": "entity/000628",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]/throw-operand[0]/operand[4]/operand[0]/operand[1]/operand[0]"
+        }
+      ]
+    }
+  ],
+  "proposedNextCapability": "Capture-first same-type class exception payload: actual selected construction/copy, explicit payload destructor, exact type token and borrowed const-reference catch, with construction-completion/final-release ownership. Review genuine captured roles before implementation.",
+  "remainingScope": [
+    "No callee-body traversal, project import inventory or whole-unit/164-object scan. A declaration-only size dependency remains outside this one-hop closure.",
+    "Related type and constant descriptions intentionally retain unexpanded associations; traceComplete refers only to the declared bounded typed containment trace.",
+    "Observed polymorphic InternalException16/8, bases, strings/allocator temporaries and full catch hierarchy are not implemented by a future minimal same-type fixture.",
+    "Mutable record references are observed; current const-reference-only adapter is not general project support.",
+    "No generated DuckDB source/build/execution, native oracle or project linking acceptance is claimed."
+  ],
+  "preservedAttempts": [
+    {
+      "sourceSnapshot": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-source-1/source-snapshot.json",
+        "bytes": 7799,
+        "sha256": "2a250e8f3d103d19c6e676785558795442d08f27e47072d10d163e0a54831f52"
+      },
+      "phase": {
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-build-1/run.json",
+          "bytes": 1249,
+          "sha256": "4ae22cf70db57f8e6d9ef6f23615a36817169513d397367b88912fed06cd77b2"
+        },
+        "elapsedSeconds": 4.574176434078254,
+        "sampledPeakProcessTreeRssBytes": 452997120,
+        "waitedPeakProcessRssBytes": 266039296,
+        "budgetViolation": null,
+        "actualExitCode": 1,
+        "acceptedValidationPhase": false
+      },
+      "traceExecuted": false,
+      "explanation": "One C# switch-pattern local-name collision; no trace ran."
+    },
+    {
+      "sourceSnapshot": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-source-2/source-snapshot.json",
+        "bytes": 7799,
+        "sha256": "5d090065a677e75e3805af95aeacb4d793f20af943fa9b0bf374019d1d0fab17"
+      },
+      "build": {
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-build-2/run.json",
+          "bytes": 1247,
+          "sha256": "0b8c0d80e7684b1c12f220fb701795db07b5c95073a5fc066ea28794fb107137"
+        },
+        "expectedExitCode": 0,
+        "elapsedSeconds": 5.07789595995564,
+        "sampledPeakProcessTreeRssBytes": 453206016,
+        "waitedPeakProcessRssBytes": 263856128,
+        "budgetViolation": null
+      },
+      "trace": {
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-trace-2/run.json",
+          "bytes": 1100,
+          "sha256": "bcb9c33cf4f752edf132a518d38a90af6cc656317bd7408d141a091c50259960"
+        },
+        "expectedExitCode": 3,
+        "elapsedSeconds": 1.3065250230720267,
+        "sampledPeakProcessTreeRssBytes": 98803712,
+        "waitedPeakProcessRssBytes": 98041856,
+        "budgetViolation": null
+      },
+      "partialTrace": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-slice-facts-2.json",
+        "bytes": 787207,
+        "sha256": "4b67a8f5051135162b6f8b15beab023f5c85ea19dadf9ff64f3aa57659be0bda"
+      },
+      "issues": [
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000001",
+          "path": "body/statement[5]",
+          "entity": "entity/000068"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role body/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]",
+          "entity": "entity/000089"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/1 is not accounted for by the selected typed facets.",
+          "root": "entity/000001",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]",
+          "entity": "entity/000098"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000002",
+          "path": "body/statement[1]",
+          "entity": "entity/000276"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role body/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]",
+          "entity": "entity/000285"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/1 is not accounted for by the selected typed facets.",
+          "root": "entity/000002",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]",
+          "entity": "entity/000294"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000003",
+          "path": "body/statement[5]",
+          "entity": "entity/000427"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role body/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]",
+          "entity": "entity/000444"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/1 is not accounted for by the selected typed facets.",
+          "root": "entity/000003",
+          "path": "body/statement[5]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]",
+          "entity": "entity/000453"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000004",
+          "path": "body/statement[1]",
+          "entity": "entity/000568"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role body/0 is not accounted for by the selected typed facets.",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]",
+          "entity": "entity/000577"
+        },
+        {
+          "code": "unclassified-execution-child",
+          "message": "Public structural role operand/1 is not accounted for by the selected typed facets.",
+          "root": "entity/000004",
+          "path": "body/statement[1]/then[0]/statement[0]/expression[0]/value[0]/operand[0]/operand[0]/operand[0]/operand[0]",
+          "entity": "entity/000586"
+        }
+      ],
+      "explanation": "Same three public facet/structural-role audit aliases per root. All typed children were already visited; partial report retained, never relabeled complete. Source3 adjusts audit accounting only and adds retained throw destructor one-hop reporting."
+    }
+  ]
+}

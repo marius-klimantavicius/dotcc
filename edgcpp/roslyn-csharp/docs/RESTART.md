@@ -226,16 +226,36 @@ application sources remain
 byte-identical and pass affected JIT/NativeAOT; repeat publication agrees.
 Saved stock revision/blob/hash excerpts are `t5/vbase-contract-source-1`.
 
-No builder or translator remains active. Product and physical workers are frozen;
-coordinator owns Git and serialized builds. The emission worker prepares only
-NEW reader-only `tests/DuckdbSliceFacts` and its note, outside this frozen source.
-Root approved a bounded next-target trace of exact DuckDB core entry 316's four
-already sampled And/Or roots, with explicit typed occurrence/evaluation,
-call/cleanup dependency and truncation limits. This is next-target evidence,
-not translation/link/whole-164 acceptance. No project-required adapter can yet be
-ranked from old reader navigation samples alone. After this checkpoint, build/run
-that tool under measured limits and review actual findings before new projection.
-Broader T5/T6 remain open; preserve original SQLite runtime/source attribution.
+Virtual-base checkpoint is `2afdba68c`. The next bounded public trace now passes:
+`acceptance/duckdb/slice-trace-report.json`, SHA-256
+`39f7682bc94f5eecb1a1b8c91c6fe6cdae96f4dba3ffa59cbc4452efb40f19e8`.
+Immutable tool source is `t5/duckdb-slice-source-3` (49 files), full output is
+`t5/duckdb-slice-facts-3.json`, SHA-256
+`c4e89c8346ecda3abe07f000391e5c68da4e22ecc97c6a75527492d556cf81b8`.
+Only exact core entry 316 and the four earlier And/Or roots are inspected.
+Final build/trace take 5.18/1.21 seconds, no budget violations; trace has zero
+issues, 404 operation identities, 40 calls, 13 one-hop functions and 193 types.
+Input before/after and executable/build source hashes verify. Current note is
+updated after the measured run and separately attributed from its frozen version.
+First build's local-name collision and trace-2's 12 alias-audit issues remain
+preserved. Typed containment completeness is not translation/link completeness.
+
+Actual next requirements are now observed: each root throws InternalException
+16/8 with a selected defined/noexcept complete D1 and two direct-local cleanup
+regions; output Vector& is mutable, and a declaration-only size dependency
+remains unresolved. Full InternalException/string/base/catch and whole-164 link
+closure are not claimed. Read [the bounded trace](DUCKDB-SLICE-TRACE.md).
+
+No builder or translator remains active. Coordinator owns Git and serialized
+builds. Root approved genuine same-type class-payload capture/native/public-facts
+preparation only. Inventory owns NEW class-payload fixture/note; emission owns
+saved pristine lifecycle/destructor source audit and read-only runtime review.
+Use canary+int payload, selected noexcept copy from const source&, exact const&
+catch and bounded lifetime observations. Capture actual layout/copy/destructor/
+catch binding/state before proposing runtime/emitter/provider changes. Failed
+pending copy must free without payload destruction but is not activated by this
+noexcept-first fixture. Broader T5/T6 remain open; preserve original SQLite
+runtime/source attribution.
 
 Never modify EDG core, use raw model bypass, recover source semantics or consult
 dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.
