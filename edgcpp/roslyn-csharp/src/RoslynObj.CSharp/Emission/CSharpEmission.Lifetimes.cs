@@ -60,6 +60,11 @@ public sealed partial class CSharpEmitter
                     throw Limit("Execution and signature parameter roles differ in the selected lifetime routine.", "lifetime-parameter");
             }
             var references = new List<PointerType>();
+            if (ordinaryConstMethods.ContainsKey(function))
+            {
+                generatedLifetimeRoutines.Add(function);
+                return;
+            }
             if (TryValidateMutableReferenceRoutine(function))
             {
                 generatedLifetimeRoutines.Add(function);
@@ -209,6 +214,7 @@ public sealed partial class CSharpEmitter
                 throw Limit("Generated receiver/result/reference calls require the actual selected direct body.", "lifetime-call");
             ValidateGeneratedLifetimeRoutine(direct);
             ValidateRegisteredMutableReferenceCall(call, direct);
+            ValidateRegisteredOrdinaryMethodCall(call, direct);
             var signature = direct.Signature;
             var arguments = call.Arguments;
             var operands = call.Operands;

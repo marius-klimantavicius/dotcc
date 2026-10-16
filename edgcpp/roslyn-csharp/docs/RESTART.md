@@ -2,59 +2,63 @@
 
 ## Current checkpoint after user resume, 2026-10-16
 
-The user explicitly unpaused; work remains authorized. SQLite T0–T4 are closed
-for their configured finite acceptance, with the actual generated source at
+Work remains authorized after the user unpaused. SQLite T0–T4 are closed for
+configured finite acceptance; actual generated source remains at
 `/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`.
-Broader T5/T6 remain open. Historical status paragraphs below retain their
-original attribution; this section is the authoritative next-action/worker state.
+T5 broader C++ and T6 portability/scale remain open. Historical paragraphs below
+retain original attribution; this section is the authoritative next-action state.
 
-Verified parent checkpoint is `192640cd9`, exact class payload. The new bounded
-mutable-reference milestone passes all 28 expected outcomes: 24 successful phases
+Verified parent is `cd36a75d1`, bounded mutable/const reference aliasing. The new
+ordinary const-method slice passes all 31 expected outcomes: 27 successful phases
 and four intended unsupported-case rejections, no unexpected outcome or budget
-violation. Compact receipt is
-`acceptance/lifetimes/mutable-reference-report.json`, SHA-256
-`68c1ac008b02db50422f18d46337128750894c8c36479816a1d3300e94045cce`.
-It freezes product `t5/mutable-reference-source-1`, separate nine-file checker
-`t5/mutable-reference-checker-source-1`, 16 genuine input objects and completion
-inventories. Every Runtime source hash remains unchanged from the class-payload
-checkpoint; providers are unchanged. No builder/export/test process remains active.
+violation. Compact receipt: `acceptance/lifetimes/ordinary-const-method-report.json`,
+SHA-256 `57036cea331ccde345e8427dd17401fd40ed4b6da25534dbed5b696cf3bf773c`.
+Immutable product `t5/ordinary-const-method-source-1` contains 242 frozen files;
+checker `t5/ordinary-const-method-checker-source-1` contains 9. All 17 genuine
+input hashes, source/checker/completion inventories and repeat outputs verify.
+Every Runtime source hash and provider contract is unchanged from the preceding
+verified checkpoint. No builder, export or test process remains active.
 
-Production CLI output `t5/mutable-reference-cli-generated-1` publishes all eight
-bodies without required imports or diagnostics. Native/JIT/AOT twice return 54,
-values `[8,12,5,7,0,11,23,1,0]`, events `[108,212,300,111,223,301]`, zero overflow
-and protocol-live count. Physical JIT/AOT checks actual Cell size 8, fields 0/4
-and sequential-prefix alignment 4. Cell has no counted resources; protocol zeros
-do not prove ownership or destruction. Generated source/project repeat byte-for-
-byte; program reports agree after output-directory normalization. Earlier normal
-const-reference, int EH and exact class-payload sources remain byte-identical
-and pass affected JIT/AOT regressions. Four existing name/handler-new-throw/
-noexcept admission negatives remain unpublished. No broader SQLite rerun occurred.
+Production `t5/ordinary-const-method-cli-generated-1` publishes eight bodies with
+zero required imports/diagnostics. Native/JIT/AOT twice return 206, values
+`[5,201,201,0,0,0,0,0,0]` and events `[15,105,221,401]`. Physical JIT/AOT proves
+actual Cell size 1, kind offset 0, sequential-prefix alignment 1 and stored/read
+unsigned byte 201. Zero live slots are protocol-only; Cell has no counted resources.
+Prior normal const-reference, mutable alias and exact class-payload sources stay
+byte-identical and pass affected JIT/AOT execution. SI/MI/Vbase re-emission also
+preserves source bytes, without relabeling their earlier runtime evidence. Four
+existing unsupported-name/handler-new-throw/noexcept negatives stay unpublished.
 
-The reference-only capability registers the exact generated void noexcept helper,
-its mutable and const natural 8/8 pointer views of the same complete Cell 8/4,
-and two actual calls from one captured noexcept caller. Const temporaries and
-qualification/equality conversions remain explicit; the same-owner call performs
-fresh reads after the first store, with no noalias assumption or source snapshot.
-Existing aggregate `dik_constant` initialization is unchanged. This is not general
-mutable-reference support: native/reference-return/rvalue/global guards remain,
-and absent noexcept facts in the actual DuckDB roots are not admitted.
-Read [the bounded proof](T5-MUTABLE-REFERENCES.md) before changing these guards.
+The reusable per-function rule admits an ordinary unadjusted nonvirtual const
+receiver whose actual body returns its own exact captured unsigned8 field, with
+no calls, locals, lifetimes or EH. It registers selected receiver/signature/field
+identity and checks each actual direct-call role/receiver operand once; no source
+name, method/call count, record size or field-count rule selects behavior. The
+actual const-pointer-object parameter wrapper remains separate from the pointer
+value. Captured null noexcept stays null: this body capability cache never enters
+`validatedNoThrowFunctions`, never calls/changes `EnsureGeneratedNoThrow` and
+never grants caller cleanup-marker omission. Existing native/indirect/virtual/
+member-pointer/adjusted-receiver and reference guards remain. Records with bases,
+virtuals or distinct occupied partners and enum/arbitrary scalar accessors are not
+proven by this slice. Read [the proof](T5-ORDINARY-CONST-METHOD.md).
 
-Models remain coordinator gpt-6.1-sol high, implementers gpt-6.1-sol xhigh, with
-root GPT-6-Astra supervising read-only. Coordinator alone schedules builds/exports
-and mutates Git. Emission's three product files are frozen (new MutableReferences
-partial plus Lifetimes/main hooks); inventory's checker/project/README are frozen.
-The current proof note/coverage/restart and compact receipt are coordinator-owned
-checkpoint integration. Preserve the two pre-existing excluded T3 aggregate
-fixtures and all unrelated dirty user files; never stage all. Preserve captures,
-immutable snapshots and failed/incomplete artifacts; no cleanup is authorized.
+Coordinator gpt-6.1-sol high owns Git/shared integration and all serialized
+builds/exports. Implementers remain gpt-6.1-sol xhigh; root GPT-6-Astra supervises
+read-only. OrdinaryMethods partial plus narrow Lifetimes/main hooks and the
+checker's three files are frozen. Inventory finalizes only the proof note.
+Next tool-only scope is approved: emission prepares a small bounded public trace
+of the actual DuckDB GetVectorType selected body in pinned core entry 316, using
+an explicit accessor mode of the existing reader tool and preserving trace3's
+immutable proof. No product widening is authorized before actual enum/type,
+record-partner and field/body findings are reviewed. No callee bodies or whole164
+scan/link acceptance is intended. Actual Vector/InternalException/string/allocator
+construction and missing dependency/link closure remain open.
 
-Next: finish exact-path milestone commit, then select the next smallest real
-DuckDB requirement from the accepted four-root public trace and pristine contract
-facts. Emission is preparing a read-only recommendation only; no new product
-scope is approved yet. Do not silently relax the noexcept/reference profile,
-start a whole164-object scan or claim runnable DuckDB/link closure. Full class
-hierarchy/string/allocator and potentially throwing construction paths remain open.
+Finish this verified milestone with an exact-path commit, then serialize the
+bounded tool snapshot/build/run. Preserve all immutable captures, source snapshots,
+failed/incomplete attempts and the two excluded pre-existing T3 aggregate fixtures;
+never stage all or clean unrelated user files. SQLite retains original frozen
+source13/runtime11 attribution; no broad SQLite rerun occurred.
 
 Updated 2026-10-16. Approved plan: `e40280bea`. Verified product source:
 `04c11ce0d` / immutable snapshot 13. T0–T4 are CLOSED for the configured finite
