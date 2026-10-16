@@ -175,17 +175,57 @@ lifetime/virtual execution claim follows. Exercise null/two distinct nonnull
 inputs, both branches, mutations/fresh reads, exact addresses and a real defined
 fixture guard that never substitutes the actual DuckDB helper.
 
-Emission owns new T5 pointer-call-chain source/header/native-harness preparation;
-coordinator will freeze/capture/build/run it serially, inventory then owns public
-facts/checker preparation. Root accepts pristine bfk_expect first-argument result
-contract for the INITIAL exact signed64 signature with captured effect-free integer
-hint only; both actual operands remain planned, first evaluated once, hint has no
-emitted effect. General hints stay unsupported, no broad audit prerequisite.
-After actual capture send precise selected facts and reusable admission proposal
-BEFORE product implementation. No new helper body mode, entry293 body expansion,
-source-name behavior, unresolved guard fallback or NoThrow/caller-marker widening.
-Product remains `16a07ae6b`; Runtime/providers and prior SQLite/C++ evidence retain
-original attribution. No build/export/test process remains active.
+The guard/audit checkpoint is committed as `477de3aa1`. The cohesive capture and
+native oracle are now frozen and pass, with product still unchanged. New owned
+source paths are `tests/Fixtures/T5/pointer-call-chain.{hpp,cpp}` and
+`tests/PointerCallChain/native.cpp`; minimal `tests/LifetimeFacts/Program.cs`
+adds BuiltinKind and ProbeVersion 7 only. Its isolated 48-file probe build passes.
+Header/source hashes are
+`184cba6160bbd33ae7c8767011262a197a50a5d96c44ac9e0a402b4d49d7ec57` /
+`c2cb2277fa8b2273ec51ad0150874e3e3a7863361bffbccbbb2869b2555b6014`;
+native oracle SHA-256
+`f9af5cc60a54987347881d7d3b9c64bd4372de39c9a86392815e9c0bf276bac2`.
+Input `t5/capture/pointer-call-chain.roslynobj`, 1,031,168 bytes, SHA-256
+`735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620`.
+Full public facts `t5/pointer-call-chain-facts-1.json`, 1,971,556 bytes, SHA-256
+`1bbd93e98f26ee6f7a45cb1828a431ff3693b0dc94904b333ee1fd232a041ddd`.
+Capture/native provenance is saved separately in
+`t5/pointer-call-chain-{capture,native}-provenance-1.json`; do not overwrite.
+Six-phase baseline receipt is `acceptance/lifetimes/pointer-call-chain-capture-report.json`,
+13,484 bytes, SHA-256
+`a48db369e8e631b112721ed5b5a034814b3525110bb0ed3ff56d91aafd567cad`.
+
+Actual capture has 17 bodies, zero EH/lifetime regions and only bfk_expect as
+executable declaration-only dependency. Optional unused extern vtable is
+nonrequired; TypeinfoVariable is null, no new native provider is needed. Native
+runs return 608 for kinds 5/201 and 94 for 37/19, each repeated twice with 32
+values/25 events and expect/guard/missing counters 4/4/1. Exact branch events
+separate direct/guard from base/no-guard paths. Native physical confirms live
+input extent/alignment 56/8, prefix +8, enum byte +24 and tail +32/+40/+48;
+all per-object input-byte checks pass. Runtime sampled RSS 20 KiB misses startup;
+waited process RSS is 18,087,936 bytes, recorded separately. No generated run.
+
+Source pointer-return methods all use the same ordinary 8/8 pointer 1075; this
+fixture does not establish distinct pointer-result alias waivers. Const pointer
+local wrapper is separate and reciprocal executable initialization is retained.
+Actual direct optimized empty base is offset 0; indirect empty metadata has false
+flags/null OriginalType and must not be required to match direct flags. Forward
+lvalue_adjust/address and reverse receiver cast are actual retained operations.
+Proxy complete 24/8 versus NV/partner 17/8 is concrete: only complete storage is
+used; do not plan/round/emit the unused 17-byte partner. Proposed complete-carrier
+predicate and scoped borrowed read-only polymorphic field view require root review
+before product edits. No global native/NoThrow/caller-marker/IR widening.
+
+Root accepts pristine bfk_expect first-result contract for INITIAL exact signed64
+signature with captured effect-free integer hint only. Both operands remain
+planned, first evaluated once, hint has no emitted effect; general hints stay
+unsupported. Successful typed projection must get an honest generated-provider
+label in CLI reports rather than claiming an unchanged Runtime method executes.
+Actual DuckDB helper body/link/EH remains unresolved despite its definition being
+located. Emission has submitted concrete product admission; inventory independently
+reviewed facts/checker plan. Await root product-scope review; no product files edited.
+Coordinator alone builds/exports/Git, workers remain requested models. No active
+build/export/test process; preserve all snapshots and unrelated T3 fixtures.
 
 ## Earlier accepted checkpoint history
 

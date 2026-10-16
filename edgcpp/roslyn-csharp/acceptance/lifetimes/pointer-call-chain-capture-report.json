@@ -1,0 +1,489 @@
+{
+  "reportVersion": 1,
+  "milestone": "Cohesive pointer-call-chain genuine capture and native input baseline",
+  "status": "capture-and-native-oracle-only",
+  "parentCheckpoint": "477de3aa1",
+  "productCheckpoint": "16a07ae6b",
+  "translatorAccepted": false,
+  "generatedExecutionAccepted": false,
+  "linkClosureComplete": false,
+  "cppObjectLifetimeGenerated": false,
+  "broaderT5Complete": false,
+  "phaseCount": 6,
+  "successfulPhaseCount": 6,
+  "unexpectedOutcomes": 0,
+  "budgetViolations": 0,
+  "phases": [
+    {
+      "name": "pointer-call-chain-facts-build-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-facts-build-1/run.json",
+        "bytes": 1278,
+        "sha256": "3c237d1eb04ede5ab0a32713985da0caa707bd98fa7f4b6525787f5a463961cd"
+      },
+      "elapsedSeconds": 6.103689712006599,
+      "sampledPeakProcessTreeRssBytes": 457502720,
+      "waitedPeakProcessRssBytes": 268713984
+    },
+    {
+      "name": "export-pointer-call-chain-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-pointer-call-chain-1/run.json",
+        "bytes": 1169,
+        "sha256": "04fa16472208c13115a8b13ec9956cab0965b39c4271fb3bc743ecebe1d76576"
+      },
+      "elapsedSeconds": 0.20095580304041505,
+      "sampledPeakProcessTreeRssBytes": 46530560,
+      "waitedPeakProcessRssBytes": 31981568
+    },
+    {
+      "name": "inspect-pointer-call-chain-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-pointer-call-chain-1/run.json",
+        "bytes": 1130,
+        "sha256": "4dc63ebe37777916a79b313a6280ea5a8fe655db5f8171c6e5590b6e47f1790f"
+      },
+      "elapsedSeconds": 0.20135038695298135,
+      "sampledPeakProcessTreeRssBytes": 52244480,
+      "waitedPeakProcessRssBytes": 80740352
+    },
+    {
+      "name": "facts-pointer-call-chain-run-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-pointer-call-chain-run-1/run.json",
+        "bytes": 1092,
+        "sha256": "79c49dc83015e2af6b2a4b5fe69f63f279360557149ac021053cb811086c5236"
+      },
+      "elapsedSeconds": 0.7041650229366496,
+      "sampledPeakProcessTreeRssBytes": 104706048,
+      "waitedPeakProcessRssBytes": 112746496
+    },
+    {
+      "name": "native-pointer-call-chain-build-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-pointer-call-chain-build-1/run.json",
+        "bytes": 1168,
+        "sha256": "00e332f1bddb61c28edb054dae8707cf9e57eafe8c6aff52987fb5edbf0b37eb"
+      },
+      "elapsedSeconds": 0.20137841906398535,
+      "sampledPeakProcessTreeRssBytes": 16752640,
+      "waitedPeakProcessRssBytes": 34340864
+    },
+    {
+      "name": "native-pointer-call-chain-run-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-pointer-call-chain-run-1/run.json",
+        "bytes": 893,
+        "sha256": "35da82d3a9c3533b473ecf8ae69efcbe165b9b6e3cdd6972bb64abbfc5359734"
+      },
+      "elapsedSeconds": 0.10071856703143567,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18087936
+    }
+  ],
+  "captureProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-capture-provenance-1.json",
+    "bytes": 3836,
+    "sha256": "bf84899d13955a7dce563fa501e7f8b8a43cb5d9031d0d9a6dcb9256aafc2750"
+  },
+  "nativeProvenance": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-native-provenance-1.json",
+    "bytes": 2873,
+    "sha256": "921ae5b78ffcd65988c3b2e8932525900ff9c5ac1f201a0f44455ef8b1b5c85a"
+  },
+  "input": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/pointer-call-chain.roslynobj",
+    "sha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+    "bytes": 1031168
+  },
+  "publicFacts": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-facts-1.json",
+    "sha256": "1bbd93e98f26ee6f7a45cb1828a431ff3693b0dc94904b333ee1fd232a041ddd",
+    "bytes": 1971556
+  },
+  "probeSourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-facts-source-1/source-snapshot.json",
+    "bytes": 7630,
+    "sha256": "3de282a3f3818d5a4a7b9d22fd21fcc288c7b8482143beeae23db54c38316c1d"
+  },
+  "captureSourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-capture-source-1/source-snapshot.json",
+    "bytes": 589,
+    "sha256": "ea205c6e69241b4ee772fbfc6c626059901a6eb6da58b6867e79aa03796f73f3"
+  },
+  "nativeSourceSnapshot": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-native-source-1/source-snapshot.json",
+    "bytes": 868,
+    "sha256": "45b89f5aa17477f69b4efb45ed0c20445cd65912599e2ec1e27718775bb6301a"
+  },
+  "sourceAndInputFreezesVerified": true,
+  "nativeObservation": {
+    "scenarios": [
+      {
+        "inputKinds": [
+          5,
+          201
+        ],
+        "first": {
+          "result": 608,
+          "values": [
+            1,
+            1,
+            1,
+            5,
+            1,
+            1,
+            5,
+            1,
+            201,
+            1,
+            201,
+            1,
+            1,
+            1,
+            201,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4,
+            1,
+            1,
+            5,
+            201,
+            1,
+            1
+          ],
+          "events": [
+            100,
+            4000,
+            2001,
+            3001,
+            200,
+            4000,
+            2000,
+            3000,
+            4000,
+            2000,
+            3000,
+            300,
+            4001,
+            400,
+            4001,
+            4001,
+            700,
+            4000,
+            2000,
+            3000,
+            800,
+            4001,
+            900,
+            4001,
+            1000
+          ],
+          "overflow": 0,
+          "live": 0
+        },
+        "second": {
+          "result": 608,
+          "values": [
+            1,
+            1,
+            1,
+            5,
+            1,
+            1,
+            5,
+            1,
+            201,
+            1,
+            201,
+            1,
+            1,
+            1,
+            201,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4,
+            1,
+            1,
+            5,
+            201,
+            1,
+            1
+          ],
+          "events": [
+            100,
+            4000,
+            2001,
+            3001,
+            200,
+            4000,
+            2000,
+            3000,
+            4000,
+            2000,
+            3000,
+            300,
+            4001,
+            400,
+            4001,
+            4001,
+            700,
+            4000,
+            2000,
+            3000,
+            800,
+            4001,
+            900,
+            4001,
+            1000
+          ],
+          "overflow": 0,
+          "live": 0
+        },
+        "inputByteChecks": {
+          "firstRun": [
+            true,
+            true
+          ],
+          "secondRun": [
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "inputKinds": [
+          37,
+          19
+        ],
+        "first": {
+          "result": 94,
+          "values": [
+            1,
+            1,
+            1,
+            37,
+            1,
+            1,
+            37,
+            1,
+            19,
+            1,
+            19,
+            1,
+            1,
+            1,
+            19,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4,
+            1,
+            1,
+            37,
+            19,
+            1,
+            1
+          ],
+          "events": [
+            100,
+            4000,
+            2001,
+            3001,
+            200,
+            4000,
+            2000,
+            3000,
+            4000,
+            2000,
+            3000,
+            300,
+            4001,
+            400,
+            4001,
+            4001,
+            700,
+            4000,
+            2000,
+            3000,
+            800,
+            4001,
+            900,
+            4001,
+            1000
+          ],
+          "overflow": 0,
+          "live": 0
+        },
+        "second": {
+          "result": 94,
+          "values": [
+            1,
+            1,
+            1,
+            37,
+            1,
+            1,
+            37,
+            1,
+            19,
+            1,
+            19,
+            1,
+            1,
+            1,
+            19,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4,
+            1,
+            1,
+            37,
+            19,
+            1,
+            1
+          ],
+          "events": [
+            100,
+            4000,
+            2001,
+            3001,
+            200,
+            4000,
+            2000,
+            3000,
+            4000,
+            2000,
+            3000,
+            300,
+            4001,
+            400,
+            4001,
+            4001,
+            700,
+            4000,
+            2000,
+            3000,
+            800,
+            4001,
+            900,
+            4001,
+            1000
+          ],
+          "overflow": 0,
+          "live": 0
+        },
+        "inputByteChecks": {
+          "firstRun": [
+            true,
+            true
+          ],
+          "secondRun": [
+            true,
+            true
+          ]
+        }
+      }
+    ],
+    "nativeInputPhysical": {
+      "representation": "two-live-native-cpp-objects",
+      "cellInputSize": 56,
+      "cellInputAlignment": 8,
+      "concreteInputSize": 56,
+      "concreteInputAlignment": 8,
+      "inputPrefixSize": 16,
+      "inputPrefixAlignment": 8,
+      "fieldCodeSize": 1,
+      "fieldCodeAlignment": 1,
+      "cellBaseOffset": 0,
+      "prefixBaseOffset": 8,
+      "firstOffset": 8,
+      "secondOffset": 16,
+      "kindOffset": 24,
+      "tailOffsets": [
+        32,
+        40,
+        48
+      ],
+      "inputAddressesAligned": [
+        true,
+        true
+      ],
+      "distinctInputPointers": true,
+      "deterministicFirstFields": {
+        "prefixHex": [
+          "9edcba9876543220",
+          "5123456789abcde0"
+        ],
+        "tailHex": [
+          "0102030405060708",
+          "fdfcfbfaf9f8f7f7",
+          "030405060708090a"
+        ]
+      },
+      "deterministicSecondFields": {
+        "prefixHex": [
+          "bedcba9876543220",
+          "3123456789abcde0"
+        ],
+        "tailHex": [
+          "1112131415161718",
+          "edecebeae9e8e7e7",
+          "131415161718191a"
+        ]
+      },
+      "allSameObjectByteChecksPassed": true
+    }
+  },
+  "scope": "Seventeen actual captured bodies, no generated output. Native oracle constructs exactly two live C++ derived inputs and repeats each of two field-value scenarios. Captured fixture only borrows input pointers, takes nonvirtual field reads and uses pointer/Boolean/base/member calls; no pointee construction, destruction or virtual invocation. Future generated proof must use separately labeled aligned layout bytes, without a C++ lifetime/vtable equivalence claim.",
+  "findings": [
+    "CellInput complete extent/alignment 56/8 and selected unsigned-byte enum-associated field 24 agree with native physical coordinates. Prefix offset 8/tail 32,40,48 are captured facts, not source layout inference.",
+    "Pointer methods use the same natural 8/8 ordinary pointer type in this fixture; no distinct pointer-result alias waiver is exercised. Const pointer-object local initialization is an actual retained execution statement.",
+    "Proxy complete 24/8 differs from occupied/NV partner 17/8. Only complete representation is used here; the occupied partner is not admitted by the baseline.",
+    "Actual optimized direct empty-base offset 0 and differing indirect metadata are retained separately. No generated execution of the captured forward lvalue-adjust/address and reverse receiver cast is claimed.",
+    "bfk_expect is captured by exact discriminant and signed64 signature with constant-zero hint and once-observable first argument. Native expect/guard/missing counters 4/4/1 and 25 events distinguish direct and no-guard base paths.",
+    "Only executable declaration-only dependency is the recorded compiler builtin. Unused optional extern vtable metadata does not imply virtual/RTTI/provider execution. Actual DuckDB guard body/link/EH remains outside this fixture."
+  ],
+  "limits": [
+    "Native source is an independent oracle, never a provider or application fallback. No generated construction, lifetime/virtual/ownership/no-throw/native ABI claim.",
+    "Short native runtime sampled RSS misses startup; waited high-water RSS is separate. All resource measurements cover their exact command phase, not a full translator workload.",
+    "Product, Runtime and providers stay frozen at 16a07ae6b; typed method/view/intrinsic admission still requires the reviewed implementation and JIT/AOT execution."
+  ]
+}

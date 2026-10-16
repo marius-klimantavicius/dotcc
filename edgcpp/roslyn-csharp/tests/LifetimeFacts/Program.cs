@@ -63,7 +63,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
         }).ToArray();
         while (pending.TryDequeue(out var entity)) entities.Add(Describe(entity));
         var manifest = input.Manifest;
-        return Row(("ProbeVersion", 6), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
+        return Row(("ProbeVersion", 7), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
             ("Semantics", "Local locators use only public semantic equality. Public structural paths preserve parent/role/ordinal and repeated identities; they are not an execution schedule, reachability proof or inferred ownership. Metadata boundaries are recorded without executing or expanding them into body occurrences. Typed facets independently record actual call/initialization/control relationships; matching facets can alias a single operand and must not be replayed. Variable, base, override, layout and constant inventories are metadata associations, not additional executable occurrences or source virtual lookup. Address ByteOffset is a signed target-byte displacement; subobject ElementOffset is a signed element count and is recorded independently."),
             ("Bounds", new { MaximumEntities, MaximumOccurrences, MaximumDepth, MaximumConstantStorageUnits,
                 CachedRows = 4096, CachedPages = 128, PageSize = 128 }),
@@ -157,6 +157,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 row["EntityKind"] = "function"; row["BodyState"] = function.BodyState.Name;
                 row["IsDefined"] = function.IsDefined; row["DefinitionType"] = Ref(function.DefinitionType);
                 row["SpecialFunctionKind"] = function.SpecialFunctionKind?.Name;
+                row["BuiltinKind"] = function.BuiltinKind?.Name;
                 row["ConstructorOrDestructorKind"] = function.ConstructorOrDestructorKind?.Name;
                 row["IsTrivialDefaultConstructor"] = function.IsTrivialDefaultConstructor;
                 row["IsTrivialCopyFunction"] = function.IsTrivialCopyFunction; row["IsTrivialDestructor"] = function.IsTrivialDestructor;
