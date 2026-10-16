@@ -96,17 +96,39 @@ ordinary pointer expression result. Parent 22/receiver 4 selection identities ar
 outside target-body counters. All translation/link/generated/full-related-type/
 closed-no-throw flags remain false. See [the scoped facts](DUCKDB-ACCESSOR-TAIL.md).
 
-Next authorized work after this tool/evidence checkpoint: inspect the three
-actual selected dependencies in one bounded tool-only batch, reusing actual-target
-selection/traversal rather than a large special-case selector. Preserve exact
-source/execution signatures, pointer-local initializer relationships, guard/throw/
-EH obligations and nullable noexcept. Body-bound hits remain partial. No product
-scope is authorized until these facts establish the cohesive requirement. Product
-remains `16a07ae6b`; coordinator schedules immutable freeze/build/trace and Git,
-emission owns additive tool code, inventory owns read-only measured notes.
-Current address-only pointer capability grants no returned-pointer/dereference/
-virtual/full DuckDB closure. Existing accessor metadata evidence remains partial;
-other scoped bodies/layout facts retain original completion/attribution limits.
+The two-body tool/evidence checkpoint is committed as `57c7c41c7`. The subsequent
+approved `tail-dependencies` batch is now frozen and measured, with a truthful
+partial result: all three actual selected bodies finish (10/12/11 identities and
+occurrences, 33 total), then the shared shallow-type inventory reaches 64. Build
+passes; trace exits 3 with the single related-type bound issue. Overall trace
+acceptance is false; do not increase the bound or relabel it as a pass. Receipt
+`acceptance/duckdb/tail-dependencies-report.json`, 150,148 bytes, SHA-256
+`f6ead30ed106af32063f451b2ed20d9654763dd82365f8c7507424405d20fcd2`.
+Source `t5/duckdb-tail-dependencies-source-1` freezes 48 inputs; Program.cs
+SHA-256 `370479b459dc201dd6bba3fcdd408b9e6f4739cd86248532b0e192fa746231cc`.
+Build/trace elapsed 6.103/1.005 seconds with sampled tree RSS
+457,588,736/92,303,360 bytes and no resource violations. Input/source hashes verify.
+
+The selected get body assigns the actual pointer field into a local using RTL
+assignment, then returns it. The actual assertion body tests selected bfk_expect
+of a signed64 cast of the Boolean parameter and exact signed64 zero, calls a
+declaration-only ThrowNullSharedPtrDereference in its then branch, then returns.
+The selected base operator assigns a direct _M_get result to a pointer local and
+returns it. Existing source noexcept metadata is true/null/true; none becomes
+closed no-throw permission. Builtin expectation, the unresolved application
+declaration and defined-but-untraversed _M_get are distinct one-hop dependencies.
+All three bodies have no local EH/lifetime tables, which does not close callees.
+See [the partial findings](DUCKDB-TAIL-DEPENDENCIES.md).
+
+No new product scope is authorized. Finalize this partial tool/evidence checkpoint,
+then propose the next cohesive requirement from actual helper/guard and storage
+facts for root review. Do not substitute pointer shortcuts, delete retained else/
+guard calls or infer behavior from names. Fixed-field access on a polymorphic
+record may use an explicit captured storage view only after a concrete reviewed
+proposal; current address-only permission does not admit the dereference. Product
+remains `16a07ae6b`; coordinator alone owns builds/Git, emission owns tool code,
+inventory owns measured notes. Runtime/providers and all prior SQLite/C++ evidence
+retain original attribution. No process remains active.
 
 ## Earlier accepted checkpoint history
 

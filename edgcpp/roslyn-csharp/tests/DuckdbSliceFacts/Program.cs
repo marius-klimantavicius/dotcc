@@ -10,9 +10,9 @@ const string pinnedSha256 = "cf385364234784aa0d748781d06f74161ad51d28a6a34215449
 var arguments = args.Chunk(2).ToArray();
 if (arguments.Any(pair => pair.Length != 2 || pair[0] is not ("--input" or "--output" or "--mode")) ||
     arguments.Select(pair => pair[0]).Distinct().Count() != arguments.Length || !arguments.Any(pair => pair[0] == "--output"))
-    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor|buffer-ref|boolean-conversion|boolean-callee|receiver-layout|accessor-tail] --output NEW_REPORT.json");
+    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor|buffer-ref|boolean-conversion|boolean-callee|receiver-layout|accessor-tail|tail-dependencies] --output NEW_REPORT.json");
 var mode = arguments.FirstOrDefault(pair => pair[0] == "--mode")?[1] ?? "four-roots";
-if (mode is not ("four-roots" or "accessor" or "buffer-ref" or "boolean-conversion" or "boolean-callee" or "receiver-layout" or "accessor-tail")) throw new ArgumentException("Unknown explicit root-selection mode.");
+if (mode is not ("four-roots" or "accessor" or "buffer-ref" or "boolean-conversion" or "boolean-callee" or "receiver-layout" or "accessor-tail" or "tail-dependencies")) throw new ArgumentException("Unknown explicit root-selection mode.");
 var inputPath = Path.GetFullPath(arguments.FirstOrDefault(pair => pair[0] == "--input")?[1] ?? pinnedPath);
 var outputPath = Path.GetFullPath(arguments.Single(pair => pair[0] == "--output")[1]);
 if (File.Exists(outputPath)) throw new ArgumentException("The evidence report must have a fresh path.");
@@ -21,7 +21,7 @@ var before = Hash(inputPath);
 if (before != pinnedSha256) throw new InvalidDataException("This bounded trace accepts only the frozen core entry 316 content hash.");
 using var input = RoslynObject.Open(inputPath, new ReadOptions { CachedRowCount = 4096, CachedPageCount = 128, PageSize = 128 });
 var probe = new SliceProbe(input, mode != "four-roots", mode == "buffer-ref", mode is "boolean-conversion" or "boolean-callee" or "receiver-layout",
-    mode is "boolean-callee" or "receiver-layout", mode == "receiver-layout", mode == "accessor-tail");
+    mode is "boolean-callee" or "receiver-layout", mode == "receiver-layout", mode is "accessor-tail" or "tail-dependencies", mode == "tail-dependencies");
 var report = probe.Build();
 var after = Hash(inputPath);
 report["input"] = new { path = inputPath, sha256 = before, bytes = new FileInfo(inputPath).Length, afterSha256 = after, unchanged = before == after };
@@ -35,10 +35,10 @@ return report["traceComplete"] is true ? 0 : 3;
 
 static string Hash(string path) { using var stream = File.OpenRead(path); return Convert.ToHexStringLower(SHA256.HashData(stream)); }
 
-internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, bool bufferReferenceRoot = false, bool booleanConversionRoot = false, bool booleanCalleeRoot = false, bool receiverLayoutRoot = false, bool accessorTailRoot = false)
+internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, bool bufferReferenceRoot = false, bool booleanConversionRoot = false, bool booleanCalleeRoot = false, bool receiverLayoutRoot = false, bool accessorTailRoot = false, bool tailDependenciesRoot = false)
 {
     private const int NameLimit = 64, SymbolsPerKey = 4, ConstantUnits = 256;
-    private int RootLimit => accessorTailRoot ? 2 : accessorRoot ? 1 : 4;
+    private int RootLimit => tailDependenciesRoot ? 3 : accessorTailRoot ? 2 : accessorRoot ? 1 : 4;
     private int OperationsPerRoot => accessorRoot ? 64 : 256;
     private int OccurrencesPerRoot => accessorRoot ? 256 : 4096;
     private int DepthLimit => receiverLayoutRoot ? ReceiverLayoutWrapperDepth : accessorRoot ? 32 : 128;
@@ -68,6 +68,8 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
     private Dictionary<string, object?>? accessorTailSelection;
     private FunctionSymbol? accessorTailUnsignedTarget;
     private FunctionSymbol? accessorTailPointerTarget;
+    private Dictionary<string, object?>? tailDependencySelection;
+    private readonly Dictionary<FunctionSymbol, List<CallOperation>> tailDependencyCalls = [];
     private const int ReceiverLayoutRecords = 8, ReceiverLayoutFields = 16, ReceiverLayoutBases = 4, ReceiverLayoutSubobjects = 8, ReceiverLayoutWrapperDepth = 16;
     private CallOperation? receiverLayoutCall;
     private Dictionary<string, object?>? receiverLayoutAudit;
@@ -135,7 +137,10 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                     selector["selected"] = new[] { Ref(target) };
                     if (accessorTailRoot)
                     {
-                        selected.AddRange(SelectAccessorTail(target));
+                        var tail = SelectAccessorTail(target);
+                        selected.AddRange(tailDependenciesRoot
+                            ? SelectDirectBodyDependencies(tail.Single(function => function.Equals(accessorTailPointerTarget)), 3)
+                            : tail);
                         continue;
                     }
                     var bodyTarget = bufferReferenceRoot ? SelectBufferReferenceInitializer(target) : booleanConversionRoot ? SelectBooleanConversion(target) : target;
@@ -150,7 +155,8 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             {
                 if (receiverLayoutRoot) { AuditReceiverLayouts(function); continue; }
                 TraceRoot(function);
-                if (accessorTailRoot) roots[^1]["tailSelectedBodyFactsNotAdmission"] = AccessorTailFacts(function);
+                if (tailDependenciesRoot) roots[^1]["selectedDependencyFactsNotAdmission"] = TailDependencyFacts(function);
+                else if (accessorTailRoot) roots[^1]["tailSelectedBodyFactsNotAdmission"] = AccessorTailFacts(function);
                 else if (bufferReferenceRoot) roots[^1]["referenceReturnFactsNotAdmission"] = ReferenceReturnFacts(function);
                 else if (booleanCalleeRoot) roots[^1]["selectedCalleeFactsNotAdmission"] = BooleanConversionFacts(function);
                 else if (booleanConversionRoot) roots[^1]["booleanConversionFactsNotAdmission"] = BooleanConversionFacts(function);
@@ -167,10 +173,12 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
         catch (TraceBound error) { AddIssue("truncation-or-bound", error.Message); }
         catch (Exception error) { AddIssue("reader-or-trace-failure", error.Message); }
         var manifest = input.Manifest; var statistics = input.Statistics;
-        var result = Row(("probeVersion", accessorTailRoot ? 8 : receiverLayoutRoot ? 7 : booleanCalleeRoot ? 6 : booleanConversionRoot ? 5 : bufferReferenceRoot ? 4 : accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
+        var result = Row(("probeVersion", tailDependenciesRoot ? 9 : accessorTailRoot ? 8 : receiverLayoutRoot ? 7 : booleanCalleeRoot ? 6 : booleanConversionRoot ? 5 : bufferReferenceRoot ? 4 : accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
             ("inventoryOnly", true), ("translatorAccepted", false), ("linkClosureComplete", false), ("generatedExecutionAccepted", false),
             ("scope", receiverLayoutRoot
                 ? "Type-only receiver layout audit anchored to the reproduced And/accessor/Boolean/sole-callee identity chain. No typed body trace. Only explicit selected receiver/generated-field-owner, immediate value-field/direct-base records and one partner each receive layout rows; pointer pointees and further layout associations are not expanded. No inferred occupied extent, ownership, full closure, no-throw or translator admission."
+                : tailDependenciesRoot
+                ? "Three actual direct-call target bodies selected from the reproduced pointer-returning accessor-tail body. And, accessor, receiver and arrow inventories are selection-only, outside target-body counters. Shallow types only; no recursive child bodies, full metadata/layout closure, guard elimination, ownership, no-throw or translator admission."
                 : accessorTailRoot
                 ? "Two distinct actual bodies: the unsigned-byte non-Boolean direct callee in the reproduced accessor and the declared ordinary-pointer-returning direct call supplying its receiver. Parent and receiver inventories are selection-only, outside body counts. Shallow types only; no callee recursion, full metadata closure, ownership, closed no-throw or translator admission."
                 : booleanCalleeRoot
@@ -197,7 +205,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             ("statistics", new { statistics.Commands, statistics.RowsRead, statistics.CachedRows, statistics.CachedPages, statistics.MaximumBatchSize }));
         if (accessorRoot)
         {
-            result["rootSelectionMode"] = accessorTailRoot ? "accessor-tail" : receiverLayoutRoot ? "receiver-layout" : booleanCalleeRoot ? "boolean-callee" : booleanConversionRoot ? "boolean-conversion" : bufferReferenceRoot ? "buffer-ref" : "accessor";
+            result["rootSelectionMode"] = tailDependenciesRoot ? "tail-dependencies" : accessorTailRoot ? "accessor-tail" : receiverLayoutRoot ? "receiver-layout" : booleanCalleeRoot ? "boolean-callee" : booleanConversionRoot ? "boolean-conversion" : bufferReferenceRoot ? "buffer-ref" : "accessor";
             result["accessorSelectionIdentityInventoryNotSchedule"] = accessorSelectionInventory;
             result["accessorSelectionBounds"] = new { AccessorSelectionRoots, AccessorSelectionOperationsPerRoot, AccessorSelectionCalls,
                 NameLimit, SymbolsPerKey, includedInTargetBodyCounters = false,
@@ -246,6 +254,13 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                     ReceiverIdentityLimit = BufferParentOperationLimit, ReceiverDepthLimit = DepthLimit,
                     selectedTargetCount = 2, includesParentOrReceiverInventoryInTargetBodyCounters = false };
                 result["relatedTypeScope"] = "Combined shallow signature/receiver/body type facts for two selected bodies; explicit wrapper/pointee chains and arithmetic enum associations only. Field/base/partner/pointee layouts are not recursively expanded, and no full type, ownership or no-throw closure is claimed.";
+            }
+            if (tailDependenciesRoot)
+            {
+                result["tailDependencyParentSelectionNotBodyTrace"] = tailDependencySelection;
+                result["tailDependencySelectionBounds"] = new { ParentIdentityLimit = BufferParentOperationLimit,
+                    SelectedDirectCallLimit = DependencyLimit, selectedTargetCount = 3, includesParentInventoryInTargetBodyCounters = false };
+                result["relatedTypeScope"] = "Combined shallow signature/receiver/body facts for three selected direct dependencies; wrapper/pointee chains and arithmetic enum associations only. Deeper callees and field/base/partner layouts remain unexpanded. Any type/body bound hit is partial evidence, never a no-throw, ownership or translation acceptance result.";
             }
         }
         return result;
@@ -390,6 +405,76 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             ("sourceNoexceptFact", function.Signature.ExceptionSpecification?.NoexceptEffective), ("closedNoThrowBodyProof", false),
             ("translationAccepted", false), ("calleeBodiesRecursivelyTraced", false));
     }
+
+    private FunctionSymbol[] SelectDirectBodyDependencies(FunctionSymbol parent, int expectedTargets)
+    {
+        currentRoot = Ref(parent); currentPath = "selection/actual-body-direct-dependencies";
+        var body = parent.Body ?? throw new TraceBound("The selected dependency owner has no actual body.");
+        var operations = Bounded(body.DescendantOperations(), BufferParentOperationLimit, "Dependency-owner selection operation identities");
+        var calls = Bounded(operations.OfType<CallOperation>().Where(call => call.RepresentationRole.Name == "execution"),
+            DependencyLimit, "Dependency-owner executable calls");
+        var matches = new List<object>(); var targets = new List<FunctionSymbol>();
+        tailDependencySelection = Row(("parent", Function(parent)), ("operationIdentityCount", operations.Length),
+            ("executableCallIdentityCount", calls.Length), ("identityInventoryNotSchedule", true),
+            ("parentIncludedInTargetBodyCounters", false), ("selectedDirectCallContexts", matches));
+        foreach (var call in calls)
+        {
+            if (call.CallKind.Name != "direct" || call.Callee is not ReferenceOperation { Target: FunctionSymbol target } callee ||
+                callee.RepresentationRole.Name != "execution" || call.TargetMethod?.Equals(target) != true ||
+                call.Call.FunctionType?.Equals(target.Signature) != true || !target.IsDefined || target.BodyState.Name != "definition" || target.Body is null)
+                throw new TraceBound("A required dependency-owner call lacks the same actual defined direct callee and selected signature; selection is incomplete.");
+            if (!tailDependencyCalls.TryGetValue(target, out var contexts))
+            {
+                tailDependencyCalls.Add(target, contexts = []); targets.Add(target);
+            }
+            contexts.Add(call);
+            matches.Add(new { call = DescribeNode(call), calleeReference = DescribeNode(callee), selectedTarget = Function(target),
+                sameActualCalleeAndRetainedTarget = target.Equals(call.TargetMethod),
+                actualReceiverExpressionInventoryNotSchedule = call.Receiver is { } receiver ? SelectionReceiverInventory(receiver) : null });
+        }
+        tailDependencySelection["uniqueSelectedTargetCount"] = targets.Count;
+        var localSet = Bounded(body.Locals, LocalsPerRoot, "Dependency-owner locals").ToHashSet();
+        tailDependencySelection["executableLocalInitializerContextsNotBodyTrace"] = operations.OfType<InitializationStatementOperation>()
+            .Where(statement => statement.RepresentationRole.Name == "execution")
+            .Select(statement =>
+            {
+                var initialization = statement.Initialization; var local = initialization.Target as VariableSymbol;
+                var expression = initialization.Expression;
+                return new { statement = Ref(statement), initialization = Ref(initialization), kind = initialization.Kind.Name,
+                    target = Ref(initialization.Target), targetLocal = local is null ? null : Variable(local),
+                    declaredType = TypeRef(local?.Type), initializationType = TypeRef(initialization.Details.Type),
+                    expression = Ref(expression), expressionType = TypeRef(expression?.Type),
+                    selectedExpressionReturnType = expression is CallOperation { TargetMethod: { } selected } ? TypeRef(selected.ReturnType) : null,
+                    reciprocalLocalInitializer = local is not null && localSet.Contains(local) && local.Initializer?.Equals(initialization) == true,
+                    reciprocalOperation = initialization.Operation?.Initialization.Equals(initialization) == true,
+                    declaredLocalTypeEqualsExpressionType = local?.Type.Equals(expression?.Type) == true,
+                    constructorAssociationUnexpanded = Ref(initialization.Constructor), destructorAssociationUnexpanded = Ref(initialization.Destructor),
+                    lifetimeAssociationUnexpanded = Ref(initialization.Lifetime), initExpressionLifetimeAssociationUnexpanded = Ref(initialization.InitExpressionLifetime) };
+            }).ToArray();
+        tailDependencySelection["retainedReturnViewsNotBodyTrace"] = operations.OfType<JumpOperation>().Where(jump => jump.JumpKind.Name == "return")
+            .Select(jump => new { statement = Ref(jump), value = Ref(jump.Value), expressionType = TypeRef(jump.Value?.Type),
+                declaredReturnType = TypeRef(parent.ReturnType), sameDeclaredAndExpressionType = parent.ReturnType.Equals(jump.Value?.Type),
+                valueVariable = jump.Value is ReferenceOperation { Target: VariableSymbol local } ? Ref(local) : null,
+                noIdentityNormalization = true }).ToArray();
+        tailDependencySelection["retainedConditionalContextsNotBodyTrace"] = operations.OfType<ConditionalOperation>().Select(conditional => new {
+            conditional = Ref(conditional), condition = conditional.Condition is { } condition ? DescribeNode(condition) : null,
+            thenAssociation = Ref(conditional.Then), elseAssociation = Ref(conditional.Else),
+            branchesEliminated = false, branchesRecordedAsRuntimeCoverage = false }).ToArray();
+        CheckResources(); currentRoot = null;
+        if (targets.Count != expectedTargets || targets.Any(target => target.Equals(parent)))
+            throw new TraceBound("The bounded actual direct-call inventory did not reproduce the expected distinct dependency-body set.");
+        return targets.ToArray();
+    }
+
+    private Dictionary<string, object?> TailDependencyFacts(FunctionSymbol function) => Row(
+        ("selectedFromActualParent", Ref(accessorTailPointerTarget)),
+        ("actualSelectingCalls", tailDependencyCalls.TryGetValue(function, out var calls) ? calls.Select(Ref).ToArray() : []),
+        ("declaredReturnType", TypeRef(function.ReturnType)),
+        ("executionSymbolViews", Bounded(function.Parameters, ParameterLimit, "Dependency execution parameter views").Select(parameter => new {
+            selectedParameter = Parameter(parameter), symbol = Ref(parameter.Symbol), symbolType = TypeRef(parameter.Symbol?.Type),
+            symbolTypeEqualsSelectedType = parameter.Symbol?.Type.Equals(parameter.Type) == true }).ToArray()),
+        ("sourceNoexceptFact", function.Signature.ExceptionSpecification?.NoexceptEffective),
+        ("closedNoThrowBodyProof", false), ("translationAccepted", false), ("childDependencyBodiesTraced", false));
 
     private FunctionSymbol SelectBufferReferenceInitializer(FunctionSymbol parent)
     {
