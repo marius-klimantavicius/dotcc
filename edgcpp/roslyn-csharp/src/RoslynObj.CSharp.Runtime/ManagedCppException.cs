@@ -10,9 +10,10 @@ public enum ManagedCppTerminationPolicy
 }
 
 /// <summary>
-/// A generated-only exception carrier for the admitted exact signed-32-bit
-/// payload. Generated tokens represent captured semantic identities. This is
-/// not a native exception ABI, general C++ type matcher or exception stack.
+/// A generated-only exception carrier for the admitted signed-32-bit payload
+/// and bounded record payload. Generated tokens represent captured semantic
+/// identities. This is not a native exception ABI, general C++ type matcher
+/// or exception stack.
 /// </summary>
 public sealed unsafe class ManagedCppException : Exception
 {
@@ -26,8 +27,12 @@ public sealed unsafe class ManagedCppException : Exception
         internal readonly object ExactTypeToken;
         internal readonly int CreatorThread;
         internal readonly long DiagnosticIdentity;
+        internal readonly Action<nint>? DestroyRecord;
         internal void* Payload;
         internal int References;
+        internal bool RecordEvaluationComplete;
+        internal bool RecordCopyComplete;
+        internal bool RecordDestructionStarted;
 
         internal PrimaryOwner(object typeToken)
         {
@@ -46,6 +51,33 @@ public sealed unsafe class ManagedCppException : Exception
             Interlocked.Increment(ref liveReferences);
             Volatile.Write(ref lastCreatedPrimaryOwner, DiagnosticIdentity);
         }
+
+        internal PrimaryOwner(object typeToken, nuint size, nuint alignment, Action<nint> destroy)
+        {
+            ExactTypeToken = typeToken;
+            CreatorThread = Environment.CurrentManagedThreadId;
+            DestroyRecord = destroy;
+            Payload = NativeMemory.Alloc(size);
+            if (Payload == null) throw new OutOfMemoryException();
+            var aligned = ((nuint)Payload & (alignment - 1)) == 0;
+            if (!aligned)
+            {
+                var unaligned = Payload; Payload = null; NativeMemory.Free(unaligned);
+                throw new PlatformNotSupportedException("The record exception payload requires natural 8-byte alignment.");
+            }
+            References = 1;
+            DiagnosticIdentity = Interlocked.Increment(ref created);
+            Interlocked.Increment(ref liveOwners);
+            Interlocked.Increment(ref liveReferences);
+            Volatile.Write(ref lastCreatedPrimaryOwner, DiagnosticIdentity);
+            Interlocked.Increment(ref recordCreated);
+            Interlocked.Increment(ref recordLiveOwners);
+            Volatile.Write(ref lastRecordPrimaryOwner, DiagnosticIdentity);
+            Volatile.Write(ref lastRecordPayloadSize, (long)size);
+            Volatile.Write(ref lastRecordPayloadAlignment, (long)alignment);
+            Volatile.Write(ref lastRecordPayloadWasAligned, aligned ? 1 : 0);
+            Volatile.Write(ref lastRecordCreatedSequence, Interlocked.Increment(ref sequence));
+        }
     }
 
     private readonly PrimaryOwner owner;
@@ -63,6 +95,11 @@ public sealed unsafe class ManagedCppException : Exception
     private static long sequence, lastSelectedSequence, lastFirstCleanupSequence, lastReleasedSequence;
     private static long rethrown, handlingEntriesReleased, liveReferences;
     private static long lastCreatedPrimaryOwner, lastRethrownPrimaryOwner, lastReleasedPrimaryOwner;
+    private static long recordCreated, recordEvaluationCompleted, recordCommitted, recordDestructorStarted, recordDestructorCompleted, recordReleased, recordLiveOwners;
+    private static long lastRecordPrimaryOwner, lastRecordPayloadSize, lastRecordPayloadAlignment;
+    private static int lastRecordPayloadWasAligned;
+    private static long lastRecordCreatedSequence, lastRecordEvaluationCompletedSequence, lastRecordCommittedSequence, lastRecordSelectedSequence,
+        lastRecordFirstCleanupSequence, lastRecordDestructorStartedSequence, lastRecordDestructorCompletedSequence, lastRecordReleasedSequence;
 
     private ManagedCppException(object typeToken) : base("Generated C++ integer exception.")
     {
@@ -78,11 +115,45 @@ public sealed unsafe class ManagedCppException : Exception
         committedSequence = Interlocked.Increment(ref sequence);
     }
 
+    private ManagedCppException(object typeToken, nuint size, nuint alignment, Action<nint> destroy) : base("Generated C++ record exception.")
+    {
+        owner = new(typeToken, size, alignment, destroy);
+        state = EntryState.Pending;
+    }
+
     /// <summary>Allocates one pending owner. The emitter separately admits the exact captured int type.</summary>
     public static ManagedCppException CreateInt32(object exactTypeToken)
     {
         ArgumentNullException.ThrowIfNull(exactTypeToken);
         return new(exactTypeToken);
+    }
+
+    /// <summary>
+    /// Allocates the admitted exact complete 16/8 record. The emitter supplies
+    /// an ordinary managed callback to its selected closed noexcept destructor.
+    /// No native callback or source type lookup is involved.
+    /// </summary>
+    public static ManagedCppException CreateRecord(object exactTypeToken, nuint size, nuint alignment, Action<nint> destroy)
+    {
+        ArgumentNullException.ThrowIfNull(exactTypeToken);
+        ArgumentNullException.ThrowIfNull(destroy);
+        if (size != 16 || alignment != 8 || sizeof(nint) != 8 || !BitConverter.IsLittleEndian)
+            Reject("The bounded record exception owner admits only its exact complete 16/8 storage on a little-endian 64-bit host.");
+        return new(exactTypeToken, size, alignment, destroy);
+    }
+
+    /// <summary>
+    /// Records the actual exception_started occurrence before the selected
+    /// copy constructor. This is separate from successful copy/throw commit.
+    /// </summary>
+    public void MarkRecordEvaluationComplete()
+    {
+        RequireThread(); RequireState(EntryState.Pending);
+        if (owner.DestroyRecord is null || owner.RecordEvaluationComplete)
+            Reject("The record evaluation marker requires one pending record owner and cannot repeat.");
+        owner.RecordEvaluationComplete = true;
+        Interlocked.Increment(ref recordEvaluationCompleted);
+        Volatile.Write(ref lastRecordEvaluationCompletedSequence, Interlocked.Increment(ref sequence));
     }
 
     /// <summary>Destination of the retained throw-initialization expression; pending ownership only.</summary>
@@ -91,6 +162,8 @@ public sealed unsafe class ManagedCppException : Exception
         get
         {
             RequireThread(); RequireState(EntryState.Pending);
+            if (owner.DestroyRecord is not null && !owner.RecordEvaluationComplete)
+                Reject("The record destination requires its retained evaluation-complete marker before copy initialization.");
             addressRequested = true;
             return owner.Payload;
         }
@@ -101,9 +174,17 @@ public sealed unsafe class ManagedCppException : Exception
     {
         RequireThread(); RequireState(EntryState.Pending);
         if (!addressRequested) Reject("The retained payload initializer has not requested its destination.");
+        if (owner.DestroyRecord is not null && !owner.RecordEvaluationComplete)
+            Reject("The record copy cannot commit without its retained evaluation marker.");
         committedSequence = Interlocked.Increment(ref sequence);
         state = EntryState.Committed;
         Interlocked.Increment(ref committed);
+        if (owner.DestroyRecord is not null)
+        {
+            owner.RecordCopyComplete = true;
+            Interlocked.Increment(ref recordCommitted);
+            Volatile.Write(ref lastRecordCommittedSequence, committedSequence);
+        }
     }
 
     /// <summary>
@@ -114,6 +195,7 @@ public sealed unsafe class ManagedCppException : Exception
     public ManagedCppException CreateRethrow(object activeHandlerToken)
     {
         RequireThread(); RequireHandler(activeHandlerToken); RequireState(EntryState.Caught);
+        if (owner.DestroyRecord is not null) Reject("Record exception rethrow is outside the admitted record owner contract.");
         if (predecessor is not null || rethrowChild is not null || owner.References != 1)
             Reject("The bounded integer exception supports one rethrow from its original caught entry.");
         // Allocate the managed wrapper before retaining a second reference, so
@@ -159,6 +241,7 @@ public sealed unsafe class ManagedCppException : Exception
         selectedSequence = Interlocked.Increment(ref sequence);
         state = EntryState.Selected;
         Interlocked.Increment(ref selected);
+        if (owner.DestroyRecord is not null) Volatile.Write(ref lastRecordSelectedSequence, selectedSequence);
         return true;
     }
 
@@ -169,6 +252,7 @@ public sealed unsafe class ManagedCppException : Exception
     public bool SelectNoexceptBoundary(object boundaryToken, ManagedCppTerminationPolicy policy)
     {
         RequireThread(); RequireState(EntryState.Committed);
+        if (owner.DestroyRecord is not null) Reject("Record exception termination is outside the admitted record owner contract.");
         RequireTerminationPolicy(policy);
         if (boundaryToken is null || predecessor is not null || rethrowChild is not null || owner.References != 1)
             Reject("The bounded noexcept destination requires one original committed throw and an exact boundary token.");
@@ -200,6 +284,7 @@ public sealed unsafe class ManagedCppException : Exception
         if (firstCleanupSequence == 0) firstCleanupSequence = Interlocked.Increment(ref sequence);
         if (firstCleanupSequence <= selectedSequence)
             Reject("Exceptional cleanup preceded handler selection.");
+        if (owner.DestroyRecord is not null) Volatile.Write(ref lastRecordFirstCleanupSequence, firstCleanupSequence);
         Interlocked.Increment(ref cleanupAssertions);
         Interlocked.Increment(ref selectionBeforeCleanupAssertions);
     }
@@ -312,19 +397,54 @@ public sealed unsafe class ManagedCppException : Exception
     {
         if (state == EntryState.Released || owner.Payload == null || owner.References <= 0)
             Reject("The exception entry or primary payload has already been released.");
+        if (owner.DestroyRecord is not null && handled &&
+            (!owner.RecordCopyComplete || !owner.RecordEvaluationComplete || owner.RecordDestructionStarted ||
+             state != EntryState.Caught || owner.References != 1 || firstCleanupSequence <= selectedSequence || firstCleanupSequence == 0))
+            Reject("Record destruction requires its completed copy, selected active handler and encoded cleanup before final retirement.");
         state = EntryState.Released;
         owner.References--;
         Interlocked.Decrement(ref liveReferences);
         if (handled) Interlocked.Increment(ref handlingEntriesReleased);
         if (owner.References != 0) return;
-        var owned = owner.Payload; owner.Payload = null;
-        NativeMemory.Free(owned);
-        Volatile.Write(ref lastSelectedSequence, selectedSequence);
-        Volatile.Write(ref lastFirstCleanupSequence, firstCleanupSequence);
-        Volatile.Write(ref lastReleasedSequence, Interlocked.Increment(ref sequence));
-        Volatile.Write(ref lastReleasedPrimaryOwner, owner.DiagnosticIdentity);
-        Interlocked.Increment(ref released);
-        Interlocked.Decrement(ref liveOwners);
+        try
+        {
+            if (owner.DestroyRecord is { } destroy && handled)
+            {
+                // The pending path deliberately skips this branch. Generated
+                // admission proves that the completed destructor cannot throw.
+                owner.RecordDestructionStarted = true;
+                Interlocked.Increment(ref recordDestructorStarted);
+                Volatile.Write(ref lastRecordDestructorStartedSequence, Interlocked.Increment(ref sequence));
+                try { destroy((nint)owner.Payload); }
+                catch (Exception error)
+                {
+                    Interlocked.Increment(ref protocolRejections);
+                    throw new InvalidOperationException("A throwing record destructor is outside the admitted generated exception contract.", error);
+                }
+                Interlocked.Increment(ref recordDestructorCompleted);
+                Volatile.Write(ref lastRecordDestructorCompletedSequence, Interlocked.Increment(ref sequence));
+            }
+        }
+        finally
+        {
+            // Clear ownership before free; the selected destructor has already
+            // run with stable valid bytes, or pending initialization never committed.
+            var owned = owner.Payload; owner.Payload = null;
+            NativeMemory.Free(owned);
+            Volatile.Write(ref lastSelectedSequence, selectedSequence);
+            Volatile.Write(ref lastFirstCleanupSequence, firstCleanupSequence);
+            var releaseSequence = Interlocked.Increment(ref sequence);
+            Volatile.Write(ref lastReleasedSequence, releaseSequence);
+            Volatile.Write(ref lastReleasedPrimaryOwner, owner.DiagnosticIdentity);
+            Interlocked.Increment(ref released);
+            Interlocked.Decrement(ref liveOwners);
+            if (owner.DestroyRecord is not null)
+            {
+                Interlocked.Increment(ref recordReleased);
+                Interlocked.Decrement(ref recordLiveOwners);
+                Volatile.Write(ref lastRecordReleasedSequence, releaseSequence);
+            }
+        }
     }
 
     /// <summary>Process-wide diagnostic counters, never used to resolve or select ownership.</summary>
@@ -343,6 +463,18 @@ public sealed unsafe class ManagedCppException : Exception
         Interlocked.Read(ref rethrown), Interlocked.Read(ref handlingEntriesReleased), Interlocked.Read(ref liveReferences),
         Interlocked.Read(ref lastCreatedPrimaryOwner), Interlocked.Read(ref lastRethrownPrimaryOwner),
         Interlocked.Read(ref lastReleasedPrimaryOwner));
+
+    /// <summary>Record-only observations. Primary identities are diagnostic labels, not ownership lookup keys.</summary>
+    public static ManagedCppExceptionRecordDiagnostics GetRecordDiagnostics() => new(
+        Interlocked.Read(ref recordCreated), Interlocked.Read(ref recordEvaluationCompleted), Interlocked.Read(ref recordCommitted),
+        Interlocked.Read(ref recordDestructorStarted), Interlocked.Read(ref recordDestructorCompleted), Interlocked.Read(ref recordReleased),
+        Interlocked.Read(ref recordLiveOwners), Interlocked.Read(ref lastRecordPrimaryOwner),
+        (ulong)Interlocked.Read(ref lastRecordPayloadSize), (ulong)Interlocked.Read(ref lastRecordPayloadAlignment),
+        Volatile.Read(ref lastRecordPayloadWasAligned) != 0,
+        Interlocked.Read(ref lastRecordCreatedSequence), Interlocked.Read(ref lastRecordEvaluationCompletedSequence),
+        Interlocked.Read(ref lastRecordCommittedSequence), Interlocked.Read(ref lastRecordSelectedSequence),
+        Interlocked.Read(ref lastRecordFirstCleanupSequence), Interlocked.Read(ref lastRecordDestructorStartedSequence),
+        Interlocked.Read(ref lastRecordDestructorCompletedSequence), Interlocked.Read(ref lastRecordReleasedSequence));
 }
 
 public readonly record struct ManagedCppExceptionDiagnostics(
@@ -353,3 +485,9 @@ public readonly record struct ManagedCppExceptionDiagnostics(
 public readonly record struct ManagedCppExceptionRethrowDiagnostics(
     long Rethrown, long HandlingEntriesReleased, long LiveReferences,
     long LastCreatedPrimaryOwner, long LastRethrownPrimaryOwner, long LastReleasedPrimaryOwner);
+
+public readonly record struct ManagedCppExceptionRecordDiagnostics(
+    long Created, long EvaluationCompleted, long Committed, long DestructorStarted, long DestructorCompleted, long Released,
+    long LiveOwners, long LastPrimaryOwner, ulong LastPayloadSize, ulong LastPayloadAlignment, bool LastPayloadWasAligned,
+    long LastCreatedSequence, long LastEvaluationCompletedSequence, long LastCommittedSequence, long LastSelectedSequence,
+    long LastFirstCleanupSequence, long LastDestructorStartedSequence, long LastDestructorCompletedSequence, long LastReleasedSequence);

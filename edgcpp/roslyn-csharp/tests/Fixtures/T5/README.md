@@ -98,3 +98,13 @@ ABI lifecycles remain separate from full native-fixture activation; D9 bodies ar
 emitted but unexercised. See [the bounded VTT proof](../../../docs/T5-VIRTUAL-INHERITANCE.md).
 Broader diamonds, virtual destructors, RTTI queries, member pointers, native
 unwinding and scale remain open.
+
+
+`class-payload.cpp` now passes production CLI/native/JIT/NativeAOT with one
+selected copy into owned complete 16/8 storage, exact const-reference catch and
+ordinary managed selected D1 before final free. Physical checks measure actual
+layout and the sole existing RTTI DATA vptr. All owner/order/lifetime observations
+match; pending-copy failure, throwing destruction, class rethrow/termination and
+base matching remain separate. See [the class payload proof](../../../docs/T5-CLASS-PAYLOAD.md).
+This isolates an observed DuckDB form, without claiming its full exception/string
+hierarchy or linked project execution.

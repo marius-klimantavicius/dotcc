@@ -30,6 +30,8 @@ actual slot execution, physical layout and pinned RTTI data-provider checks.
 retained secondary table and an independently executed fixed receiver adjustor.
 [Virtual-base construction](docs/T5-VIRTUAL-INHERITANCE.md) also passes retained
 VTT forwarding, construction-phase dispatch and data-driven receiver adjustment.
+[Exact class exception payloads](docs/T5-CLASS-PAYLOAD.md) also pass selected copy,
+const-reference catch and managed payload destruction before final free.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

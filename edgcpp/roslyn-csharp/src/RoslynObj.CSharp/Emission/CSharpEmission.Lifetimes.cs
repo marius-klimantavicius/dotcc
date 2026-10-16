@@ -60,6 +60,11 @@ public sealed partial class CSharpEmitter
                     throw Limit("Execution and signature parameter roles differ in the selected lifetime routine.", "lifetime-parameter");
             }
             var references = new List<PointerType>();
+            if (TryValidateClassExceptionReferenceRoutine(function))
+            {
+                generatedLifetimeRoutines.Add(function);
+                return;
+            }
             if (IsVirtualMethod(function))
             {
                 EnsureGeneratedNoThrow(function);
@@ -183,7 +188,7 @@ public sealed partial class CSharpEmitter
         {
             result = "";
             if (!pointer.IsReference || !generatedReferenceTypes.Contains(pointer) || currentFunction is not { } function ||
-                !generatedLifetimeRoutines.Contains(function) && !normalCleanupFunctions.Contains(function)) return false;
+                !generatedLifetimeRoutines.Contains(function) && !normalCleanupFunctions.Contains(function) && !IsClassExceptionReferenceContext(function)) return false;
             _ = GeneratedRecordPointer(pointer, true);
             result = TypeName(pointer.PointeeType) + "*";
             return true;

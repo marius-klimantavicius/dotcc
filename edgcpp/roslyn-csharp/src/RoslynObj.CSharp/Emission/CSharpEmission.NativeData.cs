@@ -17,15 +17,30 @@ public sealed partial class CSharpEmitter
         private SemanticEntity? nativeDataInitializerOwner;
         private readonly HashSet<VariableSymbol> nativeTypeinfoStorage = [];
         private readonly HashSet<FieldSymbol> nativeTypeinfoFields = [];
+        private RecordType? nativeRecordExceptionPayload;
+        private VariableSymbol? nativeRecordExceptionTypeinfo;
 
         private void InitializeNativeDataBindings()
         {
             if (options.ExternalData.Count == 0) return;
-            if (inputs.Count != 1 || selectedProgram is not null || options.ExternalData.Count is not (2 or 3) ||
+            var recordExceptionProfile = false;
+            if (inputs.Count == 1 && selectedProgram is null && options.ExternalData.Count == 1 &&
+                options.ExternalData[0].LinkageName == "_ZTVN10__cxxabiv117__class_type_infoE")
+            {
+                // This is an actual throw/caught-reference/typeinfo association,
+                // not a fabricated virtual-method owner for a nonvirtual class.
+                // Full exception execution admission follows data preflight.
+                if (!TryClassPayloadTypeinfoContext(out var payload, out var typeinfo))
+                    throw Limit("A sole class RTTI export needs the captured record-throw and reference-handler context.", "native-data");
+                nativeRecordExceptionPayload = payload;
+                nativeRecordExceptionTypeinfo = typeinfo;
+                recordExceptionProfile = true;
+            }
+            if (inputs.Count != 1 || selectedProgram is not null || !recordExceptionProfile && options.ExternalData.Count is not (2 or 3) ||
                 options.ExternalData.Select(binding => binding.LinkageName).Distinct(StringComparer.Ordinal).Count() != options.ExternalData.Count ||
                 options.ExternalData.Any(binding => !SemanticNativeDataImplementation.IsSupportedSymbol(binding.LinkageName)) ||
                 !options.ExternalData.Any(binding => binding.LinkageName == "_ZTVN10__cxxabiv117__class_type_infoE"))
-                throw Limit("The address-only RTTI provider requires its exact two- or three-export single-unit profile.", "native-data");
+                throw Limit("The address-only RTTI provider requires an admitted record-throw or two-/three-export inheritance profile in one unit.", "native-data");
             foreach (var binding in options.ExternalData)
             {
                 if (!SemanticNativeDataImplementation.IsSupportedSymbol(binding.LinkageName) || binding.EntryPoint != binding.LinkageName ||
@@ -56,6 +71,10 @@ public sealed partial class CSharpEmitter
             foreach (var implementation in nativeDataImplementations)
                 if (nativeDataAddresses.Count(address => address.BaseEntity?.Equals(implementation.Variable) == true) != 1)
                     throw Limit("Each native RTTI export must have exactly its validated typeinfo-vptr address value; allowed initializer uses are tracked separately.", "native-data");
+            if (recordExceptionProfile && (nativeTypeinfoStorage.Count != 1 ||
+                !nativeTypeinfoStorage.Contains(nativeRecordExceptionTypeinfo!) || nativeDataAddresses.Count != 1 ||
+                nativeDataAddressOwners.Values.Any(owners => owners.Count != 1 || !owners.Contains(nativeRecordExceptionTypeinfo!))))
+                throw Limit("The record exception profile borrows only its one captured typeinfo initializer address.", "native-data");
             foreach (var function in functions)
             foreach (var node in ExceptionExecutionNodes(function.Body!.Root))
             {
@@ -144,6 +163,11 @@ public sealed partial class CSharpEmitter
         {
             if (record.Alignment != 8) return false;
             var symbol = external.AssemblyName ?? external.CurrentName;
+            if (nativeRecordExceptionTypeinfo is { } typeinfo)
+                return root.Equals(typeinfo) && nativeRecordExceptionPayload?.Details.TypeinfoVariable?.Equals(root) == true &&
+                    RawRecord(root.Type)?.Equals(record) == true && record.Size == 16 &&
+                    record.VirtualFunctionTableVariable?.Equals(external) == true &&
+                    symbol == "_ZTVN10__cxxabiv117__class_type_infoE";
             if (record.VirtualFunctionTableVariable?.Equals(external) == true)
             {
                 if (symbol == "_ZTVN10__cxxabiv117__class_type_infoE") return record.Size == 16;

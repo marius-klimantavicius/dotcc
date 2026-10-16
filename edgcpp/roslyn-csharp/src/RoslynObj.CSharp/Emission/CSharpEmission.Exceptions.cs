@@ -50,6 +50,7 @@ public sealed partial class CSharpEmitter
             var graph = functions.ToDictionary(function => function, function => ExceptionExecutionNodes(function.Body!.Root).ToArray());
             var throws = graph.Values.SelectMany(nodes => nodes.OfType<ThrowOperation>()).ToArray();
             var tries = graph.Values.SelectMany(nodes => nodes.OfType<TryOperation>()).ToArray();
+            if (TryInitializeClassExceptions(graph, candidates, throws, tries)) return;
             if (throws.Any(throwing => throwing.IsRethrow))
             {
                 InitializeBoundedRethrow(graph, candidates, throws, tries);
@@ -387,7 +388,8 @@ public sealed partial class CSharpEmitter
                 signature.LanguageLinkage?.Name != "nlk_cplusplus_external" || options.ExternalFunctions.Any(binding => binding.LinkageName == release.CurrentName))
                 throw Limit("The selected no-object cleanup target does not match the bounded generated exception-owner runtime contract.", "exception-runtime");
             ValidateCallingConvention(signature);
-            var contract = noexceptTermination is not null ? SemanticRuntimeFunctionImplementation.Int32NoexceptTerminationOwnerContract :
+            var contract = classExceptionActive ? SemanticRuntimeFunctionImplementation.RecordExceptionOwnerContract :
+                noexceptTermination is not null ? SemanticRuntimeFunctionImplementation.Int32NoexceptTerminationOwnerContract :
                 boundedRethrow ? SemanticRuntimeFunctionImplementation.Int32RethrowOwnerContract : SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract;
             if (!semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release)))
                 semanticRuntimeFunctions.Add(new(release, contract));
@@ -433,6 +435,7 @@ public sealed partial class CSharpEmitter
                 "leck_function_epilogue" => eh.Epilogues.Contains(marker) && payload.Routine?.Equals(function) == true && payload.Handler is null && payload.TryBlock is null,
                 "leck_try_epilogue" => payload.TryBlock?.Equals(plan.Operation.Definition) == true && payload.Handler is null && payload.Routine is null,
                 "leck_exception_caught" => payload.Handler is null && payload.TryBlock is null && payload.Routine is null && ExceptionExecutionNodes(plan.Handler.Body).Contains(marker),
+                "leck_exception_started" => payload.Handler is null && payload.TryBlock is null && payload.Routine is null && IsClassExceptionStarted(marker, function),
                 "leck_catch_epilogue" => payload.Handler?.Equals(plan.Handler) == true && payload.TryBlock is null && payload.Routine is null && ExceptionExecutionNodes(plan.Handler.Body).Contains(marker),
                 _ => false
             };
@@ -512,6 +515,7 @@ public sealed partial class CSharpEmitter
             foreach (var plan in exceptionTries.Values)
                 fields.Append("    private static readonly object ").Append(plan.Token).AppendLine(" = new();");
             EmitNoexceptTerminationField(fields);
+            EmitClassExceptionFields(fields);
             fields.AppendLine();
         }
 
@@ -603,7 +607,9 @@ public sealed partial class CSharpEmitter
             if (!throwing.Equals(selectedIntegerThrow) || throwing.ThrownType?.Equals(exceptionIntType) != true || currentFunction is null || !currentFunction.Equals(selectedIntegerThrowFunction))
                 throw Limit("This throw has no selected bounded integer transfer adapter.", "exception");
             var owner = ExceptionLocal("__throw_owner");
-            writer.Line($"{ExceptionCarrierType} {owner} = {ExceptionCarrierType}.CreateInt32({Owner}.{exceptionTypeToken});");
+            writer.Line(classExceptionActive
+                ? $"{ExceptionCarrierType} {owner} = {ExceptionCarrierType}.CreateRecord({Owner}.{exceptionTypeToken}, 16, 8, {Owner}.{classExceptionDestructorThunk});"
+                : $"{ExceptionCarrierType} {owner} = {ExceptionCarrierType}.CreateInt32({Owner}.{exceptionTypeToken});");
             writer.Line("try"); writer.Open();
             var previous = pendingThrowOwner;
             pendingThrowOwner = owner;
@@ -634,6 +640,13 @@ public sealed partial class CSharpEmitter
                     prefix.Add(new CsSetVariable(new(CsType.Int32, adapter.State), new CsLeaf(CsType.Int32, state.StateNumber!.Value.ToString(CultureInfo.InvariantCulture), true)));
                     effects = ExpressionEffects.WriteStorage;
                 }
+            }
+            else if (kind == "leck_exception_started")
+            {
+                if (pendingThrowOwner is null || !IsClassExceptionStarted(marker, function))
+                    throw Limit("The class exception-start marker escaped its exact pending copy initializer.", "exception-record");
+                value = new CsLeaf(CsType.Void, pendingThrowOwner + ".MarkRecordEvaluationComplete()", false);
+                effects = ExpressionEffects.WriteStorage | ExpressionEffects.MayThrow;
             }
             else if (kind == "leck_thrown_object_address")
             {

@@ -246,16 +246,59 @@ regions; output Vector& is mutable, and a declaration-only size dependency
 remains unresolved. Full InternalException/string/base/catch and whole-164 link
 closure are not claimed. Read [the bounded trace](DUCKDB-SLICE-TRACE.md).
 
-No builder or translator remains active. Coordinator owns Git and serialized
-builds. Root approved genuine same-type class-payload capture/native/public-facts
-preparation only. Inventory owns NEW class-payload fixture/note; emission owns
-saved pristine lifecycle/destructor source audit and read-only runtime review.
-Use canary+int payload, selected noexcept copy from const source&, exact const&
-catch and bounded lifetime observations. Capture actual layout/copy/destructor/
-catch binding/state before proposing runtime/emitter/provider changes. Failed
-pending copy must free without payload destruction but is not activated by this
-noexcept-first fixture. Broader T5/T6 remain open; preserve original SQLite
-runtime/source attribution.
+DuckDB trace checkpoint is `504bf7641`. The next genuine class-payload capture,
+inspect, public facts and native phases all pass; provenance is
+`t5/class-payload-capture-provenance-1.json`. Source SHA-256 is
+`457a582a8261d7530bac5eca302487394192aae062dde1677bddb0efe746d950`.
+Native twice returns 14, values [7,7,1,1,2,1,1,0,0], all 12 events and live/overflow
+zero. Public facts `t5/class-payload-facts-1.json` establish complete 16/8, selected
+copy C1 17 and payload D1 15, const thrown type597 and caught reference526 to it,
+shared typeinfo33. Actual marker107 precedes copy108 into address111; handler
+binds caught address before marker238. Source region0 and handler release1 remain
+separate; pending and payload ownership never come from metadata replay.
+Inventory-only report has 15 required bodies, helper19 plus one existing class
+RTTI DATA import; catalog new/delete declarations are not required.
+
+Root approved the bounded implementation after actual contract review. Emission
+owns NEW ClassExceptions partial and narrow translator/semantic-contract hooks;
+inventory owns additive record Runtime API/diagnostics and NEW ClassPayloadLifetime
+checker; coordinator owns NativeData, all Git and serialized builds. Runtime API
+CreateRecord(token,size,alignment,managed destroy) admits exact16/8, explicit
+MarkRecordEvaluationComplete precedes copy/Commit, final completed retirement
+invokes selected ordinary managed D1 before free, pending release frees only.
+Old int APIs/DTOs stay unchanged. Pure preflight class context gates only the sole
+existing class DATA initializer; full EH admission remains a later requirement.
+No descriptor/resolver expansion or native callback/unwind is authorized.
+
+The exact class-payload slice now passes all 60 expected outcomes: 54 ordinary
+successes, two prior expected SIGABRTs and four unsupported rejections. Receipt:
+`acceptance/lifetimes/class-payload-report.json`, SHA-256
+`12e75111547bb45415c5da20001257b80a5c82a3b2d399de6c54ca1a6d8404bb`.
+Product snapshot `t5/class-payload-source-1` freezes 232 files; checker snapshot
+`t5/class-payload-checker-source-1` freezes nine. All 15 input objects, source,
+provider and completion hashes verify; no resource violations. First product
+attempt passes. Production `t5/class-payload-cli-generated-1` publishes all 15
+bodies, exact record-owner helper and sole class DATA import. Native/JIT/AOT
+both runs match 14/nine values/12 events, with one record destructor/free and
+zero live owners/references; evaluation→commit→selection→cleanup→D1→free order
+is observed. Actual complete16/8 fields0/8, natural alignment8 and stored
+providerBASE+16 pass physical checks. No occupied12 CLR carrier is claimed.
+
+Nine older C++ application sources remain byte-identical and pass affected
+JIT/AOT; repeat class output agrees. Saved audits are
+`t5/class-payload-contract-source-1` and `t5/class-payload-marker-contract-source-1`.
+Pending-copy failure, throwing destruction, class rethrow/termination, base
+matching and full DuckDB exception/string/link closure remain unsupported or
+unexercised. Generated no-object exceptional release is unactivated; normal
+catch epilogue release is proven. Old int APIs/DTOs remain unchanged.
+
+No builder/translator remains active. Product/checker workers are frozen while
+coordinator saves this checkpoint. Emission performs only read-only next-target
+review: mutable Vector& output is independently observed in all four bounded
+DuckDB roots, and current general record-reference admission is const-only.
+Propose a minimal selected mutable-reference/alias fixture after this save;
+no next product scope is authorized until review. Broader T5/T6 stay open;
+preserve original SQLite runtime/source attribution.
 
 Never modify EDG core, use raw model bypass, recover source semantics or consult
 dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.

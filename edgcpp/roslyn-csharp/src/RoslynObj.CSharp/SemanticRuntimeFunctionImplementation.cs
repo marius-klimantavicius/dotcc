@@ -5,6 +5,7 @@ namespace RoslynObj.CSharp;
 internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Function, string Contract)
 {
     internal const string Int32ExceptionOwnerContract = "managed-cpp-int32-exception-owner-v1";
+    internal const string RecordExceptionOwnerContract = "managed-cpp-exact-record-owner-v1";
     internal const string Int32RethrowOwnerContract = "managed-cpp-int32-rethrow-owner-v1";
     internal const string Int32NoexceptTerminationOwnerContract = "managed-cpp-int32-noexcept-unwind-true-failfast-owner-v1";
     internal const string GeneratedVectorConstructorContract = "generated-cpp-vector-constructor-v1";
@@ -23,10 +24,19 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
     internal static bool IsAdmittedContract(string? linkageName, string contract) =>
         CandidateContract(linkageName) == contract ||
         linkageName == "__destroy_exception_object" &&
-        contract is Int32RethrowOwnerContract or Int32NoexceptTerminationOwnerContract;
+        contract is Int32RethrowOwnerContract or Int32NoexceptTerminationOwnerContract or RecordExceptionOwnerContract;
 
     internal ImportReport Describe(ImportReport import) => Contract switch
     {
+        RecordExceptionOwnerContract => import with
+        {
+            Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",
+            BindingStatus = "generated-exact-record-owner-contract-selected",
+            Ownership = "The validated managed-cpp-exact-record-owner-v1 contract owns one captured complete 16-byte/8-aligned nonpolymorphic payload. Its retained exception-start marker precedes the selected generated copy; commit follows successful initialization. Final eligible handler release invokes the exact selected generated destructor once before freeing; pending initialization release never invokes that destructor.",
+            ErrorContract = "Only the admitted generated same-type record throw and const-reference catch participate. Class rethrow, throwing copy/destructor, base matching, class termination, native C++ unwinding and CLR-error conversion are unsupported.",
+            ThreadContract = "The explicit carrier, payload and selected handler remain on their creating managed thread; no ambient current payload or native exception stack is substituted.",
+            CallbackContract = "One static ordinary managed destructor thunk calls the actual selected generated body. No native entry, UCO function address or native application implementation is supplied."
+        },
         Int32ExceptionOwnerContract => import with
         {
             Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",
