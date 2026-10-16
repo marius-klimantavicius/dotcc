@@ -60,7 +60,7 @@ public sealed partial class CSharpEmitter
                     throw Limit("Execution and signature parameter roles differ in the selected lifetime routine.", "lifetime-parameter");
             }
             var references = new List<PointerType>();
-            if (ordinaryConstMethods.ContainsKey(function) || IsBorrowedFieldMethod(function))
+            if (ordinaryConstMethods.ContainsKey(function) || ordinaryMethodBodies.ContainsKey(function) || IsBorrowedFieldMethod(function))
             {
                 generatedLifetimeRoutines.Add(function);
                 return;
@@ -216,6 +216,7 @@ public sealed partial class CSharpEmitter
             ValidateGeneratedLifetimeRoutine(direct);
             ValidateRegisteredMutableReferenceCall(call, direct);
             ValidateRegisteredOrdinaryMethodCall(call, direct);
+            ValidateRegisteredOrdinaryBodyCall(call, direct);
             var borrowedResultView = IsRegisteredBorrowedCall(call, direct);
             var signature = direct.Signature;
             var arguments = call.Arguments;

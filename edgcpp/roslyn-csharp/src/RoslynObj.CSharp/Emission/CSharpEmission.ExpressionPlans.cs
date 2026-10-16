@@ -8,6 +8,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanExpression(ExpressionOperation expression)
         {
+            ValidateOrdinaryAddressOccurrence(expression);
             ++operationOrdinal;
             return ApplyRecordedVolatileFetch(expression, PlanExpressionCore(expression));
         }

@@ -57,6 +57,8 @@ public sealed partial class CSharpEmitter
 
         private void ValidateNativeScalarType(CppType type, bool allowVoid)
         {
+            if (AddressOnlyBoundaryType(type))
+                throw Limit("Address-only pointers and containing carriers have no native ABI adapter.", "address-only-pointer");
             var raw = Unwrap(type);
             if (raw.Kind.Name == "tk_void" && allowVoid) return;
             if (raw is PointerType pointer)

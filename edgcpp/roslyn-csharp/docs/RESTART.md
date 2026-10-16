@@ -3,154 +3,87 @@
 ## Current checkpoint after user resume, 2026-10-16
 
 Work remains authorized after the user unpaused. SQLite T0–T4 are closed for
-configured finite Linux x64 acceptance. Actual readable source is
-`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`;
-its source 13/runtime 11 attribution is unchanged. Broader C++ T5 and portability/
+configured finite Linux x64 acceptance; source remains
+`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`
+with original source 13/runtime 11 attribution. Broader C++ T5 and portability/
 scale T6 remain open. This section overrides historical state below.
 
-Current verified borrowed-member milestone is `de39c8bb9`. Prior tool HEAD was
-`21bf9f35c`, following ordinary const field methods
-`4538211f2` and mutable/const aliasing `cd36a75d1`. Compact receipt:
-`acceptance/lifetimes/borrowed-field-reference-report.json`, SHA-256
-`dfb3271496ef2111bbd46e6b4b0e2caf1125908ea4eff39344a84e6855d2f737`.
-All 48 expected outcomes pass: 43 successful phases and five intended unsupported
-rejections, zero unexpected outcomes or budget violations. Product source snapshot
-`t5/borrowed-field-reference-source-1` freezes 248 files; final checker snapshot
-`t5/borrowed-field-reference-checker-source-2` freezes nine. All 20 input hashes,
-source/checker inventories, publication files and repeat output hashes verify.
-Runtime/providers/Calls/Program/IR/planner/initializer/NormalInitializationValue
-are unchanged. No build/export/test process remains active.
+The latest verified product milestone is the cohesive borrowed-member Boolean
+conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,
+`c64ab5dec`, `303cbaf90`. Compact receipt:
+`acceptance/lifetimes/boolean-call-chain-report.json`, SHA-256
+`c9204394017d2120258c9b1f85f6e0f5b328bbd1c5545f624b7168fc99a2786c`.
+All 51 expected outcomes pass: 45 successful phases and six intended unsupported
+rejections, zero unexpected outcomes/resource violations. Frozen product snapshot
+`t5/boolean-call-chain-source-2` has 255 files, final checker snapshot
+`t5/boolean-call-chain-checker-source-1` has nine; all 23 input hashes, both source
+inventories, publication/completion files and repeat outputs verify. Runtime,
+providers, IR/renderer, Program, borrowed binding and initializer semantics are
+unchanged. No build/export/test process remains active.
 
-Two independently captured fixtures are production-published under
-`t5/borrowed-field-reference-cli-generated-1` and
-`t5/borrowed-field-reference-mutable-cli-generated-1`, each eight bodies and no
-required imports or diagnostics. Both native/JIT/AOT observations repeat result
-36, values `[5,7,11,13,1,1,1,1,0]`, events `[100,205,307,400,511,613,704]`.
-Generated source is identical across the captures, but their source/input/report/
-completion and checker invocation provenance remain separately attributable.
-Physical JIT/AOT measures Member 8/4 with fields 0/4 and Owner 16/8 with canary 0/
-payload 8, sequential-prefix alignment 4/8 and array stride 8/16. Actual getter calls
-on two owners return their exact distinct payload addresses at +8; stored pointers
-observe both subsequent owner mutations and preserve full-width signed canaries.
-Zero live slots are protocol only, not an ownership/lifetime-extension proof.
+Production output is `t5/boolean-call-chain-cli-generated-2`: ten bodies, no
+required imports/diagnostics. Native/JIT/AOT twice return 3, values
+`[0,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,0]`, events
+`[100,201,301,400,500,601,700,801,901]`. Physical JIT/AOT measures Owner 24/8,
+Wrapper/DerivedStorage/Storage 16/8, RefCountCarrier 8/8; actual fields, generated
+base offsets, prefix alignment and array strides agree. Getter calls on two owners
+return exact distinct payload addresses at +8. Both actual sbyte conversion entries
+execute `[0,1,1,0,1]` across fresh null/non-null/cleared states; scalar-address bits,
+borrowed/base/member identities, pointer cookies and full-width canaries survive.
+Zero live/slot 18 is protocol only, not resource ownership or lifetime extension.
 
-The reusable registry admits selected ordinary unadjusted const receiver methods
-returning a borrowed const alias-typed record field, direct calls and exact
-reciprocal automatic reference-local bindings. Both actual address shapes are
-preserved: direct already-const member, and explicit lvalue qualification over the
-mutable member. Declared reference and ordinary pointer value are distinct public
-types with the same exact const pointee. Contextual type rendering never grants
-unregistered same-reference-type bindings. The genuine extra direct-field-bound
-local has the same declared reference identity as the valid getter-bound local;
-it is rejected with CSHARP2502 before publication. Native/indirect/virtual/member-
-pointer/adjusted-receiver/reference-parameter/general escape/ownership support is
-not granted. Null noexcept stays null; NoThrow cache and caller cleanup-marker
-omission permissions are unchanged. Read [the proof](T5-BORROWED-FIELD-REFERENCE.md).
+The new reusable capability admits the demonstrated Boolean/int32 local/cast/
+assignment/comparison/direct-call body grammar with fixed unadjusted const
+receivers, plus explicit captured nonvirtual field carriers. It preserves actual
+operations/selected calls; no name/count/shared_ptr-specific behavior or synthetic
+truth test. Lowered Size/field offsets and recursive generated-base fields govern
+storage. Empty direct and differing indirect base metadata add no invented bytes.
+Typed pointers remain preferred. Complete unsupported polymorphic pointers receive
+an address-only void* view only after required candidate collection reaches a
+fixed point and freezes, followed by exact typed-use/storage/initializer/constant/
+signature/ABI reconciliation. Expression-plus-owner ledgers are consumed by legacy
+Expression and typed PlanExpression entry. Type membership grants no use.
+Native/indirect/variadic/callback/address-exposed/nested aggregate ABI roles, captured
+P**/arrays/unregistered slots, pointee access/stride/value storage and escapes remain
+guarded. No incomplete-pointer helper or NoThrow/cache/caller-cleanup widening.
+Opaque is complete abstract 16/8 in the input, but is never constructed or accessed;
+its unused optional extern vtable stays nonrequired. No Opaque/EmptyTag CLR carrier
+or native application implementation is emitted. Read
+[the proof](T5-BOOLEAN-CALL-CHAIN.md).
 
-Prior normal const-reference, mutable alias, ordinary unsigned-byte method and
-exact class-payload outputs stay byte-identical and pass affected JIT/AOT.
-SI/MI/Vbase re-emission stays byte-identical without relabeling prior runtime
-proof. Four prior genuine unsupported cases remain unpublished. Physical checker
-attempt1 is preserved as a checker-only address-cast syntax failure; source2
-corrects four parentheses expressions and passes all eight physical phases.
-Do not rerun successful proof for documentation-only changes.
+Positive source SHA-256 is
+`c2f5bf85e5ca97c5e4c95b8464712927b7f02aba25f26eca6bf72c18ab42b3da`,
+input `07c3198fd8d09f6dda99baeebdcf9cff98ef814bb4387ae5cff9be0b56c6bfed`.
+The independent valid pointer-slot companion preserves native observations but
+captures actual P** field-address/load/store operations. It is rejected with
+CSHARP2502 family address-only-pointer before publication. Five previous genuine
+negatives stay unpublished. Six previous CPP profiles preserve source bytes and
+JIT/AOT results; SI/MI/Vbase re-emission preserves source bytes with original runtime
+attribution. One existing pinned native-callback provider/fixture passes JIT/AOT
+751/seven events through its original library inode; no new provider matrix.
+First product source-1 compile-only FunctionType/CppType error is preserved; source-2
+adds explicit RoutineType discrimination. Do not rerun successful proof for docs.
 
-Coordinator gpt-6.1-sol high owns all Git/shared integration and serialized
-builds/exports. Implementers remain gpt-6.1-sol xhigh; root GPT-6-Astra supervises
-read-only. Emission holds the frozen four product paths (new BorrowedFieldReferences
-partial and main/Lifetimes/OrdinaryMethods hooks). Inventory owns completed checker,
-three genuine fixtures and proof note. Exact paths only when committing; preserve
-the two unrelated pre-existing T3 aggregate fixtures and all failed artifacts.
+Six product paths are complete: new OrdinaryMethodGraphs partial and narrow main,
+Lifetimes, OrdinaryMethods, Calls and ExpressionPlans hooks. Coordinator
+(gpt-6.1-sol high) alone owns Git/shared integration and serialized builds/exports;
+implementers remain gpt-6.1-sol xhigh, root GPT-6-Astra supervises read-only. Emission
+holds product files; inventory completed checker/fixtures/proof note. Preserve all
+immutable snapshots, attempts and the two unrelated pre-existing T3 aggregate
+fixtures. Exact paths only; never stage all or clean unrelated user files.
 
-Tool/evidence checkpoint `0f4849b67` saves the Boolean conversion inspection, which passes within its declared
-one-body/shallow-type scope. Compact receipt
-`acceptance/duckdb/boolean-conversion-trace-report.json`, SHA-256
-`190389570907e489242aba5128410b35a4b791e3d096c7412ee4403c9486a1e1`,
-records two successful measured phases, 48 frozen tool/reader/build files,
-unchanged pinned core 316 input, 15 typed identities/occurrences, 33 shallow types,
-one direct dependency and zero issues/resource violations. Full facts are
-`t5/duckdb-boolean-facts-1.json`; source is `t5/duckdb-boolean-source-1`.
-Prior modes/default regression retain original evidence; new mode is additive.
-
-The actual selected conversion body assigns a Boolean local from a direct call
-on the address of nested captured fields, then returns that local. It is not a
-terminal pointer test. Current report call 68 selects defined conversion 69 with
-body 75 untraversed; labels are citations only. Both conversion declarations have
-captured noexcept=true, while the parent remains null, but no closed no-throw
-body or caller cleanup-marker permission is established. Parent actual receiver
-42→const 54→alias 58→record 52 and formal 41→const 53→record 52 remain different
-pointer/pointee identities; shared leaf identity is descriptive only. Nonvirtual
-base and other record association edges remain explicitly unexpanded. All
-translator/link/generated-execution/full-closure flags are false. Read
-[the bounded facts](DUCKDB-BOOLEAN-CONVERSION.md).
-
-Tool/evidence checkpoint `c64ab5dec` saves the next selected callee inspection, which also passes within its separate one-body/
-shallow scope. Receipt `acceptance/duckdb/boolean-callee-trace-report.json`, SHA-256
-`656dc52a2fe233c94b510dba83193b27fd4657fcb257e1e0a115ab0a5a3981b4`,
-records two successful measured phases, 48 frozen source/build files, unchanged
-input, 13 identities/occurrences, 40 shallow types and no dependencies/issues.
-Full facts: `t5/duckdb-boolean-callee-facts-1.json`; source:
-`t5/duckdb-boolean-callee-source-1`. No active builder/export/test remains.
-
-Actual selected body assigns a Boolean local from the retained cast of pointer
-field inequality against exact same-pointer-type integer zero, then returns that
-local. No calls or EH/lifetime associations occur. At the selected parent call,
-actual/formal receiver type 61 and const pointee 70 are identical; execution
-symbol 82 has its own const-pointer-object wrapper 98. Parent receiver expression
-is actual address→generated base field 80 at offset 0→internal field 79 at offset
-0, with exact public identities and layouts, no synthesized adjustment. Root
-record 69's nonvirtual base 110/subobject 111, refcount field type 109 and other
-base/partner/table associations remain explicitly unexpanded. Empty-base storage,
-ownership, full metadata closure and NoThrow/product admission are not proven.
-
-After saving the scoped checkpoint, root requested the next cohesive reusable
-implementation proposal toward the actual accessor chain: ordinary managed const
-receivers, selected Boolean conversion roles, captured pointer-test/local/call
-operations and receiver alias/field/base relationships. Identify the specific
-actual layout/base facts still required and propose genuine capture fixtures;
-do not add another one-body trace without a concrete adapter gap. No product
-edits before facts/proposal review, no name-based shared_ptr behavior, no NoThrow
-cache widening or DuckDB execution claim. Emission prepares the proposal,
-inventory maintains the scoped notes, and coordinator owns builds/runs/Git.
-Product remains de39c8bb9; Runtime/providers remain unchanged.
-
-The approved `receiver-layout` audit now passes within its exact type-only scope.
-Receipt `acceptance/duckdb/receiver-layout-report.json`, SHA-256
-`8ba1c79c88dd1aaeb488338c585f90a9875263870bccac22e2f70901562c7f9e`,
-records two successful phases, 48 frozen source/build files, unchanged input,
-four explicit records/33 shallow type rows, zero typed body identities/occurrences
-and no issues or resource violation. Full facts are
-`t5/duckdb-receiver-layout-facts-1.json`; snapshot is
-`t5/duckdb-receiver-layout-source-1`. All acceptance/NoThrow/full-closure flags
-remain false. No builder/export/test process remains active.
-
-Actual receiver record 69 is complete/nonvirtual 16/8 with self partner, pointer
-field 90 at 0 and refcount field 91 (record 88) at 8. Its direct empty base 86
-has explicit IsEmpty=true, size/alignment 1/1, self partner and no fields;
-subobject 92 is optimized-empty at 0. Parent 81 is complete/nonvirtual 16/8/self
-and embeds generated field 80 of exact record 69 at 0, with reciprocal direct
-base/subobject 93. Parent indirect empty subobject 94 instead has optimized=false
-and originalType=null; do not impose the direct flag or materialize 94 separately.
-Refcount record 88 is complete/nonvirtual 8/8/self with one ordinary pointer at 0.
-No BaseSubobject occupied size is synthesized. Captured lowered fields and complete
-sizes supply the recursive carriers for these accesses; no EBO reconstruction is
-needed. Pointer pointee graphs remain unexpanded.
-
-Next root-approved direction is one cohesive borrowed-reference/delegating
-conversion/pointer-test capture and reusable supported-body/lowered-layout
-admission. Emission is actively settling the separate pointer-only representation
-policy before product edits: current TypeName eagerly schedules complete pointee
-records, while this graph transports/compares pointer values only. No global
-record erasure or fake empty complete type; any scoped address-only view needs
-actual required-use reconciliation and consistent dereference/stride/value/ABI
-exclusions. Retained nonrequired declarations are not executable uses. Complete
-abstract/virtual pointee stimulus may use explicitly cast aligned sentinel
-addresses without constructing/dereferencing that class. This proves address
-handling only, not class execution. Include genuine empty-base metadata and require
-actual captured generated-base forwarding in the composite fixture. Captured facts
-and scoped plan must be reviewed before implementation; NoThrow/caller cleanup
-permissions stay unchanged. Inventory owns the compact audit note, emission the
-read-only proposal, coordinator all builds/runs/Git. Product stays de39c8bb9.
+Next root-requested step after saving this milestone: propose one bounded tool-only
+batch for the two remaining actual direct targets in the retained Vector accessor:
+pointer-returning operator-arrow and inner byte-returning accessor. Select anew
+through current public call/callee/TargetMethod identities and existing And→accessor
+provenance; names/old locators are display labels only. Trace each actual body once
+under explicit per-body limits, no recursive helper or layout expansion. Record
+pointer result/receiver/value views, Boolean/enum/scalar distinctions, actual order
+flags (including operator-call exceptions) and dependencies honestly. Results must
+establish the next concrete gap before product scope. Current address-only pointer
+profile grants no returned-pointer/dereference/virtual/full DuckDB closure. Existing
+accessor evidence is partial related metadata; borrowed return, Boolean bodies and
+receiver layouts are complete only within their separate bounded scopes.
 
 ## Earlier accepted checkpoint history
 

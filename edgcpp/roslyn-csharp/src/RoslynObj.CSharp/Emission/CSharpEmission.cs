@@ -104,7 +104,7 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
-            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); }
+            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); }
             catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {
@@ -362,6 +362,7 @@ public sealed partial class CSharpEmitter
 
         private string Expression(ExpressionOperation expression)
         {
+            ValidateOrdinaryAddressOccurrence(expression);
             ++operationOrdinal;
             if (expression.Details.VolatileFetch) throw Limit("Volatile fetches require a target memory-order projection.", "volatile");
             return expression switch
@@ -570,6 +571,7 @@ public sealed partial class CSharpEmitter
                     throw Limit("Reference storage requires a selected generated lifetime adapter.", "reference");
                 }
                 ValidateValueAddress(pointer.PointeeType);
+                if (TryOrdinaryAddressOnlyType(pointer, out var addressOnlyPointer)) return addressOnlyPointer;
                 if (TryVoidPointerType(pointer, out var voidPointer)) return voidPointer;
                 if (MemoryRepresentationType(pointer.PointeeType) is RoutineType routine) { ValidateCallingConvention(routine); return "nint"; }
                 if (TryProgramPointerType(pointer, out var pointerView)) return pointerView;
@@ -577,6 +579,7 @@ public sealed partial class CSharpEmitter
             }
             if (type is RecordType record)
             {
+                ValidateOrdinaryCarrierEmission(record);
                 if (planned.Add(record))
                 {
                     records.Add(record);
@@ -613,7 +616,7 @@ public sealed partial class CSharpEmitter
         private void EmitRecord(RecordType record, StringBuilder output)
         {
             if (TryEmitVirtualRecord(record, output)) return;
-            if (record.HasVirtualFunctions || record.HasVirtualBases || record.Bases.Count != 0)
+            if (record.HasVirtualFunctions || record.HasVirtualBases || record.Bases.Count != 0 && !ordinaryFieldCarriers.Contains(record))
                 throw Limit("C++ inheritance/dispatch storage is unsupported in T1.", "record");
             var layout = record.Layout ?? throw Limit("Record has no captured layout.", "record");
             if (record.Size is not { } size || size <= 0 || size > int.MaxValue || record.Alignment is not { } alignment || alignment < 1 || alignment > 8)
