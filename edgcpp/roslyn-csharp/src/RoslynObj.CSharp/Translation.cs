@@ -29,6 +29,7 @@ public sealed partial class Translator
         if (request.Roots.Exports.Length != 0)
             return Failure("ROC1205", "Explicit native export wrappers require an accepted export ABI implementation.");
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
+        var nativeDataBindings = new List<CSharpExternalDataBinding>();
         var semanticRuntimeCandidates = new List<ImportReport>();
         var intrinsicImports = inventory.ProgramReport.Functions.Where(function => function.Builtin is not null)
             .Select(function => function.Locator).ToHashSet(StringComparer.Ordinal);
@@ -56,11 +57,18 @@ public sealed partial class Translator
             }
             var binding = request.Runtime.Bindings.SingleOrDefault(binding =>
                 binding.Kind == import.Kind && binding.LinkageName == import.LinkageName);
-            if (import.Kind != "function"
+            if (import.Kind == "variable" && binding is not null && import.BindingStatus == "declared-unverified" &&
+                SemanticNativeDataImplementation.IsAdmitted(binding) && !string.IsNullOrWhiteSpace(binding.LibraryPath) &&
+                binding.LibrarySha256 is { Length: 64 } && binding.LibrarySha256.All(Uri.IsHexDigit))
+            {
+                nativeDataBindings.Add(new(binding.LinkageName, binding.LibraryPath, binding.LibrarySha256, binding.Symbol, binding.DataAddressContract!));
+                continue;
+            }
+            if (import.Kind != "function" || binding?.DataAddressContract is not null
                 || binding is null || import.BindingStatus != "declared-unverified"
                 || string.IsNullOrWhiteSpace(binding.Symbol) || string.IsNullOrWhiteSpace(binding.LibraryPath)
                 || binding.LibrarySha256 is not { Length: 64 } || !binding.LibrarySha256.All(Uri.IsHexDigit))
-                return Failure("ROC1301", $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature native function binding and pinned provider file; native variable providers are not implemented here.");
+                return Failure("ROC1301", $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature pinned native function binding or the admitted address-only RTTI data contract.");
             nativeBindings.Add(new(binding.LinkageName, binding.LibraryPath, binding.Symbol));
         }
         if (inventory.ProgramReport.Families.Any(f => f.Family == "link-policy" && f.RequiredCount > 0))
@@ -73,8 +81,9 @@ public sealed partial class Translator
         {
             phaseObserver?.Invoke(TranslationPhase.InventoryCompleted);
             cancellationToken.ThrowIfCancellationRequested();
-            foreach (var binding in request.Runtime.Bindings.Where(binding => binding.Kind == "function" && nativeBindings.Any(native =>
-                native.LinkageName == binding.LinkageName)))
+            foreach (var binding in request.Runtime.Bindings.Where(binding =>
+                binding.Kind == "function" && nativeBindings.Any(native => native.LinkageName == binding.LinkageName) ||
+                binding.Kind == "variable" && nativeDataBindings.Any(native => native.LinkageName == binding.LinkageName)))
             {
                 if (!Path.IsPathFullyQualified(binding.LibraryPath!) || !File.Exists(binding.LibraryPath)
                     || !HashFile(binding.LibraryPath!, cancellationToken).Equals(binding.LibrarySha256, StringComparison.OrdinalIgnoreCase))
@@ -95,7 +104,7 @@ public sealed partial class Translator
             {
                 NamespaceName = request.Output.NamespaceName, ClassName = request.Output.ClassName,
                 Executable = request.Roots.Mode == "executable", EntryPointName = request.Roots.EntryPoint,
-                RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings,
+                RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings, ExternalData = nativeDataBindings,
                 NativeErrorProtocol = request.Runtime.NativeErrorProtocol,
                 ProgramAssembly = openedInputs.Count == 1 ? null : new ProgramAssemblyOptions
                 {
@@ -128,6 +137,24 @@ public sealed partial class Translator
                 if (semanticRuntimeCandidates.Any(candidate => !semanticRuntimeImplementations.ContainsKey(candidate.Locator)))
                     return Failure("ROC1301", "A deferred semantic helper import has no validated generated implementation.");
             }
+            var nativeDataImplementations = new Dictionary<string, SemanticNativeDataImplementation>(StringComparer.Ordinal);
+            if (nativeDataBindings.Count != 0 || emission.NativeDataImplementations.Count != 0)
+            {
+                var publicVariables = openedInputs.SelectMany((input, unitIndex) => input.TranslationUnit.Variables
+                    .Select((variable, variableIndex) => (Variable: variable,
+                        Locator: $"unit/{unitIndex + 1:D4}/storage/{variableIndex + 1:D6}")))
+                    .ToDictionary(item => item.Variable, item => item.Locator);
+                foreach (var implementation in emission.NativeDataImplementations)
+                {
+                    if (!publicVariables.TryGetValue(implementation.Variable, out var locator) ||
+                        !inventory.ProgramReport.Imports.Any(import => import.Required && import.Kind == "variable" &&
+                            import.Locator == locator && import.LinkageName == implementation.Binding.LinkageName) ||
+                        !nativeDataBindings.Contains(implementation.Binding) || !nativeDataImplementations.TryAdd(locator, implementation))
+                        return Failure("ROC1301", "Native data selection does not match a required public declaration and its admitted address-only contract.");
+                }
+                if (nativeDataImplementations.Count != nativeDataBindings.Count)
+                    return Failure("ROC1301", "A required native data binding has no validated address-only projection.");
+            }
             phaseObserver?.Invoke(TranslationPhase.EmissionCompleted);
             cancellationToken.ThrowIfCancellationRequested();
             using var process = Process.GetCurrentProcess();
@@ -142,7 +169,9 @@ public sealed partial class Translator
                     ? import with { Provider = "RoslynObj.CSharp.Runtime.TargetIntrinsics", BindingStatus = "recorded-intrinsic-lowering-selected" }
                     : semanticRuntimeImplementations.TryGetValue(import.Locator, out var implementation)
                         ? implementation.Describe(import)
-                        : import).ToArray(),
+                        : nativeDataImplementations.TryGetValue(import.Locator, out var dataImplementation)
+                            ? dataImplementation.Describe(import)
+                            : import).ToArray(),
                 Families = inventory.ProgramReport.Families.Select(f => f.RequiredCount == 0 ? f : f with
                 {
                     Status = CapabilityStatus.Implemented,

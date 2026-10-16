@@ -109,12 +109,39 @@ rethrow chains, class/pointer payloads, failed members/full-array exceptional
 activation, native unwinding, inheritance/dispatch/RTTI/member pointers and static
 guards/TLS remain separately unsupported/unexercised. T6 remains open.
 
-Ownership: coordinator owns Git, shared contracts and serialized builds/exports.
-Root supervises read-only. Both gpt-6.1-sol xhigh workers are held after verified termination edits. Inventory
-owned additive Runtime destination APIs and NEW TerminationLifetime child harness;
-emission owned Exceptions and NEW Termination partial. Coordinator owns semantic
-contract/report integration and all serialized executions. No worker builds,
-exports or mutates Git. Await next bounded public-model/stock-contract preparation.
+The single-inheritance/ordinary scalar virtual-dispatch slice now passes.
+[Virtual proof](T5-VIRTUAL-DISPATCH.md) and
+`acceptance/lifetimes/virtual-report.json` record 45 expected outcomes (39 ordinary
+successes, two prior termination signals and four unsupported rejections), no
+unexpected outcomes or budget violations. Receipt SHA-256:
+`8eea4235fc923bd0164898c327debd10b154f45b8286b87e45752f3dbe390a4b`.
+Product snapshot `t5/virtual-source-3` freezes 217 files; physical checker snapshot
+`t5/virtual-checker-source-1` freezes nine files. All 12 retained input hashes,
+provider content, repeat output and completion hashes verify.
+
+Production `t5/virtual-cli-generated-3` emits all 19 bodies and retains both RTTI
+DATA imports through exact address-only bindings. Native/JIT/AOT two-run result
+28, all nine values and ten events agree. Physical JIT/AOT proves complete sizes
+16/16, borrowed view 12, complete alignment 8 and reused-tail bonus offset 12.
+Both actual loaded canonical UCO slots execute (5/23, events 602/705), with balanced
+lifetimes. The packed view does not claim standalone alignment or by-value ABI;
+`__layout_alignment` is CLR-only alias storage, not an EDG field.
+
+Both pinned libstdc++ exports pass runtime hash/owner/RVA/full read-only extent
+checks and independent export/map inspection. Generated typeinfo uses export
+BASE plus captured 16 exactly once. ELF extent 88 is provider evidence, not EDG
+size; CXXABI_1.3 is default-export metadata, not runtime `dlvsym`. No native RTTI
+slot/application body executes. The original ELF audit's unexecuted status is
+historical; final receipt contains the actual runtime proof. Six earlier C++
+publications remain byte-identical and pass relevant JIT/AOT regressions.
+
+No builder/translator is active. Both workers are frozen after their verified
+virtual implementation. Coordinator owns Git/shared integration and serialized
+builds/exports; root supervises read-only. Next: capture-first multiple inheritance
+with actual nonzero receiver adjustment/selected thunk. Keep normal RTTI flags,
+inspect exact public layouts/vtable constants/call signatures, and audit any new
+ABI DATA symbol before implementation. Broader T5/T6 remain open. No worker builds,
+exports or mutates Git.
 Never modify EDG core, use raw model bypass, recover source semantics or consult
 dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.
 

@@ -42,6 +42,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanConversion(ConversionOperation conversion)
         {
+            if (TryPlanVirtualBaseView(conversion, out var virtualBaseView)) return virtualBaseView;
             var kind = conversion.OperatorKind.Name;
             if (conversion.Operator.RequiresRuntimeCastCheck || kind is "eok_dynamic_cast" or "eok_ref_dynamic_cast" or "eok_base_class_cast" or "eok_derived_class_cast")
                 throw Limit("Conversion requires a selected C++ object-model adapter.", "conversion");
@@ -351,7 +352,7 @@ public sealed partial class CSharpEmitter
             ExpressionPlan? callee = null;
             if (call.Callee is not ReferenceOperation { Target: FunctionSymbol })
             {
-                var address = call.Callee is OperatorOperation { OperatorKind.Name: "eok_indirect" } indirect ? indirect.Operands[0] : call.Callee;
+                var address = !IsVirtualCall(call) && call.Callee is OperatorOperation { OperatorKind.Name: "eok_indirect" } indirect ? indirect.Operands[0] : call.Callee;
                 callee = PlanExpression(address);
             }
             var all = callee is null ? arguments : new[] { callee! }.Concat(arguments).ToArray();
@@ -442,6 +443,9 @@ public sealed partial class CSharpEmitter
         private string RenderCall(CsPlannedCall plannedCall)
         {
             var call = plannedCall.Operation;
+            if (IsVirtualCall(call))
+                return VirtualCall(call, RenderExpression(plannedCall.Callee ?? throw Limit("The lowered virtual callee value is absent.", "virtual-call")),
+                    plannedCall.Arguments.Select(RenderExpression).ToArray());
             if (call.Callee is ReferenceOperation { Target: FunctionSymbol function })
             {
                 function = CanonicalFunction(function);

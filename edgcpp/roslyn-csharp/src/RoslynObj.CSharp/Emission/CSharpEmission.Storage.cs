@@ -47,7 +47,11 @@ public sealed partial class CSharpEmitter
             {
                 var item = storageOrder[index];
                 if (item.Initializer is { } constant)
-                    WriteConstant(item.Type, $"(byte*){OwnedName(item.Entity)}", constant.Value, initialization, true);
+                {
+                    nativeDataInitializerOwner = item.Entity;
+                    try { WriteConstant(item.Type, $"(byte*){OwnedName(item.Entity)}", constant.Value, initialization, true); }
+                    finally { nativeDataInitializerOwner = null; }
+                }
             }
             // Constant processing can discover a literal storage occurrence. All allocations
             // are field initializers, so every address exists before these fixups execute.
@@ -156,6 +160,7 @@ public sealed partial class CSharpEmitter
                 if (address.ByteOffset.IsZero) return $"({TypeName(type)})0";
                 throw Limit("An absolute nonzero address has no runtime binding.", "constant-address");
             }
+            if (TryNativeDataAddress(address, type, out var nativeDataAddress)) return nativeDataAddress;
             var entity = address.BaseEntity;
             if (entity is FunctionSymbol function)
             {

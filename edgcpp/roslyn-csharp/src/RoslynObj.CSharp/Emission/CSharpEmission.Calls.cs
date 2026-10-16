@@ -120,8 +120,11 @@ public sealed partial class CSharpEmitter
             existing = functionAddresses.FirstOrDefault(a => a.Function.Equals(function));
             if (existing is not null) return Owner + "." + existing.Field;
             ValidateCallingConvention(function.Signature);
-            if (HasAggregateSignature(function.Signature)) ValidateNativeAggregateSignature(function.Signature);
-            else ValidateNativeScalarSignature(function.Signature);
+            if (!IsVirtualMethod(function))
+            {
+                if (HasAggregateSignature(function.Signature)) ValidateNativeAggregateSignature(function.Signature);
+                else ValidateNativeScalarSignature(function.Signature);
+            }
             FunctionAddressItem address;
             if (!functions.Contains(function) && IsLogicalErrnoProvider(function))
                 address = new(function, InternalName("__address_" + names[function].TrimStart('@')), null, LogicalErrnoProvider: true);
@@ -301,7 +304,7 @@ public sealed partial class CSharpEmitter
                 var arguments = string.Join(", ", signature.Parameters.Select((_, i) => $"argument{i}"));
                 methods.Append("    private static ").Append(resultType).Append(' ').Append(indirect.Value).Append("(nint address")
                     .Append(string.Concat(signature.Parameters.Select((p, i) => $", {TypeName(p.Type)} argument{i}"))).AppendLine(")").AppendLine("    {");
-                foreach (var address in functionAddresses.Where(a => a.Wrapper is not null && SameRepresentation(a.Function.Signature, signature)))
+                foreach (var address in functionAddresses.Where(a => a.Wrapper is not null && !IsVirtualMethod(a.Function) && SameRepresentation(a.Function.Signature, signature)))
                 {
                     methods.Append("        if (address == ").Append(Owner).Append('.').Append(address.Field).AppendLine(")").AppendLine("        {");
                     var selectedSignature = address.Function.Signature;

@@ -445,13 +445,18 @@ public sealed partial class CSharpEmitter
             void Check(FunctionSymbol current, HashSet<FunctionSymbol> active)
             {
                 if (validatedNoThrowFunctions.Contains(current) || !active.Add(current)) return;
-                if (!functions.Contains(current) || current.Body is null || current.Signature.ExceptionSpecification?.NoexceptEffective != true)
+                if (!functions.Contains(current) || current.Body is null || current.Signature.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(current))
                     throw Limit("Normal marker omission requires a closed selected noexcept call graph.", "lifetime");
                 var nodes = ExceptionExecutionNodes(current.Body.Root).ToArray();
                 if (nodes.Any(node => node is ThrowOperation or TryOperation))
                     throw Limit("Normal-only lifetime marker omission cannot admit a live throw/try, including through noexcept calls.", "lifetime");
                 foreach (var call in nodes.OfType<CallOperation>())
                 {
+                    if (IsVirtualCall(call))
+                    {
+                        foreach (var table in virtualDispatch!.Tables) Check(table.Target, active);
+                        continue;
+                    }
                     if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || call.TargetMethod?.Equals(target) != true || target.Signature.IsVariadic)
                         throw Limit("Normal marker omission cannot hide indirect/native/variadic exception propagation.", "lifetime");
                     Check(target, active);

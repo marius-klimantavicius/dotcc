@@ -72,3 +72,11 @@ pristine runtime policy unwinds before terminating, while the separate GCC
 observation does not unwind; preserve that differential. Production CLI/JIT/NativeAOT now prove the selected cleanup/signal/marker
 contract. See [the selected contract](../../../docs/T5-TERMINATION.md). Uncaught
 program-entry policy, custom handlers and native unwinding remain separate.
+
+`single-inheritance.cpp` now passes production CLI and exact native/JIT/NativeAOT
+observations twice. Separate physical checks execute both loaded canonical method
+slots, verify complete alignment and tail-padding reuse, and resolve exactly two
+RTTI metadata addresses from the pinned provider. See
+[the bounded virtual proof](../../../docs/T5-VIRTUAL-DISPATCH.md). This does not
+claim multiple/virtual inheritance, nonzero thunks, virtual destructors, RTTI
+queries, member pointers or native unwinding.

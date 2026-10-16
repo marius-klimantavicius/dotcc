@@ -60,6 +60,12 @@ public sealed partial class CSharpEmitter
                     throw Limit("Execution and signature parameter roles differ in the selected lifetime routine.", "lifetime-parameter");
             }
             var references = new List<PointerType>();
+            if (IsVirtualMethod(function))
+            {
+                EnsureGeneratedNoThrow(function);
+                generatedLifetimeRoutines.Add(function);
+                return;
+            }
             if (signature.HasThisParameter)
             {
                 if (MemoryRepresentationType(function.ReturnType).Kind.Name != "tk_void" ||
@@ -74,21 +80,24 @@ public sealed partial class CSharpEmitter
                     throw Limit("The selected receiver pointer does not refer to its retained containing record.", "lifetime-parameter");
                 var destructor = function.SpecialFunctionKind?.Name == "sfk_destructor";
                 var arrayConstructor = automaticArrayConstructors.Contains(function) || function.PrimaryEntry is { } arrayPrimary && automaticArrayConstructors.Contains(arrayPrimary);
-                if (destructor ? parameters.Count != 1 : parameters.Count != (arrayConstructor ? 1 : 2))
-                    throw Limit("The exercised generated constructor/destructor has one receiver and at most one source argument.", "lifetime-parameter");
+                if (destructor ? parameters.Count != 1 : parameters.Count != (arrayConstructor ? 1 : 1 + VirtualConstructorArgumentCount(function)))
+                    throw Limit("The generated constructor/destructor argument count differs from its validated receiver profile.", "lifetime-parameter");
                 if (!destructor && !arrayConstructor)
                 {
-                    var source = parameters[1];
                     var alternate = function.ConstructorOrDestructorKind?.Name == "cdk_subobject";
-                    if (source.Role.Name != (alternate ? "abi_parameter" : "ordinary_parameter"))
-                        throw Limit("A constructor source argument has an unexercised selected role.", "lifetime-parameter");
-                    if (MemoryRepresentationType(source.Type) is PointerType { IsReference: true } reference)
+                    for (var index = 1; index < parameters.Count; ++index)
                     {
-                        if (!GeneratedRecordPointer(source.Type, true).Equals(record))
-                            throw Limit("The selected copy source references a different record.", "lifetime-parameter");
-                        references.Add(reference);
+                        var source = parameters[index];
+                        if (source.Role.Name != (alternate ? "abi_parameter" : "ordinary_parameter"))
+                            throw Limit("A constructor source argument has an unexercised selected role.", "lifetime-parameter");
+                        if (MemoryRepresentationType(source.Type) is PointerType { IsReference: true } reference)
+                        {
+                            if (parameters.Count != 2 || !GeneratedRecordPointer(source.Type, true).Equals(record))
+                                throw Limit("The selected copy source references a different record or has additional execution arguments.", "lifetime-parameter");
+                            references.Add(reference);
+                        }
+                        else ValidateGeneratedInt32(source.Type);
                     }
-                    else ValidateGeneratedInt32(source.Type);
                 }
                 if (function.ConstructorOrDestructorKind?.Name == "cdk_subobject")
                     ValidateGeneratedAlternateBody(function);
@@ -175,6 +184,7 @@ public sealed partial class CSharpEmitter
 
         private void ValidateGeneratedCallRoles(CallOperation call)
         {
+            if (IsVirtualCall(call)) return; // The exact lowered receiver/slot/argument associations were prevalidated together.
             var direct = call.Callee is ReferenceOperation { Target: FunctionSymbol target } ? CanonicalFunction(target) : null;
             if (call.Receiver is null && call.Call.ReturnSlot is null && (direct is null || !NeedsGeneratedLifetimeRoles(direct.Signature))) return;
             if (direct is null || !functions.Contains(direct) || call.TargetMethod is null || !CanonicalFunction(call.TargetMethod).Equals(direct))
@@ -289,10 +299,11 @@ public sealed partial class CSharpEmitter
             return false;
         }
 
-        private bool IsReceiverMemberRecipe(Initialization recipe) => receiverMemberCleanups.Values.Any(member => member.Recipe.Equals(recipe));
-        private bool MatchesLifetimeCleanupRecipe(CleanupAction action, Initialization recipe) => receiverMemberCleanups.TryGetValue(action, out var member)
-            ? member.Recipe.Equals(recipe)
-            : action.Storage?.Variable?.Equals(recipe.Target) == true && action.TargetMethod?.Equals(recipe.Destructor) == true;
+        private bool IsReceiverMemberRecipe(Initialization recipe) => IsVirtualBaseRecipe(recipe) || receiverMemberCleanups.Values.Any(member => member.Recipe.Equals(recipe));
+        private bool MatchesLifetimeCleanupRecipe(CleanupAction action, Initialization recipe) => virtualBaseCleanups.TryGetValue(action, out var selectedBase)
+            ? selectedBase.Recipe.Equals(recipe) : receiverMemberCleanups.TryGetValue(action, out var member)
+                ? member.Recipe.Equals(recipe)
+                : action.Storage?.Variable?.Equals(recipe.Target) == true && action.TargetMethod?.Equals(recipe.Destructor) == true;
 
         private void ValidateNormalCleanupBody(FunctionSymbol function)
         {
@@ -308,7 +319,7 @@ public sealed partial class CSharpEmitter
             var nodes = NormalLifetimeNodes(body.Root).ToArray();
             if (nodes.OfType<ReferenceOperation>().Any(reference => reference.Target?.Equals(table) == true))
                 throw Limit("The EH region table has a live typed value reference.", "lifetime");
-            if (nodes.OfType<ConstantOperation>().Any(constant => constant.Constant.Value is not IntegerValue))
+            if (nodes.OfType<ConstantOperation>().Any(constant => constant.Constant.Value is not IntegerValue && !IsVirtualTableAddress(constant)))
                 throw Limit("The bounded normal cleanup body contains an unvalidated noninteger constant reference.", "lifetime");
             if (table.ExceptionTable is not { } projection || projection.Kind.Name != "cleanup" || !projection.Owner.Equals(table) ||
                 !projection.FunctionEh.Routine.Equals(function) || projection.FunctionEh.RegionTable?.Equals(table) != true)
@@ -323,7 +334,7 @@ public sealed partial class CSharpEmitter
             {
                 if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(target) ||
                     call.TargetMethod is null || !call.TargetMethod.Equals(target) || target.Signature.IsVariadic ||
-                    target.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true)
+                    target.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(target))
                     throw Limit("The normal-only cleanup path requires retained direct noexcept generated callees.", "lifetime");
                 ValidateGeneratedCallRoles(call);
             }
@@ -341,10 +352,11 @@ public sealed partial class CSharpEmitter
                 var action = region.Actions[0];
                 var flags = action.Details;
                 if (action.Kind.Name != "destructor" || flags.Ordinal != 0 || !flags.Region.Equals(region) || action.Array is not null || action.AbiDetail is not null ||
-                    flags.IsArray || flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
+                    flags.IsArray || flags.IsIndirect || flags.IsConditional || flags.IsBaseSubobject && !virtualBaseCleanups.ContainsKey(action) || flags.IsVla || flags.IsDeallocation || flags.IsLocalStaticGuard ||
                     action.Storage is not { } storage)
                     throw Limit("Normal cleanup metadata requires one validated local/member destructor without conditions, arrays or ABI side actions.", "lifetime");
-                if (storage.Kind.Name == "receiver_relative")
+                if (virtualBaseCleanups.ContainsKey(action)) { /* Associations were validated against the actual base calls and layout. */ }
+                else if (storage.Kind.Name == "receiver_relative")
                     ValidateReceiverMemberCleanup(function, action, recipes.Select(recipe => recipe.Cleanup.Initialization).ToArray(), nodes, true);
                 else
                 {

@@ -21,7 +21,7 @@ static string Hash(string path) { using var stream = File.OpenRead(path); return
 
 internal sealed class LifetimeProbe(RoslynObject input)
 {
-    private const int MaximumEntities = 20000, MaximumOccurrences = 20000, MaximumDepth = 96;
+    private const int MaximumEntities = 20000, MaximumOccurrences = 20000, MaximumDepth = 96, MaximumConstantStorageUnits = 20000;
     private readonly Dictionary<SemanticEntity, string> locators = [];
     private readonly Queue<SemanticEntity> pending = [];
     private readonly List<Dictionary<string, object?>> entities = [];
@@ -45,6 +45,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
     {
         var functions = input.TranslationUnit.Functions.ToArray(); FunctionCount = functions.Length;
         foreach (var function in functions) _ = Ref(function);
+        var variables = input.TranslationUnit.Variables.Select(variable => Ref(variable)).ToArray();
         var bodies = functions.Where(function => function.Body is not null).Select(function =>
         {
             var body = function.Body!;
@@ -62,9 +63,10 @@ internal sealed class LifetimeProbe(RoslynObject input)
         }).ToArray();
         while (pending.TryDequeue(out var entity)) entities.Add(Describe(entity));
         var manifest = input.Manifest;
-        return Row(("ProbeVersion", 5), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
-            ("Semantics", "Local locators use only public semantic equality. Public structural paths preserve parent/role/ordinal and repeated identities; they are not an execution schedule, reachability proof or inferred ownership. Metadata boundaries are recorded without executing or expanding them into body occurrences. Typed facets independently record actual call/initialization/control relationships; matching facets can alias a single operand and must not be replayed."),
-            ("Bounds", new { MaximumEntities, MaximumOccurrences, MaximumDepth, CachedRows = 4096, CachedPages = 128, PageSize = 128 }),
+        return Row(("ProbeVersion", 6), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
+            ("Semantics", "Local locators use only public semantic equality. Public structural paths preserve parent/role/ordinal and repeated identities; they are not an execution schedule, reachability proof or inferred ownership. Metadata boundaries are recorded without executing or expanding them into body occurrences. Typed facets independently record actual call/initialization/control relationships; matching facets can alias a single operand and must not be replayed. Variable, base, override, layout and constant inventories are metadata associations, not additional executable occurrences or source virtual lookup. Address ByteOffset is a signed target-byte displacement; subobject ElementOffset is a signed element count and is recorded independently."),
+            ("Bounds", new { MaximumEntities, MaximumOccurrences, MaximumDepth, MaximumConstantStorageUnits,
+                CachedRows = 4096, CachedPages = 128, PageSize = 128 }),
             ("Provenance", new { manifest.FormatMajor, manifest.FormatMinor, manifest.ArtifactIdentity, manifest.Producer,
                 manifest.EdgRevision, manifest.EdgVersion, manifest.CaptureProfile, manifest.Stage,
                 Target = new { manifest.Target.Abi, manifest.Target.AddressableUnitBits, manifest.Target.Endianness,
@@ -72,7 +74,8 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 InvocationArguments = input.TranslationUnit.InvocationArguments.ToArray(),
                 Capabilities = input.TranslationUnit.Capabilities.Select(capability => new { capability.Name, capability.Value,
                     capability.IsRequired, capability.Enabled, State = capability.State.Name }).ToArray() }),
-            ("Functions", functions.Select(function => Ref(function)).ToArray()), ("Bodies", bodies), ("Entities", entities));
+            ("Functions", functions.Select(function => Ref(function)).ToArray()), ("VariablesNotExecution", variables),
+            ("Bodies", bodies), ("Entities", entities));
     }
 
     private void Walk(SemanticNode node, string path, string? parent, string role, long ordinal,
@@ -103,6 +106,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
 
     private Dictionary<string, object?> Signature(RoutineType signature) => Row(
         ("Type", Ref(signature)), ("ReturnType", Ref(signature.ReturnType)), ("ThisClass", Ref(signature.ThisClass)),
+        ("AssociatedRoutine", Ref(signature.AssociatedRoutine)),
         ("HasPrototype", signature.HasPrototype), ("IsVariadic", signature.IsVariadic),
         ("HasThisParameter", signature.HasThisParameter), ("CallingConvention", signature.CallingConvention?.Name),
         ("LanguageLinkage", signature.LanguageLinkage?.Name), ("ReturnsValueAsParameter", signature.ReturnsValueAsParameter),
@@ -130,20 +134,45 @@ internal sealed class LifetimeProbe(RoslynObject input)
         return row;
     }
 
+    private Dictionary<string, object?> Override(OverrideRelationDetails relation) => Row(
+        ("Owner", Ref(relation.Owner)), ("Ordinal", relation.Ordinal), ("Overridden", Ref(relation.Overridden)),
+        ("Subobject", Ref(relation.Subobject)), ("OverridingSubobject", Ref(relation.OverridingSubobject)),
+        ("ReturnAdjustmentSubobject", Ref(relation.ReturnAdjustmentSubobject)), ("BaseOrdinal", relation.BaseOrdinal));
+
     private Dictionary<string, object?> Describe(SemanticEntity entity)
     {
         var row = Row(("Locator", Ref(entity)), ("Name", entity.Name), ("CurrentName", entity.CurrentName),
             ("SourceNameForDisplayOnly", entity.SourceCorrespondence?.SourceName));
+        if (entity.SourceCorrespondence is { } correspondence)
+            row["SourceCorrespondenceNotBinding"] = new
+            {
+                correspondence.CurrentName, correspondence.SourceName, correspondence.FabricatedName,
+                correspondence.MangledEncoding, correspondence.NameHasBeenMangled,
+                correspondence.UnnamedEntityGivenFabricatedName, correspondence.Referenced, correspondence.Needed,
+                Linkage = correspondence.Linkage.Name, Access = correspondence.Access.Name
+            };
         switch (entity)
         {
             case FunctionSymbol function:
                 row["EntityKind"] = "function"; row["BodyState"] = function.BodyState.Name;
+                row["IsDefined"] = function.IsDefined; row["DefinitionType"] = Ref(function.DefinitionType);
                 row["SpecialFunctionKind"] = function.SpecialFunctionKind?.Name;
                 row["ConstructorOrDestructorKind"] = function.ConstructorOrDestructorKind?.Name;
                 row["IsTrivialDefaultConstructor"] = function.IsTrivialDefaultConstructor;
                 row["IsTrivialCopyFunction"] = function.IsTrivialCopyFunction; row["IsTrivialDestructor"] = function.IsTrivialDestructor;
                 row["PrimaryEntry"] = Ref(function.PrimaryEntry);
                 row["AlternateEntryPoints"] = function.AlternateEntryPoints.Select(entry => Ref(entry)).ToArray();
+                row["VirtualAndAdjustmentFacts"] = new
+                {
+                    function.IsVirtual, function.IsPureVirtual, function.IsOverride, function.IsFinal,
+                    VirtualFunctionNumber = Number(function.VirtualFunctionNumber),
+                    ThisAdjustment = Number(function.ThisAdjustment), ReturnAdjustment = Number(function.ReturnAdjustment),
+                    VirtualCallIndex = Number(function.VirtualCallIndex), VirtualBaseIndex = Number(function.VirtualBaseIndex),
+                    OverridingFunctionForWrapper = Ref(function.OverridingFunctionForWrapper),
+                    OverriddenFunctionForWrapper = Ref(function.OverriddenFunctionForWrapper),
+                    OverridesNotSlotSelection = function.Overrides.Select(Override).ToArray(),
+                    SelectedOverrides = function.SelectedOverrides.Select(selected => Ref(selected)).ToArray()
+                };
                 row["PolicyFacts"] = new { function.Details.IsWeak, function.Details.IsWeakref, function.Details.IsGnuAlias,
                     function.Details.IsIfunc, function.Details.IsUseComdat, function.Details.IsAliasEntry,
                     AliasedRoutine = Ref(function.GnuSupplement?.AliasedRoutine),
@@ -161,6 +190,14 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 row["EntityKind"] = "type"; row["Kind"] = type.Kind.Name;
                 row["Size"] = Number(type.Size); row["Alignment"] = Number(type.Alignment);
                 row["IsIncomplete"] = type.IsIncomplete; row["IsDependent"] = type.IsDependent;
+                row["UsedInExceptionOrRtti"] = type.Details.UsedInExceptionOrRtti;
+                row["TypeinfoVariable"] = Ref(type.Details.TypeinfoVariable);
+                row["DirectBasesNotLookup"] = type.Bases.Select(baseClass => new
+                {
+                    baseClass.Ordinal, Owner = Ref(baseClass.Owner), BaseType = Ref(baseClass.BaseType),
+                    Access = baseClass.Access?.Name, baseClass.IsVirtual, Subobject = Ref(baseClass.Subobject)
+                }).ToArray();
+                row["BaseSubobjects"] = type.BaseSubobjects.Select(subobject => Ref(subobject)).ToArray();
                 if (type is TypeReference reference)
                 {
                     row["UnderlyingType"] = Ref(reference is QualifiedType qualifiedReference ? qualifiedReference.UnderlyingType : reference.UnderlyingType);
@@ -185,12 +222,51 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 {
                     row["Fields"] = record.Fields.Select(field => Ref(field)).ToArray();
                     row["Layout"] = record.Layout?.Fields.Select(field => new { Field = Ref(field.Field), Offset = Number(field.Offset),
-                        BitOffset = Number(field.BitOffset), BitWidth = Number(field.BitWidth) }).ToArray();
+                        BitOffset = Number(field.BitOffset), BitWidth = Number(field.BitWidth),
+                        ContainerOffset = Number(field.ContainerOffset) }).ToArray();
+                    row["LayoutFacts"] = record.Layout is { } layout ? new
+                    {
+                        Entity = Ref(layout), Type = Ref(layout.Type), Size = Number(layout.Size), Alignment = Number(layout.Alignment),
+                        NonvirtualSize = Number(layout.NonvirtualSize), NonvirtualAlignment = Number(layout.NonvirtualAlignment), layout.IsComplete
+                    } : null;
+                    row["RecordFacts"] = new
+                    {
+                        SubobjectPartner = Ref(record.SubobjectPartner), DefinitionState = record.DefinitionState.Name,
+                        record.Record.HasSubobjectType, record.IsPacked, record.IsEmpty, record.IsAbstract, record.IsFinal,
+                        record.HasVirtualBases, record.HasVirtualFunctions, record.HasPureVirtualFunctions,
+                        MaximumMemberAlignment = Number(record.MaximumMemberAlignment),
+                        InheritanceKind = record.InheritanceKind?.Name, PrimaryBaseSubobject = Ref(record.PrimaryBaseSubobject),
+                        VirtualFunctionInfoBaseSubobject = Ref(record.VirtualFunctionInfoBaseSubobject),
+                        VirtualFunctionInfoOffset = Number(record.VirtualFunctionInfoOffset),
+                        HighestVirtualFunctionNumber = Number(record.HighestVirtualFunctionNumber),
+                        NextNegativeVirtualTableIndex = Number(record.NextNegativeVirtualTableIndex),
+                        FirstVirtualCallOffsetIndex = Number(record.FirstVirtualCallOffsetIndex),
+                        VirtualFunctionTableVariable = Ref(record.VirtualFunctionTableVariable),
+                        VirtualTableTableVariable = Ref(record.VirtualTableTableVariable),
+                        BasesInPreorder = record.BasesInPreorder.Select(subobject => Ref(subobject)).ToArray(),
+                        BasesInPostorder = record.BasesInPostorder.Select(subobject => Ref(subobject)).ToArray(),
+                        DeclaredVirtualMethodsNotSlots = record.DeclaredVirtualMethods.Select(method => Ref(method)).ToArray(),
+                        VirtualCallOffsets = record.VirtualCallOffsets.Select(offset => new
+                        {
+                            offset.Ordinal, Owner = Ref(offset.Owner), Routine = Ref(offset.Routine),
+                            BaseSubobject = Ref(offset.BaseSubobject), VirtualTableIndex = Number(offset.VirtualTableIndex), offset.IsPrimary
+                        }).ToArray()
+                    };
                 }
                 break;
             case VariableSymbol variable:
                 row["EntityKind"] = "variable"; row["Type"] = Ref(variable.Type); row["Storage"] = variable.SymbolDetails.Storage?.Name;
                 row["StorageDuration"] = variable.Details.StorageDuration?.Name; row["InitializationKind"] = variable.InitializationKind.Name;
+                row["VariableFacts"] = new
+                {
+                    variable.IsCompilerGenerated, variable.Details.LoweringGenerated, variable.Details.IsOptionalVtable,
+                    variable.Details.VtableDefined, variable.Details.IsImmutable, variable.Details.IsUsed, variable.Details.AddressTaken,
+                    variable.Details.ReferencedNonLocally, variable.AssemblyName,
+                    variable.Details.IsWeak, variable.Details.IsWeakref, variable.Details.IsGnuAlias,
+                    EffectiveClassTypeinfoVariable = Ref(variable.Details.EffectiveClassTypeinfoVariable),
+                    AliasedVariable = Ref(variable.Details.AliasedVariable), variable.Details.ComdatGroup,
+                    EntitiesDefinedInInitializer = variable.EntitiesDefinedInInitializer.Select(initialized => Ref(initialized)).ToArray()
+                };
                 row["InitializerAssociation"] = Ref(variable.Initializer);
                 row["InitializerOperationRole"] = variable.Initializer?.Operation?.RepresentationRole.Name;
                 row["DeclaredInitializerAssociation"] = Ref(variable.Details.Initializer);
@@ -219,7 +295,72 @@ internal sealed class LifetimeProbe(RoslynObject input)
                 }).ToArray();
                 break;
             case FieldSymbol field:
-                row["EntityKind"] = "field"; row["Type"] = Ref(field.Type); break;
+                row["EntityKind"] = "field"; row["Type"] = Ref(field.Type);
+                row["ContainingType"] = Ref(field.ContainingType);
+                row["GeneratedAndLayoutFacts"] = new
+                {
+                    field.IsGeneratedBase, field.IsGeneratedVirtualPointer, field.IsCompilerGenerated,
+                    field.IsBitField, field.IsMutable, field.IsPacked, ExplicitAlignment = Number(field.ExplicitAlignment)
+                }; break;
+            case RecordLayout layout:
+                row["EntityKind"] = "record-layout"; row["Type"] = Ref(layout.Type);
+                row["Size"] = Number(layout.Size); row["Alignment"] = Number(layout.Alignment);
+                row["NonvirtualSize"] = Number(layout.NonvirtualSize); row["NonvirtualAlignment"] = Number(layout.NonvirtualAlignment);
+                row["IsComplete"] = layout.IsComplete;
+                row["Fields"] = layout.Fields.Select(field => new
+                {
+                    field.Ordinal, Field = Ref(field.Field), Offset = Number(field.Offset), BitOffset = Number(field.BitOffset),
+                    BitWidth = Number(field.BitWidth), ContainerOffset = Number(field.ContainerOffset)
+                }).ToArray(); break;
+            case BaseSubobject subobject:
+                row["EntityKind"] = "base-subobject"; row["BaseType"] = Ref(subobject.BaseType);
+                row["MostDerivedType"] = Ref(subobject.MostDerivedType); row["OriginalType"] = Ref(subobject.OriginalType);
+                row["Offset"] = Number(subobject.Offset); row["DirectBaseNumber"] = subobject.DirectBaseNumber;
+                row["IsCompleteSubobject"] = subobject.IsCompleteSubobject;
+                row["Flags"] = new
+                {
+                    subobject.IsVirtual, subobject.IsDirect, subobject.IsAmbiguous, subobject.IsOptimizedEmptyBase,
+                    subobject.IsPackExpansion, subobject.SharesVirtualFunctionInfo, subobject.HasPublicDerivation
+                };
+                row["PrimaryBaseSubobject"] = Ref(subobject.PrimaryBaseSubobject);
+                row["DataSectionBaseSubobject"] = Ref(subobject.DataSectionBaseSubobject);
+                row["VirtualBasePointerOffset"] = Number(subobject.VirtualBasePointerOffset);
+                row["VirtualBasePointerBaseSubobject"] = Ref(subobject.VirtualBasePointerBaseSubobject);
+                row["VirtualFunctionTableVariable"] = Ref(subobject.VirtualFunctionTableVariable);
+                row["VirtualFunctionTableIndex"] = Number(subobject.VirtualFunctionTableIndex);
+                row["ConstructionTableIndex"] = Number(subobject.ConstructionTableIndex);
+                row["ConstructionSubarrayIndex"] = Number(subobject.ConstructionSubarrayIndex);
+                row["VirtualBaseOffsetIndex"] = Number(subobject.VirtualBaseOffsetIndex);
+                row["OverridesNotSlotSelection"] = subobject.Overrides.Select(Override).ToArray();
+                row["DerivationsNotLookup"] = subobject.Derivations.Select(derivation => Ref(derivation)).ToArray(); break;
+            case BaseDerivation derivation:
+                row["EntityKind"] = "base-derivation"; row["BaseSubobject"] = Ref(derivation.BaseSubobject);
+                row["IsDirect"] = derivation.IsDirect; row["IsPreferred"] = derivation.IsPreferred; row["Access"] = derivation.Access?.Name;
+                row["PathTailOrdinal"] = derivation.Details.PathTailOrdinal;
+                row["RetainedStepsNotReconstructed"] = derivation.Steps.Select(step => new { step.Ordinal, Subobject = Ref(step.Subobject) }).ToArray(); break;
+            case Constant constant:
+                row["EntityKind"] = "constant"; row["Type"] = Ref(constant.Type); row["OriginalType"] = Ref(constant.OriginalType);
+                row["Value"] = Ref(constant.Value); row["ValueKind"] = constant.Value.Kind.Name;
+                row["AssociatedStorageVariable"] = Ref(constant.AssociatedStorageVariable);
+                row["InitializedField"] = Ref(constant.InitializedField); row["InitializedBaseSubobject"] = Ref(constant.InitializedBaseSubobject);
+                row["BackingExpressionAssociationNotExecution"] = Ref(constant.BackingExpression);
+                row["Components"] = constant.Components.Select(component => new
+                {
+                    Role = component.Role.Name, component.Ordinal, Constant = Ref(component.Constant)
+                }).ToArray();
+                row["Flags"] = new
+                {
+                    constant.Details.ImplicitCast, constant.Details.ExplicitCastApplied, constant.Details.IsReinterpretCast,
+                    constant.Details.IsReinterpretLikeCast, constant.Details.PartialAggrValue, constant.Details.IsPartiallyInitialized,
+                    constant.Details.ImplicitAggrElement, constant.Details.IsCompoundLiteral, constant.Details.ConstantForBaseClass,
+                    constant.Details.VptrHasBeenLowered
+                }; break;
+            case ConstantValue value: DescribeValue(value, row); break;
+            case SubobjectPath path:
+                row["EntityKind"] = "subobject-path"; row["Kind"] = path.Kind.Name;
+                row["Field"] = Ref(path.Field); row["BaseSubobject"] = Ref(path.BaseSubobject);
+                row["ElementOffset"] = Number(path.ElementOffset); row["IsConverted"] = path.IsConverted;
+                row["Next"] = Ref(path.Next); break;
             case ParameterType descriptor:
                 row["EntityKind"] = "parameter-descriptor"; row["Type"] = Ref(descriptor.Type);
                 row["DeclaredType"] = Ref(descriptor.DeclaredType); row["PassedViaCopyConstructor"] = descriptor.Details.PassedViaCopyConstructor; break;
@@ -290,6 +431,54 @@ internal sealed class LifetimeProbe(RoslynObject input)
         return row;
     }
 
+    private void DescribeValue(ConstantValue value, Dictionary<string, object?> row)
+    {
+        row["EntityKind"] = "constant-value"; row["Kind"] = value.Kind.Name;
+        switch (value)
+        {
+            case IntegerValue integer: row["IntegerValue"] = Number(integer.Value); break;
+            case AddressValue address:
+                row["Address"] = new
+                {
+                    BaseKind = address.BaseKind.Name, BaseEntity = Ref(address.BaseEntity),
+                    ByteOffset = Number(address.ByteOffset), address.OnePastEnd, SubobjectPath = Ref(address.SubobjectPath),
+                    address.Details.IsObjectReflection, address.Details.ParameterNumber
+                }; break;
+            case AggregateValue aggregate:
+                row["Type"] = Ref(aggregate.Details.Type);
+                row["Elements"] = aggregate.Elements.Select(element => new
+                {
+                    element.Ordinal, Type = Ref(element.Type), Value = Ref(element.Value), ValueKind = element.Value.Kind.Name
+                }).ToArray(); break;
+            case StringValue text:
+                if (text.StorageUnits.Count > MaximumConstantStorageUnits)
+                    throw new InvalidOperationException("Focused lifetime constant unit bound exceeded.");
+                row["String"] = new
+                {
+                    Length = Number(text.Length), text.StorageUnitBits, Encoding = text.Encoding.Name,
+                    UnitKind = text.UnitKind.Name, StorageUnits = text.StorageUnits.ToArray()
+                }; break;
+            case FloatingValue floating:
+                row["Floating"] = new
+                {
+                    Class = floating.Details.Class.Name, floating.Details.Negative, floating.Details.Radix,
+                    Significand = Number(floating.Details.Significand), floating.Details.Exponent,
+                    NanPayload = Number(floating.Details.NanPayload), floating.Details.NanQuiet,
+                    RepresentationKind = floating.Details.RepresentationKind?.Name
+                }; break;
+            case ConstantValue<StackOffsetValueDetails> stack:
+                row["StackOffset"] = new { Variable = Ref(stack.Payload.Variable), Offset = Number(stack.Payload.Offset) }; break;
+            case ConstantValue<RepeatValueDetails> repeat:
+                row["Repeat"] = new
+                {
+                    Value = Ref(repeat.Payload.Value), Type = Ref(repeat.Payload.Type), Count = Number(repeat.Payload.Count),
+                    repeat.Payload.MultidimensionalTailNotRepeated
+                }; break;
+            case ConstantValue<DynamicInitializationValueDetails> dynamicValue:
+                row["InitializationAssociationNotExecution"] = Ref(dynamicValue.Payload.Initialization); break;
+        }
+    }
+
     private void DescribeInitialization(Initialization initialization, Dictionary<string, object?> row)
     {
         row["EntityKind"] = "initialization"; row["Kind"] = initialization.Kind.Name; row["InitializationKind"] = initialization.Kind.Name; row["Target"] = Ref(initialization.Target);
@@ -327,11 +516,22 @@ internal sealed class LifetimeProbe(RoslynObject input)
         {
             row["OperatorKind"] = operation.OperatorKind.Name; row["EvalLeftToRight"] = operation.Operator.EvalLeftToRight;
             row["EvalRightToLeft"] = operation.Operator.EvalRightToLeft;
+            row["RetainedVirtualCall"] = operation.Operator.RetainedVirtualCall;
+            row["OperatorFacts"] = new
+            {
+                OperationTypeKind = operation.Operator.OperationTypeKind?.Name, operation.Operator.PointerOperandIsSecond,
+                operation.Operator.RequiresRuntimeCastCheck, operation.Operator.ReturnsLvalue,
+                operation.Operator.IsReinterpretLikeCast, operation.Operator.IsReinterpretCast,
+                operation.Operator.IsReferenceCast, operation.Operator.IsRvalueReferenceCast,
+                operation.Operator.IsConstCast, operation.Operator.IsTrackingReferenceCast,
+                operation.Operator.QualifiedFunctionName, operation.Operator.ImplicitMemberNaming
+            };
         }
         switch (node)
         {
             case CallOperation call:
                 row["Call"] = new { Kind = call.CallKind.Name, Callee = Ref(call.Callee), TargetMethod = Ref(call.TargetMethod),
+                    SourceDispatchKind = call.SourceDispatchKind?.Name, RetainedVirtualCall = call.Operator.RetainedVirtualCall,
                     SourceTargetMethodForDisplayOnly = Ref(call.SourceTargetMethod), Receiver = Ref(call.Receiver), ReturnSlot = Ref(call.Call.ReturnSlot),
                     FunctionType = Ref(call.Call.FunctionType), Arguments = call.Arguments.Select(argument => new { argument.Ordinal,
                         Role = argument.Role?.Name, Parameter = Ref(argument.Parameter), Value = Ref(argument.Value) }).ToArray(),
@@ -339,6 +539,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
                         Indices = call.Operands.Select((operand, index) => (operand, index)).Where(pair => pair.operand.Equals(argument.Value)).Select(pair => pair.index).ToArray() }).ToArray() }; break;
             case ReferenceOperation reference: row["Target"] = Ref(reference.Target); break;
             case ConstantOperation constant:
+                row["Constant"] = Ref(constant.Constant); row["ConstantValue"] = Ref(constant.Constant.Value);
                 row["ConstantKind"] = constant.Constant.Value.Kind.Name;
                 row["IntegerValue"] = constant.Constant.Value is IntegerValue integer ? Number(integer.Value) : null; break;
             case InitializationOperation initialization:

@@ -24,6 +24,8 @@ callback execution and completed-prefix cleanup.
 through two handler entries and frees it once.
 [Default noexcept termination](docs/T5-TERMINATION.md) also passes its explicit
 unwind policy and isolated JIT/NativeAOT SIGABRT evidence.
+[Single-inheritance virtual dispatch](docs/T5-VIRTUAL-DISPATCH.md) now also passes
+actual slot execution, physical layout and pinned RTTI data-provider checks.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

@@ -16,6 +16,7 @@ public sealed record CSharpEmissionOptions
     public bool PrintEntryResult { get; init; }
     public string RuntimeProjectPath { get; init; } = "";
     public IReadOnlyList<CSharpExternalFunctionBinding> ExternalFunctions { get; init; } = [];
+    public IReadOnlyList<CSharpExternalDataBinding> ExternalData { get; init; } = [];
     public NativeErrorProtocol NativeErrorProtocol { get; init; }
     /// <summary>Opt in to bounded selected-program assembly. Null keeps legacy single-unit admission.</summary>
     public ProgramAssemblyOptions? ProgramAssembly { get; init; }
@@ -28,6 +29,7 @@ public sealed record CSharpEmissionResult(
     int EmittedRecordCount)
 {
     internal IReadOnlyList<SemanticRuntimeFunctionImplementation> SemanticRuntimeFunctions { get; init; } = [];
+    internal IReadOnlyList<SemanticNativeDataImplementation> NativeDataImplementations { get; init; } = [];
 }
 
 /// <summary>Projects public, already-resolved EDG objects to ordinary unsafe C#.</summary>
@@ -102,7 +104,7 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
-            try { InitializeBoundedExceptions(); }
+            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); }
             catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {
@@ -118,10 +120,14 @@ public sealed partial class CSharpEmitter
             var staticFields = new StringBuilder();
             EmitExceptionFields(staticFields);
             var staticInitialization = new CodeWriter();
+            try { EmitNativeDataFields(staticFields); }
+            catch (Unsupported ex) { Add("CSHARP2300", ex.Message, null, ex.Family); }
             try { EmitGlobalStorage(staticFields, staticInitialization); }
             catch (Unsupported ex) { Add("CSHARP2300", ex.Message, null, ex.Family); }
             try { EmitVariadicSupport(); }
             catch (Unsupported ex) { Add("CSHARP2401", ex.Message, null, ex.Family); }
+            try { EmitVirtualDispatchSupport(); }
+            catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
             try { EmitCallSupport(staticFields, staticInitialization); }
             catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
             var declarations = new StringBuilder();
@@ -176,8 +182,12 @@ public sealed partial class CSharpEmitter
             var files = new List<GeneratedSource> { new("Generated.cs", source.ToString()), new("Generated.csproj", project) };
             if (generatedAbiLibrary is not null) files.Add(new("Generated.Abi.c", NativeAbiSource()));
             if (nativeImports.Count > 0 || generatedAbiLibrary is not null) files.Add(new("Generated.NativeImports.json", NativeImportReport()));
+            if (nativeDataImplementations.Count > 0) files.Add(new("Generated.NativeDataImports.json", NativeDataImportReport()));
             if (selectedProgram is not null) files.Add(new("Generated.ProgramAssembly.json", ProgramAssemblyReport()));
-            return new(files, diagnostics, functions.Count, records.Count) { SemanticRuntimeFunctions = semanticRuntimeFunctions.ToArray() };
+            return new(files, diagnostics, functions.Count, records.Count)
+            {
+                SemanticRuntimeFunctions = semanticRuntimeFunctions.ToArray(), NativeDataImplementations = nativeDataImplementations.ToArray()
+            };
         }
 
         private CSharpEmissionResult Failure(string code, string message)
@@ -602,6 +612,7 @@ public sealed partial class CSharpEmitter
 
         private void EmitRecord(RecordType record, StringBuilder output)
         {
+            if (TryEmitVirtualRecord(record, output)) return;
             if (record.HasVirtualFunctions || record.HasVirtualBases || record.Bases.Count != 0)
                 throw Limit("C++ inheritance/dispatch storage is unsupported in T1.", "record");
             var layout = record.Layout ?? throw Limit("Record has no captured layout.", "record");

@@ -39,6 +39,15 @@ public sealed record TargetConfiguration
     public string OutputRid { get; init; } = "";
 }
 
+/// <summary>Explicit host ELF data evidence; none of these values supplies an EDG object size.</summary>
+public sealed record NativeDataAddressContract
+{
+    public string Version { get; init; } = "";
+    public string SymbolVersion { get; init; } = "";
+    public ulong ExportRelativeVirtualAddress { get; init; }
+    public int SymbolSizeBytes { get; init; }
+}
+
 public sealed record ExternalBinding
 {
     public string LinkageName { get; init; } = "";
@@ -48,6 +57,7 @@ public sealed record ExternalBinding
     /// <summary>Exact native provider file; executable binding never uses ambient library lookup.</summary>
     public string? LibraryPath { get; init; }
     public string? LibrarySha256 { get; init; }
+    public NativeDataAddressContract? DataAddressContract { get; init; }
     public string Signature { get; init; } = "";
     public string CallingConvention { get; init; } = "";
     public string Ownership { get; init; } = "";
