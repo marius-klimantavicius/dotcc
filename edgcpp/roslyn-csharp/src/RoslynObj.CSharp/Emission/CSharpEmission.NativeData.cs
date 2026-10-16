@@ -21,12 +21,11 @@ public sealed partial class CSharpEmitter
         private void InitializeNativeDataBindings()
         {
             if (options.ExternalData.Count == 0) return;
-            if (inputs.Count != 1 || selectedProgram is not null || options.ExternalData.Count != 2 ||
-                options.ExternalData.Select(binding => binding.LinkageName).Distinct(StringComparer.Ordinal).Count() != 2 ||
-                !options.ExternalData.Any(binding => binding.LinkageName == "_ZTVN10__cxxabiv117__class_type_infoE") ||
-                !options.ExternalData.Any(binding => binding.LinkageName is "_ZTVN10__cxxabiv120__si_class_type_infoE" or
-                    "_ZTVN10__cxxabiv121__vmi_class_type_infoE"))
-                throw Limit("The address-only RTTI provider requires the two explicitly bound single-unit data exports.", "native-data");
+            if (inputs.Count != 1 || selectedProgram is not null || options.ExternalData.Count is not (2 or 3) ||
+                options.ExternalData.Select(binding => binding.LinkageName).Distinct(StringComparer.Ordinal).Count() != options.ExternalData.Count ||
+                options.ExternalData.Any(binding => !SemanticNativeDataImplementation.IsSupportedSymbol(binding.LinkageName)) ||
+                !options.ExternalData.Any(binding => binding.LinkageName == "_ZTVN10__cxxabiv117__class_type_infoE"))
+                throw Limit("The address-only RTTI provider requires its exact two- or three-export single-unit profile.", "native-data");
             foreach (var binding in options.ExternalData)
             {
                 if (!SemanticNativeDataImplementation.IsSupportedSymbol(binding.LinkageName) || binding.EntryPoint != binding.LinkageName ||
@@ -144,26 +143,38 @@ public sealed partial class CSharpEmitter
         private bool IsNativeDataTypeinfoRoot(VariableSymbol root, RecordType record, VariableSymbol external)
         {
             if (record.Alignment != 8) return false;
+            var symbol = external.AssemblyName ?? external.CurrentName;
             if (record.VirtualFunctionTableVariable?.Equals(external) == true)
-                return record.Size is { } size && (size == 16 || size == 24);
-            if ((external.AssemblyName ?? external.CurrentName) != "_ZTVN10__cxxabiv121__vmi_class_type_infoE" ||
-                record.Size != 56 || record.Layout is not { IsComplete: true } layout || layout.Fields.Count != 4)
-                return false;
-            // Lowered VMI storage is an anonymous expanded record. It has no
-            // VirtualFunctionTableVariable link; do not invent that association.
-            // Anchor it in the selected application's actual TypeinfoVariable.
-            var owners = functions.Where(function => function.IsVirtual).Select(function => function.ContainingType)
-                .OfType<RecordType>().Distinct().Where(type => type.Details.TypeinfoVariable?.Equals(root) == true).ToArray();
-            if (owners.Length != 1 || owners[0].HasVirtualBases || owners[0].Bases.Count != 2 ||
-                owners[0].Size != 32 || owners[0].Alignment != 8 || owners[0].Bases.Any(@base => @base.IsVirtual))
-                return false;
+            {
+                if (symbol == "_ZTVN10__cxxabiv117__class_type_infoE") return record.Size == 16;
+                if (symbol == "_ZTVN10__cxxabiv120__si_class_type_infoE") return record.Size == 24;
+                // The one-base VMI record retains its real vtable association.
+                // Its application owner supplies the selected virtual-base context.
+                return symbol == "_ZTVN10__cxxabiv121__vmi_class_type_infoE" && IsNativeVmiLayout(record, 1) &&
+                    NativeTypeinfoOwners(root) is [var owner] && owner.HasVirtualBases && owner.Bases.Count == 1 && owner.Bases[0].IsVirtual;
+            }
+            if (symbol != "_ZTVN10__cxxabiv121__vmi_class_type_infoE" || !IsNativeVmiLayout(record, 2)) return false;
+            // Lowered two-base VMI storage is an anonymous expanded record. It
+            // has no VirtualFunctionTableVariable link; do not invent one.
+            return NativeTypeinfoOwners(root) is [var derived] && !derived.HasVirtualBases && derived.Bases.Count == 2 &&
+                derived.Size == 32 && derived.Alignment == 8 && derived.Bases.All(@base => !@base.IsVirtual);
+        }
+
+        private RecordType[] NativeTypeinfoOwners(VariableSymbol root) => functions.Where(function => function.IsVirtual)
+            .Select(function => function.ContainingType).OfType<RecordType>().Distinct()
+            .Where(type => type.Details.TypeinfoVariable?.Equals(root) == true).ToArray();
+
+        private static bool IsNativeVmiLayout(RecordType record, int count)
+        {
+            if (record.Size != 24 + count * 16 || record.Alignment != 8 ||
+                record.Layout is not { IsComplete: true } layout || layout.Fields.Count != 4) return false;
             var fields = layout.Fields;
             return fields[0].Offset == 0 && fields[1].Offset == 16 && fields[2].Offset == 20 && fields[3].Offset == 24 &&
                 fields.All(field => field.BitWidth is null) && RawRecord(fields[0].Field.Type) is { Size: { } baseSize, Alignment: { } baseAlignment } &&
                 baseSize == 16 && baseAlignment == 8 && fields[1].Field.Type.Size == 4 && fields[2].Field.Type.Size == 4 &&
                 MemoryRepresentationType(fields[3].Field.Type) is ArrayType { Bound: { } bound, Size: { } arraySize, Alignment: { } arrayAlignment } array &&
-                bound == 2 && arraySize == 32 && arrayAlignment == 8 && RawRecord(array.ElementType) is { Size: { } elementSize, Alignment: { } elementAlignment } &&
-                elementSize == 16 && elementAlignment == 8;
+                bound == count && arraySize == count * 16 && arrayAlignment == 8 &&
+                RawRecord(array.ElementType) is { Size: { } elementSize, Alignment: { } elementAlignment } && elementSize == 16 && elementAlignment == 8;
         }
 
         private void AddNativeTypeinfoFields(RecordType record, HashSet<RecordType> seen)

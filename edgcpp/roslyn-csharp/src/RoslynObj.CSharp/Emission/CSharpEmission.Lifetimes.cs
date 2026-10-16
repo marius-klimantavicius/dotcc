@@ -66,6 +66,13 @@ public sealed partial class CSharpEmitter
                 generatedLifetimeRoutines.Add(function);
                 return;
             }
+            if (virtualInheritance?.Lifetimes.Contains(function) == true)
+            {
+                ValidateVbaseLifetimeSignature(function);
+                EnsureGeneratedNoThrow(function);
+                generatedLifetimeRoutines.Add(function);
+                return;
+            }
             if (signature.HasThisParameter)
             {
                 if (MemoryRepresentationType(function.ReturnType).Kind.Name != "tk_void" ||
@@ -307,6 +314,7 @@ public sealed partial class CSharpEmitter
 
         private void ValidateNormalCleanupBody(FunctionSymbol function)
         {
+            if (vbaseNormalBodies.Contains(function)) return; // Exact closed normal metadata was validated before emission.
             var body = function.Body!;
             var eh = body.ExceptionHandling;
             if (eh.CleanupRegions.Count == 0 && !body.Lifetimes.Any(lifetime => lifetime.Cleanups.Count != 0)) return;

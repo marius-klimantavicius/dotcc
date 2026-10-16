@@ -179,11 +179,63 @@ Seven earlier C++ application sources remain byte-identical and their relevant
 JIT/AOT regressions pass. Prior compile-only accessor failure and two fail-closed
 traversal attempts remain preserved. See [MI proof](T5-MULTIPLE-INHERITANCE.md)
 and pinned stock contract provenance `t5/multiple-contract-source-1/provenance.json`.
-No builder or translator is active; workers hold product/checker bytes. Next is
-capture-first virtual inheritance/VTT with ordinary noexcept scalar dispatch and
-nonvirtual destructors. Derive actual virtual-base layout, VTT constants, hidden
-constructor roles and adjustments before proposing implementation. No native
-RTTI method/application body, source virtual lookup or native unwind is admitted.
+MI checkpoint is `699dec425`. No builder or translator is active; verified
+product/checker bytes are held. Root approved the next capture/native/facts slice:
+Root polymorphic scalar class, Branch virtually inherits Root, Final inherits
+Branch and adds a long long bonus. Branch constructor/destructor and complete
+Final call a separate Root* helper, making retained construction tables/VTT
+observable. All constructors/methods and nonvirtual destructors are noexcept;
+no throw, heap, RTTI query or member pointer is introduced. Inventory owns the
+new fixture/note; emission performs read-only public/stock VTT audit. The frozen
+ProbeVersion 6 already records VTT variables, hidden parameter roles, construction
+indices, selected wrapper metadata and typed body/constant closure. The six measured capture/inspect/public-facts/native phases now pass; provenance
+is `t5/vbase-capture-provenance-1.json`. Facts `t5/virtual-inheritance-facts-1.json`
+record 1,745 entities and 28 bodies. Native twice returns 122 with values
+[15,36,40,31,5,7,11,0,0] and 14 events, live/overflow 0. Actual complete sizes are
+Root 16/8, Branch 32/8, Final 40/8; Root is at 16 in Branch and 24 in Final. Exact
+Branch/Final VTTs and two construction tables remain generated constant data.
+All three required RTTI DATA symbols reuse existing pinned descriptors; runtime
+needs no new provider scope. Root approved the exact product profile after independent VTT-holder and
+condition checks. Emission owns a new VirtualInheritance partial and narrow
+virtual/marker/lifetime hooks. Coordinator owns only NativeData binding/root
+admission; inventory owns the new physical checker/note. Runtime remains
+unchanged. Actual retained prefix construction on Final storage is approved for
+physical checks, balanced through Branch D2 and Root destructor without invoking
+Final destruction on an incomplete Final. The bounded slice now passes all
+55 expected outcomes: 49 ordinary successes, two prior expected SIGABRTs and
+four intended unsupported rejections. Compact receipt is
+`acceptance/lifetimes/virtual-inheritance-report.json`, SHA-256
+`d7bf1ae5d14f0d659a1fb3167fbbd95c56476f7f305b487eb6d06b1c218fda76`.
+Immutable source `t5/vbase-source-2` freezes 227 files, checker snapshot
+`t5/vbase-checker-source-1` freezes nine. All 14 input objects, provider, completion
+and source hashes verify; Runtime is unchanged. First ROC1204 unpublished
+attempt remains preserved. Separate single-unit non-alias complete/delegation
+admission preserves actual independent bodies, this/VTT roles and all old
+unresolved-binding guards; it does not resolve aliases or replace bodies.
+
+Production `t5/vbase-cli-generated-2` publishes all 28 bodies and three DATA
+bindings. Full native/JIT/NativeAOT twice-run result 122, nine values and 14 events
+agree, with live/overflow zero. Physical checks execute all five UCO entries,
+complete Branch and retained prefix-in-Final (same Branch thunk at -16/-24), then
+full Final, with balanced teardown. Complete sizes 16/32/40, occupied Root/Branch
+carriers 12, alignment 8, Root offsets 16/24 and bonus 16..24 verify. Captured
+Final occupied size 24 is reported separately; no CLR carrier is fabricated.
+All three provider owner/hash/RVA/read-only/export and stored BASE+16 checks pass.
+D9 bodies and null-VTT conditional paths emit but are unexercised. Eight earlier
+application sources remain
+byte-identical and pass affected JIT/NativeAOT; repeat publication agrees.
+Saved stock revision/blob/hash excerpts are `t5/vbase-contract-source-1`.
+
+No builder or translator remains active. Product and physical workers are frozen;
+coordinator owns Git and serialized builds. The emission worker prepares only
+NEW reader-only `tests/DuckdbSliceFacts` and its note, outside this frozen source.
+Root approved a bounded next-target trace of exact DuckDB core entry 316's four
+already sampled And/Or roots, with explicit typed occurrence/evaluation,
+call/cleanup dependency and truncation limits. This is next-target evidence,
+not translation/link/whole-164 acceptance. No project-required adapter can yet be
+ranked from old reader navigation samples alone. After this checkpoint, build/run
+that tool under measured limits and review actual findings before new projection.
+Broader T5/T6 remain open; preserve original SQLite runtime/source attribution.
 
 Never modify EDG core, use raw model bypass, recover source semantics or consult
 dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.

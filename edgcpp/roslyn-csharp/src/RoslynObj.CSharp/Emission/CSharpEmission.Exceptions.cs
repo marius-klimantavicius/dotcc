@@ -452,6 +452,11 @@ public sealed partial class CSharpEmitter
                     throw Limit("Normal-only lifetime marker omission cannot admit a live throw/try, including through noexcept calls.", "lifetime");
                 foreach (var marker in nodes.OfType<ExpressionOperation>().Where(node => node.Kind.Name == "enk_result_of_overriding_function"))
                 {
+                    if (VbaseOverridingResult(marker) is { } inherited && inherited.Wrapper.Equals(current))
+                    {
+                        Check(inherited.Target, active);
+                        continue;
+                    }
                     if (multipleVirtual is not { } markerPlan || !IsOverridingResult(marker) || !markerPlan.Wrapper.Equals(current))
                         throw Limit("Normal marker omission requires the exact selected context of an overriding-result call.", "virtual-adjustor");
                     Check(markerPlan.Overriding, active);

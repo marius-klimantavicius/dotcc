@@ -28,6 +28,8 @@ unwind policy and isolated JIT/NativeAOT SIGABRT evidence.
 actual slot execution, physical layout and pinned RTTI data-provider checks.
 [Multiple inheritance](docs/T5-MULTIPLE-INHERITANCE.md) now also passes with a
 retained secondary table and an independently executed fixed receiver adjustor.
+[Virtual-base construction](docs/T5-VIRTUAL-INHERITANCE.md) also passes retained
+VTT forwarding, construction-phase dispatch and data-driven receiver adjustment.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

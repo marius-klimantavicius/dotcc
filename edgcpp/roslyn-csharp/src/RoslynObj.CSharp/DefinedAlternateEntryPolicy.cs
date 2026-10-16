@@ -8,12 +8,25 @@ internal static class DefinedAlternateEntryPolicy
     internal static bool HasIndependentBody(FunctionSymbol entry, IReadOnlyCollection<FunctionSymbol> functions)
     {
         var primary = entry.PrimaryEntry;
-        return primary is not null && functions.Contains(primary)
+        if (primary is null) return false;
+        var simpleAliasEntry = entry.Details.IsAliasEntry == true
+            && entry.ConstructorOrDestructorKind?.Name == "cdk_subobject"
+            && primary.ConstructorOrDestructorKind?.Name == "cdk_complete";
+        // Virtual-base lowering retains distinct complete/delegation bodies
+        // around a subobject primary with its selected VTT execution argument.
+        // These are separate executable entries, not aliases to substitute.
+        var virtualBaseEntry = entry.Details.IsAliasEntry == false && primary.Details.IsAliasEntry == false
+            && entry.ContainingType is RecordType { HasVirtualBases: true }
+            && primary.ConstructorOrDestructorKind?.Name == "cdk_subobject"
+            && (entry.ConstructorOrDestructorKind?.Name == "cdk_complete"
+                || entry.ConstructorOrDestructorKind?.Name == "cdk_delegation" && entry.SpecialFunctionKind?.Name == "sfk_destructor")
+            && primary.Signature.HasThisParameter && primary.Signature.Parameters.Count >= 2
+            && primary.Signature.Parameters[0].Role.Name == "this_parameter"
+            && primary.Signature.Parameters[1].Role.Name == "vtt_parameter";
+        return functions.Contains(primary)
             && entry.IsDefined && entry.BodyState.Name == "definition" && entry.Body is not null
             && primary.IsDefined && primary.BodyState.Name == "definition" && primary.Body is not null
-            && entry.Details.IsAliasEntry == true
-            && entry.ConstructorOrDestructorKind?.Name == "cdk_subobject"
-            && primary.ConstructorOrDestructorKind?.Name == "cdk_complete"
+            && (simpleAliasEntry || virtualBaseEntry)
             && entry.SpecialFunctionKind?.Name is "sfk_constructor" or "sfk_destructor"
             && entry.SpecialFunctionKind == primary.SpecialFunctionKind
             && entry.ContainingType is not null && entry.ContainingType.Equals(primary.ContainingType)

@@ -280,7 +280,7 @@ public sealed partial class CSharpEmitter
             }
         }
 
-        private bool IsOverridingResult(ExpressionOperation expression) => multipleVirtual?.Result.Equals(expression) == true;
+        private bool IsOverridingResult(ExpressionOperation expression) => multipleVirtual?.Result.Equals(expression) == true || VbaseOverridingResult(expression) is not null;
         private bool IsMultipleTableAddress(AddressValue address) => multipleVirtual is { } plan && address.BaseKind.Name == "abk_variable" &&
             !address.OnePastEnd && address.SubobjectPath is null && !address.Details.IsObjectReflection && address.Details.ParameterNumber is null &&
             (address.BaseEntity?.Equals(plan.Table) == true && (address.ByteOffset == 16 || address.ByteOffset == 48) ||
@@ -289,7 +289,8 @@ public sealed partial class CSharpEmitter
         {
             plan = null!;
             if (!IsOverridingResult(expression)) return false;
-            if (currentFunction?.Equals(multipleVirtual!.Wrapper) != true)
+            var wrapper = VbaseOverridingResult(expression)?.Wrapper ?? multipleVirtual!.Wrapper;
+            if (currentFunction?.Equals(wrapper) != true)
                 throw Limit("The retained overriding result is outside its exact selected wrapper body.", "virtual-adjustor");
             plan = new(expression.Type, expression.ValueCategory, [], new CsOverridingResult(CsType.Value(expression.Type), expression),
                 ExpressionEffects.Call | ExpressionEffects.MayThrow);
@@ -298,6 +299,12 @@ public sealed partial class CSharpEmitter
 
         private string RenderOverridingResult(CsOverridingResult expression)
         {
+            if (VbaseOverridingResult(expression.Operation) is { } inherited)
+            {
+                if (currentFunction?.Equals(inherited.Wrapper) != true)
+                    throw Limit("The dynamic overriding-result renderer requires its exact selected wrapper occurrence.", "virtual-adjustor");
+                return $"{OwnedName(inherited.Target)}({string.Join(", ", inherited.Wrapper.Parameters.Select(parameter => names[parameter.Symbol!]))})";
+            }
             if (multipleVirtual is not { } plan || !expression.Operation.Equals(plan.Result) || currentFunction?.Equals(plan.Wrapper) != true)
                 throw Limit("The overriding-result renderer requires its exact selected wrapper occurrence.", "virtual-adjustor");
             // The stock result-of-overriding-function contract uses this entry's

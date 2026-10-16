@@ -87,3 +87,14 @@ Physical checks execute all five canonical entries, including distinct direct
 and secondary-thunk paths, and verify the additional pinned VMI DATA address.
 See [the bounded MI proof](../../../docs/T5-MULTIPLE-INHERITANCE.md). Virtual
 bases/VTT, virtual destructors, dynamic adjustments and RTTI queries remain open.
+
+
+`virtual-inheritance.cpp` now passes production CLI/native/JIT/NativeAOT with
+retained complete/subobject/delegation bodies, exact construction tables/VTT and
+actual vptr[-3] receiver adjustment. Physical complete-Branch and prefix-in-Final
+lifecycles execute the same canonical thunk at -16/-24, balance construction,
+and inspect all five method slots plus three existing DATA providers. Those extra
+ABI lifecycles remain separate from full native-fixture activation; D9 bodies are
+emitted but unexercised. See [the bounded VTT proof](../../../docs/T5-VIRTUAL-INHERITANCE.md).
+Broader diamonds, virtual destructors, RTTI queries, member pointers, native
+unwinding and scale remain open.
