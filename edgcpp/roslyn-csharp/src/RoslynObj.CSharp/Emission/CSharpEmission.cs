@@ -104,7 +104,7 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
-            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializeOrdinaryMethods(); }
+            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); }
             catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {

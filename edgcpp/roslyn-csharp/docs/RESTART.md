@@ -3,112 +3,80 @@
 ## Current checkpoint after user resume, 2026-10-16
 
 Work remains authorized after the user unpaused. SQLite T0–T4 are closed for
-configured finite acceptance; actual generated source remains at
-`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`.
-T5 broader C++ and T6 portability/scale remain open. Historical paragraphs below
-retain original attribution; this section is the authoritative next-action state.
+configured finite Linux x64 acceptance. Actual readable source is
+`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`;
+its source13/runtime11 attribution is unchanged. Broader C++ T5 and portability/
+scale T6 remain open. This section overrides historical state below.
 
-Verified ordinary-method checkpoint is `4538211f2`, following `cd36a75d1`
-(bounded mutable/const reference aliasing). The ordinary const-method slice
-passes all 31 expected outcomes: 27 successful phases
-and four intended unsupported-case rejections, no unexpected outcome or budget
-violation. Compact receipt: `acceptance/lifetimes/ordinary-const-method-report.json`,
-SHA-256 `57036cea331ccde345e8427dd17401fd40ed4b6da25534dbed5b696cf3bf773c`.
-Immutable product `t5/ordinary-const-method-source-1` contains 242 frozen files;
-checker `t5/ordinary-const-method-checker-source-1` contains 9. All 17 genuine
-input hashes, source/checker/completion inventories and repeat outputs verify.
-Every Runtime source hash and provider contract is unchanged from the preceding
-verified checkpoint. No builder, export or test process remains active.
+Current verified borrowed-member milestone is ready for exact-path commit after
+root review. Previous HEAD is `21bf9f35c`, following ordinary const field methods
+`4538211f2` and mutable/const aliasing `cd36a75d1`. Compact receipt:
+`acceptance/lifetimes/borrowed-field-reference-report.json`, SHA-256
+`dfb3271496ef2111bbd46e6b4b0e2caf1125908ea4eff39344a84e6855d2f737`.
+All 48 expected outcomes pass: 43 successful phases and five intended unsupported
+rejections, zero unexpected outcomes or budget violations. Product source snapshot
+`t5/borrowed-field-reference-source-1` freezes 248 files; final checker snapshot
+`t5/borrowed-field-reference-checker-source-2` freezes nine. All 20 input hashes,
+source/checker inventories, publication files and repeat output hashes verify.
+Runtime/providers/Calls/Program/IR/planner/initializer/NormalInitializationValue
+are unchanged. No build/export/test process remains active.
 
-Production `t5/ordinary-const-method-cli-generated-1` publishes eight bodies with
-zero required imports/diagnostics. Native/JIT/AOT twice return 206, values
-`[5,201,201,0,0,0,0,0,0]` and events `[15,105,221,401]`. Physical JIT/AOT proves
-actual Cell size 1, kind offset 0, sequential-prefix alignment 1 and stored/read
-unsigned byte 201. Zero live slots are protocol-only; Cell has no counted resources.
-Prior normal const-reference, mutable alias and exact class-payload sources stay
-byte-identical and pass affected JIT/AOT execution. SI/MI/Vbase re-emission also
-preserves source bytes, without relabeling their earlier runtime evidence. Four
-existing unsupported-name/handler-new-throw/noexcept negatives stay unpublished.
+Two independently captured fixtures are production-published under
+`t5/borrowed-field-reference-cli-generated-1` and
+`t5/borrowed-field-reference-mutable-cli-generated-1`, each eight bodies and no
+required imports or diagnostics. Both native/JIT/AOT observations repeat result
+36, values `[5,7,11,13,1,1,1,1,0]`, events `[100,205,307,400,511,613,704]`.
+Generated source is identical across the captures, but their source/input/report/
+completion and checker invocation provenance remain separately attributable.
+Physical JIT/AOT measures Member 8/4 with fields 0/4 and Owner 16/8 with canary0/
+payload8, sequential-prefix alignment 4/8 and array stride 8/16. Actual getter calls
+on two owners return their exact distinct payload addresses at +8; stored pointers
+observe both subsequent owner mutations and preserve full-width signed canaries.
+Zero live slots are protocol only, not an ownership/lifetime-extension proof.
 
-The reusable per-function rule admits an ordinary unadjusted nonvirtual const
-receiver whose actual body returns its own exact captured unsigned8 field, with
-no calls, locals, lifetimes or EH. It registers selected receiver/signature/field
-identity and checks each actual direct-call role/receiver operand once; no source
-name, method/call count, record size or field-count rule selects behavior. The
-actual const-pointer-object parameter wrapper remains separate from the pointer
-value. Captured null noexcept stays null: this body capability cache never enters
-`validatedNoThrowFunctions`, never calls/changes `EnsureGeneratedNoThrow` and
-never grants caller cleanup-marker omission. Existing native/indirect/virtual/
-member-pointer/adjusted-receiver and reference guards remain. Records with bases,
-virtuals or distinct occupied partners and enum/arbitrary scalar accessors are not
-proven by this slice. Read [the proof](T5-ORDINARY-CONST-METHOD.md).
+The reusable registry admits selected ordinary unadjusted const receiver methods
+returning a borrowed const alias-typed record field, direct calls and exact
+reciprocal automatic reference-local bindings. Both actual address shapes are
+preserved: direct already-const member, and explicit lvalue qualification over the
+mutable member. Declared reference and ordinary pointer value are distinct public
+types with the same exact const pointee. Contextual type rendering never grants
+unregistered same-reference-type bindings. The genuine extra direct-field-bound
+local has the same declared reference identity as the valid getter-bound local;
+it is rejected with CSHARP2502 before publication. Native/indirect/virtual/member-
+pointer/adjusted-receiver/reference-parameter/general escape/ownership support is
+not granted. Null noexcept stays null; NoThrow cache and caller cleanup-marker
+omission permissions are unchanged. Read [the proof](T5-BORROWED-FIELD-REFERENCE.md).
 
-Coordinator gpt-6.1-sol high owns Git/shared integration and all serialized
+Prior normal const-reference, mutable alias, ordinary unsigned-byte method and
+exact class-payload outputs stay byte-identical and pass affected JIT/AOT.
+SI/MI/Vbase re-emission stays byte-identical without relabeling prior runtime
+proof. Four prior genuine unsupported cases remain unpublished. Physical checker
+attempt1 is preserved as a checker-only address-cast syntax failure; source2
+corrects four parentheses expressions and passes all eight physical phases.
+Do not rerun successful proof for documentation-only changes.
+
+Coordinator gpt-6.1-sol high owns all Git/shared integration and serialized
 builds/exports. Implementers remain gpt-6.1-sol xhigh; root GPT-6-Astra supervises
-read-only. OrdinaryMethods partial plus narrow Lifetimes/main hooks and the
-checker's three files and proof note are complete. Inventory is idle.
-Current tool-only accessor evidence is partial, not an overall trace pass.
-`acceptance/duckdb/accessor-trace-report.json`, SHA-256
-`39bec0741b200277dd17cd171f1cdfd1f67b11317b53291fb9c4f9e454d26023`,
-records five phases: three successful build/default-regression phases and two
-explicit diagnostic exits 3, no resource violation. Attempt 1 found two defined
-GetVectorType names and traced no guessed root. Attempt 2 selected the exact
-actual target using two matching direct calls from separately bounded And
-identity inventories (117/85 operations), not a source-name or old-locator binding.
+read-only. Emission holds the frozen four product paths (new BorrowedFieldReferences
+partial and main/Lifetimes/OrdinaryMethods hooks). Inventory owns completed checker,
+three genuine fixtures and proof note. Exact paths only when committing; preserve
+the two unrelated pre-existing T3 aggregate fixtures and all failed artifacts.
 
-`t5/duckdb-accessor-source-2` freezes 48 tool/build inputs. The selected actual
-Vector::GetVectorType body has 22 typed identities/occurrences, four direct calls,
-a borrowed reference local, a conditional and two returns, no EH/lifetime metadata.
-It is not a direct field-return accessor and is not admitted by the new rule.
-The retained VectorType return is unsigned8 arithmetic storage with an explicit
-enum/underlying-type declaration association. Its four callees are GetBufferRef,
-shared_ptr operator bool, VectorBuffer GetVectorType and shared_ptr operator->;
-none of their bodies was traversed. Related-type metadata stopped at its declared
-64-type limit after body traversal, so `traceComplete=false` remains authoritative.
-Do not increase that limit just to force a complete label. Full report is
-`t5/duckdb-accessor-facts-2.json`; attempt 1 and default-mode comparison with trace3
-remain preserved separately. Current tool/source input hashes verify.
+Next after saving this verified milestone: root approved tool-only inspection of
+the actual Boolean conversion callee in GetVectorType's retained eok_not condition.
+Reproduce existing And→accessor identity selection; require actual direct callee
+reference equals TargetMethod and select the unique condition target. Current
+report labels call62/target63/body70 are citations, never handles. Formal const
+record receiver and actual const→field-alias receiver must remain separate facts.
+Trace just this one body under existing 64-operation/256-occurrence/depth32,
+16-dependency/64-shallow-type limits, with no recursive callees/full type closure,
+source-level conversion lookup, runtime/product widening or translation claim.
+Coordinator serializes the frozen tool build/run; obtain actual findings before
+any product proposal. Existing accessor report is partial (body complete, related
+metadata bounded), while GetBufferRef report is complete only within its declared
+seven-node/shallow-type scope. Preserve both and the original four-root trace.
 
-The next actual GetBufferRef one-body inspection now passes within its declared
-body/shallow-type scope, without completing full related metadata or translation.
-Compact receipt `acceptance/duckdb/buffer-reference-trace-report.json`, SHA-256
-`737828bfb1987f46c6b62b83a79d1c99395f7ef30b3f3231979567f4ce58abe1`, records two
-successful phases, 48 frozen executable/build inputs, seven typed identities/
-occurrences, 21 shallow types, zero call dependencies/issues or resource violation.
-Full facts are `t5/duckdb-buffer-ref-facts-1.json`; source is
-`t5/duckdb-buffer-ref-source-1`. The exact actual target comes through the
-reproduced parent executable reference-local initializer/direct call, not a fresh
-GetBufferRef name or old report locator. Parent selection inventories are separate.
-
-The actual return is address_of(lvalue_adjust(points_to_field(actual receiver,
-field buffer at offset 8))). Signature/local reference 40 and ordinary expression/
-return pointer 41 are distinct natural 8/8 types with the identical captured const
-pointee 46. That const wrapper's underlying type is field typedef 59 (buffer_ptr),
-then record 68; effective 16/8 differs from wrapper descriptor 0/1. Preserve aliases,
-const and effective facts, never normalize identity or infer a shared_ptr copy,
-ownership transfer, destructor/release or general lifetime/escape proof. No calls,
-locals, EH or lifetime metadata occur in this callee. Unexpanded record member/
-base/partner/table edges make the deliberately shallow scope explicit.
-
-Root approved capture-only next: a plain Member field alias, Owner with wide
-canary prefix at a nonzero member offset, ordinary const alias-reference-return
-method without noexcept, two fully initialized owners, const local binding,
-post-binding owner mutation and address/canary observations. Canary comparison
-must remain wide. No explicit reference parameters, ctor/dtor, heap/native/EH.
-Inventory owns the new fixture/preparation note; coordinator captures with frozen
-producer and runs native/public facts. Emission then reviews actual return,
-typedef/reference/value-view/initializer chains and existing generic planner
-interactions before a reusable product scope is frozen. Product implementation
-is not approved yet. Any future `ValidateGeneratedCallRoles` reference-return
-admission needs a scoped ordinary-pointer value-view rule, never global removal
-of `call.Type == direct.ReturnType`; no noexcept or cleanup-marker permissions.
-Translator/runtime remain frozen at `4538211f2`; coordinator owns builds/Git.
-First save this verified tool/evidence checkpoint, then activate that capture.
-
-Preserve all immutable captures, source snapshots,
-failed/incomplete attempts and the two excluded pre-existing T3 aggregate fixtures;
-never stage all or clean unrelated user files. SQLite retains original frozen
-source13/runtime11 attribution; no broad SQLite rerun occurred.
+## Earlier accepted checkpoint history
 
 Updated 2026-10-16. Approved plan: `e40280bea`. Verified product source:
 `04c11ce0d` / immutable snapshot 13. T0–T4 are CLOSED for the configured finite

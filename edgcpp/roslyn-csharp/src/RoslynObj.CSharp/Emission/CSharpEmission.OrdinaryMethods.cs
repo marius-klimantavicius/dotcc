@@ -14,7 +14,7 @@ public sealed partial class CSharpEmitter
         private void InitializeOrdinaryMethods()
         {
             var candidates = functions.Where(function => function.Signature.HasThisParameter &&
-                function.SpecialFunctionKind?.Name == "sfk_none" && !IsVirtualMethod(function)).ToArray();
+                function.SpecialFunctionKind?.Name == "sfk_none" && !IsVirtualMethod(function) && !IsBorrowedFieldMethod(function)).ToArray();
             if (candidates.Length == 0) return;
             RequireNormalLifetimeProfile();
             foreach (var function in candidates)

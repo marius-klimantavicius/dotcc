@@ -60,7 +60,7 @@ public sealed partial class CSharpEmitter
                     throw Limit("Execution and signature parameter roles differ in the selected lifetime routine.", "lifetime-parameter");
             }
             var references = new List<PointerType>();
-            if (ordinaryConstMethods.ContainsKey(function))
+            if (ordinaryConstMethods.ContainsKey(function) || IsBorrowedFieldMethod(function))
             {
                 generatedLifetimeRoutines.Add(function);
                 return;
@@ -196,6 +196,7 @@ public sealed partial class CSharpEmitter
 
         private bool TryGeneratedReferenceType(PointerType pointer, out string result)
         {
+            if (TryBorrowedReferenceType(pointer, out result)) return true;
             if (TryMutableReferenceType(pointer, out result)) return true;
             result = "";
             if (!pointer.IsReference || !generatedReferenceTypes.Contains(pointer) || currentFunction is not { } function ||
@@ -215,11 +216,12 @@ public sealed partial class CSharpEmitter
             ValidateGeneratedLifetimeRoutine(direct);
             ValidateRegisteredMutableReferenceCall(call, direct);
             ValidateRegisteredOrdinaryMethodCall(call, direct);
+            var borrowedResultView = IsRegisteredBorrowedCall(call, direct);
             var signature = direct.Signature;
             var arguments = call.Arguments;
             var operands = call.Operands;
             if (arguments.Count != signature.Parameters.Count || operands.Count != arguments.Count + 1 || !operands[0].Equals(call.Callee) ||
-                call.Call.FunctionType is not { } selectedType || !selectedType.Equals(signature) || !call.Type.Equals(direct.ReturnType))
+                call.Call.FunctionType is not { } selectedType || !selectedType.Equals(signature) || !call.Type.Equals(direct.ReturnType) && !borrowedResultView)
                 throw Limit("The selected generated call and its retained execution signature differ.", "lifetime-call");
             for (var index = 0; index < arguments.Count; ++index)
             {
