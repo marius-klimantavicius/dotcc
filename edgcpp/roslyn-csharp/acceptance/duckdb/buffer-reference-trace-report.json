@@ -1,0 +1,1391 @@
+{
+  "reportVersion": 1,
+  "milestone": "Actual DuckDB borrowed field reference return inspection",
+  "status": "complete-within-declared-body-and-shallow-type-scope",
+  "parentCheckpoint": "506bb958e",
+  "inventoryOnly": true,
+  "translatorAccepted": false,
+  "linkClosureComplete": false,
+  "generatedExecutionAccepted": false,
+  "fullRelatedTypeClosureComplete": false,
+  "broaderT5Complete": false,
+  "input": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+    "bytes": 156354560,
+    "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65"
+  },
+  "sourceSnapshot": {
+    "manifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-buffer-ref-source-1/source-snapshot.json",
+      "bytes": 7639,
+      "sha256": "a184a56c34f6e6180190ee37056fb49d60e76d6d5daf1f2644ecfad9dc3ee987"
+    },
+    "files": 48,
+    "currentSourceFreezeVerified": true
+  },
+  "phaseCount": 2,
+  "successfulPhaseCount": 2,
+  "unexpectedOutcomes": 0,
+  "budgetViolations": 0,
+  "phases": [
+    {
+      "name": "duckdb-buffer-ref-build-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-buffer-ref-build-1/run.json",
+        "bytes": 1263,
+        "sha256": "d8114bcbdbb01b844be458a78e374b1394c90c8c4e401e2488d827df145ea570"
+      },
+      "elapsedSeconds": 6.902776170056313,
+      "sampledPeakProcessTreeRssBytes": 482152448,
+      "waitedPeakProcessRssBytes": 267370496,
+      "budgetViolation": null
+    },
+    {
+      "name": "duckdb-buffer-ref-trace-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-buffer-ref-trace-1/run.json",
+        "bytes": 1142,
+        "sha256": "df8d0f65f9f904afea3845824cdfcfb8c6bca0a13c8bb1d76771709c8c9d6b10"
+      },
+      "elapsedSeconds": 0.8037940970389172,
+      "sampledPeakProcessTreeRssBytes": 90533888,
+      "waitedPeakProcessRssBytes": 87031808,
+      "budgetViolation": null
+    }
+  ],
+  "driver": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-duckdb-buffer-ref-trace-1.py",
+    "bytes": 2327,
+    "sha256": "3a76ad78e80a20921d056942cf80e67e52996030c64a9fefc1027c15dc8d1be1"
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "bytes": 5505,
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+  },
+  "measurement": "All-thread descendant RSS sampled100ms; shared pages may count repeatedly and short peaks may be missed. Waited process RSS is separate.",
+  "priorPartialAccessorTrace": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-accessor-facts-2.json",
+    "bytes": 105102,
+    "sha256": "db98fc7a9ca9dc4242f1b07bbd7a8f223428fe7e80f003e7d4dc930883c13ea5"
+  },
+  "fullScopedFacts": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-buffer-ref-facts-1.json",
+    "bytes": 57435,
+    "sha256": "99bfbe8f0103c4cca39bc62d8b49e74fa3d8530730f3f0ce45aec7bfb9c81158"
+  },
+  "scope": "One actual direct callee body selected from the reciprocally owned executable local-reference initializer in the reproduced Vector accessor. Parent and And identities are selection-only; no callee-body recursion. Types are explicit shallow facts with unexpanded associations, not metadata/ownership closure or translator admission.",
+  "bounds": {
+    "NameLimit": 64,
+    "SymbolsPerKey": 4,
+    "RootLimit": 1,
+    "OperationsPerRoot": 64,
+    "OccurrencesPerRoot": 256,
+    "DepthLimit": 32,
+    "DependencyLimit": 16,
+    "TypeLimit": 64,
+    "FieldsPerType": 32,
+    "ParameterLimit": 16,
+    "ConstantUnits": 256,
+    "LocalsPerRoot": 128,
+    "RegionsPerRoot": 64,
+    "CleanupActionsPerRoot": 128,
+    "RecipesPerRoot": 128,
+    "FacetsPerNode": 64,
+    "EntityLimit": 8192,
+    "CommandLimit": 10000,
+    "RowLimit": 20000,
+    "CachedRows": 4096,
+    "CachedPages": 128,
+    "PageSize": 128,
+    "MaximumBatch": 900,
+    "NameQueryCaveat": "Take bounds materialization; a paged public name query can still inspect underlying rows. Wall/RSS are controlled separately by the coordinator."
+  },
+  "selectionBounds": {
+    "BufferParentOperationLimit": 64,
+    "LocalsPerRoot": 128,
+    "selectedTargetCount": 1,
+    "includesParentInTargetBodyCounters": false
+  },
+  "andSelectionBounds": {
+    "AccessorSelectionRoots": 2,
+    "AccessorSelectionOperationsPerRoot": 256,
+    "AccessorSelectionCalls": 16,
+    "NameLimit": 64,
+    "SymbolsPerKey": 4,
+    "includedInTargetBodyCounters": false,
+    "semantics": "Public DescendantOperations identity inventory for selection only; metadata excluded by the reader. No order, occurrence schedule or callee-body traversal is inferred."
+  },
+  "targetBody": {
+    "locator": "entity/000049",
+    "name": "GetBufferRef",
+    "currentName": "_ZNK6duckdb6Vector12GetBufferRefEv",
+    "sourceNameForDisplayOnly": "GetBufferRef",
+    "capturedLinkageName": "_ZNK6duckdb6Vector12GetBufferRefEv",
+    "bodyState": "definition",
+    "isDefined": true,
+    "specialFunctionKind": "sfk_none",
+    "entryKind": "cdk_none",
+    "primaryEntry": null,
+    "alternateEntries": [],
+    "containingType": "entity/000021",
+    "builtinKind": null,
+    "signature": {
+      "type": "entity/000050",
+      "returnType": "entity/000040",
+      "thisClass": "entity/000021",
+      "hasPrototype": true,
+      "isVariadic": false,
+      "hasThisParameter": true,
+      "returnsValueAsParameter": false,
+      "returnsValueViaCopyConstructor": false,
+      "returnValueParameterFollowsThis": false,
+      "callingConvention": "cc_default",
+      "languageLinkage": "nlk_cplusplus_external",
+      "noexceptEffective": null,
+      "parameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000022",
+          "declaredType": null,
+          "descriptor": "entity/000051",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": null,
+          "isSourceParameter": null
+        }
+      ]
+    },
+    "executionParameters": [
+      {
+        "ordinal": 0,
+        "role": "this_parameter",
+        "type": "entity/000022",
+        "declaredType": null,
+        "descriptor": "entity/000051",
+        "passedViaCopyConstructor": false,
+        "baseSubobject": null,
+        "variable": "entity/000052",
+        "isSourceParameter": false
+      }
+    ],
+    "bodyRootAssociationNotTraversal": "entity/000053",
+    "typedOccurrencesNotSchedule": [
+      {
+        "path": "body",
+        "parent": null,
+        "role": "body-root",
+        "ordinal": 0,
+        "node": "entity/000053",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      },
+      {
+        "path": "body/statement[0]",
+        "parent": "body",
+        "role": "statement",
+        "ordinal": 0,
+        "node": "entity/000055",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      },
+      {
+        "path": "body/statement[0]/value[0]",
+        "parent": "body/statement[0]",
+        "role": "value",
+        "ordinal": 0,
+        "node": "entity/000056",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      },
+      {
+        "path": "body/statement[0]/value[0]/operand[0]",
+        "parent": "body/statement[0]/value[0]",
+        "role": "operand",
+        "ordinal": 0,
+        "node": "entity/000057",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      },
+      {
+        "path": "body/statement[0]/value[0]/operand[0]/operand[0]",
+        "parent": "body/statement[0]/value[0]/operand[0]",
+        "role": "operand",
+        "ordinal": 0,
+        "node": "entity/000058",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      },
+      {
+        "path": "body/statement[0]/value[0]/operand[0]/operand[0]/operand[0]",
+        "parent": "body/statement[0]/value[0]/operand[0]/operand[0]",
+        "role": "operand",
+        "ordinal": 0,
+        "node": "entity/000060",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      },
+      {
+        "path": "body/statement[0]/value[0]/operand[0]/operand[0]/operand[1]",
+        "parent": "body/statement[0]/value[0]/operand[0]/operand[0]",
+        "role": "operand",
+        "ordinal": 1,
+        "node": "entity/000061",
+        "metadataBoundary": false,
+        "cycleBoundary": false
+      }
+    ],
+    "locals": [],
+    "scopeAssociation": "entity/000054",
+    "operationIdentityCount": 7,
+    "typedOccurrenceCount": 7,
+    "operatorIdentityCounts": {
+      "enk_field": 1,
+      "enk_variable": 1,
+      "eok_address_of": 1,
+      "eok_lvalue_adjust": 1,
+      "eok_points_to_field": 1,
+      "stmk_block": 1,
+      "stmk_return": 1
+    },
+    "exceptionAndLifetimeMetadataNotNormalExecution": {
+      "regionTable": null,
+      "arrayTable": null,
+      "initialState": null,
+      "nullState": null,
+      "prologue": null,
+      "epilogues": [],
+      "regions": [],
+      "reachableLifetimesNotOwnership": []
+    },
+    "referenceReturnFactsNotAdmission": {
+      "translatorAccepted": false,
+      "ownershipOrLifetimeContractEstablished": false,
+      "signatureBodyAssociationsMatch": true,
+      "result": {
+        "type": "entity/000040",
+        "leafType": "entity/000040",
+        "kind": "tk_pointer",
+        "isLvalueReference": true,
+        "pointeeType": "entity/000046"
+      },
+      "executionParameters": [
+        {
+          "parameter": {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000022",
+            "declaredType": null,
+            "descriptor": "entity/000051",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": "entity/000052",
+            "isSourceParameter": false
+          },
+          "symbol": "entity/000052",
+          "symbolType": "entity/000062",
+          "symbolHasConstPointerObjectWrapper": true
+        }
+      ],
+      "returnOccurrences": [
+        {
+          "statement": "entity/000055",
+          "value": "entity/000056",
+          "type": "entity/000041",
+          "valueCategory": "prvalue",
+          "target": null,
+          "commonLifetimeAssociation": null
+        }
+      ],
+      "fieldReferences": [
+        {
+          "occurrence": "entity/000061",
+          "valueCategory": "prvalue",
+          "valueType": "entity/000059",
+          "field": "entity/000063",
+          "Name": "buffer",
+          "fieldType": "entity/000059",
+          "containingTypeAssociation": "entity/000021",
+          "IsBitField": false,
+          "IsGeneratedBase": false,
+          "IsGeneratedVirtualPointer": null,
+          "offsets": [
+            {
+              "Ordinal": 1,
+              "offset": "8",
+              "bitOffset": "0",
+              "bitWidth": null
+            }
+          ]
+        }
+      ],
+      "limits": "Only current public types/occurrences and returned-field offsets are described. Reference representation alone proves neither a shared_ptr copy nor ownership, release, escape safety or a caller lifetime. No admission rule is evaluated."
+    }
+  },
+  "typedBodyNodes": [
+    {
+      "locator": "entity/000053",
+      "kind": "stmk_block",
+      "representationRole": "execution",
+      "isCompilerGenerated": false,
+      "structuralAssociationsNotSchedule": [
+        {
+          "role": "statement",
+          "Ordinal": 0,
+          "child": "entity/000055",
+          "representationRole": "execution"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000055",
+      "kind": "stmk_return",
+      "representationRole": "execution",
+      "isCompilerGenerated": false,
+      "jump": {
+        "kind": "return",
+        "target": null,
+        "value": "entity/000056",
+        "commonLifetimeAssociation": null
+      },
+      "structuralAssociationsNotSchedule": [
+        {
+          "role": "operand",
+          "Ordinal": 0,
+          "child": "entity/000056",
+          "representationRole": "execution"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000056",
+      "kind": "enk_operation",
+      "representationRole": "execution",
+      "isCompilerGenerated": true,
+      "type": "entity/000041",
+      "valueCategory": "prvalue",
+      "volatileFetch": false,
+      "rawOperandsNotSchedule": [
+        "entity/000057"
+      ],
+      "operatorFacts": {
+        "kind": "eok_address_of",
+        "EvalLeftToRight": false,
+        "EvalRightToLeft": false,
+        "PointerOperandIsSecond": false,
+        "ReturnsLvalue": false,
+        "RetainedVirtualCall": false,
+        "RequiresRuntimeCastCheck": false
+      },
+      "structuralAssociationsNotSchedule": [
+        {
+          "role": "operand",
+          "Ordinal": 0,
+          "child": "entity/000057",
+          "representationRole": "execution"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000057",
+      "kind": "enk_operation",
+      "representationRole": "execution",
+      "isCompilerGenerated": true,
+      "type": "entity/000046",
+      "valueCategory": "lvalue",
+      "volatileFetch": false,
+      "rawOperandsNotSchedule": [
+        "entity/000058"
+      ],
+      "operatorFacts": {
+        "kind": "eok_lvalue_adjust",
+        "EvalLeftToRight": false,
+        "EvalRightToLeft": false,
+        "PointerOperandIsSecond": false,
+        "ReturnsLvalue": false,
+        "RetainedVirtualCall": false,
+        "RequiresRuntimeCastCheck": false
+      },
+      "structuralAssociationsNotSchedule": [
+        {
+          "role": "operand",
+          "Ordinal": 0,
+          "child": "entity/000058",
+          "representationRole": "execution"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000058",
+      "kind": "enk_operation",
+      "representationRole": "execution",
+      "isCompilerGenerated": true,
+      "type": "entity/000059",
+      "valueCategory": "lvalue",
+      "volatileFetch": false,
+      "rawOperandsNotSchedule": [
+        "entity/000060",
+        "entity/000061"
+      ],
+      "operatorFacts": {
+        "kind": "eok_points_to_field",
+        "EvalLeftToRight": false,
+        "EvalRightToLeft": false,
+        "PointerOperandIsSecond": false,
+        "ReturnsLvalue": false,
+        "RetainedVirtualCall": false,
+        "RequiresRuntimeCastCheck": false
+      },
+      "structuralAssociationsNotSchedule": [
+        {
+          "role": "operand",
+          "Ordinal": 0,
+          "child": "entity/000060",
+          "representationRole": "execution"
+        },
+        {
+          "role": "operand",
+          "Ordinal": 1,
+          "child": "entity/000061",
+          "representationRole": "execution"
+        }
+      ]
+    },
+    {
+      "locator": "entity/000060",
+      "kind": "enk_variable",
+      "representationRole": "execution",
+      "isCompilerGenerated": false,
+      "type": "entity/000022",
+      "valueCategory": "prvalue",
+      "volatileFetch": false,
+      "rawOperandsNotSchedule": [],
+      "target": "entity/000052",
+      "targetType": "entity/000062",
+      "structuralAssociationsNotSchedule": []
+    },
+    {
+      "locator": "entity/000061",
+      "kind": "enk_field",
+      "representationRole": "execution",
+      "isCompilerGenerated": false,
+      "type": "entity/000059",
+      "valueCategory": "prvalue",
+      "volatileFetch": false,
+      "rawOperandsNotSchedule": [],
+      "target": "entity/000063",
+      "targetType": "entity/000059",
+      "structuralAssociationsNotSchedule": []
+    }
+  ],
+  "parentSelectionNotBodyTrace": {
+    "parent": {
+      "locator": "entity/000001",
+      "name": "GetVectorType",
+      "currentName": "_ZNK6duckdb6Vector13GetVectorTypeEv",
+      "sourceNameForDisplayOnly": "GetVectorType",
+      "capturedLinkageName": "_ZNK6duckdb6Vector13GetVectorTypeEv",
+      "bodyState": "definition",
+      "isDefined": true,
+      "specialFunctionKind": "sfk_none",
+      "entryKind": "cdk_none",
+      "primaryEntry": null,
+      "alternateEntries": [],
+      "containingType": "entity/000021",
+      "builtinKind": null,
+      "signature": {
+        "type": "entity/000019",
+        "returnType": "entity/000016",
+        "thisClass": "entity/000021",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000022",
+            "declaredType": null,
+            "descriptor": "entity/000020",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      },
+      "executionParameters": [
+        {
+          "ordinal": 0,
+          "role": "this_parameter",
+          "type": "entity/000022",
+          "declaredType": null,
+          "descriptor": "entity/000020",
+          "passedViaCopyConstructor": false,
+          "baseSubobject": null,
+          "variable": "entity/000038",
+          "isSourceParameter": false
+        }
+      ],
+      "bodyRootAssociationNotTraversal": "entity/000039"
+    },
+    "operationIdentityCount": 22,
+    "identityInventoryNotSchedule": true,
+    "matchingInitializerCalls": [
+      {
+        "parentBlock": "entity/000039",
+        "statement": "entity/000042",
+        "initialization": "entity/000043",
+        "kind": "dik_expression",
+        "initializerOperation": "entity/000043",
+        "targetLocal": {
+          "locator": "entity/000044",
+          "Name": "buffer_ref",
+          "type": "entity/000040",
+          "initializerAssociationNotEvaluation": "entity/000043"
+        },
+        "initializerTarget": "entity/000044",
+        "initializerType": "entity/000040",
+        "expression": "entity/000045",
+        "expressionType": "entity/000041",
+        "selectedReturnType": "entity/000040",
+        "localInitializerNamesSameInitialization": true,
+        "declaredReferenceView": {
+          "type": "entity/000040",
+          "size": "8",
+          "alignment": "8",
+          "IsReference": true,
+          "IsRValueReference": false,
+          "pointee": "entity/000046"
+        },
+        "expressionValueView": {
+          "type": "entity/000041",
+          "size": "8",
+          "alignment": "8",
+          "isReference": false,
+          "isRvalueReference": false,
+          "pointee": "entity/000046",
+          "sameCapturedPointeeIdentity": true,
+          "sameDeclaredTypeIdentity": false,
+          "noIdentityNormalization": true
+        },
+        "constructorAssociation": null,
+        "destructorAssociation": null,
+        "lifetimeAssociation": null,
+        "initExpressionLifetimeAssociation": null,
+        "call": {
+          "locator": "entity/000045",
+          "kind": "enk_operation",
+          "representationRole": "execution",
+          "isCompilerGenerated": false,
+          "type": "entity/000041",
+          "valueCategory": "prvalue",
+          "volatileFetch": false,
+          "rawOperandsNotSchedule": [
+            "entity/000047",
+            "entity/000048"
+          ],
+          "operatorFacts": {
+            "kind": "eok_call",
+            "EvalLeftToRight": true,
+            "EvalRightToLeft": false,
+            "PointerOperandIsSecond": false,
+            "ReturnsLvalue": false,
+            "RetainedVirtualCall": false,
+            "RequiresRuntimeCastCheck": false
+          },
+          "callFacetsNotAdditionalEvaluation": {
+            "kind": "direct",
+            "callee": "entity/000047",
+            "selectedTarget": "entity/000049",
+            "selectedFunctionType": "entity/000050",
+            "receiver": "entity/000048",
+            "returnSlot": null,
+            "sourceDispatchKind": null,
+            "sourceTargetAssociationOnly": null,
+            "arguments": [
+              {
+                "Ordinal": 0,
+                "role": "this_parameter",
+                "parameter": "entity/000051",
+                "value": "entity/000048",
+                "rawOperandIndices": [
+                  1
+                ]
+              }
+            ]
+          },
+          "dependencyClassification": "direct selected reference"
+        },
+        "calleeReference": "entity/000047",
+        "calleeTarget": "entity/000049",
+        "retainedTarget": "entity/000049",
+        "selectedSignature": {
+          "type": "entity/000050",
+          "returnType": "entity/000040",
+          "thisClass": "entity/000021",
+          "hasPrototype": true,
+          "isVariadic": false,
+          "hasThisParameter": true,
+          "returnsValueAsParameter": false,
+          "returnsValueViaCopyConstructor": false,
+          "returnValueParameterFollowsThis": false,
+          "callingConvention": "cc_default",
+          "languageLinkage": "nlk_cplusplus_external",
+          "noexceptEffective": null,
+          "parameters": [
+            {
+              "ordinal": 0,
+              "role": "this_parameter",
+              "type": "entity/000022",
+              "declaredType": null,
+              "descriptor": "entity/000051",
+              "passedViaCopyConstructor": false,
+              "baseSubobject": null,
+              "variable": null,
+              "isSourceParameter": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "relatedTypeScope": "Shallow receiver/return/execution-symbol/body-expression types and explicit wrapper/pointee chains. Record field/base/partner associations do not enqueue their types; unexpanded edges do not establish ownership or complete dependency closure.",
+  "shallowTypes": [
+    {
+      "locator": "entity/000004",
+      "kind": "tk_routine",
+      "name": null,
+      "size": null,
+      "alignment": null,
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "signature": {
+        "type": "entity/000004",
+        "returnType": "entity/000005",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000006",
+            "declaredType": "entity/000006",
+            "descriptor": "entity/000007",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000006",
+            "declaredType": "entity/000006",
+            "descriptor": "entity/000008",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000009",
+            "declaredType": "entity/000009",
+            "descriptor": "entity/000010",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000005",
+      "kind": "tk_void",
+      "name": null,
+      "size": null,
+      "alignment": null,
+      "isIncomplete": true,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "otherTypeAssociationsExpanded": false
+    },
+    {
+      "locator": "entity/000006",
+      "kind": "tk_pointer",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "8",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "pointeeType": "entity/000064",
+      "reference": true,
+      "rvalueReference": false
+    },
+    {
+      "locator": "entity/000009",
+      "kind": "tk_pointer",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "8",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "pointeeType": "entity/000021",
+      "reference": true,
+      "rvalueReference": false
+    },
+    {
+      "locator": "entity/000016",
+      "kind": "tk_integer",
+      "name": "VectorType",
+      "size": "1",
+      "alignment": "1",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "1",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "arithmetic": {
+        "kind": "unsigned_integer",
+        "Bits": 8,
+        "Signed": false
+      }
+    },
+    {
+      "locator": "entity/000019",
+      "kind": "tk_routine",
+      "name": null,
+      "size": null,
+      "alignment": null,
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "signature": {
+        "type": "entity/000019",
+        "returnType": "entity/000016",
+        "thisClass": "entity/000021",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000022",
+            "declaredType": null,
+            "descriptor": "entity/000020",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000021",
+      "kind": "tk_struct",
+      "name": "Vector",
+      "size": "24",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "24",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "record": {
+        "IsPacked": false,
+        "HasVirtualBases": false,
+        "HasVirtualFunctions": false,
+        "subobjectPartnerAssociationUnexpanded": "entity/000021",
+        "virtualTableAssociationUnexpanded": null,
+        "vttAssociationUnexpanded": null,
+        "fieldTypesEnqueued": false
+      },
+      "fieldsUnexpanded": [
+        {
+          "locator": "entity/000065",
+          "Name": "type",
+          "typeAssociationUnexpanded": "entity/000066",
+          "IsGeneratedBase": false,
+          "IsGeneratedVirtualPointer": null,
+          "IsBitField": false
+        },
+        {
+          "locator": "entity/000063",
+          "Name": "buffer",
+          "typeAssociationUnexpanded": "entity/000059",
+          "IsGeneratedBase": false,
+          "IsGeneratedVirtualPointer": null,
+          "IsBitField": false
+        }
+      ],
+      "layout": {
+        "IsComplete": true,
+        "size": "24",
+        "alignment": "8",
+        "nonvirtualSize": "24",
+        "nonvirtualAlignment": "8",
+        "fields": [
+          {
+            "Ordinal": 0,
+            "field": "entity/000065",
+            "offset": "0",
+            "bitOffset": "0",
+            "bitWidth": null,
+            "containerOffset": null
+          },
+          {
+            "Ordinal": 1,
+            "field": "entity/000063",
+            "offset": "8",
+            "bitOffset": "0",
+            "bitWidth": null,
+            "containerOffset": null
+          }
+        ]
+      },
+      "directBasesUnexpanded": []
+    },
+    {
+      "locator": "entity/000022",
+      "kind": "tk_pointer",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "8",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "pointeeType": "entity/000064",
+      "reference": false,
+      "rvalueReference": false
+    },
+    {
+      "locator": "entity/000027",
+      "kind": "tk_routine",
+      "name": null,
+      "size": null,
+      "alignment": null,
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "signature": {
+        "type": "entity/000027",
+        "returnType": "entity/000005",
+        "thisClass": null,
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": false,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "ordinary_parameter",
+            "type": "entity/000006",
+            "declaredType": "entity/000006",
+            "descriptor": "entity/000028",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 1,
+            "role": "ordinary_parameter",
+            "type": "entity/000006",
+            "declaredType": "entity/000006",
+            "descriptor": "entity/000029",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 2,
+            "role": "ordinary_parameter",
+            "type": "entity/000009",
+            "declaredType": "entity/000009",
+            "descriptor": "entity/000030",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          },
+          {
+            "ordinal": 3,
+            "role": "ordinary_parameter",
+            "type": "entity/000031",
+            "declaredType": "entity/000031",
+            "descriptor": "entity/000032",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000031",
+      "kind": "tk_typeref",
+      "name": "idx_t",
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000067",
+      "qualifiers": {
+        "IsConst": false,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000040",
+      "kind": "tk_pointer",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "8",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "pointeeType": "entity/000046",
+      "reference": true,
+      "rvalueReference": false
+    },
+    {
+      "locator": "entity/000041",
+      "kind": "tk_pointer",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "8",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "pointeeType": "entity/000046",
+      "reference": false,
+      "rvalueReference": false
+    },
+    {
+      "locator": "entity/000046",
+      "kind": "tk_typeref",
+      "name": null,
+      "size": "16",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000059",
+      "qualifiers": {
+        "IsConst": true,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000050",
+      "kind": "tk_routine",
+      "name": null,
+      "size": null,
+      "alignment": null,
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "signature": {
+        "type": "entity/000050",
+        "returnType": "entity/000040",
+        "thisClass": "entity/000021",
+        "hasPrototype": true,
+        "isVariadic": false,
+        "hasThisParameter": true,
+        "returnsValueAsParameter": false,
+        "returnsValueViaCopyConstructor": false,
+        "returnValueParameterFollowsThis": false,
+        "callingConvention": "cc_default",
+        "languageLinkage": "nlk_cplusplus_external",
+        "noexceptEffective": null,
+        "parameters": [
+          {
+            "ordinal": 0,
+            "role": "this_parameter",
+            "type": "entity/000022",
+            "declaredType": null,
+            "descriptor": "entity/000051",
+            "passedViaCopyConstructor": false,
+            "baseSubobject": null,
+            "variable": null,
+            "isSourceParameter": null
+          }
+        ]
+      }
+    },
+    {
+      "locator": "entity/000059",
+      "kind": "tk_typeref",
+      "name": "buffer_ptr",
+      "size": "16",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000068",
+      "qualifiers": {
+        "IsConst": false,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000062",
+      "kind": "tk_typeref",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000022",
+      "qualifiers": {
+        "IsConst": true,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000064",
+      "kind": "tk_typeref",
+      "name": null,
+      "size": "24",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000021",
+      "qualifiers": {
+        "IsConst": true,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000067",
+      "kind": "tk_typeref",
+      "name": "uint64_t",
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000069",
+      "qualifiers": {
+        "IsConst": false,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000068",
+      "kind": "tk_struct",
+      "name": "shared_ptr",
+      "size": "16",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "16",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "record": {
+        "IsPacked": false,
+        "HasVirtualBases": false,
+        "HasVirtualFunctions": false,
+        "subobjectPartnerAssociationUnexpanded": "entity/000068",
+        "virtualTableAssociationUnexpanded": null,
+        "vttAssociationUnexpanded": null,
+        "fieldTypesEnqueued": false
+      },
+      "fieldsUnexpanded": [
+        {
+          "locator": "entity/000070",
+          "Name": "internal",
+          "typeAssociationUnexpanded": "entity/000071",
+          "IsGeneratedBase": false,
+          "IsGeneratedVirtualPointer": null,
+          "IsBitField": false
+        }
+      ],
+      "layout": {
+        "IsComplete": true,
+        "size": "16",
+        "alignment": "8",
+        "nonvirtualSize": "16",
+        "nonvirtualAlignment": "8",
+        "fields": [
+          {
+            "Ordinal": 0,
+            "field": "entity/000070",
+            "offset": "0",
+            "bitOffset": "0",
+            "bitWidth": null,
+            "containerOffset": null
+          }
+        ]
+      },
+      "directBasesUnexpanded": []
+    },
+    {
+      "locator": "entity/000069",
+      "kind": "tk_typeref",
+      "name": "__uint64_t",
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "0",
+        "alignment": "1",
+        "IsAtomic": false
+      },
+      "underlyingType": "entity/000072",
+      "qualifiers": {
+        "IsConst": false,
+        "IsVolatile": false,
+        "IsAtomic": false,
+        "addressSpace": "0",
+        "IsShared": false,
+        "IsUpcStrict": false,
+        "IsUpcRelaxed": false,
+        "IsNear": false,
+        "IsFar": false,
+        "IsUnaligned": false
+      }
+    },
+    {
+      "locator": "entity/000072",
+      "kind": "tk_integer",
+      "name": null,
+      "size": "8",
+      "alignment": "8",
+      "isIncomplete": false,
+      "isDependent": false,
+      "typeinfoVariableAssociation": null,
+      "descriptionScope": "Shallow fact row; only explicit wrapper/pointee/signature chains enqueue types. Record member/base/partner associations are not expanded.",
+      "retainedDescriptorRepresentation": {
+        "size": "8",
+        "alignment": "8",
+        "IsAtomic": false
+      },
+      "arithmetic": {
+        "kind": "unsigned_integer",
+        "Bits": 64,
+        "Signed": false
+      }
+    }
+  ],
+  "statistics": {
+    "Commands": 759,
+    "RowsRead": 2423,
+    "CachedRows": 1393,
+    "CachedPages": 128,
+    "MaximumBatchSize": 12
+  },
+  "interpretation": {
+    "observed": "Actual return evaluates address_of(lvalue_adjust(points_to_field(actual this, exact buffer field at offset8))). No body calls, locals, EH or cleanup associations are present.",
+    "declaredVersusValue": "Signature/local declared lvalue-reference and ordinary pointer expression/return views are distinct natural8/8 types sharing the identical captured const pointee. No type identity is normalized.",
+    "aliasAndStorage": "The const returned pointee wraps the field typedef buffer_ptr before its underlying record. Public effective16/8 facts differ from descriptor0/1; future storage projection must retain effective facts and exact qualifier/field alias identity.",
+    "ownership": "These are public address/initializer facts, not generated execution, copy/ownership transfer, release or general escape/lifetime proof. No shared_ptr copy/destructor implementation or runtime provider is invoked."
+  },
+  "limits": [
+    "Only the selected actual callee body is typed-traced. And/Vector parent operation inventories select actual entities and are not schedules or part of the target7-node count.",
+    "Shallow record fields/bases/partners/tables are explicitly unexpanded association edges. Completion is limited to this declared body/shallow scope, not full metadata or dependency closure.",
+    "Default and accessor modes retain earlier immutable evidence; new mode adds no translator/runtime/provider changes or arbitrary project scans.",
+    "Ordinary managed reference-return admission and caller value-view mapping remain unimplemented. Any proposal must stay separate from noexcept/cleanup-marker permissions and native/indirect/reference escape/ownership scope.",
+    "Full GetVectorType four-call body, remaining helper bodies, DuckDB exception/string/allocator and missing link closure remain open; no application or native fallback was used."
+  ]
+}

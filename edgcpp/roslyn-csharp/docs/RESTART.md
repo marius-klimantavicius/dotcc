@@ -69,17 +69,41 @@ Do not increase that limit just to force a complete label. Full report is
 `t5/duckdb-accessor-facts-2.json`; attempt 1 and default-mode comparison with trace3
 remain preserved separately. Current tool/source input hashes verify.
 
-Root approved checkpointing this honest partial evidence, then inspecting ONLY
-the actual selected GetBufferRef callee body reached through current Call43→target49
-(body53 in report2 labels). These labels are contextual; selection must follow
-actual retained public call identity, never bind by a fresh same-name search.
-Keep one-body bounds and avoid recursive irrelevant related-record metadata.
-The local reference has the exact return reference type and no hidden copy/result
-role; no shared_ptr copy, ownership transfer or destructor is implied. Product
-widening/another fixture remains unapproved until actual body and initializer
-facts are reviewed. No whole164 scan, link closure or generated DuckDB acceptance.
-Coordinator alone serializes tool builds/runs and Git; emission owns tool changes,
-inventory is idle. Runtime and translator product remain frozen at `4538211f2`.
+The next actual GetBufferRef one-body inspection now passes within its declared
+body/shallow-type scope, without completing full related metadata or translation.
+Compact receipt `acceptance/duckdb/buffer-reference-trace-report.json`, SHA-256
+`737828bfb1987f46c6b62b83a79d1c99395f7ef30b3f3231979567f4ce58abe1`, records two
+successful phases, 48 frozen executable/build inputs, seven typed identities/
+occurrences, 21 shallow types, zero call dependencies/issues or resource violation.
+Full facts are `t5/duckdb-buffer-ref-facts-1.json`; source is
+`t5/duckdb-buffer-ref-source-1`. The exact actual target comes through the
+reproduced parent executable reference-local initializer/direct call, not a fresh
+GetBufferRef name or old report locator. Parent selection inventories are separate.
+
+The actual return is address_of(lvalue_adjust(points_to_field(actual receiver,
+field buffer at offset 8))). Signature/local reference 40 and ordinary expression/
+return pointer 41 are distinct natural 8/8 types with the identical captured const
+pointee 46. That const wrapper's underlying type is field typedef 59 (buffer_ptr),
+then record 68; effective 16/8 differs from wrapper descriptor 0/1. Preserve aliases,
+const and effective facts, never normalize identity or infer a shared_ptr copy,
+ownership transfer, destructor/release or general lifetime/escape proof. No calls,
+locals, EH or lifetime metadata occur in this callee. Unexpanded record member/
+base/partner/table edges make the deliberately shallow scope explicit.
+
+Root approved capture-only next: a plain Member field alias, Owner with wide
+canary prefix at a nonzero member offset, ordinary const alias-reference-return
+method without noexcept, two fully initialized owners, const local binding,
+post-binding owner mutation and address/canary observations. Canary comparison
+must remain wide. No explicit reference parameters, ctor/dtor, heap/native/EH.
+Inventory owns the new fixture/preparation note; coordinator captures with frozen
+producer and runs native/public facts. Emission then reviews actual return,
+typedef/reference/value-view/initializer chains and existing generic planner
+interactions before a reusable product scope is frozen. Product implementation
+is not approved yet. Any future `ValidateGeneratedCallRoles` reference-return
+admission needs a scoped ordinary-pointer value-view rule, never global removal
+of `call.Type == direct.ReturnType`; no noexcept or cleanup-marker permissions.
+Translator/runtime remain frozen at `4538211f2`; coordinator owns builds/Git.
+First save this verified tool/evidence checkpoint, then activate that capture.
 
 Preserve all immutable captures, source snapshots,
 failed/incomplete attempts and the two excluded pre-existing T3 aggregate fixtures;

@@ -236,3 +236,91 @@ field-reference body is actually retained, a later finite alias/lifetime
 fixture can target that contract. Reference-return/native/callback/ownership
 admission and the other three callee bodies remain open; no implementation or
 new fixture follows from the current partial comparison alone.
+
+## Selected reference-return body mode
+
+The new explicit `--mode buffer-ref` implements only the next public inspection.
+It reproduces the current-input And-to-accessor identity intersection, then
+inventories at most 64 operations in that actual parent body. It selects an
+executable `stmk_init` owned by an actual parent block, with a `dik_expression`
+initializer that reciprocally targets a parent local lvalue reference. Its
+expression must be a direct call whose callee reference and TargetMethod are
+the same actual defined function. Its selected return type must equal the
+local reference type; the expression's separate non-reference pointer value
+view is recorded without equating it to that reference descriptor. Exactly one target remains. There is no
+GetBufferRef name lookup or persistent locator binding.
+
+Parent selection, initializer ownership, exact result/reference types and
+receiver/raw-argument facets are reported separately from the selected body's
+typed occurrence counters. Only that callee receives typed tracing; none of
+its callees is traversed. The target retains the 64-operation, 256-occurrence,
+depth-32, 16-dependency, 64-type, 32-field and 16-parameter limits, with
+10,000 commands/20,000 rows and the coordinator's 120-second/1-GiB limit.
+
+This mode uses shallow type facts instead of expanding all related record
+fields. Actual body types, selected receiver/return and execution-symbol types
+follow explicit wrapper and pointee chains. Record size/alignment,
+complete/nonvirtual layout, field offsets and qualifiers are retained;
+field-type, base, partner and table association edges are labeled unexpanded
+and do not enqueue further record closure. Returned-field occurrences retain
+their actual field/type identities and owning-layout offsets. Reference
+representation alone does not establish a shared_ptr copy, ownership,
+destructor obligation, escape safety or caller lifetime. No admission
+comparison is run. Existing default and accessor mode behavior and evidence
+remain unchanged; this preparation adds no translator/runtime acceptance.
+
+Coordinator command, using a fresh frozen build/report path:
+
+```sh
+dotnet PATH/TO/FROZEN/DuckdbSliceFacts.dll --mode buffer-ref \
+  --input /mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj \
+  --output /mnt/storage/roslynobj-csharp-20261015/t5/NEW-duckdb-buffer-ref-facts.json
+```
+
+The measured selected-callee inspection now passes within this explicitly
+shallow scope. The [compact reference-body receipt](../acceptance/duckdb/buffer-reference-trace-report.json)
+is 46,216 bytes, SHA-256
+`737828bfb1987f46c6b62b83a79d1c99395f7ef30b3f3231979567f4ce58abe1`.
+Both measured phases pass; full related-type closure remains false.
+`t5/duckdb-buffer-ref-facts-1.json` is 57,435 bytes, SHA-256
+`99bfbe8f0103c4cca39bc62d8b49e74fa3d8530730f3f0ce45aec7bfb9c81158`.
+It records seven operation identities/seven typed occurrences, 21 described
+types, zero one-hop dependencies and zero issues. Build and trace take about
+6.9 and 0.804 seconds, with 759 reader commands, 2,423 rows and maximum batch
+12. The pinned input remains unchanged. `traceComplete=true` means that the
+one-body trace and declared shallow type scope complete; unexpanded field,
+base and partner associations still prevent any metadata/link/ownership
+closure or translator/execution acceptance claim. The earlier 64-type-bound
+accessor report remains incomplete and immutable.
+
+The actual selected body has one return. Its retained value is address-of an
+explicit const lvalue adjustment of the `buffer` field through the current
+receiver; the field is at offset 8 in the complete 24/8 Vector record. The
+selected execution receiver has a const pointer-object wrapper over the
+ordinary natural 8/8 signature pointer to const Vector. The body has no local
+variables, calls, EH state/tables/regions or lifetime associations, and its
+captured noexcept fact is null.
+
+The reference declared by the return signature and parent local is a natural
+8/8 reference descriptor. The retained return expression and parent call
+value use a different ordinary natural 8/8 pointer descriptor. Both have the
+same exact const pointee. That const type wraps the field's actual `buffer_ptr`
+typedef identity, which in turn wraps the 16/8 shared_ptr record. It is not a
+direct const-to-record relationship. The const/typedef wrappers have effective
+16/8 representation and raw descriptor 0/1; those distinct facts are preserved.
+The return's field/qualification/address operations and the parent's exact
+initializer/callee/raw-receiver associations remain actual separate nodes.
+No reference/value type identity is normalized, no record value is copied by
+this evidence, and no shared_ptr ownership behavior is inferred.
+
+This identifies a concrete next capture question: a generated const member
+method returning a const lvalue reference to an alias-typed ordinary record
+field at a nonzero offset, followed by an explicit local reference binding.
+A finite canary/member fixture can observe a later owner-member mutation
+through the reference, plus same/distinct address relationships, without
+constructors, destructors, EH, native callbacks, heap allocation or reference
+parameters. That is a proposal for review, not implemented support. Any later
+adapter must keep declared-reference and value-pointer views separate, scope
+their bridge to prevalidated actual functions/calls/initializers, preserve the
+const alias chain and existing lifetime boundaries, and leave noexcept and
+global native/reference guards intact.
