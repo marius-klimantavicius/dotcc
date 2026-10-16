@@ -8,8 +8,9 @@ configured finite acceptance; actual generated source remains at
 T5 broader C++ and T6 portability/scale remain open. Historical paragraphs below
 retain original attribution; this section is the authoritative next-action state.
 
-Verified parent is `cd36a75d1`, bounded mutable/const reference aliasing. The new
-ordinary const-method slice passes all 31 expected outcomes: 27 successful phases
+Verified ordinary-method checkpoint is `4538211f2`, following `cd36a75d1`
+(bounded mutable/const reference aliasing). The ordinary const-method slice
+passes all 31 expected outcomes: 27 successful phases
 and four intended unsupported-case rejections, no unexpected outcome or budget
 violation. Compact receipt: `acceptance/lifetimes/ordinary-const-method-report.json`,
 SHA-256 `57036cea331ccde345e8427dd17401fd40ed4b6da25534dbed5b696cf3bf773c`.
@@ -45,17 +46,42 @@ proven by this slice. Read [the proof](T5-ORDINARY-CONST-METHOD.md).
 Coordinator gpt-6.1-sol high owns Git/shared integration and all serialized
 builds/exports. Implementers remain gpt-6.1-sol xhigh; root GPT-6-Astra supervises
 read-only. OrdinaryMethods partial plus narrow Lifetimes/main hooks and the
-checker's three files are frozen. Inventory finalizes only the proof note.
-Next tool-only scope is approved: emission prepares a small bounded public trace
-of the actual DuckDB GetVectorType selected body in pinned core entry 316, using
-an explicit accessor mode of the existing reader tool and preserving trace3's
-immutable proof. No product widening is authorized before actual enum/type,
-record-partner and field/body findings are reviewed. No callee bodies or whole164
-scan/link acceptance is intended. Actual Vector/InternalException/string/allocator
-construction and missing dependency/link closure remain open.
+checker's three files and proof note are complete. Inventory is idle.
+Current tool-only accessor evidence is partial, not an overall trace pass.
+`acceptance/duckdb/accessor-trace-report.json`, SHA-256
+`39bec0741b200277dd17cd171f1cdfd1f67b11317b53291fb9c4f9e454d26023`,
+records five phases: three successful build/default-regression phases and two
+explicit diagnostic exits 3, no resource violation. Attempt 1 found two defined
+GetVectorType names and traced no guessed root. Attempt 2 selected the exact
+actual target using two matching direct calls from separately bounded And
+identity inventories (117/85 operations), not a source-name or old-locator binding.
 
-Finish this verified milestone with an exact-path commit, then serialize the
-bounded tool snapshot/build/run. Preserve all immutable captures, source snapshots,
+`t5/duckdb-accessor-source-2` freezes 48 tool/build inputs. The selected actual
+Vector::GetVectorType body has 22 typed identities/occurrences, four direct calls,
+a borrowed reference local, a conditional and two returns, no EH/lifetime metadata.
+It is not a direct field-return accessor and is not admitted by the new rule.
+The retained VectorType return is unsigned8 arithmetic storage with an explicit
+enum/underlying-type declaration association. Its four callees are GetBufferRef,
+shared_ptr operator bool, VectorBuffer GetVectorType and shared_ptr operator->;
+none of their bodies was traversed. Related-type metadata stopped at its declared
+64-type limit after body traversal, so `traceComplete=false` remains authoritative.
+Do not increase that limit just to force a complete label. Full report is
+`t5/duckdb-accessor-facts-2.json`; attempt 1 and default-mode comparison with trace3
+remain preserved separately. Current tool/source input hashes verify.
+
+Root approved checkpointing this honest partial evidence, then inspecting ONLY
+the actual selected GetBufferRef callee body reached through current Call43→target49
+(body53 in report2 labels). These labels are contextual; selection must follow
+actual retained public call identity, never bind by a fresh same-name search.
+Keep one-body bounds and avoid recursive irrelevant related-record metadata.
+The local reference has the exact return reference type and no hidden copy/result
+role; no shared_ptr copy, ownership transfer or destructor is implied. Product
+widening/another fixture remains unapproved until actual body and initializer
+facts are reviewed. No whole164 scan, link closure or generated DuckDB acceptance.
+Coordinator alone serializes tool builds/runs and Git; emission owns tool changes,
+inventory is idle. Runtime and translator product remain frozen at `4538211f2`.
+
+Preserve all immutable captures, source snapshots,
 failed/incomplete attempts and the two excluded pre-existing T3 aggregate fixtures;
 never stage all or clean unrelated user files. SQLite retains original frozen
 source13/runtime11 attribution; no broad SQLite rerun occurred.

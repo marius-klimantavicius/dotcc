@@ -8,9 +8,11 @@ using RoslynObj;
 const string pinnedPath = "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj";
 const string pinnedSha256 = "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65";
 var arguments = args.Chunk(2).ToArray();
-if (arguments.Any(pair => pair.Length != 2 || pair[0] is not ("--input" or "--output")) ||
+if (arguments.Any(pair => pair.Length != 2 || pair[0] is not ("--input" or "--output" or "--mode")) ||
     arguments.Select(pair => pair[0]).Distinct().Count() != arguments.Length || !arguments.Any(pair => pair[0] == "--output"))
-    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] --output NEW_REPORT.json");
+    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor] --output NEW_REPORT.json");
+var mode = arguments.FirstOrDefault(pair => pair[0] == "--mode")?[1] ?? "four-roots";
+if (mode is not ("four-roots" or "accessor")) throw new ArgumentException("Unknown explicit root-selection mode.");
 var inputPath = Path.GetFullPath(arguments.FirstOrDefault(pair => pair[0] == "--input")?[1] ?? pinnedPath);
 var outputPath = Path.GetFullPath(arguments.Single(pair => pair[0] == "--output")[1]);
 if (File.Exists(outputPath)) throw new ArgumentException("The evidence report must have a fresh path.");
@@ -18,7 +20,7 @@ var watch = Stopwatch.StartNew();
 var before = Hash(inputPath);
 if (before != pinnedSha256) throw new InvalidDataException("This bounded trace accepts only the frozen core entry 316 content hash.");
 using var input = RoslynObject.Open(inputPath, new ReadOptions { CachedRowCount = 4096, CachedPageCount = 128, PageSize = 128 });
-var probe = new SliceProbe(input);
+var probe = new SliceProbe(input, mode == "accessor");
 var report = probe.Build();
 var after = Hash(inputPath);
 report["input"] = new { path = inputPath, sha256 = before, bytes = new FileInfo(inputPath).Length, afterSha256 = after, unchanged = before == after };
@@ -32,12 +34,20 @@ return report["traceComplete"] is true ? 0 : 3;
 
 static string Hash(string path) { using var stream = File.OpenRead(path); return Convert.ToHexStringLower(SHA256.HashData(stream)); }
 
-internal sealed class SliceProbe(RoslynObject input)
+internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false)
 {
-    private const int NameLimit = 64, SymbolsPerKey = 4, RootLimit = 4, OperationsPerRoot = 256, OccurrencesPerRoot = 4096, DepthLimit = 128;
-    private const int DependencyLimit = 256, TypeLimit = 256, FieldsPerType = 64, ParameterLimit = 32, ConstantUnits = 256;
+    private const int NameLimit = 64, SymbolsPerKey = 4, ConstantUnits = 256;
+    private int RootLimit => accessorRoot ? 1 : 4;
+    private int OperationsPerRoot => accessorRoot ? 64 : 256;
+    private int OccurrencesPerRoot => accessorRoot ? 256 : 4096;
+    private int DepthLimit => accessorRoot ? 32 : 128;
+    private int DependencyLimit => accessorRoot ? 16 : 256;
+    private int TypeLimit => accessorRoot ? 64 : 256;
+    private int FieldsPerType => accessorRoot ? 32 : 64;
+    private int ParameterLimit => accessorRoot ? 16 : 32;
     private const int LocalsPerRoot = 128, RegionsPerRoot = 64, CleanupActionsPerRoot = 128, RecipesPerRoot = 128, FacetsPerNode = 64, EntityLimit = 8192;
-    private const long CommandLimit = 20000, RowLimit = 100000;
+    private long CommandLimit => accessorRoot ? 10000 : 20000;
+    private long RowLimit => accessorRoot ? 20000 : 100000;
     private readonly Dictionary<SemanticEntity, string> locators = [];
     private readonly Dictionary<SemanticNode, Dictionary<string, object?>> nodes = [];
     private readonly Dictionary<CppType, Dictionary<string, object?>> types = [];
@@ -48,6 +58,8 @@ internal sealed class SliceProbe(RoslynObject input)
     private readonly List<Dictionary<string, object?>> issues = [];
     private readonly List<Dictionary<string, object?>> roots = [];
     private readonly List<Dictionary<string, object?>> selectors = [];
+    private const int AccessorSelectionRoots = 2, AccessorSelectionOperationsPerRoot = 256, AccessorSelectionCalls = 16;
+    private readonly List<Dictionary<string, object?>> accessorSelectionInventory = [];
     private string? currentRoot;
     private string? currentPath;
     private HashSet<VariableSymbol> rootStorage = [];
@@ -96,18 +108,31 @@ internal sealed class SliceProbe(RoslynObject input)
         try
         {
             var selected = new List<FunctionSymbol>();
-            foreach (var name in new[] { "And", "Or" })
+            foreach (var name in accessorRoot ? new[] { "GetVectorType" } : new[] { "And", "Or" })
             {
                 var matches = Bounded(input.TranslationUnit.SemanticModel.FindSymbols(name), NameLimit, "Exact retained-name materialization");
                 if (matches.Any(symbol => symbol.Name != name)) throw new TraceBound("The exact retained-name selector returned a different name.");
                 var functions = Bounded(matches.OfType<FunctionSymbol>().Where(function => function.Body is not null), SymbolsPerKey, "Selected symbols per name");
-                selectors.Add(Row(("retainedName", name), ("matches", matches.Length), ("selected", functions.Select(Ref).ToArray()),
-                    ("selectionOnly", "Exact public retained-name and function-kind selection; no source overload lookup or rebinding.")));
-                if (functions.Length != 2) AddIssue("selection-count", "The accepted sample had exactly two defined functions for this retained name.");
+                var selector = Row(("retainedName", name), ("matches", matches.Length), ("selected", functions.Select(Ref).ToArray()),
+                    ("selectionOnly", "Exact public retained-name and function-kind selection; no source overload lookup or rebinding."));
+                selectors.Add(selector);
+                if (accessorRoot)
+                {
+                    selector["definedCandidates"] = functions.Select(Ref).ToArray();
+                    var target = SelectAccessorDependency(functions);
+                    selector["selected"] = new[] { Ref(target) };
+                    selected.Add(target);
+                    continue;
+                }
+                if (!accessorRoot && functions.Length != 2) AddIssue("selection-count", "The accepted sample had exactly two defined functions for this retained name.");
                 selected.AddRange(functions);
             }
-            if (selected.Count != RootLimit || selected.Distinct().Count() != RootLimit) throw new TraceBound("The four distinct accepted sample roots were not reproduced.");
-            foreach (var function in selected) TraceRoot(function);
+            if (selected.Count != RootLimit || selected.Distinct().Count() != RootLimit) throw new TraceBound("The selected distinct root set was not reproduced.");
+            foreach (var function in selected)
+            {
+                TraceRoot(function);
+                if (accessorRoot) roots[^1]["accessorFactsNotAdmission"] = AccessorFacts(function);
+            }
             currentRoot = null; currentPath = "related-types";
             while (pendingTypes.TryDequeue(out var type)) { DescribeType(type); CheckResources(); }
             CheckResources();
@@ -115,9 +140,11 @@ internal sealed class SliceProbe(RoslynObject input)
         catch (TraceBound error) { AddIssue("truncation-or-bound", error.Message); }
         catch (Exception error) { AddIssue("reader-or-trace-failure", error.Message); }
         var manifest = input.Manifest; var statistics = input.Statistics;
-        return Row(("probeVersion", 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
+        var result = Row(("probeVersion", accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
             ("inventoryOnly", true), ("translatorAccepted", false), ("linkClosureComplete", false), ("generatedExecutionAccepted", false),
-            ("scope", "Exactly four retained core-entry-316 And/Or root bodies; one-hop call, cleanup and storage declaration dependencies only. No callee bodies or other translation units are traversed. Trace completeness concerns bounded typed containment, not complete metadata or dependency closure."),
+            ("scope", accessorRoot
+                ? "One core-entry-316 GetVectorType candidate body selected by actual public identity intersection with retained direct calls in a separately bounded And identity inventory. Only that target receives typed body tracing; no callee bodies or other units. Shape comparison is partial evidence, not translator admission or full metadata/dependency closure."
+                : "Exactly four retained core-entry-316 And/Or root bodies; one-hop call, cleanup and storage declaration dependencies only. No callee bodies or other translation units are traversed. Trace completeness concerns bounded typed containment, not complete metadata or dependency closure."),
             ("semantics", "Local locators use public semantic equality. Typed containment paths preserve repeated operation identities and retained operands; they are not an evaluation schedule. Call receiver/result/argument facets alias raw operands and add no evaluation. Structural relations are audited independently, never used as a fallback traversal. Metadata associations are deduplicated without inventing ownership or execution; their ordinary cycles do not fail the trace."),
             ("bounds", new { NameLimit, SymbolsPerKey, RootLimit, OperationsPerRoot, OccurrencesPerRoot, DepthLimit, DependencyLimit, TypeLimit, FieldsPerType, ParameterLimit,
                 ConstantUnits, LocalsPerRoot, RegionsPerRoot, CleanupActionsPerRoot, RecipesPerRoot, FacetsPerNode, EntityLimit, CommandLimit, RowLimit,
@@ -129,6 +156,53 @@ internal sealed class SliceProbe(RoslynObject input)
             ("oneHopDependencies", dependencies.Values.ToArray()), ("oneHopStorageDependencies", storageDependencies.Values.ToArray()),
             ("relatedTypesNotLookup", types.Values.ToArray()), ("issues", issues),
             ("statistics", new { statistics.Commands, statistics.RowsRead, statistics.CachedRows, statistics.CachedPages, statistics.MaximumBatchSize }));
+        if (accessorRoot)
+        {
+            result["rootSelectionMode"] = "accessor";
+            result["accessorSelectionIdentityInventoryNotSchedule"] = accessorSelectionInventory;
+            result["accessorSelectionBounds"] = new { AccessorSelectionRoots, AccessorSelectionOperationsPerRoot, AccessorSelectionCalls,
+                NameLimit, SymbolsPerKey, includedInTargetBodyCounters = false,
+                semantics = "Public DescendantOperations identity inventory for selection only; metadata excluded by the reader. No order, occurrence schedule or callee-body traversal is inferred." };
+        }
+        return result;
+    }
+
+    private FunctionSymbol SelectAccessorDependency(FunctionSymbol[] candidates)
+    {
+        currentPath = "selection/And-direct-target-identity-inventory";
+        if (candidates.Length == 0 || candidates.Any(function => !function.IsDefined || function.BodyState.Name != "definition" || function.Body is null))
+            throw new TraceBound("Accessor candidates must be actual defined public FunctionSymbols with retained bodies.");
+        var matches = Bounded(input.TranslationUnit.SemanticModel.FindSymbols("And"), NameLimit, "And selection name materialization");
+        if (matches.Any(symbol => symbol.Name != "And")) throw new TraceBound("The exact And selector returned a different retained name.");
+        var owners = Bounded(matches.OfType<FunctionSymbol>().Where(function => function.Body is not null), SymbolsPerKey, "And selection roots");
+        if (owners.Length != AccessorSelectionRoots || owners.Distinct().Count() != AccessorSelectionRoots ||
+            owners.Any(function => !function.IsDefined || function.BodyState.Name != "definition"))
+            throw new TraceBound("The accepted two defined And identity-inventory roots were not reproduced.");
+        var candidateSet = candidates.ToHashSet(); var selected = new HashSet<FunctionSymbol>(); var callCount = 0;
+        foreach (var owner in owners)
+        {
+            currentRoot = Ref(owner);
+            var operations = Bounded(owner.Body!.DescendantOperations(), AccessorSelectionOperationsPerRoot, "And selection operation identities");
+            var row = Row(("caller", Function(owner)), ("operationIdentityCount", operations.Length),
+                ("inventoryOnlyNotTypedTraceOrSchedule", true));
+            accessorSelectionInventory.Add(row);
+            var calls = new List<object>(); row["matchingDirectCallIdentities"] = calls;
+            foreach (var call in operations.OfType<CallOperation>())
+            {
+                if (call.RepresentationRole.Name != "execution" || call.CallKind.Name != "direct" ||
+                    call.Callee is not ReferenceOperation { Target: FunctionSymbol target } reference ||
+                    reference.RepresentationRole.Name != "execution" || call.TargetMethod?.Equals(target) != true || !candidateSet.Contains(target)) continue;
+                if (++callCount > AccessorSelectionCalls) throw new TraceBound("Accessor selection matching-call inventory bound exceeded.");
+                selected.Add(target);
+                calls.Add(new { call = DescribeNode(call), calleeReference = Ref(reference), calleeTarget = Ref(target),
+                    retainedTarget = Ref(call.TargetMethod), sameActualPublicEntity = target.Equals(call.TargetMethod),
+                    selectedSignature = Signature(target.Signature) });
+            }
+            CheckResources();
+        }
+        currentRoot = null;
+        if (selected.Count != 1) throw new TraceBound("The bounded current-input direct-call identity intersection does not select one unique accessor candidate.");
+        return selected.Single();
     }
 
     private Dictionary<string, object?> Parameter(SignatureParameter parameter) => Row(("ordinal", parameter.Ordinal), ("role", parameter.Role.Name),
@@ -185,6 +259,76 @@ internal sealed class SliceProbe(RoslynObject input)
         currentPath = "metadata/exception-and-lifetime";
         row["exceptionAndLifetimeMetadataNotNormalExecution"] = CleanupMetadata(function);
         CheckResources();
+    }
+
+    private Dictionary<string, object?> AccessorFacts(FunctionSymbol function)
+    {
+        currentRoot = Ref(function); currentPath = "metadata/accessor-shape";
+        var body = function.Body ?? throw new TraceBound("The uniquely selected accessor body is absent.");
+        var parameters = Bounded(function.Parameters, ParameterLimit, "Accessor execution parameters");
+        var selected = Bounded(function.Signature.Parameters, ParameterLimit, "Accessor signature parameters");
+        var associationsMatch = body.Function.Equals(function) && parameters.Length == selected.Length && parameters.Select((parameter, index) =>
+            parameter.Ordinal == index && selected[index].Ordinal == index && parameter.Descriptor.Equals(selected[index].Descriptor) &&
+            parameter.Role.Equals(selected[index].Role) && parameter.Type.Equals(selected[index].Type)).All(match => match);
+        if (!associationsMatch) AddIssue("accessor-signature-body-association", "The actual selected body and execution/signature parameter associations differ.", function);
+        var receivers = parameters.Where(parameter => parameter.Role.Name == "this_parameter").ToArray();
+        var receiver = receivers.Length == 1 ? receivers[0] : null;
+        var pointer = receiver is not null ? TypeLeaf(receiver.Type) as PointerType : null;
+        var pointee = pointer?.PointeeType;
+        var record = pointee is not null ? TypeLeaf(pointee) as RecordType : null;
+        var returned = body.Root is BlockOperation { Statements.Count: 1 } block && block.Statements[0] is JumpOperation { JumpKind.Name: "return" } jump ? jump : null;
+        var read = returned?.Value is OperatorOperation { OperatorKind.Name: "eok_points_to_field", Operands.Count: 2 } fieldRead ? fieldRead : null;
+        var field = read?.Operands[1] is ReferenceOperation { Target: FieldSymbol member } ? member : null;
+        var receiverRead = read?.Operands[0] as ReferenceOperation;
+        var resultLeaf = TypeLeaf(function.ReturnType);
+        var layout = record?.Layout;
+        FieldLayout[] fieldLayouts = layout is null || field is null ? [] : Bounded(layout.Fields, FieldsPerType, "Accessor record layout")
+            .Where(entry => entry.Field.Equals(field)).ToArray();
+        return Row(("identityProvenance", "Current-input public FindSymbols candidates intersect the exact same FunctionSymbol in retained direct callee references and TargetMethod facets of the bounded And identity inventory. Prior trace locators are never persistent handles."),
+            ("signatureBodyAssociationsMatch", associationsMatch),
+            ("methodFacts", new { function.IsVirtual, function.IsPureVirtual, thisAdjustment = Number(function.ThisAdjustment),
+                returnAdjustment = Number(function.ReturnAdjustment), virtualCallIndex = Number(function.VirtualCallIndex), virtualBaseIndex = Number(function.VirtualBaseIndex),
+                overridingWrapperTarget = Ref(function.OverridingFunctionForWrapper), overriddenWrapperTarget = Ref(function.OverriddenFunctionForWrapper),
+                function.Details.IsWeak, function.Details.IsWeakref, function.Details.IsGnuAlias, function.Details.IsIfunc, function.Details.IsAliasEntry }),
+            ("receiver", receiver is null ? null : new { parameter = Parameter(receiver),
+                executionSymbol = receiver.Symbol is { } symbol ? Variable(symbol) : null,
+                executionSymbolType = TypeRef(receiver.Symbol?.Type), valuePointerType = TypeRef(pointer), pointeeType = TypeRef(pointee), containingRecord = TypeRef(record),
+                executionSymbolHasConstPointerObjectWrapper = receiver.Symbol?.Type is QualifiedType { IsConst: true, IsVolatile: false } wrapper && wrapper.UnderlyingType.Equals(receiver.Type) }),
+            ("return", new { statement = Ref(returned), value = Ref(returned?.Value), actualType = TypeRef(function.ReturnType), leafType = TypeRef(resultLeaf), leafKind = resultLeaf.Kind.Name,
+                arithmeticDescriptor = resultLeaf is ArithmeticType, isNaturalUnsignedByteArithmetic = resultLeaf is ArithmeticType { Kind.Name: "tk_integer", Arithmetic.Bits: 8, Arithmetic.Signed: false, Arithmetic.IsBool: false } &&
+                    function.ReturnType.Size == 1 && function.ReturnType.Alignment == 1 && resultLeaf.Size == 1 && resultLeaf.Alignment == 1 }),
+            ("fieldRead", read is null ? null : new { operation = Ref(read), valueCategory = read.ValueCategory.Name, type = TypeRef(read.Type), receiverOccurrence = Ref(receiverRead),
+                actualReceiverVariable = Ref(receiverRead?.Target), receiverValueType = TypeRef(receiverRead?.Type),
+                readsSelectedReceiver = receiver?.Symbol is { } receiverSymbol && receiverRead?.Target?.Equals(receiverSymbol) == true,
+                field = Ref(field), fieldType = TypeRef(field?.Type), containingType = TypeRef(field?.ContainingType),
+                exactReturnType = field?.Type.Equals(function.ReturnType) == true && read.Type.Equals(function.ReturnType),
+                layouts = fieldLayouts.Select(entry => new { entry.Ordinal, offset = Number(entry.Offset), bitOffset = Number(entry.BitOffset), bitWidth = Number(entry.BitWidth) }).ToArray() }),
+            ("currentOrdinaryMethodsRulePartialComparison", new {
+                translatorAccepted = false, admissionChecked = false,
+                rule = "Direct generated this-only const ordinary-record unsigned-8 field-return rule; no bases, virtuals or occupied partner. This inspection does not invoke that validator or admit callers.",
+                thisOnlySignature = function.Signature.HasThisParameter && selected.Length == 1 && selected[0].Role.Name == "this_parameter",
+                constNaturalReceiver = pointer is { IsReference: false, IsRValueReference: false, Size: { } pointerSize, Alignment: { } pointerAlignment } && pointerSize == 8 && pointerAlignment == 8 &&
+                    pointee is QualifiedType { IsConst: true, IsVolatile: false } && record is not null && !record.IsIncomplete,
+                completeOrdinaryRecordShape = record is not null && record.Kind.Name is ("tk_struct" or "tk_class") && !record.IsIncomplete && !record.IsPacked &&
+                    !record.HasVirtualBases && !record.HasVirtualFunctions && record.Bases.Count == 0 && record.BaseSubobjects.Count == 0 &&
+                    (record.SubobjectPartner is null || record.SubobjectPartner.Equals(record)) && layout is { IsComplete: true } &&
+                    layout.NonvirtualSize == record.Size && layout.NonvirtualAlignment == record.Alignment,
+                directFieldReturnShape = returned is not null && read is not null && field is not null,
+                noCallsInTraversedBody = !nodes.Keys.OfType<CallOperation>().Any(),
+                noLifetimeAssociations = body.Lifetimes.Count == 0,
+                remainingChecks = "Full policy, qualification, storage eligibility, native-address exclusions and actual caller contexts remain emitter obligations. A matching partial fact is not translation acceptance." }));
+    }
+
+    private CppType TypeLeaf(CppType type)
+    {
+        var seen = new HashSet<CppType>();
+        for (var depth = 0; ; ++depth)
+        {
+            if (depth > DepthLimit || !seen.Add(type)) throw new TraceBound("Accessor type-wrapper depth/cycle bound exceeded.");
+            TypeRef(type);
+            if (type is not TypeReference reference) return type;
+            type = reference is QualifiedType qualified ? qualified.UnderlyingType : reference.UnderlyingType;
+        }
     }
 
     private void Walk(SemanticNode node, string path, string? parent, string role, long ordinal, HashSet<SemanticNode> active,
@@ -417,6 +561,16 @@ internal sealed class SliceProbe(RoslynObject input)
         var row = Row(("locator", Ref(type)), ("kind", type.Kind.Name), ("name", type.Name), ("size", Number(type.Size)), ("alignment", Number(type.Alignment)),
             ("isIncomplete", type.IsIncomplete), ("isDependent", type.IsDependent), ("typeinfoVariableAssociation", Ref(type.Details.TypeinfoVariable)));
         types[type] = row;
+        if (accessorRoot)
+        {
+            row["arithmeticDescriptor"] = type is ArithmeticType;
+            row["retainedDescriptorRepresentation"] = new { size = Number(type.DescriptorSize), alignment = Number(type.DescriptorAlignment), type.Details.IsAtomic };
+            row["enumDeclarationAssociationsNotLookup"] = Bounded(type.DeclarationSymbols, ParameterLimit, "Related type declaration associations")
+                .OfType<EnumSymbol>().Select(enumeration => new { locator = Ref(enumeration), type = TypeRef(enumeration.Type),
+                    underlyingType = TypeRef(enumeration.UnderlyingType), explicitUnderlyingType = TypeRef(enumeration.ExplicitUnderlyingType), enumeration.HasExplicitBase }).ToArray();
+            if (type is ArithmeticType value) row["affiliatedEnumType"] = TypeRef(value.Arithmetic.AffiliatedEnumType);
+            if (type is RecordType complete) row["layoutComplete"] = complete.Layout?.IsComplete;
+        }
         switch (type)
         {
             case TypeReference reference:
