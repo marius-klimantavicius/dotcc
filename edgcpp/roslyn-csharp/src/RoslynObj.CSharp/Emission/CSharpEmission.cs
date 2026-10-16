@@ -104,7 +104,7 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
-            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); }
+            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializePointerMethods(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); }
             catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {
@@ -394,6 +394,7 @@ public sealed partial class CSharpEmitter
 
         private string Conversion(ConversionOperation conversion)
         {
+            if (TryLegacyOrdinaryBaseView(conversion, out var ordinaryBaseView)) return ordinaryBaseView;
             var kind = conversion.OperatorKind.Name;
             if (conversion.Operator.RequiresRuntimeCastCheck || kind is "eok_dynamic_cast" or "eok_ref_dynamic_cast" or "eok_base_class_cast" or "eok_derived_class_cast")
                 throw Limit($"Conversion '{kind}' needs a C++ object-model representation.", "conversion");
@@ -580,6 +581,7 @@ public sealed partial class CSharpEmitter
             if (type is RecordType record)
             {
                 ValidateOrdinaryCarrierEmission(record);
+                if (IsBorrowedByteView(record)) return BorrowedByteViewName(record);
                 if (planned.Add(record))
                 {
                     records.Add(record);
@@ -616,6 +618,7 @@ public sealed partial class CSharpEmitter
         private void EmitRecord(RecordType record, StringBuilder output)
         {
             if (TryEmitVirtualRecord(record, output)) return;
+            if (TryEmitBorrowedByteView(record, output)) return;
             if (record.HasVirtualFunctions || record.HasVirtualBases || record.Bases.Count != 0 && !ordinaryFieldCarriers.Contains(record))
                 throw Limit("C++ inheritance/dispatch storage is unsupported in T1.", "record");
             var layout = record.Layout ?? throw Limit("Record has no captured layout.", "record");

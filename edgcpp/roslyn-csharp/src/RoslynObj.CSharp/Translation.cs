@@ -31,8 +31,9 @@ public sealed partial class Translator
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
         var nativeDataBindings = new List<CSharpExternalDataBinding>();
         var semanticRuntimeCandidates = new List<ImportReport>();
-        var intrinsicImports = inventory.ProgramReport.Functions.Where(function => function.Builtin is not null)
-            .Select(function => function.Locator).ToHashSet(StringComparer.Ordinal);
+        var intrinsicBuiltins = inventory.ProgramReport.Functions.Where(function => function.Builtin is not null)
+            .ToDictionary(function => function.Locator, function => function.Builtin!, StringComparer.Ordinal);
+        var intrinsicImports = intrinsicBuiltins.Keys.ToHashSet(StringComparer.Ordinal);
         // Multi-unit execution is initially self-contained. Only ProgramAssembly
         // may fulfill its cross-unit declarations; no name-based import filtering.
         foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required && inventory.ProgramReport.Inputs.Count == 1))
@@ -166,7 +167,17 @@ public sealed partial class Translator
             {
                 TranslationComplete = true, Diagnostics = diagnostics.ToArray(),
                 Imports = inventory.ProgramReport.Imports.Select(import => import.Required && intrinsicImports.Contains(import.Locator)
-                    ? import with { Provider = "RoslynObj.CSharp.Runtime.TargetIntrinsics", BindingStatus = "recorded-intrinsic-lowering-selected" }
+                    ? intrinsicBuiltins[import.Locator] == "bfk_expect"
+                        ? import with
+                        {
+                            Provider = "generated-expression", ProviderSymbol = null,
+                            BindingStatus = "recorded-generated-intrinsic-constant-hint-expect-signed64-v1",
+                            Ownership = "constant-hint-expect-signed64-v1: Project the first captured signed64 operand value once; an effect-free integer literal hint owns no storage or runtime value.",
+                            ErrorContract = "The projection introduces no host error channel; first-operand effects and exceptions remain those of its captured evaluation. Nonconstant/effectful hints and unsupported signatures are rejected.",
+                            ThreadContract = "Synchronous expression evaluation preserves the retained operand constraints; no runtime or thread-local helper is supplied.",
+                            CallbackContract = "No callable address, native import, callback entry or Runtime method is supplied."
+                        }
+                        : import with { Provider = "RoslynObj.CSharp.Runtime.TargetIntrinsics", BindingStatus = "recorded-intrinsic-lowering-selected" }
                     : semanticRuntimeImplementations.TryGetValue(import.Locator, out var implementation)
                         ? implementation.Describe(import)
                         : nativeDataImplementations.TryGetValue(import.Locator, out var dataImplementation)

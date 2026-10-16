@@ -1,12 +1,49 @@
 # Implementation restart state
 
-## Current checkpoint after user resume, 2026-10-16
+## Current verified checkpoint, 2026-10-16
 
-Work remains authorized after the user unpaused. SQLite T0–T4 are closed for
-configured finite Linux x64 acceptance; source remains
-`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`
-with original source 13/runtime 11 attribution. Broader C++ T5 and portability/
-scale T6 remain open. This section overrides historical state below.
+User-unpaused work remains active. The cohesive pointer-result/borrowed byte-field
+chain passes production CLI, native/JIT/NativeAOT whole-chain and physical checks,
+repeat generation and affected regressions. Receipt
+`acceptance/lifetimes/pointer-call-chain-report.json` currently has SHA-256
+`5481d9f68ee65e93b920bfdf63b21711c28190e0120d256266446e6b2c5d3d91`:
+57 expected outcomes (50 successes, seven intended rejections), zero unexpected
+outcomes/resource violations. Product `t5/pointer-call-chain-product-source-5`
+(259 files), checker `t5/pointer-call-chain-checker-source-2` (nine files), all
+25 inputs and completed publication files verify. Final source is
+`t5/pointer-call-chain-cli-generated-5`; no build/export/test remains active.
+See [the current proof](T5-POINTER-CALL-CHAIN.md). Earlier failed attempts remain
+separate; no additional tests are needed for this verified freeze.
+
+Implementation retains selected direct pointer calls/locals/initialization/branches,
+actual empty-base address/reverse casts, complete Proxy 24/8 versus unrequired
+occupied 17/8, and a borrowed read-only unsigned-byte view 56/8 at 24. Existing full
+virtual representations take precedence. Both-false flags occur on two pointer
+operator calls and stay unnormalized with once-only single receiver evaluation.
+The recorded bfk_expect is a generated-expression constant-hint signed64 projection,
+not a Runtime/native helper. Runtime/IR/Program/Calls/Lifetimes/NoThrow and normal
+initialization semantics are unchanged. Native inputs are live C++ objects;
+generated inputs are aligned raw layout buffers with no class/virtual/lifetime
+claim. Seven prior source/JIT/AOT profiles, SI/MI/Vbase source bytes and one existing
+pinned native callback provider pass. The genuine readonly write remains rejected.
+
+Coordinator gpt-6.1-sol high owns builds/tests/Git; implementers remain
+gpt-6.1-sol xhigh, root GPT-6-Astra monitors read-only. Exact-owned checkpoint commit
+is next. Then activate approved [managed-root selection](MANAGED-ROOTS.md): keep
+all-definition default, select before inventory with bounded public-identity
+execution/storage/initializer/ABI/EH closure, preserve mandatory ambient init or
+reject unsupported obligations. First actual root is the captured five-node
+VectorBuffer::GetVectorType in immutable core316. This is selected-core body
+execution over borrowed inputs, not whole DuckDB/link/And/Or acceptance. No new
+serial helper trace modes or native application fallback. Product edits for this
+follow-on begin only after saving the verified pointer checkpoint.
+
+Both workers are idle after frozen product/checker and read-only root proposal;
+use followup_task to reactivate. Preserve unrelated dirty files and the two
+pre-existing untracked T3 aggregate fixtures. SQLite T0–T4 remain closed for their
+configured finite Linux x64 profile and original final source 13/runtime 11
+attribution; later C++ Runtime is not relabeled as SQLite proof. T5/T6 remain open.
+This section overrides historical state below.
 
 The latest verified product milestone is `16a07ae6b`, the cohesive borrowed-member
 Boolean conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,
@@ -223,7 +260,7 @@ unsupported. Successful typed projection must get an honest generated-provider
 label in CLI reports rather than claiming an unchanged Runtime method executes.
 Actual DuckDB helper body/link/EH remains unresolved despite its definition being
 located. Emission has submitted concrete product admission; inventory independently
-reviewed facts/checker plan. Await root product-scope review; no product files edited.
+reviewed facts/checker plan. Root has approved this scope; product workers are now active as described above.
 Coordinator alone builds/exports/Git, workers remain requested models. No active
 build/export/test process; preserve all snapshots and unrelated T3 fixtures.
 

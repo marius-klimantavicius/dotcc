@@ -9,6 +9,69 @@ public sealed partial class CSharpEmitter
         private const string Intrinsics = "global::RoslynObj.CSharp.Runtime.TargetIntrinsics";
         private static bool IsIntrinsicRoutine(FunctionSymbol function) => function.BuiltinKind is not null;
 
+        // Admission only: no rendering, registration, current-function state or
+        // canonicalization. Callers still plan the actual operand occurrences.
+        private bool IsSupportedConstantHintExpectation(CallOperation call)
+        {
+            if (call.CallKind.Name != "direct" || call.Callee is not ReferenceOperation { Target: FunctionSymbol function } callee ||
+                function.BuiltinKind?.Name != "bfk_expect" || call.TargetMethod is not { } target || !target.Equals(function) ||
+                call.Receiver is not null || call.Call.ReturnSlot is not null || call.Operator.RetainedVirtualCall ||
+                call.Operator.EvalLeftToRight && call.Operator.EvalRightToLeft || call.Details.VolatileFetch ||
+                call.RepresentationRole.Name != "execution" || call.ValueCategory.Name != "prvalue" ||
+                callee.Details.VolatileFetch || callee.Operands.Count != 0 || callee.RepresentationRole.Name != "execution")
+                return false;
+            var signature = function.Signature;
+            if (function.IsDefined || function.Body is not null || function.BodyState.Name != "declaration_only" ||
+                !signature.HasPrototype || signature.IsVariadic || signature.HasThisParameter || signature.ThisClass is not null ||
+                signature.ReturnsValueAsParameter is not false || signature.ReturnsValueViaCopyConstructor ||
+                signature.ReturnValueParameterFollowsThis is not false || signature.CallingConvention?.Name != "cc_default" ||
+                call.Call.FunctionType is not { } selectedType || !selectedType.Equals(signature) ||
+                !HasExpectationSigned64Storage(signature.ReturnType) || !HasExpectationSigned64Storage(call.Type))
+                return false;
+            var parameters = signature.Parameters;
+            var arguments = call.Arguments;
+            var operands = call.Operands;
+            if (parameters.Count != 2 || arguments.Count != 2 || operands.Count != 3 || !operands[0].Equals(callee)) return false;
+            for (var index = 0; index < 2; ++index)
+            {
+                var parameter = parameters[index];
+                var argument = arguments[index];
+                if (parameter.Ordinal != index || parameter.Role.Name != "ordinary_parameter" ||
+                    parameter.BaseSubobject is not null || parameter.Descriptor.Details.PassedViaCopyConstructor ||
+                    !HasExpectationSigned64Storage(parameter.Type) ||
+                    parameter.DeclaredType is { } declared && !HasExpectationSigned64Storage(declared) ||
+                    argument.Ordinal != index || argument.Role?.Name is not ("argument" or "ordinary_parameter") ||
+                    argument.Parameter is not { } descriptor || !descriptor.Equals(parameter.Descriptor) ||
+                    !argument.Value.Equals(operands[index + 1]) || argument.Value.RepresentationRole.Name != "execution" ||
+                    argument.Value.ValueCategory.Name != "prvalue" || !HasExpectationSigned64Storage(argument.Value.Type))
+                    return false;
+            }
+            return arguments[1].Value is ConstantOperation hint && !hint.Details.VolatileFetch &&
+                hint.Operands.Count == 0 && hint.VlaDimensions.Count == 0 &&
+                hint.Constant.Value is IntegerValue { Kind.Name: "ck_integer" } &&
+                hint.Constant.Type is { } constantType && HasExpectationSigned64Storage(constantType);
+        }
+
+        private static bool HasExpectationSigned64Storage(CppType type)
+        {
+            var seen = new HashSet<CppType>();
+            for (var current = type; seen.Count < 16 && seen.Add(current);)
+            {
+                if (current.Size != 8 || current.Alignment != 8 || current.Details.IsAtomic || current.Details.SizeKind.Name == "upc_threads") return false;
+                if (current is QualifiedType qualified)
+                {
+                    var qualifiers = qualified.Qualification;
+                    if (qualifiers.IsVolatile || qualifiers.IsAtomic || qualifiers.AddressSpace is not (null or 0) ||
+                        qualifiers.IsShared || qualifiers.IsUpcStrict || qualifiers.IsUpcRelaxed ||
+                        qualifiers.IsNear || qualifiers.IsFar || qualifiers.IsUnaligned) return false;
+                }
+                if (current is TypeReference reference) { current = reference.UnderlyingType; continue; }
+                return current is ArithmeticType arithmetic && arithmetic.Arithmetic.Bits == 64 &&
+                    arithmetic.Arithmetic.Signed is true && !arithmetic.Arithmetic.IsBool && arithmetic.Arithmetic.ArithmeticKind.Name == "signed_integer";
+            }
+            return false;
+        }
+
         private bool TryIntrinsicCall(CallOperation call, IReadOnlyList<string> arguments, out string result)
         {
             result = "";
@@ -37,6 +100,17 @@ public sealed partial class CSharpEmitter
                 throw Limit("Compiler intrinsic lowering requires the retained prototype-only builtin.", "intrinsic");
             if (signature.ReturnsValueAsParameter is not false)
                 throw Limit("Compiler intrinsic lowering requires the captured ordinary result role.", "intrinsic");
+
+            if (builtin == "bfk_expect")
+            {
+                if (!IsSupportedConstantHintExpectation(call) || arguments.Count != 2)
+                    throw Limit("The recorded expectation intrinsic requires natural signed64 values and an effect-free integer constant hint.", "intrinsic-expect");
+                // Both operands reached this method through the existing call
+                // evaluation path. The literal hint has no effects; project the
+                // first already-planned value exactly once without a helper.
+                result = $"({arguments[0]})";
+                return true;
+            }
 
             void Fixed(int count)
             {

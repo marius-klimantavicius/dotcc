@@ -44,6 +44,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanConversion(ConversionOperation conversion)
         {
+            if (TryPlanOrdinaryBaseView(conversion, out var ordinaryBaseView)) return ordinaryBaseView;
             if (TryPlanVirtualBaseView(conversion, out var virtualBaseView)) return virtualBaseView;
             var kind = conversion.OperatorKind.Name;
             if (conversion.Operator.RequiresRuntimeCastCheck || kind is "eok_dynamic_cast" or "eok_ref_dynamic_cast" or "eok_base_class_cast" or "eok_derived_class_cast")

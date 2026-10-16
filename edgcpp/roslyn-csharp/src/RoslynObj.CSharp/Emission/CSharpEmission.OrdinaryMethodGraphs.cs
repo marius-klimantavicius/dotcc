@@ -20,13 +20,14 @@ public sealed partial class CSharpEmitter
         private void InitializeOrdinaryMethodGraphs()
         {
             var candidates = functions.Where(function => function.Signature.HasThisParameter &&
-                function.SpecialFunctionKind?.Name is "sfk_none" or "sfk_conversion" &&
-                MemoryRepresentationType(function.ReturnType) is ArithmeticType { Arithmetic.IsBool: true } &&
+                (function.SpecialFunctionKind?.Name is "sfk_none" or "sfk_conversion" &&
+                MemoryRepresentationType(function.ReturnType) is ArithmeticType { Arithmetic.IsBool: true } || IsPointerMethod(function)) &&
                 !IsVirtualMethod(function)).ToArray();
-            if (candidates.Length == 0) return;
+            if (candidates.Length == 0 && !pointerMethodsActive) return;
             RequireNormalLifetimeProfile();
             foreach (var function in candidates)
                 ordinaryMethodBodies.Add(function, ValidateOrdinaryMethodSignature(function));
+            CollectOrdinaryBaseViews();
             foreach (var plan in ordinaryMethodBodies.Values) ValidateOrdinaryMethodBody(plan);
             foreach (var owner in functions)
                 foreach (var call in ExceptionExecutionNodes(owner.Body!.Root).OfType<CallOperation>())
@@ -68,7 +69,8 @@ public sealed partial class CSharpEmitter
                 signature.ThisClass?.Equals(record) != true)
                 throw Limit("The ordinary Boolean method graph supports fixed unadjusted nonvirtual const receivers only.", "ordinary-method");
             ValidateCallingConvention(signature);
-            ValidateGraphBoolean(function.ReturnType);
+            if (IsPointerMethod(function)) ValidateProgramPointer((PointerType)GraphRepresentation(function.ReturnType));
+            else ValidateGraphBoolean(function.ReturnType);
             RegisterOrdinaryFieldCarrier(record, []);
             var parameter = function.Parameters[0]; var selected = signature.Parameters[0];
             if (parameter.Ordinal != 0 || selected.Ordinal != 0 || parameter.Role.Name != "this_parameter" ||
@@ -126,11 +128,11 @@ public sealed partial class CSharpEmitter
                 ValidateAggregateQualifiers(record);
                 if (record.Kind.Name is not ("tk_struct" or "tk_class") || record.IsIncomplete || record.IsPacked ||
                     record.HasVirtualBases || record.HasVirtualFunctions || record.VirtualFunctionTableVariable is not null || record.VirtualTableTableVariable is not null ||
-                    record.SubobjectPartner is { } partner && !partner.Equals(record) ||
                     record.Size is not { } size || size <= 0 || size > int.MaxValue || record.Alignment is not { } alignment ||
                     alignment != 1 && alignment != 2 && alignment != 4 && alignment != 8 || record.Layout is not { IsComplete: true } layout ||
-                    layout.NonvirtualSize != size || layout.NonvirtualAlignment != alignment)
+                    layout.NonvirtualAlignment != alignment)
                     throw Limit("The ordinary method graph requires complete nonvirtual lowered field carriers with matching complete/nonvirtual storage.", "ordinary-method");
+                ValidateOrdinaryCompleteExtent(record);
                 foreach (var field in layout.Fields)
                 {
                     ValidateAggregateQualifiers(field.Field.Type);
@@ -197,6 +199,13 @@ public sealed partial class CSharpEmitter
                 throw Limit("The ordinary Boolean body supports no lifetime or EH execution obligations.", "ordinary-method");
             foreach (var local in body.Locals)
             {
+                if (IsPointerMethod(plan.Function))
+                {
+                    ValidatePointerMethodLocal(plan.Function, local);
+                    if (local.Details.StorageDuration?.Name != "automatic" || local.IsThreadLocal || local.LocalStaticInitializations.Count != 0)
+                        throw Limit("The ordinary pointer body requires automatic scalar/pointer locals.", "ordinary-method");
+                    continue;
+                }
                 ValidateGraphBoolean(local.Type);
                 if (local.Details.StorageDuration?.Name != "automatic" || local.IsThreadLocal || local.Initializer is not null ||
                     local.ConstantInitializer is not null || local.LocalStaticInitializations.Count != 0)
@@ -206,6 +215,7 @@ public sealed partial class CSharpEmitter
             foreach (var node in nodes)
             {
                 if (node.RepresentationRole.Name != "execution") throw Limit("Ordinary method bodies require retained execution occurrences.", "ordinary-method");
+                if (ValidatePointerMethodNode(node, plan)) continue;
                 switch (node)
                 {
                     case BlockOperation { Lifetime: null }: break;
@@ -223,6 +233,7 @@ public sealed partial class CSharpEmitter
         {
             if (expression.Details.VolatileFetch) throw Limit("Volatile execution is outside the ordinary Boolean method graph.", "ordinary-method");
             ValidateAggregateQualifiers(expression.Type);
+            if (ValidatePointerMethodExpression(expression, plan)) return;
             switch (expression)
             {
                 case ReferenceOperation { Operands.Count: 0, Target: VariableSymbol variable }:
@@ -300,27 +311,27 @@ public sealed partial class CSharpEmitter
             if (!objectType.Equals(owner)) throw Limit("The lowered field receiver changes its captured containing record.", "ordinary-method");
         }
 
-        private static void ValidateOrdinaryBodyCall(CallOperation call, OrdinaryMethodBody plan)
+        private void ValidateOrdinaryBodyCall(CallOperation call, OrdinaryMethodBody plan)
         {
             var signature = plan.Function.Signature;
             if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target, Operands.Count: 0 } || !target.Equals(plan.Function) ||
                 call.TargetMethod?.Equals(plan.Function) != true || call.CallKind.Name != "direct" || call.SourceTargetMethod is not null ||
                 call.SourceDispatchKind is not null || call.Operator.RetainedVirtualCall || call.Operator.RequiresRuntimeCastCheck ||
-                !call.Operator.EvalLeftToRight || call.Operator.EvalRightToLeft || call.RepresentationRole.Name != "execution" || call.ValueCategory.Name != "prvalue" ||
+                !call.Operator.EvalLeftToRight && !IsPointerMethod(plan.Function) || call.Operator.EvalRightToLeft || call.RepresentationRole.Name != "execution" || call.ValueCategory.Name != "prvalue" ||
                 call.Call.FunctionType?.Equals(signature) != true || !call.Type.Equals(plan.Function.ReturnType) || call.Call.ReturnSlot is not null ||
                 call.Receiver is not { } receiver || GraphRepresentation(receiver.Type) is not PointerType { IsReference: false, IsRValueReference: false } actual ||
                 !GraphConstReceiver(actual).Equals(plan.Record) || call.Arguments.Count != 1 || call.Operands.Count != 2 ||
                 !call.Operands[0].Equals(call.Callee) || !call.Operands[1].Equals(receiver) || call.Arguments[0].Ordinal != 0 ||
                 !call.Arguments[0].Value.Equals(receiver) || call.Arguments[0].Role?.Equals(signature.Parameters[0].Role) != true ||
                 call.Arguments[0].Parameter?.Equals(signature.Parameters[0].Descriptor) != true)
-                throw Limit("The ordinary Boolean call requires its actual direct signature and one retained const receiver alias in order.", "ordinary-method");
+                throw Limit("The ordinary selected method call requires its actual direct signature, retained order flags and one const receiver alias.", "ordinary-method");
         }
 
         private void ValidateRegisteredOrdinaryBodyCall(CallOperation call, FunctionSymbol function)
         {
             if (ordinaryMethodBodies.ContainsKey(function) && (currentFunction is null ||
                 !ordinaryMethodBodyCalls.TryGetValue(call, out var owner) || !owner.Equals(currentFunction)))
-                throw Limit("The ordinary Boolean method is callable only at its prevalidated generated occurrences.", "ordinary-method");
+                throw Limit("The ordinary selected method is callable only at its prevalidated generated occurrences.", "ordinary-method");
         }
 
         private bool ContainsAddressOnlyPointer(CppType type)
@@ -345,7 +356,7 @@ public sealed partial class CSharpEmitter
             finally { active.Remove(raw); }
         }
 
-        private bool AddressOnlyBoundaryType(CppType type) => ContainsAddressOnlyStorage(type) ||
+        private bool AddressOnlyBoundaryType(CppType type) => ContainsBorrowedViewStorage(type) || ContainsAddressOnlyStorage(type) ||
             addressOnlyPointers.Count != 0 && MemoryRepresentationType(type) is PointerType pointer && ContainsAddressOnlyStorage(pointer.PointeeType);
 
         private void CollectOrdinaryAddressTypes()
@@ -358,6 +369,11 @@ public sealed partial class CSharpEmitter
                 previousPointers = addressOnlyPointers.Count; previousCarriers = ordinaryFieldCarriers.Count;
                 foreach (var function in functions)
                 {
+                    if (pointerMethodsActive)
+                    {
+                        Collect(function.ReturnType);
+                        foreach (var parameter in function.Parameters) Collect(parameter.Type);
+                    }
                     foreach (var local in function.Body!.Locals) Collect(local.Type);
                     foreach (var expression in ExceptionExecutionNodes(function.Body.Root).OfType<ExpressionOperation>())
                         Collect(expression.Type);
@@ -367,6 +383,7 @@ public sealed partial class CSharpEmitter
 
             void Collect(CppType type)
             {
+                if (pointerMethodsActive) CollectPointerValueType(type);
                 if (ContainsAddressOnlyStorage(type) && MemoryRepresentationType(type) is RecordType record)
                     RegisterOrdinaryFieldCarrier(record, []);
             }
@@ -374,6 +391,7 @@ public sealed partial class CSharpEmitter
 
         private void ValidateOrdinaryAddressUses()
         {
+            if (pointerMethodsActive) { ValidatePointerAddressUses(); return; }
             foreach (var function in functions)
             {
                 var body = function.Body!;
@@ -502,12 +520,14 @@ public sealed partial class CSharpEmitter
             representation = "";
             if (!addressOnlyPointers.Contains(pointer)) return false;
             if (!ordinaryAddressUsesValidated) throw Limit("Address-only pointer rendering requires completed required-use admission.", "address-only-pointer");
-            representation = "void*";
+            representation = MemoryRepresentationType(pointer.PointeeType) is RecordType record && IsBorrowedByteView(record)
+                ? BorrowedByteViewName(record) + "*" : "void*";
             return true;
         }
 
         private void ValidateOrdinaryAddressOccurrence(ExpressionOperation expression)
         {
+            ValidateOrdinaryBaseOccurrence(expression);
             if (!ContainsAddressOnlyPointer(expression.Type)) return;
             if (!ordinaryAddressUsesValidated || currentFunction is null ||
                 !addressOnlyOccurrences.TryGetValue(expression, out var owners) || !owners.Contains(currentFunction))
@@ -516,6 +536,8 @@ public sealed partial class CSharpEmitter
 
         private void ValidateOrdinaryCarrierEmission(RecordType record)
         {
+            if (unusedOrdinarySubobjectViews.Contains(record))
+                throw Limit("The occupied-subobject partner has no required value/storage projection in this ordinary graph.", "ordinary-method");
             if (ContainsAddressOnlyStorage(record) && (!ordinaryAddressUsesValidated || !ordinaryFieldCarriers.Contains(record)))
                 throw Limit("The address-only containing storage has no frozen required-carrier representation.", "address-only-pointer");
         }

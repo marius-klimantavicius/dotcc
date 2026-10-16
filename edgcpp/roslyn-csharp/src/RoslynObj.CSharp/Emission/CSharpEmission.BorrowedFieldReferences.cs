@@ -129,12 +129,12 @@ public sealed partial class CSharpEmitter
             return new(function, result, receiverType, constant, field);
         }
 
-        private static RecordType ValidateBorrowedRecord(CppType type)
+        private RecordType ValidateBorrowedRecord(CppType type)
         {
             ValidateAggregateQualifiers(type);
             if (MemoryRepresentationType(type) is not RecordType record)
                 throw Limit("The borrowed field requires a captured ordinary record representation.", "borrowed-reference");
-            ValidateOrdinaryConstRecord(record);
+            if (!pointerMethodsActive || !ordinaryFieldCarriers.Contains(record)) ValidateOrdinaryConstRecord(record);
             for (var current = type; ;)
             {
                 if (current.Size != record.Size || current.Alignment != record.Alignment || current.IsIncomplete || current.IsDependent)

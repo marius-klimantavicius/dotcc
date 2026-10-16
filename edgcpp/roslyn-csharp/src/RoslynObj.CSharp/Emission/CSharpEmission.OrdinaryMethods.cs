@@ -15,8 +15,8 @@ public sealed partial class CSharpEmitter
         {
             var candidates = functions.Where(function => function.Signature.HasThisParameter &&
                 function.SpecialFunctionKind?.Name == "sfk_none" && !IsVirtualMethod(function) && !IsBorrowedFieldMethod(function) &&
-                !ordinaryMethodBodies.ContainsKey(function)).ToArray();
-            if (candidates.Length == 0) return;
+                !ordinaryMethodBodies.ContainsKey(function) && !ordinaryConstMethods.ContainsKey(function)).ToArray();
+            if (candidates.Length == 0 && ordinaryConstMethods.Count == 0) return;
             RequireNormalLifetimeProfile();
             foreach (var function in candidates)
                 ordinaryConstMethods.Add(function, ValidateOrdinaryConstMethod(function));
@@ -101,8 +101,9 @@ public sealed partial class CSharpEmitter
             return new(function, record, pointer, receiver, field);
         }
 
-        private static void ValidateOrdinaryConstRecord(RecordType record)
+        private void ValidateOrdinaryConstRecord(RecordType record)
         {
+            if (IsBorrowedByteView(record) || IsRegisteredVirtualCarrier(record)) return;
             ValidateAggregateQualifiers(record);
             if (record.Kind.Name is not ("tk_struct" or "tk_class") || record.IsIncomplete || record.IsPacked ||
                 record.Bases.Count != 0 || record.BaseSubobjects.Count != 0 || record.HasVirtualBases || record.HasVirtualFunctions ||
