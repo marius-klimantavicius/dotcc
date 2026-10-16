@@ -10,9 +10,9 @@ const string pinnedSha256 = "cf385364234784aa0d748781d06f74161ad51d28a6a34215449
 var arguments = args.Chunk(2).ToArray();
 if (arguments.Any(pair => pair.Length != 2 || pair[0] is not ("--input" or "--output" or "--mode")) ||
     arguments.Select(pair => pair[0]).Distinct().Count() != arguments.Length || !arguments.Any(pair => pair[0] == "--output"))
-    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor|buffer-ref|boolean-conversion|boolean-callee] --output NEW_REPORT.json");
+    throw new ArgumentException("DuckdbSliceFacts [--input PINNED_ENTRY_316] [--mode four-roots|accessor|buffer-ref|boolean-conversion|boolean-callee|receiver-layout] --output NEW_REPORT.json");
 var mode = arguments.FirstOrDefault(pair => pair[0] == "--mode")?[1] ?? "four-roots";
-if (mode is not ("four-roots" or "accessor" or "buffer-ref" or "boolean-conversion" or "boolean-callee")) throw new ArgumentException("Unknown explicit root-selection mode.");
+if (mode is not ("four-roots" or "accessor" or "buffer-ref" or "boolean-conversion" or "boolean-callee" or "receiver-layout")) throw new ArgumentException("Unknown explicit root-selection mode.");
 var inputPath = Path.GetFullPath(arguments.FirstOrDefault(pair => pair[0] == "--input")?[1] ?? pinnedPath);
 var outputPath = Path.GetFullPath(arguments.Single(pair => pair[0] == "--output")[1]);
 if (File.Exists(outputPath)) throw new ArgumentException("The evidence report must have a fresh path.");
@@ -20,7 +20,8 @@ var watch = Stopwatch.StartNew();
 var before = Hash(inputPath);
 if (before != pinnedSha256) throw new InvalidDataException("This bounded trace accepts only the frozen core entry 316 content hash.");
 using var input = RoslynObject.Open(inputPath, new ReadOptions { CachedRowCount = 4096, CachedPageCount = 128, PageSize = 128 });
-var probe = new SliceProbe(input, mode != "four-roots", mode == "buffer-ref", mode is "boolean-conversion" or "boolean-callee", mode == "boolean-callee");
+var probe = new SliceProbe(input, mode != "four-roots", mode == "buffer-ref", mode is "boolean-conversion" or "boolean-callee" or "receiver-layout",
+    mode is "boolean-callee" or "receiver-layout", mode == "receiver-layout");
 var report = probe.Build();
 var after = Hash(inputPath);
 report["input"] = new { path = inputPath, sha256 = before, bytes = new FileInfo(inputPath).Length, afterSha256 = after, unchanged = before == after };
@@ -34,16 +35,16 @@ return report["traceComplete"] is true ? 0 : 3;
 
 static string Hash(string path) { using var stream = File.OpenRead(path); return Convert.ToHexStringLower(SHA256.HashData(stream)); }
 
-internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, bool bufferReferenceRoot = false, bool booleanConversionRoot = false, bool booleanCalleeRoot = false)
+internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, bool bufferReferenceRoot = false, bool booleanConversionRoot = false, bool booleanCalleeRoot = false, bool receiverLayoutRoot = false)
 {
     private const int NameLimit = 64, SymbolsPerKey = 4, ConstantUnits = 256;
     private int RootLimit => accessorRoot ? 1 : 4;
     private int OperationsPerRoot => accessorRoot ? 64 : 256;
     private int OccurrencesPerRoot => accessorRoot ? 256 : 4096;
-    private int DepthLimit => accessorRoot ? 32 : 128;
+    private int DepthLimit => receiverLayoutRoot ? ReceiverLayoutWrapperDepth : accessorRoot ? 32 : 128;
     private int DependencyLimit => accessorRoot ? 16 : 256;
     private int TypeLimit => accessorRoot ? 64 : 256;
-    private int FieldsPerType => accessorRoot ? 32 : 64;
+    private int FieldsPerType => receiverLayoutRoot ? ReceiverLayoutFields : accessorRoot ? 32 : 64;
     private int ParameterLimit => accessorRoot ? 16 : 32;
     private const int LocalsPerRoot = 128, RegionsPerRoot = 64, CleanupActionsPerRoot = 128, RecipesPerRoot = 128, FacetsPerNode = 64, EntityLimit = 8192;
     private long CommandLimit => accessorRoot ? 10000 : 20000;
@@ -64,6 +65,10 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
     private Dictionary<string, object?>? bufferReferenceSelection;
     private Dictionary<string, object?>? booleanConversionSelection;
     private Dictionary<string, object?>? booleanCalleeSelection;
+    private const int ReceiverLayoutRecords = 8, ReceiverLayoutFields = 16, ReceiverLayoutBases = 4, ReceiverLayoutSubobjects = 8, ReceiverLayoutWrapperDepth = 16;
+    private CallOperation? receiverLayoutCall;
+    private Dictionary<string, object?>? receiverLayoutAudit;
+    private readonly Dictionary<RecordType, Dictionary<string, object?>> receiverLayoutRecords = [];
     private string? currentRoot;
     private string? currentPath;
     private HashSet<VariableSymbol> rootStorage = [];
@@ -135,6 +140,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             if (selected.Count != RootLimit || selected.Distinct().Count() != RootLimit) throw new TraceBound("The selected distinct root set was not reproduced.");
             foreach (var function in selected)
             {
+                if (receiverLayoutRoot) { AuditReceiverLayouts(function); continue; }
                 TraceRoot(function);
                 if (bufferReferenceRoot) roots[^1]["referenceReturnFactsNotAdmission"] = ReferenceReturnFacts(function);
                 else if (booleanCalleeRoot) roots[^1]["selectedCalleeFactsNotAdmission"] = BooleanConversionFacts(function);
@@ -142,15 +148,21 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                 else if (accessorRoot) roots[^1]["accessorFactsNotAdmission"] = AccessorFacts(function);
             }
             currentRoot = null; currentPath = "related-types";
-            while (pendingTypes.TryDequeue(out var type)) { DescribeType(type); CheckResources(); }
+            while (pendingTypes.TryDequeue(out var type))
+            {
+                if (receiverLayoutRoot) DescribeReceiverLayoutType(type); else DescribeType(type);
+                CheckResources();
+            }
             CheckResources();
         }
         catch (TraceBound error) { AddIssue("truncation-or-bound", error.Message); }
         catch (Exception error) { AddIssue("reader-or-trace-failure", error.Message); }
         var manifest = input.Manifest; var statistics = input.Statistics;
-        var result = Row(("probeVersion", booleanCalleeRoot ? 6 : booleanConversionRoot ? 5 : bufferReferenceRoot ? 4 : accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
+        var result = Row(("probeVersion", receiverLayoutRoot ? 7 : booleanCalleeRoot ? 6 : booleanConversionRoot ? 5 : bufferReferenceRoot ? 4 : accessorRoot ? 3 : 1), ("traceComplete", issues.Count == 0 && roots.Count == RootLimit),
             ("inventoryOnly", true), ("translatorAccepted", false), ("linkClosureComplete", false), ("generatedExecutionAccepted", false),
-            ("scope", booleanCalleeRoot
+            ("scope", receiverLayoutRoot
+                ? "Type-only receiver layout audit anchored to the reproduced And/accessor/Boolean/sole-callee identity chain. No typed body trace. Only explicit selected receiver/generated-field-owner, immediate value-field/direct-base records and one partner each receive layout rows; pointer pointees and further layout associations are not expanded. No inferred occupied extent, ownership, full closure, no-throw or translator admission."
+                : booleanCalleeRoot
                 ? "One actual sole executable direct-call target body selected from the reproduced Boolean conversion. And, accessor, conversion and nested receiver inventories are selection-only, outside target-body counts. Shallow types only; no callee recursion, full metadata closure, ownership, closed no-throw or translator admission."
                 : booleanConversionRoot
                 ? "One actual Boolean conversion callee body selected from the typed negated direct-call condition in the reproduced Vector accessor. And and parent identities are selection-only. Types are shallow facts with unexpanded associations; no callee recursion, translation, closed no-throw or ownership admission."
@@ -159,7 +171,9 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                 : accessorRoot
                 ? "One core-entry-316 GetVectorType candidate body selected by actual public identity intersection with retained direct calls in a separately bounded And identity inventory. Only that target receives typed body tracing; no callee bodies or other units. Shape comparison is partial evidence, not translator admission or full metadata/dependency closure."
                 : "Exactly four retained core-entry-316 And/Or root bodies; one-hop call, cleanup and storage declaration dependencies only. No callee bodies or other translation units are traversed. Trace completeness concerns bounded typed containment, not complete metadata or dependency closure."),
-            ("semantics", "Local locators use public semantic equality. Typed containment paths preserve repeated operation identities and retained operands; they are not an evaluation schedule. Call receiver/result/argument facets alias raw operands and add no evaluation. Structural relations are audited independently, never used as a fallback traversal. Metadata associations are deduplicated without inventing ownership or execution; their ordinary cycles do not fail the trace."),
+            ("semantics", receiverLayoutRoot
+                ? "Local locators use public semantic equality. All operation inventories are selector/receiver identity evidence, never typed body occurrences or an evaluation schedule. Layout and type associations are metadata-only; no body, ownership, occupied-size formula or C++ semantic revalidation is performed."
+                : "Local locators use public semantic equality. Typed containment paths preserve repeated operation identities and retained operands; they are not an evaluation schedule. Call receiver/result/argument facets alias raw operands and add no evaluation. Structural relations are audited independently, never used as a fallback traversal. Metadata associations are deduplicated without inventing ownership or execution; their ordinary cycles do not fail the trace."),
             ("bounds", new { NameLimit, SymbolsPerKey, RootLimit, OperationsPerRoot, OccurrencesPerRoot, DepthLimit, DependencyLimit, TypeLimit, FieldsPerType, ParameterLimit,
                 ConstantUnits, LocalsPerRoot, RegionsPerRoot, CleanupActionsPerRoot, RecipesPerRoot, FacetsPerNode, EntityLimit, CommandLimit, RowLimit,
                 CachedRows = 4096, CachedPages = 128, PageSize = 128, MaximumBatch = 900,
@@ -172,7 +186,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             ("statistics", new { statistics.Commands, statistics.RowsRead, statistics.CachedRows, statistics.CachedPages, statistics.MaximumBatchSize }));
         if (accessorRoot)
         {
-            result["rootSelectionMode"] = booleanCalleeRoot ? "boolean-callee" : booleanConversionRoot ? "boolean-conversion" : bufferReferenceRoot ? "buffer-ref" : "accessor";
+            result["rootSelectionMode"] = receiverLayoutRoot ? "receiver-layout" : booleanCalleeRoot ? "boolean-callee" : booleanConversionRoot ? "boolean-conversion" : bufferReferenceRoot ? "buffer-ref" : "accessor";
             result["accessorSelectionIdentityInventoryNotSchedule"] = accessorSelectionInventory;
             result["accessorSelectionBounds"] = new { AccessorSelectionRoots, AccessorSelectionOperationsPerRoot, AccessorSelectionCalls,
                 NameLimit, SymbolsPerKey, includedInTargetBodyCounters = false,
@@ -199,6 +213,18 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                 result["booleanCalleeSelectionBounds"] = new { ParentOperationLimit = BufferParentOperationLimit,
                     ReceiverExpressionIdentityLimit = BufferParentOperationLimit, ReceiverDepthLimit = DepthLimit,
                     selectedTargetCount = 1, includesParentOrReceiverInventoryInTargetBodyCounters = false };
+            }
+            if (receiverLayoutRoot)
+            {
+                result["noBodyTrace"] = true;
+                result["typedBodyOperationIdentityCount"] = 0;
+                result["typedBodyOccurrenceCount"] = 0;
+                result["receiverLayoutAuditNotExecution"] = receiverLayoutAudit;
+                result["receiverLayoutBounds"] = new { RecordLimit = ReceiverLayoutRecords, TypeLimit,
+                    FieldsPerRecord = ReceiverLayoutFields, DirectBasesPerRecord = ReceiverLayoutBases,
+                    SubobjectsPerRecord = ReceiverLayoutSubobjects, WrapperDepth = ReceiverLayoutWrapperDepth,
+                    includesSelectionInventoryInBodyCounters = false };
+                result["relatedTypeScope"] = "Type-only explicit layout seed audit. Related selector descriptors retain identities/representation only; wrapper chains are bounded, pointer pointees never automatically expand, and unseeded record layouts, fields, bases, methods and RTTI remain unexpanded.";
             }
         }
         return result;
@@ -348,6 +374,7 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
             callee.RepresentationRole.Name != "execution" || call.TargetMethod?.Equals(target) != true ||
             !target.IsDefined || target.BodyState.Name != "definition" || target.Body is null || call.Call.FunctionType?.Equals(target.Signature) != true)
             throw new TraceBound("The sole conversion call does not name the same actual defined direct callee and selected signature.");
+        if (receiverLayoutRoot) receiverLayoutCall = call;
         var receiverParameters = Bounded(target.Signature.Parameters, ParameterLimit, "Selected callee formal receiver parameters")
             .Where(parameter => parameter.Role.Name == "this_parameter").ToArray();
         var formalReceiver = receiverParameters.Length == 1 ? receiverParameters[0] : null;
@@ -402,6 +429,191 @@ internal sealed class SliceProbe(RoslynObject input, bool accessorRoot = false, 
                 foreach (var operand in Bounded(expression.Operands, FacetsPerNode, "Selection receiver raw operand identities")) Walk(operand, depth + 1);
             }
             finally { active.Remove(expression); }
+        }
+    }
+
+    private void AuditReceiverLayouts(FunctionSymbol function)
+    {
+        currentRoot = Ref(function); currentPath = "type-only/receiver-layout";
+        var selected = Function(function);
+        selected["bodyTracePerformed"] = false;
+        selected["operationIdentityCount"] = 0;
+        selected["typedOccurrenceCount"] = 0;
+        selected["typedOccurrencesNotSchedule"] = Array.Empty<object>();
+        roots.Add(selected);
+        var call = receiverLayoutCall ?? throw new TraceBound("The selected receiver-layout call association is absent.");
+        var receiverParameters = Bounded(function.Signature.Parameters, ParameterLimit, "Layout receiver parameters")
+            .Where(parameter => parameter.Role.Name == "this_parameter").ToArray();
+        if (receiverParameters.Length != 1 || TypeLeaf(receiverParameters[0].Type) is not PointerType pointer ||
+            TypeLeaf(pointer.PointeeType) is not RecordType receiverRecord ||
+            call.Receiver is not OperatorOperation { OperatorKind.Name: "eok_address_of", Operands.Count: 1 } address ||
+            address.Operands[0] is not OperatorOperation { OperatorKind.Name: "eok_dot_field", Operands.Count: 2 } basePlace ||
+            basePlace.Operands[1] is not ReferenceOperation { Target: FieldSymbol baseField } || !baseField.IsGeneratedBase ||
+            basePlace.Operands[0] is not OperatorOperation { OperatorKind.Name: "eok_points_to_field", Operands.Count: 2 } memberPlace ||
+            memberPlace.Operands[1] is not ReferenceOperation { Target: FieldSymbol memberField } ||
+            baseField.ContainingType is not RecordType baseOwner)
+            throw new TraceBound("The selected actual receiver does not expose the approved address/member/generated-base layout associations.");
+
+        var bindings = new[] { ReceiverLayoutField(memberField), ReceiverLayoutField(baseField) };
+        var seeds = new List<(RecordType Record, string Reason)> { (receiverRecord, "selected-formal-receiver"), (baseOwner, "actual-generated-base-field-owner") };
+        foreach (var baseClass in Bounded(receiverRecord.Bases, ReceiverLayoutBases, "Selected receiver direct-base seeds")
+                     .Concat(Bounded(baseOwner.Bases, ReceiverLayoutBases, "Actual base-field owner direct-base seeds")))
+        {
+            if (TypeLeaf(baseClass.BaseType) is RecordType baseSeedRecord) seeds.Add((baseSeedRecord, "explicit-direct-base"));
+            else AddIssue("layout-base-kind-unknown", "The explicit direct-base type is not a record after its captured wrapper chain.", baseClass.BaseType);
+        }
+        foreach (var field in Bounded(receiverRecord.Fields, ReceiverLayoutFields, "Selected receiver immediate value-field seeds"))
+        {
+            if (TypeLeaf(field.Type) is RecordType fieldSeedRecord) seeds.Add((fieldSeedRecord, "selected-receiver-immediate-by-value-field"));
+        }
+
+        receiverLayoutAudit = Row(("selectedFunction", Ref(function)), ("selectedCallAssociationNotExecution", Ref(call)),
+            ("selectedReceiverRecord", TypeRef(receiverRecord)), ("actualGeneratedBaseFieldOwner", TypeRef(baseOwner)),
+            ("selectedReceiverRecordMatchesThisClass", function.Signature.ThisClass?.Equals(receiverRecord) == true),
+            ("actualGeneratedBaseFieldTypeMatchesReceiverRecord", TypeLeaf(baseField.Type).Equals(receiverRecord)),
+            ("actualMemberTypeMatchesGeneratedBaseFieldOwner", TypeLeaf(memberField.Type).Equals(baseOwner)),
+            ("selectedFieldBindings", bindings), ("records", receiverLayoutRecords.Values),
+            ("bodyTracePerformed", false), ("typedBodyOperationIdentityCount", 0), ("typedBodyOccurrenceCount", 0),
+            ("noExecutionOrOwnershipSchedule", true),
+            ("occupiedExtentPolicy", "Complete type, nonvirtual layout and explicit subobject-partner quantities remain separate captured facts. BaseSubobject exposes no size quantity; no occupied extent, EBO formula or field-gap size is synthesized. Its absent size is not an audit failure."),
+            ("unexpandedPolicy", "Only explicit receiver/field-owner, direct-base and immediate value-field record seeds plus one partner each receive full rows. Further fields/bases/partners and pointer pointees remain associations; no methods, bodies, constants, RTTI or ownership graph is traversed."));
+        foreach (var (seedRecord, reason) in seeds)
+        {
+            AuditReceiverRecord(seedRecord, reason);
+            if (seedRecord.SubobjectPartner is { } partner && TypeLeaf(partner) is RecordType partnerSeedRecord)
+                AuditReceiverRecord(partnerSeedRecord, "one-explicit-subobject-partner");
+        }
+        CheckResources(); currentRoot = null;
+    }
+
+    private Dictionary<string, object?> ReceiverLayoutField(FieldSymbol field)
+    {
+        var owner = field.ContainingType;
+        var layout = owner?.Layout;
+        FieldSymbol[] declared = owner is null ? [] : Bounded(owner.Fields, ReceiverLayoutFields, "Explicit field declaring-owner fields")
+            .Where(candidate => candidate.Equals(field)).ToArray();
+        FieldLayout[] entries = layout is null ? [] : Bounded(layout.Fields, ReceiverLayoutFields, "Explicit field declaring-owner layout")
+            .Where(entry => entry.Field.Equals(field)).ToArray();
+        var leaf = TypeLeaf(field.Type);
+        return Row(("locator", Ref(field)), ("nameForDisplayOnly", field.Name), ("owner", TypeRef(owner)), ("declaredType", TypeRef(field.Type)),
+            ("declaredTypeLeaf", TypeRef(leaf)), ("effectiveSize", Number(field.Type.Size)), ("effectiveAlignment", Number(field.Type.Alignment)),
+            ("retainedHelperSize", Number(field.Type.EffectiveSize)), ("retainedHelperAlignment", Number(field.Type.EffectiveAlignment)),
+            ("descriptorSize", Number(field.Type.DescriptorSize)), ("descriptorAlignment", Number(field.Type.DescriptorAlignment)),
+            ("ownerDeclaresIdenticalField", declared.Length == 1), ("ownerHasOneIdenticalFieldLayout", entries.Length == 1),
+            ("layoutEntries", entries.Select(entry => new { entry.Ordinal, field = Ref(entry.Field), owner = Ref(entry.Owner),
+                ownerType = TypeRef(entry.Owner.Type), offset = Number(entry.Offset), bitOffset = Number(entry.BitOffset),
+                bitWidth = Number(entry.BitWidth), containerOffset = Number(entry.ContainerOffset) }).ToArray()),
+            ("flags", new { field.IsGeneratedBase, field.IsGeneratedVirtualPointer, field.IsMutable, field.IsBitField,
+                field.IsPacked, field.HasNoUniqueAddressAttribute, explicitAlignment = Number(field.ExplicitAlignment) }),
+            ("storageRole", leaf is PointerType ? "pointer-storage-only-pointee-unexpanded" : leaf is RecordType ? "immediate-by-value-record-association" : "captured-value-storage"),
+            ("wrapperFactsDescribed", true), ("pointeeGraphExpanded", false));
+    }
+
+    private void AuditReceiverRecord(RecordType record, string reason)
+    {
+        if (receiverLayoutRecords.TryGetValue(record, out var existing))
+        {
+            var reasons = (List<string>)existing["seedReasons"]!;
+            if (!reasons.Contains(reason, StringComparer.Ordinal)) reasons.Add(reason);
+            return;
+        }
+        if (receiverLayoutRecords.Count == ReceiverLayoutRecords) throw new TraceBound("Receiver-layout explicit record bound exceeded.");
+        var row = Row(("locator", TypeRef(record)), ("seedReasons", new List<string> { reason }));
+        receiverLayoutRecords.Add(record, row);
+        var layout = record.Layout;
+        row["nameForDisplayOnly"] = record.Name;
+        row["typeExtent"] = ReceiverLayoutExtent(record);
+        row["recordFlags"] = new { definitionState = record.DefinitionState.Name, record.Record.HasSubobjectType,
+            record.IsEmpty, record.IsPacked, record.HasVirtualBases, record.HasVirtualFunctions,
+            maximumMemberAlignment = Number(record.MaximumMemberAlignment) };
+        var partner = record.SubobjectPartner;
+        row["subobjectPartner"] = new { type = TypeRef(partner), sameIdentity = partner?.Equals(record),
+            reciprocalIdentity = partner is RecordType partnerRecord ? (bool?)partnerRecord.SubobjectPartner?.Equals(record) : null,
+            extent = partner is null ? null : ReceiverLayoutExtent(partner), furtherPartnerTraversal = false };
+        row["layout"] = layout is null ? null : new { locator = Ref(layout), type = TypeRef(layout.Type),
+            typeIdentityMatches = layout.Type.Equals(record), layout.IsComplete, size = Number(layout.Size), alignment = Number(layout.Alignment),
+            nonvirtualSize = Number(layout.NonvirtualSize), nonvirtualAlignment = Number(layout.NonvirtualAlignment),
+            fields = Bounded(layout.Fields, ReceiverLayoutFields, "Receiver-layout field rows").Select(entry => new {
+                entry.Ordinal, field = Ref(entry.Field), offset = Number(entry.Offset), bitOffset = Number(entry.BitOffset),
+                bitWidth = Number(entry.BitWidth), containerOffset = Number(entry.ContainerOffset) }).ToArray() };
+        row["fields"] = Bounded(record.Fields, ReceiverLayoutFields, "Receiver-layout explicit fields").Select(ReceiverLayoutField).ToArray();
+        row["directBases"] = Bounded(record.Bases, ReceiverLayoutBases, "Receiver-layout direct bases").Select(baseClass => new {
+            baseClass.Ordinal, owner = TypeRef(baseClass.Owner), baseType = TypeRef(baseClass.BaseType), baseClass.IsVirtual,
+            access = baseClass.Access?.Name, subobject = Ref(baseClass.Subobject),
+            subobjectBaseTypeMatches = baseClass.Subobject?.BaseType.Equals(baseClass.BaseType),
+            furtherBaseLayoutExpansion = false }).ToArray();
+        row["baseSubobjects"] = Bounded(record.BaseSubobjects, ReceiverLayoutSubobjects, "Receiver-layout base subobjects")
+            .Select(ReceiverLayoutSubobject).ToArray();
+        row["primaryBaseSubobjectAssociationUnexpanded"] = Ref(record.PrimaryBaseSubobject);
+        row["virtualTableAssociationUnexpanded"] = Ref(record.VirtualFunctionTableVariable);
+        row["vttAssociationUnexpanded"] = Ref(record.VirtualTableTableVariable);
+        if (layout is null) AddIssue("selected-layout-unavailable", "An explicit record seed has no retained layout; its facts remain unknown.", record);
+        CheckResources();
+    }
+
+    private Dictionary<string, object?> ReceiverLayoutSubobject(BaseSubobject subobject)
+    {
+        return Row(("locator", Ref(subobject)), ("mostDerivedType", TypeRef(subobject.MostDerivedType)),
+            ("baseType", TypeRef(subobject.BaseType)), ("originalType", TypeRef(subobject.OriginalType)),
+            ("offset", Number(subobject.Offset)), ("directBaseNumber", subobject.DirectBaseNumber),
+            ("completeSubobject", subobject.IsCompleteSubobject),
+            ("flags", new { subobject.IsVirtual, subobject.IsDirect, subobject.IsAmbiguous, subobject.IsOptimizedEmptyBase,
+                subobject.IsPackExpansion, subobject.SharesVirtualFunctionInfo, subobject.HasPublicDerivation }),
+            ("retainedBaseTypeExtentNotOccupiedSize", ReceiverLayoutExtent(subobject.BaseType)),
+            ("occupiedSize", null), ("occupiedSizeSynthesized", false),
+            ("occupiedSizeStatus", "No public BaseSubobject size quantity; separate type/nonvirtual/partner facts are retained without an inferred extent."),
+            ("primaryBaseSubobjectAssociationUnexpanded", Ref(subobject.PrimaryBaseSubobject)),
+            ("dataSectionBaseSubobjectAssociationUnexpanded", Ref(subobject.DataSectionBaseSubobject)),
+            ("virtualBasePointerBaseSubobjectAssociationUnexpanded", Ref(subobject.VirtualBasePointerBaseSubobject)),
+            ("virtualBasePointerOffset", Number(subobject.VirtualBasePointerOffset)),
+            ("virtualTableAssociationUnexpanded", Ref(subobject.VirtualFunctionTableVariable)));
+    }
+
+    private Dictionary<string, object?> ReceiverLayoutExtent(CppType type)
+    {
+        var layout = type is RecordType record ? record.Layout : null;
+        return Row(("type", TypeRef(type)), ("size", Number(type.Size)), ("alignment", Number(type.Alignment)),
+            ("effectiveSize", Number(type.EffectiveSize)), ("effectiveAlignment", Number(type.EffectiveAlignment)),
+            ("descriptorSize", Number(type.DescriptorSize)), ("descriptorAlignment", Number(type.DescriptorAlignment)),
+            ("sizeKind", type.Details.SizeKind.Name), ("isIncomplete", type.IsIncomplete), ("descriptorIncomplete", type.DescriptorIsIncomplete),
+            ("layoutIsComplete", layout?.IsComplete), ("nonvirtualSize", Number(layout?.NonvirtualSize)),
+            ("nonvirtualAlignment", Number(layout?.NonvirtualAlignment)), ("role", "captured-type-quantity-not-a-synthesized-occupied-extent"));
+    }
+
+    private void DescribeReceiverLayoutType(CppType type)
+    {
+        var row = ReceiverLayoutExtent(type);
+        row["locator"] = Ref(type); row["kind"] = type.Kind.Name; row["nameForDisplayOnly"] = type.Name;
+        row["descriptionScope"] = "Type-only descriptor facts. Only explicit record seeds receive grouped layout rows; pointer pointees and other record associations are not enqueued.";
+        types[type] = row;
+        switch (type)
+        {
+            case TypeReference reference:
+                var underlying = reference is QualifiedType qualifiedReference ? qualifiedReference.UnderlyingType : reference.UnderlyingType;
+                row["underlyingType"] = Ref(underlying);
+                row["underlyingTypeDescribed"] = types.ContainsKey(underlying);
+                if (reference is QualifiedType qualified)
+                {
+                    var facts = qualified.Qualification;
+                    row["qualifiers"] = new { qualified.IsConst, qualified.IsVolatile, facts.IsAtomic,
+                        addressSpace = facts.AddressSpace?.ToString(CultureInfo.InvariantCulture), facts.IsShared,
+                        facts.IsUpcStrict, facts.IsUpcRelaxed, facts.IsNear, facts.IsFar, facts.IsUnaligned };
+                }
+                break;
+            case PointerType pointer:
+                row["pointeeAssociationUnexpanded"] = Ref(pointer.PointeeType);
+                row["reference"] = pointer.IsReference; row["rvalueReference"] = pointer.IsRValueReference;
+                row["pointerPointeeTraversalPerformed"] = false;
+                break;
+            case RecordType record:
+                row["explicitLayoutAuditIncluded"] = receiverLayoutRecords.ContainsKey(record);
+                row["subobjectPartnerAssociation"] = Ref(record.SubobjectPartner);
+                row["otherRecordAssociationsExpanded"] = false;
+                break;
+            case ArithmeticType arithmetic:
+                row["arithmetic"] = new { kind = arithmetic.Arithmetic.ArithmeticKind.Name, arithmetic.Arithmetic.Bits, arithmetic.Arithmetic.Signed };
+                break;
+            default: row["otherTypeAssociationsExpanded"] = false; break;
         }
     }
 

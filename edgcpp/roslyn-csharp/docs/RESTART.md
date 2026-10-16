@@ -84,7 +84,7 @@ base and other record association edges remain explicitly unexpanded. All
 translator/link/generated-execution/full-closure flags are false. Read
 [the bounded facts](DUCKDB-BOOLEAN-CONVERSION.md).
 
-The next selected callee inspection also passes within its separate one-body/
+Tool/evidence checkpoint `c64ab5dec` saves the next selected callee inspection, which also passes within its separate one-body/
 shallow scope. Receipt `acceptance/duckdb/boolean-callee-trace-report.json`, SHA-256
 `656dc52a2fe233c94b510dba83193b27fd4657fcb257e1e0a115ab0a5a3981b4`,
 records two successful measured phases, 48 frozen source/build files, unchanged
@@ -113,6 +113,44 @@ edits before facts/proposal review, no name-based shared_ptr behavior, no NoThro
 cache widening or DuckDB execution claim. Emission prepares the proposal,
 inventory maintains the scoped notes, and coordinator owns builds/runs/Git.
 Product remains de39c8bb9; Runtime/providers remain unchanged.
+
+The approved `receiver-layout` audit now passes within its exact type-only scope.
+Receipt `acceptance/duckdb/receiver-layout-report.json`, SHA-256
+`8ba1c79c88dd1aaeb488338c585f90a9875263870bccac22e2f70901562c7f9e`,
+records two successful phases, 48 frozen source/build files, unchanged input,
+four explicit records/33 shallow type rows, zero typed body identities/occurrences
+and no issues or resource violation. Full facts are
+`t5/duckdb-receiver-layout-facts-1.json`; snapshot is
+`t5/duckdb-receiver-layout-source-1`. All acceptance/NoThrow/full-closure flags
+remain false. No builder/export/test process remains active.
+
+Actual receiver record 69 is complete/nonvirtual 16/8 with self partner, pointer
+field 90 at 0 and refcount field 91 (record 88) at 8. Its direct empty base 86
+has explicit IsEmpty=true, size/alignment 1/1, self partner and no fields;
+subobject 92 is optimized-empty at 0. Parent 81 is complete/nonvirtual 16/8/self
+and embeds generated field 80 of exact record 69 at 0, with reciprocal direct
+base/subobject 93. Parent indirect empty subobject 94 instead has optimized=false
+and originalType=null; do not impose the direct flag or materialize 94 separately.
+Refcount record 88 is complete/nonvirtual 8/8/self with one ordinary pointer at 0.
+No BaseSubobject occupied size is synthesized. Captured lowered fields and complete
+sizes supply the recursive carriers for these accesses; no EBO reconstruction is
+needed. Pointer pointee graphs remain unexpanded.
+
+Next root-approved direction is one cohesive borrowed-reference/delegating
+conversion/pointer-test capture and reusable supported-body/lowered-layout
+admission. Emission is actively settling the separate pointer-only representation
+policy before product edits: current TypeName eagerly schedules complete pointee
+records, while this graph transports/compares pointer values only. No global
+record erasure or fake empty complete type; any scoped address-only view needs
+actual required-use reconciliation and consistent dereference/stride/value/ABI
+exclusions. Retained nonrequired declarations are not executable uses. Complete
+abstract/virtual pointee stimulus may use explicitly cast aligned sentinel
+addresses without constructing/dereferencing that class. This proves address
+handling only, not class execution. Include genuine empty-base metadata and require
+actual captured generated-base forwarding in the composite fixture. Captured facts
+and scoped plan must be reviewed before implementation; NoThrow/caller cleanup
+permissions stay unchanged. Inventory owns the compact audit note, emission the
+read-only proposal, coordinator all builds/runs/Git. Product stays de39c8bb9.
 
 ## Earlier accepted checkpoint history
 
