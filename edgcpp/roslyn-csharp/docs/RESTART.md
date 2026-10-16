@@ -5,11 +5,11 @@
 Work remains authorized after the user unpaused. SQLite T0–T4 are closed for
 configured finite Linux x64 acceptance. Actual readable source is
 `/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`;
-its source13/runtime11 attribution is unchanged. Broader C++ T5 and portability/
+its source 13/runtime 11 attribution is unchanged. Broader C++ T5 and portability/
 scale T6 remain open. This section overrides historical state below.
 
-Current verified borrowed-member milestone is ready for exact-path commit after
-root review. Previous HEAD is `21bf9f35c`, following ordinary const field methods
+Current verified borrowed-member milestone is `de39c8bb9`. Prior tool HEAD was
+`21bf9f35c`, following ordinary const field methods
 `4538211f2` and mutable/const aliasing `cd36a75d1`. Compact receipt:
 `acceptance/lifetimes/borrowed-field-reference-report.json`, SHA-256
 `dfb3271496ef2111bbd46e6b4b0e2caf1125908ea4eff39344a84e6855d2f737`.
@@ -28,8 +28,8 @@ required imports or diagnostics. Both native/JIT/AOT observations repeat result
 36, values `[5,7,11,13,1,1,1,1,0]`, events `[100,205,307,400,511,613,704]`.
 Generated source is identical across the captures, but their source/input/report/
 completion and checker invocation provenance remain separately attributable.
-Physical JIT/AOT measures Member 8/4 with fields 0/4 and Owner 16/8 with canary0/
-payload8, sequential-prefix alignment 4/8 and array stride 8/16. Actual getter calls
+Physical JIT/AOT measures Member 8/4 with fields 0/4 and Owner 16/8 with canary 0/
+payload 8, sequential-prefix alignment 4/8 and array stride 8/16. Actual getter calls
 on two owners return their exact distinct payload addresses at +8; stored pointers
 observe both subsequent owner mutations and preserve full-width signed canaries.
 Zero live slots are protocol only, not an ownership/lifetime-extension proof.
@@ -62,19 +62,36 @@ partial and main/Lifetimes/OrdinaryMethods hooks). Inventory owns completed chec
 three genuine fixtures and proof note. Exact paths only when committing; preserve
 the two unrelated pre-existing T3 aggregate fixtures and all failed artifacts.
 
-Next after saving this verified milestone: root approved tool-only inspection of
-the actual Boolean conversion callee in GetVectorType's retained eok_not condition.
-Reproduce existing And→accessor identity selection; require actual direct callee
-reference equals TargetMethod and select the unique condition target. Current
-report labels call62/target63/body70 are citations, never handles. Formal const
-record receiver and actual const→field-alias receiver must remain separate facts.
-Trace just this one body under existing 64-operation/256-occurrence/depth32,
-16-dependency/64-shallow-type limits, with no recursive callees/full type closure,
-source-level conversion lookup, runtime/product widening or translation claim.
-Coordinator serializes the frozen tool build/run; obtain actual findings before
-any product proposal. Existing accessor report is partial (body complete, related
-metadata bounded), while GetBufferRef report is complete only within its declared
-seven-node/shallow-type scope. Preserve both and the original four-root trace.
+Current tool-only Boolean conversion inspection passes within its declared
+one-body/shallow-type scope. Compact receipt
+`acceptance/duckdb/boolean-conversion-trace-report.json`, SHA-256
+`190389570907e489242aba5128410b35a4b791e3d096c7412ee4403c9486a1e1`,
+records two successful measured phases, 48 frozen tool/reader/build files,
+unchanged pinned core 316 input, 15 typed identities/occurrences, 33 shallow types,
+one direct dependency and zero issues/resource violations. Full facts are
+`t5/duckdb-boolean-facts-1.json`; source is `t5/duckdb-boolean-source-1`.
+Prior modes/default regression retain original evidence; new mode is additive.
+
+The actual selected conversion body assigns a Boolean local from a direct call
+on the address of nested captured fields, then returns that local. It is not a
+terminal pointer test. Current report call 68 selects defined conversion 69 with
+body 75 untraversed; labels are citations only. Both conversion declarations have
+captured noexcept=true, while the parent remains null, but no closed no-throw
+body or caller cleanup-marker permission is established. Parent actual receiver
+42→const 54→alias 58→record 52 and formal 41→const 53→record 52 remain different
+pointer/pointee identities; shared leaf identity is descriptive only. Nonvirtual
+base and other record association edges remain explicitly unexpanded. All
+translator/link/generated-execution/full-closure flags are false. Read
+[the bounded facts](DUCKDB-BOOLEAN-CONVERSION.md).
+
+Next proposed read-only step: reproduce the same current-input selector, then
+follow the selected body's sole actual direct-call callee/TargetMethod equality
+and trace only that dependency body under the same 64-operation/256-occurrence/
+depth 32, 16-dependency/64-shallow-type limits. Do not invent a pointer-test adapter
+from a name, use old locators as handles, scan unrelated units or expand full
+metadata closure. Root reviews actual findings before product scope. Emission owns
+the tool, inventory owns the bounded note, coordinator alone schedules frozen
+builds/runs/Git. Product remains de39c8bb9; no Runtime/provider changes.
 
 ## Earlier accepted checkpoint history
 
