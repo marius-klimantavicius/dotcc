@@ -120,15 +120,56 @@ declaration and defined-but-untraversed _M_get are distinct one-hop dependencies
 All three bodies have no local EH/lifetime tables, which does not close callees.
 See [the partial findings](DUCKDB-TAIL-DEPENDENCIES.md).
 
-No new product scope is authorized. Finalize this partial tool/evidence checkpoint,
-then propose the next cohesive requirement from actual helper/guard and storage
-facts for root review. Do not substitute pointer shortcuts, delete retained else/
-guard calls or infer behavior from names. Fixed-field access on a polymorphic
-record may use an explicit captured storage view only after a concrete reviewed
-proposal; current address-only permission does not admit the dereference. Product
-remains `16a07ae6b`; coordinator alone owns builds/Git, emission owns tool code,
-inventory owns measured notes. Runtime/providers and all prior SQLite/C++ evidence
-retain original attribution. No process remains active.
+The partial checkpoint is committed as `0df599c2b`. The next approved additive
+`arrow-callee` trace now passes both measured phases, with one actual body:
+11 identities/occurrences, 16 target-only shallow types and one defined get
+one-hop dependency. The target queue was empty before collection; 40 parent
+type associations are explicitly unexpanded and separate from target facts.
+This does not complete/relabel the prior 64-type partial report. Receipt
+`acceptance/duckdb/arrow-callee-report.json`, 76,834 bytes, SHA-256
+`eabbebcdc1e37da45b916e6a0e71afb0ec2580d82007283690eeb243564ec9b8`.
+Frozen source `t5/duckdb-arrow-callee-source-1` has 48 files; Program.cs
+SHA-256 `922dabd924c12de7e16e47a0fb239cc1209f88de09bfac7339ed10c511ecf4cb`.
+Build/trace pass in 7.212/0.904 seconds, sampled tree RSS
+465,887,232/90,857,472 bytes; input/source freezes verify.
+
+Actual _M_get body retains RTL pointer-local assignment from LTR direct get(),
+with a captured cast from its empty-base this pointer to the selected get
+receiver view, then returns the local. Declared result/local pointer aliases
+remain distinct. It has no EH/lifetime table and retained noexcept true;
+transitive no-throw, arbitrary empty-base adjustment and product admission remain
+false. See [the scoped findings](DUCKDB-ARROW-CALLEE.md).
+
+Parallel approved definition-location discovery read three manifests (485,552
+bytes) and 213 manifest-listed src/common .cpp files (3,208,264 bytes). Its sole
+identifier location is official src/common/memory_safety.cpp:11, matching pinned
+source revision. Coverage maps only to entry 293, manifest size 1,837,615,104 bytes,
+SHA-256 `e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46`.
+Location audit `t5/duckdb-definition-location-1.json` SHA-256
+`9737eac8a3d897041f33006fdff4d6122c467dba1f9c7e06c594d3df581bdcab`.
+That object is not yet opened or rehashed. Inventory owns the new standalone
+public-reader lookup tool scaffold; coordinator alone will build/run it after
+freeze. Exact final linkage comparison follows bounded display-name candidates
+(maximum four plus fifth overflow sentinel), never program-wide binding.
+Root approved 128-command/512-row lookup DELTA bounds after separately recorded
+reader Open/admission statistics. Retain complete-phase totals; whole phase remains
+120 seconds/1 GiB including hashing, Open and query.
+
+Pristine EDG bfk_expect source audit is saved as
+`t5/duckdb-expect-stock-audit-1.json`, SHA-256
+`ccc3a244490f771eb5f135cc14a19a599df4c8bc37dbd7656cd58c289de5c081`.
+It records constexpr first-argument evaluation/result and preserved nonconstant
+backend hint invocation, not a general effectful-second-argument contract.
+No intrinsic implementation is authorized by this audit alone.
+
+No product scope is authorized. Do not substitute pointer shortcuts, delete
+retained else/guard calls or infer behavior from names. Fixed-field access on a
+polymorphic record may use an explicit captured storage view only after a
+concrete reviewed proposal; current address-only permission does not admit that
+dereference. Product remains `16a07ae6b`; coordinator alone owns builds/Git,
+emission owns tool code, inventory owns read-only evidence. Runtime/providers and
+all prior SQLite/C++ evidence retain original attribution. No process remains
+active beyond the workers' bounded implementation/read-only preparation.
 
 ## Earlier accepted checkpoint history
 
