@@ -1,5 +1,61 @@
 # Implementation restart state
 
+## Current checkpoint after user resume, 2026-10-16
+
+The user explicitly unpaused; work remains authorized. SQLite T0–T4 are closed
+for their configured finite acceptance, with the actual generated source at
+`/mnt/storage/roslynobj-csharp-20261015/t4/sqlite-readable-generated-1/Generated.cs`.
+Broader T5/T6 remain open. Historical status paragraphs below retain their
+original attribution; this section is the authoritative next-action/worker state.
+
+Verified parent checkpoint is `192640cd9`, exact class payload. The new bounded
+mutable-reference milestone passes all 28 expected outcomes: 24 successful phases
+and four intended unsupported-case rejections, no unexpected outcome or budget
+violation. Compact receipt is
+`acceptance/lifetimes/mutable-reference-report.json`, SHA-256
+`68c1ac008b02db50422f18d46337128750894c8c36479816a1d3300e94045cce`.
+It freezes product `t5/mutable-reference-source-1`, separate nine-file checker
+`t5/mutable-reference-checker-source-1`, 16 genuine input objects and completion
+inventories. Every Runtime source hash remains unchanged from the class-payload
+checkpoint; providers are unchanged. No builder/export/test process remains active.
+
+Production CLI output `t5/mutable-reference-cli-generated-1` publishes all eight
+bodies without required imports or diagnostics. Native/JIT/AOT twice return 54,
+values `[8,12,5,7,0,11,23,1,0]`, events `[108,212,300,111,223,301]`, zero overflow
+and protocol-live count. Physical JIT/AOT checks actual Cell size 8, fields 0/4
+and sequential-prefix alignment 4. Cell has no counted resources; protocol zeros
+do not prove ownership or destruction. Generated source/project repeat byte-for-
+byte; program reports agree after output-directory normalization. Earlier normal
+const-reference, int EH and exact class-payload sources remain byte-identical
+and pass affected JIT/AOT regressions. Four existing name/handler-new-throw/
+noexcept admission negatives remain unpublished. No broader SQLite rerun occurred.
+
+The reference-only capability registers the exact generated void noexcept helper,
+its mutable and const natural 8/8 pointer views of the same complete Cell 8/4,
+and two actual calls from one captured noexcept caller. Const temporaries and
+qualification/equality conversions remain explicit; the same-owner call performs
+fresh reads after the first store, with no noalias assumption or source snapshot.
+Existing aggregate `dik_constant` initialization is unchanged. This is not general
+mutable-reference support: native/reference-return/rvalue/global guards remain,
+and absent noexcept facts in the actual DuckDB roots are not admitted.
+Read [the bounded proof](T5-MUTABLE-REFERENCES.md) before changing these guards.
+
+Models remain coordinator gpt-6.1-sol high, implementers gpt-6.1-sol xhigh, with
+root GPT-6-Astra supervising read-only. Coordinator alone schedules builds/exports
+and mutates Git. Emission's three product files are frozen (new MutableReferences
+partial plus Lifetimes/main hooks); inventory's checker/project/README are frozen.
+The current proof note/coverage/restart and compact receipt are coordinator-owned
+checkpoint integration. Preserve the two pre-existing excluded T3 aggregate
+fixtures and all unrelated dirty user files; never stage all. Preserve captures,
+immutable snapshots and failed/incomplete artifacts; no cleanup is authorized.
+
+Next: finish exact-path milestone commit, then select the next smallest real
+DuckDB requirement from the accepted four-root public trace and pristine contract
+facts. Emission is preparing a read-only recommendation only; no new product
+scope is approved yet. Do not silently relax the noexcept/reference profile,
+start a whole164-object scan or claim runnable DuckDB/link closure. Full class
+hierarchy/string/allocator and potentially throwing construction paths remain open.
+
 Updated 2026-10-16. Approved plan: `e40280bea`. Verified product source:
 `04c11ce0d` / immutable snapshot 13. T0–T4 are CLOSED for the configured finite
 Linux x64 SQLite acceptance. [Consolidated receipt](../acceptance/sqlite/t4-acceptance.json)
