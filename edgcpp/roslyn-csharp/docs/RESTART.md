@@ -140,36 +140,52 @@ remain distinct. It has no EH/lifetime table and retained noexcept true;
 transitive no-throw, arbitrary empty-base adjustment and product admission remain
 false. See [the scoped findings](DUCKDB-ARROW-CALLEE.md).
 
-Parallel approved definition-location discovery read three manifests (485,552
-bytes) and 213 manifest-listed src/common .cpp files (3,208,264 bytes). Its sole
-identifier location is official src/common/memory_safety.cpp:11, matching pinned
-source revision. Coverage maps only to entry 293, manifest size 1,837,615,104 bytes,
-SHA-256 `e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46`.
-Location audit `t5/duckdb-definition-location-1.json` SHA-256
-`9737eac8a3d897041f33006fdff4d6122c467dba1f9c7e06c594d3df581bdcab`.
-That object is not yet opened or rehashed. Inventory owns the new standalone
-public-reader lookup tool scaffold; coordinator alone will build/run it after
-freeze. Exact final linkage comparison follows bounded display-name candidates
-(maximum four plus fifth overflow sentinel), never program-wide binding.
-Root approved 128-command/512-row lookup DELTA bounds after separately recorded
-reader Open/admission statistics. Retain complete-phase totals; whole phase remains
-120 seconds/1 GiB including hashing, Open and query.
+The arrow evidence checkpoint is committed as `d0ee6d911`. Parallel approved
+location discovery read three manifests (485,552 bytes) and 213 manifest-listed
+src/common .cpp files (3,208,264 bytes), locating one candidate in entry 293.
+The subsequent standalone public-reader lookup now passes: both hashes verify
+its 1,837,615,104-byte content against
+`e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46`.
+One display-index candidate has exact retained final linkage
+`_ZN6duckdb29ThrowNullSharedPtrDereferenceEv`, IsDefined true, definition BodyState
+and reciprocal body-function association. It has no parameters/this/hidden return/
+copy roles and nullable noexcept null. Return type is an unexpanded association;
+this is not a new cross-unit void/ABI equality proof. No typed body/type traversal
+or program-wide definition selection/linking occurs. Captured source line 11 only
+corroborates candidate location. Fifth-candidate sentinel is false.
 
-Pristine EDG bfk_expect source audit is saved as
-`t5/duckdb-expect-stock-audit-1.json`, SHA-256
-`ccc3a244490f771eb5f135cc14a19a599df4c8bc37dbd7656cd58c289de5c081`.
-It records constexpr first-argument evaluation/result and preserved nonconstant
-backend hint invocation, not a general effectful-second-argument contract.
-No intrinsic implementation is authorized by this audit alone.
+Lookup receipt `acceptance/duckdb/guard-definition-report.json`, 13,658 bytes,
+SHA-256 `055a141376e405625af54ed2dacad6f69d6620481c0bb02ca2a20d2da059ca94`.
+It freezes 48 source/configuration files and four request/manifest/audit inputs.
+Build/lookup pass in 5.696/5.224 seconds, sampled tree RSS
+458,002,432/89,022,464 bytes with no resource violation. Open/admission is separately
+10 commands/1,632 rows; lookup delta 20 commands/16 rows (limits 128/512), totals
+30/1,648. Whole phase remains 120 seconds/1 GiB including both hashes/Open/query.
+Source/input freezes verify. Exact location and pristine builtin audit copies
+are saved in `acceptance/duckdb/guard-definition-location.json` and
+`builtin-expect-stock-audit.json`. See [the scope](DUCKDB-GUARD-DEFINITION.md).
 
-No product scope is authorized. Do not substitute pointer shortcuts, delete
-retained else/guard calls or infer behavior from names. Fixed-field access on a
-polymorphic record may use an explicit captured storage view only after a
-concrete reviewed proposal; current address-only permission does not admit that
-dereference. Product remains `16a07ae6b`; coordinator alone owns builds/Git,
-emission owns tool code, inventory owns read-only evidence. Runtime/providers and
-all prior SQLite/C++ evidence retain original attribution. No process remains
-active beyond the workers' bounded implementation/read-only preparation.
+Root approved capture-first preparation of ONE cohesive generic pointer-call chain,
+not product changes: pointer getters/results/locals, retained runtime if/else,
+actual zero-offset empty-base address and reverse receiver cast, borrowed-member
+aliases and a nonvirtual unsigned-byte field read on supplied polymorphic storage.
+A genuine native oracle supplies live C++ pointees; later generated physical
+checks supply aligned captured-layout bytes only. No generated construction,
+lifetime/virtual execution claim follows. Exercise null/two distinct nonnull
+inputs, both branches, mutations/fresh reads, exact addresses and a real defined
+fixture guard that never substitutes the actual DuckDB helper.
+
+Emission owns new T5 pointer-call-chain source/header/native-harness preparation;
+coordinator will freeze/capture/build/run it serially, inventory then owns public
+facts/checker preparation. Root accepts pristine bfk_expect first-argument result
+contract for the INITIAL exact signed64 signature with captured effect-free integer
+hint only; both actual operands remain planned, first evaluated once, hint has no
+emitted effect. General hints stay unsupported, no broad audit prerequisite.
+After actual capture send precise selected facts and reusable admission proposal
+BEFORE product implementation. No new helper body mode, entry293 body expansion,
+source-name behavior, unresolved guard fallback or NoThrow/caller-marker widening.
+Product remains `16a07ae6b`; Runtime/providers and prior SQLite/C++ evidence retain
+original attribution. No build/export/test process remains active.
 
 ## Earlier accepted checkpoint history
 

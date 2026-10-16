@@ -1,0 +1,761 @@
+{
+  "auditVersion": 1,
+  "createdUtc": "2026-10-16T16:37:39.288385+00:00",
+  "purpose": "Pristine stock-source attribution for future bounded intrinsic contract; no product implementation or execution acceptance.",
+  "repository": "/tmp/roslynobj-edg-upstream-20261012",
+  "revision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "revisionScope": "Exact current authoritative EDG revision, Git object reads; no modified worktree files or historical application artifacts.",
+  "bounds": {
+    "exactMatchesPerFileMaximum": 8,
+    "linesPerRelevantSiteMaximum": 160
+  },
+  "discovery": {
+    "initialRequestedPathNotPresent": "src/c_gen.c",
+    "initialReadExitCode": 128,
+    "initialDiagnostic": "fatal: path 'src/c_gen.c' does not exist in '89e67e07c7f6d0fc38622f9778d8e79f40deaa0f'",
+    "correctPath": "src/c_gen_be.c",
+    "filenameCommand": [
+      "git",
+      "-C",
+      "/tmp/roslynobj-edg-upstream-20261012",
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+      "--",
+      "src"
+    ],
+    "filenameSelection": "c_gen|builtin|built_in|il_def",
+    "handlingSearchCommand": [
+      "git",
+      "-C",
+      "/tmp/roslynobj-edg-upstream-20261012",
+      "grep",
+      "-n",
+      "-w",
+      "-m",
+      "9",
+      "bfk_expect",
+      "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+      "--",
+      "src",
+      ":!src/builtin_defs.h",
+      ":!src/builtin_kinds.h"
+    ],
+    "handlingSearchStdout": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/folding.c:10972:      case bfk_expect:\n89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/interpret.c:12706:    case bfk_expect:\n89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/statements.c:3190:        if (bfk == (a_builtin_function_kind)bfk_expect ||\n"
+  },
+  "files": [
+    {
+      "path": "src/il_def.h",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/il_def.h"
+      ],
+      "bytes": 807435,
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6",
+      "exactDiscriminantLines": [],
+      "literalBuiltinExpectLineCount": null,
+      "excerpts": []
+    },
+    {
+      "path": "src/c_gen_be.c",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/c_gen_be.c"
+      ],
+      "bytes": 496445,
+      "sha256": "eb5e4da875ee4db1376dddb75dbee1f8b04cef328d265c08454e35746f493d29",
+      "exactDiscriminantLines": [],
+      "literalBuiltinExpectLineCount": 0,
+      "excerpts": []
+    },
+    {
+      "path": "src/builtin_kinds.h",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/builtin_kinds.h"
+      ],
+      "bytes": 978574,
+      "sha256": "98d1eb804d03e80734b2aa4ba0a46ed2222bc697297a2880dd0ed58024c82088",
+      "exactDiscriminantLines": [
+        7881
+      ],
+      "literalBuiltinExpectLineCount": null,
+      "excerpts": [
+        {
+          "startLine": 7879,
+          "endLine": 7883,
+          "lines": [
+            {
+              "line": 7879,
+              "text": "  bfk_exp2f64x,"
+            },
+            {
+              "line": 7880,
+              "text": "  bfk_exp2l,"
+            },
+            {
+              "line": 7881,
+              "text": "  bfk_expect,"
+            },
+            {
+              "line": 7882,
+              "text": "  bfk_expect_with_probability,"
+            },
+            {
+              "line": 7883,
+              "text": "  bfk_expf,"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/builtin_defs.h",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/builtin_defs.h"
+      ],
+      "bytes": 23626842,
+      "sha256": "37ad10a3555188020c6750953c6083f7d2131efcc756b4adebe89a476e021a8f",
+      "exactDiscriminantLines": [
+        118639,
+        118640
+      ],
+      "literalBuiltinExpectLineCount": null,
+      "excerpts": [
+        {
+          "startLine": 118637,
+          "endLine": 118642,
+          "lines": [
+            {
+              "line": 118637,
+              "text": "  { \"__builtin_exp2l\", bfci_99cfd45cc2, bfti_3900d90676, bfk_exp2l },"
+            },
+            {
+              "line": 118638,
+              "text": "  { \"__builtin_exp2l\", bfci_e374bf567b, bfti_90b4c59578, bfk_exp2l },"
+            },
+            {
+              "line": 118639,
+              "text": "  { \"__builtin_expect\", bfci_99cfd45cc2, bfti_10deec183f, bfk_expect },"
+            },
+            {
+              "line": 118640,
+              "text": "  { \"__builtin_expect\", bfci_e374bf567b, bfti_717a714881, bfk_expect },"
+            },
+            {
+              "line": 118641,
+              "text": "  { \"__builtin_expect_with_probability\", bfci_59f2cf4a4b, bfti_70e3bbe604, bfk_expect_with_probability },"
+            },
+            {
+              "line": 118642,
+              "text": "  { \"__builtin_expect_with_probability\", bfci_d0df5649d4, bfti_ef9c6c7138, bfk_expect_with_probability },"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/folding.c",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/folding.c"
+      ],
+      "bytes": 528909,
+      "sha256": "91fef22e8578541a8f7211ce401b7f15a3acd55aa42bed2815c254237cf045ff",
+      "exactDiscriminantLines": [
+        10972
+      ],
+      "literalBuiltinExpectLineCount": null,
+      "excerpts": [
+        {
+          "startLine": 10968,
+          "endLine": 11042,
+          "lines": [
+            {
+              "line": 10968,
+              "text": "      case bfk_clz:"
+            },
+            {
+              "line": 10969,
+              "text": "      case bfk_clzl:"
+            },
+            {
+              "line": 10970,
+              "text": "      case bfk_ctz:"
+            },
+            {
+              "line": 10971,
+              "text": "      case bfk_ctzl:"
+            },
+            {
+              "line": 10972,
+              "text": "      case bfk_expect:"
+            },
+            {
+              "line": 10973,
+              "text": "      case bfk_expect_with_probability:"
+            },
+            {
+              "line": 10974,
+              "text": "      case bfk_popcount:"
+            },
+            {
+              "line": 10975,
+              "text": "      case bfk_popcountl:"
+            },
+            {
+              "line": 10976,
+              "text": "      case bfk_parity:"
+            },
+            {
+              "line": 10977,
+              "text": "      case bfk_parityl:"
+            },
+            {
+              "line": 10978,
+              "text": "#if LONG_LONG_ALLOWED"
+            },
+            {
+              "line": 10979,
+              "text": "      case bfk_ffsll:"
+            },
+            {
+              "line": 10980,
+              "text": "      case bfk_clzll:"
+            },
+            {
+              "line": 10981,
+              "text": "      case bfk_ctzll:"
+            },
+            {
+              "line": 10982,
+              "text": "      case bfk_popcountll:"
+            },
+            {
+              "line": 10983,
+              "text": "      case bfk_parityll:"
+            },
+            {
+              "line": 10984,
+              "text": "#endif /* LONG_LONG_ALLOWED */"
+            },
+            {
+              "line": 10985,
+              "text": "      case bfk_strlen:"
+            },
+            {
+              "line": 10986,
+              "text": "      case bfk_is_string_literal:"
+            },
+            {
+              "line": 10987,
+              "text": "      case bfk_abs:"
+            },
+            {
+              "line": 10988,
+              "text": "      case bfk_fabs:"
+            },
+            {
+              "line": 10989,
+              "text": "      case bfk_fabsf:"
+            },
+            {
+              "line": 10990,
+              "text": "      case bfk_fabsl:"
+            },
+            {
+              "line": 10991,
+              "text": "      case bfk_pow:"
+            },
+            {
+              "line": 10992,
+              "text": "      case bfk_powf:"
+            },
+            {
+              "line": 10993,
+              "text": "      case bfk_powl:"
+            },
+            {
+              "line": 10994,
+              "text": "      case bfk_signbit:"
+            },
+            {
+              "line": 10995,
+              "text": "      case bfk_signbitf:"
+            },
+            {
+              "line": 10996,
+              "text": "      case bfk_signbitl:"
+            },
+            {
+              "line": 10997,
+              "text": "      case bfk_atomic_always_lock_free:"
+            },
+            {
+              "line": 10998,
+              "text": "      case bfk_atomic_is_lock_free:"
+            },
+            {
+              "line": 10999,
+              "text": "      case bfk___c11_atomic_is_lock_free:"
+            },
+            {
+              "line": 11000,
+              "text": "      case bfk_bswap16:"
+            },
+            {
+              "line": 11001,
+              "text": "      case bfk_bswap32:"
+            },
+            {
+              "line": 11002,
+              "text": "      case bfk_bswap64:"
+            },
+            {
+              "line": 11003,
+              "text": "      case bfk_ceil:"
+            },
+            {
+              "line": 11004,
+              "text": "      case bfk_ceilf:"
+            },
+            {
+              "line": 11005,
+              "text": "      case bfk_ceill:"
+            },
+            {
+              "line": 11006,
+              "text": "      case bfk_is_constant_evaluated:"
+            },
+            {
+              "line": 11007,
+              "text": "      case bfk_copysign:"
+            },
+            {
+              "line": 11008,
+              "text": "      case bfk_copysignf:"
+            },
+            {
+              "line": 11009,
+              "text": "      case bfk_copysignl:"
+            },
+            {
+              "line": 11010,
+              "text": "      case bfk_nondeterministic_value:"
+            },
+            {
+              "line": 11011,
+              "text": "      case bfk_COLUMN:"
+            },
+            {
+              "line": 11012,
+              "text": "      case bfk_LINE:"
+            },
+            {
+              "line": 11013,
+              "text": "      case bfk_FILE:"
+            },
+            {
+              "line": 11014,
+              "text": "      case bufk_FILE_NAME:"
+            },
+            {
+              "line": 11015,
+              "text": "      case bfk_FUNCTION:"
+            },
+            {
+              "line": 11016,
+              "text": "      case bufk_FUNCSIG:"
+            },
+            {
+              "line": 11017,
+              "text": "      case bfk_add_overflow_p:"
+            },
+            {
+              "line": 11018,
+              "text": "      case bfk_add_overflow:"
+            },
+            {
+              "line": 11019,
+              "text": "      case bfk_uadd_overflow:"
+            },
+            {
+              "line": 11020,
+              "text": "      case bfk_uaddl_overflow:"
+            },
+            {
+              "line": 11021,
+              "text": "      case bfk_uaddll_overflow:"
+            },
+            {
+              "line": 11022,
+              "text": "      case bfk_sadd_overflow:"
+            },
+            {
+              "line": 11023,
+              "text": "      case bfk_saddl_overflow:"
+            },
+            {
+              "line": 11024,
+              "text": "      case bfk_saddll_overflow:"
+            },
+            {
+              "line": 11025,
+              "text": "      case bfk_sub_overflow_p:"
+            },
+            {
+              "line": 11026,
+              "text": "      case bfk_sub_overflow:"
+            },
+            {
+              "line": 11027,
+              "text": "      case bfk_ssub_overflow:"
+            },
+            {
+              "line": 11028,
+              "text": "      case bfk_ssubl_overflow:"
+            },
+            {
+              "line": 11029,
+              "text": "      case bfk_ssubll_overflow:"
+            },
+            {
+              "line": 11030,
+              "text": "      case bfk_usub_overflow:"
+            },
+            {
+              "line": 11031,
+              "text": "      case bfk_usubl_overflow:"
+            },
+            {
+              "line": 11032,
+              "text": "      case bfk_usubll_overflow:"
+            },
+            {
+              "line": 11033,
+              "text": "      case bfk_mul_overflow_p:"
+            },
+            {
+              "line": 11034,
+              "text": "      case bfk_mul_overflow:"
+            },
+            {
+              "line": 11035,
+              "text": "      case bfk_smul_overflow:"
+            },
+            {
+              "line": 11036,
+              "text": "      case bfk_smull_overflow:"
+            },
+            {
+              "line": 11037,
+              "text": "      case bfk_smulll_overflow:"
+            },
+            {
+              "line": 11038,
+              "text": "      case bfk_umul_overflow:"
+            },
+            {
+              "line": 11039,
+              "text": "      case bfk_umull_overflow:"
+            },
+            {
+              "line": 11040,
+              "text": "      case bfk_umulll_overflow:"
+            },
+            {
+              "line": 11041,
+              "text": "        result = TRUE;"
+            },
+            {
+              "line": 11042,
+              "text": "        break;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/interpret.c",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/interpret.c"
+      ],
+      "bytes": 1498174,
+      "sha256": "d3f34d737a6690e482942a52a463e406b767a0d5fc06b3609c8cb9c79b27cb4d",
+      "exactDiscriminantLines": [
+        12706
+      ],
+      "literalBuiltinExpectLineCount": null,
+      "excerpts": [
+        {
+          "startLine": 12706,
+          "endLine": 12731,
+          "lines": [
+            {
+              "line": 12706,
+              "text": "    case bfk_expect:"
+            },
+            {
+              "line": 12707,
+              "text": "    case bfk_expect_with_probability:"
+            },
+            {
+              "line": 12708,
+              "text": "      {"
+            },
+            {
+              "line": 12709,
+              "text": "        interpreted = TRUE;"
+            },
+            {
+              "line": 12710,
+              "text": "        /* Evaluate the first argument instead of the call.  (The second"
+            },
+            {
+              "line": 12711,
+              "text": "           argument -- and third for __builtin_expect_with_probability -- are"
+            },
+            {
+              "line": 12712,
+              "text": "           ignored.)  */"
+            },
+            {
+              "line": 12713,
+              "text": "        if (ips->curr_call_frame == NULL && !ips->is_constant_evaluated) {"
+            },
+            {
+              "line": 12714,
+              "text": "          /* Do not fold the invocation if it is at the top level, since a"
+            },
+            {
+              "line": 12715,
+              "text": "             back end will want to see the intrinsic invocation to decide"
+            },
+            {
+              "line": 12716,
+              "text": "             branch prediction hints. */"
+            },
+            {
+              "line": 12717,
+              "text": "          do_constexpr_fail(*p_result);"
+            },
+            {
+              "line": 12718,
+              "text": "          break;"
+            },
+            {
+              "line": 12719,
+              "text": "        }  /* if */"
+            },
+            {
+              "line": 12720,
+              "text": "        if (args == NULL || args->next == NULL ||"
+            },
+            {
+              "line": 12721,
+              "text": "            (callee->variant.builtin_function_kind =="
+            },
+            {
+              "line": 12722,
+              "text": "                                                 bfk_expect_with_probability ?"
+            },
+            {
+              "line": 12723,
+              "text": "               args->next->next == NULL || args->next->next->next != NULL :"
+            },
+            {
+              "line": 12724,
+              "text": "               args->next->next != NULL)) {"
+            },
+            {
+              "line": 12725,
+              "text": "          unexpected_condition();"
+            },
+            {
+              "line": 12726,
+              "text": "        } else if (!do_constexpr_expression(ips, args, result_storage,"
+            },
+            {
+              "line": 12727,
+              "text": "                                            result_storage)) {"
+            },
+            {
+              "line": 12728,
+              "text": "          do_constexpr_fail(*p_result);"
+            },
+            {
+              "line": 12729,
+              "text": "        }  /* if */"
+            },
+            {
+              "line": 12730,
+              "text": "      }"
+            },
+            {
+              "line": 12731,
+              "text": "      break;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/statements.c",
+      "readCommand": [
+        "git",
+        "-C",
+        "/tmp/roslynobj-edg-upstream-20261012",
+        "show",
+        "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f:src/statements.c"
+      ],
+      "bytes": 373595,
+      "sha256": "a4b9476b67189ea0ed2034239f4494bc32a4f50a885bb258ab01eb8e01bac703",
+      "exactDiscriminantLines": [
+        3190
+      ],
+      "literalBuiltinExpectLineCount": null,
+      "excerpts": [
+        {
+          "startLine": 3184,
+          "endLine": 3199,
+          "lines": [
+            {
+              "line": 3184,
+              "text": "#if BUILTIN_FUNCTIONS_ENABLED"
+            },
+            {
+              "line": 3185,
+              "text": "    } else if (is_call_node(expr)) {"
+            },
+            {
+              "line": 3186,
+              "text": "      a_routine_ptr  rp = routine_from_function_expr("
+            },
+            {
+              "line": 3187,
+              "text": "                                            expr->variant.operation.operands);"
+            },
+            {
+              "line": 3188,
+              "text": "      if (rp != NULL && is_gnu_builtin_function(rp)) {"
+            },
+            {
+              "line": 3189,
+              "text": "        a_builtin_function_kind  bfk = rp->variant.builtin_function_kind;"
+            },
+            {
+              "line": 3190,
+              "text": "        if (bfk == (a_builtin_function_kind)bfk_expect ||"
+            },
+            {
+              "line": 3191,
+              "text": "            bfk == (a_builtin_function_kind)bfk_expect_with_probability) {"
+            },
+            {
+              "line": 3192,
+              "text": "          expr = skip_parens(expr->variant.operation.operands->next);"
+            },
+            {
+              "line": 3193,
+              "text": "        } else {"
+            },
+            {
+              "line": 3194,
+              "text": "          break;"
+            },
+            {
+              "line": 3195,
+              "text": "        }  /* if */"
+            },
+            {
+              "line": 3196,
+              "text": "      } else {"
+            },
+            {
+              "line": 3197,
+              "text": "        break;"
+            },
+            {
+              "line": 3198,
+              "text": "      }  /* if */"
+            },
+            {
+              "line": 3199,
+              "text": "#endif  /* BUILTIN_FUNCTIONS_ENABLED */"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "claim": "builtin_kinds declares bfk_expect; builtin_defs maps exact __builtin_expect to that discriminant.",
+      "authority": [
+        "src/builtin_kinds.h:7881",
+        "src/builtin_defs.h:118639-118640"
+      ]
+    },
+    {
+      "claim": "is_foldable_gnu_builtin_function includes bfk_expect among cases yielding TRUE. This is front-end foldability, not a native provider binding.",
+      "authority": [
+        "src/folding.c:10972",
+        "src/folding.c:11041-11042"
+      ]
+    },
+    {
+      "claim": "The constexpr interpreter evaluates only the first argument and ignores the hint argument; it verifies two arguments for bfk_expect. It deliberately refuses top-level non-constant-evaluated folding so a backend can retain branch prediction hints.",
+      "authority": [
+        "src/interpret.c:12706-12731"
+      ]
+    },
+    {
+      "claim": "The true-constant-expression classifier looks through bfk_expect to its first argument. This classifies an expression, not a runtime call implementation.",
+      "authority": [
+        "src/statements.c:3184-3199"
+      ]
+    },
+    {
+      "claim": "No exact bfk_expect or literal __builtin_expect handling appears in c_gen_be.c. Absence of a dedicated case is not a general backend or side-effect contract.",
+      "authority": [
+        "src/c_gen_be.c exact searches"
+      ]
+    }
+  ],
+  "actualCaptureScope": {
+    "report": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-tail-dependencies-facts-1.json",
+    "reportSha256": "ed652a26c1b843e5f6b7427ab1ba95d096c1a5b712a8cf1fc5d6244f938e600e",
+    "callLocatorLocalToReport": "entity/000151",
+    "builtinKind": "bfk_expect",
+    "signature": "signed64(signed64,signed64)",
+    "firstArgument": "actual cast of selected Boolean parameter to signed64",
+    "secondArgument": "exact signed64 integer zero",
+    "order": "captured LTR=true, RTL=false"
+  },
+  "futureAdmissionLimit": "A future lowering must validate actual builtin discriminant/signature/arguments and preserve typed operand occurrence/effect planning. These excerpts do not authorize dropping arbitrary effectful hint operands or implementing unresolved application declaration ThrowNullSharedPtrDereference.",
+  "applicationCandidateObjectOpened": false,
+  "tools": {
+    "git": "git version 2.43.0"
+  }
+}

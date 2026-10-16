@@ -1,0 +1,1386 @@
+{
+  "auditVersion": 1,
+  "createdUtc": "2026-10-16T16:35:28.445625+00:00",
+  "purpose": "Candidate location only; no semantic body interpretation, object open, public definition lookup or link/execution claim.",
+  "exactRequiredCapturedFinalLinkage": "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv",
+  "sourceIdentifierForLocationOnly": "ThrowNullSharedPtrDereference",
+  "officialSourceRoot": "/mnt/storage/roslynobj-duckdb-20261014/source",
+  "officialSourceRevision": "a809d3cd519df6db70223c562c4de80da311868b",
+  "sourceRevisionCommand": [
+    "git",
+    "-C",
+    "/mnt/storage/roslynobj-duckdb-20261014/source",
+    "rev-parse",
+    "HEAD"
+  ],
+  "bounds": {
+    "manifestFiles": 3,
+    "manifestBytesMaximum": 33554432,
+    "manifestListedCommonCppFilesMaximum": 256,
+    "sourceBytesMaximum": 33554432,
+    "exactMatchingLinesMaximum": 4,
+    "candidateObjectsMaximum": 2
+  },
+  "manifests": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/docs/duckdb-core-manifest.json",
+      "bytes": 168802,
+      "sha256": "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/selected-core-final.json",
+      "bytes": 168802,
+      "sha256": "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/core-source-coverage.json",
+      "bytes": 147948,
+      "sha256": "d06247dad5a79c6ce46a42af849f3de41297cf07008f56f9e0fc2f46c9b4b051"
+    }
+  ],
+  "manifestCopiesEqual": true,
+  "recordedCoreObjectCount": 164,
+  "sourceSelectionRule": "Union of published direct source paths and coverage-recorded unity members, restricted to official source/src/common/**/*.cpp.",
+  "sourceFilesSearched": [
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/adbc.cpp",
+      "bytes": 144444,
+      "sha256": "528ff9c21c71596ae3683a668488881116a2dac2b3e438ace4381699833c7b20"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/allocator.cpp",
+      "bytes": 1974,
+      "sha256": "b90c5eb49525dfbe95a2cbcd4b256859ca93795bf4b22012300c6912ce0a88f6"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/metadata.cpp",
+      "bytes": 3727,
+      "sha256": "86da1b9dc27585750058cf751149443b8d73a40e87b8aef1416722062bba9df2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/schema.cpp",
+      "bytes": 11869,
+      "sha256": "830b1d878a70d3f1eefa2d4c110cbb4241b1813742a4da1e2e34c81e06784024"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/single_batch_array_stream.cpp",
+      "bytes": 2811,
+      "sha256": "65a44ef2b7480fe01dcb92139acd13cc6951a8b37688842eda4406a654cd0942"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/allocator/allocator.cpp",
+      "bytes": 9480,
+      "sha256": "6e8b3597243f95631883e2cffdb1f81cbee707a098b6bb33c3695ed98a7e2b3f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/allocator/allocator_jemalloc.cpp",
+      "bytes": 3481,
+      "sha256": "006b13d00156bbeb3d6a298549a7e4cc6e88c14a98080663d447bbebdf30e0b2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/append_data.cpp",
+      "bytes": 1766,
+      "sha256": "6b3361711401f880351b58df6d168b825d981c408d244f46f71a2f9ba05031ce"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/bool_data.cpp",
+      "bytes": 1759,
+      "sha256": "d2392d6c7f891fc96e46106d596e86f649ae27389a2ef1bb161472ff8a94339f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/fixed_size_list_data.cpp",
+      "bytes": 1772,
+      "sha256": "275cb7362ce5829ff153a1cb17d2bc44e336a35c23cac340ca6e5b8c30021433"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/null_data.cpp",
+      "bytes": 570,
+      "sha256": "0d7e23a17c241830608eb44e0607683758b56017454eedf2aaa2e0fafa568fa2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/struct_data.cpp",
+      "bytes": 1967,
+      "sha256": "bc92b85286fb60b6433a4496f722ef0ff2cea98bea126417a243aa5bdd4e6479"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/union_data.cpp",
+      "bytes": 2573,
+      "sha256": "d8afe3e138f56e56f12bc01054b0e15ec712f3f69e9f867c853506184a42c286"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_appender.cpp",
+      "bytes": 14023,
+      "sha256": "18b4121fbc7a08f7a8c6ebe67038ae6797357943140ec55150242c17c2008c03"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_converter.cpp",
+      "bytes": 15932,
+      "sha256": "c1657636070cab24847ca9a6624988a41e3228d9ea52895702d0aed053267d64"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_format.cpp",
+      "bytes": 7949,
+      "sha256": "62f07a16d04b23c9074c9f74a83ace2e7b0abfbe17c020608c37b9cfa387a08e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_type_extension.cpp",
+      "bytes": 34808,
+      "sha256": "90dbff1cfed3682c09d505ca8a24da37fd761b285123b0e0cee0f7c88922315a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_wrapper.cpp",
+      "bytes": 1731,
+      "sha256": "f0b0dcd128725cdb7aee5cd1bf52cfd3bb368d65f7066833c13b987e6a6cac53"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/schema_metadata.cpp",
+      "bytes": 4647,
+      "sha256": "3826ea0bca0f376e6072c4a3ae3608520aae718c9b61fe1954870185301d2adc"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/assert.cpp",
+      "bytes": 405,
+      "sha256": "d4e5e70763abb24619fe4f86e4e318df98deae40aa2a66a8256cbfb519be3403"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/bignum.cpp",
+      "bytes": 12732,
+      "sha256": "d0d73939e2d750f8a20b167b4476b4966cfa49a0c887334ef187af16a019de22"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/bind_helpers.cpp",
+      "bytes": 7578,
+      "sha256": "560244cd8e2be751078d0dbba93fd21413fdab4e7629905fe31f41c1f6408286"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/box_renderer.cpp",
+      "bytes": 81025,
+      "sha256": "d0629d2327f6306374f84bf5074fea05e0b053d527d0dac930c2f360ee3955a2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/box_renderer_context.cpp",
+      "bytes": 713,
+      "sha256": "9367bd7df409e3870e4c7c45a5c26dbf040488004dd44d8ed39ea37331a4dc86"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/cgroups.cpp",
+      "bytes": 8698,
+      "sha256": "e1428273778404ec49593f30388326b3dc819bda6b51ebff16daa23855586a3f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/checksum.cpp",
+      "bytes": 2054,
+      "sha256": "8c3004101753248ee08db4d30ca03a9c0a1a0a5b754c6c293c6edd6054dc3d19"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/client_box_renderer_context.cpp",
+      "bytes": 775,
+      "sha256": "c029c4efb2ccc1b7d974d74cab832bfd188f7318b215ffe8e3c37c60d9979c8c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/clustered_aggregate.cpp",
+      "bytes": 15333,
+      "sha256": "f3ba1aa96afbd6c9badac9b299be8517998383c7cf989362118e15c06dd71f44"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/column_data_collection_render_interface.cpp",
+      "bytes": 814,
+      "sha256": "1fd5f05ed1948d6045271f79718f89dfac5f6de0fb5ffa6dbc513595868fec82"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/column_index.cpp",
+      "bytes": 3999,
+      "sha256": "29615716031b97480f559bdcca729a5ee888c8416ba2080f97ebc97475a4949b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/compressed_file_system.cpp",
+      "bytes": 8527,
+      "sha256": "103493c6b102314ecd133b507af4dbdb61a6dbeb25097cebd98af70900c9c0d8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/constants.cpp",
+      "bytes": 2137,
+      "sha256": "230823da4eaa4f3772eb5c6366b81208360b7593dd82ea61a001e3d8f32acf91"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/crypto/md5.cpp",
+      "bytes": 8231,
+      "sha256": "0c0101367304fb4aeb0ab5a2144efd490b4a424161416081af1285065f0f96d1"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/csv_writer.cpp",
+      "bytes": 14322,
+      "sha256": "316ea3a89ce4552d72b3163bd768d52af535c2cf7c9c6c4e2791d51d4ef8e513"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_functions.cpp",
+      "bytes": 9543,
+      "sha256": "7d0b06a98d018b1de01b450de3bc1d5c04d4d9b58834bdc92105b4ed8da3d8bd"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_key_manager.cpp",
+      "bytes": 5632,
+      "sha256": "c576eb8454f2872b9d1998e3d1a35c4766a7e6298ce7dd7050f5c894e3324e2b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_state.cpp",
+      "bytes": 3823,
+      "sha256": "458628220db81238cd20315f71e23e9c9c36bf94cce9d76c2a35f2199a5c515f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_types.cpp",
+      "bytes": 4492,
+      "sha256": "b0add5ce55427aa8c1b299199bb929f10ef9124ec48d0ec1c0f4d4d190800633"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enum_util.cpp",
+      "bytes": 370381,
+      "sha256": "c3619ff13b86dfe799113fee9bef5c79bcf134d87a6683c17ae9d0e117d88b58"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/catalog_type.cpp",
+      "bytes": 3246,
+      "sha256": "77e5c03f98e37c280a273a01b08940ea7ad3791f3525f88a511dd29f46e3b222"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/column_segment_info_scan_type.cpp",
+      "bytes": 188,
+      "sha256": "dcf53281a051372a6573ffa3c5ee751153c4100a58e37698c452912974ac8370"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/compression_type.cpp",
+      "bytes": 4703,
+      "sha256": "272b7e8bef0c13cbda513b676f6f25d1e2d8061759a38671b519105d54e53c5c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/date_part_specifier.cpp",
+      "bytes": 4117,
+      "sha256": "4b4cf45bef79887ab7840e90bd4941318b154e807919ca10f0bf34a28f50c5b0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/expression_type.cpp",
+      "bytes": 10722,
+      "sha256": "61a28c6c566d9574442838f692989b0b18ebfb94970cab7c42c10616525f4103"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/file_compression_type.cpp",
+      "bytes": 2497,
+      "sha256": "5ea4a049a85593b7482e079d4dd419b2cb98c9dc6b7fff7ca0bdd5d2456c75b1"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/http_status_code.cpp",
+      "bytes": 4808,
+      "sha256": "36f1a8ec4718d5bb6c4f51309c5fa422605bd6b07f6fae41b4fcddeb953b85dd"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/join_type.cpp",
+      "bytes": 1351,
+      "sha256": "9124e8fae4d9601b63de81d801f3de337f5562bf7d6d2bcc8c9b54752fb13662"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/logical_operator_type.cpp",
+      "bytes": 5038,
+      "sha256": "aaf39d724764585bdfdddaae523720c8155df7bd2c1d80a644bf83e22895c730"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/optimizer_type.cpp",
+      "bytes": 4322,
+      "sha256": "94a33c73b3f5cc641783e9a39a93dfac470043837b5dfb7114d665f573996f39"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/physical_operator_type.cpp",
+      "bytes": 6167,
+      "sha256": "3d9b4cbf9902cd071e8ddd9c94f455586c95aed2838d12b05c5358826a395707"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/relation_type.cpp",
+      "bytes": 2274,
+      "sha256": "0f7ad2c20f009d6341406dfd1ab37901b97da4983787c2f23cab822cdfc4159c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/statement_type.cpp",
+      "bytes": 3733,
+      "sha256": "0da2f8777dff309a2adfa04954d8bc14abe0f35d0e40cda7dc4118c3a8b324e3"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/error_data.cpp",
+      "bytes": 6039,
+      "sha256": "8696712c4a5d3f56367a46329ee73abd5c625834e34df81b885038438e6c57c6"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/binder_exception.cpp",
+      "bytes": 3133,
+      "sha256": "858d1007959fe4f999ed57e1ec981642fd76496e91c530f1537213b5a2c3cf98"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/catalog_exception.cpp",
+      "bytes": 3375,
+      "sha256": "82d25744642c876a758eb7532ad21a868f3e1024a2b9fb7336a7983eba6da994"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/conversion_exception.cpp",
+      "bytes": 974,
+      "sha256": "00085a641a5363249300dd51adf42194f8d28c7f8f2cb7bdbddebdb7c8852a08"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/parser_exception.cpp",
+      "bytes": 768,
+      "sha256": "b99eebce2c7be1bbf5e8bad8cc15d578c582c41c964ac9f16822278b10c4f669"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception.cpp",
+      "bytes": 18106,
+      "sha256": "fb6e59b4d48d8b9672c0a8ee15496f089dde2beae086d7d83fdcdd041ae8c951"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception_format_value.cpp",
+      "bytes": 4935,
+      "sha256": "0c34719453850af3ff36b652e2f1adf6fe5faa60a87f5e2ef9bf1ff5a17fd85d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/file_buffer.cpp",
+      "bytes": 5032,
+      "sha256": "6fe37ad9bf57774ad7ba0f2108c2e91b5330b6a415a182d827bf1a06606610ae"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/file_system.cpp",
+      "bytes": 33264,
+      "sha256": "973aa028dbf470e650607db166082763003744458112d8c42c62c55ea082acb0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/filename_pattern.cpp",
+      "bytes": 5208,
+      "sha256": "934f8c74b13be952b5946b14fbf38276beea2979c6d2c21aa9645811dac1e213"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/fsst.cpp",
+      "bytes": 1483,
+      "sha256": "2cc4949d6487242b48d1f7c063461338881c9bcc57e0e9d91deac728c11c514d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/gzip_file_system.cpp",
+      "bytes": 18724,
+      "sha256": "ef2d2aeff4db1470c7d8ef804fdda30b13f427a7173ccd7e19f266ca4685387a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/hash_functions.cpp",
+      "bytes": 1032,
+      "sha256": "766df720cb0647b248e458081d99206233c56d1353fdfa81246cf8458ebedf0a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/hive_partitioning.cpp",
+      "bytes": 16709,
+      "sha256": "69df8fa82cfbfa790bf2d9546e100d25a238d76bbbc096943c9b386aeed3da15"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/identifier.cpp",
+      "bytes": 1458,
+      "sha256": "6220c8d78cb547141e15fe7e11084129f5cd0f07a0d8619b8e2caff5742bd837"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/json_document.cpp",
+      "bytes": 9843,
+      "sha256": "5e48a053248cc95e627004d876b6265f0245f501a886c4e8463567851277d375"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/local_file_system.cpp",
+      "bytes": 83653,
+      "sha256": "4893c67a714df39e8d629507b14803a9b37b6bd95aebf19ecba9c83a1f8146c1"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/logical_type_info.cpp",
+      "bytes": 20065,
+      "sha256": "b3079243deadd27cc90defa4f3de6b5dce85a441e9c9f7a524917d91dff40d4a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/memory_mapped_file.cpp",
+      "bytes": 1752,
+      "sha256": "bd2986389230dc5ace398480f9b161d899556c34b1e06653b8832341c92543f7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/memory_safety.cpp",
+      "bytes": 2174,
+      "sha256": "94ce65bb53635026a49700017cf8bbe965545493e13ccb8922000d35cf6f324c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/base_file_reader.cpp",
+      "bytes": 1567,
+      "sha256": "e6319fd6f42271d4bd8441901f7e0ac003bbcf33c23ec292627d7c8aaca78b03"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_adaptive_filter_cache.cpp",
+      "bytes": 1174,
+      "sha256": "8735a82df1d9f14b8e7352f2c5bc85c1ab6f715777c30cca49a051152765ef22"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_column_mapper.cpp",
+      "bytes": 52951,
+      "sha256": "08b52ca85dd51090a2c4eed4c30a6ad5c9d4674c1d7229d3c32dd8ab8a6275f6"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_function.cpp",
+      "bytes": 3772,
+      "sha256": "b782ab266ac0fea7385120492b80458c73f7a439b10d20d31a0b6666520068fc"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_list.cpp",
+      "bytes": 14622,
+      "sha256": "eff8493dce82b95e7522df38246fac88c3e2ac18ce9e0a60befe7d558b032ed2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_reader.cpp",
+      "bytes": 71485,
+      "sha256": "0ec3638813cbb509563c02370125389c2cbb748721f96a2ac2425cad5b1fbfd8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/table_function_multi_file.cpp",
+      "bytes": 42350,
+      "sha256": "50153583418f969a48b5270ff29bd193e3120a3486120b0e6572f91410ee2bb3"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/union_by_name.cpp",
+      "bytes": 2657,
+      "sha256": "6c28b6acdfa543c0fc84c6f4bd12c5853e6f3b6c7e36ce419b45da4dc898b959"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/open_file_info.cpp",
+      "bytes": 5392,
+      "sha256": "d159b75fc934aacf1f74e5b85915c52caa65906f85d51325461c25e0d4792e3b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/opener_file_system.cpp",
+      "bytes": 2388,
+      "sha256": "d92f5c3d1485bf7d77de4f9f44b5f16b451ef74259e11eb7bd391c923675d62f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/operator/cast_operators.cpp",
+      "bytes": 127946,
+      "sha256": "85b73462239f6e697e17c5c2f2abdd4e7e59eb53ec2addadcab3bf997a5c8221"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/operator/convert_to_string.cpp",
+      "bytes": 2454,
+      "sha256": "295d6ef8f8207655720919aa8c653c6ad5ab470f7daba441257716f427795f1f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/operator/string_cast.cpp",
+      "bytes": 8927,
+      "sha256": "39a89947f4e659dc4c30f9e68f500312892d90601fc3727e51f3e117b991d9ac"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/optional_idx.cpp",
+      "bytes": 215,
+      "sha256": "5a60b5fad1249a4f01110903a5d468d78b7f955af47a7a06ae0918466e1d47b2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/path.cpp",
+      "bytes": 12451,
+      "sha256": "241e73d21883812b3e4c01c5126555e021ba5630951abaed685298180e8a16fe"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/pipe_file_system.cpp",
+      "bytes": 2181,
+      "sha256": "5e8f21e12a2879cc6f6d36b5d47aedb36612d0f35300f748046c74f0e8a4bd1d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/printer.cpp",
+      "bytes": 2294,
+      "sha256": "e1ac569f567e7fac3f4206984249fcfbe3eccfd1238e203e685dab2437720509"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/process_util.cpp",
+      "bytes": 5205,
+      "sha256": "cd4a7a593353d72034ab0f2e256ac3aacd5a2e7f2fb251853a58a301425cb567"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/progress_bar/progress_bar.cpp",
+      "bytes": 3808,
+      "sha256": "32bfe467df7fd4ab5abd9940286b9383588ec07eb526aac891f63fa70f7d88b3"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/progress_bar/terminal_progress_bar_display.cpp",
+      "bytes": 8517,
+      "sha256": "973bb6140258facacc16bf48a65c9883c6eda28bedef7e6505a1ab9ac3fb4c93"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/radix_partitioning.cpp",
+      "bytes": 13803,
+      "sha256": "904f4c2c5cd7418db0e4ad8b8f9b2e71166cfd4ba56ee24abf273518cbda73b4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/random_engine.cpp",
+      "bytes": 2446,
+      "sha256": "1b989eb8560dd27aad05097e06fef6ee7cce73638bff20e9ce789fff6b89bad9"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/re2_regex.cpp",
+      "bytes": 3639,
+      "sha256": "01e3832b7342b98e808cc865ef7eeea2ed1dd31aee2c77f2ce630260b4b720d4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/render_tree.cpp",
+      "bytes": 7181,
+      "sha256": "e0602cb0ba506fa0d9acf668d80fb55c34577125e8c019ed97bb6f5588b8aaca"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/row_operations/row_aggregate.cpp",
+      "bytes": 7828,
+      "sha256": "b29bf3bdfc74f3ddc3082aa3e9eb8e1ae482790037ea1bb421210f21e2f58cf2"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/row_operations/row_matcher.cpp",
+      "bytes": 20580,
+      "sha256": "2bc84f89079bde46df15a2c833a5c0126a850436a6abb26614ab1fef5ef86802"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_file_writer.cpp",
+      "bytes": 12920,
+      "sha256": "6083a38ee4849b3342bb4727a9ea798bb0d2b7dbfa80d9e162372e6d0d158dbe"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_memory_governor.cpp",
+      "bytes": 3901,
+      "sha256": "09c66c736e2bf7ff7a3bf3bbd84cb9dcb06d8b93a1f5765e82cdf0fc4f1b33ff"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_task_queue.cpp",
+      "bytes": 15648,
+      "sha256": "ef6f2494c277ab900ebb039bd7abed469e6a990b38e2f05ba805e152e4a8b524"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_write_queue.cpp",
+      "bytes": 47295,
+      "sha256": "61a743de5e0105c87a59b7d598b1d3fca3767bf2e36b7e6b579affa2a2107079"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/binary_deserializer.cpp",
+      "bytes": 3740,
+      "sha256": "ef1896ea48f32b1bff96df1057b87b7b4209310350148f7c4a138dc907beb25e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/binary_serializer.cpp",
+      "bytes": 4311,
+      "sha256": "7b3b791ff9fb5734699088297b7181864a8d9b0972fe9599b1fb553ef020204f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/buffered_file_reader.cpp",
+      "bytes": 2439,
+      "sha256": "66a841e16f73d8e6e1a6cd4e0808d33c3558e5b6d06e1f2390aaa4853126df96"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/buffered_file_writer.cpp",
+      "bytes": 3279,
+      "sha256": "15a9b70eace71f57269719d7efa33876631fa9500035607cefc98af6af31711a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/memory_stream.cpp",
+      "bytes": 2928,
+      "sha256": "28723b145bc83441d5b41e709e8eff7fdb93b1e7dd92818d4e5de4d4493fa6f8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/serialization_data.cpp",
+      "bytes": 808,
+      "sha256": "3a89aeaa3e23bb9bcf018ddf14511999e0d949afe7c56339a63cf6e6c12a2709"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/serializer.cpp",
+      "bytes": 966,
+      "sha256": "ea1ec2706f8f09d1c891df9c7d8a9e1a923ead431319a941e7bcab74356b59a8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/full_sort.cpp",
+      "bytes": 12528,
+      "sha256": "971e9e4e31e41025f85893dc818c27821c8d4c75aebdab52847a787e087b8fef"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/hashed_sort.cpp",
+      "bytes": 29909,
+      "sha256": "31150cc339eb8aa5cba7d3e997ec04a88522536ef20424b6966ae6faed601b83"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/natural_sort.cpp",
+      "bytes": 7822,
+      "sha256": "b0ee5f33873dbd896a45ff95a92241f5e0edd7e9a4700d78e3e442e94473a191"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/partition_key_tracker.cpp",
+      "bytes": 12075,
+      "sha256": "f0eb617bcac19225c6d4559a906fb7a7117f5d47ee21b2fb9614ccec0e22fa58"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/partitioned_sort.cpp",
+      "bytes": 14664,
+      "sha256": "9b5a7991c2b71ab9052235780efc17a20a927513126b7786eae26591611ee372"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sort.cpp",
+      "bytes": 21295,
+      "sha256": "c02804137469b84748174bc6b105b125d3394cdef01583beb75676dff156ae12"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sort_strategy.cpp",
+      "bytes": 2816,
+      "sha256": "14d7db32e5e427173bac6876cb2c7dd0b69a6ba4f84f9ab74fa7efa83d33438b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sorted_run.cpp",
+      "bytes": 18878,
+      "sha256": "15f49b452431ea8bf24a1914fd92417bed53be158daec5ad72df2c043584ca97"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sorted_run_merger.cpp",
+      "bytes": 36009,
+      "sha256": "72ab7b8ee0cbad534b075c813201224291d39d176af95384e03383aac470761d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/stacktrace.cpp",
+      "bytes": 3571,
+      "sha256": "25b7baff2aa0241199a622f3f3ce37918d61ac480c33cd296e502af7517c4371"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/storage_compatibility.cpp",
+      "bytes": 2659,
+      "sha256": "c93ae2c9a02feba90b6145890228e70568610cc082f29dbdefc46aefc00145ef"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/string_util.cpp",
+      "bytes": 35766,
+      "sha256": "a3499e3d288a8407dab773d6224442ec360ef21ea3241ae0dbcda3b0130c9417"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/symbols.cpp",
+      "bytes": 10225,
+      "sha256": "440f1e351a358ccf686f0682d6960e01a25b76e517e256831c0893e3ff946a26"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/thread_util.cpp",
+      "bytes": 1648,
+      "sha256": "4f0e254254f1efd25cba9decd47acaf4a05af1974ef13733e4ef734e09fa44d9"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/time_point.cpp",
+      "bytes": 2078,
+      "sha256": "5dfdcda1707c957c51a535b6dbf148660cd278c9cc4fa92ec770dd490e27347b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/compact_tree_renderer.cpp",
+      "bytes": 4084,
+      "sha256": "d24cc28a5f8827a042d4145a3d6c8a1e176082257d752aaf4d2818eb75a943c3"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/graphviz_tree_renderer.cpp",
+      "bytes": 3313,
+      "sha256": "328cee97b639ddf721d3e18c16bd7bac42664dc46b3b41c6efc8a2e831d2b194"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/html_tree_renderer.cpp",
+      "bytes": 9635,
+      "sha256": "f56443ea8eb499fe79ff4a690ee34ca5fc444c62a832ee8b49349dc7f1dc47eb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/json_tree_renderer.cpp",
+      "bytes": 3321,
+      "sha256": "5a7443a3c434b5c1a39743292ec146e31c810a7f7e45399023ba46b59d2ae30b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/mermaid_tree_renderer.cpp",
+      "bytes": 3890,
+      "sha256": "fd35f67d29485592dacaaa65d331a696b3ec68e4b86ff102d33afec0fa41a7b7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/text_tree_renderer.cpp",
+      "bytes": 48785,
+      "sha256": "b2fe82884059d08d8e7cbabcab2e09b46449b844c4f3b3adb313c15e4b4c920a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/tree_renderer.cpp",
+      "bytes": 256,
+      "sha256": "e78abbb8c283178c65cf9c70233a8723de5f97721fa3c8257f6ac9d62114826f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/yaml_tree_renderer.cpp",
+      "bytes": 3290,
+      "sha256": "7a022824623837ddf0b6a3b26a902bddde3de91c72c04026cb5a1d3782b34fc7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer.cpp",
+      "bytes": 4292,
+      "sha256": "fe80427309ab319ae118628666c10b238d85da54839070c9be1b1c1cbaf3b851"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/batched_data_collection.cpp",
+      "bytes": 6456,
+      "sha256": "e557b3ea70fe9c24430a35f26d38030244cd41afebee53e819893b1c7670c9cd"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/bignum.cpp",
+      "bytes": 18437,
+      "sha256": "7ca7829ab040214886d8fa32c72a1bb9e09b59d29d3b2423ddffcb01837e0e87"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/bit.cpp",
+      "bytes": 15743,
+      "sha256": "5a541743b6e6e2ab0e549df3c029d839bdae9854af4135acd3b9bde07c1dfd47"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/blob.cpp",
+      "bytes": 11895,
+      "sha256": "ef0ca4a68195063603db03b80e5e12b3c520a3b9557269e7a441738d178d21b5"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/cast_helpers.cpp",
+      "bytes": 9882,
+      "sha256": "5ccd05b2ec30f5bd46a7ee6e4db04e703fe5d2b5bcb8421ab5b9efcc912d792c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_allocator.cpp",
+      "bytes": 13775,
+      "sha256": "ba8a1c9e278c0d99ec8e51fa7eb8a91baaa660703dff5e1d6de060697903bbd7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_collection.cpp",
+      "bytes": 57908,
+      "sha256": "85168308125f4220da3db497951c775b105cd1054c44ad3bccf70430161aedc0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_collection_segment.cpp",
+      "bytes": 14247,
+      "sha256": "092d21f694ce5540d09a4daba04455bf52e748f4eeb2421635d799aed5910b5f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_consumer.cpp",
+      "bytes": 4025,
+      "sha256": "c7bcc6c12398ccf80c2e834d1b1c886b5592a5e98277e461e1667dbd2e1f24b4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/partitioned_column_data.cpp",
+      "bytes": 8661,
+      "sha256": "53bd5555121169f4b3bbc7f846c96ae6c9d15bb020fd5b0b9b64183b90a27d4c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/conflict_info.cpp",
+      "bytes": 439,
+      "sha256": "267d0d7accbad14f7951a7544d0dea2600f65a3828ebf6efa3749f858e7e2203"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/conflict_manager.cpp",
+      "bytes": 5224,
+      "sha256": "c943db3fc8b1fdfcd3cc06ec3d2f80645ae82b72ff40ce96986d29ddebbe252a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/data_chunk.cpp",
+      "bytes": 17276,
+      "sha256": "030c4f921174bbc1eb84342d3110372d6a3fa5b0645c403079f5af8ba4dc65bb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/date.cpp",
+      "bytes": 23862,
+      "sha256": "1022a73ae0533398aa75339cc664b71caaaeeac9aad4a7eea7561d86a3108e76"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/decimal.cpp",
+      "bytes": 1430,
+      "sha256": "a04a01a0106d6c915bd94a2031849cc286b739a103609ae7668f23e6d680e1da"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/geometry.cpp",
+      "bytes": 82600,
+      "sha256": "d77cd9a3e99d9e1121126658f0c94c0333c9e0c6ddbc1a661d1433ebec1484bb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/geometry_crs.cpp",
+      "bytes": 19904,
+      "sha256": "bdd5787131e434ad659d728070e644280840ed82484d574cac2d124b3dce758c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/hash.cpp",
+      "bytes": 4214,
+      "sha256": "3c2902814016c8d07e84ad7dadcc449b1d90c0909cec93ffc463ab48450d1de9"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/hugeint.cpp",
+      "bytes": 29021,
+      "sha256": "196a67fa4724b0ff5360d9d806bb38fab64bfe3c7402cd44ce57df718ab8bea0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/hyperloglog.cpp",
+      "bytes": 6238,
+      "sha256": "c5b0edad8f997d11ecdda9e102557b221a14aec29b95e27df35e4306b9ec4f29"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/interval.cpp",
+      "bytes": 19419,
+      "sha256": "ce7a716047fb6855b978e23e55a0c312e313a1768137778c2b83e8cba12d27bd"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/list_segment.cpp",
+      "bytes": 34433,
+      "sha256": "9d7543b0982e75ea54d5ca0a6925740179f32eedfae1a9a47164ac4bf1e314d7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/partitioned_tuple_data.cpp",
+      "bytes": 17014,
+      "sha256": "e756312a9d9fe2ade71fa75d5ee21bcfea513ccae61d9cc7cf7fc9fd2e5bfa7e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_allocator.cpp",
+      "bytes": 34211,
+      "sha256": "1ba967acd0a02f6a84594299d8b42516f9821dd0a143b8841a804737bc2a3bd1"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_collection.cpp",
+      "bytes": 32117,
+      "sha256": "7ba6c75061d9c4566bcf1a9b9cba8f0ba30712fae2517e90b8bceffb0ce88f4b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_iterator.cpp",
+      "bytes": 3742,
+      "sha256": "3ecf7ff30cfecbb0a7f4de080515e9a2aacbce0a4a26b81a557a3755c692d1ab"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_layout.cpp",
+      "bytes": 9218,
+      "sha256": "5e47766ff59f88d05a477b9e1102c32c8bb8032ab3c5b7fd270fe9695f7925a4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_scatter_gather.cpp",
+      "bytes": 87703,
+      "sha256": "0daac25cd3b73fe9d7699d2a878262e3e3e14472fb42d12080cbc56e9414983b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_segment.cpp",
+      "bytes": 5788,
+      "sha256": "a13d91bcc2f4fc4cb8b8ba1e295cee71d1c9fd7bf0e8bc1dbd9a4695990390c7"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/selection_vector.cpp",
+      "bytes": 2506,
+      "sha256": "f48fd79e12968a2594e0f805fee6e94bfe2718206248f6b5d85287f4a09e18de"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/string_heap.cpp",
+      "bytes": 633,
+      "sha256": "12df66b6736ff8bdc7439b3efa4b8fbdb61234f220b0854887d2e1957aabd5c9"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/string_type.cpp",
+      "bytes": 1641,
+      "sha256": "7afe804809da3c1edc97a4ae60c675e29b6147655acc7c8de7b0843737a0a806"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/time.cpp",
+      "bytes": 10259,
+      "sha256": "c382d574513f86e00fe549c1a35f729aab0da1e1a71739646298fb28403c7622"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/timestamp.cpp",
+      "bytes": 19024,
+      "sha256": "997ea68ff72a661716cdee138f42e2d15cdc96fd7762525b079aaa277fd7ee3a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/type_manager.cpp",
+      "bytes": 5187,
+      "sha256": "1d3254b667064c15b2d1497f9fb73744d3de178ff3f4fc06ffd4af1624879b93"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/uhugeint.cpp",
+      "bytes": 21104,
+      "sha256": "c19da751b48069c9bded70980de86f97a5e42062ad482b39a4781bc02522fb10"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/uuid.cpp",
+      "bytes": 8213,
+      "sha256": "902be1ea26277d2794c5c5bde1532a24eda2696ed37b17f11b6444a9721bd519"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/validity_mask.cpp",
+      "bytes": 11523,
+      "sha256": "aca447b10e9df97e442cfb9c02f1b0e27a475868253af54a0fd43bf4fd0183f4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/value.cpp",
+      "bytes": 85862,
+      "sha256": "f1666bac1f300ccb0c9d5c7980d5d33b20df9426f1fcfdbbb5c5705e5a061f5a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/parquet_variant_encoding.cpp",
+      "bytes": 35457,
+      "sha256": "9d909785cb9d3a2c5a908068a54d583c1ff0ef1ae0500222b047f95caff167b5"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/parquet_variant_iterator.cpp",
+      "bytes": 28178,
+      "sha256": "5f550358da0701d9a06c3716ea3f5159ae32952d173b980fef2aeee0defa8ddb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant.cpp",
+      "bytes": 4399,
+      "sha256": "428e8e7d4cb75ade9106304e2dfa5433dcb77afef389c3795886e22c1516be96"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_binary_decoder.cpp",
+      "bytes": 5205,
+      "sha256": "921eb1f12f3df1ade03ffa63a018cf612303e40d872f3f7def1075a82f6dea35"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_comparison.cpp",
+      "bytes": 9921,
+      "sha256": "6ad872f00714eaa22cee675465fbc94b49116746064df07aafc91ed3fc9d461a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_iterator.cpp",
+      "bytes": 21345,
+      "sha256": "b3ad6c5b02d7625be6d3e6db8404e17ba572ba074a83a3ea346e1dec9e210e99"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_value_convert.cpp",
+      "bytes": 1153,
+      "sha256": "cdcf83d8d0da3f948fe39f61884aaed23a36abe870e94603949415b42818f239"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector.cpp",
+      "bytes": 36662,
+      "sha256": "7adccff036df6bc431729a8effe760d04edda038a4fa19d14fb9fdf128ab37ae"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector_buffer.cpp",
+      "bytes": 14392,
+      "sha256": "fc301f33e3e30e2d48414870792f44329153a6f9e300e63872051dfaeab37ddf"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector_cache.cpp",
+      "bytes": 4594,
+      "sha256": "852b5804db98342fd8281838cde20e6bec86ab7a249b2ce894fba6f6fb625438"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector_constants.cpp",
+      "bytes": 679,
+      "sha256": "19ea52d08c4f2727dfd6111c1e1eca194831533ca5e467e70b5322157db44274"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types.cpp",
+      "bytes": 73924,
+      "sha256": "8f57af18706a748077a782f67a7469f5c62bca11a848bc2361e09960bd3f1a61"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/util/util_parsed_expression.cpp",
+      "bytes": 29527,
+      "sha256": "5b011ba5bf02203f97be4fe98b81b6f6657871d87584a3b961ad631ee6026c03"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/value_operations/comparison_operations.cpp",
+      "bytes": 9973,
+      "sha256": "d9f87d6884a34569174a764dddbf152bf8fff23e329fff396297aeaa264c28e0"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/array_vector.cpp",
+      "bytes": 8992,
+      "sha256": "bf75d083d9b5501986ba606cd05d77d26a5800caf6bc0e5f2d45949d759fe4ce"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/constant_vector.cpp",
+      "bytes": 7017,
+      "sha256": "5d5572fd4962fb78f36de4c72b73f9fb835639daa1d0b8528a63ebfdb0f3b47d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/dictionary_vector.cpp",
+      "bytes": 10923,
+      "sha256": "7cf8e491819452f15889517af07266926b94ebc1eb02569163053e4bb24999f8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/flat_vector.cpp",
+      "bytes": 22450,
+      "sha256": "a03c67e7b1c8786cc95055ac2746bc1f778e201906c81a4b70557fb1ecf6454b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/fsst_vector.cpp",
+      "bytes": 4513,
+      "sha256": "107e1cedb9b1a6888ec142fd52a5ea51b770048f3f7d7cb68f29f7183f88b558"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/list_vector.cpp",
+      "bytes": 17269,
+      "sha256": "42e81e4776c104beabfef1bca53bbc08af1c566ffe888bb0fb2867926dd71d3b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/map_vector.cpp",
+      "bytes": 2832,
+      "sha256": "6e843c9a3f40b0dc2d1204a71f000dd4cb33af7143d2434ebaec0b8d4ccc1f39"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/sequence_vector.cpp",
+      "bytes": 2708,
+      "sha256": "228570604db2d5718d5fdebc3e763d482194937ed863aeb832308a6e42f9e132"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/shredded_vector.cpp",
+      "bytes": 7141,
+      "sha256": "032585ca6579dd872ea419bafb443334c663c39c99d1ccf562f1ab9ae7bc8f5d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/string_vector.cpp",
+      "bytes": 9091,
+      "sha256": "4fcf089c4f0382911b3f9fde0a9531b2dab151f821a320552efeaaeb8f595d30"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/struct_vector.cpp",
+      "bytes": 12022,
+      "sha256": "80fcf9395402bc9a6491aa9fd682598705c0446167fcb0b04fb365072ae07e96"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/unified_vector_format.cpp",
+      "bytes": 1100,
+      "sha256": "768c70d3988c39acfca7815a27bba0a92c49f21ecafa4ce9cb59e66ee09b7bb6"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/union_vector.cpp",
+      "bytes": 6053,
+      "sha256": "33ecf7b4ebf4d329336f20bc595b97131817a0ea40f51f05dcad72b569c47614"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/variant_vector.cpp",
+      "bytes": 3898,
+      "sha256": "aaaa38686a42dc6e88631078c3cb6e9fac02846e3ab872c99a2c0daa0bd98c1e"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/boolean_operators.cpp",
+      "bytes": 6167,
+      "sha256": "29eded9934221b5aa409fa77fca51b0026356fb243e49f9dda5fcc7a9c4fee94"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/comparison_operators.cpp",
+      "bytes": 46409,
+      "sha256": "209d329b1122c0b3f3c74eae9bb4127313d18f75a2ef4919bdbd2301de146d40"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/generators.cpp",
+      "bytes": 3463,
+      "sha256": "783e10167779d41ae9bb54129b6fe757b37711f75ddb9688f1309396afb22f57"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/is_distinct_from.cpp",
+      "bytes": 7547,
+      "sha256": "67830e137c2ef9f4651634fc2839ca5d1f9228ffdc14871b74fa32883d8cf263"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/null_operations.cpp",
+      "bytes": 2843,
+      "sha256": "7a3f9fb50d4a3f9eb139ce31ba298d66099b1c38173c95be37c566f34a003a95"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/numeric_inplace_operators.cpp",
+      "bytes": 1403,
+      "sha256": "a3a72a127fbd01d1b7f0a4b78d4fa56e6e3a30689270baa08172ab7ace865e98"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/scalar_executor.cpp",
+      "bytes": 934,
+      "sha256": "423ecbbc7d01fe4edb2dedaded9688012763a67e66ebdc800b3157fff54d98fa"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_cast.cpp",
+      "bytes": 2108,
+      "sha256": "26bb7916a641c1c9e2e37a1b7a1cbefe20ad8d9ea6d1ca6535b6f42e1c22acee"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_copy.cpp",
+      "bytes": 1469,
+      "sha256": "ad3cc2648f1e247a09277f3ebc6ab91c65c202b713dc8cd9f84cde7258a43dd1"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_hash.cpp",
+      "bytes": 21306,
+      "sha256": "4ff85b21cc647946c2c6c55b959fec77619d59590428b67c2480e0401ef627b8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_storage.cpp",
+      "bytes": 3737,
+      "sha256": "fd16686d2b9eb3f3cb64edc19cb1cef4ea3dee808e701a89ba0147b3813add04"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/virtual_file_system.cpp",
+      "bytes": 18431,
+      "sha256": "991fa7f92e11c3fd9145c6c8dc6f1da0ba35838066c3062f0687a098b8d48fdb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/windows_util.cpp",
+      "bytes": 1928,
+      "sha256": "51dd9a6285480651948fc21da2e08b9cece5dc29ad2c6d5f2a4fbbc36ca91421"
+    }
+  ],
+  "sourceFilesSearchedCount": 213,
+  "sourceBytesSearched": 3208264,
+  "searchCommand": [
+    "rg",
+    "-n",
+    "-F",
+    "--no-heading",
+    "ThrowNullSharedPtrDereference",
+    "--",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/adbc.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/allocator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/metadata.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/schema.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/adbc/nanoarrow/single_batch_array_stream.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/allocator/allocator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/allocator/allocator_jemalloc.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/append_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/bool_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/fixed_size_list_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/null_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/struct_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/appender/union_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_appender.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_converter.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_format.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_type_extension.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/arrow_wrapper.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/arrow/schema_metadata.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/assert.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/bignum.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/bind_helpers.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/box_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/box_renderer_context.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/cgroups.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/checksum.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/client_box_renderer_context.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/clustered_aggregate.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/column_data_collection_render_interface.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/column_index.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/compressed_file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/constants.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/crypto/md5.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/csv_writer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_functions.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_key_manager.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_state.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/encryption_types.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enum_util.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/catalog_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/column_segment_info_scan_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/compression_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/date_part_specifier.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/expression_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/file_compression_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/http_status_code.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/join_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/logical_operator_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/optimizer_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/physical_operator_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/relation_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/enums/statement_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/error_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/binder_exception.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/catalog_exception.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/conversion_exception.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception/parser_exception.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/exception_format_value.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/file_buffer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/filename_pattern.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/fsst.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/gzip_file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/hash_functions.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/hive_partitioning.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/identifier.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/json_document.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/local_file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/logical_type_info.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/memory_mapped_file.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/memory_safety.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/base_file_reader.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_adaptive_filter_cache.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_column_mapper.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_function.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_list.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/multi_file_reader.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/table_function_multi_file.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/multi_file/union_by_name.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/open_file_info.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/opener_file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/operator/cast_operators.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/operator/convert_to_string.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/operator/string_cast.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/optional_idx.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/path.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/pipe_file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/printer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/process_util.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/progress_bar/progress_bar.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/progress_bar/terminal_progress_bar_display.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/radix_partitioning.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/random_engine.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/re2_regex.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/render_tree.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/row_operations/row_aggregate.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/row_operations/row_matcher.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_file_writer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_memory_governor.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_task_queue.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/async_write_queue.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/binary_deserializer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/binary_serializer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/buffered_file_reader.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/buffered_file_writer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/memory_stream.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/serialization_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/serializer/serializer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/full_sort.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/hashed_sort.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/natural_sort.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/partition_key_tracker.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/partitioned_sort.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sort.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sort_strategy.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sorted_run.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/sort/sorted_run_merger.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/stacktrace.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/storage_compatibility.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/string_util.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/symbols.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/thread_util.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/time_point.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/compact_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/graphviz_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/html_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/json_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/mermaid_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/text_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer/yaml_tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/tree_renderer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/batched_data_collection.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/bignum.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/bit.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/blob.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/cast_helpers.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_allocator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_collection.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_collection_segment.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/column_data_consumer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/column/partitioned_column_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/conflict_info.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/conflict_manager.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/data_chunk.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/date.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/decimal.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/geometry.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/geometry_crs.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/hash.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/hugeint.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/hyperloglog.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/interval.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/list_segment.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/partitioned_tuple_data.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_allocator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_collection.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_iterator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_layout.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_scatter_gather.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/row/tuple_data_segment.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/selection_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/string_heap.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/string_type.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/time.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/timestamp.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/type_manager.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/uhugeint.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/uuid.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/validity_mask.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/value.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/parquet_variant_encoding.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/parquet_variant_iterator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_binary_decoder.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_comparison.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_iterator.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/variant/variant_value_convert.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector_buffer.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector_cache.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types/vector_constants.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/types.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/util/util_parsed_expression.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/value_operations/comparison_operations.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/array_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/constant_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/dictionary_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/flat_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/fsst_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/list_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/map_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/sequence_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/shredded_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/string_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/struct_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/unified_vector_format.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/union_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector/variant_vector.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/boolean_operators.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/comparison_operators.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/generators.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/is_distinct_from.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/null_operations.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/numeric_inplace_operators.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/scalar_executor.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_cast.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_copy.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_hash.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/vector_operations/vector_storage.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/virtual_file_system.cpp",
+    "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/windows_util.cpp"
+  ],
+  "searchExitCode": 0,
+  "exactSearchStdout": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/memory_safety.cpp:11:void ThrowNullSharedPtrDereference() {\n",
+  "matches": [
+    {
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/source/src/common/memory_safety.cpp",
+      "sourceRelativeToOfficial": "src/common/memory_safety.cpp",
+      "line": 11,
+      "exactMatchedLine": "void ThrowNullSharedPtrDereference() {",
+      "bytes": 2174,
+      "sha256": "94ce65bb53635026a49700017cf8bbe965545493e13ccb8922000d35cf6f324c",
+      "matchesPristineRevisionBytes": true,
+      "pristineReadCommand": [
+        "git",
+        "-C",
+        "/mnt/storage/roslynobj-duckdb-20261014/source",
+        "show",
+        "a809d3cd519df6db70223c562c4de80da311868b:src/common/memory_safety.cpp"
+      ],
+      "manifestMappedEntryIndices": [
+        293
+      ]
+    }
+  ],
+  "manifestMappedCandidates": [
+    {
+      "entry_index": 293,
+      "original_entry_indices": [
+        293
+      ],
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj",
+      "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/ub_duckdb_common.cpp",
+      "source_sha256": "1156b0287de8bd71aa3923e30c7dc6ca5334980e46bc2a884bd0fecd31c91d77",
+      "category": "library",
+      "format_major": 2,
+      "format_minor": 0,
+      "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+      "bytes": 1837615104,
+      "sha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+      "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/result.json",
+      "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/recipe.json",
+      "semantic_equivalent": true,
+      "unsupported_semantic_flags": [],
+      "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+    }
+  ],
+  "candidateObjectsOpened": 0,
+  "objectHashesAreManifestClaimsNotRereads": true,
+  "requiredNextPublicLookup": "Coordinator only: bounded FindSymbols display-name candidates, require captured final linkage exact match, IsDefined/body association and selected signature. No function enumeration fallback.",
+  "tools": {
+    "rg": "ripgrep 15.2.0 (rev e89fff89ac)",
+    "git": "git version 2.43.0"
+  }
+}

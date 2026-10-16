@@ -1,0 +1,283 @@
+{
+  "reportVersion": 1,
+  "milestone": "Manifest-guided DuckDB guard definition candidate and pristine builtin audit",
+  "status": "complete-within-single-object-definition-association-lookup-scope",
+  "parentCheckpoint": "d0ee6d911",
+  "productCheckpoint": "16a07ae6b",
+  "inventoryOnly": true,
+  "translatorAccepted": false,
+  "linkClosureComplete": false,
+  "generatedExecutionAccepted": false,
+  "programWideBindingClaim": false,
+  "typedBodyTracePerformed": false,
+  "typeClosurePerformed": false,
+  "builtinRuntimeImplementationAccepted": false,
+  "broaderT5Complete": false,
+  "sourceSnapshot": {
+    "manifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-source-1/source-snapshot.json",
+      "bytes": 7654,
+      "sha256": "8fc06cc52579845996938e895e18a15962d1f9364d51ca185750c878d5b72599"
+    },
+    "files": 48,
+    "currentSourceFreezeVerified": true
+  },
+  "frozenLookupInputs": {
+    "manifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-source-1/input-snapshot.json",
+      "bytes": 587,
+      "sha256": "e813c60ed644ee5a5b6574e93ddfc38ac02b6628eb0cd30221555d76b912e378"
+    },
+    "files": 4,
+    "currentFreezeVerified": true
+  },
+  "phaseCount": 2,
+  "successfulPhaseCount": 2,
+  "unexpectedOutcomes": 0,
+  "budgetViolations": 0,
+  "phases": [
+    {
+      "name": "duckdb-definition-build-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-build-1/run.json",
+        "bytes": 1273,
+        "sha256": "44be2f8b08e278010645429cf4285cb85620a6239cc068965c234b01d024d4f7"
+      },
+      "elapsedSeconds": 5.696472401032224,
+      "sampledPeakProcessTreeRssBytes": 458002432,
+      "waitedPeakProcessRssBytes": 266797056,
+      "budgetViolation": null
+    },
+    {
+      "name": "duckdb-definition-lookup-1",
+      "expectedExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-lookup-1/run.json",
+        "bytes": 1085,
+        "sha256": "bdbba12228398df32478e9e3d4b4c46e457d7843ceb871bbe7f5504313fd2bb6"
+      },
+      "elapsedSeconds": 5.224468362051994,
+      "sampledPeakProcessTreeRssBytes": 89022464,
+      "waitedPeakProcessRssBytes": 83099648,
+      "budgetViolation": null
+    }
+  ],
+  "driver": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-duckdb-definition-lookup-1.py",
+    "bytes": 3371,
+    "sha256": "2f020ee09e375d6de60508089b94b454c208d17fb94a900e28510717982a9d24"
+  },
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "bytes": 5505,
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+  },
+  "toolBinary": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-bin-1/DuckdbDefinitionFacts.dll",
+    "bytes": 51712,
+    "sha256": "166f8c100d50768e102eee6301e9def6faf3cc81429390e0c016afe614ec5e8b"
+  },
+  "measurement": "All-thread descendant RSS sampled every 100 ms; shared pages may count repeatedly and short peaks may be missed. Waited process RSS is separate. Whole lookup phase includes both object hashes, Open/admission and query.",
+  "locationAudit": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/duckdb/guard-definition-location.json",
+    "bytes": 70031,
+    "sha256": "9737eac8a3d897041f33006fdff4d6122c467dba1f9c7e06c594d3df581bdcab"
+  },
+  "pristineBuiltinAudit": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/duckdb/builtin-expect-stock-audit.json",
+    "bytes": 22866,
+    "sha256": "ccc3a244490f771eb5f135cc14a19a599df4c8bc37dbd7656cd58c289de5c081"
+  },
+  "fullLookupFacts": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-facts-1.json",
+    "bytes": 7079,
+    "sha256": "69cad7ad3555222e8bcd975a425f47555117b02f54fc5f6e65fe68d9b2b80f62"
+  },
+  "lookupFacts": {
+    "probeVersion": 1,
+    "lookupComplete": true,
+    "inventoryOnly": true,
+    "translatorAccepted": false,
+    "linkClosureComplete": false,
+    "generatedExecutionAccepted": false,
+    "typedBodyTracePerformed": false,
+    "typedBodyOccurrenceCount": 0,
+    "typeClosurePerformed": false,
+    "programWideBindingClaim": false,
+    "scope": "One manifest-pinned entry 293 only. Display-name candidates followed by exact captured final-name comparison; body/signature associations only, no body traversal, recursive types or fallback enumeration.",
+    "bounds": {
+      "inputObjects": 1,
+      "retainedCandidates": 4,
+      "candidateOverflowSentinel": 5,
+      "parametersPerList": 16,
+      "lookupCommands": 128,
+      "lookupRows": 512,
+      "cachedRows": 4096,
+      "cachedPages": 128,
+      "pageSize": 128,
+      "commandTimeoutSeconds": 30,
+      "maximumBatchSize": 900,
+      "mandatoryOpenAccounting": "Raw Open statistics are separate; command/row limits apply to subsequent lookup deltas. Whole-process time/RSS are measured by the coordinator.",
+      "candidateIndexCaveat": "Take bounds materialized candidates, not internal name-index work. A fifth candidate stops the lookup as bounded ambiguity."
+    },
+    "issues": [],
+    "request": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/duckdb-definition-request-1.json",
+      "sha256": "896d2d9827808d2137155aa8516cd8e629a641b4aee6a9c4c04c24725ce4c377",
+      "values": {
+        "manifestPath": "/home/marius/p/dotcc/edgcpp/roslyn/docs/duckdb-core-manifest.json",
+        "manifestSha256": "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff",
+        "entryIndex": 293,
+        "inputPath": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj",
+        "inputSha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+        "inputBytes": 1837615104,
+        "displayName": "ThrowNullSharedPtrDereference",
+        "expectedFinalLinkage": "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv"
+      }
+    },
+    "coreManifest": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn/docs/duckdb-core-manifest.json",
+      "sha256": "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff",
+      "bytes": 168802,
+      "entry": {
+        "entry_index": 293,
+        "original_entry_indices": [
+          293
+        ],
+        "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj",
+        "source": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/ub_duckdb_common.cpp",
+        "source_sha256": "1156b0287de8bd71aa3923e30c7dc6ca5334980e46bc2a884bd0fecd31c91d77",
+        "category": "library",
+        "format_major": 2,
+        "format_minor": 0,
+        "contract": "3e818d17da55433edff5f5c9b035c58110e953371c3c6fa09cb99d0f6f84b5f6",
+        "bytes": 1837615104,
+        "sha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+        "result": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/result.json",
+        "recipe": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/recipe.json",
+        "semantic_equivalent": true,
+        "unsupported_semantic_flags": [],
+        "selected_attempt_manifest": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/manifest.json"
+      }
+    },
+    "mandatoryOpenStatistics": {
+      "commands": 10,
+      "rowsRead": 1632,
+      "cachedRows": 6,
+      "cachedPages": 0,
+      "maximumBatchSize": 0
+    },
+    "objectManifest": {
+      "artifactIdentity": "4f67f8e3a2065e96ad421dcf93e505da",
+      "formatMajor": 2,
+      "formatMinor": 0,
+      "producer": "roslyn_gen_be",
+      "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+      "edgVersion": "7.0",
+      "captureProfile": "native_lowered",
+      "stage": "lowered",
+      "target": {
+        "abi": "itanium",
+        "addressableUnitBits": 8,
+        "endianness": "little",
+        "pointerBits": "64",
+        "pointerAlignment": "8"
+      }
+    },
+    "candidates": [
+      {
+        "locator": "entity/000001",
+        "sourceNameForDisplayOnly": "ThrowNullSharedPtrDereference",
+        "currentName": "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv",
+        "symbolKind": "routine",
+        "sourceCorrespondence": {
+          "locator": "entity/000002",
+          "currentName": "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv",
+          "nameHasBeenMangled": true,
+          "unmangledNameOrMangledEncoding": "ThrowNullSharedPtrDereference",
+          "mangledEncoding": null,
+          "unnamedEntityGivenFabricatedName": false
+        },
+        "isFunctionCandidate": true,
+        "assemblyName": null,
+        "capturedFinalName": "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv",
+        "capturedFinalNameRule": "Retained GNU AssemblyName when non-null, otherwise retained CurrentName; no stripping, normalization, source lookup or remangling.",
+        "exactRequestedFinalName": true,
+        "comparisonScope": "Attribution candidate within this one pinned input; not program-wide definition selection.",
+        "isDefined": true,
+        "bodyState": "definition",
+        "bodyRootAssociationNotTraversal": "entity/000003",
+        "bodyFunctionAssociation": "entity/000001",
+        "bodyScopeAssociationNotTraversal": "entity/000004",
+        "source": {
+          "association": "entity/000005",
+          "position": "entity/000006",
+          "file": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/../../../source/src/common/memory_safety.cpp",
+          "presumedName": "/mnt/storage/roslynobj-duckdb-20261014/build/src/common/../../../source/src/common/memory_safety.cpp",
+          "logicalLine": "11",
+          "physicalLine": "11",
+          "column": 6
+        },
+        "specialFunctionKind": "sfk_none",
+        "entryKind": "cdk_none",
+        "containingTypeAssociationOnly": null,
+        "signature": {
+          "type": "entity/000007",
+          "returnTypeAssociationOnly": "entity/000008",
+          "thisClassAssociationOnly": null,
+          "hasPrototype": true,
+          "isVariadic": false,
+          "hasThisParameter": false,
+          "returnsValueAsParameter": false,
+          "returnsValueViaCopyConstructor": false,
+          "returnValueParameterFollowsThis": false,
+          "callingConvention": "cc_default",
+          "languageLinkage": "nlk_cplusplus_external",
+          "noexceptEffective": null,
+          "parameters": []
+        },
+        "executionParameters": [],
+        "sourceParameters": []
+      }
+    ],
+    "fifthCandidateObserved": false,
+    "materializedDisplayCandidateCount": 1,
+    "exactFinalNameCandidateCount": 1,
+    "definedExactFinalNameCandidateCount": 1,
+    "definitionCandidateLocatedWithinInspectedInput": true,
+    "definitionCandidateAmbiguousWithinInspectedInput": false,
+    "totalReaderStatistics": {
+      "commands": 30,
+      "rowsRead": 1648,
+      "cachedRows": 22,
+      "cachedPages": 4,
+      "maximumBatchSize": 1
+    },
+    "lookupStatistics": {
+      "commands": 20,
+      "rowsRead": 16
+    },
+    "input": {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj",
+      "bytes": 1837615104,
+      "sha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+      "afterSha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+      "unchanged": true
+    },
+    "elapsedSeconds": 5.1328769
+  },
+  "interpretation": {
+    "location": "Three current manifests and 213 manifest-listed common C++ source files locate one candidate object only. Source spelling/location is discovery metadata, not semantic binding. Exact captured linkage/definition/signature associations in the pinned public reader establish a candidate within entry 293 only.",
+    "lookup": "One indexed display-name candidate has the requested exact retained final linkage, IsDefined=true/BodyState=definition and reciprocal body-function association. No fifth candidate. Parameter lists are empty; source noexcept remains null. Return type is an UNEXPANDED association, not a new void/result ABI proof or cross-unit selection.",
+    "accounting": "Open/admission costs 10 commands/1632rows are reported separately. Lookup deltas 20 commands/16rows stay within 128 commands/512rows; totals 30/1648 remain explicit. Before/after 1,837,615,104-byte object SHA matches the frozen manifest.",
+    "builtin": "Pinned EDG constexpr handling evaluates/returns the first argument and ignores the hint in that interpreter context while retaining nonconstant top-level invocation for backend hinting. This does NOT establish arbitrary runtime hint-argument evaluation effects or a generated implementation.",
+    "remaining": "The guard body and its constructor/throw/link/EH dependencies are not traversed or admitted. The actual 164-object set is not thereby a linked program. The actual accessor/pointer/base/storage/intrinsic capability remains for a cohesive reviewed product slice."
+  },
+  "limits": [
+    "One object only, manifest and content hash pinned before Open; exact final-name comparison follows display candidate discovery. No whole-export/function enumeration, source semantic inference, remangling or raw SQLite/reflection access.",
+    "Definition candidate is only within the inspected pinned object. No cross-unit identity merge, selected provider, program-wide unique definition, ABI equivalence or executable/link claim.",
+    "No typed body/type closure/recursive helpers, no builtin implementation or exception behavior inferred from names or nullable noexcept.",
+    "Existing reader/translator/Runtime/providers/generated projects are unchanged; no native application fallback. Previous traces and SQLite/C++ proofs keep original attribution."
+  ]
+}
