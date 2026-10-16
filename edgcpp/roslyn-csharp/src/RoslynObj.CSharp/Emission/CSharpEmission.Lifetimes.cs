@@ -461,6 +461,35 @@ public sealed partial class CSharpEmitter
             return false;
         }
 
+        private static ExpressionOperation NormalInitializationValue(InitializationStatementOperation statement)
+        {
+            var initialization = statement.Initialization;
+            var flags = initialization.Details;
+            if (statement.RepresentationRole.Name != "execution" || initialization.Kind.Name != "dik_expression" ||
+                initialization.Operation is not { RepresentationRole.Name: "execution" } operation ||
+                !operation.Initialization.Equals(initialization) ||
+                initialization.Target is not VariableSymbol target || target.Details.StorageDuration?.Name != "automatic" ||
+                target.Initializer?.Equals(initialization) != true ||
+                flags.Type is not { } type || !type.Equals(target.Type) ||
+                initialization.Expression is not ExpressionOperation { RepresentationRole.Name: "execution" } value || !value.Type.Equals(type) ||
+                MemoryRepresentationType(type) is not PointerType { IsReference: false, IsRValueReference: false } pointer ||
+                type.Size != 8 || type.Alignment != 8 || pointer.Size != 8 || pointer.Alignment != 8 ||
+                initialization.Constructor is not null || initialization.Destructor is not null || initialization.Constant is not null ||
+                initialization.Lambda is not null || flags.Source is not null || initialization.Operands.Count != 0 ||
+                initialization.Lifetime is not null || initialization.InitExpressionLifetime is not null || initialization.OverlappingLifetime is not null ||
+                initialization.Master is not null || initialization.NextInDestructionList is not null ||
+                flags.IsUnordered || flags.IsConditional || flags.IsReusedValue || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary ||
+                flags.IsPartialAggregate || flags.IsPartialInitialization || flags.HasTemporaryLifetime || flags.IsConstructorInitialization ||
+                flags.ConstructorCopyImpliedSource || flags.ConstructorImplicitCopy || flags.ConstructorValueInitialization ||
+                flags.ConstructorSequencedArguments || flags.ConstructorArrayCopy || flags.IsQuestionResult || flags.IsCommaResult ||
+                flags.FreesStorage || flags.FreesArray || flags.IsConditionalGuard || flags.IsVlaDeallocation || flags.IsFreeingOfExceptionObject ||
+                flags.CreatesInitializerList || flags.IsInitializerListArray)
+                throw Limit("Normal lifetime traversal requires an explicit ordinary pointer initializer with one executable value and no additional lifetime payload.", "lifetime-initialization");
+            // The statement remains the retained store occurrence. Follow only
+            // its executable value; declaration associations add no evaluation.
+            return value;
+        }
+
         // Validation only, never an execution schedule. These are the exact typed
         // relationships consumed by the admitted normal body projection. Metadata
         // recipes, scope reachability and structural descendants add no evaluation.
@@ -480,6 +509,7 @@ public sealed partial class CSharpEmitter
                         ConditionalOperation conditional => new SemanticNode?[] { conditional.Condition, conditional.Then, conditional.Else }.OfType<SemanticNode>(),
                         JumpOperation { JumpKind.Name: "return" } jump => jump.Value is { } value ? [value] : [],
                         DeclarationOperation => [],
+                        InitializationStatementOperation initialization => [NormalInitializationValue(initialization)],
                         LifetimeOperation lifetime => [lifetime.Value],
                         ConditionOperation { Initialization: null, DynamicInitialization: null, Value: { } value } => [value],
                         CallOperation call => call.Operands,

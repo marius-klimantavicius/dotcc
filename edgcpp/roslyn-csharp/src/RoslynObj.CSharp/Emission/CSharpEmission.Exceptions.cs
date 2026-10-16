@@ -450,11 +450,17 @@ public sealed partial class CSharpEmitter
                 var nodes = ExceptionExecutionNodes(current.Body.Root).ToArray();
                 if (nodes.Any(node => node is ThrowOperation or TryOperation))
                     throw Limit("Normal-only lifetime marker omission cannot admit a live throw/try, including through noexcept calls.", "lifetime");
+                foreach (var marker in nodes.OfType<ExpressionOperation>().Where(node => node.Kind.Name == "enk_result_of_overriding_function"))
+                {
+                    if (multipleVirtual is not { } markerPlan || !IsOverridingResult(marker) || !markerPlan.Wrapper.Equals(current))
+                        throw Limit("Normal marker omission requires the exact selected context of an overriding-result call.", "virtual-adjustor");
+                    Check(markerPlan.Overriding, active);
+                }
                 foreach (var call in nodes.OfType<CallOperation>())
                 {
                     if (IsVirtualCall(call))
                     {
-                        foreach (var table in virtualDispatch!.Tables) Check(table.Target, active);
+                        foreach (var virtualTarget in VirtualCallTargets(call)) Check(virtualTarget, active);
                         continue;
                     }
                     if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || call.TargetMethod?.Equals(target) != true || target.Signature.IsVariadic)
@@ -682,6 +688,10 @@ public sealed partial class CSharpEmitter
                         CallOperation call => call.Operands,
                         LoweredEhOperation marker => marker.Operands,
                         ReferenceOperation or ConstantOperation => [],
+                        // This IL kind has no variant/operand payload. Traversal
+                        // is not admission: its wrapper identity, call effects
+                        // and selected no-throw target are validated separately.
+                        ExpressionOperation { Kind.Name: "enk_result_of_overriding_function", RepresentationRole.Name: "execution", Operands.Count: 0 } => [],
                         OperatorOperation operation => operation.Operands,
                         StatementOperation { Kind.Name: "stmk_expr", Expression: { } value } => [value],
                         StatementOperation { Kind.Name: "stmk_empty" } => [],

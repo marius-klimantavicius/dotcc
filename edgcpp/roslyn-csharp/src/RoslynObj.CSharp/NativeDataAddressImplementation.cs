@@ -14,10 +14,12 @@ internal sealed record SemanticNativeDataImplementation(VariableSymbol Variable,
     {
         "_ZTVN10__cxxabiv117__class_type_infoE" => 0x26dd18,
         "_ZTVN10__cxxabiv120__si_class_type_infoE" => 0x26ebd8,
+        "_ZTVN10__cxxabiv121__vmi_class_type_infoE" => 0x26ec98,
         _ => 0
     };
     internal static bool IsSupportedSymbol(string? symbol) => symbol is
-        "_ZTVN10__cxxabiv117__class_type_infoE" or "_ZTVN10__cxxabiv120__si_class_type_infoE";
+        "_ZTVN10__cxxabiv117__class_type_infoE" or "_ZTVN10__cxxabiv120__si_class_type_infoE" or
+        "_ZTVN10__cxxabiv121__vmi_class_type_infoE";
 
     internal static bool IsAdmitted(ExternalBinding binding) => binding.Kind == "variable" &&
         IsSupportedSymbol(binding.LinkageName) && binding.Symbol == binding.LinkageName &&

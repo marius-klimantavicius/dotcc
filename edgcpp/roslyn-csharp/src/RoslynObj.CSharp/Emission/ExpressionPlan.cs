@@ -27,6 +27,7 @@ internal sealed record CsPlannedCall(CsType ValueType, CallOperation Operation, 
     IReadOnlyList<CsExpression> Arguments) : CsExpression(ValueType);
 internal sealed record CsAutomaticArrayCall(CsType ValueType, CallOperation Operation,
     IReadOnlyList<CsExpression> Arguments) : CsExpression(ValueType);
+internal sealed record CsOverridingResult(CsType ValueType, ExpressionOperation Operation) : CsExpression(ValueType);
 internal sealed record CsVariadicArgument(CsType ValueType, OperatorOperation Operation, CsExpression Cursor) : CsExpression(ValueType);
 internal sealed record CsTargetShift(CsType ValueType, bool Right, CsExpression Left, CsExpression Count) : CsExpression(ValueType);
 internal sealed record CsTruth(CsExpression Value, CppType SourceType) : CsExpression(CsType.Boolean);

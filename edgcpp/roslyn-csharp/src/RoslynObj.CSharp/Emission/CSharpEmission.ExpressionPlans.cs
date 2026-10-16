@@ -16,6 +16,7 @@ public sealed partial class CSharpEmitter
         {
             if (TryPlanNormalLifetime(expression, out var normalLifetime)) return normalLifetime;
             if (TryPlanExceptionExpression(expression, out var exceptionExpression)) return exceptionExpression;
+            if (TryPlanOverridingResult(expression, out var overridingResult)) return overridingResult;
             var type = CsType.Value(expression.Type);
             switch (expression)
             {
@@ -416,6 +417,7 @@ public sealed partial class CSharpEmitter
             CsAddress address => RenderAddress(address.Place),
             CsPlannedCall call => RenderCall(call),
             CsAutomaticArrayCall call => RenderAutomaticArrayCall(call),
+            CsOverridingResult result => RenderOverridingResult(result),
             CsVariadicArgument argument => VariadicOperator(argument.Operation, [RenderExpression(argument.Cursor)]),
             CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
             CsTruth { Value: CsSourceBoolean boolean } => RenderExpression(boolean.Condition),

@@ -80,3 +80,10 @@ RTTI metadata addresses from the pinned provider. See
 [the bounded virtual proof](../../../docs/T5-VIRTUAL-DISPATCH.md). This does not
 claim multiple/virtual inheritance, nonzero thunks, virtual destructors, RTTI
 queries, member pointers or native unwinding.
+
+`multiple-inheritance.cpp` now passes production CLI/native/JIT/NativeAOT with
+two retained base views, a secondary table and one actual fixed-adjustor body.
+Physical checks execute all five canonical entries, including distinct direct
+and secondary-thunk paths, and verify the additional pinned VMI DATA address.
+See [the bounded MI proof](../../../docs/T5-MULTIPLE-INHERITANCE.md). Virtual
+bases/VTT, virtual destructors, dynamic adjustments and RTTI queries remain open.

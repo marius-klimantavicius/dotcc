@@ -25,7 +25,7 @@ public sealed record BorrowedNativeRttiDataResolution(
     bool ReadOnlyMappingVerified);
 
 /// <summary>
-/// Resolves the two admitted ABI RTTI data addresses from the exact audited
+/// Resolves the admitted ABI RTTI data addresses from the exact audited
 /// provider. This does not read an RTTI slot, implement RTTI queries, apply a
 /// captured address offset, or transfer ownership of native storage.
 /// </summary>
@@ -37,6 +37,7 @@ public static class BorrowedNativeRttiData
     private const int PinnedSymbolSize = 88;
     private const string ClassTypeInfoVtable = "_ZTVN10__cxxabiv117__class_type_infoE";
     private const string SingleInheritanceTypeInfoVtable = "_ZTVN10__cxxabiv120__si_class_type_infoE";
+    private const string MultipleInheritanceTypeInfoVtable = "_ZTVN10__cxxabiv121__vmi_class_type_infoE";
     private static readonly object Gate = new();
     private static readonly Dictionary<string, BorrowedNativeRttiDataResolution> Resolutions =
         new(StringComparer.Ordinal);
@@ -141,7 +142,8 @@ public static class BorrowedNativeRttiData
         {
             ClassTypeInfoVtable => 0x26dd18UL,
             SingleInheritanceTypeInfoVtable => 0x26ebd8UL,
-            _ => throw Unsupported("The data export is outside the exact two-symbol RTTI address contract.")
+            MultipleInheritanceTypeInfoVtable => 0x26ec98UL,
+            _ => throw Unsupported("The data export is outside the exact admitted RTTI address contract.")
         };
         if (!StringComparer.OrdinalIgnoreCase.Equals(hash, PinnedSha256) || rva != expectedRva ||
             size != PinnedSymbolSize || !StringComparer.Ordinal.Equals(version, PinnedSymbolVersion))

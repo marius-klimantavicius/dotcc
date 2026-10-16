@@ -23,6 +23,7 @@ public sealed partial class CSharpEmitter
         {
             var methods = functions.Where(function => function.IsVirtual).ToArray();
             if (methods.Length == 0) return;
+            if (TryInitializeMultipleInheritance(methods)) return;
             RequireNormalLifetimeProfile();
             if (methods.Length != 2 || HostProtocolEnabled || methods.Any(function => function.ContainingType is not RecordType))
                 throw Limit("The bounded virtual projection requires two selected scalar methods in one generated-only record pair.", "virtual-dispatch");
@@ -264,17 +265,24 @@ public sealed partial class CSharpEmitter
             virtualBaseCleanups.Add(action, new(function, recipe));
         }
 
-        private bool IsVirtualMethod(FunctionSymbol function) => virtualDispatch?.Tables.Any(table => table.Target.Equals(function)) == true;
-        private bool IsVirtualCall(CallOperation call) => virtualDispatch?.Call.Equals(call) == true;
+        private bool IsVirtualMethod(FunctionSymbol function) => virtualDispatch?.Tables.Any(table => table.Target.Equals(function)) == true ||
+            multipleVirtual?.AddressTargets.Contains(function) == true;
+        private bool IsVirtualCall(CallOperation call) => virtualDispatch?.Call.Equals(call) == true || multipleVirtual?.Sites.Any(site => site.Call.Equals(call)) == true;
+        private IReadOnlyList<FunctionSymbol> VirtualCallTargets(CallOperation call)
+        {
+            if (multipleVirtual?.Sites.FirstOrDefault(site => site.Call.Equals(call)) is { } site) return site.Targets;
+            return virtualDispatch is { } single && single.Call.Equals(call) ? single.Tables.Select(table => table.Target).ToArray() : [];
+        }
         private bool IsVirtualAlternate(FunctionSymbol function) => virtualAlternates.Contains(function);
         private bool IsVirtualBaseRecipe(Initialization recipe) => virtualBaseCleanups.Values.Any(cleanup => cleanup.Recipe.Equals(recipe));
         private bool IsVirtualTableAddress(ConstantOperation constant) => constant.Constant.Value is AddressValue address &&
-            virtualDispatch?.Tables.Any(table => address.BaseEntity?.Equals(table.Variable) == true && address.BaseKind.Name == "abk_variable" &&
-                address.ByteOffset == 16 && !address.OnePastEnd && address.SubobjectPath is null && !address.Details.IsObjectReflection && address.Details.ParameterNumber is null) == true;
-        private int VirtualConstructorArgumentCount(FunctionSymbol function) => virtualDispatch is { } plan &&
-            function.ContainingType?.Equals(plan.Derived) == true ? 2 : 1;
+            (virtualDispatch?.Tables.Any(table => address.BaseEntity?.Equals(table.Variable) == true && address.BaseKind.Name == "abk_variable" &&
+                address.ByteOffset == 16 && !address.OnePastEnd && address.SubobjectPath is null && !address.Details.IsObjectReflection && address.Details.ParameterNumber is null) == true ||
+                IsMultipleTableAddress(address));
+        private int VirtualConstructorArgumentCount(FunctionSymbol function) => multipleVirtual is { } multiple && Equals(function.ContainingType, multiple.Derived) ? 3 :
+            virtualDispatch is { } plan && function.ContainingType?.Equals(plan.Derived) == true ? 2 : 1;
         private bool NeedsVirtualDispatchPlan(ExpressionOperation expression) => expression is CallOperation call && IsVirtualCall(call) ||
-            expression is ConversionOperation conversion && virtualBaseViews.Contains(conversion);
+            expression is ConversionOperation conversion && virtualBaseViews.Contains(conversion) || IsOverridingResult(expression);
 
         private bool TryPlanVirtualBaseView(ConversionOperation conversion, out ExpressionPlan result)
         {
@@ -290,6 +298,7 @@ public sealed partial class CSharpEmitter
 
         private bool TryEmitVirtualRecord(RecordType record, StringBuilder output)
         {
+            if (TryEmitMultipleRecord(record, output)) return true;
             if (virtualDispatch is not { } plan || !record.Equals(plan.Base) && !record.Equals(plan.Derived) && !record.Equals(plan.View)) return false;
             var borrowedView = record.Equals(plan.View);
             output.Append("[StructLayout(LayoutKind.Explicit, Size = ").Append(StorageSize(record)).Append(", Pack = ").Append(borrowedView ? 1 : 8).AppendLine(")]");
@@ -304,11 +313,14 @@ public sealed partial class CSharpEmitter
         private string VirtualCall(CallOperation call, string address, IReadOnlyList<string> arguments)
         {
             if (!IsVirtualCall(call) || arguments.Count != 2) throw Limit("An indirect member call has no validated generated virtual gateway.", "virtual-call");
+            if (multipleVirtual?.Sites.FirstOrDefault(site => site.Call.Equals(call)) is { } site)
+                return $"{Owner}.{site.Invoke}({address}, {arguments[0]}, {arguments[1]})";
             return $"{Owner}.{virtualDispatch!.Invoke}({address}, {arguments[0]}, {arguments[1]})";
         }
 
         private void EmitVirtualDispatchSupport()
         {
+            EmitMultipleDispatchSupport();
             if (virtualDispatch is not { } plan) return;
             methods.Append("    private static int ").Append(plan.Invoke).Append("(nint address, ").Append(TypeName(plan.Base)).AppendLine("* receiver, int argument)")
                 .AppendLine("    {");

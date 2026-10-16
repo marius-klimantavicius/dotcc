@@ -667,6 +667,7 @@ public sealed partial class CSharpEmitter
         private static bool HasEffects(ExpressionOperation expression) => expression switch
         {
             CallOperation or TemporaryOperation or AllocationOperation or ThrowOperation => true,
+            { Kind.Name: "enk_result_of_overriding_function" } => true,
             OperatorOperation op when IsStatementExpression(op.OperatorKind.Name) || op.OperatorKind.Name == "eok_va_arg" => true,
             _ => expression.Operands.Any(HasEffects)
         };

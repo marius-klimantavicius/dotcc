@@ -142,6 +142,49 @@ with actual nonzero receiver adjustment/selected thunk. Keep normal RTTI flags,
 inspect exact public layouts/vtable constants/call signatures, and audit any new
 ABI DATA symbol before implementation. Broader T5/T6 remain open. No worker builds,
 exports or mutates Git.
+
+Virtual checkpoint is `0ed151b12`. The next genuine MI source is now frozen;
+`t5/multiple-capture-provenance-1.json` records six passing serialized capture,
+inspect, public-facts and native phases. Public facts are
+`t5/multiple-inheritance-facts-1.json` (1,321 entities, 27 bodies). Native twice
+returns 109 with values [5,11,36,57,5,7,11,0,0], all 18 events and live/overflow 0.
+Actual Derived is 32/8, Left base at 0, Right base at 16, bonus at 28; a distinct
+defined wrapper retains receiver adjustment -16 and an explicit body. Root approved the bounded MI projection and finite VMI descriptor after exact
+closure review. Audit `t5/multiple-provider-audit-1.json`, SHA-256
+`726eec58b8c91897616cd7fc8ce3eba0ab733cd2fab05686e505a855b1cab758`,
+preserves attributable ELF/relocation/provider and public initializer facts.
+The class AddressValue is shared by two roots; admission records allowed
+(root, value) pairs. VMI anonymous storage anchors through actual application
+TypeinfoVariable, not a fabricated runtime-type vtable link.
+
+The MI slice is verified in `t5/multiple-source-4` (222 files) and separate
+`t5/multiple-checker-source-1` (nine files). Compact receipt:
+`acceptance/lifetimes/multiple-inheritance-report.json`, SHA-256
+`4e82c5124a6a2b296c672fa52515e052350ed6a58b6dbd39b399cf79f7e7c329`.
+All 50 expected outcomes pass: 44 ordinary successes, two prior termination
+signals and four intended unsupported rejections. All 13 input hashes, source
+freezes, provider and completion hashes verify; repeat outputs agree.
+
+Production `t5/multiple-cli-generated-4` publishes all 27 required bodies and two
+DATA bindings without diagnostics. Native/JIT/AOT match result 109, nine values
+and 18 events twice. Physical JIT/AOT proves sizes 16/16/32, views 12, alignment 8,
+bases 0/16, bonus 28, address points 16/48 and signed prefixes 0/-16. All five
+loaded canonical entries execute: 5/11/36/57/57, events 602/703/805/907/907.
+Direct override and thunk are distinct; actual raw Right+16 reaches the captured
+Derived* thunk formal under the proven pointer ABI, and only its body adds -16.
+Ten live units balance through 25 physical events. Class/VMI provider checks and
+all three generated typeinfo vptrs BASE+16 pass independent owner/export/map proof.
+
+Seven earlier C++ application sources remain byte-identical and their relevant
+JIT/AOT regressions pass. Prior compile-only accessor failure and two fail-closed
+traversal attempts remain preserved. See [MI proof](T5-MULTIPLE-INHERITANCE.md)
+and pinned stock contract provenance `t5/multiple-contract-source-1/provenance.json`.
+No builder or translator is active; workers hold product/checker bytes. Next is
+capture-first virtual inheritance/VTT with ordinary noexcept scalar dispatch and
+nonvirtual destructors. Derive actual virtual-base layout, VTT constants, hidden
+constructor roles and adjustments before proposing implementation. No native
+RTTI method/application body, source virtual lookup or native unwind is admitted.
+
 Never modify EDG core, use raw model bypass, recover source semantics or consult
 dotobj campaigns. Leave unrelated dirty user paths and excluded files untouched.
 

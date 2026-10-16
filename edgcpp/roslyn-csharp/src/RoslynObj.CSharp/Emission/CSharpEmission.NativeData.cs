@@ -13,7 +13,7 @@ public sealed partial class CSharpEmitter
         private readonly List<SemanticNativeDataImplementation> nativeDataImplementations = [];
         private readonly Dictionary<VariableSymbol, string> nativeDataFields = [];
         private readonly HashSet<AddressValue> nativeDataAddresses = [];
-        private readonly Dictionary<AddressValue, VariableSymbol> nativeDataAddressOwners = [];
+        private readonly Dictionary<AddressValue, HashSet<VariableSymbol>> nativeDataAddressOwners = [];
         private SemanticEntity? nativeDataInitializerOwner;
         private readonly HashSet<VariableSymbol> nativeTypeinfoStorage = [];
         private readonly HashSet<FieldSymbol> nativeTypeinfoFields = [];
@@ -22,7 +22,10 @@ public sealed partial class CSharpEmitter
         {
             if (options.ExternalData.Count == 0) return;
             if (inputs.Count != 1 || selectedProgram is not null || options.ExternalData.Count != 2 ||
-                options.ExternalData.Select(binding => binding.LinkageName).Distinct(StringComparer.Ordinal).Count() != 2)
+                options.ExternalData.Select(binding => binding.LinkageName).Distinct(StringComparer.Ordinal).Count() != 2 ||
+                !options.ExternalData.Any(binding => binding.LinkageName == "_ZTVN10__cxxabiv117__class_type_infoE") ||
+                !options.ExternalData.Any(binding => binding.LinkageName is "_ZTVN10__cxxabiv120__si_class_type_infoE" or
+                    "_ZTVN10__cxxabiv121__vmi_class_type_infoE"))
                 throw Limit("The address-only RTTI provider requires the two explicitly bound single-unit data exports.", "native-data");
             foreach (var binding in options.ExternalData)
             {
@@ -53,7 +56,7 @@ public sealed partial class CSharpEmitter
             }
             foreach (var implementation in nativeDataImplementations)
                 if (nativeDataAddresses.Count(address => address.BaseEntity?.Equals(implementation.Variable) == true) != 1)
-                    throw Limit("Each native RTTI export must have exactly its validated typeinfo-vptr address occurrence.", "native-data");
+                    throw Limit("Each native RTTI export must have exactly its validated typeinfo-vptr address value; allowed initializer uses are tracked separately.", "native-data");
             foreach (var function in functions)
             foreach (var node in ExceptionExecutionNodes(function.Body!.Root))
             {
@@ -100,15 +103,16 @@ public sealed partial class CSharpEmitter
                 if (value is AddressValue address && address.BaseEntity is VariableSymbol external && nativeDataFields.ContainsKey(external))
                 {
                     var raw = MemoryRepresentationType(type);
-                    if (rootRecord is null || rootRecord.VirtualFunctionTableVariable?.Equals(external) != true ||
-                        (rootRecord.Size != 16 && rootRecord.Size != 24) || rootRecord.Alignment != 8 ||
+                    if (rootRecord is null || !IsNativeDataTypeinfoRoot(root, rootRecord, external) ||
                         offset != 0 || fieldDepth < 1 || raw is not PointerType { IsReference: false } pointer || pointer.Size != 8 || pointer.Alignment != 8 ||
                         !IsNativeDataElement(pointer.PointeeType) || address.BaseKind.Name != "abk_variable" || address.ByteOffset != 16 ||
                         address.OnePastEnd || address.SubobjectPath is not null || address.Details.IsObjectReflection || address.Details.ParameterNumber is not null)
                         throw Limit("The native RTTI export is only its captured +16 typeinfo-vptr constant, without path arithmetic or executable access.", "native-data");
-                    if (nativeDataAddressOwners.TryGetValue(address, out var previousRoot) && !previousRoot.Equals(root))
-                        throw Limit("A borrowed RTTI address is shared outside its one retained typeinfo initializer.", "native-data");
-                    nativeDataAddressOwners[address] = root;
+                    if (!nativeDataAddressOwners.TryGetValue(address, out var owners))
+                        nativeDataAddressOwners.Add(address, owners = []);
+                    // A value identity can be shared by distinct captured initializers.
+                    // Authorization is the actual (root, value) context, not value identity alone.
+                    owners.Add(root);
                     nativeDataAddresses.Add(address);
                     nativeTypeinfoStorage.Add(root);
                     AddNativeTypeinfoFields(rootRecord, []);
@@ -137,6 +141,31 @@ public sealed partial class CSharpEmitter
             finally { active.Remove(value); }
         }
 
+        private bool IsNativeDataTypeinfoRoot(VariableSymbol root, RecordType record, VariableSymbol external)
+        {
+            if (record.Alignment != 8) return false;
+            if (record.VirtualFunctionTableVariable?.Equals(external) == true)
+                return record.Size is { } size && (size == 16 || size == 24);
+            if ((external.AssemblyName ?? external.CurrentName) != "_ZTVN10__cxxabiv121__vmi_class_type_infoE" ||
+                record.Size != 56 || record.Layout is not { IsComplete: true } layout || layout.Fields.Count != 4)
+                return false;
+            // Lowered VMI storage is an anonymous expanded record. It has no
+            // VirtualFunctionTableVariable link; do not invent that association.
+            // Anchor it in the selected application's actual TypeinfoVariable.
+            var owners = functions.Where(function => function.IsVirtual).Select(function => function.ContainingType)
+                .OfType<RecordType>().Distinct().Where(type => type.Details.TypeinfoVariable?.Equals(root) == true).ToArray();
+            if (owners.Length != 1 || owners[0].HasVirtualBases || owners[0].Bases.Count != 2 ||
+                owners[0].Size != 32 || owners[0].Alignment != 8 || owners[0].Bases.Any(@base => @base.IsVirtual))
+                return false;
+            var fields = layout.Fields;
+            return fields[0].Offset == 0 && fields[1].Offset == 16 && fields[2].Offset == 20 && fields[3].Offset == 24 &&
+                fields.All(field => field.BitWidth is null) && RawRecord(fields[0].Field.Type) is { Size: { } baseSize, Alignment: { } baseAlignment } &&
+                baseSize == 16 && baseAlignment == 8 && fields[1].Field.Type.Size == 4 && fields[2].Field.Type.Size == 4 &&
+                MemoryRepresentationType(fields[3].Field.Type) is ArrayType { Bound: { } bound, Size: { } arraySize, Alignment: { } arrayAlignment } array &&
+                bound == 2 && arraySize == 32 && arrayAlignment == 8 && RawRecord(array.ElementType) is { Size: { } elementSize, Alignment: { } elementAlignment } &&
+                elementSize == 16 && elementAlignment == 8;
+        }
+
         private void AddNativeTypeinfoFields(RecordType record, HashSet<RecordType> seen)
         {
             if (!seen.Add(record)) return;
@@ -161,7 +190,7 @@ public sealed partial class CSharpEmitter
             expression = "";
             if (address.BaseEntity is not VariableSymbol variable || !nativeDataFields.TryGetValue(variable, out var field)) return false;
             if (!nativeDataAddresses.Contains(address) || nativeDataInitializerOwner is not VariableSymbol owner ||
-                !nativeDataAddressOwners[address].Equals(owner)) throw Limit("Native data address escaped its validated constant-initializer role.", "native-data");
+                !nativeDataAddressOwners[address].Contains(owner)) throw Limit("Native data address escaped its validated constant-initializer role.", "native-data");
             expression = $"({TypeName(destination)})((byte*){Owner}.{field} + ({address.ByteOffset.ToString(CultureInfo.InvariantCulture)}))";
             return true;
         }

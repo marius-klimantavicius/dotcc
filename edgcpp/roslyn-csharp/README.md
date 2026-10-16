@@ -26,6 +26,8 @@ through two handler entries and frees it once.
 unwind policy and isolated JIT/NativeAOT SIGABRT evidence.
 [Single-inheritance virtual dispatch](docs/T5-VIRTUAL-DISPATCH.md) now also passes
 actual slot execution, physical layout and pinned RTTI data-provider checks.
+[Multiple inheritance](docs/T5-MULTIPLE-INHERITANCE.md) now also passes with a
+retained secondary table and an independently executed fixed receiver adjustor.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
