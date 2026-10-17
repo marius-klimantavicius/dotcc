@@ -13,7 +13,7 @@ var options = new JsonSerializerOptions { WriteIndented = true, PropertyNamingPo
 var issues = new List<object>();
 var report = new Dictionary<string, object?>
 {
-    ["probeVersion"] = 1,
+    ["probeVersion"] = 3,
     ["lookupComplete"] = false,
     ["inventoryOnly"] = true,
     ["translatorAccepted"] = false,
@@ -23,7 +23,7 @@ var report = new Dictionary<string, object?>
     ["typedBodyOccurrenceCount"] = 0,
     ["typeClosurePerformed"] = false,
     ["programWideBindingClaim"] = false,
-    ["scope"] = "One manifest-pinned entry 293 only. Display-name candidates followed by exact captured final-name comparison; body/signature associations only, no body traversal, recursive types or fallback enumeration.",
+    ["scope"] = "One approved manifest-pinned input per invocation. Display-name candidates followed by exact captured final-name comparison; no body traversal, recursive types or fallback enumeration.",
     ["bounds"] = new
     {
         InputObjects = 1, RetainedCandidates = 4, CandidateOverflowSentinel = 5, ParametersPerList = 16,
@@ -45,6 +45,18 @@ try
     var requestBytes = File.ReadAllBytes(requestPath);
     request = JsonSerializer.Deserialize<LookupRequest>(requestBytes, options) ?? throw new InvalidDataException("Request is absent.");
     request.Validate();
+    report["scope"] = request.IsCompressionLookup
+        ? "One manifest-pinned entry 300 only. FileCompressionType display-name candidates followed by exact captured C1 final-name comparison; full body/signature associations only for exact matches, no body traversal, recursive types or fallback enumeration."
+        : "One manifest-pinned entry 293 only. Display-name candidates followed by exact captured final-name comparison; body/signature associations only, no body traversal, recursive types or fallback enumeration.";
+    report["bounds"] = new
+    {
+        InputObjects = 1, RetainedCandidates = request.MaximumCandidates, CandidateOverflowSentinel = request.MaximumCandidates + 1,
+        RelatedPrimaryOrAlternateEntries = request.IsCompressionLookup ? 16 : 0,
+        ParametersPerList = 16, LookupCommands = request.MaximumCommands, LookupRows = request.MaximumRows,
+        CachedRows = 4096, CachedPages = 128, PageSize = 128, CommandTimeoutSeconds = 30, MaximumBatchSize = 900,
+        MandatoryOpenAccounting = "Raw Open statistics are separate; command/row limits apply to subsequent lookup deltas. Whole-process time/RSS include request, manifest and object hashing, Open and lookup and are measured by the coordinator.",
+        CandidateIndexCaveat = "The public index materialization is bounded by maximum+1. An overflow sentinel stops attribution as bounded ambiguity; no fallback enumeration or uniqueness claim."
+    };
     report["request"] = new { path = requestPath, sha256 = Convert.ToHexStringLower(SHA256.HashData(requestBytes)), values = request };
     if (new FileInfo(request.ManifestPath).Length > 32L * 1024 * 1024) throw new InvalidDataException("Manifest size bound exceeded.");
     var manifestBytes = File.ReadAllBytes(request.ManifestPath);
@@ -71,7 +83,7 @@ try
         m.ArtifactIdentity, m.FormatMajor, m.FormatMinor, m.Producer, m.EdgRevision, m.EdgVersion, m.CaptureProfile, m.Stage,
         target = new { m.Target.Abi, m.Target.AddressableUnitBits, m.Target.Endianness, PointerBits = m.Target.PointerBits.ToString(CultureInfo.InvariantCulture), PointerAlignment = m.Target.PointerAlignment.ToString(CultureInfo.InvariantCulture) }
     };
-    probe = new DefinitionProbe(input, opened, issues);
+    probe = new DefinitionProbe(input, opened, issues, request);
     report["candidates"] = probe.Candidates;
     probe.Build(report, request);
 }
@@ -113,20 +125,31 @@ internal sealed record LookupRequest(
     string ManifestPath, string ManifestSha256, int EntryIndex, string InputPath, string InputSha256,
     long InputBytes, string DisplayName, string ExpectedFinalLinkage)
 {
+    public bool IsCompressionLookup => EntryIndex == 300;
+    public int MaximumCandidates => IsCompressionLookup ? 256 : 4;
+    public int MaximumCommands => IsCompressionLookup ? 4096 : 128;
+    public int MaximumRows => IsCompressionLookup ? 8192 : 512;
+    public int MaximumIdentities => IsCompressionLookup ? 2048 : 512;
+
     public void Validate()
     {
         if (string.IsNullOrEmpty(ManifestPath) || !Path.IsPathFullyQualified(ManifestPath) ||
-            ManifestSha256 != "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff" || EntryIndex != 293 ||
-            InputPath != "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj" ||
-            InputSha256 != "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46" || InputBytes != 1837615104 ||
-            DisplayName != "ThrowNullSharedPtrDereference" || ExpectedFinalLinkage != "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv")
-            throw new InvalidDataException("The request exceeds the single approved manifest/content/name/linkage lookup scope.");
+            ManifestSha256 != "b9f1cc31ab0495204fbfd948cbdeb68374ce227fce1a4ee542c23275183c17ff")
+            throw new InvalidDataException("The request does not name the approved pinned published manifest.");
+        var guard = EntryIndex == 293 && InputPath == "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj" &&
+            InputSha256 == "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46" && InputBytes == 1837615104 &&
+            DisplayName == "ThrowNullSharedPtrDereference" && ExpectedFinalLinkage == "_ZN6duckdb29ThrowNullSharedPtrDereferenceEv";
+        var compression = EntryIndex == 300 && InputPath == "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0300/unit.roslynobj" &&
+            InputSha256 == "6856d59e243fffd9b1b986beee12651948204195ebe94b200ad516e65fb48841" && InputBytes == 415345664 &&
+            DisplayName == "FileCompressionType" && ExpectedFinalLinkage == "_ZN6duckdb19FileCompressionTypeC1Ev";
+        if (!guard && !compression)
+            throw new InvalidDataException("The request exceeds the two approved manifest/content/name/linkage lookup profiles.");
     }
 }
 
 internal sealed class LookupBound(string message) : Exception(message);
 
-internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opened, List<object> issues)
+internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opened, List<object> issues, LookupRequest scope)
 {
     private readonly Dictionary<SemanticEntity, string> locators = [];
     public List<Dictionary<string, object?>> Candidates { get; } = [];
@@ -137,7 +160,7 @@ internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opene
         if (value is null) return null;
         if (!locators.TryGetValue(value, out var label))
         {
-            if (locators.Count >= 512) throw new LookupBound("Public identity label bound exceeded.");
+            if (locators.Count >= scope.MaximumIdentities) throw new LookupBound("Public identity label bound exceeded.");
             locators.Add(value, label = $"entity/{locators.Count + 1:D6}");
         }
         return label;
@@ -146,7 +169,7 @@ internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opene
     private void Check()
     {
         var value = input.Statistics;
-        if (value.Commands - opened.Commands > 128 || value.RowsRead - opened.RowsRead > 512 ||
+        if (value.Commands - opened.Commands > scope.MaximumCommands || value.RowsRead - opened.RowsRead > scope.MaximumRows ||
             value.CachedRows > 4096 || value.CachedPages > 128 || value.MaximumBatchSize > 900)
             throw new LookupBound("Public-reader lookup command/row/cache/batch bound exceeded after a reader operation.");
     }
@@ -172,17 +195,19 @@ internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opene
         {
             while (Read(iterator.MoveNext))
             {
-                if (symbols.Count == 4)
+                if (symbols.Count == request.MaximumCandidates)
                 {
-                    report["fifthCandidateObserved"] = true;
-                    report["observedDisplayCandidateCountLowerBound"] = 5;
+                    if (!request.IsCompressionLookup) report["fifthCandidateObserved"] = true;
+                    report["candidateOverflowSentinelObserved"] = true;
+                    report["observedDisplayCandidateCountLowerBound"] = request.MaximumCandidates + 1;
                     foreach (var retained in symbols) Candidates.Add(Row(("locator", Ref(retained)), ("detailsNotReadAfterOverflow", true)));
-                    throw new LookupBound("A fifth display-name candidate was observed; this bounded index sample cannot establish uniqueness or completeness.");
+                    throw new LookupBound("The display-name candidate overflow sentinel was observed; this bounded index sample cannot establish uniqueness or completeness.");
                 }
                 symbols.Add(iterator.Current);
             }
         }
-        report["fifthCandidateObserved"] = false;
+        if (!request.IsCompressionLookup) report["fifthCandidateObserved"] = false;
+        report["candidateOverflowSentinelObserved"] = false;
         report["materializedDisplayCandidateCount"] = symbols.Count;
         var exactCount = 0;
         var definedCount = 0;
@@ -217,6 +242,11 @@ internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opene
             row["capturedFinalNameRule"] = "Retained GNU AssemblyName when non-null, otherwise retained CurrentName; no stripping, normalization, source lookup or remangling.";
             row["exactRequestedFinalName"] = exact;
             row["comparisonScope"] = "Attribution candidate within this one pinned input; not program-wide definition selection.";
+            if (request.IsCompressionLookup && !exact)
+            {
+                row["bodyAndSignatureAssociationsNotInspected"] = true;
+                continue;
+            }
             var defined = Read(() => function.IsDefined);
             var body = Read(() => function.Body);
             row["isDefined"] = defined;
@@ -232,6 +262,8 @@ internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opene
             row["signature"] = Signature(signature);
             row["executionParameters"] = Bounded(Read(() => function.Parameters), 16, "Execution parameters").Select(Parameter).ToArray();
             row["sourceParameters"] = Bounded(Read(() => function.SourceParameters), 16, "Source parameters").Select(Parameter).ToArray();
+            if (request.IsCompressionLookup)
+                row["retainedEntryPolicyAssociationsNotExecution"] = EntryAssociations(function);
             if (exact) exactCount++;
             if (exact && defined && body is not null) definedCount++;
         }
@@ -245,6 +277,94 @@ internal sealed class DefinitionProbe(RoslynObject input, ReaderStatistics opene
         Check();
         Completed = true;
     }
+    private sealed record EntryAssociation(FunctionSymbol Function, FunctionSymbol? Primary, FunctionSymbol[] Alternates);
+
+    private object EntryAssociations(FunctionSymbol exact)
+    {
+        // Only the exact matched routine's explicit primary/alternate relation
+        // component is inspected. Bodies are associations, never traversed;
+        // no class member, override, declaration or GNU alias graph is walked.
+        var associations = new Dictionary<FunctionSymbol, EntryAssociation>();
+        var pending = new Queue<FunctionSymbol>();
+        var discovered = new HashSet<FunctionSymbol> { exact };
+        pending.Enqueue(exact);
+        while (pending.TryDequeue(out var entry))
+        {
+            var primary = Read(() => entry.PrimaryEntry);
+            var alternates = Bounded(Read(() => entry.AlternateEntryPoints), 16, "Related alternate entries");
+            associations.Add(entry, new(entry, primary, alternates));
+            foreach (var related in (primary is null ? alternates : alternates.Prepend(primary)))
+            {
+                if (discovered.Contains(related)) continue;
+                if (discovered.Count == 17)
+                    throw new LookupBound("More than sixteen related primary/alternate entries were observed; remaining relations are unknown.");
+                discovered.Add(related);
+                pending.Enqueue(related);
+            }
+        }
+        var containing = Read(() => exact.ContainingType);
+        var rows = new List<object>();
+        foreach (var association in associations.Values)
+        {
+            var entry = association.Function;
+            var supplement = Read(() => entry.GnuSupplement);
+            var current = Read(() => entry.CurrentName);
+            var assembly = supplement is null ? null : Read(() => supplement.AssemblyName);
+            var body = Read(() => entry.Body);
+            var bodyFunction = body is null ? null : Read(() => body.Function);
+            var entryContaining = Read(() => entry.ContainingType);
+            rows.Add(Row(
+                ("locator", Ref(entry)), ("isExactRequestedEntry", entry.Equals(exact)),
+                ("currentName", current), ("assemblyName", assembly), ("capturedFinalName", assembly ?? current),
+                ("isDefined", Read(() => entry.IsDefined)), ("bodyState", Read(() => entry.BodyState.Name)),
+                ("bodyRootAssociationNotTraversal", body is null ? null : Ref(Read(() => body.Root))),
+                ("bodyFunctionAssociation", Ref(bodyFunction)), ("bodyFunctionIsExactEntry", bodyFunction?.Equals(entry)),
+                ("bodyScopeAssociationNotTraversal", body is null ? null : Ref(Read(() => body.Scope))),
+                ("specialFunctionKind", Read(() => entry.SpecialFunctionKind?.Name)),
+                ("entryKind", Read(() => entry.ConstructorOrDestructorKind?.Name)),
+                ("containingTypeAssociationOnly", Ref(entryContaining)),
+                ("containingTypeIsExactCandidateContainingType", entryContaining?.Equals(containing)),
+                ("thisAdjustment", Read(() => entry.ThisAdjustment?.ToString(CultureInfo.InvariantCulture))),
+                ("returnAdjustment", Read(() => entry.ReturnAdjustment?.ToString(CultureInfo.InvariantCulture))),
+                ("virtualCallIndexNotComputedOffset", Read(() => entry.VirtualCallIndex?.ToString(CultureInfo.InvariantCulture))),
+                ("virtualBaseIndexNotComputedOffset", Read(() => entry.VirtualBaseIndex?.ToString(CultureInfo.InvariantCulture))),
+                ("overridingFunctionForWrapperAssociationOnly", Ref(Read(() => entry.OverridingFunctionForWrapper))),
+                ("overriddenFunctionForWrapperAssociationOnly", Ref(Read(() => entry.OverriddenFunctionForWrapper))),
+                ("primaryEntry", Ref(association.Primary)),
+                ("primaryEntryReciprocallyListsThisAlternate", association.Primary is null ? null :
+                    associations[association.Primary].Alternates.Contains(entry)),
+                ("alternateEntries", association.Alternates.Select(alternate => Row(("entry", Ref(alternate)),
+                    ("primaryEntryIsThisEntry", associations[alternate].Primary?.Equals(entry)))).ToArray()),
+                ("policy", Policy(entry)),
+                ("signature", Signature(Read(() => entry.Signature))),
+                ("executionParameters", Bounded(Read(() => entry.Parameters), 16, "Related entry execution parameters").Select(Parameter).ToArray())));
+        }
+        return new
+        {
+            Scope = "Exact candidate and at most sixteen explicit primary/alternate related entries; identity reciprocity and body associations only, not body execution or alias resolution.",
+            RelatedEntryCount = associations.Count - 1,
+            Entries = rows
+        };
+    }
+
+    private object Policy(FunctionSymbol function)
+    {
+        var details = Read(() => function.Details);
+        var supplement = Read(() => function.GnuSupplement);
+        return Row(("isWeak", Read(() => details.IsWeak)), ("isWeakref", Read(() => details.IsWeakref)),
+            ("isGnuAlias", Read(() => details.IsGnuAlias)), ("isIfunc", Read(() => details.IsIfunc)),
+            ("isUseComdat", Read(() => details.IsUseComdat)), ("isAliasEntry", Read(() => details.IsAliasEntry)),
+            ("isInline", Read(() => details.IsInline)), ("definitionForInliningOnly", Read(() => details.DefinitionForInliningOnly)),
+            ("suppressInlineBody", Read(() => details.SuppressInlineBody)), ("supersededExternal", Read(() => details.SupersededExternal)),
+            ("aliasedRoutineAssociationOnly", supplement is null ? null : Ref(Read(() => supplement.AliasedRoutine))),
+            ("targetedVersionAssociationsOnly", supplement is null ? null :
+                Bounded(Read(() => supplement.TargetedVersions), 16, "GNU targeted-version associations").Select(version => Ref(version)).ToArray()),
+            ("representativeAssociationOnly", supplement is null ? null : Ref(Read(() => supplement.Representative))),
+            ("isRepresentative", supplement is null ? null : Read(() => supplement.Details.IsRepresentative)),
+            ("isTargetSpecificVersion", supplement is null ? null : Read(() => supplement.Details.IsTargetSpecificVersion)),
+            ("resolverRequired", supplement is null ? null : Read(() => supplement.Details.ResolverRequired)));
+    }
+
     private Dictionary<string, object?> Parameter(SignatureParameter parameter)
     {
         var descriptor = Read(() => parameter.Descriptor);

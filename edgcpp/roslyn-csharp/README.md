@@ -39,8 +39,11 @@ two-input direct bindings, pending class construction and composed borrowed
 member/scalar calls in native/JIT/NativeAOT, with 77 expected phase outcomes.
 [Explicit selected startup](docs/SELECTED-STARTUP.md) also matches real native
 global construction and registered teardown in JIT/NativeAOT, with 20 expected
-outcomes. The real DuckDB startup and enclosing accessor/guard/library/EH closure
-remain open.
+outcomes. [Selected complete constructors](docs/T5-SELECTED-CONSTRUCTOR.md) now
+execute across two TUs with distinct record views in native/JIT/NativeAOT; normal-EH
+dependency accounting preserves actual cleanup schedules (27 expected outcomes).
+Real DuckDB startup now reaches a duplicate inline COMDAT policy boundary; its
+enclosing accessor/guard/library/EH execution remains open.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

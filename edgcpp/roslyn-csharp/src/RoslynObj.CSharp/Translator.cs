@@ -75,7 +75,11 @@ public sealed partial class Translator
             state.Error("ROC0002", "Inventory was cancelled and is incomplete.");
         }
         catch (ResourceBudgetException exception) { state.Error("ROC0003", exception.Message); }
-        catch (ManagedSelectionException exception) { state.Error(exception.Code, exception.Message, locator: exception.Locator, family: "managed-selection"); }
+        catch (ManagedSelectionException exception)
+        {
+            state.CaptureFailedSelection(exception.SelectionReport);
+            state.Error(exception.Code, exception.Message, locator: exception.Locator, family: "managed-selection");
+        }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException)
         { state.Error("ROC1001", exception.Message); }
         state.CheckPeak();
@@ -217,9 +221,9 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
             || request.Roots.Mode == "executable" && string.IsNullOrWhiteSpace(request.Roots.EntryPoint))
             Error("ROC1200", "Library mode or an explicit executable entry point is required.");
         if (request.Roots.RetainAllDefinitions && (request.Roots.ManagedDefinitions.Length != 0 || request.Roots.ManagedStartup is not null)
-            || !request.Roots.RetainAllDefinitions && (request.Inputs.Length is < 1 or > 2 || request.Inputs.Length > request.Budgets.MaximumOpenUnits || request.Roots.Mode != "library"
+            || !request.Roots.RetainAllDefinitions && (request.Inputs.Length < 1 || request.Inputs.Length > request.Budgets.MaximumOpenUnits || request.Roots.Mode != "library"
                 || request.Roots.ManagedDefinitions.Length == 0 && request.Roots.ManagedStartup?.Definitions.Length is not > 0 || request.Roots.Exports.Length != 0))
-            Error("ROC1200", "Explicit managed roots require one or two budgeted inputs, library mode, retainAllDefinitions=false and no native exports; default retain-all mode has no managed root filter.");
+            Error("ROC1200", "Explicit managed roots require a finite budgeted input set, library mode, retainAllDefinitions=false and no native exports; default retain-all mode has no managed root filter.");
         foreach (var root in request.Roots.ManagedDefinitions.Concat(request.Roots.ManagedStartup?.Definitions ?? []))
             if (string.IsNullOrWhiteSpace(root.LookupName) || string.IsNullOrWhiteSpace(root.LinkageName)
                 || request.Inputs.Count(input => root.InputSha256.Equals(input.Sha256, StringComparison.OrdinalIgnoreCase)) != 1)
@@ -233,10 +237,10 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
         if (request.Output.NamePolicy != "source-stable" || request.Output.FilePolicy != "declaration-size")
             Error("ROC1202", "Requested source-name or file policy is unsupported.");
         var budgets = request.Budgets;
-        if (budgets.MaximumSelectionCandidates < 1 || budgets.MaximumSelectionCandidates == int.MaxValue || budgets.MaximumAmbientRoutineCandidates is < 1 or > 256 || budgets.MaximumOpenUnits is < 1 or > 2 || budgets.MaximumWorkingSetBytes <= 0 || budgets.MaximumOperationsPerBody <= 0
+        if (budgets.MaximumSelectionCandidates < 1 || budgets.MaximumSelectionCandidates == int.MaxValue || budgets.MaximumAmbientRoutineCandidates is < 1 or > 256 || budgets.MaximumOpenUnits < 1 || budgets.MaximumWorkingSetBytes <= 0 || budgets.MaximumOperationsPerBody <= 0
             || budgets.MaximumOutputBytes <= 0 || budgets.MaximumElapsedSeconds <= 0 || budgets.ReaderCachedRows < 1
             || budgets.ReaderCachedPages < 1 || budgets.ReaderPageSize is < 1 or > 4096)
-            Error("ROC0003", "Resource budgets must be positive; inventory opens one unit at a time and selected program emission admits at most two simultaneous units.");
+            Error("ROC0003", "Resource budgets must be positive; selected emission opens only the explicitly supplied inputs within its simultaneous open-unit budget.");
         if (budgets.MaximumSelectedFunctions < 1 || budgets.MaximumSelectedStorage < 1 || budgets.MaximumSelectedTypes < 1
             || budgets.MaximumSelectionOperationsPerBody < 1 || budgets.MaximumSelectionDepth < 1)
             Error("ROC0003", "Managed selection closure budgets must be positive.");

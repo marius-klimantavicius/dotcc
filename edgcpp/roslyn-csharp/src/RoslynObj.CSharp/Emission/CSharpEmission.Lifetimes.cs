@@ -228,6 +228,7 @@ public sealed partial class CSharpEmitter
             if (call.Receiver is null && call.Call.ReturnSlot is null && (direct is null || !NeedsGeneratedLifetimeRoles(direct.Signature))) return;
             if (direct is null || !functions.Contains(direct) || call.TargetMethod is null || !CanonicalFunction(call.TargetMethod).Equals(direct))
                 throw Limit("Generated receiver/result/reference calls require the actual selected direct body.", "lifetime-call");
+            if (TryValidateManagedBoundConstructorCall(call, direct)) return;
             ValidateGeneratedLifetimeRoutine(direct);
             ValidateRegisteredMutableReferenceCall(call, direct);
             ValidateRegisteredOrdinaryMethodCall(call, direct);

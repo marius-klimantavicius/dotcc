@@ -108,3 +108,11 @@ fixture proof with managed registration and explicit reverse teardown. Omitting
 that opt-in schedule still rejects ambient obligations. Real core293 startup
 remains unpublished at selected EH dependency admission; the default mode and
 earlier actual getter execution are not relabeled.
+
+[Selected complete constructors and normal-EH accounting](T5-SELECTED-CONSTRUCTOR.md)
+now add a 27-outcome checkpoint. The explicit input-set limit is its positive
+open-unit budget, with default all-definition assembly unchanged. Dependency
+selection records ordinary EH schedules and partial per-unit failures; actual
+throw/handler and unadmitted cleanup execution still reject. Real core293+300
+startup includes both captured backend startup roots and stops unpublished on
+duplicate inline COMDAT D1 selection, not missing ambient coverage.

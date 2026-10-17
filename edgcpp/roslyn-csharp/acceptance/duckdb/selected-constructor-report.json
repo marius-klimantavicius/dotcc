@@ -1,0 +1,1328 @@
+{
+  "reportVersion": 1,
+  "status": "passed-bounded-selected-constructor-and-normal-EH-accounting",
+  "wholeDuckdbAccepted": false,
+  "actualCore293StartupExecuted": false,
+  "broaderT5Complete": false,
+  "passingCampaign": {
+    "phaseCount": 27,
+    "successes": 23,
+    "intendedRejections": 4,
+    "unexpectedOutcomes": 0,
+    "budgetViolations": 0,
+    "phases": [
+      {
+        "name": "selected-normal-eh-cli-build-8",
+        "group": "final-product-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-cli-build-8/run.json",
+          "bytes": 1288,
+          "sha256": "0bfe3115ca77475bb665f0b37fcc1b0d42a62746f06944b2457ff1a7950d5eea"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-cli-build-8/stdout.txt",
+          "bytes": 940,
+          "sha256": "c53ecc06113d7d5741bee94d62263a455aa77338d44165aab49a39244e361245"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-cli-build-8/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.389698767918162,
+        "sampledPeakProcessTreeRssBytes": 697298944,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "export-selected-constructor-provider-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constructor-provider-1/run.json",
+          "bytes": 1189,
+          "sha256": "79e3a050757ae5a96f2fcf9dd70bd3c5a0fe4a8721110efff5d5936ad07d2dae"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constructor-provider-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constructor-provider-1/stderr.txt",
+          "bytes": 139,
+          "sha256": "22e019dbed77016e240bb08867f638d9d39114a8d8f5f5724cc665362dad2bf6"
+        },
+        "elapsedSeconds": 0.10055849596392363,
+        "sampledPeakProcessTreeRssBytes": 102400,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-selected-constructor-provider-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constructor-provider-1/run.json",
+          "bytes": 1152,
+          "sha256": "ac6d487d55b68f9e7d95466ad7a0adb8034d402a05d975f06098516295c1c122"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constructor-provider-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constructor-provider-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20119062205776572,
+        "sampledPeakProcessTreeRssBytes": 65036288,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "facts-selected-constructor-provider-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constructor-provider-1/run.json",
+          "bytes": 1112,
+          "sha256": "addc31893e38f6418ce02a01c8011b7cf6c94a9258a21209f235ee75ddc1d203"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constructor-provider-1/stdout.txt",
+          "bytes": 93,
+          "sha256": "0f62507b4d46a0873d5e3da12b0de9dee24dbb47dad264190e7dfbed165ef072"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constructor-provider-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.3019772020634264,
+        "sampledPeakProcessTreeRssBytes": 84058112,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "export-selected-constructor-boundary-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constructor-boundary-1/run.json",
+          "bytes": 1187,
+          "sha256": "02922bbbcbe7bc65e3670aeb8097213118028ba7aa2eb0051e9063eba6f8be04"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constructor-boundary-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constructor-boundary-1/stderr.txt",
+          "bytes": 140,
+          "sha256": "829b13b2f88d18edd2cc7cd27839aba823fe8e09a99b545b8d98338be8e50552"
+        },
+        "elapsedSeconds": 0.1005420449655503,
+        "sampledPeakProcessTreeRssBytes": 28672,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-selected-constructor-boundary-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constructor-boundary-1/run.json",
+          "bytes": 1152,
+          "sha256": "013b0697481e53e5414e035b8ebcb3c7a6fbb3e5e3c4959818ffd2c0837d199b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constructor-boundary-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constructor-boundary-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20126982301007956,
+        "sampledPeakProcessTreeRssBytes": 69509120,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "facts-selected-constructor-boundary-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constructor-boundary-1/run.json",
+          "bytes": 1113,
+          "sha256": "14e0a99141239817d2d6e876b4c6805dc09c4806441af432c731ff06e5a24965"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constructor-boundary-1/stdout.txt",
+          "bytes": 94,
+          "sha256": "b486aea9311b9f71e65870bb08bc6c518cc2721296d4efd280a1dbd7ef57822a"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constructor-boundary-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.4023843399481848,
+        "sampledPeakProcessTreeRssBytes": 95264768,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "native-selected-constructor-build-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constructor-build-1/run.json",
+          "bytes": 1286,
+          "sha256": "5827ae922a5dc47bf740560a5160c79da1a8b13e74a647ceddd13d91eeca5520"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constructor-build-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constructor-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10059634794015437,
+        "sampledPeakProcessTreeRssBytes": 57344,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "native-selected-constructor-run-1",
+        "group": "genuine-two-TU-capture-native",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constructor-run-1/run.json",
+          "bytes": 910,
+          "sha256": "cea829296f818d1f8ef95e308e5d9144a1bca8364d0c6f43a05cce10a7af7324"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constructor-run-1/stdout.txt",
+          "bytes": 634,
+          "sha256": "db93f0ef2b94acb9a04aa3207991281985fb908cb613a426363426d4a3f17589"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constructor-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10048564802855253,
+        "sampledPeakProcessTreeRssBytes": 16384,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-constructor-boundary-translate-1",
+        "group": "production-publication",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-translate-1/run.json",
+          "bytes": 1159,
+          "sha256": "c54c84d0f36e3f223320b229659e8f3ce52e8d9c64275e2bebe496d24ee5cda3"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-translate-1/stdout.txt",
+          "bytes": 94,
+          "sha256": "0f8140350db5be49a266ae2af24f08cc12e47ce364383d27ca59c92999867a16"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-translate-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.7031187600223348,
+        "sampledPeakProcessTreeRssBytes": 110030848,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-constructor-checker-jit-build-1",
+        "group": "jit-aot-physical",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-build-1/run.json",
+          "bytes": 1432,
+          "sha256": "c956350f53d381f0ffee69b7931649fdb832ac1e576632f6539eb9beade8fe2c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-build-1/stdout.txt",
+          "bytes": 946,
+          "sha256": "958eefc9c7dac1bcf2a0eb86a3fb5536d3652577aef853c6e59248ba70dfefb7"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 5.90394402097445,
+        "sampledPeakProcessTreeRssBytes": 520974336,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-constructor-checker-jit-run-1",
+        "group": "jit-aot-physical",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-run-1/run.json",
+          "bytes": 1127,
+          "sha256": "9eddba30f5c3bc1b53b524bb4f008f959b5094082d60210f4e317bc06cc30d11"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-run-1/stdout.txt",
+          "bytes": 2584,
+          "sha256": "18fac9572abbd249cec07829c8373b807e2531d486a441274c264fb1d0e37575"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10058297007344663,
+        "sampledPeakProcessTreeRssBytes": 20480,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-constructor-checker-aot-build-1",
+        "group": "jit-aot-physical",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-build-1/run.json",
+          "bytes": 1547,
+          "sha256": "078e0a38da06d3f1aa391990f344919c81ceca0a9f0e3b514b411825244bad5c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-build-1/stdout.txt",
+          "bytes": 1098,
+          "sha256": "85044029f25272e40144be6c89f5fbfcb443f738ab1c8dc4138a22102c2c1fae"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.163379475008696,
+        "sampledPeakProcessTreeRssBytes": 686735360,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-constructor-checker-aot-run-1",
+        "group": "jit-aot-physical",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-run-1/run.json",
+          "bytes": 1109,
+          "sha256": "c33a43a182976619f9138fd1668919b5239ba2c307e73041fc9feb364a49a7ab"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-run-1/stdout.txt",
+          "bytes": 2584,
+          "sha256": "18fac9572abbd249cec07829c8373b807e2531d486a441274c264fb1d0e37575"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10057361691724509,
+        "sampledPeakProcessTreeRssBytes": 12288,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "actual-getter-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/actual-getter-translate/run.json",
+          "bytes": 1181,
+          "sha256": "61c8e9bce1941c63545bbe3ae5e27e40779df1b05c71ae6a0a4cdf7c1ee45606"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/actual-getter-translate/stdout.txt",
+          "bytes": 93,
+          "sha256": "d7af22969c336ed0319a6f64803e192cff71c37a6cade13f755ed6269563dfa3"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/actual-getter-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.0050736450357363,
+        "sampledPeakProcessTreeRssBytes": 107880448,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-scalar-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/default-scalar-translate/run.json",
+          "bytes": 1182,
+          "sha256": "dfc0cac41cdf77f6777fa8ca704d257fa970dfddb8bb5937a61a8b638fd5a0e7"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/default-scalar-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "4847801e20603d6bfd6b1dc71ef21a4a67e8bb7d5ccd3003f0e76e126cee843b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/default-scalar-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.105504299979657,
+        "sampledPeakProcessTreeRssBytes": 117829632,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-c-boundary-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/selected-c-boundary-translate/run.json",
+          "bytes": 1193,
+          "sha256": "f9e37dd1d62e0fcbd4ab2e7ddb9af6f565160156ec985c408292aa8044ce46a6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/selected-c-boundary-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "52c82ee83c8271c14e99b7e04b3da5c16890447270cad63294afb1668fdd2325"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/selected-c-boundary-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6028200030559674,
+        "sampledPeakProcessTreeRssBytes": 107532288,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-int-eh-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/default-int-eh-translate/run.json",
+          "bytes": 1182,
+          "sha256": "b8ceaea67ce3f24b225924a517f4f12ebb691b67030125193f3e485f68761a03"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/default-int-eh-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "b04c4fd927037244e5a8a6327e9a4dbc29ff80ef44073b58c7401ea55aa25f47"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/default-int-eh-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.602562366053462,
+        "sampledPeakProcessTreeRssBytes": 107307008,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-int-eh-unsupported-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/selected-int-eh-unsupported-translate/run.json",
+          "bytes": 1209,
+          "sha256": "86685accaedf6325b72a8a182f7d6fed1b502e59b77ef5c50d33e2b31ed6b040"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/selected-int-eh-unsupported-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/selected-int-eh-unsupported-translate/stderr.txt",
+          "bytes": 159,
+          "sha256": "ccae2446538daa40869889f6625ca4d71c6febe3f879c1c8add06830384e2c8a"
+        },
+        "elapsedSeconds": 0.3014804170234129,
+        "sampledPeakProcessTreeRssBytes": 95694848,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "unconfigured-real-startup-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/unconfigured-real-startup-translate/run.json",
+          "bytes": 1206,
+          "sha256": "3e1c91a69a720e8da52d2158deef155c71c982c6d00f52e421d2a40ca0addbd1"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/unconfigured-real-startup-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/unconfigured-real-startup-translate/stderr.txt",
+          "bytes": 240,
+          "sha256": "e1f9cadcd418286135eaa61b7d4c5e521a8c257e70b50f5152dc3d2f8b0212c2"
+        },
+        "elapsedSeconds": 3.313688230002299,
+        "sampledPeakProcessTreeRssBytes": 108003328,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "prior-startup-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/prior-startup-translate/run.json",
+          "bytes": 1181,
+          "sha256": "e681c8bb85359dba7d8ef7153396889e4148162040737400abfac2848ce0720e"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/prior-startup-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "a7b6b9920b886b0954f51c43d71f541d658e4e3a370d2e75f8aca038766f1412"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/prior-startup-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6030383589677513,
+        "sampledPeakProcessTreeRssBytes": 106766336,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-a",
+        "group": "genuine-strong-duplicate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/inspect-a/run.json",
+          "bytes": 1136,
+          "sha256": "cb4ddca22e0d8bb1b957a3664d4155f2156f20453f298cea29bda3ae8b2f609f"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/inspect-a/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/inspect-a/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20106920402031392,
+        "sampledPeakProcessTreeRssBytes": 58732544,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-b",
+        "group": "genuine-strong-duplicate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/inspect-b/run.json",
+          "bytes": 1136,
+          "sha256": "1e7493cc429212ef28025020c6a0692ef8189cfab86c862b3dec8fdb56b34991"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/inspect-b/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/inspect-b/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20132335694506764,
+        "sampledPeakProcessTreeRssBytes": 64307200,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "duplicate-translate",
+        "group": "genuine-strong-duplicate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/duplicate-translate/run.json",
+          "bytes": 1143,
+          "sha256": "8a6a63a7b1486a35f7f83ba3130703cf9295a18f1d97a059380a77805e5488d9"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/duplicate-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/duplicate-translate/stderr.txt",
+          "bytes": 376,
+          "sha256": "9ccff0f642eac4c7a4f09641fbf3f8b57968f3a2c4260452561b4cadadbf3aa8"
+        },
+        "elapsedSeconds": 0.4022735459730029,
+        "sampledPeakProcessTreeRssBytes": 99667968,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-real-startup-normal-eh-translate-8",
+        "group": "actual-two-input-startup-boundary",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-normal-eh-translate-8/run.json",
+          "bytes": 1173,
+          "sha256": "ed862b789e5f94cfd557886757036b5f7d2013597380e2486541ce12c44b8de5"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-normal-eh-translate-8/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-normal-eh-translate-8/stderr.txt",
+          "bytes": 409,
+          "sha256": "55175605bf829c410f8bdf267d8d76e543c475a5014f09f32c5427910fd876eb"
+        },
+        "elapsedSeconds": 26.125940165948123,
+        "sampledPeakProcessTreeRssBytes": 137691136,
+        "configuredBudgets": {
+          "timeoutSeconds": 300.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "file-compression-definition-build-3",
+        "group": "exact-missing-definition-lookup",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-build-3/run.json",
+          "bytes": 1303,
+          "sha256": "efd60261427e7f1fcb657908fe81f4015058768ff8451e1a499d07210e602d5a"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-build-3/stdout.txt",
+          "bytes": 680,
+          "sha256": "d1cb00ea732c8ed72a8e79a84c23117216ffec6047d4b45618c6fd296504e801"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-build-3/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 5.180211954051629,
+        "sampledPeakProcessTreeRssBytes": 454664192,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 4294967296,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "file-compression-definition-lookup-3",
+        "group": "exact-missing-definition-lookup",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-lookup-3/run.json",
+          "bytes": 1116,
+          "sha256": "52120253c29da8f3f50fe9f4833814a96baa364d85f7ef1e2f86290186593c17"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-lookup-3/stdout.txt",
+          "bytes": 72,
+          "sha256": "05a3953606a5b13511d6987e9b8c8bedc7997141773ae2be733a3b55fe290a32"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-lookup-3/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.0047332299873233,
+        "sampledPeakProcessTreeRssBytes": 90992640,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 1073741824,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      }
+    ]
+  },
+  "sourceFreeze": [
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-product-source-8/source-snapshot.json",
+        "bytes": 46376,
+        "sha256": "ba7f05bc421d5db73666817547b54f7892ee96e9dd948f68963c543869de8693"
+      },
+      "fileCount": 268,
+      "verified": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-source-1/source-snapshot.json",
+        "bytes": 1275,
+        "sha256": "13f5eb7c963e7df8ef8655f4a985cf1d1cdb3f74ad89be2cba1528caa3db06c6"
+      },
+      "fileCount": 8,
+      "verified": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-source-3/source-snapshot.json",
+        "bytes": 7655,
+        "sha256": "e970781081b59922e9554db77ca33248861b677400d79a69ad93530439c7383c"
+      },
+      "fileCount": 48,
+      "verified": true
+    }
+  ],
+  "sourceAndInputFreezeVerified": true,
+  "provenProductIndexFiles": [
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Contracts.cs",
+      "bytes": 15671,
+      "sha256": "a37ef19c930e582c18be166f7cfa9f4c6f863aea925914fe1175e742f2faa0ec"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Lifetimes.cs",
+      "bytes": 46534,
+      "sha256": "1e03a1ddb3abc023dfe76582945be52af106b0e1b02c06d9fbc898afc789e88c"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Program.cs",
+      "bytes": 24377,
+      "sha256": "b30609a09ad816cc00fb083b65578d9129a60f2188ce7b010dd9bc6e9ac30e74"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Inventory.cs",
+      "bytes": 39564,
+      "sha256": "64a1c395e55ebd4b67ca232bb0da9ee2d32ef6bfe3da9c33011be7d0562d5a92"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedProgramSelection.cs",
+      "bytes": 25240,
+      "sha256": "2dd0b8f15f290fbdfb3c8b72290362b013fc80c1f767c38f4a8ed8c17ffd60e1"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedSelection.NormalEh.cs",
+      "bytes": 9729,
+      "sha256": "aec1c7409a8c15fcc3e4fd68c2d8002e963cf81aaaac422cec2699ab8295432b"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedSelection.cs",
+      "bytes": 40826,
+      "sha256": "a91b8df0da3c6c1626d5b254cd562db583d1967f1ff029102813f51540802d38"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translation.cs",
+      "bytes": 24014,
+      "sha256": "0763fb6b0bff718b1cea73333af3d7f85afc2e2c29933d8c00d0e604e1d4bf4b"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translator.cs",
+      "bytes": 20156,
+      "sha256": "262580506ea74a72db15d237bd4db5085feea17238d119d015ee91c360112a15"
+    }
+  ],
+  "runtimeByteIdenticalToStartupSource2": true,
+  "nativeCapture": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-preparation-1/provenance.json",
+    "bytes": 5923,
+    "sha256": "db93a9279f0a9b642921a57a03da1fb9413fed1158263eda09e165c399b985c5"
+  },
+  "nativeOracle": {
+    "startup": {
+      "result": null,
+      "calls": 0,
+      "live": 0,
+      "overflow": 0,
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": []
+    },
+    "first": {
+      "result": 13,
+      "calls": 1,
+      "live": 0,
+      "overflow": 0,
+      "values": [
+        1,
+        2,
+        201,
+        201,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "events": [
+        501
+      ]
+    },
+    "second": {
+      "result": 14,
+      "calls": 2,
+      "live": 0,
+      "overflow": 0,
+      "values": [
+        1,
+        2,
+        201,
+        201,
+        1,
+        1,
+        1,
+        2,
+        0
+      ],
+      "events": [
+        501,
+        502
+      ]
+    },
+    "shutdown": {
+      "result": null,
+      "calls": 2,
+      "live": 0,
+      "overflow": 0,
+      "values": [
+        1,
+        2,
+        201,
+        201,
+        1,
+        1,
+        1,
+        2,
+        0
+      ],
+      "events": [
+        501,
+        502
+      ]
+    },
+    "physical": {
+      "cellSize": 16,
+      "cellAlignment": 8,
+      "canaryOffset": 0,
+      "serialOffset": 8,
+      "kindOffset": 12,
+      "globalObjectsDistinct": true,
+      "globalStorageAligned": true,
+      "globalBytesUnchanged": true,
+      "firstSerial": 1,
+      "secondSerial": 2
+    }
+  },
+  "generatedExecution": {
+    "jit": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-jit-run-1/stdout.txt",
+      "bytes": 2584,
+      "sha256": "18fac9572abbd249cec07829c8373b807e2531d486a441274c264fb1d0e37575"
+    },
+    "aot": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-checker-aot-run-1/stdout.txt",
+      "bytes": 2584,
+      "sha256": "18fac9572abbd249cec07829c8373b807e2531d486a441274c264fb1d0e37575"
+    },
+    "stdoutIdentical": true,
+    "observations": [
+      {
+        "startup": {
+          "result": null,
+          "calls": 0,
+          "live": 0,
+          "overflow": 0,
+          "values": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "events": []
+        },
+        "first": {
+          "result": 13,
+          "calls": 1,
+          "live": 0,
+          "overflow": 0,
+          "values": [
+            1,
+            2,
+            201,
+            201,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "events": [
+            501
+          ]
+        },
+        "second": {
+          "result": 14,
+          "calls": 2,
+          "live": 0,
+          "overflow": 0,
+          "values": [
+            1,
+            2,
+            201,
+            201,
+            1,
+            1,
+            1,
+            2,
+            0
+          ],
+          "events": [
+            501,
+            502
+          ]
+        },
+        "shutdown": {
+          "result": null,
+          "calls": 2,
+          "live": 0,
+          "overflow": 0,
+          "values": [
+            1,
+            2,
+            201,
+            201,
+            1,
+            1,
+            1,
+            2,
+            0
+          ],
+          "events": [
+            501,
+            502
+          ]
+        },
+        "physical": {
+          "cellSize": 16,
+          "cellAlignment": 8,
+          "canaryOffset": 0,
+          "serialOffset": 8,
+          "kindOffset": 12,
+          "globalObjectsDistinct": true,
+          "globalStorageAligned": true,
+          "globalBytesUnchanged": true,
+          "firstSerial": 1,
+          "secondSerial": 2
+        }
+      },
+      {
+        "selectedConstructorBoundary": {
+          "physical": {
+            "sourceCellSize": 16,
+            "providerCellSize": 16,
+            "sourceSequentialPrefixOffset": 8,
+            "providerSequentialPrefixOffset": 8,
+            "sourceStride": 16,
+            "providerStride": 16,
+            "providerCanaryOffset": 0,
+            "providerSerialOffset": 8,
+            "providerKindOffset": 12,
+            "probeStorageAligned": true,
+            "providerSerialCounter": 2,
+            "fullWidthCanariesIntact": true,
+            "firstUnsignedKind": 201,
+            "secondUnsignedKind": 201,
+            "distinctTuClrCarriersMeasured": true,
+            "constructedByActualSelectedStartup": true,
+            "manualConstructorOrDestructorCalls": false
+          },
+          "initializeCalls": 2,
+          "startupInvocations": 1,
+          "startupCompletions": 1,
+          "registerCalls": 0,
+          "registered": 0,
+          "pendingEntries": 0,
+          "shutdownCalls": 2,
+          "shutdownInvocations": 1,
+          "destructorStarts": 0,
+          "destructorCompletions": 0,
+          "protocolRejections": 2,
+          "startupStartSequence": 1,
+          "startupCompleteSequence": 2,
+          "shutdownStartSequence": 3,
+          "shutdownCompleteSequence": 4,
+          "beforeInitializeGuardObserved": true,
+          "afterShutdownGuardObserved": true,
+          "repeatInitializeNoApplicationEffects": true,
+          "repeatShutdownNoApplicationEffects": true,
+          "liveZeroMeaning": "scalar protocol only; no class ownership or destruction claim",
+          "postShutdownInspection": "independent scalar/event/value storage only"
+        }
+      },
+      {
+        "suppliedCaptureProvenance": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-preparation-1/provenance.json",
+          "sha256": "db93a9279f0a9b642921a57a03da1fb9413fed1158263eda09e165c399b985c5",
+          "providerInputSha256": "1f56f6f6e9dce3d1eabd25137ecfbaefc54e9f9dbe5a6e631a7162aa9385ca33",
+          "sourceInputSha256": "4825d6f3e6fb2e6165f7400fed46682fe34e5aa1fa516af442c372bf71f637d9",
+          "providerFactsSha256": "83228eb5882c6626ad494997c982629bf321f7de0c2cdaa980c3568c00d35a1b",
+          "sourceFactsSha256": "69735836670470dfd8eb6c4e83e1458f919b6f16efce9ccaa6ac4398b7e46dd4",
+          "nativeObservationsSha256": "db93f0ef2b94acb9a04aa3207991281985fb908cb613a426363426d4a3f17589",
+          "attribution": "supplied evidence; the outer receipt binds both selected inputs, GeneratedProject and executable"
+        }
+      }
+    ],
+    "jitDependencies": [
+      "Checks/1.0.0",
+      "Generated/1.0.0",
+      "RoslynObj.CSharp.Runtime/1.0.0"
+    ],
+    "scope": "Actual two global C1 calls through original declaration/once-planned receiver to separately selected provider record view; serial1/2,unsigned201,full-width canaries. Both16/8 carriers/field0,8,12/prefix8/stride16 physically measured; both objects and provider counter preserved by fixture calls. Legitimate before/after public guards and idempotent lifecycle; zero atexit registrations/D1/pending. Scalar live0 is protocol only."
+  },
+  "publication": {
+    "completion": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-generated-1/completion.json",
+      "bytes": 988,
+      "sha256": "9bcb102da5a322f276da77a946010eac8e21391d55f60b16b081b3372d38e86a"
+    },
+    "files": [
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-generated-1/Generated.cs",
+        "bytes": 8547,
+        "sha256": "b494636d38584835e917013822e16cfd5cc16ff378441f15f8fe00489eb9709d"
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-generated-1/Generated.csproj",
+        "bytes": 561,
+        "sha256": "87b687f53370ce34eece09986461bda909ebe382bcf8d777cc18b446bf6b3537"
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-boundary-generated-1/program-report.json",
+        "bytes": 162157,
+        "sha256": "c6273c41a3c4afaa86c386c64c2769e81221415cc765e0a48c8e110b07e41ab4"
+      }
+    ],
+    "selection": {
+      "bodies": 10,
+      "operations": 200,
+      "bindings": [
+        {
+          "kind": "function",
+          "linkageName": "_ZN12BoundaryCellC1Ev",
+          "declaration": "unit/0002/function/000010",
+          "definition": "unit/0001/function/000001",
+          "abiContract": "Captured representations match the supported ABI subset."
+        }
+      ]
+    },
+    "wholeInputTranslationComplete": false
+  },
+  "exactMissingDefinitionEvidence": {
+    "report": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-facts-3.json",
+      "bytes": 19857,
+      "sha256": "5e8f9e4a86d9053f082901a54c5b56d3d5b92d7ef0eb9c792d12d5bb26da7279"
+    },
+    "location": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-location-1.json",
+      "bytes": 8169,
+      "sha256": "f24a7bdd9123a9fff1dde38d158b28545b39bb8c74b757f56e6aea3983994dad"
+    },
+    "scope": "Only one pinned core300 indexed candidate lookup; exact primary C1 independently defined with reciprocal separate C2. No body traversal or program-wide binding claim."
+  },
+  "actualStartupBoundary": {
+    "report": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-first-preparation-8/real-report.json",
+      "bytes": 443011,
+      "sha256": "9bcfe1fc7d336032e7af67fc56a81556d6da8da5e98e7e1b3e6357426fc19e84"
+    },
+    "partialPerUnitBodies": [
+      17,
+      67
+    ],
+    "partialPerUnitOperations": [
+      499,
+      1797
+    ],
+    "diagnostics": [
+      {
+        "code": "ROC1222",
+        "severity": "error",
+        "message": "Duplicate selected external definitions require an explicit unsupported selection policy: _ZN6duckdb19FileCompressionTypeD1Ev; unit 1: kind=sfk_destructor, entry=cdk_complete, weak=False, COMDAT=True, inline=True, alias-entry=False, primary=, body=definition; unit 2: kind=sfk_destructor, entry=cdk_complete, weak=False, COMDAT=True, inline=True, alias-entry=False, primary=, body=definition",
+        "input": null,
+        "locator": null,
+        "family": "managed-selection"
+      }
+    ],
+    "unpublished": true,
+    "scope": "FileOpenFlags receiver+16 D1 and FileCompressionType receiver+0 stringD1 dependencies remain captured. Both generated startup roots reconciled, no ambient suppression."
+  },
+  "focusedRegression": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-regressions-1/report.json",
+      "bytes": 7592,
+      "sha256": "3e5260455fd18836208bd620cfa752857de09ee2f8671058b95fa7c5a9bf72ea"
+    },
+    "scope": "Five exact Generated.cs/nativeABI identities plus two intended boundary rejections; no broad77owner/runtime repeat."
+  },
+  "genuineStrongDuplicate": {
+    "report": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constructor-strong-1/report.json",
+      "bytes": 17250,
+      "sha256": "1c4d8576965bb3942435720b5a8228c451b7b03f7ca43ff2bdf51a94493763d8"
+    },
+    "unpublished": true
+  },
+  "toolBinariesActuallyUsed": {
+    "cli": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-cli-bin-8/roslynobj-csharp.dll",
+      "bytes": 17408,
+      "sha256": "9da85a631f55d6357a0180102a181d7c233d578fa66c53eec33c03b6c8249145"
+    },
+    "translator": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-cli-bin-8/RoslynObj.CSharp.dll",
+      "bytes": 1195008,
+      "sha256": "0a68e43d74330933a735e242d9695212264a975b2a5c2cad46295c819ed3aaf1"
+    },
+    "reader": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-cli-bin-8/RoslynObj.dll",
+      "bytes": 2635264,
+      "sha256": "050840de8b0d99b381a779e96cf0bdccd9ef54d7cb67596c259e306095039eb2"
+    }
+  },
+  "preservedIntermediateAttempts": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/file-compression-definition-lookup-1/run.json",
+      "classification": "Wrong older tool binary rejected entry300 request before Open; driver postcondition failed. New correct frozen tool and fresh lookup2/3 preserve this tooling mistake."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-selected-normal-eh-first-3.py",
+      "classification": "Driver path substitution referenced absent startup source3 before snapshot copying/build; empty attempt directories retained. Correct explicit paths in fresh attempt4."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-first-preparation-2/real-report.json",
+      "classification": "Composite policy rejection preserved."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-first-preparation-4/real-report.json",
+      "classification": "Precise declaration alternate-association rejection before approved primary-only policy."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-first-preparation-5/real-report.json",
+      "classification": "Provider300 actual startup obligation detected, not suppressed."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-first-preparation-6/real-report.json",
+      "classification": "Actual ck_void dependency leaf was unsupported; no execution projection added."
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-normal-eh-first-preparation-7/real-report.json",
+      "classification": "Actual duplicate inline D1 boundary; later source8 preserves per-unit partial facts."
+    }
+  ],
+  "limits": [
+    "Unique strong direct complete receiver-only C1 is exercised. C2 is metadata-associated and independently defined, but not substituted or activated. No adjusted receiver/hidden-result/reference-source/native/UCO/indirect constructor boundary is enabled.",
+    "Complete16/8 carrier fields0/8/12 are authoritative; occupied/nonvirtual metadata is distinct and no standalone occupied partner is admitted by this boundary.",
+    "Normal-EH dependency accounting preserves actual prologue/state/region/action/storage/condition/lifetime edges. It does not prove omission safe, implement selected throw/handler ownership or grant nullable noexcept=true.",
+    "All explicit supplied inputs retain ambient obligations. Real core293+300 startup selects84 bodies/2296 operations before duplicate inline COMDAT D1 policy rejection; closure is partial and output unpublished. No actual DuckDB startup execution or full Vector getter/guard execution is claimed.",
+    "Default strong-only remains unchanged. Both actual inline COMDAT duplicate and genuine ordinary strong duplicate reject; proposed opt-in representative policy is follow-on and unimplemented in this frozen source.",
+    "Runtime, integer/class/rethrow/termination ownership contracts are unchanged. Prior SQLite finite acceptance and previous milestones retain original source/runtime attribution."
+  ],
+  "consolidator": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/consolidate-selected-constructor-1.py",
+    "bytes": 11034,
+    "sha256": "2c2086f77f81386ac1658426764938f8bd70027f5035278ef60bb2a42c680b0e"
+  }
+}

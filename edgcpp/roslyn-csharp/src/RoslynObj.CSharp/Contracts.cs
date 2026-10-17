@@ -102,6 +102,20 @@ public sealed record ManagedRootSelectionReport(string LookupName, string Linkag
 public sealed record ManagedSelectionDependencyReport(string From, string Kind, string To);
 public sealed record ManagedUnitSelectionReport(int UnitOrdinal, string InputArtifactIdentity, string InputSha256, ManagedSelectionReport Selection);
 public sealed record ManagedSelectionBindingReport(string Kind, string LinkageName, string Declaration, string Definition, string AbiContract);
+public sealed record ManagedNormalEhActionReport(string Locator, string Kind, string? Target,
+    string? StorageKind, string? StorageVariable, string? StorageBaseEntity, string? StorageOffset,
+    bool? IsIndirect, bool? UsesThisParameterOffset, string? Condition, string? ConditionVariable, string? ComparisonValue);
+public sealed record ManagedNormalEhRegionReport(string Locator, long Ordinal, string? NextRegion,
+    IReadOnlyList<ManagedNormalEhActionReport> Actions);
+public sealed record ManagedNormalEhMarkerReport(string Locator, string Kind, string? FunctionEhOwner,
+    string? Routine, string? Region, string? StateNumber, bool? IsUnreachable, string? Initialization);
+public sealed record ManagedNormalEhReport(string Function, bool HasDescriptor, string? DescriptorRoutine,
+    string? RegionTable, string? ArrayTable, string? InitialState, string? NullState, string? Prologue,
+    IReadOnlyList<string> Epilogues, IReadOnlyList<ManagedNormalEhRegionReport> Regions)
+{
+    public string? CapturedFunctionName { get; init; }
+    public IReadOnlyList<ManagedNormalEhMarkerReport> Markers { get; init; } = [];
+}
 public sealed record ManagedSelectionReport
 {
     public string Scope { get; init; } = "selected-executable-closure";
@@ -129,6 +143,7 @@ public sealed record ManagedSelectionReport
     public IReadOnlyList<ManagedRootSelectionReport> Roots { get; init; } = [];
     public IReadOnlyList<ManagedRootSelectionReport> StartupRoots { get; init; } = [];
     public string? StartupExecutionContract { get; init; }
+    public IReadOnlyList<ManagedNormalEhReport> NormalExceptionHandling { get; init; } = [];
     public IReadOnlyList<ManagedSelectionDependencyReport> Dependencies { get; init; } = [];
 }
 public sealed record OutputConfiguration

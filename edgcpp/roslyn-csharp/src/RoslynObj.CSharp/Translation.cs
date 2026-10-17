@@ -18,14 +18,19 @@ public sealed partial class Translator
         var inventory = Inventory(request, cancellationToken);
         if (!inventory.Success) return inventory;
         var diagnostics = inventory.Diagnostics.ToList();
-        TranslationResult Failure(string code, string message)
+        TranslationResult Failure(string code, string message, ManagedSelectionReport? failedSelection = null)
         {
             diagnostics.Add(new(code, DiagnosticSeverity.Error, message));
-            var report = inventory.ProgramReport with { Diagnostics = diagnostics.ToArray() };
+            var report = inventory.ProgramReport with
+            {
+                Diagnostics = diagnostics.ToArray(),
+                ManagedSelection = failedSelection is null ? inventory.ProgramReport.ManagedSelection : failedSelection with { ClosureComplete = false }
+            };
             return inventory with { Status = TranslationStatus.Failed, Diagnostics = report.Diagnostics, ProgramReport = report };
         }
-        if (inventory.ProgramReport.Inputs.Count > 2 || inventory.ProgramReport.Inputs.Count > request.Budgets.MaximumOpenUnits)
-            return Failure("ROC1203", "Emission admits at most two units within the explicit simultaneous open-unit budget.");
+        if (request.Roots.RetainAllDefinitions && inventory.ProgramReport.Inputs.Count > 2 ||
+            inventory.ProgramReport.Inputs.Count > request.Budgets.MaximumOpenUnits)
+            return Failure("ROC1203", "The requested program exceeds its admitted assembly or explicit simultaneous open-unit budget.");
         if (request.Roots.Exports.Length != 0)
             return Failure("ROC1205", "Explicit native export wrappers require an accepted export ABI implementation.");
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
@@ -79,7 +84,9 @@ public sealed partial class Translator
                 || binding is null || import.BindingStatus != "declared-unverified"
                 || string.IsNullOrWhiteSpace(binding.Symbol) || string.IsNullOrWhiteSpace(binding.LibraryPath)
                 || binding.LibrarySha256 is not { Length: 64 } || !binding.LibrarySha256.All(Uri.IsHexDigit))
-                return Failure("ROC1301", $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature pinned native function binding or the admitted address-only RTTI data contract.");
+                return Failure("ROC1301", !request.Roots.RetainAllDefinitions && import.Kind == "function"
+                    ? $"Required function '{import.LinkageName}' has no selected captured definition or admitted binding. Supply its genuine captured generated definition; only separately admitted system ABI contracts may fulfill runtime imports. Address-only RTTI data cannot implement a function, and native application-body substitution is unsupported."
+                    : $"Required {import.Kind} '{import.LinkageName}' needs a complete exact-signature pinned native function binding or the admitted address-only RTTI data contract.");
             nativeBindings.Add(new(binding.LinkageName, binding.LibraryPath, binding.Symbol));
         }
         if (inventory.ProgramReport.Families.Any(f => f.Family == "link-policy" && f.RequiredCount > 0))
@@ -289,7 +296,7 @@ public sealed partial class Translator
             var result = Failure("ROC0002", "Translation was cancelled; no complete project was published.");
             return result with { Status = TranslationStatus.Cancelled };
         }
-        catch (ManagedSelectionException exception) { return Failure(exception.Code, exception.Message); }
+        catch (ManagedSelectionException exception) { return Failure(exception.Code, exception.Message, exception.SelectionReport); }
         catch (ResourceBudgetException exception) { return Failure("ROC0003", exception.Message); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException)
         { return Failure("ROC1502", exception.Message); }

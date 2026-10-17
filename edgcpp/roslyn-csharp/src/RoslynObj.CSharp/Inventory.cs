@@ -4,6 +4,20 @@ namespace RoslynObj.CSharp;
 
 internal sealed partial class InventoryState
 {
+    internal void CaptureFailedSelection(ManagedSelectionReport? report)
+    {
+        if (report is not null)
+            managedSelection = report with
+            {
+                Scope = report.UnitSelections.Count == 0 ? "partial-failed-input-selection" : "partial-failed-multi-input-selection", ClosureComplete = false,
+                WholeInputInventoryComplete = false, WholeInputTranslationComplete = false,
+                RelatedTypeMetadataComplete = false,
+                UnvisitedInput = report.UnitSelections.Count == 0
+                    ? "This partial report describes only the failing current input. Other supplied inputs and unvisited dependencies are not represented as a completed program closure."
+                    : report.UnvisitedInput
+            };
+    }
+
     internal void InventoryUnit(RoslynObject obj, InputArtifact input, int ordinal, string hash, ManagedSelectionPlan? selection = null)
     {
         if (selection is not null) managedSelection = selection.Report;
@@ -163,19 +177,22 @@ internal sealed partial class InventoryState
                 return;
             }
             var contexts = context == RecipeContext.ExecutionRoot ? executionInitializations : cleanupInitializations;
-            if (contexts.Add(initialization))
-                Count(context == RecipeContext.ExecutionRoot ? "initialization-root" : "initialization-cleanup-dependency", initialization.Kind.Name, true, locator);
-            if (!initializations.Add(initialization)) return;
+            if (!contexts.Add(initialization)) return;
+            Count(context == RecipeContext.ExecutionRoot ? "initialization-root" : "initialization-cleanup-dependency", initialization.Kind.Name, true, locator);
+            initializations.Add(initialization);
             Tick();
             RequireType(initialization.Details.Type);
             Use(initialization.Target, locator);
-            Use(initialization.Constructor, locator, directCall: true);
+            if (context == RecipeContext.ExecutionRoot) Use(initialization.Constructor, locator, directCall: true);
             Use(initialization.Destructor, locator, directCall: true);
-            VisitConstant(initialization.Constant, locator, true);
-            if (initialization.Operation is { RepresentationRole.Name: not "metadata" } operation)
-                VisitOperations(operation, locator, true, context);
-            else if (initialization.Operation is null && initialization.Expression is { RepresentationRole.Name: not "metadata" } expression)
-                VisitOperations(expression, locator, true, context);
+            if (context == RecipeContext.ExecutionRoot)
+            {
+                VisitConstant(initialization.Constant, locator, true);
+                if (initialization.Operation is { RepresentationRole.Name: not "metadata" } operation)
+                    VisitOperations(operation, locator, true, context);
+                else if (initialization.Operation is null && initialization.Expression is { RepresentationRole.Name: not "metadata" } expression)
+                    VisitOperations(expression, locator, true, context);
+            }
             // These associations add no evaluated edge. Actual cleanup lists below select live recipes.
             VisitInitialization(initialization.Master, locator + "/master", RecipeContext.Metadata);
             VisitInitialization(initialization.NextInDestructionList, locator + "/destruction", RecipeContext.Metadata);

@@ -21,22 +21,33 @@ internal sealed class ManagedSelectionException(string code, string message, str
 {
     internal string Code { get; } = code;
     internal string? Locator { get; } = locator;
+    internal ManagedSelectionReport? SelectionReport { get; set; }
 }
 
 /// <summary>Bounded public dependency discovery, not an execution schedule or emission admission.</summary>
-internal static class ManagedSelectionPlanner
+internal static partial class ManagedSelectionPlanner
 {
     internal static ManagedSelectionPlan Select(RoslynObject obj, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
         CancellationToken token = default, Action? checkBudget = null, ManagedStartupConfiguration? startup = null)
-        => new Work(obj, roots, budgets, token, checkBudget, startup: startup).Run();
+        => RunWork(new Work(obj, roots, budgets, token, checkBudget, startup: startup));
 
     internal static ManagedSelectionPlan SelectSeeded(RoslynObject obj, ManagedDefinitionRoot[] roots,
         IReadOnlyList<FunctionSymbol> additionalFunctions, IReadOnlyList<VariableSymbol> additionalStorage,
         string inputSha256, int unitOrdinal, ResourceBudgets budgets, CancellationToken token = default, Action? checkBudget = null,
         ManagedStartupConfiguration? startup = null)
-        => new Work(obj, roots, budgets, token, checkBudget, additionalFunctions, additionalStorage, inputSha256, unitOrdinal, startup).Run();
+        => RunWork(new Work(obj, roots, budgets, token, checkBudget, additionalFunctions, additionalStorage, inputSha256, unitOrdinal, startup));
 
-    private sealed class Work(RoslynObject obj, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
+    private static ManagedSelectionPlan RunWork(Work work)
+    {
+        try { return work.Run(); }
+        catch (ManagedSelectionException exception)
+        {
+            exception.SelectionReport ??= work.BuildReport(false);
+            throw;
+        }
+    }
+
+    private sealed partial class Work(RoslynObject obj, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
         CancellationToken token, Action? checkBudget, IReadOnlyList<FunctionSymbol>? additionalFunctions = null,
         IReadOnlyList<VariableSymbol>? additionalStorage = null, string? inputSha256 = null, int unitOrdinal = 1,
         ManagedStartupConfiguration? startup = null)
@@ -71,10 +82,12 @@ internal static class ManagedSelectionPlanner
         private long ambientRootRowsInspected;
         private int ambientRoutineCandidatesInspected;
         private int bodiesVisited;
+        private string? selectedInputHash;
 
         internal ManagedSelectionPlan Run()
         {
             var admittedHash = inputSha256 ?? roots.FirstOrDefault()?.InputSha256 ?? startup?.UnitInputOrder.SingleOrDefault();
+            selectedInputHash = admittedHash;
             var startupRoots = startup?.Definitions.Where(root => root.InputSha256.Equals(admittedHash, StringComparison.OrdinalIgnoreCase)).ToArray() ?? [];
             var allRoots = roots.Concat(startupRoots).ToArray();
             if (startup is not null && (startup.Contract != "edg7-itanium-explicit-startup-atexit-v1" || startup.Definitions.Length == 0 ||
@@ -123,21 +136,7 @@ internal static class ManagedSelectionPlanner
             checkBudget?.Invoke();
             var definitions = functions.Where(function => function.BodyState.Name == "definition" && function.Body is not null).ToArray();
             var storage = variables.Where(IsStorageDefinition).ToArray();
-            var report = new ManagedSelectionReport
-            {
-                InputArtifactIdentity = obj.Manifest.ArtifactIdentity, InputSha256 = admittedHash!.ToLowerInvariant(),
-                ClosureComplete = true, WholeInputInventoryComplete = false, WholeInputTranslationComplete = false,
-                RelatedTypeMetadataComplete = false, ExecutableBodiesVisited = bodiesVisited,
-                RequiredDeclarationCount = functions.Count - definitions.Length, StorageDefinitionCount = storage.Length,
-                RequiredVariableCount = variables.Count, ScopedTypeCount = types.Count, RequiredConstantCount = constants.Count,
-                BodyOperationCount = bodyOperationCount, SelectionWorkCount = workCount, AmbientRootRowsInspected = ambientRootRowsInspected,
-                AmbientRoutineCandidatesInspected = ambientRoutineCandidatesInspected,
-                AmbientInitialization = startup is null
-                    ? "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased."
-                    : "Exact current startup roots cover the admitted backend candidates in explicit target input order. Their executable closure is selected; generated explicit initialization and registered teardown still require emitter admission and separate execution evidence.",
-                Roots = selectedRoots.ToArray(), StartupRoots = selectedStartupRoots.ToArray(), StartupExecutionContract = startup?.Contract,
-                Dependencies = dependencies.ToArray()
-            };
+            var report = BuildReport(true);
             return new(obj, functions.ToArray(), variables.ToArray(), types.ToArray(), constants.ToArray(), definitions, storage, report)
             { StartupDefinitions = startupDefinitions.ToArray(), CallableDefinitions = callableDefinitions.ToArray() };
         }
@@ -335,19 +334,23 @@ internal static class ManagedSelectionPlanner
             }
             var body = function.Body ?? throw new ManagedSelectionException("ROC1214", "A selected definition has no retained body.", locator);
             ++bodiesVisited;
-            var eh = body.ExceptionHandling;
-            if (eh.Details is not null || eh.RegionTable is not null || eh.ArrayTable is not null ||
-                eh.CleanupRegions.Count != 0 || eh.Arrays.Count != 0 || eh.Epilogues.Count != 0)
-                Fail("ROC1214", "Selected-mode exception-handling dependency closure is unsupported; retained EH frames and tables require default all-definition mode.", locator);
             foreach (var local in body.Locals)
             {
                 locals.Add(local); UseVariable(local, locator, "body-local");
             }
+            VisitNormalEhDependencies(function, body, locator);
             var seen = new HashSet<SemanticNode>();
             Walk(body.Root, function, locator + "/body", seen, [], 0);
             VisitScope(body.Scope, locator + "/scope", 0);
-            foreach (var lifetime in body.Lifetimes.Where(lifetime => lifetime.BoundEntity?.Equals(function) == true))
-                VisitLifetime(lifetime, locator, 0);
+            foreach (var lifetime in body.Lifetimes)
+            {
+                Tick();
+                if (lifetime.BoundEntity?.Equals(function) == true) VisitLifetime(lifetime, locator, 0);
+            }
+            if (body.ExceptionHandling.Details?.Prologue is { } prologue)
+                Walk(prologue, function, locator + "/eh-prologue", seen, [], 0);
+            foreach (var epilogue in body.ExceptionHandling.Epilogues)
+                Walk(epilogue, function, locator + "/eh-epilogue", seen, [], 0);
         }
 
         private void VisitVariable(VariableSymbol variable)
@@ -403,6 +406,9 @@ internal static class ManagedSelectionPlanner
                 case LabelDifferenceValue difference:
                     VisitValue(difference.FromValue, from, depth + 1); VisitValue(difference.ToValue, from, depth + 1); break;
                 case IntegerValue or FloatingValue or StringValue: break;
+                // EDG ck_void has no variant fields (il_def.h). This only
+                // closes dependency accounting, not executable projection.
+                case ConstantValue empty when empty.Kind.Name == "ck_void": break;
                 default: Fail("ROC1214", $"Constant value '{value.Kind.Name}' has no supported dependency-selection rule.", from); break;
             }
         }
@@ -411,14 +417,27 @@ internal static class ManagedSelectionPlanner
         {
             if (recipe is null || !(cleanup ? cleanupRecipes : recipes).Add(recipe)) return;
             Tick(depth);
-            if (cleanup || recipe.Destructor is not null || recipe.IsFreeingOfExceptionObject || recipe.NextInDestructionList is not null)
-                Fail("ROC1214", "Selected-mode destruction and exception-owner recipe closure is unsupported.", from);
-            VisitLifetime(recipe.Lifetime, from, depth + 1); VisitLifetime(recipe.InitExpressionLifetime, from, depth + 1);
-            VisitLifetime(recipe.OverlappingLifetime, from, depth + 1);
-            VisitConstant(recipe.Constant, from, depth + 1);
+            Edge(from, cleanup ? "normal-cleanup-recipe" : "initialization-association", recipe);
+            if (recipe.IsFreeingOfExceptionObject)
+                Fail("ROC1214", "Selected normal-cleanup dependency accounting does not admit exception-object ownership.", from);
             var executionRoot = recipe.Operation is { RepresentationRole.Name: "execution" } operation ? (SemanticNode)operation :
                 recipe.Operation is null && recipe.Expression is { RepresentationRole.Name: "execution" } expression ? expression : null;
             var execution = executionRoot is not null;
+            if (cleanup || execution)
+            {
+                Use(recipe.Target, from, cleanup ? "cleanup-recipe-storage" : "initializer-target", depth + 1);
+                RequireType(recipe.Details.Type, false, depth + 1);
+                VisitConstant(recipe.Constant, from, depth + 1);
+                VisitLifetime(recipe.Lifetime, from, depth + 1); VisitLifetime(recipe.InitExpressionLifetime, from, depth + 1);
+                VisitLifetime(recipe.OverlappingLifetime, from, depth + 1);
+            }
+            if (cleanup)
+            {
+                Use(recipe.Destructor, from, "cleanup-recipe-target", depth + 1);
+                if (execution) Fail("ROC1214", "An executable cleanup recipe requires its own supported retained execution schedule.", from);
+                VisitRecipe(recipe.NextInDestructionList, Locator(recipe), true, depth + 1);
+                return;
+            }
             if (!execution)
             {
                 if (recipe.Constructor is not null || recipe.Expression is not null || recipe.Operands.Count != 0)
@@ -426,10 +445,8 @@ internal static class ManagedSelectionPlanner
                 return;
             }
             if (!cleanup && executionRoot is not null) requiredInitializerOccurrences.Add(executionRoot);
-            Use(recipe.Target, from, cleanup ? "cleanup-recipe-storage" : "initializer-target", depth + 1);
-            RequireType(recipe.Details.Type, false, depth + 1);
-            if (!cleanup) Use(recipe.Constructor, from, "initializer-constructor", depth + 1);
-            Use(recipe.Destructor, from, cleanup ? "cleanup-recipe-target" : "initializer-destructor", depth + 1);
+            Use(recipe.Constructor, from, "initializer-constructor", depth + 1);
+            Use(recipe.Destructor, from, "initializer-destructor", depth + 1);
             // Executable expressions are visited at their retained statement/
             // operation occurrence, never again via this association.
         }
@@ -438,8 +455,15 @@ internal static class ManagedSelectionPlanner
         {
             if (lifetime is null || !lifetimes.Add(lifetime)) return;
             Tick(depth);
-            if (lifetime.Cleanups.Count != 0 || lifetime.ParentCheckpoint is not null || lifetime.HasImplicitChild || lifetime.HasBlockAfterLabelChild)
-                Fail("ROC1214", "Selected-mode nonempty lifetime and cleanup dependency closure is unsupported.", from);
+            Edge(from, "owned-normal-lifetime", lifetime);
+            if (lifetime.HasImplicitChild || lifetime.HasBlockAfterLabelChild)
+                Fail("ROC1214", "The selected lifetime has implicit child obligations outside the recorded normal-cleanup dependency slice.", from);
+            VisitRecipe(lifetime.ParentCheckpoint, Locator(lifetime), true, depth + 1);
+            foreach (var cleanup in lifetime.Cleanups)
+            {
+                Tick(depth + 1);
+                VisitRecipe(cleanup.Initialization, Locator(lifetime), true, depth + 1);
+            }
             foreach (var child in lifetime.Children) VisitLifetime(child, from, depth + 1);
         }
 
@@ -483,8 +507,9 @@ internal static class ManagedSelectionPlanner
                         break;
                     case InitializationStatementOperation initializationStatement: VisitRecipe(initializationStatement.Initialization, path, false, depth + 1); break;
                     case InitializationOperation initializationOperation: VisitRecipe(initializationOperation.Initialization, path, false, depth + 1); break;
-                    case ThrowOperation or TryOperation or LoweredEhOperation:
+                    case ThrowOperation or TryOperation:
                         Fail("ROC1214", "Selected-mode throw, handler and lowered-EH dependency closure is unsupported.", path); break;
+                    case LoweredEhOperation lowered: VisitNormalEhMarker(lowered, owner, path, depth + 1); break;
                     case TemporaryOperation or StatementExpressionResultOperation:
                         Fail("ROC1214", "Selected-mode temporary and statement-result recipe closure is unsupported.", path); break;
                     case BlockOperation block: VisitScope(block.Scope, path, depth + 1); VisitLifetime(block.Lifetime, path, depth + 1); break;

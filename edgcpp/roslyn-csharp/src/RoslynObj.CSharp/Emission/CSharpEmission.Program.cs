@@ -162,6 +162,11 @@ public sealed partial class CSharpEmitter
             if (options.ManagedProgramSelection is not { } program ||
                 call.Callee is not ReferenceOperation { Target: FunctionSymbol captured } ||
                 !program.FunctionDefinitions.TryGetValue(captured, out var selected)) return false;
+            if (TryValidateManagedBoundConstructorCall(call, definition))
+            {
+                declaration = captured;
+                return true;
+            }
             if (!selected.Equals(definition) || currentFunction is null || !functions.Contains(currentFunction) ||
                 call.TargetMethod is null || !call.TargetMethod.Equals(captured) ||
                 call.Call.FunctionType is not { } signature || !signature.Equals(captured.Signature) ||
@@ -188,6 +193,63 @@ public sealed partial class CSharpEmitter
             ValidateProgramBoundaryType(selected.ReturnType);
             declaration = captured;
             return true;
+        }
+
+        private bool TryValidateManagedBoundConstructorCall(CallOperation call, FunctionSymbol definition)
+        {
+            if (options.ManagedProgramSelection is not { } program ||
+                call.Callee is not ReferenceOperation { Target: FunctionSymbol declaration } ||
+                !program.FunctionDefinitions.TryGetValue(declaration, out var selected) ||
+                declaration.SpecialFunctionKind?.Name != "sfk_constructor" && selected.SpecialFunctionKind?.Name != "sfk_constructor")
+                return false;
+            if (!selected.Equals(definition) || currentFunction is null || !functions.Contains(currentFunction) || !functions.Contains(definition) ||
+                call.CallKind.Name != "direct" || call.TargetMethod?.Equals(declaration) != true ||
+                call.Call.FunctionType?.Equals(declaration.Signature) != true || !call.Type.Equals(declaration.ReturnType) ||
+                call.Operator.RetainedVirtualCall || call.Operator.RequiresRuntimeCastCheck ||
+                call.Operator.EvalLeftToRight && call.Operator.EvalRightToLeft || call.Call.ReturnSlot is not null ||
+                call.Arguments.Count != 1 || call.Operands.Count != 2 || !call.Operands[0].Equals(call.Callee))
+                throw Limit("A managed-bound constructor requires its exact retained direct declaration, receiver and execution signature.", "managed-lifetime-call");
+
+            var declarationRecord = ValidateManagedBoundConstructorEntry(declaration);
+            _ = ValidateManagedBoundConstructorEntry(definition);
+            var argument = call.Arguments[0]; var parameter = declaration.Signature.Parameters[0];
+            if (argument.Ordinal != 0 || argument.Role?.Name != "this_parameter" ||
+                argument.Parameter?.Equals(parameter.Descriptor) != true || !call.Operands[1].Equals(argument.Value) ||
+                call.Receiver?.Equals(argument.Value) != true)
+                throw Limit("A managed-bound constructor receiver must alias its original declaration descriptor, raw operand and receiver facet.", "managed-lifetime-call");
+            if (!GeneratedRecordPointer(argument.Value.Type, false).Equals(declarationRecord))
+                throw Limit("A managed-bound constructor occurrence must retain its declaration's own receiver record view.", "managed-lifetime-call");
+            ValidateProgramBoundaryType(argument.Value.Type);
+            var compatibility = new AbiCompatibility().CompareFunctions(declaration, definition);
+            if (!compatibility.Compatible)
+                throw Limit($"A managed-bound constructor requires the selected captured ABI at {compatibility.Path}: {compatibility.Reason}", "managed-lifetime-call");
+
+            // Entry binding supplies only an occurrence-specific address view.
+            // It grants no constructor body, cleanup or noexcept admission.
+            ValidateGeneratedLifetimeRoutine(definition);
+            return true;
+        }
+
+        private static RecordType ValidateManagedBoundConstructorEntry(FunctionSymbol function)
+        {
+            var signature = function.Signature;
+            if (function.SpecialFunctionKind?.Name != "sfk_constructor" || function.ConstructorOrDestructorKind?.Name != "cdk_complete" ||
+                function.PrimaryEntry is not null || function.Details.IsAliasEntry == true ||
+                function.ThisAdjustment != 0 || function.ReturnAdjustment != 0 || function.VirtualCallIndex != 0 || function.VirtualBaseIndex != 0 ||
+                !signature.HasPrototype || signature.IsVariadic || !signature.HasThisParameter ||
+                signature.ReturnsValueAsParameter == true || signature.ReturnsValueViaCopyConstructor ||
+                signature.ReturnValueParameterFollowsThis == true || MemoryRepresentationType(function.ReturnType).Kind.Name != "tk_void" ||
+                signature.Parameters.Count != 1 || signature.Parameters[0].Ordinal != 0 || signature.Parameters[0].Role.Name != "this_parameter" ||
+                signature.Parameters[0].BaseSubobject is not null || signature.Parameters[0].Descriptor.Details.PassedViaCopyConstructor ||
+                signature.ThisClass is null || function.ContainingType is null)
+                throw Limit("The managed-bound lifetime entry supports a complete receiver-only constructor without adjustment or hidden copy/result roles.", "managed-lifetime-call");
+            ValidateCallingConvention(signature);
+            var receiverType = signature.Parameters[0].Type;
+            ValidateProgramBoundaryType(receiverType);
+            var record = GeneratedRecordPointer(receiverType, false);
+            if (!record.Equals(MemoryRepresentationType(signature.ThisClass)) || !record.Equals(MemoryRepresentationType(function.ContainingType)))
+                throw Limit("A managed-bound constructor's receiver must retain its own selected containing record.", "managed-lifetime-call");
+            return record;
         }
 
         private string ProgramArgumentView(CallOperation call, int index, FunctionSymbol definition, string value)

@@ -2,16 +2,41 @@
 
 ## ACTIVE, 2026-10-17 — actual Vector accessor closure implementation
 
-User explicitly resumed. Coordinator gpt-6.1-sol high owns integration/builds/Git;
-retained gpt-6.1-sol xhigh implementers own disjoint work; root GPT-6-Astra high
-monitors read-only. Current active command is recorded below. Managed-root
-checkpoint is committed as `345ee5dfe`; receipt
-`acceptance/duckdb/managed-roots-report.json`, 166,812 bytes, SHA-256
-`3f679602150fb31cbb71e73a002bf5240d350fd2eb8b9f6bfaf07067b890b438`.
-21 expected outcomes: 19 successes and two intended rejections, zero unexpected
-outcomes or budget violations. All three input hashes, product 260 files, actual
-core checker nine files and reused pointer checker nine files verify. Runtime is
-unchanged. Previous pointer checkpoint `0cedb8efd` remains closed (57 outcomes).
+Coordinator gpt-6.1-sol high owns builds/Git/integration; retained implementers
+are gpt-6.1-sol xhigh; root GPT-6-Astra high monitors read-only. User remains
+unpaused. Startup checkpoint `c671703d7` and prior selected-composition `6e767a577`
+are committed/closed; no successful baseline reruns are pending.
+
+Verified next checkpoint is staged from frozen normal-EH product source8:
+`acceptance/duckdb/selected-constructor-report.json`, 52,854 bytes, SHA-256
+`7f150df5fac8620b490757a6be2bf06fe4508d392c149bf925c432bdc243f3cc`.
+27 expected outcomes: 23 successes/four intended rejections, zero final-campaign
+unexpected outcomes or budgets. Native/JIT/AOT two-TU strong C1 snapshots and both
+16/8 carrier physical checks pass; seven preservation checks and genuine strong
+duplicate rejection pass. Runtime unchanged. Exact nine product index blobs match
+source8; pending emitter edits for COMDAT are deliberately unstaged and unverified.
+No build/test process is running at this boundary.
+
+Actual core293+300 startup now has partial per-unit selection: 17/499 and 67/1797
+bodies/operations, combined84/2296. Both captured startup roots are included. Next
+boundary is duplicate inline COMDAT FileCompressionType D1; no actual DuckDB
+startup/getter-chain execution or combined closure is claimed. Source8 diagnostic:
+`t5/selected-normal-eh-first-preparation-8/real-report.json`. Exact core300 C1
+primary/C2 association evidence is `t5/file-compression-definition-facts-3.json`.
+
+Next active work: approved opt-in captured-inline-comdat-manifest-order target
+representative policy; default strong-only stays unchanged. Coordinator owns
+selection/config/report/maps; emission owns raw-local D1 call/cleanup/registration
+validation and final invocation adaptation; inventory owns genuine two-TU inline
+fixture/checker. All supplied-unit ambient obligations remain. No ODR/body equality,
+static/TLS state merging, native application or address/UCO fallback is authorized.
+C1 baseline stays staged while these follow-on edits remain unstaged. Save the
+verified C1 checkpoint after root index review, then continue cohesive actual
+startup and full Vector guard/string/JSON/allocator/EH work. Preserve unrelated
+T3 aggregate fixtures and all unrelated upstream/core dirty files.
+
+Historical checkpoint details below retain original evidence attribution; this
+active section supersedes their older next-step descriptions.
 
 [Managed roots](MANAGED-ROOTS.md) select current public identities before Inventory,
 using pinned input SHA256, bounded indexed lookup hint and exact captured linkage;
@@ -91,11 +116,10 @@ Completed current drivers (do not rerun passed proof):
 `t5/run-composed-scalar-prepare-1.py`, retry2 and execution1;
 `t5/run-class-construction-regressions-5.py` (42 outcomes);
 `t5/run-boundaries-final-runtime-5.py` (8 outcomes). Publication identity artifacts
-and readonly assertion are bound by the compact receipt. Runtime and reader API
-changes are uncommitted, alongside selected multi-input/scalar/EH adapters and
-new genuine fixtures/checkers/tool. Preserve unrelated dirty T3 aggregate fixtures.
+and readonly assertion are bound by the compact receipt. The corresponding Runtime, reader API and selected composition changes are
+committed in `6e767a577`. Preserve unrelated dirty T3 aggregate fixtures.
 
-Verified startup checkpoint ready for exact source2 commit: compact receipt
+Verified startup checkpoint committed as `c671703d7`: compact receipt
 `acceptance/duckdb/selected-startup-report.json`, 53,472 bytes, SHA-256
 `185eb658d45891002163cdd71438477dfce23de22ab1912c3b545cc1a9085bc6`.
 20 expected outcomes: 17 successes and three intended rejections. Product
@@ -123,24 +147,11 @@ source2 compiler build5 succeeds. Earlier closed77campaign is not repeated.
 Publication/runtime evidence stays bound to actual CLI2/output4; the corrected
 compiler output is distinct. No build/test process is currently running.
 
-ACTIVE follow-on: bounded production normal-EH dependency accounting, then actual
-FileOpenFlags constructor facts/admission as justified. Real core293 explicit
-startup now stops ROC1214 at selected EH descriptor closure, unpublished; descriptor
-presence alone is not evidence of executing cleanup. Root approved collector, not
-blanket EH execution or omission. Emission owns unverified ManagedSelection.cs +
-NEW ManagedSelection.NormalEh.cs draft (frozen/build-ready); coordinator owns new
-Contracts normal-EH rows/marker schema, pending Inventory cleanup-purpose alignment
-and Translator partial-failure-report integration. These edits are NOT the source2
-startup checkpoint and remain unstaged. Startup emitter/Runtime remain frozen.
-
-Next exact work after startup save: align Inventory cleanup dependencies to select
-D1/storage only, never historical recipe C1; attach partial selection report with
-ClosureComplete=false. Then fresh combined snapshot/build and real startup attempt
-using actual current bodies, no new helper-only audit tool. Preserve actual owner/
-tables/actions/storage/state/condition/owned lifetime dependencies and lowered
-execution markers. Throw/Try/handler propagation, arrays/unknown lifetime gaps stay
-explicitly unsupported. Any scaffold emission needs exact facts and separate
-closed supported-body proof, never nullable-noexcept promotion/NoThrow cache reuse.
+Normal-EH follow-on source8 is now verified as the checkpoint above. Exact
+unique strong complete C1 executes across TUs; the real two-input startup report
+preserves actual FileOpenFlags+16/member string+0 cleanup dependencies and stops
+on duplicate inline COMDAT policy. Construction/destruction execution admission
+remains separate from selected dependency completeness.
 
 Full Vector getter and guard InternalException/string/JSON/container/allocator/EH
 closure remain open. Existing closure3 is partial193 bodies/5,628 operations.
