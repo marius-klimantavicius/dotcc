@@ -67,3 +67,8 @@ that implementation and genuine variant remain outside this checkpoint.
 Real startup, the complete Vector accessor/guard/string/JSON/allocator/EH closure
 and broader T5 remain open. Earlier SQLite and Runtime evidence retain their
 original source attribution.
+
+The later [template-COMDAT checkpoint](T5-TEMPLATE-COMDAT.md) separately proves
+the explicit instantiation provider branch and advances the actual startup
+selection to indirect-cleanup dependency accounting, retaining this proof's
+original source/runtime attribution.

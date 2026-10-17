@@ -63,7 +63,7 @@ internal static partial class ManagedProgramSelectionPlanner
             Tick();
             if (promotedConstantStorage is not ("reject" or ConstantStoragePolicy))
                 Fail("ROC1220", "The requested promoted constant storage policy is unsupported.");
-            if (definitionSelection is not ("strong-only" or InlineComdatPolicy))
+            if (definitionSelection is not ("strong-only" or InlineComdatPolicy or TemplateComdatPolicy))
                 Fail("ROC1220", "The requested selected-definition policy is unsupported.");
             if (inputs.Count < 1 || inputs.Count > budgets.MaximumOpenUnits || hashes.Count != inputs.Count ||
                 roots.Length == 0 && startup?.Definitions.Length is not > 0)
@@ -170,7 +170,7 @@ internal static partial class ManagedProgramSelectionPlanner
         private void CheckAggregateBounds()
         {
             var plans = units.Where(unit => unit.Plan is not null).Select(unit => unit.Plan!).ToArray();
-            if (definitionSelection == InlineComdatPolicy || promotedConstantStorage != "reject")
+            if (HasFunctionComdatSelectionPolicy || promotedConstantStorage != "reject")
                 foreach (var plan in plans)
                     foreach (var variable in plan.Variables)
                     {
@@ -209,7 +209,7 @@ internal static partial class ManagedProgramSelectionPlanner
                     Fail("ROC1222", "One required captured external linkage names both function and data definitions: " + group.Key);
                 if (group.Select(item => item.Symbol).Distinct().Count() > 1)
                 {
-                    if (definitionSelection == InlineComdatPolicy && group.All(item => item.Symbol is FunctionSymbol))
+                    if (HasFunctionComdatSelectionPolicy && group.All(item => item.Symbol is FunctionSymbol))
                         SelectInlineRepresentative(group.Select(item => (Unit: units[item.Ordinal - 1], Function: (FunctionSymbol)item.Symbol)).ToArray(), group.Key);
                     else if (promotedConstantStorage == ConstantStoragePolicy && group.All(item => item.Symbol is VariableSymbol))
                         SelectConstantStorage(group.Select(item => (Unit: units[item.Ordinal - 1], Variable: (VariableSymbol)item.Symbol)).ToArray(), group.Key);
@@ -354,12 +354,12 @@ internal static partial class ManagedProgramSelectionPlanner
             if (symbol is FunctionSymbol function)
             {
                 var details = function.Details; var supplement = function.GnuSupplement;
-                var inlinePolicy = definitionSelection == InlineComdatPolicy && IsInlineComdatMember(function, requireDefinition: false);
+                var comdatPolicy = IsSelectedComdatMember(function, requireDefinition: false);
                 var outOfLineRequirement = ManagedFunctionDefinitionPolicy.RequiresOutOfLineProvider(function);
                 if (details.IsWeak == true || details.IsWeakref == true || details.IsGnuAlias == true || details.IsIfunc == true ||
-                    details.IsUseComdat == true && !inlinePolicy && !outOfLineRequirement || details.IsAliasEntry == true || function.PrimaryEntry is not null ||
+                    details.IsUseComdat == true && !comdatPolicy && !outOfLineRequirement || details.IsAliasEntry == true || function.PrimaryEntry is not null ||
                     function.AlternateEntryPoints.Count != 0 && !HasPrimaryCompleteEntryAssociations(function) || supplement?.AliasedRoutine is not null ||
-                    supplement?.TargetedVersions.Count > 0 || supplement?.Representative is not null || details.IsInline && !inlinePolicy && !outOfLineRequirement ||
+                    supplement?.TargetedVersions.Count > 0 || supplement?.Representative is not null || details.IsInline && !comdatPolicy && !outOfLineRequirement ||
                     !outOfLineRequirement && (details.DefinitionForInliningOnly || details.SuppressInlineBody) || details.SupersededExternal)
                 {
                     var facts = new List<string>();

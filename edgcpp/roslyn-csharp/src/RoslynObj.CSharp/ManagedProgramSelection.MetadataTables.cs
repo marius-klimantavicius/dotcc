@@ -15,7 +15,7 @@ internal static partial class ManagedProgramSelectionPlanner
         private bool IsMetadataOnlyInlineTable(UnitState unit, FunctionSymbol function, VariableSymbol table)
         {
             Tick();
-            if (definitionSelection != InlineComdatPolicy || function.Body is not { } body ||
+            if (!HasFunctionComdatSelectionPolicy || function.Body is not { } body ||
                 !IsDefinition(function) || !body.Locals.Contains(table)) return false;
             var eh = body.ExceptionHandling;
             if (eh.Details is not { } descriptor || !descriptor.Routine.Equals(function) ||

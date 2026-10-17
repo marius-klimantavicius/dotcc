@@ -152,16 +152,19 @@ internal static partial class ManagedProgramSelectionPlanner
 
         private (UnitState Unit, Symbol Symbol) SelectInlineCandidate((UnitState Unit, Symbol Symbol)[] definitions, string linkage)
         {
-            if (definitionSelection != InlineComdatPolicy)
+            if (!HasFunctionComdatSelectionPolicy)
                 Fail("ROC1222", "Required declaration has duplicate exact captured external definitions: " + linkage);
             var selected = SelectInlineRepresentative(definitions.Select(item => (item.Unit, (FunctionSymbol)item.Symbol)).ToArray(), linkage);
             return (selected.Unit, selected.Function);
         }
 
         private static bool IsInlineComdatMember(FunctionSymbol function, bool requireDefinition)
+            => function.Details.IsInline && HasComdatMemberShape(function, requireDefinition);
+
+        private static bool HasComdatMemberShape(FunctionSymbol function, bool requireDefinition)
         {
             var details = function.Details; var supplement = function.GnuSupplement;
-            return (!requireDefinition || IsDefinition(function)) && details.IsInline && details.IsUseComdat == true &&
+            return (!requireDefinition || IsDefinition(function)) && details.IsUseComdat == true &&
                 details.IsWeak == false && details.IsWeakref == false && details.IsGnuAlias == false && details.IsIfunc == false &&
                 details.IsAliasEntry == false && function.PrimaryEntry is null &&
                 !details.DefinitionForInliningOnly && !details.SuppressInlineBody && !details.SupersededExternal &&
@@ -183,6 +186,8 @@ internal static partial class ManagedProgramSelectionPlanner
                 function.CurrentName, function.IsDefined, bodyState = function.BodyState.Name,
                 executionRole = function.Body?.Root.RepresentationRole.Name,
                 d.IsInline, d.IsUseComdat, d.DefinitionNeeded, d.InlineInstanceRequired, d.NeedOutOfLineCopy, d.IsWeak, d.IsWeakref, d.IsGnuAlias, d.IsIfunc, d.IsAliasEntry,
+                d.ExplicitInstantiation, d.ClassExplicitlyInstantiated, d.ExplicitDoNotInstantiate,
+                explicitClassComdatProvider = IsExplicitClassComdatProvider(function),
                 primaryEntry = function.PrimaryEntry?.CurrentName, d.DefinitionForInliningOnly, d.SuppressInlineBody, d.SupersededExternal,
                 aliasedRoutine = g?.AliasedRoutine?.CurrentName, representative = g?.Representative?.CurrentName,
                 inlinePartner = g?.InlinePartner?.CurrentName,
@@ -208,20 +213,20 @@ internal static partial class ManagedProgramSelectionPlanner
             (UnitState Unit, FunctionSymbol Function)[] members, string linkage)
         {
             Tick();
-            if (definitionSelection != InlineComdatPolicy)
-                Fail("ROC1222", "Duplicate function selection requires explicit inline COMDAT policy: " + linkage);
+            if (!HasFunctionComdatSelectionPolicy)
+                Fail("ROC1222", "Duplicate function selection requires an explicit captured COMDAT representative policy: " + linkage);
             if (!inlineGroups.TryGetValue(linkage, out var group)) inlineGroups.Add(linkage, group = []);
             foreach (var member in members)
             {
                 Tick();
-                if (!IsInlineComdatMember(member.Function, requireDefinition: true))
-                    Fail("ROC1224", "An inline representative group includes a non-inline/COMDAT, weak, alias, adjusted or unsupported execution-role definition: " + linkage + ". Captured group members: " + string.Join("; ", members.Select(item => "unit=" + item.Unit.Ordinal + ",sha256=" + item.Unit.Hash + ":" + DescribeInlineMember(item.Function))));
+                if (!IsSelectedComdatMember(member.Function, requireDefinition: true))
+                    Fail("ROC1224", "A captured COMDAT representative group includes a definition outside the selected inline/template policy or with unsupported weak, alias, adjustment or execution-role facts: " + linkage + ". Captured group members: " + string.Join("; ", members.Select(item => "unit=" + item.Unit.Ordinal + ",sha256=" + item.Unit.Hash + ":" + DescribeInlineMember(item.Function))));
                 if (group.All(item => !item.Function.Equals(member.Function))) group.Add(member);
                 functionOwners[member.Function] = member.Unit;
             }
             group.Sort((left, right) => left.Unit.Ordinal.CompareTo(right.Unit.Ordinal));
             if (group.GroupBy(member => member.Unit.Ordinal).Any(sameUnit => sameUnit.Count() != 1))
-                Fail("ROC1222", "An explicit inline group has more than one definition in one input: " + linkage);
+                Fail("ROC1222", "An explicit COMDAT representative group has more than one definition in one input: " + linkage);
             var selected = group[0];
             foreach (var member in group)
             {
@@ -233,10 +238,10 @@ internal static partial class ManagedProgramSelectionPlanner
                     Kind(function.ConstructorOrDestructorKind) != Kind(selected.Function.ConstructorOrDestructorKind) ||
                     Kind(signature.ExceptionSpecification?.Kind) != Kind(chosen.ExceptionSpecification?.Kind) ||
                     signature.ExceptionSpecification?.NoexceptEffective != chosen.ExceptionSpecification?.NoexceptEffective)
-                    Fail("ROC1223", "Inline representative entry kind or retained exception specification differs: " + linkage);
+                    Fail("ROC1223", "COMDAT representative entry kind or retained exception specification differs: " + linkage);
                 var comparison = compatibility.CompareFunctions(function, selected.Function);
                 if (!comparison.Compatible)
-                    Fail("ROC1223", $"Inline representative ABI is {comparison.Status} at {comparison.Path}: {comparison.Reason} ({linkage}).");
+                    Fail("ROC1223", $"COMDAT representative ABI is {comparison.Status} at {comparison.Path}: {comparison.Reason} ({linkage}).");
                 var body = function.Body!;
                 if (body.Locals.Any(variable => (variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||
                     variable.LocalStaticInitializations.Count != 0) && !TryAdmitConstantCompanion(member.Unit, variable) &&
@@ -244,7 +249,7 @@ internal static partial class ManagedProgramSelectionPlanner
                     body.Scope?.LocalStaticInitializations.Any(initializer =>
                         !initializer.Variable.LocalStaticInitializations.Contains(initializer) ||
                         !IsMetadataOnlyInlineTable(member.Unit, function, initializer.Variable)) == true)
-                    Fail("ROC1224", "Inline function selection cannot merge associated local-static/TLS initialization or storage: " + linkage +
+                    Fail("ROC1224", "COMDAT function selection cannot merge associated local-static/TLS initialization or storage: " + linkage +
                         "; locals=[" + string.Join(", ", body.Locals.Where(variable => variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||
                             variable.LocalStaticInitializations.Count != 0).Select(variable =>
                             $"{variable.CurrentName}:storage={variable.SymbolDetails.Storage?.Name},TLS={variable.IsThreadLocal},promoted={variable.Details.PromotedLocalStatic},promoted-init={variable.Details.PromotedLocalStaticInitialization},region-table={variable.Equals(body.ExceptionHandling.RegionTable)},array-table={variable.Equals(body.ExceptionHandling.ArrayTable)},local-inits={variable.LocalStaticInitializations.Count}")) +

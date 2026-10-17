@@ -52,7 +52,7 @@ incoming uses admitted; actual cleanup calls/states and NoThrow guards remain.
 Natural arithmetic complete-C1 arguments use exact raw/selected roles and ABI.
 See [current metadata proof](T5-INLINE-METADATA.md). No more checkpoint runs needed.
 
-Suppressed-provider checkpoint is VERIFIED, awaiting exact-index commit/root review:
+Suppressed-provider checkpoint `196f1f6c8` is committed and CLOSED:
 `acceptance/duckdb/suppressed-provider-report.json`,216,210B,SHA256
 `496f1af173daea5be0164452320a2848358b62afd49f8c791291dfcfcf3a6210`.
 36expected=31success/five intendedreject, no final-campaign unexpected/budgets.
@@ -69,26 +69,42 @@ NoThrow/defaultretainall unchanged. Eight exact source3 product blobs staged;
 all template-policy follow-on changes remain unstaged. No more baseline runs.
 See [provider proof](T5-SUPPRESSED-PROVIDERS.md).
 
-ACTIVE next: approved separate `captured-template-comdat-manifest-order` opt-in,
-old inline/default meanings unchanged. Emission sol xhigh owns shared policy/
-member predicate and consistent metadata/storage/group/routing integration;
-inventory sol xhigh prepares independent out-of-class non-inline C1/D1 genuine
-variant/capture recipe. Coordinator owns freezes/builds/Git. No native std::string
-or application fallback, no invented noexcept/cleanup/lifetime permission.
-Actual source3 realprobe5 at `t5/suppressed-provider-first-5/real-report.json`
-remains partial/unpublished at non-inline COMDAT `_M_create`. Earlier source1
-attempts1/2/3 retain allocator/operator= displaylookup overflows, not absence.
-Exact-name query avoids those unrelated overload sets.
+Template-COMDAT checkpoint VERIFIED, awaiting exact-index commit/root review:
+`acceptance/duckdb/template-provider-report.json`,160,887B,SHA256
+`8855f8290c41a0ee5313d9995675e0353fe35c6be2d5c2aaf492a12fd3996597`.
+22expected=17success/five intendedreject, no unexpected/finalbudgetviolations.
+Frozen `t5/template-provider-product-source-1`273files/checker1eight/fixture1four.
+Separate `captured-template-comdat-manifest-order` includes old inline eligibility
+or exact usable concrete unsuppressed explicit-class/member reciprocal instances.
+Defaults/oldinline meanings unchanged; no implicit/specialized/free template scope.
+Genuine out-of-class noninline C1/D1 companion native/JIT/AOT result30 twice,
+full9values/5events,2C1/2D1/live0,both rawcarriers4/4/field0/prefix4/stride4pass.
+Seven focusedpolicychecks: newpolicy validduplicateinline+constantstoragesource/ABI
+identities, oldinlinepriorprovideridentity, four intendedpolicyrejections. Existing
+validduplicateinline runtimeattribution retained via source+Runtimeidentity;
+NO duplicate explicit-instantiation definitions introduced. Runtime/IR/NoThrowunchanged.
+Five exact baseline source1 policyblobs staged; NormalEhfollow-on remains unstaged.
+See [template proof](T5-TEMPLATE-COMDAT.md). No more baseline runtime runs needed.
+
+ACTIVE next: dependency-only indirect_variable normalcleanup accounting. Actual
+`t5/template-provider-first-1/real-report.json` [293,300,genuinestringsupport]
+passes _M_create template policy then ROC1214 at StringUtil::Lower normalregion0
+D1 action(storage indirect_variable,IsIndirecttrue,varactualexecutionparam,offset0).
+Root authorizes fullydescribed own pointerstorage/type+actualtarget dependency
+collection, preserving all rawowner/action/region/recipe/flags and unsupported
+array/deallocation/guard/no_object exclusions. NO emitter/NoThrow/startup execution
+permission. Emission xhigh owns ManagedSelection.NormalEh.cs; coordinator compiles/
+runs actual3inputprobe when frozen. Inventory xhigh writes bounded proofdoc only.
+No new standaloneaudittool/runtimecampaign, no native applicationfallback.
 
 Genuine string support capture `t5/capture/selected-string-instantiation.roslynobj`
 33,819,648B SHA17c7f6b42fa07a5251abc596f8ad9596ef85e442abd6b347daba431c29b82391.
 Producer pinned; reviewed replacement/current headers, no historical byteidentity.
 `t5/selected-support-facts-preparation-1/facts.json` D1 ABI matches293/300;
-`...-2/facts.json` actual `_M_create` ABI matches, function+class instances concrete/
+`...-2/facts.json` actual _M_create ABI matches, function+class instances concrete/
 explicit/unsuppressed/result-reciprocal, functionnoninline+COMDAT. No full body/
-ODR/link acceptance. `IsDefined` alone never makes suppressed bodies providers.
-Tool8 missingpackageprops and original scalar-init fixture attempts preserved;
-corrected tool9/fixture2 passed. Provider facts/control/checker artifacts immutable.
+ODR/link acceptance. IsDefined alone never makes suppressed bodies providers.
+Earlier lookupbound/toolmissingprops/scalarinit attempts preserved in closedreceipt.
 
 Coordinator sol high owns builds/Git/integration; implementers sol xhigh own
 assigned disjoint product and fixture work, root Astra high monitors read-only.
