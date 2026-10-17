@@ -4,6 +4,22 @@ Updated 2026-10-17. The design at `e40280bea` is approved. Implementation starts
 from the public RoslynObj 2.0 reader (with its exact published 1.0 admission).
 EDG is the semantic authority. No prior dotobj implementation or evidence is used.
 
+Current implementation checkpoint `f7eb9ad0b` completes the requested
+[DotCC expression/storage improvement pass](DOTCC-IMPROVEMENTS.md): 88 expected
+outcomes (85 successes/three unpublished TLS rejections), with current native,
+JIT and NativeAOT evidence. Typed precedence/associativity and pure scalar routing
+preserve ordinary loops; named owners and allocation/constants/address-fixup
+phases preserve distinct pinned object identities. File-scope zero/constant
+arithmetic/pointer/recursive-array TLS has a per-thread owner and initialization
+path, exercised on four live threads with physical/GC checks. Dynamic/class/local
+TLS, thread-exit destruction, local-static synchronization/failure/retry, general
+TLS COMDAT selection and production source splitting remain open. Nine focused
+current-source phases preserve selected startup/registered teardown through the
+production CLI. Earlier rows retain their original finite evidence attribution;
+this does not close T5/T6 or make DuckDB runnable. The user requested a pause
+after these improvements; supervisor/implementers are now idle before provider
+work. See [RESTART.md](RESTART.md).
+
 | Gate | Current state | Evidence | Remaining requirements |
 | --- | --- | --- | --- |
 | T0 | Closed for contract/inventory | [Complete SQLite inventory](SQLITE-INVENTORY.md); 4,212 bodies/592,512 body operations; 103 required imports; genuine storage/cleanup/address closure tests | T0 is inventory only; execution is proved separately under T2/T3 |

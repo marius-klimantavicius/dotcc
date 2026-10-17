@@ -1,6 +1,137 @@
 # Implementation restart state
 
-## ACTIVE, 2026-10-17 — actual Vector accessor closure implementation
+## PAUSED after completed DotCC improvements, 2026-10-17
+
+The latest user instruction, **"pause after dotcc improvements are implemented"**,
+now applies. The active improvement pass is implemented, integrated, reviewed,
+verified and committed as `f7eb9ad0b`. Do not start further implementation,
+capture, builds, tests or provider work without an explicit user resume. In
+particular, do not run the saved original GCC `functexcept.cc` capture.
+
+[Checkpoint proof](DOTCC-IMPROVEMENTS.md) and
+[integration receipt](../acceptance/dotcc-improvements/integration.json):
+88 expected outcomes = 85 successes and three intentional unpublished TLS
+rejections; no measured budget violations. Integration receipt SHA256
+`242bf3462678d1bcb23c8832421c0bd2ef81d0b4c8a7fa14572a03260c0f89e8`.
+
+Completed scope:
+
+- Typed C# precedence/associativity rendering, conservative opaque text, unary
+  token/cast grammar, explicit overflow contexts, and pure scalar routing that
+  preserves ordinary loop structure. Expression acceptance: 23 phases, 30 native/
+  JIT/NativeAOT observations and six sequenced events; 19 additional renderer
+  probes compile/execute in a checked project.
+- Named process and thread owners retain distinct aligned pinned allocations.
+  Allocation/zeroing, constants and address fixups are separate named phases.
+  File-scope zero/constant arithmetic, ordinary-pointer and recursive-array TLS
+  has an explicit per-thread initialization path. Storage acceptance: 56 phases,
+  original and reverse partial source splits, native/JIT/NativeAOT comparisons,
+  four live threads, physical addresses/alignment/identity and forced GC.
+- Focused selected startup preservation: nine current-source phases rebuild the
+  native oracle, regenerate through the production CLI and verify JIT/NativeAOT
+  once-only startup, registrations, work and reverse registered destruction.
+
+Genuine dynamic TLS, cleanup-bearing TLS and local TLS reject before publication.
+General TLS/class lifetimes/thread-exit destruction, dynamic-local-static guard
+synchronization/failure/retry, independent instances, production source splitting
+and TLS COMDAT policy remain unimplemented. EDG/core sources and the independent
+reader were not changed; the separate dotobj effort was excluded. Existing
+SQLite and earlier C++ receipts retain their original attribution.
+
+Artifacts: `/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/`.
+Final expression, storage and startup receipts have copied, verified frozen
+sources. Supervisor additionally verified 93 absolute artifact records, 176
+phase logs and 31 generated source/project hashes. Failed/intermediate expression
+attempts remain distinct; final expression run honestly reuses attempt 2's
+30-observation capture. No native application fallback or provider capture.
+
+Supervisor `gpt-6.1-sol` high and both disjoint implementers `gpt-6.1-sol` xhigh
+completed the pass. Both workers returned final handoffs and are idle; no campaign
+build/capture remains active. All unrelated dirty files are preserved. This
+paused checkpoint supersedes historical ACTIVE/next-step text below.
+
+The selected DuckDB state remains 112 bodies/3,501 operations/585 types/45
+imports, with unresolved providers; DuckDB is not runnable. The genuine GCC
+provider source/recipes below remain saved, unexecuted and require a later user
+resume. No automatic continuation after this improvement pass is authorized.
+
+## Historical pause checkpoint, 2026-10-17 (superseded above)
+
+Do not resume implementation, capture, builds, tests or Git until the user
+explicitly unpauses. This section supersedes all historical ACTIVE/next-step text
+below. Coordinator gpt-6.1-sol high, retained emission/inventory implementers
+both gpt-6.1-sol xhigh; root GPT-6-Astra high monitors read-only.
+
+Documentation-only exception authorized by the user on 2026-10-17: the completed
+DotCC comparison and proposed transfers, including cleaner static/TLS
+initialization, are recorded in the [plan addendum](PLAN.md#dotcc-review-and-proposed-transfers-2026-10-17).
+No implementation, captures, builds, tests or Git were resumed. Supervisor and
+implementers remain paused. Continuation and the scope of any future transfer
+implementation are undecided; the addendum does not authorize either.
+
+Latest verified commit `5c8c8c53b` closes the selected indirect-cleanup graph and
+genuine allocator-support evidence checkpoint. Root independently verified the
+14 expected measured outcomes (11 successes/three unpublished selection boundaries),
+compact receipt SHAfed90f7043d91595e7b1db70cde3542dc3b5f30c91e7915b4490e1684477f8f7,
+all referenced artifacts/frozen files and exact six-path index before commit.
+The source2 pre-forwarding control reaches the SAME complete selected graph as
+the forwarding draft (112 bodies/3,501 operations/585 types/45 imports). The
+unexercised two-file forwarding draft was removed; frozen artifacts remain.
+No additional forwarding admission, generated startup or DuckDB execution claim.
+SQLite finite T0-T4 remains closed under its earlier frozen provenance.
+
+No coordinator process is active. Both workers confirm paused/idle with no active processes. Inventory confirms no code edits, build, run or
+object open in its follow-on: builtin implementation has NOT started. Emission
+has only saved genuine source/capture preparation; no capture/build/product edits.
+Coordinated RESTART pause-state documentation and the subsequently authorized
+PLAN review addendum are intentionally left uncommitted; preserve unrelated dirty
+upstream/core/T3 files without cleanup.
+No new checks or Git operation were run after the pause instruction.
+
+Genuine source state: read-only official gcc-13-source package version
+13.3.0-6ubuntu2~24.04.1,88,627,482B,SHA256
+39cfbb5e005381054479d10352d93351b32698fa1ba00093d494504c1c557e5a,
+acquired and extracted selectively under
+`t5/libstdcxx-provider-source-1/`, no install or source-body patches.
+`t5/libstdcxx-provider-plan-1.json`33,395B,SHA256
+ed2f150d2adced6b53dcfcb01d83c0ba7026ce8f68ed0bdfc8d37fef1d9dcc6b;
+`t5/libstdcxx-provider-capture-recipe-1.json`40,270B,SHA256
+c666783ac33a309b8bfb7cbb09b3a2f8fc947ab841f4b810d2b1220b40ce0f36.
+First translationUnits row is original
+`libstdc++-v3/src/c++11/functexcept.cc`; intended output
+`t5/capture/libstdcxx-throw-helpers-1.roslynobj` has NOT been captured.
+Fully expanded first-TU recipe is saved:
+`t5/libstdcxx-functexcept-capture-recipe-1.json`34,498B,SHA256
+16236a3594d71dce79cf979f7cd3c39d77a0b6b3f2e04d476d50ca5328e5cf46.
+Worker handoff `t5/libstdcxx-provider-restart-1.json`885B,SHA256
+1c44987798e78e4babaa3bfe3f32b6b51002eb8bd35f9030e395be8d72d6c26e.
+
+After the prioritized DotCC improvement pass, the saved provider action is to review the first-TU recipe,
+then run one bounded measured original functexcept capture and public inspection
+using the existing pinned EDG producer/reviewed wrapper/current headers. No source
+body substitution, NLS/dual-ABI/exception override or native application fallback.
+Follow actual four-helper dependencies; current selector explicitly rejects
+Throw/exception-owner paths, so preserve its first genuine production diagnostic
+before extending dependency-only ownership accounting. Root approved obtaining
+actual provider closure before designing execution adapters. `functexcept.cc`
+throws polymorphic std errors; logic/length_error use configured gettext and
+original cow-stdexcept.cc old-ABI COW bodies. Those dependencies remain open.
+
+Saved `t5/selected-startup-import-groups-1.json`53,690B,SHA256
+e4d0d21f815e9b4cb640f0ae90c91b407470c88980b8ca4999730a2c914a6737
+accounts all45 rows:24 selected generated bindings,four lifecycle,nine builtin
+rows/seven kinds,four std throw helpers,four C++ new/delete declarations.
+Reuse existing exact libc/SQLite contracts for strlen/memcmp/memcpy/memmove
+where actual builtin signature/occurrence fits; no duplicate byte algorithms.
+Runtime-only is_constant_evaluated and nonreturning unreachable need explicit
+new intrinsic admission; existing expect guards remain. No implementation started.
+Genuine libsupc++ new/delete bodies must retain new-handler/failure semantics;
+no throwing native operator-new crossing managed frames. Startup/EH execution
+admission is independent and remains guarded. No further closed-checkpoint runs.
+
+## Historical active checkpoint state (superseded by current priority above)
+
+### Actual Vector accessor closure implementation
 
 Coordinator gpt-6.1-sol high owns builds/Git/integration; retained implementers
 are gpt-6.1-sol xhigh; root GPT-6-Astra high monitors read-only. User remains

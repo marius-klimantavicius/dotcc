@@ -1,9 +1,228 @@
 # Readable unsafe C# translation plan
 
-Status: approved for implementation on 2026-10-15 (design commit `e40280bea`).
+Current status: **PAUSED after completed DotCC improvements**, per the user's
+2026-10-17 instruction: "pause after dotcc improvements are implemented".
+The implemented and verified milestone is `f7eb9ad0b`; see
+[the checkpoint proof](DOTCC-IMPROVEMENTS.md) and
+[88-outcome integration receipt](../acceptance/dotcc-improvements/integration.json).
+Supervisor/implementers are idle. Further work, including the saved original GCC
+helper capture and DuckDB/provider continuation, requires an explicit resume.
+
+Historical approval: approved for implementation on 2026-10-15 (design commit `e40280bea`).
 The finite configured SQLite T0–T4 gates now pass; broader C++ T5 and portability/
 scale T6 remain open. Implementation and evidence are tracked in [COVERAGE.md](COVERAGE.md) and
 [RESTART.md](RESTART.md); approval does not close any acceptance gate.
+
+## DotCC review and proposed transfers (2026-10-17)
+
+This addendum records a read-only GPT-6.1-Sol xhigh review and follow-up source
+inspection. The user subsequently authorized implementation of the useful
+transfers as the first resumed work. The proposals are not implemented capability
+claims; the review itself added no builds, captures or execution results.
+The separate dotobj effort was excluded.
+
+DotCC's own typed C/Zig IR and C# renderer offer useful emission, storage, runtime
+and validation knowledge. They do not supply the missing C++ semantic model.
+Keep EDG authoritative and retain the independent public RoslynObj reader. Share
+small compatible implementations or design lessons at the C# emission/runtime
+boundary; do not replace captured layouts, lifetime facts or symbol identities
+with DotCC decisions. The earlier direct EDG emitter is also separate from this
+serialized-model translator; its capabilities are not evidence for this one.
+
+### Proposed transfer priorities
+
+1. **Cleaner expressions.** Adapt the precedence-aware rendering approach in
+   [DotCC's CSharpBackend](../../../DotCC.Lib/Backends/CSharpBackend.cs) to the
+   existing typed `CsExpression` nodes in
+   [ExpressionPlan.cs](../src/RoslynObj.CSharp/Emission/ExpressionPlan.cs) and
+   [ExpressionPlans.cs](../src/RoslynObj.CSharp/Emission/CSharpEmission.ExpressionPlans.cs).
+   The current renderer wraps unary operands, binary operands and casts broadly.
+   Use C# precedence and associativity, preserving grouping, lexical separation,
+   explicit overflow contexts, target arithmetic and once-only evaluation.
+   Opaque text leaves need an explicit precedence contract or conservative
+   parentheses. Do not strip parentheses from emitted strings. Later validation
+   should exercise nonassociative nesting, casts, unary/token adjacency,
+   short-circuit branches, pointer expressions and effectful operands, with
+   compilation and native/JIT/AOT comparisons where behavior can change.
+2. **Cleaner static/TLS initialization and storage ownership.** Use the dedicated
+   proposal below. This is a requested priority alongside expression readability;
+   separate simplification of supported static storage from new TLS/local-static
+   execution capabilities.
+3. **Local control-flow repair.** Transfer the principle of
+   [GotoScopeNormalizer.cs](../../../DotCC.Lib/Backends/GotoScopeNormalizer.cs):
+   preserve ordinary functions and repair only scopes that C# cannot express.
+   Apply it within [statement emission](../src/RoslynObj.CSharp/Emission/CSharpEmission.Statements.cs),
+   using captured initialization and cleanup edges. Do not hoist initializer
+   effects or lifetime boundaries merely to satisfy C# label visibility. Validate
+   entered scopes, loop/switch targets and cleanup order on genuine programs.
+4. **Memory helpers by exact contract.** Compare
+   [MemorySizeLib.cs](../../../DotCC.Libc/MemorySizeLib.cs) with existing admitted
+   intrinsic/runtime providers before writing new byte algorithms. Preserve
+   captured size/return types, overlap behavior, zero-length behavior and allowed
+   failure/exception boundaries. DotCC's range checks and managed exceptions are
+   not automatically compatible with a generated no-throw path. Prefer an existing
+   matching EDG provider; extract or adapt a DotCC implementation only for an
+   identified gap. This complements the saved builtin/provider work, not a new
+   duplicate runtime.
+5. **Audit existing bitfields, storage and function addresses.** Named bitfield
+   properties already exist in [Storage.cs](../src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs).
+   Compare DotCC's signed extraction, normalized writes and split-storage handling
+   for specific missing cases; do not schedule a second accessor implementation.
+   [GlobalArrayLib.cs](../../../DotCC.Libc/GlobalArrayLib.cs) and
+   [FunctionPointers.cs](../../../DotCC.Lib/Backends/CSharpBackend.FunctionPointers.cs)
+   also provide ownership/alignment and canonical-address lessons. Preserve
+   native versus managed call conventions, TU-local identities and explicit
+   COMDAT policy. DotCC's layout calculator and C object-fragment linker cannot
+   replace EDG layout facts or C++ linking rules.
+6. **Optional semantic cleanup and acceptance reuse.** Learn from
+   [SourcePostProcessor.cs](../../../DotCC.PostProcess/SourcePostProcessor.cs)
+   about rebinding and checking rewritten C#; prefer fixing typed emission first.
+   DotCC-specific `Cond.B`/`CBool` transformations are not generic EDG passes.
+   Reuse applicable real-workflow and ownership/interchange checks from
+   [the translation baseline](../../../docs/plans/translation-baseline.md).
+   Existing EDG receipts already establish substantial validation practice;
+   identify actual gaps instead of duplicating closed campaigns. No new
+   corruption-based test campaign is proposed.
+
+### Cleaner static/TLS initialization proposal
+
+Useful DotCC evidence is in
+[global emission](../../../DotCC.Lib/Backends/CSharpBackend.cs),
+[Compiler.Shell.cs](../../../DotCC.Lib/Compiler.Shell.cs),
+[ThreadStorage.cs](../../../DotCC.Lib/Backends/CSharpBackend.ThreadStorage.cs),
+[StateContext.cs](../../../DotCC.Lib/Compiler.StateContext.cs) and
+[SourceFiles.cs](../../../DotCC.Lib/Compiler.SourceFiles.cs). Ordinary globals are
+grouped into an owner structure, TLS scalar initializers belong to a per-thread
+structure, and pinned backing arrays retain the managed allocation rather than
+only its raw pointer. Source splitting keeps initialization in the shell so file
+ordering cannot change it. These are useful patterns, not proof of C++ TLS support:
+DotCC itself rejects initialized TLS arrays and some contextual TLS recipes.
+
+The EDG destination is [Storage.cs](../src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs),
+[Storage.Initialization.cs](../src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.Initialization.cs),
+[Startup.cs](../src/RoslynObj.CSharp/Emission/CSharpEmission.Startup.cs) and the
+generated runtime storage/ownership contracts. Current support already separates
+allocation from address fixups and admits particular constant local statics;
+TLS and dynamic or cleanup-bearing local-static recipes remain guarded.
+
+Prioritized implementation work under the user's resume instruction:
+
+- Give generated program/module storage a small, named owner surface. Group
+  compatible ordinary globals for readability only when captured alignment,
+  address identity, lifetime and linkage permit it. Keep over-aligned, aliased,
+  externally owned and otherwise special objects explicit. Grouping is an
+  implementation choice, never a new source layout or permission to merge
+  equal-valued objects.
+- Express initialization as named phases: allocate/zero admitted storage,
+  populate retained constant values and address fixups after required addresses
+  exist, then execute captured dynamic initialization under the selected ordering
+  policy. Keep teardown registration and execution explicit. Preserve actual
+  dependencies; splitting generated source must not reorder initialization.
+  Prefer recognizable field accesses over repeated raw-address machinery when
+  an equivalent typed access is available.
+- Model thread storage with an explicit per-thread owner, stable addresses and
+  rooted backing allocations, using captured TLS initialization facts. Initialize
+  each thread's storage through its own initialization path. A `[ThreadStatic]`
+  initializer or a program-wide type constructor is not a substitute for that
+  path. Do not substitute async-flow-local storage for thread identity. Admission
+  must address cross-object references, initialization reentry/failure and
+  thread-exit destruction for the selected profile; a lazy owner allocation alone
+  does not establish those semantics.
+- Keep dynamic function-local statics distinct from constant storage and
+  program startup. Interpret retained guards, synchronization, completion and
+  failed-initialization retry obligations; register destruction only at the
+  captured successful point. Do not substitute CLR type-initializer failure
+  behavior, generic lazy initialization or a process-wide Boolean for the
+  selected C++ contract. Missing required facts remain a diagnostic.
+- Separate program shutdown, thread exit and optional instance disposal.
+  DotCC runtime contexts and per-instance thread state are useful design input,
+  but independent instances remain a separately scoped capability. The captured
+  TLS/object lifetime determines how long storage and callback owners stay alive.
+
+For a future implementation, require observable initialization/teardown order,
+stable and correctly aligned addresses, distinct thread state, once-per-thread
+effects, and supported local-static concurrency/failure/retry behavior. Compare
+native, JIT and NativeAOT observations for the admitted profiles. Include
+cross-TU initialization dependencies and source-splitting independence. Retain
+diagnostics for unimplemented lifetime/guard obligations. Presentation-only
+cleanup must not silently widen capability admission or invalidate old receipts.
+
+### Resumed transfer implementation and remaining opportunities
+
+The first wave is implemented and verified in `f7eb9ad0b` under the requested
+`gpt-6.1-sol` high supervisor and two disjoint `gpt-6.1-sol` xhigh implementers.
+Typed expression rendering and pure scalar routing preserve grouping, overflow
+contexts and ordinary loops. Named process/thread owners retain separate aligned
+pinned objects and explicit allocation/zero, constant and address-fixup phases.
+File-scope zero/constant arithmetic/pointer/recursive-array TLS is accepted by
+focused direct-emitter native/JIT/NativeAOT evidence; dynamic/class/local TLS and
+thread-exit destruction remain rejected. No production TLS COMDAT policy or
+source-splitting capability is added. The completed pass has 88 expected outcomes,
+including current production startup/teardown preservation; see
+[the exact proof and boundaries](DOTCC-IMPROVEMENTS.md). Work is now paused.
+
+Remaining transfer opportunities are tracked against existing mechanisms:
+
+| Opportunity | Existing equivalent or actual gap | Next scope |
+| --- | --- | --- |
+| Memory helpers | SQLite already binds exact libc contracts for `strlen`, `memcmp`, `memcpy` and `memmove`; intrinsic occurrence admission is separate | Reuse those contracts where captured signatures and no-throw effects match; inspect saved builtin imports before adding algorithms |
+| Local control flow | `CSharpEmission.Statements.cs` already identifies entered scopes and repairs affected bodies with labels, preserving initializer occurrences | Extend only for a genuine unsupported scope/lifetime case; no duplicate normalizer |
+| Bitfields | Named accessors and captured byte/bit-coordinate runtime reads/writes already exist | Seek a concrete signed/write/split-storage gap before changing support |
+| Addresses and ownership | Pinned per-object global ownership and explicit managed/native function-address adapters already exist | Current owner cleanup preserves distinct allocations, captured alignment and canonical identities; broader address/ABI profiles remain separate |
+| Postprocessing | Typed expression emission is the direct correction point; no rebinding postprocessor is needed for this pass | Consider semantic rebinding only for a later required transformation |
+| Acceptance reuse | Existing measured runners, genuine captures and native/JIT/NativeAOT observation harnesses are available | Reuse their mechanisms with fresh source attribution and focused new behavior; do not replay closed campaigns without cause |
+
+This ledger does not authorize independent instances, guessed C++ guard semantics,
+or importing DotCC ABI assumptions. The saved original GCC provider capture is
+deferred until a later explicit user resume; the improvement pass is complete.
+
+### Reuse boundaries and continuation decision
+
+Do not import DotCC's `char`/`wchar_t`/`long double` mappings, custom pthread
+handles or span-based varargs into the captured GNU ABI. See
+[CSharpTarget.cs](../../../DotCC.Lib/Backends/CSharpTarget.cs),
+[pthread.h](../../../DotCC.Lib/include/pthread.h) and
+[VarargLib.cs](../../../DotCC.Libc/VarargLib.cs); this translator instead has an
+explicit [SysV variadic representation](../src/RoslynObj.CSharp.Runtime/SysVVariadic.cs).
+Matching function names do not establish matching contracts: DotCC's `strlen`
+returns `int`, and runtime errno/exception ownership differs. C allocation
+optimizations do not provide C++ `new`/`delete`, new-handler or constructor-failure
+semantics. No DotCC transfer recovers source facts already lost during EDG lowering.
+
+The review recommends a bounded feasibility phase rather than an open-ended
+sequence of additional shape-specific checkpoints. The user initially authorized
+DotCC improvements first and then continuation; the later instruction requires
+pausing after the now-completed improvements. No fixed effort budget was adopted. Benefits of continuing include authoritative
+C++ capture, the independent semantic reader and real finite SQLite execution
+evidence. Risks include lost source correspondence, incomplete standard-library
+closure, narrow C++ execution admission and unproved large multi-TU scaling.
+
+In particular, [ordinary virtual dispatch](../src/RoslynObj.CSharp/Emission/CSharpEmission.VirtualDispatch.cs)
+and [class exceptions](../src/RoslynObj.CSharp/Emission/CSharpEmission.ClassExceptions.cs)
+contain exact selected-graph/layout restrictions. Other dispatch adapters exist;
+the cited paths do not define all coverage. Nevertheless, passing individual
+fixtures does not prove that differently shaped programs compose under general
+rules. [Translation.cs](../src/RoslynObj.CSharp/Translation.cs) also caps retain-all
+assembly at two inputs; that is not a limit on every selected-mode request.
+
+Before broader continuation, propose explicit gates for:
+
+- Readable representative methods, constructors, templates and exception paths,
+  with required source associations available from retained facts.
+- Previously unseen programs combining lifetime, dispatch, templates and EH
+  through unchanged generic rules, without new exact-size/count adapters.
+- One useful C++ workflow executing startup, work, errors and teardown with
+  complete required provider closure and native/JIT/AOT evidence.
+- Measured capture, selection, emission, C# compilation and runtime costs under
+  agreed budgets, including bounded multi-TU processing.
+
+The selected DuckDB inventory at the pause is 112 bodies, 3,501 operations,
+585 types and 45 imports; unresolved providers remain and DuckDB is not runnable.
+The prepared original GCC helper capture has not run. Keep those limits distinct
+from the closed finite SQLite acceptance. Preserving EDG/RoslynObj for semantic
+exploration remains an alternative even if C# translation stops. The completed
+DotCC improvements are followed by the user-requested pause. Saved provider work
+requires a later explicit resume.
 
 ## Decisions and boundaries
 
