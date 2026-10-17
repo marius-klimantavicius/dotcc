@@ -175,6 +175,35 @@ internal static partial class ManagedProgramSelectionPlanner
                     !parameter.Descriptor.Details.PassedViaCopyConstructor);
         }
 
+        private static string DescribeInlineMember(FunctionSymbol function)
+        {
+            var d = function.Details; var g = function.GnuSupplement; var signature = function.Signature;
+            return System.Text.Json.JsonSerializer.Serialize(new
+            {
+                function.CurrentName, function.IsDefined, bodyState = function.BodyState.Name,
+                executionRole = function.Body?.Root.RepresentationRole.Name,
+                d.IsInline, d.IsUseComdat, d.DefinitionNeeded, d.InlineInstanceRequired, d.NeedOutOfLineCopy, d.IsWeak, d.IsWeakref, d.IsGnuAlias, d.IsIfunc, d.IsAliasEntry,
+                primaryEntry = function.PrimaryEntry?.CurrentName, d.DefinitionForInliningOnly, d.SuppressInlineBody, d.SupersededExternal,
+                aliasedRoutine = g?.AliasedRoutine?.CurrentName, representative = g?.Representative?.CurrentName,
+                inlinePartner = g?.InlinePartner?.CurrentName,
+                inlinePartnerDefined = g?.InlinePartner?.IsDefined, inlinePartnerBodyState = g?.InlinePartner?.BodyState.Name,
+                inlinePartnerSuppress = g?.InlinePartner?.Details.SuppressInlineBody, inlinePartnerComdat = g?.InlinePartner?.Details.IsUseComdat,
+                targetedVersions = g?.TargetedVersions.Count, g?.IsRepresentative, g?.IsTargetSpecificVersion, g?.ResolverRequired,
+                thisAdjustment = function.ThisAdjustment.ToString(), returnAdjustment = function.ReturnAdjustment.ToString(),
+                virtualCallIndex = function.VirtualCallIndex.ToString(), virtualBaseIndex = function.VirtualBaseIndex.ToString(),
+                overridingFunction = function.OverridingFunctionForWrapper?.CurrentName,
+                overriddenFunction = function.OverriddenFunctionForWrapper?.CurrentName,
+                kind = function.SpecialFunctionKind?.Name, entryKind = function.ConstructorOrDestructorKind?.Name,
+                signature.HasPrototype, signature.IsVariadic, signature.ReturnsValueAsParameter, signature.ReturnsValueViaCopyConstructor,
+                noexceptEffective = signature.ExceptionSpecification?.NoexceptEffective,
+                parameters = signature.Parameters.Select(parameter => new { parameter.Ordinal, role = parameter.Role.Name,
+                    hasBaseSubobject = parameter.BaseSubobject is not null, parameter.Descriptor.Details.PassedViaCopyConstructor }).ToArray(),
+                alternates = function.AlternateEntryPoints.Select(entry => new { entry.CurrentName,
+                    kind = entry.ConstructorOrDestructorKind?.Name, primaryMatches = entry.PrimaryEntry?.Equals(function),
+                    entry.Details.IsAliasEntry, entry.IsDefined, bodyState = entry.BodyState.Name }).ToArray()
+            });
+        }
+
         private (UnitState Unit, FunctionSymbol Function) SelectInlineRepresentative(
             (UnitState Unit, FunctionSymbol Function)[] members, string linkage)
         {
@@ -186,7 +215,7 @@ internal static partial class ManagedProgramSelectionPlanner
             {
                 Tick();
                 if (!IsInlineComdatMember(member.Function, requireDefinition: true))
-                    Fail("ROC1224", "An inline representative group includes a non-inline/COMDAT, weak, alias, adjusted or unsupported execution-role definition: " + linkage);
+                    Fail("ROC1224", "An inline representative group includes a non-inline/COMDAT, weak, alias, adjusted or unsupported execution-role definition: " + linkage + ". Captured group members: " + string.Join("; ", members.Select(item => "unit=" + item.Unit.Ordinal + ",sha256=" + item.Unit.Hash + ":" + DescribeInlineMember(item.Function))));
                 if (group.All(item => !item.Function.Equals(member.Function))) group.Add(member);
                 functionOwners[member.Function] = member.Unit;
             }
@@ -210,8 +239,11 @@ internal static partial class ManagedProgramSelectionPlanner
                     Fail("ROC1223", $"Inline representative ABI is {comparison.Status} at {comparison.Path}: {comparison.Reason} ({linkage}).");
                 var body = function.Body!;
                 if (body.Locals.Any(variable => (variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||
-                    variable.LocalStaticInitializations.Count != 0) && !TryAdmitConstantCompanion(member.Unit, variable)) || body.Scope?.FunctionStaticLifetime is not null ||
-                    body.Scope?.LocalStaticInitializations.Count > 0)
+                    variable.LocalStaticInitializations.Count != 0) && !TryAdmitConstantCompanion(member.Unit, variable) &&
+                    !IsMetadataOnlyInlineTable(member.Unit, function, variable)) || body.Scope?.FunctionStaticLifetime is not null ||
+                    body.Scope?.LocalStaticInitializations.Any(initializer =>
+                        !initializer.Variable.LocalStaticInitializations.Contains(initializer) ||
+                        !IsMetadataOnlyInlineTable(member.Unit, function, initializer.Variable)) == true)
                     Fail("ROC1224", "Inline function selection cannot merge associated local-static/TLS initialization or storage: " + linkage +
                         "; locals=[" + string.Join(", ", body.Locals.Where(variable => variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||
                             variable.LocalStaticInitializations.Count != 0).Select(variable =>

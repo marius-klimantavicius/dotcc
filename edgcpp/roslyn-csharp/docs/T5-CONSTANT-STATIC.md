@@ -46,9 +46,10 @@ qualifier-sentinel, lazy-report-list and conservative alignment attempts remain
 separate in the receipt; no successful run was repeated for documentation.
 
 Actual core293+300 startup now passes the required std::string promoted constant
-storage boundary. Its next rejection is FileCompressionTypeD1's exact region-table
-metadata local. Metadata-only table admission is separate follow-on work; no
-cleanup omission or state merging is authorized here. Real DuckDB startup, the
+storage boundary. The later [metadata/scalar checkpoint](T5-INLINE-METADATA.md) passes the initial
+FileCompressionTypeD1 region-table gate and independently proves automatic member
+cleanup; actual startup remains partial at suppressed standard-library provider
+requirements. No cleanup omission or state merging is authorized by this storage policy. Real DuckDB startup, the
 full Vector accessor/guard/string/JSON/allocator/EH chain and broader T5 remain open.
 The separate MetadataTables draft was excluded from source8's isolated wildcard
 compile and the constant-storage checkpoint. Earlier SQLite evidence keeps its

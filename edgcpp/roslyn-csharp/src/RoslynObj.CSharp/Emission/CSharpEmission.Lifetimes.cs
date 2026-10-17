@@ -406,7 +406,8 @@ public sealed partial class CSharpEmitter
                     throw Limit("Normal cleanup metadata requires one validated local/member destructor without conditions, arrays or ABI side actions.", "lifetime");
                 if (virtualBaseCleanups.ContainsKey(action)) { /* Associations were validated against the actual base calls and layout. */ }
                 else if (storage.Kind.Name == "receiver_relative")
-                    ValidateReceiverMemberCleanup(function, action, recipes.Select(recipe => recipe.Cleanup.Initialization).ToArray(), nodes, true);
+                    ValidateReceiverMemberCleanup(function, action, recipes.Select(recipe => recipe.Cleanup.Initialization).ToArray(), nodes,
+                        normalDestructor: function.SpecialFunctionKind?.Name == "sfk_destructor");
                 else
                 {
                     if (storage.Kind.Name != "direct_variable" || storage.Variable is not { } variable || !body.Locals.Contains(variable) ||

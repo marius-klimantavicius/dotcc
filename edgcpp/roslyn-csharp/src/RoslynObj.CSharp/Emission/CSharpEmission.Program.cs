@@ -209,20 +209,33 @@ public sealed partial class CSharpEmitter
                 call.Call.FunctionType?.Equals(declaration.Signature) != true || !call.Type.Equals(declaration.ReturnType) ||
                 call.Operator.RetainedVirtualCall || call.Operator.RequiresRuntimeCastCheck ||
                 call.Operator.EvalLeftToRight && call.Operator.EvalRightToLeft || call.Call.ReturnSlot is not null ||
-                call.Arguments.Count != 1 || call.Operands.Count != 2 || !call.Operands[0].Equals(call.Callee))
+                call.Arguments.Count != declaration.Signature.Parameters.Count ||
+                call.Operands.Count != call.Arguments.Count + 1 || !call.Operands[0].Equals(call.Callee))
                 throw Limit("A managed-bound lifetime call requires its exact retained direct entry, receiver and execution signature.", "managed-lifetime-call");
 
             var declarationRecord = ValidateManagedBoundLifetimeEntry(declaration);
             if (!SelectedLifetimeInvocation(declaration).Equals(definition))
                 throw Limit("A managed-bound lifetime occurrence lost its exact selected entry.", "managed-lifetime-call");
-            var argument = call.Arguments[0]; var parameter = declaration.Signature.Parameters[0];
-            if (argument.Ordinal != 0 || argument.Role?.Name != "this_parameter" ||
-                argument.Parameter?.Equals(parameter.Descriptor) != true || !call.Operands[1].Equals(argument.Value) ||
-                call.Receiver?.Equals(argument.Value) != true)
-                throw Limit("A managed-bound lifetime receiver must alias its original entry descriptor, raw operand and receiver facet.", "managed-lifetime-call");
-            if (!GeneratedRecordPointer(argument.Value.Type, false).Equals(declarationRecord))
-                throw Limit("A managed-bound lifetime occurrence must retain its original entry's own receiver record view.", "managed-lifetime-call");
-            ValidateProgramBoundaryType(argument.Value.Type);
+            for (var index = 0; index < call.Arguments.Count; ++index)
+            {
+                var argument = call.Arguments[index]; var parameter = declaration.Signature.Parameters[index];
+                if (argument.Ordinal != index || argument.Role?.Name != parameter.Role.Name ||
+                    argument.Parameter?.Equals(parameter.Descriptor) != true || !call.Operands[index + 1].Equals(argument.Value))
+                    throw Limit("A managed-bound lifetime argument must alias its original entry descriptor and raw operand in order.", "managed-lifetime-call");
+                if (index == 0)
+                {
+                    if (call.Receiver?.Equals(argument.Value) != true ||
+                        !GeneratedRecordPointer(argument.Value.Type, false).Equals(declarationRecord))
+                        throw Limit("A managed-bound lifetime receiver must retain its original entry's own record view and receiver alias.", "managed-lifetime-call");
+                    ValidateProgramBoundaryType(argument.Value.Type);
+                }
+                else
+                {
+                    if (!argument.Value.Type.Equals(parameter.Type))
+                        throw Limit("A managed-bound constructor scalar argument requires its exact original declaration type.", "managed-lifetime-call");
+                    ValidateManagedBoundLifetimeScalar(argument.Value.Type);
+                }
+            }
 
             // Entry binding supplies only an occurrence-specific address view.
             // It grants no lifetime body, cleanup or noexcept admission.
@@ -246,7 +259,7 @@ public sealed partial class CSharpEmitter
             return selected;
         }
 
-        private static RecordType ValidateManagedBoundLifetimeEntry(FunctionSymbol function)
+        private RecordType ValidateManagedBoundLifetimeEntry(FunctionSymbol function)
         {
             var signature = function.Signature;
             if (function.SpecialFunctionKind?.Name is not ("sfk_constructor" or "sfk_destructor") || function.ConstructorOrDestructorKind?.Name != "cdk_complete" ||
@@ -255,17 +268,34 @@ public sealed partial class CSharpEmitter
                 !signature.HasPrototype || signature.IsVariadic || !signature.HasThisParameter ||
                 signature.ReturnsValueAsParameter == true || signature.ReturnsValueViaCopyConstructor ||
                 signature.ReturnValueParameterFollowsThis == true || MemoryRepresentationType(function.ReturnType).Kind.Name != "tk_void" ||
-                signature.Parameters.Count != 1 || signature.Parameters[0].Ordinal != 0 || signature.Parameters[0].Role.Name != "this_parameter" ||
+                signature.Parameters.Count == 0 || function.SpecialFunctionKind?.Name == "sfk_destructor" && signature.Parameters.Count != 1 ||
+                signature.Parameters[0].Ordinal != 0 || signature.Parameters[0].Role.Name != "this_parameter" ||
                 signature.Parameters[0].BaseSubobject is not null || signature.Parameters[0].Descriptor.Details.PassedViaCopyConstructor ||
                 signature.ThisClass is null || function.ContainingType is null)
-                throw Limit("The managed-bound lifetime entry supports a complete receiver-only constructor/destructor without adjustment or hidden copy/result roles.", "managed-lifetime-call");
+                throw Limit("The managed-bound lifetime entry requires a complete constructor or receiver-only destructor without adjustment or hidden copy/result roles.", "managed-lifetime-call");
             ValidateCallingConvention(signature);
+            for (var index = 1; index < signature.Parameters.Count; ++index)
+            {
+                var parameter = signature.Parameters[index];
+                if (parameter.Ordinal != index || parameter.Role.Name != "ordinary_parameter" || parameter.BaseSubobject is not null ||
+                    parameter.Descriptor.Details.PassedViaCopyConstructor)
+                    throw Limit("A managed-bound constructor source requires its ordinary captured scalar execution role.", "managed-lifetime-call");
+                ValidateManagedBoundLifetimeScalar(parameter.Type);
+            }
             var receiverType = signature.Parameters[0].Type;
             ValidateProgramBoundaryType(receiverType);
             var record = GeneratedRecordPointer(receiverType, false);
             if (!record.Equals(MemoryRepresentationType(signature.ThisClass)) || !record.Equals(MemoryRepresentationType(function.ContainingType)))
                 throw Limit("A managed-bound lifetime receiver must retain its own selected containing record.", "managed-lifetime-call");
             return record;
+        }
+
+        private void ValidateManagedBoundLifetimeScalar(CppType type)
+        {
+            if (MemoryRepresentationType(type) is not ArithmeticType)
+                throw Limit("A managed-bound constructor source has no natural scalar boundary adapter.", "managed-lifetime-call");
+            ValidateProgramBoundaryType(type);
+            ValidateNativeScalarType(type, false); // Representation check only; no native call or entry is admitted.
         }
 
         private string ProgramArgumentView(CallOperation call, int index, FunctionSymbol definition, string value)

@@ -111,6 +111,7 @@ internal static partial class ManagedProgramSelectionPlanner
             Tick();
             FinalizeFunctionBindings();
             FinalizeVariableBindings();
+            ValidateMetadataOnlyInlineTables();
             var active = units.Where(unit => unit.Plan is not null).ToArray();
             return new(active.Select(unit => unit.Plan!).ToArray(),
                 active.Select(unit => new ManagedProgramUnitSelection(unit.Ordinal, unit.Plan!)).ToArray(),

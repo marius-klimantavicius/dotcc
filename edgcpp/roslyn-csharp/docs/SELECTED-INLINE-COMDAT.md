@@ -39,6 +39,7 @@ Function selection merges no storage. The later independently opted-in
 [constant-storage companion](T5-CONSTANT-STATIC.md) admits only exact captured
 static const-byte COMDAT recipes; other local-static/TLS/static-lifetime obligations
 remain guarded. All supplied-unit ambient startup obligations remain. Actual
-core293+300 startup now advances past promoted constant storage to an exact
-EH-region-table metadata boundary. Real DuckDB startup and full Vector
+core293+300 startup passes promoted constant storage and the initial exact
+EH-region-table gate; [metadata/scalar proof](T5-INLINE-METADATA.md) records the
+subsequent independent fixture acceptance and suppressed-provider boundary. Real DuckDB startup and full Vector
 accessor/guard/library/EH execution remain open.

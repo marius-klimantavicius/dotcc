@@ -17,7 +17,7 @@ outcomes, receipt `acceptance/duckdb/selected-inline-comdat-report.json`, SHA
 `d654b48692dd22080a2446f8d97f42c42addb7481814789fd5063a2ed82cd78f`.
 Runtime unchanged; no closed checkpoint reruns pending.
 
-Verified constant-storage checkpoint is ready for exact-owned commit:
+Constant-storage checkpoint `7cb459eb2` is committed and closed:
 `acceptance/duckdb/selected-constant-static-report.json`, 88,717B, SHA256
 `ace8e757e91029d5f0be4ed1c688b121f14b67c4638e39b72b28564d9b66126e`.
 27 expected outcomes:22 successes/five intended rejections; no final-campaign
@@ -38,21 +38,47 @@ order. No contents/name interning; no dynamic/TLS/mutable/weak-data or NoThrow/I
 widening. Type alignment1 and explicit object alignment null/0/1 preserve effective1.
 One/multi-input routing tested; retain-all explicit-policy request rejects.
 
-NEXT active follow-on is exact metadata-only EH RegionTable admission under inline
-selection. Actual source8 real293+300 diagnostic rejects FileCompressionTypeD1
-static local exactly its RegionTable, not promoted state. Emission xhigh saved NEW
-`ManagedProgramSelection.MetadataTables.cs` SHA134cca76d71009b73ef9bfe2022740f4db9c514f06743cedd1782a1e3db24f90:
-precise owner/routine/table identity + empty descriptor payload, final selected
-incoming-use ledger; not yet wired/compiled/tested. It is EXCLUDED from isolated
-source8 compile and constant checkpoint. After commit, coordinator wires exact
-per-table local/scope exceptions plus final fixedpoint live-use validation, freezes
-and runs real startup293+300, retaining all cleanup/noexcept schedules. Arrays,
-source static state and any actual value/address use remain guarded. No new audit
-tool is needed. Full Vector getter/guard/string/JSON/allocator/EH remains open.
+Metadata/scalar checkpoint is VERIFIED, awaiting exact-index commit/root review:
+`acceptance/duckdb/selected-inline-metadata-report.json`, 272,883B, SHA256
+`bbaa75972d7441daee2c3efae1d3e8188e45df2e1d0b2127c04b099273c91f8d`.
+23 expected outcomes:20 successes/three intended rejections. Product5 (271files),
+source3 real-probe (271), checker1 (eight), final fixture3 (four) frozen. Native,
+JIT and AOT exact full observations:results4/9, Member2/2then4/4/live0, four
+once-only side-effecting constructor arguments. Physical bothTU Whole8/4/member4,
+Member4/4/id0, prefixalignment/strides/nestedaddresses/independentstores pass.
+Seven focused preservation phases passed (five source+ABI identities,two rejects).
+Runtime unchanged. Only exact owner/projection RegionTables with metadata-only
+incoming uses admitted; actual cleanup calls/states and NoThrow guards remain.
+Natural arithmetic complete-C1 arguments use exact raw/selected roles and ABI.
+See [current metadata proof](T5-INLINE-METADATA.md). No more checkpoint runs needed.
 
-Coordinator high owns integration/builds/Git; implementers sol xhigh own disjoint
-emission and checker work. Root Astra high monitors read-only. No process running
-at this saved boundary. Preserve unrelated T3/core dirty files. User remains active.
+ACTIVE follow-on: suppressed retained inline bodies are requirements for usable
+out-of-line providers. Draft shared policy/helper, selector/root/DTO/inventory/
+emitter integration is separate from staged metadata product5. Frozen integrated
+source `t5/suppressed-provider-product-source-1` (272files) builds cleanly. Actual
+three-input [core293,core300,genuine string support] selection attempt1 advances
+then rejects lookup cap256 at ~allocator; partial/unpublished, not absence.
+Same-build bounded retry2 uses1024 candidates, separate ambient bound unchanged;
+see `t5/suppressed-provider-first-2/real-report.json` when available. Never infer
+source noexcept, native application fallback or cleanup permission.
+
+Genuine explicit-instantiation string support is captured, not yet accepted as
+full closure: `t5/capture/selected-string-instantiation.roslynobj`,33,819,648B,
+SHA17c7f6b42fa07a5251abc596f8ad9596ef85e442abd6b347daba431c29b82391.
+Pinned producer unchanged; reviewed replacement wrapper/current headers recorded,
+historical header/wrapper byte identity explicitly not claimed. Bounded
+`t5/selected-support-facts-preparation-1/facts.json` passes: support D1 unsuppressed,
+inline+COMDAT, defined actual body; both original D1s suppressed/COMDATfalse,
+AbiCompatibility compatible, complete32/8. No body/ODR/link execution claim.
+Genuine extern-template/explicit-provider companion four source files frozen;
+emission prepares capture/native driver, coordinator schedules it. Inventory's
+verifier and metadata checker are frozen. Root supervises read-only.
+
+Coordinator sol high owns builds/Git/integration; retained implementers sol xhigh
+own disjoint product/fixture/checker preparation. Current metadata index contains
+only five baseline5 product blobs; provider draft remains unstaged. Preserve all
+unrelated T3/core dirty files. User remains active. Full real DuckDB startup,
+Vector getter/guard/string/JSON/allocator/EH closure remains open; SQLite closed.
 
 Historical checkpoint details below retain original evidence attribution; this
 active section supersedes their older next-step descriptions.
