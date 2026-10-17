@@ -35,10 +35,10 @@ Seven earlier source/native-ABI pairs remain identical. Existing selected EH and
 unconfigured-startup boundaries reject; default inline selection and genuine
 strong duplicates under both policies reject. No broad lifetime/SQLite rerun.
 
-Function selection merges no storage. Local-static/TLS/static-lifetime dependencies
-and retained promotion flags remain guarded until independently classified and
-supported. All supplied-unit ambient startup obligations remain. Actual core293+
-core300 startup currently rejects a required promoted variable; its flags alone
-prove neither dynamic initialization nor inactivity. Precise captured type,
-initializer, scope and uses plus an explicit storage contract are follow-on work.
-Real DuckDB startup and full Vector accessor/guard/library/EH execution remain open.
+Function selection merges no storage. The later independently opted-in
+[constant-storage companion](T5-CONSTANT-STATIC.md) admits only exact captured
+static const-byte COMDAT recipes; other local-static/TLS/static-lifetime obligations
+remain guarded. All supplied-unit ambient startup obligations remain. Actual
+core293+300 startup now advances past promoted constant storage to an exact
+EH-region-table metadata boundary. Real DuckDB startup and full Vector
+accessor/guard/library/EH execution remain open.

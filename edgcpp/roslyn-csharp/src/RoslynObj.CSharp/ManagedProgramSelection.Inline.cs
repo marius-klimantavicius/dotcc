@@ -8,6 +8,148 @@ internal static partial class ManagedProgramSelectionPlanner
         private readonly Dictionary<string, List<(UnitState Unit, FunctionSymbol Function)>> inlineGroups = new(StringComparer.Ordinal);
         private readonly Dictionary<FunctionSymbol, UnitState> functionOwners = [];
 
+        private string DescribeRejectedInlineStorage(ManagedSelectionPlan plan, VariableSymbol variable)
+        {
+            // Only the already-required identity and shallow prerequisite facts.
+            // This is diagnostic observation, never a storage admission waiver.
+            var types = new List<object>();
+            for (var current = variable.Type; ;)
+            {
+                Tick();
+                if (types.Count >= budgets.MaximumSelectionDepth)
+                    Fail("ROC1221", "Rejected-storage diagnostic type chain exceeds its explicit depth bound.");
+                types.Add(new { current.Name, kind = current.Kind.Name, size = current.Size?.ToString(), alignment = current.Alignment?.ToString(),
+                    isConst = (current as QualifiedType)?.IsConst, isVolatile = (current as QualifiedType)?.IsVolatile,
+                    arrayBound = (current as ArrayType)?.Bound?.ToString(), pointerReference = (current as PointerType)?.IsReference });
+                if (current is not TypeReference reference) break;
+                current = reference.UnderlyingType;
+            }
+            List<object> TypeRows(CppType? type)
+            {
+                var rows = new List<object>();
+                for (var current = type; current is not null;)
+                {
+                    Tick();
+                    if (rows.Count >= budgets.MaximumSelectionDepth) Fail("ROC1221", "Diagnostic prerequisite type depth exceeded.");
+                    rows.Add(new { current.Name, kind = current.Kind.Name, size = current.Size?.ToString(), alignment = current.Alignment?.ToString(),
+                        isConst = (current as QualifiedType)?.IsConst, isVolatile = (current as QualifiedType)?.IsVolatile,
+                        arithmeticKind = (current as ArithmeticType)?.Arithmetic.ArithmeticKind.Name,
+                        bits = (current as ArithmeticType)?.Arithmetic.Bits.ToString(), signed = (current as ArithmeticType)?.Arithmetic.Signed });
+                    current = current is TypeReference reference ? reference.UnderlyingType : null;
+                }
+                return rows;
+            }
+            object? Constant(Constant? constant)
+            {
+                if (constant is null) return null;
+                var stored = new List<uint>(); var stringValue = constant.Value as StringValue;
+                if (stringValue is not null)
+                    foreach (var unit in stringValue.StorageUnits)
+                    {
+                        Tick();
+                        if (stored.Count == 4096) break;
+                        stored.Add(unit);
+                    }
+                return new
+                {
+                    kind = constant.Value.Kind.Name, type = constant.Type?.Kind.Name, size = constant.Type?.Size?.ToString(),
+                    integer = (constant.Value as IntegerValue)?.Value.ToString(), stringLength = stringValue?.Length.ToString(),
+                    stringUnitKind = stringValue?.UnitKind.Name, stringEncoding = stringValue?.Encoding.Name,
+                    stringElementBits = stringValue?.ElementBits, exactStringUnits = stored,
+                    exactStringUnitsTruncated = stringValue is not null && stringValue.Length > stored.Count,
+                    constant.Details.IsStringLiteral, associatedStorageIsVariable = constant.AssociatedStorageVariable?.Equals(variable),
+                    addressBase = (constant.Value as AddressValue)?.BaseEntity?.Name
+                };
+            }
+            object? Initialization(Initialization? initializer) => initializer is null ? null : new
+            {
+                kind = initializer.Kind.Name, target = initializer.Target?.Name, constructor = initializer.Constructor?.CurrentName,
+                destructor = initializer.Destructor?.CurrentName, expression = initializer.Expression?.Kind.Name,
+                operation = initializer.Operation?.Kind.Name, representation = initializer.Operation?.RepresentationRole.Name,
+                constant = Constant(initializer.Constant), hasLifetime = initializer.Lifetime is not null,
+                hasInitExpressionLifetime = initializer.InitExpressionLifetime is not null, operands = initializer.Operands.Count
+            };
+            var statics = new List<object>();
+            foreach (var descriptor in variable.LocalStaticInitializations)
+            {
+                Tick();
+                if (statics.Count == 16) break;
+                statics.Add(new { kind = descriptor.Kind.Name, variableMatches = descriptor.Variable.Equals(variable),
+                    initializer = Initialization(descriptor.Initialization), constant = Constant(descriptor.Constant), hasLifetime = descriptor.Lifetime is not null });
+            }
+            var owners = new List<object>();
+            foreach (var function in plan.Functions)
+            {
+                Tick();
+                foreach (var parameter in function.Parameters)
+                {
+                    Tick();
+                    if (parameter.Symbol?.Equals(variable) == true)
+                        owners.Add(new { function = function.CurrentName, relation = "execution-parameter", ordinal = parameter.Ordinal });
+                }
+                if (function.Body?.Locals.Contains(variable) == true)
+                    owners.Add(new { function = function.CurrentName, relation = "body-local", ordinal = -1 });
+            }
+            var locator = $"unit/{units.Single(unit => ReferenceEquals(unit.Source, plan.Source)).Ordinal:D4}/storage/{plan.Variables.ToList().IndexOf(variable) + 1:D6}";
+            var uses = new List<ManagedSelectionDependencyReport>();
+            var useCount = 0;
+            foreach (var dependency in plan.Report.Dependencies)
+            {
+                Tick();
+                if (dependency.To != locator) continue;
+                ++useCount;
+                if (uses.Count < 64) uses.Add(dependency);
+            }
+            var addresses = new List<object>();
+            for (var index = 0; index < plan.Constants.Count; ++index)
+            {
+                Tick();
+                var constant = plan.Constants[index];
+                if (constant.Value is not AddressValue address || address.BaseEntity?.Equals(variable) != true) continue;
+                var constantLocator = $"unit/{units.Single(unit => ReferenceEquals(unit.Source, plan.Source)).Ordinal:D4}/constant/{index + 1:D8}";
+                var incoming = new List<ManagedSelectionDependencyReport>();
+                foreach (var dependency in plan.Report.Dependencies)
+                {
+                    Tick();
+                    if (dependency.To == constantLocator) incoming.Add(dependency);
+                }
+                var selectedOwners = new List<object>();
+                for (var functionIndex = 0; functionIndex < plan.Functions.Count; ++functionIndex)
+                {
+                    Tick();
+                    var ownerLocator = $"unit/{units.Single(unit => ReferenceEquals(unit.Source, plan.Source)).Ordinal:D4}/function/{functionIndex + 1:D6}";
+                    if (incoming.Any(use => use.From == ownerLocator || use.From.StartsWith(ownerLocator + "/", StringComparison.Ordinal)))
+                        selectedOwners.Add(new { function = plan.Functions[functionIndex].CurrentName, locator = ownerLocator });
+                }
+                CppType? addressType = constant.Type;
+                while (addressType is TypeReference reference) { Tick(); addressType = reference.UnderlyingType; }
+                addresses.Add(new { locator = constantLocator, type = TypeRows(constant.Type),
+                    pointee = TypeRows((addressType as PointerType)?.PointeeType), byteOffset = address.ByteOffset.ToString(),
+                    address.OnePastEnd, hasSubobjectPath = address.SubobjectPath is not null,
+                    incomingCount = incoming.Count, incoming = incoming.Take(64).ToArray(), incomingTruncated = incoming.Count > 64, selectedOwners });
+            }
+            CppType elementRoot = variable.Type;
+            while (elementRoot is TypeReference reference) { Tick(); elementRoot = reference.UnderlyingType; }
+            var containing = variable.ContainingEntity;
+            return System.Text.Json.JsonSerializer.Serialize(new
+            {
+                inputSha256 = plan.Report.InputSha256, locator, variable.CurrentName, variable.Name,
+                explicitObjectAlignment = variable.Details.ExplicitAlignment?.ToString(), storageClass = variable.SymbolDetails.Storage?.Name, storageDuration = variable.Details.StorageDuration?.Name,
+                variable.Details.IsParameter, variable.IsThreadLocal, variable.Details.PromotedLocalStatic, variable.Details.PromotedLocalStaticInitialization,
+                variable.Details.InitializationRewrittenAsAssignment, variable.Details.IsInline, variable.Details.IsWeak,
+                variable.Details.IsWeakref, variable.Details.IsCommon, variable.Details.IsGnuAlias, variable.Details.AddressTaken,
+                variable.IsCompilerGenerated, variable.Details.LoweringGenerated, hasCleanupRoutine = variable.CleanupRoutine is not null,
+                hasAliasedVariable = variable.Details.AliasedVariable is not null, comdatGroup = variable.Details.ComdatGroup,
+                linkage = variable.SourceCorrespondence?.Linkage.Name, containingName = containing?.Name,
+                containingScopeKind = (containing as Scope)?.Kind.Name, containingScopeEntity = (containing as Scope)?.AssociatedEntity?.Name,
+                types, arrayElementTypes = TypeRows((elementRoot as ArrayType)?.ElementType), addresses, definitionTypeKind = variable.DefinitionType?.Kind.Name, rawInitializationKind = variable.Details.InitializationKind.Name,
+                rawInitializer = Initialization(variable.Details.Initializer), rawConstant = Constant(variable.Details.ConstantInitializer),
+                wrapperInitializer = Initialization(variable.Initializer), wrapperConstant = Constant(variable.ConstantInitializer),
+                exceptionTable = variable.ExceptionTable?.Kind.Name, localStaticDescriptors = statics,
+                localStaticDescriptorCount = variable.LocalStaticInitializations.Count, owners, useCount, uses, usesTruncated = useCount > uses.Count
+            });
+        }
+
         private (UnitState Unit, Symbol Symbol) SelectInlineCandidate((UnitState Unit, Symbol Symbol)[] definitions, string linkage)
         {
             if (definitionSelection != InlineComdatPolicy)
@@ -67,8 +209,8 @@ internal static partial class ManagedProgramSelectionPlanner
                 if (!comparison.Compatible)
                     Fail("ROC1223", $"Inline representative ABI is {comparison.Status} at {comparison.Path}: {comparison.Reason} ({linkage}).");
                 var body = function.Body!;
-                if (body.Locals.Any(variable => variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||
-                    variable.LocalStaticInitializations.Count != 0) || body.Scope?.FunctionStaticLifetime is not null ||
+                if (body.Locals.Any(variable => (variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||
+                    variable.LocalStaticInitializations.Count != 0) && !TryAdmitConstantCompanion(member.Unit, variable)) || body.Scope?.FunctionStaticLifetime is not null ||
                     body.Scope?.LocalStaticInitializations.Count > 0)
                     Fail("ROC1224", "Inline function selection cannot merge associated local-static/TLS initialization or storage: " + linkage +
                         "; locals=[" + string.Join(", ", body.Locals.Where(variable => variable.IsThreadLocal || variable.SymbolDetails.Storage?.Name == "sc_static" ||

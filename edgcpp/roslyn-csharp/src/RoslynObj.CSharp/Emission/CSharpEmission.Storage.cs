@@ -15,10 +15,39 @@ public sealed partial class CSharpEmitter
         private readonly List<ArrayType> arrays = [];
         private readonly List<string> addressFixups = [];
 
+        private bool IsSelectedConstantStorageCompanion(VariableSymbol variable)
+        {
+            if (options.ManagedProgramSelection is not { } program || !program.ConstantStorageCompanions.Contains(variable)) return false;
+            if (program.PromotedConstantStoragePolicy != "captured-external-comdat-constant-manifest-order")
+                throw Limit("A constant-storage companion requires its explicit selected storage policy.", "storage-selection");
+            return true;
+        }
+
+        private bool TryAdmitSelectedConstantStorageCompanion(VariableSymbol variable)
+        {
+            if (!IsSelectedConstantStorageCompanion(variable)) return false;
+            var representative = CanonicalVariable(variable);
+            if (!IsSelectedConstantStorageCompanion(representative) ||
+                representative.Details.ConstantInitializer is not { Value: StringValue } initializer ||
+                representative.Initializer is not null || representative.LocalStaticInitializations.Count != 0)
+                throw Limit("A selected constant-storage companion lost its canonical static constant definition.", "storage-selection");
+            if (storage.TryGetValue(representative, out var existing) &&
+                (!existing.Type.Equals(representative.Type) || existing.Initializer?.Equals(initializer) != true))
+                throw Limit("A selected constant-storage companion already has a different allocation or initializer.", "storage-selection");
+            // The immutable selection admitted these exact members. Only the
+            // representative supplies an allocation and static initializer;
+            // raw local declarations and occurrence types keep their identity.
+            AddStorage(representative, representative.Type, initializer, representative.Name ?? "constant_storage");
+            staticLocals.Add(variable);
+            staticLocals.Add(representative);
+            return true;
+        }
+
         private void AdmitGlobal(VariableSymbol variable)
         {
             if (variable.Details.IsNonreal || variable.Details.IsPrototypeInstantiation || variable.Details.IsTemplateVariable) return;
             if (variable.SymbolDetails.Storage?.Name == "sc_extern") return;
+            if (TryAdmitSelectedConstantStorageCompanion(variable)) return;
             if (TryAdmitStaticLocal(variable)) return;
             if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0)
                 throw Limit($"Storage '{variable.Name}' requires thread/local-static initialization support.", "storage");
@@ -179,6 +208,7 @@ public sealed partial class CSharpEmitter
                     entity = constant;
                 }
             }
+            if (entity is VariableSymbol companion) _ = TryAdmitSelectedConstantStorageCompanion(companion);
             entity = CanonicalEntity(entity);
             if (!storage.ContainsKey(entity)) throw Limit($"Address base '{entity.Name}' has no selected storage.", "constant-address");
             return $"({TypeName(type)})((byte*){OwnedName(entity)} + ({address.ByteOffset.ToString(CultureInfo.InvariantCulture)}))";

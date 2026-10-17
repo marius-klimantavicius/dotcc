@@ -1,0 +1,2415 @@
+{
+  "reportVersion": 1,
+  "status": "passed-bounded-promoted-constant-comdat-storage",
+  "wholeDuckdbAccepted": false,
+  "actualCore293StartupExecuted": false,
+  "broaderT5Complete": false,
+  "passingCampaign": {
+    "phaseCount": 27,
+    "successes": 22,
+    "intendedRejections": 5,
+    "unexpectedOutcomes": 0,
+    "budgetViolations": 0,
+    "phases": [
+      {
+        "name": "export-selected-constant-static-source-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constant-static-source-1/run.json",
+          "bytes": 1185,
+          "sha256": "24fd816dba4a49a0dd73737f4d294e9ec9c5a4533163ebeee1c63f59d0235213"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constant-static-source-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constant-static-source-1/stderr.txt",
+          "bytes": 142,
+          "sha256": "08804b1e1c123a5b9477b33213a6f6610653d7d79303470219ff607c42b753e1"
+        },
+        "elapsedSeconds": 0.10054530808702111,
+        "sampledPeakProcessTreeRssBytes": 12288,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-selected-constant-static-source-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constant-static-source-1/run.json",
+          "bytes": 1151,
+          "sha256": "a15fabb66ecd9550bdcc7b42008c97970d4d5b41f56b8a7e8b9f656d39aee9da"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constant-static-source-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constant-static-source-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20117761206347495,
+        "sampledPeakProcessTreeRssBytes": 75329536,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "facts-selected-constant-static-source-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constant-static-source-1/run.json",
+          "bytes": 1117,
+          "sha256": "b2daf970cf2182d9dff168b22e3ef833c30c0e0785dea73f64944017c5c1f38b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constant-static-source-1/stdout.txt",
+          "bytes": 94,
+          "sha256": "cc60bb1329737df6b89cb0afe2ace426fcaed687506a8497a3df5e7eb299d5a8"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constant-static-source-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.4022436230443418,
+        "sampledPeakProcessTreeRssBytes": 93511680,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "export-selected-constant-static-provider-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constant-static-provider-1/run.json",
+          "bytes": 1196,
+          "sha256": "34642679eaa91ff5239efcad575e30c86ff65d7af5f8ca2785ef51b83ae43a75"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constant-static-provider-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-constant-static-provider-1/stderr.txt",
+          "bytes": 143,
+          "sha256": "9c4f13b5358f6bf707ee05ea5e01328e9c4de3988cc20c06a06063c6fa37a8fc"
+        },
+        "elapsedSeconds": 0.10050165501888841,
+        "sampledPeakProcessTreeRssBytes": 36864,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-selected-constant-static-provider-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constant-static-provider-1/run.json",
+          "bytes": 1155,
+          "sha256": "b98fe72df40f46ad9bb781fc86baaef452046488c529283ecc09a435bbfa793f"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constant-static-provider-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-constant-static-provider-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20128870394546539,
+        "sampledPeakProcessTreeRssBytes": 73609216,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "facts-selected-constant-static-provider-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constant-static-provider-1/run.json",
+          "bytes": 1121,
+          "sha256": "f54af5775f995a763a7a14709130dadf8b17e9ef8cb20af24e0fe7913d3c0e7b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constant-static-provider-1/stdout.txt",
+          "bytes": 93,
+          "sha256": "8cafb6f7f38be89dae50f5e9f909643fae51364b2d55fec64a24b4375b94e8aa"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-constant-static-provider-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.30153875099495053,
+        "sampledPeakProcessTreeRssBytes": 85368832,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "native-selected-constant-static-build-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constant-static-build-1/run.json",
+          "bytes": 1276,
+          "sha256": "93c8e6416e918cec5e851cc793be7de99595a7b37a1b4209398ce0b3854a014e"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constant-static-build-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constant-static-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10059869999531657,
+        "sampledPeakProcessTreeRssBytes": 143360,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "native-selected-constant-static-run-1",
+        "group": "genuine-two-TU-capture-native",
+        "productSnapshot": null,
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constant-static-run-1/run.json",
+          "bytes": 906,
+          "sha256": "c67c6fa420776fd450aec01d5029445fdd132e6ea33cf483459740b5dd48c553"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constant-static-run-1/stdout.txt",
+          "bytes": 1177,
+          "sha256": "1c4616fb4828374acd9c0f91ef8d400b48b1d7ef55ce53ca75fcfc85a4f201b7"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-constant-static-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10054966702591628,
+        "sampledPeakProcessTreeRssBytes": 20480,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "constant-static-cli-build-8",
+        "group": "corrected-product-build",
+        "productSnapshot": "constant-static-product-source-8",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-8/run.json",
+          "bytes": 1278,
+          "sha256": "db33a609c62c40a25b54affe371b06e609cca1526fc394ee51e698e4b322a285"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-8/stdout.txt",
+          "bytes": 922,
+          "sha256": "19a132ecaa0550502341ce1bf7fb713623341983e61d48281f00a93835f68076"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-8/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.08696230291389,
+        "sampledPeakProcessTreeRssBytes": 702140416,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-constant-static-translate-8",
+        "group": "corrected-production-publication",
+        "productSnapshot": "constant-static-product-source-8",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-8/run.json",
+          "bytes": 1168,
+          "sha256": "f17e06bfdb3dce15fd743602cf8840a28619c1e5572ee7a7e5a065d6eb8f7727"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-8/stdout.txt",
+          "bytes": 94,
+          "sha256": "dad99040ce9f3cced8499e247cdc73b1fb070cb9e491412abc8f9cbb02ac20e7"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-8/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.0040854889666662,
+        "sampledPeakProcessTreeRssBytes": 118857728,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "constant-static-checker-jit-build-1",
+        "group": "native-jit-aot-physical",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-build-1/run.json",
+          "bytes": 1408,
+          "sha256": "e756507261aac642bb814b1f1c828be368ae12598d0d4cd7a6d79b43a3b21c38"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-build-1/stdout.txt",
+          "bytes": 913,
+          "sha256": "c94042cb6059f148368726475eed1ccf343e4ba0f435202a550c024582595c52"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.004033391014673,
+        "sampledPeakProcessTreeRssBytes": 519876608,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "constant-static-checker-jit-run-1",
+        "group": "native-jit-aot-physical",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-run-1/run.json",
+          "bytes": 1133,
+          "sha256": "b64a677353f798bc47233ee11480490ece9ac3a49cf68b16ac271cfd873c3586"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-run-1/stdout.txt",
+          "bytes": 3000,
+          "sha256": "632632c95aabdc03f0c052af2f6e08d9596a200638f7610cb6dc4da6e9b50668"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10075079405214638,
+        "sampledPeakProcessTreeRssBytes": 299008,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "constant-static-checker-aot-build-1",
+        "group": "native-jit-aot-physical",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-build-1/run.json",
+          "bytes": 1521,
+          "sha256": "3b2d3afc5c176239fbe0b07cbd5ccb729e1a221035dc11d8f345fbd871eb713e"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-build-1/stdout.txt",
+          "bytes": 1060,
+          "sha256": "623a4141bbcd1f4d91c5bcfbbe6d7ea1c64e05feba10f44c404240afaa1bb5d8"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.47880844399333,
+        "sampledPeakProcessTreeRssBytes": 676491264,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "constant-static-checker-aot-run-1",
+        "group": "native-jit-aot-physical",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-run-1/run.json",
+          "bytes": 1114,
+          "sha256": "6863f7a3090159768f095f5a55ba04abfdceec182b16089cbe2b410ec303e764"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-run-1/stdout.txt",
+          "bytes": 3000,
+          "sha256": "632632c95aabdc03f0c052af2f6e08d9596a200638f7610cb6dc4da6e9b50668"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10055480094160885,
+        "sampledPeakProcessTreeRssBytes": 20480,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "prior-inline-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-inline-translate/run.json",
+          "bytes": 1166,
+          "sha256": "ae7da81f2174650c1ab27439316d729e83e5757f7bb209d33485b2493d53d440"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-inline-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "06361d29d5cbaa972279d996faac8ae793cdf9711e40a94584e2914f42aeca68"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-inline-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.0046062030596659,
+        "sampledPeakProcessTreeRssBytes": 117596160,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "single-input-explicit-policy-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/single-input-explicit-policy-translate/run.json",
+          "bytes": 1198,
+          "sha256": "cc87d7ba31ce24de3b21e74e2436bde6aed44f7e4757558d08b152a980542996"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/single-input-explicit-policy-translate/stdout.txt",
+          "bytes": 93,
+          "sha256": "d7af22969c336ed0319a6f64803e192cff71c37a6cade13f755ed6269563dfa3"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/single-input-explicit-policy-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.1050864530261606,
+        "sampledPeakProcessTreeRssBytes": 110678016,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-scalar-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-scalar-translate/run.json",
+          "bytes": 1169,
+          "sha256": "f9b65d0f6b8ec3f46e314a4630aa4493eaa28c2cea79ad633ee7c19aeec59938"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-scalar-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "4847801e20603d6bfd6b1dc71ef21a4a67e8bb7d5ccd3003f0e76e126cee843b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-scalar-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.104586472036317,
+        "sampledPeakProcessTreeRssBytes": 118149120,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-c-boundary-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/selected-c-boundary-translate/run.json",
+          "bytes": 1178,
+          "sha256": "d3fd900f0d093f0aa4d2bb81b25aac3e078caee8f880b9b279a8e0325fac05f4"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/selected-c-boundary-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "52c82ee83c8271c14e99b7e04b3da5c16890447270cad63294afb1668fdd2325"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/selected-c-boundary-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.70331864093896,
+        "sampledPeakProcessTreeRssBytes": 110030848,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-cpp-boundary-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/selected-cpp-boundary-translate/run.json",
+          "bytes": 1184,
+          "sha256": "20510ed24012bc7558cc3f9811852a8b8e40a2d2b411ac8508c46ae8f7e31dbb"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/selected-cpp-boundary-translate/stdout.txt",
+          "bytes": 93,
+          "sha256": "189e1805b0ea303d0efbb5c2797ae8d42e2901aa6967883086a5839649d38f11"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/selected-cpp-boundary-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6022750400006771,
+        "sampledPeakProcessTreeRssBytes": 109441024,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-int-eh-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-int-eh-translate/run.json",
+          "bytes": 1170,
+          "sha256": "7a475421eafadeba60e79a24572b02b9d3303eb924ac88a253a0d529ddc18577"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-int-eh-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "b04c4fd927037244e5a8a6327e9a4dbc29ff80ef44073b58c7401ea55aa25f47"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-int-eh-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6027296840911731,
+        "sampledPeakProcessTreeRssBytes": 107905024,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "prior-startup-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-startup-translate/run.json",
+          "bytes": 1168,
+          "sha256": "0acb6c8d3bde50207e56421bf00d6645b7929ae41f9cdd1f2eb6d8d703aab1f6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-startup-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "a7b6b9920b886b0954f51c43d71f541d658e4e3a370d2e75f8aca038766f1412"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-startup-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6026377800153568,
+        "sampledPeakProcessTreeRssBytes": 107188224,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "prior-selected-c1-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-selected-c1-translate/run.json",
+          "bytes": 1175,
+          "sha256": "aa86268427f1cfb740a402c17c83fb4a611f20c89d18c042dd412deade5ff493"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-selected-c1-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "0f8140350db5be49a266ae2af24f08cc12e47ce364383d27ca59c92999867a16"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/prior-selected-c1-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.602900458034128,
+        "sampledPeakProcessTreeRssBytes": 109015040,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "constant-policy-required-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/constant-policy-required-translate/run.json",
+          "bytes": 1193,
+          "sha256": "6ac68e2b5db8cb3595e4cdc4a3fbb38c2d3ec180714f655c0c988426cd8aeebc"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/constant-policy-required-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/constant-policy-required-translate/stderr.txt",
+          "bytes": 2789,
+          "sha256": "c9d685a5d304408cb2c8ad685358e98e64d5da2a10d8d9aaef1c0b6bbbb5ef4e"
+        },
+        "elapsedSeconds": 0.4020052619744092,
+        "sampledPeakProcessTreeRssBytes": 101548032,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-strong-duplicate-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-strong-duplicate-translate/run.json",
+          "bytes": 1190,
+          "sha256": "ec2a2082e8ea99388c3492d25761541896a0b16f702a5b58430807aa153e4805"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-strong-duplicate-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/default-strong-duplicate-translate/stderr.txt",
+          "bytes": 376,
+          "sha256": "9ccff0f642eac4c7a4f09641fbf3f8b57968f3a2c4260452561b4cadadbf3aa8"
+        },
+        "elapsedSeconds": 0.3016771910479292,
+        "sampledPeakProcessTreeRssBytes": 96636928,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "companion-strong-duplicate-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/companion-strong-duplicate-translate/run.json",
+          "bytes": 1195,
+          "sha256": "05b71ec4ef8f58288a613176788efaf3a6747c72a95e388acaf132e083e2f5e6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/companion-strong-duplicate-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/companion-strong-duplicate-translate/stderr.txt",
+          "bytes": 161,
+          "sha256": "368a89923168811b8f6628c41c2d482f879bf667ff6be960a6670b314e2967ec"
+        },
+        "elapsedSeconds": 0.30125262297224253,
+        "sampledPeakProcessTreeRssBytes": 96468992,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "retain-all-policy-unsupported-translate",
+        "group": "focused-preservation",
+        "productSnapshot": "constant-static-product-source-6",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/retain-all-policy-unsupported-translate/run.json",
+          "bytes": 1201,
+          "sha256": "941548c3f8ef1397fb93e3018ad5d7d8a18d7075b41a36aebbd2059836d4670a"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/retain-all-policy-unsupported-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/retain-all-policy-unsupported-translate/stderr.txt",
+          "bytes": 129,
+          "sha256": "f4fff53613402bdc96b4ac160e62dfe34c9ffdf841a8947200f97d54d95d42b5"
+        },
+        "elapsedSeconds": 0.20121704798657447,
+        "sampledPeakProcessTreeRssBytes": 54558720,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-real-startup-constant-translate-8",
+        "group": "actual-core-startup-next-boundary",
+        "productSnapshot": "constant-static-product-source-8",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-8/run.json",
+          "bytes": 1163,
+          "sha256": "bbdd68b57284904cbe6daaa52c80c07a6075fa0365dc6f115c12ad880275b913"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-8/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-8/stderr.txt",
+          "bytes": 323,
+          "sha256": "4506a12f70e351ab52fe32ec7e583abf26a758f315d5294323712bcd5f0bf29b"
+        },
+        "elapsedSeconds": 26.02575049805455,
+        "sampledPeakProcessTreeRssBytes": 138002432,
+        "configuredBudgets": {
+          "timeoutSeconds": 300.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      }
+    ]
+  },
+  "sourceFreeze": [
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-product-source-6/source-snapshot.json",
+        "bytes": 46763,
+        "sha256": "20f30bd1c5a24b1fe95b44bc89687e5aecb4a2c259ffb9b2c47ace7026956525"
+      },
+      "fileCount": 270,
+      "verified": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-product-source-8/source-snapshot.json",
+        "bytes": 46763,
+        "sha256": "881d4a87dff480101d8eef4d999060b72f705e0e02b8e679c29dd12b50fbc585"
+      },
+      "fileCount": 270,
+      "verified": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-source-1/source-snapshot.json",
+        "bytes": 1255,
+        "sha256": "6b0c9f135b8ca75bc92b08dd87ddeb89bba86bad091fed1b4f6545c5235d178e"
+      },
+      "fileCount": 8,
+      "verified": true
+    }
+  ],
+  "sourceAndInputFreezeVerified": true,
+  "provenProductIndexFiles": [
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Contracts.cs",
+      "bytes": 17288,
+      "sha256": "62d65754115c91d20f5c6cf84a19c31e6d0a74650bbfc1dabd9089d3a16602e5"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Constants.cs",
+      "bytes": 3283,
+      "sha256": "837adc402a0d483c173d12cb5d2b853047db26aac7797d1cd6dbaecf06f4dd4e"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Program.cs",
+      "bytes": 25416,
+      "sha256": "bca4614fb1c5cdbd1f9482c0d3dfe45ffd3edbc8eb8fc4f21954824c1769af84"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.Initialization.cs",
+      "bytes": 7413,
+      "sha256": "54dc4e76b0865b804e86fea4b9ae6b9efc42e6b6762c8b2db77ad85f6a78b5c7"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Emission/CSharpEmission.Storage.cs",
+      "bytes": 17218,
+      "sha256": "694d85e7c43aed9903da69defe1c70b2d301c6a54d2471956267c024c2fa8035"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedProgramSelection.ConstantStorage.cs",
+      "bytes": 13448,
+      "sha256": "8ca2477450c03c3b4a0e4d89018da69bb38fc039098e5ce50ab16a89ea700617"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedProgramSelection.Inline.cs",
+      "bytes": 20391,
+      "sha256": "5dc2b46192b5be781e56eb90858b4a5ce323017733ebb1f06e0d8b4fa73597d8"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedProgramSelection.cs",
+      "bytes": 28946,
+      "sha256": "2887668f52eb1f167641649c074b42b21e28a220bd52c3809902e992421cd242"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedSelection.cs",
+      "bytes": 41112,
+      "sha256": "56d9f51d06d424a688ce20ecd263d81d6b0d0733f5c66950e8ea599a7920736a"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translation.cs",
+      "bytes": 24138,
+      "sha256": "223ff970af2e131039e22b3e2cb89a84179683c7ba86ed5ac3c03a6299b3a801"
+    },
+    {
+      "path": "edgcpp/roslyn-csharp/src/RoslynObj.CSharp/Translator.cs",
+      "bytes": 21007,
+      "sha256": "fcf50a70bab2f1b5505412b1b0adad37c673c06f284d6a869573c1ecf085e07c"
+    }
+  ],
+  "followOnMetadataTablesExcludedFromFrozenCompilationAndIndex": true,
+  "nativeCapture": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-preparation-1/acceptance-provenance.json",
+    "bytes": 6247,
+    "sha256": "1d405a9f7225e1c3d32f890db65e2a1cd33d4cd257ea1e67c964b9821a7c49d3"
+  },
+  "originalPreparation": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-preparation-1/provenance.json",
+    "bytes": 5538,
+    "sha256": "d77e3d883b012ef63b684493363b6fd7016fb774dc28f765d34fd14ffb3fcda1"
+  },
+  "nativeOracle": {
+    "runs": [
+      {
+        "result": 10,
+        "live": 0,
+        "overflow": 0,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          48,
+          77,
+          0,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          0
+        ],
+        "events": [
+          501,
+          601
+        ]
+      },
+      {
+        "result": 10,
+        "live": 0,
+        "overflow": 0,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          48,
+          77,
+          0,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          0
+        ],
+        "events": [
+          501,
+          601,
+          502,
+          602
+        ]
+      }
+    ],
+    "storage": {
+      "byteCount": 50,
+      "sharedAcrossTus": true,
+      "differentAcrossTus": true,
+      "sharedStableAcrossCalls": true,
+      "differentStableAcrossCalls": true,
+      "namedArraysDistinct": true,
+      "allBytesUnchanged": true,
+      "allFourContentsEqual": true,
+      "terminatedAt49": true,
+      "sharedBytes": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        0
+      ],
+      "differentBytes": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        0
+      ]
+    }
+  },
+  "publication": {
+    "completion": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-8/completion.json",
+      "bytes": 989,
+      "sha256": "6dc31e4999152ff3ae06323a99b2b8d287253b68e2c737b2499649c300c97eee"
+    },
+    "files": [
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-8/Generated.cs",
+        "bytes": 17463,
+        "sha256": "a9b8ed8e40486ff0504f157d3f7772cf087e3883cc5648e11c5ca1fe7009f8fa"
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-8/Generated.csproj",
+        "bytes": 558,
+        "sha256": "39b1e47cd91f9da7132cf4db804a18d46f1531b03381815c0ebf551ec87d6ee5"
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-8/program-report.json",
+        "bytes": 252193,
+        "sha256": "6a02ed7be682d8557e6a59fc3cd75815653a8f0900c0f4b47304f8c0dae061a9"
+      }
+    ],
+    "sourcePublished": true,
+    "selection": {
+      "bodies": 15,
+      "operations": 437,
+      "bindings": [
+        {
+          "kind": "function",
+          "linkageName": "selected_constant_b",
+          "declaration": "unit/0001/function/000011",
+          "definition": "unit/0002/function/000001",
+          "abiContract": "Captured representations match the supported ABI subset."
+        },
+        {
+          "kind": "function",
+          "linkageName": "selected_different_b",
+          "declaration": "unit/0001/function/000013",
+          "definition": "unit/0002/function/000002",
+          "abiContract": "Captured representations match the supported ABI subset."
+        },
+        {
+          "kind": "function",
+          "linkageName": "_Z24selected_shared_constantv",
+          "declaration": "unit/0002/function/000003",
+          "definition": "unit/0001/function/000007",
+          "abiContract": "Captured representations match the supported ABI subset."
+        },
+        {
+          "kind": "function",
+          "linkageName": "_Z27selected_different_constantv",
+          "declaration": "unit/0002/function/000004",
+          "definition": "unit/0001/function/000008",
+          "abiContract": "Captured representations match the supported ABI subset."
+        },
+        {
+          "kind": "variable",
+          "linkageName": "_ZZ24selected_shared_constantvE12shared_bytes",
+          "declaration": "unit/0002/storage/000001",
+          "definition": "unit/0001/storage/000001",
+          "abiContract": "Captured representations match the supported ABI subset."
+        },
+        {
+          "kind": "variable",
+          "linkageName": "_ZZ27selected_different_constantvE15different_bytes",
+          "declaration": "unit/0002/storage/000002",
+          "definition": "unit/0001/storage/000002",
+          "abiContract": "Captured representations match the supported ABI subset."
+        }
+      ],
+      "constantStorageRepresentatives": [
+        {
+          "linkageName": "_ZZ24selected_shared_constantvE12shared_bytes",
+          "policy": "captured-external-comdat-constant-manifest-order",
+          "representativeUnitOrdinal": 1,
+          "representative": "unit/0001/storage/000001",
+          "members": [
+            {
+              "unitOrdinal": 1,
+              "inputSha256": "f0b4b51c0ca42bf8ac5a0a3da168e07022f206caa70ff410e8cca7971d729621",
+              "variable": "unit/0001/storage/000001",
+              "size": "50",
+              "alignment": "1",
+              "elementSignedness": "signed_integer",
+              "encoding": "target_code_units",
+              "units": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                0
+              ]
+            },
+            {
+              "unitOrdinal": 2,
+              "inputSha256": "8f7fc060b41ce984af43cfeffd02c5a958240fce13aa0e086080001297cffa3b",
+              "variable": "unit/0002/storage/000001",
+              "size": "50",
+              "alignment": "1",
+              "elementSignedness": "signed_integer",
+              "encoding": "target_code_units",
+              "units": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                0
+              ]
+            }
+          ],
+          "cppOdrValidated": false
+        },
+        {
+          "linkageName": "_ZZ27selected_different_constantvE15different_bytes",
+          "policy": "captured-external-comdat-constant-manifest-order",
+          "representativeUnitOrdinal": 1,
+          "representative": "unit/0001/storage/000002",
+          "members": [
+            {
+              "unitOrdinal": 1,
+              "inputSha256": "f0b4b51c0ca42bf8ac5a0a3da168e07022f206caa70ff410e8cca7971d729621",
+              "variable": "unit/0001/storage/000002",
+              "size": "50",
+              "alignment": "1",
+              "elementSignedness": "signed_integer",
+              "encoding": "target_code_units",
+              "units": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                0
+              ]
+            },
+            {
+              "unitOrdinal": 2,
+              "inputSha256": "8f7fc060b41ce984af43cfeffd02c5a958240fce13aa0e086080001297cffa3b",
+              "variable": "unit/0002/storage/000002",
+              "size": "50",
+              "alignment": "1",
+              "elementSignedness": "signed_integer",
+              "encoding": "target_code_units",
+              "units": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                0
+              ]
+            }
+          ],
+          "cppOdrValidated": false
+        }
+      ]
+    },
+    "wholeInputTranslationComplete": false
+  },
+  "generatedExecution": {
+    "jit": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-run-1/stdout.txt",
+      "bytes": 3000,
+      "sha256": "632632c95aabdc03f0c052af2f6e08d9596a200638f7610cb6dc4da6e9b50668"
+    },
+    "aot": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-aot-run-1/stdout.txt",
+      "bytes": 3000,
+      "sha256": "632632c95aabdc03f0c052af2f6e08d9596a200638f7610cb6dc4da6e9b50668"
+    },
+    "observations": [
+      {
+        "runs": [
+          {
+            "result": 10,
+            "live": 0,
+            "overflow": 0,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              48,
+              77,
+              0,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119,
+              120,
+              121,
+              122,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              0
+            ],
+            "events": [
+              501,
+              601
+            ]
+          },
+          {
+            "result": 10,
+            "live": 0,
+            "overflow": 0,
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              2,
+              48,
+              77,
+              0,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111,
+              112,
+              113,
+              114,
+              115,
+              116,
+              117,
+              118,
+              119,
+              120,
+              121,
+              122,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              0
+            ],
+            "events": [
+              501,
+              601,
+              502,
+              602
+            ]
+          }
+        ],
+        "storage": {
+          "byteCount": 50,
+          "sharedAcrossTus": true,
+          "differentAcrossTus": true,
+          "sharedStableAcrossCalls": true,
+          "differentStableAcrossCalls": true,
+          "namedArraysDistinct": true,
+          "allBytesUnchanged": true,
+          "allFourContentsEqual": true,
+          "terminatedAt49": true,
+          "sharedBytes": [
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            0
+          ],
+          "differentBytes": [
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            0
+          ]
+        }
+      },
+      {
+        "selectedConstantStatic": {
+          "physical": {
+            "sharedArraySize": 50,
+            "differentArraySize": 50,
+            "sharedFirstElementOffset": 0,
+            "differentFirstElementOffset": 0,
+            "sharedSequentialPrefixOffset": 1,
+            "differentSequentialPrefixOffset": 1,
+            "sharedStride": 50,
+            "differentStride": 50,
+            "actualSharedFirstElementOffset": 0,
+            "actualDifferentFirstElementOffset": 0,
+            "allFourWrappersMatchCanonicalStorage": true,
+            "differentNamedCanonicalStorageDistinct": true,
+            "bothTerminatorsPresent": true,
+            "arrayElementStorage": "signed8 carrier; bytes inspected without writes",
+            "initializationObservation": "actual emitted constant storage and fresh bytes; no synthetic execution counter"
+          },
+          "freshFullByteReads": true,
+          "sameNamedStorageSharedAcrossTus": true,
+          "differentNamedStorageNotInterned": true,
+          "writesPerformedByChecker": false,
+          "sourceOdrValidationClaim": false,
+          "runtimeInitializationExecutionCountClaim": false,
+          "lifetimeLiveZeroMeaning": "scalar harness protocol only"
+        }
+      },
+      {
+        "suppliedCaptureProvenance": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-preparation-1/acceptance-provenance.json",
+          "sha256": "1d405a9f7225e1c3d32f890db65e2a1cd33d4cd257ea1e67c964b9821a7c49d3",
+          "sourceInputSha256": "f0b4b51c0ca42bf8ac5a0a3da168e07022f206caa70ff410e8cca7971d729621",
+          "providerInputSha256": "8f7fc060b41ce984af43cfeffd02c5a958240fce13aa0e086080001297cffa3b",
+          "sourceFactsSha256": "6189087b70aa80bd849972ebc27560123337956f8f4a459c0a586bd1e88432bc",
+          "providerFactsSha256": "cfac1c448fb97c3b317507b28975cbd8505471a65187622bcde805ebd750135f",
+          "nativeObservationsSha256": "1c4616fb4828374acd9c0f91ef8d400b48b1d7ef55ce53ca75fcfc85a4f201b7",
+          "originalPreparationSha256": "d77e3d883b012ef63b684493363b6fd7016fb774dc28f765d34fd14ffb3fcda1",
+          "attribution": "supplied evidence; outer receipt binds both inputs, actual constant/storage representative mappings, GeneratedProject and executable"
+        }
+      }
+    ],
+    "stdoutIdentical": true,
+    "jitDependencies": [
+      "Checks/1.0.0",
+      "Generated/1.0.0",
+      "RoslynObj.CSharp.Runtime/1.0.0"
+    ],
+    "scope": "Both supplied TUs resolve each of two named objects to its selected address, repeated before/after twice-run fixture; equal50-byte contents do not merge different named objects. All64values and complete event arrays match independent native observations. Actual carrier sizes50,field0,sequentialprefix1,stride50 and allfour wrapper addresses verified; fresh full-byte reads remain unchanged. No checker writes, constructed class/lifetime or synthetic source-init count."
+  },
+  "correctedProductEvidenceReuse": {
+    "executionAndPreservationProduct": "constant-static-product-source-6",
+    "finalAdmissionProduct": "constant-static-product-source-8",
+    "generatedSemanticIdentities": [
+      {
+        "publication": 5,
+        "generatedSource": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-5/Generated.cs",
+          "bytes": 17463,
+          "sha256": "a9b8ed8e40486ff0504f157d3f7772cf087e3883cc5648e11c5ca1fe7009f8fa"
+        },
+        "finalSource": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-8/Generated.cs",
+          "bytes": 17463,
+          "sha256": "a9b8ed8e40486ff0504f157d3f7772cf087e3883cc5648e11c5ca1fe7009f8fa"
+        },
+        "sourceAndAbiByteIdentical": true
+      },
+      {
+        "publication": 6,
+        "generatedSource": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-6/Generated.cs",
+          "bytes": 17463,
+          "sha256": "a9b8ed8e40486ff0504f157d3f7772cf087e3883cc5648e11c5ca1fe7009f8fa"
+        },
+        "finalSource": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-generated-8/Generated.cs",
+          "bytes": 17463,
+          "sha256": "a9b8ed8e40486ff0504f157d3f7772cf087e3883cc5648e11c5ca1fe7009f8fa"
+        },
+        "sourceAndAbiByteIdentical": true
+      }
+    ],
+    "runtimeSourceFilesUnchanged": [
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/BorrowedNativeRttiData.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/ManagedCppException.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/SysVVariadic.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetArithmetic.Assignments.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetIntrinsics.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetStorage.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetVolatileMemory.cs",
+      "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/ManagedProgramLifetime.cs"
+    ],
+    "checkerUnchanged": true,
+    "semanticChange": "Only storage eligibility additionally rejects explicit object alignment outside null/0/1;0 is the recorded no-override convention. A diagnostic field was added. Final publication has identical generated C# and no native ABI source, same Runtime/checker. Existing source6 execution/preservation attribution is retained, not relabelled as a new execution8."
+  },
+  "selectionContract": {
+    "version": "captured-external-comdat-constant-manifest-order",
+    "request": "link.promotedConstantStorage",
+    "default": "reject; function selection alone never merges promoted storage",
+    "explicitOptIn": true,
+    "eligibility": "Captured external self-COMDAT static-duration promoted+promoted-init nonparameter definition; const/nonvolatile/nonexotic8-bit integer array with positive captured bound and size, natural type alignment1, explicit object alignment absent/0/1. Direct initk_static StringValue target_bytes/target_code_units/8-bit literal initializer exactly fills captured extent. No dynamic/TLS/cleanup/lifetime/local-static descriptor/weak/alias/common/suppression obligations.",
+    "choice": "Every original definition is checked. Same captured final linkage/group additionally requires compatible storage ABI and exact encoding/length/ordered units. First supplied TU is target representative, never C++ ODR validation. Singleton retains exact initializer. Different linkage identities remain distinct regardless of equal contents.",
+    "requiredUses": "All original member dependencies/ambient schedules retained. Flat current-public-identity variable map reconciles references, addresses and associated constants; one selected allocation with representative own initializer. Raw local declarations marked allocated; executable initialization outside admitted empty recipe ledger still rejects. Complete AddressValue.ByteOffset applied once.",
+    "mode": "Selected program planner handles explicit policy for both one and multiple inputs before Inventory and after reopen; retain-all explicit opt-in is rejected. No DTO identity rebinding, source-name/body reconstruction or native fallback."
+  },
+  "focusedPreservation": {
+    "report": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-regressions-1/report.json",
+      "bytes": 13081,
+      "sha256": "57c298412c456bf901d668dc2ac9ba0b375c333b4c8a53e4aa3226b6f8bcd62d"
+    },
+    "scope": "Eight exact previous source+ABI identities incl actual getter under single-input explicit-policy routing, prior inlineC1/D1 cleanup/startup, selectedstrongC1, C/C++pointer boundaries, scalar and defaultintEH. Four intended rejects: missingstorageoptin, defaultstrongduplicate, companion+inlineoptinstrongduplicate, retain-allstoragepolicy. Runtime unchanged; no broad owner/SQLite rerun."
+  },
+  "actualStartupBoundary": {
+    "report": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-first-preparation-8/real-report.json",
+      "bytes": 443656,
+      "sha256": "64c8ac2302f01fe2577172d027f3b25f4a7865a9813b48122827b8ff9d00ba0b"
+    },
+    "diagnostics": [
+      {
+        "code": "ROC1224",
+        "severity": "error",
+        "message": "Inline function selection cannot merge associated local-static/TLS initialization or storage: _ZN6duckdb19FileCompressionTypeD1Ev; locals=[:storage=sc_static,TLS=False,promoted=False,promoted-init=False,region-table=True,array-table=False,local-inits=1]; function-static-lifetime=False,scope-local-inits=1",
+        "input": null,
+        "locator": null,
+        "family": "managed-selection"
+      }
+    ],
+    "unpublished": true,
+    "scope": "Real std::string constructor promoted constant initializer now admitted. Next FileCompressionTypeD1 raw static local is exact retained FunctionEh.RegionTable, promotedfalse/TLSfalse with empty descriptor shape to be checked next. No metadata-table state merging or cleanup omission is authorized by constant storage; actual DuckDB startup/getter/guard remains unexecuted."
+  },
+  "stockPromotionAudit": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/promoted-local-static-stock-audit-1.json",
+    "bytes": 32059,
+    "sha256": "0a083c8398ed5e9c8c42e2947330c8f38bfaae48a0fd503baa2bac697b23e68f"
+  },
+  "toolBinariesActuallyUsed": {
+    "finalCli": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-bin-8/roslynobj-csharp.dll",
+      "bytes": 17408,
+      "sha256": "bb61d8611c940776c48461417f61628feb05220e2dc5cc6500996be756cde281"
+    },
+    "finalTranslator": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-bin-8/RoslynObj.CSharp.dll",
+      "bytes": 1321984,
+      "sha256": "b5eae2d8c37c582a4caa908857d2e566c1f18c66b66b8025d87c8a0548f042f5"
+    },
+    "finalReader": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-bin-8/RoslynObj.dll",
+      "bytes": 2635264,
+      "sha256": "b2ba40e21a7d84e75a5b1b8135fa0ef203a2974c8535501796145245d5cff45d"
+    },
+    "execution6GeneratedDll": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-bin-1/Generated.dll",
+      "bytes": 8192,
+      "sha256": "23297d9e53afc637bbb5c9366e5c094577caaada7b69c97d9d2176944a06b1ac"
+    },
+    "execution6RuntimeDll": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-checker-jit-bin-1/RoslynObj.CSharp.Runtime.dll",
+      "bytes": 88576,
+      "sha256": "7250c1d0ac11bd86aed769048c1d554ec0cc0e5882fd252b6adecfb97fc1f51b"
+    }
+  },
+  "preservedIntermediateAttempts": {
+    "classificationBySnapshot": {
+      "1": "Initial overly strict inactive qualifier payload rejection; no output.",
+      "2": "Address-space default0 admitted, inactive shared block-size sentinel still rejects; no output.",
+      "3": "Precise diagnostic establishes SharedBlockSize=-1 with IsShared/UPCfalse; no output.",
+      "4": "Inactive sentinel corrected; lazy exact-unit DTO list escapes reader lifetime and CLI exits2; no output.",
+      "5": "Materialized DTO+singleton candidate ownership corrected; fixture publication succeeds.",
+      "6": "Single-input explicit-policy routing added; publication + execution + preservation pass; subsequently isolated object-alignment guard added.",
+      "7": "Guard conservatively rejects recorded no-override object alignment0; no output. Final8 admits null/0/1 only."
+    },
+    "phases": [
+      {
+        "phase": "constant-static-cli-build-1",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-1/run.json",
+          "bytes": 1279,
+          "sha256": "eff6f5748981aa7f9a904a634cc1c0055b569f36511c3d1ddee6aa3bf46c79d9"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-1/stdout.txt",
+          "bytes": 922,
+          "sha256": "b94750567c5ade3f2a97ec7b16edf81a4f0848f23e2acbdc269431f92863a653"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-1",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-1/run.json",
+          "bytes": 1171,
+          "sha256": "1f875420e71c3227ebbaf174c3e1b5bcca0a20b4f81cb23a15d8bf53e553a377"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-1/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-1/stderr.txt",
+          "bytes": 2798,
+          "sha256": "5597f43326adf065400e463d431990d3c371bdebd4b69a8a446301ddf82c6b49"
+        }
+      },
+      {
+        "phase": "selected-real-startup-constant-translate-1",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-1/run.json",
+          "bytes": 1165,
+          "sha256": "36f410b0cd82064defdf01c85f5fa040c783d553df77db77695918d2e0b51866"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-1/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-1/stderr.txt",
+          "bytes": 3742,
+          "sha256": "81de6b72ba6e6dcbb67b5f81c0e80f80964cc3f06d0c6113f683b44cafc0f64a"
+        }
+      },
+      {
+        "phase": "constant-static-cli-build-2",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-2/run.json",
+          "bytes": 1279,
+          "sha256": "36403ed875e564167bc9d74713df5c1049b8e5d09f282fcf40577002f363b106"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-2/stdout.txt",
+          "bytes": 922,
+          "sha256": "2d7746a62e7f28704518d7316a01ad82a78eafe40c760fddcf76f7c81d4b9798"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-2/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-2",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-2/run.json",
+          "bytes": 1172,
+          "sha256": "76a3675fd4b4f83b9c2e7e834d919ad2cf0c15d0e5193b538530c62f3b4a9038"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-2/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-2/stderr.txt",
+          "bytes": 2810,
+          "sha256": "e8d4bfe72a5b9c4d1e0eb679a9b8a1d707d4e3db561fcd875452d4d1e8ea1f6a"
+        }
+      },
+      {
+        "phase": "selected-real-startup-constant-translate-2",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-2/run.json",
+          "bytes": 1165,
+          "sha256": "5e5250b7aa60837ada1be61da8de020633c814e8f12fc80be247ba906ab927c3"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-2/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-2/stderr.txt",
+          "bytes": 3754,
+          "sha256": "797daef12b78d3bebcd9458675813c1d10fe90339802e5f1b1c99b5b915e743c"
+        }
+      },
+      {
+        "phase": "constant-static-cli-build-3",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-3/run.json",
+          "bytes": 1279,
+          "sha256": "80bf8b52eec71e4f5b0e07a5ce7e1b33b419bf8c8597d4b785917a847c15c246"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-3/stdout.txt",
+          "bytes": 922,
+          "sha256": "a9c80f53f1f1a4db4b1d77a172fe3bce1185c7e3d644363d8de4c0cfdaa2cd3a"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-3/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-3",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-3/run.json",
+          "bytes": 1171,
+          "sha256": "db6fc88bec6cf1d107c96116689bc9d6fb8f264148094b8819605aca71dae329"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-3/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-3/stderr.txt",
+          "bytes": 3098,
+          "sha256": "d7c0cfd437bcae6515e7580e8a181ae20bee68548f4214fdc7cdb3845522dec1"
+        }
+      },
+      {
+        "phase": "constant-static-cli-build-4",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-4/run.json",
+          "bytes": 1278,
+          "sha256": "67c2cb3d469c4df4b9bf18e2dafefcb7bebb1c07281d868863171e93c0d92d0b"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-4/stdout.txt",
+          "bytes": 922,
+          "sha256": "e2ece72df87f8c3dbc4beacdc6a8b80a142c252936525a6b0c27952acd7daf94"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-4/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-4",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-4/run.json",
+          "bytes": 1168,
+          "sha256": "35df71c987aaff3d5a94094aa747b45974eedf4b627ef844596d29ac4233f032"
+        },
+        "actualExitCode": 2,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-4/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-4/stderr.txt",
+          "bytes": 63,
+          "sha256": "6511cfa3de53be3cb4c70edf8df30419df965ee785b7163cca05e6c5cdce3f7d"
+        }
+      },
+      {
+        "phase": "constant-static-cli-build-5",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-5/run.json",
+          "bytes": 1278,
+          "sha256": "f37f72a6d5ceb757545a46f2a4582f160b599698e4fbd834f31b9a76c5a14a72"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-5/stdout.txt",
+          "bytes": 922,
+          "sha256": "db01a6282d42fa213906310688fde731942483eb80e34d8d83cc1fb06bcdd4df"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-5",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-5/run.json",
+          "bytes": 1168,
+          "sha256": "e3365cec6a5511321bf0ecfce2b107395394d15206b73c2a78874ed984edb60a"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-5/stdout.txt",
+          "bytes": 94,
+          "sha256": "dad99040ce9f3cced8499e247cdc73b1fb070cb9e491412abc8f9cbb02ac20e7"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-real-startup-constant-translate-5",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-5/run.json",
+          "bytes": 1164,
+          "sha256": "e806e91c26c715830031241bac7c257f81ad1af88650cd7a41727a5eef04ab38"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-5/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-5/stderr.txt",
+          "bytes": 323,
+          "sha256": "4506a12f70e351ab52fe32ec7e583abf26a758f315d5294323712bcd5f0bf29b"
+        }
+      },
+      {
+        "phase": "constant-static-cli-build-6",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-6/run.json",
+          "bytes": 1278,
+          "sha256": "816ecbd7cc52665036e9af53204dd8dc772d153e753191819f5eceb2e2ad73e9"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-6/stdout.txt",
+          "bytes": 922,
+          "sha256": "f26f329fc50696342f1f429515e1cf1c1087d9fa85471df743f5eb5e2dc18250"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-6/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-6",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-6/run.json",
+          "bytes": 1167,
+          "sha256": "406cd54a075cdc6f1d4cc9543a36de7a003f9847b9947fcaa194cf0060bc0512"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-6/stdout.txt",
+          "bytes": 94,
+          "sha256": "dad99040ce9f3cced8499e247cdc73b1fb070cb9e491412abc8f9cbb02ac20e7"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-6/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-real-startup-constant-translate-6",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-6/run.json",
+          "bytes": 1164,
+          "sha256": "ac2beeb06b8868ff982047f036d6463d5007a09b2a270aeecacaeebe130a9562"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-6/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-6/stderr.txt",
+          "bytes": 323,
+          "sha256": "4506a12f70e351ab52fe32ec7e583abf26a758f315d5294323712bcd5f0bf29b"
+        }
+      },
+      {
+        "phase": "constant-static-cli-build-7",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-7/run.json",
+          "bytes": 1278,
+          "sha256": "c2667e4c1e81fd649786540e04e5492e42804ff6174f5161cee03cabbabdc217"
+        },
+        "actualExitCode": 0,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-7/stdout.txt",
+          "bytes": 922,
+          "sha256": "378dbb622c352e544fd2ef4bbe4e67e9e9225a7a6ad0a07012ac42972ed45914"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/constant-static-cli-build-7/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "phase": "selected-constant-static-translate-7",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-7/run.json",
+          "bytes": 1172,
+          "sha256": "5eae29f6eba3fd413c9b3ecc73bb8581800e8ddb9af4c26151cfc5837eb36f5e"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-7/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-constant-static-translate-7/stderr.txt",
+          "bytes": 2856,
+          "sha256": "77a449d9e447601a64f5d440af9af4f276b57633a12c80906a9f4783d87e7262"
+        }
+      },
+      {
+        "phase": "selected-real-startup-constant-translate-7",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-7/run.json",
+          "bytes": 1165,
+          "sha256": "4ac7c9b4dd731ab03a6de0aad509abe56b8238bb1779346c613c2b52c42e765d"
+        },
+        "actualExitCode": 1,
+        "budgetViolation": null,
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-7/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-constant-translate-7/stderr.txt",
+          "bytes": 3800,
+          "sha256": "1d1f3cafa78f34ce25171b67d9361c3bc94ec2de62e6865f51ee4f07c3f70eb5"
+        }
+      }
+    ]
+  },
+  "limits": [
+    "No arbitrary string interning or C++ ODR/body-equivalence validation. Only same captured external/self-COMDAT identity gets manifest-order representative selection; different named equal arrays remain distinct.",
+    "No dynamic/mutable local-static/guard/TLS or general weak-data selection, native data/provider/application fallback, new Runtime/IR/NoThrow semantics.",
+    "No object alignment beyond1 in this scope. Runtime measurements prove tested50-byte arrays; policy has no fixture size/name/text/function-count gate.",
+    "Real core293+300 initialization/atexit/string/JSON/allocator/EH and full Vector getter remain open. Metadata-only table handling is separate follow-on.",
+    "Prior SQLite and C++ exception/lifetime/virtual dispatch evidence retain original source/runtime attribution. Short phases retain100ms sampling and waited-rusage attribution limits in original receipts."
+  ],
+  "consolidator": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/consolidate-constant-static-1.py",
+    "bytes": 14245,
+    "sha256": "48c98fad8f0298e42ce1b172a2e16b59f20ba6a882752be9a0c90c3cb0029967"
+  }
+}

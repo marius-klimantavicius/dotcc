@@ -44,8 +44,10 @@ execute across two TUs with distinct record views in native/JIT/NativeAOT; norma
 dependency accounting preserves actual cleanup schedules (27 expected outcomes).
 [Explicit inline COMDAT selection](docs/SELECTED-INLINE-COMDAT.md) also passes
 actual C1/D1, automatic cleanup and registered teardown across two TUs (27 outcomes).
-Real DuckDB startup now reaches promoted-storage classification; its enclosing
-accessor/guard/library/EH execution remains open.
+[Promoted constant COMDAT storage](docs/T5-CONSTANT-STATIC.md) also preserves shared
+cross-TU identities and distinct equal-byte objects in native/JIT/NativeAOT
+(27 outcomes). Real DuckDB startup now reaches exact EH-table metadata admission;
+its enclosing accessor/guard/library/EH execution remains open.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

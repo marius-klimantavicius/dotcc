@@ -10,7 +10,7 @@ public sealed partial class CSharpEmitter
         private readonly HashSet<Initialization> staticInitializers = [];
 
         private bool IsStaticLocalCandidate(VariableSymbol variable)
-            => variable.InitializationKind.Name == "initk_function_local" || variable.LocalStaticInitializations.Count != 0 ||
+            => IsSelectedConstantStorageCompanion(variable) || variable.InitializationKind.Name == "initk_function_local" || variable.LocalStaticInitializations.Count != 0 ||
                 variable.Details.StorageDuration?.Name == "static" && currentFunction?.Body?.Locals.Contains(variable) == true;
 
         // Static constant recipes contribute to the class initialization, never to
@@ -18,6 +18,7 @@ public sealed partial class CSharpEmitter
         private bool TryAdmitStaticLocal(VariableSymbol variable)
         {
             if (staticLocals.Contains(variable)) return true;
+            if (TryAdmitSelectedConstantStorageCompanion(variable)) return true;
             if (!IsStaticLocalCandidate(variable)) return false;
             if (variable.IsThreadLocal || variable.StandardThreadLocalEffective || variable.ExtensionThreadLocal ||
                 variable.Details.StorageDuration?.Name == "thread")

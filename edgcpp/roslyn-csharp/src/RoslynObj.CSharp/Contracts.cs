@@ -110,6 +110,13 @@ public sealed record ManagedInlineRepresentativeReport(string LinkageName, strin
     public bool BodyEquivalenceOrOdrValidated { get; init; }
     public string StoragePolicy { get; init; } = "No local-static/TLS storage admitted or storage merged by function selection; other required storage keeps its separate captured binding/allocation policy.";
 }
+public sealed record ManagedConstantStorageMemberReport(int UnitOrdinal, string InputSha256, string Variable,
+    string Size, string Alignment, string ElementSignedness, string Encoding, IReadOnlyList<uint> Units);
+public sealed record ManagedConstantStorageRepresentativeReport(string LinkageName, string Policy,
+    int RepresentativeUnitOrdinal, string Representative, IReadOnlyList<ManagedConstantStorageMemberReport> Members)
+{
+    public bool CppOdrValidated { get; init; }
+}
 public sealed record ManagedNormalEhActionReport(string Locator, string Kind, string? Target,
     string? StorageKind, string? StorageVariable, string? StorageBaseEntity, string? StorageOffset,
     bool? IsIndirect, bool? UsesThisParameterOffset, string? Condition, string? ConditionVariable, string? ComparisonValue);
@@ -131,6 +138,8 @@ public sealed record ManagedSelectionReport
     public IReadOnlyList<ManagedSelectionBindingReport> Bindings { get; init; } = [];
     public string DefinitionSelectionPolicy { get; init; } = "strong-only";
     public IReadOnlyList<ManagedInlineRepresentativeReport> InlineRepresentatives { get; init; } = [];
+    public string PromotedConstantStoragePolicy { get; init; } = "reject";
+    public IReadOnlyList<ManagedConstantStorageRepresentativeReport> ConstantStorageRepresentatives { get; init; } = [];
     public string InputArtifactIdentity { get; init; } = "";
     public string InputSha256 { get; init; } = "";
     public bool ClosureComplete { get; init; }
@@ -168,6 +177,7 @@ public sealed record OutputConfiguration
 public sealed record LinkPolicy
 {
     public string DefinitionSelection { get; init; } = "strong-only";
+    public string PromotedConstantStorage { get; init; } = "reject";
     public bool DeduplicateIdenticalArtifacts { get; init; }
     public string InitializationOrder { get; init; } = "manifest-order";
     public string GlobalState { get; init; } = "process";

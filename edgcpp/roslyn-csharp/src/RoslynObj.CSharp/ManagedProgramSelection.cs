@@ -19,6 +19,9 @@ internal sealed record ManagedProgramSelectionPlan(
 {
     internal string DefinitionSelectionPolicy { get; init; } = "strong-only";
     internal IReadOnlyList<ManagedInlineRepresentativeReport> InlineRepresentatives { get; init; } = [];
+    internal string PromotedConstantStoragePolicy { get; init; } = "reject";
+    internal IReadOnlyList<VariableSymbol> ConstantStorageCompanions { get; init; } = [];
+    internal IReadOnlyList<ManagedConstantStorageRepresentativeReport> ConstantStorageRepresentatives { get; init; } = [];
     internal ManagedSelectionPlan? GetUnit(RoslynObject source)
         => Units.SingleOrDefault(unit => ReferenceEquals(unit.Source, source));
 }
@@ -29,9 +32,9 @@ internal static partial class ManagedProgramSelectionPlanner
     internal static ManagedProgramSelectionPlan Select(IReadOnlyList<RoslynObject> inputs,
         IReadOnlyList<string> inputSha256, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
         CancellationToken token = default, Action? checkBudget = null, ManagedStartupConfiguration? startup = null,
-        string definitionSelection = "strong-only")
+        string definitionSelection = "strong-only", string promotedConstantStorage = "reject")
     {
-        var work = new Work(inputs, inputSha256, roots, budgets, token, checkBudget, startup, definitionSelection);
+        var work = new Work(inputs, inputSha256, roots, budgets, token, checkBudget, startup, definitionSelection, promotedConstantStorage);
         try { return work.Run(); }
         catch (ManagedSelectionException exception)
         {
@@ -42,7 +45,7 @@ internal static partial class ManagedProgramSelectionPlanner
 
     private sealed partial class Work(IReadOnlyList<RoslynObject> inputs, IReadOnlyList<string> hashes,
         ManagedDefinitionRoot[] roots, ResourceBudgets budgets, CancellationToken token, Action? checkBudget,
-        ManagedStartupConfiguration? startup, string definitionSelection)
+        ManagedStartupConfiguration? startup, string definitionSelection, string promotedConstantStorage)
     {
         private readonly AbiCompatibility compatibility = new();
         private readonly Dictionary<FunctionSymbol, FunctionSymbol> functionDefinitions = [];
@@ -58,6 +61,8 @@ internal static partial class ManagedProgramSelectionPlanner
         internal ManagedProgramSelectionPlan Run()
         {
             Tick();
+            if (promotedConstantStorage is not ("reject" or ConstantStoragePolicy))
+                Fail("ROC1220", "The requested promoted constant storage policy is unsupported.");
             if (definitionSelection is not ("strong-only" or InlineComdatPolicy))
                 Fail("ROC1220", "The requested selected-definition policy is unsupported.");
             if (inputs.Count < 1 || inputs.Count > budgets.MaximumOpenUnits || hashes.Count != inputs.Count ||
@@ -105,13 +110,16 @@ internal static partial class ManagedProgramSelectionPlanner
             }
             Tick();
             FinalizeFunctionBindings();
+            FinalizeVariableBindings();
             var active = units.Where(unit => unit.Plan is not null).ToArray();
             return new(active.Select(unit => unit.Plan!).ToArray(),
                 active.Select(unit => new ManagedProgramUnitSelection(unit.Ordinal, unit.Plan!)).ToArray(),
                 new ReadOnlyDictionary<FunctionSymbol, FunctionSymbol>(functionDefinitions),
                 new ReadOnlyDictionary<VariableSymbol, VariableSymbol>(variableDefinitions),
                 functionBindings.ToArray(), variableBindings.ToArray())
-            { DefinitionSelectionPolicy = definitionSelection, InlineRepresentatives = BuildInlineRepresentativeReports() };
+            { DefinitionSelectionPolicy = definitionSelection, InlineRepresentatives = BuildInlineRepresentativeReports(),
+                PromotedConstantStoragePolicy = promotedConstantStorage, ConstantStorageCompanions = constantCompanions.ToArray(),
+                ConstantStorageRepresentatives = BuildConstantStorageReports() };
         }
 
         internal ManagedSelectionReport BuildFailureReport(ManagedSelectionReport? failedUnit)
@@ -131,7 +139,7 @@ internal static partial class ManagedProgramSelectionPlanner
             return new()
             {
                 Scope = "partial-failed-multi-input-selection", ClosureComplete = false, UnitSelections = rows,
-                DefinitionSelectionPolicy = definitionSelection,
+                DefinitionSelectionPolicy = definitionSelection, PromotedConstantStoragePolicy = promotedConstantStorage,
                 ExecutableBodiesVisited = rows.Sum(row => row.Selection.ExecutableBodiesVisited),
                 RequiredDeclarationCount = rows.Sum(row => row.Selection.RequiredDeclarationCount),
                 StorageDefinitionCount = rows.Sum(row => row.Selection.StorageDefinitionCount),
@@ -160,12 +168,16 @@ internal static partial class ManagedProgramSelectionPlanner
         private void CheckAggregateBounds()
         {
             var plans = units.Where(unit => unit.Plan is not null).Select(unit => unit.Plan!).ToArray();
-            if (definitionSelection == InlineComdatPolicy && plans.SelectMany(plan => plan.Variables).Any(variable =>
-                variable.IsThreadLocal || variable.Details.PromotedLocalStatic || variable.Details.PromotedLocalStaticInitialization))
-                Fail("ROC1224", "Inline COMDAT selection rejects required TLS or promoted local-static storage/initialization, including helper-owned dependencies; no storage-group policy is selected. " +
-                    string.Join("; ", plans.SelectMany(plan => plan.Variables).Where(variable => variable.IsThreadLocal || variable.Details.PromotedLocalStatic ||
-                        variable.Details.PromotedLocalStaticInitialization).Select(variable =>
-                        $"{variable.CurrentName}: TLS={variable.IsThreadLocal},promoted={variable.Details.PromotedLocalStatic},promoted-init={variable.Details.PromotedLocalStaticInitialization},exception-table={variable.ExceptionTable?.Kind.Name}")));
+            if (definitionSelection == InlineComdatPolicy || promotedConstantStorage != "reject")
+                foreach (var plan in plans)
+                    foreach (var variable in plan.Variables)
+                    {
+                        Tick();
+                        if ((variable.IsThreadLocal || variable.Details.PromotedLocalStatic || variable.Details.PromotedLocalStaticInitialization) &&
+                            !TryAdmitConstantCompanion(units.Single(unit => ReferenceEquals(unit.Source, plan.Source)), variable))
+                            Fail("ROC1224", "Required TLS/promoted local-static storage is outside the selected constant-storage policy (" + promotedConstantStorage + "; " + constantStorageFailure + "). Facts: " +
+                                DescribeRejectedInlineStorage(plan, variable));
+                    }
             if (plans.Sum(plan => (long)plan.Functions.Count) > budgets.MaximumSelectedFunctions ||
                 plans.Sum(plan => (long)plan.Variables.Count) > budgets.MaximumSelectedStorage ||
                 plans.Sum(plan => (long)plan.Types.Count) > budgets.MaximumSelectedTypes)
@@ -197,6 +209,8 @@ internal static partial class ManagedProgramSelectionPlanner
                 {
                     if (definitionSelection == InlineComdatPolicy && group.All(item => item.Symbol is FunctionSymbol))
                         SelectInlineRepresentative(group.Select(item => (Unit: units[item.Ordinal - 1], Function: (FunctionSymbol)item.Symbol)).ToArray(), group.Key);
+                    else if (promotedConstantStorage == ConstantStoragePolicy && group.All(item => item.Symbol is VariableSymbol))
+                        SelectConstantStorage(group.Select(item => (Unit: units[item.Ordinal - 1], Variable: (VariableSymbol)item.Symbol)).ToArray(), group.Key);
                     else
                         Fail("ROC1222", "Duplicate selected external definitions require an explicit unsupported selection policy: " + group.Key +
                             "; " + string.Join("; ", group.Select(item => item.Symbol is FunctionSymbol function
@@ -242,9 +256,11 @@ internal static partial class ManagedProgramSelectionPlanner
             var candidates = Candidates(lookup, name);
             CheckKinds(candidates, false, name);
             var definitions = candidates.Where(candidate => candidate.Symbol is VariableSymbol variable && IsDefinition(variable)).ToArray();
-            if (definitions.Length > 1) Fail("ROC1222", "Required storage declaration has duplicate exact captured external definitions: " + name);
             if (definitions.Length == 0) return;
-            var target = definitions[0]; var definition = (VariableSymbol)target.Symbol;
+            var target = definitions.Length == 1 ? definitions[0] : SelectConstantCandidate(definitions, name);
+            var definition = ResolveVariable((VariableSymbol)target.Symbol);
+            target = (VariableOwner(definition), definition);
+            TryAdmitConstantCompanion(target.Unit, definition);
             ValidatePolicy(definition, name);
             Tick();
             var result = compatibility.CompareStorage(declaration, definition);
@@ -274,6 +290,7 @@ internal static partial class ManagedProgramSelectionPlanner
                     candidateCache.Add((unit.Ordinal, lookup, linkage), matches);
                 }
                 foreach (var function in matches.OfType<FunctionSymbol>()) functionOwners[function] = unit;
+                foreach (var variable in matches.OfType<VariableSymbol>()) variableOwners[variable] = unit;
                 result.AddRange(matches.Select(symbol => (unit, symbol)));
             }
             return result.ToArray();
@@ -363,7 +380,7 @@ internal static partial class ManagedProgramSelectionPlanner
             {
                 var details = variable.Details;
                 if (details.IsWeak || details.IsWeakref || details.IsCommon || details.IsGnuAlias || details.AliasedVariable is not null ||
-                    details.ComdatGroup is not null || details.IsInline || details.SuppressInlineDefinition || details.SupersededExternal)
+                    details.ComdatGroup is not null && !constantCompanions.Contains(variable) || details.IsInline || details.SuppressInlineDefinition || details.SupersededExternal)
                     Fail("ROC1224", "Required cross-unit weak/common/alias/inline/COMDAT storage selection is unsupported: " + linkage);
             }
         }

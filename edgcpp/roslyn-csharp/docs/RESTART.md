@@ -12,39 +12,47 @@ Selected constructor/normal-EH checkpoint `e9740b1f3` is committed and closed:
 SHA7f150df5fac8620b490757a6be2bf06fe4508d392c149bf925c432bdc243f3cc.
 No closed constructor/startup/SQLite reruns are pending.
 
-Verified next checkpoint is staged from frozen inline COMDAT product source3:
-`acceptance/duckdb/selected-inline-comdat-report.json`, 58,593 bytes, SHA-256
+Inline COMDAT checkpoint `7ec94b0ca` is committed and closed: 27 expected
+outcomes, receipt `acceptance/duckdb/selected-inline-comdat-report.json`, SHA
 `d654b48692dd22080a2446f8d97f42c42addb7481814789fd5063a2ed82cd78f`.
-27 expected outcomes:21 successes/six intended rejections, zero final-campaign
-unexpected outcomes or budgets. Native/JIT/AOT and both carrier physical checks
-pass. Four automatic D1 calls remain separate from two registered finalizers;
-created/destroyed6/6, live0. Seven previous source/ABI pairs unchanged. Default
-inline and strong duplicates under default/opt-in reject. Runtime unchanged.
-Product source3 (269 files), checker source1 (eight files), both captured inputs,
-fixtures/facts/native evidence verify. All ten product index blobs match source3.
-No build/test process is running at this boundary.
+Runtime unchanged; no closed checkpoint reruns pending.
 
-Opt-in policy `captured-inline-comdat-manifest-order` is explicit target
-representative selection, never ODR/body equivalence. Default strong-only remains.
-All member dependency bodies and supplied-unit ambient schedules are retained.
-Raw local call/cleanup/atexit identities are validated before selected target and
-receiver cast; raw noexcept facts remain required before canonical proof cache.
-No local-static/TLS state merging, native application/UCO fallback or hidden roles.
+Verified constant-storage checkpoint is ready for exact-owned commit:
+`acceptance/duckdb/selected-constant-static-report.json`, 88,717B, SHA256
+`ace8e757e91029d5f0be4ed1c688b121f14b67c4638e39b72b28564d9b66126e`.
+27 expected outcomes:22 successes/five intended rejections; no final-campaign
+unexpected/budget violations. Final product source8 (270files), execution and
+preservation source6 (270), checker1 (eight), two inputs/four genuine source files
+verify. Runtime unchanged. Actual JIT/AOT both return10 twice/full64values/events;
+shared per-name cross-TU addresses, different equal-byte objects remain distinct,
+size50/field0/prefix1/stride50/fresh unchanged bytes physically verified. Source8
+Generated.cs equals6 exactly; execution6 attribution retained via byte/source
+identities, no redundant runs. Eight prior source/ABI pairs and four policy
+boundaries pass. Failed/intermediate attempts1..7 remain separate.
 
-Next actual core boundary: selected startup293+300 rejects a required variable
-`_ZZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1IS3_EEPKcRKS3_Es`
-with promoted-local-static and promoted-init flags true, TLSfalse, no ExceptionTable.
-`t5/inline-comdat-first-preparation-3/real-report.json` retains partial scope.
-Do not infer dynamic state or inactivity from flags/name: collect only this actual
-required public entity's type, direct/wrapper initializer, parameter/storage/scope,
-linkage and selected uses through a production diagnostic. Pristine audit
-`t5/promoted-local-static-stock-audit-1.json` SHA0a083c8398ed5e9c8c42e2947330c8f38bfaae48a0fd503baa2bac697b23e68f
-shows promotion transfers none/zero/static/dynamic initializer variants. Guard stays
-until exact applicable facts and independent storage/identity contract are reviewed.
-No broad metadata/helper audit or source recovery; full actual guard/string/JSON/
-allocator/EH closure remains open. Coordinator owns integration/builds/Git; emitter
-and inventory own disjoint follow-on. Preserve unrelated T3/core dirty paths.
-Save this verified checkpoint after root index review, then continue actual core.
+Policy `link.promotedConstantStorage =
+"captured-external-comdat-constant-manifest-order"` is independently opted in
+(defaultreject), exact captured external selfCOMDAT static const8-bit array/string
+only; same-group duplicates require captured ABI+exact encoding/units and manifest
+order. No contents/name interning; no dynamic/TLS/mutable/weak-data or NoThrow/IR
+widening. Type alignment1 and explicit object alignment null/0/1 preserve effective1.
+One/multi-input routing tested; retain-all explicit-policy request rejects.
+
+NEXT active follow-on is exact metadata-only EH RegionTable admission under inline
+selection. Actual source8 real293+300 diagnostic rejects FileCompressionTypeD1
+static local exactly its RegionTable, not promoted state. Emission xhigh saved NEW
+`ManagedProgramSelection.MetadataTables.cs` SHA134cca76d71009b73ef9bfe2022740f4db9c514f06743cedd1782a1e3db24f90:
+precise owner/routine/table identity + empty descriptor payload, final selected
+incoming-use ledger; not yet wired/compiled/tested. It is EXCLUDED from isolated
+source8 compile and constant checkpoint. After commit, coordinator wires exact
+per-table local/scope exceptions plus final fixedpoint live-use validation, freezes
+and runs real startup293+300, retaining all cleanup/noexcept schedules. Arrays,
+source static state and any actual value/address use remain guarded. No new audit
+tool is needed. Full Vector getter/guard/string/JSON/allocator/EH remains open.
+
+Coordinator high owns integration/builds/Git; implementers sol xhigh own disjoint
+emission and checker work. Root Astra high monitors read-only. No process running
+at this saved boundary. Preserve unrelated T3/core dirty files. User remains active.
 
 Historical checkpoint details below retain original evidence attribution; this
 active section supersedes their older next-step descriptions.

@@ -131,12 +131,12 @@ public sealed partial class Translator
                         || watch.Elapsed.TotalSeconds > request.Budgets.MaximumElapsedSeconds)
                         throw new ResourceBudgetException("Managed selection exceeded the translation resource budget.");
                 }
-                if (openedInputs.Count == 1)
+                if (openedInputs.Count == 1 && request.Link.PromotedConstantStorage == "reject")
                     managedSelectionPlan = ManagedSelectionPlanner.Select(openedInputs[0], request.Roots.ManagedDefinitions,
                         request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup);
                 else
                     managedProgramSelection = ManagedProgramSelectionPlanner.Select(openedInputs, inventory.ProgramReport.Inputs.Select(input => input.Sha256).ToArray(),
-                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup, request.Link.DefinitionSelection);
+                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup, request.Link.DefinitionSelection, request.Link.PromotedConstantStorage);
             }
             var emission = new CSharpEmitter().Emit(openedInputs, new()
             {

@@ -22,7 +22,7 @@ public sealed partial class Translator
         {
             if (!state.HasErrors)
             {
-                if (!request.Roots.RetainAllDefinitions && request.Inputs.Length > 1)
+                if (!request.Roots.RetainAllDefinitions && (request.Inputs.Length > 1 || request.Link.PromotedConstantStorage != "reject"))
                     InventoryManagedProgram(request, state, cancellationToken);
                 else
                 {
@@ -127,7 +127,7 @@ public sealed partial class Translator
                 if (!state.Admit(obj, input)) return;
             }
             var program = ManagedProgramSelectionPlanner.Select(opened, hashes, request.Roots.ManagedDefinitions,
-                request.Budgets, token, state.CheckBudget, request.Roots.ManagedStartup, request.Link.DefinitionSelection);
+                request.Budgets, token, state.CheckBudget, request.Roots.ManagedStartup, request.Link.DefinitionSelection, request.Link.PromotedConstantStorage);
             foreach (var unit in program.UnitSelections)
                 state.InventoryUnit(unit.Selection.Source, request.Inputs[unit.UnitOrdinal - 1], unit.UnitOrdinal,
                     hashes[unit.UnitOrdinal - 1], unit.Selection);
@@ -237,6 +237,9 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
         if (request.Link.DefinitionSelection != "strong-only" &&
             (request.Roots.RetainAllDefinitions || request.Link.DefinitionSelection != "captured-inline-comdat-manifest-order") || request.Link.InitializationOrder != "manifest-order" || request.Link.GlobalState != "process")
             Error("ROC1201", "Requested link, initialization or global-state policy is unsupported.");
+        if (request.Link.PromotedConstantStorage != "reject" &&
+            (request.Roots.RetainAllDefinitions || request.Link.PromotedConstantStorage != "captured-external-comdat-constant-manifest-order"))
+            Error("ROC1201", "Promoted constant storage selection requires its explicit selected-mode policy; retain-all mode is unsupported.");
         if (request.Output.NamePolicy != "source-stable" || request.Output.FilePolicy != "declaration-size")
             Error("ROC1202", "Requested source-name or file policy is unsupported.");
         var budgets = request.Budgets;

@@ -41,6 +41,7 @@ public sealed partial class CSharpEmitter
             SemanticEntity entity = constant;
             if (constant.AssociatedStorageVariable is { } variable)
             {
+                _ = TryAdmitSelectedConstantStorageCompanion(variable);
                 entity = CanonicalVariable(variable);
                 if (!storage.TryGetValue(entity, out var item) || item.Type.Size != type.Size)
                     throw Limit("A constant's associated storage has no same-sized selected allocation.", "constant");

@@ -52,7 +52,8 @@ public sealed partial class CSharpEmitter
 
         private IEnumerable<VariableSymbol> SelectedStorage()
         {
-            if (options.ManagedProgramSelection is { } managed) return managed.Units.SelectMany(unit => unit.StorageDefinitions).Select(CanonicalVariable).Distinct();
+            if (options.ManagedProgramSelection is { } managed) return managed.Units.SelectMany(unit => unit.StorageDefinitions)
+                .Concat(managed.ConstantStorageCompanions).Select(CanonicalVariable).Distinct();
             if (options.ManagedSelection is { } selection) return selection.StorageDefinitions;
             if (selectedProgram is { } program)
                 return program.Storage.OrderBy(storage => storage.SelectedOrdinal).Select(storage => storage.Definition);
