@@ -32,6 +32,9 @@ retained secondary table and an independently executed fixed receiver adjustor.
 VTT forwarding, construction-phase dispatch and data-driven receiver adjustment.
 [Exact class exception payloads](docs/T5-CLASS-PAYLOAD.md) also pass selected copy,
 const-reference catch and managed payload destruction before final free.
+An [actual captured DuckDB getter](docs/MANAGED-ROOTS.md) now also executes in
+JIT/NativeAOT through explicit managed-root selection over borrowed layout bytes.
+The enclosing accessor, whole core/library, linking and class ownership remain open.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

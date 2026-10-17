@@ -78,6 +78,7 @@ public sealed partial class Translator
             || File.Exists(request.Output.Directory))
             return Failure("ROC1500", "Translation output must be a new directory so existing artifacts cannot be overwritten.");
         var openedInputs = new List<RoslynObject>();
+        ManagedSelectionPlan? managedSelectionPlan = null;
         try
         {
             phaseObserver?.Invoke(TranslationPhase.InventoryCompleted);
@@ -101,12 +102,27 @@ public sealed partial class Translator
                     PageSize = request.Budgets.ReaderPageSize
                 }));
             }
+            if (!request.Roots.RetainAllDefinitions)
+            {
+                using var selectionProcess = Process.GetCurrentProcess();
+                void CheckSelectionBudget()
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    selectionProcess.Refresh();
+                    if (Math.Max(selectionProcess.WorkingSet64, selectionProcess.PeakWorkingSet64) > request.Budgets.MaximumWorkingSetBytes
+                        || watch.Elapsed.TotalSeconds > request.Budgets.MaximumElapsedSeconds)
+                        throw new ResourceBudgetException("Managed selection exceeded the translation resource budget.");
+                }
+                managedSelectionPlan = ManagedSelectionPlanner.Select(openedInputs[0], request.Roots.ManagedDefinitions,
+                    request.Budgets, cancellationToken, CheckSelectionBudget);
+            }
             var emission = new CSharpEmitter().Emit(openedInputs, new()
             {
                 NamespaceName = request.Output.NamespaceName, ClassName = request.Output.ClassName,
                 Executable = request.Roots.Mode == "executable", EntryPointName = request.Roots.EntryPoint,
                 RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings, ExternalData = nativeDataBindings,
                 NativeErrorProtocol = request.Runtime.NativeErrorProtocol,
+                ManagedSelection = managedSelectionPlan,
                 ProgramAssembly = openedInputs.Count == 1 ? null : new ProgramAssemblyOptions
                 {
                     MaximumOpenUnits = request.Budgets.MaximumOpenUnits,
@@ -123,7 +139,7 @@ public sealed partial class Translator
             var semanticRuntimeImplementations = new Dictionary<string, SemanticRuntimeFunctionImplementation>(StringComparer.Ordinal);
             if (semanticRuntimeCandidates.Count != 0 || emission.SemanticRuntimeFunctions.Count != 0)
             {
-                var publicFunctions = openedInputs.SelectMany((input, unitIndex) => input.TranslationUnit.Functions
+                var publicFunctions = openedInputs.SelectMany((input, unitIndex) => (managedSelectionPlan?.Functions ?? input.TranslationUnit.Functions.AsEnumerable())
                     .Select((function, functionIndex) => (Function: function,
                         Locator: $"unit/{unitIndex + 1:D4}/function/{functionIndex + 1:D6}")))
                     .ToDictionary(item => item.Function, item => item.Locator);
@@ -141,7 +157,7 @@ public sealed partial class Translator
             var nativeDataImplementations = new Dictionary<string, SemanticNativeDataImplementation>(StringComparer.Ordinal);
             if (nativeDataBindings.Count != 0 || emission.NativeDataImplementations.Count != 0)
             {
-                var publicVariables = openedInputs.SelectMany((input, unitIndex) => input.TranslationUnit.Variables
+                var publicVariables = openedInputs.SelectMany((input, unitIndex) => (managedSelectionPlan?.Variables ?? input.TranslationUnit.Variables.AsEnumerable())
                     .Select((variable, variableIndex) => (Variable: variable,
                         Locator: $"unit/{unitIndex + 1:D4}/storage/{variableIndex + 1:D6}")))
                     .ToDictionary(item => item.Variable, item => item.Locator);
@@ -240,6 +256,8 @@ public sealed partial class Translator
             var result = Failure("ROC0002", "Translation was cancelled; no complete project was published.");
             return result with { Status = TranslationStatus.Cancelled };
         }
+        catch (ManagedSelectionException exception) { return Failure(exception.Code, exception.Message); }
+        catch (ResourceBudgetException exception) { return Failure("ROC0003", exception.Message); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException)
         { return Failure("ROC1502", exception.Message); }
         finally

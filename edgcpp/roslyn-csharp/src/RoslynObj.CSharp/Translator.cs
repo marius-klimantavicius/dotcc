@@ -48,9 +48,18 @@ public sealed partial class Translator
                         else state.Error("ROC1003", "Repeated artifact identity is not admitted by the link policy.", input.Path);
                         continue;
                     }
-                    state.InventoryUnit(obj, input, index + 1, hash);
-                    state.ReaderCommands += obj.Statistics.Commands;
-                    state.ReaderRows += obj.Statistics.RowsRead;
+                    try
+                    {
+                        var selection = request.Roots.RetainAllDefinitions ? null
+                            : ManagedSelectionPlanner.Select(obj, request.Roots.ManagedDefinitions, request.Budgets,
+                                cancellationToken, state.CheckBudget);
+                        state.InventoryUnit(obj, input, index + 1, hash, selection);
+                    }
+                    finally
+                    {
+                        state.ReaderCommands += obj.Statistics.Commands;
+                        state.ReaderRows += obj.Statistics.RowsRead;
+                    }
                 }
                 completed = !state.HasErrors;
             }
@@ -61,6 +70,7 @@ public sealed partial class Translator
             state.Error("ROC0002", "Inventory was cancelled and is incomplete.");
         }
         catch (ResourceBudgetException exception) { state.Error("ROC0003", exception.Message); }
+        catch (ManagedSelectionException exception) { state.Error(exception.Code, exception.Message, locator: exception.Locator, family: "managed-selection"); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or ArgumentException or InvalidOperationException)
         { state.Error("ROC1001", exception.Message); }
         state.CheckPeak();
@@ -115,6 +125,11 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
     private readonly List<ImportReport> imports = [];
     private readonly List<InitializationRootReport> roots = [];
     private readonly List<InitializationRecipeReport> recipes = [];
+    private ManagedSelectionReport? managedSelection = request.Roots.RetainAllDefinitions ? null : new()
+    {
+        InputSha256 = request.Inputs.Length == 1 ? request.Inputs[0].Sha256 : "",
+        ClosureComplete = false
+    };
     private readonly SortedDictionary<string, FamilyCounter> families = new(StringComparer.Ordinal);
 
     internal void Error(string code, string message, string? input = null, string? locator = null, string? family = null)
@@ -153,9 +168,17 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
             || target.PointerBits != 64 || target.PointerAlignment != 8 || target.OperatingSystem != "linux"
             || target.Architecture != "x64" || target.Libc != "glibc" || target.OutputRid != "linux-x64")
             Error("ROC1100", "Supported source/host profile is explicitly pinned Linux x64 glibc, Itanium ABI, 8-bit units, little endian, 64-bit pointers aligned to 8 target bytes, output linux-x64.");
-        if (request.Roots.Mode is not ("library" or "executable") || !request.Roots.RetainAllDefinitions
+        if (request.Roots.Mode is not ("library" or "executable")
             || request.Roots.Mode == "executable" && string.IsNullOrWhiteSpace(request.Roots.EntryPoint))
-            Error("ROC1200", "Only retain-all library mode or an explicit retain-all executable entry point is supported.");
+            Error("ROC1200", "Library mode or an explicit executable entry point is required.");
+        if (request.Roots.RetainAllDefinitions && request.Roots.ManagedDefinitions.Length != 0
+            || !request.Roots.RetainAllDefinitions && (request.Inputs.Length != 1 || request.Roots.Mode != "library"
+                || request.Roots.ManagedDefinitions.Length == 0 || request.Roots.Exports.Length != 0))
+            Error("ROC1200", "Explicit managed roots require one input, library mode, retainAllDefinitions=false and no native exports; default retain-all mode has no managed root filter.");
+        foreach (var root in request.Roots.ManagedDefinitions)
+            if (string.IsNullOrWhiteSpace(root.LookupName) || string.IsNullOrWhiteSpace(root.LinkageName)
+                || request.Inputs.Length != 1 || !root.InputSha256.Equals(request.Inputs[0].Sha256, StringComparison.OrdinalIgnoreCase))
+                Error("ROC1200", "Each managed root requires an indexed lookup name, exact captured linkage and the selected immutable input SHA256.");
         if (request.Link.DefinitionSelection != "strong-only" || request.Link.InitializationOrder != "manifest-order" || request.Link.GlobalState != "process")
             Error("ROC1201", "Requested link, initialization or global-state policy is unsupported.");
         if (request.Output.NamePolicy != "source-stable" || request.Output.FilePolicy != "declaration-size")
@@ -165,6 +188,9 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
             || budgets.MaximumOutputBytes <= 0 || budgets.MaximumElapsedSeconds <= 0 || budgets.ReaderCachedRows < 1
             || budgets.ReaderCachedPages < 1 || budgets.ReaderPageSize is < 1 or > 4096)
             Error("ROC0003", "Resource budgets must be positive; inventory opens one unit at a time and selected program emission admits at most two simultaneous units.");
+        if (budgets.MaximumSelectedFunctions < 1 || budgets.MaximumSelectedStorage < 1 || budgets.MaximumSelectedTypes < 1
+            || budgets.MaximumSelectionOperationsPerBody < 1 || budgets.MaximumSelectionDepth < 1)
+            Error("ROC0003", "Managed selection closure budgets must be positive.");
         foreach (var binding in request.Runtime.Bindings)
         {
             if (string.IsNullOrWhiteSpace(binding.LinkageName) || string.IsNullOrWhiteSpace(binding.Provider)
@@ -214,6 +240,10 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
         return new()
     {
         TranslatorVersion = Translator.Version, InventoryComplete = complete, Target = request.Target,
+        ManagedSelection = managedSelection is null ? null : managedSelection with { ClosureComplete = complete && managedSelection.ClosureComplete },
+        InventorySemantics = request.Roots.RetainAllDefinitions
+            ? "Counts are retained entity identities per body/dependency root; they are not dynamic execution counts or an evaluation schedule. Metadata backing expressions are excluded from required execution."
+            : "InventoryComplete describes only the explicitly selected executable closure. Unselected input bodies/storage and unexpanded related metadata are not inventoried; no whole-input completion is claimed. Identity counts are not an execution schedule.",
         Runtime = request.Runtime, Roots = request.Roots, Link = request.Link, Budgets = request.Budgets, Output = request.Output,
         Inputs = inputs.ToArray(), Functions = functions.ToArray(), Storage = storage.ToArray(), Types = types.ToArray(),
         Imports = imports.ToArray(), InitializationRoots = roots.ToArray(), InitializationRecipes = recipes.ToArray(),

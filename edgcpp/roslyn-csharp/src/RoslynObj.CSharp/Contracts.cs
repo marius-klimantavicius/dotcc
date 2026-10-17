@@ -80,6 +80,40 @@ public sealed record ProgramRoots
     public string? EntryPoint { get; init; }
     public string[] Exports { get; init; } = [];
     public bool RetainAllDefinitions { get; init; } = true;
+    public ManagedDefinitionRoot[] ManagedDefinitions { get; init; } = [];
+}
+/// <summary>Current-input indexed discovery plus exact captured linkage selection; never a source semantic rule.</summary>
+public sealed record ManagedDefinitionRoot
+{
+    public string InputSha256 { get; init; } = "";
+    public string LookupName { get; init; } = "";
+    public string LinkageName { get; init; } = "";
+}
+public sealed record ManagedRootSelectionReport(string LookupName, string LinkageName,
+    string? FunctionName, string Signature, string SelectedLocator);
+public sealed record ManagedSelectionDependencyReport(string From, string Kind, string To);
+public sealed record ManagedSelectionReport
+{
+    public string Scope { get; init; } = "selected-executable-closure";
+    public string InputArtifactIdentity { get; init; } = "";
+    public string InputSha256 { get; init; } = "";
+    public bool ClosureComplete { get; init; }
+    public bool WholeInputInventoryComplete { get; init; }
+    public bool WholeInputTranslationComplete { get; init; }
+    public bool RelatedTypeMetadataComplete { get; init; }
+    public int ExecutableBodiesVisited { get; init; }
+    public int RequiredDeclarationCount { get; init; }
+    public int StorageDefinitionCount { get; init; }
+    public int RequiredVariableCount { get; init; }
+    public int ScopedTypeCount { get; init; }
+    public int RequiredConstantCount { get; init; }
+    public long BodyOperationCount { get; init; }
+    public long SelectionWorkCount { get; init; }
+    public long AmbientRootRowsInspected { get; init; }
+    public string UnvisitedInput { get; init; } = "Unselected bodies, storage and related metadata are not inventoried or translated; no whole-input completion is claimed.";
+    public string AmbientInitialization { get; init; } = "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased.";
+    public IReadOnlyList<ManagedRootSelectionReport> Roots { get; init; } = [];
+    public IReadOnlyList<ManagedSelectionDependencyReport> Dependencies { get; init; } = [];
 }
 public sealed record OutputConfiguration
 {
@@ -107,6 +141,11 @@ public sealed record ResourceBudgets
     public int ReaderCachedRows { get; init; } = 4096;
     public int ReaderCachedPages { get; init; } = 128;
     public int ReaderPageSize { get; init; } = 128;
+    public int MaximumSelectedFunctions { get; init; } = 64;
+    public int MaximumSelectedStorage { get; init; } = 128;
+    public int MaximumSelectionOperationsPerBody { get; init; } = 4096;
+    public int MaximumSelectedTypes { get; init; } = 256;
+    public int MaximumSelectionDepth { get; init; } = 128;
 }
 public sealed record TranslationRequest
 {
@@ -165,6 +204,7 @@ public sealed record ProgramReport
     public string TranslatorVersion { get; init; } = "0.1.0";
     public bool InventoryComplete { get; init; }
     public bool TranslationComplete { get; init; }
+    public ManagedSelectionReport? ManagedSelection { get; init; }
     public string InventorySemantics { get; init; } = "Counts are retained entity identities per body/dependency root; they are not dynamic execution counts or an evaluation schedule. Metadata backing expressions are excluded from required execution.";
     public TargetConfiguration Target { get; init; } = new();
     public RuntimeConfiguration Runtime { get; init; } = new();

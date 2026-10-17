@@ -4,8 +4,9 @@ namespace RoslynObj.CSharp;
 
 internal sealed partial class InventoryState
 {
-    internal void InventoryUnit(RoslynObject obj, InputArtifact input, int ordinal, string hash)
+    internal void InventoryUnit(RoslynObject obj, InputArtifact input, int ordinal, string hash, ManagedSelectionPlan? selection = null)
     {
+        if (selection is not null) managedSelection = selection.Report;
         var unit = obj.TranslationUnit;
         var prefix = $"unit/{ordinal:D4}";
         inputs.Add(new(ordinal, input.Path, hash, obj.Manifest.ArtifactIdentity,
@@ -13,17 +14,18 @@ internal sealed partial class InventoryState
             obj.Manifest.EdgVersion, obj.Manifest.CaptureProfile, unit.LanguageMode,
             unit.Capabilities.Select(c => new CapturedCapability(c.Name, c.Value, c.IsRequired, c.Enabled, c.State.Name))
                 .OrderBy(c => c.Name, StringComparer.Ordinal).ToArray(), unit.InvocationArguments.ToArray()));
-        var typeList = unit.Types.ToArray();
+        var typeList = selection?.Types.ToArray() ?? unit.Types.ToArray();
         var typeNames = typeList.Select((type, index) => (type, name: $"{prefix}/type/{index + 1:D6}"))
             .ToDictionary(pair => pair.type, pair => pair.name);
-        var functionList = unit.Functions.ToArray();
+        var functionList = selection?.Functions.ToArray() ?? unit.Functions.ToArray();
         var functionNames = functionList.Select((function, index) => (function, name: $"{prefix}/function/{index + 1:D6}"))
             .ToDictionary(pair => pair.function, pair => pair.name);
-        var variableList = unit.Variables.ToArray();
+        var variableList = selection?.Variables.ToArray() ?? unit.Variables.ToArray();
         var variableNames = variableList.Select((variable, index) => (variable, name: $"{prefix}/storage/{index + 1:D6}"))
             .ToDictionary(pair => pair.variable, pair => pair.name);
         var requiredTypes = new HashSet<CppType>();
         var requiredConstants = new HashSet<Constant>();
+        var selectedConstants = selection?.Constants.ToHashSet();
         var retainedConstants = new HashSet<Constant>();
         var requiredValues = new HashSet<ConstantValue>();
         var retainedValues = new HashSet<ConstantValue>();
@@ -37,11 +39,12 @@ internal sealed partial class InventoryState
         var scopes = new HashSet<Scope>();
         var usage = new Dictionary<Symbol, SymbolUsage>();
         var reports = new Dictionary<FunctionSymbol, FunctionReport>();
-        var requiredBodies = new HashSet<FunctionSymbol>(functionList.Where(RequiredBody));
+        var requiredBodies = new HashSet<FunctionSymbol>(selection is null ? functionList.Where(RequiredBody) : selection.Definitions);
         long checkpoint = 0;
 
         string TypeName(CppType? type) => type is null ? "<absent>" : typeNames.TryGetValue(type, out var name)
-            ? name : throw new InvalidOperationException("A type relationship is outside its translation unit's public type inventory.");
+            ? name : selection is not null ? "<unexpanded-related-type>"
+                : throw new InvalidOperationException("A type relationship is outside its translation unit's public type inventory.");
         string EntityName(SemanticEntity entity) => entity switch
         {
             FunctionSymbol function when functionNames.TryGetValue(function, out var name) => name,
@@ -52,7 +55,10 @@ internal sealed partial class InventoryState
         void Tick() { if (++checkpoint % 256 == 0) CheckBudget(); }
         void RequireType(CppType? type)
         {
-            if (type is null || !requiredTypes.Add(type)) return;
+            if (type is null) return;
+            if (selection is not null && !typeNames.ContainsKey(type))
+                throw new ManagedSelectionException("ROC1213", "A required type is absent from the immutable managed selection closure.");
+            if (!requiredTypes.Add(type)) return;
             switch (type)
             {
                 case QualifiedType qualified: RequireType(qualified.UnderlyingType); break;
@@ -64,6 +70,7 @@ internal sealed partial class InventoryState
                     foreach (var parameter in routine.Parameters) RequireType(parameter.Type);
                     break;
                 case RecordType record:
+                    if (selection is not null) break; // Scoped type associations do not pull unrelated class fields/bases into execution.
                     foreach (var field in record.Fields) RequireType(field.Type);
                     foreach (var directBase in record.Bases) RequireType(directBase.BaseType);
                     break;
@@ -74,6 +81,9 @@ internal sealed partial class InventoryState
         void Use(SemanticEntity? entity, string locator, bool address = false, bool directCall = false)
         {
             if (entity is not Symbol symbol) return;
+            if (selection is not null && (symbol is FunctionSymbol selectedFunction && !functionNames.ContainsKey(selectedFunction)
+                || symbol is VariableSymbol selectedVariable && !variableNames.ContainsKey(selectedVariable)))
+                throw new ManagedSelectionException("ROC1213", "Required inventory dependency is absent from the immutable managed selection closure.", locator);
             if (!usage.TryGetValue(symbol, out var used)) usage.Add(symbol, used = new());
             used.Required = true;
             if (address) used.AddressReferences++;
@@ -119,6 +129,8 @@ internal sealed partial class InventoryState
         void VisitConstant(Constant? constant, string locator, bool required)
         {
             if (constant is null) return;
+            if (required && selectedConstants is not null && !selectedConstants.Contains(constant))
+                throw new ManagedSelectionException("ROC1213", "A required constant is absent from the immutable managed selection closure.", locator);
             if (required && !requiredConstants.Add(constant)) return;
             if (!required && !retainedConstants.Add(constant)) return;
             retainedConstants.Add(constant);
@@ -398,32 +410,35 @@ internal sealed partial class InventoryState
                 variable.IsThreadLocal, details.AddressTaken, details.IsWeak, details.IsCommon, details.IsGnuAlias)
                 { CurrentStorage = variable.SymbolDetails.Storage?.Name });
         }
-        VisitScope(unit.GlobalScope, prefix + "/global-scope");
-        foreach (var root in unit.Roots)
+        if (selection is null)
         {
-            Tick();
-            var locator = prefix + $"/root/{root.Kind.Name}/{root.Ordinal:D6}";
-            roots.Add(new(locator, root.Kind.Name, EntityName(root.Entity), root.Ordinal, false));
-            var executableRoot = root.Kind.Name is "file_scope_statement" or "file_initializer";
-            Count("translation-unit-root", root.Kind.Name, executableRoot, locator);
-            if (!executableRoot) continue;
-            switch (root.Entity)
+            VisitScope(unit.GlobalScope, prefix + "/global-scope");
+            foreach (var root in unit.Roots)
             {
-                case Initialization initialization: VisitInitialization(initialization, locator, RecipeContext.ExecutionRoot); break;
-                case Lifetime lifetime: VisitLifetime(lifetime, locator); break;
-                case VariableSymbol variable when !ExternalVariable(variable): VisitConstant(variable.ConstantInitializer, locator, true); break;
-                case SemanticNode node when node.RepresentationRole.Name != "metadata": VisitOperations(node, locator, true, RecipeContext.ExecutionRoot); break;
+                Tick();
+                var locator = prefix + $"/root/{root.Kind.Name}/{root.Ordinal:D6}";
+                roots.Add(new(locator, root.Kind.Name, EntityName(root.Entity), root.Ordinal, false));
+                var executableRoot = root.Kind.Name is "file_scope_statement" or "file_initializer";
+                Count("translation-unit-root", root.Kind.Name, executableRoot, locator);
+                if (!executableRoot) continue;
+                switch (root.Entity)
+                {
+                    case Initialization initialization: VisitInitialization(initialization, locator, RecipeContext.ExecutionRoot); break;
+                    case Lifetime lifetime: VisitLifetime(lifetime, locator); break;
+                    case VariableSymbol variable when !ExternalVariable(variable): VisitConstant(variable.ConstantInitializer, locator, true); break;
+                    case SemanticNode node when node.RepresentationRole.Name != "metadata": VisitOperations(node, locator, true, RecipeContext.ExecutionRoot); break;
+                }
+            }
+            foreach (var root in unit.FileScopeInitializationRoutines)
+            {
+                var locator = prefix + $"/file-initialization/{root.Ordinal:D6}";
+                roots.Add(new(locator, "file-scope-routine", EntityName(root.Routine), root.Ordinal, root.IsThreadLocal));
+                Use(root.Routine, locator, directCall: true);
+                Count("initialization", root.IsThreadLocal ? "file-thread-routine" : "file-routine", true, locator);
             }
         }
-        foreach (var root in unit.FileScopeInitializationRoutines)
-        {
-            var locator = prefix + $"/file-initialization/{root.Ordinal:D6}";
-            roots.Add(new(locator, "file-scope-routine", EntityName(root.Routine), root.Ordinal, root.IsThreadLocal));
-            Use(root.Routine, locator, directCall: true);
-            Count("initialization", root.IsThreadLocal ? "file-thread-routine" : "file-routine", true, locator);
-        }
         long constantOrdinal = 0;
-        foreach (var constant in unit.Constants)
+        foreach (var constant in selection?.Constants.AsEnumerable() ?? unit.Constants)
         {
             Tick();
             // Every retained constant is inventoried, including non-executing recipe constants.

@@ -1,0 +1,4624 @@
+{
+  "reportVersion": 1,
+  "milestone": "Explicit managed roots and actual captured DuckDB getter execution",
+  "status": "passed-bounded-selected-core-slice",
+  "broaderT5Complete": false,
+  "wholeDuckdbCoreComplete": false,
+  "wholeDuckdbProjectComplete": false,
+  "parentCheckpoint": "0cedb8efd",
+  "artifactRoot": "/mnt/storage/roslynobj-csharp-20261015/t5",
+  "sourceSnapshots": [
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-product-source-1/source-snapshot.json",
+        "bytes": 44862,
+        "sha256": "25e64edf0d47881c46a543c8b49874fd2de3618a8d97ad8841ce5624b9d27822"
+      },
+      "files": 260,
+      "unchanged": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-checker-source-1/source-snapshot.json",
+        "bytes": 1365,
+        "sha256": "3657c150e1746b3fbb7d096253ab98cc18ed554596a3e4177a2d78ae9975a3ae"
+      },
+      "files": 9,
+      "unchanged": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-checker-source-2/source-snapshot.json",
+        "bytes": 1379,
+        "sha256": "399bedf185b05278576b1c916d124ceb6d5240359d3f601351549decb1831df8"
+      },
+      "files": 9,
+      "unchanged": true
+    }
+  ],
+  "sourceFreezeVerified": true,
+  "inputsUnchanged": true,
+  "inputs": {
+    "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65": {
+      "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0316/unit.roslynobj",
+      "bytes": 156354560,
+      "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65"
+    },
+    "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/pointer-call-chain.roslynobj",
+      "bytes": 1031168,
+      "sha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620"
+    },
+    "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/exception-cleanup.roslynobj",
+      "bytes": 791552,
+      "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5"
+    }
+  },
+  "runtimeUnchanged": true,
+  "unchangedRuntimeFiles": [
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/BorrowedNativeRttiData.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/ManagedCppException.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/RoslynObj.CSharp.Runtime.csproj",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/SysVVariadic.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetArithmetic.Assignments.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetArithmetic.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetIntrinsics.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetStorage.cs",
+    "edgcpp/roslyn-csharp/src/RoslynObj.CSharp.Runtime/TargetVolatileMemory.cs"
+  ],
+  "phaseCount": 21,
+  "normalSuccessfulPhaseCount": 19,
+  "expectedRejectionPhaseCount": 2,
+  "unexpectedOutcomes": 0,
+  "budgetViolations": 0,
+  "phases": [
+    {
+      "name": "managed-roots-cli-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-cli-build-1/run.json",
+        "bytes": 1273,
+        "sha256": "b29bfc7c13a4ece91643356dce3467137ee7509a348445d84b8fd024a8671a2e"
+      },
+      "elapsedSeconds": 8.876572920940816,
+      "sampledPeakProcessTreeRssBytes": 668995584,
+      "waitedPeakProcessRssBytes": 330203136,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-core-getter-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-translate-1/run.json",
+        "bytes": 1179,
+        "sha256": "0a5eec917691aa612f31365028d253eeb4b705278b99ae49403cfa09a0a894c2"
+      },
+      "elapsedSeconds": 0.9042553190374747,
+      "sampledPeakProcessTreeRssBytes": 105472000,
+      "waitedPeakProcessRssBytes": 104480768,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-pointer-chain-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-translate-1/run.json",
+        "bytes": 1183,
+        "sha256": "2711422a8d348dd660b758fa69eb064c5ba85f82a439125a88d698bf8ee57331"
+      },
+      "elapsedSeconds": 1.7089524739421904,
+      "sampledPeakProcessTreeRssBytes": 122253312,
+      "waitedPeakProcessRssBytes": 121634816,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-unresolved-guard-translate-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-unresolved-guard-translate-1/run.json",
+        "bytes": 1189,
+        "sha256": "445a430ebd325fa3f6dbf6101a3491df5965def3dd9374a4e9b158dfd4eeb4c4"
+      },
+      "elapsedSeconds": 0.5023652429226786,
+      "sampledPeakProcessTreeRssBytes": 98521088,
+      "waitedPeakProcessRssBytes": 99876864,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-eh-unsupported-translate-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-eh-unsupported-translate-1/run.json",
+        "bytes": 1185,
+        "sha256": "f8ee70a17502888bd53167cf8eb57ea12a21746619de7265ed8ade38e9327383"
+      },
+      "elapsedSeconds": 0.3015043350169435,
+      "sampledPeakProcessTreeRssBytes": 95088640,
+      "waitedPeakProcessRssBytes": 96206848,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-core-getter-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-jit-build-1/run.json",
+        "bytes": 1386,
+        "sha256": "05288d9748163769d690cda3bcd267de7a384bb93453b9d9c869f0b50e89a571"
+      },
+      "elapsedSeconds": 5.806111018056981,
+      "sampledPeakProcessTreeRssBytes": 517648384,
+      "waitedPeakProcessRssBytes": 211456000,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-core-getter-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-jit-run-1/run.json",
+        "bytes": 917,
+        "sha256": "20879abae092cd54e0fa5df6d21d56b3206dff7dd53c7727267827a033b4e249"
+      },
+      "elapsedSeconds": 0.10075081198010594,
+      "sampledPeakProcessTreeRssBytes": 106496,
+      "waitedPeakProcessRssBytes": 35389440,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-core-getter-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-aot-publish-1/run.json",
+        "bytes": 1500,
+        "sha256": "050a5cb39c8696fce9eb7bfbaca3659414f74928d4fc208aee5894f6869775de"
+      },
+      "elapsedSeconds": 9.570437225978822,
+      "sampledPeakProcessTreeRssBytes": 680730624,
+      "waitedPeakProcessRssBytes": 247664640,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-core-getter-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-aot-run-1/run.json",
+        "bytes": 898,
+        "sha256": "68b949129231866d5ae725671038b03ccec913f34168c529809aa20b5ca1e073"
+      },
+      "elapsedSeconds": 0.10052962799090892,
+      "sampledPeakProcessTreeRssBytes": 98304,
+      "waitedPeakProcessRssBytes": 18350080,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-pointer-chain-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-jit-build-1/run.json",
+        "bytes": 1401,
+        "sha256": "791b40213577a85cef117f55675fa77e12b3150d63eb48db4d76acc224633c2f"
+      },
+      "elapsedSeconds": 5.894554164027795,
+      "sampledPeakProcessTreeRssBytes": 521035776,
+      "waitedPeakProcessRssBytes": 213635072,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-pointer-chain-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-jit-run-1/run.json",
+        "bytes": 1103,
+        "sha256": "c0d6378c0aabd643f5de158f0b574979baa43d9cfa350c1df2108ff5afc7d152"
+      },
+      "elapsedSeconds": 0.1006494250614196,
+      "sampledPeakProcessTreeRssBytes": 24576,
+      "waitedPeakProcessRssBytes": 45875200,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-pointer-chain-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-aot-publish-1/run.json",
+        "bytes": 1515,
+        "sha256": "37b4b0b349475b41175b2dc2e5421f1b5f52a146715cf13f5de41d269c73d9b0"
+      },
+      "elapsedSeconds": 9.175327555043623,
+      "sampledPeakProcessTreeRssBytes": 662437888,
+      "waitedPeakProcessRssBytes": 257699840,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-pointer-chain-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-aot-run-1/run.json",
+        "bytes": 1086,
+        "sha256": "56a42abecd4e1306b5725e978e6b92c1cb4b2cb3d7aefebdb43aec4b73d3773f"
+      },
+      "elapsedSeconds": 0.10056502697989345,
+      "sampledPeakProcessTreeRssBytes": 20480,
+      "waitedPeakProcessRssBytes": 18350080,
+      "budgetViolation": null
+    },
+    {
+      "name": "managed-default-pointer-chain-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-pointer-chain-translate-1/run.json",
+        "bytes": 1207,
+        "sha256": "1e6128bc48649fc16b85669adf3bea8d7435724eeaedcb709f422709c666074d"
+      },
+      "elapsedSeconds": 2.0105794789269567,
+      "sampledPeakProcessTreeRssBytes": 123219968,
+      "waitedPeakProcessRssBytes": 118202368,
+      "budgetViolation": null
+    },
+    {
+      "name": "managed-default-eh-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-translate-1/run.json",
+        "bytes": 1185,
+        "sha256": "e970608dd69c0375b1fde7fe0306d5ae28ceaee966dfa4fafe4c210e9939796a"
+      },
+      "elapsedSeconds": 0.8049804649781436,
+      "sampledPeakProcessTreeRssBytes": 106340352,
+      "waitedPeakProcessRssBytes": 101449728,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-core-getter-repeat-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-repeat-translate-1/run.json",
+        "bytes": 1202,
+        "sha256": "15c94c0ac1bf34403d78151921320a2e97710fcbc2f13075a3383f78a79b0a9c"
+      },
+      "elapsedSeconds": 1.106465911027044,
+      "sampledPeakProcessTreeRssBytes": 107950080,
+      "waitedPeakProcessRssBytes": 102899712,
+      "budgetViolation": null
+    },
+    {
+      "name": "selected-pointer-chain-repeat-translate-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-repeat-translate-1/run.json",
+        "bytes": 1207,
+        "sha256": "e3e04ba202c2a6eba046867204e0edb7e118b9821bd872bc1f7cafc72753c362"
+      },
+      "elapsedSeconds": 2.6145061650313437,
+      "sampledPeakProcessTreeRssBytes": 120782848,
+      "waitedPeakProcessRssBytes": 118751232,
+      "budgetViolation": null
+    },
+    {
+      "name": "managed-default-eh-jit-build-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-jit-build-1/run.json",
+        "bytes": 1384,
+        "sha256": "f2d2a47e773f6600c4a3fd0f7242b43883f6dc5aeb6b8ff2c198872e338985cd"
+      },
+      "elapsedSeconds": 7.55793755792547,
+      "sampledPeakProcessTreeRssBytes": 515387392,
+      "waitedPeakProcessRssBytes": 207659008,
+      "budgetViolation": null
+    },
+    {
+      "name": "managed-default-eh-jit-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-jit-run-1/run.json",
+        "bytes": 1005,
+        "sha256": "b121ddcabc4a275b032740184bb3ba9833d50569c5140932cfacc3fcd07f45e3"
+      },
+      "elapsedSeconds": 0.10082070401404053,
+      "sampledPeakProcessTreeRssBytes": 212992,
+      "waitedPeakProcessRssBytes": 35913728,
+      "budgetViolation": null
+    },
+    {
+      "name": "managed-default-eh-aot-publish-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-aot-publish-1/run.json",
+        "bytes": 1499,
+        "sha256": "3d49130f0d1a6f45f4e3abbcea896e20fd71671314933aa1ce24e54a475bf8a1"
+      },
+      "elapsedSeconds": 12.16187950107269,
+      "sampledPeakProcessTreeRssBytes": 685449216,
+      "waitedPeakProcessRssBytes": 245878784,
+      "budgetViolation": null
+    },
+    {
+      "name": "managed-default-eh-aot-run-1",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-aot-run-1/run.json",
+        "bytes": 986,
+        "sha256": "39930a3781c8e881d40924baf51e038603236059e7df80a9814d65b8f3007888"
+      },
+      "elapsedSeconds": 0.10064406995661557,
+      "sampledPeakProcessTreeRssBytes": 16384,
+      "waitedPeakProcessRssBytes": 18087936,
+      "budgetViolation": null
+    }
+  ],
+  "requests": {
+    "selected-core-getter": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-core-getter.json",
+      "bytes": 2406,
+      "sha256": "9e80a9a72c9db78bc163ec9449d5482c8082dacacf58bbcd662e954959853d5e"
+    },
+    "selected-pointer-chain": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-pointer-chain.json",
+      "bytes": 3317,
+      "sha256": "0d2bef5a315e1fd992bbf1855296c465e0516b82c040796477c2eb3e795598fa"
+    },
+    "selected-unresolved-guard": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-unresolved-guard.json",
+      "bytes": 2432,
+      "sha256": "77a3a3120cbcdd5984a893adfbba9cae3dd8941e8d82f1ee3ec16feadfba0acf"
+    },
+    "selected-eh-unsupported": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-eh-unsupported.json",
+      "bytes": 2373,
+      "sha256": "577a0cf3fa24096c54d6b6be48ef837e59026eeea43bd63300ca819123254c1c"
+    }
+  },
+  "reports": {
+    "selected-core-getter": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-core-getter-report.json",
+      "bytes": 62607,
+      "sha256": "e2f119ae953d3caed64afcca44db8e3e6411deaa126af3e40b92c67d20cc912a"
+    },
+    "selected-pointer-chain": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-pointer-chain-report.json",
+      "bytes": 217034,
+      "sha256": "11b464e22469a8116b0f38f6a092a4f78d59113060e25ae4e3496008b073eff3"
+    },
+    "selected-unresolved-guard": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-unresolved-guard-report.json",
+      "bytes": 70024,
+      "sha256": "e18f517f1f324f169a72e60838d042d6298d9b0b78dbcb5d87e543db8bc62fb5"
+    },
+    "selected-eh-unsupported": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-eh-unsupported-report.json",
+      "bytes": 9939,
+      "sha256": "2805cc5dbbcfcaf17a399c8052942bb5ed8d7e70f7b238fa756c4eb7eacbb8e5"
+    }
+  },
+  "publications": {
+    "selected-core-getter-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-generated-1/completion.json",
+        "bytes": 808,
+        "sha256": "9ffa9507f323cc793ad22730734cff7a768a4d4a0dbeab450ebb3f75f1999ff4"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "9cf66ac5d421e51567cac9b24d4adc112ffbdbf8f312369d812dec76b0ef11a6",
+          "sizeBytes": 759
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "c2b1f9f7a180a8ddd19f29fe3241ed41845aaf074004630367c51fc3646a9377",
+          "sizeBytes": 556
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "e2f119ae953d3caed64afcca44db8e3e6411deaa126af3e40b92c67d20cc912a",
+          "sizeBytes": 62607
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+          "artifactIdentity": "b59fc07a2aa9718e152076f3287b3d09"
+        }
+      ]
+    },
+    "selected-pointer-chain-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "3cddfe7eb0d2c5d18e57bdc5303f7b5e054da09fdc0d3d4f4393629f20e16056"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "0ffbe23cf0dbefd6fb11f84adc4691860601bcdab4b398440df3695beee90ca8",
+          "sizeBytes": 22014
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "c2b1f9f7a180a8ddd19f29fe3241ed41845aaf074004630367c51fc3646a9377",
+          "sizeBytes": 556
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "11b464e22469a8116b0f38f6a092a4f78d59113060e25ae4e3496008b073eff3",
+          "sizeBytes": 217034
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+          "artifactIdentity": "ef495306877fecc9a589c39c85324d3e"
+        }
+      ]
+    },
+    "selected-core-getter-generated-repeat-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-generated-repeat-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-generated-repeat-1/completion.json",
+        "bytes": 808,
+        "sha256": "83f3855cc69f018f3c250af4779acd7550c1b74078a5f62b8c23f65086a4430a"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "9cf66ac5d421e51567cac9b24d4adc112ffbdbf8f312369d812dec76b0ef11a6",
+          "sizeBytes": 759
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "c2b1f9f7a180a8ddd19f29fe3241ed41845aaf074004630367c51fc3646a9377",
+          "sizeBytes": 556
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "e9eea9171a2f2a4143a690e909ddb4810d5011e9bf8a3ab951e3fab1e85f8bcb",
+          "sizeBytes": 62614
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+          "artifactIdentity": "b59fc07a2aa9718e152076f3287b3d09"
+        }
+      ]
+    },
+    "selected-pointer-chain-generated-repeat-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-generated-repeat-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-generated-repeat-1/completion.json",
+        "bytes": 811,
+        "sha256": "2591108dc63b8ca2bbffef84a87bb44422d89a0bad582f27ea48f353aabba32d"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "0ffbe23cf0dbefd6fb11f84adc4691860601bcdab4b398440df3695beee90ca8",
+          "sizeBytes": 22014
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "c2b1f9f7a180a8ddd19f29fe3241ed41845aaf074004630367c51fc3646a9377",
+          "sizeBytes": 556
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "5168c993cf4d039522406e29183cc6adcb180122436a8ad024df1fa5a2ac6bae",
+          "sizeBytes": 217041
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+          "artifactIdentity": "ef495306877fecc9a589c39c85324d3e"
+        }
+      ]
+    },
+    "managed-default-pointer-chain-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-pointer-chain-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-pointer-chain-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "747af37ee94b56c9a5a547db9f90f036c560a98eddeb436df7612793cd0ebb6d"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "2d313a7b1d0907d657dd1a325946c60f5b7c1be642c2383bab41d0133e1a4dc9",
+          "sizeBytes": 22012
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "c2b1f9f7a180a8ddd19f29fe3241ed41845aaf074004630367c51fc3646a9377",
+          "sizeBytes": 556
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "6ac84e30961fb4c643ccac2407c03b1a7aae9262846e6a6917739f6d783a96ee",
+          "sizeBytes": 257709
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+          "artifactIdentity": "ef495306877fecc9a589c39c85324d3e"
+        }
+      ]
+    },
+    "managed-default-eh-generated-1": {
+      "directory": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-generated-1",
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-generated-1/completion.json",
+        "bytes": 811,
+        "sha256": "4e1fc7db8d6da2231eac68bdbd19b23d31b26c99195cb6287f5d256b61862127"
+      },
+      "files": [
+        {
+          "relativePath": "Generated.cs",
+          "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce",
+          "sizeBytes": 13895
+        },
+        {
+          "relativePath": "Generated.csproj",
+          "sha256": "c2b1f9f7a180a8ddd19f29fe3241ed41845aaf074004630367c51fc3646a9377",
+          "sizeBytes": 556
+        },
+        {
+          "relativePath": "program-report.json",
+          "sha256": "825dc3271b83ec0f5c742c3aaec328d6f2846de9f1db09c19e5b31dc4283d539",
+          "sizeBytes": 188109
+        }
+      ],
+      "inputs": [
+        {
+          "ordinal": 1,
+          "sha256": "5836f0588d1f168b367996c52a0c84cb681ae0cd953a2050acf9b6a49e08eee5",
+          "artifactIdentity": "4a64e02f20ffe2715ecc5b7ad5e90d74"
+        }
+      ]
+    }
+  },
+  "selectedScope": {
+    "core": {
+      "scope": "selected-executable-closure",
+      "inputArtifactIdentity": "b59fc07a2aa9718e152076f3287b3d09",
+      "inputSha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+      "closureComplete": true,
+      "wholeInputInventoryComplete": false,
+      "wholeInputTranslationComplete": false,
+      "relatedTypeMetadataComplete": false,
+      "executableBodiesVisited": 1,
+      "requiredDeclarationCount": 0,
+      "storageDefinitionCount": 0,
+      "requiredVariableCount": 1,
+      "scopedTypeCount": 6,
+      "requiredConstantCount": 0,
+      "bodyOperationCount": 5,
+      "selectionWorkCount": 5475,
+      "ambientRootRowsInspected": 5440,
+      "unvisitedInput": "Unselected bodies, storage and related metadata are not inventoried or translated; no whole-input completion is claimed.",
+      "ambientInitialization": "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased.",
+      "roots": [
+        {
+          "lookupName": "GetVectorType",
+          "linkageName": "_ZNK6duckdb12VectorBuffer13GetVectorTypeEv",
+          "functionName": "GetVectorType",
+          "signature": "return=unit/0001/type/000002; parameters=[0:this_parameter:unit/0001/type/000003]; this=True; prototype=True; variadic=False; cc=cc_default; linkage=nlk_cplusplus_external",
+          "selectedLocator": "unit/0001/function/000001"
+        }
+      ],
+      "dependencies": [
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000001"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000008"
+        }
+      ]
+    },
+    "genuineChain": {
+      "scope": "selected-executable-closure",
+      "inputArtifactIdentity": "ef495306877fecc9a589c39c85324d3e",
+      "inputSha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+      "closureComplete": true,
+      "wholeInputInventoryComplete": false,
+      "wholeInputTranslationComplete": false,
+      "relatedTypeMetadataComplete": false,
+      "executableBodiesVisited": 17,
+      "requiredDeclarationCount": 1,
+      "storageDefinitionCount": 7,
+      "requiredVariableCount": 34,
+      "scopedTypeCount": 75,
+      "requiredConstantCount": 86,
+      "bodyOperationCount": 912,
+      "selectionWorkCount": 3402,
+      "ambientRootRowsInspected": 18,
+      "unvisitedInput": "Unselected bodies, storage and related metadata are not inventoried or translated; no whole-input completion is claimed.",
+      "ambientInitialization": "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased.",
+      "roots": [
+        {
+          "lookupName": "fixture",
+          "linkageName": "fixture",
+          "functionName": "fixture",
+          "signature": "return=unit/0001/type/000002; parameters=[0:ordinary_parameter:unit/0001/type/000003,1:ordinary_parameter:unit/0001/type/000003]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_external",
+          "selectedLocator": "unit/0001/function/000001"
+        },
+        {
+          "lookupName": "lifetime_count",
+          "linkageName": "lifetime_count",
+          "functionName": "lifetime_count",
+          "signature": "return=unit/0001/type/000002; parameters=[]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_external",
+          "selectedLocator": "unit/0001/function/000002"
+        },
+        {
+          "lookupName": "lifetime_overflow",
+          "linkageName": "lifetime_overflow",
+          "functionName": "lifetime_overflow",
+          "signature": "return=unit/0001/type/000002; parameters=[]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_external",
+          "selectedLocator": "unit/0001/function/000003"
+        },
+        {
+          "lookupName": "lifetime_live",
+          "linkageName": "lifetime_live",
+          "functionName": "lifetime_live",
+          "signature": "return=unit/0001/type/000002; parameters=[]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_external",
+          "selectedLocator": "unit/0001/function/000004"
+        },
+        {
+          "lookupName": "lifetime_event",
+          "linkageName": "lifetime_event",
+          "functionName": "lifetime_event",
+          "signature": "return=unit/0001/type/000002; parameters=[0:ordinary_parameter:unit/0001/type/000002]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_external",
+          "selectedLocator": "unit/0001/function/000005"
+        },
+        {
+          "lookupName": "lifetime_value",
+          "linkageName": "lifetime_value",
+          "functionName": "lifetime_value",
+          "signature": "return=unit/0001/type/000002; parameters=[0:ordinary_parameter:unit/0001/type/000002]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_external",
+          "selectedLocator": "unit/0001/function/000006"
+        }
+      ],
+      "dependencies": [
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000001"
+        },
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000002"
+        },
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000003"
+        },
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000004"
+        },
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000005"
+        },
+        {
+          "from": "managed-root",
+          "kind": "root",
+          "to": "unit/0001/function/000006"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000006"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[2]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[2]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[3]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000012"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[3]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[4]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000013"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[4]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000006"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[1]",
+          "kind": "initializer-target",
+          "to": "unit/0001/storage/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[2]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[2]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[2]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[2]/child[2]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[2]/child[2]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[5]/child[2]/child[2]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[8]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[8]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000042"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[8]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[9]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[9]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000042"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[9]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[10]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[10]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[10]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[10]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[10]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[10]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000056"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000057"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[11]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[12]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[12]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[12]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000059"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[12]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000012"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[13]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[13]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[13]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[13]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[13]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[13]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000056"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000057"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[14]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[15]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[15]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[15]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000059"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[15]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000013"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[16]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[16]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[16]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[18]",
+          "kind": "initializer-target",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[18]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[18]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[18]/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[20]",
+          "kind": "initializer-target",
+          "to": "unit/0001/storage/000006"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[20]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[20]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000008"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[20]/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[22]",
+          "kind": "initializer-target",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[22]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[22]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[22]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[23]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[23]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000015"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[23]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[23]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000016"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[24]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[24]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000017"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[24]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[24]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[24]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[25]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[25]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[25]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000018"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[26]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[26]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[26]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[26]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[26]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[26]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[27]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[27]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[27]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[27]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[28]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[28]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000019"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[28]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[28]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000020"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[29]/child[0]/child[1]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[30]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[30]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000021"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[30]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[30]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[30]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[30]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000022"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[31]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[31]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[31]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000023"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[32]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[32]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[32]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000059"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[32]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000024"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[33]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[33]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[33]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[33]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[34]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[34]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000025"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[34]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[34]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[35]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[35]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000026"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[35]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[35]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[35]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[36]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[36]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[36]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000027"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[37]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[37]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[37]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[37]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[37]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[37]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[38]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[38]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[38]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[38]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[39]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[39]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000028"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[39]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[39]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000029"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[40]/child[0]/child[1]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[41]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[41]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[41]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000030"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[42]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[42]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[42]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000059"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[42]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000031"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[43]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[43]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[43]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[43]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[44]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[44]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000032"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[44]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[44]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[45]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[45]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000033"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[45]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[45]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[45]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[46]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[46]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[46]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000034"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[47]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[47]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[47]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000059"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[47]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000035"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[48]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[48]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[48]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[48]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[48]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[48]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000036"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[49]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[49]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[49]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[49]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[50]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[50]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000037"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[50]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[50]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000038"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[51]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[51]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000039"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[51]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[51]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000010"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[51]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[52]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[52]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[52]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000040"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[53]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[53]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[53]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000009"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[53]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000006"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[54]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[54]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000041"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[54]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[54]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[55]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[55]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000042"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[55]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[55]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[55]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[56]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[56]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[56]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000043"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[57]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[57]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000044"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[57]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[57]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[57]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[58]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[58]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000045"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[58]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[58]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[58]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000046"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[59]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000047"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[60]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000048"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000012"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000012"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[1]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000005"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[1]/child[0]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[1]/child[0]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[61]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000049"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000056"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000057"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[62]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000056"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000057"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[63]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[64]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[64]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000052"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[64]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000003"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[64]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000042"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[64]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000053"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[65]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[65]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000054"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[65]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000004"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[65]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000042"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[65]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000055"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[66]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[66]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000056"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[66]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[67]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[67]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000057"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[67]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000012"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[68]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[68]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000058"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[68]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000013"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[69]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[69]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000059"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[69]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[69]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[70]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[70]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000060"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[70]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[70]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[70]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000001"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[71]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[71]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000061"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[71]/child[0]/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[71]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[71]/child[0]/child[1]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000002"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[72]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[72]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000062"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[72]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000011"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[72]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000012"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000063"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000064"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000065"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000066"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[1]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[73]/child[0]/child[1]/child[0]/child[1]/child[1]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000067"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000068"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000069"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000070"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000001/body/child[74]/child[0]/child[1]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000071"
+        },
+        {
+          "from": "unit/0001/function/000002/body/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000009"
+        },
+        {
+          "from": "unit/0001/function/000003/body/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000010"
+        },
+        {
+          "from": "unit/0001/function/000004/body/child[0]/child[0]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000072"
+        },
+        {
+          "from": "unit/0001/function/000005",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000015"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000015"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000073"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000015"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000009"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000016"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000015"
+        },
+        {
+          "from": "unit/0001/function/000005/body/child[0]/child[0]/child[2]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000074"
+        },
+        {
+          "from": "unit/0001/function/000006",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000017"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000017"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000075"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000017"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000076"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000014"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000017"
+        },
+        {
+          "from": "unit/0001/function/000006/body/child[0]/child[0]/child[2]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000077"
+        },
+        {
+          "from": "unit/0001/function/000007",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000018"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000009"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000078"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000016"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000009"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000018"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[2]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000010"
+        },
+        {
+          "from": "unit/0001/function/000007/body/child[0]/child[2]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000079"
+        },
+        {
+          "from": "unit/0001/function/000008",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000019"
+        },
+        {
+          "from": "unit/0001/function/000008/body/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000019"
+        },
+        {
+          "from": "unit/0001/function/000008/body/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000050"
+        },
+        {
+          "from": "unit/0001/function/000009",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000020"
+        },
+        {
+          "from": "unit/0001/function/000009",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000021"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000020"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000059"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000080"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[2]",
+          "kind": "initializer-target",
+          "to": "unit/0001/storage/000021"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[2]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000012"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[2]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000012"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[2]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000020"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[2]/child[0]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[2]/child[0]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000013"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000013"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000014"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000014"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000015"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000015"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[0]/child[1]/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000021"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[0]/child[2]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000081"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[3]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000082"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[0]/child[1]/child[4]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000021"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000083"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[2]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000016"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[2]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000016"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[2]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000020"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[2]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000009/body/child[2]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000010",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000022"
+        },
+        {
+          "from": "unit/0001/function/000010",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000023"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000023"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000017"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000017"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000022"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000051"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000052"
+        },
+        {
+          "from": "unit/0001/function/000010/body/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000023"
+        },
+        {
+          "from": "unit/0001/function/000011",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000024"
+        },
+        {
+          "from": "unit/0001/function/000011/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000024"
+        },
+        {
+          "from": "unit/0001/function/000011/body/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000201"
+        },
+        {
+          "from": "unit/0001/function/000012",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000025"
+        },
+        {
+          "from": "unit/0001/function/000012",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000026"
+        },
+        {
+          "from": "unit/0001/function/000012/body/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000026"
+        },
+        {
+          "from": "unit/0001/function/000012/body/child[0]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000025"
+        },
+        {
+          "from": "unit/0001/function/000012/body/child[0]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000012/body/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000026"
+        },
+        {
+          "from": "unit/0001/function/000013",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000027"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000012"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000027"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[1]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000013"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[2]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[2]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[2]/child[0]/child[1]/child[0]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000084"
+        },
+        {
+          "from": "unit/0001/function/000013/body/child[2]/child[0]/child[1]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000027"
+        },
+        {
+          "from": "unit/0001/function/000015",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000028"
+        },
+        {
+          "from": "unit/0001/function/000015/body/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000011"
+        },
+        {
+          "from": "unit/0001/function/000015/body/child[1]/child[0]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000015/body/child[1]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000007"
+        },
+        {
+          "from": "unit/0001/function/000015/body/child[1]/child[0]/child[1]/child[0]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000085"
+        },
+        {
+          "from": "unit/0001/function/000015/body/child[1]/child[0]/child[1]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000028"
+        },
+        {
+          "from": "unit/0001/function/000015/body/child[2]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000028"
+        },
+        {
+          "from": "unit/0001/function/000016",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000029"
+        },
+        {
+          "from": "unit/0001/function/000016",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000030"
+        },
+        {
+          "from": "unit/0001/function/000016/body/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000030"
+        },
+        {
+          "from": "unit/0001/function/000016/body/child[0]/child[0]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000018"
+        },
+        {
+          "from": "unit/0001/function/000016/body/child[0]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000018"
+        },
+        {
+          "from": "unit/0001/function/000016/body/child[0]/child[0]/child[0]/child[1]/child[1]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000029"
+        },
+        {
+          "from": "unit/0001/function/000016/body/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000030"
+        },
+        {
+          "from": "unit/0001/function/000017",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000031"
+        },
+        {
+          "from": "unit/0001/function/000017",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000032"
+        },
+        {
+          "from": "unit/0001/function/000017/body/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000032"
+        },
+        {
+          "from": "unit/0001/function/000017/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000031"
+        },
+        {
+          "from": "unit/0001/function/000017/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[0]/child[1]",
+          "kind": "reference",
+          "to": "selection/association/00000053"
+        },
+        {
+          "from": "unit/0001/function/000017/body/child[0]/child[0]/child[0]/child[1]/child[0]/child[1]",
+          "kind": "constant",
+          "to": "unit/0001/constant/00000086"
+        },
+        {
+          "from": "unit/0001/function/000017/body/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000032"
+        },
+        {
+          "from": "unit/0001/function/000018",
+          "kind": "execution-parameter",
+          "to": "unit/0001/storage/000033"
+        },
+        {
+          "from": "unit/0001/function/000018",
+          "kind": "body-local",
+          "to": "unit/0001/storage/000034"
+        },
+        {
+          "from": "unit/0001/function/000018/body/child[0]/child[0]/child[0]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000034"
+        },
+        {
+          "from": "unit/0001/function/000018/body/child[0]/child[0]/child[0]/child[1]",
+          "kind": "retained-call-target",
+          "to": "unit/0001/function/000012"
+        },
+        {
+          "from": "unit/0001/function/000018/body/child[0]/child[0]/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/function/000012"
+        },
+        {
+          "from": "unit/0001/function/000018/body/child[0]/child[0]/child[0]/child[1]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000033"
+        },
+        {
+          "from": "unit/0001/function/000018/body/child[0]/child[1]/child[0]",
+          "kind": "reference",
+          "to": "unit/0001/storage/000034"
+        }
+      ]
+    }
+  },
+  "chainRequiredImports": [
+    {
+      "locator": "unit/0001/function/000014",
+      "kind": "function",
+      "name": "__builtin_expect",
+      "linkageName": "__builtin_expect",
+      "signature": "unit/0001/type/000060(unit/0001/type/000060 ordinary_parameter,unit/0001/type/000060 ordinary_parameter) cc=cc_default linkage=nlk_external result-parameter=False",
+      "callingConvention": "cc_default",
+      "required": true,
+      "directCalls": 1,
+      "addressReferences": 0,
+      "addressExposed": false,
+      "provider": "generated-expression",
+      "providerSymbol": null,
+      "bindingSignature": null,
+      "bindingCallingConvention": null,
+      "ownership": "constant-hint-expect-signed64-v1: Project the first captured signed64 operand value once; an effect-free integer literal hint owns no storage or runtime value.",
+      "errorContract": "The projection introduces no host error channel; first-operand effects and exceptions remain those of its captured evaluation. Nonconstant/effectful hints and unsupported signatures are rejected.",
+      "threadContract": "Synchronous expression evaluation preserves the retained operand constraints; no runtime or thread-local helper is supplied.",
+      "callbackContract": "No callable address, native import, callback entry or Runtime method is supplied.",
+      "bindingStatus": "recorded-generated-intrinsic-constant-hint-expect-signed64-v1"
+    }
+  ],
+  "modes": {
+    "selected-core-getter": {
+      "jit": {
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-jit-run-1/stdout.txt",
+          "bytes": 1437,
+          "sha256": "c9a8082ca3b47c5402b9dc0496a504464666740a81120ce074b4b34ee75bd550"
+        },
+        "binary": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-jit-bin-1/Checks.dll",
+          "bytes": 13312,
+          "sha256": "45b94769fd82d253add926270fc906e5b5431822ce56cd3b84ab4cee0cb74e68"
+        },
+        "observations": [
+          {
+            "selectedCore": {
+              "inputSha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+              "selectedLinkageName": "_ZNK6duckdb12VectorBuffer13GetVectorTypeEv",
+              "inputRepresentation": "generated-aligned-layout-bytes",
+              "inputBytes": 56,
+              "inputAlignment": 8,
+              "outerGuardBytesPerSide": 8,
+              "independentInputAddresses": true,
+              "scenarios": [
+                {
+                  "inputKinds": [
+                    0,
+                    255
+                  ],
+                  "firstReads": [
+                    0,
+                    0
+                  ],
+                  "secondReads": [
+                    255,
+                    255
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    127,
+                    201
+                  ],
+                  "firstReads": [
+                    127,
+                    127
+                  ],
+                  "secondReads": [
+                    201,
+                    201
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    128,
+                    128
+                  ],
+                  "firstReads": [
+                    128,
+                    128
+                  ],
+                  "secondReads": [
+                    128,
+                    128
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    201,
+                    127
+                  ],
+                  "firstReads": [
+                    201,
+                    201
+                  ],
+                  "secondReads": [
+                    127,
+                    127
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    255,
+                    0
+                  ],
+                  "firstReads": [
+                    255,
+                    255
+                  ],
+                  "secondReads": [
+                    0,
+                    0
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                }
+              ],
+              "wholeInputsAndOuterGuardsUnchanged": true,
+              "nativeDuckdbOracleComparison": false,
+              "classConstructionOrVirtualExecutionClaim": false,
+              "ownershipOrLifetimeClaim": false,
+              "wholeCoreTranslationClaim": false,
+              "compiledProjectAttribution": "The outer receipt binds the input, request, completed generated project and checker binary."
+            }
+          },
+          {
+            "selectedCorePhysical": {
+              "viewSize": 56,
+              "kindOffset": 24,
+              "alignmentAnchorOffset": 0,
+              "sequentialPrefixOffset": 8,
+              "elementStride": 56,
+              "actualInputAddressesAligned": true,
+              "actualViewAddressesAligned": true,
+              "finalTypedFieldValues": [
+                255,
+                0
+              ]
+            }
+          }
+        ],
+        "dependencies": [
+          "Checks/1.0.0",
+          "Generated/1.0.0",
+          "RoslynObj.CSharp.Runtime/1.0.0"
+        ]
+      },
+      "aot": {
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-aot-run-1/stdout.txt",
+          "bytes": 1437,
+          "sha256": "c9a8082ca3b47c5402b9dc0496a504464666740a81120ce074b4b34ee75bd550"
+        },
+        "binary": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-aot-bin-1/Checks",
+          "bytes": 1729152,
+          "sha256": "ade5b8d3f2af97b164035cec18b4b49ffb0cf137c609540ecd55c4efd1a0ca9f"
+        },
+        "observations": [
+          {
+            "selectedCore": {
+              "inputSha256": "cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65",
+              "selectedLinkageName": "_ZNK6duckdb12VectorBuffer13GetVectorTypeEv",
+              "inputRepresentation": "generated-aligned-layout-bytes",
+              "inputBytes": 56,
+              "inputAlignment": 8,
+              "outerGuardBytesPerSide": 8,
+              "independentInputAddresses": true,
+              "scenarios": [
+                {
+                  "inputKinds": [
+                    0,
+                    255
+                  ],
+                  "firstReads": [
+                    0,
+                    0
+                  ],
+                  "secondReads": [
+                    255,
+                    255
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    127,
+                    201
+                  ],
+                  "firstReads": [
+                    127,
+                    127
+                  ],
+                  "secondReads": [
+                    201,
+                    201
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    128,
+                    128
+                  ],
+                  "firstReads": [
+                    128,
+                    128
+                  ],
+                  "secondReads": [
+                    128,
+                    128
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    201,
+                    127
+                  ],
+                  "firstReads": [
+                    201,
+                    201
+                  ],
+                  "secondReads": [
+                    127,
+                    127
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                },
+                {
+                  "inputKinds": [
+                    255,
+                    0
+                  ],
+                  "firstReads": [
+                    255,
+                    255
+                  ],
+                  "secondReads": [
+                    0,
+                    0
+                  ],
+                  "wholeInputsAndOuterGuardsUnchanged": true
+                }
+              ],
+              "wholeInputsAndOuterGuardsUnchanged": true,
+              "nativeDuckdbOracleComparison": false,
+              "classConstructionOrVirtualExecutionClaim": false,
+              "ownershipOrLifetimeClaim": false,
+              "wholeCoreTranslationClaim": false,
+              "compiledProjectAttribution": "The outer receipt binds the input, request, completed generated project and checker binary."
+            }
+          },
+          {
+            "selectedCorePhysical": {
+              "viewSize": 56,
+              "kindOffset": 24,
+              "alignmentAnchorOffset": 0,
+              "sequentialPrefixOffset": 8,
+              "elementStride": 56,
+              "actualInputAddressesAligned": true,
+              "actualViewAddressesAligned": true,
+              "finalTypedFieldValues": [
+                255,
+                0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "selected-pointer-chain": {
+      "jit": {
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-jit-run-1/stdout.txt",
+          "bytes": 3334,
+          "sha256": "b506d88bdc83449d1fefd87434f0542dd52ff1c8c8ea3e87bc94e066cd62b990"
+        },
+        "binary": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-jit-bin-1/Checks.dll",
+          "bytes": 26624,
+          "sha256": "ee66451742f8ff459a96057174273b00e336b27a41bcd502dc6d300ef9383e33"
+        },
+        "observations": [
+          {
+            "scenarios": [
+              {
+                "inputKinds": [
+                  5,
+                  201
+                ],
+                "first": {
+                  "result": 608,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    5,
+                    1,
+                    1,
+                    5,
+                    1,
+                    201,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    5,
+                    201,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "second": {
+                  "result": 608,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    5,
+                    1,
+                    1,
+                    5,
+                    1,
+                    201,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    5,
+                    201,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "inputByteChecks": {
+                  "firstRun": [
+                    true,
+                    true
+                  ],
+                  "secondRun": [
+                    true,
+                    true
+                  ]
+                }
+              },
+              {
+                "inputKinds": [
+                  37,
+                  19
+                ],
+                "first": {
+                  "result": 94,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    37,
+                    1,
+                    1,
+                    37,
+                    1,
+                    19,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    37,
+                    19,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "second": {
+                  "result": 94,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    37,
+                    1,
+                    1,
+                    37,
+                    1,
+                    19,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    37,
+                    19,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "inputByteChecks": {
+                  "firstRun": [
+                    true,
+                    true
+                  ],
+                  "secondRun": [
+                    true,
+                    true
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "pointerCallChainPhysical": {
+              "inputRepresentation": "generated-aligned-layout-bytes",
+              "nativeInputRepresentation": "two-live-native-cpp-objects",
+              "cppConstructionOrVirtualExecutionClaim": false,
+              "ownershipOrLifetimeClaim": false,
+              "inputBytes": 56,
+              "inputAlignment": 8,
+              "outerGuardBytesPerSide": 8,
+              "prefixOffsets": [
+                8,
+                16
+              ],
+              "kindOffset": 24,
+              "tailOffsets": [
+                32,
+                40,
+                48
+              ],
+              "independentInputAddresses": true,
+              "alignedInputAddresses": [
+                true,
+                true
+              ],
+              "wholeInputsAndOuterGuardsUnchanged": true,
+              "opaqueVptrAndPaddingComparedAcrossRepresentations": false,
+              "directReaderScenarios": [
+                {
+                  "inputKinds": [
+                    5,
+                    201
+                  ],
+                  "actualGeneratedReadKinds": [
+                    5,
+                    201
+                  ]
+                },
+                {
+                  "inputKinds": [
+                    37,
+                    19
+                  ],
+                  "actualGeneratedReadKinds": [
+                    37,
+                    19
+                  ]
+                }
+              ],
+              "actualGeneratedBindings": {
+                "typeOrder": "Owner,PointerProxy,DerivedStorage,PointerStorage,RefCountCarrier,CellInput_BorrowedReadView,PointerAccess",
+                "completeSizes": [
+                  32,
+                  24,
+                  16,
+                  16,
+                  8,
+                  56,
+                  1
+                ],
+                "sequentialPrefixOffsets": [
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  1
+                ],
+                "arrayStrides": [
+                  32,
+                  24,
+                  16,
+                  16,
+                  8,
+                  56,
+                  1
+                ],
+                "fieldOffsetOrder": "Owner.canary,payload;Proxy.internal,use_direct;Derived.base;Storage.pointer,refcount;RefCount.cookie;BorrowedView.alignment,kind",
+                "fieldOffsets": [
+                  0,
+                  8,
+                  0,
+                  16,
+                  0,
+                  0,
+                  8,
+                  0,
+                  0,
+                  24
+                ],
+                "actualAddressesAligned": true,
+                "borrowedOwnerDeltas": [
+                  8,
+                  8
+                ],
+                "actualBorrowedIdentities": true,
+                "actualNestedBaseViews": true,
+                "directPointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "basePointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "getPointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "delegatedPointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "reversePointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "proxyTruthValues": [
+                  0,
+                  1,
+                  1,
+                  0
+                ],
+                "storageTruthValues": [
+                  0,
+                  1,
+                  1,
+                  0
+                ],
+                "actualReadKindsAfterFinalScenario": [
+                  37,
+                  19
+                ],
+                "expectArgumentDelta": 4,
+                "guardDelta": 4,
+                "missingDelta": 2,
+                "fullWidthCanariesUnchanged": true,
+                "cookieIdentitiesUnchanged": true,
+                "secondOwnerPointerUnchanged": true,
+                "cppLifetimeOrVirtualExecutionClaim": false
+              }
+            }
+          },
+          {
+            "suppliedCaptureProvenance": {
+              "inputSha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+              "captureProvenanceSha256": "bf84899d13955a7dce563fa501e7f8b8a43cb5d9031d0d9a6dcb9256aafc2750",
+              "nativeObservationsSha256": "8474d9c8cc1b64e22344094601a71d3a11f99b472a447b0998764cb045860153",
+              "compiledGeneratedProjectIdentityScope": "Outer receipt only; supplied hashes do not identify the compiled project."
+            }
+          }
+        ],
+        "dependencies": [
+          "Checks/1.0.0",
+          "Generated/1.0.0",
+          "RoslynObj.CSharp.Runtime/1.0.0"
+        ]
+      },
+      "aot": {
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-aot-run-1/stdout.txt",
+          "bytes": 3334,
+          "sha256": "b506d88bdc83449d1fefd87434f0542dd52ff1c8c8ea3e87bc94e066cd62b990"
+        },
+        "binary": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-aot-bin-1/Checks",
+          "bytes": 2102848,
+          "sha256": "cdfba39495a60bd42c2ead09b78df249acad607e1b7f270ad5924ea98e880d93"
+        },
+        "observations": [
+          {
+            "scenarios": [
+              {
+                "inputKinds": [
+                  5,
+                  201
+                ],
+                "first": {
+                  "result": 608,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    5,
+                    1,
+                    1,
+                    5,
+                    1,
+                    201,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    5,
+                    201,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "second": {
+                  "result": 608,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    5,
+                    1,
+                    1,
+                    5,
+                    1,
+                    201,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    201,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    5,
+                    201,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "inputByteChecks": {
+                  "firstRun": [
+                    true,
+                    true
+                  ],
+                  "secondRun": [
+                    true,
+                    true
+                  ]
+                }
+              },
+              {
+                "inputKinds": [
+                  37,
+                  19
+                ],
+                "first": {
+                  "result": 94,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    37,
+                    1,
+                    1,
+                    37,
+                    1,
+                    19,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    37,
+                    19,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "second": {
+                  "result": 94,
+                  "values": [
+                    1,
+                    1,
+                    1,
+                    37,
+                    1,
+                    1,
+                    37,
+                    1,
+                    19,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    19,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    4,
+                    4,
+                    1,
+                    1,
+                    37,
+                    19,
+                    1,
+                    1
+                  ],
+                  "events": [
+                    100,
+                    4000,
+                    2001,
+                    3001,
+                    200,
+                    4000,
+                    2000,
+                    3000,
+                    4000,
+                    2000,
+                    3000,
+                    300,
+                    4001,
+                    400,
+                    4001,
+                    4001,
+                    700,
+                    4000,
+                    2000,
+                    3000,
+                    800,
+                    4001,
+                    900,
+                    4001,
+                    1000
+                  ],
+                  "overflow": 0,
+                  "live": 0
+                },
+                "inputByteChecks": {
+                  "firstRun": [
+                    true,
+                    true
+                  ],
+                  "secondRun": [
+                    true,
+                    true
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "pointerCallChainPhysical": {
+              "inputRepresentation": "generated-aligned-layout-bytes",
+              "nativeInputRepresentation": "two-live-native-cpp-objects",
+              "cppConstructionOrVirtualExecutionClaim": false,
+              "ownershipOrLifetimeClaim": false,
+              "inputBytes": 56,
+              "inputAlignment": 8,
+              "outerGuardBytesPerSide": 8,
+              "prefixOffsets": [
+                8,
+                16
+              ],
+              "kindOffset": 24,
+              "tailOffsets": [
+                32,
+                40,
+                48
+              ],
+              "independentInputAddresses": true,
+              "alignedInputAddresses": [
+                true,
+                true
+              ],
+              "wholeInputsAndOuterGuardsUnchanged": true,
+              "opaqueVptrAndPaddingComparedAcrossRepresentations": false,
+              "directReaderScenarios": [
+                {
+                  "inputKinds": [
+                    5,
+                    201
+                  ],
+                  "actualGeneratedReadKinds": [
+                    5,
+                    201
+                  ]
+                },
+                {
+                  "inputKinds": [
+                    37,
+                    19
+                  ],
+                  "actualGeneratedReadKinds": [
+                    37,
+                    19
+                  ]
+                }
+              ],
+              "actualGeneratedBindings": {
+                "typeOrder": "Owner,PointerProxy,DerivedStorage,PointerStorage,RefCountCarrier,CellInput_BorrowedReadView,PointerAccess",
+                "completeSizes": [
+                  32,
+                  24,
+                  16,
+                  16,
+                  8,
+                  56,
+                  1
+                ],
+                "sequentialPrefixOffsets": [
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  1
+                ],
+                "arrayStrides": [
+                  32,
+                  24,
+                  16,
+                  16,
+                  8,
+                  56,
+                  1
+                ],
+                "fieldOffsetOrder": "Owner.canary,payload;Proxy.internal,use_direct;Derived.base;Storage.pointer,refcount;RefCount.cookie;BorrowedView.alignment,kind",
+                "fieldOffsets": [
+                  0,
+                  8,
+                  0,
+                  16,
+                  0,
+                  0,
+                  8,
+                  0,
+                  0,
+                  24
+                ],
+                "actualAddressesAligned": true,
+                "borrowedOwnerDeltas": [
+                  8,
+                  8
+                ],
+                "actualBorrowedIdentities": true,
+                "actualNestedBaseViews": true,
+                "directPointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "basePointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "getPointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "delegatedPointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "reversePointerStates": [
+                  0,
+                  1,
+                  2,
+                  0
+                ],
+                "proxyTruthValues": [
+                  0,
+                  1,
+                  1,
+                  0
+                ],
+                "storageTruthValues": [
+                  0,
+                  1,
+                  1,
+                  0
+                ],
+                "actualReadKindsAfterFinalScenario": [
+                  37,
+                  19
+                ],
+                "expectArgumentDelta": 4,
+                "guardDelta": 4,
+                "missingDelta": 2,
+                "fullWidthCanariesUnchanged": true,
+                "cookieIdentitiesUnchanged": true,
+                "secondOwnerPointerUnchanged": true,
+                "cppLifetimeOrVirtualExecutionClaim": false
+              }
+            }
+          },
+          {
+            "suppliedCaptureProvenance": {
+              "inputSha256": "735089e79666aeca94f4daf65f32305fc2a8964a1a730c74ca24da4cbc238620",
+              "captureProvenanceSha256": "bf84899d13955a7dce563fa501e7f8b8a43cb5d9031d0d9a6dcb9256aafc2750",
+              "nativeObservationsSha256": "8474d9c8cc1b64e22344094601a71d3a11f99b472a447b0998764cb045860153",
+              "compiledGeneratedProjectIdentityScope": "Outer receipt only; supplied hashes do not identify the compiled project."
+            }
+          }
+        ]
+      }
+    }
+  },
+  "nativeChainOracle": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-pointer-call-chain-run-1/stdout.txt",
+    "bytes": 1990,
+    "sha256": "8474d9c8cc1b64e22344094601a71d3a11f99b472a447b0998764cb045860153"
+  },
+  "previousChainAcceptance": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/acceptance/lifetimes/pointer-call-chain-report.json",
+    "bytes": 129705,
+    "sha256": "5481d9f68ee65e93b920bfdf63b21711c28190e0120d256266446e6b2c5d3d91"
+  },
+  "rejections": {
+    "selected-unresolved-guard": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-unresolved-guard-report.json",
+        "bytes": 70024,
+        "sha256": "e18f517f1f324f169a72e60838d042d6298d9b0b78dbcb5d87e543db8bc62fb5"
+      },
+      "diagnostics": [
+        {
+          "code": "ROC1301",
+          "severity": "error",
+          "message": "Required function '_ZN6duckdb29ThrowNullSharedPtrDereferenceEv' needs a complete exact-signature pinned native function binding or the admitted address-only RTTI data contract.",
+          "input": null,
+          "locator": null,
+          "family": null
+        }
+      ],
+      "outputPublished": false,
+      "selectedClosureComplete": true
+    },
+    "selected-eh-unsupported": {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-roots-first-preparation-1/selected-eh-unsupported-report.json",
+        "bytes": 9939,
+        "sha256": "2805cc5dbbcfcaf17a399c8052942bb5ed8d7e70f7b238fa756c4eb7eacbb8e5"
+      },
+      "diagnostics": [
+        {
+          "code": "ROC1214",
+          "severity": "error",
+          "message": "Selected-mode exception-handling dependency closure is unsupported; retained EH frames and tables require default all-definition mode.",
+          "input": null,
+          "locator": "unit/0001/function/000002",
+          "family": "managed-selection"
+        }
+      ],
+      "outputPublished": false,
+      "selectedClosureComplete": false
+    }
+  },
+  "defaultPreservation": {
+    "managed-default-pointer-chain": {
+      "source": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-pointer-chain-generated-1/Generated.cs",
+        "bytes": 22012,
+        "sha256": "2d313a7b1d0907d657dd1a325946c60f5b7c1be642c2383bab41d0133e1a4dc9"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/pointer-call-chain-cli-generated-5/Generated.cs",
+        "bytes": 22012,
+        "sha256": "2d313a7b1d0907d657dd1a325946c60f5b7c1be642c2383bab41d0133e1a4dc9"
+      },
+      "sourceByteIdentical": true,
+      "managedSelection": null
+    },
+    "managed-default-eh": {
+      "source": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-generated-1/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "previousSource": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/eh-cli-generated-3/Generated.cs",
+        "bytes": 13895,
+        "sha256": "461cc91fe1369661c437478191c23752a35a2121f91ffdd912f91868d1ede9ce"
+      },
+      "sourceByteIdentical": true,
+      "managedSelection": null,
+      "modes": {
+        "jit": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-jit-run-1/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "observations": [
+            {
+              "runs": [
+                {
+                  "result": 11,
+                  "overflow": 0,
+                  "live": 0,
+                  "values": [
+                    3,
+                    0,
+                    8,
+                    0,
+                    0
+                  ],
+                  "events": [
+                    101,
+                    102,
+                    600,
+                    302,
+                    301,
+                    900,
+                    101,
+                    102,
+                    103,
+                    507,
+                    303,
+                    302,
+                    707,
+                    301
+                  ]
+                },
+                {
+                  "result": 11,
+                  "overflow": 0,
+                  "live": 0,
+                  "values": [
+                    3,
+                    0,
+                    8,
+                    0,
+                    0
+                  ],
+                  "events": [
+                    101,
+                    102,
+                    600,
+                    302,
+                    301,
+                    900,
+                    101,
+                    102,
+                    103,
+                    507,
+                    303,
+                    302,
+                    707,
+                    301
+                  ]
+                }
+              ]
+            },
+            {
+              "exceptionOwnership": [
+                {
+                  "created": 1,
+                  "committed": 1,
+                  "selected": 1,
+                  "caught": 1,
+                  "released": 1,
+                  "pendingReleased": 0,
+                  "liveOwners": 0,
+                  "unwindObservations": 1,
+                  "cleanupAssertions": 2,
+                  "selectionBeforeCleanupAssertions": 2,
+                  "protocolRejections": 0,
+                  "selectionSequence": 2,
+                  "firstCleanupSequence": 3,
+                  "releaseSequence": 4
+                },
+                {
+                  "created": 1,
+                  "committed": 1,
+                  "selected": 1,
+                  "caught": 1,
+                  "released": 1,
+                  "pendingReleased": 0,
+                  "liveOwners": 0,
+                  "unwindObservations": 1,
+                  "cleanupAssertions": 2,
+                  "selectionBeforeCleanupAssertions": 2,
+                  "protocolRejections": 0,
+                  "selectionSequence": 6,
+                  "firstCleanupSequence": 7,
+                  "releaseSequence": 8
+                }
+              ]
+            }
+          ]
+        },
+        "aot": {
+          "stdout": {
+            "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-aot-run-1/stdout.txt",
+            "bytes": 828,
+            "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+          },
+          "observations": [
+            {
+              "runs": [
+                {
+                  "result": 11,
+                  "overflow": 0,
+                  "live": 0,
+                  "values": [
+                    3,
+                    0,
+                    8,
+                    0,
+                    0
+                  ],
+                  "events": [
+                    101,
+                    102,
+                    600,
+                    302,
+                    301,
+                    900,
+                    101,
+                    102,
+                    103,
+                    507,
+                    303,
+                    302,
+                    707,
+                    301
+                  ]
+                },
+                {
+                  "result": 11,
+                  "overflow": 0,
+                  "live": 0,
+                  "values": [
+                    3,
+                    0,
+                    8,
+                    0,
+                    0
+                  ],
+                  "events": [
+                    101,
+                    102,
+                    600,
+                    302,
+                    301,
+                    900,
+                    101,
+                    102,
+                    103,
+                    507,
+                    303,
+                    302,
+                    707,
+                    301
+                  ]
+                }
+              ]
+            },
+            {
+              "exceptionOwnership": [
+                {
+                  "created": 1,
+                  "committed": 1,
+                  "selected": 1,
+                  "caught": 1,
+                  "released": 1,
+                  "pendingReleased": 0,
+                  "liveOwners": 0,
+                  "unwindObservations": 1,
+                  "cleanupAssertions": 2,
+                  "selectionBeforeCleanupAssertions": 2,
+                  "protocolRejections": 0,
+                  "selectionSequence": 2,
+                  "firstCleanupSequence": 3,
+                  "releaseSequence": 4
+                },
+                {
+                  "created": 1,
+                  "committed": 1,
+                  "selected": 1,
+                  "caught": 1,
+                  "released": 1,
+                  "pendingReleased": 0,
+                  "liveOwners": 0,
+                  "unwindObservations": 1,
+                  "cleanupAssertions": 2,
+                  "selectionBeforeCleanupAssertions": 2,
+                  "protocolRejections": 0,
+                  "selectionSequence": 6,
+                  "firstCleanupSequence": 7,
+                  "releaseSequence": 8
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "repeat": {
+    "selected-core-getter": {
+      "sourceByteIdentical": true,
+      "projectByteIdentical": true,
+      "programReportEqualAfterOutputDirectoryNormalization": true
+    },
+    "selected-pointer-chain": {
+      "sourceByteIdentical": true,
+      "projectByteIdentical": true,
+      "programReportEqualAfterOutputDirectoryNormalization": true
+    }
+  },
+  "aotDynamicDependencies": {
+    "selected-core-getter": {
+      "artifact": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-core-getter-aot-ldd-1.txt",
+        "bytes": 222,
+        "sha256": "29bcb43a55b4f6a4e5680e5a88f2ce45d1679d8ef9760e831bc0e88aac391363"
+      },
+      "lines": [
+        "\tlinux-vdso.so.1 (0x00007ffe710b3000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000738589077000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000738588e00000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x0000738589373000)"
+      ]
+    },
+    "selected-pointer-chain": {
+      "artifact": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-chain-aot-ldd-1.txt",
+        "bytes": 222,
+        "sha256": "c96ae24a9d2414de32cd12867de0e5861d82295ff439a290e5a67aa8d2c9249b"
+      },
+      "lines": [
+        "\tlinux-vdso.so.1 (0x00007ffdd7bec000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000773b228c7000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000773b22200000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x0000773b229df000)"
+      ]
+    },
+    "managed-default-eh": {
+      "artifact": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-default-eh-aot-ldd-1.txt",
+        "bytes": 222,
+        "sha256": "4195146bb8a87e363b2cde794d3050c12277b34bbd1d76aa33d2c136e03e5be2"
+      },
+      "lines": [
+        "\tlinux-vdso.so.1 (0x00007fff60ac8000)",
+        "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007b757624b000)",
+        "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007b7575c00000)",
+        "\t/lib64/ld-linux-x86-64.so.2 (0x00007b7576363000)"
+      ]
+    }
+  },
+  "drivers": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-managed-roots-first-1.py",
+      "bytes": 4218,
+      "sha256": "7c9c3ff375f5e977c53fc075677313b5a199e2f78ea09b09271a82a95078e435"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-managed-roots-execution-1.py",
+      "bytes": 2259,
+      "sha256": "12574988ac3adf96793a48b982b4910161aa3c30220f1ac1f7b32eaadb55892d"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-managed-roots-regressions-1.py",
+      "bytes": 3580,
+      "sha256": "3aade8776f1517fbbf55c96c6bf6e8480834b40c7d2d728ad3e0413229dd27b0"
+    }
+  ],
+  "runner": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+    "bytes": 5505,
+    "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+  },
+  "measurement": "Linux all-thread descendant RSS sampled every 100 ms; shared pages may count repeatedly, short peaks may be missed. Waited RSS is separate; tiny sampled runs do not establish startup peak.",
+  "pauseAttribution": "First 13 phases completed 2026-10-16 before explicit pause; default/repeat 8 phases completed 2026-10-17 after explicit resume. Passed phases were not repeated merely due to pause.",
+  "contract": [
+    "Default retain-all remains unchanged; managed roots are separate from native Exports.",
+    "Pinned input SHA plus bounded public indexed name discovery and exact captured linkage uniquely select current public symbols before Inventory; selection is recomputed after reopen and emitter requires the same current reader.",
+    "Immutable bounded executable dependency closure includes actual direct calls, storage/constant/address/signature roles and reconciled executable initialization. Related type metadata never selects unrelated method/vtable bodies. Required inventory symbol/type/constant uses assert plan membership.",
+    "Ambient unit initialization/teardown is ticked and explicitly unsupported; selected-mode EH/cleanup/lifetime/temporary schedules are unsupported, default retain-all EH unchanged.",
+    "Selected closure and unvisited input/related metadata are separately reported. ClosureComplete never means whole input/core/project complete.",
+    "Actual getter is emitted from retained five-node core316 body, not a handwritten pointer load. Its unsigned-byte result is executed over independently aligned layout buffers only."
+  ],
+  "limits": [
+    "Actual captured VectorBuffer getter1body is proven; enclosing Vector accessor, And/Or, whole core316, multi-input selected linking and full DuckDB are not.",
+    "Core getter uses raw borrowed layout bytes, not constructed C++ objects, native DuckDB oracle, class lifetime, virtual dispatch, refcount or ownership.",
+    "The native oracle belongs only to the separately captured genuine pointer chain; actual core getter assertions use captured layout/body facts and supplied byte values.",
+    "Actual guard declaration remains unresolved in one input. Located core293 candidate body/link/EH is not supplied by native application fallback.",
+    "Selected EH/lifetime/typeinfo closure remains unsupported; genuine existing EH capture rejects before publication while default source and JIT/AOT remain unchanged.",
+    "Broader scalar-result composition, scoped distinct pointer/receiver alias views, string/allocator/templated dependencies and ambient initialization remain future work.",
+    "Earlier SQLite T0-T4 retains original source13/runtime11 attribution; no broad SQLite or previous57 campaign was rerun."
+  ]
+}

@@ -20,6 +20,7 @@ public sealed record CSharpEmissionOptions
     public NativeErrorProtocol NativeErrorProtocol { get; init; }
     /// <summary>Opt in to bounded selected-program assembly. Null keeps legacy single-unit admission.</summary>
     public ProgramAssemblyOptions? ProgramAssembly { get; init; }
+    internal ManagedSelectionPlan? ManagedSelection { get; init; }
 }
 
 public sealed record CSharpEmissionResult(
@@ -58,6 +59,9 @@ public sealed partial class CSharpEmitter
 
         public CSharpEmissionResult Run()
         {
+            if (options.ManagedSelection is { } selection && (inputs.Count != 1 ||
+                !ReferenceEquals(selection.Source, inputs[0]) || options.ProgramAssembly is not null || !selection.Report.ClosureComplete))
+                return Failure("CSHARP2503", "Managed selection requires its exact current single reader and completed dependency plan, without program assembly rebinding.");
             if (options.ProgramAssembly is { } assemblyOptions)
             {
                 if (!InitializeProgramAssembly(assemblyOptions)) return new([], diagnostics, 0, 0);

@@ -42,12 +42,15 @@ public sealed partial class CSharpEmitter
             return !diagnostics.Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
         }
 
-        private IEnumerable<FunctionSymbol> SelectedFunctions() => selectedProgram is { } program
+        private IEnumerable<FunctionSymbol> SelectedFunctions() => options.ManagedSelection is { } selection
+            ? selection.Functions
+            : selectedProgram is { } program
             ? program.Functions.OrderBy(function => function.SelectedOrdinal).Select(function => function.Definition)
             : inputs.SelectMany(input => input.TranslationUnit.Functions);
 
         private IEnumerable<VariableSymbol> SelectedStorage()
         {
+            if (options.ManagedSelection is { } selection) return selection.StorageDefinitions;
             if (selectedProgram is { } program)
                 return program.Storage.OrderBy(storage => storage.SelectedOrdinal).Select(storage => storage.Definition);
             var localStorage = inputs.SelectMany(input => input.TranslationUnit.Functions).Where(function => function.Body is not null)

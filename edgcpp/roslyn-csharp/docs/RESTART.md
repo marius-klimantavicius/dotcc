@@ -1,49 +1,72 @@
 # Implementation restart state
 
-## Current verified checkpoint, 2026-10-16
+## ACTIVE, 2026-10-17 — verified managed-root checkpoint
 
-User-unpaused work remains active. The cohesive pointer-result/borrowed byte-field
-chain passes production CLI, native/JIT/NativeAOT whole-chain and physical checks,
-repeat generation and affected regressions. Receipt
-`acceptance/lifetimes/pointer-call-chain-report.json` currently has SHA-256
-`5481d9f68ee65e93b920bfdf63b21711c28190e0120d256266446e6b2c5d3d91`:
-57 expected outcomes (50 successes, seven intended rejections), zero unexpected
-outcomes/resource violations. Product `t5/pointer-call-chain-product-source-5`
-(259 files), checker `t5/pointer-call-chain-checker-source-2` (nine files), all
-25 inputs and completed publication files verify. Final source is
-`t5/pointer-call-chain-cli-generated-5`; no build/export/test remains active.
-See [the current proof](T5-POINTER-CALL-CHAIN.md). Earlier failed attempts remain
-separate; no additional tests are needed for this verified freeze.
+User explicitly resumed. Coordinator gpt-6.1-sol high owns integration/builds/Git;
+retained gpt-6.1-sol xhigh implementers own disjoint work; root GPT-6-Astra high
+monitors read-only. No build/export/test process remains active. Managed-root
+checkpoint is verified and approved for exact-owned commit; receipt
+`acceptance/duckdb/managed-roots-report.json`, 166,812 bytes, SHA-256
+`3f679602150fb31cbb71e73a002bf5240d350fd2eb8b9f6bfaf07067b890b438`.
+21 expected outcomes: 19 successes and two intended rejections, zero unexpected
+outcomes or budget violations. All three input hashes, product 260 files, actual
+core checker nine files and reused pointer checker nine files verify. Runtime is
+unchanged. Previous pointer checkpoint `0cedb8efd` remains closed (57 outcomes).
 
-Implementation retains selected direct pointer calls/locals/initialization/branches,
-actual empty-base address/reverse casts, complete Proxy 24/8 versus unrequired
-occupied 17/8, and a borrowed read-only unsigned-byte view 56/8 at 24. Existing full
-virtual representations take precedence. Both-false flags occur on two pointer
-operator calls and stay unnormalized with once-only single receiver evaluation.
-The recorded bfk_expect is a generated-expression constant-hint signed64 projection,
-not a Runtime/native helper. Runtime/IR/Program/Calls/Lifetimes/NoThrow and normal
-initialization semantics are unchanged. Native inputs are live C++ objects;
-generated inputs are aligned raw layout buffers with no class/virtual/lifetime
-claim. Seven prior source/JIT/AOT profiles, SI/MI/Vbase source bytes and one existing
-pinned native callback provider pass. The genuine readonly write remains rejected.
+[Managed roots](MANAGED-ROOTS.md) select current public identities before Inventory,
+using pinned input SHA256, bounded indexed lookup hint and exact captured linkage;
+selection is recomputed after reopen. Required symbols/types/constants assert
+immutable plan membership. Optional related type metadata stays unexpanded.
+Ambient init/teardown and selected EH/lifetime/temporary schedules are explicitly
+unsupported; default all-definition behavior/EH is preserved. Native Exports,
+NoThrow/cache, Runtime, IR and application bodies are not substituted.
 
-Coordinator gpt-6.1-sol high owns builds/tests/Git; implementers remain
-gpt-6.1-sol xhigh, root GPT-6-Astra monitors read-only. Exact-owned checkpoint commit
-is next. Then activate approved [managed-root selection](MANAGED-ROOTS.md): keep
-all-definition default, select before inventory with bounded public-identity
-execution/storage/initializer/ABI/EH closure, preserve mandatory ambient init or
-reject unsupported obligations. First actual root is the captured five-node
-VectorBuffer::GetVectorType in immutable core316. This is selected-core body
-execution over borrowed inputs, not whole DuckDB/link/And/Or acceptance. No new
-serial helper trace modes or native application fallback. Product edits for this
-follow-on begin only after saving the verified pointer checkpoint.
+Actual output `t5/selected-core-getter-generated-1/Generated.cs` emits captured
+`_ZNK6duckdb12VectorBuffer13GetVectorTypeEv` from core316 SHA-256
+`cf385364234784aa0d748781d06f74161ad51d28a6a34215449c3ae212810b65`:
+one body/five operations/six types/one parameter/no imports; 5,440 ambient rows
+checked under budget. JIT/AOT each pass 20 calls over independent aligned raw
+buffers with kinds 0/127/128/201/255, exact size 56/field 24/prefix 8/stride 56, all input
+bytes/guards unchanged. This is actual captured-body execution over borrowed
+bytes, not constructed C++ objects, ownership/virtual/native DuckDB oracle or
+whole-core/link acceptance. All whole-input/related-type flags remain false.
 
-Both workers are idle after frozen product/checker and read-only root proposal;
-use followup_task to reactivate. Preserve unrelated dirty files and the two
-pre-existing untracked T3 aggregate fixtures. SQLite T0–T4 remain closed for their
-configured finite Linux x64 profile and original final source 13/runtime 11
-attribution; later C++ Runtime is not relabeled as SQLite proof. T5/T6 remain open.
-This section overrides historical state below.
+Selected pointer-chain closure finds 17 bodies/seven globals/one builtin and passes
+native-equivalent 608/94 twice plus complete physical observations JIT/AOT. Default
+pointer-chain and integer-EH sources match prior bytes; default integer-EH JIT/AOT
+passes. Both selected source/project/report repeats are deterministic. Actual
+unresolved guard rejects ROC1301; genuine selected integer-EH rejects ROC1214 with
+ClosureComplete=false; outputs remain unpublished.
+
+Completed drivers (do not rerun unchanged proof):
+`t5/run-managed-roots-first-1.py` (five outcomes),
+`t5/run-managed-roots-execution-1.py` (eight),
+`t5/run-managed-roots-regressions-1.py` (eight). Product snapshot
+`t5/managed-roots-product-source-1`; checker `t5/selected-core-checker-source-1`;
+reused checker `t5/pointer-call-chain-checker-source-2`. Raw AOT ldd is preserved
+once for both selected outputs and default EH; JIT dependencies contain only
+Checks/Generated/Runtime. Earlier 13 phases stayed frozen across user pause;
+final default/repeat 8 phases ran after explicit resume, no blanket campaign repeat.
+
+Next approved cohesive target after saving checkpoint: full actual
+`_ZNK6duckdb6Vector13GetVectorTypeEv` closure in core316. Existing 22-node body
+composes borrowed local, Boolean delegation, retained branches, pointer-arrow/get/
+base chain and proven byte getter. Required new reusable capabilities are ordinary
+scalar-result composition and occurrence-scoped pointer/receiver alias views;
+real guard declaration needs exact core293 definition/link and actual class-EH
+closure. Guard candidate body is not yet inspected; no native application fallback
+or branch pruning. And/Or also require InternalException/string/allocator and size/
+templated dependencies. Prepare concrete bounded selected-program closure design,
+not another serial single-helper inspection mode. Alert material semantics; routine
+work remains authorized. Workers currently finished read-only evidence/proposal
+turns; use followup_task to activate disjoint next work after commit.
+
+Owned checkpoint paths: product Contracts/Translator/Inventory/Translation,
+NEW ManagedSelection and emitter main/Program hooks; tests/SelectedCore; receipt;
+README and current MANAGED-ROOTS/COVERAGE/RESTART docs. Preserve all unrelated
+user changes and pre-existing untracked T3 aggregate fixtures. SQLite T0–T4 stays
+closed with original source 13/runtime 11 attribution, never relabeled to later C++
+Runtime. Broader T5/T6 and full DuckDB remain open. This section overrides history.
 
 The latest verified product milestone is `16a07ae6b`, the cohesive borrowed-member
 Boolean conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,
