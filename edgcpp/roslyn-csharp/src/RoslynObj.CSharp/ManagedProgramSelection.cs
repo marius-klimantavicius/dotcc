@@ -54,7 +54,7 @@ internal static partial class ManagedProgramSelectionPlanner
         private readonly List<ManagedProgramVariableBinding> variableBindings = [];
         private readonly HashSet<FunctionSymbol> examinedFunctions = [];
         private readonly HashSet<VariableSymbol> examinedVariables = [];
-        private readonly Dictionary<(int Unit, string Lookup, string Linkage), Symbol[]> candidateCache = [];
+        private readonly Dictionary<(int Unit, string Linkage), Symbol[]> candidateCache = [];
         private UnitState[] units = [];
         private long work;
 
@@ -141,6 +141,7 @@ internal static partial class ManagedProgramSelectionPlanner
             {
                 Scope = "partial-failed-multi-input-selection", ClosureComplete = false, UnitSelections = rows,
                 DefinitionSelectionPolicy = definitionSelection, PromotedConstantStoragePolicy = promotedConstantStorage,
+                NonProviderBodyRequirements = rows.SelectMany(row => row.Selection.NonProviderBodyRequirements).ToArray(),
                 ExecutableBodiesVisited = rows.Sum(row => row.Selection.ExecutableBodiesVisited),
                 RequiredDeclarationCount = rows.Sum(row => row.Selection.RequiredDeclarationCount),
                 StorageDefinitionCount = rows.Sum(row => row.Selection.StorageDefinitionCount),
@@ -224,12 +225,10 @@ internal static partial class ManagedProgramSelectionPlanner
         private void BindFunction(UnitState source, FunctionSymbol declaration)
         {
             var name = LinkName(declaration);
-            var lookup = declaration.SourceCorrespondence?.SourceName;
-            // No source spelling is synthesized for unnamed or fabricated helpers.
-            // They remain unresolved required declarations for ordinary provider admission.
-            if (name is null || string.IsNullOrEmpty(lookup)) return;
+            // Exact captured external identity needs no source spelling.
+            if (name is null) return;
             ValidatePolicy(declaration, name);
-            var candidates = Candidates(lookup, name);
+            var candidates = Candidates(name);
             CheckKinds(candidates, true, name);
             var definitions = candidates.Where(candidate => candidate.Symbol is FunctionSymbol function && IsDefinition(function)).ToArray();
             if (definitions.Length == 0) return;
@@ -251,10 +250,10 @@ internal static partial class ManagedProgramSelectionPlanner
 
         private void BindVariable(UnitState source, VariableSymbol declaration)
         {
-            var name = LinkName(declaration); var lookup = declaration.SourceCorrespondence?.SourceName;
-            if (name is null || string.IsNullOrEmpty(lookup)) return;
+            var name = LinkName(declaration);
+            if (name is null) return;
             ValidatePolicy(declaration, name);
-            var candidates = Candidates(lookup, name);
+            var candidates = Candidates(name);
             CheckKinds(candidates, false, name);
             var definitions = candidates.Where(candidate => candidate.Symbol is VariableSymbol variable && IsDefinition(variable)).ToArray();
             if (definitions.Length == 0) return;
@@ -275,20 +274,21 @@ internal static partial class ManagedProgramSelectionPlanner
             }
         }
 
-        private (UnitState Unit, Symbol Symbol)[] Candidates(string lookup, string linkage)
+        private (UnitState Unit, Symbol Symbol)[] Candidates(string linkage)
         {
             var result = new List<(UnitState, Symbol)>();
             foreach (var unit in units)
             {
                 Tick();
-                if (!candidateCache.TryGetValue((unit.Ordinal, lookup, linkage), out var matches))
+                if (!candidateCache.TryGetValue((unit.Ordinal, linkage), out var matches))
                 {
-                    var indexed = unit.Source.TranslationUnit.SemanticModel.FindSymbols(lookup).Take(budgets.MaximumSelectionCandidates + 1).ToArray();
+                    var indexed = unit.Source.TranslationUnit.SemanticModel.FindCapturedLinkageCandidates(
+                        linkage, budgets.MaximumSelectionCandidates, token).ToArray();
                     token.ThrowIfCancellationRequested(); checkBudget?.Invoke();
                     if (indexed.Length > budgets.MaximumSelectionCandidates)
-                        Fail("ROC1221", "Managed program indexed candidate budget plus overflow sentinel exceeded; uniqueness is unknown for " + lookup);
+                        Fail("ROC1221", "Managed program captured-linkage candidate budget plus overflow sentinel exceeded; uniqueness is unknown for " + linkage);
                     matches = indexed.Where(symbol => (symbol is FunctionSymbol or VariableSymbol) && External(symbol) && LinkName(symbol) == linkage).ToArray();
-                    candidateCache.Add((unit.Ordinal, lookup, linkage), matches);
+                    candidateCache.Add((unit.Ordinal, linkage), matches);
                 }
                 foreach (var function in matches.OfType<FunctionSymbol>()) functionOwners[function] = unit;
                 foreach (var variable in matches.OfType<VariableSymbol>()) variableOwners[variable] = unit;
@@ -311,14 +311,17 @@ internal static partial class ManagedProgramSelectionPlanner
             var correspondence = symbol.SourceCorrespondence;
             if (correspondence is null || !External(symbol)) return null;
             var assembly = symbol switch { FunctionSymbol function => function.GnuSupplement?.AssemblyName, VariableSymbol variable => variable.AssemblyName, _ => null };
-            if (!string.IsNullOrEmpty(assembly)) return assembly;
+            if (assembly is not null)
+            {
+                if (assembly.Length == 0) Fail("ROC1224", "An explicitly empty captured assembly-name override is unsupported.");
+                return assembly;
+            }
             if (string.IsNullOrEmpty(correspondence.CurrentName) ||
                 correspondence.Linkage.Name is "nlk_cplusplus_external" or "cpp" && correspondence.NameHasBeenMangled != true) return null;
             return correspondence.CurrentName;
         }
 
-        private static bool IsDefinition(FunctionSymbol function) => function.IsDefined && function.BodyState.Name == "definition" &&
-            function.Body is { Root.RepresentationRole.Name: "execution" };
+        private static bool IsDefinition(FunctionSymbol function) => ManagedFunctionDefinitionPolicy.IsProviderDefinition(function);
 
         private static bool IsDefinition(VariableSymbol variable) => variable.SymbolDetails.Storage?.Name != "sc_extern" &&
             !variable.Details.IsParameter && variable.Details.StorageDuration?.Name is not ("automatic" or "parameter") &&
@@ -352,11 +355,12 @@ internal static partial class ManagedProgramSelectionPlanner
             {
                 var details = function.Details; var supplement = function.GnuSupplement;
                 var inlinePolicy = definitionSelection == InlineComdatPolicy && IsInlineComdatMember(function, requireDefinition: false);
+                var outOfLineRequirement = ManagedFunctionDefinitionPolicy.RequiresOutOfLineProvider(function);
                 if (details.IsWeak == true || details.IsWeakref == true || details.IsGnuAlias == true || details.IsIfunc == true ||
-                    details.IsUseComdat == true && !inlinePolicy || details.IsAliasEntry == true || function.PrimaryEntry is not null ||
+                    details.IsUseComdat == true && !inlinePolicy && !outOfLineRequirement || details.IsAliasEntry == true || function.PrimaryEntry is not null ||
                     function.AlternateEntryPoints.Count != 0 && !HasPrimaryCompleteEntryAssociations(function) || supplement?.AliasedRoutine is not null ||
-                    supplement?.TargetedVersions.Count > 0 || supplement?.Representative is not null || details.IsInline && !inlinePolicy ||
-                    details.DefinitionForInliningOnly || details.SuppressInlineBody || details.SupersededExternal)
+                    supplement?.TargetedVersions.Count > 0 || supplement?.Representative is not null || details.IsInline && !inlinePolicy && !outOfLineRequirement ||
+                    !outOfLineRequirement && (details.DefinitionForInliningOnly || details.SuppressInlineBody) || details.SupersededExternal)
                 {
                     var facts = new List<string>();
                     if (details.IsWeak == true) facts.Add("weak");

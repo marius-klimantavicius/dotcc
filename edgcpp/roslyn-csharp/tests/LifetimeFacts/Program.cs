@@ -63,7 +63,7 @@ internal sealed class LifetimeProbe(RoslynObject input)
         }).ToArray();
         while (pending.TryDequeue(out var entity)) entities.Add(Describe(entity));
         var manifest = input.Manifest;
-        return Row(("ProbeVersion", 7), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
+        return Row(("ProbeVersion", 8), ("InventoryOnly", true), ("GeneratedExecutionAccepted", false),
             ("Semantics", "Local locators use only public semantic equality. Public structural paths preserve parent/role/ordinal and repeated identities; they are not an execution schedule, reachability proof or inferred ownership. Metadata boundaries are recorded without executing or expanding them into body occurrences. Typed facets independently record actual call/initialization/control relationships; matching facets can alias a single operand and must not be replayed. Variable, base, override, layout and constant inventories are metadata associations, not additional executable occurrences or source virtual lookup. Address ByteOffset is a signed target-byte displacement; subobject ElementOffset is a signed element count and is recorded independently."),
             ("Bounds", new { MaximumEntities, MaximumOccurrences, MaximumDepth, MaximumConstantStorageUnits,
                 CachedRows = 4096, CachedPages = 128, PageSize = 128 }),
@@ -174,7 +174,9 @@ internal sealed class LifetimeProbe(RoslynObject input)
                     OverridesNotSlotSelection = function.Overrides.Select(Override).ToArray(),
                     SelectedOverrides = function.SelectedOverrides.Select(selected => Ref(selected)).ToArray()
                 };
-                row["PolicyFacts"] = new { function.Details.IsWeak, function.Details.IsWeakref, function.Details.IsGnuAlias,
+                row["PolicyFacts"] = new { function.Details.IsInline, function.Details.SuppressInlineBody,
+                    function.Details.DefinitionForInliningOnly,
+                    function.Details.IsWeak, function.Details.IsWeakref, function.Details.IsGnuAlias,
                     function.Details.IsIfunc, function.Details.IsUseComdat, function.Details.IsAliasEntry,
                     AliasedRoutine = Ref(function.GnuSupplement?.AliasedRoutine),
                     TargetedVersions = function.GnuSupplement?.TargetedVersions.Select(version => Ref(version)).ToArray(),

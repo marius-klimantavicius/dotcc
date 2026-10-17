@@ -82,6 +82,48 @@ public sealed class SemanticModel
         return atom is null ? [] : owner.List("SELECT s.* FROM symbol s JOIN entity_source_correspondence e ON e.owner_id=s.id JOIN source_correspondence c ON c.id=e.source_correspondence_id WHERE CASE WHEN c.unnamed_entity_given_fabricated_name=1 THEN NULL WHEN c.name_has_been_mangled=1 THEN c.unmangled_name_or_mangled_encoding_id ELSE c.current_name_id END=$owner ORDER BY s.id",atom.Value,r=>owner.Symbol(r.Long("id")),"symbol");
     }
     /// <summary>
+    /// Finds routine and variable candidates by their exact captured GNU assembly
+    /// name, or captured current name when no assembly name overrides it.
+    /// This is stored-name discovery, not C++ lookup or a linkage resolution rule.
+    /// </summary>
+    /// <remarks>
+    /// Returns at most the bound plus one overflow sentinel. The current-name
+    /// arms use the existing source-correspondence index; assembly-name override
+    /// tables have no corresponding index and may be scanned. Returned row
+    /// counts do not measure engine scan work. No bodies or type graphs are read.
+    /// </remarks>
+    public IReadOnlyList<Symbol> FindCapturedLinkageCandidates(string capturedName,
+        int maximumCandidates = 64, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(capturedName);
+        if (maximumCandidates < 1 || maximumCandidates == int.MaxValue)
+            throw new ArgumentOutOfRangeException(nameof(maximumCandidates));
+        cancellationToken.ThrowIfCancellationRequested();
+        var atom = owner.Store.FindAtom(capturedName);
+        if (atom is null) return [];
+        const string query = """
+            SELECT r.id FROM source_correspondence c
+            JOIN entity_source_correspondence e ON e.source_correspondence_id=c.id
+            JOIN routine_symbol r ON r.id=e.owner_id
+            LEFT JOIN gnu_routine_supplement g ON g.id=r.gnu_supplement_id
+            WHERE c.current_name_id=$key0 AND g.assembly_name_id IS NULL
+            UNION
+            SELECT v.id FROM source_correspondence c
+            JOIN entity_source_correspondence e ON e.source_correspondence_id=c.id
+            JOIN variable_symbol v ON v.id=e.owner_id
+            WHERE c.current_name_id=$key0 AND v.assembly_name_id IS NULL
+            UNION
+            SELECT r.id FROM gnu_routine_supplement g
+            JOIN routine_symbol r ON r.gnu_supplement_id=g.id
+            WHERE g.assembly_name_id=$key0
+            UNION
+            SELECT id FROM variable_symbol WHERE assembly_name_id=$key0
+            ORDER BY id LIMIT $key1
+            """;
+        var rows = owner.Store.QueryParameters(query, 0, cancellationToken, [atom.Value, maximumCandidates + 1]);
+        return rows.Select(row => owner.Symbol(row.Long("id"))).ToArray();
+    }
+    /// <summary>
     /// Returns captured routine candidates whose current name has the supplied
     /// ASCII backend startup prefix, or whose retained flags identify a source
     /// constructor/destructor attribute or TLS initialization entry. The caller

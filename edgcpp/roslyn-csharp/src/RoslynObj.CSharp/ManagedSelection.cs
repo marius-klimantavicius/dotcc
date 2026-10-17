@@ -77,6 +77,7 @@ internal static partial class ManagedSelectionPlanner
         private readonly List<FunctionSymbol> startupDefinitions = [];
         private readonly List<FunctionSymbol> callableDefinitions = [];
         private readonly List<ManagedSelectionDependencyReport> dependencies = [];
+        private readonly List<ManagedNonProviderBodyRequirementReport> nonProviderBodyRequirements = [];
         private long workCount;
         private long bodyOperationCount;
         private long ambientRootRowsInspected;
@@ -134,7 +135,7 @@ internal static partial class ManagedSelectionPlanner
             if (requiredInitializerOccurrences.Any(node => !executionVisited.Contains(node)))
                 Fail("ROC1214", "A required executable initializer has no selected typed execution occurrence; association-only initializer execution remains unsupported.");
             checkBudget?.Invoke();
-            var definitions = functions.Where(function => function.BodyState.Name == "definition" && function.Body is not null).ToArray();
+            var definitions = functions.Where(ManagedFunctionDefinitionPolicy.IsProviderDefinition).ToArray();
             var storage = variables.Where(IsStorageDefinition).ToArray();
             var report = BuildReport(true);
             return new(obj, functions.ToArray(), variables.ToArray(), types.ToArray(), constants.ToArray(), definitions, storage, report)
@@ -147,9 +148,9 @@ internal static partial class ManagedSelectionPlanner
             var candidates = obj.TranslationUnit.SemanticModel.FindSymbols(root.LookupName).Take(budgets.MaximumSelectionCandidates + 1).ToArray();
             if (candidates.Length > budgets.MaximumSelectionCandidates) Fail("ROC1211", "Managed root indexed candidate budget exceeded; uniqueness is unknown.");
             var selected = candidates.OfType<FunctionSymbol>().Where(function =>
-                (function.GnuSupplement?.AssemblyName ?? function.CurrentName) == root.LinkageName && function.IsDefined &&
-                function.BodyState.Name == "definition" && function.Body is { Root.RepresentationRole.Name: "execution" }).Distinct().ToArray();
-            if (selected.Length != 1) Fail("ROC1211", "A managed root must select one actual defined public function by its current captured linkage.");
+                (function.GnuSupplement?.AssemblyName ?? function.CurrentName) == root.LinkageName &&
+                ManagedFunctionDefinitionPolicy.IsProviderDefinition(function)).Distinct().ToArray();
+            if (selected.Length != 1) Fail("ROC1211", "A managed root must select one actual out-of-line provider definition by its current captured linkage; suppressed/inlining-only bodies are not providers.");
             return selected[0];
         }
 
@@ -326,6 +327,16 @@ internal static partial class ManagedSelectionPlanner
                 RequireType(parameter.DeclaredType, false);
                 if (parameter.Symbol is { } variable) UseVariable(variable, locator, "execution-parameter");
             }
+            if (ManagedFunctionDefinitionPolicy.RequiresOutOfLineProvider(function))
+            {
+                // A retained inline body is not permission to emit an external
+                // definition. Keep the original signature and copied body facts
+                // while binding selects an actual out-of-line provider.
+                nonProviderBodyRequirements.Add(new(locator, function.CurrentName, function.BodyState.Name,
+                    function.IsDefined, function.Body is not null, function.Details.SuppressInlineBody,
+                    function.Details.DefinitionForInliningOnly, "out-of-line-provider-required"));
+                return;
+            }
             if (function.BodyState.Name != "definition")
             {
                 if (function.IsDefined && function.BodyState.Name == "unavailable")
@@ -333,6 +344,8 @@ internal static partial class ManagedSelectionPlanner
                 return;
             }
             var body = function.Body ?? throw new ManagedSelectionException("ROC1214", "A selected definition has no retained body.", locator);
+            if (!ManagedFunctionDefinitionPolicy.IsProviderDefinition(function))
+                Fail("ROC1214", "A selected provider definition requires its actual defined execution body.", locator);
             ++bodiesVisited;
             foreach (var local in body.Locals)
             {
@@ -595,6 +608,7 @@ internal static class ManagedProgramSelectionReports
                 unit.Selection.Report.InputSha256, unit.Selection.Report)).ToArray(), Bindings = bindings,
             DefinitionSelectionPolicy = program.DefinitionSelectionPolicy, InlineRepresentatives = program.InlineRepresentatives,
             PromotedConstantStoragePolicy = program.PromotedConstantStoragePolicy, ConstantStorageRepresentatives = program.ConstantStorageRepresentatives,
+            NonProviderBodyRequirements = units.SelectMany(unit => unit.Selection.Report.NonProviderBodyRequirements).ToArray(),
             ExecutableBodiesVisited = units.Sum(unit => unit.Selection.Report.ExecutableBodiesVisited),
             RequiredDeclarationCount = units.Sum(unit => unit.Selection.Report.RequiredDeclarationCount),
             StorageDefinitionCount = units.Sum(unit => unit.Selection.Report.StorageDefinitionCount),

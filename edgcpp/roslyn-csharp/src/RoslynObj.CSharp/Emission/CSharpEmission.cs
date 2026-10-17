@@ -101,7 +101,9 @@ public sealed partial class CSharpEmitter
             }
             foreach (var function in SelectedFunctions())
             {
-                if (function.BodyState.Name != "definition")
+                if (function.BodyState.Name != "definition" ||
+                    (options.ManagedSelection is not null || options.ManagedProgramSelection is not null) &&
+                    !ManagedFunctionDefinitionPolicy.IsProviderDefinition(function))
                 {
                     if (function.BodyState.Name == "unavailable" && function.IsDefined && !function.Details.IsDeleted && !function.Details.IsConsteval)
                         Add("CSHARP2008", "A defined function has an unavailable execution body.", function.Name, "function");

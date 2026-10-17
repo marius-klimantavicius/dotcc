@@ -48,7 +48,8 @@ actual C1/D1, automatic cleanup and registered teardown across two TUs (27 outco
 cross-TU identities and distinct equal-byte objects in native/JIT/NativeAOT
 (27 outcomes). [Exact inline cleanup-table metadata](docs/T5-INLINE-METADATA.md)
 and once-only cross-TU scalar constructor arguments pass 23 outcomes. Real DuckDB
-startup advances to suppressed standard-library provider requirements;
+startup advances through [suppressed-body provider binding](docs/T5-SUPPRESSED-PROVIDERS.md)
+(36 outcomes) to non-inline template-COMDAT provider policy;
 its enclosing accessor/guard/library/EH execution remains open.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.

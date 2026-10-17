@@ -13,7 +13,7 @@ internal static partial class ManagedSelectionPlanner
 
         internal ManagedSelectionReport BuildReport(bool complete)
         {
-            var definitionCount = functions.Count(function => function.BodyState.Name == "definition" && function.Body is not null);
+            var definitionCount = functions.Count(ManagedFunctionDefinitionPolicy.IsProviderDefinition);
             return new()
             {
                 InputArtifactIdentity = obj.Manifest.ArtifactIdentity, InputSha256 = selectedInputHash?.ToLowerInvariant() ?? "",
@@ -21,6 +21,7 @@ internal static partial class ManagedSelectionPlanner
                 RelatedTypeMetadataComplete = false, ExecutableBodiesVisited = bodiesVisited,
                 RequiredDeclarationCount = functions.Count - definitionCount, StorageDefinitionCount = variables.Count(IsStorageDefinition),
                 RequiredVariableCount = variables.Count, ScopedTypeCount = types.Count, RequiredConstantCount = constants.Count,
+                NonProviderBodyRequirements = nonProviderBodyRequirements.ToArray(),
                 BodyOperationCount = bodyOperationCount, SelectionWorkCount = workCount, AmbientRootRowsInspected = ambientRootRowsInspected,
                 AmbientRoutineCandidatesInspected = ambientRoutineCandidatesInspected,
                 AmbientInitialization = startup is null

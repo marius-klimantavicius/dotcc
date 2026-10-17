@@ -100,6 +100,9 @@ public sealed record ManagedDefinitionRoot
 public sealed record ManagedRootSelectionReport(string LookupName, string LinkageName,
     string? FunctionName, string Signature, string SelectedLocator);
 public sealed record ManagedSelectionDependencyReport(string From, string Kind, string To);
+public sealed record ManagedNonProviderBodyRequirementReport(string Function, string? CapturedFunctionName,
+    string BodyState, bool IsDefined, bool HasRetainedBody, bool SuppressInlineBody,
+    bool DefinitionForInliningOnly, string Requirement);
 public sealed record ManagedUnitSelectionReport(int UnitOrdinal, string InputArtifactIdentity, string InputSha256, ManagedSelectionReport Selection);
 public sealed record ManagedSelectionBindingReport(string Kind, string LinkageName, string Declaration, string Definition, string AbiContract);
 public sealed record ManagedInlineDefinitionMemberReport(int UnitOrdinal, string InputSha256, string Function,
@@ -140,6 +143,7 @@ public sealed record ManagedSelectionReport
     public IReadOnlyList<ManagedInlineRepresentativeReport> InlineRepresentatives { get; init; } = [];
     public string PromotedConstantStoragePolicy { get; init; } = "reject";
     public IReadOnlyList<ManagedConstantStorageRepresentativeReport> ConstantStorageRepresentatives { get; init; } = [];
+    public IReadOnlyList<ManagedNonProviderBodyRequirementReport> NonProviderBodyRequirements { get; init; } = [];
     public string InputArtifactIdentity { get; init; } = "";
     public string InputSha256 { get; init; } = "";
     public bool ClosureComplete { get; init; }

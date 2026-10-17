@@ -38,7 +38,7 @@ order. No contents/name interning; no dynamic/TLS/mutable/weak-data or NoThrow/I
 widening. Type alignment1 and explicit object alignment null/0/1 preserve effective1.
 One/multi-input routing tested; retain-all explicit-policy request rejects.
 
-Metadata/scalar checkpoint is VERIFIED, awaiting exact-index commit/root review:
+Metadata/scalar checkpoint `f66377e34` is committed and CLOSED:
 `acceptance/duckdb/selected-inline-metadata-report.json`, 272,883B, SHA256
 `bbaa75972d7441daee2c3efae1d3e8188e45df2e1d0b2127c04b099273c91f8d`.
 23 expected outcomes:20 successes/three intended rejections. Product5 (271files),
@@ -52,33 +52,48 @@ incoming uses admitted; actual cleanup calls/states and NoThrow guards remain.
 Natural arithmetic complete-C1 arguments use exact raw/selected roles and ABI.
 See [current metadata proof](T5-INLINE-METADATA.md). No more checkpoint runs needed.
 
-ACTIVE follow-on: suppressed retained inline bodies are requirements for usable
-out-of-line providers. Draft shared policy/helper, selector/root/DTO/inventory/
-emitter integration is separate from staged metadata product5. Frozen integrated
-source `t5/suppressed-provider-product-source-1` (272files) builds cleanly. Actual
-three-input [core293,core300,genuine string support] selection attempt1 advances
-then rejects lookup cap256 at ~allocator; partial/unpublished, not absence.
-Same-build bounded retry2 uses1024 candidates, separate ambient bound unchanged;
-see `t5/suppressed-provider-first-2/real-report.json` when available. Never infer
-source noexcept, native application fallback or cleanup permission.
+Suppressed-provider checkpoint is VERIFIED, awaiting exact-index commit/root review:
+`acceptance/duckdb/suppressed-provider-report.json`,216,210B,SHA256
+`496f1af173daea5be0164452320a2848358b62afd49f8c791291dfcfcf3a6210`.
+36expected=31success/five intendedreject, no final-campaign unexpected/budgets.
+Frozen `t5/suppressed-provider-product-source-3` (272files) separates suppressed
+retained body facts from usable out-of-line providers across roots/closure/
+inventory/emission. Exact public captured-linkage query handles GNUasm overrides,
+removes source-overload breadth without C++ lookup/source synthesis. Genuine
+existing reader controls pass. Companion capture2 actual suppressed C1/D1 binds
+usable explicit provider; native/JIT/AOT result30 twice/full9values/fiveevents,
+2C1/2D1/live0; raw bothcarriers4/4/value0/prefix4/stride4/independentstores pass.
+Missingprovider ROC1301/suppressedroot ROC1211 rejectunpublished. Eight focused
+preservation checks pass (six source+ABIidentities,two policyrejects). Runtime/IR/
+NoThrow/defaultretainall unchanged. Eight exact source3 product blobs staged;
+all template-policy follow-on changes remain unstaged. No more baseline runs.
+See [provider proof](T5-SUPPRESSED-PROVIDERS.md).
 
-Genuine explicit-instantiation string support is captured, not yet accepted as
-full closure: `t5/capture/selected-string-instantiation.roslynobj`,33,819,648B,
-SHA17c7f6b42fa07a5251abc596f8ad9596ef85e442abd6b347daba431c29b82391.
-Pinned producer unchanged; reviewed replacement wrapper/current headers recorded,
-historical header/wrapper byte identity explicitly not claimed. Bounded
-`t5/selected-support-facts-preparation-1/facts.json` passes: support D1 unsuppressed,
-inline+COMDAT, defined actual body; both original D1s suppressed/COMDATfalse,
-AbiCompatibility compatible, complete32/8. No body/ODR/link execution claim.
-Genuine extern-template/explicit-provider companion four source files frozen;
-emission prepares capture/native driver, coordinator schedules it. Inventory's
-verifier and metadata checker are frozen. Root supervises read-only.
+ACTIVE next: approved separate `captured-template-comdat-manifest-order` opt-in,
+old inline/default meanings unchanged. Emission sol xhigh owns shared policy/
+member predicate and consistent metadata/storage/group/routing integration;
+inventory sol xhigh prepares independent out-of-class non-inline C1/D1 genuine
+variant/capture recipe. Coordinator owns freezes/builds/Git. No native std::string
+or application fallback, no invented noexcept/cleanup/lifetime permission.
+Actual source3 realprobe5 at `t5/suppressed-provider-first-5/real-report.json`
+remains partial/unpublished at non-inline COMDAT `_M_create`. Earlier source1
+attempts1/2/3 retain allocator/operator= displaylookup overflows, not absence.
+Exact-name query avoids those unrelated overload sets.
 
-Coordinator sol high owns builds/Git/integration; retained implementers sol xhigh
-own disjoint product/fixture/checker preparation. Current metadata index contains
-only five baseline5 product blobs; provider draft remains unstaged. Preserve all
-unrelated T3/core dirty files. User remains active. Full real DuckDB startup,
-Vector getter/guard/string/JSON/allocator/EH closure remains open; SQLite closed.
+Genuine string support capture `t5/capture/selected-string-instantiation.roslynobj`
+33,819,648B SHA17c7f6b42fa07a5251abc596f8ad9596ef85e442abd6b347daba431c29b82391.
+Producer pinned; reviewed replacement/current headers, no historical byteidentity.
+`t5/selected-support-facts-preparation-1/facts.json` D1 ABI matches293/300;
+`...-2/facts.json` actual `_M_create` ABI matches, function+class instances concrete/
+explicit/unsuppressed/result-reciprocal, functionnoninline+COMDAT. No full body/
+ODR/link acceptance. `IsDefined` alone never makes suppressed bodies providers.
+Tool8 missingpackageprops and original scalar-init fixture attempts preserved;
+corrected tool9/fixture2 passed. Provider facts/control/checker artifacts immutable.
+
+Coordinator sol high owns builds/Git/integration; implementers sol xhigh own
+assigned disjoint product and fixture work, root Astra high monitors read-only.
+Preserve unrelated T3/core dirty files. User active. Actual full DuckDB startup/
+Vector guard/string/JSON/allocator/EH open; SQLite finite T0–T4 remains closed.
 
 Historical checkpoint details below retain original evidence attribution; this
 active section supersedes their older next-step descriptions.

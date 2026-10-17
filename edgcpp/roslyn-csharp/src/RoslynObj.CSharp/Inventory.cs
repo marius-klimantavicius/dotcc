@@ -326,7 +326,13 @@ internal sealed partial class InventoryState
             var signature = Signature(function.Signature, TypeName);
             if (required) RequireType(function.Signature);
             long operations = 0;
-            if (function.Body is { } body)
+            if (selection is not null && ManagedFunctionDefinitionPolicy.RequiresOutOfLineProvider(function))
+            {
+                // Retained source body facts remain reported. Stock backend
+                // suppression forbids using this body as selected execution.
+                Count("link-policy", "retained-body-needs-out-of-line-provider", false, locator);
+            }
+            else if (function.Body is { } body)
             {
                 operations = VisitOperations(body.Root, locator, required, required ? RecipeContext.ExecutionRoot : RecipeContext.Metadata);
                 if (required)
@@ -485,7 +491,8 @@ internal sealed partial class InventoryState
             if (function.BuiltinKind is { } builtin) Count("builtin", builtin.Name, used?.Required == true, report.Locator);
             report = report with { AddressExposed = function.Details.AddressTaken || used?.AddressReferences > 0 };
             functions.Add(report);
-            if (!report.RequiredBody && function.BodyState.Name is "declaration_only" or "unavailable")
+            if (!report.RequiredBody && (function.BodyState.Name is "declaration_only" or "unavailable" ||
+                selection is not null && ManagedFunctionDefinitionPolicy.RequiresOutOfLineProvider(function)))
                 AddImport(report.Locator, "function", report.Name, report.LinkageName, report.Signature.Display,
                     report.Signature.CallingConvention, used, function.Details.AddressTaken);
         }

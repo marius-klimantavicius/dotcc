@@ -68,3 +68,8 @@ Retained suppressed bodies are not out-of-line providers. The genuine support
 capture and its definition/header/profile verification are separate pending
 binding work. This milestone does not complete a final-table audit, real DuckDB
 startup, the Vector accessor/guard/string/JSON/allocator/EH closure or broader T5.
+
+The later [suppressed-provider checkpoint](T5-SUPPRESSED-PROVIDERS.md) separately
+proves usable-provider binding and exact captured-linkage discovery; it preserves
+this milestone's source/runtime attribution and advances real startup to the
+non-inline template-COMDAT policy boundary.

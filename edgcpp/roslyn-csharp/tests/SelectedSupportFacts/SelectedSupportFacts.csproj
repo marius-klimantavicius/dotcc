@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TranslatorProject Condition="'$(TranslatorProject)' == ''">../../src/RoslynObj.CSharp/RoslynObj.CSharp.csproj</TranslatorProject>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="$(TranslatorProject)" /></ItemGroup>
+</Project>
