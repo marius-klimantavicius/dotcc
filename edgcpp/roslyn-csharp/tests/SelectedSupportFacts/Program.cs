@@ -7,11 +7,13 @@ using System.Text.Json;
 using RoslynObj;
 using RoslynObj.CSharp;
 
-if (args.Length is not (2 or 4)) throw new ArgumentException("SelectedSupportFacts SUPPORT_PATH NEW_REPORT_PATH [LOOKUP_NAME EXACT_LINKAGE]");
+if (args.Length is not (2 or 4 or 5 or 6) || args.Length >= 5 && args[4] != "--captured-linkage" ||
+    args.Length == 6 && args[5] != "--forwarding-body")
+    throw new ArgumentException("SelectedSupportFacts SUPPORT_PATH NEW_REPORT_PATH [LOOKUP_NAME EXACT_LINKAGE [--captured-linkage [--forwarding-body]]]");
 var supportPath = Path.GetFullPath(args[0]);
 var reportPath = Path.GetFullPath(args[1]);
 if (File.Exists(reportPath) || Directory.Exists(reportPath)) throw new ArgumentException("Report path must be fresh.");
-var probe = new SupportProbe(args.Length == 4 ? args[2] : null, args.Length == 4 ? args[3] : null);
+var probe = new SupportProbe(args.Length >= 4 ? args[2] : null, args.Length >= 4 ? args[3] : null, args.Length >= 5, args.Length == 6);
 try { probe.Run(supportPath); }
 catch (Exception exception) { probe.AddIssue(exception is ProbeBound ? "bound" : "failure", exception.Message); }
 finally { probe.Finish(); }
@@ -27,6 +29,8 @@ internal sealed class SupportProbe
 {
     private readonly string displayName;
     private readonly string finalName;
+    private readonly bool capturedLinkageDiscovery;
+    private readonly bool forwardingBody;
     private const int MaximumSources = 512, MaximumCandidates = 256, MaximumEntries = 16;
     private const long MaximumTotalCommands = 16384, MaximumTotalRows = 65536;
     private const long MaximumLookupCommands = 8192, MaximumLookupRows = 32768;
@@ -41,26 +45,37 @@ internal sealed class SupportProbe
     public int IssueCount => issues.Count;
     public Dictionary<string, object?> Report { get; }
 
-    public SupportProbe(string? lookupName, string? exactLinkage)
+    public SupportProbe(string? lookupName, string? exactLinkage, bool capturedLinkageDiscovery, bool forwardingBody)
     {
+        this.capturedLinkageDiscovery = capturedLinkageDiscovery;
+        this.forwardingBody = forwardingBody;
         displayName = lookupName ?? "~basic_string";
         finalName = exactLinkage ?? "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev";
         if (string.IsNullOrWhiteSpace(displayName) || string.IsNullOrWhiteSpace(finalName) ||
             Encoding.UTF8.GetByteCount(displayName) > 4096 || Encoding.UTF8.GetByteCount(finalName) > 4096)
             throw new ArgumentException("Lookup name and exact linkage must be nonempty and at most 4096 UTF-8 bytes each.");
-        Report = Row(("probeVersion", 2), ("inspectionComplete", false), ("translatorAccepted", false),
+        Report = Row(("probeVersion", 4), ("inspectionComplete", false), ("translatorAccepted", false),
             ("linkClosureComplete", false), ("historicalHeaderByteIdentityClaim", false),
             ("typedBodyTracePerformed", false), ("typedBodyOccurrenceCount", 0),
             ("functionOrTypeEnumerationPerformed", false), ("sourceRecoveryPerformed", false),
-            ("scope", "One newly supplied support capture and exactly two pinned consumer objects. Public source-file metadata/current-byte hashes and indexed exact-entry associations only. ABI comparison is representation evidence, not ODR, link closure or body proof."),
+            ("scope", capturedLinkageDiscovery
+                ? "One newly supplied support capture and exactly two pinned consumer objects. Public source-file metadata/current-byte hashes and exact captured-linkage candidates only; no source-name discovery. ABI comparison of retained defined-body associations is not provider admission, ODR, link closure or body proof."
+                : "One newly supplied support capture and exactly two pinned consumer objects. Public source-file metadata/current-byte hashes and indexed exact-entry associations only. ABI comparison is representation evidence, not ODR, link closure or body proof."),
             ("lookup", new { DisplayName = displayName, ExactCapturedFinalName = finalName,
-                DefaultD1Mode = lookupName is null && exactLinkage is null }),
+                DefaultD1Mode = lookupName is null && exactLinkage is null,
+                DiscoveryMode = capturedLinkageDiscovery ? "public-captured-final-linkage-candidates" : "public-display-name-index-candidates",
+                LookupNameUsedForDiscovery = !capturedLinkageDiscovery, SupportExactC2BodyOnly = forwardingBody }),
+            ("usableProviderAdmissionPerformed", false),
             ("templateAssociationScope", "Only each exact/explicitly related routine and its containing record: direct descriptor/instance links, descriptor kind/original/definition/prototype identities, instance result/state/flags. No template argument, instance/member collection, definition text or body expansion."),
             ("bounds", new
             {
                 InputObjects = 3, SourceFiles = MaximumSources, SourceOverflowSentinel = MaximumSources + 1,
-                DisplayCandidatesPerUnit = MaximumCandidates, CandidateOverflowSentinel = MaximumCandidates + 1,
+                DisplayCandidatesPerUnit = capturedLinkageDiscovery ? 0 : MaximumCandidates,
+                CapturedLinkageCandidatesPerUnit = capturedLinkageDiscovery ? MaximumCandidates : 0,
+                CandidateOverflowSentinel = MaximumCandidates + 1,
                 ExplicitPrimaryAlternateComponentEntries = MaximumEntries, ParametersPerList = 16,
+                SupportForwardingBodyDistinctOperations = forwardingBody ? 64 : 0,
+                SupportForwardingBodyStructuralOccurrences = forwardingBody ? 128 : 0,
                 ReceiverWrapperDepth = 16, ReceiverLayoutFields = 32, InvocationArguments = 4096,
                 InvocationUtf8Bytes = 1024 * 1024, Capabilities = 512,
                 CurrentPhysicalSourceBytes = MaximumPhysicalSourceBytes, CurrentPhysicalBytesPerFile = 64L * 1024 * 1024,
@@ -69,7 +84,9 @@ internal sealed class SupportProbe
                 WholePhaseSeconds = 120, SampledWorkingSetBytes = 1024L * 1024 * 1024,
                 CachedRowsPerObject = 4096, CachedPagesPerObject = 128, PageSize = 128, CommandTimeoutSeconds = 30,
                 Accounting = "Every reader operation is followed by aggregate checks, including mandatory Open. Open totals and post-Open deltas are both retained. Synchronous operations may reach a check only after returning; coordinator must enforce whole-process time/RSS independently.",
-                IndexCaveat = "Public indexed display-name materialization is bounded by maximum+1, not an assertion about engine work or program-wide uniqueness."
+                IndexCaveat = capturedLinkageDiscovery
+                    ? "Public captured-linkage lookup returns at most maximum+1. Current-name arms use existing indexes; assembly-name override arms may scan. Returned row counts do not measure engine scan work, and no program-wide uniqueness is claimed."
+                    : "Public indexed display-name materialization is bounded by maximum+1, not an assertion about engine work or program-wide uniqueness."
             }), ("units", units.Select(unit => unit.Report).ToList()), ("compatibility", compatibility), ("issues", issues));
     }
 
@@ -78,6 +95,7 @@ internal sealed class SupportProbe
         var support = Open("support", supportPath, null, null);
         DescribeCapture(support);
         Lookup(support);
+        if (forwardingBody) TraceSupportForwardingBody(support);
         foreach (var pin in new[]
         {
             (Name: "consumer293", Path: "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj", Bytes: 1837615104L, Sha: "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46"),
@@ -89,6 +107,7 @@ internal sealed class SupportProbe
         }
         var providers = support.Exact.Where(function => Read(() => function.IsDefined) && Read(() => function.Body) is not null).ToArray();
         Report["supportDefinedExactCandidateCount"] = providers.Length;
+        Report["supportDefinedExactCandidateCountIsProviderEligibility"] = false;
         if (providers.Length != 1)
             AddIssue("support-definition-absent-or-ambiguous", "Exactly one retained defined exact-entry candidate with a body association is required for a comparison; no provider is chosen otherwise.");
         else
@@ -187,10 +206,16 @@ internal sealed class SupportProbe
         var rows = new List<Dictionary<string, object?>>();
         unit.Report["displayNameHint"] = displayName;
         unit.Report["requiredExactCapturedFinalName"] = finalName;
+        unit.Report["discoveryMode"] = capturedLinkageDiscovery ? "public-captured-final-linkage-candidates" : "public-display-name-index-candidates";
+        unit.Report["displayNameHintUsedForDiscovery"] = !capturedLinkageDiscovery;
         unit.Report["candidates"] = rows;
         var model = Read(() => unit.Unit!.SemanticModel);
-        var symbols = Bounded(Read(() => model.FindSymbols(displayName)), MaximumCandidates, "Display-name candidates in " + unit.Name);
-        unit.Report["displayCandidateCount"] = symbols.Length;
+        var candidates = capturedLinkageDiscovery
+            ? Read(() => model.FindCapturedLinkageCandidates(finalName, MaximumCandidates))
+            : Read(() => model.FindSymbols(displayName));
+        var symbols = Bounded(candidates, MaximumCandidates,
+            (capturedLinkageDiscovery ? "Captured-linkage candidates in " : "Display-name candidates in ") + unit.Name);
+        unit.Report[capturedLinkageDiscovery ? "capturedLinkageCandidateCount" : "displayCandidateCount"] = symbols.Length;
         unit.Report["candidateOverflowSentinelObserved"] = false;
         foreach (var symbol in symbols)
         {
@@ -212,7 +237,7 @@ internal sealed class SupportProbe
             row["explicitEntryRelationsNotExecution"] = EntryRelations(function);
         }
         unit.Report["exactCandidateCount"] = unit.Exact.Count;
-        unit.Report["indexLookupCompleteWithinThisInput"] = true;
+        unit.Report[capturedLinkageDiscovery ? "capturedLinkageLookupCompleteWithinThisInput" : "indexLookupCompleteWithinThisInput"] = true;
     }
 
     private object EntryRelations(FunctionSymbol root)
@@ -237,6 +262,116 @@ internal sealed class SupportProbe
             PrimaryReciprocallyListsEntry = pair.Value.Primary is null ? (bool?)null : relations[pair.Value.Primary].Alternates.Contains(pair.Key),
             Alternates = pair.Value.Alternates.Select(alternate => new { Entry = Ref(alternate), PrimaryIsThisEntry = relations[alternate].Primary?.Equals(pair.Key) }).ToArray()
         }).ToArray();
+    }
+
+    private void TraceSupportForwardingBody(UnitProbe support)
+    {
+        if (support.Exact.Count != 1) throw new InvalidDataException("Forwarding-body mode requires one exact support entry; no consumer or alternate body is substituted.");
+        var function = support.Exact[0];
+        if (Read(() => function.SpecialFunctionKind?.Name) != "sfk_constructor" ||
+            Read(() => function.ConstructorOrDestructorKind?.Name) != "cdk_subobject")
+            throw new InvalidDataException("Forwarding-body mode inspects only the supplied support exact subobject constructor entry.");
+        var body = Read(() => function.Body) ?? throw new InvalidDataException("Exact support C2 has no retained body association.");
+        var primary = Read(() => function.PrimaryEntry);
+        var parameters = Bounded(Read(() => function.Parameters), 16, "C2 selected parameters");
+        var parameterSymbols = parameters.Select(parameter => (Parameter: parameter, Symbol: Read(() => parameter.Symbol))).ToArray();
+        var nodes = new List<Dictionary<string, object?>>(); var occurrences = new List<object>();
+        var children = new Dictionary<SemanticNode, StructuralChildDetails[]>();
+        var operations = new HashSet<Operation>(); var active = new HashSet<SemanticNode>();
+        var facts = Row(("function", Ref(function)), ("primaryEntryAssociationOnly", Ref(primary)),
+            ("bodyRoot", Ref(Read(() => body.Root))), ("bodyFunctionIsExactC2", Read(() => body.Function.Equals(function))),
+            ("scope", "Only this exact support C2 structural body. Primary C1 and callee bodies, consumer bodies, type graphs and NoThrow proof are not traversed. Structural ordinals/aliases are facts, not inferred evaluation order or ABI argument remapping."),
+            ("parameters", parameters.Select(ParameterAssociation).ToArray()), ("nodes", nodes), ("occurrences", occurrences),
+            ("completeWithinThisBody", false), ("structuralOccurrenceCount", 0));
+        Report["forwardingBody"] = facts;
+        Report["typedBodyTracePerformed"] = true;
+        Report["typedBodyDistinctOperationCount"] = 0;
+        Walk(Read(() => body.Root), null, "body-root", 0);
+        facts["completeWithinThisBody"] = true;
+
+        void Walk(SemanticNode node, SemanticNode? parent, string role, long ordinal)
+        {
+            Check();
+            if (occurrences.Count == 128) throw new ProbeBound("Support C2 structural occurrence bound exceeded; remaining children are unknown.");
+            var metadata = Read(() => node.RepresentationRole.Name) == "metadata";
+            occurrences.Add(new { Ordinal = occurrences.Count, Node = Ref(node), Parent = Ref(parent), Role = role, RoleOrdinal = ordinal,
+                MetadataBoundaryNotTraversed = metadata, RepeatedIdentity = children.ContainsKey(node) });
+            facts["structuralOccurrenceCount"] = occurrences.Count;
+            if (metadata) return;
+            if (node is Operation operation)
+            {
+                Report["typedBodyOccurrenceCount"] = (int)Report["typedBodyOccurrenceCount"]! + 1;
+                if (!operations.Contains(operation) && operations.Count == 64) throw new ProbeBound("Support C2 distinct-operation bound exceeded.");
+                operations.Add(operation); Report["typedBodyDistinctOperationCount"] = operations.Count;
+            }
+            if (!active.Add(node)) throw new ProbeBound("Support C2 structural cycle encountered; remaining cycle is not expanded.");
+            try
+            {
+                if (!children.TryGetValue(node, out var edges))
+                {
+                    edges = Bounded(Read(() => node.ChildRelations), 128, "C2 structural child relations"); children.Add(node, edges);
+                    var row = Row(("node", Ref(node)), ("nodeKind", Read(() => node.Kind.Name)),
+                        ("representationRole", Read(() => node.RepresentationRole.Name)), ("isOperation", node is Operation),
+                        ("typeAssociationOnly", node is Operation typed ? Ref(Read(() => typed.Type)) : null),
+                        ("structuralEdgesNotSchedule", edges.Select(edge => new { Role = Read(() => edge.Role.Name), Ordinal = Read(() => edge.Ordinal), Child = Ref(Read(() => edge.Child)) }).ToArray()));
+                    nodes.Add(row);
+                    ExpressionOperation[] operands = [];
+                    if (node is ExpressionOperation expression)
+                    {
+                        operands = Bounded(Read(() => expression.Operands), 16, "C2 raw operands");
+                        row["valueCategory"] = Read(() => expression.ValueCategory.Name);
+                        row["rawOperands"] = operands.Select(Ref).ToArray();
+                        row["operandRelations"] = Bounded(Read(() => expression.OperandRelations), 16, "C2 operand relations")
+                            .Select(edge => new { Role = Read(() => edge.Role.Name), Ordinal = Read(() => edge.Ordinal), Expression = Ref(Read(() => edge.Expression)) }).ToArray();
+                    }
+                    if (node is StatementOperation statement) row["statementExpressionAlias"] = Ref(Read(() => statement.Expression));
+                    if (node is OperatorOperation op)
+                        row["operator"] = new { Kind = Read(() => op.OperatorKind.Name), EvalLeftToRight = Read(() => op.Operator.EvalLeftToRight),
+                            EvalRightToLeft = Read(() => op.Operator.EvalRightToLeft), RetainedVirtualCall = Read(() => op.Operator.RetainedVirtualCall),
+                            QualifiedFunctionName = Read(() => op.Operator.QualifiedFunctionName), IsConversionCall = Read(() => op.Operator.IsConversionCall),
+                            CallUsesOperatorSyntax = Read(() => op.Operator.CallUsesOperatorSyntax) };
+                    if (node is ReferenceOperation reference)
+                    {
+                        var target = Read(() => reference.Target); row["referenceTarget"] = Ref(target);
+                        row["exactC2ParameterSymbolMatches"] = parameterSymbols.Where(pair => pair.Symbol?.Equals(target) == true)
+                            .Select(pair => ParameterAssociation(pair.Parameter)).ToArray();
+                    }
+                    if (node is CallOperation call)
+                    {
+                        var callee = Read(() => call.Callee); var target = Read(() => call.TargetMethod);
+                        var receiver = Read(() => call.Receiver); var functionType = Read(() => call.Call.FunctionType);
+                        row["call"] = new
+                        {
+                            Kind = Read(() => call.CallKind.Name), TargetMethod = Ref(target), Callee = Ref(callee),
+                            CalleeReferenceTarget = callee is ReferenceOperation calleeReference ? Ref(Read(() => calleeReference.Target)) : null,
+                            TargetIsExactC2PrimaryEntry = target is not null && target.Equals(primary),
+                            Receiver = Ref(receiver), ReturnSlot = Ref(Read(() => call.Call.ReturnSlot)), FunctionType = Ref(functionType),
+                            FunctionTypeIsTargetSignature = target is null ? (bool?)null : functionType?.Equals(Read(() => target.Signature)),
+                            TargetSelectedParameters = target is null ? null : Bounded(Read(() => target.Parameters), 16, "Call target selected parameter associations").Select(ParameterAssociation).ToArray(),
+                            SourceDispatchKind = Read(() => call.SourceDispatchKind?.Name), SourceTargetMethodAssociationOnly = Ref(Read(() => call.SourceTargetMethod)),
+                            CalleeRawOperandIndices = operands.Select((operand, index) => (operand, index)).Where(pair => pair.operand.Equals(callee)).Select(pair => pair.index).ToArray(),
+                            Arguments = Bounded(Read(() => call.Arguments), 16, "C2 call arguments").Select(argument => new
+                            {
+                                Ordinal = Read(() => argument.Ordinal), Role = Read(() => argument.Role?.Name), Parameter = Ref(Read(() => argument.Parameter)),
+                                Expression = Ref(Read(() => argument.Value)),
+                                RawOperandIndices = operands.Select((operand, index) => (operand, index)).Where(pair => pair.operand.Equals(Read(() => argument.Value))).Select(pair => pair.index).ToArray()
+                            }).ToArray()
+                        };
+                    }
+                }
+                foreach (var edge in edges) Walk(Read(() => edge.Child), node, Read(() => edge.Role.Name), Read(() => edge.Ordinal));
+            }
+            finally { active.Remove(node); }
+        }
+    }
+
+    private object ParameterAssociation(Parameter parameter)
+    {
+        var symbol = Read(() => parameter.Symbol);
+        return new { Ordinal = Read(() => parameter.Ordinal), Role = Read(() => parameter.Role.Name),
+            Descriptor = Ref(Read(() => parameter.Descriptor)), Type = Ref(Read(() => parameter.Type)),
+            DeclaredType = Ref(Read(() => parameter.DeclaredType)), Symbol = Ref(symbol),
+            SymbolType = symbol is null ? null : Ref(Read(() => symbol.Type)), IsSourceParameter = Read(() => parameter.IsSourceParameter) };
     }
 
     private object Function(FunctionSymbol function)

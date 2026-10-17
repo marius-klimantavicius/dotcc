@@ -80,9 +80,12 @@ internal static partial class ManagedSelectionPlanner
                         storage?.IsIndirect, storage?.UsesThisParameterOffset, condition?.Kind.Name,
                         OptionalLocator(condition?.Storage.Variable), Number(condition?.Details.ComparisonValue)));
                     Edge(Locator(region), "normal-cleanup-action", action);
+                    var indirectStorage = action.Details.IsIndirect || storage?.IsIndirect == true ||
+                        storage?.Kind.Name == "indirect_variable";
                     if (action.Array is not null || action.Details.IsArray || action.Details.IsVla || action.Details.IsDeallocation ||
-                        action.Details.IsLocalStaticGuard || action.Details.IsIndirect || storage?.Kind.Name == "no_object")
-                        Fail("ROC1214", "The selected normal-cleanup action has unsupported array, allocation, indirect or exception-owner dependencies.", Locator(action));
+                        action.Details.IsLocalStaticGuard || storage?.Kind.Name == "no_object" ||
+                        indirectStorage && !CollectNormalIndirectVariableCleanup(action, function, body))
+                        Fail("ROC1214", "The selected normal-cleanup action has unsupported array, allocation, incompletely described indirect storage or exception-owner dependencies.", Locator(action));
                 }
             }
             if (eh.ArrayTable is not null || eh.Arrays.Count != 0)
@@ -95,6 +98,56 @@ internal static partial class ManagedSelectionPlanner
             Tick(); Edge(from, kind, storage);
             Use(storage.Variable, Locator(storage), "normal-cleanup-storage-variable");
             Use(storage.Details.BaseEntity, Locator(storage), "normal-cleanup-storage-base");
+        }
+
+        // Dependency accounting only: the captured owned pointer slot locates
+        // an object whose actual cleanup target is already selected above.
+        // Execution still needs an independent normal-lifetime adapter.
+        private bool CollectNormalIndirectVariableCleanup(CleanupAction action, FunctionSymbol owner, FunctionBody body)
+        {
+            Tick();
+            if (action.Kind.Name != "destructor" || action.TargetMethod is null || !action.Details.IsIndirect ||
+                action.Storage is not { Kind.Name: "indirect_variable", IsIndirect: true,
+                    UsesThisParameterOffset: false, Variable: { } variable } storage ||
+                storage.Offset != 0 || storage.Details.BaseEntity is not null)
+                return false;
+            Parameter? selectedParameter = null;
+            foreach (var parameter in owner.Parameters)
+            {
+                Tick();
+                if (parameter.Symbol?.Equals(variable) != true) continue;
+                if (selectedParameter is not null) return false;
+                selectedParameter = parameter;
+            }
+            if (selectedParameter is null && !body.Locals.Contains(variable) || NormalCleanupPointerType(variable.Type) is not
+                    PointerType { IsReference: false, IsRValueReference: false } pointer ||
+                selectedParameter is not null && !pointer.Equals(NormalCleanupPointerType(selectedParameter.Type)) ||
+                pointer.Size is not { } size || size <= 0 || pointer.Alignment is not { } alignment || alignment <= 0)
+                return false;
+            RequireType(variable.Type, true);
+            RequireType(variable.DeclaredType, false);
+            if (selectedParameter is not null)
+            {
+                RequireType(selectedParameter.Type, true);
+                RequireType(selectedParameter.DeclaredType, false);
+            }
+            RequireType(pointer.PointeeType, true);
+            Edge(Locator(storage), "normal-cleanup-indirect-pointee", pointer.PointeeType);
+            return true;
+        }
+
+        private CppType NormalCleanupPointerType(CppType type)
+        {
+            var seen = new HashSet<CppType>();
+            var depth = 0;
+            while (type is TypeReference reference)
+            {
+                Tick(++depth);
+                if (!seen.Add(type)) Fail("ROC1214", "An indirect cleanup pointer has an unsupported cyclic type wrapper.");
+                type = type is QualifiedType qualified ? qualified.UnderlyingType : reference.UnderlyingType;
+            }
+            Tick(depth);
+            return type;
         }
 
         private void VisitNormalEhMarker(LoweredEhOperation marker, FunctionSymbol owner, string from, int depth)

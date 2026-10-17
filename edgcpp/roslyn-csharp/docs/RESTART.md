@@ -65,11 +65,11 @@ usable explicit provider; native/JIT/AOT result30 twice/full9values/fiveevents,
 2C1/2D1/live0; raw bothcarriers4/4/value0/prefix4/stride4/independentstores pass.
 Missingprovider ROC1301/suppressedroot ROC1211 rejectunpublished. Eight focused
 preservation checks pass (six source+ABIidentities,two policyrejects). Runtime/IR/
-NoThrow/defaultretainall unchanged. Eight exact source3 product blobs staged;
-all template-policy follow-on changes remain unstaged. No more baseline runs.
+NoThrow/defaultretainall unchanged. Eight exact source3 product blobs committed;
+subsequent template policy is separately committed below. No more baseline runs.
 See [provider proof](T5-SUPPRESSED-PROVIDERS.md).
 
-Template-COMDAT checkpoint VERIFIED, awaiting exact-index commit/root review:
+Template-COMDAT checkpoint `f22ff30f2` is committed and CLOSED:
 `acceptance/duckdb/template-provider-report.json`,160,887B,SHA256
 `8855f8290c41a0ee5313d9995675e0353fe35c6be2d5c2aaf492a12fd3996597`.
 22expected=17success/five intendedreject, no unexpected/finalbudgetviolations.
@@ -83,19 +83,54 @@ Seven focusedpolicychecks: newpolicy validduplicateinline+constantstoragesource/
 identities, oldinlinepriorprovideridentity, four intendedpolicyrejections. Existing
 validduplicateinline runtimeattribution retained via source+Runtimeidentity;
 NO duplicate explicit-instantiation definitions introduced. Runtime/IR/NoThrowunchanged.
-Five exact baseline source1 policyblobs staged; NormalEhfollow-on remains unstaged.
+Five exact baseline source1 policyblobs committed; NormalEhfollow-on remains unstaged.
 See [template proof](T5-TEMPLATE-COMDAT.md). No more baseline runtime runs needed.
 
-ACTIVE next: dependency-only indirect_variable normalcleanup accounting. Actual
-`t5/template-provider-first-1/real-report.json` [293,300,genuinestringsupport]
-passes _M_create template policy then ROC1214 at StringUtil::Lower normalregion0
-D1 action(storage indirect_variable,IsIndirecttrue,varactualexecutionparam,offset0).
-Root authorizes fullydescribed own pointerstorage/type+actualtarget dependency
-collection, preserving all rawowner/action/region/recipe/flags and unsupported
-array/deallocation/guard/no_object exclusions. NO emitter/NoThrow/startup execution
-permission. Emission xhigh owns ManagedSelection.NormalEh.cs; coordinator compiles/
-runs actual3inputprobe when frozen. Inventory xhigh writes bounded proofdoc only.
-No new standaloneaudittool/runtimecampaign, no native applicationfallback.
+Selected cleanup-graph checkpoint is verified:
+Receipt `acceptance/duckdb/selected-cleanup-graph-report.json` is19,644B,SHA256
+`fed90f7043d91595e7b1db70cde3542dc3b5f30c91e7915b4490e1684477f8f7`.
+14 expected measured outcomes:11 successes/three intended unpublished selection
+boundaries, no final-campaign runner-budget violations. Sole product delta is
+ManagedSelection.NormalEh.cs, exact proven `template-provider-product-source-2`
+(273files). It records fully described indirect_variable cleanup dependencies,
+raw owner/action/region/recipe/storage flags, and captured pointer/pointee types.
+It grants NO emitter, NoThrow, startup or runtime execution permission. Three
+prior generated source+ABI identities pass; Runtime/IR/Program remain unchanged.
+
+Actual core293/core300/string input advances to108bodies/3488ops/583types,
+first capped partialROC1221, then actual allocatorC2 provider-policyROC1224.
+Genuine replacement support adds allocator<char> explicit instantiation alongside
+basic_string<char>; source242B SHA61f5c6ef7445c7c78d69b6b01987866b711d2c7436663845268df7c82686d1fd,
+capture SHAadf0e7df8b7dbc6e565c9c30bec6f7dad25163c21e60c7da5cdda922c4be2ed2,
+artifact035f4a84cd4a62226497b6e435278418. Old input remains unchanged and is
+replaced, never combined with another explicit-instantiation definition. Reviewed
+replacement adapter/current header pins retained; no historical byte-identity claim.
+
+Required attribution control `t5/forwarding-selection-control-1/real-report.json`
+uses proven PRE-forwarding source2 CLI and the same replacement support. It reaches
+complete selected inventory112bodies/3501ops/585types/45imports, then ROC1301
+missing genuine __throw_logic_error provider, unpublished. Its ENTIRE report equals
+the forwarding draft attempt after only output.directory normalization, including
+all selection work counts. Zero allocatorC2 bindings/non-provider requirements:
+provider C2/C1 are local bodies. The unnecessary two-file forwarding draft was
+removed from the worktree; frozen `forwarding-selection-product-source-1` and
+control comparison remain attributable evidence, NOT accepted forwarding support.
+C2 identity/abi_parameter/nullNoexcept remain raw; no C2-to-C1 canonicalization.
+Facts3/4/5 and pinned pristine alias audit preserve the actual distinct forwarding
+body contract for a future genuinely required cross-unit entry case.
+
+ACTIVE next: cohesive import/provider implementation for actual startup, not
+another single-helper investigation checkpoint. `t5/selected-startup-import-groups-1.json`
+accounts all45 rows:24 generated bindings, four lifecycle, nine builtin rows/seven
+kinds, four std throw helpers and four new/delete declarations. Existing expect/
+lifecycle/system-memory contracts need actual occurrence validation; other gaps
+stay explicit. Emission xhigh acquired hash-pinned official gcc-13-source package
+13.3.0-6ubuntu2~24.04.1 (matching installed package version, no install/build) and
+is preparing genuine throw-source capture. Actual functexcept.cc helpers throw
+polymorphic std classes; logic/length_error use old-ABI COW stdexcept bodies and
+configured gettext. No handwritten std body, native C++ throw forwarding, invented
+noexcept or guard shortcut. Coordinator builds/Git; both implementers sol xhigh.
+See [graph/provenance proof](T5-SELECTED-CLEANUP-GRAPH.md).
 
 Genuine string support capture `t5/capture/selected-string-instantiation.roslynobj`
 33,819,648B SHA17c7f6b42fa07a5251abc596f8ad9596ef85e442abd6b347daba431c29b82391.

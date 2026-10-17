@@ -1,0 +1,480 @@
+{
+  "reportVersion": 1,
+  "status": "passed-selected-dependency-accounting-and-provider-input-checkpoint",
+  "scope": "Dependency accounting and genuine provider input evidence only; no generated application publication, linking or execution acceptance.",
+  "productSource": {
+    "manifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-product-source-2/source-snapshot.json",
+      "bytes": 47344,
+      "sha256": "72620ec0c21510e22e3f4055c073734efe999604c82cfc2306a101a33942b87f"
+    },
+    "fileCount": 273,
+    "allFrozenFilesVerified": true,
+    "currentFilesByteIdentical": true
+  },
+  "changedProductBlobs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/src/RoslynObj.CSharp/ManagedSelection.NormalEh.cs",
+      "bytes": 12710,
+      "sha256": "adb29ad632661bf2f99d75fce6ec807dbe92f43287eb008229e09940cee3233e"
+    }
+  ],
+  "runtimeIrProgramNoThrowUnchanged": true,
+  "toolSource3": {
+    "manifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-source-3/source-snapshot.json",
+      "bytes": 911,
+      "sha256": "1e59c94921b79bdd297633e89da9be0dce29fe8f7bf7b31138e8caad162a0e5c"
+    },
+    "fileCount": 6,
+    "allFrozenFilesVerified": true,
+    "currentFilesByteIdentical": false
+  },
+  "toolSource4": {
+    "manifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-source-4/source-snapshot.json",
+      "bytes": 911,
+      "sha256": "7118c806b1afa10d3728a7dc8b8a14cdb2ccefe241413ce5a26b0cd9128b675a"
+    },
+    "fileCount": 6,
+    "allFrozenFilesVerified": true,
+    "currentFilesByteIdentical": true
+  },
+  "phases": [
+    {
+      "name": "template-provider-cli-build-2",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-cli-build-2/run.json",
+        "bytes": 1285,
+        "sha256": "6d54fe76cf825608bc272875b0d114980ad4192c8be596ebbd15e06bf8a7c0ca"
+      }
+    },
+    {
+      "name": "selected-real-startup-template-translate-2",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-template-translate-2/run.json",
+        "bytes": 1146,
+        "sha256": "b5ba34786fe264a8bcc003333879e7cc3d077214d855fcd7a526e469d2f684a0"
+      }
+    },
+    {
+      "name": "selected-real-startup-template-translate-3",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-template-translate-3/run.json",
+        "bytes": 1146,
+        "sha256": "ed6f988e0334ac7ba47052820c5c43423ed505f2762fce78bb0b0f1102fb4232"
+      }
+    },
+    {
+      "name": "selected-real-startup-without-forwarding-translate-1",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-without-forwarding-translate-1/run.json",
+        "bytes": 1156,
+        "sha256": "b3c3ca89183e598d5f2f5ca6fed2e7eeebc5bbd5ea67cc70f9fc0ad022b30355"
+      }
+    },
+    {
+      "name": "export-selected-string-instantiation-2",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-string-instantiation-2/run.json",
+        "bytes": 16865,
+        "sha256": "8787ad3c1b1d01ed89cc7ac12824c9b7ab6162e1e08616adf575eab581ae2abf"
+      }
+    },
+    {
+      "name": "inspect-selected-string-instantiation-2",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-string-instantiation-2/run.json",
+        "bytes": 1164,
+        "sha256": "aac976456dffd2b8e94729e5c066e1a1bca407ed4c20d3bb3b18ad451d2886ce"
+      }
+    },
+    {
+      "name": "selected-support-facts-build-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-build-3/run.json",
+        "bytes": 1457,
+        "sha256": "6ef01d0409428e9e852d6217956aa499625d4a71c01e6ef6f6140ff2c1e13a27"
+      }
+    },
+    {
+      "name": "selected-support-facts-run-3",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-run-3/run.json",
+        "bytes": 1190,
+        "sha256": "8ea12dd10df68962916115235898d31eaead1d9f11d31d9fa9d531c4dc71749f"
+      }
+    },
+    {
+      "name": "selected-support-facts-run-4",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-run-4/run.json",
+        "bytes": 1199,
+        "sha256": "85ea57857bf0be2c0bab681cec6a11d34c6b2dc55f7f304bb1cfb61ec0cb2da0"
+      }
+    },
+    {
+      "name": "selected-support-facts-build-4",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-build-4/run.json",
+        "bytes": 1457,
+        "sha256": "48ed0dd8181668a266002cd50acbb82ea9c2133bbdc736bebb34f3e9f309328b"
+      }
+    },
+    {
+      "name": "selected-support-facts-run-5",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-run-5/run.json",
+        "bytes": 1225,
+        "sha256": "1c474ff720e498b60f02ed8d38e65194940d7b7207c4026f5e827e4ef71b0bb9"
+      }
+    },
+    {
+      "name": "prior-template",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-indirect-selection-preservation-1/prior-template-translate/run.json",
+        "bytes": 1194,
+        "sha256": "93d915afec384f0b799cadd0b319ac152b944222afca3782b37a8cffb1598497"
+      }
+    },
+    {
+      "name": "prior-metadata",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-indirect-selection-preservation-1/prior-metadata-translate/run.json",
+        "bytes": 1194,
+        "sha256": "c42d3672cd2793e85b428005f1485bb4230a1b844d1b8a71dcba6b161cecd14d"
+      }
+    },
+    {
+      "name": "default-normal",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "budgetViolation": null,
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-indirect-selection-preservation-1/default-normal-translate/run.json",
+        "bytes": 1194,
+        "sha256": "23d1be23fd764796bbfe2e344e07ff8d4f276af105e6e9f1ff82f0f61cbec463"
+      }
+    }
+  ],
+  "expectedOutcomeCount": 14,
+  "successCount": 11,
+  "intendedUnpublishedBoundaryCount": 3,
+  "unexpectedOutcomeCount": 0,
+  "finalCampaignBudgetViolationCount": 0,
+  "actualSelectedGraph": {
+    "inputs": [
+      {
+        "ordinal": 1,
+        "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0293/unit.roslynobj",
+        "sha256": "e8f1840398a035990420e67e3261db8b2ed044c8e6b471d07d36a7f2542d4a46",
+        "artifactIdentity": "4f67f8e3a2065e96ad421dcf93e505da",
+        "formatMajor": 2,
+        "formatMinor": 0,
+        "producer": "roslyn_gen_be",
+        "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+        "edgVersion": "7.0",
+        "captureProfile": "native_lowered",
+        "languageMode": "c++201703"
+      },
+      {
+        "ordinal": 2,
+        "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/0300/unit.roslynobj",
+        "sha256": "6856d59e243fffd9b1b986beee12651948204195ebe94b200ad516e65fb48841",
+        "artifactIdentity": "adf78b04db66ec81be93303d47f73779",
+        "formatMajor": 2,
+        "formatMinor": 0,
+        "producer": "roslyn_gen_be",
+        "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+        "edgVersion": "7.0",
+        "captureProfile": "native_lowered",
+        "languageMode": "c++201703"
+      },
+      {
+        "ordinal": 3,
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/selected-string-allocator-instantiation.roslynobj",
+        "sha256": "adf0e7df8b7dbc6e565c9c30bec6f7dad25163c21e60c7da5cdda922c4be2ed2",
+        "artifactIdentity": "035f4a84cd4a62226497b6e435278418",
+        "formatMajor": 2,
+        "formatMinor": 0,
+        "producer": "roslyn_gen_be",
+        "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+        "edgVersion": "7.0",
+        "captureProfile": "native_lowered",
+        "languageMode": "c++201703"
+      }
+    ],
+    "inventoryComplete": true,
+    "closureComplete": true,
+    "executableBodies": 112,
+    "bodyOperations": 3501,
+    "types": 585,
+    "functionRows": 155,
+    "storageRows": 494,
+    "bindingRows": 29,
+    "importRows": 45,
+    "translationComplete": false,
+    "published": false,
+    "firstDiagnostic": {
+      "code": "ROC1301",
+      "severity": "error",
+      "message": "Required function '_ZSt19__throw_logic_errorPKc' has no selected captured definition or admitted binding. Supply its genuine captured generated definition; only separately admitted system ABI contracts may fulfill runtime imports. Address-only RTTI data cannot implement a function, and native application-body substitution is unsupported.",
+      "input": null,
+      "locator": null,
+      "family": null
+    }
+  },
+  "selectionProgress": [
+    {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-first-2/real-report.json",
+        "bytes": 674762,
+        "sha256": "a90330ca87cf2db36109dd441c5e724f3db54ce2262744f5cf0abc8ce1d4a5ec"
+      },
+      "status": "partial-selected-resource-cap-diagnostic",
+      "code": "ROC1221",
+      "bodies": 108,
+      "operations": 3488,
+      "types": 583,
+      "runnerBudgetViolation": null
+    },
+    {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-first-3/real-report.json",
+        "bytes": 674849,
+        "sha256": "03a42be52c3c839420acd22b33a9908bc1f9f51efaabcdd0bfdcc93b178207ce"
+      },
+      "status": "unpublished-provider-policy-boundary",
+      "code": "ROC1224",
+      "bodies": 108,
+      "operations": 3488,
+      "types": 583,
+      "runnerBudgetViolation": null
+    },
+    {
+      "report": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-control-1/real-report.json",
+        "bytes": 2104683,
+        "sha256": "970e55d715eb32b7391f7e9b122c8b1ec0140d0d2059199b67ba5a806aa3a3ee"
+      },
+      "status": "selected-graph-complete-unbound-imports",
+      "code": "ROC1301",
+      "bodies": 112,
+      "operations": 3501,
+      "types": 585,
+      "runnerBudgetViolation": null
+    }
+  ],
+  "preservation": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-indirect-selection-preservation-1/report.json",
+    "bytes": 5056,
+    "sha256": "362fa34b0f8a8b942dc8dfad244228dbc9ed277cc475a0d6f2250cb8641015a4"
+  },
+  "genuineAllocatorSupport": {
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/T5/support/selected-string-allocator-instantiation.cpp",
+      "bytes": 242,
+      "sha256": "61f5c6ef7445c7c78d69b6b01987866b711d2c7436663845268df7c82686d1fd"
+    },
+    "capturedInput": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/capture/selected-string-allocator-instantiation.roslynobj",
+      "bytes": 33829888,
+      "sha256": "adf0e7df8b7dbc6e565c9c30bec6f7dad25163c21e60c7da5cdda922c4be2ed2"
+    },
+    "provenance": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-string-instantiation-preparation-2/provenance.json",
+      "bytes": 4885,
+      "sha256": "6a20cd236a363e8368a0d544841970d2ac24612b4119ba6692a2044b8a1e6718"
+    },
+    "oldSupportReplacedNotCombined": true,
+    "historicalHeaderBytesClaimed": false
+  },
+  "attributionControl": {
+    "comparison": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-control-1/comparison.json",
+      "bytes": 2481,
+      "sha256": "5eed8d1527ce5bbcc9aa5d2a8bfbc66a01419b10121d3b2cb3f0db685b4a6b3b"
+    },
+    "reportsEqualExceptOutputDirectory": true,
+    "includingEntireManagedSelectionAndWorkStatistics": true,
+    "newForwardingPredicateProven": false,
+    "draftRemovedFromCurrentProduct": true,
+    "draftFrozenOnly": {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-product-source-1/source-snapshot.json",
+        "bytes": 47345,
+        "sha256": "eaed633d7600a926672228c0e804c7eec32fd2fcf6efe001e88bf7bc0bfa7219"
+      },
+      "fileCount": 273,
+      "allFrozenFilesVerified": true,
+      "currentFilesByteIdentical": false
+    },
+    "zeroAllocatorC2BindingsAndNonProviderRequirements": true,
+    "interpretation": "Replacement genuine allocator support resolves the provider blocker on the already proven source2 CLI. The selection-only forwarding draft was unnecessary/unexercised and is not part of this checkpoint."
+  },
+  "evidence": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-first-2/real-manifest.json",
+      "bytes": 4329,
+      "sha256": "882f7e89c79b3be1126893a7b723f1824a207a1310c26ce1eb89daab29c49c98"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-first-2/real-report.json",
+      "bytes": 674762,
+      "sha256": "a90330ca87cf2db36109dd441c5e724f3db54ce2262744f5cf0abc8ce1d4a5ec"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-first-3/real-manifest.json",
+      "bytes": 4331,
+      "sha256": "b0b12e082629c2e60f8179db17d7243b9ea313b54733e4ede852578fa2e77df8"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/template-provider-first-3/real-report.json",
+      "bytes": 674849,
+      "sha256": "03a42be52c3c839420acd22b33a9908bc1f9f51efaabcdd0bfdcc93b178207ce"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-control-1/real-manifest.json",
+      "bytes": 4354,
+      "sha256": "3677c4af060544a650949fd8ecf12dcdc9d3bf62f1a576f59fd527ba4533acdf"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-control-1/real-report.json",
+      "bytes": 2104683,
+      "sha256": "970e55d715eb32b7391f7e9b122c8b1ec0140d0d2059199b67ba5a806aa3a3ee"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-control-1/comparison.json",
+      "bytes": 2481,
+      "sha256": "5eed8d1527ce5bbcc9aa5d2a8bfbc66a01419b10121d3b2cb3f0db685b4a6b3b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/normal-indirect-selection-preservation-1/report.json",
+      "bytes": 5056,
+      "sha256": "362fa34b0f8a8b942dc8dfad244228dbc9ed277cc475a0d6f2250cb8641015a4"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-string-instantiation-capture-recipe-3.json",
+      "bytes": 49431,
+      "sha256": "c8e0a770e55926c8ac69124039bcd96253e17a5c78ed90ae7cff121326f0bc20"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-string-instantiation-preparation-2/provenance.json",
+      "bytes": 4885,
+      "sha256": "6a20cd236a363e8368a0d544841970d2ac24612b4119ba6692a2044b8a1e6718"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-string-instantiation-preparation-2/inspect.json",
+      "bytes": 37477,
+      "sha256": "be525a4070f678444f7666d0e1c1e2d502103ce4b770f8006492337584797fbc"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-preparation-3/facts.json",
+      "bytes": 335280,
+      "sha256": "98c8ba9d886cca40cbbe4a893af15beb9877461d2e02f4c7b1b95600260bfd1f"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-preparation-4/facts.json",
+      "bytes": 335306,
+      "sha256": "491b815da1f96581aae3453ea70c587d40f3503f82bed7710fdaa990c52b543b"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-support-facts-preparation-5/facts.json",
+      "bytes": 344818,
+      "sha256": "f737dac5b94eb50c2808df4c2c5210adafc2ee3d655da1d43aefd72286178eaf"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/allocator-forwarding-evidence-1.json",
+      "bytes": 30744,
+      "sha256": "1298ecff1ded38d5e3e5011c2f696b2fffda4fee853386fb07355ee0bb049193"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/allocator-alias-stock-audit-1.json",
+      "bytes": 22252,
+      "sha256": "c718520efe36291cfe671ab5980383d827d5d8cdf676cc02aae5f731c56065d1"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-first-1/real-manifest.json",
+      "bytes": 4346,
+      "sha256": "d82f2c51f6a0bbb2aace392148f1a9dd07bb49d4ce8bbff2cce1c942e9dbc225"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-first-1/real-report.json",
+      "bytes": 2104675,
+      "sha256": "184e34911d4a6d41370d34dc415bd13b63a6e9bd7c2c03a93904ea4d4cd0e1bd"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/forwarding-selection-preservation-1/report.json",
+      "bytes": 5055,
+      "sha256": "a1d75a84ddeda9c2af6e7dbb2de667b7c87ca223df2629a4fb70357ee88d5f0c"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-forwarding-selection-first-1.py",
+      "bytes": 2428,
+      "sha256": "4ef5e2e8aa0c19314f614f91d3da7ac9fa4311f13c7e4e1aef1e32ae105e0ceb"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-forwarding-selection-preservation-1.py",
+      "bytes": 3814,
+      "sha256": "6e958ae681c6c2da47b363100687df0abbf46d11c5252a449a0b8884cc9efa26"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/run-normal-indirect-selection-preservation-1.py",
+      "bytes": 3772,
+      "sha256": "ff46f635b5c9a6ffd327c2491504eb1f5b55f887108352bdc0a59447026d973a"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-import-groups-1.json",
+      "bytes": 53690,
+      "sha256": "e4d0d21f815e9b4cb640f0ae90c91b407470c88980b8ca4999730a2c914a6737"
+    }
+  ],
+  "limits": [
+    "Selected closure completeness is not provider binding, emission or execution completeness.",
+    "Indirect cleanup changes dependency collection only, preserving raw owner/action/region/storage/recipe facts; emission/NoThrow/runtime admission unchanged.",
+    "No new forwarding-entry policy or C2-to-C1 canonicalization; C2 retains raw identity/roles/null noexcept.",
+    "No full std::string, allocator, hierarchy, cross-unit EH, startup or Vector accessor execution claim.",
+    "45 imports include still-unadmitted throw helpers, builtin and C++ allocation groups; lifecycle contracts require actual emission validation.",
+    "Earlier dependency-probe timeout and closed milestone attempts retain original receipts; zero final-campaign runner-budget violations is not an overall-history claim.",
+    "SQLite and prior native/JIT/AOT execution retain their earlier frozen provenance; this dependency-only increment requires no repeated runtime campaign."
+  ]
+}
