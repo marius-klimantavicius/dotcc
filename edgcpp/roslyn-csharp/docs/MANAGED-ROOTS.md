@@ -116,3 +116,12 @@ selection records ordinary EH schedules and partial per-unit failures; actual
 throw/handler and unadmitted cleanup execution still reject. Real core293+300
 startup includes both captured backend startup roots and stops unpublished on
 duplicate inline COMDAT D1 selection, not missing ambient coverage.
+
+An explicit selected multi-input opt-in
+`link.definitionSelection = "captured-inline-comdat-manifest-order"` now chooses
+a compatible captured inline+COMDAT representative in supplied input order,
+without ODR/body-equivalence validation. Default strong-only still rejects
+duplicates. [Finite native/JIT/AOT proof and limits](SELECTED-INLINE-COMDAT.md)
+cover direct C1/D1, actual cleanup and managed atexit invocation. Function selection
+never merges storage; promoted/static/TLS state and all ambient obligations remain
+separately guarded.

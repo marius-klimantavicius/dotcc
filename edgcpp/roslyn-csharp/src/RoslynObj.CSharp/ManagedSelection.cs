@@ -593,6 +593,7 @@ internal static class ManagedProgramSelectionReports
             Scope = "selected-multi-input-executable-closure", ClosureComplete = units.All(unit => unit.Selection.Report.ClosureComplete),
             UnitSelections = units.Select(unit => new ManagedUnitSelectionReport(unit.UnitOrdinal, unit.Selection.Source.Manifest.ArtifactIdentity,
                 unit.Selection.Report.InputSha256, unit.Selection.Report)).ToArray(), Bindings = bindings,
+            DefinitionSelectionPolicy = program.DefinitionSelectionPolicy, InlineRepresentatives = program.InlineRepresentatives,
             ExecutableBodiesVisited = units.Sum(unit => unit.Selection.Report.ExecutableBodiesVisited),
             RequiredDeclarationCount = units.Sum(unit => unit.Selection.Report.RequiredDeclarationCount),
             StorageDefinitionCount = units.Sum(unit => unit.Selection.Report.StorageDefinitionCount),

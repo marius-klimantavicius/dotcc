@@ -7,33 +7,44 @@ are gpt-6.1-sol xhigh; root GPT-6-Astra high monitors read-only. User remains
 unpaused. Startup checkpoint `c671703d7` and prior selected-composition `6e767a577`
 are committed/closed; no successful baseline reruns are pending.
 
-Verified next checkpoint is staged from frozen normal-EH product source8:
-`acceptance/duckdb/selected-constructor-report.json`, 52,854 bytes, SHA-256
-`7f150df5fac8620b490757a6be2bf06fe4508d392c149bf925c432bdc243f3cc`.
-27 expected outcomes: 23 successes/four intended rejections, zero final-campaign
-unexpected outcomes or budgets. Native/JIT/AOT two-TU strong C1 snapshots and both
-16/8 carrier physical checks pass; seven preservation checks and genuine strong
-duplicate rejection pass. Runtime unchanged. Exact nine product index blobs match
-source8; pending emitter edits for COMDAT are deliberately unstaged and unverified.
+Selected constructor/normal-EH checkpoint `e9740b1f3` is committed and closed:
+27 expected outcomes, receipt `acceptance/duckdb/selected-constructor-report.json`
+SHA7f150df5fac8620b490757a6be2bf06fe4508d392c149bf925c432bdc243f3cc.
+No closed constructor/startup/SQLite reruns are pending.
+
+Verified next checkpoint is staged from frozen inline COMDAT product source3:
+`acceptance/duckdb/selected-inline-comdat-report.json`, 58,593 bytes, SHA-256
+`d654b48692dd22080a2446f8d97f42c42addb7481814789fd5063a2ed82cd78f`.
+27 expected outcomes:21 successes/six intended rejections, zero final-campaign
+unexpected outcomes or budgets. Native/JIT/AOT and both carrier physical checks
+pass. Four automatic D1 calls remain separate from two registered finalizers;
+created/destroyed6/6, live0. Seven previous source/ABI pairs unchanged. Default
+inline and strong duplicates under default/opt-in reject. Runtime unchanged.
+Product source3 (269 files), checker source1 (eight files), both captured inputs,
+fixtures/facts/native evidence verify. All ten product index blobs match source3.
 No build/test process is running at this boundary.
 
-Actual core293+300 startup now has partial per-unit selection: 17/499 and 67/1797
-bodies/operations, combined84/2296. Both captured startup roots are included. Next
-boundary is duplicate inline COMDAT FileCompressionType D1; no actual DuckDB
-startup/getter-chain execution or combined closure is claimed. Source8 diagnostic:
-`t5/selected-normal-eh-first-preparation-8/real-report.json`. Exact core300 C1
-primary/C2 association evidence is `t5/file-compression-definition-facts-3.json`.
+Opt-in policy `captured-inline-comdat-manifest-order` is explicit target
+representative selection, never ODR/body equivalence. Default strong-only remains.
+All member dependency bodies and supplied-unit ambient schedules are retained.
+Raw local call/cleanup/atexit identities are validated before selected target and
+receiver cast; raw noexcept facts remain required before canonical proof cache.
+No local-static/TLS state merging, native application/UCO fallback or hidden roles.
 
-Next active work: approved opt-in captured-inline-comdat-manifest-order target
-representative policy; default strong-only stays unchanged. Coordinator owns
-selection/config/report/maps; emission owns raw-local D1 call/cleanup/registration
-validation and final invocation adaptation; inventory owns genuine two-TU inline
-fixture/checker. All supplied-unit ambient obligations remain. No ODR/body equality,
-static/TLS state merging, native application or address/UCO fallback is authorized.
-C1 baseline stays staged while these follow-on edits remain unstaged. Save the
-verified C1 checkpoint after root index review, then continue cohesive actual
-startup and full Vector guard/string/JSON/allocator/EH work. Preserve unrelated
-T3 aggregate fixtures and all unrelated upstream/core dirty files.
+Next actual core boundary: selected startup293+300 rejects a required variable
+`_ZZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1IS3_EEPKcRKS3_Es`
+with promoted-local-static and promoted-init flags true, TLSfalse, no ExceptionTable.
+`t5/inline-comdat-first-preparation-3/real-report.json` retains partial scope.
+Do not infer dynamic state or inactivity from flags/name: collect only this actual
+required public entity's type, direct/wrapper initializer, parameter/storage/scope,
+linkage and selected uses through a production diagnostic. Pristine audit
+`t5/promoted-local-static-stock-audit-1.json` SHA0a083c8398ed5e9c8c42e2947330c8f38bfaae48a0fd503baa2bac697b23e68f
+shows promotion transfers none/zero/static/dynamic initializer variants. Guard stays
+until exact applicable facts and independent storage/identity contract are reviewed.
+No broad metadata/helper audit or source recovery; full actual guard/string/JSON/
+allocator/EH closure remains open. Coordinator owns integration/builds/Git; emitter
+and inventory own disjoint follow-on. Preserve unrelated T3/core dirty paths.
+Save this verified checkpoint after root index review, then continue actual core.
 
 Historical checkpoint details below retain original evidence attribution; this
 active section supersedes their older next-step descriptions.

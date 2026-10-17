@@ -315,7 +315,8 @@ public sealed partial class CSharpEmitter
                     var selectedRecipe = recipes.Single(recipe => recipe.Target?.Equals(variable) == true && recipe.Destructor?.Equals(destructor) == true && !recipe.IsFreeingOfExceptionObject);
                     ValidateExceptionMetadataRecipe(selectedRecipe, false, temporary: IsConstructionTemporaryRecipe(selectedRecipe));
                     if (!matchedRecipes.Add(selectedRecipe)) throw Limit("Two EH actions unexpectedly share one destruction recipe.", "exception-cleanup");
-                    ValidateGeneratedLifetimeRoutine(destructor);
+                    var selectedDestructor = SelectedLifetimeInvocation(destructor);
+                    ValidateGeneratedLifetimeRoutine(selectedDestructor);
                     EnsureGeneratedNoThrow(destructor);
                 }
                 else if (storage.Kind.Name == "receiver_relative")
@@ -450,6 +451,10 @@ public sealed partial class CSharpEmitter
             Check(function, []);
             void Check(FunctionSymbol current, HashSet<FunctionSymbol> active)
             {
+                var captured = current;
+                current = CanonicalFunction(captured);
+                if (!current.Equals(captured) && captured.Signature.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(captured))
+                    throw Limit("Normal marker omission requires the original entry's retained noexcept fact as well as its selected body proof.", "lifetime");
                 if (validatedNoThrowFunctions.Contains(current) || !active.Add(current)) return;
                 if (!functions.Contains(current) || current.Body is null || current.Signature.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(current))
                     throw Limit("Normal marker omission requires a closed selected noexcept call graph.", "lifetime");
@@ -559,9 +564,19 @@ public sealed partial class CSharpEmitter
                 if (automaticArray?.Cleanup.Equals(action) == true)
                     writer.Line($"    {Owner}.{automaticArray.DestroyMethod}((void*)(&{names[automaticArray.Variable]}), {automaticArray.Type.Bound!.Value.ToString(CultureInfo.InvariantCulture)}UL, {automaticArray.Element.Size!.Value.ToString(CultureInfo.InvariantCulture)}UL);");
                 else if (action.Storage!.Kind.Name == "direct_variable")
-                    writer.Line($"    {OwnedName(action.TargetMethod!)}(&{names[action.Storage.Variable!]});");
+                {
+                    var rawTarget = action.TargetMethod!; var selectedTarget = SelectedLifetimeInvocation(rawTarget);
+                    var receiver = $"&{names[action.Storage.Variable!]}";
+                    if (!selectedTarget.Equals(rawTarget)) receiver = ManagedBoundValueView(rawTarget.Parameters[0].Type, selectedTarget.Parameters[0].Type, receiver);
+                    writer.Line($"    {OwnedName(selectedTarget)}({receiver});");
+                }
                 else if (receiverMemberCleanups.TryGetValue(action, out var member))
-                    writer.Line($"    {OwnedName(action.TargetMethod!)}(({TypeName(member.MemberType)}*)((byte*){names[member.Receiver]} + {action.Storage.Offset.ToString(CultureInfo.InvariantCulture)}));");
+                {
+                    var rawTarget = action.TargetMethod!; var selectedTarget = SelectedLifetimeInvocation(rawTarget);
+                    var receiver = $"({TypeName(member.MemberType)}*)((byte*){names[member.Receiver]} + {action.Storage.Offset.ToString(CultureInfo.InvariantCulture)})";
+                    if (!selectedTarget.Equals(rawTarget)) receiver = ManagedBoundValueView(rawTarget.Parameters[0].Type, selectedTarget.Parameters[0].Type, receiver);
+                    writer.Line($"    {OwnedName(selectedTarget)}({receiver});");
+                }
                 else
                 {
                     if (!exceptionReleaseHandlers.TryGetValue(action, out var handler) || !handler.Function.Equals(plan.Function))

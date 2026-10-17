@@ -127,7 +127,7 @@ public sealed partial class Translator
                 if (!state.Admit(obj, input)) return;
             }
             var program = ManagedProgramSelectionPlanner.Select(opened, hashes, request.Roots.ManagedDefinitions,
-                request.Budgets, token, state.CheckBudget, request.Roots.ManagedStartup);
+                request.Budgets, token, state.CheckBudget, request.Roots.ManagedStartup, request.Link.DefinitionSelection);
             foreach (var unit in program.UnitSelections)
                 state.InventoryUnit(unit.Selection.Source, request.Inputs[unit.UnitOrdinal - 1], unit.UnitOrdinal,
                     hashes[unit.UnitOrdinal - 1], unit.Selection);
@@ -224,6 +224,8 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
             || !request.Roots.RetainAllDefinitions && (request.Inputs.Length < 1 || request.Inputs.Length > request.Budgets.MaximumOpenUnits || request.Roots.Mode != "library"
                 || request.Roots.ManagedDefinitions.Length == 0 && request.Roots.ManagedStartup?.Definitions.Length is not > 0 || request.Roots.Exports.Length != 0))
             Error("ROC1200", "Explicit managed roots require a finite budgeted input set, library mode, retainAllDefinitions=false and no native exports; default retain-all mode has no managed root filter.");
+        if (request.Link.DefinitionSelection == "captured-inline-comdat-manifest-order" && request.Inputs.Length < 2)
+            Error("ROC1202", "Inline COMDAT representative selection requires multiple explicit pinned selected inputs.");
         foreach (var root in request.Roots.ManagedDefinitions.Concat(request.Roots.ManagedStartup?.Definitions ?? []))
             if (string.IsNullOrWhiteSpace(root.LookupName) || string.IsNullOrWhiteSpace(root.LinkageName)
                 || request.Inputs.Count(input => root.InputSha256.Equals(input.Sha256, StringComparison.OrdinalIgnoreCase)) != 1)
@@ -232,7 +234,8 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
             (startup.Contract != "edg7-itanium-explicit-startup-atexit-v1" || startup.Definitions.Length == 0 ||
              !startup.UnitInputOrder.SequenceEqual(request.Inputs.Select(input => input.Sha256), StringComparer.OrdinalIgnoreCase)))
             Error("ROC1200", "Explicit managed startup requires the admitted lifecycle contract, defined roots and the full ordered input hash list matching the selected manifest-order target contract.");
-        if (request.Link.DefinitionSelection != "strong-only" || request.Link.InitializationOrder != "manifest-order" || request.Link.GlobalState != "process")
+        if (request.Link.DefinitionSelection != "strong-only" &&
+            (request.Roots.RetainAllDefinitions || request.Link.DefinitionSelection != "captured-inline-comdat-manifest-order") || request.Link.InitializationOrder != "manifest-order" || request.Link.GlobalState != "process")
             Error("ROC1201", "Requested link, initialization or global-state policy is unsupported.");
         if (request.Output.NamePolicy != "source-stable" || request.Output.FilePolicy != "declaration-size")
             Error("ROC1202", "Requested source-name or file policy is unsupported.");

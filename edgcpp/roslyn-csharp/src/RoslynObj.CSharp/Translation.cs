@@ -136,7 +136,7 @@ public sealed partial class Translator
                         request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup);
                 else
                     managedProgramSelection = ManagedProgramSelectionPlanner.Select(openedInputs, inventory.ProgramReport.Inputs.Select(input => input.Sha256).ToArray(),
-                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup);
+                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup, request.Link.DefinitionSelection);
             }
             var emission = new CSharpEmitter().Emit(openedInputs, new()
             {

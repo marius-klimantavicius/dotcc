@@ -228,7 +228,7 @@ public sealed partial class CSharpEmitter
             if (call.Receiver is null && call.Call.ReturnSlot is null && (direct is null || !NeedsGeneratedLifetimeRoles(direct.Signature))) return;
             if (direct is null || !functions.Contains(direct) || call.TargetMethod is null || !CanonicalFunction(call.TargetMethod).Equals(direct))
                 throw Limit("Generated receiver/result/reference calls require the actual selected direct body.", "lifetime-call");
-            if (TryValidateManagedBoundConstructorCall(call, direct)) return;
+            if (TryValidateManagedBoundLifetimeCall(call, direct)) return;
             ValidateGeneratedLifetimeRoutine(direct);
             ValidateRegisteredMutableReferenceCall(call, direct);
             ValidateRegisteredOrdinaryMethodCall(call, direct);
@@ -298,7 +298,8 @@ public sealed partial class CSharpEmitter
                 throw Limit("The this-relative member cleanup must have one scope-bound retained subobject destruction recipe.", "lifetime-member");
             var recipe = matches[0];
             ValidateExceptionMetadataRecipe(recipe, false, true);
-            ValidateGeneratedLifetimeRoutine(destructor);
+            var selectedDestructor = SelectedLifetimeInvocation(destructor);
+            ValidateGeneratedLifetimeRoutine(selectedDestructor);
             EnsureGeneratedNoThrow(destructor);
             var calls = nodes.OfType<CallOperation>().Where(call => call.Receiver is { } address && IsAddressOfReceiverField(address, receiver, field)).ToArray();
             if (normalDestructor)
@@ -317,7 +318,8 @@ public sealed partial class CSharpEmitter
                     constructor.Signature.ExceptionSpecification?.NoexceptEffective == true && HasImmediateCompletionState(nodes, call, action.Details.Region)).ToArray();
                 if (completed.Length != 1)
                     throw Limit("The member cleanup must be armed by the actual retained state immediately after its selected successful constructor call.", "lifetime-member");
-                ValidateGeneratedLifetimeRoutine(completed[0].TargetMethod!);
+                var selectedConstructor = SelectedLifetimeInvocation(completed[0].TargetMethod!);
+                ValidateGeneratedLifetimeRoutine(selectedConstructor);
                 EnsureGeneratedNoThrow(completed[0].TargetMethod!);
             }
             var result = new ReceiverMemberCleanup(function, recipe, receiver, field, member);
@@ -378,9 +380,10 @@ public sealed partial class CSharpEmitter
             var calls = nodes.OfType<CallOperation>().ToArray();
             foreach (var call in calls)
             {
-                if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(target) ||
+                if (call.Callee is not ReferenceOperation { Target: FunctionSymbol target } || !functions.Contains(CanonicalFunction(target)) ||
                     call.TargetMethod is null || !call.TargetMethod.Equals(target) || target.Signature.IsVariadic ||
-                    target.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(target))
+                    target.Signature.Routine.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(target) ||
+                    CanonicalFunction(target).Signature.Routine.ExceptionSpecification?.NoexceptEffective != true && !IsVirtualAlternate(CanonicalFunction(target)))
                     throw Limit("The normal-only cleanup path requires retained direct noexcept generated callees.", "lifetime");
                 ValidateGeneratedCallRoles(call);
             }
@@ -411,7 +414,7 @@ public sealed partial class CSharpEmitter
                         action.TargetMethod is not { } destructor || destructor.SpecialFunctionKind?.Name != "sfk_destructor" ||
                         destructor.Parameters.Count != 1 || !GeneratedRecordPointer(destructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(variable.Type)))
                         throw Limit("The normal local cleanup storage has no exercised representation.", "lifetime");
-                    ValidateGeneratedLifetimeRoutine(destructor);
+                    ValidateGeneratedLifetimeRoutine(SelectedLifetimeInvocation(destructor));
                     if (!calls.Any(call => call.TargetMethod?.Equals(destructor) == true && call.Receiver is { } receiver && IsAddressOfLocal(receiver, variable)))
                         throw Limit("A normal destructor metadata action has no matching retained explicit call receiver.", "lifetime");
                 }

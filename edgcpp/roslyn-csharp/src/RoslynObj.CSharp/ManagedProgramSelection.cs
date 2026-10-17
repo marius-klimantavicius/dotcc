@@ -17,18 +17,21 @@ internal sealed record ManagedProgramSelectionPlan(
     IReadOnlyList<ManagedProgramFunctionBinding> FunctionBindings,
     IReadOnlyList<ManagedProgramVariableBinding> VariableBindings)
 {
+    internal string DefinitionSelectionPolicy { get; init; } = "strong-only";
+    internal IReadOnlyList<ManagedInlineRepresentativeReport> InlineRepresentatives { get; init; } = [];
     internal ManagedSelectionPlan? GetUnit(RoslynObject source)
         => Units.SingleOrDefault(unit => ReferenceEquals(unit.Source, source));
 }
 
 /// <summary>Combines bounded per-unit selection through required exact-linkage external declarations only.</summary>
-internal static class ManagedProgramSelectionPlanner
+internal static partial class ManagedProgramSelectionPlanner
 {
     internal static ManagedProgramSelectionPlan Select(IReadOnlyList<RoslynObject> inputs,
         IReadOnlyList<string> inputSha256, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
-        CancellationToken token = default, Action? checkBudget = null, ManagedStartupConfiguration? startup = null)
+        CancellationToken token = default, Action? checkBudget = null, ManagedStartupConfiguration? startup = null,
+        string definitionSelection = "strong-only")
     {
-        var work = new Work(inputs, inputSha256, roots, budgets, token, checkBudget, startup);
+        var work = new Work(inputs, inputSha256, roots, budgets, token, checkBudget, startup, definitionSelection);
         try { return work.Run(); }
         catch (ManagedSelectionException exception)
         {
@@ -37,9 +40,9 @@ internal static class ManagedProgramSelectionPlanner
         }
     }
 
-    private sealed class Work(IReadOnlyList<RoslynObject> inputs, IReadOnlyList<string> hashes,
+    private sealed partial class Work(IReadOnlyList<RoslynObject> inputs, IReadOnlyList<string> hashes,
         ManagedDefinitionRoot[] roots, ResourceBudgets budgets, CancellationToken token, Action? checkBudget,
-        ManagedStartupConfiguration? startup)
+        ManagedStartupConfiguration? startup, string definitionSelection)
     {
         private readonly AbiCompatibility compatibility = new();
         private readonly Dictionary<FunctionSymbol, FunctionSymbol> functionDefinitions = [];
@@ -55,6 +58,8 @@ internal static class ManagedProgramSelectionPlanner
         internal ManagedProgramSelectionPlan Run()
         {
             Tick();
+            if (definitionSelection is not ("strong-only" or InlineComdatPolicy))
+                Fail("ROC1220", "The requested selected-definition policy is unsupported.");
             if (inputs.Count < 1 || inputs.Count > budgets.MaximumOpenUnits || hashes.Count != inputs.Count ||
                 roots.Length == 0 && startup?.Definitions.Length is not > 0)
                 Fail("ROC1220", "Managed program selection requires a finite explicit pinned input set within its open-unit budget and managed roots.");
@@ -82,6 +87,7 @@ internal static class ManagedProgramSelectionPlanner
                 var plan = ManagedSelectionPlanner.SelectSeeded(next.Source, next.Roots,
                     next.FunctionSeeds, next.VariableSeeds, next.Hash, next.Ordinal, budgets, token, checkBudget, startup);
                 next.Plan = plan;
+                foreach (var function in plan.Functions) functionOwners[function] = next;
                 CheckAggregateBounds();
                 CheckSelectedDefinitions();
                 foreach (var function in plan.Functions)
@@ -98,12 +104,14 @@ internal static class ManagedProgramSelectionPlanner
                 }
             }
             Tick();
+            FinalizeFunctionBindings();
             var active = units.Where(unit => unit.Plan is not null).ToArray();
             return new(active.Select(unit => unit.Plan!).ToArray(),
                 active.Select(unit => new ManagedProgramUnitSelection(unit.Ordinal, unit.Plan!)).ToArray(),
                 new ReadOnlyDictionary<FunctionSymbol, FunctionSymbol>(functionDefinitions),
                 new ReadOnlyDictionary<VariableSymbol, VariableSymbol>(variableDefinitions),
-                functionBindings.ToArray(), variableBindings.ToArray());
+                functionBindings.ToArray(), variableBindings.ToArray())
+            { DefinitionSelectionPolicy = definitionSelection, InlineRepresentatives = BuildInlineRepresentativeReports() };
         }
 
         internal ManagedSelectionReport BuildFailureReport(ManagedSelectionReport? failedUnit)
@@ -123,6 +131,7 @@ internal static class ManagedProgramSelectionPlanner
             return new()
             {
                 Scope = "partial-failed-multi-input-selection", ClosureComplete = false, UnitSelections = rows,
+                DefinitionSelectionPolicy = definitionSelection,
                 ExecutableBodiesVisited = rows.Sum(row => row.Selection.ExecutableBodiesVisited),
                 RequiredDeclarationCount = rows.Sum(row => row.Selection.RequiredDeclarationCount),
                 StorageDefinitionCount = rows.Sum(row => row.Selection.StorageDefinitionCount),
@@ -151,6 +160,12 @@ internal static class ManagedProgramSelectionPlanner
         private void CheckAggregateBounds()
         {
             var plans = units.Where(unit => unit.Plan is not null).Select(unit => unit.Plan!).ToArray();
+            if (definitionSelection == InlineComdatPolicy && plans.SelectMany(plan => plan.Variables).Any(variable =>
+                variable.IsThreadLocal || variable.Details.PromotedLocalStatic || variable.Details.PromotedLocalStaticInitialization))
+                Fail("ROC1224", "Inline COMDAT selection rejects required TLS or promoted local-static storage/initialization, including helper-owned dependencies; no storage-group policy is selected. " +
+                    string.Join("; ", plans.SelectMany(plan => plan.Variables).Where(variable => variable.IsThreadLocal || variable.Details.PromotedLocalStatic ||
+                        variable.Details.PromotedLocalStaticInitialization).Select(variable =>
+                        $"{variable.CurrentName}: TLS={variable.IsThreadLocal},promoted={variable.Details.PromotedLocalStatic},promoted-init={variable.Details.PromotedLocalStaticInitialization},exception-table={variable.ExceptionTable?.Kind.Name}")));
             if (plans.Sum(plan => (long)plan.Functions.Count) > budgets.MaximumSelectedFunctions ||
                 plans.Sum(plan => (long)plan.Variables.Count) > budgets.MaximumSelectedStorage ||
                 plans.Sum(plan => (long)plan.Types.Count) > budgets.MaximumSelectedTypes)
@@ -179,10 +194,15 @@ internal static class ManagedProgramSelectionPlanner
                 if (group.Select(item => item.Symbol is FunctionSymbol ? "function" : "variable").Distinct(StringComparer.Ordinal).Count() > 1)
                     Fail("ROC1222", "One required captured external linkage names both function and data definitions: " + group.Key);
                 if (group.Select(item => item.Symbol).Distinct().Count() > 1)
-                    Fail("ROC1222", "Duplicate selected external definitions require an explicit unsupported selection policy: " + group.Key +
-                        "; " + string.Join("; ", group.Select(item => item.Symbol is FunctionSymbol function
-                            ? $"unit {item.Ordinal}: kind={function.SpecialFunctionKind?.Name}, entry={function.ConstructorOrDestructorKind?.Name}, weak={function.Details.IsWeak}, COMDAT={function.Details.IsUseComdat}, inline={function.Details.IsInline}, alias-entry={function.Details.IsAliasEntry}, primary={function.PrimaryEntry?.CurrentName}, body={function.BodyState.Name}"
-                            : $"unit {item.Ordinal}: variable definition")));
+                {
+                    if (definitionSelection == InlineComdatPolicy && group.All(item => item.Symbol is FunctionSymbol))
+                        SelectInlineRepresentative(group.Select(item => (Unit: units[item.Ordinal - 1], Function: (FunctionSymbol)item.Symbol)).ToArray(), group.Key);
+                    else
+                        Fail("ROC1222", "Duplicate selected external definitions require an explicit unsupported selection policy: " + group.Key +
+                            "; " + string.Join("; ", group.Select(item => item.Symbol is FunctionSymbol function
+                                ? $"unit {item.Ordinal}: kind={function.SpecialFunctionKind?.Name}, entry={function.ConstructorOrDestructorKind?.Name}, weak={function.Details.IsWeak}, COMDAT={function.Details.IsUseComdat}, inline={function.Details.IsInline}, alias-entry={function.Details.IsAliasEntry}, primary={function.PrimaryEntry?.CurrentName}, body={function.BodyState.Name}"
+                                : $"unit {item.Ordinal}: variable definition")));
+                }
             }
         }
 
@@ -197,9 +217,10 @@ internal static class ManagedProgramSelectionPlanner
             var candidates = Candidates(lookup, name);
             CheckKinds(candidates, true, name);
             var definitions = candidates.Where(candidate => candidate.Symbol is FunctionSymbol function && IsDefinition(function)).ToArray();
-            if (definitions.Length > 1) Fail("ROC1222", "Required declaration has duplicate exact captured external definitions: " + name);
             if (definitions.Length == 0) return;
-            var target = definitions[0]; var definition = (FunctionSymbol)target.Symbol;
+            var target = definitions.Length == 1 ? definitions[0] : SelectInlineCandidate(definitions, name);
+            var definition = ResolveFunction((FunctionSymbol)target.Symbol);
+            target = (FunctionOwner(definition), definition);
             ValidatePolicy(definition, name);
             Tick();
             var result = compatibility.CompareFunctions(declaration, definition);
@@ -252,6 +273,7 @@ internal static class ManagedProgramSelectionPlanner
                     matches = indexed.Where(symbol => (symbol is FunctionSymbol or VariableSymbol) && External(symbol) && LinkName(symbol) == linkage).ToArray();
                     candidateCache.Add((unit.Ordinal, lookup, linkage), matches);
                 }
+                foreach (var function in matches.OfType<FunctionSymbol>()) functionOwners[function] = unit;
                 result.AddRange(matches.Select(symbol => (unit, symbol)));
             }
             return result.ToArray();
@@ -306,15 +328,16 @@ internal static class ManagedProgramSelectionPlanner
             return true;
         }
 
-        private static void ValidatePolicy(Symbol symbol, string linkage)
+        private void ValidatePolicy(Symbol symbol, string linkage)
         {
             if (symbol is FunctionSymbol function)
             {
                 var details = function.Details; var supplement = function.GnuSupplement;
+                var inlinePolicy = definitionSelection == InlineComdatPolicy && IsInlineComdatMember(function, requireDefinition: false);
                 if (details.IsWeak == true || details.IsWeakref == true || details.IsGnuAlias == true || details.IsIfunc == true ||
-                    details.IsUseComdat == true || details.IsAliasEntry == true || function.PrimaryEntry is not null ||
+                    details.IsUseComdat == true && !inlinePolicy || details.IsAliasEntry == true || function.PrimaryEntry is not null ||
                     function.AlternateEntryPoints.Count != 0 && !HasPrimaryCompleteEntryAssociations(function) || supplement?.AliasedRoutine is not null ||
-                    supplement?.TargetedVersions.Count > 0 || supplement?.Representative is not null || details.IsInline ||
+                    supplement?.TargetedVersions.Count > 0 || supplement?.Representative is not null || details.IsInline && !inlinePolicy ||
                     details.DefinitionForInliningOnly || details.SuppressInlineBody || details.SupersededExternal)
                 {
                     var facts = new List<string>();

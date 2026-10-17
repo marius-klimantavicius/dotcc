@@ -220,9 +220,8 @@ public sealed partial class CSharpEmitter
             if (destructorExpression is not ConstantOperation { Constant.Value: AddressValue { BaseEntity: FunctionSymbol rawDestructor } address } ||
                 address.ByteOffset != 0 || address.OnePastEnd || address.SubobjectPath is not null)
                 throw Limit("The exit callback requires an effect-free captured selected routine address, without native address materialization.", "selected-startup");
-            var destructor = CanonicalFunction(rawDestructor);
-            if (destructor.SpecialFunctionKind?.Name != "sfk_destructor" || destructor.Parameters.Count != 1 ||
-                destructor.Parameters[0].Role.Name != "this_parameter" || MemoryRepresentationType(destructor.ReturnType).Kind.Name != "tk_void")
+            if (rawDestructor.SpecialFunctionKind?.Name != "sfk_destructor" || rawDestructor.Parameters.Count != 1 ||
+                rawDestructor.Parameters[0].Role.Name != "this_parameter" || MemoryRepresentationType(rawDestructor.ReturnType).Kind.Name != "tk_void")
                 throw Limit("The selected exit callback requires its retained ordinary destructor receiver.", "selected-startup");
             var objectExpression = StartupAddressLeaf(call.Arguments[1].Value);
             if (objectExpression is not ConstantOperation { Constant.Value: AddressValue { BaseEntity: VariableSymbol rawObject } objectAddress } ||
@@ -230,8 +229,9 @@ public sealed partial class CSharpEmitter
                 throw Limit("The registered object requires its actual zero-offset selected static storage address.", "selected-startup");
             var selectedObject = CanonicalVariable(rawObject);
             if (!storage.ContainsKey(selectedObject) || selectedObject.IsThreadLocal || selectedObject.Details.StorageDuration?.Name != "static" ||
-                !GeneratedRecordPointer(destructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(selectedObject.Type)))
+                !GeneratedRecordPointer(rawDestructor.Parameters[0].Type, false).Equals(MemoryRepresentationType(selectedObject.Type)))
                 throw Limit("The exit callback receiver must match its actual selected object storage and record type.", "selected-startup");
+            var destructor = SelectedLifetimeInvocation(rawDestructor);
             var dsoExpression = StartupAddressLeaf(call.Arguments[2].Value);
             if (dsoExpression is not OperatorOperation { OperatorKind.Name: "eok_address_of", Operands.Count: 1 } dsoAddress ||
                 dsoAddress.ValueCategory.Name != "prvalue" ||
