@@ -60,7 +60,7 @@ public sealed partial class CSharpEmitter
 
         private bool ContainsBorrowedViewStorage(CppType type, HashSet<CppType>? active = null)
         {
-            if (borrowedByteViews.Count == 0 && addressOnlyPointers.Count == 0) return false;
+            if (borrowedByteViews.Count == 0 && borrowedMemberViews.Count == 0 && addressOnlyPointers.Count == 0) return false;
             var raw = MemoryRepresentationType(type);
             active ??= [];
             if (!active.Add(raw)) return false;
@@ -68,7 +68,7 @@ public sealed partial class CSharpEmitter
             {
                 return raw switch
                 {
-                    RecordType record => IsBorrowedByteView(record) || record.Layout?.Fields.Any(field => ContainsBorrowedViewStorage(field.Field.Type, active)) == true,
+                    RecordType record => IsBorrowedByteView(record) || IsBorrowedMemberView(record) || record.Layout?.Fields.Any(field => ContainsBorrowedViewStorage(field.Field.Type, active)) == true,
                     PointerType pointer => addressOnlyPointers.Contains(pointer) || ContainsBorrowedViewStorage(pointer.PointeeType, active),
                     ArrayType array => ContainsBorrowedViewStorage(array.ElementType, active),
                     RoutineType routine => ContainsBorrowedViewStorage(routine.ReturnType, active) ||
@@ -154,7 +154,7 @@ public sealed partial class CSharpEmitter
                         var pointee = MemoryRepresentationType(pointer.PointeeType);
                         if (pointee is PointerType or RoutineType) { CollectPointerValueType(pointee, active); return; }
                         if (!pointer.IsReference && pointee is RecordType record &&
-                            (record.HasVirtualFunctions || record.HasVirtualBases) && !IsRegisteredVirtualCarrier(record))
+                            (record.HasVirtualFunctions || record.HasVirtualBases || IsBorrowedMemberView(record)) && !IsRegisteredVirtualCarrier(record))
                         {
                             ValidateProgramPointer(pointer); ValidateAggregateQualifiers(pointer.PointeeType);
                             addressOnlyPointers.Add(pointer);
@@ -234,7 +234,7 @@ public sealed partial class CSharpEmitter
                     {
                         if (unusedOrdinarySubobjectViews.Contains(valueRecord))
                             throw Limit("The occupied-subobject view has no required expression projection.", "ordinary-method");
-                        if (IsBorrowedByteView(valueRecord))
+                        if (IsBorrowedByteView(valueRecord) || IsBorrowedMemberView(valueRecord))
                             throw Limit("The borrowed read view grants no class-valued execution or addressable class place.", "borrowed-field-view");
                         if (ContainsAddressOnlyStorage(valueRecord) && expression.ValueCategory.Name != "lvalue" && expression is not ReferenceOperation { Target: FieldSymbol })
                             throw Limit("A borrowed-pointer carrier has no by-value expression or copy adapter.", "address-only-pointer");
@@ -277,7 +277,7 @@ public sealed partial class CSharpEmitter
             }
             if (value is ArrayType array) { RejectBorrowedValueStorage(array.ElementType); return; }
             if (value is not RecordType record) return;
-            if (IsBorrowedByteView(record) || unusedOrdinarySubobjectViews.Contains(record))
+            if (IsBorrowedByteView(record) || IsBorrowedMemberView(record) || unusedOrdinarySubobjectViews.Contains(record))
                 throw Limit("The selected borrowed field view or occupied partner has no by-value storage/ABI representation.", "borrowed-field-view");
             foreach (var field in record.Layout?.Fields ?? []) RejectBorrowedValueStorage(field.Field.Type);
         }
@@ -357,16 +357,17 @@ public sealed partial class CSharpEmitter
                 {
                     if (value is ReferenceOperation { Target: FieldSymbol field }) return ordinaryCarrierFields.Contains(field) && operation.Operands[1].Equals(value);
                     return operation.OperatorKind.Name == "eok_points_to_field" && operation.Operands[0].Equals(value) &&
+                        (IsBorrowedMemberAddressPlace(operation, owner) ||
                         ordinaryConstMethods.TryGetValue(owner, out var read) && IsBorrowedByteView(read.Record) &&
                         operation.Operands[1] is ReferenceOperation { Target: FieldSymbol selected } && selected.Equals(read.Field) &&
-                        operation.ValueCategory.Name == "prvalue" && operation.Type.Equals(read.Function.ReturnType);
+                        operation.ValueCategory.Name == "prvalue" && operation.Type.Equals(read.Function.ReturnType));
                 }
             }
             if (parent is InitializationStatementOperation statement)
                 return statement.Initialization.Target is VariableSymbol local && pointerValueLocals.TryGetValue(local, out var registered) &&
                     registered.Equals(owner) && statement.Initialization.Expression?.Equals(value) == true;
             if (parent is JumpOperation { JumpKind.Name: "return" })
-                return IsPointerMethod(owner) && owner.ReturnType.Equals(value.Type);
+                return IsPointerMethod(owner) && (owner.ReturnType.Equals(value.Type) || IsRegisteredOrdinaryPointerReturn(value, owner));
             return value is OperatorOperation { OperatorKind.Name: "eok_assign" } && parent is StatementOperation { Kind.Name: "stmk_expr" };
         }
 
@@ -413,7 +414,8 @@ public sealed partial class CSharpEmitter
                 if (statements.Length != 1) throw Limit("A pointer local requires its reciprocal executable initialization statement.", "ordinary-method");
                 _ = ValidatePointerInitialization(statements[0], function);
                 if (initialization.Target?.Equals(local) != true || initialization.Details.Type?.Equals(local.Type) != true ||
-                    initialization.Expression is not ExpressionOperation value || !GraphRepresentation(value.Type).Equals(pointer))
+                    initialization.Expression is not ExpressionOperation value || !GraphRepresentation(value.Type).Equals(pointer) &&
+                    !IsRegisteredOrdinaryPointerInitialization(initialization, function, local, value))
                     throw Limit("The pointer local and its actual initializer have different captured value views.", "ordinary-method");
             }
             pointerValueLocals[local] = function;
@@ -448,8 +450,6 @@ public sealed partial class CSharpEmitter
                 local.Details.StorageDuration?.Name != "automatic" || local.Initializer?.Equals(initialization) != true ||
                 flags.Type?.Equals(local.Type) != true || initialization.Expression is not ExpressionOperation { RepresentationRole.Name: "execution" } value ||
                 GraphRepresentation(local.Type) is not PointerType { IsReference: false, IsRValueReference: false } pointer ||
-                !value.Type.Equals(local.Type) && (local.Type is not QualifiedType { IsConst: true, IsVolatile: false } pointerObject ||
-                    !pointerObject.UnderlyingType.Equals(value.Type)) || !GraphRepresentation(value.Type).Equals(pointer) ||
                 initialization.Constructor is not null || initialization.Destructor is not null || initialization.Constant is not null ||
                 initialization.Lambda is not null || initialization.BitwiseCopySource is not null || flags.Source is not null || initialization.Operands.Count != 0 ||
                 initialization.Lifetime is not null || initialization.InitExpressionLifetime is not null || initialization.OverlappingLifetime is not null ||
@@ -461,6 +461,10 @@ public sealed partial class CSharpEmitter
                 flags.IsVlaDeallocation || flags.IsFreeingOfExceptionObject || flags.CreatesInitializerList || flags.IsInitializerListArray)
                 throw Limit("An ordinary pointer local requires its reciprocal executable value, allowing only its captured const pointer-object declaration view.", "ordinary-method");
             ValidateProgramPointer(pointer);
+            var exactValue = (value.Type.Equals(local.Type) || local.Type is QualifiedType { IsConst: true, IsVolatile: false } pointerObject &&
+                pointerObject.UnderlyingType.Equals(value.Type)) && GraphRepresentation(value.Type).Equals(pointer);
+            if (!exactValue && !RegisterOrdinaryPointerInitialization(initialization, owner, local, value))
+                throw Limit("The pointer local requires its exact value type or its selected direct-call initializer alias view.", "ordinary-method");
             return value;
         }
 

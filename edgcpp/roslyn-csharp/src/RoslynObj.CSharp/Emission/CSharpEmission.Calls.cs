@@ -111,6 +111,7 @@ public sealed partial class CSharpEmitter
 
         private string FunctionAddress(FunctionSymbol function)
         {
+            ValidateManagedBoundFunctionAddress(function);
             function = CanonicalFunction(function);
             if (IsGeneratedExceptionParticipant(function))
                 throw Limit("Generated exception participants have no native callable-address or unwinding contract.", "exception-boundary");
@@ -189,8 +190,8 @@ public sealed partial class CSharpEmitter
                     throw Limit("A selected fixed call needs explicit parameter adaptation.", "call");
                 if (HasAggregateSignature(callee.Signature) && !functions.Contains(callee))
                     return AggregateCall(callee.Signature, callee, call.Arguments.Select(a => a.Value.Type).ToArray(), argumentValues);
-                arguments = string.Join(", ", argumentValues.Select((value, i) => ProgramArgumentView(call.Arguments[i].Value.Type, callee.Signature.Parameters[i].Type, value)));
-                return ProgramResultView(callee.ReturnType, call.Type, $"{OwnedName(callee)}({arguments})");
+                arguments = string.Join(", ", argumentValues.Select((value, i) => ProgramArgumentView(call, i, callee, value)));
+                return ProgramResultView(call, callee, $"{OwnedName(callee)}({arguments})");
             }
             var type = Unwrap(call.Call.FunctionType ?? call.Callee.Type);
             if (type is PointerType pointer) type = Unwrap(pointer.PointeeType);

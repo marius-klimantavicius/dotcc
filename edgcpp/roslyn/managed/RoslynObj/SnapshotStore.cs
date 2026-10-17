@@ -89,7 +89,7 @@ internal sealed class SnapshotStore : IDisposable
     internal Row[] Query(string sql, long owner = 0, CancellationToken token = default)
         => QueryParameters(sql, owner, token, []);
 
-    private Row[] QueryParameters(string sql, long owner, CancellationToken token, IReadOnlyList<object?> parameters)
+    internal Row[] QueryParameters(string sql, long owner, CancellationToken token, IReadOnlyList<object?> parameters)
     {
         lock (sync)
         {

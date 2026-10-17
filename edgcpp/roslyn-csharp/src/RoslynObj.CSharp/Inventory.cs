@@ -487,6 +487,20 @@ internal sealed partial class InventoryState
         CheckBudget();
     }
 
+    internal void CompleteManagedProgramSelection(ManagedProgramSelectionPlan program)
+    {
+        managedSelection = ManagedProgramSelectionReports.Create(program);
+        var bindings = managedSelection.Bindings.ToDictionary(binding => binding.Declaration, StringComparer.Ordinal);
+        for (var index = 0; index < imports.Count; ++index)
+            if (bindings.TryGetValue(imports[index].Locator, out var binding))
+            {
+                if (request.Runtime.Bindings.Any(native => native.Kind == binding.Kind && native.LinkageName == binding.LinkageName))
+                    throw new ManagedSelectionException("ROC1301", "An explicitly selected managed definition cannot be replaced by a native binding.", binding.Declaration);
+                imports[index] = imports[index] with { Provider = "selected-managed-definition", ProviderSymbol = binding.Definition,
+                    BindingStatus = "captured-linkage-abi-selected-definition" };
+            }
+    }
+
     private void AddImport(string locator, string kind, string? name, string? linkageName, string signature,
         string? callingConvention, SymbolUsage? usage, bool capturedAddressTaken)
     {

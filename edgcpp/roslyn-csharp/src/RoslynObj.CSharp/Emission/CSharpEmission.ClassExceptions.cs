@@ -20,6 +20,7 @@ public sealed partial class CSharpEmitter
         // address-only data validator. Full executable EH admission is separate.
         private bool TryClassPayloadTypeinfoContext(out RecordType record, out VariableSymbol typeinfo)
         {
+            if (TryConstructionTypeinfoContext(out record, out typeinfo)) return true;
             if (classExceptionContext is { } cached)
             {
                 record = cached.Record; typeinfo = cached.Typeinfo;
@@ -216,17 +217,20 @@ public sealed partial class CSharpEmitter
         }
 
         private static void ValidateClassHandlerEntry(ClassExceptionContext plan)
+            => ValidateClassHandlerEntry(plan.Handler, plan.ReferenceType, plan.ThrownType);
+
+        private static void ValidateClassHandlerEntry(ExceptionHandler handler, PointerType referenceType, CppType caughtPointee)
         {
-            if (plan.Handler.Body is not BlockOperation body || body.Statements.Count < 3 ||
+            if (handler.Body is not BlockOperation body || body.Statements.Count < 3 ||
                 body.Statements[0].Expression is not CleanupStateOperation { IsUnreachable: false } ||
                 body.Statements[1].Expression is not OperatorOperation { OperatorKind.Name: "eok_assign" } assignment ||
                 !assignment.Operator.EvalRightToLeft || assignment.Operands.Count != 2 ||
-                assignment.Operands[0] is not ReferenceOperation { Target: VariableSymbol parameter } left || !parameter.Equals(plan.Handler.Parameter) ||
-                !left.Type.Equals(plan.ReferenceType) || left.ValueCategory.Name != "lvalue" ||
+                assignment.Operands[0] is not ReferenceOperation { Target: VariableSymbol parameter } left || !parameter.Equals(handler.Parameter) ||
+                !left.Type.Equals(referenceType) || left.ValueCategory.Name != "lvalue" ||
                 assignment.Operands[1] is not ConversionOperation { OperatorKind.Name: "eok_cast" } conversion || conversion.Operands.Count != 1 ||
                 conversion.Operator.RequiresRuntimeCastCheck || conversion.Operand is not LoweredEhOperation { ExceptionKind.Name: "leck_caught_object_address" } caught ||
-                caught.ExceptionOperation.Handler?.Equals(plan.Handler) != true || conversion.Type is not PointerType { IsReference: false, IsRValueReference: false } pointer ||
-                !pointer.PointeeType.Equals(plan.ThrownType) || pointer.Size != 8 || pointer.Alignment != 8 ||
+                caught.ExceptionOperation.Handler?.Equals(handler) != true || conversion.Type is not PointerType { IsReference: false, IsRValueReference: false } pointer ||
+                !pointer.PointeeType.Equals(caughtPointee) || pointer.Size != 8 || pointer.Alignment != 8 ||
                 body.Statements[2].Expression is not LoweredEhOperation { ExceptionKind.Name: "leck_exception_caught" } ||
                 ExceptionExecutionNodes(body).OfType<LoweredEhOperation>().Count(marker => marker.ExceptionKind.Name == "leck_caught_object_address") != 1 ||
                 ExceptionExecutionNodes(body).OfType<LoweredEhOperation>().Count(marker => marker.ExceptionKind.Name == "leck_exception_caught") != 1)

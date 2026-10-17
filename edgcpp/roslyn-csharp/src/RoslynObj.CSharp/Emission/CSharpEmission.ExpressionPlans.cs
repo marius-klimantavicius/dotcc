@@ -465,8 +465,8 @@ public sealed partial class CSharpEmitter
                     return AggregateCall(function.Signature, function, call.Arguments.Select(argument => argument.Value.Type).ToArray(),
                         plannedCall.Arguments.Select(RenderExpression).ToArray());
                 var arguments = string.Join(", ", plannedCall.Arguments.Select((value, index) =>
-                    ProgramArgumentView(call.Arguments[index].Value.Type, function.Signature.Parameters[index].Type, RenderExpression(value))));
-                return ProgramResultView(function.ReturnType, call.Type, $"{OwnedName(function)}({arguments})");
+                    ProgramArgumentView(call, index, function, RenderExpression(value))));
+                return ProgramResultView(call, function, $"{OwnedName(function)}({arguments})");
             }
             var type = Unwrap(call.Call.FunctionType ?? call.Callee.Type);
             if (type is PointerType pointer) type = Unwrap(pointer.PointeeType);

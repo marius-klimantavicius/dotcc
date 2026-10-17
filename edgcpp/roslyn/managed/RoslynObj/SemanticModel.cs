@@ -81,6 +81,48 @@ public sealed class SemanticModel
         var atom=owner.Store.FindAtom(name);
         return atom is null ? [] : owner.List("SELECT s.* FROM symbol s JOIN entity_source_correspondence e ON e.owner_id=s.id JOIN source_correspondence c ON c.id=e.source_correspondence_id WHERE CASE WHEN c.unnamed_entity_given_fabricated_name=1 THEN NULL WHEN c.name_has_been_mangled=1 THEN c.unmangled_name_or_mangled_encoding_id ELSE c.current_name_id END=$owner ORDER BY s.id",atom.Value,r=>owner.Symbol(r.Long("id")),"symbol");
     }
+    /// <summary>
+    /// Returns captured routine candidates whose current name has the supplied
+    /// ASCII backend startup prefix, or whose retained flags identify a source
+    /// constructor/destructor attribute or TLS initialization entry. The caller
+    /// supplies the prefix from an independently pinned backend contract; this
+    /// method does not infer startup execution, ordering, C++ lookup or linkage.
+    /// </summary>
+    /// <remarks>
+    /// At most <paramref name="maximumCandidates"/> plus one overflow sentinel
+    /// are returned. A sentinel means the candidate set is incomplete. The name
+    /// arm uses the captured text/name indexes; the attribute arm filters the
+    /// routine table and has no flag index. Reader command timeout/cancellation
+    /// still apply, and returned-row statistics do not count engine scan work.
+    /// Routine bodies and type graphs are not read by this query.
+    /// </remarks>
+    public IReadOnlyList<FunctionSymbol> FindAmbientRoutineCandidates(
+        string loweredInitializationPrefix, int maximumCandidates = 64,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(loweredInitializationPrefix);
+        if (loweredInitializationPrefix.Length is < 1 or > 128 ||
+            loweredInitializationPrefix.Any(character => character is < ' ' or > '~'))
+            throw new ArgumentException("A nonempty printable ASCII backend prefix of at most 128 characters is required.", nameof(loweredInitializationPrefix));
+        if (maximumCandidates is < 1 or > 256)
+            throw new ArgumentOutOfRangeException(nameof(maximumCandidates), "The candidate bound must be between 1 and 256.");
+        var upper = loweredInitializationPrefix[..^1] + (char)(loweredInitializationPrefix[^1] + 1);
+        const string query = """
+            SELECT r.id FROM text_atom a
+            JOIN source_correspondence c ON c.current_name_id=a.id
+            JOIN entity_source_correspondence e ON e.source_correspondence_id=c.id
+            JOIN routine_symbol r ON r.id=e.owner_id
+            WHERE a.value >= $key0 COLLATE BINARY AND a.value < $key1 COLLATE BINARY
+            UNION
+            SELECT id FROM routine_symbol
+            WHERE is_initialization_routine<>0 OR is_finalization_routine<>0
+                OR is_tls_initialization_routine<>0 OR is_tls_initialization_alias<>0
+            ORDER BY id LIMIT $key2
+            """;
+        var rows = owner.Store.QueryParameters(query, 0, cancellationToken,
+            [loweredInitializationPrefix, upper, maximumCandidates + 1]);
+        return rows.Select(row => owner.Function(row.Long("id"))).ToArray();
+    }
     public IReadOnlyList<FactAvailability> GetAvailability(SemanticEntity entity)
     {
         Check(entity);

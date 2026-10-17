@@ -20,8 +20,12 @@ Selection precedes Inventory and ProgramAssembler all-definition body traversal.
 An immutable bounded public-identity plan drives selected inventory, emitter
 functions/storage, required imports and reports. Unvisited input remains explicitly
 unvisited; selected-closure completion never claims a complete input translation.
-The initial implementation is one input, not multi-unit linking or a replacement
-for ProgramAssembly's definition policy. Default complete-definition behavior and
+The first verified implementation used one input. The subsequent
+[selected composition checkpoint](T5-SELECTED-COMPOSITION.md) adds two pinned
+inputs and exact declaration-to-definition linkage/ABI binding over selected
+current public identities. It does not use all-definition ProgramAssembler or
+claim ODR/coalescing resolution; pointer-bearing cross-unit callback entry remains
+unsupported. Each unit's executable closure and unvisited input remain distinct. Default complete-definition behavior and
 its previous evidence must remain unchanged.
 
 Closure follows actual typed execution operands, selected direct calls and callee
@@ -66,7 +70,7 @@ with no native DuckDB end-to-end oracle, construction, virtual dispatch, ownersh
 or whole-core claim. The existing genuine native composite remains separate evidence.
 
 The full accessor/And/Or closure remains open: distinct pointer-result aliases,
-real shared-pointer guard definition in core 293 with unresolved body/link/EH,
+the real shared-pointer guard definition in core 293 with partial constructor/JSON/library/EH closure and real startup/atexit obligations,
 InternalException/string/allocator/templated execution and broader initialization.
 The 164-object 97.735GiB core collection is not link-complete DuckDB. No further
 single-helper trace mode is planned merely to restate these known dependencies.
@@ -94,7 +98,7 @@ The actual AssertNotNull root correctly reports its required guard declaration
 unresolved in one input and stays unpublished. Existing genuine integer-EH
 selection rejects ROC1214 before publication, with ClosureComplete=false. These
 are tested capability limits, not completed class-EH/link support. The next target
-is the complete actual Vector::GetVectorType path, requiring scalar-result body
-composition, scoped pointer/receiver alias views and the real core293 guard/link/EH
-closure. Both retained branches must remain; no application body is supplied
+is the complete actual Vector::GetVectorType path. Scalar-result composition and
+scoped pointer/receiver alias views now have separate genuine composed-fixture
+evidence; actual core293 startup/atexit and guard/library/EH closure remain open. Both retained branches must remain; no application body is supplied
 natively or replaced by a guessed pointer test.

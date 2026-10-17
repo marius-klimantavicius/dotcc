@@ -19,16 +19,18 @@ public sealed partial class CSharpEmitter
 
         private void InitializeOrdinaryMethodGraphs()
         {
+            CollectOrdinaryScalarMethods();
             var candidates = functions.Where(function => function.Signature.HasThisParameter &&
                 (function.SpecialFunctionKind?.Name is "sfk_none" or "sfk_conversion" &&
-                MemoryRepresentationType(function.ReturnType) is ArithmeticType { Arithmetic.IsBool: true } || IsPointerMethod(function)) &&
+                MemoryRepresentationType(function.ReturnType) is ArithmeticType { Arithmetic.IsBool: true } || IsPointerMethod(function) || IsOrdinaryScalarMethod(function)) &&
                 !IsVirtualMethod(function)).ToArray();
             if (candidates.Length == 0 && !pointerMethodsActive) return;
             RequireNormalLifetimeProfile();
             foreach (var function in candidates)
                 ordinaryMethodBodies.Add(function, ValidateOrdinaryMethodSignature(function));
             CollectOrdinaryBaseViews();
-            foreach (var plan in ordinaryMethodBodies.Values) ValidateOrdinaryMethodBody(plan);
+            foreach (var plan in ordinaryMethodBodies.Values)
+                if (!IsOrdinaryScalarMethod(plan.Function)) ValidateOrdinaryMethodBody(plan);
             foreach (var owner in functions)
                 foreach (var call in ExceptionExecutionNodes(owner.Body!.Root).OfType<CallOperation>())
                 {
@@ -70,8 +72,9 @@ public sealed partial class CSharpEmitter
                 throw Limit("The ordinary Boolean method graph supports fixed unadjusted nonvirtual const receivers only.", "ordinary-method");
             ValidateCallingConvention(signature);
             if (IsPointerMethod(function)) ValidateProgramPointer((PointerType)GraphRepresentation(function.ReturnType));
+            else if (IsOrdinaryScalarMethod(function)) ValidateOrdinaryUnsignedByte(function.ReturnType);
             else ValidateGraphBoolean(function.ReturnType);
-            RegisterOrdinaryFieldCarrier(record, []);
+            if (!IsBorrowedMemberView(record)) RegisterOrdinaryFieldCarrier(record, []);
             var parameter = function.Parameters[0]; var selected = signature.Parameters[0];
             if (parameter.Ordinal != 0 || selected.Ordinal != 0 || parameter.Role.Name != "this_parameter" ||
                 !parameter.Role.Equals(selected.Role) || !parameter.Descriptor.Equals(selected.Descriptor) || !parameter.Type.Equals(selected.Type) ||
@@ -221,7 +224,8 @@ public sealed partial class CSharpEmitter
                     case BlockOperation { Lifetime: null }: break;
                     case StatementOperation { Kind.Name: "stmk_expr", Expression: not null }: break;
                     case JumpOperation { JumpKind.Name: "return", Target: null, CommonLifetime: null, Value: { } result }:
-                        if (!result.Type.Equals(plan.Function.ReturnType)) throw Limit("An ordinary Boolean return changes its captured result type.", "ordinary-method");
+                        if (!result.Type.Equals(plan.Function.ReturnType) && !RegisterOrdinaryPointerReturn(plan.Function, node, result))
+                            throw Limit("An ordinary return changes its captured result type without an admitted pointer view occurrence.", "ordinary-method");
                         break;
                     case ExpressionOperation expression: ValidateOrdinaryMethodExpression(expression, plan); break;
                     default: throw Limit($"Execution '{node.Kind}' has no supported ordinary Boolean body projection.", "ordinary-method");
@@ -318,13 +322,14 @@ public sealed partial class CSharpEmitter
                 call.TargetMethod?.Equals(plan.Function) != true || call.CallKind.Name != "direct" || call.SourceTargetMethod is not null ||
                 call.SourceDispatchKind is not null || call.Operator.RetainedVirtualCall || call.Operator.RequiresRuntimeCastCheck ||
                 !call.Operator.EvalLeftToRight && !IsPointerMethod(plan.Function) || call.Operator.EvalRightToLeft || call.RepresentationRole.Name != "execution" || call.ValueCategory.Name != "prvalue" ||
-                call.Call.FunctionType?.Equals(signature) != true || !call.Type.Equals(plan.Function.ReturnType) || call.Call.ReturnSlot is not null ||
+                call.Call.FunctionType?.Equals(signature) != true || !call.Type.Equals(plan.Function.ReturnType) && !RegisterOrdinaryPointerCall(call, plan.Function) || call.Call.ReturnSlot is not null ||
                 call.Receiver is not { } receiver || GraphRepresentation(receiver.Type) is not PointerType { IsReference: false, IsRValueReference: false } actual ||
                 !GraphConstReceiver(actual).Equals(plan.Record) || call.Arguments.Count != 1 || call.Operands.Count != 2 ||
                 !call.Operands[0].Equals(call.Callee) || !call.Operands[1].Equals(receiver) || call.Arguments[0].Ordinal != 0 ||
                 !call.Arguments[0].Value.Equals(receiver) || call.Arguments[0].Role?.Equals(signature.Parameters[0].Role) != true ||
                 call.Arguments[0].Parameter?.Equals(signature.Parameters[0].Descriptor) != true)
                 throw Limit("The ordinary selected method call requires its actual direct signature, retained order flags and one const receiver alias.", "ordinary-method");
+            RegisterOrdinaryReceiverView(call, plan.Function, receiver, plan.ReceiverType);
         }
 
         private void ValidateRegisteredOrdinaryBodyCall(CallOperation call, FunctionSymbol function)
@@ -350,7 +355,7 @@ public sealed partial class CSharpEmitter
             if (!active.Add(raw)) return false;
             try
             {
-                return raw is RecordType record && record.Layout?.Fields.Any(field => ContainsAddressOnlyStorage(field.Field.Type, active)) == true ||
+                return raw is RecordType record && (IsBorrowedMemberView(record) || record.Layout?.Fields.Any(field => ContainsAddressOnlyStorage(field.Field.Type, active)) == true) ||
                     raw is ArrayType array && ContainsAddressOnlyStorage(array.ElementType, active);
             }
             finally { active.Remove(raw); }
@@ -521,12 +526,14 @@ public sealed partial class CSharpEmitter
             if (!addressOnlyPointers.Contains(pointer)) return false;
             if (!ordinaryAddressUsesValidated) throw Limit("Address-only pointer rendering requires completed required-use admission.", "address-only-pointer");
             representation = MemoryRepresentationType(pointer.PointeeType) is RecordType record && IsBorrowedByteView(record)
-                ? BorrowedByteViewName(record) + "*" : "void*";
+                ? BorrowedByteViewName(record) + "*" : MemoryRepresentationType(pointer.PointeeType) is RecordType memberOwner && IsBorrowedMemberView(memberOwner)
+                    ? BorrowedMemberViewName(memberOwner) + "*" : "void*";
             return true;
         }
 
         private void ValidateOrdinaryAddressOccurrence(ExpressionOperation expression)
         {
+            ValidateOrdinaryViewOccurrence(expression);
             ValidateOrdinaryBaseOccurrence(expression);
             if (!ContainsAddressOnlyPointer(expression.Type)) return;
             if (!ordinaryAddressUsesValidated || currentFunction is null ||
@@ -536,6 +543,12 @@ public sealed partial class CSharpEmitter
 
         private void ValidateOrdinaryCarrierEmission(RecordType record)
         {
+            if (IsBorrowedMemberView(record))
+            {
+                if (!ordinaryAddressUsesValidated || !borrowedMemberViewsValidated)
+                    throw Limit("The borrowed member owner has no completed required-use projection.", "borrowed-member-view");
+                return;
+            }
             if (unusedOrdinarySubobjectViews.Contains(record))
                 throw Limit("The occupied-subobject partner has no required value/storage projection in this ordinary graph.", "ordinary-method");
             if (ContainsAddressOnlyStorage(record) && (!ordinaryAddressUsesValidated || !ordinaryFieldCarriers.Contains(record)))

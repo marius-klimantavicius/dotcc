@@ -22,6 +22,10 @@ public sealed partial class Translator
         {
             if (!state.HasErrors)
             {
+                if (!request.Roots.RetainAllDefinitions && request.Inputs.Length > 1)
+                    InventoryManagedProgram(request, state, cancellationToken);
+                else
+                {
                 var identities = new HashSet<string>(StringComparer.Ordinal);
                 for (var index = 0; index < request.Inputs.Length; index++)
                 {
@@ -61,6 +65,7 @@ public sealed partial class Translator
                         state.ReaderRows += obj.Statistics.RowsRead;
                     }
                 }
+                }
                 completed = !state.HasErrors;
             }
         }
@@ -92,6 +97,46 @@ public sealed partial class Translator
         return new(cancelled ? TranslationStatus.Cancelled : completed ? TranslationStatus.InventoryComplete : TranslationStatus.Failed,
             report.Diagnostics, [], report,
             new(watch.Elapsed.TotalSeconds, state.PeakWorkingSetBytes, state.ReaderCommands, state.ReaderRows));
+    }
+
+    private static void InventoryManagedProgram(TranslationRequest request, InventoryState state, CancellationToken token)
+    {
+        var opened = new List<RoslynObject>();
+        var hashes = new List<string>();
+        try
+        {
+            foreach (var input in request.Inputs)
+            {
+                state.CheckBudget();
+                var hash = HashFile(input.Path, token);
+                if (!hash.Equals(input.Sha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    state.Error("ROC1002", "Input SHA256 does not match the manifest.", input.Path);
+                    return;
+                }
+                var obj = RoslynObject.Open(input.Path, new ReadOptions
+                {
+                    CachedRowCount = request.Budgets.ReaderCachedRows, CachedPageCount = request.Budgets.ReaderCachedPages,
+                    PageSize = request.Budgets.ReaderPageSize
+                });
+                opened.Add(obj); hashes.Add(hash);
+                if (!state.Admit(obj, input)) return;
+            }
+            var program = ManagedProgramSelectionPlanner.Select(opened, hashes, request.Roots.ManagedDefinitions,
+                request.Budgets, token, state.CheckBudget);
+            foreach (var unit in program.UnitSelections)
+                state.InventoryUnit(unit.Selection.Source, request.Inputs[unit.UnitOrdinal - 1], unit.UnitOrdinal,
+                    hashes[unit.UnitOrdinal - 1], unit.Selection);
+            state.CompleteManagedProgramSelection(program);
+        }
+        finally
+        {
+            foreach (var obj in opened)
+            {
+                state.ReaderCommands += obj.Statistics.Commands; state.ReaderRows += obj.Statistics.RowsRead;
+                obj.Dispose();
+            }
+        }
     }
 
     public static string HashFile(string path, CancellationToken cancellationToken = default)
@@ -172,19 +217,19 @@ internal sealed partial class InventoryState(TranslationRequest request, Stopwat
             || request.Roots.Mode == "executable" && string.IsNullOrWhiteSpace(request.Roots.EntryPoint))
             Error("ROC1200", "Library mode or an explicit executable entry point is required.");
         if (request.Roots.RetainAllDefinitions && request.Roots.ManagedDefinitions.Length != 0
-            || !request.Roots.RetainAllDefinitions && (request.Inputs.Length != 1 || request.Roots.Mode != "library"
+            || !request.Roots.RetainAllDefinitions && (request.Inputs.Length is < 1 or > 2 || request.Inputs.Length > request.Budgets.MaximumOpenUnits || request.Roots.Mode != "library"
                 || request.Roots.ManagedDefinitions.Length == 0 || request.Roots.Exports.Length != 0))
-            Error("ROC1200", "Explicit managed roots require one input, library mode, retainAllDefinitions=false and no native exports; default retain-all mode has no managed root filter.");
+            Error("ROC1200", "Explicit managed roots require one or two budgeted inputs, library mode, retainAllDefinitions=false and no native exports; default retain-all mode has no managed root filter.");
         foreach (var root in request.Roots.ManagedDefinitions)
             if (string.IsNullOrWhiteSpace(root.LookupName) || string.IsNullOrWhiteSpace(root.LinkageName)
-                || request.Inputs.Length != 1 || !root.InputSha256.Equals(request.Inputs[0].Sha256, StringComparison.OrdinalIgnoreCase))
+                || request.Inputs.Count(input => root.InputSha256.Equals(input.Sha256, StringComparison.OrdinalIgnoreCase)) != 1)
                 Error("ROC1200", "Each managed root requires an indexed lookup name, exact captured linkage and the selected immutable input SHA256.");
         if (request.Link.DefinitionSelection != "strong-only" || request.Link.InitializationOrder != "manifest-order" || request.Link.GlobalState != "process")
             Error("ROC1201", "Requested link, initialization or global-state policy is unsupported.");
         if (request.Output.NamePolicy != "source-stable" || request.Output.FilePolicy != "declaration-size")
             Error("ROC1202", "Requested source-name or file policy is unsupported.");
         var budgets = request.Budgets;
-        if (budgets.MaximumOpenUnits is < 1 or > 2 || budgets.MaximumWorkingSetBytes <= 0 || budgets.MaximumOperationsPerBody <= 0
+        if (budgets.MaximumSelectionCandidates < 1 || budgets.MaximumSelectionCandidates == int.MaxValue || budgets.MaximumAmbientRoutineCandidates is < 1 or > 256 || budgets.MaximumOpenUnits is < 1 or > 2 || budgets.MaximumWorkingSetBytes <= 0 || budgets.MaximumOperationsPerBody <= 0
             || budgets.MaximumOutputBytes <= 0 || budgets.MaximumElapsedSeconds <= 0 || budgets.ReaderCachedRows < 1
             || budgets.ReaderCachedPages < 1 || budgets.ReaderPageSize is < 1 or > 4096)
             Error("ROC0003", "Resource budgets must be positive; inventory opens one unit at a time and selected program emission admits at most two simultaneous units.");

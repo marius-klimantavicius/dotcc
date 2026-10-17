@@ -50,6 +50,7 @@ public sealed partial class CSharpEmitter
             var graph = functions.ToDictionary(function => function, function => ExceptionExecutionNodes(function.Body!.Root).ToArray());
             var throws = graph.Values.SelectMany(nodes => nodes.OfType<ThrowOperation>()).ToArray();
             var tries = graph.Values.SelectMany(nodes => nodes.OfType<TryOperation>()).ToArray();
+            if (TryInitializeConstructionExceptions(graph, candidates, throws, tries)) return;
             if (TryInitializeClassExceptions(graph, candidates, throws, tries)) return;
             if (throws.Any(throwing => throwing.IsRethrow))
             {
@@ -312,7 +313,7 @@ public sealed partial class CSharpEmitter
                         recipes.Count(recipe => recipe.Target?.Equals(variable) == true && recipe.Destructor?.Equals(destructor) == true && !recipe.IsFreeingOfExceptionObject) != 1)
                         throw Limit("A direct-variable EH action must match one retained local destructor recipe.", "exception-cleanup");
                     var selectedRecipe = recipes.Single(recipe => recipe.Target?.Equals(variable) == true && recipe.Destructor?.Equals(destructor) == true && !recipe.IsFreeingOfExceptionObject);
-                    ValidateExceptionMetadataRecipe(selectedRecipe, false);
+                    ValidateExceptionMetadataRecipe(selectedRecipe, false, temporary: IsConstructionTemporaryRecipe(selectedRecipe));
                     if (!matchedRecipes.Add(selectedRecipe)) throw Limit("Two EH actions unexpectedly share one destruction recipe.", "exception-cleanup");
                     ValidateGeneratedLifetimeRoutine(destructor);
                     EnsureGeneratedNoThrow(destructor);
@@ -361,14 +362,14 @@ public sealed partial class CSharpEmitter
             return locals.Length == 1 && releases.Length == 1 && locals[0].Details.Region.NextRegion?.Equals(releases[0].Details.Region) == true;
         }
 
-        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing, bool constructorMember = false, bool arrayPartial = false)
+        private static void ValidateExceptionMetadataRecipe(Initialization recipe, bool freeing, bool constructorMember = false, bool arrayPartial = false, bool temporary = false)
         {
             var flags = recipe.Details;
             if (recipe.Kind.Name != "dik_none" || recipe.Operation?.RepresentationRole.Name != "metadata" || recipe.Expression is not null ||
                 recipe.Constructor is not null || recipe.Constant is not null || recipe.Operands.Count != 0 || recipe.Master is not null ||
                 recipe.OverlappingLifetime is not null || recipe.InitExpressionLifetime is not null || flags.IsFreeingOfExceptionObject != freeing ||
                 flags.IsUnordered || flags.IsConditional || flags.IsOverlapping || flags.IsClassResultMaster || flags.IsStaticTemporary || flags.IsPartialAggregate != arrayPartial ||
-                flags.IsPartialInitialization || flags.HasTemporaryLifetime || flags.IsConstructorInitialization != constructorMember || flags.IsConditionalGuard || flags.IsVlaDeallocation ||
+                flags.IsPartialInitialization || flags.HasTemporaryLifetime != temporary || flags.IsConstructorInitialization != constructorMember || flags.IsConditionalGuard || flags.IsVlaDeallocation ||
                 flags.CreatesInitializerList || flags.IsInitializerListArray || flags.IsReusedValue || flags.IsQuestionResult || flags.IsCommaResult ||
                 flags.ConstructorCopyImpliedSource || flags.ConstructorImplicitCopy || flags.ConstructorValueInitialization || flags.ConstructorSequencedArguments ||
                 flags.ConstructorArrayCopy || flags.FreesStorage || flags.FreesArray)
@@ -388,7 +389,8 @@ public sealed partial class CSharpEmitter
                 signature.LanguageLinkage?.Name != "nlk_cplusplus_external" || options.ExternalFunctions.Any(binding => binding.LinkageName == release.CurrentName))
                 throw Limit("The selected no-object cleanup target does not match the bounded generated exception-owner runtime contract.", "exception-runtime");
             ValidateCallingConvention(signature);
-            var contract = classExceptionActive ? SemanticRuntimeFunctionImplementation.RecordExceptionOwnerContract :
+            var contract = constructionExceptionActive ? SemanticRuntimeFunctionImplementation.RecordConstructionOwnerContract :
+                classExceptionActive ? SemanticRuntimeFunctionImplementation.RecordExceptionOwnerContract :
                 noexceptTermination is not null ? SemanticRuntimeFunctionImplementation.Int32NoexceptTerminationOwnerContract :
                 boundedRethrow ? SemanticRuntimeFunctionImplementation.Int32RethrowOwnerContract : SemanticRuntimeFunctionImplementation.Int32ExceptionOwnerContract;
             if (!semanticRuntimeFunctions.Any(implementation => implementation.Function.Equals(release)))
@@ -423,7 +425,8 @@ public sealed partial class CSharpEmitter
                 ValidateNativeScalarType(marker.Type, false);
                 if (MemoryRepresentationType(marker.Type) is not PointerType { IsReference: false } pointer || MemoryRepresentationType(pointer.PointeeType).Kind.Name != "tk_void" ||
                     payload.Routine is not null || payload.TryBlock is not null ||
-                    (kind == "leck_thrown_object_address" ? payload.Handler is not null || !ExceptionExecutionNodes(selectedIntegerThrow!.Operand!).Contains(marker)
+                    (kind == "leck_thrown_object_address" ? payload.Handler is not null ||
+                        !(IsConstructionDestination(marker, function) || selectedIntegerThrow is { Operand: { } operand } && ExceptionExecutionNodes(operand).Contains(marker))
                         : payload.Handler?.Equals(plan.Handler) != true || !ExceptionExecutionNodes(plan.Handler.Body).Contains(marker)))
                     throw Limit("An exception payload-address marker is not associated with its retained throw or handler.", "exception");
                 return;
@@ -516,6 +519,7 @@ public sealed partial class CSharpEmitter
                 fields.Append("    private static readonly object ").Append(plan.Token).AppendLine(" = new();");
             EmitNoexceptTerminationField(fields);
             EmitClassExceptionFields(fields);
+            EmitConstructionExceptionFields(fields);
             fields.AppendLine();
         }
 
@@ -595,6 +599,7 @@ public sealed partial class CSharpEmitter
 
         private bool TryEmitExceptionExpressionStatement(ExpressionOperation expression, CodeWriter writer)
         {
+            if (TryEmitConstructionStatement(expression, writer)) return true;
             if (expression is not ThrowOperation throwing) return false;
             if (throwing.IsRethrow)
             {

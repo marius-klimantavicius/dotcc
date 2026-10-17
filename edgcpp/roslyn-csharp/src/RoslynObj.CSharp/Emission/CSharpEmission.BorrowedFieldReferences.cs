@@ -134,7 +134,7 @@ public sealed partial class CSharpEmitter
             ValidateAggregateQualifiers(type);
             if (MemoryRepresentationType(type) is not RecordType record)
                 throw Limit("The borrowed field requires a captured ordinary record representation.", "borrowed-reference");
-            if (!pointerMethodsActive || !ordinaryFieldCarriers.Contains(record)) ValidateOrdinaryConstRecord(record);
+            if (!IsBorrowedMemberView(record) && (!pointerMethodsActive || !ordinaryFieldCarriers.Contains(record))) ValidateOrdinaryConstRecord(record);
             for (var current = type; ;)
             {
                 if (current.Size != record.Size || current.Alignment != record.Alignment || current.IsIncomplete || current.IsDependent)
@@ -221,6 +221,20 @@ public sealed partial class CSharpEmitter
         }
 
         private bool IsBorrowedFieldMethod(FunctionSymbol function) => borrowedFieldMethods.ContainsKey(function);
+
+        private bool IsRegisteredBorrowedLocal(FunctionSymbol owner, VariableSymbol variable) =>
+            borrowedFieldBindings.TryGetValue(variable, out var binding) && binding.Owner.Equals(owner);
+
+        private bool IsRegisteredBorrowedLocalRead(FunctionSymbol owner, VariableSymbol variable, ExpressionOperation expression) =>
+            borrowedFieldBindings.TryGetValue(variable, out var binding) && binding.Owner.Equals(owner) &&
+            expression.ValueCategory.Name == "prvalue" && IsBorrowedResultView(expression.Type, binding.Method);
+
+        private bool IsRegisteredBorrowedInitialization(FunctionSymbol owner, Initialization initialization) =>
+            initialization.Target is VariableSymbol variable && borrowedFieldBindings.TryGetValue(variable, out var binding) &&
+            binding.Owner.Equals(owner) && binding.Initialization.Equals(initialization);
+
+        private bool IsRegisteredBorrowedBindingCall(FunctionSymbol owner, CallOperation call, FunctionSymbol target) =>
+            borrowedFieldCalls.TryGetValue(call, out var binding) && binding.Owner.Equals(owner) && binding.Method.Function.Equals(target);
 
         private bool TryBorrowedReferenceType(PointerType pointer, out string result)
         {

@@ -92,9 +92,13 @@ public sealed record ManagedDefinitionRoot
 public sealed record ManagedRootSelectionReport(string LookupName, string LinkageName,
     string? FunctionName, string Signature, string SelectedLocator);
 public sealed record ManagedSelectionDependencyReport(string From, string Kind, string To);
+public sealed record ManagedUnitSelectionReport(int UnitOrdinal, string InputArtifactIdentity, string InputSha256, ManagedSelectionReport Selection);
+public sealed record ManagedSelectionBindingReport(string Kind, string LinkageName, string Declaration, string Definition, string AbiContract);
 public sealed record ManagedSelectionReport
 {
     public string Scope { get; init; } = "selected-executable-closure";
+    public IReadOnlyList<ManagedUnitSelectionReport> UnitSelections { get; init; } = [];
+    public IReadOnlyList<ManagedSelectionBindingReport> Bindings { get; init; } = [];
     public string InputArtifactIdentity { get; init; } = "";
     public string InputSha256 { get; init; } = "";
     public bool ClosureComplete { get; init; }
@@ -110,6 +114,8 @@ public sealed record ManagedSelectionReport
     public long BodyOperationCount { get; init; }
     public long SelectionWorkCount { get; init; }
     public long AmbientRootRowsInspected { get; init; }
+    public string AmbientRoutineDiscoveryContract { get; init; } = "edg7-itanium-native-default-startup-prefix-v1";
+    public int AmbientRoutineCandidatesInspected { get; init; }
     public string UnvisitedInput { get; init; } = "Unselected bodies, storage and related metadata are not inventoried or translated; no whole-input completion is claimed.";
     public string AmbientInitialization { get; init; } = "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased.";
     public IReadOnlyList<ManagedRootSelectionReport> Roots { get; init; } = [];
@@ -141,6 +147,8 @@ public sealed record ResourceBudgets
     public int ReaderCachedRows { get; init; } = 4096;
     public int ReaderCachedPages { get; init; } = 128;
     public int ReaderPageSize { get; init; } = 128;
+    public int MaximumSelectionCandidates { get; init; } = 32;
+    public int MaximumAmbientRoutineCandidates { get; init; } = 64;
     public int MaximumSelectedFunctions { get; init; } = 64;
     public int MaximumSelectedStorage { get; init; } = 128;
     public int MaximumSelectionOperationsPerBody { get; init; } = 4096;

@@ -42,7 +42,9 @@ public sealed partial class CSharpEmitter
             return !diagnostics.Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
         }
 
-        private IEnumerable<FunctionSymbol> SelectedFunctions() => options.ManagedSelection is { } selection
+        private IEnumerable<FunctionSymbol> SelectedFunctions() => options.ManagedProgramSelection is { } managed
+            ? managed.Units.SelectMany(unit => unit.Functions).Select(CanonicalFunction).Distinct()
+            : options.ManagedSelection is { } selection
             ? selection.Functions
             : selectedProgram is { } program
             ? program.Functions.OrderBy(function => function.SelectedOrdinal).Select(function => function.Definition)
@@ -50,6 +52,7 @@ public sealed partial class CSharpEmitter
 
         private IEnumerable<VariableSymbol> SelectedStorage()
         {
+            if (options.ManagedProgramSelection is { } managed) return managed.Units.SelectMany(unit => unit.StorageDefinitions).Select(CanonicalVariable).Distinct();
             if (options.ManagedSelection is { } selection) return selection.StorageDefinitions;
             if (selectedProgram is { } program)
                 return program.Storage.OrderBy(storage => storage.SelectedOrdinal).Select(storage => storage.Definition);
@@ -60,9 +63,9 @@ public sealed partial class CSharpEmitter
         }
 
         private FunctionSymbol CanonicalFunction(FunctionSymbol declaration)
-            => selectedProgram?.Resolve(declaration)?.Definition ?? declaration;
+            => options.ManagedProgramSelection?.FunctionDefinitions.GetValueOrDefault(declaration) ?? selectedProgram?.Resolve(declaration)?.Definition ?? declaration;
         private VariableSymbol CanonicalVariable(VariableSymbol declaration)
-            => selectedProgram?.Resolve(declaration)?.Definition ?? declaration;
+            => options.ManagedProgramSelection?.VariableDefinitions.GetValueOrDefault(declaration) ?? selectedProgram?.Resolve(declaration)?.Definition ?? declaration;
         private SemanticEntity CanonicalEntity(SemanticEntity entity) => entity switch
         {
             FunctionSymbol function => CanonicalFunction(function),
@@ -74,6 +77,20 @@ public sealed partial class CSharpEmitter
         private bool TryProgramReference(ReferenceOperation reference, out string rendered)
         {
             rendered = "";
+            if (options.ManagedProgramSelection is { } managed)
+            {
+                if (reference.Target is FunctionSymbol managedFunction)
+                {
+                    rendered = FunctionAddress(CanonicalFunction(managedFunction));
+                    return true;
+                }
+                if (reference.Target is not VariableSymbol managedVariable ||
+                    !managed.VariableDefinitions.TryGetValue(managedVariable, out var managedDefinition)) return false;
+                if (!storage.ContainsKey(managedDefinition))
+                    throw Limit("A managed-bound storage reference has no selected allocation.", "program-storage");
+                rendered = $"(*(({TypeName(reference.Type)}*){OwnedName(managedDefinition)}))";
+                return true;
+            }
             if (selectedProgram is null) return false;
             if (reference.Target is FunctionSymbol function)
             {
@@ -122,6 +139,84 @@ public sealed partial class CSharpEmitter
             if (raw is PointerType pointer) { ValidateProgramPointer(pointer); return; }
             if (raw is ArithmeticType && raw.Size is { } scalarSize && scalarSize > 0 && scalarSize <= 8) return;
             throw Limit("Initial multi-unit emission supports fixed scalar/pointer function boundaries; aggregate and extended-value adapters remain unsupported.", "program-abi");
+        }
+
+        private void ValidateManagedBoundFunctionAddress(FunctionSymbol function)
+        {
+            if (options.ManagedProgramSelection is not { } program) return;
+            foreach (var binding in program.FunctionBindings.Where(binding => binding.Declaration.Equals(function) || binding.Definition.Equals(function)))
+            {
+                // The established scalar entry machinery needs no TU-specific
+                // pointer view. Pointer-bearing selected boundaries currently
+                // have only direct occurrence adapters, not callback adapters.
+                foreach (var type in binding.Declaration.Signature.Parameters.Select(parameter => parameter.Type).Append(binding.Declaration.ReturnType)
+                    .Concat(binding.Definition.Signature.Parameters.Select(parameter => parameter.Type).Append(binding.Definition.ReturnType)))
+                    if (Unwrap(type) is PointerType)
+                        throw Limit("A pointer-bearing managed-bound function address requires a separately selected entry/indirect-call view; only direct occurrences are admitted.", "managed-call-address");
+            }
+        }
+
+        private bool IsManagedBoundCall(CallOperation call, FunctionSymbol definition, out FunctionSymbol declaration)
+        {
+            declaration = null!;
+            if (options.ManagedProgramSelection is not { } program ||
+                call.Callee is not ReferenceOperation { Target: FunctionSymbol captured } ||
+                !program.FunctionDefinitions.TryGetValue(captured, out var selected)) return false;
+            if (!selected.Equals(definition) || currentFunction is null || !functions.Contains(currentFunction) ||
+                call.TargetMethod is null || !call.TargetMethod.Equals(captured) ||
+                call.Call.FunctionType is not { } signature || !signature.Equals(captured.Signature) ||
+                !call.Type.Equals(captured.ReturnType) || call.Receiver is not null || call.Call.ReturnSlot is not null ||
+                captured.Signature.IsVariadic || call.Arguments.Count != captured.Signature.Parameters.Count ||
+                call.Operands.Count != call.Arguments.Count + 1 || !call.Operands[0].Equals(call.Callee))
+                throw Limit("A managed-bound call requires its exact retained ordinary direct declaration and execution operands.", "managed-call");
+            ValidateOrdinaryRoutineRoles(captured.Signature);
+            ValidateOrdinaryRoutineRoles(selected.Signature);
+            for (var index = 0; index < call.Arguments.Count; ++index)
+            {
+                var argument = call.Arguments[index]; var parameter = captured.Signature.Parameters[index];
+                if (argument.Ordinal != index || argument.Role?.Name != parameter.Role.Name ||
+                    argument.Parameter is null || !argument.Parameter.Equals(parameter.Descriptor) ||
+                    !call.Operands[index + 1].Equals(argument.Value))
+                    throw Limit("A managed-bound call argument must alias its actual declaration's selected parameter and raw operand.", "managed-call");
+                ValidateProgramBoundaryType(parameter.Type);
+                ValidateProgramBoundaryType(selected.Signature.Parameters[index].Type);
+                var actual = new AbiCompatibility().CompareTypes(argument.Value.Type, parameter.Type);
+                if (!actual.Compatible)
+                    throw Limit($"A managed-bound occurrence requires its captured declaration ABI at {actual.Path}: {actual.Reason}", "managed-call");
+            }
+            ValidateProgramBoundaryType(captured.ReturnType);
+            ValidateProgramBoundaryType(selected.ReturnType);
+            declaration = captured;
+            return true;
+        }
+
+        private string ProgramArgumentView(CallOperation call, int index, FunctionSymbol definition, string value)
+        {
+            if (!IsManagedBoundCall(call, definition, out _))
+                return ProgramArgumentView(call.Arguments[index].Value.Type, definition.Signature.Parameters[index].Type, value);
+            return ManagedBoundValueView(call.Arguments[index].Value.Type, definition.Signature.Parameters[index].Type, value);
+        }
+
+        private string ProgramResultView(CallOperation call, FunctionSymbol definition, string value)
+        {
+            if (!IsManagedBoundCall(call, definition, out _)) return ProgramResultView(definition.ReturnType, call.Type, value);
+            return ManagedBoundValueView(definition.ReturnType, call.Type, value);
+        }
+
+        private string ManagedBoundValueView(CppType actualType, CppType expectedType, string value)
+        {
+            // Called only for the actual direct occurrence after declaration,
+            // selected definition and ABI/operand-role checks above. This does
+            // not install any type-wide pointer equivalence or storage access.
+            var actual = Unwrap(actualType); var expected = Unwrap(expectedType);
+            if (actual is not PointerType actualPointer || expected is not PointerType expectedPointer) return value;
+            ValidateProgramPointer(actualPointer); ValidateProgramPointer(expectedPointer);
+            ValidateProgramBoundaryType(actualType); ValidateProgramBoundaryType(expectedType);
+            var comparison = new AbiCompatibility().CompareTypes(actualType, expectedType);
+            if (!comparison.Compatible)
+                throw Limit($"A managed-bound pointer occurrence has no captured ABI view at {comparison.Path}: {comparison.Reason}", "managed-call");
+            var expectedName = TypeName(expectedType);
+            return TypeName(actualType) == expectedName ? value : $"unchecked(({expectedName})({value}))";
         }
 
         private string ProgramArgumentView(CppType actualType, CppType formalType, string value)

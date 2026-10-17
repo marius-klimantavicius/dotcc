@@ -21,6 +21,7 @@ public sealed record CSharpEmissionOptions
     /// <summary>Opt in to bounded selected-program assembly. Null keeps legacy single-unit admission.</summary>
     public ProgramAssemblyOptions? ProgramAssembly { get; init; }
     internal ManagedSelectionPlan? ManagedSelection { get; init; }
+    internal ManagedProgramSelectionPlan? ManagedProgramSelection { get; init; }
 }
 
 public sealed record CSharpEmissionResult(
@@ -59,6 +60,10 @@ public sealed partial class CSharpEmitter
 
         public CSharpEmissionResult Run()
         {
+            if (options.ManagedProgramSelection is { } managedProgram && (options.ManagedSelection is not null || options.ProgramAssembly is not null ||
+                managedProgram.Units.Count != inputs.Count || managedProgram.UnitSelections.Where((unit, index) => unit.UnitOrdinal != index + 1 ||
+                    !ReferenceEquals(unit.Selection.Source, inputs[index]) || !unit.Selection.Report.ClosureComplete).Any()))
+                return Failure("CSHARP2503", "Managed program selection requires its exact current readers and completed per-unit plans without assembly rebinding.");
             if (options.ManagedSelection is { } selection && (inputs.Count != 1 ||
                 !ReferenceEquals(selection.Source, inputs[0]) || options.ProgramAssembly is not null || !selection.Report.ClosureComplete))
                 return Failure("CSHARP2503", "Managed selection requires its exact current single reader and completed dependency plan, without program assembly rebinding.");
@@ -66,7 +71,7 @@ public sealed partial class CSharpEmitter
             {
                 if (!InitializeProgramAssembly(assemblyOptions)) return new([], diagnostics, 0, 0);
             }
-            else if (inputs.Count != 1)
+            else if (inputs.Count != 1 && options.ManagedProgramSelection is null)
                 return Failure("CSHARP2001", "Multiple translation units require explicit bounded program assembly options.");
             globalNames.Add(options.ClassName);
             if (options.Executable) globalNames.Add("Main");
@@ -108,7 +113,7 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
-            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializePointerMethods(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); }
+            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializePointerMethods(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); ValidateOrdinaryScalarMethodBodies(); }
             catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {
@@ -586,6 +591,7 @@ public sealed partial class CSharpEmitter
             {
                 ValidateOrdinaryCarrierEmission(record);
                 if (IsBorrowedByteView(record)) return BorrowedByteViewName(record);
+                if (IsBorrowedMemberView(record)) return BorrowedMemberViewName(record);
                 if (planned.Add(record))
                 {
                     records.Add(record);
@@ -623,6 +629,7 @@ public sealed partial class CSharpEmitter
         {
             if (TryEmitVirtualRecord(record, output)) return;
             if (TryEmitBorrowedByteView(record, output)) return;
+            if (TryEmitBorrowedMemberView(record, output)) return;
             if (record.HasVirtualFunctions || record.HasVirtualBases || record.Bases.Count != 0 && !ordinaryFieldCarriers.Contains(record))
                 throw Limit("C++ inheritance/dispatch storage is unsupported in T1.", "record");
             var layout = record.Layout ?? throw Limit("Record has no captured layout.", "record");

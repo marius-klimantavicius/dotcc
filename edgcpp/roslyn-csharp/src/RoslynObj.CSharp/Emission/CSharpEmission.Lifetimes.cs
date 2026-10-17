@@ -17,9 +17,13 @@ public sealed partial class CSharpEmitter
 
         private void RequireNormalLifetimeProfile()
         {
-            if (inputs.Count != 1 || selectedProgram is not null || inputs[0].Manifest.CaptureProfile != "native_lowered" ||
-                inputs[0].Manifest.Stage != "lowered" || !inputs[0].TranslationUnit.LanguageMode.StartsWith("c++", StringComparison.Ordinal))
-                throw Limit("The generated normal-lifetime adapter requires one native-lowered unit.", "lifetime");
+            var managedContext = options.ManagedProgramSelection is { } program && program.Units.Count == inputs.Count &&
+                program.UnitSelections.Select((unit, index) => unit.UnitOrdinal == index + 1 && ReferenceEquals(unit.Selection.Source, inputs[index]) &&
+                    unit.Selection.Report.ClosureComplete).All(valid => valid);
+            if ((!managedContext && inputs.Count != 1) || selectedProgram is not null || inputs.Any(input =>
+                input.Manifest.CaptureProfile != "native_lowered" || input.Manifest.Stage != "lowered" ||
+                !input.TranslationUnit.LanguageMode.StartsWith("c++", StringComparison.Ordinal)))
+                throw Limit("The generated lifetime adapter requires a native-lowered unit or its explicit current-reader managed selection context.", "lifetime");
         }
 
         private static bool NeedsGeneratedLifetimeRoles(RoutineType signature) => signature.HasThisParameter ||
@@ -71,6 +75,11 @@ public sealed partial class CSharpEmitter
                 return;
             }
             if (TryValidateClassExceptionReferenceRoutine(function))
+            {
+                generatedLifetimeRoutines.Add(function);
+                return;
+            }
+            if (TryValidateConstructionLifetimeRoutine(function))
             {
                 generatedLifetimeRoutines.Add(function);
                 return;
@@ -198,6 +207,7 @@ public sealed partial class CSharpEmitter
         {
             if (TryBorrowedReferenceType(pointer, out result)) return true;
             if (TryMutableReferenceType(pointer, out result)) return true;
+            if (TryConstructionHandlerReferenceType(pointer, out result)) return true;
             result = "";
             if (!pointer.IsReference || !generatedReferenceTypes.Contains(pointer) || currentFunction is not { } function ||
                 !generatedLifetimeRoutines.Contains(function) && !normalCleanupFunctions.Contains(function) && !IsClassExceptionReferenceContext(function)) return false;
@@ -222,7 +232,8 @@ public sealed partial class CSharpEmitter
             var arguments = call.Arguments;
             var operands = call.Operands;
             if (arguments.Count != signature.Parameters.Count || operands.Count != arguments.Count + 1 || !operands[0].Equals(call.Callee) ||
-                call.Call.FunctionType is not { } selectedType || !selectedType.Equals(signature) || !call.Type.Equals(direct.ReturnType) && !borrowedResultView)
+                call.Call.FunctionType is not { } selectedType || !selectedType.Equals(signature) ||
+                !call.Type.Equals(direct.ReturnType) && !borrowedResultView && !IsRegisteredOrdinaryPointerCall(call, direct))
                 throw Limit("The selected generated call and its retained execution signature differ.", "lifetime-call");
             for (var index = 0; index < arguments.Count; ++index)
             {

@@ -36,8 +36,9 @@ public sealed partial class Translator
         var intrinsicImports = intrinsicBuiltins.Keys.ToHashSet(StringComparer.Ordinal);
         // Multi-unit execution is initially self-contained. Only ProgramAssembly
         // may fulfill its cross-unit declarations; no name-based import filtering.
-        foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required && inventory.ProgramReport.Inputs.Count == 1))
+        foreach (var import in inventory.ProgramReport.Imports.Where(import => import.Required && (inventory.ProgramReport.Inputs.Count == 1 || !request.Roots.RetainAllDefinitions)))
         {
+            if (import.BindingStatus == "captured-linkage-abi-selected-definition") continue;
             // Recorded compiler intrinsics are lowered from their actual call
             // occurrences. They never fall back to a similarly named host export.
             // The emitter still validates each selected signature/order/operand.
@@ -79,6 +80,7 @@ public sealed partial class Translator
             return Failure("ROC1500", "Translation output must be a new directory so existing artifacts cannot be overwritten.");
         var openedInputs = new List<RoslynObject>();
         ManagedSelectionPlan? managedSelectionPlan = null;
+        ManagedProgramSelectionPlan? managedProgramSelection = null;
         try
         {
             phaseObserver?.Invoke(TranslationPhase.InventoryCompleted);
@@ -113,8 +115,12 @@ public sealed partial class Translator
                         || watch.Elapsed.TotalSeconds > request.Budgets.MaximumElapsedSeconds)
                         throw new ResourceBudgetException("Managed selection exceeded the translation resource budget.");
                 }
-                managedSelectionPlan = ManagedSelectionPlanner.Select(openedInputs[0], request.Roots.ManagedDefinitions,
-                    request.Budgets, cancellationToken, CheckSelectionBudget);
+                if (openedInputs.Count == 1)
+                    managedSelectionPlan = ManagedSelectionPlanner.Select(openedInputs[0], request.Roots.ManagedDefinitions,
+                        request.Budgets, cancellationToken, CheckSelectionBudget);
+                else
+                    managedProgramSelection = ManagedProgramSelectionPlanner.Select(openedInputs, inventory.ProgramReport.Inputs.Select(input => input.Sha256).ToArray(),
+                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget);
             }
             var emission = new CSharpEmitter().Emit(openedInputs, new()
             {
@@ -122,8 +128,8 @@ public sealed partial class Translator
                 Executable = request.Roots.Mode == "executable", EntryPointName = request.Roots.EntryPoint,
                 RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings, ExternalData = nativeDataBindings,
                 NativeErrorProtocol = request.Runtime.NativeErrorProtocol,
-                ManagedSelection = managedSelectionPlan,
-                ProgramAssembly = openedInputs.Count == 1 ? null : new ProgramAssemblyOptions
+                ManagedSelection = managedSelectionPlan, ManagedProgramSelection = managedProgramSelection,
+                ProgramAssembly = openedInputs.Count == 1 || managedProgramSelection is not null ? null : new ProgramAssemblyOptions
                 {
                     MaximumOpenUnits = request.Budgets.MaximumOpenUnits,
                     DeduplicateIdenticalArtifacts = request.Link.DeduplicateIdenticalArtifacts,
@@ -139,7 +145,7 @@ public sealed partial class Translator
             var semanticRuntimeImplementations = new Dictionary<string, SemanticRuntimeFunctionImplementation>(StringComparer.Ordinal);
             if (semanticRuntimeCandidates.Count != 0 || emission.SemanticRuntimeFunctions.Count != 0)
             {
-                var publicFunctions = openedInputs.SelectMany((input, unitIndex) => (managedSelectionPlan?.Functions ?? input.TranslationUnit.Functions.AsEnumerable())
+                var publicFunctions = openedInputs.SelectMany((input, unitIndex) => (managedProgramSelection?.GetUnit(input)?.Functions ?? managedSelectionPlan?.Functions ?? input.TranslationUnit.Functions.AsEnumerable())
                     .Select((function, functionIndex) => (Function: function,
                         Locator: $"unit/{unitIndex + 1:D4}/function/{functionIndex + 1:D6}")))
                     .ToDictionary(item => item.Function, item => item.Locator);
@@ -157,7 +163,7 @@ public sealed partial class Translator
             var nativeDataImplementations = new Dictionary<string, SemanticNativeDataImplementation>(StringComparer.Ordinal);
             if (nativeDataBindings.Count != 0 || emission.NativeDataImplementations.Count != 0)
             {
-                var publicVariables = openedInputs.SelectMany((input, unitIndex) => (managedSelectionPlan?.Variables ?? input.TranslationUnit.Variables.AsEnumerable())
+                var publicVariables = openedInputs.SelectMany((input, unitIndex) => (managedProgramSelection?.GetUnit(input)?.Variables ?? managedSelectionPlan?.Variables ?? input.TranslationUnit.Variables.AsEnumerable())
                     .Select((variable, variableIndex) => (Variable: variable,
                         Locator: $"unit/{unitIndex + 1:D4}/storage/{variableIndex + 1:D6}")))
                     .ToDictionary(item => item.Variable, item => item.Locator);

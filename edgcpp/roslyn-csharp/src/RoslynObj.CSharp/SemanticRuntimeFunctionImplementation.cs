@@ -6,6 +6,7 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
 {
     internal const string Int32ExceptionOwnerContract = "managed-cpp-int32-exception-owner-v1";
     internal const string RecordExceptionOwnerContract = "managed-cpp-exact-record-owner-v1";
+    internal const string RecordConstructionOwnerContract = "managed-cpp-exact-record-construction-owner-v1";
     internal const string Int32RethrowOwnerContract = "managed-cpp-int32-rethrow-owner-v1";
     internal const string Int32NoexceptTerminationOwnerContract = "managed-cpp-int32-noexcept-unwind-true-failfast-owner-v1";
     internal const string GeneratedVectorConstructorContract = "generated-cpp-vector-constructor-v1";
@@ -24,10 +25,19 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
     internal static bool IsAdmittedContract(string? linkageName, string contract) =>
         CandidateContract(linkageName) == contract ||
         linkageName == "__destroy_exception_object" &&
-        contract is Int32RethrowOwnerContract or Int32NoexceptTerminationOwnerContract or RecordExceptionOwnerContract;
+        contract is Int32RethrowOwnerContract or Int32NoexceptTerminationOwnerContract or RecordExceptionOwnerContract or RecordConstructionOwnerContract;
 
     internal ImportReport Describe(ImportReport import) => Contract switch
     {
+        RecordConstructionOwnerContract => import with
+        {
+            Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",
+            BindingStatus = "generated-exact-record-construction-owner-contract-selected",
+            Ownership = "The validated managed-cpp-exact-record-construction-owner-v1 contract owns captured complete 16-byte/8-aligned payload storage. The retained direct constructor operand receives the pending address; commit follows its successful completion. Failed construction follows active EDG cleanup before freeing pending storage without payload destruction. An eligible completed final release invokes the selected generated destructor once before freeing.",
+            ErrorContract = "Only the admitted generated exact-type direct construction and const-reference catch participate. Constructor failure propagates a distinct selected owner. Copy-marker semantics, hierarchy matching, record rethrow/termination, native C++ unwinding and CLR-error conversion are not supplied by this contract.",
+            ThreadContract = "Each explicit pending or completed carrier owns its payload on its creating managed thread; no ambient current owner or native exception stack is substituted.",
+            CallbackContract = "One static ordinary managed destructor thunk invokes the actual selected generated body while completed payload storage is valid. No native entry, UCO address or native application implementation is supplied."
+        },
         RecordExceptionOwnerContract => import with
         {
             Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",

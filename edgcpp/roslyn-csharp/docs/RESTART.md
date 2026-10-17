@@ -1,11 +1,11 @@
 # Implementation restart state
 
-## ACTIVE, 2026-10-17 — verified managed-root checkpoint
+## ACTIVE, 2026-10-17 — actual Vector accessor closure implementation
 
 User explicitly resumed. Coordinator gpt-6.1-sol high owns integration/builds/Git;
 retained gpt-6.1-sol xhigh implementers own disjoint work; root GPT-6-Astra high
-monitors read-only. No build/export/test process remains active. Managed-root
-checkpoint is verified and approved for exact-owned commit; receipt
+monitors read-only. Current active command is recorded below. Managed-root
+checkpoint is committed as `345ee5dfe`; receipt
 `acceptance/duckdb/managed-roots-report.json`, 166,812 bytes, SHA-256
 `3f679602150fb31cbb71e73a002bf5240d350fd2eb8b9f6bfaf07067b890b438`.
 21 expected outcomes: 19 successes and two intended rejections, zero unexpected
@@ -48,25 +48,69 @@ once for both selected outputs and default EH; JIT dependencies contain only
 Checks/Generated/Runtime. Earlier 13 phases stayed frozen across user pause;
 final default/repeat 8 phases ran after explicit resume, no blanket campaign repeat.
 
-Next approved cohesive target after saving checkpoint: full actual
-`_ZNK6duckdb6Vector13GetVectorTypeEv` closure in core316. Existing 22-node body
-composes borrowed local, Boolean delegation, retained branches, pointer-arrow/get/
-base chain and proven byte getter. Required new reusable capabilities are ordinary
-scalar-result composition and occurrence-scoped pointer/receiver alias views;
-real guard declaration needs exact core293 definition/link and actual class-EH
-closure. Guard candidate body is not yet inspected; no native application fallback
-or branch pruning. And/Or also require InternalException/string/allocator and size/
-templated dependencies. Prepare concrete bounded selected-program closure design,
-not another serial single-helper inspection mode. Alert material semantics; routine
-work remains authorized. Workers currently finished read-only evidence/proposal
-turns; use followup_task to activate disjoint next work after commit.
+Current verified uncommitted checkpoint: selected composition, compact receipt
+`acceptance/duckdb/selected-composition-report.json`, 103,194 bytes, SHA-256
+`5471ddec7603f2570f01b281472d4a8442d9bd444243aa1409d1665f9f625579`.
+All 77 expected outcomes pass: 69 successes, two intended SIGABRT terminations,
+six unsupported rejections; no unexpected outcomes/budgets in this final campaign.
+Earlier compiler/publication/identity bookkeeping attempts and dependency probe2's
+180-second timeout are preserved separately. Final product snapshot
+`t5/class-construction-product-source-5` has 263 files and matches workspace;
+constructor/scalar/boundary checker snapshots and evidence artifact hashes verify.
+No build/export/test process is active. Root review and exact-owned commit next.
 
-Owned checkpoint paths: product Contracts/Translator/Inventory/Translation,
-NEW ManagedSelection and emitter main/Program hooks; tests/SelectedCore; receipt;
-README and current MANAGED-ROOTS/COVERAGE/RESTART docs. Preserve all unrelated
-user changes and pre-existing untracked T3 aggregate fixtures. SQLite T0–T4 stays
-closed with original source 13/runtime 11 attribution, never relabeled to later C++
-Runtime. Broader T5/T6 and full DuckDB remain open. This section overrides history.
+Verified capabilities and attribution:
+- Constructor native/JIT/AOT twice 24/nine values/30 events/live0; three pending
+  payload allocations, two successful commits/D1/free, one failed parent free
+  after child-selected active cleanup, no unconstructed D1. Complete16/8 versus NV 12/8.
+  Output2 re-published under source5 with identical Generated.cs/ABI and Runtime;
+  earlier matching execution remains valid. Copy marker/int/rethrow paths stay distinct.
+- Scalar production output `t5/composed-scalar-generated-2`, source SHA-256
+  `842a52191d66e75d8fb615c570a15229617646c93f909de8fb7cd4efcfcf8adc`.
+  Native/JIT/AOT all 16 complete tuples/events, results 201/5/206/206 and 255/128/383/383.
+  Actual owner 56/8 payload 24, Proxy 24/8 versus NV 17/8, selector 16 and input 56/8, u8 at 24;
+  all carrier physical sizes/offsets/alignments/strides, routes, pointer aliases,
+  guard effects, fresh reads and whole-buffer guards pass. Native live C++ objects
+  differ from generated aligned raw borrowed bytes; no lifetime/virtual claim.
+- Two-input exact captured-linkage/ABI bindings execute C 1150 and C++ 113111 twice
+  JIT/AOT under final Runtime. Earlier boundary manifests pointed older Runtime;
+  both were reexecuted after exact source identity checks. Pointer-bearing mapped
+  function-address callbacks remain unsupported. No ODR/coalescing claim.
+- Final-source5 focused 42 phases pass six owner profiles JIT/AOT, four prior
+  generated source identities only, prior negatives, unchanged actual getter one body/
+  five ops and real core293 startup rejection. Existing valid readonly-write capture
+  rejects CSHARP2502/address-only-pointer before publication; diagnostic assertion
+  text was corrected without rerunning the successful intended rejection.
+- Public bounded ambient discovery uses pinned EDG __sti__ ABI prefix plus actual
+  constructor/finalizer/TLS flags. Actual core293 startup: 14 FileOpenFlags C1 + 14 atexit + Slot C1
+  remains rejected, not omitted. Inert dik_none metadata is not the startup schedule.
+  Dedicated ambient-candidate budget defaults 64, range 1..256, independent of lookup.
+
+Completed current drivers (do not rerun passed proof):
+`t5/run-class-construction-prepare-1.py`, constructor CLI/checker receipts;
+`t5/run-composed-scalar-prepare-1.py`, retry2 and execution1;
+`t5/run-class-construction-regressions-5.py` (42 outcomes);
+`t5/run-boundaries-final-runtime-5.py` (8 outcomes). Publication identity artifacts
+and readonly assertion are bound by the compact receipt. Runtime and reader API
+changes are uncommitted, alongside selected multi-input/scalar/EH adapters and
+new genuine fixtures/checkers/tool. Preserve unrelated dirty T3 aggregate fixtures.
+
+After checkpoint, approved next cohesive work is an explicit ordered selected
+startup-root schedule and exact actual __cxa_atexit callback/object/module
+registrations, reverse successful registrations on explicit teardown. Cross-TU
+order is a selected target contract; publish registration only after successful
+actual result; no ProcessExit, failed-object destruction or nullable-noexcept
+promotion. Initialization failure/reentry and unhandled termination require
+explicit contracts. Start with real core293 startup (218 typed nodes), retaining
+actual C1/D1/Slot dependencies; no guard shortcut/native application fallback.
+Full actual Vector getter still needs real InternalException/string/JSON/container/
+allocator/EH closure. Existing closure3 is partial: 193 bodies/5,628 operations; not full DuckDB.
+Do not add serial helper audits merely to restate known facts. Root accepted
+startup direction; final implementation design follows checkpoint, routine fixes
+remain authorized. Coordinator builds/Git, emission product, inventory acceptance,
+root read-only; requested sol high/xhigh roles stay. SQLite T0-T4 remains source13/
+runtime11, not relabeled; broader T5/T6 remain open. This active section overrides
+all historical pause/progress text below.
 
 The latest verified product milestone is `16a07ae6b`, the cohesive borrowed-member
 Boolean conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,

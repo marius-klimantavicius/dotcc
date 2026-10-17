@@ -26,8 +26,14 @@ internal static class ManagedSelectionPlanner
         CancellationToken token = default, Action? checkBudget = null)
         => new Work(obj, roots, budgets, token, checkBudget).Run();
 
+    internal static ManagedSelectionPlan SelectSeeded(RoslynObject obj, ManagedDefinitionRoot[] roots,
+        IReadOnlyList<FunctionSymbol> additionalFunctions, IReadOnlyList<VariableSymbol> additionalStorage,
+        string inputSha256, int unitOrdinal, ResourceBudgets budgets, CancellationToken token = default, Action? checkBudget = null)
+        => new Work(obj, roots, budgets, token, checkBudget, additionalFunctions, additionalStorage, inputSha256, unitOrdinal).Run();
+
     private sealed class Work(RoslynObject obj, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
-        CancellationToken token, Action? checkBudget)
+        CancellationToken token, Action? checkBudget, IReadOnlyList<FunctionSymbol>? additionalFunctions = null,
+        IReadOnlyList<VariableSymbol>? additionalStorage = null, string? inputSha256 = null, int unitOrdinal = 1)
     {
         private readonly List<FunctionSymbol> functions = [];
         private readonly List<VariableSymbol> variables = [];
@@ -54,25 +60,28 @@ internal static class ManagedSelectionPlanner
         private long workCount;
         private long bodyOperationCount;
         private long ambientRootRowsInspected;
+        private int ambientRoutineCandidatesInspected;
         private int bodiesVisited;
 
         internal ManagedSelectionPlan Run()
         {
-            if (roots.Length == 0 || budgets.MaximumSelectedFunctions < 1 || budgets.MaximumSelectedStorage < 1 ||
+            if (roots.Length == 0 && inputSha256 is null || budgets.MaximumSelectionCandidates < 1 || budgets.MaximumSelectionCandidates == int.MaxValue || budgets.MaximumAmbientRoutineCandidates is < 1 or > 256 || budgets.MaximumSelectedFunctions < 1 || budgets.MaximumSelectedStorage < 1 ||
                 budgets.MaximumSelectionOperationsPerBody < 1 || budgets.MaximumSelectedTypes < 1 || budgets.MaximumSelectionDepth < 1)
                 Fail("ROC1210", "Managed definition selection requires roots and positive explicit closure bounds.");
             if (roots.Any(root => root.InputSha256.Length != 64 || !root.InputSha256.All(Uri.IsHexDigit) ||
                 string.IsNullOrWhiteSpace(root.LookupName) || string.IsNullOrWhiteSpace(root.LinkageName)) ||
-                roots.Select(root => root.InputSha256).Distinct(StringComparer.OrdinalIgnoreCase).Count() != 1)
+                roots.Select(root => root.InputSha256).Distinct(StringComparer.OrdinalIgnoreCase).Count() > 1
+                || inputSha256 is not null && roots.Any(root => !root.InputSha256.Equals(inputSha256, StringComparison.OrdinalIgnoreCase))
+                || unitOrdinal < 1)
                 Fail("ROC1210", "Managed roots require the one admitted input hash, indexed lookup name and exact captured linkage.");
             CheckAmbientInitialization();
             foreach (var root in roots)
             {
                 Tick();
                 // The reader supplies a public lazy name index. Materialize at
-                // most 32 candidates plus a sentinel; never scan other bodies.
-                var candidates = obj.TranslationUnit.SemanticModel.FindSymbols(root.LookupName).Take(33).ToArray();
-                if (candidates.Length > 32) Fail("ROC1211", "Managed root indexed candidate bound (32) exceeded.");
+                // the explicit candidate budget plus a sentinel; never scan other bodies.
+                var candidates = obj.TranslationUnit.SemanticModel.FindSymbols(root.LookupName).Take(budgets.MaximumSelectionCandidates + 1).ToArray();
+                if (candidates.Length > budgets.MaximumSelectionCandidates) Fail("ROC1211", "Managed root indexed candidate budget exceeded; uniqueness is unknown.");
                 var selected = candidates.OfType<FunctionSymbol>().Where(function =>
                     (function.GnuSupplement?.AssemblyName ?? function.CurrentName) == root.LinkageName &&
                     function.IsDefined && function.BodyState.Name == "definition" && function.Body is { Root.RepresentationRole.Name: "execution" }).Distinct().ToArray();
@@ -81,6 +90,8 @@ internal static class ManagedSelectionPlanner
                 UseFunction(selected[0], "managed-root", "root");
                 selectedRoots.Add(new(root.LookupName, root.LinkageName, selected[0].Name, Signature(selected[0]), Locator(selected[0])));
             }
+            foreach (var function in additionalFunctions ?? []) UseFunction(function, "selected-program", "bound-definition");
+            foreach (var variable in additionalStorage ?? []) UseVariable(variable, "selected-program", "bound-storage");
             while (pendingFunctions.Count != 0 || pendingVariables.Count != 0)
             {
                 Tick();
@@ -94,12 +105,13 @@ internal static class ManagedSelectionPlanner
             var storage = variables.Where(IsStorageDefinition).ToArray();
             var report = new ManagedSelectionReport
             {
-                InputArtifactIdentity = obj.Manifest.ArtifactIdentity, InputSha256 = roots[0].InputSha256.ToLowerInvariant(),
+                InputArtifactIdentity = obj.Manifest.ArtifactIdentity, InputSha256 = (inputSha256 ?? roots[0].InputSha256).ToLowerInvariant(),
                 ClosureComplete = true, WholeInputInventoryComplete = false, WholeInputTranslationComplete = false,
                 RelatedTypeMetadataComplete = false, ExecutableBodiesVisited = bodiesVisited,
                 RequiredDeclarationCount = functions.Count - definitions.Length, StorageDefinitionCount = storage.Length,
                 RequiredVariableCount = variables.Count, ScopedTypeCount = types.Count, RequiredConstantCount = constants.Count,
                 BodyOperationCount = bodyOperationCount, SelectionWorkCount = workCount, AmbientRootRowsInspected = ambientRootRowsInspected,
+                AmbientRoutineCandidatesInspected = ambientRoutineCandidatesInspected,
                 Roots = selectedRoots.ToArray(), Dependencies = dependencies.ToArray()
             };
             return new(obj, functions.ToArray(), variables.ToArray(), types.ToArray(), constants.ToArray(), definitions, storage, report);
@@ -109,6 +121,18 @@ internal static class ManagedSelectionPlanner
         {
             Tick();
             var unit = obj.TranslationUnit;
+            // Selected backend naming contract, not C++ source lookup. In this
+            // pinned EDG native profile, default startup routines are not in the
+            // separate-routine header list. Their bodies contain any associated
+            // __cxa_atexit registration; GNU/TLS entry flags are checked too.
+            var ambient = unit.SemanticModel.FindAmbientRoutineCandidates("__sti__", budgets.MaximumAmbientRoutineCandidates, token);
+            checkBudget?.Invoke();
+            ambientRoutineCandidatesInspected = ambient.Count;
+            if (ambient.Count > budgets.MaximumAmbientRoutineCandidates)
+                Fail("ROC1213", "Ambient routine discovery candidate budget exceeded; schedule completeness is unknown.");
+            if (ambient.Count != 0)
+                Fail("ROC1212", "Managed selection requires an explicit ambient startup/teardown schedule for captured routine '" +
+                    ambient[0].CurrentName + "'; EDG backend startup, source constructor/finalizer and TLS entries cannot be omitted.");
             if (unit.FileScopeInitializationRoutines.Take(1).Any() || unit.GlobalScope.DynamicInitializations.Take(1).Any() ||
                 unit.GlobalScope.Lifetime?.Cleanups.Take(1).Any() == true)
                 Fail("ROC1212", "Managed selection cannot omit ambient translation-unit initialization or teardown; its execution schedule is unsupported.");
@@ -138,10 +162,10 @@ internal static class ManagedSelectionPlanner
             if (locators.TryGetValue(entity, out var value)) return value;
             value = entity switch
             {
-                FunctionSymbol => $"unit/0001/function/{functions.Count:D6}",
-                VariableSymbol => $"unit/0001/storage/{variables.Count:D6}",
-                CppType => $"unit/0001/type/{types.Count:D6}",
-                Constant => $"unit/0001/constant/{constants.Count:D8}",
+                FunctionSymbol => $"unit/{unitOrdinal:D4}/function/{functions.Count:D6}",
+                VariableSymbol => $"unit/{unitOrdinal:D4}/storage/{variables.Count:D6}",
+                CppType => $"unit/{unitOrdinal:D4}/type/{types.Count:D6}",
+                Constant => $"unit/{unitOrdinal:D4}/constant/{constants.Count:D8}",
                 _ => $"selection/association/{locators.Count + 1:D8}"
             };
             locators.Add(entity, value);
@@ -466,5 +490,40 @@ internal static class ManagedSelectionPlanner
 
         private static void Fail(string code, string message, string? locator = null)
             => throw new ManagedSelectionException(code, message, locator);
+    }
+}
+
+/// <summary>Attributable selected-unit reports and exact public declaration bindings.</summary>
+internal static class ManagedProgramSelectionReports
+{
+    internal static ManagedSelectionReport Create(ManagedProgramSelectionPlan program)
+    {
+        var units = program.UnitSelections;
+        string FunctionLocator(FunctionSymbol symbol, int ordinal)
+            => $"unit/{ordinal:D4}/function/{program.Units[ordinal - 1].Functions.ToList().IndexOf(symbol) + 1:D6}";
+        string VariableLocator(VariableSymbol symbol, int ordinal)
+            => $"unit/{ordinal:D4}/storage/{program.Units[ordinal - 1].Variables.ToList().IndexOf(symbol) + 1:D6}";
+        var bindings = program.FunctionBindings.Select(binding => new ManagedSelectionBindingReport("function", binding.LinkageName,
+            FunctionLocator(binding.Declaration, binding.DeclarationUnitOrdinal), FunctionLocator(binding.Definition, binding.DefinitionUnitOrdinal), binding.Compatibility.Reason))
+            .Concat(program.VariableBindings.Select(binding => new ManagedSelectionBindingReport("variable", binding.LinkageName,
+                VariableLocator(binding.Declaration, binding.DeclarationUnitOrdinal), VariableLocator(binding.Definition, binding.DefinitionUnitOrdinal), binding.Compatibility.Reason))).ToArray();
+        return new()
+        {
+            Scope = "selected-multi-input-executable-closure", ClosureComplete = units.All(unit => unit.Selection.Report.ClosureComplete),
+            UnitSelections = units.Select(unit => new ManagedUnitSelectionReport(unit.UnitOrdinal, unit.Selection.Source.Manifest.ArtifactIdentity,
+                unit.Selection.Report.InputSha256, unit.Selection.Report)).ToArray(), Bindings = bindings,
+            ExecutableBodiesVisited = units.Sum(unit => unit.Selection.Report.ExecutableBodiesVisited),
+            RequiredDeclarationCount = units.Sum(unit => unit.Selection.Report.RequiredDeclarationCount),
+            StorageDefinitionCount = units.Sum(unit => unit.Selection.Report.StorageDefinitionCount),
+            RequiredVariableCount = units.Sum(unit => unit.Selection.Report.RequiredVariableCount),
+            ScopedTypeCount = units.Sum(unit => unit.Selection.Report.ScopedTypeCount),
+            RequiredConstantCount = units.Sum(unit => unit.Selection.Report.RequiredConstantCount),
+            BodyOperationCount = units.Sum(unit => unit.Selection.Report.BodyOperationCount),
+            SelectionWorkCount = units.Sum(unit => unit.Selection.Report.SelectionWorkCount),
+            AmbientRootRowsInspected = units.Sum(unit => unit.Selection.Report.AmbientRootRowsInspected),
+            AmbientRoutineCandidatesInspected = units.Sum(unit => unit.Selection.Report.AmbientRoutineCandidatesInspected),
+            Roots = units.SelectMany(unit => unit.Selection.Report.Roots).ToArray(),
+            Dependencies = units.SelectMany(unit => unit.Selection.Report.Dependencies).ToArray()
+        };
     }
 }

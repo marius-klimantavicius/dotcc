@@ -1,0 +1,2286 @@
+{
+  "reportVersion": 1,
+  "status": "accepted-bounded-selected-composition",
+  "wholeDuckdbAccepted": false,
+  "broaderT5Complete": false,
+  "sqliteAttributionUnchanged": "Earlier finite T0-T4 source13/runtime11; not revalidated or relabeled to this Runtime.",
+  "scope": "Additive exact-record pending construction, occurrence-scoped scalar/pointer alias composition and borrowed member views, exact selected two-input direct binding, conservative real ambient discovery. Actual full Vector getter remains rejected/unpublished due real startup and incomplete guard/EH/library closure.",
+  "finalCampaign": {
+    "phaseCount": 77,
+    "successCount": 69,
+    "expectedTerminationSignalCount": 2,
+    "intendedRejectionCount": 6,
+    "unexpectedOutcomes": 0,
+    "budgetViolations": 0,
+    "allExpectedOutcomes": true,
+    "phases": [
+      {
+        "group": "constructor-capture-native",
+        "name": "export-class-construction-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-class-construction-1/run.json",
+          "bytes": 1168,
+          "sha256": "9682b0ad00ab6691c351aecf8d80b87942ac9f1b1aae56ca8785835a41ba3314"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-class-construction-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-class-construction-1/stderr.txt",
+          "bytes": 129,
+          "sha256": "cc2d271679f582cdb7d6786728863a695689ca160f2a85c097b0a67f17446053"
+        },
+        "elapsedSeconds": 0.2009397679939866,
+        "sampledPeakProcessTreeRssBytes": 45498368,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-capture-native",
+        "name": "inspect-class-construction-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-class-construction-1/run.json",
+          "bytes": 1134,
+          "sha256": "c0b03c44911d9c5875221f9c6e8a021028e20288b45d8b80665b3f32705fd58c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-class-construction-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-class-construction-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20110276795458049,
+        "sampledPeakProcessTreeRssBytes": 57393152,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-capture-native",
+        "name": "facts-class-construction-run-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-class-construction-run-1/run.json",
+          "bytes": 1101,
+          "sha256": "94ec8a62c0dab293734f59419b3bce3e98c53c0b3a54d5af33230ebf99cad080"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-class-construction-run-1/stdout.txt",
+          "bytes": 94,
+          "sha256": "fe43b5796c574ca1d715b654588d56b30c188d8982bf5b92b78da0c7d7745e45"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-class-construction-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6029490820365027,
+        "sampledPeakProcessTreeRssBytes": 107995136,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-capture-native",
+        "name": "native-class-construction-harness-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-harness-1/run.json",
+          "bytes": 1088,
+          "sha256": "aed4956fcb8c1b695218b7e80079d8f34711b4fedac70377eca9417617c44cf4"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-harness-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-harness-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.1005580920027569,
+        "sampledPeakProcessTreeRssBytes": 212992,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-capture-native",
+        "name": "native-class-construction-build-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-build-1/run.json",
+          "bytes": 1176,
+          "sha256": "785ed315cde42766b71d7789c722f474becc373f882067bca64b3e9086c7031f"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-build-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10055950505193323,
+        "sampledPeakProcessTreeRssBytes": 102400,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-capture-native",
+        "name": "native-class-construction-run-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-run-1/run.json",
+          "bytes": 889,
+          "sha256": "d63e008bca5f065541330faf7cd7180baa69ec07bcca04704f2dbd9f6428490e"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-run-1/stdout.txt",
+          "bytes": 411,
+          "sha256": "b5647574c1cd84fc04df72925494e017c94e998bb034a069ab27a9ca9cffa051"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10055781097617,
+        "sampledPeakProcessTreeRssBytes": 86016,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-production-native-jit-aot",
+        "name": "class-construction-cli-build-2",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-build-2/run.json",
+          "bytes": 1288,
+          "sha256": "4cb91347ef66c059d90bdecf7f1a89009549ddbc9688d88cc077f9848ab6b1fb"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-build-2/stdout.txt",
+          "bytes": 940,
+          "sha256": "2c067d0eb1e07cc0f7b5f1f8342a923dda4f5b23de2f1ef6c8fefac11f597025"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-build-2/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.082291401922703,
+        "sampledPeakProcessTreeRssBytes": 693587968,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-production-native-jit-aot",
+        "name": "class-construction-cli-translate-2",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-translate-2/run.json",
+          "bytes": 1161,
+          "sha256": "d6f1f03de75710f12a7bed5d85a3ef1d472075e171120ae1474e73370520f1b3"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-translate-2/stdout.txt",
+          "bytes": 95,
+          "sha256": "872bdccfaad7e25ac1c45f0ec67cb33ca7c41c8b90b0c175f8fdc69f043cc5aa"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-translate-2/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.8038830040022731,
+        "sampledPeakProcessTreeRssBytes": 114343936,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-production-native-jit-aot",
+        "name": "class-construction-checker-build-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-build-1/run.json",
+          "bytes": 1403,
+          "sha256": "4e29cfd28ffa64924c2a81300f43660d338a5fbe06bc4627bf65e7a4fa1c1c3d"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-build-1/stdout.txt",
+          "bytes": 909,
+          "sha256": "6049ce801fc9c8b61ca4eb1af3c29589968efedd344e7aed8ce7e37f25cc124e"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.1075800330145285,
+        "sampledPeakProcessTreeRssBytes": 517279744,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-production-native-jit-aot",
+        "name": "class-construction-checker-jit-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-jit-1/run.json",
+          "bytes": 1104,
+          "sha256": "78b9398c28e9a9f730aac0875f39c99d1d7d0feee8ea83c2143585573bd20c26"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-jit-1/stdout.txt",
+          "bytes": 3153,
+          "sha256": "c80b6190838797768ad4ab2d73808a6bfb3a7359933040bf011fcfeee5f8d5c6"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-jit-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10060223401524127,
+        "sampledPeakProcessTreeRssBytes": 57344,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-production-native-jit-aot",
+        "name": "class-construction-checker-aot-publish-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-publish-1/run.json",
+          "bytes": 1524,
+          "sha256": "bbfe6ea2a41fba9c16b0064373076d7af6c856e4fc9b9d7c88c1b71531e7d959"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-publish-1/stdout.txt",
+          "bytes": 1071,
+          "sha256": "2eef3f0d0039170f488d022ecd4c6fead6610df3d111e2727483ecc49bf2de9e"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-publish-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.169388683047146,
+        "sampledPeakProcessTreeRssBytes": 690683904,
+        "budgetViolation": null
+      },
+      {
+        "group": "constructor-production-native-jit-aot",
+        "name": "class-construction-checker-aot-run-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-run-1/run.json",
+          "bytes": 1091,
+          "sha256": "82d9ee6cb136c292c841d01de29e1368f9746dd74c04b532a388511521ff13f2"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-run-1/stdout.txt",
+          "bytes": 3153,
+          "sha256": "c80b6190838797768ad4ab2d73808a6bfb3a7359933040bf011fcfeee5f8d5c6"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10284636809956282,
+        "sampledPeakProcessTreeRssBytes": 200704,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-capture-native",
+        "name": "export-composed-scalar-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-composed-scalar-1/run.json",
+          "bytes": 1185,
+          "sha256": "fef249a97c8ddf1e4b854b2b1ee795c8b306fb7c2a34e2fbea5b52beeca0e481"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-composed-scalar-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-composed-scalar-1/stderr.txt",
+          "bytes": 137,
+          "sha256": "4a18ce9d3b8c303b3bd2f920666080dd50f52fcc2722ffeaa487e7a791fde9fd"
+        },
+        "elapsedSeconds": 0.20106771995779127,
+        "sampledPeakProcessTreeRssBytes": 46211072,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-capture-native",
+        "name": "inspect-composed-scalar-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-composed-scalar-1/run.json",
+          "bytes": 1145,
+          "sha256": "23ca59aaa10151d8f36132cb86c2cc15d8b490be3556d490b5fb91e8f29832f4"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-composed-scalar-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-composed-scalar-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.2013005829649046,
+        "sampledPeakProcessTreeRssBytes": 73527296,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-capture-native",
+        "name": "facts-composed-scalar-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-composed-scalar-1/run.json",
+          "bytes": 1108,
+          "sha256": "0a204aaffe8f7c9fa145cb8dc1fc15f5c97efcd7f1d9a3ff0f552bece250de55"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-composed-scalar-1/stdout.txt",
+          "bytes": 95,
+          "sha256": "d2c46cee05d4e815005afee10ba89f6abaf18f010dcab0128a85547ef4f5021c"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-composed-scalar-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6033826280618086,
+        "sampledPeakProcessTreeRssBytes": 108015616,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-capture-native",
+        "name": "native-composed-scalar-build-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-build-1/run.json",
+          "bytes": 1167,
+          "sha256": "00cf00c3bb599ce3dc84f5b9a4567778599dd3785c94f563fa527b1627b7612c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-build-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20105725899338722,
+        "sampledPeakProcessTreeRssBytes": 24612864,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-capture-native",
+        "name": "native-composed-scalar-run-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-run-1/run.json",
+          "bytes": 897,
+          "sha256": "1077674a3daca2e1bfbf7b4e32ba1d0ab7ca0bd1c33bad88ef06900d1ce62d87"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-run-1/stdout.txt",
+          "bytes": 5405,
+          "sha256": "6c0cf00896ec82ea20a6c25d9cc0144e22cd5322b556dda0d7e8162146ebe65d"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10055049101356417,
+        "sampledPeakProcessTreeRssBytes": 81920,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-final-product-publication",
+        "name": "class-construction-cli-build-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-build-5/run.json",
+          "bytes": 1288,
+          "sha256": "db9a76d808b6f371d8653ba583c9946215ff0fa26d5d23ee2ac5f8bf9ba30a6e"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-build-5/stdout.txt",
+          "bytes": 940,
+          "sha256": "ee5c48c4e435a14558c1d269174b462e52fdc16b940dec9137d87f4a2ba7303d"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.187333556008525,
+        "sampledPeakProcessTreeRssBytes": 688029696,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-final-product-publication",
+        "name": "composed-scalar-cli-translate-2",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-cli-translate-2/run.json",
+          "bytes": 1155,
+          "sha256": "4e970c62bdaa28e947d9258763f6ee87a302943e2375817a2a40c1d685235b53"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-cli-translate-2/stdout.txt",
+          "bytes": 95,
+          "sha256": "4847801e20603d6bfd6b1dc71ef21a4a67e8bb7d5ccd3003f0e76e126cee843b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-cli-translate-2/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.1049596819793805,
+        "sampledPeakProcessTreeRssBytes": 116703232,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-jit-aot-physical",
+        "name": "composed-scalar-checker-jit-build-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-build-1/run.json",
+          "bytes": 1400,
+          "sha256": "a5d5f1c2529135053d4392b26290a009e8e5026f3e5e2ccf08ffc927384e4942"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-build-1/stdout.txt",
+          "bytes": 908,
+          "sha256": "95473f61fb8ac2b96143fced56e51b389ec9f6464a1f05f30eed5e7060f372a6"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.212008734000847,
+        "sampledPeakProcessTreeRssBytes": 522719232,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-jit-aot-physical",
+        "name": "composed-scalar-checker-jit-run-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-run-1/run.json",
+          "bytes": 1101,
+          "sha256": "f34cac1b152c60183e88bebcbe3674dc8641a7b41c0f43979a770308a734ce43"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-run-1/stdout.txt",
+          "bytes": 7893,
+          "sha256": "6cd33ee026022d0fd3a8fd5e586b0d99e8e85f255aedb592469585698e2d7bdc"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.100686977035366,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-jit-aot-physical",
+        "name": "composed-scalar-checker-aot-build-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-build-1/run.json",
+          "bytes": 1515,
+          "sha256": "6bba845dab1be7db17e3bbb7451fd2721b233c80c1ae62382f872275b08a85a2"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-build-1/stdout.txt",
+          "bytes": 1055,
+          "sha256": "580e087ff348433dc9c5a7ce6d423a0b4a0092e68a6a85b2a777692394a9d082"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 10.075670868041925,
+        "sampledPeakProcessTreeRssBytes": 712282112,
+        "budgetViolation": null
+      },
+      {
+        "group": "scalar-jit-aot-physical",
+        "name": "composed-scalar-checker-aot-run-1",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-run-1/run.json",
+          "bytes": 1085,
+          "sha256": "bfaa4e76cb093e85ae912057baa19f684681407a2e0e41b155d1e0d257e4cf14"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-run-1/stdout.txt",
+          "bytes": 7893,
+          "sha256": "6cd33ee026022d0fd3a8fd5e586b0d99e8e85f255aedb592469585698e2d7bdc"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10046107601374388,
+        "sampledPeakProcessTreeRssBytes": 73728,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "normal-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-translate/run.json",
+          "bytes": 1163,
+          "sha256": "fad35fb80422cbdac41f241651356ab281da683b0da68e56c2e4dded078407b9"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "a555f1c2c6f7d6ea52b57132457055a7de9f170c41e14118402c81bc4926282a"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6025144560262561,
+        "sampledPeakProcessTreeRssBytes": 106356736,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "normal-jit-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-jit-build/run.json",
+          "bytes": 1437,
+          "sha256": "f4848af0cb244c4d536b0eff375b9e6094ae9fdfb6a300c64e602ad4f19d915f"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-jit-build/stdout.txt",
+          "bytes": 953,
+          "sha256": "133e7ce4b201416046c4f393fbc71161bcad3806a9bc3d2a3e3eb9fe82c624d8"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-jit-build/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 5.910311950021423,
+        "sampledPeakProcessTreeRssBytes": 514641920,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "normal-jit-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-jit-run/run.json",
+          "bytes": 1021,
+          "sha256": "78eb77d8e43f6efcdb48ac1d05ea5e815d93f7858f020a9b0eef592f93bd4a3b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-jit-run/stdout.txt",
+          "bytes": 275,
+          "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-jit-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10062016500160098,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "normal-aot-publish",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-aot-publish/run.json",
+          "bytes": 1550,
+          "sha256": "c46955748ac5989e4edc8a19d431e798ae1c5248e6f776c481b73e3ba1ab5909"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-aot-publish/stdout.txt",
+          "bytes": 1132,
+          "sha256": "66bf704ede5082dc0dea57ef185003b4799e67f302f6f73a2b9aefea5cb4ac6e"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-aot-publish/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 8.96748509106692,
+        "sampledPeakProcessTreeRssBytes": 680845312,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "normal-aot-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-aot-run/run.json",
+          "bytes": 1003,
+          "sha256": "0e000582d977de6cc7b0ff635e6e7bf3f2c6dca759dda36424947e37e2bc9d37"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-aot-run/stdout.txt",
+          "bytes": 275,
+          "sha256": "a63189c396f91b206402d992afd8ab876c50dc8ed646075109b9112e20cb6386"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/normal-aot-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10044105304405093,
+        "sampledPeakProcessTreeRssBytes": 16384,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "int-eh-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-translate/run.json",
+          "bytes": 1163,
+          "sha256": "658a2f1a6f97e77f2d84b8abf0f77a16f2bff6f24eff483c0f7abddebda8a51e"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "b04c4fd927037244e5a8a6327e9a4dbc29ff80ef44073b58c7401ea55aa25f47"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6032366410363466,
+        "sampledPeakProcessTreeRssBytes": 106541056,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "int-eh-jit-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-jit-build/run.json",
+          "bytes": 1440,
+          "sha256": "623b7b69c552109e562b16d350968bbc064275e060e6ac09a52954f5c1b7b29d"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-jit-build/stdout.txt",
+          "bytes": 956,
+          "sha256": "1912df1498a7fb7b00f3b259570e944cf8b22c0b92bb315b5c312c269b7b6b7c"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-jit-build/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.115056414040737,
+        "sampledPeakProcessTreeRssBytes": 514101248,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "int-eh-jit-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-jit-run/run.json",
+          "bytes": 1024,
+          "sha256": "490e57085eb88158b7c4a2c09a3f5244de2ba7ac1bd5636d9fe1b257db29be69"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-jit-run/stdout.txt",
+          "bytes": 828,
+          "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-jit-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10057552705984563,
+        "sampledPeakProcessTreeRssBytes": 217088,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "int-eh-aot-publish",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-aot-publish/run.json",
+          "bytes": 1554,
+          "sha256": "77feeea7bce5429650db9e529711ba59e299d96a301a03b018f266d3d2a36e7d"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-aot-publish/stdout.txt",
+          "bytes": 1135,
+          "sha256": "ee765c15b45e90b06aab497cad50276536a8d7950189da3e35db71293e234540"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-aot-publish/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.066612252034247,
+        "sampledPeakProcessTreeRssBytes": 688148480,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "int-eh-aot-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-aot-run/run.json",
+          "bytes": 1005,
+          "sha256": "bb840da522d9c6e4dc9fec4cd8c68b47bfdc185d9df9fae9455a967b091f0e14"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-aot-run/stdout.txt",
+          "bytes": 828,
+          "sha256": "a489937e5edbe73a968605e67ccbf4f11ad2d2d4aa94727ce95c8675eedb477a"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/int-eh-aot-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10054653999395669,
+        "sampledPeakProcessTreeRssBytes": 94208,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "constructor-failure-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-translate/run.json",
+          "bytes": 1189,
+          "sha256": "8c48de957cc167b26333a633fe69c4c4fd0cb2ae4ff5c189b60b49f79a0a5c1c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "73d423d8d7672fbf1081a809761f909e626b3067d7aec0acf93b0b17485d00e0"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.7035135210026056,
+        "sampledPeakProcessTreeRssBytes": 112218112,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "constructor-failure-jit-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-jit-build/run.json",
+          "bytes": 1480,
+          "sha256": "e0291f176f41a4f58a91a1438466aedbf0e89e07d84fb5db6e97f4c98d524ffa"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-jit-build/stdout.txt",
+          "bytes": 1008,
+          "sha256": "60009aae32e430d454f6604966e8922817907a7a4b7bfc67ade73b6e450c69b5"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-jit-build/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.214379098964855,
+        "sampledPeakProcessTreeRssBytes": 514056192,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "constructor-failure-jit-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-jit-run/run.json",
+          "bytes": 1038,
+          "sha256": "f9f1c5019ac9f4edfc0d027953726139a4d2f23e08dae860b4ffd31eb0530ed2"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-jit-run/stdout.txt",
+          "bytes": 874,
+          "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-jit-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10056142695248127,
+        "sampledPeakProcessTreeRssBytes": 98304,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "constructor-failure-aot-publish",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-aot-publish/run.json",
+          "bytes": 1592,
+          "sha256": "ab4a8f5d4e1374749177fa63b639f79c7d6c9b5a683f5c7a378dae7806f34104"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-aot-publish/stdout.txt",
+          "bytes": 1200,
+          "sha256": "6b87faa3b81717b0fbe07fd37b4e81bdbac5dcc9e2492d346e979497a5160fa7"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-aot-publish/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.68440884409938,
+        "sampledPeakProcessTreeRssBytes": 686542848,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "constructor-failure-aot-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-aot-run/run.json",
+          "bytes": 1020,
+          "sha256": "f6052b8217364119d2c8342fc1f9e1281619de9865e82518526124d33d0f332f"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-aot-run/stdout.txt",
+          "bytes": 874,
+          "sha256": "308eae32deb9b8b0513e01e33ad1b4a6693fef55193effd026de89bf55cb2d29"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/constructor-failure-aot-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10059261496644467,
+        "sampledPeakProcessTreeRssBytes": 12288,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "rethrow-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-translate/run.json",
+          "bytes": 1165,
+          "sha256": "0f0396279192d95ba68d4272cdca30e5d250b8124e37be7f29ec3d22c9d0ea12"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "57f2fdd83b07b7f40d6c2e73116350d50db23ea766302070a8e161bef40406d9"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6022841240046546,
+        "sampledPeakProcessTreeRssBytes": 106041344,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "rethrow-jit-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-jit-build/run.json",
+          "bytes": 1440,
+          "sha256": "c859cb60c2afe2b77d9a6288192d1c10d2e8cb4110eb5776ee7bf4d56873da01"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-jit-build/stdout.txt",
+          "bytes": 958,
+          "sha256": "ead4e1b984e40e07d1420d4903e46d91035ee48e62611b5a44a01f0b7ebf81e0"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-jit-build/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.21238328400068,
+        "sampledPeakProcessTreeRssBytes": 515309568,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "rethrow-jit-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-jit-run/run.json",
+          "bytes": 1023,
+          "sha256": "1b4c4bd090b9d257a45cc76442f5900642de53b221c2e0931c0586438d2f29a8"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-jit-run/stdout.txt",
+          "bytes": 1045,
+          "sha256": "02e1025ecfae11f96524156b659cb3b23cd553543a52e922a9554109b61a2f47"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-jit-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10061890399083495,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "rethrow-aot-publish",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-aot-publish/run.json",
+          "bytes": 1555,
+          "sha256": "4f3365c3d1fd9378d724c581526a2398e1f74f937ba7d0c8730440e70d4a2a6c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-aot-publish/stdout.txt",
+          "bytes": 1138,
+          "sha256": "d0ee84779ee729833687b424533f95f11090baf28129c933090db5a10e1a68b6"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-aot-publish/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.478394881938584,
+        "sampledPeakProcessTreeRssBytes": 687415296,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "rethrow-aot-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-aot-run/run.json",
+          "bytes": 1005,
+          "sha256": "7b73a022ff1a427cfbde12798938ba0c444d2aa4322d605e2d5eae5ce9cc3644"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-aot-run/stdout.txt",
+          "bytes": 1045,
+          "sha256": "02e1025ecfae11f96524156b659cb3b23cd553543a52e922a9554109b61a2f47"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/rethrow-aot-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10054777702316642,
+        "sampledPeakProcessTreeRssBytes": 20480,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "class-copy-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-translate/run.json",
+          "bytes": 1171,
+          "sha256": "5bf544b2bc80467219fac93be657606c2d4cc1ee44a67111e4ca0b5a1ab9c250"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "f98e535d8bdf35b13099d0ae8e49942f31fb01eaf4b106439b4a12bd66891dd8"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.7031157639576122,
+        "sampledPeakProcessTreeRssBytes": 112496640,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "class-copy-jit-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-jit-build/run.json",
+          "bytes": 1463,
+          "sha256": "2f606ca8eafe7c3e8580ddfe892c44088a75148c15c3cc020671351077851876"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-jit-build/stdout.txt",
+          "bytes": 983,
+          "sha256": "62e1e9f80429afc097f08acd235cebe083bef7bb8db2f4d10f46f76d2f50e8be"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-jit-build/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.008088225033134,
+        "sampledPeakProcessTreeRssBytes": 518152192,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "class-copy-jit-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-jit-run/run.json",
+          "bytes": 1024,
+          "sha256": "f03f57d664dc148c33a98b2e7df8460fabf933faa8ce1a68a3f12a75776f3f53"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-jit-run/stdout.txt",
+          "bytes": 2343,
+          "sha256": "a22e1c020f3d5df87a21a9ec4851636679d140e1b9791b8e04c6dc82641471d9"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-jit-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10062466305680573,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "class-copy-aot-publish",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-aot-publish/run.json",
+          "bytes": 1577,
+          "sha256": "1993a8ffec01432d62a167c00e892f6914ec9036411535c005b41770e515b0ed"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-aot-publish/stdout.txt",
+          "bytes": 1166,
+          "sha256": "76c70f80469d8254c0a1809809eaeb14bae09f95a41752ee00921f99dab44461"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-aot-publish/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.482828921987675,
+        "sampledPeakProcessTreeRssBytes": 677670912,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "class-copy-aot-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-aot-run/run.json",
+          "bytes": 1006,
+          "sha256": "9444d0b91843674421b283c57b63352c51c91dbc71c79131628893226ef25812"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-aot-run/stdout.txt",
+          "bytes": 2343,
+          "sha256": "75261fda7cdd16033a54559e6489171c6d557d0ee2f2b9dbd9a211e71feddb9d"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/class-copy-aot-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10052505100611597,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-translate/run.json",
+          "bytes": 1167,
+          "sha256": "47b9777a1b228cbb6fb054ac0ab98f859b05a45315e001761b63ca4ef9685210"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "a233f730c87cac37b869baf11a2e8f78fade4a1e0ce4df1479fc300c2c94101e"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6031590449856594,
+        "sampledPeakProcessTreeRssBytes": 106487808,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-jit-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-build/run.json",
+          "bytes": 1448,
+          "sha256": "64a717d2fbe8a185bf7b1d90d526682216830fee32309cb0a244307a9348128b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-build/stdout.txt",
+          "bytes": 966,
+          "sha256": "fc8b4515e620dac10088b3fbd2dd17825b78a364f84e232cfeb7b58a637ea054"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-build/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 5.907548716990277,
+        "sampledPeakProcessTreeRssBytes": 510771200,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-jit-mode0-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-mode0-run/run.json",
+          "bytes": 1050,
+          "sha256": "d4b44d17eb70f3d9fd97c1278fde329a49a8827ea29ec4d4d4b973216f8bf053"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-mode0-run/stdout.txt",
+          "bytes": 72,
+          "sha256": "d4bfc2f53c17d501384cc698d65158a2bb993c611cc03ecaa7501bac51aece48"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-mode0-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10066399408970028,
+        "sampledPeakProcessTreeRssBytes": 16384,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-jit-mode1-run",
+        "expectedExitCode": -6,
+        "actualExitCode": -6,
+        "classification": "expected-termination-signal",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-mode1-run/run.json",
+          "bytes": 1052,
+          "sha256": "d88bbb93f3fcea3ae7dc6aa14b7819cca5b128471bd6f2b31ef11612670048ce"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-mode1-run/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-jit-mode1-run/stderr.txt",
+          "bytes": 725,
+          "sha256": "3ba0469f179cad0e421e948fc4dc8199c1595bd7af629c74985a58dad37aa9a6"
+        },
+        "elapsedSeconds": 0.10057582601439208,
+        "sampledPeakProcessTreeRssBytes": 28672,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-aot-publish",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-publish/run.json",
+          "bytes": 1562,
+          "sha256": "10a70092967fb37fa870a27c805c02948585cc8b497b055496bed05e40945828"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-publish/stdout.txt",
+          "bytes": 1147,
+          "sha256": "165460f4c5ac28cbb5035f76ba56724f3ae5139275ecb2108f04faba1a050f5b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-publish/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.174041346996091,
+        "sampledPeakProcessTreeRssBytes": 682307584,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-aot-mode0-run",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-mode0-run/run.json",
+          "bytes": 1031,
+          "sha256": "884bd5160b6b9200c89e58d4df2067f3fe83a2e0c529b6e526d67b7bfe907032"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-mode0-run/stdout.txt",
+          "bytes": 72,
+          "sha256": "d4bfc2f53c17d501384cc698d65158a2bb993c611cc03ecaa7501bac51aece48"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-mode0-run/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.1004981369478628,
+        "sampledPeakProcessTreeRssBytes": 94208,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "noexcept-aot-mode1-run",
+        "expectedExitCode": -6,
+        "actualExitCode": -6,
+        "classification": "expected-termination-signal",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-mode1-run/run.json",
+          "bytes": 1034,
+          "sha256": "73f84694b996b8b59633a0f533b40571c065d1aa992a1bec8f3a7d9fcb503394"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-mode1-run/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/noexcept-aot-mode1-run/stderr.txt",
+          "bytes": 374,
+          "sha256": "2613131ec086162386c81ae3bf3b740191c51b511ec5c57637e9d5197c1d0e29"
+        },
+        "elapsedSeconds": 0.10046686802525073,
+        "sampledPeakProcessTreeRssBytes": 86016,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "array-source-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/array-source-translate/run.json",
+          "bytes": 1175,
+          "sha256": "e122f6d82e76a520fb92e78fb852f213d8aa16a38ac7252e2374a4ec1a964661"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/array-source-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "f1e2febddee371607f1bb2a9fbf28e884b8ff1020216c77083d70a56aaf9fe90"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/array-source-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.7042427490232512,
+        "sampledPeakProcessTreeRssBytes": 113553408,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "single-source-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/single-source-translate/run.json",
+          "bytes": 1177,
+          "sha256": "1525d8c82b23b5abb68ba2b3d73f3300c903491a93f15b7fedb6907b1630eb09"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/single-source-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "347d27eb5d3681c996f9f9f029fb5f9a00301610facd2403491b2cf8ae4216f6"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/single-source-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.8045727360295132,
+        "sampledPeakProcessTreeRssBytes": 116908032,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "multiple-source-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/multiple-source-translate/run.json",
+          "bytes": 1181,
+          "sha256": "e81be59446e596cdeb9ce9f690256dba8bd42960d6333ec8dbe802627d1dbff8"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/multiple-source-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "d60750321380cb5955c97f1c68933dbe5867772509f2d74fa3cddae3da1c10b0"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/multiple-source-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.9045240830164403,
+        "sampledPeakProcessTreeRssBytes": 121315328,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "virtual-base-source-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/virtual-base-source-translate/run.json",
+          "bytes": 1188,
+          "sha256": "73185503b2a0f67aadf4f6330cfc92e40267496a4374de188958ff6f455bcf4c"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/virtual-base-source-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "5296ea250cc6c45a45ac1b479e1612f4cdd3784b803b0aa8c052606cb6047454"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/virtual-base-source-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.306489567970857,
+        "sampledPeakProcessTreeRssBytes": 126369792,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "reject-ordinary-runtime-name-translate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-ordinary-runtime-name-translate/run.json",
+          "bytes": 1207,
+          "sha256": "39baba48a1492e71e53488c1007177ccbf7f81bf291a7583ac11bea2a7c27a28"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-ordinary-runtime-name-translate/stdout.txt",
+          "bytes": 82,
+          "sha256": "4352e57bf9485ce59f477d6a440b88b58e8e142c0c17a59bc21436a89af92ca8"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-ordinary-runtime-name-translate/stderr.txt",
+          "bytes": 201,
+          "sha256": "84ea8973d32e967d60a71a0ccb9f4f5010566fc8f4f67d15288f1b753c7f3aa0"
+        },
+        "elapsedSeconds": 0.4020526419626549,
+        "sampledPeakProcessTreeRssBytes": 98586624,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "reject-ordinary-vector-names-translate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-ordinary-vector-names-translate/run.json",
+          "bytes": 1208,
+          "sha256": "80a994f38799d6051b65ddb6089171829f84c695d34335fa279f4588a3af2ba0"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-ordinary-vector-names-translate/stdout.txt",
+          "bytes": 82,
+          "sha256": "4eae09592c660fd659179b09e147d344ec6c9bcc6a5a54ebf99d95531f017864"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-ordinary-vector-names-translate/stderr.txt",
+          "bytes": 177,
+          "sha256": "3342e1a93b953f206087e3f1bf1ac308340fd6808c753de36c86a993d97fecdd"
+        },
+        "elapsedSeconds": 0.40216951398178935,
+        "sampledPeakProcessTreeRssBytes": 98738176,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "reject-exception-handler-call-translate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-exception-handler-call-translate/run.json",
+          "bytes": 1211,
+          "sha256": "ed9f00e1163d87c3818fb948c9cfd77264b937a81a1dd7bf0bf58e56740b92ec"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-exception-handler-call-translate/stdout.txt",
+          "bytes": 82,
+          "sha256": "36f5fe3a2a91130ee1668c3c5ea4041ef27dac3ec9128482519aecad053b2227"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-exception-handler-call-translate/stderr.txt",
+          "bytes": 153,
+          "sha256": "a2d2870eaae9c2d42b52c7eac0198dea2537567acc38230c68b4a20c087e37a2"
+        },
+        "elapsedSeconds": 0.40220043307635933,
+        "sampledPeakProcessTreeRssBytes": 98156544,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "reject-exception-noexcept-call-translate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-exception-noexcept-call-translate/run.json",
+          "bytes": 1213,
+          "sha256": "c76361d0a4004d0390078e49bd3e2179dbe73ef04643c62a1a60d6421d974cfb"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-exception-noexcept-call-translate/stdout.txt",
+          "bytes": 82,
+          "sha256": "fa6ffde6d7ff52d06fa54de1e33b4210a237f09f8917329b8efc21790b0842fc"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-exception-noexcept-call-translate/stderr.txt",
+          "bytes": 180,
+          "sha256": "0c6f10aba14d52367f4fee9b750a02a165b1cd8a0e0810399baf778b74957e38"
+        },
+        "elapsedSeconds": 0.40198384993709624,
+        "sampledPeakProcessTreeRssBytes": 98082816,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "selected-core-getter-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/selected-core-getter-translate/run.json",
+          "bytes": 1191,
+          "sha256": "d789195e3c3c7af49bdaaeca2bfd9034fe8ac79fa7d62fc759e9191c9a7ac143"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/selected-core-getter-translate/stdout.txt",
+          "bytes": 93,
+          "sha256": "d7af22969c336ed0319a6f64803e192cff71c37a6cade13f755ed6269563dfa3"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/selected-core-getter-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.0052203200757504,
+        "sampledPeakProcessTreeRssBytes": 108191744,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-source-focused-regressions",
+        "name": "reject-real-vector-ambient-translate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-real-vector-ambient-translate/run.json",
+          "bytes": 1205,
+          "sha256": "6f8943934c4f2845065138dc3370ce1d03f0f47fd56ae5d02c8605d767fb37e0"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-real-vector-ambient-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/reject-real-vector-ambient-translate/stderr.txt",
+          "bytes": 240,
+          "sha256": "e1f9cadcd418286135eaa61b7d4c5e521a8c257e70b50f5152dc3d2f8b0212c2"
+        },
+        "elapsedSeconds": 3.3135145540582016,
+        "sampledPeakProcessTreeRssBytes": 108105728,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-publication-source-identity",
+        "name": "construction-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5/construction-translate/run.json",
+          "bytes": 1167,
+          "sha256": "f5b34cd7c4933d335d45ad9161bd9624e4fa5e77e0c82f7b344aff42c98deefe"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5/construction-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "872bdccfaad7e25ac1c45f0ec67cb33ca7c41c8b90b0c175f8fdc69f043cc5aa"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5/construction-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.8041261899052188,
+        "sampledPeakProcessTreeRssBytes": 116195328,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-publication-source-identity",
+        "name": "c-boundary-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-2/c-boundary-translate/run.json",
+          "bytes": 1181,
+          "sha256": "ea445eb6d7ac04c6fc1442b1a0c0f0c3ca4b6af23f252d7a5e15967f14dd49d6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-2/c-boundary-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "52c82ee83c8271c14e99b7e04b3da5c16890447270cad63294afb1668fdd2325"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-2/c-boundary-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.7034146640216932,
+        "sampledPeakProcessTreeRssBytes": 106274816,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-publication-source-identity",
+        "name": "cpp-pointer-boundary-translate",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-3/cpp-pointer-boundary-translate/run.json",
+          "bytes": 1201,
+          "sha256": "78746c992ed6286123ac2d10c9d4c939ed25d01a152664172506bc81c5d22fda"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-3/cpp-pointer-boundary-translate/stdout.txt",
+          "bytes": 93,
+          "sha256": "189e1805b0ea303d0efbb5c2797ae8d42e2901aa6967883086a5839649d38f11"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-3/cpp-pointer-boundary-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6030341439181939,
+        "sampledPeakProcessTreeRssBytes": 103870464,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "managed-selected-c-final-jit-build-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-jit-build-5/run.json",
+          "bytes": 1437,
+          "sha256": "e5398001f62d15010f775a5b4df3d63b5ce47323ef2160cbf95aba21bae654a4"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-jit-build-5/stdout.txt",
+          "bytes": 964,
+          "sha256": "9a8c0938fac17ae2ab921b27c351169a10f99c893574e0ed90ccbbc8c3d24aa1"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-jit-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 5.901158391032368,
+        "sampledPeakProcessTreeRssBytes": 513671168,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "managed-selected-c-final-jit-run-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-jit-run-5/run.json",
+          "bytes": 936,
+          "sha256": "af1408b5cae3ba97b1845767632011be9b4cba5d7b8d7f6d4ee01073e316c53b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-jit-run-5/stdout.txt",
+          "bytes": 70,
+          "sha256": "f908da46d7411fa66355feef8b49c82be8e44819e3df4cfd263b65d21bf5e28b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-jit-run-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10068891302216798,
+        "sampledPeakProcessTreeRssBytes": 16384,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "managed-selected-c-final-aot-build-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-aot-build-5/run.json",
+          "bytes": 1551,
+          "sha256": "18c23b1089cb42112291a8b6be106a53d38185355cd875271bcd2a38850ce9c3"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-aot-build-5/stdout.txt",
+          "bytes": 1130,
+          "sha256": "d2a1f0df1dcf7ae86ac897b3c6d8317fb4ae76aed9a4cef976eeb1df77892abf"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-aot-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 8.657672427943908,
+        "sampledPeakProcessTreeRssBytes": 604680192,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "managed-selected-c-final-aot-run-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-aot-run-5/run.json",
+          "bytes": 918,
+          "sha256": "79db273cbac7abca0fc3c66d925a8d2a53e763cc147ddbaef016727e2b3714c6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-aot-run-5/stdout.txt",
+          "bytes": 70,
+          "sha256": "f908da46d7411fa66355feef8b49c82be8e44819e3df4cfd263b65d21bf5e28b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-selected-c-final-aot-run-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10052414902020246,
+        "sampledPeakProcessTreeRssBytes": 86016,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "selected-pointer-boundary-final-jit-build-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-jit-build-5/run.json",
+          "bytes": 1467,
+          "sha256": "a87a33069a5ff3db76954dec82a0bd0c40e29c15d09d577234a5d666dec968f1"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-jit-build-5/stdout.txt",
+          "bytes": 983,
+          "sha256": "74fa31182a028b726a73f5088538c5034e6c91042ba37d36abd8c31149b99699"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-jit-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 6.113580918987282,
+        "sampledPeakProcessTreeRssBytes": 516001792,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "selected-pointer-boundary-final-jit-run-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-jit-run-5/run.json",
+          "bytes": 1025,
+          "sha256": "ff47182d762323d1f3a3288aa01f0e1ad59ad425f61312452774efd2956a3138"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-jit-run-5/stdout.txt",
+          "bytes": 72,
+          "sha256": "1bdb2a4eec167ece2768340552cff81ebc1b3c2fd045f44cc055435769a3d805"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-jit-run-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10059750697109848,
+        "sampledPeakProcessTreeRssBytes": 102400,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "selected-pointer-boundary-final-aot-build-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-aot-build-5/run.json",
+          "bytes": 1580,
+          "sha256": "260c660246c0ae88e8dcfd1d17135d0eb81ba7d7a81e4f51b7d4a633b29fc567"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-aot-build-5/stdout.txt",
+          "bytes": 1138,
+          "sha256": "2685b9752d06d0e1d8449506279f7a19f1d4c9df5bbff162ffa251bd9392bc2a"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-aot-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.16345337301027,
+        "sampledPeakProcessTreeRssBytes": 616452096,
+        "budgetViolation": null
+      },
+      {
+        "group": "final-runtime-boundary-jit-aot",
+        "name": "selected-pointer-boundary-final-aot-run-5",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-aot-run-5/run.json",
+          "bytes": 1007,
+          "sha256": "964e03b14fdf9fbe9612d79d35a6c0cf422e7e5fb6436c94074a26ec6046c1ed"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-aot-run-5/stdout.txt",
+          "bytes": 72,
+          "sha256": "1bdb2a4eec167ece2768340552cff81ebc1b3c2fd045f44cc055435769a3d805"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-final-aot-run-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10050271695945412,
+        "sampledPeakProcessTreeRssBytes": 180224,
+        "budgetViolation": null
+      },
+      {
+        "group": "readonly-write-boundary",
+        "name": "translate",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-readonly-rejection-5/translate/run.json",
+          "bytes": 1139,
+          "sha256": "ea79117a3edbd224a279aea900a5db3157622e92de59830565359dec1ec0dd11"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-readonly-rejection-5/translate/stdout.txt",
+          "bytes": 82,
+          "sha256": "add9fb26215aae7e95683521ec34ae39b64e6f124420a42013f55fb96c4161fe"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-readonly-rejection-5/translate/stderr.txt",
+          "bytes": 171,
+          "sha256": "4cdc1179cfabeda63f36aed85e159aeccdfd9fab4f03d62d34d7ed98a653eacb"
+        },
+        "elapsedSeconds": 1.0050562010146677,
+        "sampledPeakProcessTreeRssBytes": 116699136,
+        "budgetViolation": null
+      }
+    ]
+  },
+  "sourceFreeze": [
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-product-source-5/source-snapshot.json",
+        "bytes": 45451,
+        "sha256": "6946d0a83890e535aa2f54a6e28d6a86bdcc3b9ee902480f13e95070cb1aa1f9"
+      },
+      "fileCount": 263,
+      "frozenFilesVerified": true,
+      "matchesCurrentWorkspace": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-product-source-2/source-snapshot.json",
+        "bytes": 45450,
+        "sha256": "799eae70f5187e6aa53b7238fd1ff40125f2469024a1969ce97536f90eedb91b"
+      },
+      "fileCount": 263,
+      "frozenFilesVerified": true,
+      "matchesCurrentWorkspace": false
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-source-1/source-snapshot.json",
+        "bytes": 891,
+        "sha256": "a41769b5836d70814dc3c32121457dce2be0c31781f870d23c86535da650ebd9"
+      },
+      "fileCount": 6,
+      "frozenFilesVerified": true,
+      "matchesCurrentWorkspace": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-source-1/source-snapshot.json",
+        "bytes": 1260,
+        "sha256": "a35de7ac3c9f781e2d641b487de442d57c40a76954faabffeeb7645960e9f443"
+      },
+      "fileCount": 8,
+      "frozenFilesVerified": true,
+      "matchesCurrentWorkspace": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-boundary-checker-source-1/source-snapshot.json",
+        "bytes": 907,
+        "sha256": "6a21a1f501341be08e0f005a86f1262b4dd0e8d20c0bde7637fc1cf928cd7fa8"
+      },
+      "fileCount": 6,
+      "frozenFilesVerified": true,
+      "matchesCurrentWorkspace": false
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-pointer-boundary-checker-source-1/source-snapshot.json",
+        "bytes": 902,
+        "sha256": "7aa3c4a35f5e114104c6583642ca335bc95d76b71ca33f029f1740e786e75a30"
+      },
+      "fileCount": 6,
+      "frozenFilesVerified": true,
+      "matchesCurrentWorkspace": false
+    }
+  ],
+  "sourceAndInputFreezeVerified": true,
+  "checkedArtifactsCount": 1393,
+  "constructor": {
+    "captureProvenance": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-capture-provenance-1.json",
+      "bytes": 10295,
+      "sha256": "d23452a2556e14594e19b2837c5fea8f39b8bfb97f2f412e35ed2c7a78b1f6c9"
+    },
+    "nativeResult": 24,
+    "nativeValues": [
+      7,
+      0,
+      17,
+      0,
+      3,
+      2,
+      2,
+      1,
+      0
+    ],
+    "nativeEventCount": 30,
+    "iterations": 2,
+    "completeSize": 16,
+    "alignment": 8,
+    "nonvirtualSize": 12,
+    "payloadFieldOffsets": [
+      0,
+      8
+    ],
+    "ownership": "Per invocation three pending allocations/address preparations, two completed/selected/caught payloads and final D1/free releases, one failed pending parent storage-only free after child-selected active cleanup. No payload destructor before successful construction. Existing copy-marker/int/rethrow diagnostics remain separately regressed.",
+    "native": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-class-construction-run-1/stdout.txt",
+      "bytes": 411,
+      "sha256": "b5647574c1cd84fc04df72925494e017c94e998bb034a069ab27a9ca9cffa051"
+    },
+    "jit": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-jit-1/stdout.txt",
+      "bytes": 3153,
+      "sha256": "c80b6190838797768ad4ab2d73808a6bfb3a7359933040bf011fcfeee5f8d5c6"
+    },
+    "aot": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-checker-aot-run-1/stdout.txt",
+      "bytes": 3153,
+      "sha256": "c80b6190838797768ad4ab2d73808a6bfb3a7359933040bf011fcfeee5f8d5c6"
+    }
+  },
+  "scalarComposition": {
+    "captureProvenance": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-preparation-1/provenance.json",
+      "bytes": 4834,
+      "sha256": "a59b15a9446dd7a57ea91e2f10cebe02e7d1423aedcdec59fed3144a24c2272b"
+    },
+    "independentInputHash": "24fed8a43ee41261eaebeff5b002b0a01358d95bc2c4c010a284f6770c79ad5b",
+    "fixtureInvocations": 16,
+    "scenarioResults": [
+      [
+        201,
+        5,
+        206,
+        206
+      ],
+      [
+        255,
+        128,
+        383,
+        383
+      ]
+    ],
+    "nativeEventCountsPerScenario": [
+      7,
+      11,
+      13,
+      13
+    ],
+    "ownerCompleteSize": 56,
+    "ownerAlignment": 8,
+    "ownerBorrowedFieldOffset": 24,
+    "proxyCompleteSize": 24,
+    "proxyNonvirtualSize": 17,
+    "useDirectOffset": 16,
+    "inputCompleteSize": 56,
+    "inputAlignment": 8,
+    "borrowedByteOffset": 24,
+    "representation": "Native oracle constructs live C++ owners/pointees outside captured bodies; generated checks borrow independent aligned raw layout bytes, with complete-buffer guards/identity/fresh reads. No generated C++ construction, virtual semantics, ownership or vptr equivalence claimed.",
+    "pointerAliasPolicy": "Exact owner/local/reciprocal initialization/selected call occurrence and same captured pointee+qualifiers; no global type equivalence.",
+    "native": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-composed-scalar-run-1/stdout.txt",
+      "bytes": 5405,
+      "sha256": "6c0cf00896ec82ea20a6c25d9cc0144e22cd5322b556dda0d7e8162146ebe65d"
+    },
+    "jit": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-jit-run-1/stdout.txt",
+      "bytes": 7893,
+      "sha256": "6cd33ee026022d0fd3a8fd5e586b0d99e8e85f255aedb592469585698e2d7bdc"
+    },
+    "aot": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-checker-aot-run-1/stdout.txt",
+      "bytes": 7893,
+      "sha256": "6cd33ee026022d0fd3a8fd5e586b0d99e8e85f255aedb592469585698e2d7bdc"
+    },
+    "jitAotStdoutIdentical": true,
+    "jitDependencies": [
+      "Checks/1.0.0",
+      "Generated/1.0.0",
+      "RoslynObj.CSharp.Runtime/1.0.0"
+    ]
+  },
+  "selectedBinding": {
+    "policy": "Two pinned inputs, current public declaration/definition identities, exact captured final linkage and ABI compatibility; direct occurrence-specific pointer argument/result views. No ODR/coalescing/native callback permission.",
+    "cResult": 1150,
+    "cppConstRecordPointerResult": 113111,
+    "iterationsEachMode": 2,
+    "finalPublicationIdentity": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-final.json",
+      "bytes": 4643,
+      "sha256": "6ce9f0c7f2c77836b2e8e3f80182fed68631f1efd4d850bf4b000ebb7edeb344"
+    },
+    "finalRuntimePhases": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/boundaries-final-runtime-5-phases.json",
+      "bytes": 1755,
+      "sha256": "14ee7770ed8fadf8a191f27072606dfb2a7e7b5fcbdcceff7ddf4fe34c351120"
+    },
+    "constructionRuntimeSourceIdentical": true,
+    "boundaryRuntimeEvidence": "Earlier ManagedCppException source differed, so both boundaries execute final Runtime JIT+AOT; earlier execution not relabeled."
+  },
+  "focusedRegressions": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-regressions-5/regression-receipt.json",
+      "bytes": 248731,
+      "sha256": "f4064f926374fa187a42cc4d112e9f297f3bb164f34058ea6d6af513bc8519ea"
+    },
+    "phaseCount": 42,
+    "sixOwnerProfilesJitAot": true,
+    "arraySiMiVbaseScope": "Generated.cs byte identity only; no new runtime activation claim.",
+    "selectedActualGetter": "Same one body/five operations, source bytes and zero required imports; not whole DuckDB.",
+    "realStartupRejected": "__sti___20_ub_duckdb_common_cpp_913c44b7",
+    "startupScheduleImplemented": false
+  },
+  "readonlyWriteRejection": {
+    "assertion": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-readonly-rejection-5/assertion.json",
+      "bytes": 1314,
+      "sha256": "a2011cd962aa93462eec903d0c039b4bb2537ee939c98520f015e48edfdb106f"
+    },
+    "diagnostic": "CSHARP2502/address-only-pointer",
+    "unpublished": true,
+    "postAssertionCorrection": "Initial diagnostic substring expectation was incorrect; exact code/family and publication assertions corrected without rerunning phase."
+  },
+  "ambientEvidence": {
+    "policy": "edg7-itanium-native-default-startup-prefix-v1, explicit __sti__ prefix + captured constructor/finalizer/TLS flags via bounded public reader API. Discovery is conservative rejection, not executable startup implementation.",
+    "actualCore293Startup": "14 FileOpenFlags C1 +14 actual __cxa_atexit registrations +1 Slot C1. No omitted real startup.",
+    "facts": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-ambient-facts-3.json",
+      "bytes": 326309,
+      "sha256": "44530e7c7c124f62b77217b6b1337b0033ad7e06b1e7c7968dfcb577bf73122d"
+    },
+    "sourceAudits": [
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/ambient-dik-none-stock-audit-1.json",
+        "bytes": 51534,
+        "sha256": "aa55c99e56f950582a8e4b95b87e557fb5e662e31f9c8689534f801268dec9a2"
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/ambient-startup-prefix-audit-1.json",
+        "bytes": 16392,
+        "sha256": "4f67eafaf45ea1179615d99c115fa0f11a2870a142264836f62d9956cbf33695"
+      },
+      {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/ambient-finalization-stock-audit-1.json",
+        "bytes": 23385,
+        "sha256": "1c47c88981fa5cafea2f3f058397fa7ed19ac42347d8917e4ef665a0e311ccaf"
+      }
+    ],
+    "noOpDescriptor": "Only complete dik_none/no executable scheduling/null lifetime shape is inert per pinned stock sources; destructor association/rewriteflag alone does not authorize execution or omit startup.",
+    "maximumAmbientRoutineCandidates": {
+      "minimum": 1,
+      "maximum": 256,
+      "default": 64,
+      "separateFromGeneralSelectionCandidateBudget": true
+    }
+  },
+  "preservedEarlierAttempts": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/managed-program-build-2/run.json",
+        "bytes": 1272,
+        "sha256": "6f5d8681fbb3322eedea39b6a3e830e3c442b3c4b1ddd8cfea130234ac18fe69"
+      },
+      "status": "failed",
+      "actualExitCode": 1,
+      "budgetViolation": null,
+      "outsideFinalPassingCampaign": true
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-cli-translate-1/run.json",
+        "bytes": 1163,
+        "sha256": "dd4acdebde42c55559575a506b25ddc947c84f5545896885e5d3ea2979ac48b0"
+      },
+      "status": "failed",
+      "actualExitCode": 1,
+      "budgetViolation": null,
+      "outsideFinalPassingCampaign": true
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/composed-scalar-cli-translate-1/run.json",
+        "bytes": 1157,
+        "sha256": "1f3059bcf61a10a4011f21a4c0486315655df3f471d1f8d5a2189feebcb4cf2d"
+      },
+      "status": "failed",
+      "actualExitCode": 1,
+      "budgetViolation": null,
+      "outsideFinalPassingCampaign": true
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-closure-run-2/run.json",
+        "bytes": 1020,
+        "sha256": "685544818febca42449b0b6d8b22253798dfee66b48bc1ee9b574674ab137902"
+      },
+      "status": "budget-exceeded",
+      "actualExitCode": -15,
+      "budgetViolation": "wall-time",
+      "outsideFinalPassingCampaign": true
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5",
+      "kind": "Post-publication identity bookkeeping attempt. Successful publications reused, not rerun. Initial NameError and later Runtime mismatch assertions corrected with exact identities and fresh final-Runtime boundary execution.",
+      "outsideFinalPassingCampaign": true
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-2",
+      "kind": "Post-publication identity bookkeeping attempt. Successful publications reused, not rerun. Initial NameError and later Runtime mismatch assertions corrected with exact identities and fresh final-Runtime boundary execution.",
+      "outsideFinalPassingCampaign": true
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/final-publication-identity-5-finish-3",
+      "kind": "Post-publication identity bookkeeping attempt. Successful publications reused, not rerun. Initial NameError and later Runtime mismatch assertions corrected with exact identities and fresh final-Runtime boundary execution.",
+      "outsideFinalPassingCampaign": true
+    }
+  ],
+  "dependencyEvidenceOnly": {
+    "partialClosure": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-closure-facts-3.json",
+      "bytes": 7639377,
+      "sha256": "c929df9634798bfcacd1a498662c89b3f145705b6cb7d158aab26f75a0bf96fd"
+    },
+    "scope": "193 bodies/5628 operations bounded partial. Full guard/library closure is not accepted. Earlier run2 exceeded180s and is preserved, outside passing campaign; no claim of zero budgets across historical discovery.",
+    "timeoutReceipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-closure-run-2/run.json",
+      "bytes": 1020,
+      "sha256": "685544818febca42449b0b6d8b22253798dfee66b48bc1ee9b574674ab137902"
+    }
+  },
+  "limits": [
+    "Selected class construction remains exact-type/handler profile; no class hierarchy, throwing-copy generalization, class rethrow/uncaught/noexcept/native-unwind claim.",
+    "Scalar method/alias admission is structural over supported retained body/receiver/field/call occurrences; no global noexcept promotion or cleanup-marker permission.",
+    "Borrowed readonly/member views do not implement whole object construction/copy/ownership or unrelated fields.",
+    "Selected indirect/callback pointer ABI, general weak/COMDAT cross-unit resolution and arbitrary application/library native fallback remain unsupported.",
+    "Actual core293 startup/atexit, guard InternalException/string/allocator/container/yyjson/EH closure and whole DuckDB remain open."
+  ],
+  "nextConcreteStep": "Explicit ordered selected-program startup and exact successful __cxa_atexit registration/reverse explicit teardown, then full actual Vector getter including its real guard; no branch omission or semantic stubs.",
+  "tooling": {
+    "consolidator": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/consolidate-selected-composition-1.py",
+      "bytes": 12484,
+      "sha256": "424b395867e3b96aa7bec21fa05f1bdb1f9aa57db10d244d55e17d1e96ed365a"
+    },
+    "measuredRunner": {
+      "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tools/run-measured.py",
+      "bytes": 5505,
+      "sha256": "97c606bb12d61413bd7c4d6cbb1469103d0737bc56f520ab89a342680147fb49"
+    },
+    "finalProductManifest": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/class-construction-product-source-5/source-snapshot.json",
+      "bytes": 45451,
+      "sha256": "6946d0a83890e535aa2f54a6e28d6a86bdcc3b9ee902480f13e95070cb1aa1f9"
+    }
+  }
+}

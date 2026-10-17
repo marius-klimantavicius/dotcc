@@ -34,7 +34,10 @@ VTT forwarding, construction-phase dispatch and data-driven receiver adjustment.
 const-reference catch and managed payload destruction before final free.
 An [actual captured DuckDB getter](docs/MANAGED-ROOTS.md) now also executes in
 JIT/NativeAOT through explicit managed-root selection over borrowed layout bytes.
-The enclosing accessor, whole core/library, linking and class ownership remain open.
+[Selected composition](docs/T5-SELECTED-COMPOSITION.md) now also passes exact
+two-input direct bindings, pending class construction and composed borrowed
+member/scalar calls in native/JIT/NativeAOT, with 77 expected phase outcomes.
+The enclosing real accessor, startup/teardown and guard/library/EH closure remain open.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 
