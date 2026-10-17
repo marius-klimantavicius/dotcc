@@ -1,0 +1,176 @@
+{
+  "status": "passed-dotcc-improvements",
+  "date": "2026-10-17",
+  "reports": [
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/expressions-final-3/expression-readability-receipt.json",
+      "bytes": 56701,
+      "sha256": "494e2df8ebbf689d9f98f67f939de398efd3dde0cd21cd1e273891c699756a80"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/storage-final-1/storage-initialization-receipt.json",
+      "bytes": 120049,
+      "sha256": "8264e03d6e94b284a62857efde07ff8f10b066cac105ac43d4b4afb74f1215fc"
+    },
+    {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/startup-regression-1/receipt.json",
+      "bytes": 34927,
+      "sha256": "101a9126a3df0696392ae1e0815a9a16acf48beab966346d1488f4aecf759a5c"
+    }
+  ],
+  "phases": 88,
+  "expectedSuccesses": 85,
+  "expectedUnpublishedRejections": 3,
+  "allExpectedOutcomes": true,
+  "allBudgetsPassed": true,
+  "allCurrentAndFrozenSourcesVerified": true,
+  "verifiedAbsoluteArtifactRecords": 93,
+  "captureProvenance": [
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/DotccStorageInitialization/Fixtures/constant-thread.cpp",
+        "bytes": 1231,
+        "sha256": "659556b09ae5308bb1f3475f51225540d07e46ee5b25c2da12ba578287c60ea8"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/capture/constant-thread.roslynobj",
+        "bytes": 705536,
+        "sha256": "c58a841ccd6801d00e704958e51558bb3c57d0bd62f9fa576097603bec2e7d28"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/constant-thread-export/run.json",
+        "bytes": 1135,
+        "sha256": "5450ffdec5b2d190966971cbeea3b99eab70219af610263b2fbfdc2a72d84b00"
+      }
+    },
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/DotccStorageInitialization/Fixtures/static-first.c",
+        "bytes": 1795,
+        "sha256": "9d5666902256510e8c3692f862c7df2b67f22cb8f2eda23ee60cb84b901a51e5"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/capture/static-first.roslynobj",
+        "bytes": 702464,
+        "sha256": "7636a29adc10d7c3304a2f50071c4ef1685237ffad8cfa00d35f1612bb8b84d8"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/static-first-export/run.json",
+        "bytes": 1125,
+        "sha256": "79e175735526493036406ee4d929b2e1861f3abdbe4212efaf30a0d7ea4e5ba6"
+      }
+    },
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/DotccStorageInitialization/Fixtures/static-second.c",
+        "bytes": 171,
+        "sha256": "615413e0aa2939d0b0e1b060c78a3dfaedcf59721135c3c9ebd9e43e4fc25f8c"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/capture/static-second.roslynobj",
+        "bytes": 605184,
+        "sha256": "cf5d187358811a0373255b0a32d2d9aac483349770693adecca62bb9d6af027e"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/static-second-export/run.json",
+        "bytes": 1126,
+        "sha256": "22372a6a70569ee29eb4708c611e3615925a14019104ce55db58e39540f39b33"
+      }
+    },
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/DotccStorageInitialization/Fixtures/unsupported-dynamic-thread.cpp",
+        "bytes": 154,
+        "sha256": "53f8c979556ebda9828706586180b45d4fc0b4b2fd98661438a3793097a5a0d4"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/capture/unsupported-dynamic-thread.roslynobj",
+        "bytes": 661504,
+        "sha256": "b6aee8db0157005f8acc54efa568f99302c5add9255ab25a0a3d77335503c3ba"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/unsupported-dynamic-thread-export/run.json",
+        "bytes": 1155,
+        "sha256": "89ea9daff563eadb661cbd7b89695faf93c565450400c9c8bb44cfe82fa9fb2e"
+      }
+    },
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/DotccStorageInitialization/Fixtures/unsupported-cleanup-thread.cpp",
+        "bytes": 195,
+        "sha256": "d5b6e21f35bdf9e8fe5ee5099aec4f9196e778a55d96bc03235f14953d180ee3"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/capture/unsupported-cleanup-thread.roslynobj",
+        "bytes": 669696,
+        "sha256": "04918530d1b4286392d17ea1d4c4ba4eacb76a2078486928158a110b2dee98d0"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/unsupported-cleanup-thread-export/run.json",
+        "bytes": 1157,
+        "sha256": "7b9fbba449e451c8f068c5c11915554f971923606a74984ba21771e820f9396c"
+      }
+    },
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/DotccStorageInitialization/Fixtures/unsupported-local-thread.cpp",
+        "bytes": 125,
+        "sha256": "105532354268206942fcc8ec208cac462eec2c2d1495ac5d515894061f800602"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/capture/unsupported-local-thread.roslynobj",
+        "bytes": 655360,
+        "sha256": "65131ecf11514d87fec3150b7ec8b77e7831a5f5361e94da5f90e00f8936de4c"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/unsupported-local-thread-export/run.json",
+        "bytes": 1153,
+        "sha256": "bef035aad610e044b6f66212781f5bf828ad651e6358eb03bb9a21c42920298e"
+      }
+    },
+    {
+      "source": {
+        "path": "/home/marius/p/dotcc/edgcpp/roslyn-csharp/tests/Fixtures/DotccExpressionReadability/expressions.c",
+        "bytes": 3538,
+        "sha256": "2d3f216f768657800a15211c01cb85920f0dba61aeeb1c916811d3cc25f31e1c"
+      },
+      "object": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/expressions-attempt-2/export/expressions.roslynobj",
+        "bytes": 864256,
+        "sha256": "4b92a63da9adbd0d499de96d05e71f4c1e7a2dd53259bcd9cf96168b42c1b1b8"
+      },
+      "exportReceipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/expressions-attempt-2/phases/expressions-export/run.json",
+        "bytes": 1195,
+        "sha256": "36e3b8fd47a3a7ef28b1eee7ffc7ea0691f22a9f043f7d5c18e3a53f0d7249eb"
+      }
+    }
+  ],
+  "producer": {
+    "path": "/mnt/storage/roslynobj-duckdb-20261014/export/major2/producer/cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4-roslyn-cpfe",
+    "bytes": 115573480,
+    "sha256": "cf619053cbedabca46da3eab3e8278de43fa4a25ef770a56572454abf9ff25d4"
+  },
+  "currentExportWrapper": {
+    "path": "/home/marius/p/dotcc/edgcpp/roslyn/build/roslyn-cpfe.py",
+    "bytes": 1268,
+    "sha256": "67bd8496c5b9ad74fafeb1d52040020370d8e808bbc8219b8f824c44c696df17"
+  },
+  "startupRegressionDriver": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/dotcc-improvements-1/run-startup-regression.py",
+    "bytes": 6182,
+    "sha256": "c406a2e4b8658d121662952a8e98ea969437da9e8a60a73fb70ad28f8e9d387c"
+  },
+  "nativeApplicationFallback": false,
+  "providerCapturePerformed": false,
+  "nextState": "Pause after completed DotCC improvements; saved DuckDB/provider work requires explicit resume.",
+  "limits": [
+    "Linux x64 captured profile and focused fixtures only; no whole DuckDB or broader C++ completion claim.",
+    "TLS is file-scope zero/constant arithmetic/ordinary-pointer/recursive-array storage; dynamic TLS, thread exit destruction, local TLS/guards and class TLS remain rejected.",
+    "Direct-emitter TLS and acceptance-only syntax split; no new production TLS COMDAT selection or source splitting capability.",
+    "Existing selected dynamic startup and teardown contract preserved; no general C++ local-static retry/synchronization implementation.",
+    "No independent instances, EDG semantic replacement, reader/translator coupling or DotCC ABI assumptions imported."
+  ],
+  "verifiedPhaseLogs": 176,
+  "verifiedGeneratedSourceAndProjectHashes": 31
+}

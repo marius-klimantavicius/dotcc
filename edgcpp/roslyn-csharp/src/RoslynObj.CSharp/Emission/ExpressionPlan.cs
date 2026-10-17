@@ -14,8 +14,18 @@ internal sealed record CsType(CppType? Captured, int AddedPointerDepth = 0, stri
 }
 
 internal abstract record CsExpression(CsType Type);
+// C# precedence, from opaque text to primary expressions. A text leaf opts in
+// only when its producer guarantees this contract; stability describes effects,
+// not syntax. Unknown text is grouped whenever it is embedded in another node.
+internal enum CsPrecedence
+{
+    Opaque, Conditional, LogicalOr, LogicalAnd, BitwiseOr, BitwiseXor, BitwiseAnd,
+    Equality, Relational, Shift, Additive, Multiplicative, Unary, Primary
+}
+internal readonly record struct CsRenderedExpression(string Text, CsPrecedence Precedence);
 internal sealed record CsBooleanLiteral(bool Value) : CsExpression(CsType.Boolean);
-internal sealed record CsLeaf(CsType ValueType, string Text, bool Stable) : CsExpression(ValueType);
+internal sealed record CsLeaf(CsType ValueType, string Text, bool Stable,
+    CsPrecedence Precedence = CsPrecedence.Opaque) : CsExpression(ValueType);
 internal sealed record CsVariable(CsType ValueType, string Name) : CsExpression(ValueType);
 internal sealed record CsUnary(CsType ValueType, string Operator, CsExpression Operand) : CsExpression(ValueType);
 internal sealed record CsBinary(CsType ValueType, string Operator, CsExpression Left, CsExpression Right) : CsExpression(ValueType);

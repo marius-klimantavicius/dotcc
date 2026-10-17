@@ -9,11 +9,12 @@ public sealed partial class CSharpEmitter
 {
     private sealed partial class Emission
     {
-        private sealed record StorageItem(SemanticEntity Entity, CppType Type, Constant? Initializer, string OwnerField);
+        private sealed record StorageItem(SemanticEntity Entity, CppType Type, Constant? Initializer, string OwnerField, bool ThreadLocal);
         private readonly Dictionary<SemanticEntity, StorageItem> storage = [];
         private readonly List<StorageItem> storageOrder = [];
         private readonly List<ArrayType> arrays = [];
-        private readonly List<string> addressFixups = [];
+        private readonly List<(bool ThreadLocal, string Assignment)> addressFixups = [];
+        private string? threadInitializationOwner;
 
         private bool IsSelectedConstantStorageCompanion(VariableSymbol variable)
         {
@@ -48,6 +49,7 @@ public sealed partial class CSharpEmitter
             if (variable.Details.IsNonreal || variable.Details.IsPrototypeInstantiation || variable.Details.IsTemplateVariable) return;
             if (variable.SymbolDetails.Storage?.Name == "sc_extern") return;
             if (TryAdmitSelectedConstantStorageCompanion(variable)) return;
+            if (TryAdmitConstantThreadStorage(variable)) return;
             if (TryAdmitStaticLocal(variable)) return;
             if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0)
                 throw Limit($"Storage '{variable.Name}' requires thread/local-static initialization support.", "storage");
@@ -66,42 +68,125 @@ public sealed partial class CSharpEmitter
             _ = TypeName(type);
             _ = StorageSize(type);
             Name(entity, candidate, globalNames);
-            var item = new StorageItem(entity, type, initializer, InternalName("__storage_" + names[entity].TrimStart('@')));
+            var item = new StorageItem(entity, type, initializer, InternalName("__storage_" + names[entity].TrimStart('@')),
+                entity is VariableSymbol variable && HasThreadStorage(variable));
             storage.Add(entity, item);
             storageOrder.Add(item);
         }
 
         private void EmitGlobalStorage(StringBuilder fields, CodeWriter initialization)
         {
+            var constants = new CodeWriter();
+            var threadConstants = new CodeWriter();
+            var threadOwnerParameter = InternalName("__threadStorage");
             for (var index = 0; index < storageOrder.Count; ++index)
             {
                 var item = storageOrder[index];
                 if (item.Initializer is { } constant)
                 {
                     nativeDataInitializerOwner = item.Entity;
-                    try { WriteConstant(item.Type, $"(byte*){OwnedName(item.Entity)}", constant.Value, initialization, true); }
-                    finally { nativeDataInitializerOwner = null; }
+                    threadInitializationOwner = item.ThreadLocal ? threadOwnerParameter : null;
+                    try
+                    {
+                        var pointer = StorageInitializationAddress(item);
+                        WriteConstant(item.Type, $"(byte*)({pointer})", constant.Value,
+                            item.ThreadLocal ? threadConstants : constants, true, $"*({pointer})");
+                    }
+                    finally { nativeDataInitializerOwner = null; threadInitializationOwner = null; }
                 }
             }
-            // Constant processing can discover a literal storage occurrence. All allocations
-            // are field initializers, so every address exists before these fixups execute.
-            foreach (var item in storageOrder)
+            // Drain constant discovery first: an address may introduce literal storage.
+            // Each object keeps its own allocation, captured alignment and identity.
+            var processItems = storageOrder.Where(item => !item.ThreadLocal).ToArray();
+            var threadItems = storageOrder.Where(item => item.ThreadLocal).ToArray();
+            if (processItems.Length != 0)
             {
-                var name = names[item.Entity];
+                var ownerType = InternalName("__ProgramStorage");
+                var ownerField = InternalName("__programStorage");
+                var allocate = InternalName("__AllocateAndZeroStorage");
+                var populate = InternalName("__PopulateConstantStorage");
+                var fixup = InternalName("__ApplyStorageAddressFixups");
+                EmitStorageOwner(fields, processItems, ownerType);
+                fields.Append("    private static readonly ").Append(ownerType).Append(' ').Append(ownerField).AppendLine(";");
+                EmitStorageProperties(fields, processItems, ownerField);
+                fields.Append("    private static ").Append(ownerType).Append(' ').Append(allocate).AppendLine("() => new();").AppendLine();
+                EmitStoragePhase(fields, populate, constants);
+                EmitStoragePhase(fields, fixup, AddressFixupWriter(false));
+                initialization.Line($"{ownerField} = {allocate}();");
+                initialization.Line($"{populate}();");
+                initialization.Line($"{fixup}();");
+            }
+            if (threadItems.Length != 0)
+            {
+                var ownerType = InternalName("__ThreadStorage");
+                var ownerField = InternalName("__threadStorageOwner");
+                var current = InternalName("__CurrentThreadStorage");
+                var create = InternalName("__CreateThreadStorage");
+                var allocate = InternalName("__AllocateAndZeroThreadStorage");
+                var populate = InternalName("__PopulateThreadConstants");
+                var fixup = InternalName("__ApplyThreadAddressFixups");
+                EmitStorageOwner(fields, threadItems, ownerType);
+                fields.AppendLine("    [ThreadStatic]")
+                    .Append("    private static ").Append(ownerType).Append("? ").Append(ownerField).AppendLine(";");
+                fields.Append("    private static ").Append(ownerType).Append(' ').Append(current)
+                    .Append(" => ").Append(ownerField).Append(" ??= ").Append(create).AppendLine("();").AppendLine();
+                EmitStorageProperties(fields, threadItems, current);
+                fields.Append("    private static ").Append(ownerType).Append(' ').Append(allocate).AppendLine("() => new();").AppendLine();
+                EmitStoragePhase(fields, populate, threadConstants, ownerType, threadOwnerParameter);
+                EmitStoragePhase(fields, fixup, AddressFixupWriter(true), ownerType, threadOwnerParameter);
+                fields.Append("    private static ").Append(ownerType).Append(' ').Append(create).AppendLine("()\n    {")
+                    .Append("        var ").Append(threadOwnerParameter).Append(" = ").Append(allocate).AppendLine("();")
+                    .Append("        ").Append(populate).Append('(').Append(threadOwnerParameter).AppendLine(");")
+                    .Append("        ").Append(fixup).Append('(').Append(threadOwnerParameter).AppendLine(");")
+                    .Append("        return ").Append(threadOwnerParameter).AppendLine(";\n    }").AppendLine();
+            }
+        }
+
+        private string StorageInitializationAddress(StorageItem item)
+            => item.ThreadLocal && threadInitializationOwner is { } owner
+                ? $"({TypeName(item.Type)}*){owner}.{item.OwnerField}.Pointer" : OwnedName(item.Entity);
+
+        private void EmitStorageOwner(StringBuilder fields, IReadOnlyList<StorageItem> items, string ownerType)
+        {
+            fields.Append("    private sealed class ").Append(ownerType).AppendLine("\n    {");
+            foreach (var item in items)
+            {
                 var alignment = item.Type.Alignment ?? throw Limit("Global storage alignment is absent.", "storage");
                 if (item.Entity is VariableSymbol variable && variable.Details.ExplicitAlignment is { } explicitAlignment)
                     alignment = BigInteger.Max(alignment, explicitAlignment);
                 if (alignment <= 0 || alignment > int.MaxValue) throw Limit("Global alignment is unsupported.", "storage");
-                fields.Append("    private static readonly PinnedStorage ").Append(item.OwnerField)
+                fields.Append("        internal readonly PinnedStorage ").Append(item.OwnerField)
                     .Append(" = new(").Append(StorageSize(item.Type)).Append(", ").Append(alignment).AppendLine(");");
-                fields.Append("    public static ").Append(TypeName(item.Type)).Append("* ").Append(name)
-                    .Append(" => (").Append(TypeName(item.Type)).Append("*)").Append(item.OwnerField).AppendLine(".Pointer;");
             }
-            if (storageOrder.Count > 0) fields.AppendLine();
-            foreach (var fixup in addressFixups) initialization.Line(fixup);
+            fields.AppendLine("    }").AppendLine();
         }
 
-        private void WriteConstant(CppType type, string destination, ConstantValue value, CodeWriter writer, bool deferAddress)
+        private void EmitStorageProperties(StringBuilder fields, IReadOnlyList<StorageItem> items, string owner)
+        {
+            foreach (var item in items)
+                fields.Append("    public static ").Append(TypeName(item.Type)).Append("* ").Append(names[item.Entity])
+                    .Append(" => (").Append(TypeName(item.Type)).Append("*)").Append(owner).Append('.')
+                    .Append(item.OwnerField).AppendLine(".Pointer;");
+            fields.AppendLine();
+        }
+
+        private CodeWriter AddressFixupWriter(bool threadLocal)
+        {
+            var writer = new CodeWriter();
+            foreach (var fixup in addressFixups.Where(fixup => fixup.ThreadLocal == threadLocal)) writer.Line(fixup.Assignment);
+            return writer;
+        }
+
+        private static void EmitStoragePhase(StringBuilder fields, string name, CodeWriter body,
+            string? parameterType = null, string? parameterName = null)
+        {
+            fields.Append("    private static void ").Append(name).Append('(');
+            if (parameterType is not null) fields.Append(parameterType).Append(' ').Append(parameterName);
+            fields.AppendLine(")\n    {").Append(body.TextWithIndent(2)).AppendLine("    }").AppendLine();
+        }
+
+        private void WriteConstant(CppType type, string destination, ConstantValue value, CodeWriter writer, bool deferAddress,
+            string? typedDestination = null)
         {
             type = Unwrap(type);
             if (value is StringValue text)
@@ -174,8 +259,8 @@ public sealed partial class CSharpEmitter
                 AddressValue address => AddressExpression(address, type),
                 _ => throw Limit($"Stored constant '{value.Kind}' has no exact materialization.", "constant")
             };
-            var assignment = $"*({TypeName(type)}*)({destination}) = {expression};";
-            if (deferAddress && value is AddressValue) addressFixups.Add(assignment);
+            var assignment = $"{typedDestination ?? $"*({TypeName(type)}*)({destination})"} = {expression};";
+            if (deferAddress && value is AddressValue) addressFixups.Add((threadInitializationOwner is not null, assignment));
             else writer.Line(assignment);
         }
 
@@ -210,8 +295,10 @@ public sealed partial class CSharpEmitter
             }
             if (entity is VariableSymbol companion) _ = TryAdmitSelectedConstantStorageCompanion(companion);
             entity = CanonicalEntity(entity);
-            if (!storage.ContainsKey(entity)) throw Limit($"Address base '{entity.Name}' has no selected storage.", "constant-address");
-            return $"({TypeName(type)})((byte*){OwnedName(entity)} + ({address.ByteOffset.ToString(CultureInfo.InvariantCulture)}))";
+            if (!storage.TryGetValue(entity, out var item)) throw Limit($"Address base '{entity.Name}' has no selected storage.", "constant-address");
+            if (item.ThreadLocal && nativeDataInitializerOwner is not null && threadInitializationOwner is null)
+                throw Limit("A process-storage constant cannot capture a per-thread object address.", "thread-initialization");
+            return $"({TypeName(type)})((byte*)({StorageInitializationAddress(item)}) + ({address.ByteOffset.ToString(CultureInfo.InvariantCulture)}))";
         }
 
         private string IntegerLiteral(BigInteger value, CppType type)

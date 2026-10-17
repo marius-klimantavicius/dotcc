@@ -11,8 +11,8 @@ public sealed partial class CSharpEmitter
         private readonly HashSet<LabelSymbol> retainedLabels = [];
         private readonly HashSet<string> referencedContinuations = [];
 
-        // Keep the established flat subset readable. Forms needing a sequence,
-        // selected branch effects or a captured place use only the typed plan.
+        // This predicate selects execution schedules, including loop lowering.
+        // Preferring typed syntax for an ordinary scalar tree is separate below.
         private bool NeedsExpressionPlan(ExpressionOperation expression)
         {
             if (NeedsNormalLifetimePlan(expression)) return true;
@@ -38,18 +38,54 @@ public sealed partial class CSharpEmitter
             return expression.Operands.Any(NeedsExpressionPlan);
         }
 
+        // Prefer the typed renderer for the existing flat scalar subset. Every
+        // admitted node has a zero-prefix plan: no calls, updates, branch plans,
+        // lifetime wrappers or member receivers that could need a temporary.
+        // This is a renderer choice, not an additional source-language admission.
+        private bool CanRenderScalarExpressionPlan(ExpressionOperation expression)
+        {
+            if (expression.Details.VolatileFetch || expression.Type.Details.IsAtomic ||
+                Unwrap(expression.Type) is not (ArithmeticType or PointerType)) return false;
+            return expression switch
+            {
+                ConstantOperation { Constant.Value: IntegerValue or FloatingValue or AddressValue } => true,
+                ReferenceOperation { Target: VariableSymbol or FunctionSymbol } => true,
+                ConversionOperation conversion => !conversion.Operator.RequiresRuntimeCastCheck &&
+                    conversion.OperatorKind.Name is "eok_cast" or "eok_lvalue_cast" or "eok_ref_cast" or "eok_bool_cast" or "eok_lvalue_adjust" or "eok_class_rvalue_adjust" &&
+                    CanRenderScalarExpressionPlan(conversion.Operand),
+                OperatorOperation operation => !operation.Operator.EvalRightToLeft && !operation.Operator.PointerOperandIsSecond &&
+                    !operation.Operator.RequiresRuntimeCastCheck && !operation.Operator.RetainedVirtualCall &&
+                    (BinaryOperators.ContainsKey(operation.OperatorKind.Name) || ComparisonOperators.ContainsKey(operation.OperatorKind.Name) ||
+                     operation.OperatorKind.Name is "eok_parens" or "eok_not" or "eok_negate" or "eok_unary_plus" or "eok_complement" or
+                         "eok_shiftl" or "eok_shiftr" or "eok_padd" or "eok_psubtract" or "eok_pdiff" or "eok_subscript" or
+                         "eok_indirect" or "eok_ref_indirect" or "eok_address_of" or "eok_reference_to") &&
+                    operation.Operands.All(CanRenderScalarExpressionPlan),
+                _ => false
+            };
+        }
+
+        private ExpressionPlan PlanOccurrenceExpression(ExpressionOperation expression, bool needsSchedule)
+        {
+            var plan = PlanExpression(expression);
+            if (!needsSchedule && plan.Prefix.Count != 0)
+                throw Limit("A preferred flat scalar rendering unexpectedly needs an execution prefix.", "expression-plan");
+            return plan;
+        }
+
         private string ValueOccurrence(ExpressionOperation expression, CodeWriter writer)
         {
-            if (!NeedsExpressionPlan(expression)) return Expression(expression);
-            var plan = PlanExpression(expression);
+            var needsSchedule = NeedsExpressionPlan(expression);
+            if (!needsSchedule && !CanRenderScalarExpressionPlan(expression)) return Expression(expression);
+            var plan = PlanOccurrenceExpression(expression, needsSchedule);
             EmitPlanPrefix(plan, writer);
             return RenderPlanValue(plan);
         }
 
         private string ConditionOccurrence(ExpressionOperation expression, CodeWriter writer)
         {
-            if (!NeedsExpressionPlan(expression)) return Truth(expression);
-            var plan = PlanExpression(expression);
+            var needsSchedule = NeedsExpressionPlan(expression);
+            if (!needsSchedule && !CanRenderScalarExpressionPlan(expression)) return Truth(expression);
+            var plan = PlanOccurrenceExpression(expression, needsSchedule);
             EmitPlanPrefix(plan, writer);
             return RenderExpression(new CsTruth(plan.Value, plan.Type));
         }
@@ -115,13 +151,13 @@ public sealed partial class CSharpEmitter
                 {
                     if (loop.Kind.Name == "stmk_end_test_while")
                     {
-                        writer.Line("do"); Embedded(loop.Body, writer); writer.Line($"while ({Truth(Required(loop.Condition))});");
+                        writer.Line("do"); Embedded(loop.Body, writer); writer.Line($"while ({ConditionOccurrence(Required(loop.Condition), writer)});");
                     }
                     else
                     {
                         writer.Line(loop.Kind.Name == "stmk_for"
-                            ? $"for (; {(loop.Condition is null ? "true" : Truth(loop.Condition))}; {(loop.Increment is null ? "" : Expression(loop.Increment))})"
-                            : $"while ({Truth(Required(loop.Condition))})");
+                            ? $"for (; {(loop.Condition is null ? "true" : ConditionOccurrence(loop.Condition, writer))}; {(loop.Increment is null ? "" : Expression(loop.Increment))})"
+                            : $"while ({ConditionOccurrence(Required(loop.Condition), writer)})");
                         Embedded(loop.Body, writer);
                     }
                 }

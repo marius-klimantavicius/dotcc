@@ -9,6 +9,57 @@ public sealed partial class CSharpEmitter
         private readonly HashSet<VariableSymbol> staticLocals = [];
         private readonly HashSet<Initialization> staticInitializers = [];
 
+        private static bool HasThreadStorage(VariableSymbol variable)
+            => variable.IsThreadLocal || variable.StandardThreadLocalDeclared || variable.StandardThreadLocalEffective ||
+                variable.ExtensionThreadLocal || variable.Details.StorageDuration?.Name == "thread";
+
+        private bool TryAdmitConstantThreadStorage(VariableSymbol variable)
+        {
+            if (!HasThreadStorage(variable)) return false;
+            var details = variable.Details;
+            if (variable.SourceCorrespondence?.EnclosingRoutine is not null || details.PromotedLocalStatic ||
+                details.PromotedLocalStaticInitialization || variable.LocalStaticInitializations.Count != 0 ||
+                variable.InitializationKind.Name == "initk_function_local")
+                throw Limit("Thread-local function storage requires its retained local initialization/guard contract.", "thread-initialization");
+            if (details.ThreadInitializationRoutine is not null || details.ThreadWrapperRoutine is not null ||
+                details.DynamicInitializationRoutine is not null)
+                throw Limit("Thread-local storage has a retained initialization/wrapper routine; its dynamic per-thread execution contract is unsupported.", "thread-initialization");
+            if (variable.CleanupRoutine is not null || details.ExtendsLifetime)
+                throw Limit("Thread-local storage has thread-exit cleanup/lifetime obligations; thread-exit destruction is unsupported.", "thread-initialization");
+            if (details.StorageDuration?.Name != "thread" || variable.InitializationKind.Name is not ("initk_static" or "initk_zero"))
+                throw Limit("Thread-local storage requires its captured thread duration and zero/constant initialization kind.", "thread-initialization");
+            if (!IsConstantThreadStorageType(variable.Type))
+                throw Limit("Thread-local constant storage supports arithmetic values, ordinary pointers and arrays of those values; class lifetime obligations require a separate contract.", "thread-initialization");
+            if (details.InitializationRewrittenAsAssignment || variable.InitializationKind.Name == "initk_zero" &&
+                (details.HasExplicitInitializer || details.Initializer is not null || details.ConstantInitializer is not null))
+                throw Limit("Thread-local zero storage cannot omit an explicit or rewritten initializer's per-thread execution.", "thread-initialization");
+            if (details.IsWeak || details.IsCommon || details.IsGnuAlias || details.IsWeakref || details.AliasedVariable is not null ||
+                details.ComdatGroup is not null)
+                throw Limit("Thread-local storage requires an explicit weak/common/alias/COMDAT selection policy.", "link-policy");
+            var initializer = details.Initializer;
+            if (initializer is not null && (initializer.Kind.Name != "dik_constant" || initializer.Constant is null ||
+                initializer.Expression is not null || initializer.Constructor is not null || initializer.Destructor is not null ||
+                initializer.Target is not null && !initializer.Target.Equals(variable) ||
+                initializer.Lifetime?.Cleanups.Count > 0 || initializer.InitExpressionLifetime?.Cleanups.Count > 0 ||
+                initializer.Details.IsConditional || initializer.Details.IsConditionalGuard || initializer.Details.IsReusedValue ||
+                initializer.Details.ConstantNonconstant || initializer.NextInDestructionList is not null))
+                throw Limit("Thread-local storage requires an unconditional cleanup-free retained constant initializer.", "thread-initialization");
+            var constants = new[] { details.ConstantInitializer, initializer?.Constant }.OfType<Constant>().Distinct().ToArray();
+            if (constants.Length > 1 || variable.InitializationKind.Name == "initk_static" && constants.Length != 1)
+                throw Limit("Thread-local constant initialization requires one exact retained constant value.", "thread-initialization");
+            AddStorage(variable, variable.Type, constants.SingleOrDefault(), variable.Name ?? "thread_storage");
+            return true;
+        }
+
+        private static bool IsConstantThreadStorageType(CppType type)
+            => Unwrap(type) switch
+            {
+                ArithmeticType => true,
+                PointerType pointer => !pointer.IsReference && !pointer.IsRValueReference,
+                ArrayType array => IsConstantThreadStorageType(array.ElementType),
+                _ => false
+            };
+
         private bool IsStaticLocalCandidate(VariableSymbol variable)
             => IsSelectedConstantStorageCompanion(variable) || variable.InitializationKind.Name == "initk_function_local" || variable.LocalStaticInitializations.Count != 0 ||
                 variable.Details.StorageDuration?.Name == "static" && currentFunction?.Body?.Locals.Contains(variable) == true;
@@ -20,9 +71,8 @@ public sealed partial class CSharpEmitter
             if (staticLocals.Contains(variable)) return true;
             if (TryAdmitSelectedConstantStorageCompanion(variable)) return true;
             if (!IsStaticLocalCandidate(variable)) return false;
-            if (variable.IsThreadLocal || variable.StandardThreadLocalEffective || variable.ExtensionThreadLocal ||
-                variable.Details.StorageDuration?.Name == "thread")
-                throw Limit("Thread-local storage requires its selected thread initialization contract.", "storage");
+            if (HasThreadStorage(variable))
+                throw Limit("Thread-local function storage requires its retained local initialization/guard contract.", "thread-initialization");
             if (variable.Details.StorageDuration?.Name != "static" || variable.InitializationKind.Name is not ("initk_function_local" or "initk_static" or "initk_none"))
                 throw Limit("A local-static recipe lacks the captured static-duration/function-local association.", "storage");
             if (variable.CleanupRoutine is not null || variable.Details.IsWeak || variable.Details.IsCommon ||

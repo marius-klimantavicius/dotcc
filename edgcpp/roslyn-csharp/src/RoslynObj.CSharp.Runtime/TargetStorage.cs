@@ -3,7 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace RoslynObj.CSharp.Runtime;
 
-/// <summary>Stable, zero-initialized process storage with an explicit target alignment.</summary>
+/// <summary>
+/// Stable, zero-initialized object storage with an explicit target alignment.
+/// A process or thread owner must retain this object for the native pointer's lifetime.
+/// </summary>
 public sealed unsafe class PinnedStorage
 {
     private readonly byte[] owner;

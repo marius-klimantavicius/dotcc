@@ -221,6 +221,8 @@ public sealed partial class CSharpEmitter
 
         private void EmitFunction(FunctionSymbol function)
         {
+            if (function.Details.IsTlsInitializationRoutine || function.Details.IsTlsInitializationAlias)
+                throw Limit("A retained TLS initialization routine/alias requires its dynamic per-thread execution contract.", "thread-initialization");
             ValidateGeneratedDefinitionRoles(function);
             if (IsUInt128Value(function.ReturnType) || function.Parameters.Any(parameter => IsUInt128Value(parameter.Type)))
                 throw Limit("Unsigned 128-bit execution parameters/results require a separately exercised call representation.", "integer128-call");
@@ -238,6 +240,8 @@ public sealed partial class CSharpEmitter
             {
                 if (IsOmittedNormalRegionTable(variable) || IsOmittedExceptionRegionTable(variable)) continue;
                 if (TryAdmitStaticLocal(variable)) continue;
+                if (HasThreadStorage(variable))
+                    throw Limit("Thread-local function storage requires its retained local guard and per-thread initialization contract.", "thread-initialization");
                 if (variable.IsThreadLocal || variable.LocalStaticInitializations.Count != 0 || variable.Details.StorageDuration?.Name is "static" or "thread")
                     throw Limit("Static/thread local storage requires the T2 initialization contract.", "storage");
                 Name(variable, variable.Name ?? "temporary", localNames);

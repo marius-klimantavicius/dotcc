@@ -23,10 +23,13 @@ public sealed partial class CSharpEmitter
             {
                 case ConstantOperation constant:
                     if (TryPlanStoredConstant(constant, out var storedConstant)) return storedConstant;
-                    return new(expression.Type, expression.ValueCategory, [], new CsLeaf(type, Constant(constant.Constant), true), ExpressionEffects.None);
+                    return new(expression.Type, expression.ValueCategory, [], new CsLeaf(type, Constant(constant.Constant), true,
+                        ConstantPrecedence(constant.Constant)), ExpressionEffects.None);
                 case ReferenceOperation reference:
                 {
-                    var value = new CsLeaf(type, Reference(reference), reference.Target is FunctionSymbol);
+                    // Reference emits a name/member or an already grouped storage
+                    // view. Its effect stability remains separate from that syntax.
+                    var value = new CsLeaf(type, Reference(reference), reference.Target is FunctionSymbol, CsPrecedence.Primary);
                     var place = reference.Target is VariableSymbol variable ? MemoryPlace(expression.Type, LValueKind.Slot, value, variable: variable) : null;
                     return new(expression.Type, expression.ValueCategory, [], place is null ? value : new CsLoad(place),
                         place is null ? ExpressionEffects.None : ExpressionEffects.ReadStorage, place);
@@ -94,7 +97,8 @@ public sealed partial class CSharpEmitter
             if (kind is "eok_address_of" or "eok_reference_to")
             {
                 if (operands[0] is ReferenceOperation { Target: FunctionSymbol function })
-                    return new(operation.Type, operation.ValueCategory, [], new CsLeaf(CsType.Value(operation.Type), FunctionAddress(function), true), ExpressionEffects.None);
+                    return new(operation.Type, operation.ValueCategory, [], new CsLeaf(CsType.Value(operation.Type), FunctionAddress(function), true,
+                        CsPrecedence.Primary), ExpressionEffects.None);
                 var operand = PlanExpression(operands[0]);
                 var place = operand.Place ?? throw Limit("Address-taking requires a selected place.", "lvalue");
                 if (place.IsBitField) throw Limit("A bitfield place has no ordinary native address.", "bitfield");
@@ -407,43 +411,136 @@ public sealed partial class CSharpEmitter
 
         private string RenderType(CsType type) => type.Intrinsic ?? TypeName(type.Captured!) + new string('*', type.AddedPointerDepth);
         private string RenderPlanValue(ExpressionPlan plan) => RenderExpression(plan.Value);
-        private string RenderExpression(CsExpression expression) => expression switch
+        private static CsPrecedence ConstantPrecedence(Constant constant) => constant.Value switch
         {
-            CsBooleanLiteral literal => literal.Value ? "true" : "false",
-            CsLeaf leaf => leaf.Text,
-            CsVariable variable => variable.Name,
-            CsUnary unary => $"({unary.Operator}({RenderExpression(unary.Operand)}))",
-            CsBinary binary => $"unchecked(({RenderExpression(binary.Left)}) {binary.Operator} ({RenderExpression(binary.Right)}))",
-            CsCast cast => $"unchecked(({RenderType(cast.Type)})({RenderExpression(cast.Operand)}))",
-            CsChoice choice => $"({RenderExpression(choice.Condition)} ? {RenderExpression(choice.Then)} : {RenderExpression(choice.Else)})",
-            CsLoad load => RenderMemoryLoad(load),
-            CsAddress address => RenderAddress(address.Place),
-            CsPlannedCall call => RenderCall(call),
-            CsAutomaticArrayCall call => RenderAutomaticArrayCall(call),
-            CsOverridingResult result => RenderOverridingResult(result),
-            CsVariadicArgument argument => VariadicOperator(argument.Operation, [RenderExpression(argument.Cursor)]),
-            CsTargetShift shift => $"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, checked((int)({RenderExpression(shift.Count)})))",
-            CsTruth { Value: CsSourceBoolean boolean } => RenderExpression(boolean.Condition),
-            CsTruth truth => TruthValue(RenderExpression(truth.Value), truth.SourceType),
-            CsSourceBoolean { Condition: CsBooleanLiteral literal } boolean => $"(({RenderType(boolean.Type)}){(literal.Value ? "1" : "0")})",
-            CsSourceBoolean boolean => $"({RenderExpression(boolean.Condition)} ? ({RenderType(boolean.Type)})1 : ({RenderType(boolean.Type)})0)",
-            _ => throw Limit("Unknown typed C# expression node.", "expression-plan")
+            IntegerValue integer => integer.Value.Sign < 0 ? CsPrecedence.Unary : CsPrecedence.Primary,
+            FloatingValue floating => floating.Value.IsNegative ? CsPrecedence.Unary : CsPrecedence.Primary,
+            AddressValue => CsPrecedence.Unary,
+            _ => CsPrecedence.Opaque
         };
-        private string RenderPlace(LValuePlan place) => place.Kind switch
+
+        private enum CsOverflowContext { Inherited, Unchecked, Checked }
+
+        private string RenderExpression(CsExpression expression) => RenderExpressionSyntax(expression).Text;
+
+        private static string RenderSubexpression(CsRenderedExpression expression, CsPrecedence minimum)
+            => expression.Precedence < minimum ? $"({expression.Text})" : expression.Text;
+
+        private string RenderSubexpression(CsExpression expression, CsPrecedence minimum, CsOverflowContext overflow)
+            => RenderSubexpression(RenderExpressionSyntax(expression, overflow), minimum);
+
+        // The tree supplies grouping. In particular the right operand of every
+        // left-associative binary operator needs stricter precedence, even for +
+        // and *: regrouping floating arithmetic or intermediate casts is unsafe.
+        private static CsPrecedence BinaryPrecedence(string operation) => operation switch
         {
-            LValueKind.Slot => RenderExpression(place.Operand),
-            LValueKind.Address => $"(*({RenderExpression(place.Operand)}))",
+            "||" => CsPrecedence.LogicalOr,
+            "&&" => CsPrecedence.LogicalAnd,
+            "|" => CsPrecedence.BitwiseOr,
+            "^" => CsPrecedence.BitwiseXor,
+            "&" => CsPrecedence.BitwiseAnd,
+            "==" or "!=" => CsPrecedence.Equality,
+            "<" or ">" or "<=" or ">=" => CsPrecedence.Relational,
+            "<<" or ">>" or ">>>" => CsPrecedence.Shift,
+            "+" or "-" => CsPrecedence.Additive,
+            "*" or "/" or "%" => CsPrecedence.Multiplicative,
+            _ => throw Limit("Unknown typed C# binary operator.", "expression-plan")
+        };
+
+        private static CsRenderedExpression RenderUnary(string operation, CsRenderedExpression operand)
+        {
+            var text = RenderSubexpression(operand, CsPrecedence.Unary);
+            // Adjacent unary tokens must not become ++, -- or &&. This also
+            // covers negative literal leaves without interpreting opaque text.
+            var separator = operation is "+" or "-" or "&" && text.StartsWith(operation, StringComparison.Ordinal) ? " " : "";
+            return new(operation + separator + text, CsPrecedence.Unary);
+        }
+
+        private string RenderCastOperand(CsExpression operand, CsOverflowContext overflow)
+        {
+            var rendered = RenderExpressionSyntax(operand, overflow);
+            var text = RenderSubexpression(rendered, CsPrecedence.Unary);
+            // A named C# type followed by +, -, * or & can parse as a binary
+            // expression rather than a cast. Group that operand explicitly.
+            return rendered.Precedence == CsPrecedence.Unary && text.Length != 0 && text[0] is '+' or '-' or '*' or '&'
+                ? $"({text})" : text;
+        }
+
+        private CsRenderedExpression RenderExpressionSyntax(CsExpression expression, CsOverflowContext overflow = CsOverflowContext.Inherited)
+        {
+            switch (expression)
+            {
+                case CsBooleanLiteral literal: return new(literal.Value ? "true" : "false", CsPrecedence.Primary);
+                case CsLeaf leaf: return new(leaf.Text, leaf.Precedence);
+                case CsVariable variable: return new(variable.Name, CsPrecedence.Primary);
+                case CsUnary unary: return RenderUnary(unary.Operator, RenderExpressionSyntax(unary.Operand, overflow));
+                case CsBinary binary:
+                {
+                    var precedence = BinaryPrecedence(binary.Operator);
+                    var left = RenderSubexpression(binary.Left, precedence, CsOverflowContext.Unchecked);
+                    var right = RenderSubexpression(binary.Right, (CsPrecedence)((int)precedence + 1), CsOverflowContext.Unchecked);
+                    var text = $"{left} {binary.Operator} {right}";
+                    return overflow == CsOverflowContext.Unchecked ? new(text, precedence)
+                        : new($"unchecked({text})", CsPrecedence.Primary);
+                }
+                case CsCast cast:
+                {
+                    var text = $"({RenderType(cast.Type)}){RenderCastOperand(cast.Operand, CsOverflowContext.Unchecked)}";
+                    return overflow == CsOverflowContext.Unchecked ? new(text, CsPrecedence.Unary)
+                        : new($"unchecked({text})", CsPrecedence.Primary);
+                }
+                case CsChoice choice:
+                    return new($"{RenderSubexpression(choice.Condition, CsPrecedence.LogicalOr, overflow)} ? "
+                        + $"{RenderSubexpression(choice.Then, CsPrecedence.Conditional, overflow)} : {RenderSubexpression(choice.Else, CsPrecedence.Conditional, overflow)}",
+                        CsPrecedence.Conditional);
+                case CsLoad load:
+                    // The existing helper owns volatile validation and fetches.
+                    return load.VolatileFetch || load.Place.VolatileTarget ? new(RenderMemoryLoad(load), CsPrecedence.Primary)
+                        : RenderPlaceSyntax(load.Place, overflow);
+                case CsAddress address: return RenderAddressSyntax(address.Place, overflow);
+                // Adapter strings have no precedence contract. Do not infer one
+                // from their current spelling or from the source operation kind.
+                case CsPlannedCall call: return new(RenderCall(call), CsPrecedence.Opaque);
+                case CsAutomaticArrayCall call: return new(RenderAutomaticArrayCall(call), CsPrecedence.Opaque);
+                case CsOverridingResult result: return new(RenderOverridingResult(result), CsPrecedence.Opaque);
+                case CsVariadicArgument argument:
+                    return new(VariadicOperator(argument.Operation, [RenderExpression(argument.Cursor)]), CsPrecedence.Opaque);
+                case CsTargetShift shift:
+                    // Only the selected count conversion is checked. Arithmetic
+                    // inside that count retains its own explicit unchecked scope.
+                    return new($"TargetArithmetic.{(shift.Right ? "ShiftRight" : "ShiftLeft")}({RenderExpression(shift.Left)}, "
+                        + $"checked((int){RenderCastOperand(shift.Count, CsOverflowContext.Checked)}))", CsPrecedence.Primary);
+                case CsTruth { Value: CsSourceBoolean boolean }: return RenderExpressionSyntax(boolean.Condition, overflow);
+                case CsTruth truth:
+                    return new($"{RenderSubexpression(truth.Value, CsPrecedence.Equality, overflow)} != "
+                        + (Unwrap(truth.SourceType) is PointerType ? PointerZero(truth.SourceType) : "0"), CsPrecedence.Equality);
+                case CsSourceBoolean { Condition: CsBooleanLiteral literal } boolean:
+                    return new($"({RenderType(boolean.Type)}){(literal.Value ? "1" : "0")}", CsPrecedence.Unary);
+                case CsSourceBoolean boolean:
+                    return new($"{RenderSubexpression(boolean.Condition, CsPrecedence.LogicalOr, overflow)} ? "
+                        + $"({RenderType(boolean.Type)})1 : ({RenderType(boolean.Type)})0", CsPrecedence.Conditional);
+                default: throw Limit("Unknown typed C# expression node.", "expression-plan");
+            }
+        }
+
+        private string RenderPlace(LValuePlan place) => RenderPlaceSyntax(place, CsOverflowContext.Inherited).Text;
+        private CsRenderedExpression RenderPlaceSyntax(LValuePlan place, CsOverflowContext overflow) => place.Kind switch
+        {
+            LValueKind.Slot => RenderExpressionSyntax(place.Operand, overflow),
+            LValueKind.Address => RenderUnary("*", RenderExpressionSyntax(place.Operand, overflow)),
             LValueKind.Field when IsFlexibleTailField(place.Field!) => throw Limit("A flexible tail has an address and no ordinary array value.", "array"),
-            LValueKind.Field => $"({RenderExpression(place.Operand)})->{FieldName(place.Field!)}",
+            LValueKind.Field => new($"{RenderSubexpression(place.Operand, CsPrecedence.Primary, overflow)}->{FieldName(place.Field!)}", CsPrecedence.Primary),
             _ => throw Limit("Unknown selected storage place.", "lvalue")
         };
-        private string RenderAddress(LValuePlan place)
+        private string RenderAddress(LValuePlan place) => RenderAddressSyntax(place, CsOverflowContext.Inherited).Text;
+        private CsRenderedExpression RenderAddressSyntax(LValuePlan place, CsOverflowContext overflow)
         {
             ValidateValueAddress(place.Type);
             if (place.IsBitField) throw Limit("Bitfield properties have no native field address.", "bitfield");
             if (place.Kind == LValueKind.Field && IsFlexibleTailField(place.Field!))
-                return FlexibleTailAddress(place.Field!, RenderExpression(place.Operand));
-            return place.Kind == LValueKind.Address ? RenderExpression(place.Operand) : $"&({RenderPlace(place)})";
+                return new(FlexibleTailAddress(place.Field!, RenderExpression(place.Operand)), CsPrecedence.Opaque);
+            return place.Kind == LValueKind.Address ? RenderExpressionSyntax(place.Operand, overflow)
+                : RenderUnary("&", RenderPlaceSyntax(place, overflow));
         }
         private string RenderCall(CsPlannedCall plannedCall)
         {
