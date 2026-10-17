@@ -1,0 +1,1229 @@
+{
+  "reportVersion": 1,
+  "status": "passed-bounded-explicit-startup",
+  "scope": "Actual captured global constructors and exact managed __cxa_atexit/DSO integration, explicit lifecycle API, guarded advertised wrappers over unguarded internal bodies. This is not real DuckDB startup or whole-library acceptance.",
+  "wholeDuckdbAccepted": false,
+  "actualCore293StartupExecuted": false,
+  "broaderT5Complete": false,
+  "passingCampaign": {
+    "phaseCount": 20,
+    "successes": 17,
+    "intendedRejections": 3,
+    "unexpectedOutcomes": 0,
+    "budgetViolations": 0,
+    "phases": [
+      {
+        "name": "export-selected-global-startup-1",
+        "group": "capture-native-oracle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-global-startup-1/run.json",
+          "bytes": 1175,
+          "sha256": "93f052c43712e6565c86d60849667c43e9a4c615ba21c38f818413acc7545fa6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-global-startup-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/export-selected-global-startup-1/stderr.txt",
+          "bytes": 134,
+          "sha256": "4f20df98dedee951882427a0c2d2104a0642eeb566f0868afc0c0e146f66f87e"
+        },
+        "elapsedSeconds": 0.1005756730446592,
+        "sampledPeakProcessTreeRssBytes": 81920,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "inspect-selected-global-startup-1",
+        "group": "capture-native-oracle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-global-startup-1/run.json",
+          "bytes": 1140,
+          "sha256": "10882907008e9f2f6e80007914a968b7af490f0ac613dfd39a5b9ef443cbe4d5"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-global-startup-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/inspect-selected-global-startup-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.20111541904043406,
+        "sampledPeakProcessTreeRssBytes": 66465792,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "facts-selected-global-startup-1",
+        "group": "capture-native-oracle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-global-startup-1/run.json",
+          "bytes": 1102,
+          "sha256": "f8ef356c9b0563406a1d747654518c51cb2fc55a2ce818b8044d5022ecf63f32"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-global-startup-1/stdout.txt",
+          "bytes": 94,
+          "sha256": "2646619732915554ec70261b9121237288d04097cdc9876799bfb1e5671b4de0"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/facts-selected-global-startup-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.40200779994484037,
+        "sampledPeakProcessTreeRssBytes": 98807808,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "native-selected-global-startup-build-1",
+        "group": "capture-native-oracle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-global-startup-build-1/run.json",
+          "bytes": 1163,
+          "sha256": "87c29010467b897a64cd26116b9331f5518f565425889af58aef98b5f4cabd05"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-global-startup-build-1/stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-global-startup-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10052017704583704,
+        "sampledPeakProcessTreeRssBytes": 102400,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "native-selected-global-startup-run-1",
+        "group": "capture-native-oracle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-global-startup-run-1/run.json",
+          "bytes": 897,
+          "sha256": "1ad63321bab55f79d68067b3fe08e588b60811c19ed216e19313773f156e01a6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-global-startup-run-1/stdout.txt",
+          "bytes": 568,
+          "sha256": "80d483e1c86476912a2e1ced53f7f085ace6b7ef38ecf2e195aba433fbe0793e"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/native-selected-global-startup-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10051656002178788,
+        "sampledPeakProcessTreeRssBytes": 20480,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-startup-runtime-build-1",
+        "group": "runtime-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-runtime-build-1/run.json",
+          "bytes": 1298,
+          "sha256": "11cf5ea9abb1f3b564b322e63b48e4ea997962c4cdee6b8cecee3179eed2b460"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-runtime-build-1/stdout.txt",
+          "bytes": 426,
+          "sha256": "00720c16e2c9ed46e14dbdab47e95e6634b9e2b5eabdadd1ab8e2b766fc2369f"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-runtime-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 2.430971775902435,
+        "sampledPeakProcessTreeRssBytes": 359247872,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-startup-cli-budgeted-build-5",
+        "group": "correctly-budgeted-source2-compiler-build",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-budgeted-build-5/run.json",
+          "bytes": 1300,
+          "sha256": "8c23595922e0941b85f28796ffe9e261e2358d8cb39264ea3473bd873287ce6b"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-budgeted-build-5/stdout.txt",
+          "bytes": 955,
+          "sha256": "76278ffb36ba3f4323ca636c50348fa97e4ad03ce3cb8baa71d56b0f3dddc04c"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-budgeted-build-5/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.384523494984023,
+        "sampledPeakProcessTreeRssBytes": 700477440,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-global-startup-translate-3",
+        "group": "production-publication",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-translate-3/run.json",
+          "bytes": 1171,
+          "sha256": "0c06826531424137c73000cbc41e5829432529f7a8be9c8bd7395e3f876aaf3f"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-translate-3/stdout.txt",
+          "bytes": 94,
+          "sha256": "a7b6b9920b886b0954f51c43d71f541d658e4e3a370d2e75f8aca038766f1412"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-translate-3/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6033330709906295,
+        "sampledPeakProcessTreeRssBytes": 106217472,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-global-startup-translate-4",
+        "group": "production-publication",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-translate-4/run.json",
+          "bytes": 1171,
+          "sha256": "2bb5aec2b14e7dc8384e2bab8de54a714c0fb66d9d964c337e98b237e1e3c585"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-translate-4/stdout.txt",
+          "bytes": 94,
+          "sha256": "a7b6b9920b886b0954f51c43d71f541d658e4e3a370d2e75f8aca038766f1412"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-translate-4/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6031650400254875,
+        "sampledPeakProcessTreeRssBytes": 106090496,
+        "configuredBudgets": {
+          "timeoutSeconds": 120.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-startup-checker-jit-build-1",
+        "group": "native-jit-aot-lifecycle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-build-1/run.json",
+          "bytes": 1411,
+          "sha256": "b89ee79422e1a61b2b58a87fd764a6a4e0d2c7b96091d23022874b3a3305f9a3"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-build-1/stdout.txt",
+          "bytes": 918,
+          "sha256": "f37a78dde8c0b851431d660e05bee806d4875c65e2df98e69428fe3fc2c9eb38"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 5.903624652069993,
+        "sampledPeakProcessTreeRssBytes": 519262208,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-startup-checker-jit-run-1",
+        "group": "native-jit-aot-lifecycle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-run-1/run.json",
+          "bytes": 1113,
+          "sha256": "203c3c583325ccf8286fa03610321cf1c3908e852a508941f3a09fa984c05d02"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-run-1/stdout.txt",
+          "bytes": 3365,
+          "sha256": "53255e63461755de44a2e13d5d5651046dcfc6642ed9053dbb356a83e7740d14"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10065118200145662,
+        "sampledPeakProcessTreeRssBytes": 24576,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-startup-checker-aot-build-1",
+        "group": "native-jit-aot-lifecycle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-build-1/run.json",
+          "bytes": 1525,
+          "sha256": "5877f453ad7872b3c8f64a5c886f1f22809d711ad40f9264bd4f1d3de6920045"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-build-1/stdout.txt",
+          "bytes": 1066,
+          "sha256": "aaf2652159c9ec1b6296888a0e27dc2e02e0c7a174a3c9b15efa7e0ab483a8fc"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-build-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 9.260883191949688,
+        "sampledPeakProcessTreeRssBytes": 678117376,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-startup-checker-aot-run-1",
+        "group": "native-jit-aot-lifecycle",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-run-1/run.json",
+          "bytes": 1096,
+          "sha256": "15e35c7d87e5d56d061dde220fa9dd91ae5d68049983fe2e23c5758e0bd42a71"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-run-1/stdout.txt",
+          "bytes": 3365,
+          "sha256": "53255e63461755de44a2e13d5d5651046dcfc6642ed9053dbb356a83e7740d14"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-run-1/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.10050056292675436,
+        "sampledPeakProcessTreeRssBytes": 212992,
+        "configuredBudgets": {
+          "timeoutSeconds": 600.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "actual-getter-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/actual-getter-translate/run.json",
+          "bytes": 1171,
+          "sha256": "c02ad5a3ed6179eb3fe058177adfaf541f53b7d32178caf7199f9aeaf4056f51"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/actual-getter-translate/stdout.txt",
+          "bytes": 93,
+          "sha256": "d7af22969c336ed0319a6f64803e192cff71c37a6cade13f755ed6269563dfa3"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/actual-getter-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.0051009530434385,
+        "sampledPeakProcessTreeRssBytes": 107585536,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-scalar-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/default-scalar-translate/run.json",
+          "bytes": 1173,
+          "sha256": "767be9b5747b6c1584fc7ea8df61e808fcb0d22cd16fdf7bf69ad6699f0fc735"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/default-scalar-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "4847801e20603d6bfd6b1dc71ef21a4a67e8bb7d5ccd3003f0e76e126cee843b"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/default-scalar-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 1.1047277889447287,
+        "sampledPeakProcessTreeRssBytes": 117608448,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-c-boundary-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/selected-c-boundary-translate/run.json",
+          "bytes": 1183,
+          "sha256": "d397a629ddd0878cc808c96ded4c58839f47890dd938c3dbbd8f424d0d90efac"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/selected-c-boundary-translate/stdout.txt",
+          "bytes": 94,
+          "sha256": "52c82ee83c8271c14e99b7e04b3da5c16890447270cad63294afb1668fdd2325"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/selected-c-boundary-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6028995419619605,
+        "sampledPeakProcessTreeRssBytes": 107700224,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "default-int-eh-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 0,
+        "actualExitCode": 0,
+        "classification": "success",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/default-int-eh-translate/run.json",
+          "bytes": 1173,
+          "sha256": "d6ca280afcb6d0eb2f716acbc3b2e0bd5ce7803f041c73c16b654689d42d55e8"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/default-int-eh-translate/stdout.txt",
+          "bytes": 95,
+          "sha256": "b04c4fd927037244e5a8a6327e9a4dbc29ff80ef44073b58c7401ea55aa25f47"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/default-int-eh-translate/stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsedSeconds": 0.6031475730706006,
+        "sampledPeakProcessTreeRssBytes": 107220992,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-int-eh-unsupported-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/selected-int-eh-unsupported-translate/run.json",
+          "bytes": 1199,
+          "sha256": "bb3df700e838e532d17fe6109aac993f3ca3fe7599274495b1b166f2c7816a2d"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/selected-int-eh-unsupported-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/selected-int-eh-unsupported-translate/stderr.txt",
+          "bytes": 177,
+          "sha256": "17a355e36a00591221906e7b107fcc2694b2e1c0921654479563fa774d0aab2f"
+        },
+        "elapsedSeconds": 0.3016172139905393,
+        "sampledPeakProcessTreeRssBytes": 96161792,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "unconfigured-real-startup-translate",
+        "group": "focused-preservation",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/unconfigured-real-startup-translate/run.json",
+          "bytes": 1197,
+          "sha256": "d16997c6a423e928a953f9a3081da41ae3f63ba7d6d0446afbb6d12f9474eaf6"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/unconfigured-real-startup-translate/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/unconfigured-real-startup-translate/stderr.txt",
+          "bytes": 240,
+          "sha256": "e1f9cadcd418286135eaa61b7d4c5e521a8c257e70b50f5152dc3d2f8b0212c2"
+        },
+        "elapsedSeconds": 3.2164405999938026,
+        "sampledPeakProcessTreeRssBytes": 107913216,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 2147483648,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      },
+      {
+        "name": "selected-real-startup-translate-3",
+        "group": "actual-startup-next-capability-boundary",
+        "expectedExitCode": 1,
+        "actualExitCode": 1,
+        "classification": "intended-unsupported-rejection",
+        "receipt": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-translate-3/run.json",
+          "bytes": 1167,
+          "sha256": "7c70faec01995f4b9ba39b8bfa84e8e42f85f1e39cfb2a0fe6842518ebb1b6e7"
+        },
+        "stdout": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-translate-3/stdout.txt",
+          "bytes": 79,
+          "sha256": "ae9a1e2fc31018ccbfb2ad1bec8b13202fc2b1b6856b16ff7da8243a79a095c2"
+        },
+        "stderr": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-real-startup-translate-3/stderr.txt",
+          "bytes": 177,
+          "sha256": "17a355e36a00591221906e7b107fcc2694b2e1c0921654479563fa774d0aab2f"
+        },
+        "elapsedSeconds": 3.4167709019966424,
+        "sampledPeakProcessTreeRssBytes": 119545856,
+        "configuredBudgets": {
+          "timeoutSeconds": 180.0,
+          "memoryBytes": 8589934592,
+          "logBytes": 67108864
+        },
+        "budgetViolation": null
+      }
+    ]
+  },
+  "sourceFreeze": [
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-product-source-2/source-snapshot.json",
+        "bytes": 46193,
+        "sha256": "360462c7ba96837590b3f3db33c300f09e95fa180138590249ff56643c532ec1"
+      },
+      "fileCount": 267,
+      "frozenFilesVerified": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-runtime-source-1/source-snapshot.json",
+        "bytes": 2409,
+        "sha256": "e8b4b390e01b2b03407373bbade6275703e81ef7be24f075b15d4a675479d71d"
+      },
+      "fileCount": 14,
+      "frozenFilesVerified": true
+    },
+    {
+      "manifest": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-source-1/source-snapshot.json",
+        "bytes": 1259,
+        "sha256": "223df5b4312df8ea1265a25868b87e789f651e5b086666a5e1f944b47568e080"
+      },
+      "fileCount": 8,
+      "frozenFilesVerified": true
+    }
+  ],
+  "commitAttribution": "The verified product is frozen source2. New normal-EH dependency accounting and extra report fields in the workspace are deliberately excluded from this milestone and staged from proven snapshot bytes.",
+  "sourceAndInputFreezeVerified": true,
+  "nativeCapture": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-preparation-1/provenance.json",
+    "bytes": 3966,
+    "sha256": "1c9b0205734cd3b216065395023d3520d2ef7e7725464db2d85f44b4d545d900"
+  },
+  "nativeOracle": {
+    "construction": "Actual native C++ global construction. Native-only priority101 observer registers before default startup and runs after actual registered D1 callbacks. No manual application destructor or ended-object member inspection.",
+    "snapshots": {
+      "startup": {
+        "result": null,
+        "live": 2,
+        "constructed": 2,
+        "destroyed": 0,
+        "calls": 0,
+        "overflow": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "events": [
+          101,
+          102
+        ]
+      },
+      "first": {
+        "result": 13,
+        "live": 2,
+        "constructed": 2,
+        "destroyed": 0,
+        "calls": 1,
+        "overflow": 0,
+        "values": [
+          1,
+          2,
+          2,
+          2,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "events": [
+          101,
+          102,
+          501
+        ]
+      },
+      "second": {
+        "result": 14,
+        "live": 2,
+        "constructed": 2,
+        "destroyed": 0,
+        "calls": 2,
+        "overflow": 0,
+        "values": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          0,
+          1,
+          1,
+          0
+        ],
+        "events": [
+          101,
+          102,
+          501,
+          502
+        ]
+      },
+      "shutdown": {
+        "result": null,
+        "live": 0,
+        "constructed": 2,
+        "destroyed": 2,
+        "calls": 2,
+        "overflow": 0,
+        "values": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          0,
+          1,
+          1,
+          0
+        ],
+        "events": [
+          101,
+          102,
+          501,
+          502,
+          302,
+          301
+        ]
+      }
+    }
+  },
+  "generatedExecution": {
+    "jit": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-jit-run-1/stdout.txt",
+      "bytes": 3365,
+      "sha256": "53255e63461755de44a2e13d5d5651046dcfc6642ed9053dbb356a83e7740d14"
+    },
+    "aot": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-checker-aot-run-1/stdout.txt",
+      "bytes": 3365,
+      "sha256": "53255e63461755de44a2e13d5d5651046dcfc6642ed9053dbb356a83e7740d14"
+    },
+    "jitAotStdoutIdentical": true,
+    "observations": [
+      {
+        "startup": {
+          "result": null,
+          "live": 2,
+          "constructed": 2,
+          "destroyed": 0,
+          "calls": 0,
+          "overflow": 0,
+          "values": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "events": [
+            101,
+            102
+          ]
+        },
+        "first": {
+          "result": 13,
+          "live": 2,
+          "constructed": 2,
+          "destroyed": 0,
+          "calls": 1,
+          "overflow": 0,
+          "values": [
+            1,
+            2,
+            2,
+            2,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "events": [
+            101,
+            102,
+            501
+          ]
+        },
+        "second": {
+          "result": 14,
+          "live": 2,
+          "constructed": 2,
+          "destroyed": 0,
+          "calls": 2,
+          "overflow": 0,
+          "values": [
+            1,
+            2,
+            2,
+            2,
+            2,
+            0,
+            1,
+            1,
+            0
+          ],
+          "events": [
+            101,
+            102,
+            501,
+            502
+          ]
+        },
+        "shutdown": {
+          "result": null,
+          "live": 0,
+          "constructed": 2,
+          "destroyed": 2,
+          "calls": 2,
+          "overflow": 0,
+          "values": [
+            1,
+            2,
+            2,
+            2,
+            2,
+            0,
+            1,
+            1,
+            0
+          ],
+          "events": [
+            101,
+            102,
+            501,
+            502,
+            302,
+            301
+          ]
+        }
+      },
+      {
+        "selectedProgramLifetime": {
+          "ready": {
+            "state": "Ready",
+            "initializeCalls": 2,
+            "startupInvocations": 1,
+            "startupCompletions": 1,
+            "startupFailures": 0,
+            "registerCalls": 2,
+            "registered": 2,
+            "registrationFailures": 0,
+            "shutdownCalls": 0,
+            "shutdownInvocations": 0,
+            "destructorStarts": 0,
+            "destructorCompletions": 0,
+            "shutdownCompletions": 0,
+            "shutdownFailures": 0,
+            "protocolRejections": 1,
+            "pendingEntries": 2,
+            "lastRegisteredEntry": 2,
+            "lastStartedEntry": 0,
+            "lastCompletedEntry": 0,
+            "startupStartSequence": 1,
+            "lastRegistrationSequence": 3,
+            "startupCompleteSequence": 4,
+            "shutdownStartSequence": 0,
+            "lastDestructorStartSequence": 0,
+            "lastDestructorCompleteSequence": 0,
+            "shutdownCompleteSequence": 0
+          },
+          "shutdown": {
+            "state": "Shutdown",
+            "initializeCalls": 2,
+            "startupInvocations": 1,
+            "startupCompletions": 1,
+            "startupFailures": 0,
+            "registerCalls": 2,
+            "registered": 2,
+            "registrationFailures": 0,
+            "shutdownCalls": 2,
+            "shutdownInvocations": 1,
+            "destructorStarts": 2,
+            "destructorCompletions": 2,
+            "shutdownCompletions": 1,
+            "shutdownFailures": 0,
+            "protocolRejections": 2,
+            "pendingEntries": 0,
+            "lastRegisteredEntry": 2,
+            "lastStartedEntry": 1,
+            "lastCompletedEntry": 1,
+            "startupStartSequence": 1,
+            "lastRegistrationSequence": 3,
+            "startupCompleteSequence": 4,
+            "shutdownStartSequence": 5,
+            "lastDestructorStartSequence": 8,
+            "lastDestructorCompleteSequence": 9,
+            "shutdownCompleteSequence": 10
+          },
+          "actualObjectAddressesDistinct": true,
+          "registeredSecondObject": true,
+          "lastDestroyedFirstObject": true,
+          "moduleSlotStable": true,
+          "moduleAddressObservation": "opaque registration/retirement diagnostics only",
+          "physical": {
+            "startupItemSize": 4,
+            "idOffset": 0,
+            "sequentialPrefixOffset": 4,
+            "elementStride": 4,
+            "actualStorageAligned": true,
+            "globalObjectsDistinct": true,
+            "firstInitializedId": 1,
+            "secondInitializedId": 2,
+            "inspectedWhileReady": true
+          },
+          "repeatInitializeNoApplicationEffects": true,
+          "repeatShutdownNoApplicationEffects": true,
+          "fixtureBeforeInitializeRejectedWithoutApplicationEffects": true,
+          "fixtureAfterShutdownRejectedWithoutApplicationEffects": true,
+          "postShutdownInspection": "independent generated scalar/event/value storage only",
+          "registrationFailureOrStartupFailureExercised": false
+        }
+      },
+      {
+        "suppliedCaptureProvenance": {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-preparation-1/provenance.json",
+          "sha256": "1c9b0205734cd3b216065395023d3520d2ef7e7725464db2d85f44b4d545d900",
+          "inputSha256": "485b8f2be85a8f0eba3a5bad94e3d5fc141101f2ead384d102ca809d97902b2a",
+          "fixtureSourceSha256": "bbc48b4cab85a6514e884edfebe6cc830f97fe38deeb4bd64f05e3854d8c39cc",
+          "nativeObserverSourceSha256": "9dd2e39607e47ff6b044ec102b90469b54223bb1429dc21830556516f10d1151",
+          "publicFactsSha256": "57e935a5385927df22c1a4ddd0b9a172aa7dd0b71bb56996dea67f8333e5eb7d",
+          "nativeObservationsSha256": "80d483e1c86476912a2e1ced53f7f085ace6b7ef38ecf2e195aba433fbe0793e",
+          "attribution": "supplied evidence; the outer receipt binds the compiled GeneratedProject and executable"
+        }
+      }
+    ],
+    "scope": "Initialize and Shutdown repeated; two successful registrations, reverse once actual D1, module/object identities and sequence checks, physical item4/4 id0/stride4. Legitimate public fixture calls before init and after shutdown reject with unchanged application storage; exactly two protocol rejections. Shared advertised note root is called internally from actual C1/D1 while Initializing/ShuttingDown via private __body_note, bypassing only external wrapper guards.",
+    "jitDependencies": [
+      "Checks/1.0.0",
+      "Generated/1.0.0",
+      "RoslynObj.CSharp.Runtime/1.0.0"
+    ]
+  },
+  "publications": [
+    {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-3/completion.json",
+        "bytes": 810,
+        "sha256": "888af4cdef9a5e4a67b9b47338d45fe15fee186419cb0e01e9228695afa305b1"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-3/Generated.cs",
+          "bytes": 9800,
+          "sha256": "c531d3f9f45e98bf16d0a20abd40f1ca8d1f37aee68c958a8fa3c209518daab7"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-3/Generated.csproj",
+          "bytes": 559,
+          "sha256": "791e4013b5343c1201b10db038b66fb483711646d5a34d7dc55bbd8bb4982dc4"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-3/program-report.json",
+          "bytes": 120771,
+          "sha256": "0c6faf6d6b72086e7a6c2eb9e9a4a5d0ae3350c804c32fa280ae1e73edaafb7f"
+        }
+      ],
+      "selectedBodies": 13,
+      "startupRoots": [
+        {
+          "lookupName": "__sti___27_selected_global_startup_cpp_first",
+          "linkageName": "__sti___27_selected_global_startup_cpp_first",
+          "functionName": "__sti___27_selected_global_startup_cpp_first",
+          "signature": "return=unit/0001/type/000012; parameters=[]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_cplusplus_external",
+          "selectedLocator": "unit/0001/function/000010"
+        }
+      ],
+      "semanticImports": [
+        {
+          "locator": "unit/0001/function/000013",
+          "kind": "function",
+          "name": "__cxa_atexit",
+          "linkageName": "__cxa_atexit",
+          "signature": "unit/0001/type/000002(unit/0001/type/000023 abi_parameter,unit/0001/type/000025 abi_parameter,unit/0001/type/000025 abi_parameter) cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+          "callingConvention": "cc_default",
+          "required": true,
+          "directCalls": 2,
+          "addressReferences": 0,
+          "addressExposed": false,
+          "provider": "RoslynObj.CSharp.Runtime.ManagedSelectedProgramLifetime",
+          "providerSymbol": null,
+          "bindingSignature": null,
+          "bindingCallingConvention": null,
+          "ownership": "An explicit generated program instance retains exact selected managed destructor, borrowed object address and generated module address only after successful registration. Explicit shutdown invokes successful registrations once in reverse order; storage remains owned by generated program storage.",
+          "errorContract": "The actual registration result flows to the captured consumer; nonzero failure publishes no entry and creates no compensating destruction. Initial admitted startup and destructors have separate closed generated-body nonthrow proofs, not invented source noexcept. Unexpected managed faults latch a failed explicit lifecycle state and propagate directly, without guessed C++ cleanup or CLR application type-initializer wrapping.",
+          "threadContract": "Explicit serialized instance lifecycle; concurrent/reentrant transitions and registration during drain remain unsupported. No TLS, ProcessExit, native module unload or general __cxa_finalize contract is supplied.",
+          "callbackContract": "Only the actual selected generated destructor body receives the retained object address through an ordinary managed thunk; no native function address, UCO callback or application fallback is supplied.",
+          "bindingStatus": "generated-selected-program-atexit-contract-selected"
+        },
+        {
+          "locator": "unit/0001/storage/000013",
+          "kind": "variable",
+          "name": "__dso_handle",
+          "linkageName": "__dso_handle",
+          "signature": "unit/0001/type/000025",
+          "callingConvention": null,
+          "required": true,
+          "directCalls": 0,
+          "addressReferences": 0,
+          "addressExposed": true,
+          "provider": "Generated.SelectedProgramModule",
+          "providerSymbol": null,
+          "bindingSignature": null,
+          "bindingCallingConvention": null,
+          "ownership": "One stable generated 8-byte/8-aligned module identity slot is shared by the exact required external declarations across the selected inputs. Only its address in validated __cxa_atexit registrations is exposed; no source object lifetime or native data contents are fabricated.",
+          "errorContract": "generated-selected-program-dso-v1: Complete required-use validation rejects actual definitions, conflicts, reads and escaping address uses. This generated runtime integration contract is separate from captured EDG type/layout facts; it supplies no native provider or application data fallback.",
+          "threadContract": "The generated module slot is process-lifetime storage; lifecycle transitions follow the explicit selected program instance contract.",
+          "callbackContract": "The address identifies only registrations belonging to this generated module. General __cxa_finalize, module unload, arbitrary callback transport and native DSO replacement are unsupported.",
+          "bindingStatus": "generated-selected-program-dso-address-selected"
+        }
+      ],
+      "wholeInputTranslationComplete": false
+    },
+    {
+      "completion": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-4/completion.json",
+        "bytes": 811,
+        "sha256": "76868efced9d4cbc58b1092a2ff670f50449a604229b83905697007282875f5c"
+      },
+      "files": [
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-4/Generated.cs",
+          "bytes": 10001,
+          "sha256": "9ef44a63fc3b42c5b86c1ce4fc7f190dd4ca443054badab39b303d784da66f38"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-4/Generated.csproj",
+          "bytes": 559,
+          "sha256": "791e4013b5343c1201b10db038b66fb483711646d5a34d7dc55bbd8bb4982dc4"
+        },
+        {
+          "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-global-startup-generated-4/program-report.json",
+          "bytes": 121528,
+          "sha256": "6dbc0e64b8a51b6cbeeec133a346dd1bde4fd86868ec6d1db735b2d03129e974"
+        }
+      ],
+      "selectedBodies": 13,
+      "startupRoots": [
+        {
+          "lookupName": "__sti___27_selected_global_startup_cpp_first",
+          "linkageName": "__sti___27_selected_global_startup_cpp_first",
+          "functionName": "__sti___27_selected_global_startup_cpp_first",
+          "signature": "return=unit/0001/type/000012; parameters=[]; this=False; prototype=True; variadic=False; cc=cc_default; linkage=nlk_cplusplus_external",
+          "selectedLocator": "unit/0001/function/000011"
+        }
+      ],
+      "semanticImports": [
+        {
+          "locator": "unit/0001/function/000013",
+          "kind": "function",
+          "name": "__cxa_atexit",
+          "linkageName": "__cxa_atexit",
+          "signature": "unit/0001/type/000002(unit/0001/type/000023 abi_parameter,unit/0001/type/000025 abi_parameter,unit/0001/type/000025 abi_parameter) cc=cc_default linkage=nlk_cplusplus_external result-parameter=False",
+          "callingConvention": "cc_default",
+          "required": true,
+          "directCalls": 2,
+          "addressReferences": 0,
+          "addressExposed": false,
+          "provider": "RoslynObj.CSharp.Runtime.ManagedSelectedProgramLifetime",
+          "providerSymbol": null,
+          "bindingSignature": null,
+          "bindingCallingConvention": null,
+          "ownership": "An explicit generated program instance retains exact selected managed destructor, borrowed object address and generated module address only after successful registration. Explicit shutdown invokes successful registrations once in reverse order; storage remains owned by generated program storage.",
+          "errorContract": "The actual registration result flows to the captured consumer; nonzero failure publishes no entry and creates no compensating destruction. Initial admitted startup and destructors have separate closed generated-body nonthrow proofs, not invented source noexcept. Unexpected managed faults latch a failed explicit lifecycle state and propagate directly, without guessed C++ cleanup or CLR application type-initializer wrapping.",
+          "threadContract": "Explicit serialized instance lifecycle; concurrent/reentrant transitions and registration during drain remain unsupported. No TLS, ProcessExit, native module unload or general __cxa_finalize contract is supplied.",
+          "callbackContract": "Only the actual selected generated destructor body receives the retained object address through an ordinary managed thunk; no native function address, UCO callback or application fallback is supplied.",
+          "bindingStatus": "generated-selected-program-atexit-contract-selected"
+        },
+        {
+          "locator": "unit/0001/storage/000014",
+          "kind": "variable",
+          "name": "__dso_handle",
+          "linkageName": "__dso_handle",
+          "signature": "unit/0001/type/000025",
+          "callingConvention": null,
+          "required": true,
+          "directCalls": 0,
+          "addressReferences": 0,
+          "addressExposed": true,
+          "provider": "Generated.SelectedProgramModule",
+          "providerSymbol": null,
+          "bindingSignature": null,
+          "bindingCallingConvention": null,
+          "ownership": "One stable generated 8-byte/8-aligned module identity slot is shared by the exact required external declarations across the selected inputs. Only its address in validated __cxa_atexit registrations is exposed; no source object lifetime or native data contents are fabricated.",
+          "errorContract": "generated-selected-program-dso-v1: Complete required-use validation rejects actual definitions, conflicts, reads and escaping address uses. This generated runtime integration contract is separate from captured EDG type/layout facts; it supplies no native provider or application data fallback.",
+          "threadContract": "The generated module slot is process-lifetime storage; lifecycle transitions follow the explicit selected program instance contract.",
+          "callbackContract": "The address identifies only registrations belonging to this generated module. General __cxa_finalize, module unload, arbitrary callback transport and native DSO replacement are unsupported.",
+          "bindingStatus": "generated-selected-program-dso-address-selected"
+        }
+      ],
+      "wholeInputTranslationComplete": false
+    }
+  ],
+  "lifecycleContract": {
+    "version": "edg7-itanium-explicit-startup-atexit-v1",
+    "order": "Explicit immutable input hash list matching selected manifest-order target policy; no inferred C++ cross-TU order.",
+    "state": "Instance-owned single managed thread. Concurrent or reentrant transitions and registration during drain are outside initial admitted subset. Callbacks execute outside lock. Successful repeated initialization/shutdown are idempotent; no restart after shutdown/fault.",
+    "registration": "Publish only after successful append, return actual0. Allocation failure returns nonzero without entry; captured result consumer decides behavior. No compensating destruction or fabricated init failure.",
+    "failure": "Unexpected managed init/shutdown faults latch failure and propagate original exception directly, retaining unexecuted registrations; no guessed C++ recovery/termination, CLR application startup cctor or ProcessExit. Source throw/unhandled/native unwind paths are not admitted by this profile.",
+    "sourceNoexcept": "A separate closed supported generated-body proof establishes this bounded startup and destructor graph. Nullable source noexcept is never promoted or inserted into the NoThrow marker-omission cache.",
+    "module": "generated-selected-program-dso-v1: Exact external void*8/8 __dso_handle declarations, one stable generated module slot, only recorded address uses in jointly validated registrations. No native content read, supplied definition override, escape, general __cxa_finalize or module unload.",
+    "callback": "Only exact selected managed D1 receives the captured borrowed object address. No UCO/native application body."
+  },
+  "focusedRegression": {
+    "receipt": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-regressions-1/report.json",
+      "bytes": 6244,
+      "sha256": "e3d93bfa602e533f66af43379ba6e8a4b249ee08a052ac595b8e43884b9969c3"
+    },
+    "scope": "Four source+ABI byte identities (actual getter, default scalar, selected two-unit C, default intEH) and two intended rejects. Previous ManagedCppException bytes unchanged; closed77runtime campaign not repeated or relabeled."
+  },
+  "realStartupBoundary": {
+    "report": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-first-preparation-3/real-report.json",
+      "bytes": 10567,
+      "sha256": "51f593888e75139c7678fd53ff82ce63e9303f90079217f6cc988ca10d289d09"
+    },
+    "diagnostics": [
+      {
+        "code": "ROC1214",
+        "severity": "error",
+        "message": "Selected-mode exception-handling dependency closure is unsupported; retained EH frames and tables require default all-definition mode.",
+        "input": null,
+        "locator": "unit/0001/function/000002",
+        "family": "managed-selection"
+      }
+    ],
+    "unpublished": true,
+    "selectionClosureComplete": false,
+    "finding": "Explicit schedule advances beyond ambient-root rejection, but selected EH descriptor closure is not yet admitted. Details presence alone does not establish cleanup execution. Actual normal EH metadata/accounting is separate follow-on work; no waiver or actual FileOpenFlags startup success claimed."
+  },
+  "preservedHarnessAndCompileAttempts": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-build-1/run.json",
+        "bytes": 1290,
+        "sha256": "342e251071f95877ecaabee54025629a8e6ff8d50f4fc4fbd98878548ababc3d"
+      },
+      "kind": "Initial compile-only nullable CurrentName guard error; fresh source2 corrects null to unsupported candidate."
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-build-2/run.json",
+        "bytes": 1288,
+        "sha256": "7ad8020a4fa56347bc854b637f3cdd41e550ebc057d95a558e0724162d7317a0"
+      },
+      "kind": "Compiler succeeded, but outer driver passed expected exit600 and oversized timeout8589934592 due positional arguments. No resource breach observed (9.18s), but intended deadline was not enforced. Correctly configured600s/8GiB compiler build is a separate passing campaign phase; actual publication tool binaries stay attributed to this original clean build.",
+      "actualConfiguredBudgets": {
+        "timeoutSeconds": 8589934592.0,
+        "memoryBytes": 2147483648,
+        "logBytes": 67108864
+      },
+      "observedSeconds": 9.18280229496304
+    }
+  ],
+  "toolBinariesActuallyUsed": {
+    "cli": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-bin-2/roslynobj-csharp.dll",
+      "bytes": 17408,
+      "sha256": "493b4c9bc989e096dd0810fe5499634f84815c6875b7de41ed31c9a8a5e7fb41"
+    },
+    "translator": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-bin-2/RoslynObj.CSharp.dll",
+      "bytes": 1163264,
+      "sha256": "c7f2c79fbd4e47e59fa4f7bdd37923fb36734dbf6e9f05a735b6f7c8c36cac9b"
+    },
+    "reader": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-bin-2/RoslynObj.dll",
+      "bytes": 2635264,
+      "sha256": "2e92a6a832d61bea4e86dda6d7c0ac276b1db3be38e2177f1a36b16c2385c48d"
+    },
+    "correctlyBudgetedCompilerOutput": {
+      "path": "/mnt/storage/roslynobj-csharp-20261015/t5/selected-startup-cli-budgeted-bin-5/roslynobj-csharp.dll",
+      "bytes": 17408,
+      "sha256": "80529e74c4149c0f100d12aeb8ab72d0e51dc89c8d2a722d45e8a97bad8e1684"
+    }
+  },
+  "limits": [
+    "No real core293 startup execution yet; normal-EH descriptor/scaffold and real C1/D1/Slot closure remain unadmitted.",
+    "Source TLS/priorities/unsupported ambient schedules, arbitrary __cxa_finalize/module unload, source exception/termination during startup/destruction, registry mutation while draining and cross-thread lifecycle remain unsupported.",
+    "Storage, lifetime and destruction follow actual generated bodies and successful registrations only. No synthetic destruction for failed construction/registration.",
+    "The full Vector getter including real guard InternalException/string/JSON/container/allocator/EH closure and whole DuckDB remain open.",
+    "Earlier SQLite T0-T4 and closed selected-composition77 evidence retain their original frozen source/runtime attribution."
+  ],
+  "consolidator": {
+    "path": "/mnt/storage/roslynobj-csharp-20261015/t5/consolidate-selected-startup-1.py",
+    "bytes": 11077,
+    "sha256": "42b2ed4674cc2ed8d0c90eee383afa1891e1833cc5b4077c86a81fe4ec290a15"
+  }
+}

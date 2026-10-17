@@ -48,7 +48,7 @@ once for both selected outputs and default EH; JIT dependencies contain only
 Checks/Generated/Runtime. Earlier 13 phases stayed frozen across user pause;
 final default/repeat 8 phases ran after explicit resume, no blanket campaign repeat.
 
-Current verified uncommitted checkpoint: selected composition, compact receipt
+Latest verified checkpoint: selected composition, committed as `6e767a577`, compact receipt
 `acceptance/duckdb/selected-composition-report.json`, 103,194 bytes, SHA-256
 `5471ddec7603f2570f01b281472d4a8442d9bd444243aa1409d1665f9f625579`.
 All 77 expected outcomes pass: 69 successes, two intended SIGABRT terminations,
@@ -57,7 +57,7 @@ Earlier compiler/publication/identity bookkeeping attempts and dependency probe2
 180-second timeout are preserved separately. Final product snapshot
 `t5/class-construction-product-source-5` has 263 files and matches workspace;
 constructor/scalar/boundary checker snapshots and evidence artifact hashes verify.
-No build/export/test process is active. Root review and exact-owned commit next.
+The 47 owned milestone paths were committed after root review. The closed 77-phase campaign is not pending and must not be repeated without an implicated change.
 
 Verified capabilities and attribution:
 - Constructor native/JIT/AOT twice 24/nine values/30 events/live0; three pending
@@ -95,22 +95,60 @@ and readonly assertion are bound by the compact receipt. Runtime and reader API
 changes are uncommitted, alongside selected multi-input/scalar/EH adapters and
 new genuine fixtures/checkers/tool. Preserve unrelated dirty T3 aggregate fixtures.
 
-After checkpoint, approved next cohesive work is an explicit ordered selected
-startup-root schedule and exact actual __cxa_atexit callback/object/module
-registrations, reverse successful registrations on explicit teardown. Cross-TU
-order is a selected target contract; publish registration only after successful
-actual result; no ProcessExit, failed-object destruction or nullable-noexcept
-promotion. Initialization failure/reentry and unhandled termination require
-explicit contracts. Start with real core293 startup (218 typed nodes), retaining
-actual C1/D1/Slot dependencies; no guard shortcut/native application fallback.
-Full actual Vector getter still needs real InternalException/string/JSON/container/
-allocator/EH closure. Existing closure3 is partial: 193 bodies/5,628 operations; not full DuckDB.
-Do not add serial helper audits merely to restate known facts. Root accepted
-startup direction; final implementation design follows checkpoint, routine fixes
-remain authorized. Coordinator builds/Git, emission product, inventory acceptance,
-root read-only; requested sol high/xhigh roles stay. SQLite T0-T4 remains source13/
-runtime11, not relabeled; broader T5/T6 remain open. This active section overrides
-all historical pause/progress text below.
+Verified startup checkpoint ready for exact source2 commit: compact receipt
+`acceptance/duckdb/selected-startup-report.json`, 53,472 bytes, SHA-256
+`185eb658d45891002163cdd71438477dfce23de22ab1912c3b545cc1a9085bc6`.
+20 expected outcomes: 17 successes and three intended rejections. Product
+`t5/selected-startup-product-source-2` (267 files), Runtime-only14 files and
+checker8 files verify. Source2 is the proven baseline; newer normal-EH accounting
+and report-schema edits are deliberately excluded and retained as follow-on.
+No application startup in CLR cctor or ProcessExit, no native D1/body substitute.
+
+Genuine output `t5/selected-global-startup-generated-4` has 13 bodies. Actual C1/
+registration/C1/registration runs from explicit Initialize; successful registered
+D1 runs in reverse once from Shutdown. Shared advertised note has a guarded public
+wrapper but actual private body is called internally during both transient states.
+Native/JIT/AOT exact startup [101,102], fixture13/14, final
+[101,102,501,502,302,301], two destructions/live0, physical4/4/id0/stride4.
+Repeated Initialize/Shutdown are idempotent. Public fixture rejects before init
+and after shutdown without application effects; exactly two protocol rejections.
+Final inspection reads independent protocol storage, no ended object member use.
+
+Completed startup drivers: `t5/run-selected-startup-prepare-1.py` (five phases),
+Runtime-only build1, source2 CLI build, publication3/4, execution1 (four JIT/AOT
+phases), regressions1 (six focused source-preservation/boundary phases). The first
+compile-nullability failure and second build's oversized timeout/wrong outer
+expected-exit arguments are preserved honestly. A separate correctly budgeted
+source2 compiler build5 succeeds. Earlier closed77campaign is not repeated.
+Publication/runtime evidence stays bound to actual CLI2/output4; the corrected
+compiler output is distinct. No build/test process is currently running.
+
+ACTIVE follow-on: bounded production normal-EH dependency accounting, then actual
+FileOpenFlags constructor facts/admission as justified. Real core293 explicit
+startup now stops ROC1214 at selected EH descriptor closure, unpublished; descriptor
+presence alone is not evidence of executing cleanup. Root approved collector, not
+blanket EH execution or omission. Emission owns unverified ManagedSelection.cs +
+NEW ManagedSelection.NormalEh.cs draft (frozen/build-ready); coordinator owns new
+Contracts normal-EH rows/marker schema, pending Inventory cleanup-purpose alignment
+and Translator partial-failure-report integration. These edits are NOT the source2
+startup checkpoint and remain unstaged. Startup emitter/Runtime remain frozen.
+
+Next exact work after startup save: align Inventory cleanup dependencies to select
+D1/storage only, never historical recipe C1; attach partial selection report with
+ClosureComplete=false. Then fresh combined snapshot/build and real startup attempt
+using actual current bodies, no new helper-only audit tool. Preserve actual owner/
+tables/actions/storage/state/condition/owned lifetime dependencies and lowered
+execution markers. Throw/Try/handler propagation, arrays/unknown lifetime gaps stay
+explicitly unsupported. Any scaffold emission needs exact facts and separate
+closed supported-body proof, never nullable-noexcept promotion/NoThrow cache reuse.
+
+Full Vector getter and guard InternalException/string/JSON/container/allocator/EH
+closure remain open. Existing closure3 is partial193 bodies/5,628 operations.
+Coordinator sol high owns builds/Git/integration, emission and inventory sol xhigh
+own disjoint product/acceptance, root Astra read-only. Routine fixes remain active,
+no stale approval hold. Preserve unrelated T3 aggregates and all unrelated upstream/
+core dirty files. SQLite T0-T4 retains source13/runtime11 attribution. This active
+section overrides historical pause/progress text below.
 
 The latest verified product milestone is `16a07ae6b`, the cohesive borrowed-member
 Boolean conversion chain, following product `de39c8bb9` and tool checkpoints `0f4849b67`,

@@ -37,7 +37,10 @@ JIT/NativeAOT through explicit managed-root selection over borrowed layout bytes
 [Selected composition](docs/T5-SELECTED-COMPOSITION.md) now also passes exact
 two-input direct bindings, pending class construction and composed borrowed
 member/scalar calls in native/JIT/NativeAOT, with 77 expected phase outcomes.
-The enclosing real accessor, startup/teardown and guard/library/EH closure remain open.
+[Explicit selected startup](docs/SELECTED-STARTUP.md) also matches real native
+global construction and registered teardown in JIT/NativeAOT, with 20 expected
+outcomes. The real DuckDB startup and enclosing accessor/guard/library/EH closure
+remain open.
 Broader C++ and scale remain open. See the [coverage ledger](docs/COVERAGE.md) and
 [restart state](docs/RESTART.md) for current evidence and remaining work.
 

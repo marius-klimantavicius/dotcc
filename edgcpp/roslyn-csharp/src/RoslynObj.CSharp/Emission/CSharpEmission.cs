@@ -22,6 +22,7 @@ public sealed record CSharpEmissionOptions
     public ProgramAssemblyOptions? ProgramAssembly { get; init; }
     internal ManagedSelectionPlan? ManagedSelection { get; init; }
     internal ManagedProgramSelectionPlan? ManagedProgramSelection { get; init; }
+    public ManagedStartupConfiguration? ManagedStartup { get; init; }
 }
 
 public sealed record CSharpEmissionResult(
@@ -32,6 +33,7 @@ public sealed record CSharpEmissionResult(
 {
     internal IReadOnlyList<SemanticRuntimeFunctionImplementation> SemanticRuntimeFunctions { get; init; } = [];
     internal IReadOnlyList<SemanticNativeDataImplementation> NativeDataImplementations { get; init; } = [];
+    internal IReadOnlyList<VariableSymbol> SelectedStartupDsoVariables { get; init; } = [];
 }
 
 /// <summary>Projects public, already-resolved EDG objects to ordinary unsafe C#.</summary>
@@ -75,6 +77,8 @@ public sealed partial class CSharpEmitter
                 return Failure("CSHARP2001", "Multiple translation units require explicit bounded program assembly options.");
             globalNames.Add(options.ClassName);
             if (options.Executable) globalNames.Add("Main");
+            try { InitializeSelectedStartupSelection(); }
+            catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             if (!ValidateNativeErrorProtocol()) return new([], diagnostics, 0, 0);
             if (string.IsNullOrWhiteSpace(options.RuntimeProjectPath))
                 return Failure("CSHARP2005", "An explicit generated-code runtime project path is required.");
@@ -84,7 +88,8 @@ public sealed partial class CSharpEmitter
                 var target = input.Manifest.Target;
                 if (target.Abi != "itanium" || target.AddressableUnitBits != 8 || target.PointerBits != 64 || target.PointerAlignment != 8 || target.Endianness != "little")
                     diagnostics.Add(new("CSHARP2002", DiagnosticSeverity.Error, "Emission requires the captured 8-bit-unit, little-endian 64-bit pointer profile.", input.Manifest.ArtifactIdentity, $"unit/{unit + 1}", "profile"));
-                if (input.TranslationUnit.FileScopeInitializationRoutines.Count != 0 || input.TranslationUnit.GlobalScope.DynamicInitializations.Count != 0 ||
+                if (input.TranslationUnit.FileScopeInitializationRoutines.Count != 0 || input.TranslationUnit.GlobalScope.DynamicInitializations.Any(initialization =>
+                        !SelectedStartupEnabled || !ManagedAmbientPolicy.IsInertDescriptor(initialization)) ||
                     input.TranslationUnit.Roots.Any(r => r.Kind.Name is "file_scope_statement" or "file_initializer") ||
                     input.TranslationUnit.GlobalScope.Lifetime?.Cleanups.Count > 0)
                     diagnostics.Add(new("CSHARP2006", DiagnosticSeverity.Error, "The unit has file initialization or teardown obligations; no initialization schedule is implemented.", input.Manifest.ArtifactIdentity, $"unit/{unit + 1}", "initialization"));
@@ -102,7 +107,7 @@ public sealed partial class CSharpEmitter
                         Add("CSHARP2008", "A defined function has an unavailable execution body.", function.Name, "function");
                     continue;
                 }
-                if (function.Details.IsInitializationRoutine == true || function.Details.IsFinalizationRoutine == true)
+                if ((function.Details.IsInitializationRoutine == true || function.Details.IsFinalizationRoutine == true) && !selectedStartupRoots.Contains(function))
                     Add("CSHARP2009", "Captured initialization/finalization routines require program execution order planning.", function.Name, "initialization");
                 if (function.Body is null)
                 {
@@ -113,7 +118,7 @@ public sealed partial class CSharpEmitter
                 Name(function, function.Name ?? "function", globalNames);
                 ordinals[function] = functions.Count;
             }
-            try { InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializePointerMethods(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); ValidateOrdinaryScalarMethodBodies(); }
+            try { InitializeSelectedStartup(); InitializeNativeDataBindings(); InitializeVirtualDispatch(); InitializeBoundedExceptions(); InitializeMutableReferences(); InitializePointerMethods(); InitializeOrdinaryMethodGraphs(); InitializeBorrowedFieldReferences(); InitializeOrdinaryMethods(); ValidateOrdinaryScalarMethodBodies(); }
             catch (Unsupported ex) { Add("CSHARP2502", ex.Message, null, ex.Family); return new([], diagnostics, 0, 0); }
             foreach (var function in functions)
             {
@@ -138,6 +143,8 @@ public sealed partial class CSharpEmitter
             try { EmitVirtualDispatchSupport(); }
             catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
             try { EmitCallSupport(staticFields, staticInitialization); }
+            catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
+            try { EmitSelectedStartupSupport(staticFields); }
             catch (Unsupported ex) { Add("CSHARP2400", ex.Message, null, ex.Family); }
             var declarations = new StringBuilder();
             // Either kind can discover the other (record -> array -> record).
@@ -195,7 +202,8 @@ public sealed partial class CSharpEmitter
             if (selectedProgram is not null) files.Add(new("Generated.ProgramAssembly.json", ProgramAssemblyReport()));
             return new(files, diagnostics, functions.Count, records.Count)
             {
-                SemanticRuntimeFunctions = semanticRuntimeFunctions.ToArray(), NativeDataImplementations = nativeDataImplementations.ToArray()
+                SemanticRuntimeFunctions = semanticRuntimeFunctions.ToArray(), NativeDataImplementations = nativeDataImplementations.ToArray(),
+                SelectedStartupDsoVariables = startupDsoVariables.ToArray()
             };
         }
 
@@ -250,7 +258,7 @@ public sealed partial class CSharpEmitter
                 variadicParameters[function] = argumentPack;
                 parameters.Add($"{VaType}* {argumentPack}");
             }
-            writer.Line($"public static {TypeName(function.ReturnType)} {names[function]}({string.Join(", ", parameters)})");
+            writer.Line($"{(SelectedStartupEnabled ? "private" : "public")} static {TypeName(function.ReturnType)} {names[function]}({string.Join(", ", parameters)})");
             writer.Open();
             foreach (var variable in body.Locals)
             {
@@ -389,6 +397,7 @@ public sealed partial class CSharpEmitter
 
         private string Reference(ReferenceOperation reference)
         {
+            if (TrySelectedStartupDsoReference(reference, out var dsoReference)) return dsoReference;
             if (TryProgramReference(reference, out var programReference)) return programReference;
             if (reference.Target is FunctionSymbol function) return FunctionAddress(function);
             if (reference.Target is FieldSymbol) throw Limit("A field reference requires its actual retained object operand.", "field");

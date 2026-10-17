@@ -111,6 +111,8 @@ public sealed partial class CSharpEmitter
 
         private string FunctionAddress(FunctionSymbol function)
         {
+            if (SelectedStartupEnabled)
+                throw Limit("The explicit managed startup program has no native function-address or callback boundary adapter.", "selected-startup");
             ValidateManagedBoundFunctionAddress(function);
             function = CanonicalFunction(function);
             if (IsGeneratedExceptionParticipant(function))
@@ -164,6 +166,12 @@ public sealed partial class CSharpEmitter
 
         private string EmitCall(CallOperation call)
         {
+            if (TryPlanStartupRegistration(call, out var startupRegistration))
+            {
+                if (startupRegistration.Prefix.Count != 0)
+                    throw Limit("An exit registration with value prefixes requires its typed statement occurrence.", "selected-startup");
+                return RenderPlanValue(startupRegistration);
+            }
             if (TryPlanAutomaticArrayCall(call, out var automaticArrayCall))
             {
                 if (automaticArrayCall.Prefix.Count != 0)

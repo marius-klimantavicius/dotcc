@@ -11,7 +11,11 @@ internal sealed record ManagedSelectionPlan(
     IReadOnlyList<Constant> Constants,
     IReadOnlyList<FunctionSymbol> Definitions,
     IReadOnlyList<VariableSymbol> StorageDefinitions,
-    ManagedSelectionReport Report);
+    ManagedSelectionReport Report)
+{
+    internal IReadOnlyList<FunctionSymbol> StartupDefinitions { get; init; } = [];
+    internal IReadOnlyList<FunctionSymbol> CallableDefinitions { get; init; } = [];
+}
 
 internal sealed class ManagedSelectionException(string code, string message, string? locator = null) : Exception(message)
 {
@@ -23,17 +27,19 @@ internal sealed class ManagedSelectionException(string code, string message, str
 internal static class ManagedSelectionPlanner
 {
     internal static ManagedSelectionPlan Select(RoslynObject obj, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
-        CancellationToken token = default, Action? checkBudget = null)
-        => new Work(obj, roots, budgets, token, checkBudget).Run();
+        CancellationToken token = default, Action? checkBudget = null, ManagedStartupConfiguration? startup = null)
+        => new Work(obj, roots, budgets, token, checkBudget, startup: startup).Run();
 
     internal static ManagedSelectionPlan SelectSeeded(RoslynObject obj, ManagedDefinitionRoot[] roots,
         IReadOnlyList<FunctionSymbol> additionalFunctions, IReadOnlyList<VariableSymbol> additionalStorage,
-        string inputSha256, int unitOrdinal, ResourceBudgets budgets, CancellationToken token = default, Action? checkBudget = null)
-        => new Work(obj, roots, budgets, token, checkBudget, additionalFunctions, additionalStorage, inputSha256, unitOrdinal).Run();
+        string inputSha256, int unitOrdinal, ResourceBudgets budgets, CancellationToken token = default, Action? checkBudget = null,
+        ManagedStartupConfiguration? startup = null)
+        => new Work(obj, roots, budgets, token, checkBudget, additionalFunctions, additionalStorage, inputSha256, unitOrdinal, startup).Run();
 
     private sealed class Work(RoslynObject obj, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
         CancellationToken token, Action? checkBudget, IReadOnlyList<FunctionSymbol>? additionalFunctions = null,
-        IReadOnlyList<VariableSymbol>? additionalStorage = null, string? inputSha256 = null, int unitOrdinal = 1)
+        IReadOnlyList<VariableSymbol>? additionalStorage = null, string? inputSha256 = null, int unitOrdinal = 1,
+        ManagedStartupConfiguration? startup = null)
     {
         private readonly List<FunctionSymbol> functions = [];
         private readonly List<VariableSymbol> variables = [];
@@ -56,6 +62,9 @@ internal static class ManagedSelectionPlanner
         private readonly Queue<VariableSymbol> pendingVariables = new();
         private readonly Dictionary<SemanticEntity, string> locators = [];
         private readonly List<ManagedRootSelectionReport> selectedRoots = [];
+        private readonly List<ManagedRootSelectionReport> selectedStartupRoots = [];
+        private readonly List<FunctionSymbol> startupDefinitions = [];
+        private readonly List<FunctionSymbol> callableDefinitions = [];
         private readonly List<ManagedSelectionDependencyReport> dependencies = [];
         private long workCount;
         private long bodyOperationCount;
@@ -65,30 +74,41 @@ internal static class ManagedSelectionPlanner
 
         internal ManagedSelectionPlan Run()
         {
-            if (roots.Length == 0 && inputSha256 is null || budgets.MaximumSelectionCandidates < 1 || budgets.MaximumSelectionCandidates == int.MaxValue || budgets.MaximumAmbientRoutineCandidates is < 1 or > 256 || budgets.MaximumSelectedFunctions < 1 || budgets.MaximumSelectedStorage < 1 ||
+            var admittedHash = inputSha256 ?? roots.FirstOrDefault()?.InputSha256 ?? startup?.UnitInputOrder.SingleOrDefault();
+            var startupRoots = startup?.Definitions.Where(root => root.InputSha256.Equals(admittedHash, StringComparison.OrdinalIgnoreCase)).ToArray() ?? [];
+            var allRoots = roots.Concat(startupRoots).ToArray();
+            if (startup is not null && (startup.Contract != "edg7-itanium-explicit-startup-atexit-v1" || startup.Definitions.Length == 0 ||
+                startup.UnitInputOrder.Count(hash => hash.Equals(admittedHash, StringComparison.OrdinalIgnoreCase)) != 1))
+                Fail("ROC1210", "Managed startup requires its admitted policy and exactly one current input in the explicit target order.");
+            if (allRoots.Length == 0 && admittedHash is null || budgets.MaximumSelectionCandidates < 1 || budgets.MaximumSelectionCandidates == int.MaxValue || budgets.MaximumAmbientRoutineCandidates is < 1 or > 256 || budgets.MaximumSelectedFunctions < 1 || budgets.MaximumSelectedStorage < 1 ||
                 budgets.MaximumSelectionOperationsPerBody < 1 || budgets.MaximumSelectedTypes < 1 || budgets.MaximumSelectionDepth < 1)
                 Fail("ROC1210", "Managed definition selection requires roots and positive explicit closure bounds.");
-            if (roots.Any(root => root.InputSha256.Length != 64 || !root.InputSha256.All(Uri.IsHexDigit) ||
+            if (allRoots.Any(root => root.InputSha256.Length != 64 || !root.InputSha256.All(Uri.IsHexDigit) ||
                 string.IsNullOrWhiteSpace(root.LookupName) || string.IsNullOrWhiteSpace(root.LinkageName)) ||
-                roots.Select(root => root.InputSha256).Distinct(StringComparer.OrdinalIgnoreCase).Count() > 1
-                || inputSha256 is not null && roots.Any(root => !root.InputSha256.Equals(inputSha256, StringComparison.OrdinalIgnoreCase))
+                allRoots.Select(root => root.InputSha256).Distinct(StringComparer.OrdinalIgnoreCase).Count() > 1
+                || admittedHash is not null && allRoots.Any(root => !root.InputSha256.Equals(admittedHash, StringComparison.OrdinalIgnoreCase))
                 || unitOrdinal < 1)
                 Fail("ROC1210", "Managed roots require the one admitted input hash, indexed lookup name and exact captured linkage.");
+            foreach (var root in startupRoots)
+            {
+                var selected = ResolveRoot(root);
+                if (startupDefinitions.Contains(selected)) Fail("ROC1210", "One captured startup definition is listed more than once.");
+                startupDefinitions.Add(selected);
+            }
             CheckAmbientInitialization();
             foreach (var root in roots)
             {
-                Tick();
-                // The reader supplies a public lazy name index. Materialize at
-                // the explicit candidate budget plus a sentinel; never scan other bodies.
-                var candidates = obj.TranslationUnit.SemanticModel.FindSymbols(root.LookupName).Take(budgets.MaximumSelectionCandidates + 1).ToArray();
-                if (candidates.Length > budgets.MaximumSelectionCandidates) Fail("ROC1211", "Managed root indexed candidate budget exceeded; uniqueness is unknown.");
-                var selected = candidates.OfType<FunctionSymbol>().Where(function =>
-                    (function.GnuSupplement?.AssemblyName ?? function.CurrentName) == root.LinkageName &&
-                    function.IsDefined && function.BodyState.Name == "definition" && function.Body is { Root.RepresentationRole.Name: "execution" }).Distinct().ToArray();
-                if (selected.Length != 1)
-                    Fail("ROC1211", "A managed root must select one actual defined public function by its current captured linkage.");
-                UseFunction(selected[0], "managed-root", "root");
-                selectedRoots.Add(new(root.LookupName, root.LinkageName, selected[0].Name, Signature(selected[0]), Locator(selected[0])));
+                var selected = ResolveRoot(root);
+                if (startupDefinitions.Contains(selected)) Fail("ROC1210", "A startup definition cannot also be a callable managed root.");
+                UseFunction(selected, "managed-root", "root");
+                callableDefinitions.Add(selected);
+                selectedRoots.Add(new(root.LookupName, root.LinkageName, selected.Name, Signature(selected), Locator(selected)));
+            }
+            for (var index = 0; index < startupDefinitions.Count; ++index)
+            {
+                var selected = startupDefinitions[index]; var root = startupRoots[index];
+                UseFunction(selected, "managed-startup", "ordered-startup-root");
+                selectedStartupRoots.Add(new(root.LookupName, root.LinkageName, selected.Name, Signature(selected), Locator(selected)));
             }
             foreach (var function in additionalFunctions ?? []) UseFunction(function, "selected-program", "bound-definition");
             foreach (var variable in additionalStorage ?? []) UseVariable(variable, "selected-program", "bound-storage");
@@ -105,16 +125,33 @@ internal static class ManagedSelectionPlanner
             var storage = variables.Where(IsStorageDefinition).ToArray();
             var report = new ManagedSelectionReport
             {
-                InputArtifactIdentity = obj.Manifest.ArtifactIdentity, InputSha256 = (inputSha256 ?? roots[0].InputSha256).ToLowerInvariant(),
+                InputArtifactIdentity = obj.Manifest.ArtifactIdentity, InputSha256 = admittedHash!.ToLowerInvariant(),
                 ClosureComplete = true, WholeInputInventoryComplete = false, WholeInputTranslationComplete = false,
                 RelatedTypeMetadataComplete = false, ExecutableBodiesVisited = bodiesVisited,
                 RequiredDeclarationCount = functions.Count - definitions.Length, StorageDefinitionCount = storage.Length,
                 RequiredVariableCount = variables.Count, ScopedTypeCount = types.Count, RequiredConstantCount = constants.Count,
                 BodyOperationCount = bodyOperationCount, SelectionWorkCount = workCount, AmbientRootRowsInspected = ambientRootRowsInspected,
                 AmbientRoutineCandidatesInspected = ambientRoutineCandidatesInspected,
-                Roots = selectedRoots.ToArray(), Dependencies = dependencies.ToArray()
+                AmbientInitialization = startup is null
+                    ? "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased."
+                    : "Exact current startup roots cover the admitted backend candidates in explicit target input order. Their executable closure is selected; generated explicit initialization and registered teardown still require emitter admission and separate execution evidence.",
+                Roots = selectedRoots.ToArray(), StartupRoots = selectedStartupRoots.ToArray(), StartupExecutionContract = startup?.Contract,
+                Dependencies = dependencies.ToArray()
             };
-            return new(obj, functions.ToArray(), variables.ToArray(), types.ToArray(), constants.ToArray(), definitions, storage, report);
+            return new(obj, functions.ToArray(), variables.ToArray(), types.ToArray(), constants.ToArray(), definitions, storage, report)
+            { StartupDefinitions = startupDefinitions.ToArray(), CallableDefinitions = callableDefinitions.ToArray() };
+        }
+
+        private FunctionSymbol ResolveRoot(ManagedDefinitionRoot root)
+        {
+            Tick();
+            var candidates = obj.TranslationUnit.SemanticModel.FindSymbols(root.LookupName).Take(budgets.MaximumSelectionCandidates + 1).ToArray();
+            if (candidates.Length > budgets.MaximumSelectionCandidates) Fail("ROC1211", "Managed root indexed candidate budget exceeded; uniqueness is unknown.");
+            var selected = candidates.OfType<FunctionSymbol>().Where(function =>
+                (function.GnuSupplement?.AssemblyName ?? function.CurrentName) == root.LinkageName && function.IsDefined &&
+                function.BodyState.Name == "definition" && function.Body is { Root.RepresentationRole.Name: "execution" }).Distinct().ToArray();
+            if (selected.Length != 1) Fail("ROC1211", "A managed root must select one actual defined public function by its current captured linkage.");
+            return selected[0];
         }
 
         private void CheckAmbientInitialization()
@@ -130,12 +167,31 @@ internal static class ManagedSelectionPlanner
             ambientRoutineCandidatesInspected = ambient.Count;
             if (ambient.Count > budgets.MaximumAmbientRoutineCandidates)
                 Fail("ROC1213", "Ambient routine discovery candidate budget exceeded; schedule completeness is unknown.");
-            if (ambient.Count != 0)
+            if (startup is null && ambient.Count != 0)
                 Fail("ROC1212", "Managed selection requires an explicit ambient startup/teardown schedule for captured routine '" +
                     ambient[0].CurrentName + "'; EDG backend startup, source constructor/finalizer and TLS entries cannot be omitted.");
-            if (unit.FileScopeInitializationRoutines.Take(1).Any() || unit.GlobalScope.DynamicInitializations.Take(1).Any() ||
-                unit.GlobalScope.Lifetime?.Cleanups.Take(1).Any() == true)
+            if (startup is not null)
+            {
+                foreach (var candidate in ambient)
+                {
+                    Tick();
+                    if (candidate.CurrentName?.StartsWith("__sti__", StringComparison.Ordinal) != true ||
+                        candidate.Details.IsInitializationRoutine == true || candidate.Details.IsFinalizationRoutine == true ||
+                        candidate.Details.IsTlsInitializationRoutine == true || candidate.Details.IsTlsInitializationAlias == true ||
+                        !startupDefinitions.Contains(candidate))
+                        Fail("ROC1212", "An actual ambient routine is not covered by the admitted explicit default-backend startup schedule: " + candidate.CurrentName);
+                }
+                if (startupDefinitions.Any(function => !ambient.Contains(function)))
+                    Fail("ROC1212", "An explicit startup root is not an actual default-backend ambient candidate in this current input.");
+            }
+            if (unit.FileScopeInitializationRoutines.Take(1).Any() || unit.GlobalScope.Lifetime?.Cleanups.Take(1).Any() == true)
                 Fail("ROC1212", "Managed selection cannot omit ambient translation-unit initialization or teardown; its execution schedule is unsupported.");
+            foreach (var initialization in unit.GlobalScope.DynamicInitializations)
+            {
+                Tick();
+                if (startup is null || !ManagedAmbientPolicy.IsInertDescriptor(initialization))
+                    Fail("ROC1212", "An ambient initialization or cleanup recipe has no admitted explicit execution schedule.");
+            }
             foreach (var root in unit.Roots)
             {
                 Tick();
@@ -523,6 +579,9 @@ internal static class ManagedProgramSelectionReports
             AmbientRootRowsInspected = units.Sum(unit => unit.Selection.Report.AmbientRootRowsInspected),
             AmbientRoutineCandidatesInspected = units.Sum(unit => unit.Selection.Report.AmbientRoutineCandidatesInspected),
             Roots = units.SelectMany(unit => unit.Selection.Report.Roots).ToArray(),
+            StartupRoots = units.SelectMany(unit => unit.Selection.Report.StartupRoots).ToArray(),
+            StartupExecutionContract = units.Select(unit => unit.Selection.Report.StartupExecutionContract).FirstOrDefault(contract => contract is not null),
+            AmbientInitialization = units.Select(unit => unit.Selection.Report.AmbientInitialization).FirstOrDefault() ?? "No selected ambient schedule.",
             Dependencies = units.SelectMany(unit => unit.Selection.Report.Dependencies).ToArray()
         };
     }

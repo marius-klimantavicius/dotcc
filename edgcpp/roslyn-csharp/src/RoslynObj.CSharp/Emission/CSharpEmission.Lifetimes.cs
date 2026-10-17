@@ -64,6 +64,11 @@ public sealed partial class CSharpEmitter
                     throw Limit("Execution and signature parameter roles differ in the selected lifetime routine.", "lifetime-parameter");
             }
             var references = new List<PointerType>();
+            if (TryValidateStartupLifetimeRoutine(function))
+            {
+                generatedLifetimeRoutines.Add(function);
+                return;
+            }
             if (ordinaryConstMethods.ContainsKey(function) || ordinaryMethodBodies.ContainsKey(function) || IsBorrowedFieldMethod(function))
             {
                 generatedLifetimeRoutines.Add(function);

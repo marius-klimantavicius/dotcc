@@ -31,6 +31,7 @@ public sealed partial class Translator
         var nativeBindings = new List<CSharpExternalFunctionBinding>();
         var nativeDataBindings = new List<CSharpExternalDataBinding>();
         var semanticRuntimeCandidates = new List<ImportReport>();
+        var selectedDsoCandidates = new List<ImportReport>();
         var intrinsicBuiltins = inventory.ProgramReport.Functions.Where(function => function.Builtin is not null)
             .ToDictionary(function => function.Locator, function => function.Builtin!, StringComparer.Ordinal);
         var intrinsicImports = intrinsicBuiltins.Keys.ToHashSet(StringComparer.Ordinal);
@@ -50,11 +51,19 @@ public sealed partial class Translator
             }
             // This spelling only defers admission. Successful fulfillment must
             // come from the emitter's actual validated execution/action identity.
-            if (import.Kind == "function" && SemanticRuntimeFunctionImplementation.CandidateContract(import.LinkageName) is not null)
+            if (import.Kind == "function" && SemanticRuntimeFunctionImplementation.CandidateContract(import.LinkageName) is { } candidateContract &&
+                (candidateContract != SemanticRuntimeFunctionImplementation.SelectedStartupRegistrationContract || request.Roots.ManagedStartup is not null))
             {
                 if (request.Runtime.Bindings.Any(binding => binding.Kind == import.Kind && binding.LinkageName == import.LinkageName))
                     return Failure("ROC1301", "A selected generated semantic helper cannot be replaced by a native binding.");
                 semanticRuntimeCandidates.Add(import);
+                continue;
+            }
+            if (request.Roots.ManagedStartup is not null && import.Kind == "variable" && import.LinkageName == "__dso_handle")
+            {
+                if (request.Runtime.Bindings.Any(binding => binding.Kind == import.Kind && binding.LinkageName == import.LinkageName))
+                    return Failure("ROC1301", "An explicitly selected generated module identity cannot be replaced by a native data binding.");
+                selectedDsoCandidates.Add(import);
                 continue;
             }
             var binding = request.Runtime.Bindings.SingleOrDefault(binding =>
@@ -117,10 +126,10 @@ public sealed partial class Translator
                 }
                 if (openedInputs.Count == 1)
                     managedSelectionPlan = ManagedSelectionPlanner.Select(openedInputs[0], request.Roots.ManagedDefinitions,
-                        request.Budgets, cancellationToken, CheckSelectionBudget);
+                        request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup);
                 else
                     managedProgramSelection = ManagedProgramSelectionPlanner.Select(openedInputs, inventory.ProgramReport.Inputs.Select(input => input.Sha256).ToArray(),
-                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget);
+                        request.Roots.ManagedDefinitions, request.Budgets, cancellationToken, CheckSelectionBudget, request.Roots.ManagedStartup);
             }
             var emission = new CSharpEmitter().Emit(openedInputs, new()
             {
@@ -129,6 +138,7 @@ public sealed partial class Translator
                 RuntimeProjectPath = request.Runtime.RuntimeProjectPath ?? "", ExternalFunctions = nativeBindings, ExternalData = nativeDataBindings,
                 NativeErrorProtocol = request.Runtime.NativeErrorProtocol,
                 ManagedSelection = managedSelectionPlan, ManagedProgramSelection = managedProgramSelection,
+                ManagedStartup = request.Roots.ManagedStartup,
                 ProgramAssembly = openedInputs.Count == 1 || managedProgramSelection is not null ? null : new ProgramAssemblyOptions
                 {
                     MaximumOpenUnits = request.Budgets.MaximumOpenUnits,
@@ -178,6 +188,21 @@ public sealed partial class Translator
                 if (nativeDataImplementations.Count != nativeDataBindings.Count)
                     return Failure("ROC1301", "A required native data binding has no validated address-only projection.");
             }
+            var selectedDsoImplementations = new HashSet<string>(StringComparer.Ordinal);
+            if (selectedDsoCandidates.Count != 0 || emission.SelectedStartupDsoVariables.Count != 0)
+            {
+                var publicVariables = openedInputs.SelectMany((input, unitIndex) =>
+                    (managedProgramSelection?.GetUnit(input)?.Variables ?? managedSelectionPlan?.Variables ?? input.TranslationUnit.Variables.AsEnumerable())
+                    .Select((variable, variableIndex) => (Variable: variable, Locator: $"unit/{unitIndex + 1:D4}/storage/{variableIndex + 1:D6}")))
+                    .ToDictionary(item => item.Variable, item => item.Locator);
+                foreach (var variable in emission.SelectedStartupDsoVariables)
+                    if (!publicVariables.TryGetValue(variable, out var locator) ||
+                        !selectedDsoCandidates.Any(candidate => candidate.Locator == locator) ||
+                        !selectedDsoImplementations.Add(locator))
+                        return Failure("ROC1301", "A generated module identity does not match one required current public declaration and validated address-only use closure.");
+                if (selectedDsoImplementations.Count != selectedDsoCandidates.Count)
+                    return Failure("ROC1301", "A deferred generated module declaration has no validated address-only implementation.");
+            }
             phaseObserver?.Invoke(TranslationPhase.EmissionCompleted);
             cancellationToken.ThrowIfCancellationRequested();
             using var process = Process.GetCurrentProcess();
@@ -204,6 +229,8 @@ public sealed partial class Translator
                         ? implementation.Describe(import)
                         : nativeDataImplementations.TryGetValue(import.Locator, out var dataImplementation)
                             ? dataImplementation.Describe(import)
+                            : selectedDsoImplementations.Contains(import.Locator)
+                                ? SelectedModuleDataContract.Describe(import)
                             : import).ToArray(),
                 Families = inventory.ProgramReport.Families.Select(f => f.RequiredCount == 0 ? f : f with
                 {

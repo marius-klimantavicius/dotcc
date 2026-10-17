@@ -11,6 +11,7 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
     internal const string Int32NoexceptTerminationOwnerContract = "managed-cpp-int32-noexcept-unwind-true-failfast-owner-v1";
     internal const string GeneratedVectorConstructorContract = "generated-cpp-vector-constructor-v1";
     internal const string GeneratedVectorDestructorContract = "generated-cpp-vector-destructor-v1";
+    internal const string SelectedStartupRegistrationContract = "generated-selected-program-atexit-v1";
 
     // A spelling permits deferral only. The emitter must return the actual
     // validated public function identity with the corresponding contract.
@@ -19,6 +20,7 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
         "__destroy_exception_object" => Int32ExceptionOwnerContract,
         "__cxa_vec_ctor" => GeneratedVectorConstructorContract,
         "__cxa_vec_dtor" => GeneratedVectorDestructorContract,
+        "__cxa_atexit" => SelectedStartupRegistrationContract,
         _ => null
     };
 
@@ -29,6 +31,15 @@ internal sealed record SemanticRuntimeFunctionImplementation(FunctionSymbol Func
 
     internal ImportReport Describe(ImportReport import) => Contract switch
     {
+        SelectedStartupRegistrationContract => import with
+        {
+            Provider = "RoslynObj.CSharp.Runtime.ManagedSelectedProgramLifetime",
+            BindingStatus = "generated-selected-program-atexit-contract-selected",
+            Ownership = "An explicit generated program instance retains exact selected managed destructor, borrowed object address and generated module address only after successful registration. Explicit shutdown invokes successful registrations once in reverse order; storage remains owned by generated program storage.",
+            ErrorContract = "The actual registration result flows to the captured consumer; nonzero failure publishes no entry and creates no compensating destruction. Initial admitted startup and destructors have separate closed generated-body nonthrow proofs, not invented source noexcept. Unexpected managed faults latch a failed explicit lifecycle state and propagate directly, without guessed C++ cleanup or CLR application type-initializer wrapping.",
+            ThreadContract = "Explicit serialized instance lifecycle; concurrent/reentrant transitions and registration during drain remain unsupported. No TLS, ProcessExit, native module unload or general __cxa_finalize contract is supplied.",
+            CallbackContract = "Only the actual selected generated destructor body receives the retained object address through an ordinary managed thunk; no native function address, UCO callback or application fallback is supplied."
+        },
         RecordConstructionOwnerContract => import with
         {
             Provider = "RoslynObj.CSharp.Runtime.ManagedCppException",

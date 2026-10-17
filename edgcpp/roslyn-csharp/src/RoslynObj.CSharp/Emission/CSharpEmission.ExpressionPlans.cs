@@ -343,6 +343,7 @@ public sealed partial class CSharpEmitter
 
         private ExpressionPlan PlanCall(CallOperation call)
         {
+            if (TryPlanStartupRegistration(call, out var startupRegistration)) return startupRegistration;
             if (TryPlanAutomaticArrayCall(call, out var automaticArrayCall)) return automaticArrayCall;
             ValidateGeneratedCallRoles(call);
             if (call.Operator.EvalLeftToRight && call.Operator.EvalRightToLeft)

@@ -26,11 +26,12 @@ internal static class ManagedProgramSelectionPlanner
 {
     internal static ManagedProgramSelectionPlan Select(IReadOnlyList<RoslynObject> inputs,
         IReadOnlyList<string> inputSha256, ManagedDefinitionRoot[] roots, ResourceBudgets budgets,
-        CancellationToken token = default, Action? checkBudget = null)
-        => new Work(inputs, inputSha256, roots, budgets, token, checkBudget).Run();
+        CancellationToken token = default, Action? checkBudget = null, ManagedStartupConfiguration? startup = null)
+        => new Work(inputs, inputSha256, roots, budgets, token, checkBudget, startup).Run();
 
     private sealed class Work(IReadOnlyList<RoslynObject> inputs, IReadOnlyList<string> hashes,
-        ManagedDefinitionRoot[] roots, ResourceBudgets budgets, CancellationToken token, Action? checkBudget)
+        ManagedDefinitionRoot[] roots, ResourceBudgets budgets, CancellationToken token, Action? checkBudget,
+        ManagedStartupConfiguration? startup)
     {
         private readonly AbiCompatibility compatibility = new();
         private readonly Dictionary<FunctionSymbol, FunctionSymbol> functionDefinitions = [];
@@ -46,17 +47,21 @@ internal static class ManagedProgramSelectionPlanner
         internal ManagedProgramSelectionPlan Run()
         {
             Tick();
-            if (inputs.Count is < 1 or > 2 || inputs.Count > budgets.MaximumOpenUnits || hashes.Count != inputs.Count || roots.Length == 0)
+            if (inputs.Count is < 1 or > 2 || inputs.Count > budgets.MaximumOpenUnits || hashes.Count != inputs.Count ||
+                roots.Length == 0 && startup?.Definitions.Length is not > 0)
                 Fail("ROC1220", "Managed program selection requires one or two explicit pinned inputs, admitted open-unit budgets and managed roots.");
             if (hashes.Any(hash => hash.Length != 64 || !hash.All(Uri.IsHexDigit)) ||
                 hashes.Distinct(StringComparer.OrdinalIgnoreCase).Count() != hashes.Count ||
                 inputs.Select(input => input.Manifest.ArtifactIdentity).Distinct(StringComparer.Ordinal).Count() != inputs.Count)
                 Fail("ROC1220", "Managed program inputs require distinct immutable hashes and artifact identities; implicit deduplication is unsupported.");
+            if (startup is not null && (startup.Contract != "edg7-itanium-explicit-startup-atexit-v1" || startup.Definitions.Length == 0 ||
+                !startup.UnitInputOrder.SequenceEqual(hashes, StringComparer.OrdinalIgnoreCase)))
+                Fail("ROC1220", "Explicit startup requires its admitted lifecycle policy and complete target input-order contract.");
             if (inputs.Any(input => input.Manifest.Target != inputs[0].Manifest.Target || input.Manifest.CaptureProfile != "native_lowered"))
                 Fail("ROC1220", "Managed program inputs must retain matching captured targets and the admitted native_lowered profile.");
             units = inputs.Select((input, index) => new UnitState(input, hashes[index], index + 1,
                 roots.Where(root => root.InputSha256.Equals(hashes[index], StringComparison.OrdinalIgnoreCase)).ToArray())).ToArray();
-            if (roots.Any(root => hashes.Count(hash => hash.Equals(root.InputSha256, StringComparison.OrdinalIgnoreCase)) != 1))
+            if (roots.Concat(startup?.Definitions ?? []).Any(root => hashes.Count(hash => hash.Equals(root.InputSha256, StringComparison.OrdinalIgnoreCase)) != 1))
                 Fail("ROC1220", "Each managed root must identify exactly one explicit current input hash.");
 
             var rounds = 0;
@@ -67,7 +72,7 @@ internal static class ManagedProgramSelectionPlanner
                     Fail("ROC1221", "Managed program fixed-point iteration bound exceeded.");
                 next.Dirty = false;
                 var plan = ManagedSelectionPlanner.SelectSeeded(next.Source, next.Roots,
-                    next.FunctionSeeds, next.VariableSeeds, next.Hash, next.Ordinal, budgets, token, checkBudget);
+                    next.FunctionSeeds, next.VariableSeeds, next.Hash, next.Ordinal, budgets, token, checkBudget, startup);
                 next.Plan = plan;
                 CheckAggregateBounds();
                 CheckSelectedDefinitions();

@@ -102,3 +102,9 @@ is the complete actual Vector::GetVectorType path. Scalar-result composition and
 scoped pointer/receiver alias views now have separate genuine composed-fixture
 evidence; actual core293 startup/atexit and guard/library/EH closure remain open. Both retained branches must remain; no application body is supplied
 natively or replaced by a guessed pointer test.
+
+[Explicit selected startup](SELECTED-STARTUP.md) now has a separate 20-outcome
+fixture proof with managed registration and explicit reverse teardown. Omitting
+that opt-in schedule still rejects ambient obligations. Real core293 startup
+remains unpublished at selected EH dependency admission; the default mode and
+earlier actual getter execution are not relabeled.

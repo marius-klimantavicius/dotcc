@@ -24,7 +24,8 @@ public sealed partial class CSharpEmitter
                 throw Limit($"Storage '{variable.Name}' requires thread/local-static initialization support.", "storage");
             if (variable.Details.IsWeak || variable.Details.IsCommon || variable.Details.IsGnuAlias || variable.Details.IsWeakref || variable.Details.AliasedVariable is not null)
                 throw Limit($"Storage '{variable.Name}' requires an explicit weak/common/alias selection policy.", "link-policy");
-            if (variable.Initializer is { } initializer && initializer.Kind.Name != "dik_constant")
+            if (variable.Initializer is { } initializer && initializer.Kind.Name != "dik_constant" &&
+                (!SelectedStartupEnabled || !ManagedAmbientPolicy.IsInertDescriptor(initializer)))
                 throw Limit($"Storage '{variable.Name}' has a dynamic initializer '{initializer.Kind}'.", "initialization");
             AddStorage(variable, variable.Type, variable.ConstantInitializer ?? variable.Initializer?.Constant, variable.Name ?? "storage");
         }

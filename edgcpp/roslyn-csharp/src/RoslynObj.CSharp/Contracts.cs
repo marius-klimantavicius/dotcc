@@ -81,6 +81,14 @@ public sealed record ProgramRoots
     public string[] Exports { get; init; } = [];
     public bool RetainAllDefinitions { get; init; } = true;
     public ManagedDefinitionRoot[] ManagedDefinitions { get; init; } = [];
+    public ManagedStartupConfiguration? ManagedStartup { get; init; }
+}
+/// <summary>Explicit target lifecycle policy, separate from captured source semantics.</summary>
+public sealed record ManagedStartupConfiguration
+{
+    public string Contract { get; init; } = "edg7-itanium-explicit-startup-atexit-v1";
+    public string[] UnitInputOrder { get; init; } = [];
+    public ManagedDefinitionRoot[] Definitions { get; init; } = [];
 }
 /// <summary>Current-input indexed discovery plus exact captured linkage selection; never a source semantic rule.</summary>
 public sealed record ManagedDefinitionRoot
@@ -119,6 +127,8 @@ public sealed record ManagedSelectionReport
     public string UnvisitedInput { get; init; } = "Unselected bodies, storage and related metadata are not inventoried or translated; no whole-input completion is claimed.";
     public string AmbientInitialization { get; init; } = "Required ambient translation-unit initialization/teardown is checked and unsupported execution is rejected, never erased.";
     public IReadOnlyList<ManagedRootSelectionReport> Roots { get; init; } = [];
+    public IReadOnlyList<ManagedRootSelectionReport> StartupRoots { get; init; } = [];
+    public string? StartupExecutionContract { get; init; }
     public IReadOnlyList<ManagedSelectionDependencyReport> Dependencies { get; init; } = [];
 }
 public sealed record OutputConfiguration
