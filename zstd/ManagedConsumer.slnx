@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedZstd/TranslatedZstd.csproj" />
+  <Project Path="src/Managed.Zstd/Managed.Zstd.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

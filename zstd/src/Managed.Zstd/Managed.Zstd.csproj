@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <ZstdProject Condition="'$(ZstdProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedZstd/TranslatedZstd.csproj</ZstdProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(ZstdProject)" />
+  </ItemGroup>
+  <Target Name="RequireTranslatedZstd" BeforeTargets="CoreCompile">
+    <Error Condition="!Exists('$(ZstdProject)')" Text="The real translated zstd product is unavailable. Run zstd/scripts/translate.sh first." />
+  </Target>
+</Project>

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "name": "zstd",
+  "version": "1.5.7",
+  "tag": "v1.5.7",
+  "revision": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+  "tag_object": "ac66b19e6bd6b83238bf008eecc1298105298532",
+  "url": "https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz",
+  "archive": "zstd-1.5.7.tar.gz",
+  "directory": "zstd-1.5.7",
+  "sha256": "eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3",
+  "checksum_url": "https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz.sha256",
+  "required": [
+    "LICENSE",
+    "COPYING",
+    "lib/zstd.h",
+    "lib/zdict.h",
+    "lib/common/zstd_common.c",
+    "lib/compress/zstd_compress.c",
+    "lib/compress/zstd_opt.c",
+    "lib/compress/zstd_ldm.c",
+    "lib/decompress/zstd_decompress.c",
+    "lib/dictBuilder/zdict.c",
+    "tests/fuzzer.c",
+    "tests/zstreamtest.c"
+  ]
+}

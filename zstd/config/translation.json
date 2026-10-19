@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "dialect": "c11",
+  "defines": [
+    "ZSTD_LEGACY_SUPPORT=0",
+    "ZSTD_DISABLE_ASM=1",
+    "ZSTD_NO_INTRINSICS=1",
+    "DYNAMIC_BMI2=0",
+    "STATIC_BMI2=0",
+    "XXH_VECTOR=0",
+    "XXH_NAMESPACE=ZSTD_",
+    "DEBUGLEVEL=0",
+    "NDEBUG"
+  ],
+  "undefines": [
+    "ZSTD_MULTITHREAD"
+  ],
+  "source_groups": [
+    "lib/common",
+    "lib/compress",
+    "lib/decompress",
+    "lib/dictBuilder"
+  ],
+  "units": [
+    "lib/common/debug.c",
+    "lib/common/entropy_common.c",
+    "lib/common/error_private.c",
+    "lib/common/fse_decompress.c",
+    "lib/common/pool.c",
+    "lib/common/threading.c",
+    "lib/common/xxhash.c",
+    "lib/common/zstd_common.c",
+    "lib/compress/fse_compress.c",
+    "lib/compress/hist.c",
+    "lib/compress/huf_compress.c",
+    "lib/compress/zstd_compress.c",
+    "lib/compress/zstd_compress_literals.c",
+    "lib/compress/zstd_compress_sequences.c",
+    "lib/compress/zstd_compress_superblock.c",
+    "lib/compress/zstd_double_fast.c",
+    "lib/compress/zstd_fast.c",
+    "lib/compress/zstd_lazy.c",
+    "lib/compress/zstd_ldm.c",
+    "lib/compress/zstd_opt.c",
+    "lib/compress/zstd_preSplit.c",
+    "lib/compress/zstdmt_compress.c",
+    "lib/decompress/huf_decompress.c",
+    "lib/decompress/zstd_ddict.c",
+    "lib/decompress/zstd_decompress.c",
+    "lib/decompress/zstd_decompress_block.c",
+    "lib/dictBuilder/cover.c",
+    "lib/dictBuilder/divsufsort.c",
+    "lib/dictBuilder/fastcover.c",
+    "lib/dictBuilder/zdict.c"
+  ],
+  "bridge": "src/Native/zstd_bridge.c",
+  "excluded_features": [
+    "legacy frames before v0.8",
+    "multithreaded compression",
+    "assembly and ISA-specific intrinsic implementations",
+    "upstream command-line executable"
+  ],
+  "native_jobs": 2
+}
