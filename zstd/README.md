@@ -1,9 +1,11 @@
 # Zstandard translated to C#
 
 This campaign translates the upstream portable Zstandard library with DotCC and
-delivers an owning .NET API and a separate file-archive application. Current
-Linux x64 qualification passes; clean reproduction remains. See [the plan](docs/PLAN.md), [validation](docs/validation.md)
-and [observed blockers](docs/blockers.md) for actual results.
+delivers an owning .NET API and a separate file-archive application. The selected
+portable single-thread core is qualified on Linux x64 in raw/processed JIT and
+NativeAOT forms, including clean regeneration and the file consumer. See
+[the plan](docs/PLAN.md), [validation](docs/validation.md) and
+[the resolved blocker ledger](docs/blockers.md) for evidence.
 
 The product selects the complete portable standard library core: all compression
 strategies, long-distance matching, decompression, streaming, checksums,
@@ -43,8 +45,12 @@ using Managed.Zstd;
 byte[] frame = ZstdCodec.Compress(payload, level: 9);
 byte[] restored = ZstdCodec.Decompress(frame, maxOutputBytes: 64 * 1024 * 1024);
 
+using var inputStream = new MemoryStream(payload);
+using var compressedStream = new MemoryStream();
+using var restoredStream = new MemoryStream();
 using var compressor = new ZstdCompressor();
 compressor.Compress(inputStream, compressedStream);
+compressedStream.Position = 0; // Rewind the seekable frame before decoding.
 using var decoder = new ZstdDecompressor();
 decoder.Decompress(compressedStream, restoredStream, maxOutputBytes: 1L << 30);
 

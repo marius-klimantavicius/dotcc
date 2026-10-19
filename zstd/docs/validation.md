@@ -1,6 +1,7 @@
 # Zstandard validation ledger
 
-Updated 2026-10-19. Acceptance incomplete; translated runtime results below are scoped to their exact receipts.
+Updated 2026-10-19. Accepted for the selected Linux x64 portable single-thread
+scope. Results below are scoped to their exact receipts; no required gate is open.
 
 The initial workspace inspection showed pre-existing unrelated changes in
 EDG/C++, duckdb, libuv and repository summary/plans. They are outside this
@@ -19,7 +20,7 @@ conventions. Source release checked at the official GitHub v1.5.7 release page.
 | Actual translated ABI and first useful workflow | All four ABI and consumer cells pass in final receipt. |
 | Required feature/lifetime/upstream/interoperability matrix | All four cells pass, including 33 actual upstream case labels and context-size equality per cell. |
 | Normal consumer and whole-library-rooted AOT | Both forms compile/execute and pass actual IL/ELF/method-map/notice audit. |
-| Final reproduction and affected regressions | Affected downstream regressions passed; clean reproduction pending. |
+| Final reproduction and affected regressions | Passed, including clean committed-source regeneration/solution/four-cell consumer and authored preservation. |
 
 Append exact commands, receipt/log paths, case counts, tool/runtime identities
 and milestone commit IDs as evidence becomes available. Build success alone does
@@ -301,3 +302,65 @@ exact argv, applied shared production lock/budget flags and build-log hash.
 `VectorIoEntry` field warnings remain; there are zero errors. The receipt's empty
 warning array refers to campaign policy warnings, not an assertion that compiler
 logs contain no warnings. No build is left running before reproduction.
+
+## Committed delivery and clean reproduction
+
+Authored API, consumer, exact upstream tests, audits and final trace profile were
+committed as `027c29a54` after the full matrix and root solution passed. The
+previous focused milestones are `c3a66ac65` (source/native campaign) and
+`fdd42a910` (shared compiler repairs with affected downstream regressions).
+No push was performed.
+
+`artifacts/reproduction/report.json` passes all six commands, retaining exact
+argv, environment, cwd, logs, source-archive hash and copied tool-closure hashes.
+The isolated ordinary-copy root is `build/reproduction/clean-delivery`. It
+contains a `git archive` of committed `Scripts`, root MSBuild/NuGet metadata and
+`zstd`, copied final compiler/postprocessor binary closures, and the existing
+official local upstream source tree. It does not rebuild the compiler, require
+an upstream archive, rely on old output products or use source/tool symlinks.
+NuGet restore remains its separate normal .NET policy.
+
+All commands ran from `/tmp`, using absolute paths resolved inside that clean
+root and the selected copied final tools. The command sequence was:
+
+```bash
+bash CLEAN/Scripts/campaign.sh layout zstd --check
+bash CLEAN/zstd/scripts/translate.sh --tools reuse --fetch never --hashes off --jobs 2
+python3 CLEAN/Scripts/production_support.py dotnet build CLEAN/zstd/ManagedConsumer.slnx -c Release -m:1 --artifacts-path CLEAN/zstd/build/solution
+bash CLEAN/zstd/scripts/test.sh --suite consumer --tools reuse --fetch never --hashes off --form all --mode all --rid linux-x64
+bash CLEAN/zstd/scripts/fetch.sh --fetch never --hashes warn
+bash CLEAN/zstd/scripts/fetch.sh --fetch never --hashes off
+```
+
+Here `CLEAN` abbreviates the absolute isolated root, not a required shell
+variable. `DOTCC_CAMPAIGN_COMMAND_LOCKS=production` and explicit compiler and
+postprocessor paths inside `CLEAN` applied to each command. Complete translation
+passes in 54.05 s, ordinary solution in 8.73 s, and four-cell consumer in
+41.08 s. All 39 committed authored campaign files retain identical before/after
+hashes; the root uses only ordinary copies and no symlinks.
+
+Clean receipts under `CLEAN/zstd/artifacts/campaign/`:
+
+- `20261019-204805-2a1befc1`: full raw/processed translation, hashes off,
+  local source with no cached upstream archive, fetch never, passed.
+- `20261019-204908-25825a2c`: owning consumer raw/processed JIT/NativeAOT,
+  all four meaningful file workflows passed.
+- `20261019-204949-ef20a710`: after copying and deliberately appending a
+  provenance-control marker to the isolated cached archive, hashes warn reports
+  the mismatch and accepts the still-usable local source without overwriting it.
+- `20261019-204949-d0b3c04a`: the same isolated inputs with hashes off pass
+  without common provenance checks. The canonical original archive/tree remain
+  untouched. Strict mode is optional and was not selected.
+
+The clean archive proves output regeneration and ordinary project-reference
+execution independently of the original build/output paths. The original full
+matrix supplies the separate upstream, native interoperability and rooted AOT
+artifact audits. The final documentation-only commit clarifies the stream
+examples with explicit MemoryStreams and rewind; implementation files remain
+identical to the qualified/reproduced source commit.
+
+There are no incomplete required gates for the selected scope. Other
+OS/architectures, worker compression, pre-v0.8 frames, optional trace hooks,
+deprecated/contrib/CLI products and the explicitly omitted randomized, stress
+and complete upstream drivers remain unqualified. The unrelated shared framework
+baseline failure recorded above is not relabeled as a pass.

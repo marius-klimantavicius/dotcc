@@ -1,6 +1,6 @@
 # Translate Zstandard with DotCC
 
-Status: final Linux x64 qualification passes; clean reproduction is in progress.
+Status: accepted for the selected Linux x64 portable single-thread scope.
 Campaign: `zstd/`. Updated: 2026-10-19.
 
 This campaign adopts [translation baseline v2](../../docs/plans/translation-baseline.md)
@@ -99,7 +99,7 @@ Never stage unrelated modifications. Baseline workspace was already dirty in
 | P3 | Actual translated one-shot, streaming and dictionary workflows with clean ownership. | Passed | Final receipt: behavior30/lifecycle7/interop6 plus three exact native comparisons and meaningful consumer per cell. |
 | P4 | Required feature/error/lifetime/upstream/interoperability rows pass all four matrix cells. | Passed | Final receipt: six groups/33 original upstream case labels per cell, zero skips, exact context-size comparison; explicit omitted drivers in inventory. |
 | P5 | Root solution builds; owning API and separate consumer run meaningful file workflows, JIT/AOT. | Passed | Final receipt: ordinary trimmed consumer restores four files with and without trained dictionary in all four cells; root solution build report passes. |
-| P6 | Regeneration with final tools, current full matrix, rooted AOT, dependency audit, affected shared regressions and reproduction. | Reproduction pending | Final receipt and affected downstream gates pass; isolated committed-source regeneration remains. |
+| P6 | Regeneration with final tools, current full matrix, rooted AOT, dependency audit, affected shared regressions and reproduction. | Passed | Final receipt, affected downstream gates and isolated committed-source hashes-off regeneration/solution/four-cell consumer all pass; 39 authored files preserved. |
 
 P0 → P1 → P2 → P3 → P4 → P5 → P6; native/API/test authoring proceeds in
 parallel, but runtime acceptance always uses the actual translated implementation.
@@ -142,3 +142,10 @@ Framework receipts distinguish published build products from later qualification
 failures. The final report must identify every blocked/unrun required gate and
 excluded target honestly. Completion requires the complete selected scope, useful
 workflow, current matrix and reproducible delivery evidence.
+
+Accepted evidence: final qualification receipt
+`artifacts/campaign/20261019-204241-00db2fbc/receipt.json`, ordinary solution
+report in that receipt directory, and `artifacts/reproduction/report.json` for
+committed-source clean delivery. No required selected gate remains incomplete.
+Unselected upstream drivers, optional features and other platforms retain the
+explicit exclusions above; this does not claim their execution.

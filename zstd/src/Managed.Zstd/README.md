@@ -9,8 +9,12 @@ using Managed.Zstd;
 byte[] frame = ZstdCodec.Compress(payload, level: 9);
 byte[] restored = ZstdCodec.Decompress(frame, maxOutputBytes: 16 * 1024 * 1024);
 
+using var inputStream = new MemoryStream(payload);
+using var compressedStream = new MemoryStream();
+using var outputStream = new MemoryStream();
 using var compressor = new ZstdCompressor();
 compressor.Compress(inputStream, compressedStream);
+compressedStream.Position = 0; // Rewind the seekable frame before decoding.
 using var decoder = new ZstdDecompressor();
 decoder.Decompress(compressedStream, outputStream, maxOutputBytes: 1L << 30);
 ```

@@ -1,6 +1,7 @@
 # Zstandard blocker ledger
 
-Updated 2026-10-19. No active implementation blocker; final clean reproduction remains.
+Updated 2026-10-19. All observed campaign blockers are closed. Final selected-scope
+qualification and clean reproduction pass; no required gate remains incomplete.
 
 ## ZSTD-C001 — aggregate member initializer lowering
 
@@ -136,7 +137,7 @@ unrelated repository baseline failures.
   native controls in receipt `20261019-204241-00db2fbc` have zero trace symbols
   and actual context-struct size 5272 versus the old 5280-byte native value.
   The supplementary executed context-size comparison is distinct from the
-  33 original upstream cases and must also pass every final matrix cell.
+  33 original upstream cases and passes every final matrix cell.
 - Closed: final receipt `20261019-204241-00db2fbc` passes all four upstream
   cells with native/emitted size 582672 and zero skipped cases, plus the complete
   API/consumer/import/rooted-AOT matrix. No shared compiler repair was needed.
