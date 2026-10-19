@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>DotCC.Tests</AssemblyName>
+    <SharedLibcProject Condition="'$(SharedLibcProject)' == ''">../../../DotCC.Libc/DotCC.Libc.csproj</SharedLibcProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SharedLibcProject)" />
+    <Compile Include="../../../DotCC.Tests/PthreadStackPolicyTests.cs" />
+    <Compile Include="../../../DotCC.Tests/PthreadLibTests.cs" />
+    <Compile Include="../../../DotCC.Tests/ExplicitInstanceCallbackTests.cs" />
+    <Compile Include="../../../DotCC.Tests/PthreadStackAttributeTests.cs" />
+    <Compile Include="../../../DotCC.Tests/PthreadCancellationTests.cs" />
+    <Compile Include="../../../DotCC.Tests/RuntimeTerminationTests.cs" />
+    <Compile Include="../../../DotCC.Tests/CollectionDefinitions.cs" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+</Project>

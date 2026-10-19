@@ -63,10 +63,12 @@ public static partial class Compiler
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
+        if (anonymousTypedefs != null) sb.Append(AnonymousTypedefNames.Serialize(anonymousTypedefs));
+        if (aggregateIdentities != null) sb.Append(AggregateIdentities.Serialize(aggregateIdentities));
         sb.Append("//!!dotcc-obj calling-convention:").Append(instanceMethods ? "instance-v1" : "static-v1").Append('\n');
         sb.Append("//!!dotcc-obj source-language:").Append(usesZig ? "zig" : "c").Append('\n');
         sb.Append("//!!dotcc-obj override-profile:").Append(overrideProfile).Append('\n');
@@ -145,6 +147,7 @@ public static partial class Compiler
         var libraryMode = emit is EmitMode.SharedLib or EmitMode.ManagedLib;
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
+        var anonymousTypedefs = new Dictionary<string, string>(StringComparer.Ordinal);
         var typeByName = new Dictionary<string, string>(StringComparer.Ordinal);
         var typeOrder = new List<string>();
         var aggregateByName = new Dictionary<string, ObjectAggregateMetadata>(StringComparer.Ordinal);
@@ -171,12 +174,19 @@ public static partial class Compiler
         var importSpecs = new Dictionary<string, string>(StringComparer.Ordinal);
         var definedNames = new HashSet<string>(StringComparer.Ordinal);
 
+        var objectTexts = objectPaths.Select(path => File.ReadAllText(path).ReplaceLineEndings("\n")).ToArray();
+        var identityGraphs = objectTexts.Select(AggregateIdentities.Read).ToArray();
+        var variantNames = AggregateIdentities.Plan(objectPaths.Select((path, index) =>
+            (path, identityGraphs[index])).ToArray());
         var discardedWeakFunctions = ResolveWeakObjectFunctions(objectPaths);
         for (int objectIndex = 0; objectIndex < objectPaths.Count; objectIndex++)
         {
             var path = objectPaths[objectIndex];
-            var text = File.ReadAllText(path).ReplaceLineEndings("\n");
+            var text = identityGraphs[objectIndex] is { } graph
+                ? AggregateIdentities.Relocate(objectTexts[objectIndex], graph, variantNames[objectIndex])
+                : objectTexts[objectIndex];
             ValidateInstanceObject(text, path, outputOptions?.InstanceMethods == true);
+            AnonymousTypedefNames.Read(text, anonymousTypedefs);
             if (text.Split('\n').Contains("//!!dotcc-obj source-language:zig", StringComparer.Ordinal)) usesZig = true;
             else if (usesZig != true && !text.Split('\n').Contains("//!!dotcc-obj source-language:c", StringComparer.Ordinal)) usesZig = null;
             if (!text.Contains(MagicObject, StringComparison.Ordinal))
@@ -441,21 +451,32 @@ public static partial class Compiler
         var pointerResolvers = ResolveExternalPointerOwners(typeByName, definedNames, typeByName.Keys, outputOptions?.InstanceMethods == true);
         var storage = new GlobalStorageReferences(inline.Globals,
             functionSources.Select(f => f.Name).Concat(typeByName.Keys),
-            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName), outputOptions?.InstanceMethods == true);
+            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName), outputOptions?.InstanceMethods == true,
+            stateContext: outputOptions?.StateContext == true);
         var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
-        ValidateContextNames(outputOptions, functionSources.Select(f => f.Name).Concat(typeByName.Keys).Append(owner));
+        var generatedContextTypes = anonymousTypedefs.Where(pair =>
+        {
+            var origins = identityGraphs.SelectMany(graph => graph ?? Array.Empty<AggregateIdentity>())
+                .Where(node => node.Name == pair.Key).ToArray();
+            return origins.Length != 0 && origins.All(node => !node.Tagged && node.OriginalName == pair.Key);
+        }).ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+        ValidateContextNames(outputOptions, functionSources.Select(f => f.Name).Append(owner),
+            typeByName.Keys, generatedContextTypes);
         var globalText = RenderGlobals(inline.Globals, literals, storage);
         if (outputOptions?.StateContext == true || outputOptions?.InstanceMethods == true)
             globalText = RenderStateContext(globalText, inline.Globals, literals, storage, owner, outputOptions?.InstanceMethods == true);
         string ResolveInstanceCalls(string text) => outputOptions?.InstanceMethods == true
             ? InstanceReferences.Resolve(text, definedNames, "this") : text;
+        var ownerInitializers = RenderOwnerInitializers(typeByName, literals, storage, definedNames,
+            outputOptions?.InstanceMethods == true);
         var parts = missingBoundaries ? null : functionSources.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(part.Text))) }).ToArray();
-        return BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(functions.ToString()))), parts, aliasText,
+        var files = BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(functions.ToString()))), parts, aliasText,
             emit, libraryClass, importsClass, false, split, splitSize, namespaceName, nested,
-            (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
+            (functionText, fileAliases, partial) => BuildShell(mainArity, pointerResolvers.Methods + ownerInitializers + RenderMacroFields(typeByName, owner, definedNames) + functionText, types, fileAliases, globalText,
                 emit, System.Array.Empty<EmitHelpers.Export>(), debugHeap, importsClass,
                 importsAreStatic: false, mainReturnsVoid: mainReturnsVoid,
                 mainReturnsErrUnion: mainReturnsErrUnion, mainErrPayloadIsVoid: mainErrPayloadIsVoid, libraryClass: libraryClass, partial: partial, namespaceName: namespaceName, nested: nested, includeZig: includeZig), instanceMethods: outputOptions?.InstanceMethods == true);
+        return AnonymousTypedefNames.Resolve(files, anonymousTypedefs, typeByName.Keys, definedNames);
     }
 
     private static string GeneratedOwnerAliases(IEnumerable<string> typeKeys, IEnumerable<string> definitions, bool libraryMode, string libraryClass, string? namespaceName = null, bool nested = false, bool literalPool = false)
@@ -464,7 +485,9 @@ public static partial class Compiler
         var ownerClass = libraryMode ? libraryClass : "DotCcProgram";
         var defined = new HashSet<string>(definitions, StringComparer.Ordinal);
         var aliases = new StringBuilder();
-        if (literalPool && typeKeys.Any(key => key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)))
+        if (typeKeys.Any(key => key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)
+            && (literalPool || key.StartsWith(LiteralPool.TypeKeyPrefix + "B", StringComparison.Ordinal)
+                || key.StartsWith(LiteralPool.TypeKeyPrefix + "P", StringComparison.Ordinal))))
             aliases.Append("using DotCcLiterals = global::").Append(scope).Append(HelperClass(ownerClass, "Literals")).Append(";\n");
         var keys = typeKeys.Where(key => key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal))
             .OrderBy(key => key, StringComparer.Ordinal).ToArray();

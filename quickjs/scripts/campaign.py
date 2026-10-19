@@ -15,6 +15,8 @@ def sources(root):
 
 
 def prepare(ctx):
+    from production_support import production_sources
+    ctx.receipt["production_inputs"] = production_sources(ctx.root)
     pin = json_file(ctx.root / "config/source.json")
     source = ctx.work / "source"
     ctx.receipt["adaptations"] = helper(ctx.root / "scripts/stage.py").stage(ctx.sources["product"], source)

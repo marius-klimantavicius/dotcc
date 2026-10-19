@@ -1,0 +1,48 @@
+using VM = Expanded.Storage;
+
+internal static class Entry
+{
+    private static void Check(bool value, string message)
+    {
+        if (!value) throw new InvalidOperationException(message);
+    }
+
+    public static int Main()
+    {
+        using var first = new VM();
+        using var second = new VM();
+        Check(first.expanded_run() == 0, "native byte/scalar/offset transcript");
+        Check(second.expanded_check() == 1, "second owner initialized storage");
+        Check(first.a25_rows_address() != second.a25_rows_address(), "independent owner destinations");
+        Check(first.a25_mutable() == 1 && second.a25_mutable() == 1, "distinct writable twins");
+        Check(first.a25_static_step() == 33 && second.a25_static_step() == 31, "per-owner static local");
+        ulong address = first.a25_rows_address();
+        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking: true, compacting: true);
+        Check(first.a25_rows_address() == address && first.expanded_check() == 1 && second.expanded_check() == 1,
+              "pinned destinations and final relocations across collection");
+        var results = new int[2, 2];
+        var addresses = new ulong[2];
+        var errors = new Exception?[2];
+        using var barrier = new Barrier(3);
+        var threads = Enumerable.Range(0, 2).Select(i => new Thread(() =>
+        {
+            try
+            {
+                results[i, 0] = first.a25_thread_step();
+                results[i, 1] = first.a25_thread_step();
+                addresses[i] = first.a25_thread_address();
+            }
+            catch (Exception error) { errors[i] = error; }
+            finally { barrier.SignalAndWait(TimeSpan.FromSeconds(15)); }
+        })).ToArray();
+        foreach (var thread in threads) thread.Start();
+        Check(barrier.SignalAndWait(TimeSpan.FromSeconds(15)), "worker barrier");
+        foreach (var thread in threads) Check(thread.Join(TimeSpan.FromSeconds(15)), "worker join");
+        Check(errors.All(error => error is null), "worker errors");
+        for (int i = 0; i < 2; i++) Check(results[i, 0] == 24 && results[i, 1] == 26, "worker initialized TLS");
+        Check(addresses[0] != addresses[1], "distinct TLS destinations");
+        Check(first.a25_thread_step() == 26 && second.a25_thread_step() == 24, "thread and owner isolation");
+        Console.Error.WriteLine("Expanded D10: native bytes/offsets, exact scalar bits, writable identity, GC, two owners, two workers, TLS PASS");
+        return 0;
+    }
+}

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <PublishAot>true</PublishAot>
+    <PublishTrimmed>true</PublishTrimmed>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedCPython/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Root the entire actual translated boundary, slots and shared runtime,
+         including methods unreachable from the normally trimmed sample. -->
+    <TrimmerRootAssembly Include="TranslatedCPython" />
+    <TrimmerRootAssembly Include="Managed.CPython" />
+    <ProjectReference Include="../../src/Managed.CPython/Managed.CPython.csproj" AdditionalProperties="CPythonProject=$(CPythonProject)" />
+    <Compile Include="../Behavior/Program.cs" Link="Program.cs" />
+    <Content Include="../fixtures/*.py" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../src/Managed.CPython/DeliveryNotices.targets" />
+</Project>

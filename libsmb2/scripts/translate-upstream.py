@@ -11,7 +11,11 @@ import json
 from pathlib import Path
 import platform
 import shutil
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool, require_tool_identity
 import tempfile
 import time
 
@@ -67,8 +71,13 @@ def main():
         for subdir, hashes in translation['tools'].items():
             for name, digest in hashes.items():
                 policy().check(library_stage / 'tools' / subdir / name, digest)
-        compiler = library_stage / 'tools/DotCC/dotcc.dll'
-        postprocessor = library_stage / 'tools/DotCC.PostProcess/dotcc-postprocess.dll'
+        compiler = library_stage / 'tools/DotCC' / selected_tool().name
+        postprocessor = library_stage / 'tools/DotCC.PostProcess' / selected_tool('postprocessor').name
+        if 'DOTCC_COMPILER' in __import__('os').environ:
+            require_tool_identity(selected_tool(), translation['tools']['DotCC'], 'Legacy library selected compiler')
+            require_tool_identity(selected_tool('postprocessor'), translation['tools']['DotCC.PostProcess'], 'Legacy library selected postprocessor')
+            require_tool_identity(compiler, translation['tools']['DotCC'], 'Legacy library compiler snapshot')
+            require_tool_identity(postprocessor, translation['tools']['DotCC.PostProcess'], 'Legacy library postprocessor snapshot')
         objects = [library_stage / 'objects' / (f'{i:03d}-' + Path(unit).stem + '.cs') for i, unit in enumerate(units)]
         if not all(p.is_file() for p in objects):
             raise RuntimeError('Library object fragments are absent; regenerate the library first')

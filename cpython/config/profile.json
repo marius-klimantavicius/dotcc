@@ -1,0 +1,45 @@
+{
+  "name": "embedded-gil",
+  "upstream_standard": "gnu11",
+  "dotcc_standard": "c11",
+  "dialect_reason": "DotCC explicitly rejects GNU dialect names; test actual required extensions with c11",
+  "native_configure": [
+    "--disable-shared",
+    "--without-ensurepip",
+    "--disable-test-modules",
+    "--without-mimalloc",
+    "--with-computed-gotos=no"
+  ],
+  "defines": [
+    "Py_BUILD_CORE",
+    "USE_COMPUTED_GOTOS=0",
+    "__ORDER_LITTLE_ENDIAN__=1234",
+    "__ORDER_BIG_ENDIAN__=4321",
+    "__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
+  ],
+  "target_predefines_reason": "This profile exclusively targets little-endian Linux x64. HACL's generic portable endian branch requires explicit target byte-order constants; these are profile facts, never inferred from the compiler host or global DotCC defaults.",
+  "abi": {
+    "platform": "linux-x64",
+    "pointer": 8,
+    "long": 8,
+    "int": 4,
+    "short": 2,
+    "wchar_t": 2,
+    "wchar_signed": false,
+    "little_endian": true
+  },
+  "required": {
+    "gil": true,
+    "real_threads": true,
+    "pymalloc": true,
+    "cyclic_gc": true,
+    "switch_dispatch": true
+  },
+  "disabled": [
+    "dynamic_extensions",
+    "experimental_jit",
+    "free_threaded",
+    "mimalloc"
+  ],
+  "qualification": "P0-P6 open; intended ABI until actual emitted probes pass"
+}

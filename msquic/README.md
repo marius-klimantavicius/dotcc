@@ -6,6 +6,19 @@ separate from the dotcc pipeline described below.
 
 Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
 
+The host-contract and public ABI gates honor existing `DOTCC_COMPILER` paths,
+copy complete recursive dependencies/PDBs/resources, and reject absent explicit
+tools. Their snapshots retain prior bytes. Production specialist commands use
+individual shared/native `flock --close` boundaries; do not wrap an entire peer
+suite in an outer shared lock. `test-managed-net-quic.py --variants raw optimized`
+selects matching MsQuic and picotls inputs with separate outputs. Explicit tools
+also require a current picotls source/tool/runtime binding before dependent gates.
+
+These harness changes have pure command/identity controls only. The shared
+framework snapshot/lock integration is still a private A18 candidate pending the
+active CPython qualification boundary; no current-tool production pass is claimed.
+See [the A18 handoff](../cpython/artifacts/owner-a-r18-20261018/a18-handoff.json).
+
 See the [2026-09-24 compiler refresh verification](docs/verification-20260924.md)
 for freshly regenerated PicoTLS/MsQuic results and the retained recovery failures.
 

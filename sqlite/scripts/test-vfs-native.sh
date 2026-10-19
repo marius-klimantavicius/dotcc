@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname "$0")/legacy-common.sh"
 SQLITE_SANITIZE_FLAGS=()
 if [[ "${SQLITE_SANITIZE:-0}" == 1 ]]; then
   SQLITE_SANITIZE_FLAGS=(-fsanitize=address,undefined -fno-omit-frame-pointer)
 fi
-gcc -std=c17 "${SQLITE_NATIVE_FLAGS[@]}" -O1 -g -Wall -Wextra -Werror "${SQLITE_SANITIZE_FLAGS[@]}" \
+"${PRODUCTION_COMMAND[@]}" gcc -std=c17 "${SQLITE_NATIVE_FLAGS[@]}" -O1 -g -Wall -Wextra -Werror "${SQLITE_SANITIZE_FLAGS[@]}" \
   "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" \
   "$SQLITE_AMALGAMATION/sqlite3.c" "$SQLITE_ROOT/tests/memory_vfs.c" \
   "$SQLITE_ROOT/tests/vfs_native.c" -lm -o "$SQLITE_ROOT/build/vfs-native"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
@@ -8,7 +9,7 @@ upstream="$campaign/ref/$("$PYTHON_CMD" -c 'import json,sys; print(json.load(ope
 out="$campaign/artifacts/core"
 mkdir -p "$out" "$campaign/generated/core-profile"
 [[ -f "$native/o/blink/blink.a" ]] || { echo 'Run scripts/native-oracle.sh first' >&2; exit 1; }
-timeout 60 cc -D_GNU_SOURCE -D_DEFAULT_SOURCE -DNOLINEAR -I "$native" \
+timeout 60 "${PRODUCTION_COMMAND[@]}" cc -D_GNU_SOURCE -D_DEFAULT_SOURCE -DNOLINEAR -I "$native" \
   "$campaign/src/core-probe/probe.c" "$native/o/blink/blink.a" -lz -lrt -lm -pthread \
   -Wl,-Map="$out/native-link.map" -o "$campaign/build/core-native" > "$out/native-build.log" 2>&1
 timeout 15 "$campaign/build/core-native" > "$out/native.txt" 2> "$out/native.stderr"
@@ -283,7 +284,7 @@ if [[ -d "$attempt/host" ]]; then
   includes+=(-I "$attempt/host")
 fi
 set +e
-timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" dotnet "${DOTCC_COMPILER:-$repo/DotCC/bin/Release/net10.0/dotcc.dll}" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
+timeout "${CORE_TRANSLATION_TIMEOUT:-1800}" "${PRODUCTION_COMMAND[@]}" dotnet "${DOTCC_COMPILER:-$repo/DotCC/bin/Release/net10.0/dotcc.dll}" -std=c17 -D_GNU_SOURCE -DNDEBUG -DNOLINEAR \
   "${includes[@]}" "${sources[@]}" \
   --overrides-file "$attempt/overrides.json" \
   --override-report "$attempt/override-report.jsonl" --runtime=c \

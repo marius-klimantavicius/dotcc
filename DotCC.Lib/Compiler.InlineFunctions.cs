@@ -53,9 +53,9 @@ public static partial class Compiler
                 .OrderBy(p => p.Key == EmitHelpers.Id(p.Value.OriginalName) ? 0 : 1)
                 .ThenBy(p => p.Key, StringComparer.Ordinal).First().Key);
             var selectors = (options?.ExportInline ?? Array.Empty<string>()).Select(pattern =>
-                (Pattern: pattern, Selector: new MacroExportSelector(new[] { pattern }, "--export-inline"))).ToArray();
+                (Pattern: pattern, Selector: new InlineExportSelector(pattern))).ToArray();
             foreach (var (pattern, selector) in selectors)
-                if (!entries.Any(p => selector.Matches(p.Value.OriginalName)))
+                if (!entries.Any(p => selector.Matches(p.Value.OriginalName, p.Key)))
                     throw new CompileException("--export-inline pattern '" + pattern + "' matched no inline definitions");
             var occupied = new HashSet<string>(globalNames.Concat(types.Keys), StringComparer.Ordinal);
             // A single proven implementation no longer belongs to one TU.
@@ -73,13 +73,13 @@ public static partial class Compiler
                     if (!occupied.Contains(cleanName) && !sources.Any(s => s.Name == cleanName && s.Name != representative))
                         names[representative] = cleanName;
                 }
-            foreach (var original in entries.Where(p => selectors.Any(s => s.Selector.Matches(p.Value.OriginalName)))
+            foreach (var original in entries.Where(p => selectors.Any(s => s.Selector.Matches(p.Value.OriginalName, p.Key)))
                          .GroupBy(p => p.Value.OriginalName))
             {
                 var candidates = original.Select(p => partition[p.Key]).Distinct().ToArray();
                 if (candidates.Length != 1)
                     throw new CompileException("ambiguous --export-inline '" + original.Key
-                        + "': definitions differ or depend on distinct state/function addresses; use a C wrapper in one translation unit");
+                        + "': definitions differ or depend on distinct state/function addresses; select a provider with original=bound-symbol");
                 var representative = representatives[candidates[0]];
                 var exportName = EmitHelpers.Id(original.Key);
                 if (occupied.Contains(exportName) || sources.Any(s => s.Name == exportName && s.Name != representative))

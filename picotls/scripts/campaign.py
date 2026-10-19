@@ -1,6 +1,6 @@
 """picotls source selection and campaign recipe."""
 from campaigns.model import Consumer, Recipe, Source, Suite, Translation, Unit
-from campaigns.recipes import flags, json_file, lines, link_flags
+from campaigns.recipes import flags, helper, json_file, lines, link_flags
 
 
 def sources(root):
@@ -17,6 +17,8 @@ def sources(root):
 
 
 def prepare(ctx):
+    from production_support import production_sources
+    ctx.receipt["production_inputs"] = production_sources(ctx.root)
     root, reference = ctx.root, ctx.sources["picotls"]
     core = lines(root / "config/core-sources.txt")
     hosts = lines(root / "config/host-sources.txt")
@@ -28,7 +30,13 @@ def prepare(ctx):
     units = [Unit(reference / name) for name in core if name not in wrappers]
     units += [Unit(root / name) for name in hosts]
     return Translation(units, ["-std=c17", "--overrides-file", str(root / "config/dotcc-overrides.json"), *flags(lines(root / "config/core-defines.txt"),
-                       [reference / "include", reference])], link_flags("PicoTls", "Managed.Security"))
+                       [reference / "include", reference])], link_flags("PicoTls", "Managed.Security"),
+                       configure=configure_notices)
+
+
+def configure_notices(ctx, project, form):
+    ctx.receipt.setdefault("redistributable_notices", {})[form] = helper(
+        ctx.root / "scripts/notices.py").package(ctx.root, project)
 
 
 def script_arguments(ctx, suite, script, args):

@@ -1,0 +1,45 @@
+using Managed.CPython;
+using VM = Managed.Interpreters.CPython;
+
+if (args.Length != 7) throw new ArgumentException("route locale action stdlib app inventory report");
+using var owner = args[0] == "explicit" ? new VM.Libc.RuntimeContext() : null;
+using var binding = owner != null ? owner.Enter() : default;
+string initial = LocaleName();
+if (args[1] == "selected") SelectLocale();
+else if (args[1] != "environment") throw new ArgumentException("locale");
+string selected = LocaleName();
+Console.WriteLine($"consumer locale BEFORE preinit route={args[0]} initial={initial} selected={selected}");
+try
+{
+    using var runtime = PythonRuntime.Initialize(new PythonOptions(args[3], args[4]) { WriteBytecode = true, Utf8Mode = false });
+    runtime.Execute("import sys\nassert sys.flags.utf8_mode == 0 and not sys.dont_write_bytecode\nassert sys.flags.isolated and sys.flags.ignore_environment\n", "locale_pre_discovery_r40.py");
+    if (args[2] == "probe")
+    {
+        using var module = runtime.Import("locale_probe");
+        using var function = module.GetAttribute("run_probe");
+        using var report = runtime.FromString(args[6]);
+        using var result = function.Call(report);
+        return checked((int)result.AsInt64());
+    }
+    if (args[2] != "full") throw new ArgumentException("action");
+    using var runner = runtime.Import("run_inventory");
+    using var run = runner.GetAttribute("run_embedded");
+    using var inventory = runtime.FromString(args[5]);
+    using var path = runtime.FromString(args[6]);
+    using var code = run.Call(inventory, path);
+    return checked((int)code.AsInt64());
+}
+catch (PythonException error)
+{
+    Console.Write(error.StandardOutput);
+    Console.Error.Write(error.StandardError);
+    Console.Error.WriteLine(error.PythonType + ": " + error.Message + "\n" + error.PythonTraceback);
+    return 2;
+}
+
+static unsafe string LocaleName() => System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint)VM.Libc.setlocale(0, null))!;
+static unsafe void SelectLocale()
+{
+    fixed (byte* text = "C.UTF-8\0"u8)
+        if (VM.Libc.setlocale(0, text) == null) throw new InvalidOperationException("Consumer locale unavailable");
+}

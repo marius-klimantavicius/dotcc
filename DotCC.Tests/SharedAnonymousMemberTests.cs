@@ -39,7 +39,7 @@ public sealed class SharedAnonymousMemberTests
         try
         {
             var emitted = Compiler.EmitCSharp(reverse ? new[] { second, first } : new[] { first, second });
-            Regex.Matches(emitted, @"__anon___Anon\d+").Select(match => match.Value).Distinct().Count().ShouldBe(1);
+            Regex.Matches(emitted, @"__anon___Anon(?:[0-9A-F]{64}|\d+)\b").Select(match => match.Value).Distinct().Count().ShouldBe(1);
             emitted.ShouldContain("READY");
         }
         finally { Directory.Delete(directory, recursive: true); }

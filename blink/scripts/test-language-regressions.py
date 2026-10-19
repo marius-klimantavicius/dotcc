@@ -10,7 +10,11 @@ import os
 from pathlib import Path
 import re
 import shutil
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 import tempfile
 import time
 
@@ -22,7 +26,7 @@ out = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))
 work = BLINK / 'generated/language-regressions' / out.name
 work.mkdir(parents=True)
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-cli = ROOT / 'DotCC/bin/Release/net10.0/dotcc.dll'
+cli = selected_tool()
 def compiler():
     return {p.name: sha(p) for p in sorted(cli.parent.iterdir())
             if p.is_file() and (p.suffix == '.dll' or p.name.endswith(('.deps.json', '.runtimeconfig.json')))}

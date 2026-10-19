@@ -239,7 +239,8 @@ public sealed class Char32Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.GlobalArrayFrom<uint>(new uint[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Libc.GlobalArrayZeroed<uint>(3)");
+            emitted.ShouldContain("new uint[]{ 104, 105, 0 }");
         }
         finally { File.Delete(src); }
     }
@@ -256,7 +257,8 @@ public sealed class Char32Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.GlobalArrayFrom<uint>(new uint[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Libc.GlobalArrayZeroed<uint>(3)");
+            emitted.ShouldContain("new uint[]{ 104, 105, 0 }");
         }
         finally { File.Delete(src); }
     }

@@ -96,7 +96,10 @@ public sealed class ObjectAggregateLinkTests
     {
         WithDirectory(directory =>
         {
-            var objects = Emit(directory, first + "\nint main(void) { return 0; }", second);
+            // C tags have no linkage of their own. These are ABI negatives
+            // because both units declare the same external pointer object.
+            var objects = Emit(directory, first + "\nextern struct Shared *shared_abi;\nint main(void) { return 0; }",
+                second + "\nextern " + (second.Contains("union Shared", StringComparison.Ordinal) ? "union" : "struct") + " Shared *shared_abi;");
             var error = Should.Throw<CompileException>(() => Compiler.LinkObjects(objects));
             error.Message.ShouldContain("conflicting aggregate declarations for 'Shared'");
             error.Message.ShouldContain(objects[0]);

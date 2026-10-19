@@ -175,6 +175,7 @@ public static partial class Compiler
         var indentedFns = IndentBlock(
             emittedFnList.Replace("static unsafe ", "internal static unsafe "), "    ");
         var globalsType = "DotCcProgramGlobals";
+        var initialization = PartitionStaticInitializers(globals.Initializers);
         var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
                 [FixedAddressValueType]
                 internal static {{globalsType}} {{globals.GlobalName}};
@@ -182,7 +183,8 @@ public static partial class Compiler
 
                 static DotCcProgram()
                 {
-            {{globals.Initializers}}    }
+            {{initialization.Calls}}    }
+            {{initialization.Members}}
             """)}}
             """;
         var globalsDeclaration = globals.Fields.Length == 0 ? "" : $$"""
@@ -302,6 +304,7 @@ public static partial class Compiler
             using System.Text;
             using System.Net;
             using System.Net.Sockets;
+            using Microsoft.Win32.SafeHandles;
             // ---- DotCC.Libc runtime (embedded source) ----------------
             // The Libc class (declared at file end, spliced in from the
             // ../DotCC.Libc/*.cs sources) holds every libc function +
@@ -451,6 +454,7 @@ public static partial class Compiler
             .Replace("/*__dotcc_instance_method__*/ unsafe ", "public unsafe ");
         // Indent the user-function block so it lives correctly inside the class body.
         var indentedFns = IndentBlock(publicFns, "    ");
+        var initialization = PartitionStaticInitializers(globals.Initializers);
         var globalOwnerMembers = globals.Fields.Length == 0 ? "" : $$"""
                 [FixedAddressValueType]
                 {{(managedLibrary ? "public" : "internal")}} static {{globalsType}} {{globals.GlobalName}};
@@ -458,7 +462,8 @@ public static partial class Compiler
 
                 static unsafe {{libraryClass}}()
                 {
-            {{globals.Initializers}}    }
+            {{initialization.Calls}}    }
+            {{initialization.Members}}
             """)}}
             """;
         var globalsDeclaration = globals.Fields.Length == 0 ? "" : $$"""
@@ -540,6 +545,7 @@ public static partial class Compiler
             using System.Text;
             using System.Net;
             using System.Net.Sockets;
+            using Microsoft.Win32.SafeHandles;
             using static global::{{scope}}Libc;
             using static {{libraryClass}};
             using DotCcFunctions = global::{{NamespacePrefix(namespaceName)}}{{libraryClass}};

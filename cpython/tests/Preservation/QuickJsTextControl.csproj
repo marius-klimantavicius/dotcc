@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+    <QuickJsProject Condition="'$(QuickJsProject)' == ''">$(MSBuildThisFileDirectory)../../../quickjs/generated/TranslatedQuickJs/TranslatedQuickJs.csproj</QuickJsProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="QuickJsTextControl.cs" />
+    <Compile Include="../../../quickjs/src/Managed.QuickJs/QuickJsText.cs" Link="QuickJsText.cs" />
+    <ProjectReference Include="$(QuickJsProject)" />
+  </ItemGroup>
+</Project>

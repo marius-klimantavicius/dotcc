@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/profiles/upstream-tests-static/TranslatedCPython/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Managed.CPython/Managed.CPython.csproj" AdditionalProperties="CPythonProject=$(CPythonProject)" />
+    <Content Include="scenarios.py" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

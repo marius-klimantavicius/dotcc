@@ -140,6 +140,30 @@ internal sealed partial class IrBuilder
     /// <summary>Optional API metadata; null records a definition with no constant value.</summary>
     internal List<(string Name, CExpr? Value, bool Selected)> MacroConstants { get; } = new();
 
+    private bool _primitivePayloadPrecision;
+
+    // Borrow the existing evaluator, without its text-splicing path. In
+    // particular -0 and nonfinite values must never pass through formatting.
+    internal ulong? FoldFloatingPayloadBits(CExpr expression, CType target)
+    {
+        if (target.Unqualified is not CType.Prim { Integer: false, Bytes: 4 or 8 }) return null;
+        bool previous = _primitivePayloadPrecision;
+        _primitivePayloadPrecision = true;
+        try
+        {
+            if (TryEvalTop(new Cast(target, expression) { Type = target }, allowCalls: false) is not CtFloat value)
+                return null;
+            return target.SizeOf == 4 ? BitConverter.SingleToUInt32Bits((float)value.Value)
+                : BitConverter.DoubleToUInt64Bits(value.Value);
+        }
+        finally { _primitivePayloadPrecision = previous; }
+    }
+
+    private ComptimeValue? PayloadPrecision(ComptimeValue? value, CType type) =>
+        _primitivePayloadPrecision && value is CtFloat f
+            ? new CtFloat(type.Unqualified is CType.Prim { Bytes: 4 } ? (double)(float)f.Value : f.Value, type)
+            : value;
+
     internal CExpr? FoldMacroConstant(CExpr expression)
     {
         // Normalize each typed operation before evaluating its parent. The
@@ -344,6 +368,9 @@ internal sealed partial class IrBuilder
                 return new CtBool(lb.Value);
 
             case LitFloat lf:
+                if (_primitivePayloadPrecision && lf.Type.Unqualified is CType.Prim { Bytes: 4 })
+                    return float.TryParse(lf.Text.TrimEnd('f', 'F'), NumberStyles.Float, CultureInfo.InvariantCulture, out var single)
+                        ? new CtFloat(single, lf.Type) : null;
                 return double.TryParse(lf.Text.TrimEnd('f', 'F'), NumberStyles.Float, CultureInfo.InvariantCulture, out var d)
                     ? new CtFloat(d, lf.Type)
                     : null;
@@ -486,7 +513,9 @@ internal sealed partial class IrBuilder
                 _ => System.Int128.Zero,
             }, c.Target);
         }
-        return new CtFloat(ToDouble(v), c.Target);
+        if (_primitivePayloadPrecision && p.Bytes == 4 && v is CtInt integer)
+            return new CtFloat((float)integer.Value, c.Target);
+        return PayloadPrecision(new CtFloat(ToDouble(v), c.Target), c.Target);
     }
 
     private ComptimeValue? EvalUnary(Unary u)
@@ -526,7 +555,22 @@ internal sealed partial class IrBuilder
         }
 
         if (EvalComptime(b.Left) is not { } l || EvalComptime(b.Right) is not { } r) { return null; }
-        return CombineBin(b.Op, l, r);
+        if (_primitivePayloadPrecision && (l is CtFloat || r is CtFloat))
+        {
+            var common = CType.UsualArithmetic(b.Left.Type, b.Right.Type);
+            double Operand(ComptimeValue value) => common.Unqualified is CType.Prim { Bytes: 4 }
+                ? value is CtInt integer ? (float)integer.Value : (float)ToDouble(value) : ToDouble(value);
+            double x = Operand(l), y = Operand(r);
+            // CompareTo orders NaNs; C floating comparisons do not.
+            if (b.Op is BinOp.Lt or BinOp.Gt or BinOp.Le or BinOp.Ge or BinOp.Eq or BinOp.Ne)
+                return new CtBool(b.Op switch
+                {
+                    BinOp.Lt => x < y, BinOp.Gt => x > y, BinOp.Le => x <= y,
+                    BinOp.Ge => x >= y, BinOp.Eq => x == y, _ => x != y
+                });
+            l = new CtFloat(x, common); r = new CtFloat(y, common);
+        }
+        return PayloadPrecision(CombineBin(b.Op, l, r), b.Type);
     }
 
     /// <summary>Apply a non-logical binary operator to two already-evaluated comptime values.

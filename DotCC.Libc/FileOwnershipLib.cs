@@ -52,6 +52,9 @@ public static unsafe partial class Libc
             {
                 if (slot is null) continue;
                 if (slot.Kind == FileSlot.K.Pipe) ClosePipe(slot);
+                try { FlushStdioBuffer(slot); } catch (IOException) { }
+                slot.UserBuffer = null;
+                slot.OutputBuffer = null;
                 try { slot.Writer?.Flush(); } catch (IOException) { }
                 try { slot.Stream?.Dispose(); } catch (IOException) { }
                 slot.Socket?.Dispose();

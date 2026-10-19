@@ -1,0 +1,9 @@
+// The separate owning C/managed control compares the complete fixture transcript
+// against its native compiler. This probe measures getter/view allocations only.
+internal static partial class AllocationProbe
+{
+    private sealed record NativeTable(string Name, int Length, string Address, string Sha256);
+    private static readonly List<NativeTable> NativeTables = new();
+    private static void CheckNativeTables(string path) =>
+        throw new InvalidOperationException("Use ExpandedStorage's independent whole-C transcript control.");
+}

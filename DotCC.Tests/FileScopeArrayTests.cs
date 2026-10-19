@@ -49,7 +49,9 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Globals.t = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30, 40 })");
+            emitted.ShouldContain("Globals.t = Libc.GlobalArrayZeroed<int>(4)");
+            emitted.ShouldContain("0x0000000AU, 0x00000014U, 0x0000001EU, 0x00000028U, ");
+            emitted.ShouldNotContain("AsSpan(new int[]");
         }
         finally { File.Delete(src); }
     }
@@ -65,7 +67,7 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("new int[]{ 0, 1, 4, 9, 0, 0 }");
+            emitted.ShouldContain("0x00000000U, 0x00000001U, 0x00000004U, 0x00000009U, 0x00000000U, 0x00000000U, ");
         }
         finally { File.Delete(src); }
     }
@@ -81,7 +83,8 @@ public sealed class FileScopeArrayTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // 'h'=104, 'i'=105, NUL=0. The declared const array owns distinct storage.
-            emitted.ShouldContain("Globals.tag = Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Globals.tag = Libc.GlobalArrayZeroed<byte>(3)");
+            emitted.ShouldContain("0x68, 0x69, 0x00, ");
         }
         finally { File.Delete(src); }
     }
@@ -90,7 +93,8 @@ public sealed class FileScopeArrayTests
     public void non_const_char_array_stays_writable_GlobalArrayFrom()
     {
         // Without const the array may be mutated (here it is), so it keeps the
-        // writable GlobalArrayFrom POH path — no RVA.
+        // writable pinned destination. Only its immutable initializer payload
+        // uses RVA data; the C object retains its own mutable address.
         var src = WriteTemp("""
             static char buf[] = "hi";
             int main(void) { buf[0] = 'H'; return buf[0]; }
@@ -98,7 +102,8 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Globals.buf = Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Globals.buf = Libc.GlobalArrayZeroed<byte>(3)");
+            emitted.ShouldContain("0x68, 0x69, 0x00, ");
         }
         finally { File.Delete(src); }
     }
@@ -106,9 +111,8 @@ public sealed class FileScopeArrayTests
     [Fact]
     public void const_multibyte_array_uses_generic_rva()
     {
-        // A const non-byte primitive array RVAs through the generic Libc.L<T>
-        // (writing to it is UB / rejected by the check), all-constant elements
-        // so Roslyn folds the backing array into .rodata.
+        // The initializer borrows fixed-width RVA data; the const C object
+        // still has its own address and writable backing storage.
         var src = WriteTemp("""
             static const int tab[] = { 10, 20, 30 };
             int main(void) { return tab[1]; }
@@ -116,7 +120,9 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Globals.tab = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30 })");
+            emitted.ShouldContain("Globals.tab = Libc.GlobalArrayZeroed<int>(3)");
+            emitted.ShouldContain("0x0000000AU, 0x00000014U, 0x0000001EU, ");
+            emitted.ShouldContain("ReadOnlySpan<int> Values");
         }
         finally { File.Delete(src); }
     }
@@ -131,7 +137,9 @@ public sealed class FileScopeArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Globals.tab = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30 })");
+            emitted.ShouldContain("Globals.tab = Libc.GlobalArrayZeroed<int>(3)");
+            emitted.ShouldContain("0x0000000AU, 0x00000014U, 0x0000001EU, ");
+            emitted.ShouldContain("ReadOnlySpan<int> Values");
         }
         finally { File.Delete(src); }
     }

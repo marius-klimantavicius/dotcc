@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><AssemblyName>DotCC.Tests</AssemblyName>
+    <IsTestProject>true</IsTestProject><IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../DotCC.Tests/FtruncatePositionTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/FileDurabilityTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/LibcFileTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/FileOwnershipTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/CollectionDefinitions.cs" />
+    <ProjectReference Include="../../../../DotCC.Libc/DotCC.Libc.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Shouldly" />
+  </ItemGroup>
+</Project>

@@ -76,7 +76,9 @@ public sealed unsafe class PosixQueryTests
                 setitimer(0, record, record).ShouldBe(-1);
                 execve(null, null, null).ShouldBe(-1);
                 setsid().ShouldBe(-1);
-                ((nint)mmap(null, 4096, 3, 0x22, -1, 0)).ShouldBe((nint)(-1));
+                // MAP_FIXED remains unsupported; ordinary anonymous arenas
+                // now have their own real mapping/lifecycle regressions.
+                ((nint)mmap(null, 4096, 3, 0x32, -1, 0)).ShouldBe((nint)(-1));
                 pthread_cancel(1).ShouldBe(ESRCH);
                 int previous = 99;
                 pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &previous).ShouldBe(ENOTSUP);

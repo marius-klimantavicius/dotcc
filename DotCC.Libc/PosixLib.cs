@@ -42,34 +42,55 @@ public static unsafe partial class Libc
     private const int StModeOff = 16, StSizeOff = 40, StAtimeOff = 48, StMtimeOff = 56, StCtimeOff = 64;
     private const uint S_IFDIR = 0x4000, S_IFREG = 0x8000;
 
-    /// <summary><c>stat(path, buf)</c> — 0 when <paramref name="path"/> exists
-    /// (file or directory), filling mode/size/times; -1 (ENOENT) otherwise.</summary>
-    public static int stat(byte* path, void* buf)
+    /// <summary>Read path metadata into DotCC's target stat layout. Linux x64
+    /// translates real host metadata, including permissions and identity.</summary>
+    public static int stat(byte* path, void* buf) => StatPath(path, buf, false);
+
+    /// <summary>Read the final symbolic link itself rather than its target.</summary>
+    public static int lstat(byte* path, void* buf) => StatPath(path, buf, true);
+
+    private static int StatPath(byte* path, void* buf, bool noFollow)
     {
-        var name = ResolvePath(path);
+        if (path == null || buf == null) { errno = EFAULT; return -1; }
+        if (*path == 0) { errno = ENOENT; return -1; }
         try
         {
+            var name = ResolvePath(path);
+            if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                LinuxX64Stat metadata;
+                int result;
+                fixed (byte* hostPath = Encoding.UTF8.GetBytes(name + "\0"))
+                    result = noFollow ? HostLStat(hostPath, &metadata) : HostStat(hostPath, &metadata);
+                if (result != 0) { errno = Marshal.GetLastPInvokeError(); return -1; }
+                FillHostStat(buf, in metadata);
+                return 0;
+            }
             if (File.Exists(name))
             {
                 var fi = new FileInfo(name);
-                FillStat(buf, S_IFREG, fi.Length, fi.LastWriteTimeUtc);
+                FillStat(buf, S_IFREG, fi.Length, fi.LastWriteTimeUtc, fi.LastAccessTimeUtc);
                 return 0;
             }
             if (Directory.Exists(name))
             {
-                FillStat(buf, S_IFDIR, 0, Directory.GetLastWriteTimeUtc(name));
+                FillStat(buf, S_IFDIR, 0, Directory.GetLastWriteTimeUtc(name), Directory.GetLastAccessTimeUtc(name));
                 return 0;
             }
         }
+        catch (UnauthorizedAccessException) { errno = EACCES; return -1; }
+        catch (PathTooLongException) { errno = ENAMETOOLONG; return -1; }
+        catch (ArgumentException) { errno = EINVAL; return -1; }
         catch (IOException) { /* fall through to ENOENT */ }
         errno = ENOENT;
         return -1;
     }
 
-    /// <summary><c>fstat(fd, buf)</c> — 0 for an open dotcc fd (mode = regular
-    /// file, size from the backing stream where seekable); -1 otherwise.</summary>
+    /// <summary>Read metadata for an owner-local descriptor. File handles use
+    /// host metadata; managed anonymous pipes describe their shared FIFO.</summary>
     public static int fstat(int fd, void* buf)
     {
+        if (buf == null) { errno = EFAULT; return -1; }
         var len = 0L;
         if (fd is 0 or 1 or 2)
         {
@@ -79,19 +100,82 @@ public static unsafe partial class Libc
         else
         {
             var slot = SlotByFd(fd);
+            if (slot?.Kind == FileSlot.K.Pipe) return FStatPipe(slot, buf);
             if (slot?.Stream == null) { errno = EBADF; return -1; }
+            if (slot.Stream is FileStream file && OperatingSystem.IsLinux()
+                && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                // fd is an owner-local slot, not an OS descriptor. Retain its
+                // actual owning handle across the syscall, including rename,
+                // unlink and concurrent close; never reopen its old pathname.
+                SafeHandle? handle = null;
+                bool retained = false;
+                try
+                {
+                    handle = file.SafeFileHandle;
+                    handle.DangerousAddRef(ref retained);
+                    LinuxX64Stat metadata;
+                    if (HostFStat(handle.DangerousGetHandle().ToInt32(), &metadata) != 0)
+                    { errno = Marshal.GetLastPInvokeError(); return -1; }
+                    FillHostStat(buf, in metadata);
+                    return 0;
+                }
+                catch (ObjectDisposedException) { errno = EBADF; return -1; }
+                finally { if (retained) handle!.DangerousRelease(); }
+            }
             len = slot.Stream.CanSeek ? slot.Stream.Length : 0;
         }
         FillStat(buf, S_IFREG, len, global::System.DateTime.UtcNow);
         return 0;
     }
 
-    /// <summary><c>lstat(path, buf)</c> — like <see cref="stat"/> but does not
-    /// follow a final symlink. dotcc reports the same metadata either way (the
-    /// fields it fills don't distinguish), so this aliases <c>stat</c>.</summary>
-    public static int lstat(byte* path, void* buf) => stat(path, buf);
+    // Host glibc/Linux x86-64 stat is 144 bytes; DotCC's C stat is 96.
+    // Keep these ABIs separate. Native/header probes verify every field offset.
+    [StructLayout(LayoutKind.Explicit, Size = 144)]
+    private struct LinuxX64Stat
+    {
+        [FieldOffset(0)] public ulong Device;
+        [FieldOffset(8)] public ulong Inode;
+        [FieldOffset(16)] public ulong Links;
+        [FieldOffset(24)] public uint Mode;
+        [FieldOffset(28)] public uint User;
+        [FieldOffset(32)] public uint Group;
+        [FieldOffset(40)] public ulong SpecialDevice;
+        [FieldOffset(48)] public long Size;
+        [FieldOffset(56)] public long BlockSize;
+        [FieldOffset(64)] public long Blocks;
+        [FieldOffset(72)] public long AccessSeconds;
+        [FieldOffset(88)] public long ModifySeconds;
+        [FieldOffset(104)] public long ChangeSeconds;
+    }
 
-    private static void FillStat(void* buf, uint mode, long size, global::System.DateTime mtimeUtc)
+    [DllImport("libc", EntryPoint = "stat", SetLastError = true)]
+    private static extern int HostStat(byte* path, LinuxX64Stat* metadata);
+    [DllImport("libc", EntryPoint = "lstat", SetLastError = true)]
+    private static extern int HostLStat(byte* path, LinuxX64Stat* metadata);
+    [DllImport("libc", EntryPoint = "fstat", SetLastError = true)]
+    private static extern int HostFStat(int descriptor, LinuxX64Stat* metadata);
+
+    private static void FillHostStat(void* buf, in LinuxX64Stat metadata)
+    {
+        var b = (byte*)buf;
+        new Span<byte>(b, 96).Clear();
+        *(ulong*)(b + 0) = metadata.Device;
+        *(ulong*)(b + 8) = metadata.Inode;
+        *(uint*)(b + StModeOff) = metadata.Mode;
+        *(ulong*)(b + 24) = metadata.Links;
+        *(uint*)(b + 32) = metadata.User;
+        *(uint*)(b + 36) = metadata.Group;
+        *(long*)(b + StSizeOff) = metadata.Size;
+        *(long*)(b + StAtimeOff) = metadata.AccessSeconds;
+        *(long*)(b + StMtimeOff) = metadata.ModifySeconds;
+        *(long*)(b + StCtimeOff) = metadata.ChangeSeconds;
+        *(ulong*)(b + 72) = metadata.SpecialDevice;
+        *(long*)(b + 80) = metadata.BlockSize;
+        *(long*)(b + 88) = metadata.Blocks;
+    }
+
+    private static void FillStat(void* buf, uint mode, long size, global::System.DateTime mtimeUtc, global::System.DateTime? atimeUtc = null)
     {
         var b = (byte*)buf;
         // struct stat is 96 bytes after the appended st_rdev/st_blksize/st_blocks
@@ -100,7 +184,7 @@ public static unsafe partial class Libc
         *(uint*)(b + StModeOff) = mode;
         *(long*)(b + StSizeOff) = size;
         var unix = new DateTimeOffset(mtimeUtc).ToUnixTimeSeconds();
-        *(long*)(b + StAtimeOff) = unix;
+        *(long*)(b + StAtimeOff) = new DateTimeOffset(atimeUtc ?? mtimeUtc).ToUnixTimeSeconds();
         *(long*)(b + StMtimeOff) = unix;
         *(long*)(b + StCtimeOff) = unix;
     }
@@ -224,6 +308,7 @@ public static unsafe partial class Libc
     /// <summary>Set flags; access mode is unchanged by F_SETFL, as on Linux.</summary>
     public static int fcntl(int fd, int cmd, int arg)
     {
+        if (cmd is 5 or 6 or 7) return fcntl(fd, cmd, (void*)(nuint)(uint)arg);
         var slot = SlotByFd(fd);
         if (slot is null) return FcntlError(EBADF);
         if (cmd is 1 or 3) return fcntl(fd, cmd);
@@ -253,8 +338,10 @@ public static unsafe partial class Libc
     }
 
     private static int FcntlError(int error) { errno = error; return -1; }
-    public static int fcntl(int fd, int cmd, long arg) => fcntl(fd, cmd, unchecked((int)arg));
-    public static int fcntl(int fd, int cmd, ulong arg) => fcntl(fd, cmd, unchecked((int)arg));
+    public static int fcntl(int fd, int cmd, long arg) => cmd is 5 or 6 or 7
+        ? fcntl(fd, cmd, (void*)(nint)arg) : fcntl(fd, cmd, unchecked((int)arg));
+    public static int fcntl(int fd, int cmd, ulong arg) => cmd is 5 or 6 or 7
+        ? fcntl(fd, cmd, (void*)(nuint)arg) : fcntl(fd, cmd, unchecked((int)arg));
 
     // ---- <poll.h> ----------------------------------------------------------
 

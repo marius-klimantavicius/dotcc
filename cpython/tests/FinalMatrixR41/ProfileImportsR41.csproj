@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ProfileImports.cs" />
+    <Reference Include="Managed.CPython"><HintPath>$(ActualInputDirectory)/Managed.CPython.dll</HintPath></Reference>
+    <Reference Include="TranslatedCPython"><HintPath>$(ActualInputDirectory)/TranslatedCPython.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

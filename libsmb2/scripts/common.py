@@ -12,6 +12,8 @@ import sys
 sys.path.insert(0, str(REPO / "Scripts"))
 from campaigns.compat import references
 from campaigns.process import execute
+from production_support import preflight_overrides
+preflight_overrides()
 SOURCE_SPEC = json.loads((ROOT / 'config/source.json').read_text())
 
 
@@ -26,8 +28,10 @@ def fetch():
 def run(command, log, receipt, *, cwd=REPO, timeout=600, env=None):
     entry = {}
     receipt.setdefault('commands', []).append(entry)
+    import os
+    environment = dict(os.environ if env is None else env, DOTCC_CAMPAIGN_COMMAND_LOCKS='production')
     execute(command, label=Path(log).stem, cwd=cwd, output=log, timeout=timeout,
-            env=env, record=entry)
+            env=environment, record=entry)
     return Path(log).read_text()
 
 

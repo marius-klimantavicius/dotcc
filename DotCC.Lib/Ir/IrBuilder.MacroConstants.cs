@@ -21,6 +21,7 @@ internal sealed partial class IrBuilder
         _embeds = source._embeds;
         _warnings = source._warnings;
         _file = source._file;
+        AggregateNames = source.AggregateNames;
         Copy(source._typedefs, _typedefs);
         Copy(source._externalTypes, _externalTypes);
         Copy(source._structFields, _structFields);

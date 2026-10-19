@@ -10,12 +10,15 @@ _CAMPAIGN_SOURCE = _campaign_json.loads((_CAMPAIGN_ROOT / "config/source-manifes
 import hashlib
 import os
 from pathlib import Path
+import sys as _production_sys
+_production_sys.path.insert(0, str(next(parent for parent in Path(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import selected_tool, validate_tool_closure
 
 
 def compiler_directory(campaign: Path) -> Path:
     """Use the shared campaign's immutable tool snapshot when provided."""
-    selected = os.environ.get('DOTCC_COMPILER')
-    return Path(selected).resolve().parent if selected else campaign.parent / 'DotCC/bin/Release/net10.0'
+    return selected_tool(repo=campaign.parent).parent
 
 
 def stage_semantic_intrinsics(campaign: Path, profile: Path) -> None:
@@ -178,14 +181,16 @@ def managed_boundary_selection(profile: Path, report: Path, source: str) -> dict
                 selected=selected, unmatched=unmatched, absent=not selected)
 
 
+def compiler_executable(directory: Path) -> Path:
+    selected = selected_tool()
+    candidate = directory / selected.name
+    if not candidate.is_file():
+        raise RuntimeError('missing selected compiler snapshot: ' + str(candidate))
+    return candidate
+
+
 def compiler_identity(directory: Path) -> dict[str, str]:
-    required = ('dotcc.dll', 'dotcc.deps.json', 'dotcc.runtimeconfig.json')
-    for name in required:
-        if not (directory / name).is_file():
-            raise RuntimeError('missing compiler process input: ' + str(directory / name))
-    paths = sorted({path for pattern in ('*.dll', '*.deps.json', '*.runtimeconfig.json')
-                    for path in directory.glob(pattern) if path.is_file()})
-    return {path.name:hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
+    return validate_tool_closure(compiler_executable(directory))
 
 
 def upstream_identity(campaign: Path) -> dict[str, str]:

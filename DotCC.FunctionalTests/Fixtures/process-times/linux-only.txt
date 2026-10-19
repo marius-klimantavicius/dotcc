@@ -1,0 +1,1 @@
+Linux LP64 times(2)/sysconf(3) ABI and null/errno behavior. Child process control runs separately with native C.

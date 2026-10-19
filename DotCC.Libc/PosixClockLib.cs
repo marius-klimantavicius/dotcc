@@ -4,6 +4,23 @@ namespace DotCC.Libc;
 
 public static unsafe partial class Libc
 {
+    /// <summary>Resolution of the actual BCL source used by clock_gettime.
+    /// NULL still validates the clock ID. No OS clock with a different source
+    /// or resolution is substituted for the managed reading.</summary>
+    public static int clock_getres(int clockId, timespec* resolution)
+    {
+        if (clockId != CLOCK_REALTIME && clockId != CLOCK_MONOTONIC) { errno = EINVAL; return -1; }
+        if (resolution != null)
+        {
+            long nanos = clockId == CLOCK_REALTIME ? 100
+                : (long)(((global::System.Int128)1_000_000_000 + global::System.Diagnostics.Stopwatch.Frequency - 1)
+                    / global::System.Diagnostics.Stopwatch.Frequency);
+            resolution->tv_sec = nanos / 1_000_000_000;
+            resolution->tv_nsec = nanos % 1_000_000_000;
+        }
+        return 0;
+    }
+
     public const int CLOCK_REALTIME = 0;
     public const int CLOCK_MONOTONIC = 1;
 

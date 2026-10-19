@@ -92,7 +92,7 @@ public sealed unsafe class LibcAddedSurfaceTests
     }
 
     [Fact]
-    public void setvbuf_is_a_validated_no_op()
+    public void setvbuf_validates_stream_and_buffering_mode()
     {
         setvbuf(stdout, null, 2 /*_IONBF*/, 0).ShouldBe(0);
         setvbuf(stdout, null, 99 /*invalid mode*/, 0).ShouldBe(-1);

@@ -264,7 +264,8 @@ public sealed class Char16Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.GlobalArrayFrom<char>(new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) })");
+            emitted.ShouldContain("Libc.GlobalArrayZeroed<char>(3)");
+            emitted.ShouldContain("new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) }");
         }
         finally { File.Delete(src); }
     }
@@ -281,7 +282,8 @@ public sealed class Char16Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.GlobalArrayFrom<char>(new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) })");
+            emitted.ShouldContain("Libc.GlobalArrayZeroed<char>(3)");
+            emitted.ShouldContain("new char[]{ unchecked((char)(104)), unchecked((char)(105)), unchecked((char)(0)) }");
         }
         finally { File.Delete(src); }
     }

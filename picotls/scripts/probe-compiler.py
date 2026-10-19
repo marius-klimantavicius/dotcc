@@ -11,7 +11,11 @@ import os
 from pathlib import Path
 import re
 import shlex
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 
 root = Path(__file__).resolve().parents[1]
 repo = root.parent
@@ -23,12 +27,12 @@ out.mkdir(parents=True, exist_ok=True)
 tmp = root / "artifacts/tmp/compiler"
 tmp.mkdir(parents=True, exist_ok=True)
 env = dict(os.environ, TMPDIR=str(tmp))
-compiler = repo / "DotCC/bin/Release/net10.0/dotcc.dll"
-if args.build_dotcc:
+if args.build_dotcc and 'DOTCC_COMPILER' not in os.environ:
     with (out / "build.log").open("w") as log:
         subprocess.run(["dotnet", "build", str(repo / "DotCC/DotCC.csproj"),
                         "-c", "Release"], env=env, stdout=log,
                        stderr=subprocess.STDOUT, check=True)
+compiler = selected_tool()
 if not compiler.exists():
     parser.error("build dotcc first or pass --build-dotcc")
 inputs = json.loads((root / "config/inputs.json").read_text())

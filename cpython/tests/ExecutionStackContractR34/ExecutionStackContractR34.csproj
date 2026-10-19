@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/profiles/upstream-tests-static/TranslatedCPython.Raw/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Managed.CPython/Managed.CPython.csproj" AdditionalProperties="CPythonProject=$(CPythonProject)" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+</Project>

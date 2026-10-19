@@ -8,6 +8,8 @@ public sealed class NestedDesignatedArrayTests
 {
     [Theory]
     [InlineData("static struct point values[] = {{.y=2,.x=1}, {.y=4}};")]
+    [InlineData("static struct point values[5] = {[3]={1,2}, [1]={.y=4}};")]
+    [InlineData("void f(void) { struct point values[] = {[3]={1,2}, [1]={.y=4}}; }")]
     [InlineData("void f(void) { static struct point values[] = {{.y=2,.x=1}}; }")]
     [InlineData("void f(void) { struct point values[3] = {{.y=2,.x=1}, {.y=4}}; }")]
     public void Array_entries_accept_member_designators(string declaration)

@@ -139,10 +139,11 @@ internal sealed class CFrontend : IFrontend
         // (-pedantic) or one collected error (-pedantic-errors). Off by default.
         var gate = (pedantic || pedanticErrors) ? new DialectGate(activeDialect) : null;
         var naming = req.Preprocessing is { FieldTypeNames.Count: > 0 };
-        Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null)
+        var multiple = inputPaths.Count > 1;
+        Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null, bool discovery = false)
         {
-            var builder = new Ir.IrBuilder(typeNames is null ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
-            { StableAnonymousNames = req.ObjectMode || naming, AnonymousTypeNames = typeNames };
+            var builder = new Ir.IrBuilder(typeNames is null && !discovery ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
+            { StableAnonymousNames = req.ObjectMode || naming || multiple, AnonymousTypeNames = typeNames };
             builder.ConfigureExternalTypes(req.Preprocessing?.ExternalTypes);
             builder.ConfigureFunctionOverrides(req.Preprocessing);
             return builder;
@@ -151,16 +152,41 @@ internal sealed class CFrontend : IFrontend
         var parsed = new List<(Item Root, string File, (string Name, IReadOnlyList<Item> Body, bool Selected)[] Macros)>();
         var typeNames = new Dictionary<string, string>(StringComparer.Ordinal);
         var matchedNames = new HashSet<string>(StringComparer.Ordinal);
+        var variants = new Dictionary<string, IReadOnlyDictionary<string, string>>(StringComparer.Ordinal);
         var irParser = C.BuildSourceLocatedParser();
         foreach (var unitPath in inputPaths)
         {
             var root = ParseUnit(unitPath, irParser, quiet: false, gate);
-            if (naming) parsed.Add((root, Path.GetFullPath(unitPath), macroBodies.ToArray()));
-            BindUnit(root, Path.GetFullPath(unitPath), macroBodies);
-            if (naming) irBuilder.ResolveFieldTypeNames(req.Preprocessing!, typeNames, matchedNames);
+            if (naming || multiple) parsed.Add((root, Path.GetFullPath(unitPath), macroBodies.ToArray()));
+            if (!multiple)
+            {
+                BindUnit(root, Path.GetFullPath(unitPath), macroBodies);
+                if (naming) irBuilder.ResolveFieldTypeNames(req.Preprocessing!, typeNames, matchedNames);
+            }
             macroBodies.Clear();
         }
         overrides?.Complete();
+        if (multiple)
+        {
+            // Bind each cached syntax tree independently before combining units.
+            // Otherwise the first complete tag would hide later private layouts.
+            // Parsing/preprocessing and their side effects still happen once.
+            var graphs = parsed.Select(unit =>
+            {
+                var discovery = NewBuilder(discovery: true);
+                discovery.TranslationUnitPath = unit.File;
+                discovery.AddUnit(unit.Root, Path.GetFileName(unit.File));
+                discovery.FinishAggregateTypes();
+                return (unit.File, (IReadOnlyList<AggregateIdentity>?)discovery.AggregateIdentityGraph());
+            }).ToArray();
+            var plans = AggregateIdentities.Plan(graphs);
+            for (var index = 0; index < parsed.Count; index++) variants.Add(parsed[index].File, plans[index]);
+            foreach (var unit in parsed)
+            {
+                BindUnit(unit.Root, unit.File, unit.Macros);
+                if (naming) irBuilder.ResolveFieldTypeNames(req.Preprocessing!, typeNames, matchedNames);
+            }
+        }
         if (naming)
         {
             irBuilder.FinishAggregateTypes();
@@ -185,6 +211,7 @@ internal sealed class CFrontend : IFrontend
         void BindUnit(Item root, string file, IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> macros)
         {
             irBuilder.TranslationUnitPath = file;
+            irBuilder.AggregateNames = variants.GetValueOrDefault(file);
             irBuilder.AddUnit(root, Path.GetFileName(file));
             // Lower before the next TU can replace typedef/enum bindings.
             var macroEvaluator = irBuilder.CreateMacroEvaluator();

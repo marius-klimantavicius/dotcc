@@ -7,7 +7,11 @@ import os
 import re
 from pathlib import Path
 import shutil
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
@@ -43,6 +47,49 @@ def verified(mapping, base, label):
     for name, expected in mapping.items():
         path = base / name
         check(path.is_file() and sha(path) == expected, label + ': changed/missing ' + str(path))
+
+
+def verify_probe_profile(record, role, units, commands):
+    """Only header probes omit the two product-only canonical address requests."""
+    check(role in ('host-binding', 'host-tls', 'host-core', 'abi-public', 'abi-tls', 'abi-core'),
+          'Unknown probe profile role')
+    check(set(record) == {'role', 'source_profile', 'source_sha256', 'effective_profile',
+                          'effective_sha256', 'translation_units'} and record['role'] == role,
+          'Unexpected probe profile fields/role')
+    profile = ROOT / 'config/dotcc-overrides.json'
+    check(record['source_profile'] == str(profile) and record['source_sha256'] == sha(profile),
+          'Probe source profile changed')
+    options = read(profile)
+    names = options.get('stableFunctionPointers', [])
+    check(len(names) == 2 and set(names) == {'MsQuicOpenVersion', 'MsQuicClose'},
+          'Unexpected product stable function pointer policy')
+    core = role == 'host-core'
+    effective = profile if core else ROOT / 'build' / ('host-contract' if role.startswith('host-') else 'abi') / 'header-probe-overrides.json'
+    if core:
+        expected = profile.read_bytes()
+    else:
+        del options['stableFunctionPointers']
+        expected = (json.dumps(options, indent=2) + '\n').encode()
+    check(record['effective_profile'] == str(effective) and effective.read_bytes() == expected
+          and record['effective_sha256'] == sha(effective), 'Invalid probe profile projection')
+    expected_units = {str(path): sha(path) for path in units}
+    check(record['translation_units'] == expected_units, 'Probe translation unit manifest differs')
+    library = ROOT / 'build/product-source/src/core/library.c'
+    check((str(library) in expected_units) == core, 'Probe/product core library role differs')
+    seen = []
+    for command in commands:
+        if role.startswith('host-'):
+            defines = ['-D' + value for value in read(ROOT / 'build/product-source/manifest.json')['defines']]
+            defines.append('-DQUIC_API_ENABLE_PREVIEW_FEATURES=1')
+            check([arg for arg in command if arg.startswith('-D')] == defines and
+                  not any(arg.startswith('-UQUIC_API_ENABLE_PREVIEW_FEATURES') for arg in command),
+                  'Host probe preview/define policy differs')
+        check(command.count('--overrides-file') == 1 and
+              command[command.index('--overrides-file') + 1] == str(effective),
+              'Probe command used another profile')
+        seen.extend(str(Path(argument).resolve()) for argument in command if argument.endswith('.c'))
+    check(len(seen) == len(expected_units) and set(seen) == set(expected_units),
+          'Probe command/unit manifest differs')
 
 
 def verified_archive(directory, closure_hash):
@@ -210,6 +257,11 @@ check(product.get('generated_directories') == dict(raw='generated/TranslatedMsQu
                                                  optimized='generated/TranslatedMsQuic'),
       'Product output locations differ from the selected layout')
 verified(host['compiler_hashes'], compiler, 'Frozen emitter')
+from production_support import selected_tool, require_tool_identity
+require_tool_identity(selected_tool(), host['compiler_hashes'], 'Freeze selected compiler')
+require_tool_identity(compiler / host.get('compiler_tool', {}).get('executable', 'dotcc.dll'),
+                      host['compiler_hashes'], 'Freeze host compiler')
+check(abi.get('compiler_hashes') == host['compiler_hashes'], 'Public ABI recursive compiler closure differs')
 check(product['compiler_hashes'] == host['compiler_hashes'], 'Product and host compiler differ')
 if args.sqlite_receipt is not None:
     for name, expected in sqlite['compiler_after'].items():
@@ -231,6 +283,15 @@ for case in host['cases']:
     check(source.is_file() and sha(source) == case['source_sha256'], 'Host ABI probe changed: ' + str(source))
 stage_path = ROOT / 'build/product-source/manifest.json'
 stage, pin = read(stage_path), read(ROOT / 'config/source.json')
+host_defines = [*stage['defines'], 'QUIC_API_ENABLE_PREVIEW_FEATURES=1']
+check(host.get('host_feature_policy') == dict(defines=host_defines,
+      header_sha256={name: sha(stage_path.parent / name) for name in
+                     ('src/platform/platform_internal.h', 'src/inc/msquic.h', 'src/inc/quic_tls.h',
+                      'host/msquic_host.h', 'host/msquic_host_internal.h')},
+      include_order=dict(tls='quic_platform.h -> quic_tls.h -> msquic.h',
+                         platform='platform_internal.h: preview=1 before quic_platform.h/msquic.h',
+                         host='msquic_host_internal.h -> msquic_host.h -> platform_internal.h')),
+      'Host feature selection/header/include-order evidence differs')
 check(sha(stage_path) == host['stage_manifest_sha256'] == product['stage_manifest_sha256'], 'Staged inputs differ between gates')
 check(stage['revision'] == pin['commit'] and 'VER_GIT_HASH=' + pin['commit'] in stage['defines'], 'Missing pinned revision metadata')
 reference_verification = abi.get('reference_verification', 'archive')
@@ -249,6 +310,28 @@ for item in stage['files']:
     check(origin.is_file() and sha(origin) == item['sha256'], 'Authored/upstream source changed: ' + str(origin))
 check([row['source'] for row in product['objects']] == stage['units'], 'Product object list differs from staged unit closure')
 host_commands = {row['name']: row['arguments'] for row in host['commands']}
+for name in ('binding', 'tls', 'core'):
+    native_command = host_commands[name + '-native-build']
+    check([arg for arg in native_command if arg.startswith('-D')] == ['-D' + value for value in host_defines]
+          and not any(arg.startswith('-UQUIC_API_ENABLE_PREVIEW_FEATURES') for arg in native_command),
+          'Native host feature selection differs: ' + name)
+for case in host['cases']:
+    name = case['name']
+    units = [host_sources[name]]
+    if name == 'core':
+        units += [stage_path.parent / unit for unit in stage['units']]
+        commands = [row['arguments'] for row in host['commands'] if re.fullmatch(r'core-object-\d+', row['name'])]
+    else:
+        units += [stage_path.parent / ('src/platform/' + unit) for unit in ('hashtable.c', 'toeplitz.c')]
+        if name == 'tls':
+            units += [stage_path.parent / ('host/' + unit) for unit in ('host.c', 'forwarders.c', 'portable.c')]
+        commands = [host_commands[name + '-emit']]
+    verify_probe_profile(host.get('translation_profiles', {}).get(name, {}), 'host-' + name, units, commands)
+for group in abi['groups']:
+    verify_probe_profile(group.get('translation_profile', {}), 'abi-' + group['name'],
+                         [ROOT / 'tests/Abi' / (group['name'] + '.c')],
+                         [row['arguments'] for row in abi['commands']
+                          if row['group'] == group['name'] and row['stage'] == 'emit'])
 for index, record in enumerate(product['objects'], 1):
     source = stage_path.parent / record['source']
     obj = ROOT / 'build/host-contract/core-objects' / f'{index:02d}-{source.stem}.cs'
@@ -262,14 +345,14 @@ for index, record in enumerate(product['objects'], 1):
           and cached['object'] == str(obj) and cached['object_sha256'] == record['object_sha256']
           and cached['stage_manifest_sha256'] == sha(stage_path) and cached['compiler_hashes'] == host['compiler_hashes'],
           'Object provenance differs from validated source/compiler: ' + record['source'])
-    check(cached['flags'] == ['-D' + value for value in stage['defines']], 'Object defines differ from staging')
+    check(cached['flags'] == ['-D' + value for value in host_defines], 'Object defines differ from selected host features')
     expected_includes = ['-I' + str(stage_path.parent / path) for path in ['system', 'src/inc', 'src/core', 'src/platform', 'host']]
     expected_includes.extend(['-I' + str(ROOT / 'tests/Abi'), '-I' + str(ROOT / 'tests/HostContract')])
     check(cached['includes'] == expected_includes, 'Object include roots differ from the host ABI campaign')
     check(cached.get('macro_exports') == host.get('macro_exports') == product.get('macro_exports') == ['QUIC_STATUS_*'],
           'Object macro export selection differs from the product')
     check(cached.get('translation_profile_sha256') == profile_hash, 'Object translation profile differs from the product')
-    expected_command = ['dotnet', str(compiler / 'dotcc.dll'), '--emit=obj', '--emit-define', 'QUIC_STATUS_*',
+    expected_command = ['dotnet', str(compiler / host.get('compiler_tool', {}).get('executable', 'dotcc.dll')), '--emit=obj', '--emit-define', 'QUIC_STATUS_*',
                         '--overrides-file', str(profile), *cached['flags'], *cached['includes'],
                         str(source), '-o', str(obj)]
     check(record['arguments'] == host_commands.get(f'core-object-{index:02d}') == expected_command,
@@ -294,7 +377,7 @@ build_metadata = subprocess.run(['dotnet', 'build', str(metadata_project), '-c',
     '--artifacts-path', str(metadata_output / 'intermediate'), '-o', str(metadata_output / 'app')],
     cwd=REPO, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 check(build_metadata.returncode == 0, 'Compiler metadata helper build failed:\n' + build_metadata.stdout)
-assemblies = ['dotcc.dll', 'DotCC.Lib.dll']
+assemblies = [host.get('compiler_tool', {}).get('executable', 'dotcc.dll'), 'DotCC.Lib.dll']
 metadata = subprocess.run(['dotnet', str(metadata_output / 'app/CompilerMetadata.dll'),
     *(str(compiler / name) for name in assemblies)], cwd=REPO, text=True,
     stdout=subprocess.PIPE, stderr=subprocess.PIPE)

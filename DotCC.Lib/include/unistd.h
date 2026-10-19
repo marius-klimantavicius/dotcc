@@ -5,6 +5,8 @@
 
 #define _SC_PAGESIZE 30
 #define _SC_PAGE_SIZE _SC_PAGESIZE
+/* Linux selector value; shared runtime maps only implemented host queries. */
+#define _SC_CLK_TCK 2
 
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
@@ -61,6 +63,10 @@ int isatty(int fd);
 int gethostname(char *name, unsigned long length);
 /* BCL compatibility: Environment.UserName, not terminal utmp identity. */
 int getlogin_r(char *name, unsigned long length);
+uid_t getuid(void);
+uid_t geteuid(void);
+gid_t getgid(void);
+gid_t getegid(void);
 int close(int fd);
 long read(int fd, void *buf, unsigned long count);
 long write(int fd, void *buf, unsigned long count);
@@ -92,6 +98,9 @@ int pipe(int *pipefd);
 /* Process control (DotCC.Libc.ProcessSignalLib). getpid/getppid are faithful
    (real OS pids); fork/exec/wait have no .NET primitive and fail. */
 int getpid(void);
+/* Signal-handler dispatch is unsupported by the managed runtime. pause()
+   fails with ENOTSUP rather than reporting a fictitious signal wakeup. */
+int pause(void);
 int getppid(void);
 unsigned int sleep(unsigned int seconds);
 int fork(void);

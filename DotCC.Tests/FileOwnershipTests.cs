@@ -74,7 +74,15 @@ public sealed unsafe class FileOwnershipTests
             {
                 fixed (byte* name = Encoding.UTF8.GetBytes(path + "\0"))
                 fixed (byte* mode = "w\0"u8)
-                    ((nint)fopen(name, mode)).ShouldNotBe(0);
+                {
+                    var owned = fopen(name, mode);
+                    ((nint)owned).ShouldNotBe(0);
+                    // Linux fopen does not take an advisory sharing lock. Take
+                    // an explicit lock so the native/BCL observer below tests
+                    // disposal of this owner's real backing, not implicit open.
+                    if (OperatingSystem.IsLinux() && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture == System.Runtime.InteropServices.Architecture.X64)
+                        flock(fileno(owned), 2).ShouldBe(0);
+                }
             }
             using (active.Enter())
             {

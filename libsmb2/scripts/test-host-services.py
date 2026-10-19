@@ -2,7 +2,9 @@
 """Native/JIT/NativeAOT controls for services used by the libsmb2 host profile."""
 import argparse
 import json
+import os
 from common import ROOT, REPO, run, sha
+from production_support import selected_tool
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--no-build-tools', action='store_true')
@@ -11,10 +13,10 @@ logs = ROOT / 'artifacts/host-services'
 logs.mkdir(parents=True, exist_ok=True)
 receipt = dict(passed=False, cases=[])
 try:
-    if not args.no_build_tools:
+    if not args.no_build_tools and 'DOTCC_COMPILER' not in os.environ:
         run(['dotnet', 'build', REPO / 'DotCC/DotCC.csproj', '-c', 'Release', '--nologo'],
             logs / 'compiler-build.log', receipt)
-    compiler = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
+    compiler = selected_tool()
     receipt['compiler'] = {p.name: sha(p) for p in compiler.parent.glob('*.dll')}
     for name in ['linux-endian-headers', 'socket-nonblocking', 'socket-linger',
                  'network-services', 'host-identity', 'protocol-errno', 'asprintf']:

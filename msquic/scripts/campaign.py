@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib
 from campaigns.model import Consumer, Recipe, Source, Suite, Translation, Unit
 from campaigns.testing import forms
-from campaigns.recipes import flags, json_file, lines, link_flags
+from campaigns.recipes import flags, helper, json_file, lines, link_flags
 
 
 def sources(root):
@@ -14,11 +14,15 @@ def sources(root):
 
 def gates(ctx):
     if not ctx.options.fast and ctx.options.action != "probe":
+        ctx.receipt["picotls_current_binding"] = helper(ctx.root / "scripts/provenance.py").picotls_provenance(
+            ctx.repo / "picotls")["current_binding"]
         ctx.script("test-host-contract.py", "--no-fetch", timeout=7200)
         ctx.script("test-abi.py", "--groups", "public", "--no-fetch", timeout=3600)
 
 
 def prepare(ctx):
+    from production_support import production_sources
+    ctx.receipt["production_inputs"] = production_sources(ctx.root)
     ctx.script("generate-host-contract.py")
     ctx.script("stage-product.py", "--no-fetch")
     stage = ctx.root / "build/product-source"
@@ -50,7 +54,7 @@ names = ("platform-host", "packet-crypto", "tls-adapter", "datapath-host", "mana
 def script_arguments(ctx, suite, script, args):
     if ctx.options.mode == "jit" and script != "test-packet-crypto.py":
         args.append("--jit-only")
-    if script not in ("test-packet-crypto.py", "test-managed-net-quic.py"):
+    if script != "test-packet-crypto.py":
         args += ["--variants", *("raw" if form == "raw" else "optimized" for form in forms(ctx))]
     return args
 

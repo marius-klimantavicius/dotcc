@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DotCC.Libc;
@@ -62,6 +63,17 @@ public static unsafe partial class Libc
         {
             for (int i = 0; i < suffix.Length; i++) suffix[i] = alphabet[global::System.Security.Cryptography.RandomNumberGenerator.GetInt32(alphabet.Length)];
             string path = ResolvePath(prefix + new string(suffix));
+            if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                int descriptor = OpenLinuxFile(path, 2 | 0x40 | 0x80, 0x180); // O_RDWR|O_CREAT|O_EXCL, 0600
+                if (descriptor < 0)
+                {
+                    if (errno == EEXIST) continue;
+                    return -1;
+                }
+                for (int i = 0; i < suffix.Length; i++) template[length - 6 + i] = (byte)suffix[i];
+                return descriptor;
+            }
             FileStream? file = null;
             try
             {

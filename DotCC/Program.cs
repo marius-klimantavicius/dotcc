@@ -2,6 +2,7 @@
 
 using System;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,7 +46,7 @@ internal static class Program
         var deduplicateInlineOpt = new Option<bool>("--deduplicate-inline") { Description = "Merge provably equivalent static inline functions; set at link time for objects." };
         var exportInlineOpt = new Option<string[]>("--export-inline")
         {
-            Description = "Expose selected inline functions under their original names. Repeatable exact names or * / ? patterns (quote globs); set at link time.",
+            Description = "Expose selected inline functions under their original names. Exact names or * / ? patterns; optionally original=bound-symbol to select a provider from object metadata. Quote globs; set at link time.",
             AllowMultipleArgumentsPerToken = false
         };
         var exportEnumOpt = new Option<string[]>("--export-enum")
@@ -99,6 +100,11 @@ internal static class Program
         var defineOpt = new Option<string[]>("-D")
         {
             Description = "Predefine macro (NAME or NAME=VALUE). Repeatable.",
+            AllowMultipleArgumentsPerToken = false,
+        };
+        var undefineOpt = new Option<string[]>("-U")
+        {
+            Description = "Undefine a macro, including a predefined macro. -D/-U are applied in command-line order. Repeatable.",
             AllowMultipleArgumentsPerToken = false,
         };
         var compileOpt = new Option<bool>("-c")
@@ -166,7 +172,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -211,7 +217,19 @@ internal static class Program
             var target = parse.GetValue(targetOpt);
             var preprocessOnly = parse.GetValue(preprocessOpt);
             var includes = parse.GetValue(includeOpt) ?? Array.Empty<string>();
-            var defines = parse.GetValue(defineOpt) ?? Array.Empty<string>();
+            // Parsed tokens preserve cross-option ordering and expand glued
+            // short forms. Reading the two option arrays separately would lose
+            // -DNAME -UNAME -DNAME=VALUE semantics and response-file ordering.
+            var defines = new System.Collections.Generic.List<string>();
+            for (int index = 0; index < parse.Tokens.Count; index++)
+            {
+                var token = parse.Tokens[index];
+                if (token.Type == TokenType.Option && token.Value is "-D" or "-U")
+                {
+                    if (++index >= parse.Tokens.Count) throw new CompileException("missing macro option argument");
+                    defines.Add((token.Value == "-U" ? "-U" : "") + parse.Tokens[index].Value);
+                }
+            }
             var compileFlag = parse.GetValue(compileOpt);
             var sharedFlag = parse.GetValue(sharedOpt);
             var stdValue = parse.GetValue(stdOpt);
@@ -286,7 +304,7 @@ internal static class Program
                 var typeNames = parse.GetValue(typeNameOpt) ?? Array.Empty<string>();
                 var preprocessing = profile != null || overrides.Length != 0 || report != null || emitDefines.Length != 0 || typeNames.Length != 0
                     ? CPreprocessingOptions.Load(profile, overrides, report, emitDefines, typeNames: typeNames) : null;
-            return Run(inputs, output, emit, target, preprocessOnly, includes, defines, sharedFlag, dialect,
+            return Run(inputs, output, emit, target, preprocessOnly, includes, defines.ToArray(), sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt),
                        split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));

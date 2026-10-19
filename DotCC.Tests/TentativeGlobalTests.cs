@@ -51,7 +51,7 @@ public sealed class TentativeGlobalTests
     {
         var output = Emit("static unsigned char values[3]; static unsigned char values[3] = {1,2,3}; static unsigned char values[3]; int main(void) { return values[2]; }");
         (output.Split("public byte* values;").Length - 1).ShouldBe(1);
-        output.ShouldNotContain("GlobalArrayZeroed<byte>(3)");
+        output.Split("GlobalArrayZeroed<byte>(3)").Length.ShouldBe(2);
     }
 
     [Fact]

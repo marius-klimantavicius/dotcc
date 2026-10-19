@@ -161,6 +161,7 @@ public sealed class Symbol
 /// </summary>
 public sealed class SymbolTable
 {
+    internal IEnumerable<Symbol> FileScopeSymbols => _scopes[0].Values;
     private readonly List<Dictionary<string, Symbol>> _scopes = new();
     // Identifiers already emitted in the CURRENT function — drives uniquification.
     private readonly HashSet<string> _usedNames = new(StringComparer.Ordinal);

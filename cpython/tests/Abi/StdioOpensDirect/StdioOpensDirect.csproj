@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible><DefineConstants>$(DefineConstants);STDIO_OPEN_DIRECT</DefineConstants></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../../../DotCC.Libc/DotCC.Libc.csproj" /><Compile Include="../../../../DotCC.Tests/CPythonR10StdioOpenTests.cs" Link="StdioOpenChecks.cs" /></ItemGroup>
+</Project>

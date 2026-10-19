@@ -13,6 +13,95 @@ public static unsafe partial class Libc
     // null attributes and initialized attributes. The OS may round it upward.
     public const int DOTCC_PTHREAD_DEFAULT_STACK_SIZE = 1024 * 1024;
 
+    /// <summary>Returns the existing program owner, including the legacy owner
+    /// when no explicit binding is active. Capture a RetainLease before moving
+    /// this identity to another thread; this never creates another context.</summary>
+    public static RuntimeContext CaptureRuntimeContext() => RuntimeState;
+
+    public sealed partial class RuntimeContext
+    {
+        private PthreadStackPolicy? pthreadStackPolicy;
+        private int pthreadAdmissions;
+
+        /// <summary>Opt into a minimum physical managed-thread stack request.
+        /// Logical pthread attributes and their validation remain unchanged.
+        /// Only one scope may exist and acquisition requires drained workers.
+        /// Disposing the scope retires it: already admitted workers and their
+        /// descendants keep the policy until the last worker exits, including
+        /// TLS destructors. A new scope cannot replace an undrained policy.</summary>
+        public IDisposable UseMinimumPthreadStackSize(int minimumBytes)
+        {
+            if (minimumBytes < PTHREAD_STACK_MIN) throw new ArgumentOutOfRangeException(nameof(minimumBytes));
+            var policy = new PthreadStackPolicy(this, minimumBytes);
+            lock (gate)
+            {
+                ObjectDisposedException.ThrowIf(disposed, this);
+                if (pthreadStackPolicy != null || pthreadAdmissions != 0)
+                    throw new InvalidOperationException("The pthread stack policy requires a drained context and no existing scope.");
+                Retain();
+                pthreadStackPolicy = policy;
+            }
+            return policy;
+        }
+
+        internal PthreadAdmission AdmitPthread(int requestedBytes)
+        {
+            lock (gate)
+            {
+                ObjectDisposedException.ThrowIf(disposed, this);
+                var admission = new PthreadAdmission(this, Math.Max(requestedBytes, pthreadStackPolicy?.MinimumBytes ?? 0));
+                int count = checked(pthreadAdmissions + 1);
+                Retain();
+                pthreadAdmissions = count;
+                return admission;
+            }
+        }
+
+        internal void RetirePthreadPolicy(PthreadStackPolicy policy)
+        {
+            lock (gate)
+            {
+                if (policy.Retired) return;
+                policy.Retired = true;
+                ReleaseRetiredPthreadPolicy();
+            }
+        }
+
+        private void ReleaseRetiredPthreadPolicy()
+        {
+            if (pthreadAdmissions == 0 && pthreadStackPolicy is { Retired: true })
+            {
+                pthreadStackPolicy = null;
+                Release();
+            }
+        }
+
+        internal void ReleasePthreadAdmission()
+        {
+            lock (gate)
+            {
+                if (pthreadAdmissions <= 0) throw new InvalidOperationException("Unbalanced pthread admission.");
+                pthreadAdmissions--;
+                ReleaseRetiredPthreadPolicy();
+                Release();
+            }
+        }
+    }
+
+    internal sealed class PthreadStackPolicy(RuntimeContext owner, int minimumBytes) : IDisposable
+    {
+        internal readonly int MinimumBytes = minimumBytes;
+        internal bool Retired;
+        public void Dispose() => owner.RetirePthreadPolicy(this);
+    }
+
+    internal sealed class PthreadAdmission(RuntimeContext owner, int stackSize) : IDisposable
+    {
+        private RuntimeContext? retained = owner;
+        internal readonly int StackSize = stackSize;
+        public void Dispose() => Interlocked.Exchange(ref retained, null)?.ReleasePthreadAdmission();
+    }
+
     private sealed class PthreadAttributes
     {
         internal int StackSize = DOTCC_PTHREAD_DEFAULT_STACK_SIZE;

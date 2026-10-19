@@ -12,7 +12,7 @@
 /* glibc status encoding: low 7 bits = signal, 0x7f = stopped, else exit. */
 #define WIFEXITED(s)    (((s) & 0x7f) == 0)
 #define WEXITSTATUS(s)  (((s) >> 8) & 0xff)
-#define WIFSIGNALED(s)  ((((s) & 0x7f) + 1) >> 1 > 0)
+#define WIFSIGNALED(s)  (((signed char)(((s) & 0x7f) + 1) >> 1) > 0)
 #define WTERMSIG(s)     ((s) & 0x7f)
 #define WIFSTOPPED(s)   (((s) & 0xff) == 0x7f)
 #define WSTOPSIG(s)     WEXITSTATUS(s)

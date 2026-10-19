@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 # Serial native oracle build/test. Coordinate the repository build slot first.
 set -euo pipefail
@@ -11,13 +12,13 @@ logs="$campaign/artifacts/oracle"
 {
     date -u +%FT%TZ
     uname -a
-    cc --version
-    cmake --version
+    "${PRODUCTION_COMMAND[@]}" cc --version
+    "${PRODUCTION_COMMAND[@]}" cmake --version
     openssl version -a
-    dotnet --info
+    "${PRODUCTION_COMMAND[@]}" dotnet --info
     dpkg-query -W gcc cmake libssl-dev libssl3t64 openssl 2>/dev/null || true
 } > "$logs/environment.txt"
-cmake -S "$source_root" -B "$build" \
+"${PRODUCTION_COMMAND[@]}" cmake -S "$source_root" -B "$build" \
     -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCMAKE_C_FLAGS='-DPTLS_HAVE_LOG=0 -DPICOTLS_USE_DTRACE=0' \
     -DPKG_CONFIG_EXECUTABLE="$campaign/scripts/oracle-pkg-config.sh" \
@@ -38,7 +39,7 @@ for option in ('WITH_DTRACE', 'WITH_FUSION', 'WITH_AEGIS', 'WITH_MBEDTLS', 'BUIL
     if f'{option}:BOOL=OFF' not in cache:
         raise SystemExit(f'Expected {option}=OFF')
 PY
-timeout 600 cmake --build "$build" --parallel 1 \
+timeout 600 "${PRODUCTION_COMMAND[@]}" cmake --build "$build" --parallel 1 \
     --target picotls-core picotls-openssl cli test-openssl.t test-minicrypto.t \
     2>&1 | tee "$logs/build.log"
 (cd "$source_root" && timeout 180 prove --exec '' -v "$build/test-openssl.t" "$build/test-minicrypto.t") \

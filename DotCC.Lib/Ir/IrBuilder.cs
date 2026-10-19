@@ -230,6 +230,7 @@ internal sealed partial class IrBuilder
     public void AddUnit(Item root, string file)
     {
         _file = file;
+        _anonymousTypedefOccurrences.Clear();
         FlattenFns(root, BuildTopLevel);
         FinishWeakFunctionDefinitions();
     }
@@ -386,6 +387,7 @@ internal sealed partial class IrBuilder
                 _pendingAttrNodiscard = nodiscard;
                 break;
             }
+            case C.EmptyTranslationUnit:
             case C.EmptyDeclaration: break;
             case C.TypedefFunction t:
             {
@@ -483,37 +485,28 @@ internal sealed partial class IrBuilder
             // `extern T x;` declares the name + type for resolution but emits no
             // field — the definition lives in another TU (dotcc whole-program model).
             case C.ExternVarDecl g: BuildGlobalDecls(g.Arg1, g.Arg2, Storage.Extern); break;
-            // `typedef <type> <name>;` — record name → underlying type. Resolution
-            // (ResolveType's TypeName case) then sees through it everywhere.
-            case C.TypedefAlias t: _typedefs[UserTypedefName(Tok(t.Arg2))] = ResolveType(t.Arg1); break;
+            // Bind each typedef declarator, preserving pointer and array shape.
+            // ResolveType's TypeName case sees through each alias everywhere.
+            case C.TypedefAlias t: BuildTypedefList(t.Arg1, t.Arg2); break;
             case C.TypedefAttributedAlias t: BuildAttributedTypedef(t.Arg1, t.Arg2, t.Arg3); break;
-            // `typedef T Name[N];` — the alias IS an array type. Bounds must be
-            // constant (same rule as struct array members); the registered
-            // CType.Array drives every use site: member → fixed buffer, param →
-            // pointer decay, sizeof → N*sizeof(T), local decl → stackalloc.
-            case C.TypedefArr t:
-                _typedefs[UserTypedefName(Tok(t.Arg2))] = MakeArrayType(
-                    ResolveType(t.Arg1),
-                    TryConstDims(t.Arg3) ?? throw new IrUnsupportedException("non-constant array typedef bound"));
-                break;
             // enum definitions — register a real C# enum (tagged/typedef'd) or, for
             // an anonymous un-typedef'd enum, plain int constants.
             case C.EnumDefAnonymous e: RegisterEnum(null, null, e.Arg2); break;
             case C.EnumDef e: RegisterEnum(Tok(e.Arg1), null, e.Arg3); break;
             case C.EnumDefTyped e: RegisterEnum(Tok(e.Arg1), e.Arg3, e.Arg5); break;
-            case C.TypedefEnum e: _typedefs[UserTypedefName(Tok(e.Arg6))] = RegisterEnum(Tok(e.Arg2), null, e.Arg4, Tok(e.Arg6)); break;
-            case C.TypedefEnumAnon e: _typedefs[UserTypedefName(Tok(e.Arg5))] = RegisterEnum(null, null, e.Arg3, Tok(e.Arg5)); break;
+            case C.TypedefEnum e: BuildEnumTypedef(Tok(e.Arg2), e.Arg4, e.Arg6); break;
+            case C.TypedefEnumAnon e: BuildEnumTypedef(null, e.Arg3, e.Arg5); break;
             // struct/union definitions.
-            case C.TypedefAttributedStruct s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), false, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
-            case C.TypedefAttributedUnion s: BuildStructDef(Tok(s.Arg3), s.Arg5, Tok(s.Arg7), true, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
+            case C.TypedefAttributedStruct s: BuildAggregateTypedef(Tok(s.Arg3), s.Arg5, s.Arg7, false, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
+            case C.TypedefAttributedUnion s: BuildAggregateTypedef(Tok(s.Arg3), s.Arg5, s.Arg7, true, GnuAggregateAlignment(s.Arg2), pack: GnuAggregatePack(s.Arg2, fn), pragmaPack: SourcePacking.Of(fn)); break;
             case C.AttributedStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, false, GnuAggregateAlignment(s.Arg1), pack: GnuAggregatePack(s.Arg1, fn), pragmaPack: SourcePacking.Of(fn)); break;
             case C.AttributedUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, null, true, GnuAggregateAlignment(s.Arg1), pack: GnuAggregatePack(s.Arg1, fn), pragmaPack: SourcePacking.Of(fn)); break;
             case C.StructDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: false, pack: SourcePacking.Of(fn)); break;
             case C.UnionDef s: BuildStructDef(Tok(s.Arg1), s.Arg3, null, isUnion: true, pack: SourcePacking.Of(fn)); break;
-            case C.TypedefStruct s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: false, pack: SourcePacking.Of(fn)); break;
-            case C.TypedefUnion s: BuildStructDef(Tok(s.Arg2), s.Arg4, Tok(s.Arg6), isUnion: true, pack: SourcePacking.Of(fn)); break;
-            case C.TypedefStructAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: false, pack: SourcePacking.Of(fn)); break;
-            case C.TypedefUnionAnon s: BuildStructDef(null, s.Arg3, Tok(s.Arg5), isUnion: true, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefStruct s: BuildAggregateTypedef(Tok(s.Arg2), s.Arg4, s.Arg6, false, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefUnion s: BuildAggregateTypedef(Tok(s.Arg2), s.Arg4, s.Arg6, true, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefStructAnon s: BuildAggregateTypedef(null, s.Arg3, s.Arg5, false, pack: SourcePacking.Of(fn)); break;
+            case C.TypedefUnionAnon s: BuildAggregateTypedef(null, s.Arg3, s.Arg5, true, pack: SourcePacking.Of(fn)); break;
             // `struct Tag;` forward declaration — C# resolves order-independently.
             case C.StructFwd s: ReferenceAggregate(s.Arg1, isUnion: false); break;
             // `_Static_assert(expr[, "msg"]);` at file scope — a compile-time-only
@@ -844,13 +837,15 @@ internal sealed partial class IrBuilder
         }
     }
 
-    private void RegisterProto(Item fnSig)
+    private void RegisterProto(Item fnSig, bool blockScope = false)
     {
         _sawNoreturnSpec = false;
         _sawInlineSpec = false;
         _sawWeakSpec = false;
         _sawNodiscardSpec = null;
         var sig = ExtractFnSig(fnSig);
+        if (blockScope && sig.IsStatic)
+            throw new IrUnsupportedException("block-scope function declaration cannot specify static storage");
         // The reduction's position is its leftmost leaf token (LALR.CC propagates
         // children[0].Position up), and the whole declaration lives in one file —
         // so the band check is reliable without inspecting the name token.
@@ -1157,6 +1152,7 @@ internal sealed partial class IrBuilder
                 // alias like chibi's `sexp_abi_identifier_t`) decays to a
                 // pointer exactly like the explicit `T name[]` forms below
                 // (C99 §6.7.5.3p7 applies through a typedef too).
+                case C.ParamRegister p: Walk(p.Arg1); break;
                 case C.ParamGnuAttributes p: ValidateGnuObjectAttribute(p.Arg1); Walk(p.Arg0); break;
                 case C.Param p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), Tok(p.Arg1))); break;
                 case C.ParamUnnamed p: acc.Add(new(DecayParam(ResolveType(p.Arg0)), "_p" + unnamed++)); break;
@@ -1327,10 +1323,12 @@ internal sealed partial class IrBuilder
     /// for an anonymous <c>typedef struct {…} Alias</c>); <paramref name="alias"/>
     /// the typedef name if any. Emits a C# struct under a canonical name, records
     /// its fields for member-type resolution, and maps the typedef alias to it.</summary>
-    private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion, int alignment = 0, int pack = 0, int? pragmaPack = null)
+    private void BuildStructDef(string? tag, Item memberList, string? alias, bool isUnion, int alignment = 0, int pack = 0, int? pragmaPack = null, bool tagged = true)
     {
         var canonical = tag ?? alias ?? throw new IrUnsupportedException("struct with neither tag nor typedef name");
         RejectExternalDefinition(canonical);
+        canonical = AggregateName(canonical);
+        if (tagged) _taggedAggregates.Add(canonical);
         if (_emittedTypes.Add(canonical))
         {
             // Shared headers can repeat this named definition in later source
@@ -1489,7 +1487,11 @@ internal sealed partial class IrBuilder
                 case C.StructPtrToArrMember sm:
                 {
                     var dims = TryConstDims(sm.Arg5) ?? throw new IrUnsupportedException("non-constant pointer-to-array member bound");
-                    fields.Add(AlignedField(sm.Arg0, sm.Arg3, new CType.Pointer(MakeArrayType(ResolveType(sm.Arg0), dims))));
+                    var (name, quals) = QualifiedCallbackName(sm.Arg3);
+                    if (name.Content is not C.FnPtrScalarName scalar)
+                        throw new IrUnsupportedException("pointer-to-array member requires a scalar name");
+                    fields.Add(AlignedField(sm.Arg0, scalar.Arg0,
+                        new CType.Pointer(MakeArrayType(ResolveType(sm.Arg0), dims)).WithQuals(quals)));
                     break;
                 }
                 case C.StructArrMember sm:
@@ -1508,14 +1510,11 @@ internal sealed partial class IrBuilder
                 // FnPtrType lowering as the typedef/param fn-ptr forms (codegen
                 // emits a `delegate*` field).
                 case C.StructFnPtrFormatMember sm:
-                    ValidateGnuFormatAttribute(sm.Arg8);
-                    fields.Add(AlignedField(sm.Arg0, sm.Arg3, FnPtrType(sm.Arg0, sm.Arg6)));
+                    ValidateGnuFormatAttribute(sm.Arg1);
+                    fields.Add(BuildCallbackMember(sm.Arg0));
                     break;
                 case C.StructFnPtrMember sm:
-                    fields.Add(AlignedField(sm.Arg0, sm.Arg3, FnPtrType(sm.Arg0, sm.Arg6)));
-                    break;
-                case C.StructFnPtrMemberNoArgs sm:
-                    fields.Add(AlignedField(sm.Arg0, sm.Arg3, FnPtrType(sm.Arg0, null)));
+                    fields.Add(BuildCallbackMember(sm.Arg0));
                     break;
                 case C.StructFnPtrStorageMember sm:
                     fields.Add(AlignedField(sm.Arg0, sm.Arg4, new CType.Pointer(FnPtrType(sm.Arg0, sm.Arg7))));
@@ -1637,7 +1636,8 @@ internal sealed partial class IrBuilder
     /// of that type — unlike an anonymous member, the fields are NOT promoted.</summary>
     private void AddNamedNested(string? tag, Item innerMemberList, string member, List<StructField> parentFields, bool isUnion, bool pointer = false, Item? dimensions = null, bool flexible = false, int pack = 0)
     {
-        var typeName = tag ?? AnonymousAggregateName(innerMemberList, isUnion);
+        var typeName = tag is null ? AnonymousAggregateName(innerMemberList, isUnion) : AggregateName(tag);
+        if (tag is not null) _taggedAggregates.Add(typeName);
         if (_emittedTypes.Add(typeName))
         {
             _structPacks[typeName] = pack;
@@ -1664,7 +1664,10 @@ internal sealed partial class IrBuilder
         if (StructCanonical(MemberOwnerType(baseExpr.Type, arrow)) is { } name
             && _structFields.TryGetValue(name, out var fields))
         {
-            foreach (var f in fields) { if (f.Name == field) { return f.Type; } }
+            var owner = MemberOwnerType(baseExpr.Type, arrow);
+            if (arrow && owner.Unqualified is CType.Pointer pointer) owner = pointer.Pointee;
+            foreach (var f in fields)
+                if (f.Name == field) return f.Type.WithQuals(owner.Quals & (TypeQual.Const | TypeQual.Volatile));
         }
         return CType.Int;
     }
@@ -1863,8 +1866,9 @@ internal sealed partial class IrBuilder
 
     private CType ResolveTaggedAggregate(string tag, Item memberList, bool isUnion, int pack = 0)
     {
-        if (!_emittedTypes.Contains(tag)) BuildStructDef(tag, memberList, null, isUnion, pack: pack);
-        return new CType.Named(tag);
+        var name = AggregateName(tag);
+        if (!_emittedTypes.Contains(name)) BuildStructDef(tag, memberList, null, isUnion, pack: pack);
+        return new CType.Named(name);
     }
 
     /// <summary>Resolve a type-name token: a user/library typedef resolves to its
@@ -2741,8 +2745,10 @@ internal sealed partial class IrBuilder
         C.DeclAutoInfer d => BuildDeclAutoInfer(d),
         C.DeclAutoStorage d => BuildDeclList(d.Arg1, d.Arg2),
         C.DeclRegisterStorage d => BuildDeclList(d.Arg1, d.Arg2),
+        C.DeclFunctionProto d => BuildBlockFunctionPrototype(d.Arg0),
+        C.DeclExternFunctionProto d => BuildBlockFunctionPrototype(d.Arg1),
         C.DeclLocalTypedefFunction d => BuildLocalFunctionTypedef(d.Arg1),
-        C.DeclLocalTypedefAlias d => BuildLocalTypedef(d.Arg2, ResolveType(d.Arg1)),
+        C.DeclLocalTypedefAlias d => BuildLocalTypedefList(d.Arg1, d.Arg2),
         C.DeclLocalTypedefFnPtr d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, d.Arg7)),
         C.DeclLocalTypedefFnPtrNoArgs d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, null)),
         // `char s[] = "hi";` (implicit size) / `char buf[N] = "hi";` (explicit, zero-padded).
@@ -2758,9 +2764,9 @@ internal sealed partial class IrBuilder
         C.DeclU8CharArrStrSized d => BuildDeclCharArrStr(d.Arg0, d.Arg1, CharArrSize(d.Arg2), d.Arg4, wide: true),
         C.DeclStructInit d => BuildDeclStructInit(d),
         // `T x = { .field = … };` — C99 designated struct/union initializer.
-        C.DeclStructDesignated d => BuildLocalInit(d.Arg1, ResolveType(d.Arg0), BuildStructDesignated(ResolveType(d.Arg0), d.Arg4), DeclarationAlignment(d.Arg0)),
+        C.DeclStructDesignated d => BuildLocalInit(d.Arg1, ResolveType(d.Arg0), () => BuildStructDesignated(ResolveType(d.Arg0), d.Arg4), DeclarationAlignment(d.Arg0)),
         // `T x = {};` — C23 empty initializer (zero value).
-        C.DeclEmptyInit d => Gated(2023, "empty initializer", d.Arg1, BuildLocalInit(d.Arg1, ResolveType(d.Arg0), new DefaultLit { Type = ResolveType(d.Arg0) }, DeclarationAlignment(d.Arg0))),
+        C.DeclEmptyInit d => Gated(2023, "empty initializer", d.Arg1, BuildLocalInit(d.Arg1, ResolveType(d.Arg0), () => new DefaultLit { Type = ResolveType(d.Arg0) }, DeclarationAlignment(d.Arg0))),
         C.DeclArr d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, null, implicitSize: false),
         C.DeclArrEmptyInit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, null, implicitSize: false),
         C.DeclArrInit d => BuildArrDecl(d.Arg0, d.Arg1, d.Arg2, d.Arg5, implicitSize: false),
@@ -2770,10 +2776,9 @@ internal sealed partial class IrBuilder
         C.DeclPtrToArr d => BuildPtrToArr(d.Arg0, d.Arg3, d.Arg5, null),
         C.DeclPtrToArrInit d => BuildPtrToArr(d.Arg0, d.Arg3, d.Arg5, d.Arg7),
         // Local function-pointer variable: `Ret (*name)(params)` [= init].
-        C.DeclFnPtr d => BuildFnPtrLocal(d.Arg0, d.Arg3, d.Arg6, null),
-        C.DeclFnPtrNoArgs d => BuildFnPtrLocal(d.Arg0, d.Arg3, null, null),
-        C.DeclFnPtrInit d => BuildFnPtrLocal(d.Arg0, d.Arg3, d.Arg6, d.Arg9),
-        C.DeclFnPtrNoArgsInit d => BuildFnPtrLocal(d.Arg0, d.Arg3, null, d.Arg8),
+        C.DeclCallback d => BuildLocalCallback(d.Arg0, null),
+        C.DeclCallbackInit d => BuildLocalCallback(d.Arg0, d.Arg2),
+        C.DeclCallbackArrayInit d => BuildLocalCallback(d.Arg0, d.Arg3, braces: true),
         C.DeclFnPtrStorage d => BuildFnPtrLocal(d.Arg0, d.Arg4, d.Arg7, null, pointerLevels: 1),
         C.DeclFnPtrStorageNoArgs d => BuildFnPtrLocal(d.Arg0, d.Arg4, null, null, pointerLevels: 1),
         C.DeclFnPtrStorageInit d => BuildFnPtrLocal(d.Arg0, d.Arg4, d.Arg7, d.Arg10, pointerLevels: 1),
@@ -2863,13 +2868,14 @@ internal sealed partial class IrBuilder
     {
         var type = ResolveStaticLocalType(typeItem);
         var threadLocal = _sawThreadLocalSpec;
-        var init = BuildStaticAggregateInitializer(type, () => designated ? BuildStructDesignated(type, initializer) : BuildAggregateInit(type, initializer));
         var sym = new Symbol
         {
             Name = Tok(nameItem), Kind = SymKind.Var, Type = type,
             Storage = Storage.Static, IsGlobal = true, IsThreadLocal = threadLocal,
             TargetName = $"{_symbols.Escape(Tok(nameItem))}__s{_staticLocalSeq++}",
         };
+        _symbols.DeclareAlias(sym);
+        var init = BuildStaticAggregateInitializer(type, () => designated ? BuildStructDesignated(type, initializer) : BuildAggregateInit(type, initializer));
         RegisterStaticLocal(sym, init);
         return new DeclStmt(System.Array.Empty<LocalDecl>());
     }
@@ -2881,6 +2887,12 @@ internal sealed partial class IrBuilder
         return new Seq(System.Array.Empty<CStmt>());
     }
 
+    private CStmt BuildBlockFunctionPrototype(Item signature)
+    {
+        RegisterProto(signature, blockScope: true);
+        return new Seq(System.Array.Empty<CStmt>());
+    }
+
     private CStmt BuildLocalTypedef(Item nameItem, CType type)
     {
         // The existing symbol table restores an outer alias when a block ends.
@@ -2889,15 +2901,20 @@ internal sealed partial class IrBuilder
         return new Seq(System.Array.Empty<CStmt>());
     }
 
-    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false, bool isExtern = false)
+    private (Item ReturnType, Item Name, Item? Parameters, TypeQual Quals) CallbackDeclarator(Item declarator)
     {
-        _sawThreadLocalSpec = false;
         var (returnType, arrayName, parameters) = declarator.Content switch
         {
             C.FnPtrArrayDeclarator d => (d.Arg0, d.Arg3, (Item?)d.Arg6),
             C.FnPtrArrayDeclaratorNoArgs d => (d.Arg0, d.Arg3, (Item?)null),
             _ => throw new IrUnsupportedException(TypeName(declarator.Content)),
         };
+        var (name, quals) = QualifiedCallbackName(arrayName);
+        return (returnType, name, parameters, quals);
+    }
+
+    private static (Item Name, TypeQual Quals) QualifiedCallbackName(Item arrayName)
+    {
         var quals = TypeQual.None;
         while (true)
         {
@@ -2908,6 +2925,28 @@ internal sealed partial class IrBuilder
             }
             break;
         }
+        return (arrayName, quals);
+    }
+
+    private StructField BuildCallbackMember(Item declarator)
+    {
+        var (returnType, name, parameters, quals) = CallbackDeclarator(declarator);
+        var callback = FnPtrType(returnType, parameters).WithQuals(quals);
+        var (identifier, type) = name.Content switch
+        {
+            C.FnPtrScalarName scalar => (scalar.Arg0, callback),
+            C.FnPtrArrayNameSized array => (array.Arg0,
+                MakeArrayType(callback, TryConstDims(array.Arg1)
+                    ?? throw new IrUnsupportedException("non-constant callback member array bound"))),
+            _ => throw new IrUnsupportedException("callback member requires a name and fixed array bounds"),
+        };
+        return new StructField(Tok(identifier), type, Alignment: DeclarationAlignment(returnType, type));
+    }
+
+    private void BuildGlobalFnPtrArray(Item declarator, Item? initItem, bool scalarInitializer = false, bool isExtern = false)
+    {
+        _sawThreadLocalSpec = false;
+        var (returnType, arrayName, parameters, quals) = CallbackDeclarator(declarator);
         if (arrayName.Content is C.FnPtrScalarName scalar)
         {
             if (initItem != null && !scalarInitializer)
@@ -2939,9 +2978,32 @@ internal sealed partial class IrBuilder
         else BuildGlobalArr(element, name, dimensions, initItem, null, alignment: alignment, threadLocal: threadLocal);
     }
 
-    private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0)
+    private CStmt BuildLocalCallback(Item declarator, Item? initializer, bool braces = false)
     {
-        CType.Func type = FnPtrType(retItem, paramsItem);
+        var (returnType, name, parameters, qualifiers) = CallbackDeclarator(declarator);
+        if (name.Content is C.FnPtrScalarName scalar)
+        {
+            if (braces) throw new IrUnsupportedException("braced scalar callback initializer");
+            return BuildFnPtrLocal(returnType, scalar.Arg0, parameters, initializer, qualifiers: qualifiers);
+        }
+        if (initializer is not null && !braces)
+            throw new IrUnsupportedException("callback array initializer requires braces");
+        var (identifier, dimensions) = name.Content switch
+        {
+            C.FnPtrArrayNameImplicit array => (array.Arg0, (Item?)null),
+            C.FnPtrArrayNameSized array => (array.Arg0, (Item?)array.Arg1),
+            _ => throw new IrUnsupportedException(TypeName(name.Content)),
+        };
+        if (dimensions is null && initializer is null)
+            throw new IrUnsupportedException("local callback array requires complete bounds or an initializer");
+        var element = FnPtrType(returnType, parameters).WithQuals(qualifiers);
+        return BuildArrDecl(element, identifier, dimensions, initializer, dimensions is null,
+            alignment: DeclarationAlignment(returnType, element));
+    }
+
+    private DeclStmt BuildFnPtrLocal(Item retItem, Item nameItem, Item? paramsItem, Item? initItem, int pointerLevels = 0, TypeQual qualifiers = TypeQual.None)
+    {
+        CType.Func type = FnPtrType(retItem, paramsItem) with { Quals = qualifiers };
         var init = initItem is { } ii ? BuildExpr(ii) : null;
         // Propagate a dlsym-sourced native calling-convention marker from the
         // initializer onto the declared fn-ptr type, so the canonical idiom
@@ -2996,24 +3058,8 @@ internal sealed partial class IrBuilder
                     throw new IrUnsupportedException(
                         $"'{name}': only integer constexpr objects are supported (float/pointer/struct/array constexpr is not built yet)");
                 }
-                // Same lowering as a standalone fixed-size array decl: the symbol
-                // keeps the (possibly nested) array type so sizeof/the length idiom
-                // resolve; the stackalloc extent is the flattened product.
-                var total = 1;
-                var dimensions = new List<int>();
-                var elem = type.Unqualified;
-                while (elem is CType.Array a)
-                {
-                    var count = a.Count ?? throw new IrUnsupportedException("unsized array in a multi-declarator tail");
-                    dimensions.Add(count);
-                    total = checked(total * count);
-                    elem = a.Element;
-                }
-                var asym = _symbols.Declare(new Symbol { Name = name, Alignment = DeclarationAlignment(typeItem, type), Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
                 Flush();
-                stmts.Add(new ArrayDecl(asym, elem,
-                    new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int },
-                    initItem is { } arrayInit ? BuildArrayElems(elem, dimensions, ParseInitList(arrayInit)) : null));
+                stmts.Add(BuildFixedLocalArray(name, type, DeclarationAlignment(typeItem, type), initItem));
                 return;
             }
             var sym = _symbols.Declare(new Symbol
@@ -3038,13 +3084,15 @@ internal sealed partial class IrBuilder
     /// distinguishes an aggregate from a scalar or pointer initialization.</summary>
     private CExpr BuildDeclaratorInitializer(CType type, Item initializer) => initializer.Content switch
     {
-        C.InitListOne or C.InitListCons or C.InitListTrail =>
+        C.InitListOne or C.InitListCons or C.InitListMember or C.InitListAfterMembers or C.InitListTrail =>
             BuildFieldInitializer(type, new InitGroup(ParseInitList(initializer))),
         C.MemberInitListOne or C.MemberInitListCons or C.MemberInitListTrail =>
             BuildStructDesignated(type, initializer),
         C.DeclItemListEmptyHead or C.DeclItemTailEmptyInit or C.MemberInitEmpty =>
             Gated(2023, "empty initializer", initializer,
                 BuildFieldInitializer(type, new InitGroup(System.Array.Empty<Init>()))),
+        _ when type.Unqualified is CType.Array =>
+            BuildFieldInitializer(type, new InitVal(BuildExpr(initializer))),
         _ => BuildExpr(initializer),
     };
 
@@ -3094,6 +3142,13 @@ internal sealed partial class IrBuilder
                 CType.Func f => f with { IsFunctionType = true },
                 _ => element,
             };
+        void AddGrouped(Item declarator, Item? suffix, Item? initializer, CType type)
+        {
+            var (name, dimensions) = GroupedObjectName(declarator);
+            if (suffix is { } more)
+                dimensions.AddRange(TryConstDims(more) ?? throw new IrUnsupportedException("non-constant grouped array bound"));
+            add(name, initializer, dimensions.Count == 0 ? type : MakeArrayType(type, dimensions));
+        }
         void WalkTail(Item it, CType tailType)
         {
             switch (it.Content)
@@ -3105,6 +3160,11 @@ internal sealed partial class IrBuilder
                 case C.DeclItemTailPtr p: WalkTail(p.Arg1, PointerType(tailType)); break;
                 case C.DeclItemTailConstPtr p: WalkTail(p.Arg2, PointerType(tailType).WithQuals(TypeQual.Const)); break;
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, tailType); break;
+                case C.DeclItemGrouped d: AddGrouped(d.Arg0, null, null, tailType); break;
+                case C.DeclItemGroupedArray d: AddGrouped(d.Arg0, d.Arg1, null, tailType); break;
+                case C.DeclItemGroupedInit d: AddGrouped(d.Arg0, null, d.Arg2, tailType); break;
+                case C.DeclItemGroupedBraceInit d: AddGrouped(d.Arg0, null, d.Arg3, tailType); break;
+                case C.DeclItemGroupedArrayInit d: AddGrouped(d.Arg0, d.Arg1, d.Arg4, tailType); break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, tailType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, tailType); break;
                 case C.DeclItemGnuAttributes di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), null, tailType); break;
@@ -3152,6 +3212,9 @@ internal sealed partial class IrBuilder
                     WalkTail(a.Arg7, element);
                     break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, baseType); break;
+                case C.DeclItemGrouped or C.DeclItemGroupedArray or C.DeclItemGroupedInit
+                    or C.DeclItemGroupedBraceInit or C.DeclItemGroupedArrayInit:
+                    WalkTail(it, baseType); break;
                 case C.DeclItemInit di: add(Tok(di.Arg0), di.Arg2, baseType); break;
                 case C.DeclItemGnuAttributes di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), null, baseType); break;
                 case C.DeclItemGnuAttributesInit di: ValidateGnuObjectAttribute(di.Arg1); add(Tok(di.Arg0), di.Arg3, baseType); break;
@@ -3172,6 +3235,23 @@ internal sealed partial class IrBuilder
                 case C.DeclItemListOne one: pending.Push(one.Arg0); break;
                 default: Walk(declarator); break;
             }
+        }
+    }
+
+    private (string Name, List<int> Dimensions) GroupedObjectName(Item declarator)
+    {
+        switch (declarator.Content)
+        {
+            case C.GroupedObjectName n: return (Tok(n.Arg1), new List<int>());
+            case C.GroupedObjectArray n: return (Tok(n.Arg1), (TryConstDims(n.Arg2)
+                ?? throw new IrUnsupportedException("non-constant grouped array bound")).ToList());
+            case C.GroupedObjectNested n: return GroupedObjectName(n.Arg1);
+            case C.GroupedObjectNestedArray n:
+                var result = GroupedObjectName(n.Arg1);
+                result.Dimensions.AddRange(TryConstDims(n.Arg2)
+                    ?? throw new IrUnsupportedException("non-constant grouped array bound"));
+                return result;
+            default: throw new IrUnsupportedException(TypeName(declarator.Content));
         }
     }
 
@@ -3219,6 +3299,11 @@ internal sealed partial class IrBuilder
     private CStmt BuildArrDecl(Item typeItem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize, bool inferOuter = false)
     {
         var elem = ResolveType(typeItem);
+        return BuildArrDecl(elem, nameItem, dimsItem, initItem, implicitSize, inferOuter, DeclarationAlignment(typeItem, elem));
+    }
+
+    private CStmt BuildArrDecl(CType elem, Item nameItem, Item? dimsItem, Item? initItem, bool implicitSize, bool inferOuter = false, int alignment = 0)
+    {
         RequireCompleteObject(elem, "array element");
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) : null;
@@ -3280,7 +3365,7 @@ internal sealed partial class IrBuilder
             arrType = new CType.Pointer(elem);
         }
 
-        var sym = _symbols.Declare(new Symbol { Name = name, Alignment = DeclarationAlignment(typeItem, elem), Kind = SymKind.Var, Type = arrType, Storage = Storage.Auto });
+        var sym = _symbols.Declare(new Symbol { Name = name, Alignment = alignment, Kind = SymKind.Var, Type = arrType, Storage = Storage.Auto });
         var declaration = new ArrayDecl(sym, elem, countExpr, inits);
         return capturedExtent is null ? declaration : new Seq(new CStmt[] { new DeclStmt(new[] { capturedExtent }), declaration });
     }
@@ -3310,15 +3395,19 @@ internal sealed partial class IrBuilder
     private CStmt BuildDeclStructInit(C.DeclStructInit n)
     {
         var type = ResolveType(n.Arg0);
-        return BuildLocalInit(n.Arg1, type, BuildAggregateInit(type, n.Arg4), DeclarationAlignment(n.Arg0));
+        if (type.Unqualified is CType.Array)
+            return BuildFixedLocalArray(Tok(n.Arg1), type, DeclarationAlignment(n.Arg0), n.Arg4);
+        return BuildLocalInit(n.Arg1, type, () => BuildAggregateInit(type, n.Arg4), DeclarationAlignment(n.Arg0));
     }
 
     /// <summary>Declare a single block local of <paramref name="type"/> with an
-    /// already-built initializer, as a one-declarator <see cref="DeclStmt"/>.</summary>
-    private DeclStmt BuildLocalInit(Item nameItem, CType type, CExpr init, int alignment = 0)
+    /// initializer, as a one-declarator <see cref="DeclStmt"/>. Its identifier
+    /// is visible while building that initializer, including self addresses.</summary>
+    private DeclStmt BuildLocalInit(Item nameItem, CType type, System.Func<CExpr> buildInitializer, int alignment = 0)
     {
-        EnsureNotEmbed(init);
         var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Alignment = alignment, Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
+        var init = buildInitializer();
+        EnsureNotEmbed(init);
         return new DeclStmt(new[] { new LocalDecl(sym, init) });
     }
 
@@ -3548,7 +3637,7 @@ internal sealed partial class IrBuilder
             && _promoted.TryGetValue(canonical, out var pm)
             && pm.TryGetValue(field, out var p))
         {
-            var hidden = new Member(base_, p.Hidden, arrow) { Type = new CType.Named(p.Nested), IsLValue = arrow || base_.IsLValue };
+            var hidden = new Member(base_, p.Hidden, arrow) { Type = MemberType(base_, p.Hidden, arrow), IsLValue = arrow || base_.IsLValue };
             return BuildMemberAccess(hidden, field, arrow: false);
         }
         return new Member(base_, field, arrow) { Type = MemberType(base_, field, arrow), IsLValue = arrow || base_.IsLValue };
@@ -4032,6 +4121,7 @@ internal sealed partial class IrBuilder
             {
                 case C.OffsetofPathCons c: Walk(c.Arg0); segs.Add(Tok(c.Arg2)); break;
                 case C.OffsetofPathOne o: segs.Add(Tok(o.Arg0)); break;
+                case C.OffsetofPathTypeName o: segs.Add(Tok(o.Arg0)); break;
                 case C.OffsetofPathIndex index:
                     Walk(index.Arg0);
                     var value = ConstEval(BuildExpr(index.Arg2));
@@ -4151,6 +4241,7 @@ internal sealed partial class IrBuilder
         {
             switch (node.Content)
             {
+                case C.StrArrayInitParens group: pending.Push(group.Arg1); break;
                 case C.StrSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
                 case C.StrSeqOne so: pending.Push(so.Arg0); break;
                 default: segs.Add(Tok(node)); break;
@@ -4181,6 +4272,10 @@ internal sealed partial class IrBuilder
         {
             switch (node.Content)
             {
+                case C.U16strArrayInitParens group: pending.Push(group.Arg1); break;
+                case C.WstrArrayInitParens group: pending.Push(group.Arg1); break;
+                case C.U32strArrayInitParens group: pending.Push(group.Arg1); break;
+                case C.U8strArrayInitParens group: pending.Push(group.Arg1); break;
                 case C.U16strSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;
                 case C.U16strSeqOne so: pending.Push(so.Arg0); break;
                 case C.WstrSeqCons sc: pending.Push(sc.Arg1); pending.Push(sc.Arg0); break;

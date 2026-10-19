@@ -1,0 +1,146 @@
+ M docs/campaigns.md
+ M docs/plans/summary.md
+ M duckdb/edg/portable.py
+ M edgcpp/docs/libc-wscanf.md
+ M edgcpp/object-linker/relational/managed/EmitterDelegatingConstructors.cs
+ M edgcpp/object-linker/relational/managed/EmitterLifetimes.cs
+ M edgcpp/upstream/src/class_decl.c
+ M edgcpp/upstream/src/decl_inits.c
+ M edgcpp/upstream/src/declarator.c
+ M edgcpp/upstream/src/expr.c
+ M edgcpp/upstream/src/fe_wrapup.c
+ M edgcpp/upstream/src/il.c
+ M edgcpp/upstream/src/il_alloc.c
+ M edgcpp/upstream/src/layout.c
+ M edgcpp/upstream/src/lower_c99.c
+ M edgcpp/upstream/src/lower_eh.c
+ M edgcpp/upstream/src/lower_il.c
+ M edgcpp/upstream/src/lower_init.c
+ M edgcpp/upstream/src/templates.c
+ M edgcpp/upstream/src/trans_copy.c
+ M libuv/README.md
+ M libuv/docs/PLAN.md
+ M libuv/docs/blockers.md
+ M libuv/docs/compiler-native.md
+ M libuv/docs/compromises.md
+ M libuv/docs/coordination.md
+ M libuv/docs/validation.md
+?? 01460-exception.ti
+?? 01575-hugeint.ti
+?? abi_atomic.ti
+?? adapters.ti
+?? allocator.ti
+?? array_views_extern.ti
+?? c-backend-provider.ti
+?? casts-contract-first.ti
+?? cleanup.ti
+?? combined.ti
+?? consumer.ti
+?? coroutine_allocation_failure.ti
+?? coroutine_counter.ti
+?? coroutine_function_try.ti
+?? coroutine_function_try_cleanup.ti
+?? coroutine_function_try_protocol.ti
+?? coroutine_value_construction.ti
+?? coroutine_value_lifetime.ti
+?? count.ti
+?? cpython/docs/PLAN.md
+?? cpython/docs/coordination-tasks.json
+?? deallocator.ti
+?? docs/plans/compiler-review-2026-09-29.md
+?? docs/plans/upstream-fixes-tdd.md
+?? duckdb_deferred_declaration_return_provider.ti
+?? duckdb_static_initializer_temporary_rollback.ti
+?? edgcpp/backend/dot_gen_object.h.orig
+?? edgcpp/backend/dot_gen_object_source.h.orig
+?? edgcpp/backend/tests/coroutine_placement_member_verify.py
+?? edgcpp/backend/tests/libcxx/coroutine_placement_member.cpp
+?? edgcpp/backend/tests/libcxx/coroutine_placement_parameter_lvalues.cpp
+?? edgcpp/backend/tests/libcxx/variant_component.cpp
+?? edgcpp/backend/tests/local_entities.cpp
+?? edgcpp/backend/tests/local_entities_verify.py
+?? edgcpp/docs/dotobj-source-graph-correction-20261011.md
+?? edgcpp/docs/duckdb-supervisor-pause-20261010.md
+?? edgcpp/object-linker/managed/SourceTemplateMetadata.cs.orig
+?? edgcpp/object-linker/relational/tests/delegating_constructor_cleanup/main.cpp
+?? edgcpp/object-linker/relational/tests/delegating_constructor_cleanup/program.h
+?? edgcpp/object-linker/relational/tests/delegating_constructor_cleanup/provider.cpp
+?? edgcpp/object-linker/relational/tests/delegating_constructor_cleanup/unsupported_throwing_argument.cpp
+?? edgcpp/object-linker/relational/tests/verify_delegating_constructor_cleanup.py
+?? edgcpp/object-linker/tests/duckdb_array_allocation_callbacks.cpp
+?? edgcpp/object-linker/tests/duckdb_array_allocation_callbacks_verify.py
+?? edgcpp/object-linker/tests/duckdb_guard_exit.cpp
+?? edgcpp/object-linker/tests/duckdb_record_initialization_failure.cpp
+?? edgcpp/object-linker/tests/duckdb_source_member_substitutions_verify.py
+?? edgcpp/object-linker/tests/provider_closure.py
+?? edgcpp/roslyn-csharp/tests/Fixtures/T3/storage-constants/aggregate-oracle.cpp
+?? edgcpp/roslyn-csharp/tests/Fixtures/T3/storage-constants/aggregate-value.cpp
+?? edgcpp/roslyn/build/NATIVE_RESTART.md
+?? edgcpp/roslyn/docs/PAUSED-FILES.json
+?? edgcpp/roslyn/docs/PAUSED.md
+?? edgcpp/roslyn/managed/RESTART-20261012.txt
+?? edgcpp/roslyn/managed/routine-contract-proposal.tsv
+?? edgcpp/roslyn/tests/fixtures/name_reference_overloads.cpp
+?? edgcpp/tests/cpp_graph_recycling_probe.cpp
+?? edgcpp/upstream/src/libc-inet-bindings.def
+?? empty-tail.ti
+?? exception-capture-instance.ti
+?? exception-capture-static.ti
+?? exception-foreign-owner-instance.ti
+?? exception-foreign-owner-static.ti
+?? exception-handles-instance.ti
+?? exception-handles-static.ti
+?? exception-owner-instance.ti
+?? exception-owner-static.ti
+?? exception_counts_host-instance.ti
+?? exception_counts_host-static.ti
+?? exception_counts_main-instance.ti
+?? exception_counts_main-static.ti
+?? exception_ptr.ti
+?? folded_designated_initializers.int.c
+?? forward.ti
+?? function-try.ti
+?? function_reference.ti
+?? instance-component.ti
+?? instance-global.ti
+?? instance.ti
+?? language_modes.ti
+?? local_entities.ti
+?? main.ti
+?? merged_inline_members_first.ti
+?? name-limits.ti
+?? new.ti
+?? nontrivial.ti
+?? one.ti
+?? ordered_operator_calls.ti
+?? owned_array_initializer.ti
+?? portable.ti
+?? probe.ti
+?? probe3.ti
+?? provider.ti
+?? real-copy.ti
+?? relative-hard
+?? relative-renamed/entry
+?? relative-symbolic?
+?? return-provider.ti
+?? self_libcxx.ti
+?? self_musl.ti
+?? self_profile_alignment.ti
+?? smoke.ti
+?? source_names.ti
+?? static-component.ti
+?? static-global.ti
+?? static.ti
+?? string.ti
+?? string_util.ti
+?? template_entities.ti
+?? template_packs.ti
+?? traits.ti
+?? trivial.ti
+?? uncaught_copy_marker-instance.ti
+?? uncaught_copy_marker-static.ti
+?? uncaught_counts-instance.ti
+?? uncaught_counts-static.ti
+?? unity.ti
+?? variant.ti
+?? visit.ti

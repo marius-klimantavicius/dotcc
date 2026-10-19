@@ -29,6 +29,9 @@ typedef unsigned short sa_family_t;
 #define SOCK_NONBLOCK 0x800
 #define SOCK_CLOEXEC 0x80000
 
+/* Linux header value; the effective listen queue limit is host-controlled. */
+#define SOMAXCONN 4096
+
 /* setsockopt / getsockopt levels and option names */
 #define SOL_SOCKET   1
 #define SO_REUSEADDR 2

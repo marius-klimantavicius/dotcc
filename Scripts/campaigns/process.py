@@ -3,7 +3,57 @@ import os
 from pathlib import Path
 import signal
 import subprocess
+import threading
 import time
+from contextlib import contextmanager
+
+
+# Exclusive build/link/PP commands serialize locally. Private object writers
+# borrow shared OS leases and have independent exclusive output leases instead.
+_production_commands = threading.Condition()
+_production_readers = 0
+_production_writer = False
+_production_waiting_writers = 0
+
+
+@contextmanager
+def command_lease(shared, cancellation=None):
+    """Schedule siblings locally; OS leases still reject external contention.
+
+    Ineligible emissions may require an exclusive lease in the same batch.
+    Wait for sibling readers without acquiring any OS lock while idle.
+    """
+    global _production_readers, _production_writer, _production_waiting_writers
+    acquired = False
+    with _production_commands:
+        if not shared:
+            _production_waiting_writers += 1
+        try:
+            while (_production_writer or (not shared and _production_readers)
+                   or (shared and _production_waiting_writers)):
+                if cancellation is not None and cancellation.is_set():
+                    break
+                _production_commands.wait(timeout=.1)
+            else:
+                acquired = True
+                if shared:
+                    _production_readers += 1
+                else:
+                    _production_writer = True
+        finally:
+            if not shared:
+                _production_waiting_writers -= 1
+            _production_commands.notify_all()
+    try:
+        yield
+    finally:
+        if acquired:
+            with _production_commands:
+                if shared:
+                    _production_readers -= 1
+                else:
+                    _production_writer = False
+                _production_commands.notify_all()
 
 
 class CommandError(RuntimeError):
@@ -67,7 +117,7 @@ def stop_tree(process):
     process.wait()
 
 
-def execute(command, *, label, cwd, output, timeout=600, env=None, check=True,
+def _execute(command, *, label, cwd, output, timeout=600, env=None, check=True,
             separate=False, record=None, cancellation=None):
     command = list(map(str, command))
     environment = os.environ if env is None else env
@@ -100,7 +150,15 @@ def execute(command, *, label, cwd, output, timeout=600, env=None, check=True,
     record = record if record is not None else {}
     record.update(label=label, command=command, cwd=str(cwd), stdout=str(output),
                   timeout=timeout, status="running", exit_code=None)
+    if environment.get("DOTCC_CAMPAIGN_COMMAND_LOCKS") == "production":
+        from production_support import locked_command
+        record["requested_command"] = command.copy()
+        command = locked_command(command, env=environment)
+        record["command"] = command
+        record["command_lock_mode"] = ("shared-object-emission" if command[:2] == ["flock", "-s"]
+                                       else "exclusive-command" if command[:1] == ["flock"] else "none")
     started = time.monotonic()
+    record["started"] = time.time()
     process = None
     stderr_path = output.with_suffix(".stderr") if separate else None
     error_stream = None
@@ -113,6 +171,7 @@ def execute(command, *, label, cwd, output, timeout=600, env=None, check=True,
                                        stderr=error_stream or subprocess.STDOUT,
                                        start_new_session=os.name != "nt",
                                        creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0)
+            record["pid"] = process.pid
             try:
                 if cancellation is None:
                     record["exit_code"] = process.wait(timeout=timeout)
@@ -144,6 +203,37 @@ def execute(command, *, label, cwd, output, timeout=600, env=None, check=True,
         if error_stream:
             error_stream.close()
         record["seconds"] = time.monotonic() - started
+        record["finished"] = time.time()
     if check and record["status"] != "passed":
         raise CommandError(record)
     return record
+
+
+def execute(command, **kwargs):
+    environment = kwargs.get("env")
+    if environment is None:
+        environment = os.environ
+    if environment.get("DOTCC_CAMPAIGN_COMMAND_LOCKS") == "production":
+        from production_support import locked_command, private_object_output
+        original = list(map(str, command))
+        if locked_command(original, env=environment) != original:
+            with command_lease(private_object_output(original, env=environment) is not None,
+                               kwargs.get("cancellation")):
+                cancellation = kwargs.get("cancellation")
+                if cancellation is not None and cancellation.is_set():
+                    record = kwargs.get("record")
+                    record = record if record is not None else {}
+                    record.update(label=kwargs["label"], command=original,
+                                  cwd=str(kwargs["cwd"]), stdout=str(kwargs["output"]),
+                                  status="cancelled", exit_code=130, seconds=0)
+                    raise CommandError(record)
+                return _execute(original, **kwargs)
+        cancellation = kwargs.get("cancellation")
+        if cancellation is not None and cancellation.is_set():
+            record = kwargs.get("record")
+            record = record if record is not None else {}
+            record.update(label=kwargs["label"], command=original,
+                          cwd=str(kwargs["cwd"]), stdout=str(kwargs["output"]),
+                          status="cancelled", exit_code=130, seconds=0)
+            raise CommandError(record)
+    return _execute(command, **kwargs)

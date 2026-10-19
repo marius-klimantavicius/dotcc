@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
@@ -26,11 +27,11 @@ for name, expected in lock['sources'].items():
     if actual != expected: raise SystemExit('guest source hash mismatch: ' + name)
 PY
 cd "$campaign/build/musl"
-timeout 60 env -u CC -u CFLAGS -u CPPFLAGS -u LDFLAGS "$campaign/build/musl-source/configure" --prefix="$campaign/build/musl-install" --disable-shared > "$campaign/artifacts/guest/musl-configure.log" 2>&1
-timeout 300 make -j"${JOBS:-4}" > "$campaign/artifacts/guest/musl-build.log" 2>&1
-timeout 60 make install > "$campaign/artifacts/guest/musl-install.log" 2>&1
+timeout 60 env -u CC -u CFLAGS -u CPPFLAGS -u LDFLAGS "${PRODUCTION_COMMAND[@]}" "$campaign/build/musl-source/configure" --prefix="$campaign/build/musl-install" --disable-shared > "$campaign/artifacts/guest/musl-configure.log" 2>&1
+timeout 300 "${PRODUCTION_COMMAND[@]}" make -j"${JOBS:-4}" > "$campaign/artifacts/guest/musl-build.log" 2>&1
+timeout 60 "${PRODUCTION_COMMAND[@]}" make install > "$campaign/artifacts/guest/musl-install.log" 2>&1
 flags=(-std=c11 -D_POSIX_C_SOURCE=200809L -O2 -static -fno-pie -no-pie -Wl,--build-id=none -Wall -Wextra -Werror)
-timeout 30 "$campaign/build/musl-install/bin/musl-gcc" "${flags[@]}" "$campaign/tests/ServiceFixture/service.c" -o "$campaign/build/guest/service"
+timeout 30 "${PRODUCTION_COMMAND[@]}" "$campaign/build/musl-install/bin/musl-gcc" "${flags[@]}" "$campaign/tests/ServiceFixture/service.c" -o "$campaign/build/guest/service"
 readelf -h -l "$campaign/build/guest/service" > "$campaign/artifacts/guest/elf.txt"
 "$PYTHON_CMD" - "$campaign" "${flags[@]}" <<'PY'
 import hashlib, json, pathlib, shutil, struct, subprocess, sys

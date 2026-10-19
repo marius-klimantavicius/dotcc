@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ManagedThunks.cs" />
+    <Compile Include="../../src/Managed.CPython/CallbackRoots.cs" Link="Support/CallbackRoots.cs" />
+    <Compile Include="../../src/Managed.CPython/CallbackThunks.cs" Link="Support/CallbackThunks.cs" />
+    <Compile Include="../../src/Managed.CPython/PythonText.cs" Link="Support/PythonText.cs" />
+    <ProjectReference Include="$(CallbackProbeProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualEmittedProbe" BeforeTargets="CoreCompile">
+    <Error Condition="'$(CallbackProbeProject)' == '' Or !Exists('$(CallbackProbeProject)')" Text="Supply CallbackProbeProject from ordinary emission of managed_callback_probe.c. No fake exported implementation is supported." />
+  </Target>
+</Project>

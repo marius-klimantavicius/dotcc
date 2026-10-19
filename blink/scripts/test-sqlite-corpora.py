@@ -7,7 +7,11 @@ import json
 import os
 from pathlib import Path
 import shutil
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tools_manifest, selected_tool
 import tempfile
 import time
 
@@ -36,9 +40,7 @@ out = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))
 work = BLINK / 'generated/sqlite-corpora' / out.name
 work.mkdir(parents=True)
 def tools():
-    return {str(p.relative_to(ROOT)): sha(p) for project in ('DotCC', 'DotCC.PostProcess')
-        for p in (ROOT / project / 'bin/Release/net10.0').iterdir()
-        if p.is_file() and (p.suffix == '.dll' or p.name.endswith(('.deps.json', '.runtimeconfig.json')))}
+    return selected_tools_manifest()
 names = subprocess.check_output(['git', 'ls-files', 'sqlite'], cwd=ROOT, text=True).splitlines()
 receipt = dict(kind='fresh-sqlite-five-non-injection-corpora', passed=False, tools=tools(),
     authored={n: sha(ROOT / n) for n in names}, runner_sha256=sha(Path(__file__)),
@@ -50,7 +52,7 @@ receipt = dict(kind='fresh-sqlite-five-non-injection-corpora', passed=False, too
                'expected_matrix': [{'suite': suite, 'mode': mode} for suite in SELECTED for mode in MODES],
                'ordinary_errors': 'Ordinary SQL syntax/constraint/API outcomes remain included; exclusions concern injected implementation failures.'})
 env = dict(os.environ, LC_ALL='C', TMPDIR=str(out / 'tmp'), SQLITE_SOURCE_SPLIT='none',
-           DOTCC_COMPILER=str(ROOT / 'DotCC/bin/Release/net10.0/dotcc.dll'))
+           DOTCC_COMPILER=str(selected_tool()))
 Path(env['TMPDIR']).mkdir()
 def save(): (out / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
 def run(command, label, timeout=1200):
@@ -103,7 +105,7 @@ try:
             shutil.copytree(generated, work / (suite + '-raw'), ignore=shutil.ignore_patterns('bin', 'obj'))
             for mode in ('raw', 'optimized'):
                 if mode == 'optimized':
-                    run(['dotnet', ROOT / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll', project, '--in-place'], suite + '-postprocess')
+                    run(['dotnet', selected_tool('postprocessor'), project, '--in-place'], suite + '-postprocess')
                 case[mode + '_sources'] = sources(generated)
                 run(['dotnet', 'build', project, '-c', 'Release', '-p:WarningsAsErrors=CS8500'], suite + '-' + mode + '-build')
                 jit = generated / 'bin/Release/net10.0' / ('Test-' + suite + '.dll')

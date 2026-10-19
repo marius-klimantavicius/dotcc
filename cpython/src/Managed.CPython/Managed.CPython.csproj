@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedCPython/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CPythonProject)" />
+    <Content Include="../../../LICENSE" Link="notices/DotCC-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="RequireTranslatedCPythonBinding" BeforeTargets="CoreCompile">
+    <Error Condition="!Exists('$(CPythonProject)')" Text="Translated CPython is unavailable. Generate the real embedded-gil product; native Python and test doubles are not supported backends." />
+    <Error Condition="!Exists('$(MSBuildThisFileDirectory)TranslatedExports.cs')" Text="The real CPython export binding has not been implemented and verified against emitted symbols. See cpython/docs/api-progress.md." />
+  </Target>
+</Project>

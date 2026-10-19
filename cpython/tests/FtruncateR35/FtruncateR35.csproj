@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Unit/**/*.cs" />
+    <ProjectReference Include="../../../DotCC.Libc/DotCC.Libc.csproj" />
+  </ItemGroup>
+</Project>

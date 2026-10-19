@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedCPython/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Managed.CPython/Managed.CPython.csproj" AdditionalProperties="CPythonProject=$(CPythonProject)" />
+    <Content Include="delivery_contract.py" Link="app/delivery_contract.py" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../src/Managed.CPython/DeliveryNotices.targets" />
+</Project>

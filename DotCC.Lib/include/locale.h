@@ -4,12 +4,15 @@
 /* dotcc's <locale.h> (C90 7.4) — locale control. Backed by
    DotCC.Libc/LocaleLib.cs.
 
-   dotcc supports only the "C" (== "POSIX") locale — the one guaranteed at
+   dotcc supports "C" (== "POSIX") formatting — the one guaranteed at
    program startup and the only set of conventions portable across hosts.
    setlocale() accepts NULL (query) / "" / "C" / "POSIX" and returns "C"; any
-   other locale name is reported unsupported (NULL). localeconv() reports the
+   other formatting locale name is reported unsupported (NULL). LC_CTYPE and
+   LC_ALL additionally accept C.UTF-8/C.utf8, selecting strict UTF-8 for the
+   stateless multibyte conversions; C/POSIX use ASCII. Selection is scoped to
+   the bound runtime and shared by its workers. localeconv() reports the
    "C" locale's conventions (decimal_point ".", every other string empty, the
-   numeric members CHAR_MAX). The category argument is accepted but ignored.
+   numeric members CHAR_MAX). Numeric/monetary conventions remain C.
 
    `struct lconv` is the runtime Libc.lconv struct — declared ONLY there (same
    pattern as <time.h>'s struct tm): dotcc parses `struct lconv` via the usual

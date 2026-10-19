@@ -80,7 +80,8 @@ public sealed class EmbedTests
         var (emit, _) = Fill(new byte[] { 0xDE, 0xAD, 0xBE, 0xEF });
         // One backing byte[] carrying exactly the file's bytes — not exploded.
         // Constness does not permit merging distinct declared array objects.
-        emit.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 222, 173, 190, 239 }");
+        emit.ShouldContain("Libc.GlobalArrayZeroed<byte>(4)");
+        emit.ShouldContain("0xDE, 0xAD, 0xBE, 0xEF, ");
     }
 
     // ---- limit(N): embed only the first N bytes ----------------------------
@@ -89,7 +90,7 @@ public sealed class EmbedTests
     public void embed_limit_clamps_to_leading_bytes()
     {
         var (emit, _) = Fill(new byte[] { 0xDE, 0xAD, 0xBE, 0xEF }, " limit(2)");
-        emit.ShouldContain("new byte[]{ 222, 173 }");
+        emit.ShouldContain("0xDE, 0xAD, ");
         emit.ShouldNotContain("190, 239");
     }
 
@@ -107,7 +108,7 @@ public sealed class EmbedTests
                 return e[0];
             }
             """, "blob.bin", new byte[] { 1, 2, 3 });
-        emit.ShouldContain("new byte[]{ 241, 99, 100, 242 }");
+        emit.ShouldContain("0xF1, 0x63, 0x64, 0xF2, ");
     }
 
     // ---- mixed list: #embed bytes splice between scalar elements ------------
@@ -169,7 +170,7 @@ public sealed class EmbedTests
         stderr.ShouldContain("prefix");
         stderr.ShouldContain("not yet supported");
         // The bytes still embed; only the prefix clause is dropped.
-        emit.ShouldContain("new byte[]{ 222, 173 }");
+        emit.ShouldContain("0xDE, 0xAD, ");
     }
 
     // ---- dialect gate: #embed is C23 --------------------------------------

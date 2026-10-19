@@ -1,0 +1,1 @@
+Linux LP64 NSS/mmap and libm services; native wchar4 is a separate control ABI.

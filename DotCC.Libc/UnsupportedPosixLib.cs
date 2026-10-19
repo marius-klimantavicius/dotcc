@@ -14,8 +14,9 @@ public static unsafe partial class Libc
     public static int execve(byte* path, byte** arguments, byte** environment) => UnsupportedPosix();
     public static int setsid() => UnsupportedPosix();
     public static uint umask(uint mask) { UnsupportedPosix(); return uint.MaxValue; }
-    public static void* mmap(void* address, ulong length, int protection, int flags, int descriptor, long offset)
-    { UnsupportedPosix(); return (void*)(nint)(-1); }
+    // Installing/dispatching POSIX signal handlers is outside the managed
+    // runtime contract. A pause must fail visibly, never report fake wakeup.
+    public static int pause() => UnsupportedPosix();
     public static int ioctl(int descriptor, ulong request, params ReadOnlySpan<VaArg> arguments)
     { errno = SlotByFd(descriptor) is null ? EBADF : ENOTTY; return -1; }
     public static int dladdr(void* address, void* information) => 0;

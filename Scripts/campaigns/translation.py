@@ -1,5 +1,5 @@
 """Common direct/object emission, postprocessing, build, and publication."""
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 import os
 from pathlib import Path
@@ -23,6 +23,19 @@ def relocate_project(project, origin):
     if changed:
         ET.indent(tree, space="  ")
         tree.write(project, encoding="unicode")
+
+
+def object_report_flags(flags, report):
+    """Replace a recipe's direct-emission report with the per-object report."""
+    result = []
+    arguments = iter(flags)
+    for argument in arguments:
+        if argument == "--override-report":
+            if next(arguments, None) is None:
+                raise ValueError("--override-report requires a path")
+        elif not str(argument).startswith("--override-report="):
+            result.append(argument)
+    return [*result, "--override-report", report]
 
 
 def translate(ctx):
@@ -51,8 +64,8 @@ def translate(ctx):
         name = f"{index:03d}-{unit.path.stem}"
         output = objects / (name + ".cs")
         report = ctx.artifacts / (name + "-overrides.jsonl")
-        ctx.run(["dotnet", ctx.compiler, *spec.flags, *unit.flags,
-                 "--override-report", report, unit.path, "--emit=obj", "-o", output], name,
+        ctx.run(["dotnet", ctx.compiler, *object_report_flags([*spec.flags, *unit.flags], report),
+                 unit.path, "--emit=obj", "-o", output], name,
                 timeout=ctx.options.timeout)
         if not output.is_file():
             raise RuntimeError(f"Compiler produced no object: {unit.path}")
@@ -61,7 +74,12 @@ def translate(ctx):
     if spec.objects or ctx.options.action == "probe":
         workers = ThreadPoolExecutor(max_workers=ctx.options.jobs)
         try:
-            emitted = list(workers.map(emit, enumerate(units)))
+            pending = {workers.submit(emit, row): row[0] for row in enumerate(units)}
+            emitted = [None] * len(units)
+            # Observe any failure immediately, even if an earlier ordered unit
+            # is still running. Keep the successful link's original unit order.
+            for future in as_completed(pending):
+                emitted[pending[future]] = future.result()
         except BaseException:
             ctx.cancellation.set()
             raise

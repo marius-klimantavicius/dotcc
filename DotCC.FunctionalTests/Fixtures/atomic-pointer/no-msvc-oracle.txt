@@ -1,0 +1,1 @@
+C11 atomic pointer support requires the C11 native oracle.

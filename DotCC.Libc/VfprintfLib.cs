@@ -25,7 +25,7 @@ public static unsafe partial class Libc
             // observable write. vasprintf owns the byte-oriented cursor formatter.
             int count = vasprintf(&buffer, format, arguments);
             if (count < 0) return -1;
-            if (slot.Kind is FileSlot.K.Out or FileSlot.K.Err)
+            if (slot.BufferMode < 0 && (slot.Kind is FileSlot.K.Out or FileSlot.K.Err))
             {
                 // Console redirection uses TextWriter, while the return value is
                 // still the number of C bytes, not the decoded character count.

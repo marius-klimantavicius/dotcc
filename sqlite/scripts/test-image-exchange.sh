@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 mkdir -p "$TMPDIR"
@@ -8,7 +9,7 @@ if [[ $# -gt 1 || ( -n "${1:-}" && "$1" != --emit-only ) ]]; then
 fi
 
 output="$SQLITE_ROOT/generated/Test-image"
-dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
+"${PRODUCTION_COMMAND[@]}" dotnet "$DOTCC_COMPILER" \
   -std=c17 "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" \
   -I "$SQLITE_ROOT/tests" \
   "$SQLITE_AMALGAMATION/sqlite3.c" "$SQLITE_ROOT/tests/image_native.c" \
@@ -18,7 +19,7 @@ if [[ "${1:-}" == --emit-only ]]; then
   echo "Emitted $output"
   exit 0
 fi
-dotnet build "$output/Test-image.csproj" -c Release --nologo \
+"${PRODUCTION_COMMAND[@]}" dotnet build "$output/Test-image.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/translated-image-build.log" 2>&1
 "$SQLITE_ROOT/scripts/test-image-native.sh" \
   > "$SQLITE_ROOT/artifacts/native-image-roundtrip.out" \

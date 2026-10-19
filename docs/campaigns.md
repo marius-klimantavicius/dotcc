@@ -15,6 +15,15 @@ and copy its [project plan template](plans/translation-template.md) to
 `<project>/docs/PLAN.md`. The template records product decisions and acceptance
 gates; the runner integration is described in [Adding a project](#adding-a-project).
 
+The [CPython campaign](../cpython/docs/PLAN.md) is authorized for implementation.
+Its discoverable recipe and exact-pin native controls now include required
+Unicode-name parsing. The full 193-unit manifest includes the authored embedding
+boundary. A complete retry now emits/links, builds and publishes raw and
+processed libraries. Shared initializer repairs allow the actual raw JIT owning
+consumer to pass two cycles; remaining ABI/matrix/rooted-AOT qualification stays
+open. Final compiler/runtime regeneration is pending. No completed CPython milestone is claimed. See its
+[implementation ledger](../cpython/docs/IMPLEMENTATION.md) for current evidence.
+
 Shared campaign `link_flags` defaults to 256 KB source splitting
 (`--split=size --split-size=262144`), `--literal-pool`, and
 `--deduplicate-inline`. Recipes inherit these settings and document any explicit
@@ -42,7 +51,10 @@ bash Scripts/campaign.sh verify all --dry-run
 Every project has `fetch.sh`, `translate.sh`, `build.sh`, `test.sh`, `verify.sh`,
 and `probe.sh`. The repository helper takes the action followed by the project
 name (or `all`). Projects and suites run serially; `--jobs 1..16` bounds object
-emission within a project. Some specialist assemblers impose a lower bound.
+emission within a project (default 4). CPython honors every supported explicit
+request without a hidden two-worker clamp. Native builds retain two jobs and
+managed builds retain one MSBuild node. Choose the emission budget for available
+CPU and memory; increasing it does not increase those build budgets.
 
 | Action | Contract |
 | --- | --- |
@@ -116,6 +128,54 @@ otherwise. The shared runner snapshots compiler/postprocessor DLLs and runtime
 configuration for translation. Existing specialist test emitters retain their
 own tool prerequisites. A build-only or consumer test command does not rebuild
 the compiler merely to inspect an existing library.
+
+`DOTCC_COMPILER` and `DOTCC_POSTPROCESSOR` select explicit existing tool paths.
+The runner snapshots each selected closure and records its actual bytes. A
+missing selected tool fails instead of falling back to root output.
+
+The six production regression campaigns have legacy command adapters in
+`Scripts/production_support.py` and `production-common.sh`. These cover individual
+specialist builds, not entire verification or peer sessions. Linux uses
+nonblocking shared/native `flock --close`; busy locks fail without starting the
+command. Native make/CMake is bounded to two jobs. CPython keeps its existing
+specialist lock protocol. Pure controls run with:
+
+```bash
+python3 -B -m unittest discover -s Scripts/production_tests -v
+```
+
+The live shared runner still copies top-level DLL/JSON tool files. Explicit
+`DOTCC_CAMPAIGN_COMMAND_LOCKS=production` enables the shared command adapter for
+individual build/emission/postprocessor commands. Linux uses nonblocking
+`flock --close`. Validated immutable-tool object emissions to distinct private
+run outputs use shared leases on the same global lock, plus an exclusive lease
+for each object path. The classifier parses the actual compiler/source/options/
+output/report paths; unsupported commands retain exclusive leases. A local
+reader/writer scheduler lets eligible siblings overlap and waits for them before
+an exclusive sibling command, without holding an idle OS lease. External
+contention and duplicate output writers still fail immediately. Receipts retain
+requested/effective argv, lock mode, start/end times and the actual process PID.
+Runtime and
+specialist orchestration commands have no outer build lock. CPython's native
+preparation uses a separate cache-state lock under this opt-in, so individual
+native commands acquire shared/native locks exactly once. The ordinary campaign
+run lock and transactional publisher remain in use. Publication mutations take
+an exclusive global lease and release it before final build validation, whose
+commands acquire their own leases. Worker failure cancels and drains owned
+process trees before a link can start. Windows adds no Linux flock.
+
+A18's recursive tool-copy candidate remains private. The command hook and
+private-lock controls do not establish complete production lock
+coverage or qualify a production campaign. See the
+[scoped A23 handoff](../cpython/artifacts/owner-a-r23-20261018/a23-handoff.json).
+
+For early CPython blocker discovery, select `--form raw --jobs 4` on the ordinary
+translation route, then run the actual raw JIT suite. This omits processed work
+for that discovery run only; final raw/processed JIT/AOT acceptance remains
+required. `--tools reuse` reuses tools and still emits every selected C unit.
+Semantic-context self-builds and final canonical builds remain enabled: evaluated
+reference/resource/generator inputs and moved-project PDB identity require proof
+before replacing those checks with reference preparation or output reuse.
 
 ## Layout and evidence
 

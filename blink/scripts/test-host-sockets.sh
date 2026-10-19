@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 BLINK_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$BLINK_ROOT/artifacts/host-sockets"
 rm -f "$BLINK_ROOT/artifacts/host-sockets/receipt.json"
 project="$BLINK_ROOT/tests/HostSockets/HostSockets.csproj"
-dotnet build "$project" -c Release > "$BLINK_ROOT/artifacts/host-sockets/build.log" 2>&1
-timeout --kill-after=5s 30 dotnet "$BLINK_ROOT/tests/HostSockets/bin/Release/net10.0/HostSockets.dll" > "$BLINK_ROOT/artifacts/host-sockets/jit.txt"
-dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true -o "$BLINK_ROOT/build/host-sockets-aot" > "$BLINK_ROOT/artifacts/host-sockets/aot-build.log" 2>&1
+"${PRODUCTION_COMMAND[@]}" dotnet build "$project" -c Release > "$BLINK_ROOT/artifacts/host-sockets/build.log" 2>&1
+timeout --kill-after=5s 30 "${PRODUCTION_COMMAND[@]}" dotnet "$BLINK_ROOT/tests/HostSockets/bin/Release/net10.0/HostSockets.dll" > "$BLINK_ROOT/artifacts/host-sockets/jit.txt"
+"${PRODUCTION_COMMAND[@]}" dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true -o "$BLINK_ROOT/build/host-sockets-aot" > "$BLINK_ROOT/artifacts/host-sockets/aot-build.log" 2>&1
 timeout --kill-after=5s 30 "$BLINK_ROOT/build/host-sockets-aot/HostSockets" > "$BLINK_ROOT/artifacts/host-sockets/aot.txt"
 diff -u "$BLINK_ROOT/artifacts/host-sockets/jit.txt" "$BLINK_ROOT/artifacts/host-sockets/aot.txt"
 cat "$BLINK_ROOT/artifacts/host-sockets/jit.txt"

@@ -235,11 +235,22 @@ public sealed class InlineFunctionTests
     [Fact]
     public void Incompatible_complete_layouts_are_rejected_before_deduplicating()
     {
-        const string helper = "static inline int helper(struct Wrapper *p) { return p->value; }";
+        const string helper = "extern struct Wrapper *shared_abi; static inline int helper(struct Wrapper *p) { return p->value; }";
         Should.Throw<CompileException>(() => Translate(true, "",
             "struct Wrapper { int value; }; " + helper,
             "struct Wrapper { long pad; int value; }; " + helper,
             new(DeduplicateInline: true))).Message.ShouldContain("conflicting aggregate");
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Private_layout_variants_do_not_share_an_inline_proof(bool link)
+    {
+        const string helper = "static inline int helper(struct Wrapper *p) { return p->value; }";
+        var source = Translate(link, "", "struct Wrapper { int value; }; " + helper,
+            "struct Wrapper { long pad; int value; }; " + helper, new(DeduplicateInline: true));
+        Methods(source, "helper").ShouldBe(2);
     }
 
     [Theory]

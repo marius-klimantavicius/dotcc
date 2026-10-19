@@ -3,7 +3,9 @@
 import hashlib
 import json
 from pathlib import Path
-import subprocess
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'Scripts'))
+from production_support import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 stage = ROOT / 'build/product-source'

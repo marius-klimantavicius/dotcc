@@ -146,6 +146,20 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         _embedSymbolId = symMap["EMBED"];
         foreach (var d in predefines)
         {
+            // The API's ordered predefinition list accepts NAME[=VALUE] and
+            // -UNAME. Builtin dialect definitions precede user operations, so
+            // an explicit -U can remove a seed and a later -D can restore it.
+            if (d.StartsWith("-U", StringComparison.Ordinal))
+            {
+                var undefine = d[2..];
+                if (undefine.Length == 0 || !(char.IsLetter(undefine[0]) || undefine[0] == '_')
+                    || undefine.Any(c => !(char.IsLetterOrDigit(c) || c == '_')))
+                    throw new CompileException("invalid macro name for -U: " + undefine);
+                if (undefine == RuntimeIntrinsicNames.IsLittleEndian)
+                    throw new CompileException("cannot undefine runtime intrinsic: " + undefine);
+                _macros.Remove(undefine);
+                continue;
+            }
             // -D NAME           → defined-as-marker (empty body)
             // -D NAME=VALUE     → lex VALUE through the same byte lexer the
             //                     parser uses, so the substitution is a real
@@ -200,7 +214,8 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     /// <summary>Final user macro definitions, expanded without freezing contextual macros.</summary>
     internal IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> ConstantMacroBodies(IReadOnlyList<string>? explicitDefines, MacroExportSelector? selector = null)
     {
-        var names = _sourceMacroNames.Concat((explicitDefines ?? Array.Empty<string>()).Select(d => d.Split('=')[0]))
+        var names = _sourceMacroNames.Concat((explicitDefines ?? Array.Empty<string>())
+                .Where(d => !d.StartsWith("-U", StringComparison.Ordinal)).Select(d => d.Split('=')[0]))
             .Concat(_macros.Keys.Where(name => selector?.Matches(name) == true));
         foreach (var name in names.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))
             if (_macros.TryGetValue(name, out var macro))

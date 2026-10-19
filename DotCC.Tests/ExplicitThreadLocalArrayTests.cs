@@ -31,11 +31,31 @@ public sealed class ExplicitThreadLocalArrayTests
     [Theory]
     [InlineData("_Thread_local int data[2] = {1,2};")]
     [InlineData("_Thread_local char data[] = \"a\";")]
-    public void unsupported_initialized_tls_array_fails_instead_of_emitting_shared_storage(string declaration)
+    public void initialized_tls_array_uses_owned_per_thread_storage(string declaration)
     {
         string path=Path.Combine(Path.GetTempPath(),"dotcc-initialized-tls-"+Guid.NewGuid().ToString("N")+".c");
         File.WriteAllText(path,declaration+"\nint main(void) { return data[0]; }");
-        try { Should.Throw<Exception>(()=>Compiler.EmitCSharp(new[]{path})).Message.ShouldContain("initialized thread-local arrays are not supported"); }
+        try
+        {
+            string emitted = Compiler.EmitCSharp(new[] { path });
+            emitted.ShouldContain("__dotcc_tls_array_data");
+            emitted.ShouldContain("GC.AllocateArray<byte>");
+            emitted.ShouldContain("__dotcc_tls_initialize_data");
+            emitted.ShouldNotContain("AsSpan(new int[]");
+        }
+        finally { File.Delete(path); }
+    }
+
+    [Fact]
+    public void initialized_tls_array_rejects_runtime_evaluation()
+    {
+        string path = Path.Combine(Path.GetTempPath(), "dotcc-dynamic-tls-" + Guid.NewGuid().ToString("N") + ".c");
+        File.WriteAllText(path, "int next(void); _Thread_local int data[] = {next()};");
+        try
+        {
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { path }))
+                .Message.ShouldContain("_Thread_local array requires a supported constant initializer");
+        }
         finally { File.Delete(path); }
     }
 }

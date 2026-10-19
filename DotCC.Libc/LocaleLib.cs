@@ -11,13 +11,14 @@ namespace DotCC.Libc;
 /// </summary>
 /// <remarks>
 /// <para>
-/// dotcc supports only the <c>"C"</c> (== <c>"POSIX"</c>) locale — the one the
+/// dotcc supports <c>"C"</c> (== <c>"POSIX"</c>) formatting — the one the
 /// standard guarantees at program startup, and the only set of conventions that
 /// is portable across hosts. <c>setlocale</c> accepts <c>NULL</c> (query) /
 /// <c>""</c> / <c>"C"</c> / <c>"POSIX"</c> and returns <c>"C"</c>; any other
-/// locale name is reported unsupported (<c>NULL</c>), exactly as a minimal C
-/// library would. The <paramref name="category"/> is accepted but ignored —
-/// there is only one locale to select.
+/// formatting locale name is reported unsupported (<c>NULL</c>). LC_CTYPE and
+/// LC_ALL also accept C.UTF-8/C.utf8 to select strict UTF-8 for stateless
+/// multibyte conversion. C/POSIX select ASCII. The choice belongs to a runtime
+/// context and is shared with its workers; numeric conventions remain C.
 /// </para>
 /// <para>
 /// <b><c>struct lconv</c> lowering.</b> C code spells the type <c>struct lconv</c>;
@@ -119,13 +120,24 @@ public static unsafe partial class Libc
     }
 
     /// <summary><c>setlocale(category, locale)</c> — select / query the locale.
-    /// dotcc has only the "C" locale: NULL queries it; "" / "C" / "POSIX" select
-    /// it (return "C"); any other name is unsupported (NULL). The category is
-    /// accepted but ignored.</summary>
+    /// NULL queries; "" / "C" / "POSIX" retain C formatting and select ASCII
+    /// for LC_CTYPE. C.UTF-8/C.utf8 select UTF-8 for LC_CTYPE/LC_ALL; other
+    /// formatting locale names fail with NULL.</summary>
     public static byte* setlocale(int category, byte* locale)
     {
-        if (locale == null) { return (LiteralPool.Pointer + LiteralPool.LocaleC); }  // query — always "C"
+        bool ctype = category == 0 || category == 6;
+        if (locale == null) return ctype && Utf8MultibyteLocale ? Utf8LocaleName : LiteralPool.Pointer + LiteralPool.LocaleC;
         var name = Encoding.UTF8.GetString(locale, (int)strlen(locale));
-        return name is "" or "C" or "POSIX" ? (LiteralPool.Pointer + LiteralPool.LocaleC) : null;
+        if (name is "" or "C" or "POSIX")
+        {
+            if (ctype) Volatile.Write(ref RuntimeState.Utf8MultibyteLocale, false);
+            return LiteralPool.Pointer + LiteralPool.LocaleC;
+        }
+        if (name is "C.UTF-8" or "C.utf8")
+        {
+            if (ctype) Volatile.Write(ref RuntimeState.Utf8MultibyteLocale, true);
+            return ctype ? Utf8LocaleName : LiteralPool.Pointer + LiteralPool.LocaleC;
+        }
+        return null;
     }
 }

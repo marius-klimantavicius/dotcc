@@ -15,6 +15,31 @@ var intended = new Dictionary<string, (string Assembly, string[] Additional)>
     ["harness"] = ("QuickJs.Behavior", ["Managed.QuickJs", "TranslatedQuickJs"])
 };
 var allowedNative = new HashSet<string>(["libc", "kernel32.dll", "psapi.dll"], StringComparer.OrdinalIgnoreCase);
+if (args is ["--self-test-host-math"])
+{
+    byte[] signature = [0x00, 0x01, 0x0d, 0x0d]; // static double(double)
+    const string owner = "Managed.Interpreters.QuickJs+Libc";
+    foreach (var (member, symbol) in new[] { ("PosixErf", "erf"), ("PosixErfc", "erfc") })
+    {
+        if (!HostMath("product", owner, member, "libm.so.6", symbol, signature, true, 0x140, true))
+            throw new InvalidOperationException("Exact host math binding rejected");
+    }
+    bool[] rejected = [
+        HostMath("consumer", owner, "PosixErf", "libm.so.6", "erf", signature, true, 0x140, true),
+        HostMath("product", owner + "Other", "PosixErf", "libm.so.6", "erf", signature, true, 0x140, true),
+        HostMath("product", owner, "Other", "libm.so.6", "erf", signature, true, 0x140, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erfc", signature, true, 0x140, true),
+        HostMath("product", owner, "PosixErf", "other.so", "erf", signature, true, 0x140, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erf", [0x00, 0x01, 0x0c, 0x0d], true, 0x140, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erf", [0x20, 0x01, 0x0d, 0x0d], true, 0x140, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erf", signature, false, 0x140, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erf", signature, true, 0x100, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erf", signature, true, 0x240, true),
+        HostMath("product", owner, "PosixErf", "libm.so.6", "erf", signature, true, 0x140, false)];
+    if (rejected.Any(value => value)) throw new InvalidOperationException("Inexact host math binding accepted");
+    Console.WriteLine("PASS exact shared host math policy: 2 positive, 11 negative controls");
+    return 0;
+}
 var reports = new List<object>();
 try
 {
@@ -53,8 +78,18 @@ try
             MethodImport import = method.GetImport();
             string library = metadata.GetString(metadata.GetModuleReference(import.Module).Name);
             string symbol = metadata.GetString(import.Name);
-            if (!allowedNative.Contains(library)) throw new InvalidOperationException($"Unapproved P/Invoke {assembly} -> {library}!{symbol}: {path}");
-            imports.Add(new { library, symbol });
+            string owner = TypeName(metadata, method.GetDeclaringType());
+            string member = metadata.GetString(method.Name);
+            byte[] signature = metadata.GetBlobBytes(method.Signature);
+            bool privateStatic = (method.Attributes & (MethodAttributes.MemberAccessMask | MethodAttributes.Static))
+                == (MethodAttributes.Private | MethodAttributes.Static);
+            bool hostMath = HostMath(role, owner, member, library, symbol, signature, privateStatic,
+                (int)import.Attributes, (method.ImplAttributes & MethodImplAttributes.PreserveSig) != 0);
+            if (!allowedNative.Contains(library) && !hostMath)
+                throw new InvalidOperationException($"Unapproved P/Invoke {assembly} -> {library}!{symbol} ({owner}.{member}, signature={Convert.ToHexString(signature)}, importAttributes=0x{(int)import.Attributes:X}): {path}");
+            imports.Add(new { library, symbol, declaring_type = owner, method = member,
+                signature = Convert.ToHexString(signature), import_attributes = (int)import.Attributes,
+                shared_host_math = hostMath });
         }
         reports.Add(new { role, path, assembly, references = references.Order().ToArray(), imports });
     }
@@ -66,3 +101,21 @@ catch (Exception error)
     Console.Error.WriteLine("AUDIT FAIL " + error.Message);
     return 1;
 }
+
+static string TypeName(MetadataReader metadata, TypeDefinitionHandle handle)
+{
+    var type = metadata.GetTypeDefinition(handle);
+    string name = metadata.GetString(type.Name);
+    var parent = type.GetDeclaringType();
+    if (!parent.IsNil) return TypeName(metadata, parent) + "+" + name;
+    string ns = metadata.GetString(type.Namespace);
+    return ns.Length == 0 ? name : ns + "." + name;
+}
+
+static bool HostMath(string role, string owner, string member, string library, string symbol,
+    ReadOnlySpan<byte> signature, bool privateStatic, int importAttributes, bool preserveSig) =>
+    role == "product" && owner == "Managed.Interpreters.QuickJs+Libc" && library == "libm.so.6"
+    && (member, symbol) is ("PosixErf", "erf") or ("PosixErfc", "erfc")
+    && signature is [0x00, 0x01, 0x0d, 0x0d] && privateStatic && preserveSig
+    // Exact source DllImport defaults: Winapi (0x100) plus SetLastError (0x40).
+    && importAttributes == 0x140;

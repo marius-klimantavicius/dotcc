@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Managed.CPython" HintPath="$(ProfileInput)/Managed.CPython.dll" />
+    <Reference Include="TranslatedCPython" HintPath="$(ProfileInput)/TranslatedCPython.dll" />
+  </ItemGroup>
+</Project>

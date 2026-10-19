@@ -14,6 +14,7 @@ public static unsafe partial class Libc
     {
         internal readonly Lock Sync = new();
         internal readonly Dictionary<nint, DirState> Directories = new();
+        internal readonly Dictionary<int, PasswdStorage> Passwd = new();
     }
 
     private static readonly ConditionalWeakTable<RuntimeContext, PathState> pathStates = new();
@@ -65,6 +66,8 @@ public static unsafe partial class Libc
                 NativeMemory.Free((void*)directory.Key);
             }
             state.Directories.Clear();
+            foreach (var storage in state.Passwd.Values) NativeMemory.Free(storage.Block);
+            state.Passwd.Clear();
         }
         pathStates.Remove(owner);
     }

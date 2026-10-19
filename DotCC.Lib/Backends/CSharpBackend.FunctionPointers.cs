@@ -27,16 +27,23 @@ internal sealed partial class CSharpBackend
         {
             var type = (CType.Func)function.Type.Unqualified;
             if (type.IsNativeCallConv) throw new CompileException("native function addresses are unsupported with --instance-methods");
-            var parameters = type.Params.Select((p, i) => Cs(p) + " a" + i).ToList();
-            var arguments = type.Params.Select((_, i) => "a" + i).ToList();
+            var parameters = type.Params.Select((p, i) =>
+                (VaListLifetimeValidator.IsCursorReference(p) ? "scoped " : "") + Cs(p) + " a" + i).ToList();
+            var arguments = type.Params.Select((p, i) =>
+                (VaListLifetimeValidator.IsCursorReference(p) ? "ref " : "") + "a" + i).ToList();
             if (type.Variadic) { parameters.Add("global::System.ReadOnlySpan<VaArg> tail"); arguments.Add("tail"); }
             parameters.Insert(0, "DotCcFunctions instance");
             var target = InstanceReferences.Target + name;
             var context = (type.Params.Any(ContainsInstanceCallback) || ContainsInstanceCallback(type.Return)) ? InstanceReferences.CallbackContext + name + " " : "";
+            var invocation = target + "(" + context + string.Join(", ", arguments) + ")";
+            // The selected runtime can erase a header-owned pointer result to
+            // void*. The adapter keeps the C signature, just like a direct
+            // runtime call, while preserving its existing owner binding.
+            if (type.Return.Unqualified is not CType.VoidType && !VaListLifetimeValidator.IsCursorReference(type.Return))
+                invocation = "unchecked((" + Cs(type.Return) + ")(" + invocation + "))";
             adapter = "    //!!dotcc-instance-adapter\n" + $"    internal static {Cs(type.Return)} {entry}({string.Join(", ", parameters)})\n"
                 + "    {\n        using var binding = global::System.Object.ReferenceEquals(Libc.RuntimeContext.Current, instance.__DotCcRuntime) ? default(Libc.RuntimeBinding) : instance.__DotCcEnter();\n        "
-                + (type.Return is CType.VoidType ? "" : "return ") + target + "(" + context
-                + string.Join(", ", arguments) + ");\n    }\n";
+                + (type.Return.Unqualified is CType.VoidType ? "" : "return ") + invocation + ";\n    }\n";
         }
         // Capture each address only on demand. The per-property cache deliberately
         // uses unsynchronized initialization, with no shared class initializer.

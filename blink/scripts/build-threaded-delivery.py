@@ -7,7 +7,11 @@ import os
 from pathlib import Path
 import shutil
 import signal
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 import tempfile
 import time
 import xml.etree.ElementTree as ET
@@ -62,8 +66,8 @@ def main():
                    raw_snapshot=str(raw), output=str(output), commands={}, inputs={}, raw_files={})
     publication_committed = False
     publication_started = False
-    cli = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
-    post = REPO / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
+    cli = selected_tool()
+    post = selected_tool('postprocessor')
 
     def save():
         temporary = attempt / 'receipt.tmp'

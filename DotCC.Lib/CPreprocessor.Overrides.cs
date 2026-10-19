@@ -17,9 +17,14 @@ internal sealed class MacroOverrideSession
         Options = options;
         _rules = options.Rules.GroupBy(r => r.Rule.Name).ToDictionary(g => g.Key, g => g.ToArray(), StringComparer.Ordinal);
         _selected = new int[options.Rules.Length]; _expansions = new int[options.Rules.Length];
+        var activeDefinitions = new HashSet<string>(StringComparer.Ordinal);
         foreach (var d in defines ?? Array.Empty<string>())
         {
-            var name = d.Split('=')[0];
+            if (d.StartsWith("-U", StringComparison.Ordinal)) activeDefinitions.Remove(d[2..]);
+            else activeDefinitions.Add(d.Split('=')[0]);
+        }
+        foreach (var name in activeDefinitions)
+        {
             if (_rules.ContainsKey(name)) throw new CompileException("cannot combine -D and macro override for '" + name + "'");
         }
         Event("profile", ("hash", options.ProfileHash), ("path", options.ProfilePath ?? "API/CLI"));

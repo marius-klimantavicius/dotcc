@@ -233,12 +233,12 @@ public static unsafe partial class Libc
     /// <paramref name="s"/> per the conversion specifiers in
     /// <paramref name="fmt"/>. Returns the number of bytes written (excluding
     /// the terminating NUL), or 0 if the result (with NUL) would exceed
-    /// <paramref name="max"/>. C-locale names. (<c>max</c> is the C
-    /// <c>size_t</c>, which dotcc threads as <c>int</c>.)
+    /// <paramref name="max"/>. C-locale names. Count and capacity follow the
+    /// target's LP64 <c>size_t</c> ABI.
     /// </summary>
-    public static int strftime(byte* s, int max, byte* fmt, tm* t)
+    public static ulong strftime(byte* s, ulong max, byte* fmt, tm* t)
     {
-        if (s == null || fmt == null || t == null || max <= 0) { return 0; }
+        if (s == null || fmt == null || t == null || max == 0) { return 0; }
         var sb = new StringBuilder();
         var ci = CultureInfo.InvariantCulture;
         for (byte* p = fmt; *p != 0; p++)
@@ -286,9 +286,13 @@ public static unsafe partial class Libc
         }
     done:
         var bytes = Encoding.UTF8.GetBytes(sb.ToString());
-        if (bytes.Length >= max) { return 0; }      // doesn't fit with the NUL
+        if ((ulong)bytes.Length >= max) { return 0; } // doesn't fit with the NUL
         for (int i = 0; i < bytes.Length; i++) { s[i] = bytes[i]; }
         s[bytes.Length] = 0;
-        return bytes.Length;
+        return (ulong)bytes.Length;
     }
+
+    /// <summary>Compatibility for existing managed callers with signed capacities.</summary>
+    public static int strftime(byte* s, int max, byte* fmt, tm* t) =>
+        max <= 0 ? 0 : checked((int)strftime(s, (ulong)max, fmt, t));
 }

@@ -19,7 +19,11 @@ import selectors
 import shutil
 import signal
 import socket
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, native_build_command
 import tempfile
 import time
 
@@ -85,6 +89,8 @@ def main():
         log = attempt / (name + ".log")
         row = {"name": name, "argv": list(map(str, argv)), "timeout_seconds": timeout,
                "cwd": str(attempt), "log": str(log)}
+        if name == "container-publish":
+            row["argv"] = native_build_command(row["argv"])
         receipt["commands"].append(row)
         process = None
         started = time.monotonic()
@@ -150,7 +156,7 @@ for tool in dotnet clang cc ld; do
   sha256sum "$(readlink -f "$path")" >> /work/container-tool-hashes.txt
   "$tool" --version >> /work/container-tool-versions.txt
 done
-dotnet publish KestrelService.csproj -c Release -r linux-musl-x64 --self-contained true \\
+dotnet publish KestrelService.csproj --disable-build-servers -m:1 -p:UseSharedCompilation=false -c Release -r linux-musl-x64 --self-contained true \\
   -o /work/publish -p:RuntimeFrameworkVersion=10.0.12 -p:PublishAot=true \\
   -p:StaticExecutable=true -p:PositionIndependentExecutable=false \\
   -p:InvariantGlobalization=true -p:ImportDirectoryBuildTargets=false

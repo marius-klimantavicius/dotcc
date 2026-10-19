@@ -7,7 +7,11 @@ import json
 import os
 from pathlib import Path
 import shutil
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 import tempfile
 import time
 BLINK = Path(__file__).resolve().parents[1]
@@ -19,8 +23,8 @@ out = Path(tempfile.mkdtemp(prefix='attempt-', dir=base))
 work = BLINK / 'generated/sqlite-regression' / out.name
 work.mkdir(parents=True)
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-cli = ROOT / 'DotCC/bin/Release/net10.0/dotcc.dll'
-post = ROOT / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
+cli = selected_tool()
+post = selected_tool('postprocessor')
 receipt = dict(kind='fresh-sqlite-managed-consumer-regression',passed=False,results={},
     compiler={p.name:sha(p) for p in cli.parent.glob('*.dll')},
     postprocessor={p.name:sha(p) for p in post.parent.glob('*.dll')},

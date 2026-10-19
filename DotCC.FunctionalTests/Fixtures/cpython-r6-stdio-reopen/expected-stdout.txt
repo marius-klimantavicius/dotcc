@@ -1,0 +1,1 @@
+stdio-reopen passed old=A new=B

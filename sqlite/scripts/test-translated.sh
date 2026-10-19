@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
@@ -24,7 +25,7 @@ case "$suite" in
   *) echo "Usage: $0 [core|api|vfs|vtable|allocation|upstream|fts5] [--emit-only]" >&2; exit 2 ;;
 esac
 output="$SQLITE_ROOT/generated/Test-$suite"
-dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll" \
+"${PRODUCTION_COMMAND[@]}" dotnet "$DOTCC_COMPILER" \
   -std=c17 "${SQLITE_DEFINES[@]}" -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" -I "$(dirname "$harness")" \
   "$SQLITE_AMALGAMATION/sqlite3.c" "$harness" \
   "$SQLITE_ROOT/tests/memory_vfs.c" --emit=csproj -o "$output" \
@@ -33,7 +34,7 @@ if [[ "${2:-}" == --emit-only ]]; then
   echo "Emitted $output"
   exit 0
 fi
-dotnet build "$output/Test-$suite.csproj" -c Release --nologo \
+"${PRODUCTION_COMMAND[@]}" dotnet build "$output/Test-$suite.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/translated-$suite-build.log" 2>&1
 run_sqlite_process dotnet "$output/bin/Release/net10.0/Test-$suite.dll" \
   > "$SQLITE_ROOT/artifacts/translated-$suite.out"
@@ -45,7 +46,7 @@ cat "$SQLITE_ROOT/artifacts/translated-$suite.out"
 # checks the translated test VFS against the native contract in AOT too.
 if [[ "${SQLITE_AOT:-0}" == 1 && ( "$suite" == api || "$suite" == vfs ) ]]; then
   publish="$SQLITE_ROOT/build/$suite-aot"
-  dotnet publish "$output/Test-$suite.csproj" -c Release -r linux-x64 \
+  "${PRODUCTION_COMMAND[@]}" dotnet publish "$output/Test-$suite.csproj" -c Release -r linux-x64 \
     -p:PublishAot=true -o "$publish" --nologo \
     > "$SQLITE_ROOT/artifacts/translated-$suite-aot-build.log" 2>&1
   run_sqlite_process "$publish/Test-$suite" > "$SQLITE_ROOT/artifacts/translated-$suite-aot.out"

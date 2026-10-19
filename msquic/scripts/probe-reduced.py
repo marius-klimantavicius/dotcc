@@ -3,7 +3,11 @@
 import argparse
 import json
 from pathlib import Path
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 
 root = Path(__file__).resolve().parents[1]
 repo = root.parent
@@ -17,7 +21,7 @@ for source in sorted((root / 'probes').glob('*.c')):
     record = {'source': str(source.relative_to(root))}
     commands = {
         'gcc': ['gcc', '-std=gnu17', '-fms-extensions', '-fsyntax-only', str(source)],
-        'dotcc': ['dotnet', str(repo / 'DotCC/bin/Release/net10.0/dotcc.dll'), str(source),
+        'dotcc': ['dotnet', str(selected_tool()), str(source),
                   '--emit=obj', '-o', str(out / (source.stem + '.cs'))],
     }
     for name, command in commands.items():
@@ -28,7 +32,7 @@ for source in sorted((root / 'probes').glob('*.c')):
     print(source.name, 'gcc:', record['gcc']['exit_code'], 'dotcc:', record['dotcc']['exit_code'], flush=True)
     if source.stem in ['nested-variadic', 'include-nonstandard-extension']:
         for name, command in [('gcc', ['gcc', '-E', '-P', str(source)]),
-                              ('dotcc', ['dotnet', str(repo / 'DotCC/bin/Release/net10.0/dotcc.dll'), '-E', str(source)])]:
+                              ('dotcc', ['dotnet', str(selected_tool()), '-E', str(source)])]:
             result = subprocess.run(command, capture_output=True, text=True, timeout=30)
             (out / (source.stem + '.' + name + '.i')).write_text(result.stdout)
             (out / (source.stem + '.' + name + '.log')).write_text(result.stderr)
@@ -44,7 +48,7 @@ if args.build:
         commands = []
         if executable:
             commands.append(['gcc', '-std=gnu17', '-fms-extensions', str(source), '-o', str(out / name)])
-        commands.append(['dotnet', str(repo / 'DotCC/bin/Release/net10.0/dotcc.dll'), str(source),
+        commands.append(['dotnet', str(selected_tool()), str(source),
                          '--emit=csproj' if executable else '--emit=managedlib', '-o', str(destination)])
         for command in commands:
             result = subprocess.run(command, capture_output=True, text=True, timeout=30)

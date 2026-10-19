@@ -176,7 +176,7 @@ public static partial class Compiler
         var convGate = (warnings & WarningFlags.Conversion) != 0 ? new ConversionGate() : null;
         // Objects retain public types so managed linking requires no textual
         // rewriting of type declarations or their inline-array wrapper types.
-        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"), inlineMetadata: asObject || UsesInlineOptions(outputOptions), instanceMethods: outputOptions?.InstanceMethods == true, stableFunctionPointers: preprocessing?.StableFunctionPointers);
+        var cg = Backends.CSharpBackend.Run(irBuilder, convGate, publicTypes: emit is EmitMode.ManagedLib or EmitMode.Object, relocatable: asObject || namespaceName != null || nested, pointerClass: HelperClass(libraryMode ? libraryClass : "DotCcProgram", "FunctionPointers"), inlineMetadata: asObject || UsesInlineOptions(outputOptions), instanceMethods: outputOptions?.InstanceMethods == true, stableFunctionPointers: preprocessing?.StableFunctionPointers, aggregateTokens: asObject);
         if (convGate is { HasAny: true })
         {
             foreach (var d in convGate.Diagnostics) { Console.Error.WriteLine("dotcc: warning: " + d); }
@@ -233,7 +233,7 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes, instanceMethods: outputOptions?.InstanceMethods == true, weakFunctions: irBuilder.Functions.Where(f => f.Sym.IsWeak).Select(f => f.Sym.TargetName), weakReferences: irBuilder.ReferencedWeakFunctionNames));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, aggregateIdentities: irBuilder.AggregateIdentityGraph(), anonymousTypedefs: irBuilder.AnonymousTypedefs, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes, instanceMethods: outputOptions?.InstanceMethods == true, weakFunctions: irBuilder.Functions.Where(f => f.Sym.IsWeak).Select(f => f.Sym.TargetName), weakReferences: irBuilder.ReferencedWeakFunctionNames));
         }
         if (UsesInlineOptions(outputOptions))
         {
@@ -259,18 +259,24 @@ public static partial class Compiler
             irBuilder.Functions.Select(function => function.Sym.TargetName), irBuilder.Globals.Select(global => global.Sym.TargetName), outputOptions?.InstanceMethods == true);
         var storage = new GlobalStorageReferences(cg.Globals,
             cg.FunctionSources!.Select(f => f.Name).Concat(cg.TypeDeclarations!.Keys),
-            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName), outputOptions?.InstanceMethods == true);
+            owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName), outputOptions?.InstanceMethods == true,
+            stateContext: outputOptions?.StateContext == true);
         var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
-        ValidateContextNames(outputOptions, cg.FunctionSources!.Select(f => f.Name).Concat(cg.TypeDeclarations!.Keys).Append(owner));
+        ValidateContextNames(outputOptions, cg.FunctionSources!.Select(f => f.Name).Append(owner),
+            cg.TypeDeclarations!.Keys, irBuilder.AnonymousTypedefs);
         var globals = RenderGlobals(cg.Globals, literals, storage);
         if (outputOptions?.StateContext == true || outputOptions?.InstanceMethods == true)
             globals = RenderStateContext(globals, cg.Globals, literals, storage, owner, outputOptions?.InstanceMethods == true);
         var instanceDefinitions = cg.FunctionSources!.Select(part => part.Name).ToHashSet(StringComparer.Ordinal);
         string ResolveInstanceCalls(string text) => outputOptions?.InstanceMethods == true
             ? InstanceReferences.Resolve(text, instanceDefinitions, "this") : text;
+        var ownerInitializers = RenderOwnerInitializers(cg.TypeDeclarations!, literals, storage,
+            instanceDefinitions, outputOptions?.InstanceMethods == true);
         var parts = cg.FunctionSources?.Select(part => part with { Text = storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(part.Text))) }).ToArray();
-        return BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(cg.Functions))), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
-            (functions, fileAliases, partial) => BuildShell(cg.MainArity, pointerResolvers.Methods + RenderMacroFields(cg.TypeDeclarations, owner, cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, types, fileAliases, globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig), instanceMethods: outputOptions?.InstanceMethods == true);
+        var files = BuildSourceFiles(storage.Rewrite(literals.Rewrite(ResolveInstanceCalls(cg.Functions))), parts, aliases, emit, libraryClass, importsClass, importsAreStatic, split, splitSize, namespaceName, nested,
+            (functions, fileAliases, partial) => BuildShell(cg.MainArity, pointerResolvers.Methods + ownerInitializers + RenderMacroFields(cg.TypeDeclarations, owner, cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName))) + functions, types, fileAliases, globals, emit, cg.Exports, debugHeap, importsClass, importsAreStatic, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, testMode, cg.Tests, libraryClass, partial, namespaceName, nested, includeZig), instanceMethods: outputOptions?.InstanceMethods == true);
+        return AnonymousTypedefNames.Resolve(files, irBuilder.AnonymousTypedefs, cg.TypeDeclarations!.Keys,
+            cg.FunctionSources!.Select(f => f.Name).Concat(irBuilder.Globals.Select(g => g.Sym.TargetName)));
     }
 
     /// <summary>
@@ -570,6 +576,7 @@ public static partial class Compiler
         {
             seeded.Add($"__STDC_VERSION__={stdcVersion}");
         }
+        // NAME[=VALUE] and -UNAME operations retain their order after seeds.
         if (userDefines is not null) { seeded.AddRange(userDefines); }
         return seeded.ToArray();
     }

@@ -5,7 +5,13 @@
 Roles are product, facade, consumer and harness. Each has an exact assembly name
 and approved project references; other assembly references must belong to the
 running .NET framework. P/Invoke modules are limited to the shared runtime's
-`libc`, `kernel32.dll` and `psapi.dll`. Compiler-emitted native import binding
+`libc`, `kernel32.dll` and `psapi.dll`. The product role also permits exactly
+`Managed.Interpreters.QuickJs+Libc.PosixErf` / `PosixErfc` bound to Linux
+`libm.so.6!erf` / `erfc`: private static `double(double)`, PreserveSig,
+SetLastError and the declared default Winapi calling convention (import flags
+`0x140`). Other roles, owners, members, symbols, signatures and import flags
+receive no libm exemption. `--self-test-host-math` checks this predicate without
+loading an inspected assembly. Compiler-emitted native import binding
 tables are rejected independently of ordinary P/Invoke metadata.
 
 `scripts/audit.py` is a shared campaign suite adapter. Run it after consumer and

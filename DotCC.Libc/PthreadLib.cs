@@ -29,6 +29,8 @@ public static unsafe partial class Libc
         public Func<IntPtr, IntPtr>? InstanceStart;
         public Thread Thread = null!;
         public RuntimeContext? Context;
+        public RuntimeContext OwnerContext = null!;
+        public PthreadAdmission Admission = null!;
         public bool Detached, Joining, Finished;
         public int CancellationRequested;
     }
@@ -47,26 +49,30 @@ public static unsafe partial class Libc
 
     public static int pthread_create(long* thread, int* attr, delegate*<void*, void*> start, void* arg)
     {
-        if (thread == null || start == null || !TryPthreadAttributes(RuntimeState, attr, out int stackSize, out bool detached)) return EINVAL;
+        RuntimeContext owner = RuntimeState;
+        if (thread == null || start == null || !TryPthreadAttributes(owner, attr, out int stackSize, out bool detached)) return EINVAL;
         PthreadState? state = null;
-        RuntimeContext? context = RuntimeContext.Current;
-        bool retained = false;
+        PthreadAdmission? admission = null;
         try
         {
-            if (context != null) { context.Retain(); retained = true; }
-            state = new PthreadState { Context = context, Id = Interlocked.Increment(ref _nextPthread),
+            admission = owner.AdmitPthread(stackSize);
+            // Retaining/binding legacy identity must not turn the legacy route
+            // into the explicit-context worker fault/termination boundary.
+            state = new PthreadState { OwnerContext = owner, Admission = admission,
+                Context = ReferenceEquals(owner, legacyRuntime) ? null : owner, Id = Interlocked.Increment(ref owner.NextThread),
                 Function = (IntPtr)start, Argument = (IntPtr)arg, Detached = detached };
-            state.Thread = new Thread(PthreadEntry, stackSize);
-            _pthreads[state.Id] = state;
-            state.Thread.Start(state);
+            state.Thread = new Thread(PthreadEntry, admission.StackSize);
+            owner.Threads[state.Id] = state;
+            StartPthreadWithoutContextFlow(state);
             *thread = state.Id;
             return 0;
         }
-        catch (Exception ex) when (ex is OutOfMemoryException or ThreadStateException)
+        catch (Exception error)
         {
-            if (state != null) _pthreads.TryRemove(state.Id, out _);
-            if (retained) context!.Release();
-            return EAGAIN;
+            if (state != null) owner.Threads.TryRemove(state.Id, out _);
+            admission?.Dispose();
+            if (error is OutOfMemoryException or ThreadStateException) return EAGAIN;
+            throw;
         }
     }
     /// <summary>Creates a thread in the explicitly supplied program runtime,
@@ -78,38 +84,48 @@ public static unsafe partial class Libc
         RuntimeContext context = instance.__DotCcRuntime;
         if (!TryPthreadAttributes(context, attr, out int stackSize, out bool detached)) return EINVAL;
         PthreadState? state = null;
-        context.Retain();
+        PthreadAdmission? admission = null;
         try
         {
+            admission = context.AdmitPthread(stackSize);
             IntPtr address = (IntPtr)start;
             state = new PthreadState
             {
-                Context = context, Id = Interlocked.Increment(ref context.NextThread),
+                Context = context, OwnerContext = context, Admission = admission, Id = Interlocked.Increment(ref context.NextThread),
                 InstanceStart = argument => (IntPtr)((delegate*<T, void*, void*>)address)(instance, (void*)argument),
                 Argument = (IntPtr)arg, Detached = detached
             };
-            state.Thread = new Thread(PthreadEntry, stackSize);
+            state.Thread = new Thread(PthreadEntry, admission.StackSize);
             context.Threads[state.Id] = state;
-            state.Thread.Start(state);
+            StartPthreadWithoutContextFlow(state);
             *thread = state.Id;
             return 0;
         }
         catch (Exception error)
         {
             if (state != null) context.Threads.TryRemove(state.Id, out _);
-            context.Release();
+            admission?.Dispose();
             if (error is OutOfMemoryException or ThreadStateException) return EAGAIN;
             throw;
+        }
+    }
+    private static void StartPthreadWithoutContextFlow(PthreadState state)
+    {
+        if (ExecutionContext.IsFlowSuppressed()) state.Thread.Start(state);
+        else
+        {
+            using (ExecutionContext.SuppressFlow()) state.Thread.Start(state);
         }
     }
     private static void PthreadEntry(object? argument)
     {
         var state = (PthreadState)argument!;
-        using var contextBinding = state.Context?.Enter();
-        _pthreadSelf = state.Id;
-        _pthreadCreated = true;
+        RuntimeBinding contextBinding = default;
         try
         {
+            contextBinding = state.Context?.Enter() ?? default;
+            _pthreadSelf = state.Id;
+            _pthreadCreated = true;
             bool completed = false;
             try
             {
@@ -138,10 +154,14 @@ public static unsafe partial class Libc
             lock (state)
             {
                 state.Finished = true;
-                if (state.Detached) _pthreads.TryRemove(state.Id, out _);
+                if (state.Detached) state.OwnerContext.Threads.TryRemove(state.Id, out _);
             }
-            _pthreadCreated = false;
-            state.Context?.Release();
+            try
+            {
+                _pthreadCreated = false;
+                contextBinding.Dispose();
+            }
+            finally { state.Admission.Dispose(); }
         }
     }
     public static int pthread_join(long thread, void** result)

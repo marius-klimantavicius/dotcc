@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Inspect this real shared-runtime assembly as the native-import basis.
+         It is a harness dependency, never an alternate interpreter. -->
+    <ProjectReference Include="../../../DotCC.Libc/DotCC.Libc.csproj" />
+  </ItemGroup>
+  <Import Project="../../src/Managed.CPython/DeliveryNotices.targets" />
+</Project>

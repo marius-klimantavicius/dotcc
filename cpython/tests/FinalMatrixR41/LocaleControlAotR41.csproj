@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="LocaleControlAotR41.cs.txt" />
+    <Reference Include="Managed.CPython"><HintPath>$(ActualInputDirectory)/Managed.CPython.dll</HintPath></Reference>
+    <Reference Include="TranslatedCPython"><HintPath>$(ActualInputDirectory)/TranslatedCPython.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

@@ -30,6 +30,7 @@
 | `-E` | Preprocess only — dump the post-`#include`/`#define` token stream to stdout. No parsing. |
 | `-I <dir>` | Add header search dir. Repeatable. Auto-includes each `<input>.c`'s directory. |
 | `-D NAME[=VALUE]` | Predefine a macro. Repeatable. `=VALUE` is lexed through the same byte lexer as the parser; bare `NAME` is a defined-as-marker (empty body). |
+| `-U NAME` | Remove a macro definition, including a dialect seed. Glued `-UNAME` is accepted. Mixed `-D`/`-U` options retain command-line order, including response files. The compiler API's `defines` list accepts ordered `NAME[=VALUE]` and `-UNAME` entries. |
 | `-MD` / `-MMD` | **Header-dependency file** (`Compiler.EmitDependencyRule`): a Make rule listing the TU + every transitively-`#include`d header, so CMake/Ninja/Make recompile on header change. `-MMD` drops angle headers; synthetic system headers (no disk path) are always omitted. The scan honors `#if`/`#ifdef`. Paths normalized to `/`, make-special chars escaped. |
 | `-MF <file>` | Dependency-file output path (defaults to the object/source name with `.d`). |
 | `-MT <target>` | Dependency rule target name(s). Repeatable. CMake passes `-MT <OBJECT>`. |

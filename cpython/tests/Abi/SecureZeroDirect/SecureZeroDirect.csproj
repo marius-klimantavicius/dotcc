@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefineConstants>$(DefineConstants);SECURE_ZERO_DIRECT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../../DotCC.Libc/DotCC.Libc.csproj" />
+    <Compile Include="../../../../DotCC.Tests/CPythonR13SecureZeroTests.cs" Link="SecureZeroChecks.cs" />
+  </ItemGroup>
+</Project>

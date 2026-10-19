@@ -4,7 +4,8 @@ set -euo pipefail
 campaign=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 "$PYTHON_CMD" "$CAMPAIGN_REPO/Scripts/campaign-reference.py" blink "$@"
 "$PYTHON_CMD" - "$campaign" <<'PY'
-import hashlib, json, os, pathlib, platform, shutil, subprocess, sys, time
+import hashlib, json, os, pathlib, platform, shutil, sys, time
+from production_support import subprocess
 root = pathlib.Path(sys.argv[1])
 manifest = json.loads((root / 'config/source-manifest.json').read_text())
 build = root / 'build/native'

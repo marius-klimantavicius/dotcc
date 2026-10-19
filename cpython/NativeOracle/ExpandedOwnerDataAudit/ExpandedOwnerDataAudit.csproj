@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+<ItemGroup><Compile Include="../GeneratedDataAudit/Program.cs" Link="Program.cs"/><EmbeddedResource Include="TypedAudit.cs" LogicalName="ExpandedOwnerDataAudit.TypedAudit.cs"/><EmbeddedResource Include="../GeneratedDataAudit/Program.cs" LogicalName="ExpandedOwnerDataAudit.Program.cs"/><EmbeddedResource Include="ExpandedOwnerDataAudit.csproj" LogicalName="ExpandedOwnerDataAudit.Project"/></ItemGroup>
+</Project>

@@ -1,0 +1,1391 @@
+{
+  "profile": "embedded-gil",
+  "basis": [
+    "Makefile LIBRARY_OBJS",
+    "LIBHACL_SHA2_OBJS",
+    "Modules/Setup.bootstrap",
+    "Modules/Setup.local",
+    "generated Modules/config.c"
+  ],
+  "units": [
+    {
+      "path": "Modules/getbuildinfo.c",
+      "native_object": "Modules/getbuildinfo.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Parser/token.c",
+      "native_object": "Parser/token.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/pegen.c",
+      "native_object": "Parser/pegen.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/pegen_errors.c",
+      "native_object": "Parser/pegen_errors.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/action_helpers.c",
+      "native_object": "Parser/action_helpers.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/parser.c",
+      "native_object": "Parser/parser.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/string_parser.c",
+      "native_object": "Parser/string_parser.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/peg_api.c",
+      "native_object": "Parser/peg_api.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/lexer/buffer.c",
+      "native_object": "Parser/lexer/buffer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/lexer/lexer.c",
+      "native_object": "Parser/lexer/lexer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/lexer/state.c",
+      "native_object": "Parser/lexer/state.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/tokenizer/file_tokenizer.c",
+      "native_object": "Parser/tokenizer/file_tokenizer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/tokenizer/readline_tokenizer.c",
+      "native_object": "Parser/tokenizer/readline_tokenizer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/tokenizer/string_tokenizer.c",
+      "native_object": "Parser/tokenizer/string_tokenizer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/tokenizer/utf8_tokenizer.c",
+      "native_object": "Parser/tokenizer/utf8_tokenizer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/tokenizer/helpers.c",
+      "native_object": "Parser/tokenizer/helpers.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Parser/myreadline.c",
+      "native_object": "Parser/myreadline.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/abstract.c",
+      "native_object": "Objects/abstract.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/boolobject.c",
+      "native_object": "Objects/boolobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/bytes_methods.c",
+      "native_object": "Objects/bytes_methods.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/bytearrayobject.c",
+      "native_object": "Objects/bytearrayobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/bytesobject.c",
+      "native_object": "Objects/bytesobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/call.c",
+      "native_object": "Objects/call.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/capsule.c",
+      "native_object": "Objects/capsule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/cellobject.c",
+      "native_object": "Objects/cellobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/classobject.c",
+      "native_object": "Objects/classobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/codeobject.c",
+      "native_object": "Objects/codeobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/complexobject.c",
+      "native_object": "Objects/complexobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/descrobject.c",
+      "native_object": "Objects/descrobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/enumobject.c",
+      "native_object": "Objects/enumobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/exceptions.c",
+      "native_object": "Objects/exceptions.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/genericaliasobject.c",
+      "native_object": "Objects/genericaliasobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/genobject.c",
+      "native_object": "Objects/genobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/fileobject.c",
+      "native_object": "Objects/fileobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/floatobject.c",
+      "native_object": "Objects/floatobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/frameobject.c",
+      "native_object": "Objects/frameobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/funcobject.c",
+      "native_object": "Objects/funcobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/iterobject.c",
+      "native_object": "Objects/iterobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/listobject.c",
+      "native_object": "Objects/listobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/longobject.c",
+      "native_object": "Objects/longobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/dictobject.c",
+      "native_object": "Objects/dictobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/odictobject.c",
+      "native_object": "Objects/odictobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/memoryobject.c",
+      "native_object": "Objects/memoryobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/methodobject.c",
+      "native_object": "Objects/methodobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/moduleobject.c",
+      "native_object": "Objects/moduleobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/namespaceobject.c",
+      "native_object": "Objects/namespaceobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/object.c",
+      "native_object": "Objects/object.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/obmalloc.c",
+      "native_object": "Objects/obmalloc.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/picklebufobject.c",
+      "native_object": "Objects/picklebufobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/rangeobject.c",
+      "native_object": "Objects/rangeobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/setobject.c",
+      "native_object": "Objects/setobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/sliceobject.c",
+      "native_object": "Objects/sliceobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/structseq.c",
+      "native_object": "Objects/structseq.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/tupleobject.c",
+      "native_object": "Objects/tupleobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/typeobject.c",
+      "native_object": "Objects/typeobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/typevarobject.c",
+      "native_object": "Objects/typevarobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/unicodeobject.c",
+      "native_object": "Objects/unicodeobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/unicodectype.c",
+      "native_object": "Objects/unicodectype.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/unionobject.c",
+      "native_object": "Objects/unionobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Objects/weakrefobject.c",
+      "native_object": "Objects/weakrefobject.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/_warnings.c",
+      "native_object": "Python/_warnings.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/Python-ast.c",
+      "native_object": "Python/Python-ast.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/Python-tokenize.c",
+      "native_object": "Python/Python-tokenize.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/asdl.c",
+      "native_object": "Python/asdl.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/assemble.c",
+      "native_object": "Python/assemble.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/ast.c",
+      "native_object": "Python/ast.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/ast_opt.c",
+      "native_object": "Python/ast_opt.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/ast_unparse.c",
+      "native_object": "Python/ast_unparse.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/bltinmodule.c",
+      "native_object": "Python/bltinmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/brc.c",
+      "native_object": "Python/brc.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/ceval.c",
+      "native_object": "Python/ceval.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/codecs.c",
+      "native_object": "Python/codecs.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/compile.c",
+      "native_object": "Python/compile.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/context.c",
+      "native_object": "Python/context.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/critical_section.c",
+      "native_object": "Python/critical_section.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/crossinterp.c",
+      "native_object": "Python/crossinterp.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/dynamic_annotations.c",
+      "native_object": "Python/dynamic_annotations.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/errors.c",
+      "native_object": "Python/errors.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/flowgraph.c",
+      "native_object": "Python/flowgraph.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/frame.c",
+      "native_object": "Python/frame.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/frozenmain.c",
+      "native_object": "Python/frozenmain.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/future.c",
+      "native_object": "Python/future.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/gc.c",
+      "native_object": "Python/gc.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/gc_free_threading.c",
+      "native_object": "Python/gc_free_threading.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/gc_gil.c",
+      "native_object": "Python/gc_gil.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/getargs.c",
+      "native_object": "Python/getargs.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/getcompiler.c",
+      "native_object": "Python/getcompiler.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/getcopyright.c",
+      "native_object": "Python/getcopyright.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/getplatform.c",
+      "native_object": "Python/getplatform.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/getversion.c",
+      "native_object": "Python/getversion.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/ceval_gil.c",
+      "native_object": "Python/ceval_gil.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/hamt.c",
+      "native_object": "Python/hamt.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/hashtable.c",
+      "native_object": "Python/hashtable.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/import.c",
+      "native_object": "Python/import.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/importdl.c",
+      "native_object": "Python/importdl.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/initconfig.c",
+      "native_object": "Python/initconfig.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/interpconfig.c",
+      "native_object": "Python/interpconfig.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/instrumentation.c",
+      "native_object": "Python/instrumentation.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/instruction_sequence.c",
+      "native_object": "Python/instruction_sequence.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/intrinsics.c",
+      "native_object": "Python/intrinsics.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/jit.c",
+      "native_object": "Python/jit.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/legacy_tracing.c",
+      "native_object": "Python/legacy_tracing.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/lock.c",
+      "native_object": "Python/lock.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/marshal.c",
+      "native_object": "Python/marshal.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/modsupport.c",
+      "native_object": "Python/modsupport.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/mysnprintf.c",
+      "native_object": "Python/mysnprintf.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/mystrtoul.c",
+      "native_object": "Python/mystrtoul.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/object_stack.c",
+      "native_object": "Python/object_stack.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/optimizer.c",
+      "native_object": "Python/optimizer.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/optimizer_analysis.c",
+      "native_object": "Python/optimizer_analysis.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/optimizer_symbols.c",
+      "native_object": "Python/optimizer_symbols.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/parking_lot.c",
+      "native_object": "Python/parking_lot.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pathconfig.c",
+      "native_object": "Python/pathconfig.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/preconfig.c",
+      "native_object": "Python/preconfig.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pyarena.c",
+      "native_object": "Python/pyarena.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pyctype.c",
+      "native_object": "Python/pyctype.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pyfpe.c",
+      "native_object": "Python/pyfpe.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pyhash.c",
+      "native_object": "Python/pyhash.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pylifecycle.c",
+      "native_object": "Python/pylifecycle.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pymath.c",
+      "native_object": "Python/pymath.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pystate.c",
+      "native_object": "Python/pystate.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pythonrun.c",
+      "native_object": "Python/pythonrun.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pytime.c",
+      "native_object": "Python/pytime.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/qsbr.c",
+      "native_object": "Python/qsbr.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/bootstrap_hash.c",
+      "native_object": "Python/bootstrap_hash.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/specialize.c",
+      "native_object": "Python/specialize.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/structmember.c",
+      "native_object": "Python/structmember.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/symtable.c",
+      "native_object": "Python/symtable.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/sysmodule.c",
+      "native_object": "Python/sysmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/thread.c",
+      "native_object": "Python/thread.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/traceback.c",
+      "native_object": "Python/traceback.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/tracemalloc.c",
+      "native_object": "Python/tracemalloc.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/getopt.c",
+      "native_object": "Python/getopt.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pystrcmp.c",
+      "native_object": "Python/pystrcmp.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pystrtod.c",
+      "native_object": "Python/pystrtod.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/pystrhex.c",
+      "native_object": "Python/pystrhex.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/dtoa.c",
+      "native_object": "Python/dtoa.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/formatter_unicode.c",
+      "native_object": "Python/formatter_unicode.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/fileutils.c",
+      "native_object": "Python/fileutils.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/suggestions.c",
+      "native_object": "Python/suggestions.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/perf_trampoline.c",
+      "native_object": "Python/perf_trampoline.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/perf_jit_trampoline.c",
+      "native_object": "Python/perf_jit_trampoline.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Python/dynload_stub.c",
+      "native_object": "Python/dynload_shlib.o",
+      "basis": "LIBRARY_OBJS; upstream static-only implementation selected because HAVE_DYNAMIC_LOADING is undefined",
+      "flags": []
+    },
+    {
+      "path": "Modules/config.c",
+      "native_object": "Modules/config.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/main.c",
+      "native_object": "Modules/main.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/gcmodule.c",
+      "native_object": "Modules/gcmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/arraymodule.c",
+      "native_object": "Modules/arraymodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_bisectmodule.c",
+      "native_object": "Modules/_bisectmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_contextvarsmodule.c",
+      "native_object": "Modules/_contextvarsmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_heapqmodule.c",
+      "native_object": "Modules/_heapqmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_json.c",
+      "native_object": "Modules/_json.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_opcode.c",
+      "native_object": "Modules/_opcode.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_pickle.c",
+      "native_object": "Modules/_pickle.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_randommodule.c",
+      "native_object": "Modules/_randommodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_struct.c",
+      "native_object": "Modules/_struct.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/mathmodule.c",
+      "native_object": "Modules/mathmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_statisticsmodule.c",
+      "native_object": "Modules/_statisticsmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/unicodedata.c",
+      "native_object": "Modules/unicodedata.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/sha2module.c",
+      "native_object": "Modules/sha2module.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN",
+        "-I{source}/Modules/_hacl/include"
+      ]
+    },
+    {
+      "path": "Modules/atexitmodule.c",
+      "native_object": "Modules/atexitmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/faulthandler.c",
+      "native_object": "Modules/faulthandler.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/posixmodule.c",
+      "native_object": "Modules/posixmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/signalmodule.c",
+      "native_object": "Modules/signalmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_tracemalloc.c",
+      "native_object": "Modules/_tracemalloc.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_suggestions.c",
+      "native_object": "Modules/_suggestions.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_codecsmodule.c",
+      "native_object": "Modules/_codecsmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_collectionsmodule.c",
+      "native_object": "Modules/_collectionsmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/errnomodule.c",
+      "native_object": "Modules/errnomodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/_iomodule.c",
+      "native_object": "Modules/_io/_iomodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/iobase.c",
+      "native_object": "Modules/_io/iobase.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/fileio.c",
+      "native_object": "Modules/_io/fileio.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/bytesio.c",
+      "native_object": "Modules/_io/bytesio.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/bufferedio.c",
+      "native_object": "Modules/_io/bufferedio.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/textio.c",
+      "native_object": "Modules/_io/textio.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_io/stringio.c",
+      "native_object": "Modules/_io/stringio.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/itertoolsmodule.c",
+      "native_object": "Modules/itertoolsmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_sre/sre.c",
+      "native_object": "Modules/_sre/sre.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_sysconfig.c",
+      "native_object": "Modules/_sysconfig.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_threadmodule.c",
+      "native_object": "Modules/_threadmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/timemodule.c",
+      "native_object": "Modules/timemodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_typingmodule.c",
+      "native_object": "Modules/_typingmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_weakref.c",
+      "native_object": "Modules/_weakref.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_abc.c",
+      "native_object": "Modules/_abc.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_functoolsmodule.c",
+      "native_object": "Modules/_functoolsmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_localemodule.c",
+      "native_object": "Modules/_localemodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_operator.c",
+      "native_object": "Modules/_operator.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/_stat.c",
+      "native_object": "Modules/_stat.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/symtablemodule.c",
+      "native_object": "Modules/symtablemodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/pwdmodule.c",
+      "native_object": "Modules/pwdmodule.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN"
+      ]
+    },
+    {
+      "path": "Modules/getpath.c",
+      "native_object": "Modules/getpath.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN",
+        "-DPREFIX=\"\"",
+        "-DEXEC_PREFIX=\"\"",
+        "-DVERSION=\"3.13\"",
+        "-DVPATH=\"\"",
+        "-DPLATLIBDIR=\"lib\""
+      ]
+    },
+    {
+      "path": "Python/frozen.c",
+      "native_object": "Python/frozen.o",
+      "basis": "LIBRARY_OBJS",
+      "flags": []
+    },
+    {
+      "path": "Modules/_hacl/Hacl_Hash_SHA2.c",
+      "native_object": "Modules/_hacl/Hacl_Hash_SHA2.o",
+      "basis": "LIBHACL_SHA2_OBJS; selected _sha2 static dependency",
+      "flags": [
+        "-DPy_BUILD_CORE_BUILTIN",
+        "-I{source}/Modules/_hacl/include"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "object": "Python/asm_trampoline.o",
+      "reason": "native perf executable trampoline; PY_HAVE_PERF_TRAMPOLINE undefined in translated profile"
+    }
+  ],
+  "static_builtins": [
+    "array",
+    "_bisect",
+    "_contextvars",
+    "_heapq",
+    "_json",
+    "_opcode",
+    "_pickle",
+    "_random",
+    "_struct",
+    "math",
+    "_statistics",
+    "unicodedata",
+    "_sha2",
+    "atexit",
+    "faulthandler",
+    "posix",
+    "_signal",
+    "_tracemalloc",
+    "_suggestions",
+    "_codecs",
+    "_collections",
+    "errno",
+    "_io",
+    "itertools",
+    "_sre",
+    "_sysconfig",
+    "_thread",
+    "time",
+    "_typing",
+    "_weakref",
+    "_abc",
+    "_functools",
+    "_locale",
+    "_operator",
+    "_stat",
+    "_symtable",
+    "pwd"
+  ],
+  "disabled_modules": [
+    "_asyncio",
+    "_csv",
+    "_lsprof",
+    "_queue",
+    "_interpreters",
+    "_interpchannels",
+    "_interpqueues",
+    "_zoneinfo",
+    "cmath",
+    "_datetime",
+    "_decimal",
+    "binascii",
+    "_bz2",
+    "_lzma",
+    "zlib",
+    "_dbm",
+    "_gdbm",
+    "readline",
+    "_md5",
+    "_sha1",
+    "_sha3",
+    "_blake2",
+    "pyexpat",
+    "_elementtree",
+    "_codecs_cn",
+    "_codecs_hk",
+    "_codecs_iso2022",
+    "_codecs_jp",
+    "_codecs_kr",
+    "_codecs_tw",
+    "_multibytecodec",
+    "fcntl",
+    "grp",
+    "mmap",
+    "_posixsubprocess",
+    "resource",
+    "select",
+    "_socket",
+    "syslog",
+    "termios",
+    "_posixshmem",
+    "_multiprocessing",
+    "_ctypes",
+    "_curses",
+    "_curses_panel",
+    "_sqlite3",
+    "_ssl",
+    "_hashlib",
+    "_uuid",
+    "_tkinter",
+    "_scproxy",
+    "xxsubtype",
+    "_xxtestfuzz",
+    "_testbuffer",
+    "_testinternalcapi",
+    "_testcapi",
+    "_testlimitedcapi",
+    "_testclinic",
+    "_testclinic_limited",
+    "_testimportmultiple",
+    "_testmultiphase",
+    "_testsinglephase",
+    "_testexternalinspection",
+    "_ctypes_test",
+    "xxlimited",
+    "xxlimited_35"
+  ],
+  "dialect": "c11",
+  "include_order": [
+    "{config}",
+    "{source}/Include",
+    "{source}/Include/internal",
+    "{source}",
+    "DotCC supplied C headers"
+  ],
+  "qualification": "inventory; no emission or runtime pass implied"
+}

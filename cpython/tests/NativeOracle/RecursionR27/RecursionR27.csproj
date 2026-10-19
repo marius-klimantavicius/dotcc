@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="TranslatedCPython" HintPath="$(CPythonAssembly)" />
+    <Reference Include="Managed.CPython" HintPath="$(FacadeAssembly)" />
+    <Content Include="exact_case.py" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="RequireExistingInputs" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(CPythonAssembly)') Or !Exists('$(FacadeAssembly)')" Text="Select existing, independently bound actual consumer PEs. This diagnostic never rebuilds CPython or its owning API." />
+  </Target>
+</Project>

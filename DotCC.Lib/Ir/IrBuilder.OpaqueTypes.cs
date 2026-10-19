@@ -15,6 +15,7 @@ internal sealed partial class IrBuilder
     {
         var name = Tok(tag);
         RejectExternalDefinition(name);
+        name = AggregateName(name);
         if (_macroEvaluation && !_aggregateTags.ContainsKey(name) && !_structFields.ContainsKey(name))
             throw new IrUnsupportedException("unknown aggregate in macro constant: " + name);
         // time.h and locale.h deliberately omit these bodies: the library owns
@@ -22,6 +23,7 @@ internal sealed partial class IrBuilder
         // at synthetic declarations, never by an arbitrary user's tag spelling.
         if (tag.Position.Line >= SrcPos.SyntheticLineBase && name is "tm" or "timespec" or "lconv")
             RegisterRuntimeAggregate(name);
+        _taggedAggregates.Add(name);
         _aggregateTags.TryAdd(name, isUnion);
         return new CType.Named(name);
     }

@@ -1,6 +1,8 @@
 #ifndef _TIME_H
 #define _TIME_H
 
+#include <stddef.h>
+
 /* dotcc's <time.h> — time surface (DotCC.Libc/TimeLib.cs scalar bits +
    CalendarLib.cs struct tm family). time_t / clock_t lower to C# long
    (dotcc's LP64 model). clock() is a monotonic millisecond counter
@@ -43,6 +45,7 @@ double difftime(time_t end, time_t beginning);
 #define TIME_UTC 1
 int timespec_get(struct timespec* ts, int base);
 int clock_gettime(clockid_t clock_id, struct timespec *value);
+int clock_getres(clockid_t clock_id, struct timespec *resolution);
 int nanosleep(const struct timespec *request, struct timespec *remaining);
 
 /* Calendar conversions. gmtime/localtime/asctime/ctime return a pointer
@@ -52,7 +55,7 @@ struct tm* localtime(time_t* timer);
 time_t mktime(struct tm* t);
 char* asctime(struct tm* t);
 char* ctime(time_t* timer);
-int strftime(char* s, int max, char* fmt, struct tm* t);
+size_t strftime(char* s, size_t max, const char* fmt, const struct tm* t);
 
 /* Reentrant variants (POSIX): the caller owns the output buffer. These are
    the primitives; the plain forms above wrap them with a thread-local buffer.

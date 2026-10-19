@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="TranslatedCPython" HintPath="$(CPythonAssembly)" />
+    <Reference Include="Managed.CPython" HintPath="$(FacadeAssembly)" />
+  </ItemGroup>
+  <Target Name="RequireFrozenInputs" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(CPythonAssembly)') Or !Exists('$(FacadeAssembly)')" Text="Select explicit existing interpreter and owning API PEs; this probe never rebuilds them." />
+  </Target>
+</Project>

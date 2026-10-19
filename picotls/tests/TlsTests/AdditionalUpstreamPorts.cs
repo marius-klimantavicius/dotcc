@@ -289,7 +289,7 @@ internal static partial class Program
             {
                 PicoTls.dotcc_ptls_client_properties(&properties, &alpn, 1,
                     new st_ptls_iovec_t { @base = ticketBytes, len = (ulong)ticket.Length }, 0);
-                properties.__anon___Anon16.client.ech.configs = new() { @base = Libc.L("\0"u8), len = 0 };
+                properties.client.ech.configs = new() { @base = Libc.L("\0"u8), len = 0 };
                 byte[] hello = StepUpstreamGreaseClient(client, &properties, [], true);
                 _ = RewriteClientExtensions(hello, extensions =>
                     Check(extensions.Any(extension => extension.Type == 0xfe0d), "GREASE extension actually emitted in ClientHello"));

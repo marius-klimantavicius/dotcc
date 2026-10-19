@@ -7,12 +7,24 @@ namespace DotCC;
 
 public static partial class Compiler
 {
-    private static void ValidateContextNames(CSharpOutputOptions? options, IEnumerable<string> names)
+    private static void ValidateContextNames(CSharpOutputOptions? options, IEnumerable<string> names,
+        IEnumerable<string>? types = null, IReadOnlyDictionary<string, string>? generatedTypes = null)
     {
         if (options?.StateContext != true && options?.InstanceMethods != true) return;
         foreach (var name in names)
             if (name.TrimStart('@').StartsWith("__DotCc", StringComparison.Ordinal))
                 throw new CompileException("--state-context reserves the __DotCc member prefix");
+        // A generated identity is not an authored type name. Callers supply
+        // exact provenance from the IR's anonymous-typedef registry or the
+        // corresponding validated object identity graph, never a prefix rule.
+        // Its original C alias must still satisfy the reserved-name guard.
+        if (generatedTypes != null)
+            ValidateContextNames(options, generatedTypes.Values);
+        if (types != null)
+            foreach (var name in types)
+                if (name.TrimStart('@').StartsWith("__DotCc", StringComparison.Ordinal)
+                    && generatedTypes?.ContainsKey(name) != true)
+                    throw new CompileException("--state-context reserves the __DotCc member prefix");
     }
 
     // Objects retain their storage recipes. Context ownership is selected only

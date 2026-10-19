@@ -63,8 +63,8 @@ public sealed class LiteralPoolTests
                 if (enabled)
                 {
                     emitted.ShouldContain("DotCcLiterals.S0");
-                    emitted.ShouldContain("Libc.GlobalArrayFrom<int>(new int[]{ 7, 42 })");
-                    emitted.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 255, 128 })");
+                    emitted.ShouldContain("Globals.numbers = Libc.GlobalArrayZeroed<int>(2)");
+                    emitted.ShouldContain("0xFF, 0x80, ");
                     emitted.ShouldNotContain("Libc.L(");
                     emitted.ShouldNotContain("Libc.L<");
                     var pool = ParseSource(emitted, cancellationToken: TestContext.Current.CancellationToken)
@@ -78,10 +78,10 @@ public sealed class LiteralPoolTests
                 else
                 {
                     emitted.ShouldContain("Libc.L(\"one\\0\"u8)");
-                    emitted.ShouldContain("Libc.GlobalArrayFrom<int>(new int[]{ 7, 42 })");
-                    emitted.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 255, 128 })");
-                    emitted.ShouldNotContain("using DotCcLiterals =");
-                    emitted.ShouldNotContain("class DotCcProgramLiterals");
+                    emitted.ShouldContain("Globals.numbers = Libc.GlobalArrayZeroed<int>(2)");
+                    emitted.ShouldContain("0xFF, 0x80, ");
+                    emitted.ShouldContain("using DotCcLiterals =");
+                    emitted.ShouldContain("class DotCcProgramLiterals");
                     emitted.ShouldNotContain("/*\"one\"*/");
                 }
                 FixtureRunner.CompileAndRun(emitted, Array.Empty<string>()).ReplaceLineEndings("\n").ShouldBe("ok\n");

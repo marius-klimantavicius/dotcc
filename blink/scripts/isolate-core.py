@@ -12,10 +12,14 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import tempfile
 import time
-from core_inputs import compiler_directory, compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, object_options
+from core_inputs import compiler_executable, compiler_directory, compiler_identity, profile_sources, canonical_emission, semantic_selection, managed_boundary_selection, object_options
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -51,7 +55,7 @@ for entry in closure['sources']:
         raise SystemExit('staged source checksum mismatch: ' + str(source))
     original_source = source
     emission_profile, source, c_identity, emission_key = canonical_emission(profile, root, profile_inputs, entry)
-    command = ['dotnet', str(compiler / 'dotcc.dll'), *object_options(profile),
+    command = ['dotnet', str(compiler_executable(compiler)), *object_options(profile),
                '-I', str(emission_profile), '-I', str(root / ("ref/" + _CAMPAIGN_SOURCE["directory"])),
                '-I', str(emission_profile / 'authored'), '-I', str(emission_profile / 'host'),
                '--overrides-file', str(emission_profile / 'overrides.json')]

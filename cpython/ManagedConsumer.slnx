@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="generated/TranslatedCPython/TranslatedCPython.csproj" />
+  <Project Path="src/Managed.CPython/Managed.CPython.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>

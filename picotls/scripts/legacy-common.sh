@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 PICOTLS_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 DOTCC_ROOT="$(cd -- "$PICOTLS_ROOT/.." && pwd)"
 PICOTLS_PROJECT="$PICOTLS_ROOT/generated/TranslatedPicotls/TranslatedPicotls.csproj"

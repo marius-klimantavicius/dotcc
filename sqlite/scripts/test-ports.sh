@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
 export SQLITE_EXECUTION_TIMEOUT="${SQLITE_PORT_TIMEOUT:-600}"
 mkdir -p "$TMPDIR"
-compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
+compiler="$DOTCC_COMPILER"
 # A prior emitter may have used another source filename (for example Program.cs
 # instead of DotCcProgram.cs). Keep each run in a fresh output tree so MSBuild's
 # source glob cannot combine old and current translations. Preserve old runs.
@@ -19,9 +20,9 @@ lua_units=(lapi lcode lctype ldebug ldo ldump lfunc lgc llex lmem lobject lopcod
 lua_inputs=()
 for unit in "${lua_units[@]}"; do lua_inputs+=("$lua_source/$unit.c"); done
 lua_output="$port_output/Regression-Lua"
-dotnet "$compiler" --emit=csproj -I "$lua_source" "${lua_inputs[@]}" -o "$lua_output" \
+"${PRODUCTION_COMMAND[@]}" dotnet "$compiler" --emit=csproj -I "$lua_source" "${lua_inputs[@]}" -o "$lua_output" \
   > "$SQLITE_ROOT/artifacts/regression-lua-emission.log" 2>&1
-dotnet build "$lua_output/Regression-Lua.csproj" -c Release --nologo \
+"${PRODUCTION_COMMAND[@]}" dotnet build "$lua_output/Regression-Lua.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/regression-lua-build.log" 2>&1
 (
   cd "$lua_source/testes"
@@ -33,21 +34,21 @@ echo "PASS shared Lua upstream conformance"
 # Mirror chibi.yml's native stub bootstrap and explicit static-module build.
 chibi_root="$DOTCC_ROOT/examples/chibi"
 chibi_source="$chibi_root/chibi-src"
-make -C "$chibi_source" -j2 chibi-scheme \
+"${PRODUCTION_COMMAND[@]}" make -C "$chibi_source" -j2 chibi-scheme \
   > "$SQLITE_ROOT/artifacts/regression-chibi-native-build.log" 2>&1
-make -C "$chibi_source" lib/chibi/filesystem.c lib/chibi/io/io.c lib/chibi/process.c lib/chibi/time.c \
+"${PRODUCTION_COMMAND[@]}" make -C "$chibi_source" lib/chibi/filesystem.c lib/chibi/io/io.c lib/chibi/process.c lib/chibi/time.c \
   >> "$SQLITE_ROOT/artifacts/regression-chibi-native-build.log" 2>&1
 chibi_inputs=()
 for unit in gc sexp bignum gc_heap opcodes vm eval simplify main; do
   chibi_inputs+=("$chibi_source/$unit.c")
 done
 chibi_output="$port_output/Regression-Chibi"
-dotnet "$compiler" --emit=csproj -I "$chibi_root/gen-include" -I "$chibi_source/include" \
+"${PRODUCTION_COMMAND[@]}" dotnet "$compiler" --emit=csproj -I "$chibi_root/gen-include" -I "$chibi_source/include" \
   -D SEXP_USE_INTTYPES -D SEXP_USE_NTPGETTIME -D SEXP_USE_DL=0 -D SEXP_USE_POLL_PORT=0 \
   -D SEXP_USE_STATIC_LIBS=1 -D SEXP_USE_STATIC_LIBS_NO_INCLUDE=0 \
   -I "$chibi_root/gen-lib" -I "$chibi_source" "${chibi_inputs[@]}" -o "$chibi_output" \
   > "$SQLITE_ROOT/artifacts/regression-chibi-emission.log" 2>&1
-dotnet build "$chibi_output/Regression-Chibi.csproj" -c Release --nologo \
+"${PRODUCTION_COMMAND[@]}" dotnet build "$chibi_output/Regression-Chibi.csproj" -c Release --nologo \
   > "$SQLITE_ROOT/artifacts/regression-chibi-build.log" 2>&1
 (
   cd "$chibi_source"

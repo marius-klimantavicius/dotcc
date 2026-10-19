@@ -6,7 +6,11 @@ import json
 import os
 from pathlib import Path
 import signal
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tools_manifest
 import tempfile
 import time
 
@@ -25,13 +29,12 @@ def input_identity():
         for path in directory.rglob("*"):
             if path.is_file() and not {"bin", "obj"}.intersection(path.relative_to(directory).parts) and path.suffix in (".cs", ".csproj", ".json", ".props", ".targets"):
                 paths.add(path)
-    for directory in (ROOT / "DotCC/bin/Release/net10.0", ROOT / "DotCC.PostProcess/bin/Release/net10.0"):
-        paths.update(directory.glob("*.dll"))
     latest = BLINK / "artifacts/translation/latest.json"
     if latest.exists():
         paths.add(latest)
         paths.add(Path(json.loads(latest.read_text())["receipt"]))
-    return {str(path.relative_to(ROOT)): sha(path) for path in sorted(paths)}
+    return {**{str(path.relative_to(ROOT)): sha(path) for path in sorted(paths)},
+            **selected_tools_manifest()}
 
 
 def stop_group(process):

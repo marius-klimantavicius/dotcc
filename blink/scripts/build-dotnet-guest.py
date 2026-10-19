@@ -9,7 +9,11 @@ import selectors
 import shutil
 import signal
 import socket
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]

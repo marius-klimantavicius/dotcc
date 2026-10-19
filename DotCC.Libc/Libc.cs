@@ -691,24 +691,95 @@ public static unsafe partial class Libc
 
     // ── <signal.h> ─────────────────────────────────────────────────────
 
-    private static unsafe delegate*<int, void> _sigintHandler;
+    private sealed class SignalRegistration(delegate*<int, void> handler, RuntimeContext owner) : IDisposable
+    {
+        internal readonly delegate*<int, void> Handler = handler;
+        internal readonly RuntimeContext Owner = owner;
+        private readonly IDisposable lease = owner.RetainLease();
+        public void Dispose() => lease.Dispose();
+    }
+
+    private static readonly object signalGate = new();
+    private static SignalRegistration? sigintRegistration;
+    private static bool sigintSubscribed;
+    [ThreadStatic] private static bool deliveringSigint;
+    [ThreadStatic] private static bool pendingSigint;
 
     /// <summary><c>signal(sig, func)</c> — register a signal handler.
     /// Only SIGINT (2) is supported; uses .NET
-    /// <see cref="Console.CancelKeyPress"/>.</summary>
+    /// <see cref="Console.CancelKeyPress"/>. Dispositions are process-wide;
+    /// a handler retains its installing context until replaced or reset.</summary>
     public static unsafe delegate*<int, void> signal(
         int sig, delegate*<int, void> func)
     {
-        if (sig != 2) return null;
-        var prev = _sigintHandler;
-        if (func == null) { _sigintHandler = null; Console.CancelKeyPress -= OnSigint; }
-        else { _sigintHandler = func; Console.CancelKeyPress += OnSigint; }
-        return prev;
+        // Other signals have never had a managed signal() handler backend.
+        // Report unsupported registration instead of false SIG_DFL success.
+        if (sig != 2 || (nint)func == -1) { errno = EINVAL; return (delegate*<int, void>)(nint)(-1); }
+        SignalRegistration? next = func == null ? null : new(func, RuntimeState);
+        SignalRegistration? previous;
+        try
+        {
+            lock (signalGate)
+            {
+                if (next != null && !sigintSubscribed)
+                {
+                    Console.CancelKeyPress += OnSigint;
+                    sigintSubscribed = true;
+                }
+                else if (next == null && sigintSubscribed)
+                {
+                    Console.CancelKeyPress -= OnSigint;
+                    sigintSubscribed = false;
+                }
+                previous = sigintRegistration;
+                sigintRegistration = next;
+            }
+        }
+        catch { next?.Dispose(); throw; }
+        // In-flight delivery acquired its own Enter() binding under the gate.
+        var result = previous == null ? null : previous.Handler;
+        previous?.Dispose();
+        return result;
     }
+
+    private static bool DeliverSigint()
+    {
+        // POSIX defers the same signal while its handler runs. Coalesce a
+        // reentrant raise and observe reinstallation after the handler returns.
+        if (deliveringSigint) { pendingSigint = true; return true; }
+        deliveringSigint = true;
+        try
+        {
+            do
+            {
+                pendingSigint = false;
+                SignalRegistration? registration;
+                RuntimeBinding binding = default;
+                lock (signalGate)
+                {
+                    registration = sigintRegistration;
+                    if (registration != null && (nint)registration.Handler != 1)
+                        binding = registration.Owner.Enter();
+                }
+                if (registration == null)
+                {
+                    // The caller must apply SIG_DFL, including a deferred
+                    // signal whose handler selected default before returning.
+                    return false;
+                }
+                // Never execute a callback under the disposition gate.
+                using (binding)
+                {
+                    if ((nint)registration.Handler != 1) registration.Handler(2);
+                }
+            } while (pendingSigint);
+            return true;
+        }
+        finally { pendingSigint = false; deliveringSigint = false; }
+    }
+
     private static unsafe void OnSigint(object? sender, ConsoleCancelEventArgs e)
     {
-        if (_sigintHandler == null) return;
-        _sigintHandler(2);
-        e.Cancel = true;
+        if (DeliverSigint()) e.Cancel = true;
     }
 }

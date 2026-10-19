@@ -1,0 +1,9 @@
+#include "contract.h"
+const PublicRecord *find_record(const PublicRecord *records, unsigned short slot, signed char delta) {
+    return records && slot<=1 && delta==-7 ? records+slot : 0;
+}
+unsigned short narrow_result(unsigned short value) { return (unsigned short)((unsigned)value+65536); }
+_Bool truth_result(int value) { return value!=0; }
+intptr_t native_result(intptr_t value) { return value; }
+void touch_record(PublicRecord *record) { record->value++; }
+Lookup callback_result(Lookup callback) { return callback; }

@@ -1,0 +1,19 @@
+namespace Binding;
+public static unsafe partial class Api
+{
+    // These authored services deliberately use the runtime's erased pointer
+    // boundary; the C ABI and the public consumer keep the real record type.
+    public static void* find_record(void* records, ushort slot, sbyte delta)
+    {
+        if (records == null || slot > 1 || delta != -7) return null;
+        return (PublicRecord*)records + slot;
+    }
+    public static void* find_record(void* records, int slot, int delta)
+        => throw new System.InvalidOperationException("wrong scalar overload");
+    public static int narrow_result(ushort value) => value + 65536;
+    public static int truth_result(int value) => value == 0 ? 0 : 7;
+    public static nint native_result(long value) => (nint)value;
+    public static void touch_record(void* record) { ((PublicRecord*)record)->value++; }
+    public static delegate*<PublicRecord*, ushort, sbyte, PublicRecord*> callback_result(
+        delegate*<PublicRecord*, ushort, sbyte, PublicRecord*> callback) => callback;
+}

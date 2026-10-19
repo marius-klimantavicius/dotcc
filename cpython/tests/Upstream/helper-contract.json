@@ -1,0 +1,1004 @@
+{
+  "pin_metadata": "../../config/source.json",
+  "status": "private exact-pin static native profile built: 30 modules/94 C sources; complete Linux seed inventory frozen; seven required native blockers; translated test profile unbuilt",
+  "policy": "Every discovered ID is selected or individually excluded by source-backed product/platform/resource evidence. No missing helper exclusions. Required skips and expected failures (seven native outcomes) stay REQUIRED and fail. Static _testmultiphase/_testsinglephase satisfy imports; tests requiring dynamic loaders are individually excluded.",
+  "modules": [
+    {
+      "module": "_asyncio",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 32,
+      "setup_row": "_asyncio _asynciomodule.c",
+      "sources": [
+        "Modules/_asynciomodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_queue",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 41,
+      "setup_row": "_queue _queuemodule.c",
+      "sources": [
+        "Modules/_queuemodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_datetime",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 58,
+      "setup_row": "_datetime _datetimemodule.c",
+      "sources": [
+        "Modules/_datetimemodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "cmath",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 54,
+      "setup_row": "cmath cmathmodule.c",
+      "sources": [
+        "Modules/cmathmodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "binascii",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 67,
+      "setup_row": "binascii binascii.c -UUSE_ZLIB_CRC32",
+      "sources": [
+        "Modules/binascii.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_socket",
+      "role": "test-profile import dependency; network execution excluded from product",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 119,
+      "sources": [
+        "Modules/socketmodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt",
+      "setup_row": "_socket socketmodule.c"
+    },
+    {
+      "module": "_posixsubprocess",
+      "role": "test-profile import dependency; subprocess execution excluded from product",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 116,
+      "sources": [
+        "Modules/_posixsubprocess.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt",
+      "setup_row": "_posixsubprocess _posixsubprocess.c"
+    },
+    {
+      "module": "select",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 118,
+      "setup_row": "select selectmodule.c",
+      "sources": [
+        "Modules/selectmodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "fcntl",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 112,
+      "setup_row": "fcntl fcntlmodule.c",
+      "sources": [
+        "Modules/fcntlmodule.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "resource",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 117,
+      "setup_row": "resource resource.c",
+      "sources": [
+        "Modules/resource.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "unicodedata",
+      "role": "product language requirement: named Unicode escape parsing; also test dependency",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 106,
+      "sources": [
+        "Modules/unicodedata.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt",
+      "setup_row": "unicodedata unicodedata.c"
+    },
+    {
+      "module": "_testcapi",
+      "role": "required test helper, excluded from delivery",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 166,
+      "sources": [
+        "Modules/_testcapimodule.c",
+        "Modules/_testcapi/vectorcall.c",
+        "Modules/_testcapi/heaptype.c",
+        "Modules/_testcapi/abstract.c",
+        "Modules/_testcapi/unicode.c",
+        "Modules/_testcapi/dict.c",
+        "Modules/_testcapi/set.c",
+        "Modules/_testcapi/list.c",
+        "Modules/_testcapi/tuple.c",
+        "Modules/_testcapi/getargs.c",
+        "Modules/_testcapi/datetime.c",
+        "Modules/_testcapi/docstring.c",
+        "Modules/_testcapi/mem.c",
+        "Modules/_testcapi/watchers.c",
+        "Modules/_testcapi/long.c",
+        "Modules/_testcapi/float.c",
+        "Modules/_testcapi/complex.c",
+        "Modules/_testcapi/numbers.c",
+        "Modules/_testcapi/structmember.c",
+        "Modules/_testcapi/exceptions.c",
+        "Modules/_testcapi/code.c",
+        "Modules/_testcapi/buffer.c",
+        "Modules/_testcapi/pyatomic.c",
+        "Modules/_testcapi/run.c",
+        "Modules/_testcapi/file.c",
+        "Modules/_testcapi/codec.c",
+        "Modules/_testcapi/immortal.c",
+        "Modules/_testcapi/gc.c",
+        "Modules/_testcapi/hash.c",
+        "Modules/_testcapi/time.c",
+        "Modules/_testcapi/bytes.c",
+        "Modules/_testcapi/object.c",
+        "Modules/_testcapi/monitoring.c",
+        "Modules/_testcapi/weakref.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt",
+      "setup_row": "_testcapi _testcapimodule.c _testcapi/vectorcall.c _testcapi/heaptype.c _testcapi/abstract.c _testcapi/unicode.c _testcapi/dict.c _testcapi/set.c _testcapi/list.c _testcapi/tuple.c _testcapi/getargs.c _testcapi/datetime.c _testcapi/docstring.c _testcapi/mem.c _testcapi/watchers.c _testcapi/long.c _testcapi/float.c _testcapi/complex.c _testcapi/numbers.c _testcapi/structmember.c _testcapi/exceptions.c _testcapi/code.c _testcapi/buffer.c _testcapi/pyatomic.c _testcapi/run.c _testcapi/file.c _testcapi/codec.c _testcapi/immortal.c _testcapi/gc.c _testcapi/hash.c _testcapi/time.c _testcapi/bytes.c _testcapi/object.c _testcapi/monitoring.c _testcapi/weakref.c"
+    },
+    {
+      "module": "_testlimitedcapi",
+      "role": "required test helper, excluded from delivery",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 167,
+      "sources": [
+        "Modules/_testlimitedcapi.c",
+        "Modules/_testlimitedcapi/abstract.c",
+        "Modules/_testlimitedcapi/bytearray.c",
+        "Modules/_testlimitedcapi/bytes.c",
+        "Modules/_testlimitedcapi/capsule.c",
+        "Modules/_testlimitedcapi/complex.c",
+        "Modules/_testlimitedcapi/dict.c",
+        "Modules/_testlimitedcapi/eval.c",
+        "Modules/_testlimitedcapi/float.c",
+        "Modules/_testlimitedcapi/heaptype_relative.c",
+        "Modules/_testlimitedcapi/import.c",
+        "Modules/_testlimitedcapi/list.c",
+        "Modules/_testlimitedcapi/long.c",
+        "Modules/_testlimitedcapi/object.c",
+        "Modules/_testlimitedcapi/pyos.c",
+        "Modules/_testlimitedcapi/set.c",
+        "Modules/_testlimitedcapi/sys.c",
+        "Modules/_testlimitedcapi/tuple.c",
+        "Modules/_testlimitedcapi/unicode.c",
+        "Modules/_testlimitedcapi/vectorcall_limited.c",
+        "Modules/_testlimitedcapi/file.c",
+        "Modules/_testlimitedcapi/weakref.c",
+        "Modules/_testlimitedcapi/run.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt",
+      "setup_row": "_testlimitedcapi _testlimitedcapi.c _testlimitedcapi/abstract.c _testlimitedcapi/bytearray.c _testlimitedcapi/bytes.c _testlimitedcapi/capsule.c _testlimitedcapi/complex.c _testlimitedcapi/dict.c _testlimitedcapi/eval.c _testlimitedcapi/float.c _testlimitedcapi/heaptype_relative.c _testlimitedcapi/import.c _testlimitedcapi/list.c _testlimitedcapi/long.c _testlimitedcapi/object.c _testlimitedcapi/pyos.c _testlimitedcapi/set.c _testlimitedcapi/sys.c _testlimitedcapi/tuple.c _testlimitedcapi/unicode.c _testlimitedcapi/vectorcall_limited.c _testlimitedcapi/file.c _testlimitedcapi/weakref.c _testlimitedcapi/run.c"
+    },
+    {
+      "module": "_testinternalcapi",
+      "role": "required test helper, excluded from delivery",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 165,
+      "sources": [
+        "Modules/_testinternalcapi.c",
+        "Modules/_testinternalcapi/test_lock.c",
+        "Modules/_testinternalcapi/pytime.c",
+        "Modules/_testinternalcapi/set.c",
+        "Modules/_testinternalcapi/test_critical_sections.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt",
+      "setup_row": "_testinternalcapi _testinternalcapi.c _testinternalcapi/test_lock.c _testinternalcapi/pytime.c _testinternalcapi/set.c _testinternalcapi/test_critical_sections.c"
+    },
+    {
+      "module": "_testbuffer",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 164,
+      "setup_row": "_testbuffer _testbuffer.c",
+      "sources": [
+        "Modules/_testbuffer.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "xxsubtype",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 162,
+      "setup_row": "xxsubtype xxsubtype.c",
+      "sources": [
+        "Modules/xxsubtype.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_multibytecodec",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 105,
+      "setup_row": "_multibytecodec cjkcodecs/multibytecodec.c",
+      "sources": [
+        "Modules/cjkcodecs/multibytecodec.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_codecs_cn",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 99,
+      "setup_row": "_codecs_cn cjkcodecs/_codecs_cn.c",
+      "sources": [
+        "Modules/cjkcodecs/_codecs_cn.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_codecs_hk",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 100,
+      "setup_row": "_codecs_hk cjkcodecs/_codecs_hk.c",
+      "sources": [
+        "Modules/cjkcodecs/_codecs_hk.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_codecs_iso2022",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 101,
+      "setup_row": "_codecs_iso2022 cjkcodecs/_codecs_iso2022.c",
+      "sources": [
+        "Modules/cjkcodecs/_codecs_iso2022.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_codecs_jp",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 102,
+      "setup_row": "_codecs_jp cjkcodecs/_codecs_jp.c",
+      "sources": [
+        "Modules/cjkcodecs/_codecs_jp.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_codecs_kr",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 103,
+      "setup_row": "_codecs_kr cjkcodecs/_codecs_kr.c",
+      "sources": [
+        "Modules/cjkcodecs/_codecs_kr.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_codecs_tw",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 104,
+      "setup_row": "_codecs_tw cjkcodecs/_codecs_tw.c",
+      "sources": [
+        "Modules/cjkcodecs/_codecs_tw.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_md5",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 82,
+      "setup_row": "_md5 md5module.c -I$(srcdir)/Modules/_hacl/include _hacl/Hacl_Hash_MD5.c -D_BSD_SOURCE -D_DEFAULT_SOURCE",
+      "sources": [
+        "Modules/md5module.c",
+        "Modules/_hacl/Hacl_Hash_MD5.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_sha1",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 83,
+      "setup_row": "_sha1 sha1module.c -I$(srcdir)/Modules/_hacl/include _hacl/Hacl_Hash_SHA1.c -D_BSD_SOURCE -D_DEFAULT_SOURCE",
+      "sources": [
+        "Modules/sha1module.c",
+        "Modules/_hacl/Hacl_Hash_SHA1.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_sha3",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 85,
+      "setup_row": "_sha3 sha3module.c -I$(srcdir)/Modules/_hacl/include _hacl/Hacl_Hash_SHA3.c -D_BSD_SOURCE -D_DEFAULT_SOURCE",
+      "sources": [
+        "Modules/sha3module.c",
+        "Modules/_hacl/Hacl_Hash_SHA3.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_blake2",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 86,
+      "setup_row": "_blake2 _blake2/blake2module.c _blake2/blake2b_impl.c _blake2/blake2s_impl.c",
+      "sources": [
+        "Modules/_blake2/blake2module.c",
+        "Modules/_blake2/blake2b_impl.c",
+        "Modules/_blake2/blake2s_impl.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_testmultiphase",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 174,
+      "setup_row": "_testmultiphase _testmultiphase.c",
+      "sources": [
+        "Modules/_testmultiphase.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_testsinglephase",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 175,
+      "setup_row": "_testsinglephase _testsinglephase.c",
+      "sources": [
+        "Modules/_testsinglephase.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    },
+    {
+      "module": "_csv",
+      "role": "real static test-profile support only; excluded from shipped API/module selection",
+      "setup_path": "Modules/Setup.stdlib.in",
+      "setup_line": 35,
+      "setup_row": "_csv _csv.c",
+      "sources": [
+        "Modules/_csv.c"
+      ],
+      "status": "native static built/imported; separate translated test profile unbuilt"
+    }
+  ],
+  "mandatory_case_floor": [
+    {
+      "case": "test.test_grammar.TokenTests.test_string_literals",
+      "upstream_path": "Lib/test/test_grammar.py",
+      "line": 177,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_grammar.GrammarTests.test_funcdef",
+      "upstream_path": "Lib/test/test_grammar.py",
+      "line": 460,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_grammar.GrammarTests.test_lambdef",
+      "upstream_path": "Lib/test/test_grammar.py",
+      "line": 708,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_grammar.GrammarTests.test_classdef",
+      "upstream_path": "Lib/test/test_grammar.py",
+      "line": 1608,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_grammar.GrammarTests.test_genexps",
+      "upstream_path": "Lib/test/test_grammar.py",
+      "line": 1711,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_grammar.GrammarTests.test_try",
+      "upstream_path": "Lib/test/test_grammar.py",
+      "line": 1311,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_int.IntTestCases.test_basic",
+      "upstream_path": "Lib/test/test_int.py",
+      "line": 43,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_int.IntTestCases.test_unicode",
+      "upstream_path": "Lib/test/test_int.py",
+      "line": 241,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_float.GeneralFloatCases.test_float",
+      "upstream_path": "Lib/test/test_float.py",
+      "line": 40,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_str.StrTest.test_surrogates",
+      "upstream_path": "Lib/test/test_str.py",
+      "line": 865,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_str.StrTest.test_codecs_utf8",
+      "upstream_path": "Lib/test/test_str.py",
+      "line": 1820,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_str.StrTest.test_utf8_decode_valid_sequences",
+      "upstream_path": "Lib/test/test_str.py",
+      "line": 1857,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_str.StrTest.test_utf8_decode_invalid_sequences",
+      "upstream_path": "Lib/test/test_str.py",
+      "line": 1874,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_context.ContextTest.test_context_run_1",
+      "upstream_path": "Lib/test/test_context.py",
+      "line": 109,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_context.ContextTest.test_context_threads_1",
+      "upstream_path": "Lib/test/test_context.py",
+      "line": 356,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_context.HamtTest.test_hamt_basics_1",
+      "upstream_path": "Lib/test/test_context.py",
+      "line": 491,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_gc.GCTests.test_collect_generations",
+      "upstream_path": "Lib/test/test_gc.py",
+      "line": 395,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    },
+    {
+      "case": "test.test_gc.GCCallbackTests.test_collect",
+      "upstream_path": "Lib/test/test_gc.py",
+      "line": 1228,
+      "evidence": "source declaration only; runtime discovery/execution still required"
+    }
+  ],
+  "blocked_import_evidence": [
+    {
+      "test_module": "test.test_builtin",
+      "observed_missing_imports": [
+        "_socket"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_builtin.py",
+          "line": 4
+        },
+        {
+          "path": "Lib/asyncio/__init__.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/asyncio/base_events.py",
+          "line": 23
+        },
+        {
+          "path": "Lib/socket.py",
+          "line": 52
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_int",
+      "observed_missing_imports": [
+        "unicodedata"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_int.py",
+          "line": 54
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_float",
+      "observed_missing_imports": [
+        "unicodedata"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_float.py",
+          "line": 63
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_str",
+      "observed_missing_imports": [
+        "unicodedata"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_str.py",
+          "line": 17
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_codecs",
+      "observed_missing_imports": [
+        "_socket"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_codecs.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/unittest/mock.py",
+          "line": 27
+        },
+        {
+          "path": "Lib/asyncio/__init__.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/asyncio/base_events.py",
+          "line": 23
+        },
+        {
+          "path": "Lib/socket.py",
+          "line": 52
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_bytes",
+      "observed_missing_imports": [
+        "unicodedata"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_list",
+      "observed_missing_imports": [
+        "_posixsubprocess"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_list.py",
+          "line": 5
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_exceptions",
+      "observed_missing_imports": [
+        "_posixsubprocess"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_exceptions.py",
+          "line": 14
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_coroutines",
+      "observed_missing_imports": [
+        "_posixsubprocess"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_coroutines.py",
+          "line": 13
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_gc",
+      "observed_missing_imports": [
+        "_socket"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_gc.py",
+          "line": 2
+        },
+        {
+          "path": "Lib/unittest/mock.py",
+          "line": 27
+        },
+        {
+          "path": "Lib/asyncio/__init__.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/asyncio/base_events.py",
+          "line": 23
+        },
+        {
+          "path": "Lib/socket.py",
+          "line": 52
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_weakref",
+      "observed_missing_imports": [
+        "_posixsubprocess"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_weakref.py",
+          "line": 16
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_importlib",
+      "observed_missing_imports": [
+        "_posixsubprocess",
+        "_socket",
+        "binascii"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/unittest/loader.py",
+          "line": 403
+        },
+        {
+          "path": "Lib/unittest/loader.py",
+          "line": 346
+        },
+        {
+          "path": "Lib/test/test_importlib/metadata/test_api.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/importlib/metadata/__init__.py",
+          "line": 12
+        },
+        {
+          "path": "Lib/zipfile/__init__.py",
+          "line": 6
+        },
+        {
+          "path": "Lib/test/test_importlib/metadata/test_main.py",
+          "line": 6
+        },
+        {
+          "path": "Lib/test/test_importlib/metadata/test_zip.py",
+          "line": 5
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_compatibilty_files.py",
+          "line": 11
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/util.py",
+          "line": 11
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/zip.py",
+          "line": 5
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_contents.py",
+          "line": 4
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_custom.py",
+          "line": 10
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_files.py",
+          "line": 13
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_functional.py",
+          "line": 10
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_open.py",
+          "line": 4
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_path.py",
+          "line": 6
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_read.py",
+          "line": 5
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_reader.py",
+          "line": 6
+        },
+        {
+          "path": "Lib/importlib/readers.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/importlib/resources/readers.py",
+          "line": 10
+        },
+        {
+          "path": "Lib/test/test_importlib/resources/test_resource.py",
+          "line": 3
+        },
+        {
+          "path": "Lib/test/test_importlib/test_abc.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/unittest/mock.py",
+          "line": 27
+        },
+        {
+          "path": "Lib/asyncio/__init__.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/asyncio/base_events.py",
+          "line": 23
+        },
+        {
+          "path": "Lib/socket.py",
+          "line": 52
+        },
+        {
+          "path": "Lib/test/test_importlib/test_threaded_import.py",
+          "line": 20
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_json",
+      "observed_missing_imports": [
+        "_posixsubprocess",
+        "_socket",
+        "unicodedata"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/unittest/loader.py",
+          "line": 403
+        },
+        {
+          "path": "Lib/unittest/loader.py",
+          "line": 346
+        },
+        {
+          "path": "Lib/test/test_json/test_decode.py",
+          "line": 2
+        },
+        {
+          "path": "Lib/unittest/mock.py",
+          "line": 27
+        },
+        {
+          "path": "Lib/asyncio/__init__.py",
+          "line": 8
+        },
+        {
+          "path": "Lib/asyncio/base_events.py",
+          "line": 23
+        },
+        {
+          "path": "Lib/socket.py",
+          "line": 52
+        },
+        {
+          "path": "Lib/test/test_json/test_tool.py",
+          "line": 7
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        },
+        {
+          "path": "Lib/test/test_json/test_unicode.py",
+          "line": 11
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_io",
+      "observed_missing_imports": [
+        "_posixsubprocess"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_io.py",
+          "line": 40
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    },
+    {
+      "test_module": "test.test_threading",
+      "observed_missing_imports": [
+        "_posixsubprocess"
+      ],
+      "import_frames": [
+        {
+          "path": "Lib/importlib/__init__.py",
+          "line": 88
+        },
+        {
+          "path": "Lib/test/test_threading.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/test/support/script_helper.py",
+          "line": 9
+        },
+        {
+          "path": "Lib/subprocess.py",
+          "line": 106
+        }
+      ],
+      "evidence": "owner-b-20261017/upstream-discovery.json; historical diagnostic, not a fresh test result"
+    }
+  ],
+  "native_profile_requirement": "Owner B built the private exact-pin static native helper oracle with source/Setup/generator evidence. A must build the separate real translated test profile from these rows and the actual product core, using its reviewed 16-bit ABI and independently staged test assets. Native controls are never product backend/qualification.",
+  "profile_definition": "helper-profile.json",
+  "frozen_inventory": "inventory.frozen.json",
+  "native_source_manifest": "../../build/upstream-profile/owner-b-r3-20261017/helper-sources.json"
+}

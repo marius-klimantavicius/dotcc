@@ -18,6 +18,27 @@ namespace DotCC.Ir;
 /// </summary>
 internal sealed partial class IrBuilder
 {
+    // A typedef can supply the entire array declarator. Keep its shape for
+    // indexing/sizeof, and use the same flattened storage as explicit arrays.
+    private ArrayDecl BuildFixedLocalArray(string name, CType type, int alignment, Item? initializer)
+    {
+        var total = 1;
+        var dimensions = new List<int>();
+        var element = type.Unqualified;
+        while (element.Unqualified is CType.Array array)
+        {
+            var count = array.Count ?? throw new IrUnsupportedException("unsized local array typedef");
+            dimensions.Add(count);
+            total = checked(total * count);
+            element = array.Element;
+        }
+        var symbol = _symbols.Declare(new Symbol { Name = name, Alignment = alignment,
+            Kind = SymKind.Var, Type = type, Storage = Storage.Auto });
+        return new ArrayDecl(symbol, element,
+            new LitInt(total.ToString(System.Globalization.CultureInfo.InvariantCulture), total) { Type = CType.Int },
+            initializer is { } init ? BuildArrayElems(element, dimensions, ParseInitList(init)) : null);
+    }
+
     // ---- structured brace-initializer tree -------------------------------
     // A brace initializer parses into a small structured tree so designators and
     // nesting survive into the type-directed interpretation below. Leaf values are
@@ -31,7 +52,7 @@ internal sealed partial class IrBuilder
     // the designators until their containing array/field supplies that type.
     private sealed record InitMembers(Item Members) : Init;
     private sealed record InitMember(string Path, Item Value) : Init;
-    private sealed record InitAt(int Index, CExpr Value) : Init;
+    private sealed record InitAt(int Index, Init Value) : Init;
 
     /// <summary>Parse an <c>InitList</c> (its element list, with the optional
     /// trailing comma) into the structured init tree.</summary>
@@ -112,9 +133,9 @@ internal sealed partial class IrBuilder
         C.InitElemNest nest => new InitGroup(ParseInitList(nest.Arg1)),
         C.InitElemMembers members => Gated(1999, "designated aggregate initializers", it, new InitMembers(members.Arg1)),
         C.InitElemDesignated d => Gated(1999, "array designators", it, new InitAt(
-            ConstEval(BuildExpr(d.Arg1)) is { } ix && ix >= 0 ? (int)ix
+            ConstEval(BuildExpr(d.Arg1)) is { } ix && ix >= 0 && ix <= int.MaxValue ? (int)ix
                 : throw new IrUnsupportedException("array designator index must be a constant non-negative integer"),
-            BuildExpr(d.Arg4))),
+            ParseInitElem(d.Arg4))),
         _ => new InitVal(BuildExpr(it)),
     };
 
@@ -159,7 +180,8 @@ internal sealed partial class IrBuilder
             if (TryInlineStringInitializer(array, initializer, out var stringValues))
                 return new InlineArrayInit(array.FlatElement, stringValues) { Type = type };
             var items = initializer is InitGroup group ? group.Items
-                : throw new IrUnsupportedException("inline array member initializer requires braces");
+                : throw new IrUnsupportedException("inline array member initializer requires braces: "
+                    + type.Describe() + " from " + (initializer is InitVal leaf ? leaf.Value.GetType().Name : initializer.GetType().Name));
             var values = BuildArrayElems(array.FlatElement, dimensions, items);
             if (values.Count > dimensions.Aggregate(1, (left, right) => checked(left * right)))
                 throw new IrUnsupportedException("too many initializers for inline array member");
@@ -186,6 +208,7 @@ internal sealed partial class IrBuilder
             InitGroup { Items: [InitVal value] } => value.Value,
             _ => null,
         };
+        while (literal is Paren parenthesized) literal = parenthesized.Inner;
         if (literal is LitStr or LitU16Str or LitU32Str && array.Element.Unqualified is not CType.Array)
         {
             var name = (array.Element.Unqualified as CType.Prim)?.Name;
@@ -368,6 +391,11 @@ internal sealed partial class IrBuilder
     /// (<c>[]</c>) or non-constant.</param>
     private List<CExpr> BuildArrayElems(CType elem, IReadOnlyList<int>? dims, IReadOnlyList<Init> items)
     {
+        if (items.Any(i => i is InitAt))
+        {
+            if (dims is { Count: > 1 }) { throw new IrUnsupportedException("array designators on a multi-dimensional array"); }
+            return DesignatedArrayValues(elem, items, dims is { Count: 1 } ? dims[0] : -1);
+        }
         var elemName = (elem.Unqualified as CType.Named)?.Name;
         if (elemName is not null && _structFields.ContainsKey(elemName))
         {
@@ -405,11 +433,6 @@ internal sealed partial class IrBuilder
             }
             return outp;
         }
-        if (items.Any(i => i is InitAt))
-        {
-            if (dims is { Count: > 1 }) { throw new IrUnsupportedException("array designators on a multi-dimensional array"); }
-            return DesignatedArrayValues(elem, items, dims is { Count: 1 } ? dims[0] : -1);
-        }
         if (dims is { Count: > 0 })
         {
             // A string initializes one character-array subobject, not a scalar
@@ -426,7 +449,7 @@ internal sealed partial class IrBuilder
             : throw new IrUnsupportedException("nested brace in an implicitly-sized scalar array")).ToList();
     }
 
-    /// <summary>Build the dense, zero-filled value list for a 1-D scalar array with
+    /// <summary>Build the dense, zero-filled value list for a 1-D array with
     /// C99 array designators: a <c>[i] =</c> moves the cursor to <c>i</c>, an
     /// undesignated value fills the cursor, both advance it (a later write to the
     /// same index wins). <paramref name="declaredSize"/> is the constant size, or
@@ -439,9 +462,8 @@ internal sealed partial class IrBuilder
         {
             switch (it)
             {
-                case InitAt d: cursor = d.Index; slots[cursor] = d.Value; break;
-                case InitVal v: slots[cursor] = v.Value; break;
-                default: throw new IrUnsupportedException("nested brace mixed with array designators");
+                case InitAt d: cursor = d.Index; slots[cursor] = BuildFieldInitializer(elem, d.Value); break;
+                default: slots[cursor] = BuildFieldInitializer(elem, it); break;
             }
             if (cursor > maxIndex) { maxIndex = cursor; }
             cursor++;
@@ -449,7 +471,9 @@ internal sealed partial class IrBuilder
         var size = declaredSize >= 0 ? declaredSize : maxIndex + 1;
         if (maxIndex >= size) { throw new IrUnsupportedException($"array designator index {maxIndex} is out of bounds for [{size}]"); }
         var outp = new List<CExpr>(size);
-        for (var i = 0; i < size; i++) { outp.Add(slots.TryGetValue(i, out var v) ? v : Zero); }
+        for (var i = 0; i < size; i++) { outp.Add(slots.TryGetValue(i, out var v) ? v
+            : elem.Unqualified is CType.Named named && _structFields.ContainsKey(named.Name)
+                ? new DefaultLit { Type = elem } : Zero); }
         return outp;
     }
 
@@ -525,9 +549,12 @@ internal sealed partial class IrBuilder
     /// pointee so subscript striding and <c>sizeof</c> resolve.</summary>
     private DeclStmt BuildPtrToArr(Item typeItem, Item nameItem, Item dimsItem, Item? initItem)
     {
+        var (declarator, qualifiers) = QualifiedCallbackName(nameItem);
+        nameItem = declarator.Content is C.FnPtrScalarName name ? name.Arg0
+            : throw new IrUnsupportedException("pointer-to-array declaration requires a scalar name");
         var elem = ResolveType(typeItem);
         var dims = TryConstDims(dimsItem) ?? throw new IrUnsupportedException("pointer-to-array needs constant dimensions");
-        var type = new CType.Pointer(MakeArrayType(elem, dims));
+        var type = new CType.Pointer(MakeArrayType(elem, dims)).WithQuals(qualifiers);
         var sym = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Auto, Alignment = DeclarationAlignment(typeItem, type) });
         return new DeclStmt(new[] { new LocalDecl(sym, initItem is { } ii ? BuildExpr(ii) : null) });
     }
@@ -632,6 +659,23 @@ internal sealed partial class IrBuilder
         var name = Tok(nameItem);
         var dims = dimsItem is { } di ? TryConstDims(di) ?? throw new IrUnsupportedException("file-scope array requires a constant bound") : null;
 
+        // An object's identifier is in scope in its own initializer. In
+        // particular, intrusive static lists take addresses inside this array.
+        var provisionalType = inferOuter ? new CType.Array(MakeArrayType(elem, dims is { } innerDimensions ? innerDimensions : System.Array.Empty<int>()), null)
+            : dims is { Count: > 0 } ? MakeArrayType(elem, dims) : new CType.Array(elem, null);
+        var declaration = csName is null ? RegisterScalarGlobal(new Symbol
+        {
+            Name = name, Type = provisionalType, Kind = SymKind.Var, Storage = Storage.Static,
+            IsGlobal = true, IsThreadLocal = threadLocal, Alignment = alignment,
+        }, SrcPos.From(nameItem)) : null;
+        if (csName is null && declaration is null) return;
+        var local = csName is not null ? new Symbol
+        {
+            Name = name, Type = provisionalType, Kind = SymKind.Var, Storage = Storage.Static,
+            IsGlobal = true, IsThreadLocal = threadLocal, Alignment = alignment, TargetName = csName,
+        } : null;
+        if (local is not null) _symbols.DeclareAlias(local);
+
         CType arrType;
         CExpr init;
         if (initItem is { } ii)
@@ -654,7 +698,16 @@ internal sealed partial class IrBuilder
             throw new IrUnsupportedException($"file-scope array '{name}' needs a constant size or an initializer");
         }
 
-        AddGlobalArray(name, arrType, init, csName, alignment, threadLocal, initItem is not null, SrcPos.From(nameItem));
+        if (local is not null)
+        {
+            local.Type = arrType;
+            RegisterStaticLocal(local, init);
+        }
+        else
+        {
+            declaration!.Symbol.Type = arrType;
+            DefineRegisteredGlobal(declaration, init, initItem is not null, SrcPos.From(nameItem));
+        }
     }
 
     /// <summary>Register a global-array symbol and its <see cref="GlobalVar"/>. A

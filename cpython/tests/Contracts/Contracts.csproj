@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Bookkeeping/text checks only. No fake export adapter or interpreter. -->
+    <Compile Include="../../src/Managed.CPython/*.cs" Exclude="../../src/Managed.CPython/PythonRuntime.Translated.cs;../../src/Managed.CPython/TranslatedExports.cs" Link="Contracts/%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

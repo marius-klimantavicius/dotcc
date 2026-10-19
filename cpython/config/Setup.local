@@ -1,0 +1,82 @@
+# Selected from the same-pin Setup.stdlib.in; bootstrap remains upstream.
+*static*
+array arraymodule.c
+_bisect _bisectmodule.c
+_contextvars _contextvarsmodule.c
+_heapq _heapqmodule.c
+_json _json.c
+_opcode _opcode.c
+_pickle _pickle.c
+_random _randommodule.c
+_struct _struct.c
+math mathmodule.c
+_statistics _statisticsmodule.c
+unicodedata unicodedata.c
+_sha2 sha2module.c -I$(srcdir)/Modules/_hacl/include Modules/_hacl/libHacl_Hash_SHA2.a
+*disabled*
+_asyncio
+_csv
+_lsprof
+_queue
+_interpreters
+_interpchannels
+_interpqueues
+_zoneinfo
+cmath
+_datetime
+_decimal
+binascii
+_bz2
+_lzma
+zlib
+_dbm
+_gdbm
+readline
+_md5
+_sha1
+_sha3
+_blake2
+pyexpat
+_elementtree
+_codecs_cn
+_codecs_hk
+_codecs_iso2022
+_codecs_jp
+_codecs_kr
+_codecs_tw
+_multibytecodec
+fcntl
+grp
+mmap
+_posixsubprocess
+resource
+select
+_socket
+syslog
+termios
+_posixshmem
+_multiprocessing
+_ctypes
+_curses
+_curses_panel
+_sqlite3
+_ssl
+_hashlib
+_uuid
+_tkinter
+_scproxy
+xxsubtype
+_xxtestfuzz
+_testbuffer
+_testinternalcapi
+_testcapi
+_testlimitedcapi
+_testclinic
+_testclinic_limited
+_testimportmultiple
+_testmultiphase
+_testsinglephase
+_testexternalinspection
+_ctypes_test
+xxlimited
+xxlimited_35

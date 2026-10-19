@@ -11,6 +11,10 @@ namespace DotCC.Tests;
 [Collection("Runtime")]
 public sealed unsafe class LibcNetworkServiceTests
 {
+    [DllImport("libc", EntryPoint="getaddrinfo")]
+    private static extern int NativeGetAddrInfo(byte* name, byte* service, void* hints, void* result);
+    [DllImport("libc", EntryPoint="freeaddrinfo")]
+    private static extern void NativeFreeAddrInfo(void* result);
     [StructLayout(LayoutKind.Sequential)]
     private struct Iov { public byte* Base; public ulong Length; }
 
@@ -47,7 +51,7 @@ public sealed unsafe class LibcNetworkServiceTests
     }
 
     [Fact]
-    public void Resolver_rejects_invalid_flags_names_and_ports_without_leaving_an_output()
+    public void Resolver_rejects_invalid_flags_names_and_services_without_leaving_an_output()
     {
         byte* hints = stackalloc byte[48];
         new Span<byte>(hints, 48).Clear();
@@ -62,7 +66,7 @@ public sealed unsafe class LibcNetworkServiceTests
             getaddrinfo(node, null, hints, &result).ShouldBe(-2);
         ((nint)result).ShouldBe(0);
         fixed (byte* node = "127.0.0.1\0"u8)
-        fixed (byte* service = "65536\0"u8)
+        fixed (byte* service = "invalid!service\0"u8)
             getaddrinfo(node, service, hints, &result).ShouldBe(-8);
         ((nint)result).ShouldBe(0);
         ((nint)gai_strerror(-1)).ShouldBe((nint)gai_strerror(-1));
@@ -72,25 +76,41 @@ public sealed unsafe class LibcNetworkServiceTests
     [Fact]
     public void Localhost_dns_returns_owned_linked_results()
     {
-        byte* result = null;
+        byte* result = null, native = null;
         fixed (byte* node = "localhost\0"u8)
         fixed (byte* service = "445\0"u8)
+        {
+            NativeGetAddrInfo(node, service, null, &native).ShouldBe(0);
             getaddrinfo(node, service, null, &result).ShouldBe(0);
+        }
         try
         {
             int count = 0;
+            var expected = native;
             for (var current = result; current != null; current = *(byte**)(current + 40))
             {
                 (++count).ShouldBeLessThan(32);
+                ((nint)expected).ShouldNotBe(0);
                 var family = *(int*)(current + 4);
                 (family is 2 or 10).ShouldBeTrue();
-                (*(int*)(current + 8)).ShouldBeOneOf(1, 2);
+                // Same node/service/NULL hints: compare every flags/family/
+                // socket/protocol field and actual node order against libc.
+                for (int offset = 0; offset < 16; offset += 4)
+                    (*(int*)(current + offset)).ShouldBe(*(int*)(expected + offset));
+                uint length = *(uint*)(current + 16);
+                length.ShouldBe(*(uint*)(expected + 16));
                 var address = *(byte**)(current + 24);
+                new ReadOnlySpan<byte>(address, (int)length).SequenceEqual(
+                    new ReadOnlySpan<byte>(*(byte**)(expected + 24), (int)length)).ShouldBeTrue();
+                Marshal.PtrToStringUTF8(*(nint*)(current + 32)).ShouldBe(
+                    Marshal.PtrToStringUTF8(*(nint*)(expected + 32)));
                 IPAddress.IsLoopback(new IPAddress(new ReadOnlySpan<byte>(address + (family == 2 ? 4 : 8), family == 2 ? 4 : 16))).ShouldBeTrue();
+                expected = *(byte**)(expected + 40);
             }
+            ((nint)expected).ShouldBe(0);
             count.ShouldBeGreaterThan(0);
         }
-        finally { freeaddrinfo(result); }
+        finally { freeaddrinfo(result); NativeFreeAddrInfo(native); }
     }
 
     [Fact]

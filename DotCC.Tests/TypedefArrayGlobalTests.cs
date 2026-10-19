@@ -23,7 +23,7 @@ public sealed class TypedefArrayGlobalTests
 
     [Theory]
     [InlineData("typedef unsigned char Bytes[16]; const Bytes value = {255, 1};", "Libc.L")]
-    [InlineData("typedef int Matrix[2][3]; Matrix value = {{1, 2}, {3, 4, 5}};", "Libc.GlobalArrayFrom")]
+    [InlineData("typedef int Matrix[2][3]; Matrix value = {{1, 2}, {3, 4, 5}};", "Libc.GlobalArrayZeroed")]
     public void Brace_initializers_use_typedef_array_storage(string source, string storage)
     {
         var directory = Path.Combine(Path.GetTempPath(), "dotcc-typedef-array-" + Guid.NewGuid().ToString("N"));

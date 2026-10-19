@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../StartupQualificationR37/Qualification/Program.cs" />
+    <Reference Include="Managed.CPython"><HintPath>$(ActualInputDirectory)/Managed.CPython.dll</HintPath></Reference>
+    <Reference Include="TranslatedCPython"><HintPath>$(ActualInputDirectory)/TranslatedCPython.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

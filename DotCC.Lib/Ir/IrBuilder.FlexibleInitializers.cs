@@ -36,7 +36,8 @@ internal sealed partial class IrBuilder
         if (!IsStaticFlexibleMember(owner, field)) return false;
         var group = initializer.Content switch
         {
-            C.InitListOne or C.InitListCons or C.InitListTrail => new InitGroup(ParseInitList(initializer)),
+            C.InitListOne or C.InitListCons or C.InitListMember or C.InitListAfterMembers or C.InitListTrail
+                => new InitGroup(ParseInitList(initializer)),
             _ => throw new IrUnsupportedException("static flexible array member initializer requires braces"),
         };
         return TryBuildStaticFlexibleMember(owner, field, group, out value);

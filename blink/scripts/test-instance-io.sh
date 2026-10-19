@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 set -euo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 mkdir -p "$root/artifacts/instance-io"
 rm -f "$root/artifacts/instance-io/receipt.json"
 project="$root/tests/InstanceIo/InstanceIo.csproj"
-dotnet build "$project" -c Release > "$root/artifacts/instance-io/build.log" 2>&1
-timeout --kill-after=5s 30 dotnet "$root/tests/InstanceIo/bin/Release/net10.0/InstanceIo.dll" > "$root/artifacts/instance-io/jit.txt"
-dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true -o "$root/build/instance-io-aot" > "$root/artifacts/instance-io/aot-build.log" 2>&1
+"${PRODUCTION_COMMAND[@]}" dotnet build "$project" -c Release > "$root/artifacts/instance-io/build.log" 2>&1
+timeout --kill-after=5s 30 "${PRODUCTION_COMMAND[@]}" dotnet "$root/tests/InstanceIo/bin/Release/net10.0/InstanceIo.dll" > "$root/artifacts/instance-io/jit.txt"
+"${PRODUCTION_COMMAND[@]}" dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true -o "$root/build/instance-io-aot" > "$root/artifacts/instance-io/aot-build.log" 2>&1
 timeout --kill-after=5s 30 "$root/build/instance-io-aot/InstanceIo" > "$root/artifacts/instance-io/aot.txt"
 diff -u "$root/artifacts/instance-io/jit.txt" "$root/artifacts/instance-io/aot.txt"
 cat "$root/artifacts/instance-io/jit.txt"

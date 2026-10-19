@@ -24,6 +24,7 @@ public static unsafe partial class Libc
     /// nodes. Each node, address and optional canonical name share one allocation.</summary>
     public static int getaddrinfo(byte* node, byte* service, void* hints, void* result)
     {
+        if (HasHostResolverAbi) return GetHostAddrInfo(node, service, hints, result);
         const int passive = 1, canon = 2, numericHost = 4, mapped = 8, all = 16,
             configured = 32, numericService = 1024;
         if (result == null) return -4;
@@ -146,12 +147,18 @@ public static unsafe partial class Libc
 
     public static void freeaddrinfo(void* result)
     {
-        var current = (ResolverInfo*)result;
-        while (current != null)
+        // Validate ownership before reading Next. In particular, reject foreign
+        // context or already released nodes without dereferencing their memory.
+        lock (ownedHeapLock)
         {
-            var next = current->Next;
-            free(current);
-            current = next;
+            var current = (ResolverInfo*)result;
+            while (current != null)
+            {
+                FindOwnedHeapBlock(current, "free resolver results from", out _);
+                var next = current->Next;
+                free(current);
+                current = next;
+            }
         }
     }
 

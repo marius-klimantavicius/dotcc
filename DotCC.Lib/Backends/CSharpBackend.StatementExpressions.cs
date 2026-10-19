@@ -13,6 +13,14 @@ internal sealed partial class CSharpBackend
     private string RenderStatementExpression(StatementExpression expression)
     {
         var eager = _canHoist;
+        var outerAddresses = _globalAddressBases;
+        var outerAddressReuse = _addressReuseAllowed;
+        if (!eager)
+        {
+            // A deferred delegate cannot capture an enclosing fixed local.
+            _globalAddressBases = new(System.Collections.Generic.ReferenceEqualityComparer.Instance);
+            _addressReuseAllowed = false;
+        }
         var isVoid = expression.Type.Unqualified is CType.VoidType;
         if (!eager) ValidateStatementExpressionCapture(expression);
         // Nested statements own their pending prefixes. Preserve any prefixes
@@ -44,6 +52,8 @@ internal sealed partial class CSharpBackend
             _pending.Clear();
             _pending.AddRange(outerPending);
             _canHoist = eager;
+            _globalAddressBases = outerAddresses;
+            _addressReuseAllowed = outerAddressReuse;
         }
         if (eager)
         {

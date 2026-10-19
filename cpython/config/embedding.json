@@ -1,0 +1,20 @@
+{
+  "units": [
+    {
+      "path": "src/Host/dotcc_cpython_host.c",
+      "flags": [
+        "-I{root}/src/Host"
+      ],
+      "basis": "authored real CPython embedding API boundary; Owner B round 2 native controls and limited actual object/link probe"
+    }
+  ],
+  "export_inline": [
+    "Py_INCREF",
+    "Py_DECREF"
+  ],
+  "export_inline_provider": "src/Host/dotcc_cpython_host.c",
+  "export_enum": [
+    "PyUnicode_4BYTE_KIND"
+  ],
+  "source_policy": "ordinary product C unit; native validation is oracle only; no native product backend"
+}

@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 import tempfile
 from common import ROOT, run, sha
+from production_support import selected_tool
 from campaigns.compat import policy, provenance
 
 argparse.ArgumentParser(description=__doc__).parse_args()
@@ -71,7 +72,7 @@ try:
         shutil.copytree(product, copied, ignore=shutil.ignore_patterns('bin', 'obj'))
         before = {p.name: sha(p) for p in copied.glob('*.cs')}
         run(['dotnet', 'restore', copied / 'TranslatedLibsmb2.csproj', '--nologo'], logs / 'idempotence-restore.log', receipt)
-        post = ROOT.parent / 'DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll'
+        post = selected_tool('postprocessor')
         run(['dotnet', post, copied / 'TranslatedLibsmb2.csproj', '--in-place'], logs / 'idempotence.log', receipt)
         if before != {p.name: sha(p) for p in copied.glob('*.cs')}:
             raise RuntimeError('Postprocessor changed an already processed product')

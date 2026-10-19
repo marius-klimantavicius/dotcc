@@ -6,6 +6,8 @@ namespace DotCC.Libc;
 
 public static unsafe partial class Libc
 {
+    private static long nextManagedPipeIdentity;
+
     // Managed anonymous pipes have Linux PIPE_BUF atomicity and a bounded buffer.
     // Descriptors and endpoints belong to the current runtime, as files do.
     private sealed class ManagedPipe
@@ -14,6 +16,43 @@ public static unsafe partial class Libc
         internal readonly byte[] Bytes = new byte[65536];
         internal int Head, Count;
         internal bool ReaderOpen = true, WriterOpen = true;
+        // These identify the managed FIFO, never a host kernel inode or fd.
+        // The device value 0 below denotes no host device. The counter is shared
+        // across owners so colliding owner-local fd numbers cannot alias pipes.
+        internal readonly ulong Identity = unchecked((ulong)Interlocked.Increment(ref nextManagedPipeIdentity));
+        internal readonly uint User = geteuid(), Group = getegid();
+        internal long AccessSeconds, ModifySeconds, ChangeSeconds;
+
+        internal ManagedPipe()
+        {
+            AccessSeconds = ModifySeconds = ChangeSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        }
+    }
+
+    private static int FStatPipe(FileSlot slot, void* destination)
+    {
+        var pipe = slot.Pipe!;
+        lock (pipe.Sync)
+        {
+            // SlotByFd can race close. Snapshot the same endpoint lifetime that
+            // read/write/close use, rather than reporting a retired descriptor.
+            if ((slot.StatusFlags & 3) == 0 ? !pipe.ReaderOpen : !pipe.WriterOpen)
+                return FcntlError(EBADF);
+            var b = (byte*)destination;
+            new Span<byte>(b, 96).Clear();
+            *(ulong*)(b + 8) = pipe.Identity;
+            *(uint*)(b + StModeOff) = 0x1000 | 0x180; // S_IFIFO | 0600
+            *(ulong*)(b + 24) = 1;
+            *(uint*)(b + 32) = pipe.User;
+            *(uint*)(b + 36) = pipe.Group;
+            *(long*)(b + StAtimeOff) = pipe.AccessSeconds;
+            *(long*)(b + StMtimeOff) = pipe.ModifySeconds;
+            *(long*)(b + StCtimeOff) = pipe.ChangeSeconds;
+            // Queue bytes are not file length or allocated filesystem blocks.
+            // PIPE_BUF is the backend's preferred atomic transfer size.
+            *(long*)(b + 80) = 4096;
+            return 0;
+        }
     }
 
     public static int pipe(int* pipefd)
@@ -60,6 +99,7 @@ public static unsafe partial class Libc
             pipe.Bytes.AsSpan(0, length - first).CopyTo(output[first..]);
             pipe.Head = (pipe.Head + length) % pipe.Bytes.Length;
             pipe.Count -= length;
+            pipe.AccessSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             Monitor.PulseAll(pipe.Sync);
             return length;
         }
@@ -96,6 +136,7 @@ public static unsafe partial class Libc
                 input[first..].CopyTo(pipe.Bytes.AsSpan(0, length - first));
                 pipe.Count += length;
                 written += (ulong)length;
+                pipe.ModifySeconds = pipe.ChangeSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 Monitor.PulseAll(pipe.Sync);
                 if ((slot.StatusFlags & 0x800) != 0) return (long)written;
             }

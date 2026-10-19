@@ -5,7 +5,11 @@ import collections
 import json
 from pathlib import Path
 import re
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -20,7 +24,7 @@ objects = [root / 'generated' / args.label / (Path(r['unit']).parent.name + '-' 
            for r in scoreboard['results']]
 prefix = 'scope-library' if args.label == 'syntax' else args.label + '-library'
 destination = root / 'generated' / prefix
-command = ['dotnet', scoreboard.get('compiler', str(root.parent / 'DotCC/bin/Release/net10.0/dotcc.dll'))]
+command = ['dotnet', selected_tool(explicit=__import__('os').environ.get('DOTCC_COMPILER', scoreboard.get('compiler')))]
 command += [str(obj) for obj in objects]
 command += ['--emit=managedlib', '--class-name', 'MsQuicScopeProbe', '--split=size', '-o', str(destination)]
 records = []

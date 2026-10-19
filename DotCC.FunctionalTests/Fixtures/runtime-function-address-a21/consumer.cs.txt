@@ -1,0 +1,15 @@
+public static unsafe class Consumer
+{
+    public static int Run()
+    {
+        if (Binding.Api.verify()!=0) return 10;
+        Binding.Api.PublicRecord* records=stackalloc Binding.Api.PublicRecord[2];
+        records[0].value=31; records[1].value=47;
+        delegate*<Binding.Api.PublicRecord*,ushort,sbyte,Binding.Api.PublicRecord*> lookup=Binding.Api.first_address();
+        if (lookup!=Binding.Api.second_address()) return 11;
+        System.GC.Collect(2,System.GCCollectionMode.Forced,true,true);
+        if (lookup(records,1,-7)!=records+1 || lookup(records,1,-7)->value!=47) return 12;
+        return Binding.Api.verify();
+    }
+    public static int Main() { int result=Run(); System.Console.WriteLine("typed runtime boundary "+result); return result; }
+}

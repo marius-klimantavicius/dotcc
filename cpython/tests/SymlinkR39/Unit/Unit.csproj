@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><AssemblyName>DotCC.Tests</AssemblyName>
+    <IsTestProject>true</IsTestProject><IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <LibcProject Condition="'$(LibcProject)' == ''">../../../../DotCC.Libc/DotCC.Libc.csproj</LibcProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../DotCC.Tests/SymlinkErrnoTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/PathOwnershipTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/CollectionDefinitions.cs" />
+    <ProjectReference Include="$(LibcProject)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" /><PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" /><PackageReference Include="Shouldly" />
+  </ItemGroup>
+</Project>

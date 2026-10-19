@@ -42,7 +42,8 @@ public sealed class StaticLocalArrayTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // Hoisted to a mangled global field with distinct backing storage.
-            emitted.ShouldContain("tab__s0 = Libc.GlobalArrayFrom<byte>(new byte[]{ 0, 1, 2, 3 })");
+            emitted.ShouldContain("tab__s0 = Libc.GlobalArrayZeroed<byte>(4)");
+            emitted.ShouldContain("0x00, 0x01, 0x02, 0x03, ");
             // …and the in-function use rewrites to that field.
             emitted.ShouldContain("tab__s0[x]");
         }
@@ -63,7 +64,9 @@ public sealed class StaticLocalArrayTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // Const arrays retain their object identity.
-            emitted.ShouldContain("tab__s0 = Libc.GlobalArrayFrom<int>(new int[]{ 10, 20, 30 })");
+            emitted.ShouldContain("tab__s0 = Libc.GlobalArrayZeroed<int>(3)");
+            emitted.ShouldContain("0x0000000AU, 0x00000014U, 0x0000001EU, ");
+            emitted.ShouldContain("ReadOnlySpan<int> Values");
         }
         finally { File.Delete(src); }
     }
@@ -71,8 +74,8 @@ public sealed class StaticLocalArrayTests
     [Fact]
     public void pointer_element_static_local_array_uses_nint_reinterpret()
     {
-        // C# can't make `byte*[]` or `GlobalArrayFrom<byte*>` — store the
-        // pointers as a pinned nint[] and reinterpret the base as `byte**`.
+        // C# pointer types cannot be generic array arguments. Allocate the
+        // owned nint backing, then store relocations through a typed alias.
         var src = WriteTemp("""
             const char *name(int i) {
                 static const char *const names[] = {"a", "b"};
@@ -83,7 +86,10 @@ public sealed class StaticLocalArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("names__s0 = (byte**)Libc.GlobalArrayFrom<nint>(new nint[]{ (nint)(Libc.L(\"a\\0\"u8)), (nint)(Libc.L(\"b\\0\"u8)) })");
+            emitted.ShouldContain("names__s0 = (byte**)Libc.GlobalArrayZeroed<nint>(2)");
+            emitted.ShouldContain("names__s0_destination[0] = Libc.L(\"a\\0\"u8)");
+            emitted.ShouldContain("names__s0_destination[1] = Libc.L(\"b\\0\"u8)");
+            emitted.ShouldNotContain("AsSpan(new nint[]");
             emitted.ShouldNotContain("GlobalArrayFrom<byte*>");
             emitted.ShouldNotContain("new byte*[]");
         }
@@ -102,8 +108,10 @@ public sealed class StaticLocalArrayTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             // Mangled per declaration order → two distinct fields and backing arrays.
-            emitted.ShouldContain("t__s0 = Libc.GlobalArrayFrom<int>(new int[]{ 1, 2 })");
-            emitted.ShouldContain("t__s1 = Libc.GlobalArrayFrom<int>(new int[]{ 3, 4 })");
+            emitted.ShouldContain("t__s0 = Libc.GlobalArrayZeroed<int>(2)");
+            emitted.ShouldContain("0x00000001U, 0x00000002U, ");
+            emitted.ShouldContain("t__s1 = Libc.GlobalArrayZeroed<int>(2)");
+            emitted.ShouldContain("0x00000003U, 0x00000004U, ");
         }
         finally { File.Delete(src); }
     }
@@ -121,7 +129,7 @@ public sealed class StaticLocalArrayTests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Globals.names = (byte**)Libc.GlobalArrayFrom<nint>(new nint[]{");
+            emitted.ShouldContain("Globals.names = (byte**)Libc.GlobalArrayZeroed<nint>(3)");
             emitted.ShouldNotContain("GlobalArrayFrom<byte*>");
             emitted.ShouldNotContain("new byte*[]");
         }

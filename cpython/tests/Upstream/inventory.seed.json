@@ -1,0 +1,64 @@
+{
+  "status": "historical mandatory floor; use inventory.frozen.json for qualification",
+  "discovery_modules": [
+    "test.test_grammar",
+    "test.test_builtin",
+    "test.test_int",
+    "test.test_float",
+    "test.test_str",
+    "test.test_codecs",
+    "test.test_bytes",
+    "test.test_list",
+    "test.test_dict",
+    "test.test_tuple",
+    "test.test_set",
+    "test.test_exceptions",
+    "test.test_generators",
+    "test.test_coroutines",
+    "test.test_descr",
+    "test.test_gc",
+    "test.test_weakref",
+    "test.test_importlib",
+    "test.test_json",
+    "test.test_re",
+    "test.test_io",
+    "test.test_threading",
+    "test.test_context"
+  ],
+  "required_cases": [
+    "test.test_grammar.TokenTests.test_string_literals",
+    "test.test_grammar.GrammarTests.test_funcdef",
+    "test.test_grammar.GrammarTests.test_lambdef",
+    "test.test_grammar.GrammarTests.test_classdef",
+    "test.test_grammar.GrammarTests.test_genexps",
+    "test.test_grammar.GrammarTests.test_try",
+    "test.test_int.IntTestCases.test_basic",
+    "test.test_int.IntTestCases.test_unicode",
+    "test.test_float.GeneralFloatCases.test_float",
+    "test.test_str.StrTest.test_surrogates",
+    "test.test_str.StrTest.test_codecs_utf8",
+    "test.test_str.StrTest.test_utf8_decode_valid_sequences",
+    "test.test_str.StrTest.test_utf8_decode_invalid_sequences",
+    "test.test_context.ContextTest.test_context_run_1",
+    "test.test_context.ContextTest.test_context_threads_1",
+    "test.test_context.HamtTest.test_hamt_basics_1",
+    "test.test_gc.GCTests.test_collect_generations",
+    "test.test_gc.GCCallbackTests.test_collect"
+  ],
+  "exclusions": [],
+  "open_contracts": [
+    "This seed retains the mandatory floor only; qualification uses complete inventory.frozen.json (5134 discovered/4867 required/267 individually excluded).",
+    "A must prepare the separate translated static helper profile and test-only stdlib/data/sysconfig assets; no test helpers in delivery.",
+    "Seven required native skip/expected-failure outcomes remain blockers; no failure normalization or removed assertions."
+  ],
+  "helper_contract": "helper-contract.json",
+  "required_cases_note": "18 mandatory IDs retained in full frozen inventory; this seed is discovery input only",
+  "platform_only_module_skips": {
+    "test.test_importlib.test_windows": {
+      "missing_module": "winreg",
+      "upstream_path": "Lib/test/test_importlib/test_windows.py",
+      "reason": "Windows registry import finder tests require Windows; selected target is Linux x64"
+    }
+  },
+  "python_version": "3.13.15"
+}

@@ -1,0 +1,75 @@
+{
+  "project": "CPython",
+  "version": "3.13.15",
+  "tag": "v3.13.15",
+  "revision": "4061bc4c35f7c26f25264666d4ba083b93d2f6f9",
+  "url": "https://codeload.github.com/python/cpython/tar.gz/4061bc4c35f7c26f25264666d4ba083b93d2f6f9",
+  "archive": "cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9.tar.gz",
+  "directory": "cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9",
+  "cache_directory": "cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete",
+  "cache_reason": "Preserve the original partial acquisition; extract and strictly verify the complete declared archive selection in a separate cache, including Grammar/Tokens.",
+  "sha256": "9a00eb52da22373c03fd5d03d2730516213ab2752413ee6db56f1f4243d1f5f7",
+  "required": [
+    "LICENSE",
+    "Include/Python.h",
+    "Include/patchlevel.h",
+    "Grammar/Tokens",
+    "Makefile.pre.in",
+    "configure",
+    "Modules/Setup.bootstrap.in",
+    "Modules/Setup.stdlib.in",
+    "Programs/_freeze_module.c",
+    "Tools/build/freeze_modules.py",
+    "Lib/json/__init__.py",
+    "Modules/unicodedata.c",
+    "Modules/unicodedata_db.h",
+    "Modules/unicodename_db.h",
+    "Modules/clinic/unicodedata.c.h"
+  ],
+  "notices": [
+    "LICENSE"
+  ],
+  "archive_paths": [
+    "Include/",
+    "Parser/",
+    "Objects/",
+    "Python/",
+    "Modules/",
+    "Lib/",
+    "Programs/",
+    "Tools/",
+    "LICENSE",
+    "README.rst",
+    "Makefile.pre.in",
+    "configure",
+    "configure.ac",
+    "aclocal.m4",
+    "config.guess",
+    "config.sub",
+    "install-sh",
+    "pyconfig.h.in",
+    "Misc/python-config.in",
+    "Misc/python-config.sh.in",
+    "Misc/python-embed.pc.in",
+    "Misc/python.pc.in",
+    "Misc/platform_triplet.c",
+    "Misc/coverity_model.c",
+    "Misc/NEWS.d/next/README.rst",
+    "Grammar/"
+  ],
+  "archive_exclusions": {
+    "Misc/mypy/_colorize.py": "upstream symlink not needed for native build or selected product; framework rejects selected links",
+    "Doc/": "documentation outside product/build closure",
+    "PC/": "Windows execution not selected",
+    "PCbuild/": "Windows native execution not selected",
+    "other Misc/ and repository metadata": "not selected build/product inputs"
+  },
+  "inline_notices": [
+    {
+      "source": "Modules/_hacl/Hacl_Hash_SHA2.c",
+      "destination": "HACL-SHA2-LICENSE.txt",
+      "selection": "leading block comment, complete upstream MIT license"
+    }
+  ],
+  "notice_scope": "PSF upstream distribution license plus selected HACL SHA2 leading MIT notice; final transitive header/license audit remains required"
+}

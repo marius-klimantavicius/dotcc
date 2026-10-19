@@ -15,15 +15,46 @@ internal sealed class LiteralPool
     private const int LineWidth = 500;
     private readonly Dictionary<string, string> _records = new(StringComparer.Ordinal);
 
-    internal string Add(IEnumerable<byte> data)
+    internal string Add(IEnumerable<byte> data) => Add(data, payload: false);
+
+    // A payload is immutable assembly data, not the C object it initializes.
+    // Keep its record distinct from pointer literals and their owned lifetime.
+    internal string AddPayload(IEnumerable<byte> data) => Add(data, payload: true);
+
+    // Reuse the literal record envelope and linker deduplication. The backing
+    // type is part of its identity; views never own or merge C destinations.
+    internal const int PayloadElements = 4096;
+    internal string AddPayload(string backing, ReadOnlySpan<byte> bytes)
     {
-        var bytes = data.ToArray();
-        var name = "S" + Convert.ToHexString(SHA256.HashData(bytes));
-        var encoded = Convert.ToBase64String(bytes);
+        int width = PayloadWidth(backing);
+        if (bytes.Length == 0 || bytes.Length % width != 0 || bytes.Length / width > PayloadElements)
+            throw new CompileException("primitive literal payload exceeds its element boundary");
+        if (backing == "byte") return AddPayload(bytes.ToArray());
+        string name = "P" + backing + "_" + Convert.ToHexString(SHA256.HashData(bytes));
+        _records[TypeKeyPrefix + name] = Record(bytes);
+        return "DotCcLiterals." + name;
+    }
+
+    private static int PayloadWidth(string backing) => backing switch
+    {
+        "byte" => 1, "ushort" => 2, "uint" => 4, "ulong" => 8,
+        _ => throw new CompileException("unsupported primitive literal backing")
+    };
+
+    private static string Record(ReadOnlySpan<byte> bytes)
+    {
+        string encoded = Convert.ToBase64String(bytes);
         var record = new StringBuilder();
         for (int i = 0; i < encoded.Length; i += 480)
             record.Append(RecordPrefix).Append(encoded.AsSpan(i, Math.Min(480, encoded.Length - i))).Append('\n');
-        _records[TypeKeyPrefix + name] = record.ToString();
+        return record.ToString();
+    }
+
+    private string Add(IEnumerable<byte> data, bool payload)
+    {
+        var bytes = data.ToArray();
+        var name = (payload ? "B" : "S") + Convert.ToHexString(SHA256.HashData(bytes));
+        _records[TypeKeyPrefix + name] = Record(bytes);
         return $"DotCcLiterals.{name}";
     }
 
@@ -72,20 +103,62 @@ internal sealed class LiteralPool
         var offsets = new StringBuilder();
         var binaryOffsets = new List<(string Name, int Offset)>();
         var strictUtf8 = new UTF8Encoding(false, true);
+        var payloads = new StringBuilder();
         foreach (var (key, record) in declarations.OrderBy(p => p.Key, StringComparer.Ordinal))
         {
             if (!key.StartsWith(TypeKeyPrefix, StringComparison.Ordinal)) continue;
             var name = key[TypeKeyPrefix.Length..];
             byte[] bytes;
+            string backing = "byte";
             try
             {
                 var lines = record.Split('\n', StringSplitOptions.RemoveEmptyEntries);
                 if (lines.Any(line => !line.StartsWith(RecordPrefix, StringComparison.Ordinal)))
                     throw new FormatException();
                 bytes = Convert.FromBase64String(string.Concat(lines.Select(line => line[RecordPrefix.Length..])));
-                if (name != "S" + Convert.ToHexString(SHA256.HashData(bytes))) throw new FormatException();
+                string hash;
+                if (name.StartsWith('P'))
+                {
+                    int separator = name.IndexOf('_');
+                    if (separator < 0) throw new FormatException();
+                    backing = name[1..separator];
+                    if (backing is not ("ushort" or "uint" or "ulong")) throw new FormatException();
+                    int width = PayloadWidth(backing);
+                    if (bytes.Length == 0 || bytes.Length % width != 0 || bytes.Length / width > PayloadElements)
+                        throw new FormatException();
+                    hash = name[(separator + 1)..];
+                }
+                else
+                {
+                    if (name.Length == 0 || name[0] is not ('S' or 'B')) throw new FormatException();
+                    hash = name[1..];
+                }
+                if (hash != Convert.ToHexString(SHA256.HashData(bytes))) throw new FormatException();
             }
             catch (FormatException) { throw new CompileException("invalid literal object record; regenerate objects"); }
+            if (name[0] is 'B' or 'P')
+            {
+                // C# lowers this constant collection expression to RVA data.
+                // Never substitute a cached/new byte[]: callers only borrow the
+                // span while copying into each C declaration's own storage.
+                replacements.Add(name, "DotCcLiterals." + name);
+                payloads.Append("        internal static global::System.ReadOnlySpan<").Append(backing).Append("> ").Append(name).Append(" => [\n            ");
+                int column = 12;
+                int width = PayloadWidth(backing);
+                for (int offset = 0; offset < bytes.Length; offset += width)
+                {
+                    // The target ABI is little-endian. Assemble explicitly,
+                    // independently of the compiler host's byte order.
+                    ulong bits = 0;
+                    for (int b = 0; b < width; b++) bits |= (ulong)bytes[offset + b] << (b * 8);
+                    string value = "0x" + bits.ToString("X" + (width * 2))
+                        + (width == 8 ? "UL" : width == 4 ? "U" : "") + ", ";
+                    if (column + value.Length > LineWidth) { payloads.Append("\n            "); column = 12; }
+                    payloads.Append(value); column += value.Length;
+                }
+                payloads.Append("\n        ];\n");
+                continue;
+            }
             if (!enabled)
             {
                 replacements.Add(name, LegacyLiteral(bytes));
@@ -107,10 +180,13 @@ internal sealed class LiteralPool
                 binary.AddRange(bytes);
             }
         }
-        if (offsets.Length == 0 && binaryOffsets.Count == 0) return new Output("", replacements);
+        if (offsets.Length == 0 && binaryOffsets.Count == 0)
+            return new Output(payloads.Length == 0 ? ""
+                : "internal static class " + className + "\n{\n" + payloads + "}\n", replacements);
         foreach (var (name, offset) in binaryOffsets) AppendOffset(offsets, name, checked(utf8.Count + offset));
         int length = checked(utf8.Count + binary.Count);
         var sb = new StringBuilder("internal static unsafe class ").Append(className).Append("\n{\n");
+        sb.Append(payloads);
         sb.Append("        private static readonly byte[] Storage;\n        internal static readonly byte* Pointer;\n");
         sb.Append(offsets);
         sb.Append("        static ").Append(className).Append("()\n        {\n");

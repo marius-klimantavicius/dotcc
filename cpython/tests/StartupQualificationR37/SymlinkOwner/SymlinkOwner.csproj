@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <StartupObject>OwnerEntry</StartupObject>
+    <NativeSymlinkSource Condition="'$(NativeSymlinkSource)' == ''">missing-explicit-emitted-source.cs</NativeSymlinkSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(NativeSymlinkSource)" Link="UnchangedEmittedSymlink.cs" />
+  </ItemGroup>
+</Project>

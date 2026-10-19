@@ -30,8 +30,8 @@ namespace DotCC;
 /// Typedef names are visible through their containing braced scope. Names
 /// introduced locally are removed when that scope closes, while shadowing an
 /// existing typedef keeps its lexical classification (the binder restores its
-/// underlying type). Ordinary-variable shadowing of a visible typedef remains
-/// a separate declaration-context problem.
+/// underlying type). Ordinary-variable shadows are restored at block, parameter
+/// and for-statement boundaries.
 /// <para>
 /// All the iterator plumbing (ready queue, look-ahead buffer, exhaustion
 /// flag) lives in <see cref="RewritingTokenStream"/>; this class is pure
@@ -40,8 +40,9 @@ namespace DotCC;
 /// <see cref="PreprocessorTokenStream"/> uses for macro expansion.
 /// </para>
 /// </remarks>
-internal sealed class TypeNameRewriter : RewritingTokenStream
+internal sealed partial class TypeNameRewriter : RewritingTokenStream
 {
+    private readonly DeclarationLookahead _lookahead;
     private readonly int _idSymbol;
     private readonly int _typeNameSymbol;
     private readonly int _typedefSymbol;
@@ -68,11 +69,12 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private readonly Stack<bool> _aggregateScopes = new();
     // Parameter names may hide typedefs in the parameter list and function
     // body, but must not leak out of a prototype or function definition.
-    private sealed class ParenthesisScope(bool declaratorGroup, int blockDepth, bool completesType)
+    private sealed class ParenthesisScope(bool declaratorGroup, int blockDepth, bool completesType, bool forHeader)
     {
         public bool DeclaratorGroup { get; } = declaratorGroup;
         public int BlockDepth { get; } = blockDepth;
         public bool CompletesType { get; } = completesType;
+        public bool ForHeader { get; } = forHeader;
         public HashSet<string> Shadows { get; } = new(StringComparer.Ordinal);
     }
     private readonly Stack<ParenthesisScope> _parenthesisScopes = new();
@@ -101,8 +103,12 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     /// </summary>
     public TypeNameRewriter(
         ISyncIterator<Item> inner,
-        IEnumerable<string>? seedTypeNames = null) : base(inner)
+        IEnumerable<string>? seedTypeNames = null) : this(new DeclarationLookahead(inner), seedTypeNames) { }
+
+    private TypeNameRewriter(DeclarationLookahead inner, IEnumerable<string>? seedTypeNames) : base(inner)
     {
+        _lookahead = inner;
+        _declarations.Push(new DeclarationContext());
         // Resolve symbol ids by name from the generated grammar's definition.
         // Done once at construction so per-token dispatch stays O(1).
         var map = new Dictionary<string, int>(StringComparer.Ordinal);
@@ -126,6 +132,9 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _enumSymbol = map["enum"];
         _dotSymbol = map["."];
         _arrowSymbol = map["->"];
+        _commaSymbol = map[","];
+        _equalsSymbol = map["="];
+        _forSymbol = map["for"];
         _pointerQualifiers = new HashSet<int> { _starSymbol, map["const"], map["volatile"], map["restrict"] };
         _parenthesizedTypeOperators = new HashSet<int> { map["_Atomic"], map["typeof"] };
         _typeSpecifiers = new HashSet<int>();
@@ -146,6 +155,10 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
 
     protected override void ProcessToken(Item token)
     {
+        RestoreCompletedForScopes();
+        if (token.ID == _forSymbol)
+            _forScopes.Push(new ForScope(_lookahead.StatementEnd(), _aggregateScopes.Count));
+        var declarationComma = AdvanceDeclarationContext(token);
         var closesAggregate = token.ID == _closeBraceSymbol && _aggregateScopes.Count > 0 && _aggregateScopes.Peek();
         if (token.ID == _openBraceSymbol)
         {
@@ -173,7 +186,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         if (token.ID == _openParenSymbol)
         {
             var completesType = _parenthesizedTypeOperators.Contains(_previousSymbol);
-            _parenthesisScopes.Push(new ParenthesisScope(_afterDeclarationType || completesType, _aggregateScopes.Count, completesType));
+            _parenthesisScopes.Push(new ParenthesisScope(_afterDeclarationType || completesType, _aggregateScopes.Count, completesType, _previousSymbol == _forSymbol));
         }
         else if (token.ID == _closeParenSymbol && _parenthesisScopes.Count > 0)
         {
@@ -212,6 +225,7 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             Emit(SourceFileOrigin.Rewrite(token, _typeNameSymbol, name));
             _previousSymbol = _typeNameSymbol;
             _afterDeclarationType = true;
+            _declarations.Peek().Active = true;
             return;
         }
 
@@ -223,8 +237,9 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             _typeNames.Remove(localName);
             shadows.Add(localName);
         }
-        _afterDeclarationType = closesAggregate || closesParenthesizedType
+        _afterDeclarationType = declarationComma || closesAggregate || closesParenthesizedType
             || IsAfterDeclarationType(token, afterTag, _afterDeclarationType);
+        if (_afterDeclarationType) _declarations.Peek().Active = true;
 
         if (token.ID == _typedefSymbol)
         {
@@ -242,8 +257,10 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     private HashSet<string>? DeclarationShadowScope()
     {
         foreach (var scope in _parenthesisScopes)
-            if (!scope.DeclaratorGroup && scope.BlockDepth == _aggregateScopes.Count)
+            if (!scope.DeclaratorGroup && !scope.ForHeader && scope.BlockDepth == _aggregateScopes.Count)
                 return scope.Shadows;
+        if (_forScopes.TryPeek(out var loop) && loop.BlockDepth == _aggregateScopes.Count)
+            return loop.Shadows;
         return _aggregateScopes.Count > 0 && !_aggregateScopes.Peek()
             ? _scopeShadowedTypeNames.Peek() : null;
     }
@@ -280,22 +297,17 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             }
         }
 
-        // Identify the alias position: the `( * ID )` group of a fn-ptr
-        // typedef, else the last ID token at brace/paren-depth zero before
-        // the terminating semicolon. ONE discovery for both registration and
+        // Identify each declarator's alias: the `( * ID )` group of a fn-ptr
+        // typedef, else its last ID at delimiter-depth zero. Split only at
+        // declaration commas, retaining bounds/parameter/member commas. One
+        // discovery for both registration and
         // emission — they used to disagree: registration knew the fn-ptr
         // pattern but emission took "last ID in the body", which for
         // `typedef sexp (*sexp_proc1)(sexp, sexp, sexp_sint_t);` is the
         // PARAM `sexp_sint_t`, wrongly exempting it from TYPE_NAME promotion
         // (chibi-scheme's procedure typedefs; Lua's fn-ptr typedef params are
         // keyword types, which is why it never surfaced there).
-        var aliasIndex = FindAliasIndex(body);
-        var aliasName = aliasIndex >= 0 ? body[aliasIndex].Content as string : null;
-        if (aliasName is not null)
-        {
-            if (_typeNames.Add(aliasName) && _scopeTypeNames.Count > 0)
-                _scopeTypeNames.Peek().Add(aliasName);
-        }
+        var aliasIndices = FindAliasIndices(body);
 
         // Emit the typedef token + body so the parser sees the full sequence.
         // Body IDs that already match a known typedef-name get promoted to
@@ -305,6 +317,8 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         Emit(typedefToken);
         _previousSymbol = typedefToken.ID;
         var afterDeclarationType = false;
+        var declarationContexts = new Stack<DeclarationContext>();
+        declarationContexts.Push(new DeclarationContext());
         var parenthesizedTypes = new Stack<bool>();
         var aggregateScopes = new Stack<bool>();
         var aggregateHead = false;
@@ -326,29 +340,36 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
             var afterTag = i > 0 && (body[i - 1].ID == _structSymbol
                 || body[i - 1].ID == _unionSymbol
                 || body[i - 1].ID == _enumSymbol);
+            var declarationComma = AdvanceDeclarationContext(t, declarationContexts, afterDeclarationType, afterTag);
             aggregateHead = t.ID == _structSymbol || t.ID == _unionSymbol || t.ID == _enumSymbol
                 || (afterTag && t.ID == _idSymbol);
-            if (i != aliasIndex
+            if (!aliasIndices.Contains(i)
                 && t.ID == _idSymbol
                 && !afterTag
                 && !afterDeclarationType
                 && _previousSymbol != _dotSymbol
                 && _previousSymbol != _arrowSymbol
                 && t.Content is string s
-                && _typeNames.Contains(s)
-                && s != aliasName)
+                && _typeNames.Contains(s))
             {
                 Emit(SourceFileOrigin.Rewrite(t, _typeNameSymbol, s));
                 _previousSymbol = _typeNameSymbol;
                 afterDeclarationType = true;
+                declarationContexts.Peek().Active = true;
             }
             else
             {
                 Emit(t);
                 _previousSymbol = t.ID;
-                afterDeclarationType = closesAggregate || closesParenthesizedType
+                afterDeclarationType = declarationComma || closesAggregate || closesParenthesizedType
                     || IsAfterDeclarationType(t, afterTag, afterDeclarationType);
+                if (afterDeclarationType) declarationContexts.Peek().Active = true;
             }
+            // An alias becomes visible at its declarator, including in the
+            // bounds of later aliases in this same declaration.
+            if (aliasIndices.Contains(i) && t.Content is string aliasName
+                && _typeNames.Add(aliasName) && _scopeTypeNames.Count > 0)
+                _scopeTypeNames.Peek().Add(aliasName);
         }
 
         // The typedef body was consumed wholesale (it ended at `;`), so the next
@@ -356,6 +377,25 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
         _afterTagKeyword = false;
         _afterDeclarationType = false;
         _aggregateHead = false;
+        _declarations.Peek().Active = false;
+    }
+
+    private HashSet<int> FindAliasIndices(List<Item> body)
+    {
+        var aliases = new HashSet<int>();
+        var depth = 0;
+        var start = 0;
+        for (var i = 0; i < body.Count; i++)
+        {
+            var id = body[i].ID;
+            if (id == _openBraceSymbol || id == _openParenSymbol || id == _openBracketSymbol) depth++;
+            else if (id == _closeBraceSymbol || id == _closeParenSymbol || id == _closeBracketSymbol) depth--;
+            if (depth != 0 || (id != _commaSymbol && id != _semiSymbol)) continue;
+            var alias = FindAliasIndex(body.GetRange(start, i - start));
+            if (alias >= 0) aliases.Add(start + alias);
+            start = i + 1;
+        }
+        return aliases;
     }
 
     private int FindAliasIndex(List<Item> body)
@@ -411,6 +451,9 @@ internal sealed class TypeNameRewriter : RewritingTokenStream
     {
         // Restore to the seed-only state so predefined libc-class type
         // names survive across reuse but per-TU typedef'd aliases don't.
+        _declarations.Clear();
+        _declarations.Push(new DeclarationContext());
+        _forScopes.Clear();
         _typeNames.Clear();
         _scopeTypeNames.Clear();
         _scopeShadowedTypeNames.Clear();

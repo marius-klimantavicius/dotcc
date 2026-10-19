@@ -26,7 +26,9 @@
    is a UTF-8<->UTF-16 conversion against the same byte streams <stdio.h> uses, and
    the wide printf/scanf formats are transcoded to UTF-8 to reuse the byte engine.
 
-   NOT provided (out of scope): the explicit multibyte<->wide conversion model
+   stdlib.h supplies stateless mbstowcs/wcstombs with explicit ASCII (C/POSIX)
+   and strict UTF-8 (C.UTF-8) locale selection, converting to unsigned UTF-16.
+   NOT provided (out of scope): the stateful multibyte<->wide conversion model
    (mbrtowc / wcrtomb / mbsrtowcs / mbstate_t and the <uchar.h> mbrtoc16/c16rtomb
    family) — dotcc has no locale/multibyte machinery beyond the implicit UTF-8<->UTF-16
    bridge. char32_t stays out too (see <uchar.h>). */

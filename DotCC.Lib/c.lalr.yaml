@@ -483,13 +483,28 @@ symbols:
   - GnuFormatAttr       # 197 format annotation (no ABI effect)
   - BitFieldList        # 198 comma-separated named/anonymous bit-fields
   - BitFieldItem        # 199 one bit-field declarator
+  - TranslationUnitBody # 200 optional external-declaration sequence
+  - TypedefNameList
+  - TypedefName
+  - TypedefNameTail
+  - GroupedObjectDeclarator
+  - StringArrayInitializer
+  - U16StringArrayInitializer
+  - WStringArrayInitializer
+  - U32StringArrayInitializer
+  - U8StringArrayInitializer
 
 productions:
-  # Start production. Single-non-terminal — trimmed at parse time so the root
-  # Item carries FnList's already-built C# source string.
+  # The parser's augmented start has one production. Put the empty-unit
+  # alternative in its body so an empty preprocessing result still reduces.
   - derivation: none
     rules:
-      - { lhs: TU, rhs: [FnList] }
+      - { lhs: TU, rhs: [TranslationUnitBody] }
+
+  - derivation: none
+    rules:
+      - { lhs: TranslationUnitBody, rhs: [FnList] }
+      - { lhs: TranslationUnitBody, rhs: [], action: emptyTranslationUnit }
 
   - derivation: leftmost
     rules:
@@ -590,7 +605,7 @@ productions:
       # a single C# identifier (e.g. struct tag), otherwise emits nothing —
       # C# already infers usage from the underlying type and the lexer hack
       # has done its job at parse time.
-      - { lhs: Fn, rhs: ['typedef', Type, ID, ';'], action: typedefAlias }
+      - { lhs: Fn, rhs: ['typedef', Type, TypedefNameList, ';'], action: typedefAlias }
       - { lhs: Fn, rhs: ['typedef', Type, ID, GnuFormatAttr, ';'], action: typedefAttributedAlias }
       # `typedef T Name[N];` — a typedef of an ARRAY type (C89). The alias
       # denotes `T[N]`: a variable of the alias type declares an array, a
@@ -600,36 +615,35 @@ productions:
       # ArrDims (not a single `[E]`) so multi-dim aliases compose like array
       # declarations. chibi-scheme: `typedef char sexp_abi_identifier_t[8];`.
       # Conflict-free with typedefAlias: `[` vs `;` after the ID.
-      - { lhs: Fn, rhs: ['typedef', Type, ID, ArrDims, ';'], action: typedefArr }
       # `typedef struct ID { MemberList } ID ;` — struct definition + alias
       # in one go (the common C idiom). The trailing ID may differ from the
       # tag — the visitor emits the C# struct under the alias name (since C#
       # has no separate tag namespace) plus an empty alias for the tag form
       # when they differ.
-      - { lhs: Fn, rhs: ['typedef', 'struct', ID, '{', MemberList, '}', ID, ';'], action: typedefStruct }
-      - { lhs: Fn, rhs: ['typedef', 'struct', GnuFormatAttr, ID, '{', MemberList, '}', ID, ';'], action: typedefAttributedStruct }
-      - { lhs: Fn, rhs: ['typedef', 'union', GnuFormatAttr, ID, '{', MemberList, '}', ID, ';'], action: typedefAttributedUnion }
+      - { lhs: Fn, rhs: ['typedef', 'struct', ID, '{', MemberList, '}', TypedefNameList, ';'], action: typedefStruct }
+      - { lhs: Fn, rhs: ['typedef', 'struct', GnuFormatAttr, ID, '{', MemberList, '}', TypedefNameList, ';'], action: typedefAttributedStruct }
+      - { lhs: Fn, rhs: ['typedef', 'union', GnuFormatAttr, ID, '{', MemberList, '}', TypedefNameList, ';'], action: typedefAttributedUnion }
       - { lhs: Fn, rhs: ['struct', GnuFormatAttr, ID, '{', MemberList, '}', ';'], action: attributedStruct }
       - { lhs: Fn, rhs: ['union', GnuFormatAttr, ID, '{', MemberList, '}', ';'], action: attributedUnion }
       # `typedef struct { MemberList } ID ;` — ANONYMOUS (tagless) struct + alias,
       # the most common typedef-struct idiom in real C. Conflict-free with the
       # tagged form above: after `typedef struct`, an ID lookahead → tagged, a `{`
       # lookahead → tagless. Same emit as typedefStruct, minus the tag binding.
-      - { lhs: Fn, rhs: ['typedef', 'struct', '{', MemberList, '}', ID, ';'], action: typedefStructAnon }
+      - { lhs: Fn, rhs: ['typedef', 'struct', '{', MemberList, '}', TypedefNameList, ';'], action: typedefStructAnon }
       # `typedef union ID { MemberList } ID ;` and `typedef union { MemberList } ID ;`
       # — the union counterparts of the two struct forms above (Lua's core value
       # representation: `typedef union Value { … } Value;` in lobject.h). Same
       # tagged-vs-anonymous `ID` / `{` lookahead split. The emitted C# is a
       # [StructLayout(Explicit)] + [FieldOffset(0)] struct (overlapping storage =
       # C union), exactly like a plain `union ID { … };` def (unionDef).
-      - { lhs: Fn, rhs: ['typedef', 'union', ID, '{', MemberList, '}', ID, ';'], action: typedefUnion }
-      - { lhs: Fn, rhs: ['typedef', 'union', '{', MemberList, '}', ID, ';'], action: typedefUnionAnon }
+      - { lhs: Fn, rhs: ['typedef', 'union', ID, '{', MemberList, '}', TypedefNameList, ';'], action: typedefUnion }
+      - { lhs: Fn, rhs: ['typedef', 'union', '{', MemberList, '}', TypedefNameList, ';'], action: typedefUnionAnon }
       # `typedef enum Tag { EnumList } Alias ;` and `typedef enum { EnumList }
       # Alias ;` — the enum counterparts (Lua's `typedef enum { TM_INDEX, … }
       # TMS;` in ltm.h). Same tagged-vs-anonymous `ID` / `{` lookahead split as
       # the struct/union forms. Lowers to a real C# `enum Alias : int { … }`.
-      - { lhs: Fn, rhs: ['typedef', 'enum', ID, '{', EnumList, '}', ID, ';'], action: typedefEnum }
-      - { lhs: Fn, rhs: ['typedef', 'enum', '{', EnumList, '}', ID, ';'], action: typedefEnumAnon }
+      - { lhs: Fn, rhs: ['typedef', 'enum', ID, '{', EnumList, '}', TypedefNameList, ';'], action: typedefEnum }
+      - { lhs: Fn, rhs: ['typedef', 'enum', '{', EnumList, '}', TypedefNameList, ';'], action: typedefEnumAnon }
       # Function-pointer typedef: `typedef Ret (*Name)(args);`. Lowers to
       # C# `using unsafe Name = delegate*<args..., Ret>;`. The standalone
       # form `int (*fn)(int);` is famously hard to LALR-parse due to the
@@ -684,20 +698,20 @@ productions:
       - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: globalArrInit }
       - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: globalArrInitImplicit }
       - { lhs: Fn, rhs: [Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}', ';'], action: globalArrInitOuterImplicit }
-      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', StringSeq, ';'],           action: globalCharArrStrSized }
-      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', StringSeq, ';'],          action: globalCharArrStr }
+      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', StringArrayInitializer, ';'],           action: globalCharArrStrSized }
+      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', StringArrayInitializer, ';'],          action: globalCharArrStr }
       # char16_t file-scope array from a u"…" literal (→ pinned char[] / GlobalArrayFrom).
-      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', U16StringSeq, ';'],        action: globalU16CharArrStrSized }
-      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', U16StringSeq, ';'],       action: globalU16CharArrStr }
+      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', U16StringArrayInitializer, ';'],        action: globalU16CharArrStrSized }
+      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', U16StringArrayInitializer, ';'],       action: globalU16CharArrStr }
       # wchar_t file-scope array from an L"…" literal (same shapes, 16-bit decode).
-      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', WStringSeq, ';'],          action: globalWCharArrStrSized }
-      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', WStringSeq, ';'],         action: globalWCharArrStr }
+      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', WStringArrayInitializer, ';'],          action: globalWCharArrStrSized }
+      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', WStringArrayInitializer, ';'],         action: globalWCharArrStr }
       # char32_t file-scope array from a U"…" literal (same shapes, 32-bit decode).
-      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', U32StringSeq, ';'],        action: globalU32CharArrStrSized }
-      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', U32StringSeq, ';'],       action: globalU32CharArrStr }
+      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', U32StringArrayInitializer, ';'],        action: globalU32CharArrStrSized }
+      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', U32StringArrayInitializer, ';'],       action: globalU32CharArrStr }
       # char8_t file-scope array from a u8"…" literal (same shapes, UTF-8 byte decode).
-      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', U8StringSeq, ';'],         action: globalU8CharArrStrSized }
-      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', U8StringSeq, ';'],        action: globalU8CharArrStr }
+      - { lhs: Fn, rhs: [Type, ID, ArrDims, '=', U8StringArrayInitializer, ';'],         action: globalU8CharArrStrSized }
+      - { lhs: Fn, rhs: [Type, ID, '[', ']', '=', U8StringArrayInitializer, ';'],        action: globalU8CharArrStr }
       # `static` file-scope arrays — internal linkage is a no-op (never exported),
       # so each lowers identically to its plain counterpart; `static` is consumed.
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, ';'],                           action: globalStaticArr }
@@ -707,16 +721,16 @@ productions:
       - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: globalStaticArrInit }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: globalStaticArrInitImplicit }
       - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}', ';'], action: globalStaticArrInitOuterImplicit }
-      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', StringSeq, ';'],           action: globalStaticCharArrStrSized }
-      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', StringSeq, ';'],          action: globalStaticCharArrStr }
-      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U16StringSeq, ';'],         action: globalStaticU16CharArrStrSized }
-      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U16StringSeq, ';'],        action: globalStaticU16CharArrStr }
-      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', WStringSeq, ';'],           action: globalStaticWCharArrStrSized }
-      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', WStringSeq, ';'],          action: globalStaticWCharArrStr }
-      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U32StringSeq, ';'],         action: globalStaticU32CharArrStrSized }
-      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U32StringSeq, ';'],        action: globalStaticU32CharArrStr }
-      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U8StringSeq, ';'],          action: globalStaticU8CharArrStrSized }
-      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U8StringSeq, ';'],         action: globalStaticU8CharArrStr }
+      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', StringArrayInitializer, ';'],           action: globalStaticCharArrStrSized }
+      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', StringArrayInitializer, ';'],          action: globalStaticCharArrStr }
+      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U16StringArrayInitializer, ';'],         action: globalStaticU16CharArrStrSized }
+      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U16StringArrayInitializer, ';'],        action: globalStaticU16CharArrStr }
+      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', WStringArrayInitializer, ';'],           action: globalStaticWCharArrStrSized }
+      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', WStringArrayInitializer, ';'],          action: globalStaticWCharArrStr }
+      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U32StringArrayInitializer, ';'],         action: globalStaticU32CharArrStrSized }
+      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U32StringArrayInitializer, ';'],        action: globalStaticU32CharArrStr }
+      - { lhs: Fn, rhs: ['static', Type, ID, ArrDims, '=', U8StringArrayInitializer, ';'],          action: globalStaticU8CharArrStrSized }
+      - { lhs: Fn, rhs: ['static', Type, ID, '[', ']', '=', U8StringArrayInitializer, ';'],         action: globalStaticU8CharArrStr }
       # Direct callback arrays retain the same pinned global-array storage as
       # typedef-spelled callback arrays, including const pointer elements.
       - { lhs: Fn, rhs: [FnPtrArrayDeclarator, '=', E, ';'], action: globalFnPtrScalarInit }
@@ -766,6 +780,9 @@ productions:
 
   - derivation: none
     rules:
+      # The register storage hint is valid on parameters as well as locals.
+      # Keep it in parameter grammar so it does not become a general type qualifier.
+      - { lhs: Param, rhs: ['register', Param], action: paramRegister }
       - { lhs: Param, rhs: [Type, ID], action: param }
       - { lhs: Param, rhs: [Param, GnuFormatAttr], action: paramGnuAttributes }
       # Unnamed (abstract) parameter — `int f(int, char*)`, and the params of a
@@ -1076,7 +1093,7 @@ productions:
       # for-init/update positions cover the dominant use case.
       - { lhs: CommaExprList, rhs: [E],                        action: commaExprOne }
       - { lhs: CommaExprList, rhs: [CommaExprList, ',', E],    action: commaExprCons }
-      - { lhs: Stmt, rhs: ['return', E, ';'],            action: stmtReturn }
+      - { lhs: Stmt, rhs: ['return', Expr, ';'],          action: stmtReturn }
       - { lhs: Stmt, rhs: ['return', ';'],                action: stmtReturnVoid }
       # `break;` / `continue;` — bare keyword + semicolon. Grammar accepts
       # them anywhere a Stmt is valid; semantic validity (must be inside a
@@ -1113,16 +1130,16 @@ productions:
       - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', '{', InitList, '}', ';'],  action: stmtStaticArrInit }
       - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', '{', InitList, '}', ';'], action: stmtStaticArrInitImplicit }
       - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', ArrDims, '=', '{', InitList, '}', ';'], action: stmtStaticArrInitOuterImplicit }
-      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', StringSeq, ';'],           action: stmtStaticCharArrStrSized }
-      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', StringSeq, ';'],          action: stmtStaticCharArrStr }
-      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U16StringSeq, ';'],         action: stmtStaticU16CharArrStrSized }
-      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', U16StringSeq, ';'],        action: stmtStaticU16CharArrStr }
-      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', WStringSeq, ';'],           action: stmtStaticWCharArrStrSized }
-      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', WStringSeq, ';'],          action: stmtStaticWCharArrStr }
-      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U32StringSeq, ';'],         action: stmtStaticU32CharArrStrSized }
-      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', U32StringSeq, ';'],        action: stmtStaticU32CharArrStr }
-      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U8StringSeq, ';'],           action: stmtStaticU8CharArrStrSized }
-      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', U8StringSeq, ';'],          action: stmtStaticU8CharArrStr }
+      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', StringArrayInitializer, ';'],           action: stmtStaticCharArrStrSized }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', StringArrayInitializer, ';'],          action: stmtStaticCharArrStr }
+      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U16StringArrayInitializer, ';'],         action: stmtStaticU16CharArrStrSized }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', U16StringArrayInitializer, ';'],        action: stmtStaticU16CharArrStr }
+      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', WStringArrayInitializer, ';'],           action: stmtStaticWCharArrStrSized }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', WStringArrayInitializer, ';'],          action: stmtStaticWCharArrStr }
+      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U32StringArrayInitializer, ';'],         action: stmtStaticU32CharArrStrSized }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', U32StringArrayInitializer, ';'],        action: stmtStaticU32CharArrStr }
+      - { lhs: Stmt, rhs: ['static', Type, ID, ArrDims, '=', U8StringArrayInitializer, ';'],           action: stmtStaticU8CharArrStrSized }
+      - { lhs: Stmt, rhs: ['static', Type, ID, '[', ']', '=', U8StringArrayInitializer, ';'],          action: stmtStaticU8CharArrStr }
       # Block-scope `static T x = { … };` — a static struct/union AGGREGATE
       # initializer (Lua's `static const expdesc ef = {VKINT, {0}, NO_JUMP,
       # NO_JUMP}`). Like the static-array forms, lowers to a once-initialised
@@ -1210,16 +1227,17 @@ productions:
       - { lhs: Member, rhs: [Type, ID, ArrDims, ';'],     action: structArrMember }
       - { lhs: Member, rhs: [Type, ID, '[', ']', ';'],    action: structFlexArrMember }
       # Pointer to array retains its row extent for field indexing and sizeof.
-      - { lhs: Member, rhs: [Type, '(', '*', ID, ')', ArrDims, ';'], action: structPtrToArrMember }
+      - { lhs: Member, rhs: [Type, '(', '*', FnPtrArrayName, ')', ArrDims, ';'], action: structPtrToArrMember }
       # Function-pointer member `Ret (*name)(params);` — the struct-member
       # counterpart of the fn-ptr typedef/param forms (same `( * ID ) ( … )`
       # declarator shape, so conflict-free: after `Type`, only the fn-ptr forms
       # take `(`, the others take ID/`:`). Ubiquitous in callback tables / vtables
       # (chibi's `struct sigaction { void (*sa_handler)(int); … }`). Lowers to a
       # `delegate*` field via FnPtrType, like every other fn-ptr position.
-      - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', GnuFormatAttr, ';'], action: structFnPtrFormatMember }
-      - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrMember }
-      - { lhs: Member, rhs: [Type, '(', '*', ID, ')', '(', ')', ';'],            action: structFnPtrMemberNoArgs }
+      # Share the qualified callback declarator with file-scope objects. This
+      # retains pointer const/volatile and fixed callback-array bounds.
+      - { lhs: Member, rhs: [FnPtrArrayDeclarator, GnuFormatAttr, ';'], action: structFnPtrFormatMember }
+      - { lhs: Member, rhs: [FnPtrArrayDeclarator, ';'], action: structFnPtrMember }
       - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')', ';'], action: structFnPtrStorageMember }
       - { lhs: Member, rhs: [Type, '(', '*', '*', ID, ')', '(', ')', ';'], action: structFnPtrStorageMemberNoArgs }
       # A callback may itself return a function pointer (SQLite's xDlSym).
@@ -1314,9 +1332,13 @@ productions:
       - { lhs: Decl, rhs: ['auto', Type, DeclItemList], action: declAutoStorage }
       # Register allocation is a compiler hint; the local retains automatic storage.
       - { lhs: Decl, rhs: ['register', Type, DeclItemList], action: declRegisterStorage }
+      # Block-scope function declarations retain their C linkage and signature;
+      # they do not allocate a local callback variable or emit a nested function.
+      - { lhs: Decl, rhs: [FnSig], action: declFunctionProto }
+      - { lhs: Decl, rhs: ['extern', FnSig], action: declExternFunctionProto }
       # Block-scoped aliases use the same resolved types as file-scope typedefs.
       - { lhs: Decl, rhs: ['typedef', FnSig], action: declLocalTypedefFunction }
-      - { lhs: Decl, rhs: ['typedef', Type, ID], action: declLocalTypedefAlias }
+      - { lhs: Decl, rhs: ['typedef', Type, TypedefNameList], action: declLocalTypedefAlias }
       - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ParamList, ')'], action: declLocalTypedefFnPtr }
       - { lhs: Decl, rhs: ['typedef', Type, '(', '*', ID, ')', '(', ')'], action: declLocalTypedefFnPtrNoArgs }
       # Stack-allocated array: `int arr[N]`. Lowers to `int* arr = stackalloc int[N]`
@@ -1352,20 +1374,20 @@ productions:
       # zero-pads to N. Conflict-free with the `{ … }` forms above: after `=`,
       # `{` → brace init, a STRING → these. Sized form via ArrDims (shares the
       # dim reduction with declArrInit).
-      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', StringSeq],  action: declCharArrStr }
-      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', StringSeq],   action: declCharArrStrSized }
+      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', StringArrayInitializer],  action: declCharArrStr }
+      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', StringArrayInitializer],   action: declCharArrStrSized }
       # char16_t block-scope array from a u"…" literal (→ char* stackalloc copy).
-      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', U16StringSeq], action: declU16CharArrStr }
-      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', U16StringSeq],  action: declU16CharArrStrSized }
+      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', U16StringArrayInitializer], action: declU16CharArrStr }
+      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', U16StringArrayInitializer],  action: declU16CharArrStrSized }
       # wchar_t block-scope array from an L"…" literal (→ char* stackalloc copy).
-      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', WStringSeq], action: declWCharArrStr }
-      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', WStringSeq],  action: declWCharArrStrSized }
+      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', WStringArrayInitializer], action: declWCharArrStr }
+      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', WStringArrayInitializer],  action: declWCharArrStrSized }
       # char32_t block-scope array from a U"…" literal (→ uint* stackalloc copy).
-      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', U32StringSeq], action: declU32CharArrStr }
-      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', U32StringSeq],  action: declU32CharArrStrSized }
+      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', U32StringArrayInitializer], action: declU32CharArrStr }
+      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', U32StringArrayInitializer],  action: declU32CharArrStrSized }
       # char8_t block-scope array from a u8"…" literal (→ byte* stackalloc copy).
-      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', U8StringSeq], action: declU8CharArrStr }
-      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', U8StringSeq],  action: declU8CharArrStrSized }
+      - { lhs: Decl, rhs: [Type, ID, '[', ']', '=', U8StringArrayInitializer], action: declU8CharArrStr }
+      - { lhs: Decl, rhs: [Type, ID, ArrDims, '=', U8StringArrayInitializer],  action: declU8CharArrStrSized }
       # Struct aggregate initializer: `Point p = {1, 2};`. The visitor looks
       # up the struct's field names from a side map populated by StructDef /
       # TypedefStruct / UnionDef, then emits `Point p = new Point { x = 1,
@@ -1378,10 +1400,9 @@ productions:
       # other declarator (which start `Type ID`), so it's conflict-free. Lowers
       # to a C# `delegate*<args…, ret>` local. (The typedef'd form — `typedef
       # int (*Cmp)(int); Cmp fp;` — also works and is often cleaner.)
-      - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')'],            action: declFnPtr }
-      - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ')'],                       action: declFnPtrNoArgs }
-      - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ParamList, ')', '=', E],    action: declFnPtrInit }
-      - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', '(', ')', '=', E],               action: declFnPtrNoArgsInit }
+      - { lhs: Decl, rhs: [FnPtrArrayDeclarator], action: declCallback }
+      - { lhs: Decl, rhs: [FnPtrArrayDeclarator, '=', E], action: declCallbackInit }
+      - { lhs: Decl, rhs: [FnPtrArrayDeclarator, '=', '{', InitList, '}'], action: declCallbackArrayInit }
       # A pointer to a callback slot/table composes the same function type
       # with one ordinary data-pointer level.
       - { lhs: Decl, rhs: [Type, '(', '*', '*', ID, ')', '(', ParamList, ')'], action: declFnPtrStorage }
@@ -1394,8 +1415,8 @@ productions:
       # `)`, so the `[` vs `(` lookahead keeps them disjoint. Lowers to a flat C#
       # pointer that subscripts with the array's stride (reuses the multi-dim
       # machinery); `sizeof` of it is the pointer size.
-      - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', ArrDims],          action: declPtrToArr }
-      - { lhs: Decl, rhs: [Type, '(', '*', ID, ')', ArrDims, '=', E],  action: declPtrToArrInit }
+      - { lhs: Decl, rhs: [Type, '(', '*', FnPtrArrayName, ')', ArrDims],          action: declPtrToArr }
+      - { lhs: Decl, rhs: [Type, '(', '*', FnPtrArrayName, ')', ArrDims, '=', E],  action: declPtrToArrInit }
       # Designated initializer (C99): `Point p = { .x = 1, .y = 2 };`. The
       # user names the fields directly — no _structFields lookup needed at
       # emit time. LALR(1)-distinguished from the positional form by the
@@ -1435,6 +1456,22 @@ productions:
       - { lhs: BitFieldItem, rhs: [ID, ':', E], action: bitFieldNamed }
       - { lhs: BitFieldItem, rhs: [':', E], action: bitFieldAnonymous }
 
+  # Typedef declarators carry no initializer. The first literal pointer
+  # prefixes are absorbed by Type; tail prefixes belong only to that alias.
+  - derivation: leftmost
+    rules:
+      - { lhs: TypedefNameList, rhs: [TypedefName], action: typedefNameListOne }
+      - { lhs: TypedefNameList, rhs: [TypedefNameList, ',', TypedefNameTail], action: typedefNameListCons }
+  - derivation: none
+    rules:
+      - { lhs: TypedefName, rhs: [ID], action: typedefName }
+      - { lhs: TypedefName, rhs: [ID, ArrDims], action: typedefArrayName }
+      - { lhs: TypedefNameTail, rhs: [TypedefName], action: typedefNameTailPlain }
+      - { lhs: TypedefNameTail, rhs: ['*', TypedefNameTail], action: typedefNameTailPtr }
+      - { lhs: TypedefNameTail, rhs: ['*', 'const', TypedefNameTail], action: typedefNameTailConstPtr }
+      - { lhs: TypedefNameTail, rhs: ['*', 'volatile', TypedefNameTail], action: typedefNameTailVolatilePtr }
+      - { lhs: TypedefNameTail, rhs: ['*', 'restrict', TypedefNameTail], action: typedefNameTailRestrictPtr }
+
   # DeclItemList: comma-separated list of declarators sharing a leading Type.
   - derivation: leftmost
     rules:
@@ -1459,6 +1496,11 @@ productions:
   - derivation: none
     rules:
       - { lhs: DeclItem, rhs: [ID], action: declItem }
+      - { lhs: DeclItem, rhs: [GroupedObjectDeclarator], action: declItemGrouped }
+      - { lhs: DeclItem, rhs: [GroupedObjectDeclarator, ArrDims], action: declItemGroupedArray }
+      - { lhs: DeclItem, rhs: [GroupedObjectDeclarator, '=', E], action: declItemGroupedInit }
+      - { lhs: DeclItem, rhs: [GroupedObjectDeclarator, '=', '{', InitList, '}'], action: declItemGroupedBraceInit }
+      - { lhs: DeclItem, rhs: [GroupedObjectDeclarator, ArrDims, '=', '{', InitList, '}'], action: declItemGroupedArrayInit }
       - { lhs: DeclItem, rhs: [ID, '=', E], action: declItemInit }
       - { lhs: DeclItem, rhs: [ID, GnuFormatAttr], action: declItemGnuAttributes }
       - { lhs: DeclItem, rhs: [ID, GnuFormatAttr, '=', E], action: declItemGnuAttributesInit }
@@ -1480,6 +1522,15 @@ productions:
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', InitList, '}'], action: declItemTailBraceInit }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', MemberInitList, '}'], action: declItemTailDesignatedInit }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', '}'], action: declItemTailEmptyInit }
+
+  # Redundant grouping changes no pointer/array binding. Keep the ID explicit
+  # to share its prefix with parenthesized function-name declarations.
+  - derivation: none
+    rules:
+      - { lhs: GroupedObjectDeclarator, rhs: ['(', ID, ')'], action: groupedObjectName }
+      - { lhs: GroupedObjectDeclarator, rhs: ['(', ID, ArrDims, ')'], action: groupedObjectArray }
+      - { lhs: GroupedObjectDeclarator, rhs: ['(', GroupedObjectDeclarator, ')'], action: groupedObjectNested }
+      - { lhs: GroupedObjectDeclarator, rhs: ['(', GroupedObjectDeclarator, ArrDims, ')'], action: groupedObjectNestedArray }
 
   # MemberInitList — one or more `.field = E` items, comma-separated, optional
   # trailing comma (`{ .x = 1, .y = 2, }`). Left-recursive, so the trailing-
@@ -1512,9 +1563,9 @@ productions:
       # e.g. `int a[5] = {[2] = 9, [4] = 1}`. Conflict-free: `[` can't begin an
       # expression, so the lookahead after `{`/`,` cleanly picks this over the
       # positional `E` element. The emitter builds a dense, zero-filled array;
-      # 1-D constant-index scalar arrays only (nested/struct designators fail
-      # loudly). Distinct from struct designators (`.field =`, MemberInitList).
-      - { lhs: InitElem, rhs: ['[', E, ']', '=', E], action: initElemDesignated }
+      # Retain the initializer tree after the index: the selected array
+      # element supplies the scalar/aggregate type during lowering.
+      - { lhs: InitElem, rhs: ['[', E, ']', '=', InitElem], action: initElemDesignated }
 
   - derivation: none
     rules:
@@ -1706,6 +1757,9 @@ productions:
       # sexp_offsetof); constant array designators (`m[2]`) may be interleaved.
       - { lhs: Postfix, rhs: ['offsetof', '(', Type, ',', OffsetofPath, ')'], action: offsetofExpr }
       - { lhs: OffsetofPath, rhs: [ID], action: offsetofPathOne }
+      # The first member has no preceding '.' to suppress typedef promotion.
+      # It still names a field in its own namespace, even when it is a typedef.
+      - { lhs: OffsetofPath, rhs: [TYPE_NAME], action: offsetofPathTypeName }
       - { lhs: OffsetofPath, rhs: [OffsetofPath, '.', ID], action: offsetofPathCons }
       - { lhs: OffsetofPath, rhs: [OffsetofPath, '[', E, ']'], action: offsetofPathIndex }
       # Postfix ++/-- — left-associative (chained `x++` then `++` is illegal
@@ -1808,6 +1862,22 @@ productions:
     rules:
       - { lhs: ArgList, rhs: [E, ',', ArgList], action: argsCons }
       - { lhs: ArgList, rhs: [E],                action: argsOne }
+
+  # Parentheses around an array string initializer do not turn the array
+  # into a pointer. Keep this grouping in array-only grammar positions, so
+  # ordinary parenthesized expressions and literal concatenation stay separate.
+  - derivation: none
+    rules:
+      - { lhs: StringArrayInitializer, rhs: [StringSeq] }
+      - { lhs: StringArrayInitializer, rhs: ['(', StringArrayInitializer, ')'], action: strArrayInitParens }
+      - { lhs: U16StringArrayInitializer, rhs: [U16StringSeq] }
+      - { lhs: U16StringArrayInitializer, rhs: ['(', U16StringArrayInitializer, ')'], action: u16strArrayInitParens }
+      - { lhs: WStringArrayInitializer, rhs: [WStringSeq] }
+      - { lhs: WStringArrayInitializer, rhs: ['(', WStringArrayInitializer, ')'], action: wstrArrayInitParens }
+      - { lhs: U32StringArrayInitializer, rhs: [U32StringSeq] }
+      - { lhs: U32StringArrayInitializer, rhs: ['(', U32StringArrayInitializer, ')'], action: u32strArrayInitParens }
+      - { lhs: U8StringArrayInitializer, rhs: [U8StringSeq] }
+      - { lhs: U8StringArrayInitializer, rhs: ['(', U8StringArrayInitializer, ')'], action: u8strArrayInitParens }
 
   # Adjacent string-literal concatenation. Left-recursive: a run of `STRING`
   # tokens folds into one StringSeq, which `Primary → StringSeq` lowers.

@@ -124,6 +124,31 @@ class Context:
         self.run(["dotnet", "restore", project, "--nologo"], label)
 
     def tools(self):
+        if os.environ.get("DOTCC_PRODUCTION_TOOLS") == "existing":
+            required = ("DOTCC_COMPILER", "DOTCC_POSTPROCESSOR")
+            missing = [name for name in required if name not in os.environ]
+            if missing:
+                raise RuntimeError("Production existing tools require explicit environment keys: " + ", ".join(missing))
+            from production_support import selected_tool, snapshot_tool, validate_tool_closure
+            selections = []
+            for kind, project in (("compiler", "DotCC"), ("postprocessor", "DotCC.PostProcess")):
+                selected = selected_tool(kind, repo=self.repo)
+                selections.append((project, selected, validate_tool_closure(selected)))
+            self.receipt["dotnet_sdk"] = self.run(["dotnet", "--version"], "dotnet-version").strip()
+            for project, selected, expected in selections:
+                destination = self.work / "tools" / project
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                executable, binding = snapshot_tool(selected, destination)
+                if binding["files"] != expected:
+                    raise RuntimeError(f"Selected production tool changed before snapshot: {selected}")
+                self.receipt.setdefault("tools", {})[project] = binding["files"]
+                self.receipt.setdefault("tool_snapshots", {})[project] = binding
+                if project == "DotCC":
+                    self.compiler = executable
+                else:
+                    self.postprocessor = executable
+            self.save()
+            return
         self.receipt["dotnet_sdk"] = self.run(["dotnet", "--version"], "dotnet-version").strip()
         for project, executable in (("DotCC", "dotcc.dll"), ("DotCC.PostProcess", "dotcc-postprocess.dll")):
             if self.options.tools == "build" and project not in self.session:
@@ -133,9 +158,11 @@ class Context:
                                  project + "-build", "-p:UseLocalLalrCc=false")
                 self.session.add(project)
             source = self.repo / project / "bin/Release/net10.0"
-            if project == "DotCC" and os.environ.get("DOTCC_COMPILER"):
-                source = Path(os.environ["DOTCC_COMPILER"]).resolve().parent
-                executable = Path(os.environ["DOTCC_COMPILER"]).name
+            override = os.environ.get({"DotCC": "DOTCC_COMPILER",
+                                       "DotCC.PostProcess": "DOTCC_POSTPROCESSOR"}[project])
+            if override:
+                selected = Path(override).resolve()
+                source, executable = selected.parent, selected.name
             if not (source / executable).is_file():
                 raise RuntimeError(f"Missing tool: {source / executable}; use --tools build")
             destination = self.work / "tools" / project

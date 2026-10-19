@@ -1,0 +1,20 @@
+<Project>
+  <!-- Executable projects import this explicitly. NativeAOT redistributes
+       runtime code, so copy notices from the SDK's actually resolved pack. -->
+  <Target Name="AddCPythonRuntimeNotices" BeforeTargets="AssignTargetPaths"
+          DependsOnTargets="ResolveFrameworkReferences" Condition="'$(PublishAot)' == 'true'">
+    <ItemGroup>
+      <_CPythonRuntimePack Include="@(ResolvedTargetILCompilerPack)" />
+      <_CPythonRuntimePack Include="@(ResolvedILCompilerPack)" Condition="'@(ResolvedTargetILCompilerPack)' == ''" />
+    </ItemGroup>
+    <Error Condition="'@(_CPythonRuntimePack)' == ''" Text="CPython AOT delivery requires the resolved .NET runtime pack and its notices." />
+    <!-- NativeAOT's runtime pack declares MIT in its nuspec and ships its
+         third-party notices. The installed SDK supplies the MIT license text. -->
+    <Error Condition="!Exists('$(NetCoreRoot)LICENSE.txt')" Text="Installed .NET MIT LICENSE.txt is missing." />
+    <Error Condition="!Exists('%(_CPythonRuntimePack.PackageDirectory)/THIRD-PARTY-NOTICES.TXT')" Text="Resolved .NET runtime THIRD-PARTY-NOTICES.TXT is missing." />
+    <ItemGroup>
+      <Content Include="$(NetCoreRoot)LICENSE.txt" Link="notices/DotNet-Runtime-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+      <Content Include="@(_CPythonRuntimePack->'%(PackageDirectory)/THIRD-PARTY-NOTICES.TXT')" Link="notices/DotNet-Runtime-THIRD-PARTY-NOTICES.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+</Project>

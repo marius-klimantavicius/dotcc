@@ -1,6 +1,8 @@
 #ifndef _FCNTL_H
 #define _FCNTL_H
 
+#include <sys/types.h>
+
 /* Linux descriptor/status flag values. F_SETFL controls socket blocking and
    file append behavior; unsupported nonblocking console input returns ENOTSUP. */
 
@@ -9,6 +11,24 @@
 #define F_SETFD 2
 #define F_GETFL 3
 #define F_SETFL 4
+
+/* Linux x64 LP64 process-associated advisory record locks. off_t is signed
+   64-bit and pid_t is signed 32-bit. The aggregate is 32 bytes/alignment 8,
+   with fields at 0, 2, 8, 16, 24. This is not a 32-bit host ABI declaration. */
+#define F_GETLK  5
+#define F_SETLK  6
+#define F_SETLKW 7
+#define F_RDLCK  0
+#define F_WRLCK  1
+#define F_UNLCK  2
+
+struct flock {
+    short l_type;
+    short l_whence;
+    off_t l_start;
+    off_t l_len;
+    pid_t l_pid;
+};
 
 #define O_ACCMODE  0x3
 #define O_CLOEXEC  0x80000
@@ -20,6 +40,7 @@
 #define O_TRUNC    0x200
 #define O_APPEND   0x400
 #define O_NONBLOCK 0x800
+#define O_NOFOLLOW 0x20000
 
 int fcntl(int fd, int cmd, ...);
 

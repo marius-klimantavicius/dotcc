@@ -52,11 +52,21 @@ and initialization stay in the main generated file when functions are split.
 The object format is version 2 with `literal-pool:2` capability; objects without
 that capability marker must be regenerated.
 
-With the flag, declared constant arrays use `GlobalArrayFrom<T>` (or the existing aligned
-variant), which copies into rooted pinned storage. Separate declarations retain
-separate allocations and their element representation. Without it, constant
-primitive arrays retain the legacy `Libc.L`/`Libc.L<T>` path. UTF-16/UTF-32 strings
-continue to use the existing rooted `L16`/`L32` pools.
+Declared arrays retain separate writable storage, including C `const` arrays.
+The linker establishes all global-array allocations before applying values and
+relocations. Constant byte initializer payloads have separate content-addressed
+object records and become named static `ReadOnlySpan<byte>` properties with
+collection expressions, in either literal-pool mode. The C# compiler places
+their immutable bytes in assembly data. Copying that payload does not coalesce
+the C destinations or remove their required pinned/aligned allocations. Exact
+extents, zero-fill and embedded/final terminators remain part of the payload.
+UTF-16/UTF-32 strings continue to use the existing rooted `L16`/`L32` pools.
+
+The assembly-data representation is verified from actual Release getter IL and
+RVA bytes, with warmed repeated access/copy allocation controls under JIT and
+NativeAOT. Source syntax by itself is not allocation evidence. The existing
+pointer-literal pool still owns its pinned storage and pointer lifetime; the
+immutable initializer properties do not replace that ownership.
 
 Validation covers exact UTF-8 and binary bytes, long wrapped literals, global
 initialization, array identity, object linking, split/nested output, concurrent

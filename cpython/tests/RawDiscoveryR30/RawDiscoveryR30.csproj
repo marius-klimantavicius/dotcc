@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/profiles/upstream-tests-static/TranslatedCPython.Raw/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Managed.CPython/Managed.CPython.csproj" AdditionalProperties="CPythonProject=$(CPythonProject)" />
+    <Content Include="../Upstream/run_inventory.py" Link="upstream/run_inventory.py" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../Abi/frozen_startup_checks_r29.py" Link="controls/frozen_startup_checks_r29.py" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="getcwd_startup_r30.py" Link="controls/getcwd_startup_r30.py" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

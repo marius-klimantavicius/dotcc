@@ -6,10 +6,14 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import sys
 import time
-from core_inputs import compiler_directory, compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods, upstream_identity
+from core_inputs import compiler_executable, compiler_directory, compiler_identity, profile_sources, emission_identity, semantic_selection, managed_boundary_selection, instance_methods, upstream_identity
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK_OPTIONS = ['--emit=managedlib', '--literal-pool', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
@@ -103,7 +107,9 @@ def emit(entry):
                    producing_profile_inputs_sha256=receipt['profile_inputs_sha256'])
     return row
 save()
-with ThreadPoolExecutor(max_workers=args.jobs) as pool:
+# Each worker invokes a separate emitter process. Serialize those commands;
+# a nonblocking global flock must never turn sibling work into a false failure.
+with ThreadPoolExecutor(max_workers=1) as pool:
     pending = {pool.submit(emit, entry):entry for entry in entries if entry['path'] not in objects}
     for future in as_completed(pending):
         entry = pending[future]
@@ -152,7 +158,7 @@ if args.emit_only or args.sources:
     raise SystemExit(0)
 output = ROOT / 'generated/core-objects' / key / 'ManagedCore'
 output.parent.mkdir(parents=True, exist_ok=True)
-command = ['dotnet', str(compiler_dir / 'dotcc.dll'),
+command = ['dotnet', str(compiler_executable(compiler_dir)),
            *[report['objects'][entry['path']]['object_path'] for entry in entries],
            *LINK_OPTIONS, '-o', str(output)]
 with (cache / 'link.log').open('wb') as stream:

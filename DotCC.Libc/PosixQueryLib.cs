@@ -13,6 +13,7 @@ public static unsafe partial class Libc
 
     public static long sysconf(int name) => name switch
     {
+        2 => ProcessClockTicksPerSecond(), // _SC_CLK_TCK; same units as times()
         30 => Environment.SystemPageSize,
         83 or 84 => Environment.ProcessorCount,
         _ => UnsupportedSysconf()

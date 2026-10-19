@@ -36,6 +36,36 @@ int getaddrinfo(const char *node, const char *service,
                 const struct addrinfo *hints, struct addrinfo **result);
 void freeaddrinfo(struct addrinfo *result);
 const char *gai_strerror(int error);
+
+#define NI_NUMERICHOST 1
+#define NI_NUMERICSERV 2
+#define NI_NOFQDN 4
+#define NI_NAMEREQD 8
+#define NI_DGRAM 16
+#define NI_MAXHOST 1025
+#define NI_MAXSERV 32
+int getnameinfo(const struct sockaddr *address, socklen_t address_length,
+                char *host, socklen_t host_length,
+                char *service, socklen_t service_length, int flags);
+
+struct hostent {
+    char *h_name;
+    char **h_aliases;
+    int h_addrtype;
+    int h_length;
+    char **h_addr_list;
+};
+#define HOST_NOT_FOUND 1
+#define TRY_AGAIN 2
+#define NO_RECOVERY 3
+#define NO_DATA 4
+#define NO_ADDRESS NO_DATA
+#define NETDB_INTERNAL -1
+#define NETDB_SUCCESS 0
+/* A real system-header runtime variable, like errno. Storage is scoped to
+   the current C runtime context and thread; no managed interior pointer. */
+extern int h_errno;
+struct hostent *gethostbyname(const char *name);
 /* Linux LP64 protocol database record. Returned records are borrowed. */
 struct protoent {
     char *p_name;

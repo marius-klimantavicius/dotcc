@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 # Compile copied sources from two translations into ONE consumer assembly.
 source "$(dirname "$0")/legacy-common.sh"
 output="$SQLITE_ROOT/artifacts/copied-translations"
@@ -16,9 +17,9 @@ int set_error(int n) { errno=n; return errno; }
 int get_error(void) { return errno; }
 C
 if [[ -n "${DOTCC_EXECUTABLE:-}" ]]; then
-  compiler=("$DOTCC_EXECUTABLE")
+  compiler=("${PRODUCTION_COMMAND[@]}" "$DOTCC_EXECUTABLE")
 else
-  compiler=(dotnet "$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll")
+  compiler=("${PRODUCTION_COMMAND[@]}" dotnet "$DOTCC_COMPILER")
 fi
 "${compiler[@]}" "$output/api.c" --emit=managedlib --nest-types --runtime=c \
   --namespace Managed.Database --class-name CopyA --split=function -o "$output/CopyA"
@@ -52,10 +53,10 @@ internal static unsafe class Program
 }
 CS
 # The consumer includes both generated source trees; no ProjectReference exists.
-dotnet build "$output/Copied.csproj" -c Release --nologo > "$output/build.log" 2>&1
+"${PRODUCTION_COMMAND[@]}" dotnet build "$output/Copied.csproj" -c Release --nologo > "$output/build.log" 2>&1
 run_sqlite_process dotnet "$output/bin/Release/net10.0/Copied.dll"
 if [[ "${SQLITE_AOT:-0}" == 1 ]]; then
-  dotnet publish "$output/Copied.csproj" -c Release -r linux-x64 -p:PublishAot=true \
+  "${PRODUCTION_COMMAND[@]}" dotnet publish "$output/Copied.csproj" -c Release -r linux-x64 -p:PublishAot=true \
     -o "$SQLITE_ROOT/build/copied-translations-aot" --nologo > "$output/aot-build.log" 2>&1
   run_sqlite_process "$SQLITE_ROOT/build/copied-translations-aot/Copied"
 fi

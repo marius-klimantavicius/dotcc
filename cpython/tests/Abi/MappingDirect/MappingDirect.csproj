@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefineConstants>$(DefineConstants);MAPPING_DIRECT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../../DotCC.Libc/DotCC.Libc.csproj" />
+    <Compile Include="../../../../DotCC.Tests/CPythonR14MappingTests.cs" Link="MappingChecks.cs" />
+  </ItemGroup>
+</Project>

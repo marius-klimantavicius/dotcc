@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="TranslatedCPython" HintPath="$(CPythonAssembly)" />
+  </ItemGroup>
+  <Target Name="RequireActualAssembly" BeforeTargets="CoreCompile">
+    <Error Condition="!Exists('$(CPythonAssembly)')" Text="Supply the actual selected profile assembly." />
+  </Target>
+</Project>

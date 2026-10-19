@@ -7,14 +7,15 @@ using LALR.CC.LexicalGrammar;
 
 namespace DotCC;
 
-/// <summary>Phase-two text plus the removed UTF-8 byte ranges. Lexer coordinates
+/// <summary>Phase-two text and logical comment lines plus removed UTF-8 byte ranges. Lexer coordinates
 /// stay logical until preprocessing has finished; only source reporting uses
 /// the original physical coordinates.</summary>
 internal sealed class PhysicalSourceMap
 {
     public string Text { get; }
     internal SourceFileOrigin? SourceFile { get; }
-    public bool HasSplices => _spliceOffsets.Length != 0;
+    public bool HasLineChanges => _spliceOffsets.Length != 0 || _hasCommentNewlines;
+    private readonly bool _hasCommentNewlines;
     private readonly byte[] _original;
     private readonly int[] _spliceOffsets, _removedBytes, _lineStarts;
     private readonly int _initialLine;
@@ -52,12 +53,14 @@ internal sealed class PhysicalSourceMap
         _spliceOffsets = offsets.ToArray();
         _removedBytes = removed.ToArray();
         _lineStarts = lines.ToArray();
-        Text = offsets.Count == 0 ? source : Encoding.UTF8.GetString(output.ToArray());
+        var logical = output.ToArray();
+        _hasCommentNewlines = CCommentLogicalLines.Normalize(logical);
+        Text = !HasLineChanges ? source : Encoding.UTF8.GetString(logical);
     }
 
     public SourcePosition Physical(SourcePosition logical)
     {
-        if (!HasSplices || !logical.IsKnown) return logical;
+        if (!HasLineChanges || !logical.IsKnown) return logical;
         var splice = LastAtOrBefore(_spliceOffsets, logical.ByteOffset);
         var offset = logical.ByteOffset + (splice < 0 ? 0 : _removedBytes[splice]);
         var line = LastAtOrBefore(_lineStarts, offset);
@@ -69,7 +72,7 @@ internal sealed class PhysicalSourceMap
 
     public int PhysicalEndLine(SourcePosition logical)
     {
-        if (!HasSplices) return logical.Line;
+        if (!HasLineChanges) return logical.Line;
         // A #line directive controls the physical line following the whole
         // logical directive, including any trailing continued empty lines.
         var bytes = Encoding.UTF8.GetBytes(Text);
@@ -147,7 +150,7 @@ internal sealed class SourceMappingLexer : ISyncIterator<Item>
         try
         {
             if (!_inner.MoveNext()) return false;
-            Current = _map.HasSplices || _map.SourceFile is not null ? new SourceMappedItem(_inner.Current, _map) : _inner.Current;
+            Current = _map.HasLineChanges || _map.SourceFile is not null ? new SourceMappedItem(_inner.Current, _map) : _inner.Current;
             return true;
         }
         catch (LexerException error)

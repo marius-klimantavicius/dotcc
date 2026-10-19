@@ -1,0 +1,544 @@
+{
+  "profile": "embedded-gil",
+  "bootstrap": [
+    {
+      "name": "atexit",
+      "sources": [
+        "atexitmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "faulthandler",
+      "sources": [
+        "faulthandler.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "posix",
+      "sources": [
+        "posixmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_signal",
+      "sources": [
+        "signalmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_tracemalloc",
+      "sources": [
+        "_tracemalloc.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_suggestions",
+      "sources": [
+        "_suggestions.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_codecs",
+      "sources": [
+        "_codecsmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_collections",
+      "sources": [
+        "_collectionsmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "errno",
+      "sources": [
+        "errnomodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_io",
+      "sources": [
+        "_io/_iomodule.c",
+        "_io/iobase.c",
+        "_io/fileio.c",
+        "_io/bytesio.c",
+        "_io/bufferedio.c",
+        "_io/textio.c",
+        "_io/stringio.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "itertools",
+      "sources": [
+        "itertoolsmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_sre",
+      "sources": [
+        "_sre/sre.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_sysconfig",
+      "sources": [
+        "_sysconfig.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_thread",
+      "sources": [
+        "_threadmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "time",
+      "sources": [
+        "timemodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_typing",
+      "sources": [
+        "_typingmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_weakref",
+      "sources": [
+        "_weakref.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_abc",
+      "sources": [
+        "_abc.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_functools",
+      "sources": [
+        "_functoolsmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_locale",
+      "sources": [
+        "_localemodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_operator",
+      "sources": [
+        "_operator.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_stat",
+      "sources": [
+        "_stat.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "_symtable",
+      "sources": [
+        "symtablemodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    },
+    {
+      "name": "pwd",
+      "sources": [
+        "pwdmodule.c"
+      ],
+      "origin": "Modules/Setup.bootstrap.in"
+    }
+  ],
+  "selected": [
+    {
+      "name": "array",
+      "setup": "array arraymodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_bisect",
+      "setup": "_bisect _bisectmodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_contextvars",
+      "setup": "_contextvars _contextvarsmodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_heapq",
+      "setup": "_heapq _heapqmodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_json",
+      "setup": "_json _json.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_opcode",
+      "setup": "_opcode _opcode.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_pickle",
+      "setup": "_pickle _pickle.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_random",
+      "setup": "_random _randommodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_struct",
+      "setup": "_struct _struct.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "math",
+      "setup": "math mathmodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_statistics",
+      "setup": "_statistics _statisticsmodule.c",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "_sha2",
+      "setup": "_sha2 sha2module.c -I$(srcdir)/Modules/_hacl/include Modules/_hacl/libHacl_Hash_SHA2.a",
+      "origin": "Modules/Setup.stdlib.in"
+    },
+    {
+      "name": "unicodedata",
+      "setup": "unicodedata unicodedata.c",
+      "origin": "Modules/Setup.stdlib.in",
+      "reason": "required CPython named-Unicode-escape language parsing; Owner B native fixture exposed the missing dependency"
+    }
+  ],
+  "disabled": [
+    {
+      "name": "_asyncio",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_csv",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_lsprof",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_queue",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_interpreters",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_interpchannels",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_interpqueues",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_zoneinfo",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "cmath",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_datetime",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_decimal",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "binascii",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_bz2",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_lzma",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "zlib",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_dbm",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_gdbm",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "readline",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_md5",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_sha1",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_sha3",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_blake2",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "pyexpat",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_elementtree",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_codecs_cn",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_codecs_hk",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_codecs_iso2022",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_codecs_jp",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_codecs_kr",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_codecs_tw",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_multibytecodec",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "fcntl",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "grp",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "mmap",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_posixsubprocess",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "resource",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "select",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_socket",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "syslog",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "termios",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_posixshmem",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_multiprocessing",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_ctypes",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_curses",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_curses_panel",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_sqlite3",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_ssl",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_hashlib",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_uuid",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_tkinter",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_scproxy",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "xxsubtype",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_xxtestfuzz",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "_testbuffer",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testinternalcapi",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testcapi",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testlimitedcapi",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testclinic",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testclinic_limited",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testimportmultiple",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testmultiphase",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testsinglephase",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_testexternalinspection",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "_ctypes_test",
+      "reason": "not a selected product dependency"
+    },
+    {
+      "name": "xxlimited",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    },
+    {
+      "name": "xxlimited_35",
+      "reason": "outside selected embedding surface; test helpers need separate qualification profile"
+    }
+  ],
+  "required": [
+    "json",
+    "re",
+    "collections",
+    "functools",
+    "itertools",
+    "math",
+    "struct",
+    "random",
+    "time",
+    "threading",
+    "contextvars",
+    "io",
+    "gc",
+    "weakref",
+    "sys",
+    "unicodedata"
+  ],
+  "external_libraries": {
+    "OpenSSL": "disabled _ssl/_hashlib; no network surface",
+    "zlib/bzip2/lzma": "disabled optional compression modules",
+    "libffi": "disabled ctypes/native loading",
+    "SQLite": "future extension; not selected",
+    "libmpdec": "decimal not selected",
+    "Expat": "XML not selected",
+    "readline/curses/Tk": "interactive UI not selected"
+  },
+  "pure_python_fallbacks": [
+    "heapq algorithms if _heapq unavailable: acceleration is nevertheless selected",
+    "json decoder/encoder fallback exists: _json nevertheless selected"
+  ]
+}

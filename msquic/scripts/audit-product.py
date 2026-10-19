@@ -17,6 +17,8 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
+sys.path.insert(0, str(REPO / 'Scripts'))
+from provenance import picotls_provenance
 LOG = ROOT / 'artifacts/product-audit'
 LOG.mkdir(parents=True, exist_ok=True)
 spec = importlib.util.spec_from_file_location('picotls_product_audit', REPO / 'picotls/scripts/audit-product.py')
@@ -67,6 +69,52 @@ def check_hashes(mapping, base, purpose):
 
 def product_sources(folder):
     return sorted(p for p in folder.rglob('*.cs') if not {'bin', 'obj'}.intersection(p.relative_to(folder).parts))
+
+
+def current_picotls():
+    root = REPO / 'picotls'
+    path = root / 'artifacts/campaign/current-default.json'
+    pointer = read(path)
+    pico = picotls_provenance(root)
+    binding = pico.get('current_binding')
+    if not binding:
+        raise RuntimeError('Current picotls requires strict selected-tool/product binding')
+    receipt = Path(binding['receipt']).resolve()
+    if (Path(pointer.get('receipt', '')).resolve() != receipt or
+            sha(receipt) != binding['receiptSha256'] or
+            set(pointer.get('outputs', {})) != {'raw', 'processed'}):
+        raise RuntimeError('Current picotls pointer differs from its strict binding')
+    for form, variant in [('raw', 'raw'), ('processed', 'optimized')]:
+        output = pointer['outputs'][form]
+        if (output.get('project') != binding['forms'][form]['project'] or
+                output.get('hashes') != binding['forms'][form]['files'] or
+                pico.get(variant) != output.get('hashes')):
+            raise RuntimeError('Current picotls output differs from its strict binding: ' + form)
+    require(pico['inputs'] == lex.input_state()['inputs'], 'Current picotls source pins differ')
+    report['picotls_provenance'] = dict(path=str(path.relative_to(REPO)), sha256=sha(path),
+        input_revision=pico['inputs']['picotls']['revision'], current_binding=binding)
+    return path, pico
+
+
+def picotls_generated(directory, recorded):
+    # Validate every recorded asset before selecting the consumer's compiled
+    # inputs. Notices and ownership metadata are not part of that projection.
+    if not {'DotCC.LICENSE', 'Picotls.NOTICES', 'Picotls.NOTICES.json', '.campaign-files.json'}.issubset(recorded):
+        raise RuntimeError('Current picotls output lacks recorded notices/ownership')
+    check_hashes(recorded, directory, 'Current picotls full generated closure')
+    names = (directory / 'Dotcc.SourceFiles.txt').read_text().splitlines()
+    if not names or len(names) != len(set(names)) or any(Path(n).name != n or not n.endswith('.cs') for n in names):
+        raise RuntimeError('Invalid source manifest: ' + str(directory))
+    actual = {str(p.relative_to(directory)) for p in directory.rglob('*.cs')
+              if not {'bin', 'obj'}.intersection(p.relative_to(directory).parts)}
+    if set(names) != actual:
+        raise RuntimeError('Unmanifested or missing generated sources')
+    current = {n: sha(directory / n) for n in names}
+    require(current == {n: h for n, h in recorded.items() if n.endswith('.cs')},
+            'Generated inputs differ from translation receipt')
+    # This is exactly the projection returned by test-public-consumer.py.
+    return {p.name: sha(p) for p in sorted(directory.iterdir())
+            if p.is_file() and p.suffix in ('.cs', '.csproj', '.txt')}
 
 
 def normalized_code(source):
@@ -202,14 +250,7 @@ try:
     check_hashes(closure['compiler_hashes'], ROOT / 'build/host-contract/compiler', 'Frozen compiler')
     bind(Path(__file__).resolve())
     bind(REPO / 'picotls/scripts/audit-product.py')
-    pico_path = REPO / 'picotls/artifacts/translation/success.json'
-    pico = read(pico_path)
-    require(pico.get('format') == 'picotls-translation-v1', 'Unsupported picotls provenance format')
-    for name, value in lex.input_state().items():
-        require(pico.get(name) == value, 'Reused picotls translation input changed: ' + name)
-    check_hashes(pico.get('tool_sha256', {}), REPO, 'picotls compiler/postprocessor provenance')
-    report['picotls_provenance'] = dict(path=str(pico_path.relative_to(REPO)), sha256=sha(pico_path),
-                                       tool_sha256=pico.get('tool_sha256', {}), input_revision=pico['inputs']['picotls']['revision'])
+    pico_path, pico = current_picotls()
     patterns = dict(lex.PATTERNS)
     patterns['native TLS facade'] = re.compile(r'\bSslStream\b')
     folders = [ROOT / 'src/BclHost', ROOT / 'src/ManagedApi', REPO / 'picotls/src/BclProvider', ROOT / 'samples/ManagedConsumer']
@@ -256,9 +297,9 @@ try:
             if separator:
                 report['embedded_runtime_imports'].extend(lex.native_imports(runtime, str(path.relative_to(REPO)), translated.count('\n')))
         pico_directory = REPO / 'picotls/generated' / ('TranslatedPicotls.Raw' if variant == 'raw' else 'TranslatedPicotls')
+        pico_selected = picotls_generated(pico_directory, pico[variant])
         pico_files = lex.generated_files(pico_directory)
-        require({p.name: sha(p) for p in pico_files} == pico[variant], 'Reused picotls generated closure differs: ' + variant)
-        report['generated']['picotls-' + variant] = {p.name: sha(p) for p in pico_files}
+        report['generated']['picotls-' + variant] = pico_selected
         for path in pico_files:
             if path.suffix != '.cs': continue
             translated, separator, runtime = path.read_text().partition(marker)
@@ -303,7 +344,8 @@ try:
         for variant in variants:
             require(variant.get('passed') is True, 'Consumer variant did not pass')
             require(variant.get('generated_sha256') == {**closure['generated'][variant['name']]}, 'Consumer MsQuic generated inputs differ')
-            require(variant.get('picotls_generated_sha256') == pico[variant['name']], 'Consumer picotls generated inputs differ')
+            require(variant.get('picotls_generated_sha256') == report['generated']['picotls-' + variant['name']],
+                    'Consumer picotls generated inputs differ')
             runtimes = variant.get('runtimes', {})
             require(set(runtimes) == {'jit', 'aot'}, 'Public consumer runtimes incomplete')
             for runtime, entry in runtimes.items():

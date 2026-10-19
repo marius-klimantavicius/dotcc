@@ -53,6 +53,8 @@ internal sealed partial class CSharpBackend
     private ITarget _target = new CSharpTarget();
     private bool _instanceMethods;
     private readonly DotCC.LiteralPool _literals = new();
+    private global::System.Func<CExpr, CExpr?> _foldConstant = null!;
+    private global::System.Func<CExpr, CType, ulong?> _foldFloatingPayloadBits = null!;
     private bool _publicTypes;
     private bool _relocatable;
     private bool _inlineMetadata;
@@ -70,11 +72,18 @@ internal sealed partial class CSharpBackend
     /// spelling — replaces the type model's old baked-in <c>CsType</c> property.</summary>
     private string Cs(CType t) => _target.RenderType(t);
 
-    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false, IReadOnlyList<string>? stableFunctionPointers = null)
+    public static CSharpBackendResult Run(IrBuilder unit, DotCC.ConversionGate? convGate = null, bool publicTypes = false, bool relocatable = false, string pointerClass = "DotCcProgramFunctionPointers", bool inlineMetadata = false, bool instanceMethods = false, IReadOnlyList<string>? stableFunctionPointers = null, bool aggregateTokens = false)
     {
         VaListLifetimeValidator.Validate(unit);
-        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _target = new CSharpTarget(instanceMethods) };
+        var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _target = new CSharpTarget(instanceMethods,
+            aggregateTokens ? unit.Types.ToDictionary(t => t.Name, t => AggregateIdentities.Token(t.Name), StringComparer.Ordinal) : null) };
+        cg._foldConstant = unit.FoldMacroConstant;
+        cg._foldFloatingPayloadBits = unit.FoldFloatingPayloadBits;
         foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
+        cg._initializerNames.UnionWith(unit.Globals.Select(global => global.Sym.TargetName.TrimStart('@')));
+        cg._initializerNames.UnionWith(unit.Functions.Select(function => function.Sym.TargetName.TrimStart('@')));
+        cg._initializerNames.UnionWith(unit.Types.Select(type => type.Name.TrimStart('@')));
+        cg._initializerNames.UnionWith(new[] { "error", "p", "storage", "destination", "__dotcc_staticBase" });
         cg.RegisterStableFunctionPointers(unit, stableFunctionPointers);
         cg._offsetDocument = unit.CreateOffsetDocument();
         cg._offsetRequests.UnionWith(cg._offsetDocument.Requests.Select(request => request.Name));
@@ -162,9 +171,13 @@ internal sealed partial class CSharpBackend
         // Thread-local and explicitly over-aligned objects retain dedicated static
         // owner members because their storage requirements differ.
         var globals = new List<CSharpGlobalSource>();
+        cg._stableAddressLocals.Clear();
+        cg._globalAddressBases.Clear();
+        cg._stableAddressDeclarations = "";
         cg._renderingStaticStorage = true;
         foreach (var g in unit.Globals)
         {
+            cg._initializerSourceName = g.Sym.TargetName;
             var field = new StringBuilder();
             var initializer = new StringBuilder();
             var threadField = new StringBuilder();
@@ -177,12 +190,19 @@ internal sealed partial class CSharpBackend
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
+            if (g.Sym.IsThreadLocal && g.Init is StructInit threadAggregate)
+            {
+                threadField.Append($"    public {cg.Cs(g.Sym.Type)}* {g.Sym.TargetName};\n");
+                cg.EmitThreadLocalAggregate(staticMembers, g, threadAggregate);
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
+                continue;
+            }
             if (cg.EmitFlexibleGlobal(staticMembers, g))
             {
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
             }
-            if (cg.EmitAlignedGlobal(staticMembers, g))
+            if (cg.EmitAlignedGlobal(staticMembers, initializer, g))
             {
                 globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
                 continue;
@@ -213,8 +233,18 @@ internal sealed partial class CSharpBackend
                 continue;
             }
             field.Append($"    public {cg.Cs(g.Sym.Type)} {g.Sym.TargetName};\n");
-            var init = g.Init is PinnedArray arrayInit ? cg.PinnedArrayText(arrayInit, g.Sym.Alignment)
-                : g.Init is { } i ? cg.Coerced(i, g.Sym.Type) : null;
+            if (g.Init is PinnedArray arrayInit)
+            {
+                cg.EmitGlobalArrayInitializer(initializer, g, arrayInit);
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
+                continue;
+            }
+            if (cg.EmitLargeStaticAggregateInitializer(initializer, g))
+            {
+                globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
+                continue;
+            }
+            var init = g.Init is { } i ? cg.Coerced(i, g.Sym.Type) : null;
             if (init != null) initializer.Append($"        {GlobalStorageReferences.Emit(g.Sym.TargetName)} = {init};\n");
             globals.Add(new(g.Sym.TargetName, field.ToString(), initializer.ToString(), threadField.ToString(), staticMembers.ToString()));
         }
@@ -227,6 +257,7 @@ internal sealed partial class CSharpBackend
         foreach (var t in unit.Types) { typeDeclarations.Add(t.Name, cg.StructText(t)); }
         foreach (var en in unit.Enums) { typeDeclarations.Add(en.Name, cg.EnumText(en)); }
         foreach (var factory in cg._aggregateFactories) { typeDeclarations.Add(factory.Key, factory.Value); }
+        if (cg._usesGlobalAddressCache) typeDeclarations.Add(GlobalAddressCache.TypeName, GlobalAddressCache.Declaration);
         // One independently keyed partial declaration per function lets object
         // linking coalesce the same canonical address across translation units.
         foreach (var pointer in cg._functionPointers.OrderBy(pointer => pointer.Key, StringComparer.Ordinal))
@@ -303,7 +334,7 @@ internal sealed partial class CSharpBackend
             // Zig `packed struct` — byte-pack with no inter-field padding (V1: Pack=1, not bit-packed).
             sb.Append("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]\n");
         }
-        sb.Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ").Append(t.Name).Append("\n{\n");
+        sb.Append(_publicTypes ? "public unsafe partial struct " : "unsafe partial struct ").Append(Cs(new CType.Named(t.Name))).Append("\n{\n");
         if (headerLayout is { Size: > 0 })
         {
             // Preserve the model's alignment even if only unnamed bitfields or
@@ -342,7 +373,7 @@ internal sealed partial class CSharpBackend
             {
                 var offset = Expr(new OffsetOf(new CType.Named(t.Name), new[] { f.Name }, f.Type) { Type = CType.SizeT });
                 sb.Append("    public ").Append(Cs(f.Type)).Append(' ').Append(DotCC.EmitHelpers.Id(f.Name)).Append("\n    {\n        get\n        {\n            fixed (")
-                    .Append(t.Name).Append("* __self = &this)\n            {\n                return (").Append(Cs(f.Type)).Append(")((byte*)__self + ")
+                    .Append(Cs(new CType.Named(t.Name))).Append("* __self = &this)\n            {\n                return (").Append(Cs(f.Type)).Append(")((byte*)__self + ")
                     .Append(offset).Append(");\n            }\n        }\n    }\n");
                 fi++;
                 continue;
@@ -354,7 +385,7 @@ internal sealed partial class CSharpBackend
                 // expose that address without introducing a backing field.
                 var offset = Expr(new OffsetOf(new CType.Named(t.Name), new[] { f.Name }, f.Type) { Type = CType.SizeT });
                 sb.Append("    public ref ").Append(Cs(f.Type)).Append(' ').Append(DotCC.EmitHelpers.Id(f.Name)).Append("\n    {\n        get\n        {\n            fixed (")
-                    .Append(t.Name).Append("* __self = &this)\n            {\n                return ref *(").Append(Cs(f.Type)).Append("*)((byte*)__self + ")
+                    .Append(Cs(new CType.Named(t.Name))).Append("* __self = &this)\n            {\n                return ref *(").Append(Cs(f.Type)).Append("*)((byte*)__self + ")
                     .Append(offset).Append(");\n            }\n        }\n    }\n");
                 fi++;
                 continue;
@@ -381,7 +412,7 @@ internal sealed partial class CSharpBackend
                 {
                     // Escape the complete synthesized identifier, not an embedded
                     // keyword field (e.g. C `null` must not become `_@null`).
-                    var wrap = DotCC.EmitHelpers.Id($"__IA_{t.Name.TrimStart('@')}_{f.Name.TrimStart('@')}");
+                    var wrap = DotCC.EmitHelpers.Id($"__IA_{Cs(new CType.Named(t.Name)).TrimStart('@')}_{f.Name.TrimStart('@')}");
                     var element = Cs(flat);
                     if (flat.IsPointerLowered)
                     {
@@ -689,10 +720,19 @@ internal sealed partial class CSharpBackend
     private HashSet<Symbol> _scopedVaListLocals = new(ReferenceEqualityComparer.Instance);
 
     private string LocalType(Symbol symbol)
-        => (_scopedVaListLocals.Contains(symbol) ? "scoped " : "") + Cs(symbol.Type);
+        => (VaListLifetimeValidator.IsCursorReference(symbol.Type) || _scopedVaListLocals.Contains(symbol)
+            ? "scoped " : "") + Cs(symbol.Type);
 
     private string Func(FuncDef fn)
     {
+        _globalAddressBases.Clear();
+        _addressReuseAllowed = true;
+        _addressLocalNames = new(fn.Params.Select(parameter => parameter.TargetName), StringComparer.Ordinal);
+        WalkAddressStatements(fn.Body, statement =>
+        {
+            if (statement is DeclStmt declaration)
+                foreach (var local in declaration.Decls) _addressLocalNames.Add(local.Sym.TargetName);
+        }, expression => { if (expression is VarRef variable) _addressLocalNames.Add(variable.Sym.TargetName); });
         _alignedArraySymbols.Clear();
         _scopedVaListLocals = VaListLifetimeValidator.ScopedLocals(fn);
         var retTy = fn.Sym.Type is CType.Func f ? f.Return : CType.Int;
@@ -722,8 +762,11 @@ internal sealed partial class CSharpBackend
         // C lets a goto jump INTO a nested block; C# scopes labels to their
         // block. Hoist labeled tails until every goto is legal (no-op for the
         // overwhelming majority of functions — see GotoScopeNormalizer).
-        var body = GotoScopeNormalizer.Normalize(fn.Body);
+        var body = GotoScopeNormalizer.Normalize(ExternalSwitchEntryNormalizer.Normalize(fn.Body));
+        body = GotoDeclarationNormalizer.Normalize(body);
         body = PrepareFunctionSwitchEntries(body);
+        PrepareStableAddressScope(visit => WalkStableAddressStatements(body, visit));
+        _stableAddressDeclarations = StableAddressDeclarations();
         // A Zig `!T` function (error-union return) wraps its body so a propagated
         // `try` (ZigErrorReturn) converts back to an `Err` return — the exception-based
         // early-return-out-of-an-expression, modeled on the setjmp lowering. A `!void`
@@ -841,9 +884,7 @@ internal sealed partial class CSharpBackend
         switch (s)
         {
             case Block b:
-                sb.Append(pad).Append("{\n");
-                foreach (var st in b.Stmts) { Stmt(sb, st, ind + 1); }
-                sb.Append(pad).Append("}\n");
+                EmitAddressReuseBlock(sb, b, ind);
                 break;
             // Brace-less sequence — children share the ENCLOSING scope (a
             // multi-declarator decl that split into DeclStmt + ArrayDecl).
@@ -1498,15 +1539,37 @@ internal sealed partial class CSharpBackend
     // field cannot itself be Unsafe.AsPointer<T>'s generic type argument, but
     // its containing unmanaged aggregate can. Nested member paths remain
     // ordinary pointer projections with the original field's storage identity.
-    private string GlobalStorageAddress(CExpr value) => value switch
+    private string GlobalStorageAddress(CExpr value)
     {
-        Paren p => GlobalStorageAddress(p.Inner),
-        Member { Arrow: false } member =>
-            $"&(({Cs(member.Base.Type)}*){GlobalStorageAddress(member.Base)})->{DotCC.EmitHelpers.Id(member.Field)}",
-        VarRef variable =>
-            $"global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref {GlobalName(variable.Sym)})",
-        _ => throw new IrUnsupportedException("global storage address without a global root"),
-    };
+        var fields = new List<string>();
+        while (true)
+        {
+            if (value is Paren parenthesized) { value = parenthesized.Inner; continue; }
+            if (value is Member { Arrow: false } member)
+            {
+                fields.Add(DotCC.EmitHelpers.Id(member.Field)); value = member.Base; continue;
+            }
+            break;
+        }
+        if (value is not VarRef variable) throw new IrUnsupportedException("global storage address without a global root");
+        var storageType = AddressStorageType(variable.Sym);
+        var direct = $"(({storageType}*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref {GlobalName(variable.Sym)}))";
+        var address = _globalAddressBases.GetValueOrDefault(variable.Sym, direct);
+        // C026's explicit pin is already the required scoped stable address.
+        if (address != "__dotcc_staticBase" && _renderingStaticStorage && AddressRoot(variable) is not null)
+        {
+            _usesGlobalAddressCache = true;
+            address = GlobalStorageReferences.InitializerAddress(variable.Sym.TargetName, storageType, address);
+        }
+        else if (address != "__dotcc_staticBase" && _addressReuseAllowed && _stableAddressLocals.TryGetValue(variable.Sym, out var local))
+            address = GlobalStorageReferences.AddressUse(variable.Sym.TargetName, storageType, local, address);
+        if (NintStorage(variable.Sym)) address = "((" + Cs(variable.Type) + "*)" + address + ")";
+        if (fields.Count == 0) return address;
+        fields.Reverse();
+        // These are only direct aggregate members, with no intervening pointer
+        // load/cast. One projection preserves the exact typed lvalue and address.
+        return "&(" + address + ")->" + string.Join('.', fields);
+    }
 
     /// <summary>The C# backend's decision to store a pointer/fn-ptr-typed
     /// <em>global</em> as an <c>nint</c> field: pointer objects use a stable
@@ -1537,11 +1600,17 @@ internal sealed partial class CSharpBackend
         Paren p => BareLValue(p.Inner),
         VarRef v => GlobalName(v.Sym),
         Member m when IsZeroSizedAggregate(m.Type) => $"*{ZeroSizedMemberAddress(m)}",
-        Member m => $"{Sub(m.Base, PPostfix)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}",
+        Member m => $"{MemberBase(m)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}",
         Index ix => $"{Sub(ix.Base, PPostfix)}[{Expr(DecayEnum(ix.Idx))}]",
+        Unary { Op: UnOp.Deref } u when VaListLifetimeValidator.IsVaList(u.Type) => Expr(u.Operand),
         Unary { Op: UnOp.Deref } u => $"*{Sub(u.Operand, PUnary)}",
         _ => Expr(e),
     };
+
+    // Selecting a member designates its storage, without loading an intermediate
+    // volatile aggregate. The selected scalar inherits the qualifiers.
+    private string MemberBase(Member member) => Sub(member.Arrow ? member.Base
+        : member.Base with { Type = member.Base.Type.Unqualified }, PPostfix);
 
     // Global field names shadowed by an emitted TYPE name — C keeps tags and
     // ordinary identifiers in separate namespaces (`enum sexp_number_types` +
@@ -1574,11 +1643,42 @@ internal sealed partial class CSharpBackend
         value.Type.Unqualified == promoted.Unqualified ? Expr(value)
             : Expr(new Cast(promoted, value) { Type = promoted });
 
-    /// <summary>Coerce a call argument to its parameter type, falling back to the
-    /// argument rendered at assignment precedence (so a bare comma operator can't
-    /// be misread as an argument separator).</summary>
-    private string CoercedArg(CExpr value, CType target) =>
-        TryCoerceCast(value, target, out var t) ? t : Sub(value, PAssign);
+    // A va_list address is a scoped managed reference, never an unmanaged
+    // pointer to the ref-struct cursor or to its borrowed argument span.
+    private string CursorReference(CExpr expression) => expression switch
+    {
+        Paren p => CursorReference(p.Inner),
+        NullPtr or LitInt { Value: 0 } => "global::System.Runtime.CompilerServices.Unsafe.NullRef<VaList>()",
+        Cast c when IsNullCursorReference(c.Operand) => CursorReference(c.Operand),
+        Unary { Op: UnOp.AddrOf } u when VaListLifetimeValidator.IsVaList(u.Operand.Type) => BareLValue(u.Operand),
+        VarRef v when VaListLifetimeValidator.IsCursorReference(v.Type) => Expr(v),
+        _ => throw new CompileException("C# va_list lifetime: unsupported cursor reference expression"),
+    };
+
+    private static bool IsNullCursorReference(CExpr expression) => expression switch
+    {
+        NullPtr or LitInt { Value: 0 } => true,
+        Paren p => IsNullCursorReference(p.Inner),
+        Cast c => IsNullCursorReference(c.Operand),
+        _ => false,
+    };
+
+    /// <summary>Coerce a call argument at assignment precedence, including scoped
+    /// cursor references and C's ordinary argument conversions.</summary>
+    private string CoercedArg(CExpr value, CType target, bool bindRuntimeOverload = false)
+    {
+        if (VaListLifetimeValidator.IsCursorReference(target)) return "ref " + CursorReference(value);
+        if (TryCoerceCast(value, target, out var text)) return text;
+        // A direct runtime boundary can have compatibility overloads. Bind its
+        // fixed scalar formal type even when C# normally converts implicitly:
+        // an int literal or float could otherwise select the wrong overload.
+        // Generated C functions/wrappers and typed indirect calls already have
+        // their C signature; retain their existing conversion rendering.
+        if (bindRuntimeOverload && value.Type.Unqualified is CType.Prim && target.Unqualified is CType.Prim
+            && Cs(value.Type.Unqualified) != Cs(target.Unqualified))
+            return CoercionCast(value, Cs(target.Unqualified));
+        return Sub(value, PAssign);
+    }
 
     /// <summary>True (with the coerced text) when storing <paramref name="value"/>
     /// into <paramref name="target"/> needs an explicit C# cast C performs
@@ -1643,7 +1743,7 @@ internal sealed partial class CSharpBackend
         }
         // void* → T* (e.g. malloc's result): C# makes T*→void* implicit but requires
         // the reverse cast explicitly. Skip void*→void* (same type).
-        if (tgt is CType.Pointer && src is CType.Pointer { Pointee: CType.VoidType }
+        if (tgt is CType.Pointer or CType.Func && src is CType.Pointer { Pointee: CType.VoidType }
             && Cs(tgt) != Cs(src))
         {
             text = $"({Cs(tgt)})({Expr(value)})";
@@ -1865,6 +1965,33 @@ internal sealed partial class CSharpBackend
     private void EmitDeclStmt(StringBuilder sb, DeclStmt d, string pad)
     {
         if (d.Decls.Count == 0) { return; }
+        if (_canHoist && d.Decls.Count > 1)
+        {
+            // A later initializer may refer to earlier declarators. Hoists must
+            // follow those declarations, rather than precede the entire group.
+            var declarations = new List<(LocalDecl Decl, string Init, string Pending)>();
+            foreach (var declaration in d.Decls)
+            {
+                var init = declaration.Init is { } value ? Coerced(value, declaration.Sym.Type) : "default";
+                var pending = new StringBuilder();
+                FlushPending(pending, pad);
+                declarations.Add((declaration, init, pending.ToString()));
+            }
+            var sharedType = LocalType(d.Decls[0].Sym);
+            if (declarations.All(e => e.Pending.Length == 0 && !RequiresAlignedObject(e.Decl.Sym)
+                && LocalType(e.Decl.Sym) == sharedType))
+                sb.Append(pad).Append(sharedType).Append(' ').Append(string.Join(", ",
+                    declarations.Select(e => $"{e.Decl.Sym.TargetName} = {e.Init}"))).Append(";\n");
+            else foreach (var declaration in declarations)
+            {
+                sb.Append(declaration.Pending);
+                if (RequiresAlignedObject(declaration.Decl.Sym))
+                    EmitAlignedLocal(sb, pad, declaration.Decl.Sym, declaration.Init);
+                else sb.Append(pad).Append(LocalType(declaration.Decl.Sym)).Append(' ')
+                    .Append(declaration.Decl.Sym.TargetName).Append(" = ").Append(declaration.Init).Append(";\n");
+            }
+            return;
+        }
         if (d.Decls.Any(declaration => RequiresAlignedObject(declaration.Sym)))
         {
             foreach (var declaration in d.Decls)
@@ -2235,13 +2362,13 @@ internal sealed partial class CSharpBackend
                         dot = $"{name}.{DotCC.EmitHelpers.Id(m.Field)}";
                     }
                 }
-                else dot = $"{Sub(m.Base, PPostfix)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}";
+                else dot = $"{MemberBase(m)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}";
                 if (!m.Arrow && m.Type.Unqualified is CType.Array && RootsAtGlobal(m.Base))
                 {
                     // Array decay/address-taking needs an unmanaged storage
                     // expression. Static aggregate fields live in stable static
                     // storage; use the same address projection as explicit &g.
-                    dot = $"(({Cs(m.Base.Type)}*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref {BareLValue(m.Base)}))->{DotCC.EmitHelpers.Id(m.Field)}";
+                    dot = $"({GlobalStorageAddress(m.Base)})->{DotCC.EmitHelpers.Id(m.Field)}";
                 }
                 // A non-primitive array member is stored as an [InlineArray]; its
                 // access decays to the element pointer `(T*)&field` (C#'s InlineArray
@@ -2251,7 +2378,7 @@ internal sealed partial class CSharpBackend
                 {
                     return ($"({Cs(m.Type)})&{dot}", PUnary);
                 }
-                return QualifiedRead(m, dot, PPostfix);
+                return m.Type.Unqualified is CType.Array ? (dot, PPostfix) : QualifiedRead(m, dot, PPostfix);
             }
             case StructInit si: return (StructInitText(si), PPrimary);
             case StackArray sa:
@@ -2298,6 +2425,8 @@ internal sealed partial class CSharpBackend
                     ? ($"({Cs(va.Target)})({Sub(va.Ap, PPostfix)}.NextPtr())", PUnary)
                     : ($"({Cs(va.Target)})({Sub(va.Ap, PPostfix)}.Next())", PUnary);
             case Call c: return (CallText(c), PPostfix);
+            case CondExpr t when _canHoist && (HasLazyEffects(t.Then) || HasLazyEffects(t.Else)):
+                return (RenderLazyConditional(t), PPrimary);
             case CondExpr t:
                 // C-truthy condition, arms isolated by `?`/`:`. The arms are
                 // conditional, so they render without hoisting (the condition always
@@ -2496,7 +2625,7 @@ internal sealed partial class CSharpBackend
         {
             // C's unary arithmetic treats an enum as its underlying int — decay it
             // (`-EnumName.Member` is invalid C#).
-            case UnOp.Plus: return ($"+{Sub(DecayEnum(u.Operand), PUnary)}", PUnary);
+            case UnOp.Plus: return (SignedUnaryText('+', u.Operand), PUnary);
             // Unary minus on an UNSIGNED operand is modular in C (2^N − x); C#
             // rejects -ulong (CS0023) and silently widens -uint to long. Spell
             // the modular subtraction out.
@@ -2504,7 +2633,9 @@ internal sealed partial class CSharpBackend
                 return ($"unchecked(0UL - {Sub(DecayEnum(u.Operand), PUnary)})", PPrimary);
             case UnOp.Neg when Cs(u.Operand.Type.Unqualified) is "uint":
                 return ($"unchecked(0u - {Sub(DecayEnum(u.Operand), PUnary)})", PPrimary);
-            case UnOp.Neg: return ($"-{Sub(DecayEnum(u.Operand), PUnary)}", PUnary);
+            // Keep separate C tokens separate: -(-5) must not become --5,
+            // and +(+x) must not become the mutating ++x operator.
+            case UnOp.Neg: return (SignedUnaryText('-', u.Operand), PUnary);
             case UnOp.BitNot: return ($"~{Sub(DecayEnum(u.Operand), PUnary)}", PUnary);
             // &fn where fn is a function already reads the canonical address in VarRef
             // case — don't emit a second `&`.
@@ -2524,7 +2655,11 @@ internal sealed partial class CSharpBackend
             // non-moving static storage, so the pointer is stable. (Lua
             // leans on this: &absentkey, &dummynode_.)
             case UnOp.AddrOf when RootsAtGlobal(u.Operand):
-                return ($"({Cs(u.Type)}){GlobalStorageAddress(u.Operand)}", PUnary);
+                return (GlobalStorageAddress(u.Operand), PUnary);
+            // C explicitly cancels &* even for a null pointer. Evaluate the
+            // pointer expression once, retaining its volatile/side effects.
+            case UnOp.AddrOf when u.Operand is Unary { Op: UnOp.Deref } dereference:
+                return Render(dereference.Operand);
             // &<rvalue> — the address of a materialized temporary: a C compound literal
             // `&(T){…}` or a Zig typed struct literal `&T{…}` (both lower to a StructInit
             // rvalue). C# forbids `&new T{…}` (CS0211), so bind the literal to a block-local
@@ -2552,7 +2687,10 @@ internal sealed partial class CSharpBackend
             case UnOp.AddrOf: return ($"&{BareLValue(u.Operand)}", PUnary);
             // *p where p is a pointer-TO-array: the pointed-to array decays right
             // back to the (same) flat row pointer, so the deref is a no-op here.
+            case UnOp.Deref when VaListLifetimeValidator.IsVaList(u.Type): return Render(u.Operand);
             case UnOp.Deref when u.Type.Unqualified is CType.Array: return (Sub(u.Operand, PUnary), PUnary);
+            // C function-pointer dereference yields the same callable designator.
+            case UnOp.Deref when u.Operand.Type.Unqualified is CType.Func: return Render(u.Operand);
             case UnOp.Deref: return QualifiedRead(u, $"*{Sub(u.Operand, PUnary)}", PUnary);
             case UnOp.PreInc: return ($"++{Sub(u.Operand, PUnary)}", PUnary);
             case UnOp.PreDec: return ($"--{Sub(u.Operand, PUnary)}", PUnary);
@@ -2565,6 +2703,12 @@ internal sealed partial class CSharpBackend
         }
     }
 
+    private string SignedUnaryText(char sign, CExpr operand)
+    {
+        var text = Sub(DecayEnum(operand), PUnary);
+        return text.Length > 0 && text[0] == sign ? $"{sign}({text})" : sign + text;
+    }
+
     // C relational / equality yields int 0/1, NOT bool — `int x = a < b;` is legal
     // C. Lower the result to CBool (the integer-typed _Bool): CBool→int carries it
     // into arithmetic positions, and Cond.B(CBool) into conditional ones. `&&`/`||`
@@ -2572,6 +2716,15 @@ internal sealed partial class CSharpBackend
     // All three forms render fully wrapped, so they're atomic to a parent.
     private (string, int) RenderBinary(Binary b)
     {
+        if (_canHoist && b.Op is BinOp.LogAnd or BinOp.LogOr && HasLazyEffects(b.Right))
+            return RenderLazyLogical(b);
+        if (b.Op is BinOp.Eq or BinOp.Ne &&
+            (VaListLifetimeValidator.IsCursorReference(b.Left.Type) || VaListLifetimeValidator.IsCursorReference(b.Right.Type)))
+        {
+            var same = $"global::System.Runtime.CompilerServices.Unsafe.AreSame(ref {CursorReference(b.Left)}, ref {CursorReference(b.Right)})";
+            return ($"((CBool)({(b.Op == BinOp.Ne ? "!" : "")}{same}))", PPrimary);
+        }
+
         // C treats an enum operand as its underlying integer in every binary
         // context; C# allows few enum operators, so decay each operand first.
         b = b with { Left = DecayEnum(b.Left), Right = DecayEnum(b.Right) };
@@ -2760,45 +2913,24 @@ internal sealed partial class CSharpBackend
         _ => false,
     };
 
-    /// <summary>Render a pinned global/static array's backing store. A scalar /
-    /// struct element uses the generic <c>GlobalArrayFrom&lt;T&gt;</c> /
-    /// <c>GlobalArrayZeroed&lt;T&gt;</c>; a pointer element (a C# generic type
-    /// argument can't be a pointer — CS0306) round-trips through a pinned
-    /// <c>nint[]</c> reinterpreted as <c>T**</c>; a function-pointer element uses
-    /// the non-generic <c>PinFnPtrArray</c> (delegate* can't be a type argument
-    /// either).</summary>
+    /// <summary>Render owned C storage, independently of its initializer payload.
+    /// Pointer/function-pointer destinations use nint backing because pointers
+    /// cannot be generic arguments. Nonprimitive payloads initialize that final
+    /// zeroed destination through bounded owner helpers, without a temporary
+    /// managed array or a by-value containing-record construction.</summary>
     private string PinnedArrayText(PinnedArray pa, int requestedAlignment = 0)
     {
         var elemCs = Cs(pa.Element);
         var alignment = Math.Max(requestedAlignment, TypeAlignment(pa.Element));
+        if (TryPrimitiveArrayText(pa, requestedAlignment, out var payload)) return payload;
+        if (pa.Elems is not null) return OwnedArrayText(pa, requestedAlignment);
+        string storageType = pa.Element.IsPointerLowered ? "nint" : elemCs;
+        string cast = pa.Element.IsPointerLowered ? $"({elemCs}*)" : "";
         if (requestedAlignment > 0 || alignment > 8)
         {
-            if (pa.Element.IsPointerLowered)
-                throw new IrUnsupportedException("over-aligned array of pointers requires integer-backed initialization");
-            return pa.Elems is null
-                ? $"Libc.GlobalAlignedZeroed<{elemCs}>({(pa.Count is { } count ? Expr(count) : "0")}, {alignment})"
-                : $"Libc.GlobalAlignedFrom<{elemCs}>(new {elemCs}[]{{ {string.Join(", ", pa.Elems.Select(value => Coerced(value, pa.Element)))} }}, {alignment})";
+            return $"{cast}Libc.GlobalAlignedZeroed<{storageType}>({(pa.Count is { } count ? Expr(count) : "0")}, {alignment})";
         }
-        if (pa.Elems is null)
-        {
-            var count = pa.Count is { } c ? Expr(c) : "0";
-            return pa.Element.Unqualified is CType.Pointer or CType.Func
-                ? $"({elemCs}*)Libc.GlobalArrayZeroed<nint>({count})"
-                : $"Libc.GlobalArrayZeroed<{elemCs}>({count})";
-        }
-        if (pa.Element.Unqualified is CType.Func)
-        {
-            return $"({elemCs}*)Libc.PinFnPtrArray(new {elemCs}[]{{ {string.Join(", ", pa.Elems.Select(value => Coerced(value, pa.Element)))} }})";
-        }
-        if (pa.Element.Unqualified is CType.Pointer)
-        {
-            var ptr = string.Join(", ", pa.Elems.Select(e => $"(nint)({Expr(e)})"));
-            return $"({elemCs}*)Libc.GlobalArrayFrom<nint>(new nint[]{{ {ptr} }})";
-        }
-        var vals = string.Join(", ", pa.Elems.Select(e => Coerced(e, pa.Element)));
-        // Each declared array has its own address, including const arrays with
-        // identical contents. Only string literals may use content interning.
-        return $"Libc.GlobalArrayFrom<{elemCs}>(new {elemCs}[]{{ {vals} }})";
+        return $"{cast}Libc.GlobalArrayZeroed<{storageType}>({(pa.Count is { } c ? Expr(c) : "0")})";
     }
 
     /// <summary>Render a positional aggregate initializer as a C# object
@@ -2993,6 +3125,12 @@ internal sealed partial class CSharpBackend
 
     private string CommaDelegate(IReadOnlyList<CExpr> items)
     {
+        var previous = _globalAddressBases;
+        var reuse = _addressReuseAllowed;
+        _globalAddressBases = new(ReferenceEqualityComparer.Instance);
+        _addressReuseAllowed = false;
+        try
+        {
         VaListLifetimeValidator.ValidateCapture(items);
         var body = new StringBuilder();
         for (var i = 0; i < items.Count - 1; i++) { body.Append(RenderStmtExpr(items[i])).Append("; "); }
@@ -3001,6 +3139,8 @@ internal sealed partial class CSharpBackend
         return IsPointerType(last.Type)
             ? $"(({Cs(last.Type)})((global::System.Func<nint>)(() => {{ {body}return (nint)({Expr(last)}); }}))())"
             : $"((global::System.Func<{Cs(last.Type)}>)(() => {{ {body}return {Expr(last)}; }}))()";
+        }
+        finally { _globalAddressBases = previous; _addressReuseAllowed = reuse; }
     }
 
     // ---- <stdatomic.h> generic functions ---------------------------------
@@ -3027,6 +3167,10 @@ internal sealed partial class CSharpBackend
         var args = c.Args;
         var name = c.Callee.EndsWith("_explicit", StringComparison.Ordinal)
             ? c.Callee[..^"_explicit".Length] : c.Callee;
+
+        if (args.Count > 0 && args[0].Type.Unqualified is CType.Pointer pointer
+            && pointer.Pointee.Unqualified.IsPointerLowered)
+            return LowerPointerAtomicCall(c, name, pointer.Pointee.Unqualified);
 
         // Pointee C# type of arg0 (a `T*`), or null if undeterminable.
         string? Pointee() => args.Count > 0 && args[0].Type.Unqualified is CType.Pointer p
@@ -3147,7 +3291,7 @@ internal sealed partial class CSharpBackend
             // unknown-signature arg takes C's default argument promotions — notably
             // an enum decays to its underlying int (C# has no enum→int for `.Arg`).
             a.Add(c.ParamTypes is { } pts && i < pts.Count
-                ? CoercedArg(c.Args[i], pts[i])
+                ? CoercedArg(c.Args[i], pts[i], bindRuntimeOverload: c.CalleeSym is { FromSystemHeader: true })
                 // VaArg stores pointer bits via its void* conversion. A bare
                 // function address first needs its delegate* signature; an
                 // existing callback pointer uses the same representation.

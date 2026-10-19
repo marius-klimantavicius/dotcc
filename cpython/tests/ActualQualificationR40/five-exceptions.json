@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "scope": "CPython frozen upstream cases only",
+  "explicitUserAuthorization": true,
+  "authorizationQuote": "Accept five explicit native-parity exceptions; retain their SKIP/XFAIL counts.",
+  "authorizationDate": "2026-10-18",
+  "notDotCCCIWaiver": true,
+  "inputs": {
+    "inventory": {
+      "path": "/home/marius/p/dotcc/cpython/tests/Upstream/inventory.frozen.json",
+      "sha256": "d0d00c5f7d4b2cdc208a45095081627f7524acf7dc376bb59b0b838f4398e2dc"
+    },
+    "markers": {
+      "path": "/home/marius/p/dotcc/cpython/artifacts/owner-b-r36-20261018/required-marker-source-inventory.json",
+      "sha256": "a7ca80ced25e89eb5702133c333bd2a941a2d14c50722999c5e9012fc58b8de2"
+    },
+    "native": {
+      "path": "/home/marius/p/dotcc/cpython/artifacts/owner-b-r37-20261018/native-marker-adjudication.json",
+      "sha256": "43bcf2cbd6eb2d700cb53943c1e37fe579c146bf2e11c816c87b5b2ca9425ba1"
+    }
+  },
+  "exceptions": [
+    {
+      "case": "test.test_descr.ClassPropertiesAndMethods.test_bad_new",
+      "status": "required-expected-failure",
+      "reason": null,
+      "sourceSha256": "77a62df4d1ed043d40901576eda331807c251c1ddf25d4cb08296fbed940c656",
+      "methodSource": "    @unittest.expectedFailure\n    def test_bad_new(self):\n        self.assertRaises(TypeError, object.__new__)\n        self.assertRaises(TypeError, object.__new__, '')\n        self.assertRaises(TypeError, list.__new__, object)\n        self.assertRaises(TypeError, object.__new__, list)\n        class C(object):\n            __new__ = list.__new__\n        self.assertRaises(TypeError, C)\n        class C(list):\n            __new__ = object.__new__\n        self.assertRaises(TypeError, C)\n",
+      "method": "test_bad_new",
+      "declaringClass": "test.test_descr.ClassPropertiesAndMethods",
+      "expectedFailure": true
+    },
+    {
+      "case": "test.test_descr.ClassPropertiesAndMethods.test_restored_object_new",
+      "status": "required-expected-failure",
+      "reason": null,
+      "sourceSha256": "77a62df4d1ed043d40901576eda331807c251c1ddf25d4cb08296fbed940c656",
+      "methodSource": "    @unittest.expectedFailure\n    def test_restored_object_new(self):\n        class A(object):\n            def __new__(cls, *args, **kwargs):\n                raise AssertionError\n        self.assertRaises(AssertionError, A)\n        class B(A):\n            __new__ = object.__new__\n            def __init__(self, foo):\n                self.foo = foo\n        with warnings.catch_warnings():\n            warnings.simplefilter('error', DeprecationWarning)\n            b = B(3)\n        self.assertEqual(b.foo, 3)\n        self.assertEqual(b.__class__, B)\n        del B.__new__\n        self.assertRaises(AssertionError, B)\n        del A.__new__\n        with warnings.catch_warnings():\n            warnings.simplefilter('error', DeprecationWarning)\n            b = B(3)\n        self.assertEqual(b.foo, 3)\n        self.assertEqual(b.__class__, B)\n",
+      "method": "test_restored_object_new",
+      "declaringClass": "test.test_descr.ClassPropertiesAndMethods",
+      "expectedFailure": true
+    },
+    {
+      "case": "test.test_importlib.resources.test_resource.DeletingZipsTest.test_as_file_does_not_keep_open",
+      "status": "required-skip",
+      "reason": "Desired but not supported.",
+      "sourceSha256": "99ba221613264205524ed135bfe77b02419abca2f6e324d075b860b3d4b1dfb7",
+      "methodSource": "    @unittest.skip(\"Desired but not supported.\")\n    def test_as_file_does_not_keep_open(self):  # pragma: no cover\n        resources.as_file(resources.files('data01') / 'binary.file')\n",
+      "method": "test_as_file_does_not_keep_open",
+      "declaringClass": "test.test_importlib.resources.test_resource.DeletingZipsTest",
+      "expectedFailure": false
+    },
+    {
+      "case": "test.test_importlib.test_namespace_pkgs.ZipWithMissingDirectory.test_missing_directory",
+      "status": "required-expected-failure",
+      "reason": null,
+      "sourceSha256": "d1874be2dd9cc4a487e2754454ca453877e7b5c16fb5c625d63c0d7fcaa607e9",
+      "methodSource": "    @unittest.expectedFailure\n    def test_missing_directory(self):\n        # This will fail because missing_directory.zip contains:\n        #   Length      Date    Time    Name\n        # ---------  ---------- -----   ----\n        #        29  2012-05-03 18:13   foo/one.py\n        #         0  2012-05-03 20:57   bar/\n        #        38  2012-05-03 20:57   bar/two.py\n        # ---------                     -------\n        #        67                     3 files\n\n        # Because there is no 'foo/', the zipimporter currently doesn't\n        #  know that foo is a namespace package\n\n        import foo.one\n",
+      "method": "test_missing_directory",
+      "declaringClass": "test.test_importlib.test_namespace_pkgs.ZipWithMissingDirectory",
+      "expectedFailure": true
+    },
+    {
+      "case": "test.test_threading.ConditionAsRLockTests.test_recursion_count",
+      "status": "required-skip",
+      "reason": "Condition does not expose _recursion_count()",
+      "sourceSha256": "8d6f8b1c0aaa17fd8b372796a3f28304aa45e32a4e9aaafc1d1eedf36e1dab7e",
+      "methodSource": "    def test_recursion_count(self):\n        self.skipTest(\"Condition does not expose _recursion_count()\")\n",
+      "method": "test_recursion_count",
+      "declaringClass": "test.test_threading.ConditionAsRLockTests",
+      "expectedFailure": false
+    }
+  ]
+}

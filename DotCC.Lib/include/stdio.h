@@ -91,6 +91,9 @@ char* fgets(char* s, int n, FILE* stream);
 
 /* File streams (FILE* is a real pointer to the opaque Libc.FILE). */
 FILE* fopen(const char* path, const char* mode);
+/* Adopts the existing descriptor without duplication or truncation. fclose
+   closes that descriptor; failure leaves descriptor ownership with the caller. */
+FILE* fdopen(int fd, const char* mode);
 FILE* freopen(const char* path, const char* mode, FILE* stream);
 FILE* tmpfile(void);
 int fclose(FILE* stream);
@@ -106,6 +109,7 @@ int ferror(FILE* stream);
 void clearerr(FILE* stream);
 int ungetc(int c, FILE* stream);
 int setvbuf(FILE* stream, char* buf, int mode, int size);
+void setbuf(FILE* stream, char* buf);
 char* tmpnam(char* s);
 int remove(const char* path);
 int rename(const char* oldp, const char* newp);

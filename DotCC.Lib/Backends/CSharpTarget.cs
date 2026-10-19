@@ -13,7 +13,7 @@ using DotCC.Ir;
 /// type is a <c>delegate*</c>. This reproduces exactly the spellings the IR type
 /// model used to bake in via the old <c>CType.CsType</c> property.
 /// </summary>
-internal sealed class CSharpTarget(bool instanceMethods = false) : ITarget
+internal sealed class CSharpTarget(bool instanceMethods = false, IReadOnlyDictionary<string, string>? aggregateNames = null) : ITarget
 {
     public string RenderType(CType t) => t switch
     {
@@ -21,6 +21,7 @@ internal sealed class CSharpTarget(bool instanceMethods = false) : ITarget
         CType.VoidType => "void",
         // A pointer-TO-array collapses to the array's own flat row pointer (no extra
         // `*`); every other pointer is the pointee's spelling plus `*`.
+        CType.Pointer ptr when VaListLifetimeValidator.IsVaList(ptr.Pointee) => "ref VaList",
         CType.Pointer ptr => ptr.Pointee is CType.Array ? RenderType(ptr.Pointee) : RenderType(ptr.Pointee) + "*",
         // An array lowers to a single pointer to its innermost scalar.
         CType.Array a => RenderType(a.FlatElement) + "*",
@@ -35,7 +36,7 @@ internal sealed class CSharpTarget(bool instanceMethods = false) : ITarget
             + string.Join(", ", f.Params.Select(RenderType)
                 .Concat(f.Variadic && !f.IsNativeCallConv ? new[] { "global::System.ReadOnlySpan<VaArg>" } : global::System.Array.Empty<string>())
                 .Append(RenderType(f.Return))) + ">",
-        CType.Named n => n.Name,
+        CType.Named n => aggregateNames?.GetValueOrDefault(n.Name, n.Name) ?? n.Name,
         CType.Enum e => EmitHelpers.Id(e.Name),
         CType.ComplexType => "global::System.Numerics.Complex",
         CType.Float128Type => "Float128",

@@ -14,7 +14,11 @@ import os
 from pathlib import Path
 import shutil
 import signal
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tools_manifest, selected_tool
 import tempfile
 import time
 
@@ -23,16 +27,7 @@ CAMPAIGN = ROOT / "picotls"
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 def tools_identity():
-    files = []
-    for project in ("DotCC", "DotCC.PostProcess"):
-        directory = ROOT / project / "bin/Release/net10.0"
-        files.extend(directory.glob("*.dll"))
-        files.extend(directory.glob("*.deps.json"))
-        files.extend(directory.glob("*.runtimeconfig.json"))
-    for name in ("DotCC/bin/Release/net10.0/dotcc.dll", "DotCC.PostProcess/bin/Release/net10.0/dotcc-postprocess.dll"):
-        if not (ROOT / name).is_file():
-            raise RuntimeError("Missing frozen tool: " + name)
-    return {str(p.relative_to(ROOT)): sha(p) for p in sorted(set(files))}
+    return selected_tools_manifest()
 
 def authored_identity():
     paths = subprocess.check_output(["git", "ls-files", "picotls"], cwd=ROOT, text=True).splitlines()
@@ -50,7 +45,7 @@ def execute(name, argv, seconds):
     with Path(command["log"]).open("w") as log:
         process = subprocess.Popen(command["argv"], cwd=ROOT, stdout=log, stderr=subprocess.STDOUT,
                                    start_new_session=True, env=dict(os.environ, LC_ALL="C", TMPDIR=str(run / "tmp"),
-                                       DOTCC_COMPILER=str(ROOT / "DotCC/bin/Release/net10.0/dotcc.dll")))
+                                       DOTCC_COMPILER=str(selected_tool())))
         try:
             command["exit_code"] = process.wait(timeout=seconds)
         except BaseException as error:

@@ -10,7 +10,11 @@ from pathlib import Path
 import platform
 import shutil
 import signal
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import sys
 import tempfile
 import time
@@ -98,6 +102,15 @@ def source_closure(project):
     return files
 
 
+def require_instance_object(obj):
+    # Compiler.InstanceMethods parses line-anchored records across the whole
+    # object: aggregate identity metadata can precede the convention marker.
+    prefix = '//!!dotcc-obj calling-convention:'
+    records = [line for line in obj.read_text().split('\n') if line.startswith(prefix)]
+    if records != [prefix + 'instance-v1']:
+        raise RuntimeError('Producer object is not instance-v1: ' + str(obj))
+
+
 def verify_delivery(args, receipt, pin, tree):
     delivery_path = pin(args.delivery_receipt, args.delivery_sha256)
     pin(ROOT / 'scripts/campaign_delivery.py')
@@ -126,8 +139,7 @@ def verify_delivery(args, receipt, pin, tree):
         raise RuntimeError('Instance producer identity differs')
     for row in assembly['objects'].values():
         obj = pin(row['object_path'], row['object_sha256'])
-        if '//!!dotcc-obj calling-convention:instance-v1' not in obj.read_text().splitlines()[:20]:
-            raise RuntimeError('Producer object is not instance-v1: ' + str(obj))
+        require_instance_object(obj)
         pin(row['receipt'])
     for name, digest in inputs['staged_headers'].items():
         pin(profile / name, digest)

@@ -11,6 +11,9 @@ public static partial class Compiler
     // Unresolved C methods may be supplied by an authored partial class, a
     // selected native import, or the embedded runtime. Let C# perform exactly
     // the lexical lookup used by direct calls, inside the translated owner.
+    // A C prototype need not be the CLR service's exact signature (notably a
+    // header-owned T* versus void*). Take the address of one typed forwarding
+    // method per unresolved C symbol, rather than the runtime method group.
     private static (IReadOnlyDictionary<string, string> Types, string Methods) ResolveExternalPointerOwners(
         IReadOnlyDictionary<string, string> declarations, IEnumerable<string> definitions,
         IEnumerable<string> otherNames, bool instanceMethods = false)
@@ -47,10 +50,41 @@ public static partial class Compiler
             while (!occupied.Add(resolver)) resolver += "_";
             var target = "&" + FunctionPointerNames.OwnerAlias(name) + "." + EmitHelpers.Id(name);
             if (!text.Contains(target, StringComparison.Ordinal)) throw new CompileException("invalid function-pointer target record; regenerate objects");
-            types[key] = text.Replace(target, "DotCcFunctions." + resolver + "()", StringComparison.Ordinal);
-            methods.Append("internal unsafe static ").Append(signature.Groups[1].Value).Append(' ').Append(resolver)
-                .Append("() => &").Append(EmitHelpers.Id(name)).Append(";\n");
+            types[key] = text.Replace(target, "&DotCcFunctions." + resolver, StringComparison.Ordinal);
+            methods.Append(ExternalPointerAdapter(signature.Groups[1].Value, resolver, EmitHelpers.Id(name)));
         }
         return (types, methods.ToString());
+    }
+
+    private static string ExternalPointerAdapter(string signature, string name, string target)
+    {
+        // The existing object record carries the fully rendered C ABI. Split
+        // only its outer parameter list: callbacks and generic runtime types
+        // can themselves contain commas. No source-language type inference is
+        // needed here, and aggregate relocations have already been applied.
+        var types = new List<string>();
+        int start = "delegate*<".Length, depth = 0;
+        for (int i = start; i < signature.Length - 1; i++)
+        {
+            if (signature[i] == '<') depth++;
+            else if (signature[i] == '>') depth--;
+            else if (signature[i] == ',' && depth == 0)
+            {
+                types.Add(signature[start..i].Trim());
+                start = i + 1;
+            }
+        }
+        types.Add(signature[start..^1].Trim());
+        var result = types[^1];
+        var parameters = types.Take(types.Count - 1).Select((type, i) =>
+            (type.StartsWith("ref ", StringComparison.Ordinal) ? "scoped " : "") + type + " a" + i);
+        var arguments = types.Take(types.Count - 1).Select((type, i) =>
+            (type.StartsWith("ref ", StringComparison.Ordinal) ? "ref " : "") + "a" + i);
+        var call = target + "(" + string.Join(", ", arguments) + ")";
+        var expression = result == "void" ? call
+            : result.StartsWith("ref ", StringComparison.Ordinal) ? "ref " + call
+            : "unchecked((" + result + ")(" + call + "))";
+        return "internal unsafe static " + result + " " + name + "(" + string.Join(", ", parameters)
+            + ") => " + expression + ";\n";
     }
 }

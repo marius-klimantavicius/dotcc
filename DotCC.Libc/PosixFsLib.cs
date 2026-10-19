@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Microsoft.Win32.SafeHandles;
 
 namespace DotCC.Libc;
 
@@ -26,9 +27,8 @@ namespace DotCC.Libc;
 /// (pointers + <c>int</c>), so <c>[DllImport]</c> emits a direct AOT-clean call
 /// with no marshalling stub, and — unlike <c>[LibraryImport]</c> — needs no
 /// source generator, so it survives the runtime-block splice into the functional
-/// tests' generator-less Roslyn compilation. <c>flock</c> (advisory locks) is a
-/// success no-op — a single managed process never self-contends, and portable
-/// code already tolerates the absence of a cross-process guarantee. <c>chmod</c>
+/// tests' generator-less Roslyn compilation. Linux x64 advisory locks use the
+/// real OS descriptor through the shared file-lock services. <c>chmod</c>
 /// is best-effort (Unix mode bits via
 /// <see cref="File.SetUnixFileMode(string, UnixFileMode)"/> where the host
 /// supports it, else a no-op success).
@@ -64,19 +64,78 @@ public static unsafe partial class Libc
         string[] names;
         try
         {
-            if (!Directory.Exists(path)) { errno = ENOENT; return null; }
-            var entries = Directory.GetFileSystemEntries(path);
-            names = new string[entries.Length + 2];
-            names[0] = ".";
-            names[1] = "..";
-            for (var i = 0; i < entries.Length; i++) { names[i + 2] = global::System.IO.Path.GetFileName(entries[i]); }
+            if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                // Exists suppresses kernel traversal errors. Enumerate one
+                // actual opened directory, retaining its identity after rename.
+                var snapshot = ReadLinuxDirectory(path);
+                if (snapshot == null) return null;
+                names = snapshot;
+            }
+            else
+            {
+                var entries = Directory.GetFileSystemEntries(path);
+                names = new string[entries.Length + 2];
+                names[0] = ".";
+                names[1] = "..";
+                for (var i = 0; i < entries.Length; i++) { names[i + 2] = global::System.IO.Path.GetFileName(entries[i]); }
+            }
         }
         catch (UnauthorizedAccessException) { errno = EACCES; return null; }
+        catch (DirectoryNotFoundException) { errno = ENOENT; return null; }
+        catch (FileNotFoundException) { errno = ENOENT; return null; }
+        catch (ArgumentException) { errno = EINVAL; return null; }
         catch (IOException) { errno = EIO; return null; }
-        var token = (byte*)NativeMemory.Alloc(8);
-        var buf = (byte*)NativeMemory.Alloc((nuint)DName + 16);
-        lock (_dirsLock) { _dirs[(nint)token] = new DirState { Names = names, Dirent = buf }; }
-        return token;
+        catch (OutOfMemoryException) { errno = ENOMEM; return null; }
+        byte* token = null;
+        byte* buf = null;
+        try
+        {
+            token = (byte*)NativeMemory.Alloc(8);
+            buf = (byte*)NativeMemory.Alloc((nuint)DName + 16);
+            lock (_dirsLock) { _dirs.Add((nint)token, new DirState { Names = names, Dirent = buf }); }
+            var result = token;
+            token = buf = null; // ownership transfers only after registration
+            return result;
+        }
+        catch (OutOfMemoryException) { errno = ENOMEM; return null; }
+        finally { NativeMemory.Free(buf); NativeMemory.Free(token); }
+    }
+
+    [DllImport("libc", EntryPoint = "opendir", SetLastError = true)]
+    private static extern nint HostOpenDirectory(byte* path);
+    [DllImport("libc", EntryPoint = "readdir", SetLastError = true)]
+    private static extern byte* HostReadDirectory(nint directory);
+    [DllImport("libc", EntryPoint = "closedir", SetLastError = true)]
+    private static extern int HostCloseDirectory(nint directory);
+
+    private static string[]? ReadLinuxDirectory(string path)
+    {
+        nint directory;
+        fixed (byte* bytes = Encoding.UTF8.GetBytes(path + "\0"))
+            directory = HostOpenDirectory(bytes);
+        if (directory == 0) { errno = Marshal.GetLastPInvokeError(); return null; }
+        try
+        {
+            var names = new List<string>();
+            while (true)
+            {
+                // .NET clears native errno before a SetLastError call, so
+                // a null result distinguishes clean EOF from a read failure.
+                byte* entry = HostReadDirectory(directory);
+                if (entry == null)
+                {
+                    int error = Marshal.GetLastPInvokeError();
+                    if (error != 0) { errno = error; return null; }
+                    break;
+                }
+                // Linux x64 dirent: ino64/off64/reclen16/type8/name[]. This is
+                // the host layout, independent of dotcc's public dirent ABI.
+                names.Add(Marshal.PtrToStringUTF8((nint)(entry + 19))!);
+            }
+            return names.ToArray();
+        }
+        finally { HostCloseDirectory(directory); }
     }
 
     /// <summary><c>readdir(dirp)</c> — fill and return the reused
@@ -135,10 +194,17 @@ public static unsafe partial class Libc
     {
         if (path == null) { errno = ENOENT; return -1; }
         var p = ResolvePath(path);
+        if ((flags & 0x20000) != 0) return OpenLinuxFile(p, flags, mode);
         // FileStream cannot own directory handles. Report that capability
         // boundary explicitly instead of misclassifying it as a permission
         // failure; callers may support platforms without directory fsync.
         if (Directory.Exists(p)) { errno = EISDIR; return -1; }
+        // A path-based FileStream silently takes an flock share lock. POSIX
+        // open must not acquire an application advisory lock, or fail merely
+        // because another process holds one. Reuse the existing native-open
+        // owning-handle path on its supported ABI, also when O_NOFOLLOW is off.
+        if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            return OpenLinuxFile(p, flags, mode);
         const int oCreat = 0x40, oExcl = 0x80, oTrunc = 0x200, oAppend = 0x400;
         var access = (flags & 0x3) switch
         {
@@ -169,6 +235,51 @@ public static unsafe partial class Libc
         catch (ArgumentException) { errno = EINVAL; return -1; }
         catch (IOException) { errno = EIO; return -1; }
     }
+
+    // Native open(2) supplies atomic O_NOFOLLOW and creates no hidden flock.
+    // The FileStream adopts this original owning SafeFileHandle without a
+    // second path open, advisory sharing lock, duplicate or premature close.
+    private static int OpenLinuxFile(string path, int flags, int mode)
+    {
+        if (!OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64)
+        { errno = ENOTSUP; return -1; }
+        var stream = OpenLinuxStream(path, flags, mode);
+        if (stream is null) return -1;
+        try
+        {
+            int fd = RegisterFileSlot(stream);
+            var slot = SlotByFd(fd)!;
+            slot.StatusFlags = flags & (3 | 0x400 | 0x800);
+            slot.DescriptorFlags = (flags & 0x80000) != 0 ? 1 : 0;
+            return fd;
+        }
+        catch (OutOfMemoryException) { stream.Dispose(); errno = ENOMEM; return -1; }
+    }
+
+    // Shared by POSIX open, stdio opens and exclusive temporary creation.
+    // SafeFileHandle owns the original descriptor; FileStream never reopens the
+    // path or acquires a .NET sharing flock. No synthetic fd reaches the OS.
+    private static FileStream? OpenLinuxStream(string path, int flags, int mode)
+    {
+        int descriptor;
+        fixed (byte* name = Encoding.UTF8.GetBytes(path + "\0")) descriptor = PosixOpenFile(name, flags, mode);
+        if (descriptor < 0) { errno = Marshal.GetLastPInvokeError(); return null; }
+        var handle = new SafeFileHandle((IntPtr)descriptor, ownsHandle: true);
+        try
+        {
+            var access = (flags & 3) == 2 ? FileAccess.ReadWrite : (flags & 3) == 1 ? FileAccess.Write : FileAccess.Read;
+            return new FileStream(handle, access, bufferSize: 1);
+        }
+        catch (Exception error) when (error is IOException or ArgumentException or UnauthorizedAccessException or OutOfMemoryException)
+        {
+            handle.Dispose();
+            errno = error is UnauthorizedAccessException ? EACCES : error is ArgumentException ? EINVAL : error is OutOfMemoryException ? ENOMEM : EIO;
+            return null;
+        }
+    }
+
+    [DllImport("libc", EntryPoint = "open", SetLastError = true)]
+    private static extern int PosixOpenFile(byte* path, int flags, int mode);
 
     // ---- path operations (<unistd.h> / <sys/stat.h> / <stdlib.h>) ----------
 
@@ -239,17 +350,47 @@ public static unsafe partial class Libc
 
     /// <summary><c>getcwd(buf, size)</c> — copy the working directory into
     /// <paramref name="buf"/> (NUL-terminated) and return it, or <c>null</c>
-    /// (ERANGE) if it doesn't fit. A <c>null</c> buf allocates a buffer (the GNU
-    /// extension chibi relies on); the caller frees it.</summary>
+    /// (ERANGE) if it doesn't fit. A <c>null</c> buf allocates size bytes, or
+    /// enough for the path when size is zero (GNU extension); the caller frees
+    /// it through this runtime's allocator.</summary>
     public static byte* getcwd(byte* buf, ulong size)
     {
-        var cwd = CurrentWorkingDirectory;
-        var need = Encoding.UTF8.GetByteCount(cwd) + 1;
-        if (buf == null) { buf = (byte*)AllocateHeap((nuint)need); if (buf == null) { errno = ENOMEM; return null; } size = (ulong)need; }
-        else if ((ulong)need > size) { errno = ERANGE; return null; }
-        var n = Encoding.UTF8.GetBytes(cwd, new Span<byte>(buf, (int)size));
-        buf[n] = 0;
-        return buf;
+        if (buf != null && size == 0) { errno = EINVAL; return null; }
+        try
+        {
+            // A deleted process cwd makes GetCurrentDirectory throw. Contain
+            // that failure at the C boundary, before allocating any output.
+            string cwd = CurrentWorkingDirectory;
+            if (RuntimeContext.Current is not null)
+            {
+                // Explicit owners have a path-based virtual cwd, not a host
+                // directory descriptor. Do not report a vanished cached path
+                // as success, or change the process cwd to inspect it.
+                if ((File.GetAttributes(cwd) & FileAttributes.Directory) == 0)
+                { errno = ENOTDIR; return null; }
+            }
+            int length = Encoding.UTF8.GetByteCount(cwd);
+            ulong need = (ulong)length + 1;
+            ulong capacity = buf == null && size == 0 ? need : size;
+            if (need > capacity) { errno = ERANGE; return null; }
+            if (buf == null)
+            {
+                if (capacity > (ulong)nuint.MaxValue) { errno = ENOMEM; return null; }
+                buf = (byte*)AllocateHeap((nuint)capacity);
+                if (buf == null) { errno = ENOMEM; return null; }
+            }
+            // The caller's size_t can exceed Int32.MaxValue. Only construct a
+            // span over the bytes actually written, never over that capacity.
+            Encoding.UTF8.GetBytes(cwd, new Span<byte>(buf, length));
+            buf[length] = 0;
+            return buf;
+        }
+        catch (FileNotFoundException) { errno = ENOENT; return null; }
+        catch (DirectoryNotFoundException) { errno = ENOENT; return null; }
+        catch (UnauthorizedAccessException) { errno = EACCES; return null; }
+        catch (PathTooLongException) { errno = ENAMETOOLONG; return null; }
+        catch (IOException) { errno = EIO; return null; }
+        catch (OutOfMemoryException) { errno = ENOMEM; return null; }
     }
 
     /// <summary><c>chmod(path, mode)</c> — set Unix permission bits best-effort
@@ -264,33 +405,80 @@ public static unsafe partial class Libc
     }
 
     /// <summary><c>symlink(target, linkpath)</c> — create a symbolic link; 0 on
-    /// success, -1 (EEXIST/EACCES/EIO).</summary>
+    /// success, -1 with errno on failure. Linux x64 uses the native primitive
+    /// to retain traversal errors, including ENOENT/ENOTDIR/EACCES/ELOOP.
+    /// Only linkpath is owner-relative; target bytes are stored unchanged.</summary>
     public static int symlink(byte* target, byte* linkpath)
     {
-        var tgt = Str(target);
-        var lnk = ResolvePath(linkpath);
-        try { File.CreateSymbolicLink(lnk, tgt); return 0; }
-        catch (IOException) when (File.Exists(lnk) || Directory.Exists(lnk)) { errno = EEXIST; return -1; }
+        try
+        {
+            if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                byte[]? name = linkpath == null ? null : Encoding.UTF8.GetBytes(ResolvePath(linkpath) + "\0");
+                fixed (byte* path = name)
+                {
+                    int result = PosixSymbolicLink(target, path);
+                    if (result < 0) errno = Marshal.GetLastPInvokeError();
+                    return result;
+                }
+            }
+            if (target == null || linkpath == null) { errno = EFAULT; return -1; }
+            var lnk = ResolvePath(linkpath);
+            try { File.CreateSymbolicLink(lnk, Str(target)); return 0; }
+            catch (IOException) when (File.Exists(lnk) || Directory.Exists(lnk)) { errno = EEXIST; return -1; }
+        }
         catch (UnauthorizedAccessException) { errno = EACCES; return -1; }
+        catch (FileNotFoundException) { errno = ENOENT; return -1; }
+        catch (DirectoryNotFoundException) { errno = ENOENT; return -1; }
+        catch (PathTooLongException) { errno = ENAMETOOLONG; return -1; }
+        catch (ArgumentException) { errno = EINVAL; return -1; }
         catch (IOException) { errno = EIO; return -1; }
+        catch (OutOfMemoryException) { errno = ENOMEM; return -1; }
     }
 
     /// <summary><c>readlink(path, buf, bufsiz)</c> — write the symlink target
-    /// (NOT NUL-terminated, per POSIX) into <paramref name="buf"/>, truncated to
-    /// <paramref name="bufsiz"/>; returns the byte count, or -1 (EINVAL if the
-    /// path is not a symlink).</summary>
+    /// without a NUL terminator into <paramref name="buf"/>, truncated to
+    /// <paramref name="bufsiz"/>; returns the byte count, or -1 with errno.
+    /// Linux x64 retains native path errors and size_t behavior, including
+    /// EINVAL for zero capacity or an existing nonlink. Only path is resolved
+    /// against the caller's owner cwd; the stored target is never resolved.</summary>
     public static long readlink(byte* path, byte* buf, ulong bufsiz)
     {
-        var p = ResolvePath(path);
-        string? target;
-        try { target = (File.Exists(p) ? new FileInfo(p) : (FileSystemInfo)new DirectoryInfo(p)).LinkTarget; }
+        try
+        {
+            if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                byte[]? name = path == null ? null : Encoding.UTF8.GetBytes(ResolvePath(path) + "\0");
+                fixed (byte* p = name)
+                {
+                    long result = PosixReadLink(p, buf, bufsiz);
+                    if (result < 0) errno = Marshal.GetLastPInvokeError();
+                    return result;
+                }
+            }
+            if (bufsiz == 0) { errno = EINVAL; return -1; }
+            if (path == null || buf == null) { errno = EFAULT; return -1; }
+            var namePath = ResolvePath(path);
+            string? target = (File.Exists(namePath) ? new FileInfo(namePath) : (FileSystemInfo)new DirectoryInfo(namePath)).LinkTarget;
+            if (target == null) { errno = EINVAL; return -1; }
+            var bytes = Encoding.UTF8.GetBytes(target);
+            int n = (int)Math.Min((ulong)bytes.Length, bufsiz);
+            new ReadOnlySpan<byte>(bytes, 0, n).CopyTo(new Span<byte>(buf, n));
+            return n;
+        }
+        catch (UnauthorizedAccessException) { errno = EACCES; return -1; }
+        catch (FileNotFoundException) { errno = ENOENT; return -1; }
+        catch (DirectoryNotFoundException) { errno = ENOENT; return -1; }
+        catch (PathTooLongException) { errno = ENAMETOOLONG; return -1; }
+        catch (ArgumentException) { errno = EINVAL; return -1; }
         catch (IOException) { errno = EIO; return -1; }
-        if (target == null) { errno = EINVAL; return -1; }
-        var bytes = Encoding.UTF8.GetBytes(target);
-        var n = Math.Min(bytes.Length, (int)bufsiz);
-        new Span<byte>(bytes, 0, n).CopyTo(new Span<byte>(buf, n));
-        return n;
+        catch (OutOfMemoryException) { errno = ENOMEM; return -1; }
     }
+
+    [DllImport("libc", EntryPoint = "symlink", SetLastError = true)]
+    private static extern int PosixSymbolicLink(byte* target, byte* linkpath);
+    [DllImport("libc", EntryPoint = "readlink", SetLastError = true)]
+    private static extern long PosixReadLink(byte* path, byte* buf, ulong bufsiz);
 
     /// <summary><c>link(oldpath, newpath)</c> — create a hard link
     /// <paramref name="newpath"/> to the existing file <paramref name="oldpath"/>.
@@ -366,10 +554,6 @@ public static unsafe partial class Libc
 
     // ---- <sys/file.h> ------------------------------------------------------
 
-    /// <summary><c>flock(fd, operation)</c> — advisory locking; a success no-op
-    /// (see the class remarks). Always 0.</summary>
-    public static int flock(int fd, int operation) => 0;
-
     // ---- more <unistd.h> ---------------------------------------------------
 
     /// <summary><c>access(path, mode)</c> — 0 when the path exists and the
@@ -414,14 +598,46 @@ public static unsafe partial class Libc
     private static extern int PosixChown(byte* path, uint owner, uint group);
 
     /// <summary><c>ftruncate(fd, length)</c> — resize the fd's backing file to
-    /// <paramref name="length"/> bytes; 0 on success, -1 (EBADF/EINVAL).</summary>
+    /// <paramref name="length"/> bytes without changing its offset, including
+    /// offsets beyond EOF. Returns 0 on success, -1 with errno on failure.</summary>
     public static int ftruncate(int fd, long length)
     {
+        if (length < 0) { errno = EINVAL; return -1; }
         var s = SlotByFd(fd);
-        if (s?.Stream is not { CanSeek: true, CanWrite: true } st) { errno = EBADF; return -1; }
-        try { st.SetLength(length); return 0; }
+        if (s is null) { errno = EBADF; return -1; }
+        if (s.Stream is not { CanSeek: true, CanWrite: true } st) { errno = EINVAL; return -1; }
+        try
+        {
+            if (st is FileStream file)
+            {
+                // Use the registered stream's owning handle, never the dotcc fd.
+                // Exposing it first flushes BCL buffers. The positional resize
+                // leaves both managed and OS offsets alone, without a seek/restore
+                // race with other users of this open file. C stdio buffers remain
+                // the caller's responsibility (fflush before descriptor access).
+                if (!OperatingSystem.IsWindows())
+                {
+                    if (ResizeFile(file.SafeFileHandle, length) == 0) return 0;
+                    errno = Marshal.GetLastPInvokeError();
+                    return -1;
+                }
+                RandomAccess.SetLength(file.SafeFileHandle, length);
+            }
+            else
+            {
+                long position = st.Position;
+                st.SetLength(length);
+                if (st.Position != position) st.Position = position;
+            }
+            return 0;
+        }
+        catch (ObjectDisposedException) { errno = EBADF; return -1; }
         catch (ArgumentOutOfRangeException) { errno = EINVAL; return -1; }
+        catch (UnauthorizedAccessException) { errno = EACCES; return -1; }
         catch (IOException) { errno = EIO; return -1; }
+
+        [DllImport("libc", EntryPoint = "ftruncate", SetLastError = true)]
+        static extern int ResizeFile(SafeFileHandle handle, long size);
     }
 
     /// <summary><c>mkfifo(path, mode)</c> — create a named pipe (FIFO). Forwards

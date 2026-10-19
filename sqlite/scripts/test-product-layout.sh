@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 source "$(dirname "$0")/legacy-common.sh"
 export TMPDIR="$SQLITE_ROOT/artifacts/tmp"
@@ -11,7 +12,7 @@ fi
 prefix="$SQLITE_ROOT/artifacts/product-layout"
 generated="$SQLITE_ROOT/generated/product-layout"
 mkdir -p "$generated"
-"$SQLITE_ROOT/scripts/emit-engine.sh" > "$prefix-emission.log" 2>&1
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/product_identity.py" > "$prefix-product-identity.json"
 
 # Preserve product override precedence without native macro-redefinition
 # diagnostics. Both preprocess and native oracle consume this identical list.
@@ -25,12 +26,12 @@ done
 printf '%s\n' "${definitions[@]}" | sort > "$prefix-defines.txt"
 flags=()
 while IFS= read -r definition; do flags+=("-D$definition"); done < "$prefix-defines.txt"
-compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
+compiler="$DOTCC_COMPILER"
 source_directory="$SQLITE_ROOT/generated/sqlite-port"
 # The campaign translator stages inputs in its run directory. Prepare this
 # standalone native probe input too, so a release upgrade cannot reuse old C.
 "$PYTHON_CMD" "$SQLITE_ROOT/scripts/prepare-host-source.py" >&2
-dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/tests" \
+"${PRODUCTION_COMMAND[@]}" dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/tests" \
   --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
   -E "$source_directory/sqlite3.c" > "$prefix-preprocessed.c"
 "$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
@@ -59,7 +60,7 @@ header.write_text(content + "".join(f"REQUIRED({owner}, {member});\n" for owner,
 print(f"Added {len(additional)} native probes for emitted flexible-array contracts")
 PY
 
-gcc -std=c17 -O1 "${SQLITE_NATIVE_FLAGS[@]}" "${flags[@]}" -DDOTCC_LAYOUT_REQUESTS \
+"${PRODUCTION_COMMAND[@]}" gcc -std=c17 -O1 "${SQLITE_NATIVE_FLAGS[@]}" "${flags[@]}" -DDOTCC_LAYOUT_REQUESTS \
   -I "$source_directory" -I "$SQLITE_ROOT/tests" -I "$generated" \
   "$SQLITE_ROOT/tests/ProductLayout/native.c" -lm -o "$SQLITE_ROOT/build/product-layout-native" \
   > "$prefix-native-build.log" 2>&1
@@ -72,13 +73,13 @@ run_sqlite_process "$SQLITE_ROOT/build/product-layout-native" > "$prefix-native.
 cat "$prefix-metadata.log"
 
 project="$SQLITE_ROOT/tests/ProductLayout/ProductLayout.csproj"
-dotnet build "$project" -c Release --nologo > "$prefix-build.log" 2>&1
+"${PRODUCTION_COMMAND[@]}" dotnet build "$project" -c Release --nologo > "$prefix-build.log" 2>&1
 run_sqlite_process dotnet "$SQLITE_ROOT/tests/ProductLayout/bin/Release/net10.0/ProductLayout.dll" \
   > "$prefix-jit.out"
 cat "$prefix-jit.out"
 if [[ "${SQLITE_AOT:-0}" == 1 ]]; then
   publish="$SQLITE_ROOT/build/product-layout-aot"
-  dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true \
+  "${PRODUCTION_COMMAND[@]}" dotnet publish "$project" -c Release -r linux-x64 -p:PublishAot=true \
     -o "$publish" --nologo > "$prefix-aot-build.log" 2>&1
   run_sqlite_process "$publish/ProductLayout" > "$prefix-aot.out"
   diff -u "$prefix-jit.out" "$prefix-aot.out"

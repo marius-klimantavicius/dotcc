@@ -18,6 +18,16 @@
 #define M_LN2   0.6931471805599453
 #define M_LN10  2.302585092994046
 
+/* Typed IEEE-754 constant expressions for the selected target ABI. Keeping the
+   C types here matters for sizeof, promotions and conditional expressions;
+   undeclared identifiers cannot inherit the managed runtime property's type.
+   Floating division follows the target's IEC 60559 infinity/quiet-NaN rules. */
+#define HUGE_VAL  (1.0 / 0.0)
+#define HUGE_VALF (1.0f / 0.0f)
+#define HUGE_VALL (1.0L / 0.0L)
+#define INFINITY  (1.0f / 0.0f)
+#define NAN       (0.0f / 0.0f)
+
 /* Trigonometric. */
 double sin(double x);   float sinf(float x);
 double cos(double x);   float cosf(float x);
@@ -37,6 +47,9 @@ double atanh(double x); float atanhf(float x);
 
 /* Exponentials and logarithms. */
 double exp(double x);   float expf(float x);
+double exp2(double x);
+double erf(double x);
+double erfc(double x);
 double expm1(double x); float expm1f(float x);
 double log(double x);   float logf(float x);
 double log1p(double x); float log1pf(float x);
@@ -72,6 +85,9 @@ long double fabsl(long double x);
 double fmod(double x, double y); float fmodf(float x, float y);
 double fmin(double x, double y); float fminf(float x, float y);
 double fmax(double x, double y); float fmaxf(float x, float y);
+double copysign(double x, double y);
+double nextafter(double x, double y);
+double fma(double x, double y, double z);
 
 /* Classification values follow the Linux header ABI. */
 #define FP_NAN 0

@@ -197,7 +197,8 @@ public sealed class Char8Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Libc.GlobalArrayZeroed<byte>(3)");
+            emitted.ShouldContain("0x68, 0x69, 0x00, ");
         }
         finally { File.Delete(src); }
     }
@@ -213,7 +214,8 @@ public sealed class Char8Tests
         try
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
-            emitted.ShouldContain("Libc.GlobalArrayFrom<byte>(new byte[]{ 104, 105, 0 })");
+            emitted.ShouldContain("Libc.GlobalArrayZeroed<byte>(3)");
+            emitted.ShouldContain("0x68, 0x69, 0x00, ");
         }
         finally { File.Delete(src); }
     }

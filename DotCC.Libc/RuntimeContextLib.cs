@@ -28,6 +28,7 @@ public static unsafe partial class Libc
         private int users;
         private bool disposed;
         internal string WorkingDirectory;
+        internal bool Utf8MultibyteLocale;
         internal readonly List<object> ArrayRoots = new();
         internal readonly HashSet<nuint> NativeAllocations = new();
         internal readonly List<(GCHandle Handle, Array Arr)> FunctionArrays = new();
@@ -95,16 +96,20 @@ public static unsafe partial class Libc
                 disposed = true;
                 DisposeFileDescriptors(this);
                 DisposePathState(this);
+                DisposeOwnedMappings(this);
                 DisposeOwnedHeap(this);
                 foreach (var item in FunctionArrays) item.Handle.Free();
                 FunctionArrays.Clear(); ArrayRoots.Clear();
                 Threads.Clear(); Mutexes.Clear(); Conditions.Clear(); Keys.Clear();
+                foreach (var state in threadStates) state.Value.Resolver?.Dispose();
                 threadStates.Clear();
             }
         }
     }
     internal sealed class RuntimeThreadState
     {
+        internal int HostError;
+        internal ResolverStorage? Resolver;
         internal int Errno, PthreadSets;
         internal long Self;
         internal bool Created;

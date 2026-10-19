@@ -73,6 +73,12 @@ public static unsafe partial class Libc
         public int PendingWide = -1;    // one wchar_t pending for the wide reader
                                         // (a stashed low surrogate, or an ungetwc
                                         // pushback); -1 = none. See ReadWideFrom.
+        public int BufferMode = -1;    // -1 preserves legacy backing behavior
+        public byte* UserBuffer;       // borrowed until fclose/setvbuf
+        public byte[]? OutputBuffer;   // used only when caller requested allocation
+        public int BufferCapacity, BufferedBytes;
+        public int StdioAccess;        // 0=legacy, 1=read, 2=write, 3=read/write
+        public Decoder? ConsoleDecoder; // preserves UTF-8 across buffered byte writes
     }
 
     // Runtime-bound descriptors are isolated; unbound calls use the legacy context.
@@ -129,9 +135,10 @@ public static unsafe partial class Libc
     // (non-null) slot, so neither needs a null-forgiving `!`.
     internal static TextWriter WriterFor(FILE* f) => Slot(f) switch
     {
+        { BufferMode: >= 0 } s => s.Writer ??= new StreamFileWriter(s),
         { Kind: FileSlot.K.Out } => Console.Out,
         { Kind: FileSlot.K.Err } => Console.Error,
-        { Kind: FileSlot.K.File, Stream: { } st } s => s.Writer ??= new StreamFileWriter(st),
+        { Kind: FileSlot.K.File, Stream: { } } s => s.Writer ??= new StreamFileWriter(s),
         _ => TextWriter.Null, // not an output stream — drop, don't throw
     };
 
@@ -148,9 +155,35 @@ public static unsafe partial class Libc
     // byte-oriented in C); for the console they go through Console.* as chars,
     // which is exactly correct for ASCII (matches dotcc's UTF-8-in-char* model).
 
-    internal static bool WriteByteTo(FILE* f, byte b) => Slot(f) is { } s && WriteByteSlot(s, b);
+    internal static bool WriteByteTo(FILE* f, byte b)
+    {
+        if (Slot(f) is { } s) return WriteByteSlot(s, b);
+        errno = EBADF;
+        return false;
+    }
 
     private static bool WriteByteSlot(FileSlot s, byte b)
+    {
+        if (s.StdioAccess == 1 || s.Stream is { CanWrite: false }) { errno = EBADF; s.Err = true; return false; }
+        try
+        {
+            if (s.BufferMode is 0 or 1)
+            {
+                if (s.UserBuffer != null) s.UserBuffer[s.BufferedBytes] = b;
+                else s.OutputBuffer![s.BufferedBytes] = b;
+                s.BufferedBytes++;
+                return s.BufferedBytes < s.BufferCapacity && !(s.BufferMode == 1 && b == (byte)'\n')
+                    || FlushStdioBuffer(s);
+            }
+            bool result = WriteByteBacking(s, b);
+            if (result && s.BufferMode == 2) FlushBacking(s);
+            return result;
+        }
+        catch (IOException) { errno = FileIoError(s); s.Err = true; return false; }
+        catch (ObjectDisposedException) { errno = EBADF; s.Err = true; return false; }
+    }
+
+    private static bool WriteByteBacking(FileSlot s, byte b)
     {
         // Socket-backed fd: one byte onto the connection (fputc on an fdopen'd socket).
         if (s.Kind == FileSlot.K.Pipe) { bool ok = PipeWrite(s, &b, 1) == 1; if (!ok) s.Err = true; return ok; }
@@ -166,14 +199,30 @@ public static unsafe partial class Libc
             st.WriteByte(b);
             return true;
         }
-        (s.Kind == FileSlot.K.Err ? Console.Error : Console.Out).Write((char)b);
+        if (s.Kind == FileSlot.K.In) { errno = EBADF; s.Err = true; return false; }
+        var console = s.Kind == FileSlot.K.Err ? Console.Error : Console.Out;
+        if (s.BufferMode >= 0)
+        {
+            Span<byte> input = stackalloc byte[1] { b };
+            Span<char> output = stackalloc char[2];
+            s.ConsoleDecoder ??= Encoding.UTF8.GetDecoder();
+            int count = s.ConsoleDecoder.GetChars(input, output, flush: false);
+            console.Write(output[..count]);
+        }
+        else console.Write((char)b);
         return true;
     }
 
-    internal static int ReadByteFrom(FILE* f) => Slot(f) is { } s ? ReadByteSlot(s) : -1;
-
-    private static int ReadByteSlot(FileSlot s)
+    internal static int ReadByteFrom(FILE* f)
     {
+        if (Slot(f) is { } s) return ReadByteSlot(s);
+        errno = EBADF;
+        return -1;
+    }
+
+    private static int ReadByteSlot(FileSlot s, bool stdio = true)
+    {
+        if (stdio && s.StdioAccess == 2) { errno = EBADF; s.Err = true; return -1; }
         // A byte pushed back by ungetc is returned before touching the stream
         // (covers fgetc / getc / getchar / fgets — the common ungetc consumers).
         if (s.Pushback >= 0) { int p = s.Pushback; s.Pushback = -1; return p; }
@@ -275,19 +324,41 @@ public static unsafe partial class Libc
         else if (p == "/dev/full") { stream = new FullDeviceStream(); }
         else
         {
-            try
-            {
-                stream = new FileStream(p, fileMode, access,
-                    FileShare.ReadWrite | FileShare.Delete);  // Unix-like: allow concurrent open + unlink/rename
-            }
-            catch (ArgumentException) { errno = EINVAL; return null; }
-            catch (FileNotFoundException) { errno = ENOENT; return null; }
-            catch (DirectoryNotFoundException) { errno = ENOENT; return null; }
-            catch (UnauthorizedAccessException) { errno = EACCES; return null; }
-            catch (IOException) { errno = EIO; return null; }
+            var opened = OpenStdioFile(p, mode, fileMode, access);
+            if (opened is null) return null;
+            stream = opened;
         }
-        int slot = RegisterFileSlot(stream);
-        return AllocateFileHandle(slot);
+        int descriptor = -1;
+        try
+        {
+            descriptor = RegisterFileSlot(stream);
+            ConfigureStdioSlot(SlotByFd(descriptor)!, mode, access);
+            return AllocateFileHandle(descriptor);
+        }
+        catch (OutOfMemoryException)
+        {
+            if (descriptor >= 0) close(descriptor); else stream.Dispose();
+            errno = ENOMEM;
+            return null;
+        }
+    }
+
+    /// <summary>Adopt a descriptor in the same owner table, without opening,
+    /// duplicating or truncating it. Failure never closes the descriptor.</summary>
+    public static FILE* fdopen(int descriptor, byte* mode)
+    {
+        if (mode == null || !ParseMode(mode, out _, out var access)) { errno = EINVAL; return null; }
+        var slot = SlotByFd(descriptor);
+        if (slot is null) { errno = EBADF; return null; }
+        int requested = access == FileAccess.Read ? 1 : access == FileAccess.Write ? 2 : 3;
+        int actual = (slot.StatusFlags & 3) == 0 ? 1 : (slot.StatusFlags & 3) == 1 ? 2 : 3;
+        if ((requested & actual) != requested) { errno = EINVAL; return null; }
+        FILE* handle;
+        try { handle = AllocateFileHandle(descriptor); }
+        catch (OutOfMemoryException) { errno = ENOMEM; return null; }
+        slot.StdioAccess = requested;
+        if (*mode == (byte)'a') slot.StatusFlags |= 0x400;
+        return handle;
     }
 
     /// <summary>
@@ -304,25 +375,35 @@ public static unsafe partial class Libc
         // path == NULL: C says change mode of the existing stream — we have no
         // mode state to change, so just return the stream unchanged.
         if (path == null) { return stream; }
-        if (!ParseMode(mode, out var fileMode, out var access)) { errno = EINVAL; return null; }
-        var p = ResolvePath(path);
-        Stream newStream;
-        try
-        {
-            newStream = new FileStream(p, fileMode, access,
-                FileShare.ReadWrite | FileShare.Delete);  // Unix-like: allow concurrent open + unlink/rename
-        }
-        catch (FileNotFoundException) { errno = ENOENT; CloseSlot(slot); return null; }
-        catch (DirectoryNotFoundException) { errno = ENOENT; CloseSlot(slot); return null; }
-        catch (UnauthorizedAccessException) { errno = EACCES; CloseSlot(slot); return null; }
-        catch (IOException) { errno = EIO; CloseSlot(slot); return null; }
-        // Drop the old backing, adopt the new file backing in place.
-        slot.Writer?.Flush();
-        slot.Stream?.Dispose();
-        slot.Kind = FileSlot.K.File;
-        slot.Stream = newStream;
+        // Drain the old stdio buffer BEFORE opening (and possibly truncating)
+        // the replacement path. Byte-only output need not have a Writer.
+        // Like native freopen, a failure flushing the old association does
+        // not prevent opening the replacement; its indicators are reset below.
+        try { FlushStdioBuffer(slot); slot.Writer?.Flush(); }
+        catch (IOException) { }
+        catch (ObjectDisposedException) { }
+        try { slot.Stream?.Dispose(); }
+        catch (IOException) { }
+        catch (ObjectDisposedException) { }
+        slot.Stream = null;
         slot.Writer = null;
         slot.Reader = null;
+        // Even an invalid replacement mode closes the old association.
+        if (!ParseMode(mode, out var fileMode, out var access)) { errno = EINVAL; CloseSlot(slot); return null; }
+        var newStream = OpenStdioFile(ResolvePath(path), mode, fileMode, access);
+        if (newStream is null)
+        {
+            int error = errno;
+            CloseSlot(slot);
+            errno = error;
+            return null;
+        }
+        // Adopt in place, retaining FILE identity and caller-owned buffering.
+        slot.Kind = FileSlot.K.File;
+        slot.Stream = newStream;
+        ConfigureStdioSlot(slot, mode, access);
+        slot.Pushback = slot.PendingWide = -1;
+        slot.ConsoleDecoder = null;
         slot.Eof = false;
         slot.Err = false;
         return stream;
@@ -336,18 +417,22 @@ public static unsafe partial class Libc
     public static int fclose(FILE* stream)
     {
         var slot = Slot(stream);
-        if (slot == null) { return -1; }
+        if (slot == null) { errno = EBADF; return -1; }
         // Invalidate the slot index BEFORE freeing, so a double-fclose on the
         // same FILE* won't read freed memory and corrupt a different file's slot.
         stream->_slot = -1;
-        CloseSlot(slot);
+        int result = 0;
+        try { if (!FlushStdioBuffer(slot)) result = -1; }
+        catch (IOException) { errno = FileIoError(slot); result = -1; }
+        try { CloseSlot(slot); }
+        catch (IOException) { errno = FileIoError(slot); result = -1; }
         // Free the native FILE struct (but never the cached std-stream structs).
         if (stream != _stdinP && stream != _stdoutP && stream != _stderrP)
         {
             lock (_filesLock) FileDescriptors.Handles.Remove((nint)stream);
             NativeMemory.Free(stream);
         }
-        return 0;
+        return result;
     }
 
     /// <summary>
@@ -385,7 +470,7 @@ public static unsafe partial class Libc
         long got = 0;
         for (; (ulong)got < count; got++)
         {
-            int b = ReadByteSlot(s);
+            int b = ReadByteSlot(s, stdio: false);
             if (b < 0) { break; }
             dst[got] = (byte)b;
         }
@@ -406,7 +491,7 @@ public static unsafe partial class Libc
         long written = 0;
         for (; (ulong)written < count; written++)
         {
-            if (!WriteByteSlot(s, src[written])) { break; }
+            if (!WriteByteBacking(s, src[written])) { break; }
         }
         return written;
     }
@@ -444,6 +529,18 @@ public static unsafe partial class Libc
 
     private static void CloseSlot(FileSlot slot)
     {
+        FlushStdioBuffer(slot);
+        slot.UserBuffer = null;
+        slot.OutputBuffer = null;
+        slot.BufferedBytes = slot.BufferCapacity = 0;
+        // Every old FILE* must stay closed even after this fd number is reused.
+        lock (_filesLock)
+        {
+            int descriptor = _files.IndexOf(slot);
+            if (descriptor >= 3)
+                foreach (nint address in FileDescriptors.Handles)
+                    if (((FILE*)address)->_slot == descriptor) ((FILE*)address)->_slot = -1;
+        }
         if (slot.Kind == FileSlot.K.Pipe)
         {
             ClosePipe(slot);
@@ -469,16 +566,22 @@ public static unsafe partial class Libc
         }
         if (slot.Kind == FileSlot.K.File)
         {
-            slot.Writer?.Flush();
-            slot.Stream?.Dispose();
-            slot.Stream = null;
-            slot.Writer = null;
-            slot.Reader = null;
-            // Mark the table entry reusable by a later fopen.
-            lock (_filesLock)
+            try { slot.Writer?.Flush(); }
+            finally
             {
-                int idx = _files.IndexOf(slot);
-                if (idx >= 3) { _files[idx] = null; }
+                try { slot.Stream?.Dispose(); }
+                finally
+                {
+                    slot.Stream = null;
+                    slot.Writer = null;
+                    slot.Reader = null;
+                    // Mark the table entry reusable even if flushing failed.
+                    lock (_filesLock)
+                    {
+                        int idx = _files.IndexOf(slot);
+                        if (idx >= 3) { _files[idx] = null; }
+                    }
+                }
             }
         }
         else
@@ -503,13 +606,54 @@ public static unsafe partial class Libc
         }
     }
 
+    private static void ConfigureStdioSlot(FileSlot slot, byte* mode, FileAccess access)
+    {
+        slot.StatusFlags = access == FileAccess.Read ? 0 : access == FileAccess.Write ? 1 : 2;
+        if (*mode == (byte)'a') slot.StatusFlags |= 0x400;
+        slot.DescriptorFlags = 0;
+        for (byte* p = mode + 1; *p != 0; p++) if (*p == (byte)'e') slot.DescriptorFlags = 1;
+        slot.StdioAccess = access == FileAccess.Read ? 1 : access == FileAccess.Write ? 2 : 3;
+    }
+
+    private static Stream? OpenStdioFile(string path, byte* mode, FileMode fileMode, FileAccess access)
+    {
+        if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+        {
+            int flags = access == FileAccess.Read ? 0 : access == FileAccess.Write ? 1 : 2;
+            if (*mode == (byte)'w') flags |= 0x40 | 0x200;
+            if (*mode == (byte)'a') flags |= 0x40 | 0x400;
+            if (fileMode == FileMode.CreateNew) flags |= 0x80;
+            for (byte* p = mode + 1; *p != 0; p++) if (*p == (byte)'e') flags |= 0x80000;
+            var stream = OpenLinuxStream(path, flags, 0x1b6); // 0666, filtered by the kernel umask
+            if (stream is { CanSeek: true } && *mode == (byte)'a' && access == FileAccess.Write)
+                stream.Seek(0, SeekOrigin.End);
+            return stream;
+        }
+        try
+        {
+            var stream = new FileStream(path, fileMode, access, FileShare.ReadWrite | FileShare.Delete);
+            if (*mode == (byte)'a' && access == FileAccess.Write) stream.Seek(0, SeekOrigin.End);
+            return stream;
+        }
+        catch (ArgumentException) { errno = EINVAL; return null; }
+        catch (FileNotFoundException) { errno = ENOENT; return null; }
+        catch (DirectoryNotFoundException) { errno = ENOENT; return null; }
+        catch (UnauthorizedAccessException) { errno = EACCES; return null; }
+        catch (IOException) when (fileMode == FileMode.CreateNew && File.Exists(path)) { errno = EEXIST; return null; }
+        catch (IOException) { errno = EIO; return null; }
+    }
+
     private static bool ParseMode(byte* mode, out FileMode fileMode, out FileAccess access)
     {
         fileMode = FileMode.Open;
         access = FileAccess.Read;
         byte first = *mode;
-        bool plus = false;
-        for (byte* m = mode; *m != 0; m++) { if (*m == (byte)'+') { plus = true; } }
+        bool plus = false, exclusive = false;
+        for (byte* m = mode; *m != 0; m++)
+        {
+            if (*m == (byte)'+') plus = true;
+            if (*m == (byte)'x') exclusive = true;
+        }
         switch (first)
         {
             case (byte)'r':
@@ -517,12 +661,12 @@ public static unsafe partial class Libc
                 access = plus ? FileAccess.ReadWrite : FileAccess.Read;
                 return true;
             case (byte)'w':
-                fileMode = FileMode.Create;
+                fileMode = exclusive ? FileMode.CreateNew : FileMode.Create;
                 access = plus ? FileAccess.ReadWrite : FileAccess.Write;
                 return true;
             case (byte)'a':
-                fileMode = FileMode.Append;
-                access = FileAccess.Write; // .NET forbids Append+Read; a+ degrades to write-at-end
+                fileMode = FileMode.OpenOrCreate;
+                access = plus ? FileAccess.ReadWrite : FileAccess.Write;
                 return true;
             default:
                 return false;
@@ -549,6 +693,7 @@ public static unsafe partial class Libc
             errno = ESPIPE;
             return -1;
         }
+        if (!FlushStdioBuffer(slot)) return -1;
         var origin = whence switch
         {
             SEEK_CUR => SeekOrigin.Current,
@@ -573,7 +718,7 @@ public static unsafe partial class Libc
             errno = ESPIPE;
             return -1;
         }
-        long pos = st.Position;
+        long pos = st.Position + slot.BufferedBytes;
         // Account for a byte buffered by a pending Peek().
         if (slot.Reader is { HasPushback: true }) { pos -= 1; }
         return pos;
@@ -622,15 +767,54 @@ public static unsafe partial class Libc
     /// <summary>
     /// <c>setvbuf(stream, buf, mode, size)</c> — request a buffering mode
     /// (<c>_IOFBF</c>=0 / <c>_IOLBF</c>=1 / <c>_IONBF</c>=2; see include/stdio.h).
-    /// dotcc's streams are managed and the BCL owns buffering, so this is a
-    /// validated no-op: returns 0 for a valid stream + recognized mode, nonzero
-    /// otherwise. The caller's buffer is never adopted.
+    /// Output buffering uses the caller's borrowed buffer, or owned managed
+    /// storage when NULL. Unbuffered output flushes the backing after each write.
+    /// Call before I/O, as required by C. Input retains the backing's read policy.
     /// </summary>
     public static int setvbuf(FILE* stream, byte* buf, int mode, int size)
     {
-        if (Slot(stream) == null || mode < 0 || mode > 2) { return -1; }
+        var slot = Slot(stream);
+        if (slot == null) { errno = EBADF; return -1; }
+        if (mode < 0 || mode > 2 || mode != 2 && size <= 0) { errno = EINVAL; return -1; }
+        byte[]? buffer = null;
+        try { if (mode != 2 && buf == null) buffer = new byte[size]; }
+        catch (OutOfMemoryException) { errno = ENOMEM; return -1; }
+        if (!FlushStdioBuffer(slot)) return -1;
+        slot.BufferMode = mode;
+        slot.UserBuffer = mode == 2 ? null : buf;
+        slot.OutputBuffer = buffer;
+        slot.BufferCapacity = mode == 2 ? 0 : size;
         return 0;
     }
+
+    public static void setbuf(FILE* stream, byte* buffer)
+        => setvbuf(stream, buffer, buffer == null ? 2 : 0, 8192);
+
+    private static void FlushBacking(FileSlot slot)
+    {
+        if (slot.Stream != null) slot.Stream.Flush();
+        else if (slot.Kind == FileSlot.K.Out) Console.Out.Flush();
+        else if (slot.Kind == FileSlot.K.Err) Console.Error.Flush();
+    }
+
+    private static bool FlushStdioBuffer(FileSlot slot)
+    {
+        try
+        {
+            int count = slot.BufferedBytes;
+            slot.BufferedBytes = 0;
+            for (int i = 0; i < count; i++)
+                if (!WriteByteBacking(slot, slot.UserBuffer != null ? slot.UserBuffer[i] : slot.OutputBuffer![i]))
+                { slot.Err = true; return false; }
+            if (count != 0) FlushBacking(slot);
+            return true;
+        }
+        catch (IOException) { errno = FileIoError(slot); slot.Err = true; return false; }
+        catch (ObjectDisposedException) { errno = EBADF; slot.Err = true; return false; }
+        catch (UnauthorizedAccessException) { errno = EACCES; slot.Err = true; return false; }
+    }
+
+    private static int FileIoError(FileSlot slot) => slot.Stream is FullDeviceStream ? ENOSPC : EIO;
 
     // Shared buffer returned by tmpnam(NULL); kept in sync with L_tmpnam.
     private static ref byte* _tmpnamBuf => ref FileDescriptors.Tmpnam;
@@ -671,13 +855,24 @@ public static unsafe partial class Libc
     {
         if (stream == null)
         {
+            FileSlot?[] all;
+            lock (_filesLock) all = _files.ToArray();
+            int result = 0;
+            foreach (var current in all)
+                if (current != null && current.BufferMode >= 0)
+                {
+                    try { if (!FlushStdioBuffer(current)) result = -1; FlushBacking(current); }
+                    catch (IOException) { current.Err = true; errno = EIO; result = -1; }
+                }
             Console.Out.Flush();
             Console.Error.Flush();
-            return 0;
+            return result;
         }
         var slot = Slot(stream);
         try
         {
+            if (slot == null) { errno = EBADF; return -1; }
+            if (!FlushStdioBuffer(slot)) return -1;
             if (slot?.Kind == FileSlot.K.File) { slot.Writer?.Flush(); slot.Stream?.Flush(); }
             else if (slot?.Kind == FileSlot.K.Err) { Console.Error.Flush(); }
             else { Console.Out.Flush(); }
@@ -808,29 +1003,29 @@ public static unsafe partial class Libc
     /// (<c>fprintf</c>) and raw byte output (<c>fputc</c>/<c>fwrite</c>) on the
     /// same handle stay correctly ordered.
     /// </summary>
-    internal sealed class StreamFileWriter : TextWriter
+    private sealed class StreamFileWriter : TextWriter
     {
-        private readonly Stream _s;
-        public StreamFileWriter(Stream s) { _s = s; }
+        private readonly FileSlot _s;
+        public StreamFileWriter(FileSlot s) { _s = s; }
         public override Encoding Encoding => Encoding.UTF8;
 
         public override void Write(char c)
         {
-            if (c < 0x80) { _s.WriteByte((byte)c); return; }
+            if (c < 0x80) { if (!WriteByteSlot(_s, (byte)c)) throw new IOException(); return; }
             Span<char> one = stackalloc char[1] { c };
             Span<byte> buf = stackalloc byte[4];
             int n = Encoding.UTF8.GetBytes(one, buf);
-            _s.Write(buf[..n]);
+            for (int i = 0; i < n; i++) if (!WriteByteSlot(_s, buf[i])) throw new IOException();
         }
 
         public override void Write(string? value)
         {
             if (string.IsNullOrEmpty(value)) { return; }
             var bytes = Encoding.UTF8.GetBytes(value);
-            _s.Write(bytes, 0, bytes.Length);
+            foreach (byte b in bytes) if (!WriteByteSlot(_s, b)) throw new IOException();
         }
 
-        public override void Flush() => _s.Flush();
+        public override void Flush() { if (!FlushStdioBuffer(_s)) throw new IOException(); FlushBacking(_s); }
     }
 
     /// <summary>

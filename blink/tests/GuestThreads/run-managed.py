@@ -9,7 +9,11 @@ from pathlib import Path
 import platform
 import shutil
 import signal
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import sys
 import tempfile
 import time

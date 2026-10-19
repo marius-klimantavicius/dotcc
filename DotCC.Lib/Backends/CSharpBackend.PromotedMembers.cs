@@ -73,9 +73,9 @@ internal sealed partial class CSharpBackend
         var read = helper + (type.IsAtomic ? ".Load" : ".Read") + "(ref " + location + ")";
         var write = helper + (type.IsAtomic ? ".Store" : ".Write") + "(ref " + location + ", (" + storageType + ")value)";
         output.Append("    public ").Append(Cs(type)).Append(' ').Append(EmitHelpers.Id(field.Name)).Append("\n    {\n")
-            .Append("        get { fixed (").Append(owner.Name).Append("* __self = &this) { return (").Append(Cs(type)).Append(')').Append(read).Append("; } }\n");
+            .Append("        get { fixed (").Append(Cs(new CType.Named(owner.Name))).Append("* __self = &this) { return (").Append(Cs(type)).Append(')').Append(read).Append("; } }\n");
         if (!type.IsConst)
-            output.Append("        set { fixed (").Append(owner.Name).Append("* __self = &this) { ").Append(write).Append("; } }\n");
+            output.Append("        set { fixed (").Append(Cs(new CType.Named(owner.Name))).Append("* __self = &this) { ").Append(write).Append("; } }\n");
         output.Append("    }\n");
     }
 

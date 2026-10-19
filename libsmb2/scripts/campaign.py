@@ -47,6 +47,8 @@ def validate(ctx, reports):
 
 
 def prepare(ctx):
+    from production_support import production_sources
+    ctx.receipt["production_inputs"] = production_sources(ctx.root)
     source = ctx.sources["product"]
     definitions = json_file(ctx.root / "config" / ("defines.json" if ctx.profile == "async" else "legacy-defines.json"))
     options = ["-std=c17", *flags(definitions, [ctx.root / "config/managed", source / "include", source / "include/smb2", source / "lib"])]

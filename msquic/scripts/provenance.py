@@ -11,10 +11,16 @@ def picotls_provenance(root):
     unavailable evidence, which the caller handles using the shared policy.
     """
     root = Path(root)
+    import os
+    binding = None
+    if "DOTCC_COMPILER" in os.environ:
+        from production_support import existing_product_binding
+        binding = existing_product_binding(root, "TranslatedPicotls")
     available = tuple(form for form, suffix in (("raw", ".Raw"), ("processed", ""))
                       if (root / "generated" / ("TranslatedPicotls" + suffix)).exists())
     current = provenance(root, "TranslatedPicotls", "default", forms=available)
     return {"format": "campaign-provenance-projection-v1",
+            "current_binding": binding,
             "raw": current.get("outputs", {}).get("raw", {}).get("hashes", {}),
             "optimized": current.get("outputs", {}).get("processed", {}).get("hashes", {}),
             "inputs": json.loads((root / "config/inputs.json").read_text()),

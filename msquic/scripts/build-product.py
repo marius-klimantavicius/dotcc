@@ -10,7 +10,11 @@ import os
 from pathlib import Path
 import re
 import shutil
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,12 +69,16 @@ try:
     for item in manifest['files']:
         if sha(STAGE / item['path']) != item['sha256']:
             raise RuntimeError('Changed staged source: ' + item['path'])
-    compiler = HOST / 'compiler/dotcc.dll'
+    from production_support import selected_tool, require_tool_identity
+    compiler = HOST / 'compiler' / host_result.get('compiler_tool', {}).get('executable', 'dotcc.dll')
+    require_tool_identity(selected_tool(), host_result['compiler_hashes'], 'Host ABI')
+    require_tool_identity(compiler, host_result['compiler_hashes'], 'Frozen host ABI')
     for name, digest in host_result['compiler_hashes'].items():
         if sha(compiler.parent / name) != digest:
             raise RuntimeError('Host ABI compiler changed: ' + name)
     receipt['stage_manifest_sha256'] = stage_hash
     receipt['compiler_hashes'] = host_result['compiler_hashes']
+    receipt['compiler_tool'] = host_result.get('compiler_tool')
     if host_result.get('macro_exports') != ['QUIC_STATUS_*']:
         raise RuntimeError('Rebuild host ABI objects with QUIC_STATUS_* macro exports')
     receipt['macro_exports'] = host_result['macro_exports']

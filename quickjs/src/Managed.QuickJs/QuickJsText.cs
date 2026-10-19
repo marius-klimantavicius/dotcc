@@ -100,7 +100,11 @@ internal static unsafe class QuickJsText
     internal static int GetBytes(ReadOnlySpan<char> text, Span<byte> result)
     {
         if (!text.ContainsAnyInRange('\uD800', '\uDFFF'))
-            return Encoding.UTF8.GetBytes(text, result);
+        {
+            int written = Encoding.UTF8.GetBytes(text, result);
+            result[written] = 0;
+            return written;
+        }
 
         var count = 0;
         for (var i = 0; i < text.Length; i++)

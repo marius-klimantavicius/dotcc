@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>DotCC.Libc</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Actual held shared source, one known bad binding. No alternate backend. -->
+    <Compile Include="../../../DotCC.Libc/*.cs" Exclude="../../../DotCC.Libc/PthreadLib.cs" />
+    <Compile Include="../../build/owner-a-r29-20261018/v19/source-bytes/DotCC.Libc/PthreadLib.cs" />
+    <InternalsVisibleTo Include="DotCC.Tests" />
+  </ItemGroup>
+</Project>

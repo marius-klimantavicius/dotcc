@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/production-common.sh"
 source "$(dirname -- "${BASH_SOURCE[0]}")/../../Scripts/campaign-common.sh"
 source "$(dirname "$0")/legacy-common.sh"
 SQLITE_LAYOUT_FLAGS=("${SQLITE_NATIVE_FLAGS[@]}")
@@ -12,7 +13,7 @@ fi
 "$SQLITE_ROOT/scripts/preprocess.sh" > "$SQLITE_ROOT/artifacts/layout-sqlite3.i"
 "$PYTHON_CMD" "$SQLITE_ROOT/scripts/generate-layout-requests.py" \
   "$SQLITE_ROOT/artifacts/layout-sqlite3.i" "$SQLITE_ROOT/generated/layout_requests.h" >&2
-gcc -std=c17 -O0 "${SQLITE_LAYOUT_FLAGS[@]}" "${SQLITE_DEFINES[@]}" \
+"${PRODUCTION_COMMAND[@]}" gcc -std=c17 -O0 "${SQLITE_LAYOUT_FLAGS[@]}" "${SQLITE_DEFINES[@]}" \
   -DDOTCC_LAYOUT_REQUESTS -I "$SQLITE_ROOT/generated" \
   -I "$SQLITE_AMALGAMATION" -I "$SQLITE_ROOT/tests" "$SQLITE_ROOT/tests/layout_probe.c" "$SQLITE_ROOT/tests/memory_vfs.c" \
   -lm -o "$SQLITE_ROOT/build/layout-native"

@@ -1,0 +1,57 @@
+{
+  "name": "upstream-tests-static",
+  "pin_metadata": "../../config/source.json",
+  "base_profile": "../../config/profile.json",
+  "base_setup": "../../config/Setup.local",
+  "scope": "Native discovery/control and separate translated test profile only; never shipped product APIs or native delivery backend",
+  "configure_additions": [
+    "--enable-test-modules"
+  ],
+  "static_modules": [
+    "_asyncio",
+    "_queue",
+    "_datetime",
+    "cmath",
+    "binascii",
+    "_socket",
+    "_posixsubprocess",
+    "select",
+    "fcntl",
+    "resource",
+    "unicodedata",
+    "_testcapi",
+    "_testlimitedcapi",
+    "_testinternalcapi",
+    "_testbuffer",
+    "xxsubtype",
+    "_multibytecodec",
+    "_codecs_cn",
+    "_codecs_hk",
+    "_codecs_iso2022",
+    "_codecs_jp",
+    "_codecs_kr",
+    "_codecs_tw",
+    "_md5",
+    "_sha1",
+    "_sha3",
+    "_blake2",
+    "_testmultiphase",
+    "_testsinglephase",
+    "_csv"
+  ],
+  "setup_overrides": {
+    "binascii": "binascii binascii.c -UUSE_ZLIB_CRC32"
+  },
+  "external_dependencies": [],
+  "dependency_policy": "binascii uses upstream's built-in CRC algorithm without optional zlib. No external compression/TLS/ffi/database library is acquired or added to product. OS socket/select/subprocess modules here allow unmodified test support imports; selected cases must still respect embedded product exclusions.",
+  "delivery_exclusions": [
+    "Every test helper",
+    "Test-only socket/subprocess/select/fcntl/resource support",
+    "Extra hash/CJK/asyncio modules unless separately selected by product owner"
+  ],
+  "inventory_status": "Complete Linux-target discovery and source-backed classification frozen in inventory.frozen.json: 5134 unique IDs, 4867 required, 267 individual exclusions; seven native required outcomes remain blockers; translated profile unbuilt",
+  "bootstrap_freezer": "../../build/native/build/Programs/_freeze_module",
+  "bootstrap_identity": "../../build/native/identity.json",
+  "bootstrap_reason": "Upstream static _testinternalcapi references real _Py_Get_Getpath_CodeObject, absent from the minimal _freeze_module link. Reuse exact-pin existing native freezer in private tools to generate getpath, then link the actual helper core with real Modules/getpath.o. No stub or helper assertion removed.",
+  "static_extension_fixture_note": "Real upstream multi/single-phase fixture sources are registered as static builtins solely to satisfy unmodified importlib support imports. Tests of dlopen, native extension suffixes, __file__, or alternate PyInit entry points are individually outside static product scope; no shared objects or native delivery backend."
+}

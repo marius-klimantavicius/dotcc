@@ -3312,7 +3312,8 @@ public sealed class ZigFrontendTests
         var cs = EmitZig(
             "const table: [3]u8 = .{ 10, 11, 12 };\n" +
             "pub fn main() u8 { return table[0]; }\n");
-        cs.ShouldContain("GlobalArrayFrom<byte>(new byte[]{ 10, 11, 12 })");
+        cs.ShouldContain("GlobalArrayZeroed<byte>(3)");
+        cs.ShouldContain("0x0A, 0x0B, 0x0C, ");
     }
 
     [Fact]

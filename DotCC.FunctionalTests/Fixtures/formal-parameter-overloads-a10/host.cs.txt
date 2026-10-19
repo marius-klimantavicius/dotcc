@@ -1,0 +1,17 @@
+public static class FormalHost
+{
+    public static int LegacyCalls;
+    public static ulong Choose(ulong value) { return value+1000; }
+    public static int Choose(int value) { LegacyCalls++; return -91; }
+}
+public static class FormalConsumer
+{
+    public static int Main()
+    {
+        int result=FormalApi.run_c();
+        if(result!=0 || FormalHost.LegacyCalls!=0 || FormalApi.side_calls()!=2 || FormalApi.side_trace()!=12)
+            throw new global::System.InvalidOperationException("Wrong overload, value or evaluation count: "+result+"/"+FormalHost.LegacyCalls);
+        global::System.Console.WriteLine("formal parameters: ordinary/tight/empty/wide, callbacks, promotions, evaluations=2 trace=12");
+        return 0;
+    }
+}

@@ -40,6 +40,12 @@ unsigned long strtoull(const char *nptr, char **endptr, int base);
 int atoi(const char *nptr);
 long atol(const char *nptr);
 long atoll(const char *nptr);
+/* Counts are bytes for wcstombs and UTF-16 units for mbstowcs. A NULL
+   destination measures the complete NUL-terminated conversion, ignoring n.
+   C/POSIX use ASCII; C.UTF-8 uses strict UTF-8, including surrogate pairs.
+   Invalid byte sequences/lone surrogates return (size_t)-1 with EILSEQ. */
+size_t mbstowcs(wchar_t *destination, const char *source, size_t n);
+size_t wcstombs(char *destination, const wchar_t *source, size_t n);
 
 /* Integer arithmetic. */
 int abs(int n);

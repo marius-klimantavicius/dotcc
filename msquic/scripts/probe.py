@@ -7,7 +7,11 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool, snapshot_tool, validate_tool_closure
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,23 +20,15 @@ SNAPSHOT = json.loads((ROOT / 'ref/snapshot.json').read_text())
 SOURCE = ROOT / 'ref' / SNAPSHOT['directory']
 DEFINES = ['CX_PLATFORM_LINUX=1', '__linux__=1', '_GNU_SOURCE=1', 'NDEBUG=1',
            'QUIC_BUILD_STATIC=1', 'QUIC_EVENTS_STUB=1', 'QUIC_LOGS_STUB=1']
-COMPILER = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
+COMPILER = selected_tool()
 
 
 def snapshot_compiler():
     """Keep a multi-unit probe independent of concurrent development rebuilds."""
-    files = sorted(path for path in COMPILER.parent.iterdir() if path.suffix in ('.dll', '.json'))
-    contents = {path.name: path.read_bytes() for path in files}
-    hashes = {name: hashlib.sha256(value).hexdigest() for name, value in contents.items()}
+    hashes = validate_tool_closure(COMPILER)
     identity = hashlib.sha256(json.dumps(hashes, sort_keys=True).encode()).hexdigest()
-    destination = ROOT / 'artifacts/toolchains' / identity
-    destination.mkdir(parents=True, exist_ok=True)
-    for name, value in contents.items():
-        (destination / name).write_bytes(value)
-    if any(hashlib.sha256(path.read_bytes()).hexdigest() != hashes[path.name] for path in files):
-        raise RuntimeError('Compiler changed while snapshotting; retry after the build completes')
-    (destination / 'manifest.json').write_text(json.dumps(hashes, indent=2) + '\n')
-    return destination / COMPILER.name, hashes
+    tool, binding = snapshot_tool(COMPILER, ROOT / 'artifacts/toolchains' / identity)
+    return tool, binding['files']
 
 
 def prepare_headers():

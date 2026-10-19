@@ -12,8 +12,7 @@ namespace DotCC.Libc;
 /// in-process signal *handling*, so fork/exec/wait stay honest stubs that compile
 /// + let the module LOAD. The process *identity* and *targeting* primitives are
 /// faithful, though: <c>getpid</c>/<c>getppid</c> report the real OS pids, the
-/// <c>sigset_t</c> manipulators are real bitset ops, and <c>kill</c> (with
-/// <c>raise</c> = <c>kill(getpid(), sig)</c>) forwards to the OS (POSIX
+/// <c>sigset_t</c> manipulators are real bitset ops, and <c>kill</c> forwards to the OS (POSIX
 /// <c>kill(2)</c> / Windows OpenProcess+TerminateProcess) so the portable
 /// <c>kill(pid, 0)</c> existence probe and a SIGKILL/SIGTERM are real.
 /// The R7RS suite uses
@@ -211,19 +210,84 @@ public static unsafe partial class Libc
         return -1;
     }
 
-    /// <summary><c>raise(sig)</c> — send <paramref name="sig"/> to the calling
-    /// process. POSIX defines it as <c>kill(getpid(), sig)</c> for a
-    /// single-threaded program, which is exactly how dotcc lowers it, so it
-    /// inherits <see cref="kill"/>'s faithful per-OS behaviour (real delivery on
-    /// POSIX; existence-probe + terminate-class signals on Windows). SIGABRT is
-    /// special-cased to <c>abort()</c> so <c>raise(SIGABRT)</c> — what
-    /// <c>abort</c>/<c>assert</c> use — terminates abnormally on every OS,
-    /// including Windows where a bare signal number has no delivery path.
-    /// Returns 0 on success, nonzero on failure.</summary>
+    /// <summary><c>raise(sig)</c> — deliver a registered SIGINT handler on this
+    /// thread before returning, without also sending an OS signal. Default and
+    /// other OS dispositions use host raise. SIGABRT retains the runtime's
+    /// abnormal-termination contract.</summary>
     public static int raise(int sig)
     {
+        if (sig == 2)
+        {
+            while (true)
+            {
+                if (DeliverSigint()) return 0;
+                lock (signalGate)
+                {
+                    // A concurrent signal() may have installed a handler since
+                    // the delivery snapshot. Retry outside the callback gate.
+                    if (sigintRegistration != null) continue;
+                    return RaiseDefaultSigint();
+                }
+            }
+        }
         if (sig == 6) { abort(); }   // SIGABRT — abnormal termination, never returns
-        return kill(getpid(), sig);
+        return RaiseHostSignal(sig);
+    }
+
+    // This is the HOST glibc Linux x64 ABI, not dotcc's struct sigaction.
+    // Native sizeof/offsetof and blocked-signal action/mask roundtrips exercise
+    // every field; other Unix ABIs must not use this layout.
+    [StructLayout(LayoutKind.Explicit, Size = 152)]
+    internal struct LinuxSignalAction
+    {
+        [FieldOffset(0)] public nint Handler;
+        [FieldOffset(8)] public fixed ulong Mask[16];
+        [FieldOffset(136)] public int Flags;
+        [FieldOffset(144)] public nint Restorer;
+    }
+
+    [DllImport("libc", EntryPoint = "sigaction", SetLastError = true)]
+    private static extern int HostSignalAction(int sig, LinuxSignalAction* action, LinuxSignalAction* previous);
+
+    // Called with signalGate held and no installed C disposition. An explicit
+    // process-wide C SIG_DFL request is terminal; CLR's asynchronous console
+    // trampoline is not that disposition. Select the actual kernel default.
+    // If blocked, raise returns with a pending signal: restore the exact CLR
+    // action so subsequent registration/unblocking still uses its real backend.
+    private static int RaiseDefaultSigint()
+    {
+        if (OperatingSystem.IsWindows()) return kill(getpid(), 2);
+        if (!OperatingSystem.IsLinux() || RuntimeInformation.ProcessArchitecture != Architecture.X64)
+        { errno = ENOTSUP; return -1; }
+        LinuxSignalAction previous = default, action = default;
+        if (HostSignalAction(2, null, &previous) != 0)
+        { errno = Marshal.GetLastPInvokeError(); return -1; }
+        if (HostSignalAction(2, &action, null) != 0)
+        { errno = Marshal.GetLastPInvokeError(); return -1; }
+        int result = 0, error = errno;
+        try
+        {
+            result = PosixRaise(2);
+            if (result != 0) error = Marshal.GetLastPInvokeError();
+        }
+        finally
+        {
+            if (HostSignalAction(2, &previous, null) != 0 && result == 0)
+            { result = -1; error = Marshal.GetLastPInvokeError(); }
+            errno = error;
+        }
+        return result;
+    }
+
+    [DllImport("libc", EntryPoint = "raise", SetLastError = true)]
+    private static extern int PosixRaise(int sig);
+
+    private static int RaiseHostSignal(int sig)
+    {
+        if (OperatingSystem.IsWindows()) return kill(getpid(), sig);
+        int result = PosixRaise(sig);
+        if (result != 0) errno = Marshal.GetLastPInvokeError();
+        return result;
     }
 
     /// <summary><c>sigaction(sig, act, oldact)</c> — accepted and ignored: the

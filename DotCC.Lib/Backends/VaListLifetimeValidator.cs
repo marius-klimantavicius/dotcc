@@ -14,8 +14,11 @@ internal static class VaListLifetimeValidator
 {
     internal static bool IsVaList(CType type) => type.Unqualified is CType.Named { Name: "VaList" };
 
+    internal static bool IsCursorReference(CType type) =>
+        type.Unqualified is CType.Pointer p && IsVaList(p.Pointee);
+
     internal static bool HasByRefLikeSignature(CType.Func signature)
-        => IsVaList(signature.Return) || signature.Params.Any(IsVaList);
+        => IsVaList(signature.Return) || signature.Params.Any(p => IsVaList(p) || IsCursorReference(p));
 
     private static bool ContainsCursor(CType type) => type.Unqualified switch
     {
@@ -31,14 +34,16 @@ internal static class VaListLifetimeValidator
         switch (type.Unqualified)
         {
             case CType.Pointer p:
-                if (ContainsCursor(p.Pointee)) Fail("pointer/address to va_list is unsupported", pos);
+                if (IsCursorReference(p.Pointee)) Fail("pointer to cursor reference is unsupported", pos);
+                if (IsVaList(p.Pointee)) return;
                 CheckType(p.Pointee, pos);
                 break;
             case CType.Array a:
-                if (ContainsCursor(a.Element)) Fail("array storage of va_list is unsupported", pos);
+                if (ContainsCursor(a.Element) || IsCursorReference(a.Element)) Fail("array storage of va_list is unsupported", pos);
                 CheckType(a.Element, pos);
                 break;
             case CType.Func f:
+                if (IsCursorReference(f.Return)) Fail("return of cursor pointer is unsupported", pos);
                 CheckType(f.Return, pos);
                 foreach (var p in f.Params) CheckType(p, pos);
                 break;
@@ -51,23 +56,46 @@ internal static class VaListLifetimeValidator
             if (ContainsCursor(use.Type)) Fail(use.Operation + " has no unmanaged va_list layout", use.Pos);
         foreach (var global in unit.Globals)
         {
-            if (ContainsCursor(global.Sym.Type)) Fail("global storage of va_list is unsupported");
+            if (ContainsCursor(global.Sym.Type) || IsCursorReference(global.Sym.Type)) Fail("global storage of va_list is unsupported");
             CheckType(global.Sym.Type);
             if (global.Init is { } init) Walk(init, CheckExpression);
         }
         foreach (var aggregate in unit.Types)
             foreach (var field in aggregate.Fields)
             {
-                if (ContainsCursor(field.Type)) Fail($"field {aggregate.Name}.{field.Name} cannot store va_list");
+                if (ContainsCursor(field.Type) || IsCursorReference(field.Type)) Fail($"field {aggregate.Name}.{field.Name} cannot store va_list");
                 CheckType(field.Type);
             }
         foreach (var function in unit.Functions)
         {
             CheckType(function.Sym.Type);
+            var allowedReferences = new HashSet<CExpr>(ReferenceEqualityComparer.Instance);
+            void Allow(CExpr expression)
+            {
+                allowedReferences.Add(expression);
+                if (expression is Paren p) Allow(p.Inner);
+            }
+            void CheckReference(CExpr expression)
+            {
+                if (IsCursorReference(expression.Type) && !allowedReferences.Contains(expression))
+                    Fail("cursor pointer may only be dereferenced or passed to a fixed cursor-reference parameter", expression.Pos);
+                if (expression is Binary { Op: BinOp.Eq or BinOp.Ne } comparison)
+                {
+                    Allow(comparison.Left); Allow(comparison.Right);
+                }
+                if (expression is Unary { Op: UnOp.Deref } dereference && IsVaList(dereference.Type)) Allow(dereference.Operand);
+                if (expression is Call call && call.ParamTypes is { } parameters)
+                    for (int i = 0; i < parameters.Count && i < call.Args.Count; i++)
+                        if (IsCursorReference(parameters[i])) Allow(call.Args[i]);
+                if (expression is IndirectCall indirect && FunctionType(indirect.Callee.Type) is { } signature)
+                    for (int i = 0; i < signature.Params.Count && i < indirect.Args.Count; i++)
+                        if (IsCursorReference(signature.Params[i])) Allow(indirect.Args[i]);
+                CheckExpression(expression);
+            }
             var expressions = new List<CExpr>();
             var declarations = new List<LocalDecl>();
             var returns = new List<Return>();
-            Visit(function.Body, expression => { CheckExpression(expression); expressions.Add(expression); }, declarations, returns);
+            Visit(function.Body, expression => { CheckReference(expression); expressions.Add(expression); }, declarations, returns);
             var local = FindLocalCursors(expressions, declarations);
             foreach (var statement in returns)
                 if (statement.Value is { } value && IsVaList(value.Type) && BorrowsLocal(value, local))
@@ -122,6 +150,7 @@ internal static class VaListLifetimeValidator
         return expression switch
         {
             VarRef v => local.Contains(v.Sym),
+            Unary { Op: UnOp.Deref } u when IsCursorReference(u.Operand.Type) => true,
             Paren p => BorrowsLocal(p.Inner, local),
             Cast c => BorrowsLocal(c.Operand, local),
             Assign a => BorrowsLocal(a.Value, local),
@@ -170,7 +199,7 @@ internal static class VaListLifetimeValidator
         if (IsCursorValue(items[^1]))
             Fail("comma delegate result cannot contain va_list", items[^1].Pos);
         foreach (var item in items)
-            Walk(item, e => { if (e is VarRef && IsVaList(e.Type)) Fail("comma delegate cannot capture va_list", e.Pos); });
+            Walk(item, e => { if (e is VarRef && (IsVaList(e.Type) || IsCursorReference(e.Type))) Fail("comma delegate cannot capture va_list", e.Pos); });
     }
 
     internal static void ValidateTuple(IReadOnlyList<CExpr> items)
@@ -180,7 +209,7 @@ internal static class VaListLifetimeValidator
                 Fail("comma tuple cannot store va_list", item.Pos);
     }
 
-    private static bool IsCursorValue(CExpr expression) => IsVaList(expression.Type) || expression switch
+    private static bool IsCursorValue(CExpr expression) => IsVaList(expression.Type) || IsCursorReference(expression.Type) || expression switch
     {
         Paren p => IsCursorValue(p.Inner),
         Call { Callee: "va_start" or "va_copy" } => true,
@@ -233,10 +262,14 @@ internal static class VaListLifetimeValidator
             case Block b: Stmts(b.Stmts); break;
             case Seq s: Stmts(s.Stmts); break;
             case DeclStmt d:
-                foreach (var declaration in d.Decls) { CheckType(declaration.Sym.Type, d.Pos); declarations.Add(declaration); Expr(declaration.Init); }
+                foreach (var declaration in d.Decls)
+                {
+                    if (IsCursorReference(declaration.Sym.Type)) Fail("local cursor pointer storage is unsupported", d.Pos);
+                    CheckType(declaration.Sym.Type, d.Pos); declarations.Add(declaration); Expr(declaration.Init);
+                }
                 break;
             case ArrayDecl a:
-                if (ContainsCursor(a.Element)) Fail("array storage of va_list is unsupported", a.Pos);
+                if (ContainsCursor(a.Element) || IsCursorReference(a.Element)) Fail("array storage of va_list is unsupported", a.Pos);
                 CheckType(a.Element, a.Pos); Expr(a.CountExpr); if (a.Inits is { } initializers) foreach (var init in initializers) Expr(init);
                 break;
             case ExprStmt e: Expr(e.Expr); break;

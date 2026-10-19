@@ -11,7 +11,11 @@ import json
 import os
 from pathlib import Path
 import platform
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess
 import tarfile
 import time
 
@@ -19,7 +23,6 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
 PIN = json.loads((ROOT / 'config/source.json').read_text())
 SOURCE = ROOT / 'ref' / PIN['directory']
-COMPILER = REPO / 'DotCC/bin/Release/net10.0/dotcc.dll'
 DEFINES = ['CX_PLATFORM_LINUX=1', '__linux__=1', '_GNU_SOURCE=1', 'NDEBUG=1',
            'QUIC_BUILD_STATIC=1', 'QUIC_EVENTS_STUB=1', 'QUIC_LOGS_STUB=1',
            'QUIC_API_ENABLE_PREVIEW_FEATURES=1', 'QUIC_API_ENABLE_INSECURE_FEATURES=1']
@@ -68,10 +71,13 @@ def main():
     parser.add_argument('--native-only', action='store_true', help='Record native controls only; does not claim managed ABI compatibility')
     parser.add_argument('--jit-only', action='store_true', help='Skip NativeAOT; records JIT-only evidence')
     parser.add_argument('--timeout', type=int, default=240)
-    parser.add_argument('--compiler', type=Path, default=COMPILER, help='dotcc.dll path; accepts a frozen compiler directory')
+    parser.add_argument('--compiler', type=Path, help='existing compiler DLL; defaults to DOTCC_COMPILER, then repository output')
     parser.add_argument('--no-fetch', action='store_true', help='Validate local source directly without requiring its archive')
     args = parser.parse_args()
-    compiler = args.compiler.resolve()
+    from production_support import selected_tool, snapshot_tool, tool_manifest, validate_tool_closure
+    selected_compiler = None if args.native_only else selected_tool(explicit=args.compiler)
+    if selected_compiler is not None:
+        validate_tool_closure(selected_compiler)
     if platform.system() != 'Linux' or platform.machine() not in ('x86_64', 'amd64'):
         raise SystemExit('This first ABI reference profile requires Linux x64 (LP64); do not silently substitute another ABI')
     if hasattr(os, 'sched_getaffinity'):
@@ -80,6 +86,7 @@ def main():
     artifacts.mkdir(parents=True, exist_ok=True)
     build = ROOT / 'build/abi'
     build.mkdir(parents=True, exist_ok=True)
+    compiler, compiler_identity = (None, None) if args.native_only else snapshot_tool(selected_compiler, build / 'compiler')
     commands = []
     report = {
         'profile': 'upstream-linux-x64-lp64-preview-reference',
@@ -95,8 +102,10 @@ def main():
         'local_reference_sha256': local_reference_hashes() if args.no_fetch else {},
         'source_sha256': {str(p.relative_to(ROOT)): sha256(p) for p in [Path(__file__).resolve(), *sorted((ROOT / 'tests/Abi').glob('*'))] if p.is_file()},
         'translation_profile_sha256': sha256(ROOT / 'config/dotcc-overrides.json'),
-        'compiler_sha256': {str(p): sha256(p) for p in
+        'compiler_sha256': {} if compiler is None else {str(p): sha256(p) for p in
             [compiler, compiler.parent / 'DotCC.Lib.dll'] if p.is_file()},
+        'compiler_tool': compiler_identity,
+        'compiler_hashes': {} if compiler_identity is None else compiler_identity['files'],
         'groups': [], 'commands': commands, 'passed': False,
     }
 
@@ -127,6 +136,13 @@ def main():
     run('environment', 'dotnet-info', ['dotnet', '--info'])
     include_args = ['-I', str(SOURCE / 'src/inc'), '-I', str(SOURCE / 'src/core')]
     define_args = ['-D' + value for value in DEFINES]
+    profile = ROOT / 'config/dotcc-overrides.json'
+    probe_options = json.loads(profile.read_text())
+    if set(probe_options.get('stableFunctionPointers', [])) != {'MsQuicOpenVersion', 'MsQuicClose'} or len(probe_options['stableFunctionPointers']) != 2:
+        raise RuntimeError('Unexpected product stable function pointer policy')
+    del probe_options['stableFunctionPointers']
+    probe_profile = build / 'header-probe-overrides.json'
+    probe_profile.write_text(json.dumps(probe_options, indent=2) + '\n')
     for group in args.groups:
         destination = build / group
         destination.mkdir(parents=True, exist_ok=True)
@@ -148,8 +164,11 @@ def main():
         if args.native_only:
             outcome['status'] = 'native-reference-only'
             continue
+        outcome['translation_profile'] = dict(role='abi-' + group, source_profile=str(profile),
+            source_sha256=report['translation_profile_sha256'], effective_profile=str(probe_profile),
+            effective_sha256=sha256(probe_profile), translation_units={str(source): sha256(source)})
         generated = destination / 'generated'
-        code, _ = run(group, 'emit', ['dotnet', str(compiler), '-std=c17', '--overrides-file', str(ROOT / 'config/dotcc-overrides.json')] + define_args + include_args +
+        code, _ = run(group, 'emit', ['dotnet', str(compiler), '-std=c17', '--overrides-file', str(probe_profile)] + define_args + include_args +
             [str(source), '--emit=csproj', '-o', str(generated)])
         if code:
             outcome['status'] = 'blocked-translation'
@@ -192,9 +211,10 @@ def main():
         outcome['status'] = ('passed-jit-only' if args.jit_only else 'passed-jit-and-aot') if outcome['passed'] else 'failed-runtime-or-comparison'
         write_report()
     report['translation_profile_sha256_after'] = sha256(ROOT / 'config/dotcc-overrides.json')
-    report['compiler_sha256_after'] = {str(p): sha256(p) for p in
+    report['compiler_sha256_after'] = {} if compiler is None else {str(p): sha256(p) for p in
         [compiler, compiler.parent / 'DotCC.Lib.dll'] if p.is_file()}
-    report['compiler_stable'] = report['compiler_sha256'] == report['compiler_sha256_after']
+    report['compiler_stable'] = report['compiler_sha256'] == report['compiler_sha256_after'] and (
+        compiler is None or tool_manifest(compiler.parent) == tool_manifest(selected_compiler.parent) == report['compiler_hashes'])
     report['reference_stable'] = not args.no_fetch or report['local_reference_sha256'] == local_reference_hashes()
     report['passed'] = not args.native_only and report['compiler_stable'] and report['reference_stable'] and all(group['passed'] for group in report['groups'])
     write_report()

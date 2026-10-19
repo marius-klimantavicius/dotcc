@@ -1,0 +1,44 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using DotCcLiterals = Managed.Interpreters.CPython.CPythonLiterals;
+namespace Managed.Interpreters;
+public static unsafe class CPython {
+    internal static class CPythonLiterals {
+        internal static ReadOnlySpan<byte> BYTE_NAME => [0x41, 0x00, 0x42, 0x00];
+        internal static ReadOnlySpan<uint> BITS_NAME => [0x80000000U, 0x00000001U, 0x7FC00042U, 0x7F800000U];
+    }
+    internal static class VIEW_NAME {
+        public static ReadOnlySpan<float> Values => global::System.Runtime.InteropServices.MemoryMarshal.Cast<uint, float>(DotCcLiterals.BITS_NAME);
+    }
+    private static int observed;
+    public static void Copy(byte* destination) {
+        DotCcLiterals.BYTE_NAME.CopyTo(new Span<byte>(destination, 4));
+        VIEW_NAME.Values.CopyTo(new Span<float>(destination, 4));
+        Indirect();
+    }
+    private static void Indirect() { CONTROL_BODY }
+    private static void CallbackTarget() { }
+    private static int targetValue;
+    private static ref int AcquireClean() => ref targetValue;
+    private static ref int AcquireBadArray() { GC.KeepAlive(new byte[17]); return ref targetValue; }
+    private static ref int AcquireBadObject() { GC.KeepAlive(new ArrayBox()); return ref targetValue; }
+    internal unsafe ref struct __DotccGlobalAddressCache {
+        private ref byte value;
+        internal T* Get<T>(delegate* managed<ref T> acquire) where T : unmanaged {
+            if (Unsafe.IsNullRef(ref value)) value = ref Unsafe.As<T,byte>(ref acquire());
+            return (T*)Unsafe.AsPointer(ref value);
+        }
+    }
+    private static byte* __dotcc_owned_array_0() { OWNED_BODY return null; }
+    private static class Hidden { internal static readonly byte[] Payload = new byte[17]; }
+    private sealed class ArrayBox { internal readonly byte[] Payload = new byte[17]; }
+    public struct RuntimeState { public int Value; }
+    public static class Globals { public static RuntimeState _PyRuntime; }
+    private static void ScopedAddress() {
+        fixed (RuntimeState* __dotcc_staticBase = &Globals._PyRuntime) {
+            ref RuntimeState __dotcc_address0 = ref Globals._PyRuntime;
+            observed = __dotcc_address0.Value;
+        }
+    }
+}

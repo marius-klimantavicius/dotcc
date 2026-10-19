@@ -67,6 +67,8 @@ def sources(root):
 
 
 def translate(ctx):
+    from production_support import production_sources
+    ctx.receipt["production_inputs"] = production_sources(ctx.root)
     root = ctx.root
     ctx.env['DOTCC_COMPILER'] = str(ctx.compiler)
     if not ctx.options.fast:
@@ -93,7 +95,7 @@ def translate(ctx):
     inputs = json_file(profile / "inputs.json")
     core = helper(root / "scripts/core_inputs.py")
     entries = core.profile_sources(profile, root, inputs)
-    options = ["--profile", profile, "--jobs", str(min(4, ctx.options.jobs)), "--timeout", str(ctx.options.timeout)]
+    options = ["--profile", profile, "--jobs", str(1), "--timeout", str(ctx.options.timeout)]
     if ctx.options.action == "probe":
         options += ["--emit-only"]
         if ctx.options.unit:

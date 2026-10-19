@@ -4,9 +4,13 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import subprocess
+import sys as _production_sys
+from pathlib import Path as _ProductionPath
+_production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
+    if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
+from production_support import subprocess, selected_tool
 
-from core_inputs import compiler_identity, emission_identity, profile_sources
+from core_inputs import compiler_executable, compiler_identity, emission_identity, profile_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -48,7 +52,7 @@ for receipt_path in [args.baseline_assembly, *args.replacement_assembly]:
         objects[name] = dict(row, replay_assembly_receipt=str(receipt_path), producer_compiler=producer)
 if set(objects) != set(selected):
     raise SystemExit('incomplete selected object set')
-compiler_dir = ROOT.parent / 'DotCC/bin/Release/net10.0'
+compiler_dir = selected_tool().parent
 compiler = compiler_identity(compiler_dir)
 options = ['--emit=managedlib', '--deduplicate-inline', '--nest-types', '--class-name', 'BlinkCore',
            '--namespace', 'Managed.Emulation', '--runtime=c']
@@ -60,7 +64,7 @@ out = ROOT / 'artifacts/core/objects' / key
 out.mkdir(parents=True, exist_ok=True)
 generated = ROOT / 'generated/core-objects' / key / 'ManagedCore'
 generated.parent.mkdir(parents=True, exist_ok=True)
-command = ['dotnet', str(compiler_dir / 'dotcc.dll'),
+command = ['dotnet', str(compiler_executable(compiler_dir)),
            *[objects[entry['path']]['object_path'] for entry in entries], *options, '-o', str(generated)]
 with (out / 'link.log').open('wb') as log:
     code = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=180).returncode

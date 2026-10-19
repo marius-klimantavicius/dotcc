@@ -1,0 +1,30 @@
+{
+  "profile": "embedded-gil",
+  "policy": "Reuse DotCC.Libc; no application-owned second libc or native CPython backend",
+  "status": "P1 open; operation-by-operation linked import audit requires complete emission",
+  "boundaries": [
+    {"name":"memory", "service":"DotCC.Libc allocation", "translated":"CPython pymalloc/reference counting/cyclic GC", "gate":"allocator alignment/domain/realloc/arena and actual-object ownership probes"},
+    {"name":"threads", "service":"DotCC.Libc PthreadLib and AtomicLib", "translated":"CPython GIL/TLS/parking lot/locks", "gate":"real emitted CPython worker/callback scheduling and shutdown; host prerequisite observations in docs/abi-progress.md"},
+    {"name":"text", "service":"shared WcharLib plus explicit length-bearing managed conversions", "translated":"CPython Unicode/codecs", "gate":"unsigned 16-bit wchar actual-header layout/conversion probes; native Linux wchar is 32-bit"},
+    {"name":"files", "service":"shared descriptor/stdio/path services", "translated":"CPython _io/posix/importlib", "gate":"files/error propagation/relocation/isolated startup"},
+    {"name":"clocks/entropy", "service":"shared time and entropy services", "translated":"time conversions/hash seeding/random algorithms", "gate":"bounds, monotonic ordering, entropy-backed seeding"}
+  ],
+  "macro_policy": "config/pyconfig-policy.json advertises only reviewed declarations; emitted ABI and link validation still required",
+  "missing_declarations": ["max_align_t", "wcsftime", "wcsxfrm", "mbstowcs", "wcstombs", "mbrtowc", "wcrtomb", "mbstate_t", "clock_getres"],
+  "missing_declarations_status": "header inventory observations; implement only after independently reproducing required actual-source use; B owns libc/headers",
+  "runtime_dependency_audit": "Fresh final-tool product dynamic/native dependency, runtime-source, loader and license audits remain required at P6; historical linked products do not qualify B23/B24 implementations.",
+  "resolver_host_dependency": {
+    "status": "Coordinator-adjudicated D4 implementation; B24 reports 411 checks per JIT/AOT, while corrected unit rerun/final sealed evidence remain pending; not SOURCE-READY or product-qualified",
+    "owner": "B24 exclusively owns netdb.h, NetDbLib.cs, ResolverLib.cs and narrow RuntimeContextLib.cs integration",
+    "boundary": "Extend the shared DotCC.Libc host P/Invoke service pattern used by PasswdLib and existing OS services; no application-owned shim, private second libc or native Python engine",
+    "target": "Linux x64 host libc ABI; other runtime targets require explicit support checks and separate qualification",
+    "private_host_calls": ["getnameinfo", "gethostbyname_r"],
+    "necessity": "Faithful same-environment NSS canonical names and aliases, NI_NOFQDN behavior, TCP/UDP service-name distinctions, partial buffer writes and native errors are not faithfully available through the BCL DNS surface alone.",
+    "public_c_surface": "Ordinary getnameinfo and nonreentrant gethostbyname/hostent/h_errno; no public gethostbyname_r declaration or HAVE_GETHOSTBYNAME_R selection",
+    "supporting_host_bindings": "B24's design uses host __errno_location and existing getaddrinfo/freeaddrinfo services, cloning host addrinfo results into the existing owned heap for native service/protocol filtering; no borrowed host addrinfo list escapes.",
+    "ownership": "Caller-owned getnameinfo buffers; separate owned addrinfo lists; stable unmanaged borrowed hostent storage on existing RuntimeThreadState, separate per-thread/context h_errno, next-lookup invalidation and existing context-disposal/finalizer cleanup",
+    "gates": "Actual native ABI/size_t/layout/result-pointer/ERANGE/error/partial-write and ownership/thread/context/lifecycle controls; fresh normal tool capture, unchanged-C emitted after-proof and real socket/profile/product retries",
+    "source_policy": "Common HAVE_SOCKET is live; twelve test-only dependent feature values remain private until B24 proof and a coordinated consistent source boundary",
+    "audit_pending": "Record actual libc/NSS/service dependencies and platform/loader behavior from fresh JIT/NativeAOT delivered artifacts, with dependency/license notices in P6 audit; source inference is not dynamic-dependency evidence."
+  }
+}

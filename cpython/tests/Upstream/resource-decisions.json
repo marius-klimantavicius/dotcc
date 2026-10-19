@@ -1,0 +1,14 @@
+{
+  "policy": "Individual optional platform/resource exclusions only. Native required failures and expected failures remain blockers. No missing C helper is excluded.",
+  "cases": {
+    "test.test_float.GeneralFloatCases.test_float_with_comma": {"upstream_path":"Lib/test/test_float.py","source_guard":"decimal_point","reason":"Comma-decimal LC_NUMERIC locale resource unavailable (only C/C.utf8/POSIX installed); isolated UTF-8 product does not promise locale-specific numeric syntax"},
+    "test.test_codecs.CodecsModuleTest.test_lookup_issue1813": {"upstream_path":"Lib/test/test_codecs.py","source_guard":"tr_TR","reason":"Turkish tr_TR locale resource unavailable; ordinary codec lookup/Unicode cases remain required"},
+    "test.test_re.ReTests.test_locale_caching": {"upstream_path":"Lib/test/test_re.py","source_guard":"en_US.iso88591","reason":"en_US.iso88591 locale resource unavailable; Unicode and byte regex matching remain required"},
+    "test.test_re.ReTests.test_locale_compiled": {"upstream_path":"Lib/test/test_re.py","source_guard":"en_US.iso88591","reason":"en_US.iso88591 locale resource unavailable; Unicode and byte regex matching remain required"},
+    "test.test_descr.ClassPropertiesAndMethods.test_refleaks_in_classmethod___init__": {"upstream_path":"Lib/test/test_descr.py","source_guard":"gettotalrefcount","reason":"Requires debug-build sys.gettotalrefcount instrumentation absent from the selected release layout; ordinary ownership/refcount/GC assertions remain required"},
+    "test.test_descr.ClassPropertiesAndMethods.test_refleaks_in_staticmethod___init__": {"upstream_path":"Lib/test/test_descr.py","source_guard":"gettotalrefcount","reason":"Requires debug-build sys.gettotalrefcount instrumentation absent from the selected release layout; ordinary ownership/refcount/GC assertions remain required"},
+    "test.test_importlib.metadata.test_main.InaccessibleSysPath.test_discovery": {"upstream_path":"Lib/test/test_importlib/metadata/test_main.py","source_guard":"def test_discovery","reason":"Optional third-party pyfakefs filesystem fixture unavailable (upstream metadata/stubs.py setUpPyfakefs explicitly skips); real filesystem/importlib discovery cases remain required"},
+    "test.test_io.CIOTest.test_unbounded_file": {"upstream_path":"Lib/test/test_io.py","source_guard":"test can only run in a 32-bit address space","reason":"Upstream /dev/zero exhaustion test explicitly requires 32-bit address space and >=2 GiB; selected ABI is Linux x64"},
+    "test.test_io.PyIOTest.test_unbounded_file": {"upstream_path":"Lib/test/test_io.py","source_guard":"test can only run in a 32-bit address space","reason":"Upstream /dev/zero exhaustion test explicitly requires 32-bit address space and >=2 GiB; selected ABI is Linux x64"}
+  }
+}

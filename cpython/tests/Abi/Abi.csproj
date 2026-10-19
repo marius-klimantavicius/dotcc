@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- This runner has its own entry point; nested direct-service probes are separate projects. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CPythonProject Condition="'$(CPythonProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedCPython/TranslatedCPython.csproj</CPythonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="$(CPythonProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualProduct" BeforeTargets="CoreCompile">
+    <Error Condition="!Exists('$(CPythonProject)')" Text="Supply the actual translated CPython product. No native engine or test substitute is supported." />
+  </Target>
+</Project>

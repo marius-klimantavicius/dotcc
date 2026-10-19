@@ -1,0 +1,41 @@
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using VM = PRODUCT_OWNER;
+
+internal static partial class AllocationProbe {
+    private sealed record NativeTable(string Name, int Length, string Address, string Sha256);
+    private static readonly List<NativeTable> NativeTables = new();
+    private static unsafe void CheckNativeTables(string path) {
+        var rows = File.ReadAllLines(path).Select(line => line.Split(' ')).ToDictionary(row => row[0]);
+        if (rows.Count != 5 || rows.Values.Any(row => row.Length != 3)) throw new Exception("incomplete independent native table oracle");
+        var addresses = new HashSet<nuint>();
+        var tableAddresses = new Dictionary<string, nuint>();
+        for (int cycle = 0; cycle < 2; cycle++) {
+            Check("_PyLong_DigitValue", VM.Globals._PyLong_DigitValue, 256);
+            Check("_Py_ctype_table", VM.Globals._Py_ctype_table, 256 * 4);
+            Check("_Py_ctype_tolower", VM.Globals._Py_ctype_tolower, 256);
+            Check("_Py_ctype_toupper", VM.Globals._Py_ctype_toupper, 256);
+            Check("_PyUnicode_ExtendedCase", VM.Globals._PyUnicode_ExtendedCase, 1236 * 4);
+            if (cycle == 0) GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking:true, compacting:true);
+        }
+        // These independently allocated C objects may use common immutable
+        // payload storage. A write through one C address must stay local.
+        byte first = VM.Globals._Py_ctype_tolower[0], other = VM.Globals._Py_ctype_toupper[0];
+        VM.Globals._Py_ctype_tolower[0] ^= 0x7f;
+        if (VM.Globals._Py_ctype_toupper[0] != other) throw new Exception("C destinations coalesced");
+        VM.Globals._Py_ctype_tolower[0] = first;
+
+        void Check(string name, void* pointer, int length) {
+            var row = rows[name];
+            byte[] expected = Convert.FromHexString(row[2]);
+            if (int.Parse(row[1]) != length || expected.Length != length
+                || !new ReadOnlySpan<byte>(pointer, length).SequenceEqual(expected)) throw new Exception(name + " actual native bytes");
+            if (NativeTables.Count < 5) {
+                if (!addresses.Add((nuint)pointer)) throw new Exception("distinct C destination addresses");
+                tableAddresses.Add(name, (nuint)pointer);
+                NativeTables.Add(new NativeTable(name, length, ((nuint)pointer).ToString("X"),
+                    Convert.ToHexString(SHA256.HashData(expected)).ToLowerInvariant()));
+            } else if (tableAddresses[name] != (nuint)pointer) throw new Exception(name + " moved after compacting collection");
+        }
+    }
+}

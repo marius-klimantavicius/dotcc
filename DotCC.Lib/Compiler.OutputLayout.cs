@@ -12,7 +12,8 @@ public static partial class Compiler
         if (options is null) return;
         if (!Enum.IsDefined(options.Runtime)) throw new CompileException("unknown runtime profile");
         if (options.ExportEnum != null) _ = new MacroExportSelector(options.ExportEnum, "--export-enum");
-        if (options.ExportInline != null) _ = new MacroExportSelector(options.ExportInline, "--export-inline");
+        if (options.ExportInline != null)
+            foreach (var pattern in options.ExportInline) _ = new InlineExportSelector(pattern);
         if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.ExportEnum is { Count: > 0 } || options.LiteralPool || options.StateContext))
             throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline, --export-enum, --literal-pool and --state-context must be set at link time for objects");
         if (options.InstanceMethods && emit is not (EmitMode.Object or EmitMode.ManagedLib))
@@ -43,7 +44,7 @@ public static partial class Compiler
     private static Backends.CSharpGlobalOutput RenderGlobals(
         IReadOnlyList<Backends.CSharpGlobalSource> globals, LiteralPool.Output literals, GlobalStorageReferences storage) => new(
         string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Field)))),
-        string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Initializer)))),
+        StaticStorageInitializers.Order(globals.Select(global => storage.Rewrite(literals.Rewrite(global.Initializer)))),
         string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.ThreadField)))),
         string.Concat(globals.Select(global => storage.Rewrite(literals.Rewrite(global.StaticMembers)))),
         storage.GlobalName, storage.ThreadName, storage.ThreadBackingName);
@@ -59,6 +60,7 @@ public static partial class Compiler
         foreach (var (key, text) in declarations)
         {
             if (key.StartsWith(MacroConstantPrefix, StringComparison.Ordinal)
+                || key.StartsWith(OwnerInitializerPrefix, StringComparison.Ordinal)
                 || key.StartsWith(LiteralPool.TypeKeyPrefix, StringComparison.Ordinal)) continue;
             if (tagLayout?.TypeNames.ContainsKey(key.TrimStart('@')) == true)
             {

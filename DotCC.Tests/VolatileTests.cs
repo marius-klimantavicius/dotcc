@@ -114,11 +114,10 @@ public sealed class VolatileTests
     }
 
     [Fact]
-    public void non_eligible_volatile_struct_local_falls_back_to_plain()
+    public void volatile_struct_member_selection_reads_the_qualified_scalar()
     {
-        // A volatile lvalue of non-eligible type (a struct value) is read via
-        // Volatile.Read on the whole struct, then the field is accessed on the
-        // returned copy. The declaration itself is a plain initializer.
+        // Member selection qualifies and reads the scalar in its real storage.
+        // It does not load an intermediate aggregate copy.
         var src = WriteTemp("""
             typedef struct Pt { int x; int y; } Pt;
             int main(void) { volatile Pt p = { 1, 2 }; return p.x; }
@@ -127,7 +126,8 @@ public sealed class VolatileTests
         {
             var emitted = Compiler.EmitCSharp(new[] { src });
             emitted.ShouldContain("Pt p = new Pt");
-            emitted.ShouldContain("Volatile.Read(ref p).x");
+            emitted.ShouldContain("Volatile.Read(ref p.x)");
+            emitted.ShouldNotContain("Volatile.Read(ref p).x");
         }
         finally { File.Delete(src); }
     }

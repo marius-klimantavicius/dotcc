@@ -74,7 +74,7 @@ internal sealed partial class CSharpBackend
     private bool IsSpecialAlignedGlobal(GlobalVar global) =>
         RequiresAlignedObject(global.Sym) && global.Init is not PinnedArray;
 
-    private bool EmitAlignedGlobal(StringBuilder sb, GlobalVar global)
+    private bool EmitAlignedGlobal(StringBuilder sb, StringBuilder initializer, GlobalVar global)
     {
         var symbol = global.Sym;
         var alignment = ObjectAlignment(symbol);
@@ -83,13 +83,22 @@ internal sealed partial class CSharpBackend
             throw new IrUnsupportedException("over-aligned thread-local storage requires a per-thread aligned allocation");
         var type = NintStorage(symbol) ? "nint" : Cs(symbol.Type);
         var storageType = symbol.Type.IsPointerLowered ? "nint" : type;
-        var init = global.Init is { } value ? Coerced(value, symbol.Type) : "default";
-        if (symbol.Type.IsPointerLowered && global.Init is not null) init = "(nint)(" + init + ")";
         sb.Append("    private static unsafe ").Append(type).Append("* ").Append(AlignedName(symbol))
-            .Append(" = (").Append(type).Append("*)Libc.GlobalAlignedFrom<").Append(storageType).Append(">(new ").Append(storageType)
-            .Append("[]{ ").Append(init).Append(" }, ").Append(alignment).Append(");\n");
+            .Append(" = (").Append(type).Append("*)Libc.GlobalAlignedZeroed<").Append(storageType)
+            .Append(">(1, ").Append(alignment).Append(");\n");
         sb.Append("    public static unsafe ref ").Append(type).Append(' ').Append(symbol.TargetName)
             .Append(" => ref *").Append(AlignedName(symbol)).Append(";\n");
+        // Establish the aligned C object's address before evaluating any
+        // relocation, then initialize it in place in declaration order. A
+        // one-element managed payload would both allocate and copy a possibly
+        // huge containing record by value.
+        if (!EmitLargeStaticAggregateInitializer(initializer, global) && global.Init is { } value)
+        {
+            var init = Coerced(value, symbol.Type);
+            if (symbol.Type.IsPointerLowered) init = "(nint)(" + init + ")";
+            initializer.Append("        ").Append(GlobalStorageReferences.Emit(symbol.TargetName))
+                .Append(" = ").Append(init).Append(";\n");
+        }
         return true;
     }
 }

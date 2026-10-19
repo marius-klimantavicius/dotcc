@@ -1,0 +1,1 @@
+Uses POSIX threads and C11 pointer atomics.

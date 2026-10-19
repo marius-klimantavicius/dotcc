@@ -12,7 +12,7 @@ internal sealed partial class IrBuilder
     private string NameAnonymousAggregate(string original)
     {
         _anonymousAggregateTypes.Add(original);
-        return AnonymousTypeNames is not null && AnonymousTypeNames.TryGetValue(original, out var name) ? name : original;
+        return AggregateName(AnonymousTypeNames is not null && AnonymousTypeNames.TryGetValue(original, out var name) ? name : original);
     }
 
     // Resolve C names from the bound type graph; hidden storage names are never

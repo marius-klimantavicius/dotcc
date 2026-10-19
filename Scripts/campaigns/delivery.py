@@ -1,5 +1,5 @@
 """Locked, recoverable promotion of a complete set of generated projects."""
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 import json
 import os
 from pathlib import Path
@@ -91,7 +91,15 @@ def recover(journal):
     journal.unlink()
 
 
-def promote(pairs, journal, validate, metadata=None, *, legacy_owned=()):
+def publication_lock():
+    """Only filesystem mutation owns this lease; build validation owns its own."""
+    if os.name != 'nt' and os.environ.get('DOTCC_CAMPAIGN_COMMAND_LOCKS') == 'production':
+        from production_support import SHARED_LOCK
+        return lock(SHARED_LOCK)
+    return nullcontext()
+
+
+def _prepare_promotion(pairs, journal, metadata, legacy_owned):
     recover(journal)
     rows = []
     for candidate, target in pairs:
@@ -128,18 +136,28 @@ def promote(pairs, journal, validate, metadata=None, *, legacy_owned=()):
              "metadata": [{"path": str(path), "previous": json.loads(path.read_text()) if path.exists() else None}
                           for path in metadata]}
     write_json(journal, state)
+    return state
+
+
+def promote(pairs, journal, validate, metadata=None, *, legacy_owned=()):
+    metadata = metadata or {}
+    with publication_lock():
+        state = _prepare_promotion(pairs, journal, metadata, legacy_owned)
     try:
-        for row in rows:
-            target = Path(row["target"])
-            if row["previous"]:
-                target.rename(row["backup"])
-            Path(row["candidate"]).rename(target)
+        with publication_lock():
+            for row in state['outputs']:
+                target = Path(row["target"])
+                if row["previous"]:
+                    target.rename(row["backup"])
+                Path(row["candidate"]).rename(target)
         validate()
-        for path, value in metadata.items():
-            write_json(path, value())
-        state["committed"] = True
-        write_json(journal, state)
+        with publication_lock():
+            for path, value in metadata.items():
+                write_json(path, value())
+            state["committed"] = True
+            write_json(journal, state)
+            journal.unlink()
     except BaseException:
-        recover(journal)
+        with publication_lock():
+            recover(journal)
         raise
-    journal.unlink()

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>DotCC.Tests</AssemblyName>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Compile the ordinary runtime tests at their authored paths. This
+         focused project has no compiler dependency or compiler build. -->
+    <Compile Include="../../../../DotCC.Tests/CPythonR18BootstrapServicesTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/LibcCalendarTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/LibcProcessSignalTests.cs" />
+    <Compile Include="../../../../DotCC.Tests/CollectionDefinitions.cs" />
+    <ProjectReference Include="../../../../DotCC.Libc/DotCC.Libc.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+</Project>
