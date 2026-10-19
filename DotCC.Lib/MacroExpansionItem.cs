@@ -38,6 +38,20 @@ internal sealed class MacroExpansionItem : SourceMappedItem
         ? new MacroExpansionItem(item, expansion._disabled, invocation)
         : new SourceMappedItem(item, invocation);
 
+    internal static Item WithLeadingSpace(Item item, bool? leadingSpace)
+    {
+        var copy = new MacroExpansionItem(item, (item as MacroExpansionItem)?._disabled ?? NoDisabledNames);
+        copy.PreprocessingLeadingSpace = leadingSpace;
+        return copy;
+    }
+
+    internal static Item WithTrailingSpace(Item item)
+    {
+        var copy = new MacroExpansionItem(item, (item as MacroExpansionItem)?._disabled ?? NoDisabledNames);
+        copy.PreprocessingTrailingSpace = true;
+        return copy;
+    }
+
     internal static bool IsDisabled(Item item, string name) =>
         item is MacroExpansionItem expansion && (expansion._fullyExpanded || expansion._disabled.Contains(name));
 

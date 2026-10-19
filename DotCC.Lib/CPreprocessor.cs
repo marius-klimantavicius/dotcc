@@ -882,9 +882,18 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
     private List<Item> ExpandObjectLikeBody(IReadOnlyList<Item> body, HashSet<string> hideSet, Item? invocation = null, bool preserveContext = false)
     {
         var result = new List<Item>(body.Count);
-        foreach (var original in body)
+        var pendingSpace = false;
+        for (var index = 0; index < body.Count; ++index)
         {
-            var item = invocation is null ? original : MacroExpansionItem.AtInvocation(original, invocation);
+            var original = body[index];
+            bool? leadingSpace = index == 0
+                ? (invocation as SourceMappedItem)?.PreprocessingLeadingSpace
+                    ?? (original as SourceMappedItem)?.PreprocessingLeadingSpace
+                : MacroExpander.Separated(body[index - 1], original);
+            if (pendingSpace) leadingSpace = true;
+            pendingSpace = false;
+            var item = MacroExpansionItem.WithLeadingSpace(
+                invocation is null ? original : MacroExpansionItem.AtInvocation(original, invocation), leadingSpace);
             if (!preserveContext && item.Content is "__LINE__" or "__FILE__")
             {
                 result.AddRange(Rewrite(item));
@@ -898,13 +907,18 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
             {
                 if (!preserveContext) RecordExpansion(inner, invocation ?? item);
                 var nestedHide = new HashSet<string>(hideSet, StringComparer.Ordinal) { text };
-                result.AddRange(ExpandObjectLikeBody(inner.Body, nestedHide, item, preserveContext));
+                var replacement = ExpandObjectLikeBody(inner.Body, nestedHide, item, preserveContext);
+                result.AddRange(replacement);
+                pendingSpace = replacement.Count == 0 ? leadingSpace == true
+                    : replacement[^1] is SourceMappedItem { PreprocessingTrailingSpace: true };
             }
             else
             {
                 result.Add(MacroExpansionItem.Disable(item, hideSet));
             }
         }
+        if (result.Count > 0 && (pendingSpace || invocation is SourceMappedItem { PreprocessingTrailingSpace: true }))
+            result[^1] = MacroExpansionItem.WithTrailingSpace(result[^1]);
         return result;
     }
 

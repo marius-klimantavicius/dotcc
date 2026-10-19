@@ -1,0 +1,4 @@
+table 2 0 6 0
+cube 12 0 14 0
+local 15 0 20 saved 24 0
+copies 25 26 0

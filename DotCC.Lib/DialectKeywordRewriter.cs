@@ -96,6 +96,10 @@ internal sealed class DialectKeywordRewriter : RewritingTokenStream
             // — covering c99/c11/c17/c23, the default c17 included. The FnSig
             // path turns the flagged type into a [MethodImpl(AggressiveInlining)].
             ["inline"] = (1999, map["inline"], "inline"),
+            // GNU's reserved alternate spellings also work in C90 headers.
+            // Promotion follows macro expansion, so explicit definitions win.
+            ["__inline"] = (1990, map["inline"], "inline"),
+            ["__inline__"] = (1990, map["inline"], "inline"),
 
             // C23 makes `static_assert` a first-class keyword (the C11 form is
             // `_Static_assert`, with the lowercase macro living in <assert.h>).

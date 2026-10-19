@@ -1728,7 +1728,9 @@ internal sealed partial class CSharpBackend
         // of the same enum stores as-is.
         if (tgt is CType.Enum te && Cs(src) != Cs(te) && (src.IsArithmetic || src is CType.Enum))
         {
-            text = $"({Cs(te)})({Sub(value, PUnary)})";
+            text = IsBooleanRendered(value)
+                ? $"({Cs(te)})(int)({Expr(value)})"
+                : $"({Cs(te)})({Sub(value, PUnary)})";
             if (IsConstExpr(value) && !(TryConstInt(value, out var ev) && ConstFitsTarget(ev, Cs(te.Underlying))))
             {
                 text = $"unchecked({text})";
@@ -2883,7 +2885,9 @@ internal sealed partial class CSharpBackend
         // C# parses (EnumName)-value as subtraction unless the signed operand
         // is parenthesized. This also applies to folded enum flag constants
         // whose high bit makes the underlying signed value negative.
-        var operand = c.Target.Unqualified is CType.Enum && c.Operand is Unary { Op: UnOp.Neg or UnOp.Plus }
+        var operand = c.Target.Unqualified is CType.Enum && IsBooleanRendered(c.Operand)
+            ? $"(int)({Expr(c.Operand)})"
+            : c.Target.Unqualified is CType.Enum && c.Operand is Unary { Op: UnOp.Neg or UnOp.Plus }
             ? $"({Expr(c.Operand)})" : Sub(c.Operand, PUnary);
         var text = $"({Cs(c.Target)}){operand}";
         var integerTarget = c.Target.Unqualified is CType.Enum enumeration
@@ -2896,6 +2900,21 @@ internal sealed partial class CSharpBackend
         }
         return (text, PUnary);
     }
+
+    // C comparisons have type int but render as CBool. C# enum conversions
+    // cannot chain CBool's user-defined integer conversion implicitly. Preserve
+    // the C value through an explicit int boundary for both casts and stores.
+    private static bool IsBooleanRendered(CExpr value) => value.Type.Unqualified == CType.Bool || value switch
+    {
+        Paren parenthesized => IsBooleanRendered(parenthesized.Inner),
+        Binary { Op: BinOp.Eq or BinOp.Ne or BinOp.Lt or BinOp.Gt
+            or BinOp.Le or BinOp.Ge or BinOp.LogAnd or BinOp.LogOr } => true,
+        RuntimeIntrinsic { Kind: RuntimeIntrinsicKind.IsLittleEndian } => true,
+        CommaOp comma when comma.Items.Count > 0 => IsBooleanRendered(comma.Items[^1]),
+        CommaSeq comma when comma.Items.Count > 0 => IsBooleanRendered(comma.Items[^1]),
+        ComptimeFold { Resolved: { } resolved } => IsBooleanRendered(resolved),
+        _ => false,
+    };
 
     /// <summary>True when <paramref name="e"/> is a C constant expression — only
     /// literals, enum constants, <c>sizeof</c>, and operators over constant

@@ -101,6 +101,10 @@ internal sealed class PhysicalSourceMap
 internal class SourceMappedItem : Item
 {
     internal int? Packing { get; set; }
+    // Replacement tokens can originate in different macro definitions. Their
+    // boundary whitespace must survive Item streams independently of locations.
+    internal bool? PreprocessingLeadingSpace { get; set; }
+    internal bool PreprocessingTrailingSpace { get; set; }
     private readonly PhysicalSourceMap? _map;
     private readonly SourcePosition _origin;
 
@@ -110,6 +114,8 @@ internal class SourceMappedItem : Item
         _map = (origin as SourceMappedItem)?._map;
         _origin = origin is SourceMappedItem mapped ? mapped._origin : origin.Position;
         Packing = SourcePacking.Recorded(origin);
+        PreprocessingLeadingSpace = (item as SourceMappedItem)?.PreprocessingLeadingSpace;
+        PreprocessingTrailingSpace = (item as SourceMappedItem)?.PreprocessingTrailingSpace ?? false;
         FunctionMacroOrigin.Copy(item, this);
         FunctionMacroOrigin.Copy(origin, this);
     }

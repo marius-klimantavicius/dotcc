@@ -404,6 +404,27 @@ internal sealed partial class IrBuilder
                 int count = dims is { Count: > 0 } ? dims.Aggregate(1, (left, right) => checked(left * right)) : 1;
                 return Enumerable.Range(0, count).Select(_ => (CExpr)new DefaultLit { Type = elem }).ToList();
             }
+            if (dims is { Count: > 1 } && items.Any(item => item is InitGroup))
+            {
+                // These braces initialize array rows, not the fields of one
+                // struct. Compatible aggregate expressions without braces
+                // retain the flat element-copy path below (brace elision).
+                // Retain each row's extent while descending so a short
+                // row is zero-filled before the following row starts.
+                if (items.Count > dims[0])
+                    throw new IrUnsupportedException("too many initializers for aggregate array dimension");
+                var inner = dims.Skip(1).ToList();
+                var values = new List<CExpr>();
+                foreach (var item in items)
+                {
+                    if (item is not InitGroup row)
+                        throw new IrUnsupportedException("multidimensional aggregate array rows require braces");
+                    values.AddRange(BuildArrayElems(elem, inner, row.Items));
+                }
+                var total = dims.Aggregate(1, (left, right) => checked(left * right));
+                while (values.Count < total) values.Add(new DefaultLit { Type = elem });
+                return values;
+            }
             // A struct/union element can initialize its members with braces or
             // copy an already-typed aggregate value (a variable/call/literal).
             var outp = new List<CExpr>(items.Count);

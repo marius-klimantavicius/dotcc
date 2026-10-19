@@ -70,6 +70,69 @@ public sealed class MacroStringificationTests
     }
 
     [Fact]
+    public void Object_like_aliases_preserve_nested_argument_token_boundaries()
+    {
+        var output = Preprocess("""
+            #define STR(x) #x
+            #define XSTR(x) STR(x)
+            #define MAJOR 1
+            #define MINOR 5
+            #define PATCH 7
+            #define NUMBERS MAJOR.MINOR.PATCH
+            #define VERSION XSTR(NUMBERS)
+            #define SPACED XSTR(MAJOR . MINOR . PATCH)
+            #define NAME identifier
+            #define PUNCTUATION XSTR(NAME+NAME->member)
+            #define EMPTY
+            #define REMOVED XSTR(NAME EMPTY+NAME)
+            const char *version = VERSION;
+            const char *spaced = SPACED;
+            const char *punctuation = PUNCTUATION;
+            const char *removed = REMOVED;
+            """);
+        output.ShouldContain("version = \"1.5.7\"");
+        output.ShouldContain("spaced = \"1 . 5 . 7\"");
+        output.ShouldContain("punctuation = \"identifier+identifier->member\"");
+        output.ShouldContain("removed = \"identifier +identifier\"");
+    }
+
+    [Fact]
+    public void Object_expansion_before_stringification_retains_comments_and_literal_spelling()
+    {
+        var output = Preprocess("""
+            #define STR(x) #x
+            #define XSTR(x) STR(x)
+            #define WORD word
+            #define LITERAL "a\\b\"c"
+            #define ALIAS XSTR(WORD/**/+   LITERAL)
+            const char *text = ALIAS;
+            """);
+        output.ShouldContain(""""
+            text = "word + \"a\\\\b\\\"c\""
+            """");
+    }
+
+    [Fact]
+    public void Removed_trailing_macro_tokens_preserve_whitespace_before_the_callers_suffix()
+    {
+        var output = Preprocess("""
+            #define STR(x) #x
+            #define XSTR(x) STR(x)
+            #define EMPTY
+            #define INNER x EMPTY
+            #define OUTER XSTR(INNER+y)
+            #define FORWARD(arg) XSTR(arg+y)
+            #define PREFIX XSTR(
+            const char *outer = OUTER;
+            const char *forward = FORWARD(INNER);
+            const char *prefix = PREFIX INNER+y);
+            const char *direct = XSTR(INNER+y);
+            """);
+        foreach (var name in new[] { "outer", "forward", "prefix", "direct" })
+            output.ShouldContain(name + " = \"x +y\"");
+    }
+
+    [Fact]
     public void Variadic_stringification_retains_comma_spacing()
     {
         Preprocess("#define STR(...) #__VA_ARGS__\nconst char *s=STR(a,b , c);\n")

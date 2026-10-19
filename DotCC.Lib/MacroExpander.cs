@@ -75,10 +75,12 @@ internal sealed class MacroExpander : RewritingTokenStream
         catch (MetadataExpansionLimit) { return Array.Empty<Item>(); }
     }
 
-    private static bool Separated(Item previous, Item next)
+    internal static bool Separated(Item previous, Item next)
     {
-        return previous.Position.Line != next.Position.Line
-            || previous.Position.Column + (previous.Content?.ToString()?.Length ?? 0) != next.Position.Column;
+        if (previous is SourceMappedItem { PreprocessingTrailingSpace: true }) return true;
+        return (next as SourceMappedItem)?.PreprocessingLeadingSpace
+            ?? (previous.Position.Line != next.Position.Line
+                || previous.Position.Column + (previous.Content?.ToString()?.Length ?? 0) != next.Position.Column);
     }
 
     private static List<Token> ReadTokens(IReadOnlyList<Item> items)
@@ -93,6 +95,12 @@ internal sealed class MacroExpander : RewritingTokenStream
     {
         for (var i = 0; i < replacement.Count; ++i)
             output.Add(i == 0 ? replacement[i] with { LeadingSpace = leadingSpace } : replacement[i]);
+    }
+
+    private static void KeepTrailingSpace(List<Token> tokens, bool trailingSpace)
+    {
+        if (trailingSpace && tokens.Count > 0)
+            tokens[^1] = tokens[^1] with { Item = MacroExpansionItem.WithTrailingSpace(tokens[^1].Item) };
     }
 
     protected override void ProcessToken(Item token)
@@ -172,6 +180,7 @@ internal sealed class MacroExpander : RewritingTokenStream
                         if (!_metadata) _cpp.RecordExpansion(macro, token.Item);
                         activeHiding.Add(name);
                         var replacement = ExpandTokenList(ReadBody(macro.Body, token.Item), activeHiding);
+                        KeepTrailingSpace(replacement, token.Item is SourceMappedItem { PreprocessingTrailingSpace: true });
                         if (RescanReplacementBoundary(replacement, tokens, i + 1, hiding) is { } remainder)
                         {
                             AppendReplacement(result, remainder, token.LeadingSpace);
@@ -192,6 +201,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             }
             result.Add(token with { Item = MacroExpansionItem.Disable(token.Item, hiding) });
         }
+        KeepTrailingSpace(result, pendingSpace);
         return result;
     }
 
@@ -395,6 +405,7 @@ internal sealed class MacroExpander : RewritingTokenStream
             }
             result.Add(token);
         }
+        KeepTrailingSpace(result, pendingSpace);
     }
 
     private IReadOnlyList<Token> ResolveOperand(Token token, Dictionary<string, IReadOnlyList<Token>> parameters)
@@ -419,9 +430,11 @@ internal sealed class MacroExpander : RewritingTokenStream
     private static string Stringify(IReadOnlyList<Token> tokens)
     {
         var result = new System.Text.StringBuilder();
+        var previousTrailingSpace = false;
         foreach (var token in tokens)
         {
-            if (result.Length > 0 && token.LeadingSpace) result.Append(' ');
+            if (result.Length > 0 && (token.LeadingSpace || previousTrailingSpace)) result.Append(' ');
+            previousTrailingSpace = token.Item is SourceMappedItem { PreprocessingTrailingSpace: true };
             var text = token.Content?.ToString();
             if (text is null) continue;
             // Quotes/backslashes are escaped within literal preprocessing tokens.
