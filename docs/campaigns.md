@@ -1,7 +1,7 @@
 # Translation campaigns
 
-SQLite, picotls, MsQuic, Blink, Valkey, libsmb2, Pinta, and QuickJS share the runner in
-`Scripts/campaigns`. Their `scripts/campaign.py` recipes supply source selection,
+SQLite, picotls, MsQuic, Blink, Valkey, libsmb2, Pinta, QuickJS, and
+[Zstandard](../zstd/docs/PLAN.md) share the runner in `Scripts/campaigns`. Their `scripts/campaign.py` recipes supply source selection,
 adaptations, compiler options, host bindings, and named test suites. Existing
 specialist harnesses retain their behavioral assertions and detailed reports.
 
