@@ -1,6 +1,6 @@
 # Translate Zstandard with DotCC
 
-Status: implementation in progress; qualification is incomplete.
+Status: final Linux x64 qualification passes; clean reproduction is in progress.
 Campaign: `zstd/`. Updated: 2026-10-19.
 
 This campaign adopts [translation baseline v2](../../docs/plans/translation-baseline.md)
@@ -21,7 +21,7 @@ frame parsing, checksums and dictionary algorithms execute as translated C#.
 | Scope | Features/APIs/workloads |
 | --- | --- |
 | Required | Complete portable, single-threaded current-format libzstd core: common, compress, decompress and dictBuilder sources; ordinary levels including optimal parsing; one-shot and streaming APIs; checksums; concatenated and skippable frames; raw and trained dictionaries; training; errors, reuse and deterministic disposal; file interchange with native same-pin libzstd. |
-| Excluded | Worker-thread compression (`ZSTD_MULTITHREAD` undefined), legacy pre-v0.8 frame decoders (`ZSTD_LEGACY_SUPPORT=0`), assembly/intrinsic acceleration, CLI implementation, seekable/contrib libraries, external sequence-producer plugins and benchmark tools. These are optional upstream configurations or separate products. Standard portable algorithms remain required. |
+| Excluded | Worker-thread compression (`ZSTD_MULTITHREAD` undefined), legacy pre-v0.8 frame decoders (`ZSTD_LEGACY_SUPPORT=0`), assembly/intrinsic acceleration, optional native weak-symbol trace hooks (`ZSTD_TRACE=0`), CLI implementation, seekable/contrib libraries, external sequence-producer plugins and benchmark tools. These are optional upstream configurations or separate products. Standard portable algorithms remain required. |
 | Later extensions | Independently qualified native worker scheduling, optional contrib/seekable features, other operating systems/architectures and legacy formats. |
 | Baseline departures | None for Linux x64 raw/processed × JIT/NativeAOT acceptance. Discovery may use raw/JIT before the final matrix. |
 
@@ -30,10 +30,10 @@ frame parsing, checksums and dictionary algorithms execute as translated C#.
 | ID | Decision | Choice and reason | Status; evidence/gate |
 | --- | --- | --- | --- |
 | D1 | Source | Stable v1.5.7 release, verified against the official [release page](https://github.com/facebook/zstd/releases/tag/v1.5.7). URL, revision and checksum belong only in `config/source.json`. Native controls and upstream cases use the same acquired tree. Preserve BSD/GPL notices. | Decided; acquisition/native P0. |
-| D2 | Configuration | Explicit JSON/source manifest of every portable standard library C unit in common/compress/decompress/dictBuilder. Upstream supported portable single-thread settings, no algorithm substitutions; C99/C11 as accepted by upstream and DotCC. Source preparation stages copies and preserves usable `ref/`. | Decided profile; manifest/config inspection P0. |
+| D2 | Configuration | Explicit JSON/source manifest of every portable standard library C unit in common/compress/decompress/dictBuilder. Upstream supported portable single-thread settings, no algorithm substitutions; C99/C11 as accepted by upstream and DotCC. Optional host trace hooks are explicitly disabled identically (`ZSTD_TRACE=0`) to avoid compiler-dependent weak-symbol auto-detection. Source preparation stages copies and preserves usable `ref/`. | Decided profile; manifest/config inspection P0. |
 | D3 | ABI | Linux x64 little-endian, LP64, 64-bit `size_t`/pointers, 32-bit `unsigned` and enum. Actual emitted probes compare upstream stream structures, offsets, widths and boundary constants to native observations. Binary data remains bytes; error names are upstream ASCII. | Decided target; actual ABI P1. |
 | D4 | Host/dependencies | Existing DotCC C runtime supplies allocation, memory and standard C services. BCL provides managed file/Stream I/O and API ownership. Delivered code may not import native libzstd, spawn a zstd subprocess or use another compression engine. Native executables are controls only. | Decided; import/dependency audit P2/P6. |
-| D5 | State/lifetime | Each compressor/decompressor owns its upstream context. Concurrent independent instances are required; an individual context is not shared concurrently. Dictionaries are copied or have explicit retained ownership. Pinned span addresses do not escape calls. Disposal is idempotent and later calls fail clearly. | Decided; lifecycle tests P1/P3/P4. |
+| D5 | State/lifetime | Each compressor/decompressor owns its upstream context. Calls bind one private process-lifetime DotCC runtime context so translated global tables and allocator ownership survive ordinary codec disposal and restore callers' ambient bindings. Concurrent codec instances are required; per-codec calls/disposal serialize. Independently disposable C-program runtimes are not promised. Dictionaries are copied; pinned span addresses do not escape calls. Disposal is idempotent and later calls fail clearly. | Decided; ambient-binding/ownership and lifecycle tests P1/P3/P4. |
 | D6 | Delivery | Object emission/link, class `Zstd`, namespace `Managed.Zstd.Native`; raw and processed products use shared transactional publication. Shared `link_flags` supplies 256 KB splitting, literal pooling and inline deduplication. Authored API lives in `src/Managed.Zstd`, referenced normally by consumer through `ZstdProject`. | Decided; P2/P5. |
 | D7 | Controls | Build the exact selected upstream sources natively with assertions enabled, bounded compilation and a deliberate failing assertion control. Compare bytes/status/ABI exactly where deterministic; cross-decode native and translated frames and dictionaries. Native oracle has no delivered runtime role. | Decided; P0/P4. |
 | D8 | Matrix | Linux x64, default portable single-thread profile, raw and processed libraries, JIT and executable NativeAOT. Normal trimmed owning consumer plus whole-library-rooted AOT harness serve distinct gates. | Decided; P4/P5/P6. |
@@ -94,12 +94,12 @@ Never stage unrelated modifications. Baseline workspace was already dirty in
 | Phase | Exit gate | Status | Evidence |
 | --- | --- | --- | --- |
 | P0 | Frozen scope/manifest; shared recipe/layout; working native controls; first real translation attempt. | Passed | Native 11-case control and current-tool full-source failure receipt in validation ledger. |
-| P1 | Actual emitted/native ABI and context/dictionary ownership probes. | Planned | Required before boundary acceptance. |
-| P2 | Every selected unit emits/links; raw and processed builds; canonical transactional products; required imports audited. | Planned | No generated repairs permitted. |
-| P3 | Actual translated one-shot, streaming and dictionary workflows with clean ownership. | Planned | Harness and consumer outputs. |
-| P4 | Required feature/error/lifetime/upstream/interoperability rows pass all four matrix cells. | Planned | Case-level reports; excluded upstream scope explicit. |
-| P5 | Root solution builds; owning API and separate consumer run meaningful file workflows, JIT/AOT. | Planned | Ordinary project references, no native backend. |
-| P6 | Regeneration with final tools, current full matrix, rooted AOT, dependency audit, affected shared regressions and reproduction. | Planned | Required unrun gates keep acceptance open. |
+| P1 | Actual emitted/native ABI and context/dictionary ownership probes. | Passed | Final receipt 20261019-204241-00db2fbc: three ABI and seven lifecycle cases per cell. |
+| P2 | Every selected unit emits/links; raw and processed builds; canonical transactional products; required imports audited. | Passed | Final receipt: complete 31-unit regeneration, both canonical builds, 12 generated sources per form, full source/import/license audit. |
+| P3 | Actual translated one-shot, streaming and dictionary workflows with clean ownership. | Passed | Final receipt: behavior30/lifecycle7/interop6 plus three exact native comparisons and meaningful consumer per cell. |
+| P4 | Required feature/error/lifetime/upstream/interoperability rows pass all four matrix cells. | Passed | Final receipt: six groups/33 original upstream case labels per cell, zero skips, exact context-size comparison; explicit omitted drivers in inventory. |
+| P5 | Root solution builds; owning API and separate consumer run meaningful file workflows, JIT/AOT. | Passed | Final receipt: ordinary trimmed consumer restores four files with and without trained dictionary in all four cells; root solution build report passes. |
+| P6 | Regeneration with final tools, current full matrix, rooted AOT, dependency audit, affected shared regressions and reproduction. | Reproduction pending | Final receipt and affected downstream gates pass; isolated committed-source regeneration remains. |
 
 P0 → P1 → P2 → P3 → P4 → P5 → P6; native/API/test authoring proceeds in
 parallel, but runtime acceptance always uses the actual translated implementation.
@@ -118,7 +118,7 @@ parallel, but runtime acceptance always uses the actual translated implementatio
 | Shared repairs | Focused compiler tests and native-backed functional execution; affected downstream campaigns chosen by actual repaired behavior | Triggered when shared code changes |
 
 Default suite: `consumer`. Intended verification suites: `native`, `abi`,
-`consumer`, `behavior`, `lifecycle`, `upstream`, `audit`; final recipe is
+`consumer`, `behavior`, `lifecycle`, `interop`, `upstream`, `audit`; final recipe is
 authoritative. Preserve original transcripts and exact case counts. Byte arrays,
 statuses and layouts compare exactly; nondeterministic training optimizations
 must be compared by documented format/roundtrip invariants if bytes legitimately

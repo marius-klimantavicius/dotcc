@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <ZstdProject Condition="'$(ZstdProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedZstd/TranslatedZstd.csproj</ZstdProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Managed.Zstd/Managed.Zstd.csproj" AdditionalProperties="ZstdProject=$(ZstdProject)" />
+    <TrimmerRootAssembly Include="TranslatedZstd" />
+    <TrimmerRootAssembly Include="Managed.Zstd" />
+  </ItemGroup>
+</Project>

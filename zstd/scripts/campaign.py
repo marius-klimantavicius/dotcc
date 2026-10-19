@@ -46,8 +46,10 @@ def prepare(ctx):
     }
     return Translation(units, ["-std=" + policy["dialect"],
                        *flags(policy["defines"], [source / "lib", source / "lib/common",
-                                                  ctx.root / "src/Native"])],
-                       link_flags("Zstd", "Managed.Zstd.Native"), objects=True,
+                                                  ctx.root / "src/Native"]),
+                       *("-U" + name for name in policy["undefines"])],
+                       [*link_flags("Zstd", "Managed.Zstd.Native"),
+                        *(flag for pattern in policy["export_enums"] for flag in ("--export-enum", pattern))], objects=True,
                        configure=configure)
 
 
@@ -90,6 +92,10 @@ def run_managed(ctx, suite):
     return helper(ctx.root / "tests/managed_qualification.py").run(ctx, suite)
 
 
+def run_consumer(ctx, suite):
+    return helper(ctx.root / "tests/managed_qualification.py").run_consumer(ctx, suite)
+
+
 def run_audit(ctx, suite):
     return helper(ctx.root / "tests/audit.py").run(ctx, suite)
 
@@ -101,7 +107,7 @@ recipe = Recipe(
     consumer=Consumer(property="ZstdProject", arguments=("--self-test", "{work}/consumer-{label}")),
     suites=(Suite("native", (), run=run_native,
                   scope="exact-source portable native ABI, compression, streaming, dictionary and error controls"),
-            Suite("consumer", ("consumer",), matrix=True,
+            Suite("consumer", (), run=run_consumer, matrix=True,
                   scope="owning API multi-file streaming consumer"),
             *(Suite(name, (), run=run_managed, matrix=True)
               for name in ("abi", "behavior", "lifecycle", "interop", "upstream")),

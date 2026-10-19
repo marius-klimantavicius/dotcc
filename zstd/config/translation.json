@@ -3,6 +3,7 @@
   "dialect": "c11",
   "defines": [
     "ZSTD_LEGACY_SUPPORT=0",
+    "ZSTD_TRACE=0",
     "ZSTD_DISABLE_ASM=1",
     "ZSTD_NO_INTRINSICS=1",
     "DYNAMIC_BMI2=0",
@@ -58,7 +59,23 @@
     "legacy frames before v0.8",
     "multithreaded compression",
     "assembly and ISA-specific intrinsic implementations",
-    "upstream command-line executable"
+    "upstream command-line executable",
+    "optional host weak-symbol tracing hooks"
   ],
-  "native_jobs": 2
+  "native_jobs": 2,
+  "export_enums": [
+    "ZSTD_e_*",
+    "ZSTD_c_*",
+    "ZSTD_d_*",
+    "ZSTD_reset_*",
+    "ZSTD_fast",
+    "ZSTD_dfast",
+    "ZSTD_greedy",
+    "ZSTD_lazy",
+    "ZSTD_lazy2",
+    "ZSTD_btlazy2",
+    "ZSTD_btopt",
+    "ZSTD_btultra",
+    "ZSTD_btultra2"
+  ]
 }

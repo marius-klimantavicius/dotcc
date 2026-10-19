@@ -49,8 +49,8 @@ def build(source: Path, output: Path, *, execute=None):
         'add_executable(native-oracle ' + ' '.join(map(cmake_string, inputs)) + ')',
         'target_include_directories(native-oracle PRIVATE ' + cmake_string(staged / 'lib') + ')',
         'target_compile_definitions(native-oracle PRIVATE ' + ' '.join(policy['defines']) + ')',
-        'if(MSVC)', 'target_compile_options(native-oracle PRIVATE /UZSTD_MULTITHREAD)',
-        'else()', 'target_compile_options(native-oracle PRIVATE -UZSTD_MULTITHREAD)', 'endif()',
+        'if(MSVC)', 'target_compile_options(native-oracle PRIVATE ' + ' '.join('/U' + name for name in policy['undefines']) + ')',
+        'else()', 'target_compile_options(native-oracle PRIVATE ' + ' '.join('-U' + name for name in policy['undefines']) + ')', 'endif()',
     ]) + '\n')
     output.mkdir(parents=True, exist_ok=True)
     execute = execute or (lambda label, command, **kw: subprocess.run(command, check=True, **kw))
