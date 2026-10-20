@@ -179,12 +179,21 @@ and ordinary copied-source closure check.
 
 ## Direct intrinsic emission follow-up (2026-10-20)
 
-The next authorized improvement emits selected BCL intrinsics directly at known
-C call sites, retaining original wrappers for function pointers/exported identity.
-[direct-intrinsics.md](direct-intrinsics.md) records the frozen current optimized
-reference, symbol-bound lowering design, conversion/effect contracts and pending
-gates. This work changes shared compiler intrinsic lowering, so native-backed
-regressions and affected downstream checks precede its implementation milestone.
-Fresh final products require the complete selected zstd matrix and measurements
-against the existing optimized adapter baseline. Prior acceptance is historical
-and does not qualify these new products automatically.
+The qualified follow-up emits selected BCL intrinsics directly at known C call
+sites, retaining original wrappers for function pointers/exported identity.
+[direct-intrinsics.md](direct-intrinsics.md) records the immutable optimized
+adapter reference, symbol-bound lowering and conversion/effect contracts.
+Shared commit `72039d41f` follows 170 unit and 34 functional passes, a native-backed
+four-cell fixture and affected Blink/SQLite/QuickJS checks. Campaign commit
+`e063f8f58` selects 747 intrinsic operations across 40 helper identities and 48
+managed selections across the two exact-three-byte LE24 helpers.
+
+Fresh final receipt `20261020-065322-dcdf2024` passes all 31 units, both products
+and all nine suites in raw/processed JIT/NativeAOT. Ordinary solution and
+source-preserving copied delivery pass. Final paired timing binds those exact
+products without regeneration and passes all 116 input/frame comparisons.
+Direct emission is not a general speed improvement over the already optimized
+adapters: 67 medians are slower, including repeatable compression regressions;
+ratios span 0.675–1.499×. These costs and dispersion are part of acceptance, not
+hidden behind the requested source-emission improvement. Historical original
+and adapter acceptance remain separate. No required selected gate is incomplete.

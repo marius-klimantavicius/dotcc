@@ -5,6 +5,12 @@ The historical original port acceptance remains separate in
 [validation.md](validation.md); the replacement acceptance below uses fresh
 translation, differential tests, full qualification and final-product timing.
 
+This document preserves the adapter-based milestone. The current default emits
+40 selected intrinsics directly and retains only the two LE24 adapters; its
+separate [direct-call acceptance](direct-intrinsics.md) includes measured
+regressions against these already optimized adapters. The speedups below use
+untouched translated C as their denominator and do not describe that follow-up.
+
 This follow-up uses DotCC's [typed function overrides](../../docs/function-overrides.md)
 to replace small memory and integer primitives with authored aggressively inlined
 .NET adapters. Compression, decompression, dictionaries, training and hashing

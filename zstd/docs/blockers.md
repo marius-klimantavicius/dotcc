@@ -208,3 +208,11 @@ raw/processed JIT/NativeAOT fixture. First complete current-tool source retry
 SQLite and QuickJS checks. Final codec matrix/delivery/timing acceptance is
 recorded separately in [direct-intrinsics.md](direct-intrinsics.md); historical
 failed records and earlier accepted products are not relabeled.
+
+Final current-tool receipt `20261020-065322-dcdf2024` passes all nine suites in
+all four cells, plus the ordinary solution and copied delivery. Exact frozen
+products at `e063f8f58` pass 116 paired input/frame comparisons. Direct emission
+has repeatable compression regressions against the preceding optimized adapters
+(worst speed ratio 0.675×); bounded IL/codegen observations and full dispersion
+are retained with the direct-call report. This is a measured performance limit,
+not an unresolved correctness failure or a claim of universal improvement.

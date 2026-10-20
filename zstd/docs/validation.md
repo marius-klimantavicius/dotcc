@@ -429,3 +429,54 @@ regeneration was performed after final timing.
 No required selected optimized gate remains incomplete. The final documentation
 and delivery-test helper changes preserve measured implementation commit
 `b322ebdd5`, all canonical products and the original baseline. No push.
+
+## Qualified direct intrinsic emission (2026-10-20)
+
+The current default is separately qualified at shared implementation commit
+`72039d41f` and campaign implementation `e063f8f58`. Forty selected helper
+identities emit BCL intrinsics at known direct callers (747 per-unit selections);
+the two LE24 adapters retain exact three-byte accesses (48 selections). Original
+wrappers preserve indirect/exported identity. Authored codec/API behavior and
+upstream algorithm bodies are unchanged; no generated C# is manually patched.
+
+Final receipt `artifacts/campaign/20261020-065322-dcdf2024/receipt.json` passes
+all 12 tasks and 200 commands, including intentional failing controls. All 31
+units regenerate, both canonical products build, and all nine suites pass.
+
+| Gate | Current direct-emission evidence |
+| --- | --- |
+| Primitive differential | Native and eight original/replaced form/mode cells match 227486 checks, digest `9b3f85183c30d739`; exact three-byte guard and failure controls pass |
+| ABI / behavior / lifecycle | 3 / 30 / 7 per raw/processed JIT/NativeAOT cell, no required failures/skips |
+| Interoperability / actual upstream | 6 managed + 3 exact native comparisons; 33 actual upstream cases in groups `[1,1,1,11,13,6]` per cell; context size 582672 |
+| Consumer / artifact audit | Meaningful archive consumer, dependency/license/rooted-AOT audit and actual caller IL audit pass in all four cells |
+| Caller audit controls | Four private positive/negative controls reject wrapper-only evidence and stale direct calls, including outside algorithm prefixes |
+| Ordinary delivery | Root solution passes; 47-file ordinary copy builds/runs both forms, preserves all bytes and contains evaluated source/project references |
+| Shared native-backed regressions | 170 unit / 34 functional passes; actual Release tools pass raw/processed JIT/NativeAOT fixture, caller-body assertions, direct/object/split/instance and failing controls |
+| Affected downstream | Blink native 336-row/four-cell existing intrinsic profile; SQLite full current-tool regeneration/build/JIT consumers plus identity JIT/AOT; QuickJS five-unit regeneration/build/JIT consumers and behavior controls |
+
+Detailed commands, source/tool closure hashes, failed-before evidence and exact
+downstream receipts are in [direct-intrinsics.md](direct-intrinsics.md) and
+`../../artifacts/function-override-direct-20261020/shared-summary.json`.
+Unaffected production matrices were not repeated. The full original opt-out
+recipe's narrower smoke qualification above remains historical; this does not
+claim a new full original-profile codec matrix.
+
+Before any mutation, the 8665-file read-only optimized adapter reference at
+`1f9677154` was captured independently of the untouched-C reference. Final timing
+at frozen `e063f8f58` uses identical harness/API/settings and alternating paired
+processes. All 116 exact input/frame comparisons pass in
+`artifacts/optimizations/direct-intrinsic-final-benchmark-20261020/report.json`.
+Its exact `final-product-binding.json` passes without normalization; 51 frozen
+inputs, measured source/project/adapter hashes and qualified tools remain
+unchanged. `baseline-posttiming-verification.json` rehashes every reference file.
+No product regeneration follows timing.
+
+Direct emission is not a general performance win: 67 of 116 medians are slower,
+with ratios 0.675–1.499×. Raw NativeAOT mixed-binary compression increases median
+latency from 110.206 to 163.292 microseconds (48.2%), with separated IQRs.
+128 KiB text level 3 compression ratios are 0.914 / 0.754 / 0.873 / 0.729× across
+raw JIT/AOT and processed JIT/AOT. Full workload rows, dispersion and bounded
+code-shape investigation are retained; no causal claim or universal speedup is
+made. All 112 context-reuse/streaming rows allocate zero managed bytes in both
+variants. The default delivers the requested direct-call contract with these
+measured costs. No required selected functional or delivery gate remains open.

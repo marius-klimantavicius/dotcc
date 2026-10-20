@@ -7,12 +7,15 @@ NativeAOT forms, including clean regeneration and the file consumer. See
 [the plan](docs/PLAN.md), [validation](docs/validation.md) and
 [the resolved blocker ledger](docs/blockers.md) for evidence.
 
-The default `portable` profile uses 42 typed .NET primitive replacements built
-with `Unsafe`, `BinaryPrimitives` and `BitOperations`. The complete correctness
-matrix passes; the final local benchmark improves every measured workload, with
-128 KiB level 3 compression 3.77–4.29× faster and decompression 1.40–1.49× faster.
-See [contracts, preserved baseline and measurements](docs/optimizations.md) for
-workloads, dispersion, limits and separate historical acceptance evidence.
+The default `portable` profile selects 40 typed intrinsics whose known direct
+calls emit `Unsafe`, `BinaryPrimitives` and `BitOperations` at the caller. Two
+authored adapters retain exact three-byte LE24 accesses. Function pointers and
+exports retain their original wrappers. The complete correctness matrix passes.
+Direct emission is not a general performance improvement over the preceding
+optimized adapters: measured speed ratios range from 0.675 to 1.499×, including
+repeatable compression regressions. See [direct-call contracts and measurements](docs/direct-intrinsics.md).
+The earlier adapter gains over untouched translated C remain separate
+[historical evidence](docs/optimizations.md).
 
 The product selects the complete portable standard library core: all compression
 strategies, long-distance matching, decompression, streaming, checksums,
