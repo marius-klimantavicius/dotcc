@@ -294,10 +294,22 @@ def run(ctx, suite):
                 report["native_cases"] = observed_cases(transcript)
                 report["native_metrics"] = printed_metrics(transcript)
         ctx.tools()
+        primitives = helper(ctx.root / "scripts/primitives.py")
+        groups = primitives.inventory(ctx.root)["groups"]
+        # Exact header closure: the extracted TU includes zstd_internal.h ->
+        # fse.h -> bitstream.h -> bits.h; datagen.c includes only mem.h.
+        test_primitives = sorted([*groups["mem"], *groups["bits"]])
+        datagen_primitives = sorted(groups["mem"])
         test_object = work / "upstream_cases.cs"
-        ctx.run(["dotnet", ctx.compiler, *common, test, "--emit=obj", "-o", test_object], "upstream-emit", timeout=600)
+        test_overrides = ctx.artifacts / "upstream-test-overrides.jsonl"
+        ctx.run(["dotnet", ctx.compiler, *common, *primitives.unit_flags(ctx, test, core_source, test_primitives),
+                 "--override-report", test_overrides, test, "--emit=obj", "-o", test_object], "upstream-emit", timeout=600)
         datagen_object = work / "datagen.cs"
-        ctx.run(["dotnet", ctx.compiler, *common, datagen, "--emit=obj", "-o", datagen_object], "upstream-datagen-emit", timeout=600)
+        datagen_overrides = ctx.artifacts / "upstream-datagen-overrides.jsonl"
+        ctx.run(["dotnet", ctx.compiler, *common, *primitives.unit_flags(ctx, datagen, core_source, datagen_primitives),
+                 "--override-report", datagen_overrides, datagen, "--emit=obj", "-o", datagen_object], "upstream-datagen-emit", timeout=600)
+        report["primitive_overrides"] = [primitives.validate_report(ctx, path, unit, core_source, names)
+            for path, unit, names in ((test_overrides, test, test_primitives), (datagen_overrides, datagen, datagen_primitives))]
         raw = work / "raw/TranslatedUpstreamZstd"
         ctx.run(["dotnet", ctx.compiler, *core, test_object, datagen_object, "--emit=managedlib",
                  *link_flags("UpstreamZstd", "Managed.Zstd.Upstream"), "-o", raw], "upstream-link", timeout=600)
@@ -306,6 +318,7 @@ def run(ctx, suite):
         if len(projects) != 1:
             raise RuntimeError("Expected one test-only generated project")
         raw_project = projects[0]
+        primitives.configure(ctx, raw_project)
         products = {"raw": raw_project}
         ctx.managed("build", raw_project, "upstream-raw-build", "-m:1", timeout=900)
         if "processed" in forms(ctx):

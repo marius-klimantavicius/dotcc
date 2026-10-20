@@ -1,0 +1,726 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "MEM_isLittleEndian",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_isLittleEndian"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_read16",
+      "signature": {
+        "returnType": "unsigned short",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_read16"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_read32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_read32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_read64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_read64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readBE32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readBE32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readBE64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readBE64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readBEST",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readBEST"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readLE16",
+      "signature": {
+        "returnType": "unsigned short",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE16"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readLE24",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE24"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readLE32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readLE64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readLEST",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLEST"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_readST",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readST"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_swap32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_swap32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_swap64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_swap64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_swapST",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_swapST"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_write16",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned short"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_write16"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_write32",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_write32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_write64",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_write64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeBE32",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeBE32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeBE64",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeBE64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeBEST",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeBEST"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeLE16",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned short"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE16"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeLE24",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE24"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeLE32",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeLE64",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "MEM_writeLEST",
+      "signature": {
+        "returnType": "void",
+        "parameterTypes": [
+          "void*",
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLEST"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
+      "requireMatch": true
+    },
+    {
+      "name": "ZSTD_NbCommonBytes",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_NbCommonBytes"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
+      "requireMatch": true
+    },
+    {
+      "name": "ZSTD_countLeadingZeros32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countLeadingZeros32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
+      "requireMatch": true
+    },
+    {
+      "name": "ZSTD_countLeadingZeros64",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countLeadingZeros64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
+      "requireMatch": true
+    },
+    {
+      "name": "ZSTD_countTrailingZeros32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countTrailingZeros32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
+      "requireMatch": true
+    },
+    {
+      "name": "ZSTD_countTrailingZeros64",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countTrailingZeros64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
+      "requireMatch": true
+    },
+    {
+      "name": "ZSTD_highbit32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_highbit32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_isLittleEndian",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": [],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_isLittleEndian"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_read32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_read32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_read64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_read64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_readBE32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readBE32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_readBE64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readBE64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_readLE32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readLE32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_readLE64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "const void*"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readLE64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_swap32",
+      "signature": {
+        "returnType": "unsigned int",
+        "parameterTypes": [
+          "unsigned int"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_swap32"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    },
+    {
+      "name": "XXH_swap64",
+      "signature": {
+        "returnType": "unsigned long",
+        "parameterTypes": [
+          "unsigned long"
+        ],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_swap64"
+      },
+      "linkage": "internal",
+      "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
+      "requireMatch": true
+    }
+  ]
+}

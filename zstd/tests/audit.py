@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import sys
 import xml.etree.ElementTree as ET
-from campaigns.recipes import json_file
+from campaigns.recipes import helper, json_file
 from campaigns.testing import forms, modes
 from campaigns.translation import check_product
 
@@ -16,7 +16,7 @@ ELF_LIBRARIES = {"libc.so.6", "libm.so.6", "libgcc_s.so.1", "libdl.so.2", "libpt
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def sources(project, root):
+def sources(project, root, profile):
     directory = project.parent.resolve()
     tree = ET.parse(project)
     if list(tree.iter("PackageReference")) or list(tree.iter("ProjectReference")):
@@ -36,10 +36,28 @@ def sources(project, root):
     for path in directory.rglob("*.cs"):
         if not {"bin", "obj"} & set(path.relative_to(directory).parts) and path not in generated:
             raise RuntimeError("Unowned compiled product source: " + str(path))
+    adapter = (root / "src/Optimization/Primitives.cs").resolve()
+    adapter_links = []
     for node in tree.iter("Compile"):
-        if node.get("Include") and (directory / node.get("Include")).resolve() not in generated:
-            raise RuntimeError("Unexpected linked generated implementation: " + str(node.attrib))
+        if node.get("Include") and (path := (directory / node.get("Include")).resolve()) not in generated:
+            if profile != "portable" or path != adapter or node.get("Link") != "Optimization/Primitives.cs" or path.is_symlink():
+                raise RuntimeError("Unexpected linked generated implementation: " + str(node.attrib))
+            adapter_links.append(path)
+    if len(adapter_links) != (1 if profile == "portable" else 0):
+        raise RuntimeError("Profile must link exactly its original authored primitive adapter")
+    primitives = helper(root / "scripts/primitives.py")
+    if adapter_links:
+        names = re.findall(r'\bpublic\s+static\s+\w+\s+(\w+)\s*\(', adapter.read_text())
+        if sorted(names) != primitives.all_names(root):
+            raise RuntimeError("Authored primitive method inventory differs")
     text = "\n".join(combined)
+    if profile == "portable":
+        missing = [name for name in primitives.all_names(root)
+                   if not re.search(r'\bManaged\.Zstd\.Optimization\.Primitives\.' + re.escape(name) + r'\s*\(', text)]
+        if missing:
+            raise RuntimeError("Required generated typed primitive calls missing: " + repr(missing))
+    elif "Managed.Zstd.Optimization.Primitives" in text:
+        raise RuntimeError("Original profile unexpectedly uses authored primitive replacements")
     required = ("ZSTD_compress2", "ZSTD_decompressStream", "ZDICT_trainFromBuffer", "ZSTD_compressBlock_fast", "ZSTD_compressBlock_btultra2", "ZSTD_ldm_generateSequences")
     if not all(re.search(r'\b' + name + r'\s*\(', text) for name in required):
         raise RuntimeError("Required translated algorithm entrypoints missing")
@@ -61,7 +79,7 @@ def sources(project, root):
         if item is None or item.get("TargetPath") != "Zstd." + name or any(item.get(key) != "PreserveNewest" for key in ("CopyToOutputDirectory", "CopyToPublishDirectory")):
             raise RuntimeError("Notice not delivered by build/publish: " + name)
     forbidden = re.compile(r'\b(?:DllImport|LibraryImport)\s*\(|\bNativeLibrary\s*\.|\bAssembly\s*\.\s*Load|\b(?:LoadLibrary|dlopen|SetDllImportResolver)\s*\(|\bProcessStartInfo\b|\bProcess\s*\.\s*Start\s*\(|\bnew\s+Process\b|\bSystem\.IO\.Compression\b')
-    authored = [*(root / "src/Managed.Zstd").glob("*.cs"), *(root / "samples/ManagedConsumer").glob("*.cs")]
+    authored = [*(root / "src/Managed.Zstd").glob("*.cs"), *(root / "samples/ManagedConsumer").glob("*.cs"), *adapter_links]
     for path in authored:
         if forbidden.search(path.read_text()):
             raise RuntimeError("Authored native/subprocess/alternate engine forbidden: " + str(path))
@@ -70,11 +88,45 @@ def sources(project, root):
             if item.tag in ("PackageReference", "NativeReference", "NativeLibrary"):
                 raise RuntimeError("Unexpected authored product dependency: " + str(item.attrib))
             if item.tag == "Compile" and item.get("Include"):
-                linked = (project_path.parent / item.get("Include")).resolve()
-                if linked not in {path.resolve() for path in authored}:
-                    raise RuntimeError("Unexpected authored source link: " + str(linked))
-    return dict(project=str(project), generated_source_count=len(generated), required_algorithms=list(required), generated_required_imports=[],
+                linked_source = (project_path.parent / item.get("Include")).resolve()
+                if linked_source not in {path.resolve() for path in authored}:
+                    raise RuntimeError("Unexpected authored source link: " + str(linked_source))
+    return dict(project=str(project), profile=profile, generated_source_count=len(generated), required_algorithms=list(required), generated_required_imports=[],
+                primitive_adapter_links=[dict(path=str(path), sha256=digest(path)) for path in adapter_links],
                 authored_sources=[dict(path=str(path), sha256=digest(path)) for path in authored])
+
+def primitive_selection(ctx):
+    """Recheck physical source/signature selection, independently of build success."""
+    origin = ctx.receipt
+    if "primitive_overrides" not in origin:
+        pointer = json_file(ctx.root / "artifacts/campaign" / ("current-" + ctx.profile + ".json"))
+        origin = json_file(Path(pointer["receipt"]))
+    record = origin.get("primitive_overrides", {})
+    policy = json_file(ctx.root / "config/translation.json")
+    if record.get("profile") != ctx.profile or len(record.get("units", [])) != len(policy["units"]) + 1:
+        raise RuntimeError("Complete selected-profile primitive override evidence missing")
+    primitives = helper(ctx.root / "scripts/primitives.py")
+    expected = primitives.inventory(ctx.root)["expected_units"]
+    source = Path(origin["zstd_selection"]["staged_source"])
+    wanted = {str((source / name).resolve()): names for name, names in expected.items() if name in policy["units"]}
+    wanted[str((ctx.root / policy["bridge"]).resolve())] = expected[policy["bridge"]]
+    observed = {str(Path(row["unit"]).resolve()) for row in record["units"]}
+    if observed != set(wanted):
+        raise RuntimeError("Primitive source-unit coverage differs")
+    verified = []
+    for row in record["units"]:
+        unit = Path(row["unit"])
+        actual = primitives.validate_report(ctx, Path(row["report"]), unit, source, wanted[str(unit.resolve())])
+        if actual != row:
+            raise RuntimeError("Retained primitive provenance changed: " + str(unit))
+        verified.append(dict(unit=str(unit), report=str(row["report"]), report_sha256=digest(Path(row["report"])), selected=len(actual["selected"])))
+    adapter = (ctx.root / "src/Optimization/Primitives.cs").resolve()
+    if ctx.profile == "portable":
+        if Path(record.get("adapter", "")).resolve() != adapter or origin.get("production_inputs", {}).get(str(adapter)) != digest(adapter):
+            raise RuntimeError("Selected original authored primitive source binding differs")
+    elif record.get("adapter") is not None:
+        raise RuntimeError("Original profile unexpectedly retains primitive adapter")
+    return dict(profile=ctx.profile, units=verified, selections=sum(row["selected"] for row in verified))
 
 def notices(directory, product):
     records = []
@@ -116,6 +168,7 @@ def run(ctx, suite):
     report = dict(status="running", forms=[], artifacts=[])
     report_path = ctx.artifacts / "audit-report.json"
     try:
+        report["primitive_selection"] = primitive_selection(ctx)
         inspector = ctx.root / "tests/Audit/Zstd.Audit.csproj"
         output = ctx.work / "audit-inspector"
         ctx.managed("build", inspector, "audit-inspector-build", "-m:1", "--artifacts-path", ctx.work / "audit-intermediates", "-o", output)
@@ -128,7 +181,7 @@ def run(ctx, suite):
             raise RuntimeError("Owning API does not reference selected generated product")
         for form in forms(ctx):
             product = check_product(ctx, form)
-            report["forms"].append(dict(form=form, **sources(product, ctx.root)))
+            report["forms"].append(dict(form=form, **sources(product, ctx.root, ctx.profile)))
             for mode in modes(ctx):
                 consumer_label = "consumer-" + form + "-" + mode
                 consumer_runs = [entry for entry in ctx.receipt["commands"] if entry.get("label") == consumer_label + "-run" and entry.get("status") == "passed"]

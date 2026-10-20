@@ -6,13 +6,14 @@ consumer exercises ordinary trimming and project-reference delivery.
 
 | Suite | Assertions |
 | --- | --- |
+| `primitives` | Original native and original/replaced translated primitive parity, exact per-unit typed selection, alignment/sentinel checks, three-byte inaccessible-page checks and deliberate fault controls; raw/processed JIT/AOT |
 | `abi` | 12 native/emitted upstream stream-layout observations, actual upstream struct storage roundtrip, version/error contract |
 | `behavior` | 30 cases: sizes through block boundaries, levels through 22, all nine strategies, LDM, incremental flush/end, stream copies, unknown size, concatenated/skippable frames, standard/raw dictionaries, training, malformed/truncated/checksum errors and output bounds |
 | `lifecycle` | Seven cases: repeated reset/dispose, error recovery, concurrent independent contexts, active GC during calls, nested ambient runtime restoration, SafeHandle finalization and validation |
 | `interop` | Six managed checks plus three exact comparisons: bidirectional native frame/dictionary exchange, native decoding of managed unknown-size streaming frames, identical compression and training bytes for matching settings/corpus |
 | `upstream` | Six groups: three complete bounds/parameter routines, exact fuzzer compression and dictionary-training/use excerpts, exact zstream streaming/skip/dictionary/reuse excerpts; original CHECK macros and actual upstream data generator; native and translated execution |
 | `consumer` | Plain and trained-dictionary streaming archives, four restored files including Unicode names and empty content, exact filename inventory and SHA-256 equality |
-| `audit` | Canonical source ownership, complete algorithm representatives, no required-symbol native fallback, exact license/notice delivery, managed dependency/import metadata, actual rooted AOT machine code and ordinary consumer/harness ELF dependencies |
+| `audit` | Canonical source ownership, exact authored primitive source link and hash, complete typed selection provenance and algorithm representatives, no required-symbol native fallback, exact license/notice delivery, managed dependency/import metadata, actual rooted AOT machine code and ordinary consumer/harness ELF dependencies |
 
 ```bash
 DOTCC_CAMPAIGN_COMMAND_LOCKS=production bash zstd/scripts/test.sh \
@@ -40,3 +41,20 @@ cases are reported in `behavior`.
 Declaration-only build probes under ignored `build/declaration-only` contain
 throw-only signatures for early syntax checking. They must never be executed or
 treated as a product, runtime test, interoperability result or qualification.
+
+After a complete successful optimized verification run, copied-source delivery
+can be checked with fresh outputs:
+
+```sh
+DOTCC_CAMPAIGN_COMMAND_LOCKS=production python3 zstd/tests/delivery.py \
+  --receipt zstd/artifacts/campaign/RUN/receipt.json \
+  --output zstd/artifacts/campaign/RUN/copied-delivery
+```
+
+This copies only the generated products, owning API, sample, original authored
+primitive source and root MSBuild metadata. It preserves every source byte,
+rejects links to the original workspace, evaluates actual compiled source and
+project references, builds each form in private intermediates, checks delivered
+notices and runs both archive consumer self-tests. It retains its source hash
+manifest, exact commands, evaluations, outputs and failure evidence. The copied
+source tree contains no upstream reference source or compiler tools.

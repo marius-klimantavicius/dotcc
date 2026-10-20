@@ -30,11 +30,16 @@ def prepare(ctx):
     for name in ("LICENSE", "COPYING"):
         shutil.copyfile(upstream / name, source / name)
     bridge = ctx.root / policy["bridge"]
-    units = [Unit(source / name) for name in policy["units"]]
+    primitives = helper(ctx.root / "scripts/primitives.py")
+    inventory = primitives.inventory(ctx.root)["expected_units"]
+    if set(inventory) != {*policy["units"], policy["bridge"]}:
+        raise RuntimeError("Primitive inventory must cover exactly the selected source units")
+    units = [Unit(source / name, primitives.unit_flags(ctx, source / name, source, inventory[name]))
+             for name in policy["units"]]
     # A diagnostic object probe can run while the authored embedding bridge is
     # being developed. A deliverable always requires the complete boundary.
     if bridge.is_file():
-        units.append(Unit(bridge))
+        units.append(Unit(bridge, primitives.unit_flags(ctx, bridge, source, inventory[policy["bridge"]])))
     elif ctx.options.action != "probe":
         raise RuntimeError(f"Missing authored Zstandard boundary: {bridge}")
     ctx.receipt["zstd_selection"] = {
@@ -50,7 +55,7 @@ def prepare(ctx):
                        *("-U" + name for name in policy["undefines"])],
                        [*link_flags("Zstd", "Managed.Zstd.Native"),
                         *(flag for pattern in policy["export_enums"] for flag in ("--export-enum", pattern))], objects=True,
-                       configure=configure)
+                       configure=configure, validate_objects=primitives.validate_objects)
 
 
 def configure(ctx, project, form):
@@ -78,6 +83,7 @@ def configure(ctx, project, form):
         node.set("CopyToPublishDirectory", "PreserveNewest")
     ET.indent(tree, space="  ")
     tree.write(project, encoding="unicode")
+    helper(ctx.root / "scripts/primitives.py").configure(ctx, project)
 
 
 def run_native(ctx, suite):
@@ -100,13 +106,19 @@ def run_audit(ctx, suite):
     return helper(ctx.root / "tests/audit.py").run(ctx, suite)
 
 
+def run_primitives(ctx, suite):
+    return helper(ctx.root / "tests/Primitives/run.py").run(ctx, suite)
+
+
 recipe = Recipe(
-    "zstd", "TranslatedZstd", ("portable",),
+    "zstd", "TranslatedZstd", ("portable", "original"),
     ("src/Managed.Zstd/Managed.Zstd.csproj", "samples/ManagedConsumer/ManagedConsumer.csproj"),
     sources, prepare,
     consumer=Consumer(property="ZstdProject", arguments=("--self-test", "{work}/consumer-{label}")),
     suites=(Suite("native", (), run=run_native,
                   scope="exact-source portable native ABI, compression, streaming, dictionary and error controls"),
+            Suite("primitives", (), run=run_primitives, timeout=7200,
+                  scope="original native and original/replaced translated byte and bit helper parity, including guard pages"),
             Suite("consumer", (), run=run_consumer, matrix=True,
                   scope="owning API multi-file streaming consumer"),
             *(Suite(name, (), run=run_managed, matrix=True)
@@ -114,5 +126,5 @@ recipe = Recipe(
             Suite("audit", (), run=run_audit,
                   scope="selected managed artifact closure and native-backend exclusion")),
     default_suites=("consumer",),
-    verify_suites=("native", "abi", "consumer", "behavior", "lifecycle", "interop", "upstream", "audit"),
+    verify_suites=("native", "primitives", "abi", "consumer", "behavior", "lifecycle", "interop", "upstream", "audit"),
 )

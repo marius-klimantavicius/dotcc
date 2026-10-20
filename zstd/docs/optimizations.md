@@ -80,8 +80,8 @@ universal throughput claim.
 | Direct/function-pointer calls, single evaluation and memory read-after-write | Passed |
 | Full 31-unit regeneration and exact typed-selection closure | Passed: 795 required selections, 42 unique targets |
 | Measured candidate improvement/regression review, JIT and NativeAOT | Pending |
-| Raw/processed JIT/NativeAOT native/ABI/consumer/behavior/lifecycle/interop/upstream/audit | Pending |
-| Newly linked authored adapter source preserved and clean ordinary delivery rebuilt | Pending |
+| Raw/processed JIT/NativeAOT native/ABI/consumer/behavior/lifecycle/interop/upstream/audit | Passed in final receipt 20261020-053617-98836bfa |
+| Newly linked authored adapter source preserved and clean ordinary delivery rebuilt | Passed: final source hash preserved; 47-file copied closure builds/runs both forms |
 
 Each observed failure is classified before repair. Shared compiler changes, if
 needed, require native-backed regressions and affected downstream checks. Pure
@@ -139,3 +139,40 @@ those compiler-detection macros. Delivered upstream sources and feature flags
 remain unchanged. Zero/all-one memory and swap cases are separate from the
 nonzero-only bit-scan contract. Comparative measurements and the complete current
 product matrix remain required before optimized-default acceptance.
+
+## Qualified implementation before final timing
+
+The final portable verification receipt
+`artifacts/campaign/20261020-053617-98836bfa/receipt.json` passes all nine declared
+suites. Its complete 31-unit translation selects exactly 795 required typed
+replacements. Raw/processed JIT/NativeAOT each pass ABI3, behavior30, lifecycle7,
+interop6 plus exact native comparisons, the ordinary file consumer, 33 selected
+original upstream cases and the import/dependency/license/rooted-AOT audit.
+The upstream context-size observation remains native/emitted 582672.
+
+The final primitive fixture includes explicit zero and all-one scalar/buffer
+patterns where valid, including the full 64-bit all-one swaps. Native output is
+227486 checks, digest `9b3f85183c30d739`, guard3 true, exactly matched in all eight
+original/candidate raw/processed JIT/AOT cells. The earlier 227466-check receipt
+predates the additional all-one swap cases; its history is not relabeled.
+
+An ordinary solution build and exact copied delivery also pass. Reports are in
+the same final receipt directory under `root-solution/report.json` and
+`copied-delivery/report.json`. The latter copies 47 source/project/notice/build
+metadata files, verifies relative links resolve entirely inside the copied tree,
+builds both forms and runs both four-file archive workflows. Every copied file
+remains byte-identical; no original workspace source/reference escapes the tree.
+Authored adapter source also matches its pre-translation hash after semantic
+postprocessing. These current regeneration and ordinary copied-delivery checks
+close the relevant source-preservation/relocation gate without repeating another
+full portable regeneration.
+
+The first paired comparison passes all 116 cases with faster medians and exact
+frame hashes, but its generated product precedes final regeneration. A strict
+attempt to bind those measurements by changing only internal `__unit_<64hex>`
+suffixes fails: staging identity also changes member order and encoded owner
+aliases. That failed proof is retained, not broadened into an equivalence claim.
+Final acceptance therefore requires another bounded paired comparison against
+the final published products, after which portable products and implementation
+sources remain fixed. No codec, adapter or benchmark workload changed; the new
+measurement closes the exact generated-source provenance boundary.
