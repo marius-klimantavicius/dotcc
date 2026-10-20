@@ -1,0 +1,38 @@
+{
+  "command": [
+    "dotnet",
+    "publish",
+    "tests/EdgSharp.Tests/EdgSharp.Tests.csproj",
+    "-c",
+    "Release",
+    "-r",
+    "linux-x64",
+    "-p:PublishAot=true",
+    "-o",
+    "tests/EdgSharp.Tests/bin/aot-smoke",
+    "--nologo"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "duration_seconds": 4.648,
+  "stdout": "  Determining projects to restore...\n  Restored /home/marius/p/dotcc/edgcpp/manual-csharp/tests/EdgSharp.Tests/EdgSharp.Tests.csproj (in 176 ms).\n  Restored /home/marius/p/dotcc/edgcpp/manual-csharp/src/EdgSharp/EdgSharp.csproj (in 176 ms).\n  EdgSharp -> /home/marius/p/dotcc/edgcpp/manual-csharp/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll\n  EdgSharp.Tests -> /home/marius/p/dotcc/edgcpp/manual-csharp/tests/EdgSharp.Tests/bin/Release/net10.0/linux-x64/EdgSharp.Tests.dll\n  Generating native code\n  EdgSharp.Tests -> /home/marius/p/dotcc/edgcpp/manual-csharp/tests/EdgSharp.Tests/bin/aot-smoke/\n",
+  "stderr": "",
+  "source_sha256": {
+    "src/EdgSharp/CompilationSession.cs": "d8e13fba703a9a910984d94c0909c4387813e1c5406d8e2ff14e72264c747d12",
+    "src/EdgSharp/EdgSharp.csproj": "00d8ff77e583f61c6b7fa60010c6fdf2a7d1879ab0575db8f38697222ea0786e",
+    "src/EdgSharp/Expressions.cs": "b934a16daf65854034457d537e385116ef84d33999d61ac081afb45a606d45f5",
+    "src/EdgSharp/ParseState.cs": "cd4af101f86db24d6f977f4817b02f4ad296c46188cdfebe98508011a53a0041",
+    "src/EdgSharp/Parser.cs": "6a338117dc941bdcc69faccd6a0a8a7b6fe1dfbe2f152d7d3be49dbd3aa1f69d",
+    "src/EdgSharp/SemanticGraph.cs": "e4a1412ff56e7222e2aeb2ea1bc4d5ec7de63d1a975f8a0cf760ce36e8863ed9",
+    "src/EdgSharp/Source.cs": "3a43225e6c050ea592f122a6c6139551ab07fc26b6a96308e6d85953ab4d4950",
+    "src/EdgSharp/Tokens.cs": "1b7a7c1939de6cea2a883c92acc52451b3440d81d89dbdef8718553ba5479cd9",
+    "src/EdgSharp/Types.cs": "dda9f2c5a921dc46061fa535cf9725f949ef0a74bbeb754b8a51f259d7e41871",
+    "tests/EdgSharp.Tests/EdgSharp.Tests.csproj": "b393fdd1784f39915fd001d6d89e3c69eb4f772ea47b92924c8bca134db0a1d4",
+    "tests/EdgSharp.Tests/Program.cs": "f3a1bbd2161effd0d32c76a234ebcda22f6e9cce423fc019240505376d39d7df",
+    "fixtures/m2-conflicting.cpp": "347929ac58733f920d42287ec26675a5c994c71d390d63d87f21c7670570dc9b",
+    "fixtures/m2-parameter-redeclaration.cpp": "2ef16ab886824a23f129062333a66d7cda86ddd8a7b0389847d06193ac5277b5",
+    "fixtures/m2-positive.cpp": "2a3702e7443419d40d60be96dd2439dbdb695d6017bb334e705d4f7158450621",
+    "fixtures/m2-unresolved.cpp": "448b2e018bf14e72ec5f245288d7388966411c216cb34d2b61eb3a4738f131fc",
+    "fixtures/m2-unsupported-statement.cpp": "4529339ae5cf76d30e3b223a3f0069d2bfe1106214edb33c57fb76f43d4f3a82"
+  }
+}

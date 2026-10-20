@@ -1,0 +1,23 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/unresolved.cpp",
+  "source_sha256": "22daf3fde89f0cbc0eedf3fbc54f0f94af6fe4c59676143ce6a0b8e419e84aa1",
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/unresolved.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/unresolved.cpp\",\n          line 2: error: identifier \"missing\" is undefined\n  int caller() { return missing; }\n                        ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/unresolved.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

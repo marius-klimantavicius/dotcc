@@ -1,0 +1,95 @@
+{
+  "purpose": "consulted source provenance, not a claim that complete files are ported",
+  "imported_base": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "repository_head_at_inspection": "66e6d152636f05f2ce8e4052f08d63ad034bf486",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.h",
+      "sha256": "805ade6649e8b2e0d2d11c2eaf8364904e51d54bbaa3701d2011f8609e74e8b3"
+    },
+    {
+      "path": "edgcpp/upstream/src/preproc.c",
+      "sha256": "e0927cba0b5ba139152d69063a6ec73114e103be957effd90eec4616438a65af"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_tbl.c",
+      "sha256": "ef2fc5af96a478fc1d6cf02927de2845c4f61814e6ddb084d36455baed2c7eff"
+    },
+    {
+      "path": "edgcpp/upstream/src/scope_stk.c",
+      "sha256": "8f781d2ded6e32ec02943ab98a9ffbb1ae800812b8d6eada6484c698c7b682e4"
+    },
+    {
+      "path": "edgcpp/upstream/src/lookup.c",
+      "sha256": "251e21f04cc94b0e8da1c5e1031ca3f832aaf5ec2b19bd6ff4ece4116e543af2"
+    },
+    {
+      "path": "edgcpp/upstream/src/decls.c",
+      "sha256": "1b362f931dd532b477c272d4cc4481baa822660ffb278c00475ae2da51b8fdc0"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_spec.c",
+      "sha256": "b7ed79284e50c8418dc68895e6e5e5dfc7328f5837bd71b1ef933e5377cfb6de"
+    },
+    {
+      "path": "edgcpp/upstream/src/declarator.c",
+      "sha256": "26680a8059cb338336b31d68ab40b25e9d1660bb5ba6192aea16ae15a9651552"
+    },
+    {
+      "path": "edgcpp/upstream/src/func_def.c",
+      "sha256": "b2a378a42cbfc99187de5998aa960e1a4c046c56c6cc26f81e53ddf25f4f175f"
+    },
+    {
+      "path": "edgcpp/upstream/src/statements.c",
+      "sha256": "a4b9476b67189ea0ed2034239f4494bc32a4f50a885bb258ab01eb8e01bac703"
+    },
+    {
+      "path": "edgcpp/upstream/src/expr.c",
+      "sha256": "056f8e7416d6f948846abbe17c3401e9eb4ca8ed1ce0ae7673cd573b314df3c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.c",
+      "sha256": "1b01609700d2a72f64f94e218a3f210e7e9503394bc3cf16168e8a1a50e50812"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.c",
+      "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.h",
+      "sha256": "7bc5d8c9b472a2d72c724b628f384a49fa726f3c8d7406fedaf9107596375495"
+    },
+    {
+      "path": "edgcpp/upstream/src/literals.c",
+      "sha256": "de5276f87f073a67bb4b7c6a4cd152a66eab0a155fda84f0d991e3d296213d95"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.c",
+      "sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/error.c",
+      "sha256": "e9a2fee3c39c8958361236285b57a87a98ceb02592a1de5e1035bd65e7bf3a60"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.h",
+      "sha256": "6a2125d77c052ee8a98c04d5cb3b6b51ba6abc9220314d273af499c83e334a88"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_def.h",
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.c",
+      "sha256": "535768a37a2bd0f90dd18c41bd867398074289a305c3ff88589da67153514cd0"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_ref.c",
+      "sha256": "a21ad4317c1b64d5c3acebde6314550adb64597ab60b3134394b78cc4b4781fa"
+    }
+  ]
+}

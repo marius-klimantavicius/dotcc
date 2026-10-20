@@ -1,0 +1,29 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m2-semantic-witness.cpp",
+  "source_sha256": "756a876dbaa848465ab53874bd1141b294def48506a91fa26425546252408b96",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m2-positive.cpp",
+      "sha256": "2a3702e7443419d40d60be96dd2439dbdb695d6017bb334e705d4f7158450621"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m2-semantic-witness.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/../../fixtures/m\n          2-positive.cpp\", line 9: warning: expression has no effect\n          result + 1;\n          ^\n\n",
+  "expected": "accept",
+  "matched": true
+}
