@@ -175,3 +175,16 @@ products; its current executed scope is recorded separately from historical
 original acceptance and the optimized full matrix. No additional portable
 regeneration is needed to establish relocation after the fresh full verification
 and ordinary copied-source closure check.
+
+
+## Direct intrinsic emission follow-up (2026-10-20)
+
+The next authorized improvement emits selected BCL intrinsics directly at known
+C call sites, retaining original wrappers for function pointers/exported identity.
+[direct-intrinsics.md](direct-intrinsics.md) records the frozen current optimized
+reference, symbol-bound lowering design, conversion/effect contracts and pending
+gates. This work changes shared compiler intrinsic lowering, so native-backed
+regressions and affected downstream checks precede its implementation milestone.
+Fresh final products require the complete selected zstd matrix and measurements
+against the existing optimized adapter baseline. Prior acceptance is historical
+and does not qualify these new products automatically.
