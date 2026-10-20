@@ -21,6 +21,7 @@
 | `--nest-types` | Place translated types, globals/cache helpers and embedded runtime inside the library wrapper. Supports managed/shared libraries and object linking. Split output uses file-local aliases so differently named translations can share a consumer namespace. |
 | `--runtime=all\|c\|auto` | Select embedded runtime modules. `all` (default) retains everything; `c` excludes Zig-only modules and requires known C-only inputs; `auto` uses source/object language provenance (unknown old objects retain all). Set at link time for objects. |
 | `--deduplicate-inline` | Merge provably equivalent static inline definitions and redirect their bound calls. Set at link time for objects. C function addresses and distinct static dependencies prevent merging. |
+| `--deduplicate-static` | Merge provably equivalent static definitions, including inline functions, using the same conservative proof. Opt-in; set at link time for objects and regenerate older fragments. |
 | `--export-inline <pattern>` | Expose selected inline definitions under their original C names. Repeatable case-sensitive exact names or `*` / `?` globs; quote globs. Missing matches, ambiguous definitions and name collisions are errors. Set at link time for objects. |
 | `--export-enum <pattern>` | Export file-scope C enumerators, including anonymous enums, as public constants of their underlying integer type. Repeatable case-sensitive exact names or `*` / `?` globs; quote globs. Missing matches, conflicting values/types and name collisions are errors. Set at link time for objects, or use `enumExports` in a source override profile. |
 | `--split=none\|function\|size` | C# project source layout: one file (default), one translated function per file, or groups of whole functions. Supported by csproj/build/managedlib/shared emission and object linking. File/stdout, preprocessing, WAT and object emission reject splitting. |
@@ -149,15 +150,22 @@ dotcc --emit=managedlib --deduplicate-inline \
   --nest-types --class-name MsQuic --runtime=c objects/*.cs -o TranslatedMsQuic
 ```
 
-Both options also work when translating C sources together. Object compilation
-always records inline metadata; pass these options at the final link, and
-regenerate objects produced by older compilers. The library API exposes the same
+These options also work when translating C sources together. Object compilation
+always records function proof metadata; pass these options at the final link.
+The library API exposes the same
 controls through `CSharpOutputOptions(DeduplicateInline: true,
 ExportInline: new[] { "CxPlatEwma", "QuicAddrGet*" })`.
 
+Use `--deduplicate-static`, or `CSharpOutputOptions(DeduplicateStatic: true)`,
+to include non-inline static functions. It also includes static inline functions,
+so the inline deduplication flag is optional in this mode. Static deduplication
+requires version 4 function metadata in every object; regenerate older fragments.
+Version 3 metadata remains usable with inline deduplication and exports. Neither
+deduplication flag is enabled by the standalone CLI by default.
+
 `--deduplicate-inline` compares typed IR, including signatures, constants,
 aggregate type identities, local bindings, control flow and bound function
-dependencies. Complete aggregate layouts are checked separately by the linker;
+dependencies and selected function replacement targets. Complete aggregate layouts are checked separately by the linker;
 an unrelated forward declaration becoming complete does not change a function.
 It merges equivalent definitions of the same original name, including recursive
 groups. Calls are redirected through explicit symbol relocations. Differing
@@ -171,7 +179,11 @@ objects, pointer-bearing constants, address uses and array decay remain excluded
 This does not repair the existing per-translation-unit mutable-global storage
 limitation; retaining separate methods does not establish separate global storage.
 
-Externally linked definitions and non-inline functions are not deduplicated.
+Externally linked definitions are not deduplicated. With only
+`--deduplicate-inline`, non-inline static functions retain distinct identities,
+including when an inline function calls them. `--deduplicate-static` can share
+those dependency groups when their complete proof succeeds. This code sharing
+does not request additional .NET inlining.
 
 `--export-inline` gives one selected definition its original name, for example
 `MsQuic.QuicAddrGetPort(...)`. With deduplication enabled, it is the shared body;
@@ -180,11 +192,13 @@ definition or one proven equivalent group. Ambiguous selections fail with a
 suggestion to provide a C wrapper in the desired translation unit. Exporting a
 single address-used function preserves its existing canonical pointer cache.
 Managed exports do not add native entry points to a shared library.
+Export selectors still match only inline definitions when static deduplication
+is enabled.
 
-When either option is enabled, inline functions receive pointer-cache properties only
+Functions selected by an enabled deduplication or inline export option receive pointer-cache properties only
 for actual C address uses (including global initializers and uses from other
 objects). Managed callers can invoke the methods directly. Defaults remain
-unchanged when neither option is selected. Unambiguous, proven static inline groups receive their original names
+unchanged when no option is selected. Unambiguous, proven deduplication groups receive their original names
 automatically. Conflicting names and unproven groups retain their existing names.
 `--export-inline` pins a requested managed name: it diagnoses ambiguity instead of
 falling back to unit names when new source units are added. Visibility is unchanged.
