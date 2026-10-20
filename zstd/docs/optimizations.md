@@ -1,8 +1,9 @@
 # Zstandard primitive replacements
 
-Status: implementation and measurement in progress, 2026-10-20. The original
-portable translation remains qualified by the historical acceptance evidence in
-[validation.md](validation.md); those results do not qualify new replacements.
+Status: optimized `portable` profile qualified on Linux x64, 2026-10-20.
+The historical original port acceptance remains separate in
+[validation.md](validation.md); the replacement acceptance below uses fresh
+translation, differential tests, full qualification and final-product timing.
 
 This follow-up uses DotCC's [typed function overrides](../../docs/function-overrides.md)
 to replace small memory and integer primitives with authored aggressively inlined
@@ -22,25 +23,24 @@ products, original owning API and root build metadata, accepted receipt
 All 5440 files (1,139,351,937 bytes) were rehashed before making them read-only;
 there are no symlinks. The original remains available for repeated comparisons.
 
-The proposed default remains `portable`, with the same API and canonical product
-paths. Its primitive implementations become optimized only after the gates below
-pass. An explicit `original` profile regenerates the unchanged C primitive bodies
-as an opt-out/reference; its own executed qualification scope will be recorded
-separately. There is no additional optimized alias.
+The default `portable` profile uses the optimized primitives with the same API
+and canonical product paths. The explicit `original` profile regenerates unchanged
+C primitive bodies as an opt-out/reference. Its narrower executed qualification
+scope is recorded separately below. There is no additional optimized alias.
 
-## Candidate boundary and contracts
+## Replacement boundary and contracts
 
-The baseline object-definition inventory finds 42 candidate function identities:
+The baseline object-definition inventory finds 42 selected function identities:
 27 MEM helpers in 24 of 31 units, six bit helpers in 23 units, and nine xxhash
 helpers only in `xxhash.c`. Typed per-unit profiles must preserve original
 signatures, internal linkage and physical declaration/TU identity. Their actual
 selection reports must match the expected inventory exactly, including signatures
 and managed targets; missing or unexpected selections fail the translation.
 
-| Family | Intended managed operation | Required contract |
+| Family | Managed operation | Required contract |
 | --- | --- | --- |
 | Native reads/writes 16/32/64 | `Unsafe.ReadUnaligned` / `WriteUnaligned` | Exactly the named ordinary memory width, all alignments; original `const void*` / `void*` signatures. |
-| Native/LE/BE size_t | 64-bit load/store or endian operation | Selected translated Linux LP64 `size_t` is `ulong`; never infer it from managed `IntPtr.Size`. |
+| Native size_t read; LE/BE read/write | 64-bit load/store or endian operation | Selected translated Linux LP64 `size_t` is `ulong`; never infer it from managed `IntPtr.Size`. |
 | LE/BE reads/writes | `BinaryPrimitives` | Exact byte order and width, including reads after intervening writes. |
 | LE24 | Three-byte implementation | Exactly three readable/writable bytes; never a masked four-byte access. |
 | 32/64/size_t byte swaps | `BinaryPrimitives.ReverseEndianness` | Preserve unsigned bit patterns and C widths, including zero and high-bit values. |
@@ -51,12 +51,19 @@ and managed targets; missing or unexpected selections fail the translation.
 
 `MEM_32bits`/`MEM_64bits` already fold and are excluded. Fallback subroutines need
 no separate override when their public helper is replaced. Rotations, including
-xxhash rotation macros, are excluded from the first candidate because existing
+xxhash rotation macros, remain excluded because existing
 shift idioms may already lower efficiently; they require measured evidence before
 adding another replacement. Algorithms and optional ISA/profile decisions remain
 unchanged, including `ZSTD_TRACE=0`.
 
 ## Measurement and acceptance gates
+
+Exact names, C signatures and managed targets are in
+[primitive-overrides.json](../config/primitive-overrides.json); the required
+per-unit closure is in [primitive-inventory.json](../config/primitive-inventory.json).
+The only adapter source is [Primitives.cs](../src/Optimization/Primitives.cs),
+linked from its authored path into both generated projects and available during
+semantic postprocessing, ordinary builds and NativeAOT.
 
 The benchmark uses one identical authored harness and fixed corpus/settings for
 preserved-original and candidate products, with fresh isolated build paths.
@@ -75,19 +82,18 @@ universal throughput claim.
 | --- | --- |
 | Untouched source/tool/product reference preserved | Passed |
 | Baseline numerical measurements with identical reusable harness | Passed: 29 cases in each raw/processed JIT/AOT cell |
-| Every selected primitive compared with original/native C | Passed: 227466 checks, all eight original/candidate form/mode cells |
+| Every selected primitive compared with original/native C | Passed: 227486 checks, all eight original/candidate form/mode cells |
 | All unaligned offsets, endian patterns, exact-width guards and LE24 inaccessible boundary | Passed, including intentional inaccessible-page fault controls |
 | Direct/function-pointer calls, single evaluation and memory read-after-write | Passed |
 | Full 31-unit regeneration and exact typed-selection closure | Passed: 795 required selections, 42 unique targets |
-| Measured candidate improvement/regression review, JIT and NativeAOT | Pending |
+| Measured candidate improvement/regression review, JIT and NativeAOT | Passed: all 116 final-product medians improve, minimum 1.317× |
 | Raw/processed JIT/NativeAOT native/ABI/consumer/behavior/lifecycle/interop/upstream/audit | Passed in final receipt 20261020-053617-98836bfa |
 | Newly linked authored adapter source preserved and clean ordinary delivery rebuilt | Passed: final source hash preserved; 47-file copied closure builds/runs both forms |
 
 Each observed failure is classified before repair. Shared compiler changes, if
 needed, require native-backed regressions and affected downstream checks. Pure
 campaign replacements do not trigger unrelated blanket regression runs. Final
-results, commands, selections, limitations and focused commit IDs will be added
-here as the gates complete.
+results, commands, selections, limitations and focused commit IDs follow below.
 
 ## Untouched original measurements
 
@@ -137,10 +143,10 @@ an addressable endian helper or macro-aliases byte swaps to builtins; the first
 harness build exposed this in `20261020-052220`. Only the test fixture adjusts
 those compiler-detection macros. Delivered upstream sources and feature flags
 remain unchanged. Zero/all-one memory and swap cases are separate from the
-nonzero-only bit-scan contract. Comparative measurements and the complete current
-product matrix remain required before optimized-default acceptance.
+nonzero-only bit-scan contract. The fresh full matrix and exact final-product
+measurements below provide optimized-default acceptance.
 
-## Qualified implementation before final timing
+## Qualified implementation and delivery
 
 The final portable verification receipt
 `artifacts/campaign/20261020-053617-98836bfa/receipt.json` passes all nine declared
@@ -172,7 +178,118 @@ frame hashes, but its generated product precedes final regeneration. A strict
 attempt to bind those measurements by changing only internal `__unit_<64hex>`
 suffixes fails: staging identity also changes member order and encoded owner
 aliases. That failed proof is retained, not broadened into an equivalence claim.
-Final acceptance therefore requires another bounded paired comparison against
-the final published products, after which portable products and implementation
-sources remain fixed. No codec, adapter or benchmark workload changed; the new
-measurement closes the exact generated-source provenance boundary.
+A second bounded paired comparison therefore measures the final published
+products exactly. No codec, adapter or benchmark workload changed. The final
+measurements below close the generated-source provenance boundary without
+claiming that reordered generated code is byte-equivalent.
+
+
+## Final paired measurements
+
+`artifacts/optimizations/final-candidate-benchmark-20261020/report.json` passes
+all 29 workloads in each of four cells: 116 exact comparisons, with ten measured
+batches per variant and case. Every input and compressed frame matches the
+preserved original exactly. Final source/project/adapter/configuration hashes,
+verification receipt hash and unchanged compiler/postprocessor closures are
+retained in `product-provenance.json` beside the report.
+`final-product-binding.json` passes exact before/after hashes without normalization;
+all 5440 original snapshot files were rehashed unchanged and remain read-only. Implementation commit
+`b322ebdd5` was frozen throughout timing; the published portable products remain
+unchanged afterward. This report supersedes the earlier candidate timing for
+acceptance.
+
+All measured medians improve. The slowest case in every cell is shown so the
+result does not depend on selecting only the largest gains:
+
+| Cell | Minimum speedup | Workload | Maximum speedup |
+| --- | ---: | --- | ---: |
+| Raw JIT | 1.417× | 1 MiB streaming decode | 7.296× |
+| Raw NativeAOT | 1.431× | 4 KiB dictionary decode | 4.973× |
+| Processed JIT | 1.373× | 4 KiB dictionary decode | 7.873× |
+| Processed NativeAOT | 1.317× | 4 KiB dictionary decode | 5.038× |
+
+Representative 128 KiB text, level 3 throughput is in MiB/s. Original and
+optimized values come from the same alternating final run:
+
+| Cell | Encode original → optimized | Encode speedup | Decode original → optimized | Decode speedup |
+| --- | ---: | ---: | ---: | ---: |
+| Raw JIT | 142.51 → 549.17 | 3.854× | 405.61 → 605.76 | 1.493× |
+| Raw NativeAOT | 149.59 → 564.43 | 3.773× | 414.03 → 617.01 | 1.490× |
+| Processed JIT | 161.80 → 694.86 | 4.295× | 419.43 → 605.17 | 1.443× |
+| Processed NativeAOT | 166.20 → 647.21 | 3.894× | 428.46 → 599.31 | 1.399× |
+
+| Additional workload speedup | Raw JIT | Raw NativeAOT | Processed JIT | Processed NativeAOT |
+| --- | ---: | ---: | ---: | ---: |
+| 1 MiB streaming encode | 3.141× | 3.037× | 3.237× | 2.964× |
+| 1 MiB streaming decode | 1.417× | 1.474× | 1.401× | 1.343× |
+| 4 KiB dictionary encode | 2.850× | 2.595× | 3.239× | 3.166× |
+| 4 KiB dictionary decode | 1.451× | 1.431× | 1.373× | 1.317× |
+| Allocating 128 KiB roundtrip | 2.287× | 2.184× | 2.227× | 2.116× |
+
+All 112 context-reuse and streaming comparisons allocate zero managed bytes on
+the measured thread for both variants. The allocating roundtrip remains approximately
+544–545 kB per operation; small fractional per-operation differences are retained
+in the report. Allocation does not include native heap traffic or peak RSS.
+Medians, quartiles, MAD, min/max and every batch remain in the JSON; the complete
+`comparison-cases.md`/`.csv` table includes all 116 pairs and both variants' IQRs;
+`comparison-summary.md`/`.json` contains selected medians and IQRs. These results measure the
+combined replacement profile on this host, not an individual primitive's isolated
+contribution or an unmeasured target.
+
+Reproduce with fresh output paths and the preserved original snapshot. Replace
+`NEW_RUN` with the successful verification receipt directory printed by the first
+command; measure and copy those newly published products before regenerating again:
+
+```bash
+DOTCC_CAMPAIGN_COMMAND_LOCKS=production bash zstd/scripts/verify.sh --tools reuse --fetch never --form all --mode all --rid linux-x64 --jobs 2
+DOTCC_CAMPAIGN_COMMAND_LOCKS=production python3 zstd/benchmarks/run.py --baseline zstd/artifacts/optimizations/baseline-00373046c-20261020T021419Z --output zstd/artifacts/optimizations/final-repeat --variant candidate --compare-to zstd/artifacts/optimizations/original-benchmark-20261020/report.json
+DOTCC_CAMPAIGN_COMMAND_LOCKS=production python3 zstd/tests/delivery.py --receipt zstd/artifacts/campaign/NEW_RUN/receipt.json --output zstd/artifacts/optimizations/delivery-repeat
+```
+
+The benchmark command uses the currently published portable products. If verifying
+again regenerates them, measure that newly generated product afterward rather
+than attributing an earlier product's timing to it. The runner and harness are
+unchanged from baseline milestone `32085415a`; shared compiler/runtime sources
+were not modified by this optimization campaign.
+
+
+The stronger copied-delivery rerun is
+`artifacts/copied-delivery-receipt-bound-20261020/report.json`, using the same final
+qualification receipt. It again builds and runs both forms. Of 47 copied files,
+seven authored files match recorded production-input hashes and 34 generated
+files match recorded output hashes. Six files absent from historical
+`production_inputs` are explicitly labeled unbound: root Build/Packages props,
+NuGet config, solution, and consumer project/source. Their copied bytes and
+all evaluated references are still checked. The helper rejects stale recorded
+adapter or root metadata digests before copying; four private matching/stale/
+absent-input controls pass in
+`artifacts/delivery-receipt-control-final-20261020/report.json`. This does not
+invent historical hashes for files the receipt did not record.
+
+
+## Original opt-out profile scope
+
+`artifacts/campaign/20261020-055712-5bb14ef6/receipt.json` separately passes full
+31-unit emission, raw/processed builds, three ABI cases in each JIT cell, and both
+ordinary four-file streaming/dictionary archive consumers. There are zero typed
+replacements, no adapter link and no managed optimization calls in these
+products. They reside below `generated/profiles/original/`, preserving canonical
+portable products.
+
+```bash
+DOTCC_CAMPAIGN_COMMAND_LOCKS=production bash zstd/scripts/verify.sh --profile original --form all --mode jit --suite abi --suite consumer --tools reuse --jobs 2 --timeout 600 --fetch never --hashes warn
+```
+
+`artifacts/original-profile-validation-20261020/report.json` retains both output
+hash maps, commands and results; all 40 protected portable product/adapter/config/
+receipt-pointer hashes remain unchanged afterward. The new `original` profile's
+full NativeAOT, behavior/lifecycle/interop/upstream/audit suites were not rerun.
+Its original/replaced primitive fixture does cover all four form/mode cells.
+Historical original snapshot qualification remains separate, and the default
+optimized portable profile has the complete fresh four-cell matrix.
+
+All required gates for the selected optimized scope pass. Other architectures,
+operating systems and upstream feature exclusions retain the plan's qualification
+limits. Baseline/harness milestone: `32085415a`; typed replacements and full
+correctness milestone: `b322ebdd5`. Final evidence and the isolated delivery
+receipt-binding repair are committed together after these checks; no push.

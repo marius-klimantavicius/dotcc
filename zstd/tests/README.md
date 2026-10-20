@@ -58,3 +58,14 @@ project references, builds each form in private intermediates, checks delivered
 notices and runs both archive consumer self-tests. It retains its source hash
 manifest, exact commands, evaluations, outputs and failure evidence. The copied
 source tree contains no upstream reference source or compiler tools.
+
+
+Recorded `production_inputs` and generated-output digests bind copied files to
+that successful receipt. Files absent from historical receipt inputs are marked
+explicitly unbound, while still checked for byte preservation and source closure.
+Private stale-receipt controls exercise the actual copy path without changing
+campaign sources:
+
+```sh
+python3 zstd/tests/delivery_control.py --output zstd/artifacts/delivery-control-repeat
+```

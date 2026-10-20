@@ -27,6 +27,28 @@ def save(path, value):
     path.write_text(json.dumps(value, indent=2) + "\n")
 
 
+def copy_source(source, tree, production_inputs):
+    """Copy original bytes, binding to historical inputs when recorded."""
+    if not source.is_file() or source.is_symlink():
+        raise RuntimeError("Missing or symlinked source: " + str(source))
+    relative = source.relative_to(REPO)
+    actual = sha(source)
+    key = str(source.resolve())
+    recorded = key in production_inputs
+    expected = production_inputs.get(key)
+    if recorded and actual != expected:
+        raise RuntimeError("Verified production input changed: " + str(source))
+    destination = tree / relative
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, destination)
+    copied = sha(destination)
+    if copied != actual or (recorded and copied != expected):
+        raise RuntimeError("Copied source differs: " + str(source))
+    destination.chmod(destination.stat().st_mode & ~0o222)
+    return relative.as_posix(), dict(original=str(source), sha256=copied, bytes=source.stat().st_size,
+                                     receipt_production_sha256=expected, receipt_output_sha256=None)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--receipt", type=Path, required=True)
@@ -63,17 +85,12 @@ def main():
         finally:
             row.update(elapsed_seconds=time.monotonic() - start, log_sha256=sha(log)); save(report_path, report)
 
-    def copy(source):
-        if not source.is_file() or source.is_symlink():
-            raise RuntimeError("Missing or symlinked source: " + str(source))
-        relative = source.relative_to(REPO)
-        destination = tree / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source, destination)
-        if sha(source) != sha(destination):
-            raise RuntimeError("Copied source differs: " + str(source))
-        report["files"][relative.as_posix()] = dict(original=str(source), sha256=sha(source), bytes=source.stat().st_size)
-        destination.chmod(destination.stat().st_mode & ~0o222)
+    def copy(source, output_digest=None):
+        relative, entry = copy_source(source, tree, receipt.get("production_inputs", {}))
+        if output_digest is not None and entry["sha256"] != output_digest:
+            raise RuntimeError("Copied verified generated input changed: " + str(source))
+        entry["receipt_output_sha256"] = output_digest
+        report["files"][relative] = entry
 
     try:
         for name in ("Directory.Build.props", "Directory.Build.targets", "Directory.Packages.props", "nuget.config", "global.json"):
@@ -91,7 +108,13 @@ def main():
                 file = project.parent / name
                 if not file.resolve().is_relative_to(project.parent) or sha(file) != expected:
                     raise RuntimeError("Verified generated input changed: " + str(file))
-                copy(file)
+                copy(file, expected)
+        report["receipt_binding"] = {
+            "production_inputs": [name for name, entry in report["files"].items() if entry["receipt_production_sha256"] is not None],
+            "generated_outputs": [name for name, entry in report["files"].items() if entry["receipt_output_sha256"] is not None],
+            "unbound": [name for name, entry in report["files"].items()
+                        if entry["receipt_production_sha256"] is None and entry["receipt_output_sha256"] is None],
+        }
         # An escaping original absolute link fails before any build can consume it.
         for project in tree.rglob("*.csproj"):
             for node in ET.parse(project).iter("Compile"):

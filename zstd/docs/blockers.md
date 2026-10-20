@@ -141,3 +141,34 @@ unrelated repository baseline failures.
 - Closed: final receipt `20261019-204241-00db2fbc` passes all four upstream
   cells with native/emitted size 582672 and zero skipped cases, plus the complete
   API/consumer/import/rooted-AOT matrix. No shared compiler repair was needed.
+
+
+## Optimization follow-up — resolved test/provenance findings
+
+- The first primitive native fixture build (`20261020-052220`) exposed GCC's
+  omission of an addressable xxhash endian helper and builtin macro aliases for
+  byte swaps. The test-only fixture includes system headers first, then selects
+  the same portable upstream helper definitions as translated C. Delivered
+  feature flags and upstream sources are unchanged. Final native and all eight
+  original/replaced form/mode fixtures match 227486 checks and digest
+  `9b3f85183c30d739`, with a real inaccessible-page LE24 guard control.
+- Historical whole-header hashes initially acted as an unconditional helper
+  compatibility gate. They now follow ordinary off/warn/explicit-strict
+  provenance policy; actual typed signatures, physical declaration/TU identity,
+  exact reports and functional tests establish compatibility. Unrelated header
+  comment probes emit all 42 replacements in off/warn; strict rejects drift.
+- Exact copied delivery requires a relative authored adapter link and evaluates
+  every Compile/ProjectReference inside the copied source tree. The final
+  47-file closure builds and runs both consumer forms without external source
+  references; hashes remain unchanged. The audit's adapter-list variable is
+  distinct from its per-file source variable, including explicit Compile items.
+- The first paired timing preceded final regeneration. A strict proof allowing
+  only bijective internal unit-suffix renaming failed because staging identity
+  also changes generated member ordering and owner aliases. The proof was not
+  weakened. Final timing reruns the same original/candidate harness against the
+  exact final published products; all 116 comparisons pass and their full hashes
+  remain bound to the qualification receipt.
+
+These findings required no shared compiler repair, upstream algorithm change or
+manual generated-source patch. Historical failed receipts remain available;
+the current selected optimized scope has no open product blocker.

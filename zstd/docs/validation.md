@@ -364,3 +364,68 @@ OS/architectures, worker compression, pre-v0.8 frames, optional trace hooks,
 deprecated/contrib/CLI products and the explicitly omitted randomized, stress
 and complete upstream drivers remain unqualified. The unrelated shared framework
 baseline failure recorded above is not relabeled as a pass.
+
+
+## Qualified primitive optimizations (2026-10-20)
+
+Historical port acceptance above describes the original primitive bodies. The
+new default `portable` profile is separately qualified by
+`artifacts/campaign/20261020-053617-98836bfa/receipt.json`: all 12 tasks and 192
+commands pass, including full 31-unit regeneration and all nine declared suites.
+Exactly 795 typed replacements select 42 unique managed adapters. No shared
+compiler/runtime implementation, codec algorithm or generated C# was patched.
+
+| Gate | Current optimized evidence |
+| --- | --- |
+| Primitive differential | Native 227486 checks, digest `9b3f85183c30d739`, real three-byte guard boundary; original/replaced × raw/processed × JIT/NativeAOT all match |
+| Selection/provenance controls | Nine malformed reports fail closed; unrelated header comment remains usable in warn/off, explicit strict rejects historical drift |
+| ABI / behavior / lifecycle | 3 / 30 / 7 per four-cell matrix, no required skips |
+| Native interoperability | 6 managed cases plus three exact native comparisons per cell |
+| Actual upstream | 33 cases in groups `[1,1,1,11,13,6]` per cell; native/emitted context size 582672 |
+| Ordinary consumer / artifact audit | Both pass raw/processed JIT/NativeAOT; exact authored adapter link, import/license/rooted AOT checks |
+| Ordinary solution | `root-solution/report.json` in final receipt, passed |
+| Original-path adapter preservation / delivery | Final regeneration preserves source hash; copied 47-file closure builds and runs both forms with no escaping evaluated source/project references |
+
+Commands and contracts are in [optimizations.md](optimizations.md). The read-only
+5440-file original snapshot predates every mutation and remains byte-identical.
+Baseline measurement/harness milestone `32085415a` precedes implementation
+milestone `b322ebdd5`. Fresh final measurements at that frozen implementation
+commit pass all 116 exact input/frame comparisons in
+`artifacts/optimizations/final-candidate-benchmark-20261020/report.json`.
+All measured medians improve: 1.317–7.873× over these selected local workloads;
+128 KiB text level 3 compression improves 3.773–4.295× and decompression
+1.399–1.493×. These are combined-profile results on the recorded Linux x64 host,
+not claims for unmeasured workloads or targets. Complete medians/IQRs and raw
+samples are retained. Context reuse/streaming allocate zero managed bytes in
+both variants; allocating roundtrip remains about 544–545 kB per operation.
+
+Exact `final-product-binding.json` beside that benchmark and
+`final-benchmark-source-binding.json` in the qualification receipt pass without
+normalization. Generated sources, projects, adapter, tool closures, harness and
+settings are bound to the final published products. The earlier candidate run
+precedes final regeneration and is retained only as exploratory evidence; its
+failed strict suffix-only equivalence proof is not a qualification claim.
+
+The stronger delivery helper rerun
+`artifacts/copied-delivery-receipt-bound-20261020/report.json` passes both forms
+and all ten commands. Seven authored files match recorded production-input
+hashes, 34 generated files match output-receipt hashes, and six absent historical
+inputs are explicitly labeled unbound while their copied bytes and contained
+references remain checked. Four private matching/stale/absent receipt controls
+pass in `artifacts/delivery-receipt-control-final-20261020/report.json`.
+
+
+The explicit newly generated `original` opt-out profile is checked separately in
+receipt `20261020-055712-5bb14ef6`: all 31 units, both builds, zero replacement
+selections or adapter links/calls, ABI 3+3 in raw/processed JIT, and both meaningful
+archive consumers pass. Its full NativeAOT/behavior/lifecycle/interop/upstream/
+audit matrix was not repeated. The original primitive fixture does cover all four
+cells; historical original snapshot full qualification is distinct.
+`artifacts/original-profile-validation-20261020/report.json` retains commands,
+output hashes and before/after proof that all 40 protected canonical portable
+product/adapter/configuration/pointer hashes remain unchanged. No second portable
+regeneration was performed after final timing.
+
+No required selected optimized gate remains incomplete. The final documentation
+and delivery-test helper changes preserve measured implementation commit
+`b322ebdd5`, all canonical products and the original baseline. No push.

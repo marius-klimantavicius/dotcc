@@ -7,9 +7,12 @@ NativeAOT forms, including clean regeneration and the file consumer. See
 [the plan](docs/PLAN.md), [validation](docs/validation.md) and
 [the resolved blocker ledger](docs/blockers.md) for evidence.
 
-The primitive optimization follow-up is in progress; see
-[its contracts, preserved baseline and measurements](docs/optimizations.md).
-Historical port acceptance does not qualify the new replacements.
+The default `portable` profile uses 42 typed .NET primitive replacements built
+with `Unsafe`, `BinaryPrimitives` and `BitOperations`. The complete correctness
+matrix passes; the final local benchmark improves every measured workload, with
+128 KiB level 3 compression 3.77–4.29× faster and decompression 1.40–1.49× faster.
+See [contracts, preserved baseline and measurements](docs/optimizations.md) for
+workloads, dispersion, limits and separate historical acceptance evidence.
 
 The product selects the complete portable standard library core: all compression
 strategies, long-distance matching, decompression, streaming, checksums,
@@ -33,7 +36,7 @@ DOTCC_CAMPAIGN_COMMAND_LOCKS=production bash zstd/scripts/verify.sh --fetch neve
 
 `build.sh` builds existing products. `translate.sh` emits every selected C unit,
 builds raw and processed forms and publishes transactionally. `verify.sh` also
-runs the declared native, ABI, consumer, behavior, lifecycle, interoperability,
+runs the declared native, primitive, ABI, consumer, behavior, lifecycle, interoperability,
 upstream-case and dependency audits. Use `--hashes off` to disable provenance
 hashing and `--fetch never` to use existing inputs; NuGet restore is controlled
 separately with `--restore`. Scripts resolve paths from their own locations.
@@ -42,6 +45,12 @@ Reference [Managed.Zstd.csproj](src/Managed.Zstd/Managed.Zstd.csproj) normally.
 Its `ZstdProject` property selects the generated product and defaults to the
 processed form. The raw form is
 `generated/TranslatedZstd.Raw/TranslatedZstd.csproj`.
+
+The explicit `--profile original` opt-out emits unchanged C primitive bodies to
+`generated/profiles/original/TranslatedZstd/TranslatedZstd.csproj` (and the `.Raw`
+sibling). Pass that project as `-p:ZstdProject=ABSOLUTE_PATH` when building the API
+or consumer. It shares the codec scope and API, without the managed adapter.
+Its current profile-specific smoke scope is recorded in the optimization report.
 
 ```csharp
 using Managed.Zstd;

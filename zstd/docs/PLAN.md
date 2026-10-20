@@ -152,12 +152,26 @@ explicit exclusions above; this does not claim their execution.
 
 ## Primitive optimization follow-up (2026-10-20)
 
-The original port acceptance above is historical. The newly authorized follow-up
-uses typed function replacements and authored .NET primitive adapters, with no
-codec or generated-C# rewrite. [optimizations.md](optimizations.md) records the
-preserved original, exact candidate boundary, differential/memory contracts,
-matched end-to-end measurements and remaining gates. Default `portable` retains
-canonical paths and API behavior; an `original` profile supplies an explicit
-unchanged-primitive reference. New optimization acceptance requires measured
-results, the complete four-cell matrix and rebuilt delivery with original-path
-authored adapter sources. It does not inherit original acceptance automatically.
+The original port acceptance above is historical. The qualified optimization
+follow-up uses 42 typed function replacements and authored .NET primitive
+adapters, with no codec or generated-C# rewrite. Exactly 795 per-unit selections
+are required across the complete 31-unit core. [optimizations.md](optimizations.md)
+records the read-only preserved original, contracts and every executed gate.
+
+Default `portable` retains canonical paths and API behavior. Fresh receipt
+`20261020-053617-98836bfa` passes all nine suites in raw/processed JIT/NativeAOT,
+including native-matching 227486-check primitive fixtures, ABI, owning consumer,
+behavior, lifecycles, interoperability, 33 original upstream cases and audits.
+Ordinary solution and copied-source delivery builds pass with authored adapters
+linked from their original paths and preserved byte-for-byte.
+
+The final paired benchmark measures the exact published products at implementation
+commit `b322ebdd5`: all 116 workload comparisons pass exact input/frame checks;
+all measured medians improve, with the smallest gain 1.317×. Results include
+medians and dispersion on the selected Linux x64 host and do not claim universal
+speedups. Neither compiler nor runtime implementation changed in this follow-up.
+The explicit `original` profile provides unchanged C primitive bodies in separate
+products; its current executed scope is recorded separately from historical
+original acceptance and the optimized full matrix. No additional portable
+regeneration is needed to establish relocation after the fresh full verification
+and ordinary copied-source closure check.
