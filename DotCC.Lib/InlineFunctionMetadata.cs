@@ -11,24 +11,34 @@ namespace DotCC;
 /// <summary>A typed-IR proof candidate, independent of C# spelling. A missing shape
 /// means that equivalence has not been proved; it never means an empty body.</summary>
 internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic, string Shape,
-    bool AddressUsed, string[] Dependencies)
+    bool AddressUsed, string[] Dependencies, bool IsInline)
 {
-    internal const string Version = "//!!dotcc-obj inline-metadata:3";
+    internal const string Version = "//!!dotcc-obj inline-metadata:4";
+    internal const string LegacyVersion = "//!!dotcc-obj inline-metadata:3";
     internal const string Prefix = "//!!dotcc-obj inline:";
+    internal static void ValidateVersion(string text)
+    {
+        var lines = text.Split('\n');
+        if (lines.Contains(Version, StringComparer.Ordinal)
+            && lines.Any(line => line.StartsWith(Prefix, StringComparison.Ordinal)
+                && line[Prefix.Length..].Split(' ').Length != 7))
+            throw new CompileException("invalid static metadata; regenerate objects");
+    }
     internal string Serialize(string name) => Prefix + string.Join(" ", name, OriginalName,
-        IsStatic ? "1" : "0", Shape, AddressUsed ? "1" : "0", string.Join(",", Dependencies));
+        IsStatic ? "1" : "0", Shape, AddressUsed ? "1" : "0", string.Join(",", Dependencies), IsInline ? "1" : "0");
 
     internal static (string Name, InlineFunctionMetadata Metadata) Parse(string line)
     {
         var parts = line[Prefix.Length..].Split(' ');
         static bool Identifier(string s) => s.Length > 0 && s.All(c => char.IsAsciiLetterOrDigit(c) || c is '_' or '@');
-        if (parts.Length != 6 || !Identifier(parts[0]) || !Identifier(parts[1])
+        if (parts.Length is not (6 or 7) || !Identifier(parts[0]) || !Identifier(parts[1])
             || parts[2] is not ("0" or "1") || parts[4] is not ("0" or "1")
             || !(parts[3] == "-" || parts[3].Length == 64 && parts[3].All(Uri.IsHexDigit))
-            || parts[5].Split(',', StringSplitOptions.RemoveEmptyEntries).Any(s => !Identifier(s)))
+            || parts[5].Split(',', StringSplitOptions.RemoveEmptyEntries).Any(s => !Identifier(s))
+            || parts.Length == 7 && parts[6] is not ("0" or "1"))
             throw new CompileException("invalid inline metadata; regenerate objects");
         return (parts[0], new(parts[1], parts[2] == "1", parts[3], parts[4] == "1",
-            parts[5].Split(',', StringSplitOptions.RemoveEmptyEntries)));
+            parts[5].Split(',', StringSplitOptions.RemoveEmptyEntries), parts.Length == 6 || parts[6] == "1"));
     }
 
     internal static InlineFunctionMetadata From(FuncDef function, IrBuilder unit, bool addressUsed)
@@ -38,12 +48,13 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
         proof.Type(function.Sym.Type);
         proof.Atom(function.Sym.IsNoReturn);
         proof.Atom(function.Sym.Deprecated);
+        proof.Override(function.Sym.IntrinsicOverride);
         proof.Atom(function.Variadic);
         foreach (var parameter in function.Params) proof.Local(parameter);
         proof.Statement(function.Body);
         return new(function.Sym.Name, function.Sym.Storage == Storage.Static,
             proof.Supported ? Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(proof.Text.ToString()))) : "-",
-            addressUsed, proof.Dependencies.ToArray());
+            addressUsed, proof.Dependencies.ToArray(), function.Sym.IsInline);
     }
 
     // Explicit, conservative traversal. New IR nodes opt out until their complete
@@ -61,6 +72,14 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
         {
             var s = Convert.ToString(value, CultureInfo.InvariantCulture) ?? "<null>";
             Text.Append(s.Length).Append(':').Append(s).Append(';');
+        }
+        internal void Override(FunctionOverrideTarget? target)
+        {
+            // Retain version-3 hashes for ordinary definitions so legacy and
+            // current objects can still prove the same inline implementation.
+            if (target == null) return;
+            Atom("semantic-override"); Atom(target.Kind); Atom(target.Value);
+            Atom(target.DoesNotReturn); Atom(target.PassInstance);
         }
         internal void Type(CType type)
         {
@@ -98,6 +117,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
             else if (symbol.Kind == SymKind.Func)
             {
                 Atom("function"); Atom(symbol.Name);
+                Override(symbol.IntrinsicOverride);
                 if (symbol.Storage == Storage.Static)
                 {
                     Atom(Dependencies.Count); Dependencies.Add(symbol.TargetName);
@@ -188,6 +208,7 @@ internal sealed record InlineFunctionMetadata(string OriginalName, bool IsStatic
                 case Assign e: Atom("assign"); Atom(e.CompoundOp); Expression(e.Target); Expression(e.Value); break;
                 case Call e:
                     Atom("call"); Atom(e.Callee);
+                    Override(e.SemanticTarget);
                     if (e.CalleeSym != null) Reference(e.CalleeSym); else Atom("unresolved");
                     Atom(e.ParamTypes?.Count ?? -1);
                     if (e.ParamTypes != null) foreach (var p in e.ParamTypes) Type(p);

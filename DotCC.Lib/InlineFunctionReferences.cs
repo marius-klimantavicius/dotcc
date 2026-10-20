@@ -11,7 +11,7 @@ internal static class InlineFunctionReferences
 {
     private const string Marker = "/*__dotcc_inline_ref__*/";
     internal static string Emit(Symbol symbol, bool annotate) =>
-        (annotate && symbol.IsInline && symbol.Storage == Storage.Static ? Marker : "") + symbol.TargetName;
+        (annotate && symbol.Storage == Storage.Static ? Marker : "") + symbol.TargetName;
 
     internal static string Rewrite(string source, IReadOnlyDictionary<string, string> names) =>
         BoundSymbolReferences.Rewrite(

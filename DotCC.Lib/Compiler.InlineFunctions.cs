@@ -7,7 +7,7 @@ namespace DotCC;
 public static partial class Compiler
 {
     private static bool UsesInlineOptions(CSharpOutputOptions? options) =>
-        options?.DeduplicateInline == true || options?.ExportInline is { Count: > 0 };
+        options?.DeduplicateStatic == true || options?.DeduplicateInline == true || options?.ExportInline is { Count: > 0 };
 
     private sealed record InlineOutput(string Functions, IReadOnlyList<CSharpFunctionSource> Parts,
         IReadOnlyDictionary<string, string> Types, IReadOnlyList<Backends.CSharpGlobalSource> Globals);
@@ -19,6 +19,10 @@ public static partial class Compiler
         var names = new Dictionary<string, string>(StringComparer.Ordinal);
         var removed = new HashSet<string>(StringComparer.Ordinal);
         bool enabled = UsesInlineOptions(options);
+        bool CanDeduplicate(InlineFunctionMetadata function) => function.IsStatic
+            && (options?.DeduplicateStatic == true || function.IsInline && options?.DeduplicateInline == true);
+        bool IsCandidate(InlineFunctionMetadata function) => CanDeduplicate(function)
+            || function.IsInline && options?.ExportInline is { Count: > 0 };
         if (enabled)
         {
             var entries = metadata.OrderBy(p => p.Key, StringComparer.Ordinal).ToArray();
@@ -26,7 +30,7 @@ public static partial class Compiler
             // bound callees. Refinement only splits, so recursive groups converge.
             // Unproven/address-used/external definitions remain unique identities.
             var bases = entries.ToDictionary(p => p.Key, p =>
-                p.Value.IsStatic && p.Value.Shape != "-" && !p.Value.AddressUsed
+                IsCandidate(p.Value) && p.Value.IsStatic && p.Value.Shape != "-" && !p.Value.AddressUsed
                     ? "shape:" + p.Value.Shape : "identity:" + p.Key, StringComparer.Ordinal);
             static Dictionary<string, int> Partition(IEnumerable<KeyValuePair<string, string>> keys)
             {
@@ -55,15 +59,15 @@ public static partial class Compiler
             var selectors = (options?.ExportInline ?? Array.Empty<string>()).Select(pattern =>
                 (Pattern: pattern, Selector: new InlineExportSelector(pattern))).ToArray();
             foreach (var (pattern, selector) in selectors)
-                if (!entries.Any(p => selector.Matches(p.Value.OriginalName, p.Key)))
+                if (!entries.Any(p => p.Value.IsInline && selector.Matches(p.Value.OriginalName, p.Key)))
                     throw new CompileException("--export-inline pattern '" + pattern + "' matched no inline definitions");
             var occupied = new HashSet<string>(globalNames.Concat(types.Keys), StringComparer.Ordinal);
             // A single proven implementation no longer belongs to one TU.
             // Give it the original spelling when that spelling is unambiguous.
             // Explicit exports below still diagnose rather than silently skip a
             // requested name, and can name a single unmerged implementation.
-            if (options?.DeduplicateInline == true)
-                foreach (var original in entries.GroupBy(p => p.Value.OriginalName))
+            if (options?.DeduplicateInline == true || options?.DeduplicateStatic == true)
+                foreach (var original in entries.Where(p => CanDeduplicate(p.Value)).GroupBy(p => p.Value.OriginalName))
                 {
                     var candidates = original.Select(p => partition[p.Key]).Distinct().ToArray();
                     if (candidates.Length != 1 || original.Any(p => !p.Value.IsStatic
@@ -73,7 +77,7 @@ public static partial class Compiler
                     if (!occupied.Contains(cleanName) && !sources.Any(s => s.Name == cleanName && s.Name != representative))
                         names[representative] = cleanName;
                 }
-            foreach (var original in entries.Where(p => selectors.Any(s => s.Selector.Matches(p.Value.OriginalName, p.Key)))
+            foreach (var original in entries.Where(p => p.Value.IsInline && selectors.Any(s => s.Selector.Matches(p.Value.OriginalName, p.Key)))
                          .GroupBy(p => p.Value.OriginalName))
             {
                 var candidates = original.Select(p => partition[p.Key]).Distinct().ToArray();
@@ -86,12 +90,12 @@ public static partial class Compiler
                     throw new CompileException("--export-inline name '" + original.Key + "' conflicts with an existing declaration");
                 names[representative] = exportName;
             }
-            if (options?.DeduplicateInline == true)
+            if (options?.DeduplicateInline == true || options?.DeduplicateStatic == true)
                 foreach (var group in groups)
                 {
                     var representative = representatives[group.Key];
                     var target = names.GetValueOrDefault(representative, representative);
-                    foreach (var entry in group.Where(p => p.Key != representative))
+                    foreach (var entry in group.Where(p => p.Key != representative && CanDeduplicate(p.Value)))
                     { names[entry.Key] = target; removed.Add(entry.Key); }
                 }
         }
@@ -104,7 +108,7 @@ public static partial class Compiler
             // Retain translated and explicitly requested host address uses.
             if (enabled && key.StartsWith(FunctionPointerNames.TypeKeyPrefix, StringComparison.Ordinal)
                 && metadata.TryGetValue(key[FunctionPointerNames.TypeKeyPrefix.Length..], out var function)
-                && !function.AddressUsed) continue;
+                && IsCandidate(function) && !function.AddressUsed) continue;
             declarations.Add(key, InlineFunctionReferences.Rewrite(text, names));
         }
         return new(string.Join("\n\n", parts.Select(p => p.Text)), parts, declarations,

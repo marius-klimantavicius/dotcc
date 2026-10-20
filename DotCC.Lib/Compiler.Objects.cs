@@ -175,6 +175,7 @@ public static partial class Compiler
         var definedNames = new HashSet<string>(StringComparer.Ordinal);
 
         var objectTexts = objectPaths.Select(path => File.ReadAllText(path).ReplaceLineEndings("\n")).ToArray();
+        foreach (var text in objectTexts) InlineFunctionMetadata.ValidateVersion(text);
         var identityGraphs = objectTexts.Select(AggregateIdentities.Read).ToArray();
         var variantNames = AggregateIdentities.Plan(objectPaths.Select((path, index) =>
             (path, identityGraphs[index])).ToArray());
@@ -219,13 +220,22 @@ public static partial class Compiler
             if (text.Contains(FragWeakFunction, StringComparison.Ordinal) && !text.Contains(FragFunction, StringComparison.Ordinal))
                 throw new CompileException("Weak function objects require function boundaries; regenerate objects");
             missingEnumMetadata |= !text.Split('\n').Contains(EnumConstantsVersion, StringComparer.Ordinal);
-            if (UsesInlineOptions(outputOptions) && !text.Split('\n').Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal))
+            var metadataVersions = text.Split('\n');
+            if (outputOptions?.DeduplicateStatic == true && !metadataVersions.Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal))
+                throw new CompileException("Object lacks static metadata; regenerate objects before using --deduplicate-static");
+            if (UsesInlineOptions(outputOptions) && !metadataVersions.Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal)
+                && !metadataVersions.Contains(InlineFunctionMetadata.LegacyVersion, StringComparer.Ordinal))
                 throw new CompileException("Object lacks inline metadata; regenerate objects before using --deduplicate-inline or --export-inline");
             foreach (var line in text.Split('\n'))
             {
                 if (line.StartsWith(InlineFunctionMetadata.Prefix, StringComparison.Ordinal))
                 {
                     var (name, metadata) = InlineFunctionMetadata.Parse(line);
+                    // Version 3 did not include semantic replacement targets in
+                    // its typed proof. Preserve those implementations and their
+                    // callers when legacy objects contain selected overrides.
+                    if (!metadataVersions.Contains(InlineFunctionMetadata.Version, StringComparer.Ordinal)
+                        && replacedFunctions.Count > 0) metadata = metadata with { Shape = "-" };
                     if (discardedWeakFunctions.Contains((objectIndex, name))) continue;
                     if (!inlineMetadata.TryAdd(name, metadata) && !replacedFunctions.Contains(name))
                         throw new CompileException("duplicate inline definition '" + name + "' in linked objects");
@@ -412,7 +422,7 @@ public static partial class Compiler
 
         ValidateExternalTypeDefinitions(externalTypeContracts, typeByName.Keys);
         if (UsesInlineOptions(outputOptions) && missingBoundaries)
-            throw new CompileException("Object lacks function boundaries; regenerate objects before using inline options");
+            throw new CompileException("Object lacks function boundaries; regenerate objects before using static or inline options");
         foreach (var name in usedFunctionAddresses)
             if (inlineMetadata.TryGetValue(name, out var entry)) inlineMetadata[name] = entry with { AddressUsed = true };
         var inline = ProcessInlineFunctions(functionSources, inlineMetadata, typeByName,

@@ -280,7 +280,7 @@ internal sealed partial class CSharpBackend
             : null;
 
         return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals, mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From),
-            inlineMetadata ? unit.Functions.Where(f => f.Sym.IsInline).ToDictionary(f => f.Sym.TargetName,
+            inlineMetadata ? unit.Functions.Where(f => f.Sym.IsInline || f.Sym.Storage == Storage.Static).ToDictionary(f => f.Sym.TargetName,
                 f => InlineFunctionMetadata.From(f, unit, cg._usedFunctionAddresses.Contains(f.Sym.TargetName))) : null, cg._usedFunctionAddresses);
     }
 

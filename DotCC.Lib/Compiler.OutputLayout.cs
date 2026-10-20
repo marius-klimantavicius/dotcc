@@ -15,7 +15,7 @@ public static partial class Compiler
         if (options.ExportInline != null)
             foreach (var pattern in options.ExportInline) _ = new InlineExportSelector(pattern);
         if (emit == EmitMode.Object && (options.NestTypes || options.Runtime != RuntimeProfile.All || UsesInlineOptions(options) || options.ExportEnum is { Count: > 0 } || options.LiteralPool || options.StateContext))
-            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --export-inline, --export-enum, --literal-pool and --state-context must be set at link time for objects");
+            throw new CompileException("--nest-types, --runtime, --deduplicate-inline, --deduplicate-static, --export-inline, --export-enum, --literal-pool and --state-context must be set at link time for objects");
         if (options.InstanceMethods && emit is not (EmitMode.Object or EmitMode.ManagedLib))
             throw new CompileException("--instance-methods requires object or managed-library output");
         if (options.InstanceMethods && options.StateContext)

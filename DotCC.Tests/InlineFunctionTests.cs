@@ -317,7 +317,7 @@ public sealed class InlineFunctionTests
             var obj = Path.Combine(dir, "source.o");
             File.WriteAllText(source, "static inline int helper(int x) { return x; }");
             var fragment = Compiler.EmitObject(source);
-            File.WriteAllText(obj, fragment.Replace("//!!dotcc-obj inline-metadata:3\n", ""));
+            File.WriteAllText(obj, fragment.Replace("//!!dotcc-obj inline-metadata:4\n", ""));
             Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib).ShouldContain("int helper__unit_");
             Should.Throw<CompileException>(() => Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib,
                 outputOptions: new(DeduplicateInline: true))).Message.ShouldContain("regenerate objects");
