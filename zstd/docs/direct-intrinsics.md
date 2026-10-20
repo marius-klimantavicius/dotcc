@@ -6,6 +6,10 @@ reference in [optimizations.md](optimizations.md). This follow-up has separate
 compiler, downstream, product and timing evidence. Direct emission is not a
 general performance improvement over that already optimized reference.
 
+The later [static deduplication campaign](static-deduplication.md) records its
+separate source/binary size result and correctness qualification. The timing
+findings on this page remain the historical direct-emission comparison.
+
 ## Outcome and boundary
 
 Known direct calls selected by a typed intrinsic rule emit their BCL

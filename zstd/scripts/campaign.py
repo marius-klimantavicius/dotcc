@@ -53,7 +53,7 @@ def prepare(ctx):
                        *flags(policy["defines"], [source / "lib", source / "lib/common",
                                                   ctx.root / "src/Native"]),
                        *("-U" + name for name in policy["undefines"])],
-                       [*link_flags("Zstd", "Managed.Zstd.Native"),
+                       [*link_flags("Zstd", "Managed.Zstd.Native"), "--deduplicate-static",
                         *(flag for pattern in policy["export_enums"] for flag in ("--export-enum", pattern))], objects=True,
                        configure=configure, validate_objects=primitives.validate_objects)
 

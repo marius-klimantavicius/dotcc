@@ -17,6 +17,12 @@ repeatable compression regressions. See [direct-call contracts and measurements]
 The earlier adapter gains over untouched translated C remain separate
 [historical evidence](docs/optimizations.md).
 
+The zstd recipe also enables static function deduplication. Qualified products
+contain 340 fewer translated function declarations per form, with smaller
+generated sources and JIT/AOT binaries. See
+[static deduplication evidence](docs/static-deduplication.md); this size result
+does not make a runtime performance claim.
+
 The product selects the complete portable standard library core: all compression
 strategies, long-distance matching, decompression, streaming, checksums,
 dictionary use and dictionary training. Worker-thread compression, legacy frames
