@@ -13,7 +13,7 @@ consumer exercises ordinary trimming and project-reference delivery.
 | `interop` | Six managed checks plus three exact comparisons: bidirectional native frame/dictionary exchange, native decoding of managed unknown-size streaming frames, identical compression and training bytes for matching settings/corpus |
 | `upstream` | Six groups: three complete bounds/parameter routines, exact fuzzer compression and dictionary-training/use excerpts, exact zstream streaming/skip/dictionary/reuse excerpts; original CHECK macros and actual upstream data generator; native and translated execution |
 | `consumer` | Plain and trained-dictionary streaming archives, four restored files including Unicode names and empty content, exact filename inventory and SHA-256 equality |
-| `audit` | Canonical source ownership, exact authored primitive source link and hash, complete typed selection provenance and algorithm representatives, no required-symbol native fallback, exact license/notice delivery, managed dependency/import metadata, actual rooted AOT machine code and ordinary consumer/harness ELF dependencies |
+| `audit` | Canonical source ownership, two exact-width LE24 adapters, 747 intrinsic and 48 managed selections with complete typed provenance, actual BCL operations in algorithm caller IL, no required-symbol native fallback, exact license/notice delivery, managed dependency/import metadata, actual rooted AOT machine code and ordinary consumer/harness ELF dependencies |
 
 ```bash
 DOTCC_CAMPAIGN_COMMAND_LOCKS=production bash zstd/scripts/test.sh \
@@ -27,6 +27,17 @@ controls: their actual exit code 1 remains in the receipt together with explicit
 expected-exit metadata. Other missing, skipped or failed required cases fail the
 suite. JSON case reports, matrix rows, native transcripts and input/output files
 remain in the current campaign artifact directory, including failure paths.
+
+The portable profile maps 40 primitive contracts to closed compiler intrinsics.
+Only `MEM_readLE24` and `MEM_writeLE24` use the authored adapter, each touching
+exactly three bytes. The audit decodes actual algorithm method IL in raw and
+processed assemblies, including generic BCL calls and endian field reads. It
+scans every translated method for direct calls to retained intrinsic wrappers,
+while allowing wrapper
+addresses for function-pointer identity. Wrapper bodies never satisfy caller
+evidence. Private audit-tool fixtures prove wrapper-only rejection, forbidden
+calls from algorithm and other helper methods, and the allowed address case;
+these fixtures are not product or runtime qualification.
 
 The upstream suite runs original selected routines and assertion excerpts, not
 analogous managed roundtrips. Its report records original line ranges, observed

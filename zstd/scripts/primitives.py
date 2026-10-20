@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
+from collections import Counter
 
 ADAPTER = "src/Optimization/Primitives.cs"
 
@@ -16,6 +17,26 @@ def inventory(root):
 
 def all_names(root):
     return sorted(inventory(root)["contracts"])
+
+
+def target_name(rule):
+    target = rule["target"]
+    kind = target["kind"]
+    return kind + ":" + target["name" if kind == "intrinsic" else "method"]
+
+
+def rules(root):
+    selected = json.loads((root / "config/primitive-overrides.json").read_text())["functionOverrides"]
+    policy = inventory(root)
+    actual = {rule["name"]: target_name(rule) for rule in selected}
+    if len(selected) != 42 or actual != policy["expected_targets"]:
+        raise RuntimeError("Closed primitive target inventory differs")
+    if dict(Counter(rule["target"]["kind"] for rule in selected)) != policy["expected_target_kinds"]:
+        raise RuntimeError("Primitive target kind counts differ")
+    managed = {rule["name"] for rule in selected if rule["target"]["kind"] == "managedMethod"}
+    if managed != {"MEM_readLE24", "MEM_writeLE24"}:
+        raise RuntimeError("Only exact three-byte accesses may use authored adapters")
+    return {rule["name"]: rule for rule in selected}
 
 
 def check_headers(ctx, source):
@@ -35,8 +56,7 @@ def unit_flags(ctx, unit, source, names):
     if ctx.profile == "original":
         return ()
     names = sorted(names)
-    rules = json.loads((ctx.root / "config/primitive-overrides.json").read_text())["functionOverrides"]
-    by_name = {rule["name"]: rule for rule in rules}
+    by_name = rules(ctx.root)
     if len(by_name) != 42 or set(by_name) != set(all_names(ctx.root)) or not set(names) <= set(by_name):
         raise RuntimeError("Primitive rule inventory differs")
     check_headers(ctx, source)
@@ -61,9 +81,9 @@ def validate_report(ctx, report, unit, source, names):
     if len(actual) != len(expected) or set(actual) != expected or any(row.get("event") == "function-override-unmatched" for row in rows):
         raise RuntimeError(f"Primitive selection differs for {unit}: expected={sorted(expected)}, actual={actual}")
     contracts = inventory(ctx.root)["contracts"]
-    rules = {rule["name"]: rule for rule in json.loads((ctx.root / "config/primitive-overrides.json").read_text())["functionOverrides"]}
+    by_name = rules(ctx.root)
     for row in selected:
-        rule = rules[row["name"]]
+        rule = by_name[row["name"]]
         header = source / "lib/common" / Path(rule["declarationFile"]).name
         origin = re.fullmatch(r"(.+):functionOverrides\[(\d+)\]", row.get("origin", ""))
         if origin is None:
@@ -71,13 +91,14 @@ def validate_report(ctx, report, unit, source, names):
         profile = json.loads(Path(origin[1]).read_text())
         selected_rule = profile["functionOverrides"][int(origin[2])]
         if (row["signature"] != contracts[row["name"]]
-                or row["target"] != "managedMethod:" + rule["target"]["method"]
+                or row["target"] != target_name(rule)
                 or Path(row["translationUnit"]).resolve() != unit.resolve()
                 or Path(row["declarationFile"]).resolve() != header.resolve()
                 or row.get("matches") != "1"
                 or selected_rule != dict(rule, translationUnit=str(unit.resolve()), declarationFile=str(header.resolve()))):
             raise RuntimeError("Primitive selection provenance differs: " + str(row))
-    return dict(unit=str(unit), report=str(report), expected=sorted(expected), selected=selected)
+    return dict(unit=str(unit), report=str(report), expected=sorted(expected), selected=selected,
+                target_kinds=dict(Counter(row["target"].split(":", 1)[0] for row in selected)))
 
 
 def validate_objects(ctx, reports):
@@ -91,9 +112,13 @@ def validate_objects(ctx, reports):
         raise RuntimeError("Primitive per-object reports incomplete")
     records = [validate_report(ctx, report, unit, source, by_path[str(unit.resolve())])
                for unit, report in zip(units, reports)]
+    kinds = Counter(row["target"].split(":", 1)[0] for record in records for row in record["selected"])
+    expected_kinds = {} if ctx.profile == "original" else inventory(ctx.root)["expected_core_selection_kinds"]
+    if not ctx.options.unit and dict(kinds) != expected_kinds:
+        raise RuntimeError("Complete core intrinsic/adapter selection counts differ: " + repr(dict(kinds)))
     ctx.receipt["primitive_overrides"] = dict(profile=ctx.profile, rules=str(ctx.root / "config/primitive-overrides.json"),
         inventory=str(ctx.root / "config/primitive-inventory.json"), adapter=str(ctx.root / ADAPTER) if ctx.profile != "original" else None,
-        units=records, selections=sum(len(row["selected"]) for row in records))
+        units=records, selections=sum(len(row["selected"]) for row in records), target_kinds=dict(kinds))
 
 
 def configure(ctx, project):

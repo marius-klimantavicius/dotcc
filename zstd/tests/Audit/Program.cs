@@ -18,8 +18,11 @@ var hostLibraries = new HashSet<string>(["libc", "kernel32.dll", "psapi.dll"], S
 var reports = new List<object>();
 try
 {
-    if (args.Length == 0 || args.Length % 2 != 0) throw new ArgumentException("Zstd.Audit (ROLE ASSEMBLY)+");
-    for (int i = 0; i < args.Length; i += 2)
+    string? primitiveContract = null;
+    int first = 0;
+    if (args.Length >= 2 && args[0] == "--intrinsic-contract") { primitiveContract = args[1]; first = 2; }
+    if (args.Length == first || (args.Length - first) % 2 != 0) throw new ArgumentException("Zstd.Audit [--intrinsic-contract FILE] (ROLE ASSEMBLY)+");
+    for (int i = first; i < args.Length; i += 2)
     {
         string role = args[i], path = Path.GetFullPath(args[i + 1]);
         if (!contracts.TryGetValue(role, out var contract)) throw new ArgumentException("Unexpected audit role");
@@ -59,7 +62,8 @@ try
                 throw new InvalidDataException("Unapproved native import: " + assembly + " -> " + library + "!" + symbol);
             imports.Add(new { library, symbol, owner, member });
         }
-        reports.Add(new { role, path, assembly, references, imports });
+        object? intrinsicCalls = role == "product" && primitiveContract != null ? IntrinsicCalls.Read(pe, metadata, primitiveContract) : null;
+        reports.Add(new { role, path, assembly, references, imports, intrinsic_calls = intrinsicCalls });
     }
     Console.WriteLine(JsonSerializer.Serialize(reports, new JsonSerializerOptions { WriteIndented = true }));
     return 0;

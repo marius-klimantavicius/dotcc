@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import sys
 import xml.etree.ElementTree as ET
+from collections import Counter
 from campaigns.recipes import helper, json_file
 from campaigns.testing import forms, modes
 from campaigns.translation import check_product
@@ -46,16 +47,21 @@ def sources(project, root, profile):
     if len(adapter_links) != (1 if profile == "portable" else 0):
         raise RuntimeError("Profile must link exactly its original authored primitive adapter")
     primitives = helper(root / "scripts/primitives.py")
+    rules = primitives.rules(root)
+    managed = {name for name, rule in rules.items() if rule["target"]["kind"] == "managedMethod"}
     if adapter_links:
         names = re.findall(r'\bpublic\s+static\s+\w+\s+(\w+)\s*\(', adapter.read_text())
-        if sorted(names) != primitives.all_names(root):
+        if sorted(names) != sorted(managed):
             raise RuntimeError("Authored primitive method inventory differs")
     text = "\n".join(combined)
     if profile == "portable":
-        missing = [name for name in primitives.all_names(root)
+        missing = [name for name in managed
                    if not re.search(r'\bManaged\.Zstd\.Optimization\.Primitives\.' + re.escape(name) + r'\s*\(', text)]
         if missing:
-            raise RuntimeError("Required generated typed primitive calls missing: " + repr(missing))
+            raise RuntimeError("Required exact three-byte adapter calls missing: " + repr(missing))
+        authored_calls = set(re.findall(r'\bManaged\.Zstd\.Optimization\.Primitives\.(\w+)\s*\(', text))
+        if authored_calls != managed:
+            raise RuntimeError("Generated source retains non-LE24 authored primitive calls: " + repr(sorted(authored_calls - managed)))
     elif "Managed.Zstd.Optimization.Primitives" in text:
         raise RuntimeError("Original profile unexpectedly uses authored primitive replacements")
     required = ("ZSTD_compress2", "ZSTD_decompressStream", "ZDICT_trainFromBuffer", "ZSTD_compressBlock_fast", "ZSTD_compressBlock_btultra2", "ZSTD_ldm_generateSequences")
@@ -93,6 +99,7 @@ def sources(project, root, profile):
                     raise RuntimeError("Unexpected authored source link: " + str(linked_source))
     return dict(project=str(project), profile=profile, generated_source_count=len(generated), required_algorithms=list(required), generated_required_imports=[],
                 primitive_adapter_links=[dict(path=str(path), sha256=digest(path)) for path in adapter_links],
+                allowed_authored_primitive_calls=sorted(managed) if profile == "portable" else [],
                 authored_sources=[dict(path=str(path), sha256=digest(path)) for path in authored])
 
 def primitive_selection(ctx):
@@ -114,11 +121,13 @@ def primitive_selection(ctx):
     if observed != set(wanted):
         raise RuntimeError("Primitive source-unit coverage differs")
     verified = []
+    target_counts = Counter()
     for row in record["units"]:
         unit = Path(row["unit"])
         actual = primitives.validate_report(ctx, Path(row["report"]), unit, source, wanted[str(unit.resolve())])
         if actual != row:
             raise RuntimeError("Retained primitive provenance changed: " + str(unit))
+        target_counts.update(item["target"] for item in actual["selected"])
         verified.append(dict(unit=str(unit), report=str(row["report"]), report_sha256=digest(Path(row["report"])), selected=len(actual["selected"])))
     adapter = (ctx.root / "src/Optimization/Primitives.cs").resolve()
     if ctx.profile == "portable":
@@ -126,7 +135,14 @@ def primitive_selection(ctx):
             raise RuntimeError("Selected original authored primitive source binding differs")
     elif record.get("adapter") is not None:
         raise RuntimeError("Original profile unexpectedly retains primitive adapter")
-    return dict(profile=ctx.profile, units=verified, selections=sum(row["selected"] for row in verified))
+    kinds = Counter()
+    for target, count in target_counts.items():
+        kinds[target.split(":", 1)[0]] += count
+    expected_kinds = {} if ctx.profile == "original" else primitives.inventory(ctx.root)["expected_core_selection_kinds"]
+    if dict(kinds) != expected_kinds or record.get("target_kinds") != expected_kinds:
+        raise RuntimeError("Required 747 intrinsic / 48 LE24 selection closure differs")
+    return dict(profile=ctx.profile, units=verified, selections=sum(row["selected"] for row in verified),
+                target_kinds=dict(kinds), per_target_counts=dict(sorted(target_counts.items())))
 
 def notices(directory, product):
     records = []
@@ -164,6 +180,49 @@ def aot_il(ctx, project, build, label):
         raise RuntimeError("Exact NativeAOT input IL missing: " + str(target))
     return target
 
+def intrinsic_audit_controls(ctx, inspector):
+    """Qualify caller/identity discrimination; these are audit-tool fixtures."""
+    fixture = ctx.root / "tests/Audit/Fixtures/Callers.cs.in"
+    work = ctx.work / "audit-controls"
+    work.mkdir()
+    (work / "Callers.cs").write_bytes(fixture.read_bytes())
+    project = work / "Controls.csproj"
+    tree = ET.Element("Project", Sdk="Microsoft.NET.Sdk")
+    props = ET.SubElement(tree, "PropertyGroup")
+    for key, value in {"AssemblyName": "TranslatedZstd", "AllowUnsafeBlocks": "true", "EnableDefaultCompileItems": "false"}.items():
+        ET.SubElement(props, key).text = value
+    ET.SubElement(ET.SubElement(tree, "ItemGroup"), "Compile", Include="Callers.cs")
+    ET.ElementTree(tree).write(project, encoding="unicode")
+    records = []
+    for name, define, expected in (
+        ("actual-caller-and-retained-address", "CALLER", None),
+        ("wrapper-only-evidence", "WRAPPER_ONLY", "Direct BCL operations missing from actual algorithm callers"),
+        ("stale-wrapper-direct-call", "STALE_CALL", "Translated method calls retained intrinsic wrapper"),
+        ("helper-wrapper-direct-call", "HELPER_STALE_CALL", "Translated method calls retained intrinsic wrapper: entropy_helper"),
+    ):
+        output = work / name
+        label = "audit-control-" + name
+        ctx.managed("build", project, label + "-build", "-m:1", "-p:DefineConstants=" + define,
+                    "--artifacts-path", work / "intermediates" / name, "-o", output)
+        transcript = ctx.run(["dotnet", inspector, "--intrinsic-contract", ctx.root / "config/primitive-overrides.json",
+                              "product", output / "TranslatedZstd.dll"], label, check=expected is None)
+        command = ctx.receipt["commands"][-1]
+        if expected is not None:
+            if command.get("exit_code") != 1 or expected not in transcript:
+                raise RuntimeError("Intrinsic audit failed its rejection control: " + name)
+            command.update(deliberate_failure_control=True, expected_exit_code=1, expected_error=expected)
+        else:
+            result = json.loads(transcript)[0]["intrinsic_calls"]
+            if (result["excluded_primitive_wrapper_definitions"] != 1 or result["stale_intrinsic_wrapper_calls"] != 0
+                    or len(result["retained_wrapper_addresses"]) != 1
+                    or not any(row["generic_signature_hex"] for row in result["caller_evidence"])
+                    or not any(row["opcode"] == "ldsfld" for row in result["caller_evidence"])):
+                raise RuntimeError("Intrinsic audit rejected or counted retained wrapper identity")
+        records.append(dict(name=name, status="passed", expected_exit_code=0 if expected is None else 1,
+                            fixture_sha256=digest(fixture), assembly_sha256=digest(output / "TranslatedZstd.dll"),
+                            transcript=command["stdout"]))
+    return records
+
 def run(ctx, suite):
     report = dict(status="running", forms=[], artifacts=[])
     report_path = ctx.artifacts / "audit-report.json"
@@ -172,6 +231,10 @@ def run(ctx, suite):
         inspector = ctx.root / "tests/Audit/Zstd.Audit.csproj"
         output = ctx.work / "audit-inspector"
         ctx.managed("build", inspector, "audit-inspector-build", "-m:1", "--artifacts-path", ctx.work / "audit-intermediates", "-o", output)
+        report["inspector"] = dict(path=str(output / "Zstd.Audit.dll"), sha256=digest(output / "Zstd.Audit.dll"),
+            sources={str(path): digest(path) for path in sorted(inspector.parent.glob("*.cs"))})
+        if ctx.profile == "portable":
+            report["intrinsic_audit_controls"] = intrinsic_audit_controls(ctx, output / "Zstd.Audit.dll")
         consumer_project = ctx.root / "samples/ManagedConsumer/ManagedConsumer.csproj"
         api_project = ctx.root / "src/Managed.Zstd/Managed.Zstd.csproj"
         sample = ET.parse(consumer_project)
@@ -227,9 +290,14 @@ def run(ctx, suite):
                     else:
                         il = entry
                     row[role + "_dependencies"] = dependencies(il.with_suffix(".deps.json"))
-                    metadata = ctx.run(["dotnet", output / "Zstd.Audit.dll", role, il, "facade", il.parent / "Managed.Zstd.dll", "product", il.parent / "TranslatedZstd.dll"],
+                    intrinsic_arguments = ["--intrinsic-contract", ctx.root / "config/primitive-overrides.json"] if ctx.profile == "portable" else []
+                    metadata = ctx.run(["dotnet", output / "Zstd.Audit.dll", *intrinsic_arguments, role, il, "facade", il.parent / "Managed.Zstd.dll", "product", il.parent / "TranslatedZstd.dll"],
                                        "audit-" + form + "-" + mode + "-" + role + "-metadata")
                     row[role + "_metadata"] = json.loads(metadata)
+                    if ctx.profile == "portable":
+                        product_records = [item for item in row[role + "_metadata"] if item["role"] == "product"]
+                        if len(product_records) != 1 or (product_records[0].get("intrinsic_calls") or {}).get("status") != "passed":
+                            raise RuntimeError("Actual algorithm caller IL intrinsic evidence missing")
         report["status"] = "passed"
     except BaseException as error:
         report.update(status="failed", error=str(error))

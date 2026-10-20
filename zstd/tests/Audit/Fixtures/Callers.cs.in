@@ -1,0 +1,64 @@
+// Metadata audit-tool controls. This is never a zstd implementation or runtime qualification.
+using System;
+using System.Buffers.Binary;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+
+namespace Managed.Zstd.Native;
+
+public static unsafe class Zstd
+{
+    private struct Layout { public ulong First; public uint Second; }
+
+    // Exercise type-token and switch operands while walking real method bodies.
+    public static uint ZSTD_auditTypeAndSwitch(uint input)
+    {
+        switch (input)
+        {
+            case 0: return (uint)sizeof(Layout);
+            case 1: return (uint)sizeof(Layout) + 1;
+            case 2: return (uint)sizeof(Layout) + 2;
+            default: return input;
+        }
+    }
+
+    // The exact source identity includes a generated internal-unit suffix.
+    public static uint MEM_read32__unit_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA(void* pointer)
+    {
+#if WRAPPER_ONLY
+        uint result = Unsafe.ReadUnaligned<uint>(pointer);
+        result ^= BinaryPrimitives.ReadUInt32LittleEndian(new ReadOnlySpan<byte>(pointer, 4));
+        BinaryPrimitives.WriteUInt32LittleEndian(new Span<byte>(pointer, 4), result);
+        result ^= BinaryPrimitives.ReverseEndianness(result);
+        result += (uint)BitOperations.LeadingZeroCount(result) + (uint)BitOperations.TrailingZeroCount(result);
+        return result + (BitConverter.IsLittleEndian ? 1U : 0U);
+#else
+        return Unsafe.ReadUnaligned<uint>(pointer);
+#endif
+    }
+
+    public static uint ZSTD_auditCaller(void* pointer)
+    {
+        // ldftn is retained identity, never a stale direct call or BCL evidence.
+        delegate*<void*, uint> identity = &MEM_read32__unit_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA;
+#if STALE_CALL
+        return MEM_read32__unit_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA(pointer);
+#elif WRAPPER_ONLY
+        return identity(pointer);
+#else
+        uint result = Unsafe.ReadUnaligned<uint>(pointer);
+        result ^= BinaryPrimitives.ReadUInt32LittleEndian(new ReadOnlySpan<byte>(pointer, 4));
+        BinaryPrimitives.WriteUInt32LittleEndian(new Span<byte>(pointer, 4), result);
+        result ^= BinaryPrimitives.ReverseEndianness(result);
+        result += (uint)BitOperations.LeadingZeroCount(result) + (uint)BitOperations.TrailingZeroCount(result);
+        return result + (BitConverter.IsLittleEndian ? 1U : 0U) + identity(pointer);
+#endif
+    }
+
+#if HELPER_STALE_CALL
+    // The forbidden-edge scan must include helpers outside algorithm prefixes.
+    public static uint entropy_helper(void* pointer) =>
+        MEM_read32__unit_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA(pointer);
+#endif
+
+}

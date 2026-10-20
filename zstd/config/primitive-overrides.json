@@ -9,8 +9,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_isLittleEndian"
+        "kind": "intrinsic",
+        "name": "is-little-endian.u32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -26,8 +26,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_read16"
+        "kind": "intrinsic",
+        "name": "load.u16.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -43,8 +43,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_read32"
+        "kind": "intrinsic",
+        "name": "load.u32.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -60,8 +60,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_read64"
+        "kind": "intrinsic",
+        "name": "load.u64.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -77,8 +77,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readBE32"
+        "kind": "intrinsic",
+        "name": "load.u32.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -94,8 +94,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readBE64"
+        "kind": "intrinsic",
+        "name": "load.u64.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -111,8 +111,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readBEST"
+        "kind": "intrinsic",
+        "name": "load.u64.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -128,8 +128,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE16"
+        "kind": "intrinsic",
+        "name": "load.u16.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -162,8 +162,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE32"
+        "kind": "intrinsic",
+        "name": "load.u32.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -179,8 +179,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLE64"
+        "kind": "intrinsic",
+        "name": "load.u64.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -196,8 +196,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readLEST"
+        "kind": "intrinsic",
+        "name": "load.u64.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -213,8 +213,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_readST"
+        "kind": "intrinsic",
+        "name": "load.u64.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -230,8 +230,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_swap32"
+        "kind": "intrinsic",
+        "name": "bswap.u32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -247,8 +247,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_swap64"
+        "kind": "intrinsic",
+        "name": "bswap.u64"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -264,8 +264,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_swapST"
+        "kind": "intrinsic",
+        "name": "bswap.u64"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -282,8 +282,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_write16"
+        "kind": "intrinsic",
+        "name": "store.u16.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -300,8 +300,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_write32"
+        "kind": "intrinsic",
+        "name": "store.u32.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -318,8 +318,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_write64"
+        "kind": "intrinsic",
+        "name": "store.u64.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -336,8 +336,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeBE32"
+        "kind": "intrinsic",
+        "name": "store.u32.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -354,8 +354,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeBE64"
+        "kind": "intrinsic",
+        "name": "store.u64.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -372,8 +372,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeBEST"
+        "kind": "intrinsic",
+        "name": "store.u64.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -390,8 +390,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE16"
+        "kind": "intrinsic",
+        "name": "store.u16.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -426,8 +426,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE32"
+        "kind": "intrinsic",
+        "name": "store.u32.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -444,8 +444,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLE64"
+        "kind": "intrinsic",
+        "name": "store.u64.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -462,8 +462,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.MEM_writeLEST"
+        "kind": "intrinsic",
+        "name": "store.u64.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/mem.h",
@@ -479,8 +479,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_NbCommonBytes"
+        "kind": "intrinsic",
+        "name": "commonbytes.u64"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
@@ -496,8 +496,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countLeadingZeros32"
+        "kind": "intrinsic",
+        "name": "clz.u32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
@@ -513,8 +513,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countLeadingZeros64"
+        "kind": "intrinsic",
+        "name": "clz.u64"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
@@ -530,8 +530,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countTrailingZeros32"
+        "kind": "intrinsic",
+        "name": "ctz.u32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
@@ -547,8 +547,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_countTrailingZeros64"
+        "kind": "intrinsic",
+        "name": "ctz.u64"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
@@ -564,8 +564,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.ZSTD_highbit32"
+        "kind": "intrinsic",
+        "name": "highbit.u32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/bits.h",
@@ -579,8 +579,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_isLittleEndian"
+        "kind": "intrinsic",
+        "name": "is-little-endian.i32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -596,8 +596,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_read32"
+        "kind": "intrinsic",
+        "name": "load.u32.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -613,8 +613,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_read64"
+        "kind": "intrinsic",
+        "name": "load.u64.native"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -630,8 +630,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readBE32"
+        "kind": "intrinsic",
+        "name": "load.u32.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -647,8 +647,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readBE64"
+        "kind": "intrinsic",
+        "name": "load.u64.be"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -664,8 +664,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readLE32"
+        "kind": "intrinsic",
+        "name": "load.u32.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -681,8 +681,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_readLE64"
+        "kind": "intrinsic",
+        "name": "load.u64.le"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -698,8 +698,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_swap32"
+        "kind": "intrinsic",
+        "name": "bswap.u32"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",
@@ -715,8 +715,8 @@
         "variadic": false
       },
       "target": {
-        "kind": "managedMethod",
-        "method": "global::Managed.Zstd.Optimization.Primitives.XXH_swap64"
+        "kind": "intrinsic",
+        "name": "bswap.u64"
       },
       "linkage": "internal",
       "declarationFile": "../ref/zstd-1.5.7/lib/common/xxhash.h",

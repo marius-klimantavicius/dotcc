@@ -172,3 +172,39 @@ unrelated repository baseline failures.
 These findings required no shared compiler repair, upstream algorithm change or
 manual generated-source patch. Historical failed receipts remain available;
 the current selected optimized scope has no open product blocker.
+
+
+## Direct-intrinsic follow-up — shared feature and context repairs
+
+- The accepted adapter implementation is runtime-correct, but direct calls still
+  invoke selected C wrappers. Eight new actual-caller source assertions fail
+  before direct lowering; the managedMethod isolation control passes. Intrinsic
+  target metadata is now bound to the resolved symbol and consulted at emission,
+  preserving late selection, shadowing, indirect wrappers and object contracts.
+- ZSTD-C005: new native-backed conversion coverage exposes an existing enum
+  constant narrowing failure. Native enum 65537 passed to an unsigned16 formal
+  becomes 1; generated C# initially fails CS0221. The shared enum-to-integer
+  coercion now uses the same unchecked out-of-range constant guard as ordinary
+  integer coercion. Independent normal-call/assignment/return coverage passes.
+- The first derived-expression lowering emits invalid C# statement forms in
+  mixed for clauses (both CommaOp and CommaSeq). Result-discarded scalar targets
+  now emit their underlying BCL invocation; unused no-argument endian facts may
+  disappear. Mixed loops preserve calls, assignments and volatile/atomic reads,
+  while proven-pure unused operands can disappear.
+- ZSTD-C006: the first experimental discard lowering assigns to a legitimate C
+  local/parameter named `_`. Native preservation passes while both pre-repair
+  managed controls return the wrong result. Descriptor-level discarded scalar
+  calls avoid any new `_ =` assignment, source renaming, helper, boxing or
+  temporary sink. Native and direct/object/instance/context tests now preserve 99.
+- An unrelated existing parser limitation for a `(void)` function-returning-
+  pointer declarator is not repaired. The test-only address getter uses an unused
+  int parameter and retains the intended stable/distinct pointer identity proof.
+
+Evidence index: `../../artifacts/function-override-direct-20261020/shared-summary.json`.
+Final focused results are 170 unit and 34 functional passes plus the native-backed
+raw/processed JIT/NativeAOT fixture. First complete current-tool source retry
+`20261020-064606-43b48ba9` passes all 31 units, both builds and exact 747 intrinsic /
+48 LE24 selections, followed by actual caller IL audit and affected Blink,
+SQLite and QuickJS checks. Final codec matrix/delivery/timing acceptance is
+recorded separately in [direct-intrinsics.md](direct-intrinsics.md); historical
+failed records and earlier accepted products are not relabeled.
