@@ -50,20 +50,22 @@ The same profile syntax supports these unsigned targets:
 
 | Target | Required C signature | Managed operation |
 | --- | --- | --- |
-| `load.u16.le` | unsigned 16-bit result, one unsigned-byte pointer | `ReadUInt16LittleEndian` |
-| `load.u32.le` | unsigned 32-bit result, one unsigned-byte pointer | `ReadUInt32LittleEndian` |
-| `load.u64.le` | unsigned 64-bit result, one unsigned-byte pointer | `ReadUInt64LittleEndian` |
-| `store.u16.le` | `void`, unsigned-byte pointer, unsigned 16-bit value | `WriteUInt16LittleEndian` |
-| `store.u32.le` | `void`, unsigned-byte pointer, unsigned 32-bit value | `WriteUInt32LittleEndian` |
-| `store.u64.le` | `void`, unsigned-byte pointer, unsigned 64-bit value | `WriteUInt64LittleEndian` |
+| `load.u16.le` | unsigned 16-bit result, one ordinary unsigned-byte or void pointer | `ReadUInt16LittleEndian` |
+| `load.u32.le` | unsigned 32-bit result, one ordinary unsigned-byte or void pointer | `ReadUInt32LittleEndian` |
+| `load.u64.le` | unsigned 64-bit result, one ordinary unsigned-byte or void pointer | `ReadUInt64LittleEndian` |
+| `store.u16.le` | `void`, ordinary unsigned-byte or void pointer, unsigned 16-bit value | `WriteUInt16LittleEndian` |
+| `store.u32.le` | `void`, ordinary unsigned-byte or void pointer, unsigned 32-bit value | `WriteUInt32LittleEndian` |
+| `store.u64.le` | `void`, ordinary unsigned-byte or void pointer, unsigned 64-bit value | `WriteUInt64LittleEndian` |
 
 For example, a `store.u64.le` rule can select
 `void write_word(uint8_t *p, uint64_t value)`. Signature matching uses actual C
 types after typedef resolution; the intrinsic then checks integer signedness
 and width. Both `unsigned long` and `unsigned long long` are 64-bit types in
 the current C model. A rule must still match the original declaration exactly.
-Loads permit const source bytes. Stores require writable bytes and reject
-const, volatile or atomic destinations. Every operation accesses exactly its
+These memory targets accept either `void *` or `unsigned char *` parameters,
+including const pointees for loads. A profile must still match the selected C
+declaration exactly. Stores require writable memory and reject const pointees.
+Volatile and atomic access signatures are rejected for both loads and stores. Every operation accesses exactly its
 width (2, 4 or 8 bytes) and supports unaligned addresses. Stores use a
 `Span<byte>` over the destination; the caller must supply writable memory.
 
@@ -74,6 +76,66 @@ memory read, so an intervening write must remain observable. Stores retain call
 effects as well: neither loads nor stores become pure expressions, and both
 store arguments are evaluated once.
 
+## Native and big-endian memory, swaps and bit operations
+
+The unsigned memory families also support `load.u16.be`, `load.u32.be`,
+`load.u64.be` and their `store` counterparts. These use the corresponding
+`BinaryPrimitives` big-endian operation. The `.native` variants use
+`Unsafe.ReadUnaligned<ushort/uint/ulong>` or
+`Unsafe.WriteUnaligned<ushort/uint/ulong>` with explicit generic types, retaining
+host byte order. All three byte-order families access exactly 2, 4 or 8 ordinary
+bytes and support unaligned pointers. There is no 24-bit target: an authored
+three-byte helper must retain its exact readable/writable extent.
+
+| Target | Required C signature | Result |
+| --- | --- | --- |
+| `bswap.u32`, `bswap.u64` | Unsigned result and one unsigned parameter, both of the named width. | `BinaryPrimitives.ReverseEndianness`. |
+| `clz.u32`, `clz.u64` | Unsigned 32-bit result and one unsigned parameter of the named width. | `BitOperations.LeadingZeroCount`, converted to the C unsigned result. |
+| `ctz.u32`, `ctz.u64` | Same widths as `clz`. | `BitOperations.TrailingZeroCount`, converted to the C unsigned result. |
+| `highbit.u32` | Unsigned 32-bit result and one **nonzero** unsigned 32-bit parameter. | `31 - LeadingZeroCount`. |
+| `commonbytes.u64` | Unsigned 32-bit result and one **nonzero** unsigned 64-bit parameter. | Native-endian leading/trailing zero count divided by eight. |
+| `is-little-endian.u32`, `is-little-endian.i32` | No parameters; unsigned/signed 32-bit result respectively. | `BitConverter.IsLittleEndian` as 0 or 1. |
+
+The general `clz`/`ctz` targets define zero to return their parameter width,
+matching the BCL. An application profile must retain any narrower preconditions
+of the original C helper. For example, zstd's count, highbit and common-byte
+helpers require nonzero arguments; selecting an intrinsic does not expand that
+source contract. Native comparison must never invoke a C builtin with undefined
+zero behavior. Runtime domain preconditions are the profile author's responsibility.
+
+## Direct calls and retained function identity
+
+A direct call bound to a selected intrinsic emits the BCL operation in the
+caller's body. It first performs the original C formal-parameter conversions,
+including narrowing, sign changes and implicit widening. This also fixes BCL
+overload selection: a C `uint64_t` formal receives a 64-bit operation even when
+the source argument is a 32-bit integer or an integer constant. The result has
+the original C type, including the unsigned result of count helpers. Derived
+expressions are parenthesized so surrounding C arithmetic retains its precedence.
+
+Selection belongs to the bound function symbol. A later matching declaration
+can select already-bound direct calls; a shadowing local function pointer or
+member with the same source spelling retains its own binding. Calls remain
+effectful IR operations, with each argument evaluated once and memory reads and
+writes retained. Endian-dependent common-byte expressions evaluate their one
+argument only in the chosen host-endian branch.
+
+The generated C-signature wrapper remains available to exported and indirect
+calls. Taking a function address continues to identify that wrapper; repeated
+addresses are stable and distinct TU-local functions retain distinct addresses,
+including when inline deduplication is enabled. Object emission materializes
+direct intrinsic calls and records the existing typed override contracts, so
+object linking still rejects incompatible replacement identities. Apply the
+profile to every relevant source compilation; linking objects cannot add it.
+
+At discarded-result sinks, count/highbit/common-byte targets retain one direct
+underlying BCL call and the argument conversions/effects, omitting unused result
+arithmetic. An unused no-argument endian fact may disappear. This also supports
+`(void)` calls and comma/`for` contexts without assigning to a source variable
+named `_`. No temporary host helper, delegate, boxing or heap allocation is
+introduced. Authored `managedMethod` calls continue through their original
+typed wrapper, including existing instance and nonreturning contracts.
+
 ## Population count and intrinsic registration
 
 `popcount.u64` requires a signed 32-bit C result and one unsigned 64-bit integer
@@ -82,8 +144,9 @@ parameter, such as `int count_bits(uint64_t value)`. It calls
 64-bit value returns 64; the input expression is evaluated once.
 
 The compiler's closed intrinsic registry supplies the fully qualified managed
-method, its C signature predicate and an optional argument adapter. The adapter
-receives rendered arguments and retains their order, using each once. Endian
+method, its C signature predicate and optional argument/result adapters or
+closed derived renderers. Argument rendering receives values after their C
+formal conversions and retains their order and single evaluation. Endian
 operations adapt pointers to spans; population count needs no adapter. The C#
 backend invokes this description without selecting a BCL class itself, so a
 new managed intrinsic does not require another backend class-name branch.
@@ -208,7 +271,7 @@ does not carry successful matches into a later invocation.
 The initial targets support C input and C# output. WAT rejects these replacements
 instead of falling back to the original implementation. This feature does not
 include automatic recognition of equivalent C bodies, body-hash guards, byte
-widths or byte orders beyond the listed targets, or arbitrary C# templates.
+widths or byte orders beyond the listed targets, or arbitrary profile-provided C# templates.
 
 ## Qualification
 

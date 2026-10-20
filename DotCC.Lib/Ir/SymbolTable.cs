@@ -115,6 +115,11 @@ public sealed class Symbol
     /// hint, the faithful lowering of C's "please inline this".</summary>
     public bool IsInline { get; set; }
 
+    /// <summary>A selected intrinsic on this bound function identity. Direct
+    /// calls consult it at emission so later declarations can select existing
+    /// call sites. Managed-method replacements continue through typed wrappers.</summary>
+    internal FunctionOverrideTarget? IntrinsicOverride { get; set; }
+
     /// <summary>The selected external function definition has GNU weak linkage.</summary>
     public bool IsWeak { get; set; }
 

@@ -42,6 +42,7 @@ internal sealed partial class IrBuilder
             if (matches.Count > 1)
                 throw CPreprocessingOptions.FunctionError(rule, "ambiguous function selector; specify translationUnit and/or linkage");
             _functionReplacements[symbol] = (rule, key, TranslationUnitPath, SourceFileOrigin.Of(declaration)?.Identity);
+            if (rule.Target.Kind == "intrinsic") symbol.IntrinsicOverride = rule.Target;
             // A later declaration can select a previously bound definition.
             var index = Functions.FindIndex(f => ReferenceEquals(f.Sym, symbol));
             if (index >= 0) Functions[index] = BuildFunctionReplacement(symbol);

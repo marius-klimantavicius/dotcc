@@ -1134,7 +1134,7 @@ internal sealed partial class CSharpBackend
                 var init = fr.Init switch
                 {
                     DeclStmt d => DeclInline(d),
-                    ExprStmt e => Expr(e.Expr),
+                    ExprStmt e => RequiresIntrinsicDiscard(e.Expr) ? ForPost(e.Expr) : Expr(e.Expr),
                     _ => "",
                 };
                 var cond = fr.Cond is null ? "" : LoopCondition(fr.Cond);
@@ -1741,6 +1741,8 @@ internal sealed partial class CSharpBackend
         if (tgt is CType.Prim { Integer: true } && src is CType.Enum)
         {
             text = $"({Cs(tgt)})({Sub(value, PUnary)})";
+            if (IsConstExpr(value) && !(TryConstInt(value, out var ev) && ConstFitsTarget(ev, Cs(tgt))))
+                text = $"unchecked({text})";
             return true;
         }
         // void* → T* (e.g. malloc's result): C# makes T*→void* implicit but requires
@@ -3029,6 +3031,8 @@ internal sealed partial class CSharpBackend
         // Outer parens never matter for a statement-expression (a macro body like
         // `((c) ? a() : b())` arrives parenthesized) — strip them to see the shape.
         while (e is Paren p) { e = p.Inner; }
+        if (e is Call call && SelectedIntrinsic(call) is { IsStatementExpression: false } intrinsic)
+            return IntrinsicCall(call, intrinsic, discard: true);
         if (e is Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } arrayUpdate
             && NeedsPointerUpdateLowering(arrayUpdate.Operand))
             return PointerArrayUpdate(arrayUpdate, discard: true).Item1;
@@ -3050,6 +3054,7 @@ internal sealed partial class CSharpBackend
 
     private static bool IsStmtExpr(CExpr e) => e switch
     {
+        Call c when SelectedIntrinsic(c) is { IsStatementExpression: false } => false,
         // Boolean intrinsics (compare/exchange and flag tests) may render as
         // CBool casts around calls. Such casts require a discard in C# even
         // though the source IR is a call. A discard also preserves ordinary
@@ -3278,9 +3283,35 @@ internal sealed partial class CSharpBackend
             ? CoercionCast(value, Cs(promoted)) : Sub(value, PAssign);
     }
 
+    private static FunctionOverrideIntrinsic? SelectedIntrinsic(Call call) =>
+        (call.SemanticTarget ?? call.CalleeSym?.IntrinsicOverride) is { Kind: "intrinsic" } target
+            ? FunctionOverrideIntrinsic.Find(target.Value) : null;
+
+    private static bool RequiresIntrinsicDiscard(CExpr expression) => expression switch
+    {
+        Call call => SelectedIntrinsic(call) is { IsStatementExpression: false },
+        Paren paren => RequiresIntrinsicDiscard(paren.Inner),
+        CommaOp comma => comma.Items.Any(RequiresIntrinsicDiscard),
+        CommaSeq comma => comma.Items.Any(RequiresIntrinsicDiscard),
+        _ => false,
+    };
+
+    private string IntrinsicCall(Call call, FunctionOverrideIntrinsic operation, bool discard = false)
+    {
+        if (call.ParamTypes is not { } parameters || parameters.Count != call.Args.Count)
+            throw new CompileException("intrinsic call requires its original fixed C parameter signature: " + call.Callee);
+        // The replaced C wrapper used to perform these conversions. Preserve
+        // them at the direct BCL boundary, including implicit widening: otherwise
+        // overload resolution could silently choose (for example) uint clz for
+        // a C function whose actual formal parameter is unsigned 64-bit.
+        var arguments = call.Args.Select((argument, index) =>
+            CoercedArg(argument, parameters[index], bindRuntimeOverload: true)).ToArray();
+        return discard ? operation.RenderDiscard(arguments) : operation.RenderCall(arguments);
+    }
+
     private string CallText(Call c)
     {
-        if (c.SemanticTarget is { } replacement)
+        if ((c.SemanticTarget ?? c.CalleeSym?.IntrinsicOverride) is { } replacement)
         {
             if (replacement.Kind == "managedMethod")
             {
@@ -3292,7 +3323,7 @@ internal sealed partial class CSharpBackend
                     + string.Join(", ", c.Args.Select(Expr)) + ")";
             }
             if (replacement.Kind == "intrinsic" && FunctionOverrideIntrinsic.Find(replacement.Value) is { } operation)
-                return operation.RenderCall(c.Args.Select(Expr).ToArray());
+                return IntrinsicCall(c, operation);
             throw new CompileException("unsupported semantic function target: " + replacement);
         }
         if (LowerGnuIntrinsicCall(c) is { } intrinsic) { return intrinsic; }

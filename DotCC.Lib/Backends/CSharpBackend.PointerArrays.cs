@@ -69,6 +69,8 @@ internal sealed partial class CSharpBackend
     private string ForPost(CExpr value)
     {
         while (value is Paren parenthesized) value = parenthesized.Inner;
+        if (RequiresIntrinsicDiscard(value))
+            return IntrinsicForPart(value);
         if (value is Assign { Target.Type.IsVolatile: true, Target.Type.IsPointerLowered: true }
             or Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec,
                 Operand.Type.IsVolatile: true, Operand.Type.IsPointerLowered: true })
@@ -77,5 +79,18 @@ internal sealed partial class CSharpBackend
             && NeedsPointerUpdateLowering(unary.Operand)
             ? PointerArrayUpdate(unary, discard: true).Item1
             : Expr(value);
+    }
+
+    private string IntrinsicForPart(CExpr value)
+    {
+        while (value is Paren parenthesized) value = parenthesized.Inner;
+        // Once a comma list needs intrinsic-result discards, every operand is
+        // still an ordinary C discarded expression, including pure literals and
+        // nested comma groups. C# for clauses separate these with commas.
+        var items = value switch { CommaOp comma => comma.Items, CommaSeq sequence => sequence.Items, _ => null };
+        return items is not null
+            ? string.Join(", ", items.Where(item => !IsPure(item)).Select(IntrinsicForPart).Where(text => text.Length != 0))
+            : value is Call call && SelectedIntrinsic(call) is { IsStatementExpression: false }
+                ? RenderStmtExpr(value) : ForPost(value);
     }
 }
