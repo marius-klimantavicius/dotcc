@@ -149,3 +149,15 @@ report in that receipt directory, and `artifacts/reproduction/report.json` for
 committed-source clean delivery. No required selected gate remains incomplete.
 Unselected upstream drivers, optional features and other platforms retain the
 explicit exclusions above; this does not claim their execution.
+
+## Primitive optimization follow-up (2026-10-20)
+
+The original port acceptance above is historical. The newly authorized follow-up
+uses typed function replacements and authored .NET primitive adapters, with no
+codec or generated-C# rewrite. [optimizations.md](optimizations.md) records the
+preserved original, exact candidate boundary, differential/memory contracts,
+matched end-to-end measurements and remaining gates. Default `portable` retains
+canonical paths and API behavior; an `original` profile supplies an explicit
+unchanged-primitive reference. New optimization acceptance requires measured
+results, the complete four-cell matrix and rebuilt delivery with original-path
+authored adapter sources. It does not inherit original acceptance automatically.

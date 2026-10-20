@@ -1,0 +1,141 @@
+# Zstandard primitive replacements
+
+Status: implementation and measurement in progress, 2026-10-20. The original
+portable translation remains qualified by the historical acceptance evidence in
+[validation.md](validation.md); those results do not qualify new replacements.
+
+This follow-up uses DotCC's [typed function overrides](../../docs/function-overrides.md)
+to replace small memory and integer primitives with authored aggressively inlined
+.NET adapters. Compression, decompression, dictionaries, training and hashing
+algorithms remain upstream C translated through DotCC. Generated C# is not edited.
+No volatile, atomic, allocator or ownership operation is replaced.
+
+## Preserved reference
+
+Before any source/configuration mutation or regeneration, the clean committed
+`00373046c` tree and verified products were copied to the read-only ordinary-copy
+snapshot `artifacts/optimizations/baseline-00373046c-20261020T021419Z`.
+Its `identity.json` and `manifest.json` record original HEAD, source/configuration,
+full selected tool closures, upstream source/archive, both original twelve-source
+products, original owning API and root build metadata, accepted receipt
+`20261019-204241-00db2fbc` and compiled verification artifacts.
+All 5440 files (1,139,351,937 bytes) were rehashed before making them read-only;
+there are no symlinks. The original remains available for repeated comparisons.
+
+The proposed default remains `portable`, with the same API and canonical product
+paths. Its primitive implementations become optimized only after the gates below
+pass. An explicit `original` profile regenerates the unchanged C primitive bodies
+as an opt-out/reference; its own executed qualification scope will be recorded
+separately. There is no additional optimized alias.
+
+## Candidate boundary and contracts
+
+The baseline object-definition inventory finds 42 candidate function identities:
+27 MEM helpers in 24 of 31 units, six bit helpers in 23 units, and nine xxhash
+helpers only in `xxhash.c`. Typed per-unit profiles must preserve original
+signatures, internal linkage and physical declaration/TU identity. Their actual
+selection reports must match the expected inventory exactly, including signatures
+and managed targets; missing or unexpected selections fail the translation.
+
+| Family | Intended managed operation | Required contract |
+| --- | --- | --- |
+| Native reads/writes 16/32/64 | `Unsafe.ReadUnaligned` / `WriteUnaligned` | Exactly the named ordinary memory width, all alignments; original `const void*` / `void*` signatures. |
+| Native/LE/BE size_t | 64-bit load/store or endian operation | Selected translated Linux LP64 `size_t` is `ulong`; never infer it from managed `IntPtr.Size`. |
+| LE/BE reads/writes | `BinaryPrimitives` | Exact byte order and width, including reads after intervening writes. |
+| LE24 | Three-byte implementation | Exactly three readable/writable bytes; never a masked four-byte access. |
+| 32/64/size_t byte swaps | `BinaryPrimitives.ReverseEndianness` | Preserve unsigned bit patterns and C widths, including zero and high-bit values. |
+| Endian detection | `BitConverter.IsLittleEndian` | Runtime byte-order fact without constructing a union probe. |
+| Leading/trailing zero counts | `BitOperations` | Preserve the upstream nonzero input domain; zero builtin behavior is not a native oracle. |
+| High bit / common bytes | Leading/trailing count and byte scaling | Preserve unsigned return and the nonzero domain, selected LP64 and endian convention. |
+| xxhash read/swap/endian helpers | Same fixed-width primitives | Preserve exact original signatures and memory effects; no hashing algorithm substitution. |
+
+`MEM_32bits`/`MEM_64bits` already fold and are excluded. Fallback subroutines need
+no separate override when their public helper is replaced. Rotations, including
+xxhash rotation macros, are excluded from the first candidate because existing
+shift idioms may already lower efficiently; they require measured evidence before
+adding another replacement. Algorithms and optional ISA/profile decisions remain
+unchanged, including `ZSTD_TRACE=0`.
+
+## Measurement and acceptance gates
+
+The benchmark uses one identical authored harness and fixed corpus/settings for
+preserved-original and candidate products, with fresh isolated build paths.
+Real codec cases cover text at 4 KiB/128 KiB/1 MiB and levels 1/3/9, mixed and
+incompressible data, level 19, streaming and trained dictionaries. Context-reuse
+throughput is reported separately from an allocating convenience roundtrip.
+Training/setup and full byte validation occur outside timing. Each process
+records output sizes/digests, allocation and GC observations, machine/runtime/tool
+identity and harness hash. Matched JIT policy disables tiered compilation;
+warmup is at least 200 ms and three calls, followed by five calibrated samples
+of at least 100 ms. Report medians and dispersion, and alternate original/candidate
+process order where practical. These controlled workload results are not a
+universal throughput claim.
+
+| Gate | State |
+| --- | --- |
+| Untouched source/tool/product reference preserved | Passed |
+| Baseline numerical measurements with identical reusable harness | Passed: 29 cases in each raw/processed JIT/AOT cell |
+| Every selected primitive compared with original/native C | Passed: 227466 checks, all eight original/candidate form/mode cells |
+| All unaligned offsets, endian patterns, exact-width guards and LE24 inaccessible boundary | Passed, including intentional inaccessible-page fault controls |
+| Direct/function-pointer calls, single evaluation and memory read-after-write | Passed |
+| Full 31-unit regeneration and exact typed-selection closure | Passed: 795 required selections, 42 unique targets |
+| Measured candidate improvement/regression review, JIT and NativeAOT | Pending |
+| Raw/processed JIT/NativeAOT native/ABI/consumer/behavior/lifecycle/interop/upstream/audit | Pending |
+| Newly linked authored adapter source preserved and clean ordinary delivery rebuilt | Pending |
+
+Each observed failure is classified before repair. Shared compiler changes, if
+needed, require native-backed regressions and affected downstream checks. Pure
+campaign replacements do not trigger unrelated blanket regression runs. Final
+results, commands, selections, limitations and focused commit IDs will be added
+here as the gates complete.
+
+## Untouched original measurements
+
+The first complete original run is
+`artifacts/optimizations/original-benchmark-20261020/report.json`; all 29 cases
+pass in all four cells. Its source/binary hashes and complete sample/dispersion
+records remain available. Host: AMD Ryzen 9 7950X, Linux 6.8 x64, pinned CPU 0;
+.NET information is retained in the report/logs. Values below are MiB/s and
+measure the stated local workloads; candidate comparisons use fresh alternating
+original/candidate runs rather than comparing only against these earlier numbers.
+
+| Workload | Raw JIT | Raw AOT | Processed JIT | Processed AOT |
+| --- | ---: | ---: | ---: | ---: |
+| 128 KiB text compression, level 3 | 141.20 | 150.54 | 157.96 | 165.76 |
+| 128 KiB text decompression, level 3 | 408.68 | 407.93 | 422.92 | 429.74 |
+| 1 MiB streaming compression | 143.06 | 150.18 | 160.15 | 166.21 |
+| 1 MiB streaming decompression | 410.46 | 417.88 | 422.51 | 431.72 |
+| Allocating 128 KiB roundtrip | 95.04 | 99.12 | 103.36 | 107.59 |
+
+Context-reuse rows allocate zero managed bytes per operation on the benchmark
+thread. The original allocating raw JIT roundtrip uses approximately 544561
+managed bytes per operation. This metric excludes native heap traffic and peak
+resident memory. The separate convenience case must not be treated as a single
+compression or decompression throughput result.
+
+Reproduce the original run with the preserved snapshot and a fresh output path:
+
+```bash
+DOTCC_CAMPAIGN_COMMAND_LOCKS=production python3 zstd/benchmarks/run.py --baseline zstd/artifacts/optimizations/baseline-00373046c-20261020T021419Z --output zstd/artifacts/optimizations/original-repeat --variant original
+```
+
+The exact typed candidate first full-source receipt is
+`artifacts/campaign/20261020-052319-79188bd9/receipt.json`: all 31 units emit/link,
+raw and processed semantic/final builds pass, with exactly 795 selections
+(24×27 MEM + 23×6 bit + nine xxhash). Primitive receipt
+`artifacts/campaign/20261020-052446-a1206c88/receipt.json` passes original and
+candidate raw/processed JIT/NativeAOT: 227466 native-matching checks each,
+digest `11d3aca8d139d10a`, real three-byte guard boundary and required fault
+controls. Nine malformed selection reports fail closed. An unrelated header
+comment edit also permits actual typed emission in warn/off modes while strict
+explicitly rejects historical hash drift; hashes are provenance, not an ordinary
+compatibility allowlist.
+
+The native primitive fixture deliberately selects the exact portable upstream
+helper definitions after including system headers. Native GCC otherwise omits
+an addressable endian helper or macro-aliases byte swaps to builtins; the first
+harness build exposed this in `20261020-052220`. Only the test fixture adjusts
+those compiler-detection macros. Delivered upstream sources and feature flags
+remain unchanged. Zero/all-one memory and swap cases are separate from the
+nonzero-only bit-scan contract. Comparative measurements and the complete current
+product matrix remain required before optimized-default acceptance.

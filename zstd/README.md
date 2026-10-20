@@ -7,6 +7,10 @@ NativeAOT forms, including clean regeneration and the file consumer. See
 [the plan](docs/PLAN.md), [validation](docs/validation.md) and
 [the resolved blocker ledger](docs/blockers.md) for evidence.
 
+The primitive optimization follow-up is in progress; see
+[its contracts, preserved baseline and measurements](docs/optimizations.md).
+Historical port acceptance does not qualify the new replacements.
+
 The product selects the complete portable standard library core: all compression
 strategies, long-distance matching, decompression, streaming, checksums,
 dictionary use and dictionary training. Worker-thread compression, legacy frames
