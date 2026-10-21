@@ -1,0 +1,2 @@
+# Preserve exact physical newlines in the native raw-string contract.
+tools/oracle-inputs/m1-string-contracts/raw-crlf.cpp -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
