@@ -1,0 +1,128 @@
+{
+  "scope": "test-only original arithmetic leaf callees; not full frontend startup",
+  "source_sha256": "fe067fa053022fac7067433f799dcb35758036cbcc0930fcb73b8dd041d9bc79",
+  "steps": [
+    {
+      "command": [
+        "/usr/bin/c++",
+        "-DBACK_END_IS_C_GEN_BE=1",
+        "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+        "-DDO_IL_LOWERING=1",
+        "-DLOWER_FIXED_POINT=1",
+        "-DLOWER_IFUNC=1",
+        "-DNEED_IL_DISPLAY=1",
+        "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+        "-DUSE_CMAKE_DEFINES",
+        "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+        "-O3",
+        "-DNDEBUG",
+        "-std=c++14",
+        "-Wall",
+        "-Wwrite-strings",
+        "-Wformat-security",
+        "-pedantic",
+        "-Werror=shadow",
+        "-Wimplicit-fallthrough",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wswitch-default",
+        "-flto",
+        "-fno-exceptions",
+        "-fno-unwind-tables",
+        "-fno-rtti",
+        "-x",
+        "c++",
+        "-fsanitize=undefined",
+        "-fno-sanitize-recover=undefined",
+        "-iquote",
+        "/home/marius/p/dotcc/edgcpp/upstream/src",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-c",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/research/initializer-width-probe.cpp",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/probe.o"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/usr/bin/c++",
+        "-O3",
+        "-flto",
+        "-fsanitize=undefined",
+        "-fno-sanitize-recover=undefined",
+        "-Wl,--gc-sections",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-ubsan-r1/const_ints.o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/probe.o",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "binary_sha256": "0c27506bc36d734e71b7d13322a880d209addca8326e7414a2b715b932aa239c",
+  "runs": [
+    {
+      "mode": "describe",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "header-only arithmetic: maxwidth=65535 char_bits=8 bytes=8192 storage_bits=65536 CHECKING=1\nsigned initializer maximum bits=65535 unsigned_difference=18446744073709486209 int_count=-65407 part_offset=-4087 first=-15 second=31\nunsigned initializer maximum bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nsigned initializer extension bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\n"
+    },
+    {
+      "mode": "valid-127",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe",
+        "valid-127"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "header-only arithmetic: maxwidth=65535 char_bits=8 bytes=8192 storage_bits=65536 CHECKING=1\nsigned initializer maximum bits=65535 unsigned_difference=18446744073709486209 int_count=-65407 part_offset=-4087 first=-15 second=31\nunsigned initializer maximum bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nsigned initializer extension bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\n7fffffffffffffffffffffffffffffff\n"
+    },
+    {
+      "mode": "valid-128",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe",
+        "valid-128"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "header-only arithmetic: maxwidth=65535 char_bits=8 bytes=8192 storage_bits=65536 CHECKING=1\nsigned initializer maximum bits=65535 unsigned_difference=18446744073709486209 int_count=-65407 part_offset=-4087 first=-15 second=31\nunsigned initializer maximum bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nsigned initializer extension bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nffffffffffffffffffffffffffffffff\n"
+    },
+    {
+      "mode": "signed-max",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe",
+        "signed-max"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "header-only arithmetic: maxwidth=65535 char_bits=8 bytes=8192 storage_bits=65536 CHECKING=1\nsigned initializer maximum bits=65535 unsigned_difference=18446744073709486209 int_count=-65407 part_offset=-4087 first=-15 second=31\nunsigned initializer maximum bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nsigned initializer extension bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\n/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c:1024:45: runtime error: shift exponent -15 is negative\n"
+    },
+    {
+      "mode": "unsigned-max",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe",
+        "unsigned-max"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "header-only arithmetic: maxwidth=65535 char_bits=8 bytes=8192 storage_bits=65536 CHECKING=1\nsigned initializer maximum bits=65535 unsigned_difference=18446744073709486209 int_count=-65407 part_offset=-4087 first=-15 second=31\nunsigned initializer maximum bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nsigned initializer extension bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\n00000000000000000000000000000000\n"
+    },
+    {
+      "mode": "signed-extend",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/initializer-probe-r1/initializer-probe",
+        "signed-extend"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "header-only arithmetic: maxwidth=65535 char_bits=8 bytes=8192 storage_bits=65536 CHECKING=1\nsigned initializer maximum bits=65535 unsigned_difference=18446744073709486209 int_count=-65407 part_offset=-4087 first=-15 second=31\nunsigned initializer maximum bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\nsigned initializer extension bits=65536 unsigned_difference=18446744073709486208 int_count=-65408 part_offset=-4088 first=0 second=16\n00000000000000000000000000000000\n"
+    }
+  ]
+}

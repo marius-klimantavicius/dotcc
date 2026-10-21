@@ -1,0 +1,3387 @@
+{
+  "schema": "faithful-routine-ledger-v1",
+  "batch": "const_ints-batch2",
+  "task": "faithful-p1-integer-arithmetic-20261021-r1",
+  "date": "2026-10-21",
+  "authority": "Current PLAN.md, AGENTS.md, explicit RESUME-20261021.md; historical STOP superseded.",
+  "implementation": "handwritten one-to-one active source branch; no code generation/mechanical translation/native production fallback; metadata hashes calculated from existing bytes",
+  "status": "translated but dependency-blocked; independent produced-code review pending",
+  "qualification": {
+    "routines": 0,
+    "branches": 0,
+    "reviewerOpenedExactNativeAndManaged": false,
+    "reviewedManagedSnapshot": null,
+    "nativeAbiMeasured": false,
+    "testsExecutedByWorker": false
+  },
+  "hashRule": "SHA-256 of exact bytes; inclusive1-based range lines concatenated with original line terminators, no normalization",
+  "nativeInputs": [
+    {
+      "path": "edgcpp/upstream/src/const_ints.c",
+      "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.h",
+      "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_common.h",
+      "wholeFileSha256": "39b80f4d24d5cae46d85230f9bf978d024bc369431336de884f33a54fc62fedb"
+    },
+    {
+      "path": "edgcpp/upstream/src/basic_hdrs.h",
+      "wholeFileSha256": "be3354996241679dc89ad58ed66e002c363891ae6132fe205df61d3a2d4df5c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/basics.h",
+      "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines.h",
+      "wholeFileSha256": "4112aa9ba2c076dd9b83877bdfae6f107bd12952b6a12776baa6942ad114f18e"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.h",
+      "wholeFileSha256": "a8c9c5e79dbdd6be8c82f360c58d8681f91015e5e14e61039076b7f8c3b9c2c1"
+    },
+    {
+      "path": "edgcpp/upstream/src/targ_def.h",
+      "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b"
+    },
+    {
+      "path": "edgcpp/upstream/src/lang_feat.h",
+      "wholeFileSha256": "980f0c21dfe065ec0a0b4601ac69d137f18a71754e59ad0cd0c809f65a7e889e"
+    },
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f"
+    },
+    {
+      "path": "edgcpp/build/compile_commands.json",
+      "wholeFileSha256": "568c80d00f1887a37a076c35bd8123fd1de1910cbecf73f18151d25bfb86d609"
+    }
+  ],
+  "nativeBuild": {
+    "target": "cpfe",
+    "compileCommandEntry": {
+      "directory": "/home/marius/p/dotcc/edgcpp/build",
+      "command": "/usr/bin/c++ -DBACK_END_IS_C_GEN_BE=1 -DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1 -DDO_IL_LOWERING=1 -DLOWER_FIXED_POINT=1 -DLOWER_IFUNC=1 -DNEED_IL_DISPLAY=1 -DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1 -DUSE_CMAKE_DEFINES -I/home/marius/p/dotcc/edgcpp/build/src/includes -O3 -DNDEBUG -std=c++14 -Wall -Wwrite-strings -Wformat-security -pedantic -Werror=shadow -Wimplicit-fallthrough -Wconversion -Wsign-conversion -Wswitch-default -flto -fno-exceptions -fno-unwind-tables -fno-rtti -x c++ -o src/cmake/cpfe/CMakeFiles/cpfe.dir/__/__/const_ints.c.o -c /home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+      "file": "/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+      "output": "src/cmake/cpfe/CMakeFiles/cpfe.dir/__/__/const_ints.c.o"
+    },
+    "commandTextSha256": "49d13fe7bfd68aeddde03aca7db70aad8ea48f9b9cd97d8f856f508e8ac37a95",
+    "recordOnly": true,
+    "sourceToBinaryReceipt": null,
+    "runtimeQualification": "Prospective strictC++20/LP64, separate from compiled C++14/all-extensions features; pure arithmetic tests do not invoke frontend initialization."
+  },
+  "configuration": [
+    {
+      "id": "CFG-include",
+      "condition": "USE_CMAKE_DEFINES",
+      "resolved": true,
+      "native": {
+        "path": "edgcpp/upstream/src/defines.h",
+        "wholeFileSha256": "4112aa9ba2c076dd9b83877bdfae6f107bd12952b6a12776baa6942ad114f18e",
+        "firstLine": 30,
+        "lastLine": 40,
+        "rangeSha256": "8bba30242ce344e34f48172de79caab647c7b1219307a495df92645905b51698"
+      },
+      "selection": "Generated header selected. Other defines.h configurations remain baseline backlog."
+    },
+    {
+      "id": "CFG-repr",
+      "condition": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER",
+      "resolved": 0,
+      "native": {
+        "path": "edgcpp/build/src/includes/cmake_defines.h",
+        "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+        "firstLine": 148,
+        "lastLine": 150,
+        "rangeSha256": "422ac9c29126d081ca188e31692287021ec429fa328d8b8fdfdbe4a8f9bd355f"
+      },
+      "selection": "All active simulated-parts branches translated; scalar alternatives recorded per routine. Type/scalar macro alternatives stay unported."
+    },
+    {
+      "id": "CFG-bool",
+      "condition": "USE_BOOL_FOR_BOOLEAN_IN_CPLUSPLUS",
+      "resolved": 1,
+      "native": {
+        "path": "edgcpp/build/src/includes/cmake_defines.h",
+        "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+        "firstLine": 3835,
+        "lastLine": 3837,
+        "rangeSha256": "30db74392b6127ae1c8309fea1370dfee93d118242c8c964981c7dfa3a4c4c2c"
+      },
+      "definition": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "firstLine": 204,
+        "lastLine": 223,
+        "rangeSha256": "4d9cec57f7bee074ce35e9c56a5cc13d23e471da7e085353592dee4b05e76e5f"
+      },
+      "selection": "Native bool, not default int; bool width expected1 pending supervisor ABI. Default-int branch is inactive configuration backlog."
+    },
+    {
+      "id": "CFG-part",
+      "condition": "!INTEGER_VALUE_REPR_IS_A_HOST_INTEGER",
+      "resolved": true,
+      "native": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "firstLine": 1611,
+        "lastLine": 1631,
+        "rangeSha256": "2d81c4bc915092ac062d9bac4c365b87ef532480e576641409acc19deca98d23"
+      },
+      "selection": "ushort parts, masks65535/32768, native ptrdiff_t and size_t work. Linux x86_64 LP64 maps to long/ulong; alternative DOS/non-ANSI/other widths unqualified."
+    },
+    {
+      "id": "CFG-size",
+      "condition": "INT128_EXTENSIONS_ALLOWED && LONG_LONG_ALLOWED; MAX_SIZEOF_LARGEST_INTEGER",
+      "resolved": "16-byte integer maximum",
+      "native": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "firstLine": 1172,
+        "lastLine": 1268,
+        "rangeSha256": "e4529d7b43d1d4e0cc2b1f7ad6f4db86b3e98378945a3b4c9d7d06ca584900cb"
+      },
+      "selection": "Enabled128-bit storage required even in strict runtime mode. Smaller/scalar representations unported."
+    },
+    {
+      "id": "CFG-fixed",
+      "condition": "FIXED_POINT_ALLOWED; MAX_SIZEOF_LARGEST_FIXED_POINT > INTEGER_VALUE_REPRESENTATION_SIZE",
+      "resolved": "enabled; 8>16 is false",
+      "native": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "firstLine": 1657,
+        "lastLine": 1679,
+        "rangeSha256": "d72cd8aaa3cde4fa439a6c43222f22d1ba71c0a4b26338129e0f46131cd30482"
+      },
+      "selection": "Keep enabled fixed-point dependency; disabled or larger fixed-point representations remain explicit backlog."
+    },
+    {
+      "id": "CFG-char",
+      "condition": "TARG_CHAR_BIT==8 and host CHAR_BIT==8",
+      "resolved": true,
+      "native": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "firstLine": 1633,
+        "lastLine": 1655,
+        "rangeSha256": "ad2edf42d0fcb9248d5d0b39811802e92565c1f5673e2738f7acded842b25dbe"
+      },
+      "selection": "INTERNAL_TARG_CHAR_BIT8; source16/24/32 and invalid-target error alternatives belong to representation backlog, not active branch removals."
+    },
+    {
+      "id": "CFG-checking",
+      "condition": "CHECKING=1, DEBUG=0",
+      "resolved": true,
+      "selection": "No assertion/diagnostic call in these exact routines; future caller closures still need real checking/error dependencies."
+    }
+  ],
+  "managedOwnedInputs": [
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+      "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/Program.cs",
+      "wholeFileSha256": "c3c54f44d872dfddb4ea549126c2572e7e8c72617c273460966747f69c5907c0"
+    }
+  ],
+  "managedDependencyObservedInputs": [
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+      "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+      "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/Directory.Build.props",
+      "wholeFileSha256": "cc5b89366aa568c3fd20b237592403d36f816c421364d89d98b97a14b727f617"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/EdgFaithful.csproj",
+      "wholeFileSha256": "7efcdd8e74be5323363e9ad8a8c719e4a46e384990fb9f9287de41cfd30e96b0"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/IntegerArithmetic.csproj",
+      "wholeFileSha256": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2"
+    }
+  ],
+  "dependencySnapshotsAreHeld": false,
+  "dependencies": [
+    {
+      "name": "an_integer_value and constants",
+      "native": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "firstLine": 1596,
+        "lastLine": 1679,
+        "rangeSha256": "a3672fc5e606ecc8358de15425a6cf5f6ac430b08f0b155979d24ac07539c9ad"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+      },
+      "contract": "Inline fixed ushort part[8], ms part0; expected size16 alignment2; constants shared, no additional foundation.",
+      "directDependencies": [],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    },
+    {
+      "name": "INT_VALUE_PART_BASE",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 28,
+        "lastLine": 30,
+        "rangeSha256": "01d2771e8d09b03369dd47aab39ec80a7bca0ef60d66b8e6d709f933e59aa6b5"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+      },
+      "contract": "Source cast to a_host_large_unsigned, mask+1 => ulong65536.",
+      "directDependencies": [],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    },
+    {
+      "name": "sign_of",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.h",
+        "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+        "firstLine": 43,
+        "lastLine": 49,
+        "rangeSha256": "89397fea4d70749c0685a01a2e29c1dfdfc7e02d2dfbbb7aaad7d4823d3da9eb"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+      },
+      "contract": "bool sign_of(an_integer_value*), reads high-part mask at each original source evaluation point.",
+      "directDependencies": [],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    },
+    {
+      "name": "signed_shift_right",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.h",
+        "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+        "firstLine": 37,
+        "lastLine": 40,
+        "rangeSha256": "c94dc7482ec5a681bbab56bad9d818dc5e40a58ad65673fb57b71eea8dfc9d80"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+      },
+      "contract": "Transitive signed setter dependency; long work, logical ulong shift plus native sign-fill mask; inspected setter count16 only.",
+      "directDependencies": [],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    },
+    {
+      "name": "set_integer_value(a_host_large_integer)",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 33,
+        "lastLine": 47,
+        "rangeSha256": "370bfcf85013f262c2f4777249033f0cee70fcef1a319bc93a5157b0cd55b159"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98"
+      },
+      "contract": "void(an_integer_value*,long), descending masked native signed decomposition; no pointer copy substitution.",
+      "directDependencies": [
+        "signed_shift_right"
+      ],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    },
+    {
+      "name": "complement_integer_value",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 1109,
+        "lastLine": 1120,
+        "rangeSha256": "52aab16381a9e99578a643e9006c18354b10967539080c2595ad12a7eaf53f17"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98"
+      },
+      "contract": "void(an_integer_value*), descending promoted int complement, mask, ushort narrow.",
+      "directDependencies": [],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    },
+    {
+      "name": "cmp_integer_values",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 284,
+        "lastLine": 334,
+        "rangeSha256": "2da1f239d25742f50ae658e3b7029c90abf1662dcdd63596f6855f284b83efa4"
+      },
+      "managedFileObservedSnapshot": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98"
+      },
+      "contract": "int(an_integer_value*,bool,an_integer_value*,bool); short-circuit signs then ascending unsigned part comparison with early break.",
+      "directDependencies": [
+        "sign_of"
+      ],
+      "status": "review-pending; source-derived ABI, actual measurement pending; observed dependency not held by this worker"
+    }
+  ],
+  "commonIdentityContract": "Live aligned nonnull typed storage per native-valid callers; exact self alias and disjoint integer operands, caller-owned lifetime, pin movable managed objects for alias lifetime; native value-copy locals stay independent inline arrays. No allocation/free/state/diagnostic/recovery/retention. Partially overlapping/ill-typed objects unqualified.",
+  "boundedArithmeticContract": {
+    "leftRightCount": [
+      0,
+      127
+    ],
+    "maskExtendBits": [
+      1,
+      128
+    ],
+    "firstComponentShift": [
+      0,
+      15
+    ],
+    "secondComponentShift": [
+      1,
+      16
+    ],
+    "signedAddWork": [
+      0,
+      131071
+    ],
+    "signedSubtractWork": [
+      -65536,
+      65535
+    ],
+    "nativeBoolean": "C++ bool from active generated feature, expected1 byte, measurement pending",
+    "CLRMaskedInvalidShiftSemanticsAccepted": false
+  },
+  "routines": [
+    {
+      "name": "add_integer_values",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 711,
+        "lastLine": 764,
+        "rangeSha256": "57aef4a9f0bc2bf7c102b6528b2f6088087d0c1ef71d56d9b0e9f0a0d04819d8"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 14,
+        "lastLine": 47,
+        "rangeSha256": "0b90f594556ee2eedd2b9cd01b72a1437cc45eacc90e57e9aad96342789a95cb"
+      },
+      "parametersAndOutputs": "op_1/an_integer_value*: in-place first operand; op_2/an_integer_value*: live second operand, may equal op_1; is_signed/a_boolean -> bool; err/a_boolean* -> bool*, written after all part stores; void return.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "sign_of(op_1)",
+        "INT_VALUE_PARTS_PER_INTEGER_VALUE / MAX_UINT_VALUE_PART / INT_VALUE_PART_BASE",
+        "sign_of(op_2) then conditionally sign_of(op_1) after mutation"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "A01-entry",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 737,
+            "lastLine": 739,
+            "rangeSha256": "b69ca75a6cbfc3425b18c1d0670504f7406fd5b5b90f413069a67e31c5b73126"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 19,
+            "lastLine": 21,
+            "rangeSha256": "d19491f9e28e0db5e8ae84ed5eb6accacc815385cb3b43f05b78aa47106b3b73"
+          },
+          "orderedOperationAndBranches": "Declare int i; initialize signed host-large carry=0; capture only sign_1 from live op_1 before writes.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A02-loop-init",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 741,
+            "lastLine": 741,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 23,
+            "lastLine": 23,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Initialize i=8-1=7. Native size_t constant expression narrows exact7 to int.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A03-loop-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 741,
+            "lastLine": 741,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 23,
+            "lastLine": 23,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Test i>=0 true enters body; fixed profile has eight iterations, including zero input.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A04-work",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 742,
+            "lastLine": 744,
+            "rangeSha256": "db059bd7e5c6277de00cad9af191a0f6063579321a6ad69192f1554329c7b727"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 25,
+            "lastLine": 26,
+            "rangeSha256": "71de06b41f1c89e342de3f7fcf7bcae72721b1c29e487bde247dc4bec4d38767"
+          },
+          "orderedOperationAndBranches": "Read op_1.part[i] and op_2.part[i] at current iteration, cast each to signed64, add then add carry; alias reads same current part before write.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A05-carry-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 745,
+            "lastLine": 747,
+            "rangeSha256": "85a4d651892cc6157aa45ceb53e9ffbe77080a04be6ddce6f67b66c1bae6e89c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 27,
+            "lastLine": 31,
+            "rangeSha256": "a4e457f070ddb4834a9793978cfda15e05b18a0194384d10ca8f935e7a46b610"
+          },
+          "orderedOperationAndBranches": "If work>65535 true, subtract signed64 cast of unsigned64 base65536, set carry=1 in that order.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A06-carry-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 745,
+            "lastLine": 750,
+            "rangeSha256": "81e859105837937fbd85e7a7813574cf23d7960f71ae6d012f879b5c6dab15ab"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 27,
+            "lastLine": 35,
+            "rangeSha256": "1a2912145be44a8043d485b04c74b5f35f10e95b79331177e9afcb99c4fefcbd"
+          },
+          "orderedOperationAndBranches": "If work>65535 false, set carry=0; no adjustment.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A07-store",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 751,
+            "lastLine": 751,
+            "rangeSha256": "90f9e899a0240689960974cf54b673d1c77eb818ef7798071cd9b92a0515604f"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 36,
+            "lastLine": 36,
+            "rangeSha256": "9cf8a971ce7298bc36003cf2c5e28b2205fdce34da013253f590cb8cf39ddd8b"
+          },
+          "orderedOperationAndBranches": "Narrow work to native ushort and store op_1.part[i]; unchecked records source narrowing.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A08-loop-update",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 741,
+            "lastLine": 741,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 23,
+            "lastLine": 23,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Decrement i only after current store; loop back for next less-significant index number (toward high significance).",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A09-loop-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 741,
+            "lastLine": 752,
+            "rangeSha256": "ab483b726a6f33fc7d110d12728735df69cd6c5e8505bbd4cac57fcf2eb6d263"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 23,
+            "lastLine": 37,
+            "rangeSha256": "ed4e323cef1e4f9a6cb2bc8f95c42d621333bf6ef24fc30b6f2e2368284de729"
+          },
+          "orderedOperationAndBranches": "Test i>=0 false at -1 exits. Zero-iteration entry is unreachable with fixed eight parts, not claimed covered.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A10-unsigned",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 754,
+            "lastLine": 757,
+            "rangeSha256": "c1914d4780965947bef42a43fd7a6ea127d51d55ec7368bcfeea7aa352e0fd1e"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 38,
+            "lastLine": 41,
+            "rangeSha256": "70c5ca20eeeb3793ce02fccb7cd877260e3ac46b2c3812b3a5808078e63ada71"
+          },
+          "orderedOperationAndBranches": "If !is_signed true, write err=(carry!=0); both final carry0 and carry1 yield canonical native bool.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A11-signed",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 754,
+            "lastLine": 761,
+            "rangeSha256": "561d42f72e733a66807c1fb305e9775debdb94a42b7ff2d7c14d5b4d5d73a4db"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 38,
+            "lastLine": 45,
+            "rangeSha256": "e532e7d85b22bd6c21fc32070d89f252d99a21ee2a246181536c6334b2058237"
+          },
+          "orderedOperationAndBranches": "If !is_signed false, evaluate sign_1==sign_of(op_2) only after all writes; self alias reads the resulting high part.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A12-signed-short-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 761,
+            "lastLine": 761,
+            "rangeSha256": "9d6e1e17feeebaa1862115c45180f19aff62e496af8da7bcf6a3eaab065ec310"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 45,
+            "lastLine": 45,
+            "rangeSha256": "b98b23d9ab2252cbd88cf1b9be93a29152eb297ec53617333fa5eb930e86a670"
+          },
+          "orderedOperationAndBranches": "When first signed comparison false, skip sign_of(op_1), store err=false.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A13-signed-short-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 761,
+            "lastLine": 761,
+            "rangeSha256": "9d6e1e17feeebaa1862115c45180f19aff62e496af8da7bcf6a3eaab065ec310"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 45,
+            "lastLine": 45,
+            "rangeSha256": "b98b23d9ab2252cbd88cf1b9be93a29152eb297ec53617333fa5eb930e86a670"
+          },
+          "orderedOperationAndBranches": "When first signed comparison true, read result sign from op_1, compare sign_1!=result sign, store that bool to err; preserve source alias quirks.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        },
+        {
+          "id": "A14-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 762,
+            "lastLine": 764,
+            "rangeSha256": "31a6605fd7055659cc1a9b774cac22601a745682fd554a959eff4b4809932d65"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 46,
+            "lastLine": 47,
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "orderedOperationAndBranches": "Fall through void return; no recovery/cleanup or later operand store.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "leaf --stream add"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 721,
+            "lastLine": 735,
+            "rangeSha256": "60e76620200d1f8907b3a05c10802f04df3bf0f56617afadaf09e6d9bbae92ae"
+          },
+          "nativeActive": false,
+          "managed": null,
+          "reason": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0 excludes this native scalar branch.",
+          "orderedOperationsAndBranches": [
+            "Capture sign_1; declare result; result=op_1+op_2 before output write.",
+            "!is_signed true computes (MAX_UNSIGNED_INTEGER_VALUE-*op_1)<*op_2 for err.",
+            "!is_signed false short-circuits same-sign then result-sign test for err.",
+            "Store *op_1=result after err; scalar alias timing differs from active parts branch."
+          ],
+          "status": "explicit configuration backlog; not implemented or qualified"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "add_mixed_signed_integer_values",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 767,
+        "lastLine": 792,
+        "rangeSha256": "5cfbf3468a035f02519cc3d1143019f0661fa17b299aa7f84de469408ee3e82f"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 49,
+        "lastLine": 63,
+        "rangeSha256": "107cf48ef73548e28512f3809fd1674008039271b0416e073d10662014a41f2d"
+      },
+      "parametersAndOutputs": "Live op_1/op_2 integer pointers, separate bool op_1_signed/op_2_signed, bool* err; void. orig_value is a value copy chosen before the base operation.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "add_integer_values(op_1,op_2,op_1_signed,err)",
+        "cmp_integer_values(&orig_value,TRUE,op_1,op_1_signed) only when flags differ"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "MA01-entry",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 778,
+            "lastLine": 778,
+            "rangeSha256": "518998628108880e4e47ce0a9a710c6303a63100f31ba8d4306a293e7af8fd47"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 55,
+            "lastLine": 55,
+            "rangeSha256": "50f5991a9357403995eff2d21b6386d9d64d1542b7bb53452428fad92d2374f5"
+          },
+          "orderedOperationAndBranches": "Declare inline orig_value, no allocation.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        },
+        {
+          "id": "MA02-select-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 780,
+            "lastLine": 780,
+            "rangeSha256": "5d20aa18b064c3c40b85647492c4a3bc5be5a2e8454493060816647e179a7c58"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 57,
+            "lastLine": 57,
+            "rangeSha256": "59b93eee2a8be0f2890e493a7111f201a31d6e03c8da2db1a3045105eb0311c8"
+          },
+          "orderedOperationAndBranches": "op_1_signed true snapshots original *op_1; conditional does not read *op_2 for this copy.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        },
+        {
+          "id": "MA03-select-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 780,
+            "lastLine": 780,
+            "rangeSha256": "5d20aa18b064c3c40b85647492c4a3bc5be5a2e8454493060816647e179a7c58"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 57,
+            "lastLine": 57,
+            "rangeSha256": "59b93eee2a8be0f2890e493a7111f201a31d6e03c8da2db1a3045105eb0311c8"
+          },
+          "orderedOperationAndBranches": "op_1_signed false snapshots original *op_2, even when both operands unsigned; no alias substituted for copy.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        },
+        {
+          "id": "MA04-base-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 781,
+            "lastLine": 781,
+            "rangeSha256": "6f0e9e2e8bfea157fb5536add2bb1d2731125c5b4f75ff736cd56e53598f99af"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 58,
+            "lastLine": 58,
+            "rangeSha256": "50f7c34f4c9ebd2f82ae9f8b81f84b8deafd5e6b907979496cb95a038815b3e2"
+          },
+          "orderedOperationAndBranches": "Call add with original live pointers, first signedness and caller err; source base mutations/error complete before next predicate.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        },
+        {
+          "id": "MA05-flags-equal",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 784,
+            "lastLine": 791,
+            "rangeSha256": "18913be13bb195cf69a2985394fb35dd76adc658974eff122a1f2a953646c48a"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 59,
+            "lastLine": 62,
+            "rangeSha256": "6e9318b38c4f48c110a637eab5c8f4fd9f6ca31323a3835defab3fe190a1d800"
+          },
+          "orderedOperationAndBranches": "If signedness unequal predicate false, retain base err; skip comparison entirely.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        },
+        {
+          "id": "MA06-flags-differ",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 784,
+            "lastLine": 790,
+            "rangeSha256": "1e2094d5831259b08fdf2656d77f7c8b29bc236d68ce455709519141bd8255c4"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 59,
+            "lastLine": 61,
+            "rangeSha256": "fc4dfeda2ba3db37e79daa0afb1342d3f7ff6438bebbef0db433ed3830c7a8c6"
+          },
+          "orderedOperationAndBranches": "If flags differ, call comparison with local original signed TRUE then live op_1 with op_1_signed; compare return>0 and overwrite err (true/false both meaningful).",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        },
+        {
+          "id": "MA07-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 791,
+            "lastLine": 792,
+            "rangeSha256": "d621e34cc3c3cee0fb919e61172bd0c7242c40543e7e02efbe7bdd96629b71e5"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 62,
+            "lastLine": 63,
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "orderedOperationAndBranches": "Void return after optional replacement; local inline copy lifetime ends.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream add-mixed"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "subtract_mixed_signed_integer_values",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 795,
+        "lastLine": 826,
+        "rangeSha256": "42726b70e21790a65196794a6b1f812ba370678e23484e13a3dba78a50f37174"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 65,
+        "lastLine": 89,
+        "rangeSha256": "669f2cbb86e8f86645cc48a79bfa0ae5ff631d735498ecc6d243d3f4cac3d76d"
+      },
+      "parametersAndOutputs": "Live op_1/op_2 pointers and two bool signedness flags; bool* err first receives subtract output then optional replacement. orig_value is first operand copy; void.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "subtract_integer_values(op_1,op_2,op_1_signed,err)",
+        "sign_of(op_2) only if flags differ and op_2_signed",
+        "cmp_integer_values(&orig_value,op_1_signed,op_1,op_1_signed) only if flags differ"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "MS01-entry-copy",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 806,
+            "lastLine": 808,
+            "rangeSha256": "24ead2d32219ca9adf5512d321fc331ad4eeb238f140dd499766d610359e940d"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 71,
+            "lastLine": 73,
+            "rangeSha256": "e9cbb00f577f50c1e030d09e9c7b97e3a312636c5a96083bf13c832caddcdbdc"
+          },
+          "orderedOperationAndBranches": "Declare orig_value then copy *op_1 before subtraction regardless of flags/alias.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS02-base-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 809,
+            "lastLine": 809,
+            "rangeSha256": "87e633b35b65fe9adb6e5707d29a400d6a18467fabe85069e0db8e7b19ba2b26"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 74,
+            "lastLine": 74,
+            "rangeSha256": "94e843ea429e7d05f0c1d7076c389749bea5ed8e051bb025de733977dd05d7ba"
+          },
+          "orderedOperationAndBranches": "Call subtract with live original pointers and first signedness; allow all writes and base err before later sign read.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS03-flags-equal",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 816,
+            "lastLine": 825,
+            "rangeSha256": "9ea3255930b44c36d69215978339aeb5249649e0bd2c70b0f6aba9c435091b63"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 75,
+            "lastLine": 88,
+            "rangeSha256": "69ba4ccd35c864108010029a45001a6a8840fe9e9dcf7c56952d741dd3468227"
+          },
+          "orderedOperationAndBranches": "Unequal-flags predicate false retains base err, skipping sign and compare.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS04-flags-differ",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 816,
+            "lastLine": 816,
+            "rangeSha256": "741c848a45b002c41fb18fb55d5d7c0d47a4bb7f559f03db08a567646e4356d0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 75,
+            "lastLine": 75,
+            "rangeSha256": "23ae8bd8548f7f21b26a3c93efecc2e72a692e133d909bae47ba36a163562b2e"
+          },
+          "orderedOperationAndBranches": "Unequal-flags predicate true enters replacement processing.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS05-second-unsigned",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 817,
+            "lastLine": 817,
+            "rangeSha256": "f5b2e49ab06382874dbb805a9cef77a2762ff48936449bd9bcc9e455c7ffac3d"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 77,
+            "lastLine": 77,
+            "rangeSha256": "2698433ca91f387e7cb3ef7156c4fe6cc1c0fc27b273fd36d2f9876fa722cb5f"
+          },
+          "orderedOperationAndBranches": "op_2_signed false short-circuits sign_of; op_2_sign=false.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS06-second-signed",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 817,
+            "lastLine": 817,
+            "rangeSha256": "f5b2e49ab06382874dbb805a9cef77a2762ff48936449bd9bcc9e455c7ffac3d"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 77,
+            "lastLine": 77,
+            "rangeSha256": "2698433ca91f387e7cb3ef7156c4fe6cc1c0fc27b273fd36d2f9876fa722cb5f"
+          },
+          "orderedOperationAndBranches": "op_2_signed true reads current op_2 sign after subtraction; exact alias therefore observes result0, not original sign.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS07-comparison",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 818,
+            "lastLine": 819,
+            "rangeSha256": "0d735aeb231f80cdd2cb0776052943ca8ae28bd2b8fdb3379e293390c94e585b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 78,
+            "lastLine": 79,
+            "rangeSha256": "bbc32891c71883049b376210edccd0206596a28a146f07323e34983678717f8a"
+          },
+          "orderedOperationAndBranches": "After sign calculation call cmp with local orig_value and result, each interpreted using op_1_signed; store int cmp.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS08-negative-second",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 820,
+            "lastLine": 821,
+            "rangeSha256": "5a46fd5c2c2ab9360f55ffcfe5b8e0fb2afa6054ca998731d24d109ffb445b92"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 80,
+            "lastLine": 82,
+            "rangeSha256": "d03c58d8e7d9ec51cf08b35db9fd0de847a6c7a38c9de47a8103990855c592eb"
+          },
+          "orderedOperationAndBranches": "If op_2_sign true, overwrite err=(cmp>0), including false for cmp0 or negative.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS09-nonnegative-second",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 820,
+            "lastLine": 824,
+            "rangeSha256": "a4817bceb7f829de0cb8b5f4b3cd6c1aa81164cd486d56f4f847d773ac8d603d"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 80,
+            "lastLine": 87,
+            "rangeSha256": "10bd667ef784b3fe2c0f9495af18037e5544b6dbae4acc8b481dcf4e44c5a162"
+          },
+          "orderedOperationAndBranches": "If op_2_sign false, overwrite err=(cmp<=0), including true at equality; do not change to a mathematically preferred strict predicate.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        },
+        {
+          "id": "MS10-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 825,
+            "lastLine": 826,
+            "rangeSha256": "2dab31973e4f1f203cc44a04b831b474dbbac2cd8e182be2190de42c9fa8175c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 88,
+            "lastLine": 89,
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "orderedOperationAndBranches": "Void return after conditional replacement; no restoration of base error.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MixedArithmetic",
+            "leaf --stream subtract-mixed"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "make_integer_value_mask",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 829,
+        "lastLine": 850,
+        "rangeSha256": "11aaa3e8db571d9a89c273ce683afefa2da6b79f2bfcf75efb9190d42e533877"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 91,
+        "lastLine": 98,
+        "rangeSha256": "02a2764181eec5eccb662476d7e82df63e8432d6e3df44c6477c1c064e8710d9"
+      },
+      "parametersAndOutputs": "mask/an_integer_value* pure output, bits/size_t -> nuint by value; void. Candidate valid widths1..128 only; no production guard added.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "set_integer_value(mask,(a_host_large_integer)0)",
+        "complement_integer_value(mask)",
+        "shift_right_integer_value(mask,(int)(BITS_IN_AN_INTEGER_VALUE-bits),FALSE,FALSE)"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "M01-zero",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 837,
+            "lastLine": 837,
+            "rangeSha256": "4d5ddb7ae0f77b732724ff0978ca6d8c6448bb480020f27a88781422b7461c21"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 93,
+            "lastLine": 93,
+            "rangeSha256": "041888ba5c2255038b057c964aa48f7f12735d220b2d6923e4a1ec57f8887d17"
+          },
+          "orderedOperationAndBranches": "Choose long setter overload using explicit signed zero; perform all native descending zero stores.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream mask"
+          ]
+        },
+        {
+          "id": "M02-complement",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 838,
+            "lastLine": 838,
+            "rangeSha256": "8dd2b8ee9961ea4ad0661903bcfdab3fc3253771b21b3ee96ef7eae30a7fc5a9"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 94,
+            "lastLine": 94,
+            "rangeSha256": "9fb966b5d3c405d908e9a2b718edcc5d2cb7180aded741b2a59f8de6c763bef8"
+          },
+          "orderedOperationAndBranches": "Complement same caller mask in place after zero call.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream mask"
+          ]
+        },
+        {
+          "id": "M03-width-convert",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 839,
+            "lastLine": 839,
+            "rangeSha256": "94d03f2b5602e98a89feebb50072c22e8bcf4e9f9d2d2de782848d2564054100"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 95,
+            "lastLine": 96,
+            "rangeSha256": "31aa0c3b845e61b5a86c910139af591e16699c744b664219bc0e36a501a113a9"
+          },
+          "orderedOperationAndBranches": "Convert represented width128 to unsigned native size_t (nuint), subtract bits at that width, then explicitly unchecked narrow to int. Bounded domain yields0..127; INIT-001/out-of-range behavior remains unresolved.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream mask"
+          ]
+        },
+        {
+          "id": "M04-right-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 839,
+            "lastLine": 840,
+            "rangeSha256": "7cd626638898cf7d937d6d7d5b6565b8bd9d9ad6a5b8bf2eae2ec6fb12fa174e"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 95,
+            "lastLine": 97,
+            "rangeSha256": "18cd3cff736a95a3942a369d803d1c3f11f452663bfb18a3651dc08a6af15463"
+          },
+          "orderedOperationAndBranches": "Call logical right shift with is_signed FALSE, sign_extend FALSE; no alternate direct mask formula.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream mask"
+          ]
+        },
+        {
+          "id": "M05-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 849,
+            "lastLine": 850,
+            "rangeSha256": "c1e5aaef3f82759a21823e5a9d698d5132b8ae465688d3545c779e3962d06b51"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 98,
+            "lastLine": 98,
+            "rangeSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+          },
+          "orderedOperationAndBranches": "Void return; no bool/error output exists and no caller input is preserved.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream mask"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 841,
+            "lastLine": 848,
+            "rangeSha256": "b5d032e2d1de31284119f831baf750efa2500f131d8ca04507ecaaae4163b03e"
+          },
+          "nativeActive": false,
+          "managed": null,
+          "reason": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0 excludes this native scalar branch.",
+          "orderedOperationsAndBranches": [
+            "Compute size_t shift_count=represented width-bits.",
+            "Initialize scalar result to complement zero.",
+            "Shift scalar result right by shift_count, then store output mask."
+          ],
+          "status": "explicit configuration backlog; not implemented or qualified"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "sign_extend_integer_value",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 853,
+        "lastLine": 865,
+        "rangeSha256": "5c320ebeded1145e8df74252dfb1773da955485d6ba650aed751f230e1fbf7cc"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 100,
+        "lastLine": 106,
+        "rangeSha256": "d28b090eb55aa04c09e30babc305da7ae8871c15e557bb1f5a362ae62d9a6c35"
+      },
+      "parametersAndOutputs": "value/an_integer_value* in-out; bits/size_t -> nuint by value. Local bool err does not escape and is intentionally ignored; void. Candidate widths1..128.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "shift_left_integer_value(value,shift_bits,&err)",
+        "shift_right_integer_value(value,shift_bits,TRUE,TRUE)"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "E01-width-convert",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 860,
+            "lastLine": 860,
+            "rangeSha256": "a431401de89cd07c4b982b54aa183befec872b02184f9cc2f501b851a02863f0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 102,
+            "lastLine": 102,
+            "rangeSha256": "170cbeffade2f9e5531a534643a86a3fac5fed1f20706c710f3eab3bacf0b626"
+          },
+          "orderedOperationAndBranches": "Compute native size_t128-bits then int narrowing at original stage; bounded width produces legal shift0..127.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream extend"
+          ]
+        },
+        {
+          "id": "E02-local-error",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 861,
+            "lastLine": 861,
+            "rangeSha256": "4b4010d5dc114b599f43692ace90e59311e578c8bcb70770fdcba235f8451a0b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 103,
+            "lastLine": 103,
+            "rangeSha256": "665859e8feb2ae6799853588712eae7acf75cc87afa22d9c91d72de63c965912"
+          },
+          "orderedOperationAndBranches": "Declare uninitialized call-lived bool err; left-shift writes it before any possible use, and source never reads it.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream extend"
+          ]
+        },
+        {
+          "id": "E03-left-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 862,
+            "lastLine": 862,
+            "rangeSha256": "13dea4a26a1ed950e03855dae27eda853e73e035474c16cef9f5493f2f0a9459"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 104,
+            "lastLine": 104,
+            "rangeSha256": "0f9014604650ac4a2322f380d195471614b30d13e63e0c29dcb6f40b89bab612"
+          },
+          "orderedOperationAndBranches": "Call left shift on original value pointer; retain all mutations and local err output even when err true.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream extend"
+          ]
+        },
+        {
+          "id": "E04-right-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 863,
+            "lastLine": 864,
+            "rangeSha256": "85e4e747662a5f5a36a5ec1ea65f8d2ec0e2da53a3ae47a3aa560859d3f627ac"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 105,
+            "lastLine": 105,
+            "rangeSha256": "a8bc903f4f877cc5dadb7c62905daded7114f19c88c5a89f1bfa011b2ba53ac8"
+          },
+          "orderedOperationAndBranches": "After left completion, call right shift with same count and both flags TRUE; local overflow is not propagated or checked.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream extend"
+          ]
+        },
+        {
+          "id": "E05-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 865,
+            "lastLine": 865,
+            "rangeSha256": "c0de8923dc41d7175410e0542a742eb39b93b0a2eb01d612db7e8dda988ad2ac"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 106,
+            "lastLine": 106,
+            "rangeSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+          },
+          "orderedOperationAndBranches": "Void return with sign-extended bits. No error output, cleanup or recovery.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "MasksAndSignExtension",
+            "leaf --stream extend"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.h",
+            "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+            "firstLine": 96,
+            "lastLine": 103,
+            "rangeSha256": "d39b92c09dc30e34c94bd08ac9d1e04eabbc916f5bc39efa28e81b439a7d7c97"
+          },
+          "nativeActive": false,
+          "managed": null,
+          "reason": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0 excludes this native scalar branch.",
+          "orderedOperationsAndBranches": [
+            "Inactive header macro computes int se_shift_bits, scalar signed se_work, left shift assignment, then signed_shift_right store."
+          ],
+          "status": "scalar macro backlog; active source function fully inventoried here"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "get_part",
+      "kind": "macro language adaptation",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 913,
+        "lastLine": 917,
+        "rangeSha256": "54fc018a43951e51ea26f2ac7835ba45d418f8470759b9f3df24e3532146a2ef"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 111,
+        "lastLine": 117,
+        "rangeSha256": "a7a6dcf22f39a84307f2d64f33147f4e096578ec762d6deeded4f41156fc15db"
+      },
+      "parametersAndOutputs": "Native macro value lvalue -> live an_integer_value* value; part_gp int expression -> int argument; captured local fill_value/ushort -> explicit ushort argument; a_host_large_unsigned result -> ulong.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "INT_VALUE_PARTS_PER_INTEGER_VALUE",
+        "caller local fill_value; live part storage only in range"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "G01-negative",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 915,
+            "lastLine": 915,
+            "rangeSha256": "941977d5373e58c310c9dafc72aa6b27029ce7b7bfa6428fc595cc6b8fc7afba"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 114,
+            "lastLine": 114,
+            "rangeSha256": "e112639bdeaaaebe5c89f10a8fa0533b72505437f1baa328f643c8262fe5002d"
+          },
+          "orderedOperationAndBranches": "Test part_gp<0 first. True short-circuits upper-bound check and selects fill; do not dereference value.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries via both shifts",
+            "MasksAndSignExtension via shifts",
+            "leaf --stream left/right"
+          ]
+        },
+        {
+          "id": "G02-upper",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 915,
+            "lastLine": 916,
+            "rangeSha256": "1690cc56533f629bf21d306c81d7770608a24d077ef0203f54389ee27b6b0e32"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 114,
+            "lastLine": 115,
+            "rangeSha256": "9c05f2aa864d7463d0956b59bd293c48e01e1a2680f4ee79447f81859959c556"
+          },
+          "orderedOperationAndBranches": "Negative check false evaluates part_gp>=8 (native int casts are identities); true selects fill without dereference.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries via both shifts",
+            "MasksAndSignExtension via shifts",
+            "leaf --stream left/right"
+          ]
+        },
+        {
+          "id": "G03-fill",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 915,
+            "lastLine": 917,
+            "rangeSha256": "a4343540f8d487e6d6c39378a59a5d7e9caaa150267d03ac4a8339b92c10c0ed"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 114,
+            "lastLine": 116,
+            "rangeSha256": "b2f9e7ef6faff9fd18df8d1e585fbe31de7a49e539c4ecdafba61af1df5da542"
+          },
+          "orderedOperationAndBranches": "If either range check true, return caller ushort fill_value widened to unsigned64.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries via both shifts",
+            "MasksAndSignExtension via shifts",
+            "leaf --stream left/right"
+          ]
+        },
+        {
+          "id": "G04-in-range",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 915,
+            "lastLine": 917,
+            "rangeSha256": "a4343540f8d487e6d6c39378a59a5d7e9caaa150267d03ac4a8339b92c10c0ed"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 114,
+            "lastLine": 116,
+            "rangeSha256": "b2f9e7ef6faff9fd18df8d1e585fbe31de7a49e539c4ecdafba61af1df5da542"
+          },
+          "orderedOperationAndBranches": "Both checks false read only value->part[part_gp] from current live storage, then widen unsigned ushort to ulong.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries via both shifts",
+            "MasksAndSignExtension via shifts",
+            "leaf --stream left/right"
+          ]
+        },
+        {
+          "id": "G05-evaluation-adaptation",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 913,
+            "lastLine": 917,
+            "rangeSha256": "54fc018a43951e51ea26f2ac7835ba45d418f8470759b9f3df24e3532146a2ef"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 111,
+            "lastLine": 117,
+            "rangeSha256": "a7a6dcf22f39a84307f2d64f33147f4e096578ec762d6deeded4f41156fc15db"
+          },
+          "orderedOperationAndBranches": "Macro may repeat pure int part_gp expression; method evaluates it once. Actual call sites have side-effect-free bounded int arithmetic and stable nonvolatile fill. Pointer avoids copying macro value lvalue. No write between combined calls; helper return cast matches native widening.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries via both shifts",
+            "MasksAndSignExtension via shifts",
+            "leaf --stream left/right"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 852,
+            "lastLine": 918,
+            "rangeSha256": "df8717d99f84430253af23a586df53a061f602b18b3b77e318f976af4dfadeec"
+          },
+          "nativeActive": true,
+          "managed": "private helper only for simulated representation",
+          "reason": "The enclosing #if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER is true; no get_part macro exists in scalar selection.",
+          "orderedOperationsAndBranches": [
+            "The source-only OR/AND/XOR routines between sign_extend and get_part are leaf-owned and are not duplicated."
+          ],
+          "status": "active helper translated; scalar absence inventoried"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "shift_left_integer_value",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 921,
+        "lastLine": 977,
+        "rangeSha256": "8b8c950dbf5b7d205c1cf2f3c785555efb41bf967dbf2789cdbde2955eb2d9d6"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 119,
+        "lastLine": 150,
+        "rangeSha256": "e346930e400b85aeb12c18ba84a6590ab023cf4f9dc765a6b22997cde5c2c535"
+      },
+      "parametersAndOutputs": "op_1/an_integer_value* in-out; op_2/int count by value; err/bool* output stored after full loop; void. Caller legal-count obligation, candidate domain0..127.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "INT_VALUE_PARTS_PER_INTEGER_VALUE / BITS_IN_INT_VALUE_PART / MAX_UINT_VALUE_PART",
+        "get_part(op_1,i+part_offset,fill_value)",
+        "get_part(op_1,i+part_offset+1,fill_value)"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "L01-entry",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 944,
+            "lastLine": 948,
+            "rangeSha256": "1f3acce979b2b6395aa2cfe2dab8e28752e8427601f7d0be5b448dbd6278f665"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 123,
+            "lastLine": 127,
+            "rangeSha256": "322baf85f9dd52e090ca04fe15646bcdbb5eef689f99be6e0c53eb911210eb13"
+          },
+          "orderedOperationAndBranches": "Declare int i,offsets,component counts; bool overflow initialized FALSE.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L02-offset",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 959,
+            "lastLine": 959,
+            "rangeSha256": "79dc4d9f7864666e336497dfa4388c0c948a9a338a247068498c543534f4cc4b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 129,
+            "lastLine": 129,
+            "rangeSha256": "bf3c122783687cc2a76249e00b05146f63d757a61bb46560a1ed55fac0bcf483"
+          },
+          "orderedOperationAndBranches": "Compute int part_offset=op_2/16 with truncation toward zero; valid domain0..127 gives0..7.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L03-first-shift",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 960,
+            "lastLine": 960,
+            "rangeSha256": "0af0477b987869db3fca2d6c2672cdcf6a4884cb35193e067ea9d4f7e7a8fe49"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 130,
+            "lastLine": 130,
+            "rangeSha256": "4c6ea013d0dc9fb24a351fb545f2f1a1c1c9f072c13e1735884c4a443e271701"
+          },
+          "orderedOperationAndBranches": "Compute int first_part_shift=op_2%16; valid domain0..15.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L04-second-shift",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 961,
+            "lastLine": 961,
+            "rangeSha256": "2f9932ecaf539c5fbd20c62f46362286fb117819a2346f3cd17cbd400754caae"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 131,
+            "lastLine": 131,
+            "rangeSha256": "279f2507552d8c48e3ca3da3d05df100473db2ab09ba6b117707d35b9831624d"
+          },
+          "orderedOperationAndBranches": "Compute int second_part_shift=16-first_part_shift; valid domain1..16, not ushort shift width.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L05-loop-init",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 962,
+            "lastLine": 962,
+            "rangeSha256": "6db55e496183ca53e02c40ba39c7b267ea5a28414c8b5d914490a7e310c6d0a0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 132,
+            "lastLine": 132,
+            "rangeSha256": "c04727dc92867a40912ae64905100a157fa825f8331d5a25c17de9cbb6078a85"
+          },
+          "orderedOperationAndBranches": "Set i=0; ascending traversal preserves not-yet-read higher part indices during in-place mutation.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L06-loop-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 962,
+            "lastLine": 962,
+            "rangeSha256": "6db55e496183ca53e02c40ba39c7b267ea5a28414c8b5d914490a7e310c6d0a0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 132,
+            "lastLine": 132,
+            "rangeSha256": "c04727dc92867a40912ae64905100a157fa825f8331d5a25c17de9cbb6078a85"
+          },
+          "orderedOperationAndBranches": "Predicate i<8 true enters body; every call including count0 traverses all eight parts.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L07-current-work",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 963,
+            "lastLine": 965,
+            "rangeSha256": "ba22b30856e6a801bc29b12fd8c3d4fc799b76884d23c9d7e335e55257e7359b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 134,
+            "lastLine": 136,
+            "rangeSha256": "d8408be37426763a3b2054cefbd67e4b6636eea08770ec8e415d043efae595a0"
+          },
+          "orderedOperationAndBranches": "Declare unsigned64 work and ushort fill_value=0, then read current original part[i] into widened work.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L08-whole-loss-first-short",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 966,
+            "lastLine": 966,
+            "rangeSha256": "59e70340f804c95fc1dc7df3bee154cce9c7adf4c25d836804fdf88b6150138e"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 137,
+            "lastLine": 137,
+            "rangeSha256": "a629851c9b683c7b62844704806d159a83261c745d0cdc55b7ae55abdceadb60"
+          },
+          "orderedOperationAndBranches": "Evaluate i<part_offset first; false skips work!=0, true evaluates work!=0. Both booleans must be true to take whole-part loss arm.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L09-whole-loss-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 966,
+            "lastLine": 967,
+            "rangeSha256": "7ed53dd5401573a199c3e0b5591d0a51722ee5d76215eac40ac69d36e6ba9411"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 137,
+            "lastLine": 139,
+            "rangeSha256": "d999997dfc5e5708419cdbda1cfc054319a949cc7434031a1fccb5341a00c216"
+          },
+          "orderedOperationAndBranches": "Whole-part loss condition true sets sticky overflow=TRUE, skips else-if.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L10-whole-loss-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 966,
+            "lastLine": 968,
+            "rangeSha256": "542ec8d281a37363f3ace8774522961fdab419c4a5e538852b0f237c66b3b829"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 137,
+            "lastLine": 141,
+            "rangeSha256": "088b3bbe04ea0b0335c83cec05454de1e5cd72c9e8f1b2d1f65d05e2a020ca1a"
+          },
+          "orderedOperationAndBranches": "Whole-part loss condition false evaluates else-if i==part_offset; false skips right-shift loss test.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L11-boundary-compare-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 968,
+            "lastLine": 968,
+            "rangeSha256": "73353010c77fcb5d171d72aee6109032db16e7e7b83f071fb39b99c2ede51c34"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 141,
+            "lastLine": 141,
+            "rangeSha256": "a6b1f86d45e776fdd9a3119d2f5513aad54684dad1ecf3c8d0511a24d1c8e517"
+          },
+          "orderedOperationAndBranches": "i==part_offset true shifts unsigned64 work right by second_part_shift then tests nonzero.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L12-boundary-loss-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 968,
+            "lastLine": 969,
+            "rangeSha256": "3407c84eb48d8faf1bf87721bcfc87d243280ad07da3537f3e0b4befd94a31b6"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 141,
+            "lastLine": 143,
+            "rangeSha256": "c2dc510c57b4b2658edfaf1ff29efd3a02abbb591754badde4903f658b44b54f"
+          },
+          "orderedOperationAndBranches": "Boundary loss nonzero true sets sticky overflow=TRUE.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L13-no-loss",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 966,
+            "lastLine": 970,
+            "rangeSha256": "ab987493e81e700015eb60348e6e85604114b4c6e0121d105fae0146faf03594"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 137,
+            "lastLine": 144,
+            "rangeSha256": "78130c43cf77cbfb83e18e007305e1a4e3e3a14a19227a7294bdb937c2abd258"
+          },
+          "orderedOperationAndBranches": "Whole loss false and boundary loss false perform no overflow write; earlier TRUE stays TRUE.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L14-get-first",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 971,
+            "lastLine": 971,
+            "rangeSha256": "22544a0577792481957fb365f6bd7fdf627bf14787182c2254f4c8de8c896149"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 145,
+            "lastLine": 145,
+            "rangeSha256": "6d855c62d4ef22ef698c8f68d1d43cb73e6f3def8ecf53a5cb87780e77741d1d"
+          },
+          "orderedOperationAndBranches": "Read get_part at i+offset, with zero fill, into unsigned64 then shift left first count0..15.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L15-get-second",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 972,
+            "lastLine": 972,
+            "rangeSha256": "d7a0cf6533814501680d49231fec47630effb845b97fc9f5355872ef3e5cf79f"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 146,
+            "lastLine": 146,
+            "rangeSha256": "49c449f9f4fbf6bde1bff10edd676467478af09a450a46432d27bd4b4c1ad921"
+          },
+          "orderedOperationAndBranches": "Read get_part at i+offset+1, zero fill, into unsigned64 then logical shift right second count1..16. Both reads precede store; source unspecified relative read order is unobservable for these pure operands.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L16-combine-store",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 971,
+            "lastLine": 973,
+            "rangeSha256": "0e928506d1fca438690b575c414a6f3aa9f777b9d2235edf1cf52b673734e013"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 145,
+            "lastLine": 147,
+            "rangeSha256": "595e871de4fdd364edb69ea09ff42ea369cd181e38d451a83cb90e509fa4e462"
+          },
+          "orderedOperationAndBranches": "OR two widened shifted values, AND int constant65535 converted exactly to ulong, then unchecked narrow/store ushort part[i].",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L17-loop-update",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 962,
+            "lastLine": 962,
+            "rangeSha256": "6db55e496183ca53e02c40ba39c7b267ea5a28414c8b5d914490a7e310c6d0a0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 132,
+            "lastLine": 132,
+            "rangeSha256": "c04727dc92867a40912ae64905100a157fa825f8331d5a25c17de9cbb6078a85"
+          },
+          "orderedOperationAndBranches": "Increment i only after destination store and loop back.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L18-loop-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 962,
+            "lastLine": 974,
+            "rangeSha256": "6aa02ddbc1aa8f178b4910a33c675415b6f221abefa1590152cfa2e4db165ce4"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 132,
+            "lastLine": 148,
+            "rangeSha256": "9aab8043642f059898385e10cfe5f8839c3d0d6a785adf89156dabbb842f140b"
+          },
+          "orderedOperationAndBranches": "Predicate false at i8 exits; impossible zero-iteration entry remains mapped, not claimed covered.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L19-final-error",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 975,
+            "lastLine": 975,
+            "rangeSha256": "57087757f6bdd65882779a2e8b3efe44f713fe775cb804a73accc8e3204a22f0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 149,
+            "lastLine": 149,
+            "rangeSha256": "c157c890c7f2bcfa6eaf24c35c6869e03e7eb1813874064f924131d1f4a1b94b"
+          },
+          "orderedOperationAndBranches": "Store sticky bool overflow to caller err after all parts; overwrite incoming err even for zero count.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        },
+        {
+          "id": "L20-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 976,
+            "lastLine": 977,
+            "rangeSha256": "e572b8dc65a425c6505ee84bfb654eecf3578d026e1af34b46f301d3f25aad10"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 150,
+            "lastLine": 150,
+            "rangeSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+          },
+          "orderedOperationAndBranches": "Void return; invalid shifts remain caller/INIT-001 blocker, no new checks or portable CLR-mask semantics.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries",
+            "MasksAndSignExtension",
+            "leaf --stream left"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 931,
+            "lastLine": 942,
+            "rangeSha256": "0fe9582c50a0cfbae1d0788080f008bc363dbed51c757f07a80c8956c6e5a669"
+          },
+          "nativeActive": false,
+          "managed": null,
+          "reason": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0 excludes this native scalar branch.",
+          "orderedOperationsAndBranches": [
+            "Declare scalar result/bits_lost.",
+            "If op_2!=0 true, left-shift original, compute right-shifted bits_lost, write err, then op_1.",
+            "If count0 false branch writes err=FALSE and leaves scalar operand unwritten. Active parts branch must not adopt this no-write shortcut."
+          ],
+          "status": "explicit configuration backlog; not implemented or qualified"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "shift_right_integer_value",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 980,
+        "lastLine": 1029,
+        "rangeSha256": "c87053cc3bef929a3d03d7c42c64731ffdd844b674e37e5b196bcb9ad7b18faf"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 152,
+        "lastLine": 181,
+        "rangeSha256": "817884dc9899123586c0eeb2e753c0a67fd3bbb5b89773ddb1bb924eb6b3c650"
+      },
+      "parametersAndOutputs": "op_1/an_integer_value* in-out; op_2/int count; is_signed and sign_extend/a_boolean -> bool, by value; void, no err output. Caller legal-count obligation; candidate0..127.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "BITS_IN_INT_VALUE_PART / INT_VALUE_PARTS_PER_INTEGER_VALUE / MAX_UINT_VALUE_PART",
+        "sign_of(op_1) only when is_signed && sign_extend",
+        "get_part(op_1,i-part_offset,fill_value)",
+        "get_part(op_1,i-part_offset-1,fill_value)"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "R01-entry",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 999,
+            "lastLine": 1003,
+            "rangeSha256": "1de255a3f147a4ff30a1a505a16aedfba14698c2c812f2558be59c394bdcb743"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 157,
+            "lastLine": 161,
+            "rangeSha256": "eea97f85d082af2197cc7dd7b2ca24458d6372fa995c9e0a1c85062ff631f908"
+          },
+          "orderedOperationAndBranches": "Declare int loop/offset/count locals and ushort fill_value; no initial input snapshot.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R02-offset",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1012,
+            "lastLine": 1012,
+            "rangeSha256": "79dc4d9f7864666e336497dfa4388c0c948a9a338a247068498c543534f4cc4b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 163,
+            "lastLine": 163,
+            "rangeSha256": "bf3c122783687cc2a76249e00b05146f63d757a61bb46560a1ed55fac0bcf483"
+          },
+          "orderedOperationAndBranches": "Compute int part_offset=op_2/16.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R03-first-shift",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1013,
+            "lastLine": 1013,
+            "rangeSha256": "0af0477b987869db3fca2d6c2672cdcf6a4884cb35193e067ea9d4f7e7a8fe49"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 164,
+            "lastLine": 164,
+            "rangeSha256": "4c6ea013d0dc9fb24a351fb545f2f1a1c1c9f072c13e1735884c4a443e271701"
+          },
+          "orderedOperationAndBranches": "Compute int first_part_shift=op_2%16.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R04-second-shift",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1014,
+            "lastLine": 1014,
+            "rangeSha256": "ad468b81be1223977280a00ee627b50e9159fe1612678096cf3947291210562b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 165,
+            "lastLine": 165,
+            "rangeSha256": "279f2507552d8c48e3ca3da3d05df100473db2ab09ba6b117707d35b9831624d"
+          },
+          "orderedOperationAndBranches": "Compute int second_part_shift=16-first_part_shift.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R05-unsigned-short",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1017,
+            "lastLine": 1017,
+            "rangeSha256": "bc626c5f503ccc94f87dbf512b7302755faf6c1aabc201a9fb54806df4211175"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 166,
+            "lastLine": 166,
+            "rangeSha256": "38cd1e4e586d6172986759211927e6bc579c4449c2e697f1f6a150c378fa3212"
+          },
+          "orderedOperationAndBranches": "Test is_signed first; false skips sign_extend and sign_of and chooses fill0.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R06-no-extend",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1017,
+            "lastLine": 1020,
+            "rangeSha256": "293bdc97e71f592f171caa976940d7a75e8baa2fb06aa232164b146ea1cceed7"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 166,
+            "lastLine": 172,
+            "rangeSha256": "6939d3716f9d51aa1b6c1f282038b7069144013fb25dbbca914e8cb22387da48"
+          },
+          "orderedOperationAndBranches": "is_signed true evaluates sign_extend; false chooses fill0 and skips sign_of.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R07-extend",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1017,
+            "lastLine": 1018,
+            "rangeSha256": "0900937e4cce211098ff1326456e719dd4a7fc6518624113f1bde12e675186d6"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 166,
+            "lastLine": 168,
+            "rangeSha256": "5910d963e57bfd3aece7867a68839bcf8476fdd95196fe2ee1452b8dee08d41a"
+          },
+          "orderedOperationAndBranches": "Both flags true read sign_of from original live high part before mutation; native bool-to-int 0/1 is C# conditional0/1; negate signed int, AND int65535, narrow to ushort fill0 or65535.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R08-fill-zero",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1019,
+            "lastLine": 1020,
+            "rangeSha256": "731f16630e4d5f87482df010696bbbf483d7b4ff4f1050858c08c675d093b77a"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 170,
+            "lastLine": 172,
+            "rangeSha256": "fb8d5ef25fbbfa3a8fc791c38eb96ecdbc1ded4141dd99f805560203a5f0ba59"
+          },
+          "orderedOperationAndBranches": "False && result assigns fill_value=0 explicitly.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R09-loop-init",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1022,
+            "lastLine": 1022,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 174,
+            "lastLine": 174,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Initialize int i=7; descending traversal preserves lower unread source indices.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R10-loop-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1022,
+            "lastLine": 1022,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 174,
+            "lastLine": 174,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "i>=0 true enters body; count0 still traverses and rewrites eight parts.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R11-get-first",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1023,
+            "lastLine": 1024,
+            "rangeSha256": "dbb0964a504ea0579ec4bc3523bcd21025528e5c525cee69b549d270e62a5ea7"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 176,
+            "lastLine": 177,
+            "rangeSha256": "5bede7e3e17badc5732a8673426da3694cca0a4844d26025fd4aa25df14703a0"
+          },
+          "orderedOperationAndBranches": "Declare unsigned64 work; get_part(i-offset) uses captured fill, widen then logical shift right first count0..15.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R12-get-second",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1025,
+            "lastLine": 1025,
+            "rangeSha256": "2b74e07205960e21364b819dee6f898a75e7bc9dac5c57250126fafba5fc2557"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 178,
+            "lastLine": 178,
+            "rangeSha256": "41b5c29d55ebb06029a130fb5942f44399ab6f187a29e94ba58b2d4e452be471"
+          },
+          "orderedOperationAndBranches": "get_part(i-offset-1) uses same original-sign fill, widen then left shift second count1..16; both reads occur before destination write.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R13-combine-store",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1024,
+            "lastLine": 1026,
+            "rangeSha256": "fc71e219dfb18a5cdf46b8fa94e7ce85ccde699f97598cb087cbad17b258f2a9"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 177,
+            "lastLine": 179,
+            "rangeSha256": "ddb8cffb0765d410d11e88079d512319c3ae67a3bc6c1971e9b36a829c407975"
+          },
+          "orderedOperationAndBranches": "OR widened results, mask65535 in ulong, then unchecked narrow/store ushort current part.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R14-loop-update",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1022,
+            "lastLine": 1022,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 174,
+            "lastLine": 174,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Decrement i after each store, loop back.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R15-loop-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1022,
+            "lastLine": 1027,
+            "rangeSha256": "85f00a9718d49882064c154bfc1bb321826a23d785ea2f0c79f143478e6279e9"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 174,
+            "lastLine": 180,
+            "rangeSha256": "9ccdce0931edf7526b7fb980dfb1d257c9a593d5393a26e60eb5fc44530b0235"
+          },
+          "orderedOperationAndBranches": "i>=0 false at -1 exits; no dynamic zero-iteration case under fixed8 profile.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        },
+        {
+          "id": "R16-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1028,
+            "lastLine": 1029,
+            "rangeSha256": "cc03dabeec854c1ae53dee92b6fa68cd6e81f816db439f9e8811c99af311024e"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 181,
+            "lastLine": 181,
+            "rangeSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+          },
+          "orderedOperationAndBranches": "Void return, no bool output or loss diagnostic. Invalid counts remain unqualified.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "ShiftBoundaries all four flags",
+            "MasksAndSignExtension",
+            "leaf --stream right"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 990,
+            "lastLine": 997,
+            "rangeSha256": "8f18315eecc26ce7bdaa41f4ad1419835fd46b279bee13fd7d3f3ab41aea3768"
+          },
+          "nativeActive": false,
+          "managed": null,
+          "reason": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0 excludes this native scalar branch.",
+          "orderedOperationsAndBranches": [
+            "Short circuit is_signed, sign_extend, then negative sign_of.",
+            "True calls scalar signed_shift_right and stores op_1.",
+            "False performs unsigned scalar right shift and stores op_1."
+          ],
+          "status": "explicit configuration backlog; not implemented or qualified"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "subtract_integer_values",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 1032,
+        "lastLine": 1091,
+        "rangeSha256": "cff6a7430da12cd9f26f1c62cba9c20f0d51fbc6f9dbb86bd4fde71e7bc604ca"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 183,
+        "lastLine": 216,
+        "rangeSha256": "d2b75015b1123daed265a949e63f75f41f25f5bddab7ee9487f013227c967d3c"
+      },
+      "parametersAndOutputs": "Live an_integer_value* op_1 (in-out) and op_2 (read but may alias op_1), bool is_signed, bool* err written after all part stores; void.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "sign_of(op_1)",
+        "INT_VALUE_PARTS_PER_INTEGER_VALUE / MAX_UINT_VALUE_PART / INT_VALUE_PART_BASE",
+        "sign_of(op_2) then conditionally sign_of(op_1) after mutation"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "S01-entry",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1062,
+            "lastLine": 1064,
+            "rangeSha256": "49fc6a41e2ccce7386bc7dcf4ffdbc5a7e82fbaf874fc955175438525fa0d307"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 188,
+            "lastLine": 190,
+            "rangeSha256": "436ef286d337229e872397a9e451e8876855341f72d097ce7fa5d92c370aaad9"
+          },
+          "orderedOperationAndBranches": "Declare int i, signed64 borrow=0, capture original sign_1 via live sign_of(op_1).",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S02-loop-init",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1066,
+            "lastLine": 1066,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 192,
+            "lastLine": 192,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Initialize i=7.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S03-loop-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1066,
+            "lastLine": 1066,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 192,
+            "lastLine": 192,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "i>=0 true enters body; exactly8 iterations under pinned profile.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S04-work",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1067,
+            "lastLine": 1069,
+            "rangeSha256": "38f583d75d50b4fd2d81cc4e252bebecc1d4ff2c7abad1b80d739f832540bf43"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 194,
+            "lastLine": 195,
+            "rangeSha256": "3b3e2c48ad24c621f68c49a38011bf94002177008c95d5e52ef9cf81d857cbd4"
+          },
+          "orderedOperationAndBranches": "Read both current live parts before write, cast separately to signed64, subtract op_2 then borrow. Aliased operands are not cloned.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S05-borrow-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1070,
+            "lastLine": 1072,
+            "rangeSha256": "c3250dbce993fb79351a86062e8fcb9d4f9ba725da013669901267ae2edeeb74"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 196,
+            "lastLine": 199,
+            "rangeSha256": "cbdbbb25b2ee3d4ff9d2c023c3d4279bdea3bb821e8d1225c0d547e9c8013f4a"
+          },
+          "orderedOperationAndBranches": "work<0 true adds signed64 cast base65536, then sets borrow1.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S06-borrow-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1070,
+            "lastLine": 1075,
+            "rangeSha256": "deb496c73487dce1f170d81030e2264f82756084d644201426cccb927e238767"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 196,
+            "lastLine": 204,
+            "rangeSha256": "55926b76f2b4ceb270fb5fff85ae2d14d9b2867c25741b0d26b37aaf42714c1b"
+          },
+          "orderedOperationAndBranches": "work<0 false sets borrow0 without adjustment.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S07-store",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1076,
+            "lastLine": 1076,
+            "rangeSha256": "90f9e899a0240689960974cf54b673d1c77eb818ef7798071cd9b92a0515604f"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 205,
+            "lastLine": 205,
+            "rangeSha256": "9cf8a971ce7298bc36003cf2c5e28b2205fdce34da013253f590cb8cf39ddd8b"
+          },
+          "orderedOperationAndBranches": "Unchecked narrow to ushort then store current op_1 part.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S08-loop-update",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1066,
+            "lastLine": 1066,
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 192,
+            "lastLine": 192,
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "orderedOperationAndBranches": "Decrement i after store, loop back toward high part0.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S09-loop-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1066,
+            "lastLine": 1077,
+            "rangeSha256": "dba9a48a5602fe005ef169395fc3e5ff5927c410a0446d553bc9f635eb33b20e"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 192,
+            "lastLine": 206,
+            "rangeSha256": "0c7fe66825604da1857772c67a5325a740284dca21d4ded04a1922e58f7a1628"
+          },
+          "orderedOperationAndBranches": "i>=0 false at -1 exits; zero-iteration entry unreachable with8 parts.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S10-unsigned",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1079,
+            "lastLine": 1083,
+            "rangeSha256": "f7badfa3da23e4c3ed9002276cb520656e2e37bf5f67418a43cbd09b6080b6c2"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 207,
+            "lastLine": 210,
+            "rangeSha256": "364e59d56ac5287a5219a420aea7ab75d4047ca26188e0ee29d91fd111592aa9"
+          },
+          "orderedOperationAndBranches": "!is_signed true writes err=(borrow!=0) based on last high-part operation.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S11-signed",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1079,
+            "lastLine": 1088,
+            "rangeSha256": "37a65a3390e077f5b469e5233624267d4dab048d94ad640f52d8a2e6c199c14c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 207,
+            "lastLine": 214,
+            "rangeSha256": "5fa64a3bbd591eae81ee816b7f7b166b00a14cd873e3edad456142c7319c1090"
+          },
+          "orderedOperationAndBranches": "!is_signed false evaluates original sign_1!=current sign_of(op_2) after all writes; alias rereads result sign.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S12-signed-short-false",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1088,
+            "lastLine": 1088,
+            "rangeSha256": "98a6d4a733d00da22e5385d34e73efb473a13fde42919e205392787e1a1e8958"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 214,
+            "lastLine": 214,
+            "rangeSha256": "12358de1bde17a825daf29b0328f03b7e346e3c95ebb1bc7d11dd4e559d36b21"
+          },
+          "orderedOperationAndBranches": "If first comparison false, skip result sign read and store err=false.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S13-signed-short-true",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1088,
+            "lastLine": 1088,
+            "rangeSha256": "98a6d4a733d00da22e5385d34e73efb473a13fde42919e205392787e1a1e8958"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 214,
+            "lastLine": 214,
+            "rangeSha256": "12358de1bde17a825daf29b0328f03b7e346e3c95ebb1bc7d11dd4e559d36b21"
+          },
+          "orderedOperationAndBranches": "If first comparison true, evaluate original sign_1!=current sign_of(op_1), store that bool; negative self-subtraction can report native overflow.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        },
+        {
+          "id": "S14-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1089,
+            "lastLine": 1091,
+            "rangeSha256": "5f4a47f18c3e801a5827be17da04a6a958899daf780980f6e933b28feab2c116"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 215,
+            "lastLine": 216,
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "orderedOperationAndBranches": "Void return after err output; no restoration, cleanup or diagnostics.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "DistinctArithmetic",
+            "ExactAliases",
+            "MixedArithmetic",
+            "leaf --stream subtract"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [
+        {
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1042,
+            "lastLine": 1060,
+            "rangeSha256": "108a9052db9a6b646434b99bc4a2d63cd632f74b4e99807677b8a830dd0b0ad7"
+          },
+          "nativeActive": false,
+          "managed": null,
+          "reason": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0 excludes this native scalar branch.",
+          "orderedOperationsAndBranches": [
+            "Initialize scalar overflowFALSE, sign_1; declare result.",
+            "Compute difference then cast to a_signed_integer_value at source stage.",
+            "!is_signed true tests op_2>op_1; true sets overflowTRUE, false retainsFALSE.",
+            "Signed arm short-circuits differing original signs and result-sign change.",
+            "Store *op_1=result, then *err=overflow."
+          ],
+          "status": "explicit configuration backlog; not implemented or qualified"
+        }
+      ],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    },
+    {
+      "name": "negate_integer_value",
+      "kind": "routine",
+      "native": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "firstLine": 1094,
+        "lastLine": 1105,
+        "rangeSha256": "3987fcc84bdce3ce4a75a9e20ca9adfee85c73ba6987bb79ba88c5102211b8bf"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 218,
+        "lastLine": 224,
+        "rangeSha256": "bf9139709b02e4d55ded865705599db23a56d8a484b5652af1d4bf1509848fb8"
+      },
+      "parametersAndOutputs": "Live an_integer_value* op_1 in-out and caller bool* err; void. result is a distinct stack inline struct, initialized through setter.",
+      "state": "translated but dependency-blocked; review-pending",
+      "directDependenciesInSourceOrder": [
+        "set_integer_value(&result,(a_host_large_integer)0)",
+        "subtract_integer_values(&result,op_1,TRUE,err)"
+      ],
+      "transitiveDependencies": "See dependency records. No caller is qualified by this callee record.",
+      "stateEffects": "Only caller integer storage and explicit bool output where present; no globals, diagnostics, recovery, allocation, cleanup, retained pointers or ownership change.",
+      "identityAndLifetime": "Live native-shaped pointer inputs, exact self alias or disjoint objects; native by-value locals remain inline struct copies; call-lived locals and caller-owned storage; no invented partial-overlap domain.",
+      "arithmeticContract": "Linux x86_64 LP64 source-derived contract; long/ulong work, ushort parts, int indices, bool flags/output; ABI measurement and independent review pending. Shift domain 0..127, mask/extend width1..128; out-of-contract shifts including INIT-001 unqualified.",
+      "blocks": [
+        {
+          "id": "N01-local",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1101,
+            "lastLine": 1101,
+            "rangeSha256": "4111cff6db6ece63ddc5295a7792f6e8d0298e834e2777471c41c00f5f3d441c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 220,
+            "lastLine": 220,
+            "rangeSha256": "00e42e43f9959c380ed53af0fb09c1d476dba6c122e4802965dc901fa55f0bcd"
+          },
+          "orderedOperationAndBranches": "Declare result inline, no heap allocation.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "Negation",
+            "leaf --stream negate"
+          ]
+        },
+        {
+          "id": "N02-zero-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1102,
+            "lastLine": 1102,
+            "rangeSha256": "0318a7c3aedfc7bb7c248dd153c5b770eaf693477096bab2be719566a8dbbed2"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 221,
+            "lastLine": 221,
+            "rangeSha256": "3caa3ace499c617647fdf37d6a8ea7977df48c1fb1f8f73d5d68eb6a9e4bf25a"
+          },
+          "orderedOperationAndBranches": "Initialize every result part through signed-long zero setter.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "Negation",
+            "leaf --stream negate"
+          ]
+        },
+        {
+          "id": "N03-subtract-call",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1103,
+            "lastLine": 1103,
+            "rangeSha256": "19d6c1fbbc0d6a9343e353c4fe9228e3f1fa3c1b30e6b94f1661645081c44ff7"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 222,
+            "lastLine": 222,
+            "rangeSha256": "fa6b6894831a2d89f0f5ff81e3b04bab807b6b2c6c9e3a11ff70bd2d2f7cd7db"
+          },
+          "orderedOperationAndBranches": "Pass result local as first operand and original caller pointer as second; signedTRUE and original err. Source subtract mutates local and writes err before final original operand copy.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "Negation",
+            "leaf --stream negate"
+          ]
+        },
+        {
+          "id": "N04-result-copy",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1104,
+            "lastLine": 1104,
+            "rangeSha256": "0da77b08f4365af7fa76fa73daae22b324c109146e879f48c796449e1c86b435"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 223,
+            "lastLine": 223,
+            "rangeSha256": "fd6a3facacca8113bb149596bf7b3e462236f77f0d62cfcd93b0e2abba72815b"
+          },
+          "orderedOperationAndBranches": "Copy entire native-shaped inline result to *op_1 only after subtract/error completion; result remains distinct during call.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "Negation",
+            "leaf --stream negate"
+          ]
+        },
+        {
+          "id": "N05-return",
+          "native": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "firstLine": 1105,
+            "lastLine": 1105,
+            "rangeSha256": "9c4d9020c762ac57cc8f7702517ead1e73af196699fdfdaacc5524d93a8650dd"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+            "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+            "firstLine": 224,
+            "lastLine": 224,
+            "rangeSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+          },
+          "orderedOperationAndBranches": "Void return with native signed-minimum overflow flag; no special-case negation algorithm.",
+          "review": "pending; independent reviewer must open both snapshots",
+          "execution": "not run; authored cases only",
+          "testAssociation": [
+            "Negation",
+            "leaf --stream negate"
+          ]
+        }
+      ],
+      "inactiveAlternatives": [],
+      "reviewVerdict": null,
+      "executedEvidence": []
+    }
+  ],
+  "blockers": [
+    {
+      "id": "ABI-001",
+      "detail": "Source-derived Linuxx86_64 widths/layout are candidate only; native/managed ABI and exact source-to-binary receipts pending."
+    },
+    {
+      "id": "REVIEW-001",
+      "detail": "Independent reviewer must open exact native and produced C# per routine/block/helper. No self-review or ledger hash qualifies a method."
+    },
+    {
+      "id": "DEPS-001",
+      "detail": "Leaf representation/setter/complement/comparison/sign macros remain review-pending; reconcile leaf HOLD and this observed snapshot before validation."
+    },
+    {
+      "id": "INIT-001",
+      "detail": "Independent P0 report found enabled bit-precise initialization widths65535/65536 exceed128 storage; underflow/narrowing/negative shift path unresolved. No clamp, feature removal, semantic guard or CLR-masked-count qualification; caller initialization remains unqualified."
+    },
+    {
+      "id": "VALIDATION-001",
+      "detail": "Supervisor alone serializes native oracle, JIT/NativeAOT and authored tests after all shared writers HOLD. No executions claimed."
+    }
+  ],
+  "authoredTests": {
+    "path": "tests/IntegerArithmetic/Program.cs",
+    "methods": [
+      "DistinctArithmetic",
+      "ExactAliases",
+      "MixedArithmetic",
+      "ShiftBoundaries",
+      "MasksAndSignExtension",
+      "Negation"
+    ],
+    "state": "authored; unexecuted",
+    "expectationTypes": "UInt128/Int128 test-only; no such types in production",
+    "nativeTraceAdapter": "Leaf-owned tests/IntegerLeaves/Program.cs --stream, supervisor protocol; not duplicated here",
+    "invalidCountPolicy": "No invalid counts in claimed tests/domain; INIT-001 remains unresolved."
+  },
+  "provenance": "EDG Compiler Project Apache-2.0 WITH LLVM-exception attribution preserved. Old prototype, dirty work/evidence and upstream preserved.",
+  "handoff": "Own file hashes in const_ints-batch2.sha256; final explicit HOLD after bookkeeping. Dependency snapshots not held by this worker."
+}

@@ -1,0 +1,413 @@
+{
+  "holds": {
+    "allSharedWritersHeld": true,
+    "authority": "explicit writer reports, research HOLD read from live child thread at position31",
+    "tasks": [
+      {
+        "key": "pin",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p0-source-pin-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "integers",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-integer-leaves-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "review",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p0-contract-review-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "arithmetic",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-integer-arithmetic-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "init",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-init-width-investigation-20261021-r1",
+        "status": "running",
+        "hold": true
+      }
+    ],
+    "reviewedQualifiedRoutines": 0
+  },
+  "started_unix": 1792563119.839521,
+  "steps": [
+    {
+      "name": "snapshot-before",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/capture_snapshot.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/snapshot-before.json"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/snapshot-before.log",
+      "log_sha256": "4eb23e48044ac5d5460d60f9bf8bd41bf68283dafd3c60722ce2d6bff58de0f0"
+    },
+    {
+      "name": "leaf-hashes",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/leaf-hashes.log",
+      "log_sha256": "ee2a0887b1297c63defe4f6e4bc9742f7847eafd3627608c5fb492b36d2d1adb"
+    },
+    {
+      "name": "arithmetic-hashes",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/arithmetic-hashes.log",
+      "log_sha256": "bc07f677dddf59f06955d6a4a257ee2eea517c6efec8440f186c95f12a06c66e"
+    },
+    {
+      "name": "native-prepare",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/prepare_integer_oracle.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native-prepare.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "native-abi",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle",
+        "--abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native-abi.log",
+      "log_sha256": "603760d85b6703c3cc66e6dd2f5144e8bc64359de572a9cd0699c26c79a850bd"
+    },
+    {
+      "name": "header-abi-build",
+      "command": [
+        "/usr/bin/c++",
+        "-DBACK_END_IS_C_GEN_BE=1",
+        "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+        "-DDO_IL_LOWERING=1",
+        "-DLOWER_FIXED_POINT=1",
+        "-DLOWER_IFUNC=1",
+        "-DNEED_IL_DISPLAY=1",
+        "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+        "-DUSE_CMAKE_DEFINES",
+        "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+        "-O3",
+        "-DNDEBUG",
+        "-std=c++14",
+        "-Wall",
+        "-Wwrite-strings",
+        "-Wformat-security",
+        "-pedantic",
+        "-Werror=shadow",
+        "-Wimplicit-fallthrough",
+        "-Wconversion",
+        "-Wsign-conversion",
+        "-Wswitch-default",
+        "-flto",
+        "-fno-exceptions",
+        "-fno-unwind-tables",
+        "-fno-rtti",
+        "-x",
+        "c++",
+        "-iquote",
+        "/home/marius/p/dotcc/edgcpp/upstream/src",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/baseline/integer_abi_probe.cpp",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/header-abi"
+      ],
+      "cwd": "/home/marius/p/dotcc/edgcpp/build",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/header-abi-build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "header-abi",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/header-abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/header-abi.log",
+      "log_sha256": "28fb69a0d586fd4c07fdb26746c5c2062ef523cc98a73358a3c1f08ff75b9d85"
+    },
+    {
+      "name": "build-IntegerLeaves",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerLeaves/IntegerLeaves.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/build-IntegerLeaves.log",
+      "log_sha256": "5c713e3d0981dbfd593a1a33cd2f2aa44e95d4e13d093f9a02e0ca99402ad5ab"
+    },
+    {
+      "name": "jit-IntegerLeaves",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerLeaves/bin/Release/net10.0/IntegerLeaves.dll"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/jit-IntegerLeaves.log",
+      "log_sha256": "302735a5dba38d4fd2575143395b356fc74fb76a8ad50c3b5671458e6570e1fa"
+    },
+    {
+      "name": "build-IntegerArithmetic",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/IntegerArithmetic.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/build-IntegerArithmetic.log",
+      "log_sha256": "05b468aada9e25f547845106e24100d4c0734a4b2e43e8f02fb7aee910cc609e"
+    },
+    {
+      "name": "jit-IntegerArithmetic",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/bin/Release/net10.0/IntegerArithmetic.dll"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/jit-IntegerArithmetic.log",
+      "log_sha256": "4ec36d536f6acae519ac3c00d7bcb9c79f09750e002ee6719cab69acefa32c22"
+    },
+    {
+      "name": "managed-abi",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerLeaves/bin/Release/net10.0/IntegerLeaves.dll",
+        "--abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/managed-abi.log",
+      "log_sha256": "15a39d10dd243054531a5caa5a36c58bed6373c4a9e7033da3c6cef8315cd0b4"
+    },
+    {
+      "name": "diff-jit-leaves",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_integer_streams.py",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerLeaves/bin/Release/net10.0/IntegerLeaves.dll",
+        "--group",
+        "leaves",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-jit-leaves"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-jit-leaves.log",
+      "log_sha256": "0fe503075a40bc00c28bce065f101d3791b7f621b37b52a10a75a4f21c5a49d9"
+    },
+    {
+      "name": "diff-jit-arithmetic",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_integer_streams.py",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerLeaves/bin/Release/net10.0/IntegerLeaves.dll",
+        "--group",
+        "arithmetic",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-jit-arithmetic"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-jit-arithmetic.log",
+      "log_sha256": "e38740bb674773aa6e968b1ed2a5a83339c471cc5645bac432fefd4f5ff76a5e"
+    },
+    {
+      "name": "publish-IntegerLeaves",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerLeaves/IntegerLeaves.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/publish-IntegerLeaves.log",
+      "log_sha256": "13fce1f1b2b195086c0c4395e138051b06e381b4316622bcd129c730163eea5a"
+    },
+    {
+      "name": "aot-IntegerLeaves",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/IntegerLeaves"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves.log",
+      "log_sha256": "302735a5dba38d4fd2575143395b356fc74fb76a8ad50c3b5671458e6570e1fa"
+    },
+    {
+      "name": "publish-IntegerArithmetic",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/IntegerArithmetic.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerArithmetic",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/publish-IntegerArithmetic.log",
+      "log_sha256": "d88191ae7152b9bfa5814ba8254cdb28bdc2db8ce217df97bdbc636d67681d1a"
+    },
+    {
+      "name": "aot-IntegerArithmetic",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerArithmetic/IntegerArithmetic"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerArithmetic.log",
+      "log_sha256": "4ec36d536f6acae519ac3c00d7bcb9c79f09750e002ee6719cab69acefa32c22"
+    },
+    {
+      "name": "diff-aot-leaves",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_integer_streams.py",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/IntegerLeaves",
+        "--aot",
+        "--group",
+        "leaves",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-aot-leaves"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-aot-leaves.log",
+      "log_sha256": "74d9da1716f090aefbe8241c34714283da0eca4c40b3bdefc4717b8613f5f03d"
+    },
+    {
+      "name": "diff-aot-arithmetic",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_integer_streams.py",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/IntegerLeaves",
+        "--aot",
+        "--group",
+        "arithmetic",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-aot-arithmetic"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/diff-aot-arithmetic.log",
+      "log_sha256": "0f301bea0f7bc4483984feaf5d4ad9e2a7e5f4905b6d5dc9e0a3a8aabd6cca1c"
+    },
+    {
+      "name": "snapshot-after",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/capture_snapshot.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/snapshot-after.json"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/snapshot-after.log",
+      "log_sha256": "4eb23e48044ac5d5460d60f9bf8bd41bf68283dafd3c60722ce2d6bff58de0f0"
+    }
+  ],
+  "passed": true,
+  "abi_native_measured": {
+    "integer_size": 16,
+    "integer_alignment": 2,
+    "part_size": 2,
+    "parts": 8,
+    "bits": 128,
+    "host_signed_size": 8,
+    "host_unsigned_size": 8,
+    "sizeof_t_size": 8,
+    "boolean_size": 1,
+    "char_bit": 8,
+    "host_repr": 0,
+    "fixed_point": 1,
+    "checking": 1
+  },
+  "abi_managed_observed": {
+    "integer_size": 16,
+    "integer_alignment": 2,
+    "part_size": 2,
+    "parts": 8,
+    "bits": 128,
+    "host_signed_size": 8,
+    "host_unsigned_size": 8,
+    "sizeof_t_size": 8,
+    "boolean_size": 1,
+    "char_bit": 8,
+    "host_repr": 0,
+    "fixed_point": 1,
+    "max_fixed_point_size": 8,
+    "checking": 1
+  },
+  "abi_source_only_managed_metadata": {
+    "max_fixed_point_size": 8
+  },
+  "abi_limit": "max_fixed_point_size is source-derived managed configuration metadata, not measured after native targ_def.h undefines its constituent target macros",
+  "abi_equal": true,
+  "snapshot_equal": true,
+  "finished_unix": 1792563130.7082026
+}

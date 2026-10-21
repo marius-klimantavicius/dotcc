@@ -1,0 +1,191 @@
+{
+  "native_entry": {
+    "directory": "/home/marius/p/dotcc/edgcpp/build",
+    "command": "/usr/bin/c++ -DBACK_END_IS_C_GEN_BE=1 -DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1 -DDO_IL_LOWERING=1 -DLOWER_FIXED_POINT=1 -DLOWER_IFUNC=1 -DNEED_IL_DISPLAY=1 -DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1 -DUSE_CMAKE_DEFINES -I/home/marius/p/dotcc/edgcpp/build/src/includes -O3 -DNDEBUG -std=c++14 -Wall -Wwrite-strings -Wformat-security -pedantic -Werror=shadow -Wimplicit-fallthrough -Wconversion -Wsign-conversion -Wswitch-default -flto -fno-exceptions -fno-unwind-tables -fno-rtti -x c++ -o src/cmake/cpfe/CMakeFiles/cpfe.dir/__/__/const_ints.c.o -c /home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+    "file": "/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+    "output": "src/cmake/cpfe/CMakeFiles/cpfe.dir/__/__/const_ints.c.o"
+  },
+  "instrumentation_changes": [
+    "function/data sections",
+    "dead-section removal",
+    "test wrapper main",
+    "wrapper-only quote include path reproduces original source directory header lookup",
+    "isolated dynamic/default-linker oracle rather than full cpfe static/gold link; frontend initialization not linked"
+  ],
+  "sanitizer": [],
+  "commands": [
+    [
+      "/usr/bin/c++",
+      "-DBACK_END_IS_C_GEN_BE=1",
+      "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+      "-DDO_IL_LOWERING=1",
+      "-DLOWER_FIXED_POINT=1",
+      "-DLOWER_IFUNC=1",
+      "-DNEED_IL_DISPLAY=1",
+      "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+      "-DUSE_CMAKE_DEFINES",
+      "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++14",
+      "-Wall",
+      "-Wwrite-strings",
+      "-Wformat-security",
+      "-pedantic",
+      "-Werror=shadow",
+      "-Wimplicit-fallthrough",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wswitch-default",
+      "-flto",
+      "-fno-exceptions",
+      "-fno-unwind-tables",
+      "-fno-rtti",
+      "-x",
+      "c++",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-MD",
+      "-MF",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native/const_ints.d",
+      "-c",
+      "/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+      "-o",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native/const_ints.o"
+    ],
+    [
+      "/usr/bin/c++",
+      "-DBACK_END_IS_C_GEN_BE=1",
+      "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+      "-DDO_IL_LOWERING=1",
+      "-DLOWER_FIXED_POINT=1",
+      "-DLOWER_IFUNC=1",
+      "-DNEED_IL_DISPLAY=1",
+      "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+      "-DUSE_CMAKE_DEFINES",
+      "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++14",
+      "-Wall",
+      "-Wwrite-strings",
+      "-Wformat-security",
+      "-pedantic",
+      "-Werror=shadow",
+      "-Wimplicit-fallthrough",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wswitch-default",
+      "-flto",
+      "-fno-exceptions",
+      "-fno-unwind-tables",
+      "-fno-rtti",
+      "-x",
+      "c++",
+      "-iquote",
+      "/home/marius/p/dotcc/edgcpp/upstream/src",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-c",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/integer_oracle.cpp",
+      "-o",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native/wrapper.o"
+    ],
+    [
+      "/usr/bin/c++",
+      "-O3",
+      "-flto",
+      "-Wl,--gc-sections",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native/const_ints.o",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native/wrapper.o",
+      "-o",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native/integer-oracle"
+    ]
+  ],
+  "results": [
+    {
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "returncode": 1,
+      "output": "In file included from /home/marius/p/dotcc/edgcpp/upstream/src/basic_hdrs.h:34,\n                 from /home/marius/p/dotcc/edgcpp/upstream/src/fe_common.h:58,\n                 from /home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/integer_oracle.cpp:6:\n/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/integer_oracle.cpp: In function \u2018int main(int, char**)\u2019:\n/home/marius/p/dotcc/edgcpp/upstream/src/targ_def.h:1434:41: error: \u2018TARG_SIZEOF_UNSIGNED_LONG_ACCUM\u2019 was not declared in this scope; did you mean \u2018TARG_SIZEOF_UNSIGNED_LONG_ACCUM_win32\u2019?\n 1434 | #define TARG_SIZEOF_LARGEST_FIXED_POINT TARG_SIZEOF_UNSIGNED_LONG_ACCUM\n      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/home/marius/p/dotcc/edgcpp/upstream/src/targ_def.h:1455:40: note: in expansion of macro \u2018TARG_SIZEOF_LARGEST_FIXED_POINT\u2019\n 1455 | #define MAX_SIZEOF_LARGEST_FIXED_POINT TARG_SIZEOF_LARGEST_FIXED_POINT\n      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/integer_oracle.cpp:37:28: note: in expansion of macro \u2018MAX_SIZEOF_LARGEST_FIXED_POINT\u2019\n   37 |       FIXED_POINT_ALLOWED, MAX_SIZEOF_LARGEST_FIXED_POINT, CHECKING);\n      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+    }
+  ],
+  "source_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+  "wrapper_sha256": "a4a40858c64cfd54089468e06fc23a0e6981eb04bb42db281a38b2b2ec65f3cb",
+  "compiler_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+  "compiler_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+  "host": {
+    "system": "Linux",
+    "node": "marius-devtop",
+    "release": "6.8.0-138-generic",
+    "version": "#138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026",
+    "machine": "x86_64",
+    "processor": "x86_64"
+  },
+  "compiler_observations": [
+    {
+      "command": [
+        "/usr/bin/c++",
+        "--version"
+      ],
+      "returncode": 0,
+      "output": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    {
+      "command": [
+        "/usr/bin/c++",
+        "-dumpmachine"
+      ],
+      "returncode": 0,
+      "output": "x86_64-linux-gnu\n"
+    },
+    {
+      "command": [
+        "/usr/bin/c++",
+        "-dumpfullversion"
+      ],
+      "returncode": 0,
+      "output": "13.3.0\n"
+    }
+  ],
+  "effective_macro_dump": {
+    "command": [
+      "/usr/bin/c++",
+      "-DBACK_END_IS_C_GEN_BE=1",
+      "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+      "-DDO_IL_LOWERING=1",
+      "-DLOWER_FIXED_POINT=1",
+      "-DLOWER_IFUNC=1",
+      "-DNEED_IL_DISPLAY=1",
+      "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+      "-DUSE_CMAKE_DEFINES",
+      "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+      "-O3",
+      "-DNDEBUG",
+      "-std=c++14",
+      "-Wall",
+      "-Wwrite-strings",
+      "-Wformat-security",
+      "-pedantic",
+      "-Werror=shadow",
+      "-Wimplicit-fallthrough",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wswitch-default",
+      "-flto",
+      "-fno-exceptions",
+      "-fno-unwind-tables",
+      "-fno-rtti",
+      "-x",
+      "c++",
+      "-dM",
+      "-E",
+      "/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c"
+    ],
+    "returncode": 0,
+    "sha256": "87362eb346c8676da4ae464243efcc7a3c00a0c61fdc540b47b336261a50d310",
+    "stderr": ""
+  }
+}

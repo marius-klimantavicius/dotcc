@@ -1,0 +1,21 @@
+{
+  "counts": {
+    "conditional_directives": 44071,
+    "files": 283,
+    "include_directives": 1299,
+    "macro_definitions": 10715,
+    "routine_candidates": 16924,
+    "type_declaration_candidates": 7453,
+    "unresolved_regions": 8707
+  },
+  "limitations": [
+    "No preprocessing or guard evaluation",
+    "No overload/template/virtual/function-pointer resolution",
+    "Macros/types may be mistaken for calls",
+    "Inline/constructor/operator/macro-defined routines may be missed",
+    "End-comment/signature regions require exact manual confirmation",
+    "No completeness claim for enabled routines or the call graph"
+  ],
+  "schema": 1,
+  "status": "PARTIAL routine/type/dependency inventory; complete src-file enumeration"
+}

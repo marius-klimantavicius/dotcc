@@ -1,0 +1,25 @@
+{
+  "group": "arithmetic",
+  "commands": [
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle"
+    ],
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/IntegerLeaves",
+      "--stream"
+    ]
+  ],
+  "cases": 12546,
+  "native_rows": 12546,
+  "managed_rows": 12546,
+  "exit_codes": [
+    0,
+    0
+  ],
+  "passed": true,
+  "input_sha256": "a43101675d9cf4eb34244632a402cf9835574ea95c9e18d003be701a2a44937e",
+  "native_stdout_sha256": "b3d7ad43ea850df7426929d78a4841830b96558e61a0f046ea3122a358a3359e",
+  "managed_stdout_sha256": "b3d7ad43ea850df7426929d78a4841830b96558e61a0f046ea3122a358a3359e",
+  "mismatches_first_32": [],
+  "scope": "Bounded valid leaf argument contracts; raw limb values, error/comparison results, host bits, alias partition and post-call other mutation. Not frontend initialization or complete parity."
+}

@@ -1,0 +1,6567 @@
+{
+  "definitions": [
+    {
+      "line": 2,
+      "name": "ASM_FUNCTION_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 5,
+      "name": "DEFAULT_GNU_COMPATIBILITY",
+      "replacement": "0"
+    },
+    {
+      "line": 8,
+      "name": "DEFAULT_INSTANTIATION_MODE",
+      "replacement": "tim_none"
+    },
+    {
+      "line": 11,
+      "name": "DEFAULT_OUTPUT_MODE",
+      "replacement": "om_text"
+    },
+    {
+      "line": 14,
+      "name": "DEFAULT_INCOGNITO",
+      "replacement": "0"
+    },
+    {
+      "line": 17,
+      "name": "DEFAULT_MICROSOFT_MODE",
+      "replacement": "0"
+    },
+    {
+      "line": 20,
+      "name": "EXTRA_SOURCE_POSITIONS_IN_IL",
+      "replacement": "1"
+    },
+    {
+      "line": 23,
+      "name": "MACRO_INVOCATION_TREE_IN_IL",
+      "replacement": "0"
+    },
+    {
+      "line": 26,
+      "name": "UPC_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 29,
+      "name": "ABI_COMPATIBILITY_VERSION",
+      "replacement": "99999"
+    },
+    {
+      "line": 32,
+      "name": "DEFAULT_FLOATING_POINT_TEMPLATE_PARAMETERS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 35,
+      "name": "DEFAULT_USE_PREDEFINED_MACRO_FILE",
+      "replacement": "1"
+    },
+    {
+      "line": 38,
+      "name": "EXPORT_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 41,
+      "name": "DEFAULT_EXPORT_TEMPLATE_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 44,
+      "name": "REFLECTION_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 47,
+      "name": "DEFAULT_MODULES_ENABLED",
+      "replacement": "1"
+    },
+    {
+      "line": 50,
+      "name": "ASSUME_LITTLE_ENDIAN_IFC_MODULES",
+      "replacement": "1"
+    },
+    {
+      "line": 53,
+      "name": "TARG_MINIMUM_PACK_ALIGNMENT_linux_x86_64",
+      "replacement": "1"
+    },
+    {
+      "line": 56,
+      "name": "TARG_MAXIMUM_PACK_ALIGNMENT_linux_x86_64",
+      "replacement": "128"
+    },
+    {
+      "line": 59,
+      "name": "TARG_MINIMUM_PACK_ALIGNMENT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 62,
+      "name": "TARG_MAXIMUM_PACK_ALIGNMENT_linux_i686",
+      "replacement": "128"
+    },
+    {
+      "line": 65,
+      "name": "TARG_MINIMUM_PACK_ALIGNMENT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 68,
+      "name": "TARG_MAXIMUM_PACK_ALIGNMENT_win64",
+      "replacement": "128"
+    },
+    {
+      "line": 71,
+      "name": "TARG_MINIMUM_PACK_ALIGNMENT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 74,
+      "name": "TARG_MAXIMUM_PACK_ALIGNMENT_win32",
+      "replacement": "128"
+    },
+    {
+      "line": 77,
+      "name": "__ANSIC__",
+      "replacement": "1"
+    },
+    {
+      "line": 80,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT",
+      "replacement": "0"
+    },
+    {
+      "line": 83,
+      "name": "TARG_SETJMP_FUNC",
+      "replacement": "\"_setjmp\""
+    },
+    {
+      "line": 86,
+      "name": "EMBEDDED_C_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 89,
+      "name": "DEFAULT_EMBEDDED_C_ENABLED",
+      "replacement": "0"
+    },
+    {
+      "line": 92,
+      "name": "FIXED_POINT_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 95,
+      "name": "TARG_WINT_T_INT_KIND",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 98,
+      "name": "MAKE_ALL_FUNCTIONS_UNPROTOTYPED",
+      "replacement": "0"
+    },
+    {
+      "line": 101,
+      "name": "DESIGNATED_INITIALIZER_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 104,
+      "name": "RUNTIME_USES_NAMESPACES",
+      "replacement": "1"
+    },
+    {
+      "line": 107,
+      "name": "BUILTIN_VA_LIST_OVERRIDE_TYPE_NAME",
+      "replacement": "\"__gnuc_va_list\""
+    },
+    {
+      "line": 110,
+      "name": "DEFAULT_PASS_STDARG_REFERENCES_TO_GENERATED_CODE",
+      "replacement": "1"
+    },
+    {
+      "line": 113,
+      "name": "TARG_EXTERNAL_NAMES_GET_UNDERSCORE_ADDED",
+      "replacement": "0"
+    },
+    {
+      "line": 116,
+      "name": "IGNORE_CARRIAGE_RETURN_IN_SOURCE",
+      "replacement": "1"
+    },
+    {
+      "line": 119,
+      "name": "GNU_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 122,
+      "name": "GNU_FUNCTION_MULTIVERSIONING",
+      "replacement": "1"
+    },
+    {
+      "line": 125,
+      "name": "GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 128,
+      "name": "GNU_VISIBILITY_ATTRIBUTE_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 131,
+      "name": "RECORD_RAW_ASM_OPERAND_DESCRIPTIONS",
+      "replacement": "0"
+    },
+    {
+      "line": 134,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 137,
+      "name": "ALLOW_NON_INT_BIT_FIELD_BASE_TYPE_IN_GENERATED_C",
+      "replacement": "1"
+    },
+    {
+      "line": 140,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED",
+      "replacement": "0"
+    },
+    {
+      "line": 143,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED",
+      "replacement": "1"
+    },
+    {
+      "line": 146,
+      "name": "LONG_LONG_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 149,
+      "name": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER",
+      "replacement": "0"
+    },
+    {
+      "line": 152,
+      "name": "TYPE_FOR_AN_INTEGER_VALUE",
+      "replacement": "unsigned long long"
+    },
+    {
+      "line": 155,
+      "name": "TYPE_FOR_A_SIGNED_INTEGER_VALUE",
+      "replacement": "long long"
+    },
+    {
+      "line": 158,
+      "name": "MAX_INTEGER_VALUE",
+      "replacement": "9223372036854775807LL"
+    },
+    {
+      "line": 161,
+      "name": "MIN_INTEGER_VALUE",
+      "replacement": "(-MAX_INTEGER_VALUE-1)"
+    },
+    {
+      "line": 164,
+      "name": "MAX_UNSIGNED_INTEGER_VALUE",
+      "replacement": "18446744073709551615ULL"
+    },
+    {
+      "line": 167,
+      "name": "FP_LONG_DOUBLE_IS_80BIT_EXTENDED",
+      "replacement": "1"
+    },
+    {
+      "line": 170,
+      "name": "LINKER_CAN_DISCARD_DUPLICATE_DEFINITIONS",
+      "replacement": "1"
+    },
+    {
+      "line": 173,
+      "name": "USE_HOST_FP_CONVERSION_ROUTINES",
+      "replacement": "0"
+    },
+    {
+      "line": 176,
+      "name": "INSTANTIATE_EXTERN_INLINE",
+      "replacement": "0"
+    },
+    {
+      "line": 179,
+      "name": "TYPE_FOR_TARG_ALIGNMENT",
+      "replacement": "unsigned short"
+    },
+    {
+      "line": 182,
+      "name": "TARG_MAXIMUM_PACK_ALIGNMENT",
+      "replacement": "32768"
+    },
+    {
+      "line": 185,
+      "name": "ALLOW_CPPCLI_WITH_LOWERING",
+      "replacement": "1"
+    },
+    {
+      "line": 188,
+      "name": "EDG_TEST_VERSION",
+      "replacement": "1"
+    },
+    {
+      "line": 191,
+      "name": "IA64_ABI",
+      "replacement": "1"
+    },
+    {
+      "line": 194,
+      "name": "HANDLE_VIRTUAL_BASES_IN_COMPLETE_CTOR_DTORS",
+      "replacement": "1"
+    },
+    {
+      "line": 197,
+      "name": "HANDLE_VIRTUAL_BASES_IN_SUBOBJECT_CTOR_DTORS",
+      "replacement": "1"
+    },
+    {
+      "line": 200,
+      "name": "GNU_VECTOR_TYPES_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 203,
+      "name": "RISCV_VECTOR_BUILTINS_ENABLED",
+      "replacement": "1"
+    },
+    {
+      "line": 206,
+      "name": "ASSUME_THIS_CANNOT_BE_NULL_IN_CONDITIONAL_OPERATORS",
+      "replacement": "0"
+    },
+    {
+      "line": 209,
+      "name": "TYPE_FOR_A_FIXED_POINT_VALUE",
+      "replacement": "an_integer_value"
+    },
+    {
+      "line": 212,
+      "name": "UNICODE_SOURCE_SUPPORTED",
+      "replacement": "1"
+    },
+    {
+      "line": 215,
+      "name": "FREE_MEMORY_REGIONS_EARLY",
+      "replacement": "1"
+    },
+    {
+      "line": 218,
+      "name": "KEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED",
+      "replacement": "1"
+    },
+    {
+      "line": 221,
+      "name": "COROUTINE_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 224,
+      "name": "ONLY_MANGLE_TYPES_NEEDED_FOR_EXTERNAL_NAMES",
+      "replacement": "0"
+    },
+    {
+      "line": 227,
+      "name": "CPPCLI_PORTABLE_ASSEMBLY_PATH",
+      "replacement": "\"/home/marius/p/dotcc/edgcpp/upstream/ms_assemblies\""
+    },
+    {
+      "line": 230,
+      "name": "TIE_DEFAULT_GNU_ABI_VERSION_TO_GNU_VERSION",
+      "replacement": "1"
+    },
+    {
+      "line": 233,
+      "name": "MIN_GNU_VERSION",
+      "replacement": "30200"
+    },
+    {
+      "line": 236,
+      "name": "FLOAT128_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 239,
+      "name": "USE_FLOAT128_FOR_HOST_FP_VALUE",
+      "replacement": "1"
+    },
+    {
+      "line": 242,
+      "name": "THREAD_LOCAL_STORAGE_SPECIFIER_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 245,
+      "name": "TYPE_FOR_PREFIX_ENTRY_NUMBER",
+      "replacement": "unsigned long long"
+    },
+    {
+      "line": 248,
+      "name": "TARG_SIZEOF_LONG",
+      "replacement": "8"
+    },
+    {
+      "line": 251,
+      "name": "TARG_ALIGNOF_LONG",
+      "replacement": "8"
+    },
+    {
+      "line": 254,
+      "name": "TARG_SIZEOF_POINTER",
+      "replacement": "8"
+    },
+    {
+      "line": 257,
+      "name": "TARG_ALIGNOF_POINTER",
+      "replacement": "8"
+    },
+    {
+      "line": 260,
+      "name": "TARG_SIZEOF_DOUBLE",
+      "replacement": "8"
+    },
+    {
+      "line": 263,
+      "name": "TARG_SIZEOF_LONG_DOUBLE",
+      "replacement": "16"
+    },
+    {
+      "line": 266,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE",
+      "replacement": "16"
+    },
+    {
+      "line": 269,
+      "name": "TARG_WCHAR_T_INT_KIND",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 272,
+      "name": "TARG_SIZE_T_INT_KIND",
+      "replacement": "((an_integer_kind)ik_unsigned_long)"
+    },
+    {
+      "line": 275,
+      "name": "TARG_PTRDIFF_T_INT_KIND",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 278,
+      "name": "HOST_ALIGNMENT_REQUIRED",
+      "replacement": "8"
+    },
+    {
+      "line": 281,
+      "name": "TYPE_FOR_AN_FP_VALUE_PART",
+      "replacement": "unsigned int"
+    },
+    {
+      "line": 284,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS",
+      "replacement": "25"
+    },
+    {
+      "line": 287,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 290,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES",
+      "replacement": "0"
+    },
+    {
+      "line": 293,
+      "name": "TARG_ALIGNOF_DOUBLE",
+      "replacement": "8"
+    },
+    {
+      "line": 296,
+      "name": "TARG_ALIGNOF_LONG_LONG",
+      "replacement": "8"
+    },
+    {
+      "line": 299,
+      "name": "INT128_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 302,
+      "name": "LEGACY_TARGET_CONFIGURATION_NAME",
+      "replacement": "\"linux_x86_64\""
+    },
+    {
+      "line": 305,
+      "name": "TARG_ALIGNOF_DOUBLE_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 308,
+      "name": "TARG_ALIGNOF_FAR_POINTER_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 311,
+      "name": "TARG_ALIGNOF_FLOAT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 314,
+      "name": "TARG_ALIGNOF_FLOAT128_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 317,
+      "name": "TARG_ALIGNOF_FLOAT80_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 320,
+      "name": "TARG_ALIGNOF_INT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 323,
+      "name": "TARG_ALIGNOF_INT128_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 326,
+      "name": "TARG_ALIGNOF_LONG_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 329,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 332,
+      "name": "TARG_ALIGNOF_LONG_LONG_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 335,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 338,
+      "name": "TARG_ALIGNOF_POINTER_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 341,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 344,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 347,
+      "name": "TARG_ALIGNOF_SHORT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 350,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 353,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 356,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 359,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 362,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 365,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 368,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 371,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 374,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 377,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 380,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 383,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 386,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 389,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 392,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 395,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_linux_i686",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 398,
+      "name": "TARG_BOOL_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 401,
+      "name": "TARG_C_BOOL_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 404,
+      "name": "TARG_CHAR16_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 407,
+      "name": "TARG_CHAR32_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 410,
+      "name": "TARG_CHAR_BIT_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 413,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 416,
+      "name": "TARG_DBL_MANT_DIG_linux_i686",
+      "replacement": "53"
+    },
+    {
+      "line": 419,
+      "name": "TARG_DBL_MAX_EXP_linux_i686",
+      "replacement": "1024"
+    },
+    {
+      "line": 422,
+      "name": "TARG_DBL_MIN_EXP_linux_i686",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 425,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 428,
+      "name": "TARG_DELTA_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 431,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 434,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 437,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 440,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 443,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 446,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 449,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 452,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 455,
+      "name": "TARG_FLT_MANT_DIG_linux_i686",
+      "replacement": "24"
+    },
+    {
+      "line": 458,
+      "name": "TARG_FLT_MAX_EXP_linux_i686",
+      "replacement": "128"
+    },
+    {
+      "line": 461,
+      "name": "TARG_FLT_MIN_EXP_linux_i686",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 464,
+      "name": "TARG_FLT128_MANT_DIG_linux_i686",
+      "replacement": "113"
+    },
+    {
+      "line": 467,
+      "name": "TARG_FLT128_MAX_EXP_linux_i686",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 470,
+      "name": "TARG_FLT128_MIN_EXP_linux_i686",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 473,
+      "name": "TARG_FLT80_MANT_DIG_linux_i686",
+      "replacement": "64"
+    },
+    {
+      "line": 476,
+      "name": "TARG_FLT80_MAX_EXP_linux_i686",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 479,
+      "name": "TARG_FLT80_MIN_EXP_linux_i686",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 482,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 485,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_linux_i686",
+      "replacement": "15"
+    },
+    {
+      "line": 488,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_linux_i686",
+      "replacement": "15"
+    },
+    {
+      "line": 491,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_linux_i686",
+      "replacement": "31"
+    },
+    {
+      "line": 494,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_linux_i686",
+      "replacement": "31"
+    },
+    {
+      "line": 497,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_linux_i686",
+      "replacement": "7"
+    },
+    {
+      "line": 500,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_linux_i686",
+      "replacement": "7"
+    },
+    {
+      "line": 503,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 506,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 509,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_linux_i686",
+      "replacement": "32"
+    },
+    {
+      "line": 512,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_linux_i686",
+      "replacement": "32"
+    },
+    {
+      "line": 515,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 518,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 521,
+      "name": "TARG_HAS_SIGNED_CHARS_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 524,
+      "name": "TARG_HOST_STRING_CHAR_BIT_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 527,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 530,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 533,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 536,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 539,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 542,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 545,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 548,
+      "name": "TARG_INT_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 551,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 554,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 557,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_linux_i686",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 560,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 563,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_linux_i686",
+      "replacement": "39"
+    },
+    {
+      "line": 566,
+      "name": "TARG_SETJMP_FUNC_linux_i686",
+      "replacement": "\"_setjmp\""
+    },
+    {
+      "line": 569,
+      "name": "TARG_LDBL_MANT_DIG_linux_i686",
+      "replacement": "64"
+    },
+    {
+      "line": 572,
+      "name": "TARG_LDBL_MAX_EXP_linux_i686",
+      "replacement": "16384"
+    },
+    {
+      "line": 575,
+      "name": "TARG_LDBL_MIN_EXP_linux_i686",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 578,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_linux_i686",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 581,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_linux_i686",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 584,
+      "name": "TARG_LITTLE_ENDIAN_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 587,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 590,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 593,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 596,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 599,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 602,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 605,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 608,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 611,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 614,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 617,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 620,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 623,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 626,
+      "name": "TARG_POINTER_MODE_linux_i686",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 629,
+      "name": "TARG_PTRDIFF_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 632,
+      "name": "TARG_REGION_NUMBER_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 635,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 638,
+      "name": "TARG_REUSE_TAIL_PADDING_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 641,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 644,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 647,
+      "name": "TARG_SIZEOF_DOUBLE_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 650,
+      "name": "TARG_SIZEOF_FAR_POINTER_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 653,
+      "name": "TARG_SIZEOF_FLOAT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 656,
+      "name": "TARG_SIZEOF_FLOAT128_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 659,
+      "name": "TARG_SIZEOF_FLOAT80_linux_i686",
+      "replacement": "12"
+    },
+    {
+      "line": 662,
+      "name": "TARG_SIZEOF_INT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 665,
+      "name": "TARG_SIZEOF_INT128_linux_i686",
+      "replacement": "16"
+    },
+    {
+      "line": 668,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 671,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 674,
+      "name": "TARG_SIZEOF_LONG_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 677,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_linux_i686",
+      "replacement": "12"
+    },
+    {
+      "line": 680,
+      "name": "TARG_SIZEOF_LONG_LONG_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 683,
+      "name": "TARG_SIZEOF_NEAR_POINTER_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 686,
+      "name": "TARG_SIZEOF_POINTER_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 689,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 692,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_linux_i686",
+      "replacement": "(4+4)"
+    },
+    {
+      "line": 695,
+      "name": "TARG_SIZEOF_SHORT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 698,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 701,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 704,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 707,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 710,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 713,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 716,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 719,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 722,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_linux_i686",
+      "replacement": "8"
+    },
+    {
+      "line": 725,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 728,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_linux_i686",
+      "replacement": "2"
+    },
+    {
+      "line": 731,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 734,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_linux_i686",
+      "replacement": "4"
+    },
+    {
+      "line": 737,
+      "name": "TARG_SIZE_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 740,
+      "name": "TARG_SIZE_T_MAX_linux_i686",
+      "replacement": "((a_targ_size_t)(2147483647 * 2U + 1U))"
+    },
+    {
+      "line": 743,
+      "name": "TARG_SSIZE_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 746,
+      "name": "TARG_SUPPORTS_ARM32_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 749,
+      "name": "TARG_SUPPORTS_ARM64_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 752,
+      "name": "TARG_SUPPORTS_RISCV32_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 755,
+      "name": "TARG_SUPPORTS_RISCV64_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 758,
+      "name": "TARG_SUPPORTS_X86_64_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 761,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 764,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_i686",
+      "replacement": "0"
+    },
+    {
+      "line": 767,
+      "name": "TARG_UNWIND_WORD_MODE_linux_i686",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 770,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 773,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 776,
+      "name": "TARG_VAR_HANDLE_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 779,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 782,
+      "name": "TARG_WCHAR_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 785,
+      "name": "TARG_WINT_T_INT_KIND_linux_i686",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 788,
+      "name": "TARG_WORD_MODE_linux_i686",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 791,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_i686",
+      "replacement": "1"
+    },
+    {
+      "line": 794,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_linux_i686",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 797,
+      "name": "TARGET_CONFIGURATION_1",
+      "replacement": "linux_i686"
+    },
+    {
+      "line": 800,
+      "name": "TARG_ALIGNOF_DOUBLE_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 803,
+      "name": "TARG_ALIGNOF_FAR_POINTER_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 806,
+      "name": "TARG_ALIGNOF_FLOAT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 809,
+      "name": "TARG_ALIGNOF_FLOAT128_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 812,
+      "name": "TARG_ALIGNOF_FLOAT80_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 815,
+      "name": "TARG_ALIGNOF_INT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 818,
+      "name": "TARG_ALIGNOF_INT128_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 821,
+      "name": "TARG_ALIGNOF_LONG_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 824,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 827,
+      "name": "TARG_ALIGNOF_LONG_LONG_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 830,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 833,
+      "name": "TARG_ALIGNOF_POINTER_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 836,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 839,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 842,
+      "name": "TARG_ALIGNOF_PTR_TO_VIRTUAL_BASE_CLASS_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 845,
+      "name": "TARG_ALIGNOF_SHORT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 848,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 851,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 854,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 857,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 860,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 863,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 866,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 869,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 872,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 875,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 878,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 881,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 884,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 887,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 890,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 893,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_win64",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 896,
+      "name": "TARG_BOOL_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 899,
+      "name": "TARG_C_BOOL_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 902,
+      "name": "TARG_CHAR16_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 905,
+      "name": "TARG_CHAR32_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 908,
+      "name": "TARG_CHAR_BIT_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 911,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 914,
+      "name": "TARG_DBL_MANT_DIG_win64",
+      "replacement": "53"
+    },
+    {
+      "line": 917,
+      "name": "TARG_DBL_MAX_EXP_win64",
+      "replacement": "1024"
+    },
+    {
+      "line": 920,
+      "name": "TARG_DBL_MIN_EXP_win64",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 923,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 926,
+      "name": "TARG_DELTA_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 929,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 932,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 935,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 938,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 941,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 944,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 947,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 950,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 953,
+      "name": "TARG_FLT_MANT_DIG_win64",
+      "replacement": "24"
+    },
+    {
+      "line": 956,
+      "name": "TARG_FLT_MAX_EXP_win64",
+      "replacement": "128"
+    },
+    {
+      "line": 959,
+      "name": "TARG_FLT_MIN_EXP_win64",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 962,
+      "name": "TARG_FLT128_MANT_DIG_win64",
+      "replacement": "113"
+    },
+    {
+      "line": 965,
+      "name": "TARG_FLT128_MAX_EXP_win64",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 968,
+      "name": "TARG_FLT128_MIN_EXP_win64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 971,
+      "name": "TARG_FLT80_MANT_DIG_win64",
+      "replacement": "64"
+    },
+    {
+      "line": 974,
+      "name": "TARG_FLT80_MAX_EXP_win64",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 977,
+      "name": "TARG_FLT80_MIN_EXP_win64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 980,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 983,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_win64",
+      "replacement": "15"
+    },
+    {
+      "line": 986,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_win64",
+      "replacement": "15"
+    },
+    {
+      "line": 989,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_win64",
+      "replacement": "31"
+    },
+    {
+      "line": 992,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_win64",
+      "replacement": "31"
+    },
+    {
+      "line": 995,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_win64",
+      "replacement": "7"
+    },
+    {
+      "line": 998,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_win64",
+      "replacement": "7"
+    },
+    {
+      "line": 1001,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1004,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1007,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_win64",
+      "replacement": "32"
+    },
+    {
+      "line": 1010,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_win64",
+      "replacement": "32"
+    },
+    {
+      "line": 1013,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1016,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1019,
+      "name": "TARG_HAS_SIGNED_CHARS_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1022,
+      "name": "TARG_HOST_STRING_CHAR_BIT_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1025,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1028,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1031,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1034,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1037,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1040,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1043,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_long_long)"
+    },
+    {
+      "line": 1046,
+      "name": "TARG_INT_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1049,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1052,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1055,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_win64",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 1058,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 1061,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_win64",
+      "replacement": "39"
+    },
+    {
+      "line": 1064,
+      "name": "TARG_SETJMP_FUNC_win64",
+      "replacement": "\"setjmp\""
+    },
+    {
+      "line": 1067,
+      "name": "TARG_LDBL_MANT_DIG_win64",
+      "replacement": "53"
+    },
+    {
+      "line": 1070,
+      "name": "TARG_LDBL_MAX_EXP_win64",
+      "replacement": "1024"
+    },
+    {
+      "line": 1073,
+      "name": "TARG_LDBL_MIN_EXP_win64",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 1076,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_win64",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1079,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_win64",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1082,
+      "name": "TARG_LITTLE_ENDIAN_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1085,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1088,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1091,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1094,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1097,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1100,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1103,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1106,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_win64",
+      "replacement": "BACK_END_IS_CP_GEN_BE"
+    },
+    {
+      "line": 1109,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1112,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1115,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1118,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1121,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1124,
+      "name": "TARG_POINTER_MODE_win64",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1127,
+      "name": "TARG_PTRDIFF_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_long_long)"
+    },
+    {
+      "line": 1130,
+      "name": "TARG_REGION_NUMBER_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1133,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 1136,
+      "name": "TARG_REUSE_TAIL_PADDING_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1139,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1142,
+      "name": "TARG_RUNTIME_ELEM_COUNT_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_long_long)"
+    },
+    {
+      "line": 1145,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1148,
+      "name": "TARG_SIZEOF_DOUBLE_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1151,
+      "name": "TARG_SIZEOF_FAR_POINTER_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1154,
+      "name": "TARG_SIZEOF_FLOAT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1157,
+      "name": "TARG_SIZEOF_FLOAT128_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1160,
+      "name": "TARG_SIZEOF_FLOAT80_win64",
+      "replacement": "12"
+    },
+    {
+      "line": 1163,
+      "name": "TARG_SIZEOF_INT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1166,
+      "name": "TARG_SIZEOF_INT128_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1169,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1172,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1175,
+      "name": "TARG_SIZEOF_LONG_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1178,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1181,
+      "name": "TARG_SIZEOF_LONG_LONG_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1184,
+      "name": "TARG_SIZEOF_NEAR_POINTER_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1187,
+      "name": "TARG_SIZEOF_POINTER_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1190,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1193,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_win64",
+      "replacement": "16"
+    },
+    {
+      "line": 1196,
+      "name": "TARG_SIZEOF_PTR_TO_VIRTUAL_BASE_CLASS_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1199,
+      "name": "TARG_SIZEOF_SHORT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1202,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1205,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1208,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1211,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1214,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1217,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1220,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1223,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1226,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1229,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1232,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_win64",
+      "replacement": "2"
+    },
+    {
+      "line": 1235,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1238,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_win64",
+      "replacement": "8"
+    },
+    {
+      "line": 1241,
+      "name": "TARG_SIZE_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_long_long)"
+    },
+    {
+      "line": 1244,
+      "name": "TARG_SIZE_T_MAX_win64",
+      "replacement": "((a_targ_size_t)(9223372036854775807LL * 2ULL + 1))"
+    },
+    {
+      "line": 1247,
+      "name": "TARG_SSIZE_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_long_long)"
+    },
+    {
+      "line": 1250,
+      "name": "TARG_SUPPORTS_ARM32_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1253,
+      "name": "TARG_SUPPORTS_ARM64_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1256,
+      "name": "TARG_SUPPORTS_RISCV32_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1259,
+      "name": "TARG_SUPPORTS_RISCV64_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1262,
+      "name": "TARG_SUPPORTS_X86_64_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1265,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1268,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_win64",
+      "replacement": "0"
+    },
+    {
+      "line": 1271,
+      "name": "TARG_UNWIND_WORD_MODE_win64",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1274,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1277,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1280,
+      "name": "TARG_VAR_HANDLE_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1283,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 1286,
+      "name": "TARG_WCHAR_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1289,
+      "name": "TARG_WINT_T_INT_KIND_win64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1292,
+      "name": "TARG_WORD_MODE_win64",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1295,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_win64",
+      "replacement": "1"
+    },
+    {
+      "line": 1298,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_win64",
+      "replacement": "4"
+    },
+    {
+      "line": 1301,
+      "name": "TARGET_CONFIGURATION_2",
+      "replacement": "win64"
+    },
+    {
+      "line": 1304,
+      "name": "TARG_ALIGNOF_DOUBLE_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1307,
+      "name": "TARG_ALIGNOF_FAR_POINTER_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1310,
+      "name": "TARG_ALIGNOF_FLOAT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1313,
+      "name": "TARG_ALIGNOF_FLOAT128_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1316,
+      "name": "TARG_ALIGNOF_FLOAT80_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1319,
+      "name": "TARG_ALIGNOF_INT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1322,
+      "name": "TARG_ALIGNOF_INT128_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1325,
+      "name": "TARG_ALIGNOF_LONG_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1328,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1331,
+      "name": "TARG_ALIGNOF_LONG_LONG_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1334,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1337,
+      "name": "TARG_ALIGNOF_POINTER_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1340,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1343,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1346,
+      "name": "TARG_ALIGNOF_PTR_TO_VIRTUAL_BASE_CLASS_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1349,
+      "name": "TARG_ALIGNOF_SHORT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1352,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1355,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1358,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1361,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1364,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1367,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1370,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1373,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1376,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1379,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1382,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1385,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1388,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1391,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1394,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1397,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_win32",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 1400,
+      "name": "TARG_BOOL_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 1403,
+      "name": "TARG_C_BOOL_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 1406,
+      "name": "TARG_CHAR16_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1409,
+      "name": "TARG_CHAR32_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 1412,
+      "name": "TARG_CHAR_BIT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1415,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1418,
+      "name": "TARG_DBL_MANT_DIG_win32",
+      "replacement": "53"
+    },
+    {
+      "line": 1421,
+      "name": "TARG_DBL_MAX_EXP_win32",
+      "replacement": "1024"
+    },
+    {
+      "line": 1424,
+      "name": "TARG_DBL_MIN_EXP_win32",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 1427,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1430,
+      "name": "TARG_DELTA_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 1433,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1436,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1439,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1442,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1445,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1448,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1451,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1454,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1457,
+      "name": "TARG_FLT_MANT_DIG_win32",
+      "replacement": "24"
+    },
+    {
+      "line": 1460,
+      "name": "TARG_FLT_MAX_EXP_win32",
+      "replacement": "128"
+    },
+    {
+      "line": 1463,
+      "name": "TARG_FLT_MIN_EXP_win32",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 1466,
+      "name": "TARG_FLT128_MANT_DIG_win32",
+      "replacement": "113"
+    },
+    {
+      "line": 1469,
+      "name": "TARG_FLT128_MAX_EXP_win32",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 1472,
+      "name": "TARG_FLT128_MIN_EXP_win32",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 1475,
+      "name": "TARG_FLT80_MANT_DIG_win32",
+      "replacement": "64"
+    },
+    {
+      "line": 1478,
+      "name": "TARG_FLT80_MAX_EXP_win32",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 1481,
+      "name": "TARG_FLT80_MIN_EXP_win32",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 1484,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1487,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_win32",
+      "replacement": "15"
+    },
+    {
+      "line": 1490,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_win32",
+      "replacement": "15"
+    },
+    {
+      "line": 1493,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_win32",
+      "replacement": "31"
+    },
+    {
+      "line": 1496,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_win32",
+      "replacement": "31"
+    },
+    {
+      "line": 1499,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_win32",
+      "replacement": "7"
+    },
+    {
+      "line": 1502,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_win32",
+      "replacement": "7"
+    },
+    {
+      "line": 1505,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1508,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1511,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_win32",
+      "replacement": "32"
+    },
+    {
+      "line": 1514,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_win32",
+      "replacement": "32"
+    },
+    {
+      "line": 1517,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1520,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1523,
+      "name": "TARG_HAS_SIGNED_CHARS_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1526,
+      "name": "TARG_HOST_STRING_CHAR_BIT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1529,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1532,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1535,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1538,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1541,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1544,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1547,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 1550,
+      "name": "TARG_INT_FIELD_ALIGNMENT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1553,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1556,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1559,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_win32",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 1562,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 1565,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1568,
+      "name": "TARG_SETJMP_FUNC_win32",
+      "replacement": "\"setjmp\""
+    },
+    {
+      "line": 1571,
+      "name": "TARG_LDBL_MANT_DIG_win32",
+      "replacement": "53"
+    },
+    {
+      "line": 1574,
+      "name": "TARG_LDBL_MAX_EXP_win32",
+      "replacement": "1024"
+    },
+    {
+      "line": 1577,
+      "name": "TARG_LDBL_MIN_EXP_win32",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 1580,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_win32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1583,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_win32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1586,
+      "name": "TARG_LITTLE_ENDIAN_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1589,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1592,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1595,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1598,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1601,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1604,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1607,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1610,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_win32",
+      "replacement": "BACK_END_IS_CP_GEN_BE"
+    },
+    {
+      "line": 1613,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1616,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1619,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1622,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1625,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_win32",
+      "replacement": "( !1)"
+    },
+    {
+      "line": 1628,
+      "name": "TARG_POINTER_MODE_win32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1631,
+      "name": "TARG_PTRDIFF_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 1634,
+      "name": "TARG_REGION_NUMBER_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1637,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 1640,
+      "name": "TARG_REUSE_TAIL_PADDING_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1643,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1646,
+      "name": "TARG_RUNTIME_ELEM_COUNT_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 1649,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1652,
+      "name": "TARG_SIZEOF_DOUBLE_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1655,
+      "name": "TARG_SIZEOF_FAR_POINTER_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1658,
+      "name": "TARG_SIZEOF_FLOAT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1661,
+      "name": "TARG_SIZEOF_FLOAT128_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1664,
+      "name": "TARG_SIZEOF_FLOAT80_win32",
+      "replacement": "12"
+    },
+    {
+      "line": 1667,
+      "name": "TARG_SIZEOF_INT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1670,
+      "name": "TARG_SIZEOF_INT128_win32",
+      "replacement": "16"
+    },
+    {
+      "line": 1673,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1676,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1679,
+      "name": "TARG_SIZEOF_LONG_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1682,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1685,
+      "name": "TARG_SIZEOF_LONG_LONG_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1688,
+      "name": "TARG_SIZEOF_NEAR_POINTER_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1691,
+      "name": "TARG_SIZEOF_POINTER_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1694,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1697,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_win32",
+      "replacement": "((((2*2+4-1)/4)+1)* 4)"
+    },
+    {
+      "line": 1700,
+      "name": "TARG_SIZEOF_PTR_TO_VIRTUAL_BASE_CLASS_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1703,
+      "name": "TARG_SIZEOF_SHORT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1706,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1709,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1712,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1715,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1718,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1721,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1724,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1727,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1730,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_win32",
+      "replacement": "8"
+    },
+    {
+      "line": 1733,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1736,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_win32",
+      "replacement": "2"
+    },
+    {
+      "line": 1739,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1742,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_win32",
+      "replacement": "4"
+    },
+    {
+      "line": 1745,
+      "name": "TARG_SIZE_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 1748,
+      "name": "TARG_SIZE_T_MAX_win32",
+      "replacement": "((a_targ_size_t)0xffffffff)"
+    },
+    {
+      "line": 1751,
+      "name": "TARG_SSIZE_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 1754,
+      "name": "TARG_SUPPORTS_ARM32_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1757,
+      "name": "TARG_SUPPORTS_ARM64_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1760,
+      "name": "TARG_SUPPORTS_RISCV32_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1763,
+      "name": "TARG_SUPPORTS_RISCV64_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1766,
+      "name": "TARG_SUPPORTS_X86_64_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1769,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_win32",
+      "replacement": "0"
+    },
+    {
+      "line": 1772,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1775,
+      "name": "TARG_UNWIND_WORD_MODE_win32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1778,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1781,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1784,
+      "name": "TARG_VAR_HANDLE_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1787,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 1790,
+      "name": "TARG_WCHAR_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1793,
+      "name": "TARG_WINT_T_INT_KIND_win32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1796,
+      "name": "TARG_WORD_MODE_win32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 1799,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_win32",
+      "replacement": "1"
+    },
+    {
+      "line": 1802,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_win32",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 1805,
+      "name": "TARGET_CONFIGURATION_3",
+      "replacement": "win32"
+    },
+    {
+      "line": 1808,
+      "name": "TARG_ALIGNOF_DOUBLE_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1811,
+      "name": "TARG_ALIGNOF_FAR_POINTER_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1814,
+      "name": "TARG_ALIGNOF_FLOAT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1817,
+      "name": "TARG_ALIGNOF_FLOAT128_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1820,
+      "name": "TARG_ALIGNOF_FLOAT80_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1823,
+      "name": "TARG_ALIGNOF_INT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1826,
+      "name": "TARG_ALIGNOF_INT128_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1829,
+      "name": "TARG_ALIGNOF_LONG_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1832,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1835,
+      "name": "TARG_ALIGNOF_LONG_LONG_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1838,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 1841,
+      "name": "TARG_ALIGNOF_POINTER_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1844,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1847,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1850,
+      "name": "TARG_ALIGNOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1853,
+      "name": "TARG_ALIGNOF_SHORT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 1856,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1859,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 1862,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1865,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1868,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 1871,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1874,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1877,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 1880,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1883,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1886,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 1889,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1892,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1895,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1898,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1901,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_linux_aarch64",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 1904,
+      "name": "TARG_BOOL_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 1907,
+      "name": "TARG_C_BOOL_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 1910,
+      "name": "TARG_CHAR16_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 1913,
+      "name": "TARG_CHAR32_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 1916,
+      "name": "TARG_CHAR_BIT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1919,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1922,
+      "name": "TARG_DBL_MANT_DIG_linux_aarch64",
+      "replacement": "53"
+    },
+    {
+      "line": 1925,
+      "name": "TARG_DBL_MAX_EXP_linux_aarch64",
+      "replacement": "1024"
+    },
+    {
+      "line": 1928,
+      "name": "TARG_DBL_MIN_EXP_linux_aarch64",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 1931,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1934,
+      "name": "TARG_DELTA_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 1937,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 1940,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 1943,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 1946,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 1949,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1952,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 1955,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1958,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 1961,
+      "name": "TARG_FLT_MANT_DIG_linux_aarch64",
+      "replacement": "24"
+    },
+    {
+      "line": 1964,
+      "name": "TARG_FLT_MAX_EXP_linux_aarch64",
+      "replacement": "128"
+    },
+    {
+      "line": 1967,
+      "name": "TARG_FLT_MIN_EXP_linux_aarch64",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 1970,
+      "name": "TARG_FLT128_MANT_DIG_linux_aarch64",
+      "replacement": "113"
+    },
+    {
+      "line": 1973,
+      "name": "TARG_FLT128_MAX_EXP_linux_aarch64",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 1976,
+      "name": "TARG_FLT128_MIN_EXP_linux_aarch64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 1979,
+      "name": "TARG_FLT80_MANT_DIG_linux_aarch64",
+      "replacement": "64"
+    },
+    {
+      "line": 1982,
+      "name": "TARG_FLT80_MAX_EXP_linux_aarch64",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 1985,
+      "name": "TARG_FLT80_MIN_EXP_linux_aarch64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 1988,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 1991,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_linux_aarch64",
+      "replacement": "15"
+    },
+    {
+      "line": 1994,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_linux_aarch64",
+      "replacement": "15"
+    },
+    {
+      "line": 1997,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_linux_aarch64",
+      "replacement": "31"
+    },
+    {
+      "line": 2000,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_linux_aarch64",
+      "replacement": "31"
+    },
+    {
+      "line": 2003,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_linux_aarch64",
+      "replacement": "7"
+    },
+    {
+      "line": 2006,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_linux_aarch64",
+      "replacement": "7"
+    },
+    {
+      "line": 2009,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2012,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2015,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_linux_aarch64",
+      "replacement": "32"
+    },
+    {
+      "line": 2018,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_linux_aarch64",
+      "replacement": "32"
+    },
+    {
+      "line": 2021,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2024,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2027,
+      "name": "TARG_HAS_SIGNED_CHARS_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2030,
+      "name": "TARG_HOST_STRING_CHAR_BIT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2033,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2036,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2039,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2042,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2045,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2048,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2051,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 2054,
+      "name": "TARG_INT_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2057,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2060,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2063,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_linux_aarch64",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 2066,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 2069,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_linux_aarch64",
+      "replacement": "25"
+    },
+    {
+      "line": 2072,
+      "name": "TARG_SETJMP_FUNC_linux_aarch64",
+      "replacement": "\"_setjmp\""
+    },
+    {
+      "line": 2075,
+      "name": "TARG_LDBL_MANT_DIG_linux_aarch64",
+      "replacement": "64"
+    },
+    {
+      "line": 2078,
+      "name": "TARG_LDBL_MAX_EXP_linux_aarch64",
+      "replacement": "16384"
+    },
+    {
+      "line": 2081,
+      "name": "TARG_LDBL_MIN_EXP_linux_aarch64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 2084,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_linux_aarch64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 2087,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_linux_aarch64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 2090,
+      "name": "TARG_LITTLE_ENDIAN_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2093,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2096,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2099,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2102,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2105,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2108,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2111,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2114,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_linux_aarch64",
+      "replacement": "BACK_END_IS_CP_GEN_BE"
+    },
+    {
+      "line": 2117,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2120,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2123,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2126,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2129,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2132,
+      "name": "TARG_POINTER_MODE_linux_aarch64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 2135,
+      "name": "TARG_PTRDIFF_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 2138,
+      "name": "TARG_REGION_NUMBER_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 2141,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2144,
+      "name": "TARG_REUSE_TAIL_PADDING_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2147,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2150,
+      "name": "TARG_RUNTIME_ELEM_COUNT_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 2153,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2156,
+      "name": "TARG_SIZEOF_DOUBLE_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2159,
+      "name": "TARG_SIZEOF_FAR_POINTER_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2162,
+      "name": "TARG_SIZEOF_FLOAT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2165,
+      "name": "TARG_SIZEOF_FLOAT128_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2168,
+      "name": "TARG_SIZEOF_FLOAT80_linux_aarch64",
+      "replacement": "12"
+    },
+    {
+      "line": 2171,
+      "name": "TARG_SIZEOF_INT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2174,
+      "name": "TARG_SIZEOF_INT128_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2177,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2180,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2183,
+      "name": "TARG_SIZEOF_LONG_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2186,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_linux_aarch64",
+      "replacement": "16"
+    },
+    {
+      "line": 2189,
+      "name": "TARG_SIZEOF_LONG_LONG_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2192,
+      "name": "TARG_SIZEOF_NEAR_POINTER_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2195,
+      "name": "TARG_SIZEOF_POINTER_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2198,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2201,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_linux_aarch64",
+      "replacement": "((((2*2+8-1)/8)+1)* 8)"
+    },
+    {
+      "line": 2204,
+      "name": "TARG_SIZEOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2207,
+      "name": "TARG_SIZEOF_SHORT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2210,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2213,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2216,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2219,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2222,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2225,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2228,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2231,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2234,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2237,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2240,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_linux_aarch64",
+      "replacement": "2"
+    },
+    {
+      "line": 2243,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2246,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_linux_aarch64",
+      "replacement": "8"
+    },
+    {
+      "line": 2249,
+      "name": "TARG_SIZE_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_long)"
+    },
+    {
+      "line": 2252,
+      "name": "TARG_SIZE_T_MAX_linux_aarch64",
+      "replacement": "((a_targ_size_t)(9223372036854775807ULL * 2ULL + 1ULL))"
+    },
+    {
+      "line": 2255,
+      "name": "TARG_SSIZE_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 2258,
+      "name": "TARG_SUPPORTS_ARM32_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2261,
+      "name": "TARG_SUPPORTS_ARM64_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2264,
+      "name": "TARG_SUPPORTS_RISCV32_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2267,
+      "name": "TARG_SUPPORTS_RISCV64_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2270,
+      "name": "TARG_SUPPORTS_X86_64_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2273,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2276,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_aarch64",
+      "replacement": "0"
+    },
+    {
+      "line": 2279,
+      "name": "TARG_UNWIND_WORD_MODE_linux_aarch64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 2282,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2285,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2288,
+      "name": "TARG_VAR_HANDLE_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 2291,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 2294,
+      "name": "TARG_WCHAR_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 2297,
+      "name": "TARG_WINT_T_INT_KIND_linux_aarch64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2300,
+      "name": "TARG_WORD_MODE_linux_aarch64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 2303,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_aarch64",
+      "replacement": "1"
+    },
+    {
+      "line": 2306,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_linux_aarch64",
+      "replacement": "4"
+    },
+    {
+      "line": 2309,
+      "name": "TARGET_CONFIGURATION_4",
+      "replacement": "linux_aarch64"
+    },
+    {
+      "line": 2312,
+      "name": "TARG_ALIGNOF_DOUBLE_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2315,
+      "name": "TARG_ALIGNOF_FAR_POINTER_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2318,
+      "name": "TARG_ALIGNOF_FLOAT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2321,
+      "name": "TARG_ALIGNOF_FLOAT128_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2324,
+      "name": "TARG_ALIGNOF_FLOAT80_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2327,
+      "name": "TARG_ALIGNOF_INT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2330,
+      "name": "TARG_ALIGNOF_INT128_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2333,
+      "name": "TARG_ALIGNOF_LONG_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2336,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2339,
+      "name": "TARG_ALIGNOF_LONG_LONG_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2342,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2345,
+      "name": "TARG_ALIGNOF_POINTER_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2348,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2351,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2354,
+      "name": "TARG_ALIGNOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2357,
+      "name": "TARG_ALIGNOF_SHORT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2360,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2363,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2366,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2369,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2372,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2375,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2378,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2381,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2384,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2387,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2390,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2393,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2396,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2399,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2402,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2405,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_linux_armv7",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 2408,
+      "name": "TARG_BOOL_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 2411,
+      "name": "TARG_C_BOOL_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 2414,
+      "name": "TARG_CHAR16_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 2417,
+      "name": "TARG_CHAR32_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2420,
+      "name": "TARG_CHAR_BIT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2423,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2426,
+      "name": "TARG_DBL_MANT_DIG_linux_armv7",
+      "replacement": "53"
+    },
+    {
+      "line": 2429,
+      "name": "TARG_DBL_MAX_EXP_linux_armv7",
+      "replacement": "1024"
+    },
+    {
+      "line": 2432,
+      "name": "TARG_DBL_MIN_EXP_linux_armv7",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 2435,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2438,
+      "name": "TARG_DELTA_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 2441,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2444,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2447,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2450,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2453,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2456,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2459,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2462,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2465,
+      "name": "TARG_FLT_MANT_DIG_linux_armv7",
+      "replacement": "24"
+    },
+    {
+      "line": 2468,
+      "name": "TARG_FLT_MAX_EXP_linux_armv7",
+      "replacement": "128"
+    },
+    {
+      "line": 2471,
+      "name": "TARG_FLT_MIN_EXP_linux_armv7",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 2474,
+      "name": "TARG_FLT128_MANT_DIG_linux_armv7",
+      "replacement": "113"
+    },
+    {
+      "line": 2477,
+      "name": "TARG_FLT128_MAX_EXP_linux_armv7",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 2480,
+      "name": "TARG_FLT128_MIN_EXP_linux_armv7",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 2483,
+      "name": "TARG_FLT80_MANT_DIG_linux_armv7",
+      "replacement": "64"
+    },
+    {
+      "line": 2486,
+      "name": "TARG_FLT80_MAX_EXP_linux_armv7",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 2489,
+      "name": "TARG_FLT80_MIN_EXP_linux_armv7",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 2492,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2495,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_linux_armv7",
+      "replacement": "15"
+    },
+    {
+      "line": 2498,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_linux_armv7",
+      "replacement": "15"
+    },
+    {
+      "line": 2501,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_linux_armv7",
+      "replacement": "31"
+    },
+    {
+      "line": 2504,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_linux_armv7",
+      "replacement": "31"
+    },
+    {
+      "line": 2507,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_linux_armv7",
+      "replacement": "7"
+    },
+    {
+      "line": 2510,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_linux_armv7",
+      "replacement": "7"
+    },
+    {
+      "line": 2513,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2516,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2519,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_linux_armv7",
+      "replacement": "32"
+    },
+    {
+      "line": 2522,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_linux_armv7",
+      "replacement": "32"
+    },
+    {
+      "line": 2525,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2528,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2531,
+      "name": "TARG_HAS_SIGNED_CHARS_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2534,
+      "name": "TARG_HOST_STRING_CHAR_BIT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2537,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2540,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2543,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2546,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2549,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2552,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2555,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 2558,
+      "name": "TARG_INT_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2561,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2564,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2567,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_linux_armv7",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 2570,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 2573,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_linux_armv7",
+      "replacement": "25"
+    },
+    {
+      "line": 2576,
+      "name": "TARG_SETJMP_FUNC_linux_armv7",
+      "replacement": "\"_setjmp\""
+    },
+    {
+      "line": 2579,
+      "name": "TARG_LDBL_MANT_DIG_linux_armv7",
+      "replacement": "53"
+    },
+    {
+      "line": 2582,
+      "name": "TARG_LDBL_MAX_EXP_linux_armv7",
+      "replacement": "1024"
+    },
+    {
+      "line": 2585,
+      "name": "TARG_LDBL_MIN_EXP_linux_armv7",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 2588,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_linux_armv7",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 2591,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_linux_armv7",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 2594,
+      "name": "TARG_LITTLE_ENDIAN_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2597,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2600,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2603,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2606,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2609,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2612,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2615,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2618,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_linux_armv7",
+      "replacement": "BACK_END_IS_CP_GEN_BE"
+    },
+    {
+      "line": 2621,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2624,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2627,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2630,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2633,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2636,
+      "name": "TARG_POINTER_MODE_linux_armv7",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 2639,
+      "name": "TARG_PTRDIFF_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 2642,
+      "name": "TARG_REGION_NUMBER_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 2645,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2648,
+      "name": "TARG_REUSE_TAIL_PADDING_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2651,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2654,
+      "name": "TARG_RUNTIME_ELEM_COUNT_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 2657,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2660,
+      "name": "TARG_SIZEOF_DOUBLE_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2663,
+      "name": "TARG_SIZEOF_FAR_POINTER_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2666,
+      "name": "TARG_SIZEOF_FLOAT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2669,
+      "name": "TARG_SIZEOF_FLOAT128_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2672,
+      "name": "TARG_SIZEOF_FLOAT80_linux_armv7",
+      "replacement": "12"
+    },
+    {
+      "line": 2675,
+      "name": "TARG_SIZEOF_INT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2678,
+      "name": "TARG_SIZEOF_INT128_linux_armv7",
+      "replacement": "16"
+    },
+    {
+      "line": 2681,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2684,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2687,
+      "name": "TARG_SIZEOF_LONG_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2690,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2693,
+      "name": "TARG_SIZEOF_LONG_LONG_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2696,
+      "name": "TARG_SIZEOF_NEAR_POINTER_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2699,
+      "name": "TARG_SIZEOF_POINTER_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2702,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2705,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_linux_armv7",
+      "replacement": "((((2*2+4-1)/4)+1)* 4)"
+    },
+    {
+      "line": 2708,
+      "name": "TARG_SIZEOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2711,
+      "name": "TARG_SIZEOF_SHORT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2714,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2717,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2720,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2723,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2726,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2729,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2732,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2735,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2738,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_linux_armv7",
+      "replacement": "8"
+    },
+    {
+      "line": 2741,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2744,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_linux_armv7",
+      "replacement": "2"
+    },
+    {
+      "line": 2747,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2750,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2753,
+      "name": "TARG_SIZE_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2756,
+      "name": "TARG_SIZE_T_MAX_linux_armv7",
+      "replacement": "((a_targ_size_t)(2147483647 * 2U + 1U))"
+    },
+    {
+      "line": 2759,
+      "name": "TARG_SSIZE_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 2762,
+      "name": "TARG_SUPPORTS_ARM32_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2765,
+      "name": "TARG_SUPPORTS_ARM64_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2768,
+      "name": "TARG_SUPPORTS_RISCV32_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2771,
+      "name": "TARG_SUPPORTS_RISCV64_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2774,
+      "name": "TARG_SUPPORTS_X86_64_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2777,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2780,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_armv7",
+      "replacement": "0"
+    },
+    {
+      "line": 2783,
+      "name": "TARG_UNWIND_WORD_MODE_linux_armv7",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 2786,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2789,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2792,
+      "name": "TARG_VAR_HANDLE_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 2795,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 2798,
+      "name": "TARG_WCHAR_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2801,
+      "name": "TARG_WINT_T_INT_KIND_linux_armv7",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2804,
+      "name": "TARG_WORD_MODE_linux_armv7",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 2807,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_armv7",
+      "replacement": "1"
+    },
+    {
+      "line": 2810,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_linux_armv7",
+      "replacement": "4"
+    },
+    {
+      "line": 2813,
+      "name": "TARGET_CONFIGURATION_5",
+      "replacement": "linux_armv7"
+    },
+    {
+      "line": 2816,
+      "name": "TARG_ALIGNOF_DOUBLE_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2819,
+      "name": "TARG_ALIGNOF_FAR_POINTER_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2822,
+      "name": "TARG_ALIGNOF_FLOAT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2825,
+      "name": "TARG_ALIGNOF_FLOAT128_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2828,
+      "name": "TARG_ALIGNOF_FLOAT80_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2831,
+      "name": "TARG_ALIGNOF_INT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2834,
+      "name": "TARG_ALIGNOF_INT128_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2837,
+      "name": "TARG_ALIGNOF_LONG_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2840,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2843,
+      "name": "TARG_ALIGNOF_LONG_LONG_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2846,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 2849,
+      "name": "TARG_ALIGNOF_POINTER_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2852,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2855,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2858,
+      "name": "TARG_ALIGNOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2861,
+      "name": "TARG_ALIGNOF_SHORT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 2864,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2867,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 2870,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2873,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2876,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 2879,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2882,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2885,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 2888,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2891,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2894,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 2897,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2900,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2903,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2906,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2909,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_linux_riscv64",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 2912,
+      "name": "TARG_BOOL_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 2915,
+      "name": "TARG_C_BOOL_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 2918,
+      "name": "TARG_CHAR16_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 2921,
+      "name": "TARG_CHAR32_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 2924,
+      "name": "TARG_CHAR_BIT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2927,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2930,
+      "name": "TARG_DBL_MANT_DIG_linux_riscv64",
+      "replacement": "53"
+    },
+    {
+      "line": 2933,
+      "name": "TARG_DBL_MAX_EXP_linux_riscv64",
+      "replacement": "1024"
+    },
+    {
+      "line": 2936,
+      "name": "TARG_DBL_MIN_EXP_linux_riscv64",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 2939,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2942,
+      "name": "TARG_DELTA_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 2945,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 2948,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 2951,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 2954,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 2957,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2960,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 2963,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2966,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 2969,
+      "name": "TARG_FLT_MANT_DIG_linux_riscv64",
+      "replacement": "24"
+    },
+    {
+      "line": 2972,
+      "name": "TARG_FLT_MAX_EXP_linux_riscv64",
+      "replacement": "128"
+    },
+    {
+      "line": 2975,
+      "name": "TARG_FLT_MIN_EXP_linux_riscv64",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 2978,
+      "name": "TARG_FLT128_MANT_DIG_linux_riscv64",
+      "replacement": "113"
+    },
+    {
+      "line": 2981,
+      "name": "TARG_FLT128_MAX_EXP_linux_riscv64",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 2984,
+      "name": "TARG_FLT128_MIN_EXP_linux_riscv64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 2987,
+      "name": "TARG_FLT80_MANT_DIG_linux_riscv64",
+      "replacement": "64"
+    },
+    {
+      "line": 2990,
+      "name": "TARG_FLT80_MAX_EXP_linux_riscv64",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 2993,
+      "name": "TARG_FLT80_MIN_EXP_linux_riscv64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 2996,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 2999,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_linux_riscv64",
+      "replacement": "15"
+    },
+    {
+      "line": 3002,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_linux_riscv64",
+      "replacement": "15"
+    },
+    {
+      "line": 3005,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_linux_riscv64",
+      "replacement": "31"
+    },
+    {
+      "line": 3008,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_linux_riscv64",
+      "replacement": "31"
+    },
+    {
+      "line": 3011,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_linux_riscv64",
+      "replacement": "7"
+    },
+    {
+      "line": 3014,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_linux_riscv64",
+      "replacement": "7"
+    },
+    {
+      "line": 3017,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3020,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3023,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_linux_riscv64",
+      "replacement": "32"
+    },
+    {
+      "line": 3026,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_linux_riscv64",
+      "replacement": "32"
+    },
+    {
+      "line": 3029,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3032,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3035,
+      "name": "TARG_HAS_SIGNED_CHARS_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3038,
+      "name": "TARG_HOST_STRING_CHAR_BIT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3041,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3044,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3047,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3050,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3053,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3056,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3059,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 3062,
+      "name": "TARG_INT_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3065,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3068,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3071,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_linux_riscv64",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 3074,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 3077,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_linux_riscv64",
+      "replacement": "43"
+    },
+    {
+      "line": 3080,
+      "name": "TARG_SETJMP_FUNC_linux_riscv64",
+      "replacement": "\"_setjmp\""
+    },
+    {
+      "line": 3083,
+      "name": "TARG_LDBL_MANT_DIG_linux_riscv64",
+      "replacement": "113"
+    },
+    {
+      "line": 3086,
+      "name": "TARG_LDBL_MAX_EXP_linux_riscv64",
+      "replacement": "16384"
+    },
+    {
+      "line": 3089,
+      "name": "TARG_LDBL_MIN_EXP_linux_riscv64",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 3092,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_linux_riscv64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 3095,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_linux_riscv64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 3098,
+      "name": "TARG_LITTLE_ENDIAN_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3101,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3104,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3107,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3110,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3113,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3116,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3119,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3122,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_linux_riscv64",
+      "replacement": "BACK_END_IS_CP_GEN_BE"
+    },
+    {
+      "line": 3125,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3128,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3131,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3134,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3137,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3140,
+      "name": "TARG_POINTER_MODE_linux_riscv64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 3143,
+      "name": "TARG_PTRDIFF_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 3146,
+      "name": "TARG_REGION_NUMBER_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 3149,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 3152,
+      "name": "TARG_REUSE_TAIL_PADDING_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3155,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3158,
+      "name": "TARG_RUNTIME_ELEM_COUNT_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 3161,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3164,
+      "name": "TARG_SIZEOF_DOUBLE_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3167,
+      "name": "TARG_SIZEOF_FAR_POINTER_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3170,
+      "name": "TARG_SIZEOF_FLOAT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3173,
+      "name": "TARG_SIZEOF_FLOAT128_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3176,
+      "name": "TARG_SIZEOF_FLOAT80_linux_riscv64",
+      "replacement": "12"
+    },
+    {
+      "line": 3179,
+      "name": "TARG_SIZEOF_INT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3182,
+      "name": "TARG_SIZEOF_INT128_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3185,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3188,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3191,
+      "name": "TARG_SIZEOF_LONG_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3194,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_linux_riscv64",
+      "replacement": "16"
+    },
+    {
+      "line": 3197,
+      "name": "TARG_SIZEOF_LONG_LONG_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3200,
+      "name": "TARG_SIZEOF_NEAR_POINTER_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3203,
+      "name": "TARG_SIZEOF_POINTER_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3206,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3209,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_linux_riscv64",
+      "replacement": "((((2*2+8-1)/8)+1)* 8)"
+    },
+    {
+      "line": 3212,
+      "name": "TARG_SIZEOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3215,
+      "name": "TARG_SIZEOF_SHORT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3218,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3221,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3224,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3227,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3230,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3233,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3236,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3239,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3242,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3245,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3248,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_linux_riscv64",
+      "replacement": "2"
+    },
+    {
+      "line": 3251,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3254,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_linux_riscv64",
+      "replacement": "8"
+    },
+    {
+      "line": 3257,
+      "name": "TARG_SIZE_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_long)"
+    },
+    {
+      "line": 3260,
+      "name": "TARG_SIZE_T_MAX_linux_riscv64",
+      "replacement": "((a_targ_size_t)(9223372036854775807ULL * 2ULL + 1ULL))"
+    },
+    {
+      "line": 3263,
+      "name": "TARG_SSIZE_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_long)"
+    },
+    {
+      "line": 3266,
+      "name": "TARG_SUPPORTS_ARM32_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3269,
+      "name": "TARG_SUPPORTS_ARM64_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3272,
+      "name": "TARG_SUPPORTS_RISCV32_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3275,
+      "name": "TARG_SUPPORTS_RISCV64_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3278,
+      "name": "TARG_SUPPORTS_X86_64_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3281,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3284,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_riscv64",
+      "replacement": "0"
+    },
+    {
+      "line": 3287,
+      "name": "TARG_UNWIND_WORD_MODE_linux_riscv64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 3290,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3293,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3296,
+      "name": "TARG_VAR_HANDLE_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 3299,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 3302,
+      "name": "TARG_WCHAR_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 3305,
+      "name": "TARG_WINT_T_INT_KIND_linux_riscv64",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 3308,
+      "name": "TARG_WORD_MODE_linux_riscv64",
+      "replacement": "((a_type_mode_kind)tmk_DI)"
+    },
+    {
+      "line": 3311,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_riscv64",
+      "replacement": "1"
+    },
+    {
+      "line": 3314,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_linux_riscv64",
+      "replacement": "4"
+    },
+    {
+      "line": 3317,
+      "name": "TARGET_CONFIGURATION_6",
+      "replacement": "linux_riscv64"
+    },
+    {
+      "line": 3320,
+      "name": "TARG_ALIGNOF_DOUBLE_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3323,
+      "name": "TARG_ALIGNOF_FAR_POINTER_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3326,
+      "name": "TARG_ALIGNOF_FLOAT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3329,
+      "name": "TARG_ALIGNOF_FLOAT128_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3332,
+      "name": "TARG_ALIGNOF_FLOAT80_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3335,
+      "name": "TARG_ALIGNOF_INT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3338,
+      "name": "TARG_ALIGNOF_INT128_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3341,
+      "name": "TARG_ALIGNOF_LONG_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3344,
+      "name": "TARG_ALIGNOF_LONG_DOUBLE_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3347,
+      "name": "TARG_ALIGNOF_LONG_LONG_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3350,
+      "name": "TARG_ALIGNOF_NEAR_POINTER_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3353,
+      "name": "TARG_ALIGNOF_POINTER_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3356,
+      "name": "TARG_ALIGNOF_PTR_TO_DATA_MEMBER_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3359,
+      "name": "TARG_ALIGNOF_PTR_TO_MEMBER_FUNCTION_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3362,
+      "name": "TARG_ALIGNOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3365,
+      "name": "TARG_ALIGNOF_SHORT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3368,
+      "name": "TARG_ALIGNOF_SIGNED_ACCUM_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3371,
+      "name": "TARG_ALIGNOF_SIGNED_FRACT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3374,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_ACCUM_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3377,
+      "name": "TARG_ALIGNOF_SIGNED_LONG_FRACT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3380,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_ACCUM_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3383,
+      "name": "TARG_ALIGNOF_SIGNED_SHORT_FRACT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3386,
+      "name": "TARG_ALIGNOF_UNSIGNED_ACCUM_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3389,
+      "name": "TARG_ALIGNOF_UNSIGNED_FRACT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3392,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_ACCUM_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3395,
+      "name": "TARG_ALIGNOF_UNSIGNED_LONG_FRACT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3398,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_ACCUM_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3401,
+      "name": "TARG_ALIGNOF_UNSIGNED_SHORT_FRACT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3404,
+      "name": "TARG_ALIGNOF_VIRTUAL_FUNCTION_INFO_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3407,
+      "name": "TARG_ALL_POINTERS_SAME_SIZE_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3410,
+      "name": "TARG_BIT_FIELD_AFFECTS_UNION_ALIGNMENT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3413,
+      "name": "TARG_BIT_FIELD_CONTAINER_SIZE_linux_riscv32",
+      "replacement": "(-1)"
+    },
+    {
+      "line": 3416,
+      "name": "TARG_BOOL_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_char)"
+    },
+    {
+      "line": 3419,
+      "name": "TARG_C_BOOL_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_char)"
+    },
+    {
+      "line": 3422,
+      "name": "TARG_CHAR16_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 3425,
+      "name": "TARG_CHAR32_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 3428,
+      "name": "TARG_CHAR_BIT_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3431,
+      "name": "TARG_CHAR_CONSTANT_FIRST_CHAR_MOST_SIGNIFICANT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3434,
+      "name": "TARG_DBL_MANT_DIG_linux_riscv32",
+      "replacement": "53"
+    },
+    {
+      "line": 3437,
+      "name": "TARG_DBL_MAX_EXP_linux_riscv32",
+      "replacement": "1024"
+    },
+    {
+      "line": 3440,
+      "name": "TARG_DBL_MIN_EXP_linux_riscv32",
+      "replacement": "(-1021)"
+    },
+    {
+      "line": 3443,
+      "name": "TARG_DEFAULT_NEW_ALIGNMENT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3446,
+      "name": "TARG_DELTA_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 3449,
+      "name": "TARG_DOUBLE_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3452,
+      "name": "TARG_DUAL_ALIGNMENTS_FOR_BUILTIN_TYPES_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3455,
+      "name": "TARG_ENUM_BIT_FIELDS_ARE_ALWAYS_UNSIGNED_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3458,
+      "name": "TARG_ENUM_TYPES_CAN_BE_SMALLER_THAN_INT_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3461,
+      "name": "TARG_FIELD_ALLOC_SEQUENCE_EQUALS_DECL_SEQUENCE_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3464,
+      "name": "TARG_FLOAT_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3467,
+      "name": "TARG_FLOAT128_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3470,
+      "name": "TARG_FLOAT80_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3473,
+      "name": "TARG_FLT_MANT_DIG_linux_riscv32",
+      "replacement": "24"
+    },
+    {
+      "line": 3476,
+      "name": "TARG_FLT_MAX_EXP_linux_riscv32",
+      "replacement": "128"
+    },
+    {
+      "line": 3479,
+      "name": "TARG_FLT_MIN_EXP_linux_riscv32",
+      "replacement": "(-125)"
+    },
+    {
+      "line": 3482,
+      "name": "TARG_FLT128_MANT_DIG_linux_riscv32",
+      "replacement": "113"
+    },
+    {
+      "line": 3485,
+      "name": "TARG_FLT128_MAX_EXP_linux_riscv32",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 3488,
+      "name": "TARG_FLT128_MIN_EXP_linux_riscv32",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 3491,
+      "name": "TARG_FLT80_MANT_DIG_linux_riscv32",
+      "replacement": "64"
+    },
+    {
+      "line": 3494,
+      "name": "TARG_FLT80_MAX_EXP_linux_riscv32",
+      "replacement": "(16384)"
+    },
+    {
+      "line": 3497,
+      "name": "TARG_FLT80_MIN_EXP_linux_riscv32",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 3500,
+      "name": "TARG_FORCE_ONE_BIT_BIT_FIELD_TO_BE_UNSIGNED_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3503,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_ACCUM_linux_riscv32",
+      "replacement": "15"
+    },
+    {
+      "line": 3506,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_FRACT_linux_riscv32",
+      "replacement": "15"
+    },
+    {
+      "line": 3509,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_ACCUM_linux_riscv32",
+      "replacement": "31"
+    },
+    {
+      "line": 3512,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_LONG_FRACT_linux_riscv32",
+      "replacement": "31"
+    },
+    {
+      "line": 3515,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_ACCUM_linux_riscv32",
+      "replacement": "7"
+    },
+    {
+      "line": 3518,
+      "name": "TARG_FRACTIONAL_BITS_FOR_SIGNED_SHORT_FRACT_linux_riscv32",
+      "replacement": "7"
+    },
+    {
+      "line": 3521,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_ACCUM_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3524,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_FRACT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3527,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_ACCUM_linux_riscv32",
+      "replacement": "32"
+    },
+    {
+      "line": 3530,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_LONG_FRACT_linux_riscv32",
+      "replacement": "32"
+    },
+    {
+      "line": 3533,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_ACCUM_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3536,
+      "name": "TARG_FRACTIONAL_BITS_FOR_UNSIGNED_SHORT_FRACT_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3539,
+      "name": "TARG_HAS_SIGNED_CHARS_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3542,
+      "name": "TARG_HOST_STRING_CHAR_BIT_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3545,
+      "name": "TARG_IA64_ABI_USE_GUARD_ACQUIRE_RELEASE_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3548,
+      "name": "TARG_IA64_ABI_USE_INT_STATIC_INIT_GUARD_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3551,
+      "name": "TARG_IA64_ABI_USE_VARIANT_ARRAY_COOKIES_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3554,
+      "name": "TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3557,
+      "name": "TARG_IA64_ABI_VARIANT_CTORS_AND_DTORS_RETURN_THIS_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3560,
+      "name": "TARG_IA64_ABI_VARIANT_KEY_FUNCTION_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3563,
+      "name": "TARG_IA64_VTABLE_ENTRY_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 3566,
+      "name": "TARG_INT_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3569,
+      "name": "TARG_INT128_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3572,
+      "name": "TARG_JMP_BUF_ELEMENTS_ARE_FLOAT_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3575,
+      "name": "TARG_JMP_BUF_ELEMENT_FLOAT_KIND_linux_riscv32",
+      "replacement": "((a_float_kind)fk_long_double)"
+    },
+    {
+      "line": 3578,
+      "name": "TARG_JMP_BUF_ELEMENT_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_long_long)"
+    },
+    {
+      "line": 3581,
+      "name": "TARG_JMP_BUF_NUM_ELEMENTS_linux_riscv32",
+      "replacement": "36"
+    },
+    {
+      "line": 3584,
+      "name": "TARG_SETJMP_FUNC_linux_riscv32",
+      "replacement": "\"_setjmp\""
+    },
+    {
+      "line": 3587,
+      "name": "TARG_LDBL_MANT_DIG_linux_riscv32",
+      "replacement": "113"
+    },
+    {
+      "line": 3590,
+      "name": "TARG_LDBL_MAX_EXP_linux_riscv32",
+      "replacement": "16384"
+    },
+    {
+      "line": 3593,
+      "name": "TARG_LDBL_MIN_EXP_linux_riscv32",
+      "replacement": "(-16381)"
+    },
+    {
+      "line": 3596,
+      "name": "TARG_LIBGCC_CMP_RETURN_MODE_linux_riscv32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 3599,
+      "name": "TARG_LIBGCC_SHIFT_COUNT_MODE_linux_riscv32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 3602,
+      "name": "TARG_LITTLE_ENDIAN_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3605,
+      "name": "TARG_LONG_DOUBLE_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3608,
+      "name": "TARG_LONG_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3611,
+      "name": "TARG_LONG_LONG_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3614,
+      "name": "TARG_MAXIMUM_INTRINSIC_ALIGNMENT_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3617,
+      "name": "TARG_MAX_BASE_CLASS_OFFSET_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3620,
+      "name": "TARG_MAX_CLASS_OBJECT_SIZE_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3623,
+      "name": "TARG_MICROSOFT_BIT_FIELD_ALLOCATION_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3626,
+      "name": "TARG_MICROSOFT_PTR_TO_MEMBER_SIZING_linux_riscv32",
+      "replacement": "BACK_END_IS_CP_GEN_BE"
+    },
+    {
+      "line": 3629,
+      "name": "TARG_MINIMUM_STRUCT_ALIGNMENT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3632,
+      "name": "TARG_NONNEGATIVE_ENUM_BIT_FIELD_IS_UNSIGNED_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3635,
+      "name": "TARG_OPTIMIZE_EMPTY_BASE_CLASS_LAYOUT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3638,
+      "name": "TARG_PAD_BIT_FIELDS_LARGER_THAN_BASE_TYPE_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3641,
+      "name": "TARG_PLAIN_INT_BIT_FIELD_IS_UNSIGNED_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3644,
+      "name": "TARG_POINTER_MODE_linux_riscv32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 3647,
+      "name": "TARG_PTRDIFF_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 3650,
+      "name": "TARG_REGION_NUMBER_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 3653,
+      "name": "TARG_ETS_FLAG_TYPE_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 3656,
+      "name": "TARG_REUSE_TAIL_PADDING_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3659,
+      "name": "TARG_RIGHT_SHIFT_IS_ARITHMETIC_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3662,
+      "name": "TARG_RUNTIME_ELEM_COUNT_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 3665,
+      "name": "TARG_SHORT_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3668,
+      "name": "TARG_SIZEOF_DOUBLE_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3671,
+      "name": "TARG_SIZEOF_FAR_POINTER_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3674,
+      "name": "TARG_SIZEOF_FLOAT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3677,
+      "name": "TARG_SIZEOF_FLOAT128_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3680,
+      "name": "TARG_SIZEOF_FLOAT80_linux_riscv32",
+      "replacement": "12"
+    },
+    {
+      "line": 3683,
+      "name": "TARG_SIZEOF_INT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3686,
+      "name": "TARG_SIZEOF_INT128_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3689,
+      "name": "TARG_SIZEOF_LARGEST_FIXED_POINT_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3692,
+      "name": "TARG_SIZEOF_LARGEST_ATOMIC_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3695,
+      "name": "TARG_SIZEOF_LONG_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3698,
+      "name": "TARG_SIZEOF_LONG_DOUBLE_linux_riscv32",
+      "replacement": "16"
+    },
+    {
+      "line": 3701,
+      "name": "TARG_SIZEOF_LONG_LONG_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3704,
+      "name": "TARG_SIZEOF_NEAR_POINTER_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3707,
+      "name": "TARG_SIZEOF_POINTER_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3710,
+      "name": "TARG_SIZEOF_PTR_TO_DATA_MEMBER_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3713,
+      "name": "TARG_SIZEOF_PTR_TO_MEMBER_FUNCTION_linux_riscv32",
+      "replacement": "((((2*2+4-1)/4)+1)* 4)"
+    },
+    {
+      "line": 3716,
+      "name": "TARG_SIZEOF_PTR_TO_VIRTUAL_BASE_CLASS_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3719,
+      "name": "TARG_SIZEOF_SHORT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3722,
+      "name": "TARG_SIZEOF_SIGNED_ACCUM_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3725,
+      "name": "TARG_SIZEOF_SIGNED_FRACT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3728,
+      "name": "TARG_SIZEOF_SIGNED_LONG_ACCUM_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3731,
+      "name": "TARG_SIZEOF_SIGNED_LONG_FRACT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3734,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_ACCUM_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3737,
+      "name": "TARG_SIZEOF_SIGNED_SHORT_FRACT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3740,
+      "name": "TARG_SIZEOF_UNSIGNED_ACCUM_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3743,
+      "name": "TARG_SIZEOF_UNSIGNED_FRACT_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3746,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_ACCUM_linux_riscv32",
+      "replacement": "8"
+    },
+    {
+      "line": 3749,
+      "name": "TARG_SIZEOF_UNSIGNED_LONG_FRACT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3752,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_ACCUM_linux_riscv32",
+      "replacement": "2"
+    },
+    {
+      "line": 3755,
+      "name": "TARG_SIZEOF_UNSIGNED_SHORT_FRACT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3758,
+      "name": "TARG_SIZEOF_VIRTUAL_FUNCTION_INFO_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3761,
+      "name": "TARG_SIZE_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 3764,
+      "name": "TARG_SIZE_T_MAX_linux_riscv32",
+      "replacement": "((a_targ_size_t)(2147483647 * 2U + 1U))"
+    },
+    {
+      "line": 3767,
+      "name": "TARG_SSIZE_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 3770,
+      "name": "TARG_SUPPORTS_ARM32_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3773,
+      "name": "TARG_SUPPORTS_ARM64_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3776,
+      "name": "TARG_SUPPORTS_RISCV32_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3779,
+      "name": "TARG_SUPPORTS_RISCV64_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3782,
+      "name": "TARG_SUPPORTS_X86_64_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3785,
+      "name": "TARG_TOO_LARGE_SHIFT_COUNT_IS_TAKEN_MODULO_SIZE_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3788,
+      "name": "TARG_UNNAMED_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_riscv32",
+      "replacement": "0"
+    },
+    {
+      "line": 3791,
+      "name": "TARG_UNWIND_WORD_MODE_linux_riscv32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 3794,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BASE_CLASSES_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3797,
+      "name": "TARG_USER_CONTROL_OF_STRUCT_PACKING_AFFECTS_BIT_FIELDS_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3800,
+      "name": "TARG_VAR_HANDLE_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_short)"
+    },
+    {
+      "line": 3803,
+      "name": "TARG_VIRTUAL_FUNCTION_INDEX_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_short)"
+    },
+    {
+      "line": 3806,
+      "name": "TARG_WCHAR_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_int)"
+    },
+    {
+      "line": 3809,
+      "name": "TARG_WINT_T_INT_KIND_linux_riscv32",
+      "replacement": "((an_integer_kind)ik_unsigned_int)"
+    },
+    {
+      "line": 3812,
+      "name": "TARG_WORD_MODE_linux_riscv32",
+      "replacement": "((a_type_mode_kind)tmk_SI)"
+    },
+    {
+      "line": 3815,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_AFFECTS_STRUCT_ALIGNMENT_linux_riscv32",
+      "replacement": "1"
+    },
+    {
+      "line": 3818,
+      "name": "TARG_ZERO_WIDTH_BIT_FIELD_ALIGNMENT_linux_riscv32",
+      "replacement": "4"
+    },
+    {
+      "line": 3821,
+      "name": "TARGET_CONFIGURATION_7",
+      "replacement": "linux_riscv32"
+    },
+    {
+      "line": 3824,
+      "name": "USE_QUADMATH_LIBRARY",
+      "replacement": "1"
+    },
+    {
+      "line": 3827,
+      "name": "FLOAT80_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3830,
+      "name": "DEBUG",
+      "replacement": "0"
+    },
+    {
+      "line": 3833,
+      "name": "USE_EDG_NAMESPACE",
+      "replacement": "1"
+    },
+    {
+      "line": 3836,
+      "name": "USE_BOOL_FOR_BOOLEAN_IN_CPLUSPLUS",
+      "replacement": "1"
+    },
+    {
+      "line": 3839,
+      "name": "CHECK_SWITCH_DEFAULT_UNEXPECTED",
+      "replacement": "1"
+    },
+    {
+      "line": 3842,
+      "name": "IL_SHOULD_BE_WRITTEN_TO_FILE",
+      "replacement": "1"
+    },
+    {
+      "line": 3845,
+      "name": "OVERWRITE_FREED_MEM_BLOCKS",
+      "replacement": "0"
+    },
+    {
+      "line": 3848,
+      "name": "DEFAULT_DISPLAY_ERROR_CONTEXT_ON_CATASTROPHE",
+      "replacement": "0"
+    },
+    {
+      "line": 3851,
+      "name": "CHECKING",
+      "replacement": "1"
+    },
+    {
+      "line": 3854,
+      "name": "MICROSOFT_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3857,
+      "name": "CPPCLI_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3860,
+      "name": "CPPCX_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3863,
+      "name": "ALLOW_CPPCLI_AND_CPPCX_WITH_LOWERING",
+      "replacement": "1"
+    },
+    {
+      "line": 3866,
+      "name": "READ_CPPCLI_PORTABLE_ASSEMBLIES",
+      "replacement": "1"
+    },
+    {
+      "line": 3869,
+      "name": "CPPCX_INCLUDE_PATH",
+      "replacement": "\"/edg/cpfe/ms_includes\""
+    },
+    {
+      "line": 3872,
+      "name": "ATT_PREPROCESSING_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3875,
+      "name": "SUN_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3878,
+      "name": "SUN_TARGET_VERSION_NUMBER",
+      "replacement": "0x5120"
+    },
+    {
+      "line": 3881,
+      "name": "DEFAULT_SUN_COMPATIBILITY",
+      "replacement": "0"
+    },
+    {
+      "line": 3884,
+      "name": "GNU_X86_ASM_EXTENSIONS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3887,
+      "name": "GNU_NAKED_ATTRIBUTE_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3890,
+      "name": "GNU_X86_ATTRIBUTES_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3893,
+      "name": "PRAGMA_WEAK_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3896,
+      "name": "PTR_TO_INCOMP_ARRAY_ARITHMETIC_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3899,
+      "name": "C_ANACHRONISMS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3902,
+      "name": "ADDR_OF_BIT_FIELD_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3905,
+      "name": "NEAR_AND_FAR_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3908,
+      "name": "NAMED_ADDRESS_SPACES_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3911,
+      "name": "NAMED_REGISTERS_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3914,
+      "name": "VLA_ALLOWED",
+      "replacement": "1"
+    },
+    {
+      "line": 3917,
+      "name": "COMPOUND_LITERAL_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3920,
+      "name": "BOOL_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3923,
+      "name": "WCHAR_T_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3926,
+      "name": "EXC_SPEC_IN_FUNC_TYPE_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3929,
+      "name": "RTTI_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3932,
+      "name": "ARRAY_NEW_AND_DELETE_ENABLING_POSSIBLE",
+      "replacement": "1"
+    },
+    {
+      "line": 3935,
+      "name": "NEED_IL_DISPLAY",
+      "replacement": "1"
+    }
+  ],
+  "interpretation": "textual #define records; not a compiler-expanded effective macro dump; command-line -D overrides and later headers must be inspected",
+  "path": "edgcpp/build/src/includes/cmake_defines.h",
+  "sha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f"
+}

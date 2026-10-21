@@ -1,0 +1,132 @@
+[
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/const_ints.d",
+    "sha256": "72f381da20ac16672cac0ee78934d5661410a8a1e2844968a6f26bb81445bb82",
+    "size": 7731
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/const_ints.o",
+    "sha256": "bf1219bff18fe6149bb13f43c5751263ed968f26a2eb94ff9c79f5d0c81b4188",
+    "size": 246904
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/effective-macros.txt",
+    "sha256": "87362eb346c8676da4ae464243efcc7a3c00a0c61fdc540b47b336261a50d310",
+    "size": 284361
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/integer-oracle",
+    "sha256": "71560cfdc589f9b2e2beb3570031662c055cab1da8b03a5461bf20682c6bb038",
+    "size": 24536
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/prepare-receipt.json",
+    "sha256": "9ffbadea5f65eca30393e290708d0b53e97c45ef6fa1e9d269bd3e430e697cd3",
+    "size": 31094
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/native/wrapper.o",
+    "sha256": "da8a67e4cf2c9d531247a02baaf62eb46461094320eec1106441e0e34000693d",
+    "size": 103816
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/EdgFaithful.dll",
+    "sha256": "1dcb7b9a0f8c55b20ac196c56eb0a8c01fd3ce3b0eeaeb33df863f7aac8f11a8",
+    "size": 8704
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/EdgFaithful.pdb",
+    "sha256": "c77eec97d6e35f8816c66269f0e8e1cb32b44a59d161ac794aa79239b2fe346f",
+    "size": 14232
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/IntegerArithmetic",
+    "sha256": "8e10cb8f41f96b448afd08d89373e4b234c5e5fa0d4d43bd46f8274db6d502a2",
+    "size": 79832
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/IntegerArithmetic.deps.json",
+    "sha256": "6b4a3e155952df80cb9f98921731cc6ba80a0a18269678237758a977fee7507b",
+    "size": 790
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/IntegerArithmetic.dll",
+    "sha256": "33620db86ac41056ac07a15172251bc18cdcddf4c2e6c4d5c959e21db54c1917",
+    "size": 16384
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/IntegerArithmetic.pdb",
+    "sha256": "742cd92af5101e0e39ba923c77791931e62e81fc01a7487f95db1986007c76a5",
+    "size": 13920
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerArithmetic/IntegerArithmetic.runtimeconfig.json",
+    "sha256": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+    "size": 330
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/EdgFaithful.dll",
+    "sha256": "1dcb7b9a0f8c55b20ac196c56eb0a8c01fd3ce3b0eeaeb33df863f7aac8f11a8",
+    "size": 8704
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/EdgFaithful.pdb",
+    "sha256": "c77eec97d6e35f8816c66269f0e8e1cb32b44a59d161ac794aa79239b2fe346f",
+    "size": 14232
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/IntegerLeaves",
+    "sha256": "26a7b00abc7fa660e8ea6e63deee3bc3127bd0ca71786ddadc1e9b8a7387b37a",
+    "size": 79832
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/IntegerLeaves.deps.json",
+    "sha256": "5cd9448ce3d6f3394a3ea68fe899a9de2151123193b0ad76df67316a51bdad79",
+    "size": 778
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/IntegerLeaves.dll",
+    "sha256": "d12484a8e66d642da88e55868534d8885a8ec7327d0a599bf17be2db4398462e",
+    "size": 18944
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/IntegerLeaves.pdb",
+    "sha256": "3386081ce348d4169ffbda5689cf926b406226be3ccea291370e634fbc59b2c4",
+    "size": 15028
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/held-managed/IntegerLeaves/IntegerLeaves.runtimeconfig.json",
+    "sha256": "9950d4583cfc9a106857c0d5b8a75b53e8774852b57b80bc3823a74d44a4d87f",
+    "size": 330
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/EdgFaithful.pdb",
+    "sha256": "c77eec97d6e35f8816c66269f0e8e1cb32b44a59d161ac794aa79239b2fe346f",
+    "size": 14232
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/IntegerLeaves",
+    "sha256": "d1393a7ac777cecad0ab2aca20d4a1d1ad9861140d61af5814ccd0ccdc563042",
+    "size": 1377752
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerLeaves/IntegerLeaves.dbg",
+    "sha256": "9df5f783c4f374fdb7cdc4c7aeb39834797c97791090c6adcfbd26c0a1ab5b52",
+    "size": 2529664
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerArithmetic/EdgFaithful.pdb",
+    "sha256": "c77eec97d6e35f8816c66269f0e8e1cb32b44a59d161ac794aa79239b2fe346f",
+    "size": 14232
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerArithmetic/IntegerArithmetic",
+    "sha256": "a48c91c6ae1d8f782c999cac5ad090f04856a704fa902ce585857cb8273b5986",
+    "size": 1307696
+  },
+  {
+    "path": "edgcpp/manual-csharp/faithful/artifacts/integer-r3/aot-IntegerArithmetic/IntegerArithmetic.dbg",
+    "sha256": "5e9cbe26c9eb81cccbea51b4bd5a0b86135b3e8247e7dfff19e3ef9a16ae2bac",
+    "size": 2469688
+  }
+]

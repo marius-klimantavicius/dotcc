@@ -1,0 +1,94 @@
+{
+  "holds": {
+    "allSharedWritersHeld": true,
+    "authority": "explicit writer reports, research HOLD read from live child thread at position31",
+    "tasks": [
+      {
+        "key": "pin",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p0-source-pin-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "integers",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-integer-leaves-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "review",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p0-contract-review-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "arithmetic",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-integer-arithmetic-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "init",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-init-width-investigation-20261021-r1",
+        "status": "running",
+        "hold": true
+      }
+    ],
+    "reviewedQualifiedRoutines": 0
+  },
+  "started_unix": 1792563073.7226744,
+  "steps": [
+    {
+      "name": "snapshot-before",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/capture_snapshot.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/snapshot-before.json"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/snapshot-before.log",
+      "log_sha256": "4228f6430371c4bb099c6c8e5386b4fa69276fc07696c5f98eb0ceb16f990e5e"
+    },
+    {
+      "name": "leaf-hashes",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/leaf-hashes.log",
+      "log_sha256": "ee2a0887b1297c63defe4f6e4bc9742f7847eafd3627608c5fb492b36d2d1adb"
+    },
+    {
+      "name": "arithmetic-hashes",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/arithmetic-hashes.log",
+      "log_sha256": "bc07f677dddf59f06955d6a4a257ee2eea517c6efec8440f186c95f12a06c66e"
+    },
+    {
+      "name": "native-prepare",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/prepare_integer_oracle.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 1,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/integer-r2/native-prepare.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "passed": false,
+  "finished_unix": 1792563074.1963272
+}

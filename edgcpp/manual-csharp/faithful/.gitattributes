@@ -1,0 +1,3 @@
+# Exact compiler/tool output is hash-pinned evidence; retain native whitespace.
+evidence/integer-first-gate/native-effective-macros.txt -whitespace
+baseline/cpfe-elf-inspection.txt -whitespace

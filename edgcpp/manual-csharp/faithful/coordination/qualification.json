@@ -1,0 +1,295 @@
+{
+  "qualifiedRoutineCount": 18,
+  "restrictedDomainRoutineCount": 2,
+  "reviewedRoutineBodies": 20,
+  "macroVerdicts": "3 call-specific only",
+  "reviewId": "faithful-integer-held-r2",
+  "reviewReportSha256": "f3b8d849b636d827797f4c54bdb7f6551d077b3c28c6787527cadd326ad8b1ef",
+  "reviewLedgerSha256": "25a635ef0e06e54e72869444328405c85d02e5971297336d5efb18ae8b97335c",
+  "snapshot": {
+    "schema": 1,
+    "manifest_sha256": "115a3cf01bae6d28e80f020abc7986beafe66b854f4befeae99743c8786c97ad",
+    "files": {
+      "edgcpp/build/compile_commands.json": "568c80d00f1887a37a076c35bd8123fd1de1910cbecf73f18151d25bfb86d609",
+      "edgcpp/build/src/includes/cmake_defines.h": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+      "edgcpp/manual-csharp/faithful/Directory.Build.props": "cc5b89366aa568c3fd20b237592403d36f816c421364d89d98b97a14b727f617",
+      "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.json": "bec971ee7aa97fc5d1fa85a78b2af126bc9d02933796291f8c3c9d828757de9f",
+      "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.md": "290f35e287b4d74bdd460f5b0ed2f4ca4e210c3af27336bc331e22ca9dc4ca73",
+      "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.sha256": "c8ce37587df4e2e884e8faab3fa6ed242d74d65abff84cf572c2dc2db25e2893",
+      "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.json": "fa838d5f03cbdbdfd2793b3574c6fddea23b62fade8bdfd8cf84b9d1f884bcf0",
+      "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.md": "570421648256626c4a15ca3b61dbc30cd814fddcb59a69afbb4e26a0e6dd9f55",
+      "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.sha256": "7f7598a832de9d833d6f06583fc119e34a64355dfac9ddc675a99c3072a4d094",
+      "edgcpp/manual-csharp/faithful/src/EdgFaithful/EdgFaithful.csproj": "7efcdd8e74be5323363e9ad8a8c719e4a46e384990fb9f9287de41cfd30e96b0",
+      "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+      "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+      "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+      "edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/IntegerArithmetic.csproj": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2",
+      "edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/Program.cs": "c3c54f44d872dfddb4ea549126c2572e7e8c72617c273460966747f69c5907c0",
+      "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/IntegerLeaves.csproj": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2",
+      "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/Program.cs": "eb98a0c84af711d2e544ab13696223edc94979e5e6d345808690fbff9efea0b3",
+      "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/README.md": "37a215c731ecb35cd3834a84e2e3aa82804a678c1f3f7f80cece59ac29865c00",
+      "edgcpp/manual-csharp/faithful/tools/capture_snapshot.py": "d206c94369ef9a9f303503a31213272853d3a0eb65235227b78e7ff95638be4f",
+      "edgcpp/manual-csharp/faithful/tools/compare_integer_streams.py": "8b7baa4dfdd6cf7576e421d92975980b9dd5e3e8e038273657d5b5e67ee73bf3",
+      "edgcpp/manual-csharp/faithful/tools/integer_oracle.cpp": "a1c6095017728a9d3e6ce0e09780a8ee522968143b2a1ce696a5101153b48a94",
+      "edgcpp/manual-csharp/faithful/tools/prepare_integer_oracle.py": "93d32d4bc0ef2c01f09651e4ef1d99d9ce76dc20821accea7c00f61a9bcf4cda",
+      "edgcpp/manual-csharp/faithful/tools/run_integer_gate.py": "44947192f35c585b2cea20db5a2c0ea30939b5a0f0558105ee2a9e50109cde69",
+      "edgcpp/upstream/src/basics.h": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+      "edgcpp/upstream/src/const_ints.c": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "edgcpp/upstream/src/const_ints.h": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+      "edgcpp/upstream/src/targ_def.h": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b"
+    }
+  },
+  "qualified": [
+    {
+      "name": "set_integer_value(host-signed)",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 20,
+        "lastLine": 32,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "8c659a02021ebee4f901b9e890821e91ac170b325e11d982a4c61395cf06dd58"
+      }
+    },
+    {
+      "name": "set_integer_value(const-reference)",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 35,
+        "lastLine": 42,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "8834e8f1a00213c8ff468318ec900484f585a3a7676b22b1236055559fc37887"
+      }
+    },
+    {
+      "name": "set_unsigned_integer_value(host-unsigned)",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 45,
+        "lastLine": 57,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "e953fef4f8f5ff1f0f6ccea01e3cbfed1797da175b2822adc49ac638b59d8a9f"
+      }
+    },
+    {
+      "name": "set_unsigned_integer_value(const-reference)",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 60,
+        "lastLine": 67,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "97aaeed95af553f75847ea32b783b32d7566a2369f3bd5dc5cd09faa7b0d4629"
+      }
+    },
+    {
+      "name": "conv_integer_value_to_host_large_integer",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 70,
+        "lastLine": 117,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "6d4c7b894e9a5e595c688d94c939e9daa11abb4962c96b8e4518e127e5dc59b1"
+      }
+    },
+    {
+      "name": "cmp_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 120,
+        "lastLine": 151,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "25bf5b14f97a78ab17e8dd53413ba5deae8fb76e57fa1107305f50c20caa172f"
+      }
+    },
+    {
+      "name": "incr_integer_value",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 154,
+        "lastLine": 160,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "f0a8a6d41f56e04000aa4ff839e9f5e0239e232ff5f36b3d1ba1d6ef36867567"
+      }
+    },
+    {
+      "name": "or_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 163,
+        "lastLine": 171,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "d6b47d0fa2c6ccd7cde727d540bd28c5ed58269e3d60edad6187a909762de40b"
+      }
+    },
+    {
+      "name": "and_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 174,
+        "lastLine": 182,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "5b41bce3fef2e6535613cc90d78eaad12107cab3a8602724a59b7d27b12560d9"
+      }
+    },
+    {
+      "name": "xor_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 185,
+        "lastLine": 193,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "9a0c31ad8fce5a19c79f651fd8e4323f452d1d65a60ebfcdce6f5a5278565e3a"
+      }
+    },
+    {
+      "name": "complement_integer_value",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 196,
+        "lastLine": 203,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "5700d79fbc26d0563e95323cd5fbc7be73d4d0710ff415dfb28152667da179ff"
+      }
+    },
+    {
+      "name": "add_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 14,
+        "lastLine": 47,
+        "rangeSha256": "0b90f594556ee2eedd2b9cd01b72a1437cc45eacc90e57e9aad96342789a95cb"
+      }
+    },
+    {
+      "name": "add_mixed_signed_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 49,
+        "lastLine": 63,
+        "rangeSha256": "107cf48ef73548e28512f3809fd1674008039271b0416e073d10662014a41f2d"
+      }
+    },
+    {
+      "name": "subtract_mixed_signed_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 65,
+        "lastLine": 89,
+        "rangeSha256": "669f2cbb86e8f86645cc48a79bfa0ae5ff631d735498ecc6d243d3f4cac3d76d"
+      }
+    },
+    {
+      "name": "shift_left_integer_value",
+      "domainType": "source-legal-shift-count-caller-precondition",
+      "reviewedDomain": "P; all limb patterns; valid bool output; source legal-count caller precondition0..127 for128-bit represented integer (c927-928), not arbitrary int counts.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 119,
+        "lastLine": 150,
+        "rangeSha256": "e346930e400b85aeb12c18ba84a6590ab023cf4f9dc765a6b22997cde5c2c535"
+      }
+    },
+    {
+      "name": "shift_right_integer_value",
+      "domainType": "source-legal-shift-count-caller-precondition",
+      "reviewedDomain": "P; all limb patterns/flags; source legal-count caller precondition0..127 (c986-987), not arbitrary int counts.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 152,
+        "lastLine": 181,
+        "rangeSha256": "817884dc9899123586c0eeb2e753c0a67fd3bbb5b89773ddb1bb924eb6b3c650"
+      }
+    },
+    {
+      "name": "subtract_integer_values",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 183,
+        "lastLine": 216,
+        "rangeSha256": "d2b75015b1123daed265a949e63f75f41f25f5bddab7ee9487f013227c967d3c"
+      }
+    },
+    {
+      "name": "negate_integer_value",
+      "domainType": "source-valid-typed-storage-and-argument-contract",
+      "reviewedDomain": "P/D live typed storage, full128-bit limb or host-scalar domain admitted by signature, all bool flags, exact self alias or disjoint integer operands, distinct valid typed output storage.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 218,
+        "lastLine": 224,
+        "rangeSha256": "bf9139709b02e4d55ded865705599db23a56d8a484b5652af1d4bf1509848fb8"
+      }
+    }
+  ],
+  "restricted": [
+    {
+      "name": "make_integer_value_mask",
+      "verdict": "unqualified",
+      "reviewedDomain": "P; valid output storage; bits1..128 only. Native explicit precondition is bits>=1, not this upper bound. Remaining source-defined size_t cases unreviewed.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 91,
+        "lastLine": 98,
+        "rangeSha256": "02a2764181eec5eccb662476d7e82df63e8432d6e3df44c6477c1c064e8710d9"
+      }
+    },
+    {
+      "name": "sign_extend_integer_value",
+      "verdict": "unqualified",
+      "reviewedDomain": "P; all128-bit input patterns; bits1..128 only. Other source-defined size_t cases unreviewed.",
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+        "wholeFileSha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5",
+        "firstLine": 100,
+        "lastLine": 106,
+        "rangeSha256": "d28b090eb55aa04c09e30babc305da7ae8871c15e557bb1f5a362ae62d9a6c35"
+      }
+    }
+  ],
+  "notQualified": [
+    "INIT-001/full startup",
+    "unrestricted mask/sign-extension domains",
+    "new runtime source",
+    "remaining integer subsystem",
+    "whole frontend",
+    "P0 completeness"
+  ],
+  "evidence": "evidence/integer-first-gate/; exact independent review is authoritative; no prototype credit"
+}

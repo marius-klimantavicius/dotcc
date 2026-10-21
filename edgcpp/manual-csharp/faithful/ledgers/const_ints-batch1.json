@@ -1,0 +1,2639 @@
+{
+  "schema": "faithful-manual-port-routine-ledger-v1",
+  "batch": "const_ints-batch1",
+  "date": "2026-10-21",
+  "state": "HOLD; translated/review-pending; no qualified routines",
+  "hashRule": "SHA-256 of exact bytes; inclusive line ranges retain original line terminators; no encoding/newline normalization.",
+  "authority": [
+    "edgcpp/manual-csharp/PLAN.md",
+    "edgcpp/manual-csharp/AGENTS.md",
+    "edgcpp/manual-csharp/faithful/coordination/RESUME-20261021.md"
+  ],
+  "sourceInputFiles": [
+    {
+      "path": "edgcpp/upstream/src/const_ints.c",
+      "sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.h",
+      "sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f"
+    },
+    {
+      "path": "edgcpp/upstream/src/targ_def.h",
+      "sha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b"
+    },
+    {
+      "path": "edgcpp/upstream/src/basics.h",
+      "sha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_def.h",
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines.h",
+      "sha256": "4112aa9ba2c076dd9b83877bdfae6f107bd12952b6a12776baa6942ad114f18e"
+    },
+    {
+      "path": "edgcpp/upstream/src/basic_hdrs.h",
+      "sha256": "be3354996241679dc89ad58ed66e002c363891ae6132fe205df61d3a2d4df5c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_common.h",
+      "sha256": "39b80f4d24d5cae46d85230f9bf978d024bc369431336de884f33a54fc62fedb"
+    },
+    {
+      "path": "edgcpp/upstream/src/lang_feat.h",
+      "sha256": "980f0c21dfe065ec0a0b4601ac69d137f18a71754e59ad0cd0c809f65a7e889e"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.h",
+      "sha256": "a8c9c5e79dbdd6be8c82f360c58d8681f91015e5e14e61039076b7f8c3b9c2c1"
+    },
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "sha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f"
+    },
+    {
+      "path": "edgcpp/build/compile_commands.json",
+      "sha256": "568c80d00f1887a37a076c35bd8123fd1de1910cbecf73f18151d25bfb86d609"
+    }
+  ],
+  "nativeCommandSelection": {
+    "target": "cpfe",
+    "entry": {
+      "directory": "/home/marius/p/dotcc/edgcpp/build",
+      "command": "/usr/bin/c++ -DBACK_END_IS_C_GEN_BE=1 -DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1 -DDO_IL_LOWERING=1 -DLOWER_FIXED_POINT=1 -DLOWER_IFUNC=1 -DNEED_IL_DISPLAY=1 -DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1 -DUSE_CMAKE_DEFINES -I/home/marius/p/dotcc/edgcpp/build/src/includes -O3 -DNDEBUG -std=c++14 -Wall -Wwrite-strings -Wformat-security -pedantic -Werror=shadow -Wimplicit-fallthrough -Wconversion -Wsign-conversion -Wswitch-default -flto -fno-exceptions -fno-unwind-tables -fno-rtti -x c++ -o src/cmake/cpfe/CMakeFiles/cpfe.dir/__/__/const_ints.c.o -c /home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+      "file": "/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+      "output": "src/cmake/cpfe/CMakeFiles/cpfe.dir/__/__/const_ints.c.o"
+    },
+    "databaseSha256": "568c80d00f1887a37a076c35bd8123fd1de1910cbecf73f18151d25bfb86d609",
+    "execution": "not run by child",
+    "sourceToBinaryReceipt": "pending supervisor"
+  },
+  "profile": {
+    "host": "recorded Linux x86-64 LP64 little endian; fresh measurements pending",
+    "targetRuntime": "strict C++20/LP64 qualification pending; compile-time all-extensions retained",
+    "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER": 0,
+    "USE_BOOL_FOR_BOOLEAN_IN_CPLUSPLUS": 1,
+    "FIXED_POINT_ALLOWED": 1,
+    "INT128_EXTENSIONS_ALLOWED": 1,
+    "LONG_LONG_ALLOWED": 1,
+    "CHECKING": 1,
+    "DEBUG": 0,
+    "CHAR_BIT": 8,
+    "INTERNAL_TARG_CHAR_BIT": 8,
+    "sizeof_short": 2,
+    "sizeof_ptrdiff_t": 8,
+    "sizeof_size_t": 8,
+    "sizeof_bool": 1,
+    "MAX_SIZEOF_LARGEST_INTEGER": 16,
+    "MAX_SIZEOF_LARGEST_FIXED_POINT": 8,
+    "INT_VALUE_PARTS_PER_INTEGER_VALUE": 8,
+    "BITS_IN_AN_INTEGER_VALUE": 128
+  },
+  "configurationBranches": [
+    {
+      "id": "repr-array-guard",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 32,
+        "lastLine": 32,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "8d6b577cdd545c6ef5ee7448a675a1de018e8047f787d7a6bcf6a34ac07154ab"
+      },
+      "selectionAndExcludedAlternatives": "!INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=true; first five routine bodies included; ending guard c144",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "incr-array-guard",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 633,
+        "lastLine": 644,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "0c00de1b86b55fd6b518f0e24c468c9ebbd192d163b22b0a7e0dfc0a5855b7b3"
+      },
+      "selectionAndExcludedAlternatives": "array increment active; scalar increment macro h111-112 inactive",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "bitwise-array-guard",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 852,
+        "lastLine": 918,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "df8717d99f84430253af23a586df53a061f602b18b3b77e318f976af4dfadeec"
+      },
+      "selectionAndExcludedAlternatives": "array block active; only OR/AND/XOR in batch1; sign extension/get_part owned batch2",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "complement-array-guard",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 1108,
+        "lastLine": 1147,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "a4a2020586684515735ca12099d19f982636cec937f7467d138ca1657c9cd2f0"
+      },
+      "selectionAndExcludedAlternatives": "array complement active; clear_parts/copy_parts not dependencies of batch1 and remain unported",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "repr-header-alternatives",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.h",
+        "firstLine": 26,
+        "lastLine": 150,
+        "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+        "rangeSha256": "96ab495cbe84c39979578849fbed76c6c6f666a42789e38fb84bc1812fbeb5d5"
+      },
+      "selectionAndExcludedAlternatives": "scalar shift/sign/set/conversion including _lint alternatives/bitwise/signextend/complement/increment excluded; active extern array declarations preserve overload roles",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "target-types-alternatives",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1486,
+        "lastLine": 1679,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "3d48dea712927dd444e34b21266321a1059773022f78687ef369fc46a05f0630"
+      },
+      "selectionAndExcludedAlternatives": "scalar typedef branch inactive; ushort/ptrdiff/size array branch active; INTERNAL_TARG_CHAR_BIT8; fixed point enabled max8 does not exceed16",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "boolean-alternatives",
+      "source": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "firstLine": 208,
+        "lastLine": 223,
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "rangeSha256": "7f1d7382bea5786c3082333a6f03131c0cc02f64ee0cf866a53087caa47c582b"
+      },
+      "selectionAndExcludedAlternatives": "USE_BOOL_FOR_BOOLEAN_IN_CPLUSPLUS true, native bool; int/a_byte false branch excluded",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "host-width-alternatives",
+      "source": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "firstLine": 528,
+        "lastLine": 600,
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "rangeSha256": "87966b35371a83b1040ace2745d4a948c3453749811fa9c7d8225984723888c0"
+      },
+      "selectionAndExcludedAlternatives": "__ANSIC__ true, EDG_MSDOS false; size_t and ptrdiff_t; DOS and non-ANSI alternatives excluded",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "integer-max-branches",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1202,
+        "lastLine": 1268,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "a831b307a1702416dba86041e5b48ae25611bf324093c9eec80c556041d963ee"
+      },
+      "selectionAndExcludedAlternatives": "LONG_LONG_ALLOWED1 and INT1281 give literal16; defaults used; branches1/4/8 maxima excluded",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    },
+    {
+      "id": "fixedpoint-max-branches",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1283,
+        "lastLine": 1462,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "e01ac15f5d10d1adb134c58fd56498cdc71df51f46872f00c65e0d1187f30868"
+      },
+      "selectionAndExcludedAlternatives": "enabled fixed-point defaults max8; no configured override in generated header; disabled branch excluded",
+      "state": "source inspected; exact active preprocessor/ABI receipt pending"
+    }
+  ],
+  "generatedSelections": [
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "firstLine": 91,
+      "lastLine": 93,
+      "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+      "rangeSha256": "9ce2dcfe6b84e83259d752ff0d12f5908bd9b2c598b55a09a255f557e74293f2"
+    },
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "firstLine": 145,
+      "lastLine": 162,
+      "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+      "rangeSha256": "a3c1cebc434a8b5830745b35a67426f49e08cc3777f61c2bae3fc4ef226c643b"
+    },
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "firstLine": 298,
+      "lastLine": 300,
+      "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+      "rangeSha256": "694263cefff231e8e7b54b045beb2311502043fb885ebc723479510ef964dc5d"
+    },
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "firstLine": 3829,
+      "lastLine": 3852,
+      "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+      "rangeSha256": "d646cbcc05ae0d40b495d283151125e9e388849ddf370b1bcb2a2436ae9a9a58"
+    }
+  ],
+  "representationTypes": [
+    {
+      "id": "an_integer_value",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1673,
+        "lastLine": 1675,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "d94abbbc78eface890f4a826b5ace3ba322995ef63eee4bce58f558996154a4c"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 13,
+        "lastLine": 17,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "3fe5e73c1a0e9830a0a697a3702e11659e677c7a74e5bf0ed1cd193291eafd5b"
+      },
+      "mapping": "Inline fixed ushort[8], sequential layout pack2 size16; high-order part first; value assignment copies all parts; no owning reference field; caller owns/pins storage.",
+      "measuredAbi": "pending supervisor native/managed gate",
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "an_int_value_part",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1611,
+        "lastLine": 1611,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "7a0ea39a9bdd1a0d87a78fecd2ca4d99160ad2f3aa1b04696843f53c17c7ef97"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 10,
+        "lastLine": 10,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "1b3139fbb2f3f4559e1d11a4c917aba78e0f76438bcfb25de739376328662a41"
+      },
+      "mapping": "unsigned short->System.UInt16,2 bytes; int promotion preserved in leaf expressions",
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "a_host_large_integer/a_host_large_unsigned",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1627,
+        "lastLine": 1628,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "c0a02c571b54cf0e32daaf7d4174292d1bb307e24af71cb44c491fb93ad04c39"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 8,
+        "lastLine": 9,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "00f9e4e57ba0cc1bf835d11525c8306e223082bcfe2faf05400b6f851ae8a179"
+      },
+      "supportingSource": [
+        {
+          "path": "edgcpp/upstream/src/basics.h",
+          "firstLine": 533,
+          "lastLine": 554,
+          "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+          "rangeSha256": "550edc3a3df6b1bd95945453ce3a4db04f41d1d60cb70af88da044b45fd115d7"
+        }
+      ],
+      "mapping": "ptrdiff_t/size_t->System.Int64/UInt64 only for pinned64-bit host",
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "a_boolean",
+      "source": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "firstLine": 213,
+        "lastLine": 217,
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "rangeSha256": "81d97616e70dffdbbce1f216d53ca75659581eaee6eeadd5fc83b70051d53719"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 7,
+        "lastLine": 7,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "f7087d26aab358c5231e9930f356ff0064f11dcdef58258a1d3c9e6cbd1f2477"
+      },
+      "mapping": "native bool->System.Boolean; true/false constants; bool* points to in-process one-byte output, no P/Invoke",
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "sizeof_t",
+      "source": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "firstLine": 540,
+        "lastLine": 542,
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "rangeSha256": "e3254c17fcfd18fdefd8964a7013365845c15654680c7e79dc9b05d13beb15fc"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 11,
+        "lastLine": 11,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "ef6ae2f1728b9deffd6cb7353da875518212537809b10c4e8942730c9c0ef63b"
+      },
+      "mapping": "size_t->System.UInt64 in pinned non-DOS LP64 profile",
+      "state": "translated/review-pending"
+    }
+  ],
+  "constantDependencies": [
+    {
+      "id": "MAX_UINT_VALUE_PART",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1612,
+        "lastLine": 1612,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "c7831bc060bc4f7caaa09348e904a8a93cc42657532fd8a749452bb7728a4750"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 41,
+        "lastLine": 41,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "01c18a97d1c3467a6dc8697d7c1a367ae653c9d9c14acc56f23e266c4d4f6df7"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "SIGN_BIT_INT_VALUE_PART",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1613,
+        "lastLine": 1613,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "75a1371e0579ab82308535df1a81362b1d5710471d6c4d7096931261f3b7198a"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 42,
+        "lastLine": 42,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "f700778b9ea01d28a50019d2b8cf33dc00440233f3313b71f607cf6aa5c98a11"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "SIZEOF_INT_VALUE_PART",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1614,
+        "lastLine": 1614,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "49f1463fece52a01f0535a63dd9ba237f54c842e0c03dc380da6e2f1737ebd02"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 33,
+        "lastLine": 33,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "7f78869f2d0754078c751ae8c8541b49808cd417e0ecfb82ba348f8c8ec8ff9b"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "BITS_IN_INT_VALUE_PART",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1615,
+        "lastLine": 1615,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "f8303e773cecb218e41e46b8a7ed7eb9c016921ce62c000fc031c273fdfa6706"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 34,
+        "lastLine": 34,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "c42c0e56ea1f69aafd0e9c62fcf7f4d6bbfbdbeb6da019650e924e34986ef3d1"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "INTERNAL_TARG_CHAR_BIT",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1637,
+        "lastLine": 1655,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "5f428170506674cdf5d5041bdf480070e8b3ce21d6682c2460791c3b53300444"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 29,
+        "lastLine": 29,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "4ad1fea758fe5beeacb7ddf42780cf143a9af0e22eda27da13c3581e13c3278a"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "BITS_IN_HOST_LARGE_INTEGER",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1657,
+        "lastLine": 1657,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "98dd9ad5358d3021e4cd2e0fc6a309dd2be4f7de7d2112e174872fceec3ae819"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 40,
+        "lastLine": 40,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "950e996a54d2d5896b5975c58a97d3308bf4b484ab23c0fe8f82d415e09436bb"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "INTEGER_VALUE_REPRESENTATION_SIZE",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1661,
+        "lastLine": 1667,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "98be2fe8eb7d82d398d942dc6b7648d0c20e9e70d1f6265deec6f0ec0d14a4e7"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 32,
+        "lastLine": 32,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "73d2e0bbe415d2aad9221e53dc1d98655070c78613418410796a3847eb34e467"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "INT_VALUE_PARTS_PER_INTEGER_VALUE",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1668,
+        "lastLine": 1670,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "91f3d478d2f8e43b5e4e979fcaa116b1babe9a0d2225398ef4bbbaf06bde5496"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 35,
+        "lastLine": 37,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "55318f885c2cb68c5d3357815fc45009c765638ab714db08a98ef2a27f27eca2"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "BITS_IN_AN_INTEGER_VALUE",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1676,
+        "lastLine": 1677,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "8b078105a0365ecf460cd44916ee7bd48fff1c4d01a843cd8e83cedc451cc6f1"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 38,
+        "lastLine": 39,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "69ef910e2f5598381cf19df25a3a8d8f779ee3462721b9e0d38859cda32aa598"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "MAX_SIZEOF_LARGEST_INTEGER",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1258,
+        "lastLine": 1264,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "299b8666f6a5395aacade1087de7b8d4698a3c44f4964252d1b1284de3d440b4"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 30,
+        "lastLine": 30,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "4329ab737319fd55ee3b7c4bed8961db49de87ed364c3593db1dcc718dcf6daf"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "MAX_SIZEOF_LARGEST_FIXED_POINT",
+      "source": {
+        "path": "edgcpp/upstream/src/targ_def.h",
+        "firstLine": 1429,
+        "lastLine": 1460,
+        "wholeFileSha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b",
+        "rangeSha256": "89e652c64cdd077e9f1d769323eaa84cb1fcb923bb54ed168ebff810ed573d44"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 31,
+        "lastLine": 31,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "38a64badb80e3207717e4566e5f93c8ca0f7aa4c8a9b51d78bdc67a884511c1d"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "INT_VALUE_PART_BASE",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 27,
+        "lastLine": 29,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "88bd9368bfbd6f48bf15173c4392865bd72bc72225c40891796154c8bed891f4"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 43,
+        "lastLine": 43,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "dce9962b0e06e924aa8171965eecb7bd8721c334b6a2eb8e310c2f7362b8bdbd"
+      },
+      "mapping": "unsigned host64 value65536",
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "TRUE/FALSE",
+      "source": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "firstLine": 216,
+        "lastLine": 217,
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "rangeSha256": "21495021d8b7ad1598f810ebfc46686d3b0ac3ed9e5072f539b16372d89b0b7f"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 26,
+        "lastLine": 27,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "d4cfe41a450728ce24a829b5df6168ff35cc4274bfe5a14e5153b1589ec3915d"
+      },
+      "mapping": "bool true/false",
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "INTEGER_VALUE_REPR_IS_A_HOST_INTEGER",
+      "source": {
+        "path": "edgcpp/build/src/includes/cmake_defines.h",
+        "firstLine": 148,
+        "lastLine": 150,
+        "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+        "rangeSha256": "422ac9c29126d081ca188e31692287021ec429fa328d8b8fdfdbe4a8f9bd355f"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 22,
+        "lastLine": 22,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "87dc7d9e8a12d9825bbc79307b8d4bb6a560403d6ed503d44eb9d74d118e0e9b"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "USE_BOOL_FOR_BOOLEAN_IN_CPLUSPLUS",
+      "source": {
+        "path": "edgcpp/build/src/includes/cmake_defines.h",
+        "firstLine": 3835,
+        "lastLine": 3837,
+        "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+        "rangeSha256": "30db74392b6127ae1c8309fea1370dfee93d118242c8c964981c7dfa3a4c4c2c"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 23,
+        "lastLine": 23,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "10444c7ee43404796c97592586465c4b034d77647813194824b3ad5b7fc602a9"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "FIXED_POINT_ALLOWED",
+      "source": {
+        "path": "edgcpp/build/src/includes/cmake_defines.h",
+        "firstLine": 91,
+        "lastLine": 93,
+        "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+        "rangeSha256": "9ce2dcfe6b84e83259d752ff0d12f5908bd9b2c598b55a09a255f557e74293f2"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 24,
+        "lastLine": 24,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "03c95a74d26d66bd07802c416b947d06385da164ea33755759f197c3162fe7c1"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "INT128_EXTENSIONS_ALLOWED",
+      "source": {
+        "path": "edgcpp/build/src/includes/cmake_defines.h",
+        "firstLine": 298,
+        "lastLine": 300,
+        "wholeFileSha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f",
+        "rangeSha256": "694263cefff231e8e7b54b045beb2311502043fb885ebc723479510ef964dc5d"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 25,
+        "lastLine": 25,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "2ec39cdb751cf0d622e8493535eb8e643500c90a34d12ec9a7478ff3e790b7ac"
+      },
+      "state": "source-derived/review-pending"
+    },
+    {
+      "id": "CHAR_BIT",
+      "source": {
+        "path": "edgcpp/upstream/src/basics.h",
+        "firstLine": 528,
+        "lastLine": 531,
+        "wholeFileSha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9",
+        "rangeSha256": "040384bf43b227a4145247567d233ccec6947e1cc27a0922f00aef4aafd7dbb5"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 28,
+        "lastLine": 28,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "ba001d710c486f53e162deec094fcfaf895003d1f5d75d5889569b1b2a4e59f4"
+      },
+      "mapping": "System <limits.h> CHAR_BIT=8 under recorded x86-64 ABI; exact native preprocessor/layout receipt pending supervisor",
+      "state": "source-derived/review-pending"
+    }
+  ],
+  "macros": [
+    {
+      "id": "signed_shift_right",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.h",
+        "firstLine": 37,
+        "lastLine": 40,
+        "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+        "rangeSha256": "c94dc7482ec5a681bbab56bad9d818dc5e40a58ad65673fb57b71eea8dfc9d80"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 47,
+        "lastLine": 51,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "df571adc245b0536e6e5b13750bfd8f2d5d4be66def3fa7b97489d3ec6746419"
+      },
+      "branches": [
+        {
+          "id": "shift.unsigned-cast-shift",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.h",
+            "firstLine": 38,
+            "lastLine": 38,
+            "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+            "rangeSha256": "158f8659054d1c138b8c5b3fbd0a9d8d30cdd5faf24658a6489e31559f0a3174"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+            "firstLine": 49,
+            "lastLine": 49,
+            "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+            "rangeSha256": "6427815f013de7911174178904f31f198c121335e2101455b2f96b07af979d4c"
+          },
+          "operation": "Cast signed64 to unsigned64 then logical right shift.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "shift.sign-predicate-and-arms",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.h",
+            "firstLine": 39,
+            "lastLine": 40,
+            "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+            "rangeSha256": "0c45049e7e0dd07a97036032285e780cf91bfd067504578edf945a9669dd4517"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+            "firstLine": 50,
+            "lastLine": 50,
+            "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+            "rangeSha256": "38d3f6600fa18e35d07d4f33f47051496c10a789f111b98d768f0df0a241ff57"
+          },
+          "operation": "Test signed value<0; negative constructs ~(ulong-all-ones >> bits), else0; OR then signed64 cast.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ],
+      "callDomain": "Enabled const_ints.c:45 only: pure local value, constant16. c:993 is excluded scalar branch. Other callers require side-effect/multiple-evaluation audit; defined shift counts0..63 only.",
+      "dependencies": [
+        "a_host_large_integer/a_host_large_unsigned"
+      ],
+      "state": "translated/review-pending"
+    },
+    {
+      "id": "sign_of",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.h",
+        "firstLine": 47,
+        "lastLine": 48,
+        "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+        "rangeSha256": "f7463fd6665f8739fa851d4a186ccd013487192410f499af53c7e771ab8ad116"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+        "firstLine": 55,
+        "lastLine": 58,
+        "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+        "rangeSha256": "b7a80c3934919bb5255936458c17adb9abce18a7f4747db6a8922f335a92966c"
+      },
+      "branches": [
+        {
+          "id": "sign.read-mask-predicate",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.h",
+            "firstLine": 47,
+            "lastLine": 48,
+            "wholeFileSha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+            "rangeSha256": "f7463fd6665f8739fa851d4a186ccd013487192410f499af53c7e771ab8ad116"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+            "firstLine": 57,
+            "lastLine": 57,
+            "wholeFileSha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5",
+            "rangeSha256": "b7cfb471fdc794e29be62cb79b8de1de2c6c4bfd4ff81aaae92752a6c1b98524"
+          },
+          "operation": "Read live part0, promote to int, mask0x8000 and compare !=0; true/false reflects raw sign bit.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ],
+      "callDomain": "Pointer denotes exact lvalue/subobject at original macro evaluation point; no caching/snapshot; caller retains short-circuit order.",
+      "dependencies": [
+        "an_integer_value",
+        "SIGN_BIT_INT_VALUE_PART"
+      ],
+      "state": "translated/review-pending"
+    }
+  ],
+  "routines": [
+    {
+      "id": "set_integer_value(host-signed)",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 33,
+        "lastLine": 47,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "370bfcf85013f262c2f4777249033f0cee70fcef1a319bc93a5157b0cd55b159"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 20,
+        "lastLine": 32,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "8c659a02021ebee4f901b9e890821e91ac170b325e11d982a4c61395cf06dd58"
+      },
+      "parametersAndOutputs": [
+        "intval: live writable an_integer_value*; output only, eight ordered stores",
+        "value: signed 64-bit by-value input; local is shifted after each store; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants",
+        "signed_shift_right"
+      ],
+      "testMethodsAuthored": [
+        "SetHostValues",
+        "SignedShiftMacro",
+        "--stream:set-signed"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "set_integer_value(host-signed).entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 39,
+            "lastLine": 40,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "cabbf5be947972847666072da81308231aa584fa56ed0a5c5193f39e63f8b63a"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 23,
+            "lastLine": 24,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "33016fb8d88528c3c0938a48415e3c4b5e0021fe4c22c17a87296d5bbfd62041"
+          },
+          "operation": "Declare int i and signed host this_part.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(host-signed).loop-init-true-false-update",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 42,
+            "lastLine": 42,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 26,
+            "lastLine": 26,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "operation": "i=7; evaluate i>=0; true enters; decrement after body; false terminates after eight iterations; zero iterations impossible under pinned count.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(host-signed).mask",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 43,
+            "lastLine": 43,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "142580eee7165dc57e0b885200d4d050a77c135a8bde21458e2ef6fa3a6433ed"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 28,
+            "lastLine": 28,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "972ebcdf321dea87568f9237a6af640f2b6ea41387c5f10849a8dcf8d4a4a2c7"
+          },
+          "operation": "Mask signed 64-bit value with promoted int constant 65535.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(host-signed).narrow-store",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 44,
+            "lastLine": 44,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "f5d390139fda09da51a8b81fdbbbce19e1c92cb889b7d755ff2214773d569e65"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 29,
+            "lastLine": 29,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "ff8c6867bae95590b3427ec78ae4c1c96d998639e564ca3f816cb88fdb0aa825"
+          },
+          "operation": "Narrow to ushort and store existing intval->part[i].",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(host-signed).shift-call",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 45,
+            "lastLine": 45,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "476725704b2093dfc548e9db3baa555119cf00095f44019803f2d06bba8c7592"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 30,
+            "lastLine": 30,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "4b821ccf56956d99bf4bb531f749b47b5792c364eaf4f7edde5ba7d14a7ddc3f"
+          },
+          "operation": "Call mapped source macro with side-effect-free value and constant16; assign result to local value.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(host-signed).exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 46,
+            "lastLine": 47,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "3d05b4926e6c3950d774c2ce8c01ed80efbf7ae63283daadd92292d808aaeabf"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 31,
+            "lastLine": 32,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop exit and void return; no shortened zero fill.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "set_integer_value(const-reference)",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 50,
+        "lastLine": 59,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "0b202f4319d3178c907bbac7365f756b31c4f6348fe585b6a5f5b8b227bce27d"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 35,
+        "lastLine": 42,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "8834e8f1a00213c8ff468318ec900484f585a3a7676b22b1236055559fc37887"
+      },
+      "parametersAndOutputs": [
+        "intval: writable live output pointer",
+        "value: C++ non-null live const-reference adapted to pointer to exact referent; no writes through value; self alias allowed; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "CopyValues",
+        "--stream:copy-signed"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "set_integer_value(const-reference).forward-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 56,
+            "lastLine": 56,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "be50f75b036b18bee95781448d4b94d9ce98bb0916a2a6df5a034f6e9bfb15f7"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 38,
+            "lastLine": 38,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "059a7eeb1162ef904c8827c56d7393dd20ea8b1a348c540382b3ae7150212815"
+          },
+          "operation": "uint i=0; evaluate i<8 true/false; increment after each store; false at8; zero iterations impossible.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(const-reference).copy-live-part",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 57,
+            "lastLine": 57,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "57c5cf4de89aeb95789a805b3f484ab1548d2ee2f032d8362d8e326220e651c3"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 40,
+            "lastLine": 40,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "2f0863b955ff19486a8540033bbd403c6ce25c840e9ab8b50669d61c97f6041f"
+          },
+          "operation": "Read live source at i before writing same-index destination; do not snapshot referent.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_integer_value(const-reference).exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 58,
+            "lastLine": 59,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "3d05b4926e6c3950d774c2ce8c01ed80efbf7ae63283daadd92292d808aaeabf"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 41,
+            "lastLine": 42,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop and void return; no allocation or retained alias.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "set_unsigned_integer_value(host-unsigned)",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 62,
+        "lastLine": 76,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "99d9453b3d8d8de7cb01c15b4cae9ff8b04834de0a02a2e98a2a54ff7db8a01c"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 45,
+        "lastLine": 57,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "e953fef4f8f5ff1f0f6ccea01e3cbfed1797da175b2822adc49ac638b59d8a9f"
+      },
+      "parametersAndOutputs": [
+        "intval: live writable an_integer_value*; output only",
+        "value: unsigned64 by-value input; this_part remains signed64 as native; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "SetHostValues",
+        "--stream:set-unsigned"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "set_unsigned_integer_value(host-unsigned).entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 68,
+            "lastLine": 69,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "cabbf5be947972847666072da81308231aa584fa56ed0a5c5193f39e63f8b63a"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 48,
+            "lastLine": 49,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "33016fb8d88528c3c0938a48415e3c4b5e0021fe4c22c17a87296d5bbfd62041"
+          },
+          "operation": "Declare int i and signed64 this_part.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(host-unsigned).loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 71,
+            "lastLine": 71,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 51,
+            "lastLine": 51,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "operation": "i=7; i>=0 true/false; --i after each body; exactly8 iterations.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(host-unsigned).mask",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 72,
+            "lastLine": 72,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "142580eee7165dc57e0b885200d4d050a77c135a8bde21458e2ef6fa3a6433ed"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 53,
+            "lastLine": 53,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "2fc2408142116bb5456538f356dff454dcfa8ed051c83f0d6f83cf8e041aa028"
+          },
+          "operation": "ulong mask; source implicit conversion to signed64 made explicit; masked range0..65535.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(host-unsigned).store",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 73,
+            "lastLine": 73,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "f5d390139fda09da51a8b81fdbbbce19e1c92cb889b7d755ff2214773d569e65"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 54,
+            "lastLine": 54,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "ff8c6867bae95590b3427ec78ae4c1c96d998639e564ca3f816cb88fdb0aa825"
+          },
+          "operation": "Unchecked ushort narrowing and write to existing part[i].",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(host-unsigned).shift",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 74,
+            "lastLine": 74,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "24b2a56f04253f85f315ebc53878b258f6139c892adca0e212a8421db874e342"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 55,
+            "lastLine": 55,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "1a2a32b4cef78c80e75375f50e945371dcf6ac879b9e944ccdb85df3577c70d4"
+          },
+          "operation": "Logical unsigned64 right shift16, assign local.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(host-unsigned).exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 75,
+            "lastLine": 76,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "86051b0a6063241ca89954b73dcdbec2d50b61cbcacdcdec2ee453dfa9e0ad82"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 56,
+            "lastLine": 57,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop exit and void return.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "set_unsigned_integer_value(const-reference)",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 79,
+        "lastLine": 88,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "6b3738c071746e8ba76c01362968feb10c3a794ca713588954c1d0da2c4415e4"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 60,
+        "lastLine": 67,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "97aaeed95af553f75847ea32b783b32d7566a2369f3bd5dc5cd09faa7b0d4629"
+      },
+      "parametersAndOutputs": [
+        "intval: writable live output pointer",
+        "value: exact C++ const-reference referent adapted to live non-null pointer; source not independently mutated; self alias allowed; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "CopyValues",
+        "--stream:copy-unsigned"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "set_unsigned_integer_value(const-reference).forward-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 85,
+            "lastLine": 85,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "be50f75b036b18bee95781448d4b94d9ce98bb0916a2a6df5a034f6e9bfb15f7"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 63,
+            "lastLine": 63,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "059a7eeb1162ef904c8827c56d7393dd20ea8b1a348c540382b3ae7150212815"
+          },
+          "operation": "uint i=0; i<8 true/false; ++i; false at8; exactly8 iterations.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(const-reference).copy-live-part",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 86,
+            "lastLine": 86,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "57c5cf4de89aeb95789a805b3f484ab1548d2ee2f032d8362d8e326220e651c3"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 65,
+            "lastLine": 65,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "2f0863b955ff19486a8540033bbd403c6ce25c840e9ab8b50669d61c97f6041f"
+          },
+          "operation": "Read source current part then write destination same-index; forward order.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "set_unsigned_integer_value(const-reference).exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 87,
+            "lastLine": 88,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "86051b0a6063241ca89954b73dcdbec2d50b61cbcacdcdec2ee453dfa9e0ad82"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 66,
+            "lastLine": 67,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop exit and void return.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "conv_integer_value_to_host_large_integer",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 91,
+        "lastLine": 142,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "5d23cfb67f8ebe0100fd600f81fef100f2795b1c6ea9fed95cb05674a419f2bf"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 70,
+        "lastLine": 117,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "6d4c7b894e9a5e595c688d94c939e9daa11abb4962c96b8e4518e127e5dc59b1"
+      },
+      "parametersAndOutputs": [
+        "intval: live input pointer; read only; never retained",
+        "is_signed: native bool by value",
+        "value: live signed64 output pointer; always receives retained low64 bits, including overflow",
+        "err: live bool output pointer; overwritten after *value; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants",
+        "sign_of"
+      ],
+      "testMethodsAuthored": [
+        "ConvertValues",
+        "--stream:extract"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "conv_integer_value_to_host_large_integer.entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 105,
+            "lastLine": 113,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "59cc766a1fb5d9da9cbdbde91b97d1959d0156be14a47228242b59767c262917"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 76,
+            "lastLine": 84,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "4df59c9bc72dfd09540d43d5d898b79ba701aa67a66d4ee7b0de8ddfcb13b5af"
+          },
+          "operation": "Declare locals, bits_so_far=0; bits_discarded=128-sizeof(host)*8=64; unsigned result0; overflow false.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.raw-sign",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 118,
+            "lastLine": 118,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "70632a2630383221e31c140de389775020b4a3c562ad88ff88fb9fc5c45cca44"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 86,
+            "lastLine": 86,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "66aa4f3cb646e4aa0ae5aaaf1cfe3130eb02b49e4aec60d98add5f6d0241a845"
+          },
+          "operation": "Read original input sign from live high part.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.fill-short-circuit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 119,
+            "lastLine": 119,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "cf6864f345143bb010f87dda7b6972d97d937fca9fb75409747a26459a76cfaf"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 87,
+            "lastLine": 87,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "0d3b8109045b1a42e46c9a93f07ed67dc112a9774c8501eeb9a5eeb68f1595d0"
+          },
+          "operation": "Evaluate is_signed first; if false skip is_negative; if true evaluate raw sign.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.fill-negative",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 120,
+            "lastLine": 120,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "d25ef96c3accf27a8b469f2f3acefd8c89aa22207f7698c725159465bdf9bb51"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 89,
+            "lastLine": 89,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f1a5871f492a0eda484976f454ef76a990cd8d84cd2964813e61538ae8629514"
+          },
+          "operation": "True arm fill=65535.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.fill-other",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 121,
+            "lastLine": 123,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "fa192a1b7d16b52457a339695c5fe30463be7a17507667da0ffb54741f9c1b92"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 91,
+            "lastLine": 94,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "7e7ec5c6db8c458ffcd5237d59d814fe272aa158385a8f5de3f9fdc27878cb57"
+          },
+          "operation": "False arm fill=0; includes signed positive and unsigned either raw sign.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 124,
+            "lastLine": 124,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "6db55e496183ca53e02c40ba39c7b267ea5a28414c8b5d914490a7e310c6d0a0"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 95,
+            "lastLine": 95,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "c04727dc92867a40912ae64905100a157fa825f8331d5a25c17de9cbb6078a85"
+          },
+          "operation": "i=0; i<8 true/false; ++i; read high-to-low; eight iterations.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.read-part",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 125,
+            "lastLine": 125,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "b098d99c307059ee5271e51cd3ec67fdc03a39901eb95fa5000890f59adf6066"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 97,
+            "lastLine": 97,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "7f7849cefd64a2f20a8837b2129f98c7d67a56b6f24847c0ff635c357a4f14a3"
+          },
+          "operation": "Snapshot current input part to ushort local.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.discard-predicate",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 126,
+            "lastLine": 126,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "67a3cbf94a4e94541b7c0060667f53d1a016ff12621be27b61790a01d4064297"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 98,
+            "lastLine": 98,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "07228389b2d22a32ffc5744999d8154239a52c8771a6082fa1c8444ff6719206"
+          },
+          "operation": "bits_so_far<64 true selects discarded high part; false selects retained part.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.fill-match-predicate",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 127,
+            "lastLine": 127,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "d535828c54679b5d66a94f6227500f08ffe7292d941f2dea546fd28bb9c60264"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 100,
+            "lastLine": 100,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "066b461bdc93850087ddc91dcd0ecc648f25a084ba5bb1b836e803bd7beb2f60"
+          },
+          "operation": "Compare discarded part against selected fill: equal leaves overflow unchanged; unequal enters error write.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.fill-mismatch",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 128,
+            "lastLine": 129,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "a4c03f061086ea6310e904b51a5ea100372923e048d0d6b78a81f66d9beadc0a"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 102,
+            "lastLine": 103,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "005f5f317b11d05a267d867dd56532e60ab60082aa09f00f3b9a344e23050e24"
+          },
+          "operation": "Set overflow true; do not exit or omit retained result construction.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.retained-part",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 130,
+            "lastLine": 132,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "49f659eacb97fecc2cb442c5824e840d36d738266f7f58a2874becb3337e1c06"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 105,
+            "lastLine": 108,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "a68c9cb8a24c5afe1ea1004cf0a86e37c5f43fab5f7a1e6c45054f5e7431d79c"
+          },
+          "operation": "Else: unsigned64 result shifted16 then current part added; preserve order.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.advance-bits",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 133,
+            "lastLine": 134,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "69b08810aac75387a0e12d07796f4717411e6379a8c2780fe2d97ae5db95a1d4"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 109,
+            "lastLine": 110,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "e9eb2b832c453dde777f6dfa488df332142b82429f2d36f4d68bc62071ab108b"
+          },
+          "operation": "bits_so_far+=16, then next loop predicate.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.final-sign-short-circuit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 137,
+            "lastLine": 137,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "3d003630a383f27a212ce11df0a484b2b7e05eb221cb622b2e707f1cb393e127"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 111,
+            "lastLine": 111,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "55cced7f9f03a24e5c6dba50f2f858bce9f029ce8202ca50d03861142b13b3cb"
+          },
+          "operation": "Evaluate is_signed first; false skips signed result conversion/sign comparison. True compares original raw sign with signed low64 sign; equality leaves flag unchanged.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.final-sign-mismatch",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 138,
+            "lastLine": 139,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "68952490212bfab89daf6d753e76d64de83de4e1bf64c31b9454c87b7aafbdad"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 113,
+            "lastLine": 114,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "d05cdcab13bfdf64cedbeeb45a55d4f3fa4bb45de0f59ad1f7f79f219205169f"
+          },
+          "operation": "If signed signs unequal set overflow true.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.value-output",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 140,
+            "lastLine": 140,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "e8a6dabbd183c8ec424cdc6c63c4dcae5766cea84ce8944f7600098495f7a3b3"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 115,
+            "lastLine": 115,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "c77d0681571390a104d0c2e25c951f33d7b4fbe6a51cdc816cb1ee48a7cc4552"
+          },
+          "operation": "Store retained result bit pattern through signed64 pointer FIRST, using unchecked two-complement reinterpretation under pinned host.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "conv_integer_value_to_host_large_integer.error-output-return",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 141,
+            "lastLine": 142,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "1335ceabafdbbb376909596b52d804897910b9b8eb268d7c610d2d3e78d226bf"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 116,
+            "lastLine": 117,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "16745e34e84538dca469891b4446260ddcc26d4638bee1ce4eaa1bba37f78201"
+          },
+          "operation": "Store bool overflow SECOND, then return void.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "cmp_integer_values",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 284,
+        "lastLine": 334,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "2da1f239d25742f50ae658e3b7029c90abf1662dcdd63596f6855f284b83efa4"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 120,
+        "lastLine": 151,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "25bf5b14f97a78ab17e8dd53413ba5deae8fb76e57fa1107305f50c20caa172f"
+      },
+      "parametersAndOutputs": [
+        "op_1/op_2: live read-only an_integer_value*; exact same object allowed",
+        "op_1_signed/op_2_signed: independent bool interpretation flags, even for aliased object",
+        "return: int exactly -1,0,+1; no writes"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants",
+        "sign_of"
+      ],
+      "testMethodsAuthored": [
+        "CompareValues",
+        "--stream:compare"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "cmp_integer_values.entry-index",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 298,
+            "lastLine": 300,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "3342cb27bdc76b32153c9abf451da90d83197b0033618a612b2e463d2e3e0d82"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 125,
+            "lastLine": 125,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "dcdb44d45421bb260616f17f4cd3a1e75a86d433656f9f544809f5d071ba7293"
+          },
+          "operation": "Active array branch declares int i; scalar exclusion recorded separately.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.sign1-short-circuit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 301,
+            "lastLine": 301,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "473e5e3752a3bacfe0d33a47aa9e5cb1a6b6cb9be02207be1c740df5aa099204"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 126,
+            "lastLine": 126,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "c47f767048dded78f57c9fdfa943b8d1f8fa19cce3d8e2ad75286ae7db8ee82d"
+          },
+          "operation": "Evaluate op_1_signed then only if true read sign_of(op_1).",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.sign2-short-circuit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 302,
+            "lastLine": 302,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "852d44d0e635395aa639e36e17a7e367c37bd81a21afa1dcabf7493dcedea73b"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 127,
+            "lastLine": 127,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "3f0f4def38a52e9bec65b5e858db2819f46d4af48cefb257f5c4d5dcfe3cba01"
+          },
+          "operation": "Then evaluate op_2_signed and conditional live sign_of(op_2).",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.initialize-result",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 303,
+            "lastLine": 303,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "d103135ac05b3c1e987f2227677222ec1f5924f3eefdb35c87fe3f8c08e58650"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 128,
+            "lastLine": 128,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "e7287feb7bb1b441584be9f2000fed8e569dc3a16a4f70e95091f213be9a8d8d"
+          },
+          "operation": "int result=0.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.sign-predicate",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 305,
+            "lastLine": 305,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "41f7c30ce9cb97595920d06fdc17669e3e1a600b180f2861dab303fbd6f45c21"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 130,
+            "lastLine": 130,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "8af86dfdc9f4091f788037ef454b765f7bd6b47832a99c42e6cc85929df7d7cb"
+          },
+          "operation": "Unequal sign flags select differing-sign branch; equal signs select part loop.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.different-sign-ternary",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 309,
+            "lastLine": 309,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "b775049943fe85bf8056f664ffeee6e2ae0525c82c1d467341883714ee79aae3"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 132,
+            "lastLine": 132,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "a5e305fc1f065e1f89b7018b889c2683ae464f7bbd9c027ec4a7d7b92a5e3beb"
+          },
+          "operation": "If sign1 true result=-1; else result=+1. Do not compare parts.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.equal-sign-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 322,
+            "lastLine": 322,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "d54eb249a4ab272d115d03c0a6b021e21853b2480d6652c6de793632f19880c8"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 136,
+            "lastLine": 136,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "c41c5ae31667abac681a0f192e54ddbbf3f79f2d5f28ea61d2d2cfcd7dba838b"
+          },
+          "operation": "i=0; i<8 true/false; ++i; equality of every part leaves result0.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.greater-predicate",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 323,
+            "lastLine": 323,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "c71ba3f5a3de4828591423fc7f5ca05952782193c46a67145a218b70b5527d22"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 138,
+            "lastLine": 138,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "936adad5fd76d1749acd795b626904d7f3990c32b73fc65c240bcbf20c848967"
+          },
+          "operation": "First compare live op1[i]>op2[i]. False proceeds to less comparison.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.greater-break",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 324,
+            "lastLine": 325,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "09b9120fc4832bf5f5948e8e33d601a60c04daccb3fa7ea3e4e25894a967f860"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 140,
+            "lastLine": 141,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "4fa8ba223a5ce3ac395643f25416c8b51b8e9b8ed96131c94855f62f5ce81d42"
+          },
+          "operation": "True sets1 then breaks loop.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.less-predicate",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 326,
+            "lastLine": 326,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "5ff14385e4184126d1a15b595e1123009474006b9ecbf2728bcd9d76f842741c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 143,
+            "lastLine": 143,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "56327b2bf6fec346b0b9e6c99bad54896be71954a0b7f927b690753ab2cdef79"
+          },
+          "operation": "Only after greater false compare op1[i]<op2[i]; false continues after equal part.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.less-break",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 327,
+            "lastLine": 328,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "a6927bb94774ab63569e5f4505410729adb23093e2a5310dda1220e38c2afc4f"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 145,
+            "lastLine": 146,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "a25d99831cf39ff46ff76176491db5dd110afe6aa35659ab9195e556409c94f3"
+          },
+          "operation": "True sets-1 then breaks loop.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.loop-sign-exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 329,
+            "lastLine": 332,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "77b82654a5b6eaa0a52882c6a7ceb044318bff5f44c193ae1b04d82f978de5b7"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 147,
+            "lastLine": 149,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "fce8d137fa44ac6648b3a4a6f56f50baba67734145d0474a4e555697fd26bec8"
+          },
+          "operation": "Equal part continues loop; false loop exit preserves0; exit equal-sign branch.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "cmp_integer_values.return",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 333,
+            "lastLine": 334,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "dab60a8f44fd6cc1023f010515a9ed68b12d37d9028d110ec754d81f633d0bee"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 150,
+            "lastLine": 151,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "8695bb5caf89068e3df366303470af93c6e6eca19480533ca2b7376dc3591098"
+          },
+          "operation": "Return result; inputs unmodified.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "incr_integer_value",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 634,
+        "lastLine": 643,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "53f3229e41345c13294c0d87fe759cfdb052e1ab324bf9526ec5cd71f31bd562"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 154,
+        "lastLine": 160,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "f0a8a6d41f56e04000aa4ff839e9f5e0239e232ff5f36b3d1ba1d6ef36867567"
+      },
+      "parametersAndOutputs": [
+        "intval: live writable input/result pointer; void return; overflow intentionally ignored"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants",
+        "set_integer_value(host-signed)",
+        "batch2:add_integer_values"
+      ],
+      "testMethodsAuthored": [
+        "IncrementValues",
+        "--stream:increment"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "incr_integer_value.locals",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 639,
+            "lastLine": 640,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "2d8019a61c5d76a7a6eadce705790108f3d0f0b2270e998e45bbfc313177da2a"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 156,
+            "lastLine": 157,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "8f0fc2b131179e5d27f72b186a6293f5fbecc5efbd5558c5be782b73eb1aa43a"
+          },
+          "operation": "Declare inline local one and bool err; addresses remain valid through nested calls.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "incr_integer_value.set-one",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 641,
+            "lastLine": 641,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "fb07dbd0353b800f9a6e34bc49b37ea247dabd400d70e8bbc7cd9f2144c1a2f9"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 158,
+            "lastLine": 158,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "9965be1ad798aebdee77b59197f6ac2b03b5c7a62700ac1fdc637a9abe878008"
+          },
+          "operation": "Call scalar signed setter with local one pointer and signed64 literal1.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "incr_integer_value.unsigned-add",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 642,
+            "lastLine": 642,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "fc8ca7c53636bf5d4f81e044ee1e3862d36b06d7601dc81cc84535c5698571b9"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 159,
+            "lastLine": 159,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "b2064707a075775c589c00a964a160e9aafdf9d26b187e1fa97fbce79c74450c"
+          },
+          "operation": "THEN call batch2 add_integer_values(intval,&one,FALSE,&err), retaining original algorithm and mutation order.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "incr_integer_value.return-ignore-error",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 643,
+            "lastLine": 643,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "584a4b2b48e9b44f1d5e6f4de8040d9f0b55eac00fab9c6790e060c57f6deb21"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 160,
+            "lastLine": 160,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413"
+          },
+          "operation": "Return without inspecting err; local lifetimes end.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "or_integer_values",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 868,
+        "lastLine": 879,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "210ec76bae1e21523d22cf13e679f79e2b6d04fb849bcd4d8c601fc4af8ed9d5"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 163,
+        "lastLine": 171,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "d6b47d0fa2c6ccd7cde727d540bd28c5ed58269e3d60edad6187a909762de40b"
+      },
+      "parametersAndOutputs": [
+        "op_1: live input/result pointer",
+        "op_2: live input pointer; exact alias with op_1 allowed; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "BitwiseValues",
+        "--stream:or"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "or_integer_values.entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 875,
+            "lastLine": 875,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "766b9fb8291c4521f74df27dd6ac1d5d0bd73aa7515039b947c727ac4e1ee40c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 166,
+            "lastLine": 166,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "dcdb44d45421bb260616f17f4cd3a1e75a86d433656f9f544809f5d071ba7293"
+          },
+          "operation": "Declare int i.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "or_integer_values.descending-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 876,
+            "lastLine": 876,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 167,
+            "lastLine": 167,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "operation": "i=7; i>=0 true/false; --i after body; eight writes even for zero.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "or_integer_values.promote-operate-store",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 877,
+            "lastLine": 877,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "c3ed53a853652eb9f7f39ab285550259b5dc8fb3aeaad127831eed7e1015b677"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 169,
+            "lastLine": 169,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f912077f6bcf4bb2f9173afca8f6b2d3af37a60949ba16698e6986e621ace88c"
+          },
+          "operation": "Read both live ushort parts, promote to int, apply |, narrow to ushort and store op_1->part[i]. No pre-copy of op_2.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "or_integer_values.exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 878,
+            "lastLine": 879,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "526d0f9a5822bafd9dcdb25be8cebd7058d19a47f19d7ff6efdfb7d4b4b9dc24"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 170,
+            "lastLine": 171,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop false exit and void return.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "and_integer_values",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 882,
+        "lastLine": 893,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "6e45b8bffbe02c0f4c2ec44fe713f1000bb95b3601491353c715542ed8d72654"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 174,
+        "lastLine": 182,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "5b41bce3fef2e6535613cc90d78eaad12107cab3a8602724a59b7d27b12560d9"
+      },
+      "parametersAndOutputs": [
+        "op_1: live input/result pointer",
+        "op_2: live input pointer; exact alias with op_1 allowed; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "BitwiseValues",
+        "--stream:and"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "and_integer_values.entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 889,
+            "lastLine": 889,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "766b9fb8291c4521f74df27dd6ac1d5d0bd73aa7515039b947c727ac4e1ee40c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 177,
+            "lastLine": 177,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "dcdb44d45421bb260616f17f4cd3a1e75a86d433656f9f544809f5d071ba7293"
+          },
+          "operation": "Declare int i.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "and_integer_values.descending-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 890,
+            "lastLine": 890,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 178,
+            "lastLine": 178,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "operation": "i=7; i>=0 true/false; --i after body; eight writes even for zero.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "and_integer_values.promote-operate-store",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 891,
+            "lastLine": 891,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "2ef7940f5512d582d44390b63722aaf8d159673e41d2aa1c5ca3415974c29e49"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 180,
+            "lastLine": 180,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "4658cb64d9a1265f9869db9e2e465ef990aa3eb5ce847752acff1d53d7bb931b"
+          },
+          "operation": "Read both live ushort parts, promote to int, apply &, narrow to ushort and store op_1->part[i]. No pre-copy of op_2.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "and_integer_values.exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 892,
+            "lastLine": 893,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "de02fb34d873a999da2a0a3bd6dd075bfa6ac3087e002c02cbfa386b4c565f7e"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 181,
+            "lastLine": 182,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop false exit and void return.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "xor_integer_values",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 896,
+        "lastLine": 907,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "04520816fe893ef48c7c908ae2bd0667116a176e9ee4b99452081cd2bc41db83"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 185,
+        "lastLine": 193,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "9a0c31ad8fce5a19c79f651fd8e4323f452d1d65a60ebfcdce6f5a5278565e3a"
+      },
+      "parametersAndOutputs": [
+        "op_1: live input/result pointer",
+        "op_2: live input pointer; exact alias with op_1 allowed; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "BitwiseValues",
+        "--stream:xor"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "xor_integer_values.entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 903,
+            "lastLine": 903,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "766b9fb8291c4521f74df27dd6ac1d5d0bd73aa7515039b947c727ac4e1ee40c"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 188,
+            "lastLine": 188,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "dcdb44d45421bb260616f17f4cd3a1e75a86d433656f9f544809f5d071ba7293"
+          },
+          "operation": "Declare int i.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "xor_integer_values.descending-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 904,
+            "lastLine": 904,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 189,
+            "lastLine": 189,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "operation": "i=7; i>=0 true/false; --i after body; eight writes even for zero.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "xor_integer_values.promote-operate-store",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 905,
+            "lastLine": 905,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "06180def2435c2d4b8123d810ce078b35ed86b8aecf9095259d74a067af8f4b9"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 191,
+            "lastLine": 191,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "be2eb7641b02d16b705fce9dbd2a9634be69a9a693d066494daf3c01a91c7afb"
+          },
+          "operation": "Read both live ushort parts, promote to int, apply ^, narrow to ushort and store op_1->part[i]. No pre-copy of op_2.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "xor_integer_values.exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 906,
+            "lastLine": 907,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "e79790899e759f1d463e7a84b8433bbd02794aee3cbeb1dca99d8a7f20a616ae"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 192,
+            "lastLine": 193,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop false exit and void return.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    },
+    {
+      "id": "complement_integer_value",
+      "state": "translated/review-pending",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 1109,
+        "lastLine": 1120,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "52aab16381a9e99578a643e9006c18354b10967539080c2595ad12a7eaf53f17"
+      },
+      "managed": {
+        "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+        "firstLine": 196,
+        "lastLine": 203,
+        "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+        "rangeSha256": "5700d79fbc26d0563e95323cd5fbc7be73d4d0710ff415dfb28152667da179ff"
+      },
+      "parametersAndOutputs": [
+        "op_1: live input/result pointer; void return"
+      ],
+      "globalContextCacheReads": [],
+      "globalContextCacheWrites": [],
+      "allocationCleanupDiagnosticsRecovery": [],
+      "dependencies": [
+        "an_integer_value",
+        "an_int_value_part",
+        "a_host_large_integer/a_host_large_unsigned",
+        "a_boolean",
+        "pinned-widths-and-constants"
+      ],
+      "testMethodsAuthored": [
+        "BitwiseValues",
+        "--stream:complement"
+      ],
+      "testExecution": "not run",
+      "branches": [
+        {
+          "id": "complement_integer_value.entry",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 1115,
+            "lastLine": 1115,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "e445fdce38e672cb591651c85920b1225374d110a37e90fea9cc713622855ceb"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 198,
+            "lastLine": 198,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "dcdb44d45421bb260616f17f4cd3a1e75a86d433656f9f544809f5d071ba7293"
+          },
+          "operation": "Declare int i.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "complement_integer_value.descending-loop",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 1117,
+            "lastLine": 1117,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "ebf658b1655d7b3c8ee7c63301e058603d73fa71bb6f875891029c4792d4b030"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 199,
+            "lastLine": 199,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "14291b5cb9f0d4eabee5fe1b8006ed9b9fb08e01277bc91be116844cab321340"
+          },
+          "operation": "i=7; i>=0 true/false; --i after body; exactly8 iterations.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "complement_integer_value.promote-complement-mask-store",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 1118,
+            "lastLine": 1118,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "722f81a6ddf510460e43ae021e49ab59b257f8d0a4fe84f3b701a8ad76fa7a2d"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 201,
+            "lastLine": 201,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "bd80abf41c1b6a3a77d2f935bfa03e0aea2c9c37752fe000925b423cbe2e7591"
+          },
+          "operation": "Promote ushort to int, complement, AND int65535, narrow to ushort and store existing part.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        },
+        {
+          "id": "complement_integer_value.exit",
+          "source": {
+            "path": "edgcpp/upstream/src/const_ints.c",
+            "firstLine": 1119,
+            "lastLine": 1120,
+            "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+            "rangeSha256": "b9946b7a680708e40b7edd1ffada81f75cbc1fba16cb69d11844d8ef426b5ddd"
+          },
+          "managed": {
+            "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+            "firstLine": 202,
+            "lastLine": 203,
+            "wholeFileSha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98",
+            "rangeSha256": "f206e17d648acc4999177e39b33de026827b714d662b159dfd92f9abb0c394ee"
+          },
+          "operation": "Loop exit and void return.",
+          "reviewVerdict": "pending independent exact-byte review",
+          "testExecution": "not run"
+        }
+      ]
+    }
+  ],
+  "externalSourceDependencies": [
+    {
+      "id": "batch2:add_integer_values",
+      "source": {
+        "path": "edgcpp/upstream/src/const_ints.c",
+        "firstLine": 711,
+        "lastLine": 764,
+        "wholeFileSha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+        "rangeSha256": "57aef4a9f0bc2bf7c102b6528b2f6088087d0c1ef71d56d9b0e9f0a0d04819d8"
+      },
+      "managedPath": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+      "ledger": "const_ints-batch2.*",
+      "state": "separate concurrent writer; supervisor must pin final held whole-file/routine bytes before review; dependency not qualified",
+      "effects": "in-place descending carry propagation; sign_of(op2) post-write alias observation; unsigned flag output to increment local"
+    }
+  ],
+  "managedSnapshotFiles": [
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+      "sha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+      "sha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/Program.cs",
+      "sha256": "eb98a0c84af711d2e544ab13696223edc94979e5e6d345808690fbff9efea0b3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/README.md",
+      "sha256": "37a215c731ecb35cd3834a84e2e3aa82804a678c1f3f7f80cece59ac29865c00"
+    }
+  ],
+  "tests": {
+    "state": "authored, NOT executed",
+    "entryPoint": "IntegerLeaves.Program.Main",
+    "modes": [
+      "no-args: assertions",
+      "--abi: native field-compatible measurements",
+      "--stream: oracle-compatible operation cases"
+    ],
+    "source": "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/Program.cs",
+    "manifestOwner": "supervisor",
+    "aliases": "distinct output/input at both address orders; exact self-copy; bitwise/compare operand reversal; exact binary operand/result alias; compare each signedness pair on same storage; conversion typed distinct out storage",
+    "unqualifiedDomains": [
+      "invalid/expired/unpinned pointers",
+      "partially overlapping objects without proven valid native lifetime/alias contract",
+      "signed_shift_right counts outside0..63",
+      "INIT-001 frontend initialization excessive widths"
+    ]
+  },
+  "review": {
+    "p0Contract": "edgcpp/manual-csharp/faithful/reviews/p0-contract-r1.md",
+    "p0ContractRole": "source-derived contract only; not produced-code acceptance",
+    "producedCodeVerdict": "pending independent exact original/C# review",
+    "reviewedManagedSnapshot": null
+  },
+  "remainingGates": [
+    "ABI-001 native/managed ABI and exact source-to-binary/config evidence",
+    "REVIEW-001 fresh independent original/C# review of these exact bytes and batch2/shared dependencies",
+    "supervisor serialized held JIT/native stream and NativeAOT validation",
+    "INIT-001 intentionally unresolved frontend initializer caller domain; no clamp or native-defect exception",
+    "CHECK-001 failure closure before any future checking dependency"
+  ],
+  "childExecution": "No builds/tests/native preparation/Git mutations/subdelegation.",
+  "ownership": "Only const_ints.cs, IntegerRepresentation.cs, const_ints-batch1.*, tests/IntegerLeaves excluding project manifests."
+}

@@ -1,0 +1,2418 @@
+{
+  "active_macro_selection": "signed_shift_right and sign_of select non-host-integer branches; other listed macros are multipart definitions",
+  "complete_call_graph_claim": false,
+  "file": "edgcpp/upstream/src/const_ints.c",
+  "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+  "macro_definitions_with_all_alternatives": [
+    {
+      "end": 28,
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 27
+        }
+      ],
+      "name": "INT_VALUE_PART_BASE",
+      "replacement": "#define INT_VALUE_PART_BASE ((a_host_large_unsigned)MAX_UINT_VALUE_PART + 1)",
+      "sha256": "3ce84767c7a68d53b5c34542ecaad89a63aa2c47cb5353430ac64d365186f790",
+      "start": 28,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 917,
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 852
+        }
+      ],
+      "name": "get_part",
+      "replacement": "#define get_part(value, part_gp)\t\t\t\t\t\\\n  ((a_host_large_unsigned)\t\t\t\t\t\t\\\n  (((part_gp) < 0 ||\t\t\t\t\t\t\t\\\n    (int)(part_gp) >= (int)INT_VALUE_PARTS_PER_INTEGER_VALUE) ?\t\t\\\n                                      fill_value : (value).part[part_gp]))",
+      "sha256": "54fc018a43951e51ea26f2ac7835ba45d418f8470759b9f3df24e3532146a2ef",
+      "start": 913,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 1131,
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1108
+        }
+      ],
+      "name": "clear_parts",
+      "replacement": "#define clear_parts(to_arg, parts_cp)\t\t\t\t\t\\\n  {\t\t\t\t\t\t\t\t\t\\\n    int                i_cp;\t\t\t\t\t\t\\\n    an_int_value_part  *to_cp = to_arg;\t\t\t\t\t\\\n    for (i_cp = 0; i_cp < (int)(parts_cp); ++i_cp) to_cp[i_cp] = 0;\t\\\n  }",
+      "sha256": "c4e58f362c62d6a8cfc06ff372a0f897c4dfdb1c90d7906dcb98537ba6e60a59",
+      "start": 1126,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 1146,
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1108
+        }
+      ],
+      "name": "copy_parts",
+      "replacement": "#define copy_parts(from_arg, to_arg, parts_cp)\t\t\t\t\\\n  {\t\t\t\t\t\t\t\t\t\\\n    int                i_cp;\t\t\t\t\t\t\\\n    an_int_value_part  *from_cp = from_arg;\t\t\t\t\\\n    an_int_value_part  *to_cp = to_arg;\t\t\t\t\t\\\n    for (i_cp = 0; i_cp < (int)(parts_cp); ++i_cp) {\t\t\t\\\n      to_cp[i_cp] = from_cp[i_cp];\t\t\t\t\t\\\n    }  /* for */\t\t\t\t\t\t\t\\\n  }",
+      "sha256": "3705a7cc61f27a0bbba7b4571f0e5871236ecdf43f61af613ce9b7e9ecdc7ecd",
+      "start": 1138,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 34,
+      "file": "edgcpp/upstream/src/const_ints.h",
+      "file_sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+      "guards": [
+        {
+          "alternatives": [
+            "ifndef CONST_INTS_H"
+          ],
+          "line": 16
+        },
+        {
+          "alternatives": [
+            "if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 26
+        }
+      ],
+      "name": "signed_shift_right",
+      "replacement": "#define signed_shift_right(value, bits)                               \\\n  ((a_signed_integer_value)((an_integer_value)((value) >> bits) |     \\\n   (((a_signed_integer_value)(value) < 0) ?                           \\\n                     ~((~(an_integer_value)0) >> bits) : 0)))",
+      "sha256": "2bc30841eddef12f2d1a1be51ea6e29322f662b47e9b07d4bc5b5bdcec6ad580",
+      "start": 31,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 40,
+      "file": "edgcpp/upstream/src/const_ints.h",
+      "file_sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+      "guards": [
+        {
+          "alternatives": [
+            "ifndef CONST_INTS_H"
+          ],
+          "line": 16
+        },
+        {
+          "alternatives": [
+            "if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER",
+            "else /* !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+          ],
+          "line": 26
+        }
+      ],
+      "name": "signed_shift_right",
+      "replacement": "#define signed_shift_right(value, bits)                               \\\n  ((a_host_large_integer)(((a_host_large_unsigned)(value) >> bits) |  \\\n   (((a_host_large_integer)(value) < 0) ?                             \\\n                     ~((~(a_host_large_unsigned)0) >> bits) : 0)))",
+      "sha256": "c94dc7482ec5a681bbab56bad9d818dc5e40a58ad65673fb57b71eea8dfc9d80",
+      "start": 37,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 45,
+      "file": "edgcpp/upstream/src/const_ints.h",
+      "file_sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+      "guards": [
+        {
+          "alternatives": [
+            "ifndef CONST_INTS_H"
+          ],
+          "line": 16
+        },
+        {
+          "alternatives": [
+            "if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 44
+        }
+      ],
+      "name": "sign_of",
+      "replacement": "#define sign_of(value) ((a_signed_integer_value)(value) < 0)",
+      "sha256": "6132b5992e4f2db676ac65e6b629a37f45b4d996fb77d1f00411fa325625a2cf",
+      "start": 45,
+      "status": "unstarted; guard selection unresolved"
+    },
+    {
+      "end": 48,
+      "file": "edgcpp/upstream/src/const_ints.h",
+      "file_sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f",
+      "guards": [
+        {
+          "alternatives": [
+            "ifndef CONST_INTS_H"
+          ],
+          "line": 16
+        },
+        {
+          "alternatives": [
+            "if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER",
+            "else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+          ],
+          "line": 44
+        }
+      ],
+      "name": "sign_of",
+      "replacement": "#define sign_of(value)\t\t\t\t\t\t\\\n  (((value).part[0] & SIGN_BIT_INT_VALUE_PART) != 0)",
+      "sha256": "f7463fd6665f8739fa851d4a186ccd013487192410f499af53c7e771ab8ad116",
+      "start": 47,
+      "status": "unstarted; guard selection unresolved"
+    }
+  ],
+  "next_closure": "IL-aware constants/types and runtime target/checking/minmax initialization (separate width research); then formatter/float dependencies",
+  "required_representation": "an_integer_value embeds eight unsigned short parts, highest first; host ptrdiff_t/size_t 64 bit",
+  "routines": [
+    {
+      "active_direct_dependencies": [
+        "signed_shift_right"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 38,
+      "branch_candidates": [
+        {
+          "line": 42,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 47,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 32
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:33:set_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "set_integer_value",
+      "native_inspection_note": "Descending parts; mask then narrow then arithmetic sign-fill shift.",
+      "ordered_call_candidates": [
+        {
+          "line": 45,
+          "name": "signed_shift_right"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "370bfcf85013f262c2f4777249033f0cee70fcef1a319bc93a5157b0cd55b159",
+      "start": 33
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 55,
+      "branch_candidates": [
+        {
+          "line": 56,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 59,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 32
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:50:set_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "set_integer_value",
+      "native_inspection_note": "Reference overload; ascending part copies; same-storage alias permitted by source.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "0b202f4319d3178c907bbac7365f756b31c4f6348fe585b6a5f5b8b227bce27d",
+      "start": 50
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 67,
+      "branch_candidates": [
+        {
+          "line": 71,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 76,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 32
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:62:set_unsigned_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "set_unsigned_integer_value",
+      "native_inspection_note": "Descending parts; unsigned logical shift; signed work temporary preserves masked positive part.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "99d9453b3d8d8de7cb01c15b4cae9ff8b04834de0a02a2e98a2a54ff7db8a01c",
+      "start": 62
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 84,
+      "branch_candidates": [
+        {
+          "line": 85,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 88,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 32
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:79:set_unsigned_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "set_unsigned_integer_value",
+      "native_inspection_note": "Unsigned reference overload copies ascending parts just as the signed reference overload.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "6b3738c071746e8ba76c01362968feb10c3a794ca713588954c1d0da2c4415e4",
+      "start": 79
+    },
+    {
+      "active_direct_dependencies": [
+        "sign_of"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 104,
+      "branch_candidates": [
+        {
+          "line": 119,
+          "token": "if"
+        },
+        {
+          "line": 119,
+          "token": "&&"
+        },
+        {
+          "line": 121,
+          "token": "else"
+        },
+        {
+          "line": 124,
+          "token": "for"
+        },
+        {
+          "line": 126,
+          "token": "if"
+        },
+        {
+          "line": 127,
+          "token": "if"
+        },
+        {
+          "line": 130,
+          "token": "else"
+        },
+        {
+          "line": 137,
+          "token": "if"
+        },
+        {
+          "line": 137,
+          "token": "&&"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 142,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 32
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:91:conv_integer_value_to_host_large_integer",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "conv_integer_value_to_host_large_integer",
+      "native_inspection_note": "Sign/empty fill; high-part overflow scan then low-part accumulation; sign mismatch; value write precedes err write.",
+      "ordered_call_candidates": [
+        {
+          "line": 118,
+          "name": "sign_of"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "5d23cfb67f8ebe0100fd600f81fef100f2795b1c6ea9fed95cb05674a419f2bf",
+      "start": 91
+    },
+    {
+      "active_direct_dependencies": [
+        "conv_integer_value_to_host_large_integer"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 210,
+      "branch_candidates": [
+        {
+          "line": 216,
+          "token": "if"
+        },
+        {
+          "line": 216,
+          "token": "&&"
+        },
+        {
+          "line": 216,
+          "token": "||"
+        },
+        {
+          "line": 221,
+          "token": "return"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 222,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:202:value_of_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "value_of_integer_value",
+      "native_inspection_note": "Clear overflow; extract; unsigned-to-signed negative-result or conversion error; return bits anyway.",
+      "ordered_call_candidates": [
+        {
+          "line": 215,
+          "name": "conv_integer_value_to_host_large_integer"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "c560aef9c6e3cb99ccae37470dd7867d5d8bae039eff025ba6d4a84dbf1ee71d",
+      "start": 202
+    },
+    {
+      "active_direct_dependencies": [
+        "conv_integer_value_to_host_large_integer",
+        "sign_of"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 234,
+      "branch_candidates": [
+        {
+          "line": 243,
+          "token": "if"
+        },
+        {
+          "line": 243,
+          "token": "||"
+        },
+        {
+          "line": 243,
+          "token": "&&"
+        },
+        {
+          "line": 248,
+          "token": "return"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 249,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:225:unsigned_value_of_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "unsigned_value_of_integer_value",
+      "native_inspection_note": "Clear overflow; extract; conversion error or negative signed source; unsigned cast of returned bits.",
+      "ordered_call_candidates": [
+        {
+          "line": 241,
+          "name": "conv_integer_value_to_host_large_integer"
+        },
+        {
+          "line": 243,
+          "name": "sign_of"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "6ad7c2d81c7a12f8dd05552a213b4ce7477fbd17736f9fedc55416a6d9d0928a",
+      "start": 225
+    },
+    {
+      "active_direct_dependencies": [
+        "sign_of"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 297,
+      "branch_candidates": [
+        {
+          "line": 298,
+          "token": "if"
+        },
+        {
+          "line": 301,
+          "token": "&&"
+        },
+        {
+          "line": 302,
+          "token": "&&"
+        },
+        {
+          "line": 305,
+          "token": "if"
+        },
+        {
+          "line": 309,
+          "token": "?"
+        },
+        {
+          "line": 310,
+          "token": "else"
+        },
+        {
+          "line": 313,
+          "token": "if"
+        },
+        {
+          "line": 314,
+          "token": "if"
+        },
+        {
+          "line": 316,
+          "token": "else"
+        },
+        {
+          "line": 316,
+          "token": "if"
+        },
+        {
+          "line": 318,
+          "token": "else"
+        },
+        {
+          "line": 321,
+          "token": "else"
+        },
+        {
+          "line": 322,
+          "token": "for"
+        },
+        {
+          "line": 323,
+          "token": "if"
+        },
+        {
+          "line": 325,
+          "token": "break"
+        },
+        {
+          "line": 326,
+          "token": "else"
+        },
+        {
+          "line": 326,
+          "token": "if"
+        },
+        {
+          "line": 328,
+          "token": "break"
+        },
+        {
+          "line": 333,
+          "token": "return"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 334,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:284:cmp_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 298,
+          "text": "#if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 300,
+          "text": "#endif /* !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 313,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 321,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 331,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "cmp_integer_values",
+      "native_inspection_note": "Signedness short-circuits signs; unequal signs first; ascending lexicographic parts with ordered greater/less breaks.",
+      "ordered_call_candidates": [
+        {
+          "line": 301,
+          "name": "sign_of"
+        },
+        {
+          "line": 302,
+          "name": "sign_of"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "2da1f239d25742f50ae658e3b7029c90abf1662dcdd63596f6855f284b83efa4",
+      "start": 284
+    },
+    {
+      "active_direct_dependencies": [
+        "set_integer_value",
+        "add_integer_values"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 638,
+      "branch_candidates": [],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 643,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 633
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:634:incr_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "incr_integer_value",
+      "native_inspection_note": "Construct local one; unsigned add; deliberately ignore overflow out flag.",
+      "ordered_call_candidates": [
+        {
+          "line": 641,
+          "name": "set_integer_value"
+        },
+        {
+          "line": 642,
+          "name": "add_integer_values"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "53f3229e41345c13294c0d87fe759cfdb052e1ab324bf9526ec5cd71f31bd562",
+      "start": 634
+    },
+    {
+      "active_direct_dependencies": [
+        "sign_of",
+        "INT_VALUE_PART_BASE"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 720,
+      "branch_candidates": [
+        {
+          "line": 721,
+          "token": "if"
+        },
+        {
+          "line": 727,
+          "token": "if"
+        },
+        {
+          "line": 730,
+          "token": "else"
+        },
+        {
+          "line": 733,
+          "token": "&&"
+        },
+        {
+          "line": 736,
+          "token": "else"
+        },
+        {
+          "line": 741,
+          "token": "for"
+        },
+        {
+          "line": 745,
+          "token": "if"
+        },
+        {
+          "line": 748,
+          "token": "else"
+        },
+        {
+          "line": 754,
+          "token": "if"
+        },
+        {
+          "line": 758,
+          "token": "else"
+        },
+        {
+          "line": 761,
+          "token": "&&"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 764,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:711:add_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 721,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 736,
+          "text": "#else /* !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 763,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "add_integer_values",
+      "native_inspection_note": "Descending carry loop; unsigned carry result or signed sign test AFTER destination writes; preserve alias-visible second sign.",
+      "ordered_call_candidates": [
+        {
+          "line": 722,
+          "name": "sign_of"
+        },
+        {
+          "line": 733,
+          "name": "sign_of"
+        },
+        {
+          "line": 733,
+          "name": "sign_of"
+        },
+        {
+          "line": 739,
+          "name": "sign_of"
+        },
+        {
+          "line": 761,
+          "name": "sign_of"
+        },
+        {
+          "line": 761,
+          "name": "sign_of"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "57aef4a9f0bc2bf7c102b6528b2f6088087d0c1ef71d56d9b0e9f0a0d04819d8",
+      "start": 711
+    },
+    {
+      "active_direct_dependencies": [
+        "add_integer_values",
+        "cmp_integer_values"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 777,
+      "branch_candidates": [
+        {
+          "line": 780,
+          "token": "?"
+        },
+        {
+          "line": 784,
+          "token": "if"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 792,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:767:add_mixed_signed_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "add_mixed_signed_integer_values",
+      "native_inspection_note": "Copy selected original signed operand; add with op_1 signedness; only mixed signedness overrides error using ordered compare.",
+      "ordered_call_candidates": [
+        {
+          "line": 781,
+          "name": "add_integer_values"
+        },
+        {
+          "line": 789,
+          "name": "cmp_integer_values"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "5cfbf3468a035f02519cc3d1143019f0661fa17b299aa7f84de469408ee3e82f",
+      "start": 767
+    },
+    {
+      "active_direct_dependencies": [
+        "subtract_integer_values",
+        "sign_of",
+        "cmp_integer_values"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 805,
+      "branch_candidates": [
+        {
+          "line": 816,
+          "token": "if"
+        },
+        {
+          "line": 817,
+          "token": "&&"
+        },
+        {
+          "line": 820,
+          "token": "if"
+        },
+        {
+          "line": 822,
+          "token": "else"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 826,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:795:subtract_mixed_signed_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "subtract_mixed_signed_integer_values",
+      "native_inspection_note": "Copy original op_1; subtract; mixed case reads op_2 sign after mutation; compare >0 for negative operand, <=0 otherwise.",
+      "ordered_call_candidates": [
+        {
+          "line": 809,
+          "name": "subtract_integer_values"
+        },
+        {
+          "line": 817,
+          "name": "sign_of"
+        },
+        {
+          "line": 818,
+          "name": "cmp_integer_values"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "42726b70e21790a65196794a6b1f812ba370678e23484e13a3dba78a50f37174",
+      "start": 795
+    },
+    {
+      "active_direct_dependencies": [
+        "set_integer_value",
+        "complement_integer_value",
+        "shift_right_integer_value"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 835,
+      "branch_candidates": [
+        {
+          "line": 836,
+          "token": "if"
+        },
+        {
+          "line": 841,
+          "token": "else"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 850,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:829:make_integer_value_mask",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 836,
+          "text": "#if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 841,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 849,
+          "text": "#endif /* !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "make_integer_value_mask",
+      "native_inspection_note": "Set zero; complement; unsigned right shift by total-minus-bits; bits>=1 source precondition.",
+      "ordered_call_candidates": [
+        {
+          "line": 837,
+          "name": "set_integer_value"
+        },
+        {
+          "line": 838,
+          "name": "complement_integer_value"
+        },
+        {
+          "line": 839,
+          "name": "shift_right_integer_value"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "11aaa3e8db571d9a89c273ce683afefa2da6b79f2bfcf75efb9190d42e533877",
+      "start": 829
+    },
+    {
+      "active_direct_dependencies": [
+        "shift_left_integer_value",
+        "shift_right_integer_value"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 859,
+      "branch_candidates": [],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 865,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 852
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:853:sign_extend_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "sign_extend_integer_value",
+      "native_inspection_note": "Left shift first ignoring local error; then signed right shift with sign extension; size_t-to-int cast preserved.",
+      "ordered_call_candidates": [
+        {
+          "line": 862,
+          "name": "shift_left_integer_value"
+        },
+        {
+          "line": 863,
+          "name": "shift_right_integer_value"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "5c320ebeded1145e8df74252dfb1773da955485d6ba650aed751f230e1fbf7cc",
+      "start": 853
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 874,
+      "branch_candidates": [
+        {
+          "line": 876,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 879,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 852
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:868:or_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "or_integer_values",
+      "native_inspection_note": "Descending part loop; original integer promotions and narrowing; read-modify-write OR.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "210ec76bae1e21523d22cf13e679f79e2b6d04fb849bcd4d8c601fc4af8ed9d5",
+      "start": 868
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 888,
+      "branch_candidates": [
+        {
+          "line": 890,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 893,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 852
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:882:and_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "and_integer_values",
+      "native_inspection_note": "Descending part loop; original integer promotions and narrowing; read-modify-write AND.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "6e45b8bffbe02c0f4c2ec44fe713f1000bb95b3601491353c715542ed8d72654",
+      "start": 882
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 902,
+      "branch_candidates": [
+        {
+          "line": 904,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 907,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 852
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:896:xor_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "xor_integer_values",
+      "native_inspection_note": "Descending part loop; original integer promotions and narrowing; read-modify-write XOR.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "04520816fe893ef48c7c908ae2bd0667116a176e9ee4b99452081cd2bc41db83",
+      "start": 896
+    },
+    {
+      "active_direct_dependencies": [
+        "get_part"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 930,
+      "branch_candidates": [
+        {
+          "line": 931,
+          "token": "if"
+        },
+        {
+          "line": 935,
+          "token": "if"
+        },
+        {
+          "line": 940,
+          "token": "else"
+        },
+        {
+          "line": 943,
+          "token": "else"
+        },
+        {
+          "line": 962,
+          "token": "for"
+        },
+        {
+          "line": 966,
+          "token": "if"
+        },
+        {
+          "line": 966,
+          "token": "&&"
+        },
+        {
+          "line": 968,
+          "token": "else"
+        },
+        {
+          "line": 968,
+          "token": "if"
+        },
+        {
+          "line": 968,
+          "token": "&&"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 977,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:921:shift_left_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 931,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 943,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 976,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "shift_left_integer_value",
+      "native_inspection_note": "Quotient/remainder of count define offsets; ascending loop; lost-part and boundary-bit tests in source else-if order; mask then store; final error.",
+      "ordered_call_candidates": [
+        {
+          "line": 971,
+          "name": "get_part"
+        },
+        {
+          "line": 972,
+          "name": "get_part"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "8b8c950dbf5b7d205c1cf2f3c785555efb41bf967dbf2789cdbde2955eb2d9d6",
+      "start": 921
+    },
+    {
+      "active_direct_dependencies": [
+        "sign_of",
+        "get_part"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 989,
+      "branch_candidates": [
+        {
+          "line": 990,
+          "token": "if"
+        },
+        {
+          "line": 991,
+          "token": "if"
+        },
+        {
+          "line": 991,
+          "token": "&&"
+        },
+        {
+          "line": 991,
+          "token": "&&"
+        },
+        {
+          "line": 994,
+          "token": "else"
+        },
+        {
+          "line": 998,
+          "token": "else"
+        },
+        {
+          "line": 1017,
+          "token": "if"
+        },
+        {
+          "line": 1017,
+          "token": "&&"
+        },
+        {
+          "line": 1019,
+          "token": "else"
+        },
+        {
+          "line": 1022,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1029,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:980:shift_right_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 990,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 998,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 1028,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "shift_right_integer_value",
+      "native_inspection_note": "Compute offsets; signed-and-sign_extend guard sets 16-bit fill; descending loop preserves in-place source reads; mask then store.",
+      "ordered_call_candidates": [
+        {
+          "line": 991,
+          "name": "sign_of"
+        },
+        {
+          "line": 993,
+          "name": "signed_shift_right"
+        },
+        {
+          "line": 1018,
+          "name": "sign_of"
+        },
+        {
+          "line": 1024,
+          "name": "get_part"
+        },
+        {
+          "line": 1025,
+          "name": "get_part"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "c87053cc3bef929a3d03d7c42c64731ffdd844b674e37e5b196bcb9ad7b18faf",
+      "start": 980
+    },
+    {
+      "active_direct_dependencies": [
+        "sign_of",
+        "INT_VALUE_PART_BASE"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1041,
+      "branch_candidates": [
+        {
+          "line": 1042,
+          "token": "if"
+        },
+        {
+          "line": 1049,
+          "token": "if"
+        },
+        {
+          "line": 1051,
+          "token": "if"
+        },
+        {
+          "line": 1052,
+          "token": "else"
+        },
+        {
+          "line": 1056,
+          "token": "&&"
+        },
+        {
+          "line": 1061,
+          "token": "else"
+        },
+        {
+          "line": 1066,
+          "token": "for"
+        },
+        {
+          "line": 1070,
+          "token": "if"
+        },
+        {
+          "line": 1073,
+          "token": "else"
+        },
+        {
+          "line": 1079,
+          "token": "if"
+        },
+        {
+          "line": 1084,
+          "token": "else"
+        },
+        {
+          "line": 1088,
+          "token": "&&"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1091,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:1032:subtract_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 1042,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 1061,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 1090,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "subtract_integer_values",
+      "native_inspection_note": "Descending borrow loop; unsigned borrow or signed sign-difference test AFTER writes; preserve op_1/op_2 alias behavior.",
+      "ordered_call_candidates": [
+        {
+          "line": 1044,
+          "name": "sign_of"
+        },
+        {
+          "line": 1056,
+          "name": "sign_of"
+        },
+        {
+          "line": 1056,
+          "name": "sign_of"
+        },
+        {
+          "line": 1057,
+          "name": "sign_of"
+        },
+        {
+          "line": 1064,
+          "name": "sign_of"
+        },
+        {
+          "line": 1088,
+          "name": "sign_of"
+        },
+        {
+          "line": 1088,
+          "name": "sign_of"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "cff6a7430da12cd9f26f1c62cba9c20f0d51fbc6f9dbb86bd4fde71e7bc604ca",
+      "start": 1032
+    },
+    {
+      "active_direct_dependencies": [
+        "set_integer_value",
+        "subtract_integer_values"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1100,
+      "branch_candidates": [],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1105,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:1094:negate_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "negate_integer_value",
+      "native_inspection_note": "Set local zero; subtract source using signed operation; copy full result after helper error write.",
+      "ordered_call_candidates": [
+        {
+          "line": 1102,
+          "name": "set_integer_value"
+        },
+        {
+          "line": 1103,
+          "name": "subtract_integer_values"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "3987fcc84bdce3ce4a75a9e20ca9adfee85c73ba6987bb79ba88c5102211b8bf",
+      "start": 1094
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1114,
+      "branch_candidates": [
+        {
+          "line": 1117,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1120,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1108
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:1109:complement_integer_value",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "complement_integer_value",
+      "native_inspection_note": "Descending loop; promoted complement then 0xffff mask then part narrowing.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "52aab16381a9e99578a643e9006c18354b10967539080c2595ad12a7eaf53f17",
+      "start": 1109
+    },
+    {
+      "active_direct_dependencies": [
+        "clear_parts",
+        "sign_of",
+        "negate_integer_value",
+        "copy_parts"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1187,
+      "branch_candidates": [
+        {
+          "line": 1188,
+          "token": "if"
+        },
+        {
+          "line": 1191,
+          "token": "if"
+        },
+        {
+          "line": 1200,
+          "token": "if"
+        },
+        {
+          "line": 1200,
+          "token": "&&"
+        },
+        {
+          "line": 1202,
+          "token": "else"
+        },
+        {
+          "line": 1209,
+          "token": "if"
+        },
+        {
+          "line": 1209,
+          "token": "&&"
+        },
+        {
+          "line": 1212,
+          "token": "if"
+        },
+        {
+          "line": 1213,
+          "token": "else"
+        },
+        {
+          "line": 1213,
+          "token": "if"
+        },
+        {
+          "line": 1213,
+          "token": "&&"
+        },
+        {
+          "line": 1224,
+          "token": "if"
+        },
+        {
+          "line": 1225,
+          "token": "else"
+        },
+        {
+          "line": 1225,
+          "token": "if"
+        },
+        {
+          "line": 1225,
+          "token": "&&"
+        },
+        {
+          "line": 1226,
+          "token": "if"
+        },
+        {
+          "line": 1227,
+          "token": "else"
+        },
+        {
+          "line": 1227,
+          "token": "if"
+        },
+        {
+          "line": 1227,
+          "token": "&&"
+        },
+        {
+          "line": 1228,
+          "token": "if"
+        },
+        {
+          "line": 1230,
+          "token": "else"
+        },
+        {
+          "line": 1230,
+          "token": "if"
+        },
+        {
+          "line": 1230,
+          "token": "&&"
+        },
+        {
+          "line": 1231,
+          "token": "&&"
+        },
+        {
+          "line": 1231,
+          "token": "||"
+        },
+        {
+          "line": 1232,
+          "token": "&&"
+        },
+        {
+          "line": 1239,
+          "token": "return"
+        },
+        {
+          "line": 1240,
+          "token": "else"
+        },
+        {
+          "line": 1268,
+          "token": "if"
+        },
+        {
+          "line": 1269,
+          "token": "if"
+        },
+        {
+          "line": 1275,
+          "token": "if"
+        },
+        {
+          "line": 1285,
+          "token": "for"
+        },
+        {
+          "line": 1287,
+          "token": "for"
+        },
+        {
+          "line": 1307,
+          "token": "for"
+        },
+        {
+          "line": 1308,
+          "token": "if"
+        },
+        {
+          "line": 1310,
+          "token": "continue"
+        },
+        {
+          "line": 1314,
+          "token": "if"
+        },
+        {
+          "line": 1316,
+          "token": "if"
+        },
+        {
+          "line": 1318,
+          "token": "else"
+        },
+        {
+          "line": 1324,
+          "token": "if"
+        },
+        {
+          "line": 1324,
+          "token": "&&"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1329,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:1178:multiply_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 1188,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 1240,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 1328,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "multiply_integer_values",
+      "native_inspection_note": "Clear double-size work array; conditional local copies for negative operands and pointer retargeting; nested descending multiplication; copy low parts; high-part overflow scan; signed final negation/error handling.",
+      "ordered_call_candidates": [
+        {
+          "line": 1224,
+          "name": "divide_integers"
+        },
+        {
+          "line": 1226,
+          "name": "divide_integers"
+        },
+        {
+          "line": 1228,
+          "name": "divide_integers"
+        },
+        {
+          "line": 1243,
+          "name": "WORK_AREA_PARTS"
+        },
+        {
+          "line": 1259,
+          "name": "clear_parts"
+        },
+        {
+          "line": 1269,
+          "name": "sign_of"
+        },
+        {
+          "line": 1272,
+          "name": "negate_integer_value"
+        },
+        {
+          "line": 1275,
+          "name": "sign_of"
+        },
+        {
+          "line": 1278,
+          "name": "negate_integer_value"
+        },
+        {
+          "line": 1304,
+          "name": "copy_parts"
+        },
+        {
+          "line": 1315,
+          "name": "sign_of"
+        },
+        {
+          "line": 1317,
+          "name": "negate_integer_value"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "adde20ec286b582a6515e0b92f92548ac6c6f830fc57d75902c628627b722a0f",
+      "start": 1178
+    },
+    {
+      "active_direct_dependencies": [],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1344,
+      "branch_candidates": [
+        {
+          "line": 1349,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1355,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1332
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:1333:multiply_by_int_value_part",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "multiply_by_int_value_part",
+      "native_inspection_note": "Descending raw-part multiplication with unsigned host-large carry and mask; no allocation; no overflow out flag.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "a25446b9298dcd416e3ef6d53eb5d66cdb383934674b4a1027bc9300cd669bf2",
+      "start": 1333
+    },
+    {
+      "active_direct_dependencies": [
+        "INT_VALUE_PART_BASE"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1369,
+      "branch_candidates": [
+        {
+          "line": 1374,
+          "token": "for"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1380,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1332
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:1358:divide_by_int_value_part",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "divide_by_int_value_part",
+      "native_inspection_note": "Ascending raw-part division; preserve old part before quotient write; carry uses modulus times base; divisor nonzero precondition.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "96a7f56b29b2889fb913f0af9b040dd983562f5414c10b10cc26612c96ac3cf2",
+      "start": 1358
+    },
+    {
+      "active_direct_dependencies": [
+        "INT_VALUE_PART_BASE"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1389,
+      "branch_candidates": [
+        {
+          "line": 1393,
+          "token": "for"
+        },
+        {
+          "line": 1397,
+          "token": "if"
+        },
+        {
+          "line": 1400,
+          "token": "else"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1405,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1332
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:1383:special_subtract",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "special_subtract",
+      "native_inspection_note": "Descending loop includes index equal to normal part count; work buffers have extra part; signed borrow corrections.",
+      "ordered_call_candidates": [],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "a52b8eb301d30c98b4d3d4f7d1773ecae16248d690ab50ae14c45eb4caf6e891",
+      "start": 1383
+    },
+    {
+      "active_direct_dependencies": [
+        "clear_parts",
+        "sign_of",
+        "negate_integer_value",
+        "set_integer_value",
+        "cmp_integer_values",
+        "copy_parts",
+        "INT_VALUE_PART_BASE",
+        "multiply_by_int_value_part",
+        "special_subtract",
+        "divide_by_int_value_part"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1434,
+      "branch_candidates": [
+        {
+          "line": 1471,
+          "token": "if"
+        },
+        {
+          "line": 1472,
+          "token": "if"
+        },
+        {
+          "line": 1479,
+          "token": "if"
+        },
+        {
+          "line": 1487,
+          "token": "if"
+        },
+        {
+          "line": 1493,
+          "token": "goto"
+        },
+        {
+          "line": 1494,
+          "token": "else"
+        },
+        {
+          "line": 1494,
+          "token": "if"
+        },
+        {
+          "line": 1499,
+          "token": "goto"
+        },
+        {
+          "line": 1500,
+          "token": "else"
+        },
+        {
+          "line": 1500,
+          "token": "if"
+        },
+        {
+          "line": 1506,
+          "token": "goto"
+        },
+        {
+          "line": 1513,
+          "token": "for"
+        },
+        {
+          "line": 1514,
+          "token": "if"
+        },
+        {
+          "line": 1517,
+          "token": "break"
+        },
+        {
+          "line": 1521,
+          "token": "for"
+        },
+        {
+          "line": 1522,
+          "token": "if"
+        },
+        {
+          "line": 1525,
+          "token": "break"
+        },
+        {
+          "line": 1550,
+          "token": "for"
+        },
+        {
+          "line": 1561,
+          "token": "if"
+        },
+        {
+          "line": 1563,
+          "token": "else"
+        },
+        {
+          "line": 1585,
+          "token": "for"
+        },
+        {
+          "line": 1587,
+          "token": "if"
+        },
+        {
+          "line": 1587,
+          "token": "continue"
+        },
+        {
+          "line": 1588,
+          "token": "if"
+        },
+        {
+          "line": 1592,
+          "token": "break"
+        },
+        {
+          "line": 1594,
+          "token": "while"
+        },
+        {
+          "line": 1611,
+          "token": "if"
+        },
+        {
+          "line": 1620,
+          "token": "if"
+        },
+        {
+          "line": 1622,
+          "token": "else"
+        },
+        {
+          "line": 1622,
+          "token": "if"
+        },
+        {
+          "line": 1622,
+          "token": "&&"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1628,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [
+        {
+          "alternatives": [
+            "if !INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+          ],
+          "line": 1332
+        }
+      ],
+      "id": "edgcpp/upstream/src/const_ints.c:1415:divide_and_remainder_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "divide_and_remainder_integer_values",
+      "native_inspection_note": "Original work arrays, local divisor copy, optional dividend copy; divisor-zero/dividend-zero/smaller-dividend gotos; preserve output write order; normalize; trial quotient retry loop; subtract; denormalize; copy quotient then remainder; sign correction; common exit overwrites err.",
+      "ordered_call_candidates": [
+        {
+          "line": 1456,
+          "name": "clear_parts"
+        },
+        {
+          "line": 1457,
+          "name": "clear_parts"
+        },
+        {
+          "line": 1459,
+          "name": "clear_parts"
+        },
+        {
+          "line": 1472,
+          "name": "sign_of"
+        },
+        {
+          "line": 1475,
+          "name": "negate_integer_value"
+        },
+        {
+          "line": 1479,
+          "name": "sign_of"
+        },
+        {
+          "line": 1480,
+          "name": "negate_integer_value"
+        },
+        {
+          "line": 1486,
+          "name": "set_integer_value"
+        },
+        {
+          "line": 1487,
+          "name": "cmp_integer_values"
+        },
+        {
+          "line": 1494,
+          "name": "cmp_integer_values"
+        },
+        {
+          "line": 1500,
+          "name": "cmp_integer_values"
+        },
+        {
+          "line": 1511,
+          "name": "copy_parts"
+        },
+        {
+          "line": 1539,
+          "name": "multiply_by_int_value_part"
+        },
+        {
+          "line": 1542,
+          "name": "multiply_by_int_value_part"
+        },
+        {
+          "line": 1573,
+          "name": "clear_parts"
+        },
+        {
+          "line": 1574,
+          "name": "copy_parts"
+        },
+        {
+          "line": 1576,
+          "name": "multiply_by_int_value_part"
+        },
+        {
+          "line": 1596,
+          "name": "special_subtract"
+        },
+        {
+          "line": 1602,
+          "name": "divide_by_int_value_part"
+        },
+        {
+          "line": 1605,
+          "name": "copy_parts"
+        },
+        {
+          "line": 1607,
+          "name": "copy_parts"
+        },
+        {
+          "line": 1612,
+          "name": "negate_integer_value"
+        },
+        {
+          "line": 1621,
+          "name": "negate_integer_value"
+        },
+        {
+          "line": 1622,
+          "name": "sign_of"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "7d7d409ee17f75f81b544ba4629a12116fd736ab5a7ef9873cf2185c3b6c419e",
+      "start": 1415
+    },
+    {
+      "active_direct_dependencies": [
+        "divide_and_remainder_integer_values"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1642,
+      "branch_candidates": [
+        {
+          "line": 1643,
+          "token": "if"
+        },
+        {
+          "line": 1649,
+          "token": "if"
+        },
+        {
+          "line": 1652,
+          "token": "else"
+        },
+        {
+          "line": 1653,
+          "token": "if"
+        },
+        {
+          "line": 1657,
+          "token": "if"
+        },
+        {
+          "line": 1657,
+          "token": "&&"
+        },
+        {
+          "line": 1658,
+          "token": "&&"
+        },
+        {
+          "line": 1662,
+          "token": "else"
+        },
+        {
+          "line": 1664,
+          "token": "if"
+        },
+        {
+          "line": 1668,
+          "token": "else"
+        },
+        {
+          "line": 1672,
+          "token": "else"
+        },
+        {
+          "line": 1680,
+          "token": "else"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1685,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:1634:divide_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 1643,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 1680,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 1684,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "divide_integer_values",
+      "native_inspection_note": "Private helper receives op_1 as quotient output and a local remainder; selected multipart body only.",
+      "ordered_call_candidates": [
+        {
+          "line": 1667,
+          "name": "divide_integers"
+        },
+        {
+          "line": 1682,
+          "name": "divide_and_remainder_integer_values"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "069ece3430bc75e678600bf20ee51f7b409ea8ee69eef7f7b5c363c4a890bb94",
+      "start": 1634
+    },
+    {
+      "active_direct_dependencies": [
+        "set_integer_value",
+        "cmp_integer_values",
+        "divide_and_remainder_integer_values"
+      ],
+      "active_profile": "cpfe: INTEGER_VALUE_REPR_IS_A_HOST_INTEGER=0; LP64 host",
+      "body_start": 1696,
+      "branch_candidates": [
+        {
+          "line": 1697,
+          "token": "if"
+        },
+        {
+          "line": 1703,
+          "token": "if"
+        },
+        {
+          "line": 1706,
+          "token": "else"
+        },
+        {
+          "line": 1707,
+          "token": "if"
+        },
+        {
+          "line": 1709,
+          "token": "if"
+        },
+        {
+          "line": 1715,
+          "token": "else"
+        },
+        {
+          "line": 1719,
+          "token": "else"
+        },
+        {
+          "line": 1727,
+          "token": "else"
+        },
+        {
+          "line": 1732,
+          "token": "if"
+        },
+        {
+          "line": 1740,
+          "token": "else"
+        }
+      ],
+      "branch_review_status": "Native obligations recorded; full C#/source operation mapping and independent review pending",
+      "configuration_status": "unresolved; do not infer enabled/disabled from this index",
+      "discovery": "approximate EDG end-comment plus signature regex",
+      "effects_identity_lifetime": "uninspected",
+      "end": 1746,
+      "exclusions": "Scalar representation alternatives retained in source/branch inventory but inactive in this build",
+      "file": "edgcpp/upstream/src/const_ints.c",
+      "file_sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c",
+      "guards": [],
+      "id": "edgcpp/upstream/src/const_ints.c:1688:remainder_integer_values",
+      "implementation_state": "unstarted",
+      "internal_conditionals": [
+        {
+          "line": 1697,
+          "text": "#if INTEGER_VALUE_REPR_IS_A_HOST_INTEGER"
+        },
+        {
+          "line": 1727,
+          "text": "#else /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        },
+        {
+          "line": 1745,
+          "text": "#endif /* INTEGER_VALUE_REPR_IS_A_HOST_INTEGER */"
+        }
+      ],
+      "managed_counterpart": null,
+      "managed_review_status": "No managed files opened by this research task; no parity qualification",
+      "name": "remainder_integer_values",
+      "native_inspection_note": "Construct -1; compare with actual op_2 signedness; zero result/clear error special case; otherwise helper with local quotient and op_1 remainder.",
+      "ordered_call_candidates": [
+        {
+          "line": 1731,
+          "name": "set_integer_value"
+        },
+        {
+          "line": 1732,
+          "name": "cmp_integer_values"
+        },
+        {
+          "line": 1738,
+          "name": "set_integer_value"
+        },
+        {
+          "line": 1742,
+          "name": "divide_and_remainder_integer_values"
+        }
+      ],
+      "review": "unreviewed",
+      "source_effect_contract": "Only passed storage and local values; no global writes/allocation/diagnostics in selected bodies",
+      "source_sha256": "97b3c608ee150d62ee551ab1962aca3f20d88c98a82efe9c024aad0efbf4b686",
+      "start": 1688
+    }
+  ],
+  "state_dependencies": "Passed storage, out flags, local copy/array storage and pinned widths; caller preconditions/alias contracts remain source-defined",
+  "status": "SOURCE-DEFINED INITIAL CLOSURE; native research only; managed qualification pending"
+}
