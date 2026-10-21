@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual main integrated Unicode Release/JIT/NativeAOT output fingerprints",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 1396736,
+      "sha256": "6c135c0f9e104fc3c4519101b0debb6650ec4b1d9a08422ff9afd3fad39cf348"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 248320,
+      "sha256": "c9911519d2a9db3c366cc6b35c6c9283e6e3250ccb9a7611370ad2e23cbe6775"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-unicode-integrated/EdgSharp.Tests",
+      "bytes": 5565960,
+      "sha256": "72acd17987a4d6747851e58358ae0c9eb643fb1964b105dc3c14dd57d871e289"
+    }
+  ]
+}

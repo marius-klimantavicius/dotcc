@@ -1,0 +1,17 @@
+{
+  "purpose": "Fresh isolated U1/U2 repair hold/identity audit, not main acceptance",
+  "handoff_sha256": "774440b24afaeaaba25db2c6909215435c766f7131119f62913ddc60f31098dc",
+  "authored_file_count": 27,
+  "all_authored_hashes_match": true,
+  "hold": "fresh author READY/HOLD; continuation completed/result_available/no pending children",
+  "changed_source_files": [
+    "MacroExpansion.cs",
+    "Preprocessing.cs",
+    "PreprocessingDirectives.cs",
+    "Tokens.cs",
+    "UnicodeIdentifiers.cs",
+    "UnicodeTests.cs"
+  ],
+  "tools_data_unchanged": true,
+  "main_writer": "separate checkout; cannot affect isolated source map"
+}

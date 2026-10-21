@@ -53,7 +53,10 @@ internal static partial class Tests
         AnalysisResult warning = Success("char value='\\q'; int multi='ab';");
         Equal(new BigInteger(113), Character(warning, "value").ConstantValue!.Value);
         Check(warning.Diagnostics.Count(d => d.Severity == DiagnosticSeverity.Warning) == 2);
-        foreach (string source in new[] { "char value='\\u0041';", "char value='é';", "int value='a'_custom;", "char32_t value=U'\\é';" })
+        Equal(new BigInteger(65), Character(Success("char value='\\u0041';"), "value").ConstantValue!.Value);
+        AnalysisResult multibyte = Analyze("char value='é';");
+        Check(!multibyte.IsSuccess && !multibyte.ContainsUnsupportedFeatures && multibyte.Diagnostics.Any(d => d.Code == "LEX020"));
+        foreach (string source in new[] { "int value='a'_custom;", "char32_t value=U'\\é';" })
         { AnalysisResult bounded = Analyze(source); Check(!bounded.IsSuccess && bounded.ContainsUnsupportedFeatures, source); }
         Equal("'a'_tag", Pp("#define _tag 7\n#define E(x) x\nE('a'_tag)"));
         AnalysisResult template = Success("template<class T> constexpr int warning(T x){return '\\q'+x;} static_assert(warning(1)==114);");

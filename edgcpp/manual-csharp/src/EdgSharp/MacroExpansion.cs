@@ -71,8 +71,9 @@ internal sealed partial class Preprocessor
                 while (input.Take() is PpToken rest) { Tick(rest.Origin); yield return rest; }
                 yield break;
             }
-            if (token.Kind != TokenKind.Identifier || token.Unavailable.Contains(token.Text)) { yield return token; continue; }
-            if (token.Text == "__has_include")
+            DiagnoseIdentifier(token);
+            if (token.Kind != TokenKind.Identifier || token.Unavailable.Contains(token.IdentifierText)) { yield return token; continue; }
+            if (token.IdentifierText == "__has_include")
             {
                 transformed = true;
                 if (controllingExpressionDepth == 0)
@@ -101,16 +102,16 @@ internal sealed partial class Preprocessor
                 yield return Synthesized(found ? "1" : "0", TokenKind.IntegerLiteral, origin);
                 continue;
             }
-            if (token.Text is "__LINE__" or "__FILE__")
+            if (token.IdentifierText is "__LINE__" or "__FILE__")
             {
                 transformed = true;
-                string spelling = token.Text == "__LINE__" ? token.Origin.Presumed.Line.ToString(System.Globalization.CultureInfo.InvariantCulture) :
+                string spelling = token.IdentifierText == "__LINE__" ? token.Origin.Presumed.Line.ToString(System.Globalization.CultureInfo.InvariantCulture) :
                     QuoteFilename(token.Origin.Presumed.FileName);
                 var origin = new TokenOrigin(token.Origin.SpellingRanges, token.Origin.Presumed, token.Origin.Include, token.Origin.Expansion, TokenOriginKind.Predefined, [token.Origin]);
-                yield return Synthesized(spelling, token.Text == "__LINE__" ? TokenKind.IntegerLiteral : TokenKind.StringLiteral, origin);
+                yield return Synthesized(spelling, token.IdentifierText == "__LINE__" ? TokenKind.IntegerLiteral : TokenKind.StringLiteral, origin);
                 continue;
             }
-            if (!macros.TryGetValue(token.Text, out MacroDefinition? macro)) { yield return token; continue; }
+            if (!macros.TryGetValue(token.IdentifierText, out MacroDefinition? macro)) { yield return token; continue; }
             if (macro.IsFunctionLike && input.Peek()?.Kind != TokenKind.LeftParen) { yield return token; continue; }
             MacroExpansionFrame? parent = token.Origin.Expansion;
             int depth = argumentDepth;
@@ -177,7 +178,7 @@ internal sealed partial class Preprocessor
             var expanded = new PpToken[]?[rawArguments.Count];
             PpToken[] ContextArgument(int index) => rawArguments[index].Select(arg => arg.Copy(origin: arg.Origin.Expanded(frame, TokenOriginKind.MacroArgument))).ToArray();
             PpToken[] ExpandedArgument(int index) => expanded[index] ??= Expand(ContextArgument(index), argumentDepth + 1).ToArray();
-            bool nonemptyPack = macro.IsVariadic && macro.Replacement.Any(part => part.Text == "__VA_OPT__") &&
+            bool nonemptyPack = macro.IsVariadic && macro.Replacement.Any(part => part.IdentifierText == "__VA_OPT__") &&
                 ExpandedArgument(macro.Parameters.Count - 1).Length != 0;
             List<PpToken> Substitute(PpToken[] text)
             {
@@ -190,15 +191,15 @@ internal sealed partial class Preprocessor
                     PpToken part = selected[i];
                     if (!part.Substituted && macro.IsFunctionLike && part.Kind == TokenKind.Hash)
                     {
-                        if (++i >= selected.Length || selected[i].Kind != TokenKind.Identifier || !macro.Parameters.Contains(selected[i].Text))
+                        if (++i >= selected.Length || selected[i].Kind != TokenKind.Identifier || !macro.Parameters.Contains(selected[i].IdentifierText))
                         {
                             Error("PP007", "Stringization requires a macro parameter.", part.Origin); continue;
                         }
-                        int index = macro.Parameters.IndexOf(selected[i].Text);
+                        int index = macro.Parameters.IndexOf(selected[i].IdentifierText);
                         replacement.Add(Stringize(rawArguments[index], part, frame).Copy(unavailable: unavailable));
                         continue;
                     }
-                    int parameter = !part.Substituted && part.Kind == TokenKind.Identifier ? macro.Parameters.IndexOf(part.Text) : -1;
+                    int parameter = !part.Substituted && part.Kind == TokenKind.Identifier ? macro.Parameters.IndexOf(part.IdentifierText) : -1;
                     if (parameter >= 0)
                     {
                         bool pasted = i != 0 && selected[i - 1].PasteOperator || i + 1 < selected.Length && selected[i + 1].PasteOperator;
@@ -231,7 +232,12 @@ internal sealed partial class Preprocessor
         foreach (PpToken token in raw)
         {
             if (content.Length != 0 && token.SpaceBefore) content += " ";
-            content += token.Text.Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal);
+            // stringized_arg escapes quotes/backslashes within literal tokens.
+            // A UCN in an identifier retains its effective single backslash; escaping
+            // it here would change the resulting string token's spelling.
+            content += token.Kind is TokenKind.StringLiteral or TokenKind.CharacterLiteral
+                ? token.Text.Replace("\\", "\\\\", StringComparison.Ordinal).Replace("\"", "\\\"", StringComparison.Ordinal)
+                : token.Text;
         }
         var origins = new[] { op.Origin }.Concat(raw.Select(token => token.Origin)).ToArray();
         var origin = new TokenOrigin(origins.SelectMany(item => item.SpellingRanges), frame.Invocation.Presumed,
@@ -245,9 +251,9 @@ internal sealed partial class Preprocessor
         for (int i = 0; i < tokens.Length; ++i)
         {
             PpToken token = tokens[i];
-            PpToken? stringizeOperator = token.Kind == TokenKind.Hash && i + 1 < tokens.Length && tokens[i + 1].Text == "__VA_OPT__" ? token : null;
+            PpToken? stringizeOperator = token.Kind == TokenKind.Hash && i + 1 < tokens.Length && tokens[i + 1].IdentifierText == "__VA_OPT__" ? token : null;
             if (stringizeOperator != null) token = tokens[++i];
-            if (token.Text != "__VA_OPT__") { selected.Add(token); continue; }
+            if (token.IdentifierText != "__VA_OPT__") { selected.Add(token); continue; }
             if (!variadic || ++i >= tokens.Length || tokens[i].Kind != TokenKind.LeftParen)
             { Error("PP008", "__VA_OPT__ requires parentheses in a variadic macro.", token.Origin); continue; }
             var body = new List<PpToken>();
@@ -259,7 +265,7 @@ internal sealed partial class Preprocessor
                 body.Add(tokens[i]);
             }
             if (depth != 0) Error("PP009", "Unterminated __VA_OPT__ operand.", token.Origin);
-            if (body.Any(part => part.Text == "__VA_OPT__")) Error("PP010", "Nested __VA_OPT__ is not permitted.", token.Origin);
+            if (body.Any(part => part.IdentifierText == "__VA_OPT__")) Error("PP010", "Nested __VA_OPT__ is not permitted.", token.Origin);
             if (stringizeOperator != null) selected.Add(stringize(nonempty ? body.ToArray() : [], stringizeOperator));
             else if (nonempty && body.Count != 0)
             {
@@ -288,13 +294,15 @@ internal sealed partial class Preprocessor
             var source = new SourceFile("<token paste>", spelling, SourceFileKind.SynthesizedToken);
             var localDiagnostics = new DiagnosticBag();
             TokenBuffer pasted = new Lexer(source, localDiagnostics, preprocessing: true).Scan();
-            if (localDiagnostics.Count != 0 || pasted.Tokens.Count != 2 || pasted.Tokens[0].Kind is TokenKind.Error or TokenKind.PreprocessingOther)
+            if (localDiagnostics.Count != 0 || pasted.Tokens.Count != 2 || pasted.Tokens[0].ScannedUcnDiagnostic != null || pasted.Tokens[0].Kind is TokenKind.Error or TokenKind.PreprocessingOther ||
+                pasted.Tokens[0].Kind == TokenKind.Identifier && UnicodeIdentifiers.Analyze(pasted.Tokens[0].Spelling, out _) != null)
             { Error("PP012", "Token paste does not form exactly one preprocessing token.", token.Origin); continue; }
             var origin = new TokenOrigin(left.Origin.SpellingRanges.Concat(right.Origin.SpellingRanges).Concat(token.Origin.SpellingRanges),
                 frame.Invocation.Presumed, frame.Invocation.Include, frame, TokenOriginKind.TokenPaste, [left.Origin, right.Origin, token.Origin]);
             var hidden = new HashSet<string>(left.Unavailable, StringComparer.Ordinal);
             hidden.IntersectWith(right.Unavailable);
-            result.Add(new PpToken(pasted.Tokens[0].Kind, source.Range(0, spelling.Length), origin, left.SpaceBefore, unavailable: hidden));
+            result.Add(new PpToken(pasted.Tokens[0].Kind, source.Range(0, spelling.Length), origin, left.SpaceBefore, unavailable: hidden,
+                scannedUcnDiagnostic: pasted.Tokens[0].ScannedUcnDiagnostic));
         }
         return result;
     }

@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted scalar constant-storage outputs before Unicode integration builds",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/44640803b/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "792027d12abd4f5961075213ef4a6bc3ed360b92a6e8a6b4d87026cff16ff015"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/44640803b/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "df98a109cece32cf3962a4dd92531b05ddc29344c4fa983e1acda502789df7e9"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-reference-constexpr/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/44640803b/tests/EdgSharp.Tests/bin/aot-reference-constexpr/EdgSharp.Tests",
+      "sha256": "cabeaf5f2aa8976e24aee40801119f0cb3a19589034c827caddbfb8a5f8329b5"
+    }
+  ]
+}

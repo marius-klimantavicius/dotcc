@@ -10,7 +10,7 @@ namespace EdgSharp;
 
 public interface IIncludeProvider
 {
-    /// <summary>Reads an explicitly searched canonical path. Providers must return stable contents during one analysis.</summary>
+    /// <summary>Reads an explicitly searched canonical path as decoded managed Unicode text. Providers must return stable contents during one analysis. Use IStructuredIncludeProvider to retain original byte encoding/BOM metadata; neither interface enables a host locale fallback.</summary>
     bool TryRead(string path, out string? text);
 }
 
@@ -34,10 +34,11 @@ public sealed class PreprocessingOptions
     /// <summary>Configured UTC translation time, or null to capture UTC once when a session is created. Session.Options exposes the effective timestamp.</summary>
     public DateTimeOffset? TranslationTimestamp { get; }
     public bool Hosted { get; }
+    public SourceInputOptions SourceInput { get; }
     public PreprocessingOptions(IIncludeProvider? includeProvider = null, IEnumerable<string>? quoteDirectories = null,
         IEnumerable<string>? systemDirectories = null, IEnumerable<KeyValuePair<string, string>>? predefinedMacros = null,
         int includeDepthLimit = 64, int macroDepthLimit = 128, int workLimit = 100000,
-        DateTimeOffset? translationTimestamp = null, bool hosted = true)
+        DateTimeOffset? translationTimestamp = null, bool hosted = true, SourceInputOptions? sourceInput = null)
     {
         if (includeDepthLimit <= 0 || macroDepthLimit <= 0 || workLimit <= 0) throw new ArgumentOutOfRangeException(nameof(workLimit), "Preprocessing limits must be positive.");
         (IncludeProvider, IncludeDepthLimit, MacroDepthLimit, WorkLimit) = (includeProvider, includeDepthLimit, macroDepthLimit, workLimit);
@@ -48,9 +49,10 @@ public sealed class PreprocessingOptions
             throw new ArgumentException("Reserved predefined names use dedicated options and cannot be overridden through generic macro definitions.", nameof(predefinedMacros));
         TranslationTimestamp = translationTimestamp?.ToUniversalTime();
         Hosted = hosted;
+        SourceInput = sourceInput ?? new SourceInputOptions();
     }
     internal PreprocessingOptions CaptureTranslationTimestamp() => TranslationTimestamp != null ? this :
-        new(IncludeProvider, QuoteDirectories, SystemDirectories, PredefinedMacros, IncludeDepthLimit, MacroDepthLimit, WorkLimit, DateTimeOffset.UtcNow, Hosted);
+        new(IncludeProvider, QuoteDirectories, SystemDirectories, PredefinedMacros, IncludeDepthLimit, MacroDepthLimit, WorkLimit, DateTimeOffset.UtcNow, Hosted, SourceInput);
 }
 
 internal static class IncludePaths
@@ -78,7 +80,10 @@ public sealed class MacroDefinition
     public bool IsFunctionLike { get; }
     public bool IsVariadic { get; }
     public ReadOnlyCollection<string> Parameters { get; }
+    /// <summary>Effective replacement text, including canonical UCN spelling of literal identifier replacement tokens.</summary>
     public string ReplacementSpelling => string.Join(" ", Replacement.Select(token => token.Text));
+    /// <summary>Original authored token spelling before replacement-text canonicalization; physical contributors are retained in token origins.</summary>
+    public string RawReplacementSpelling => string.Join(" ", Replacement.Select(token => token.RawSpelling));
     internal PpToken[] Replacement { get; }
     internal MacroDefinition(string name, TokenOrigin origin, bool function, bool variadic, string[] parameters, PpToken[] replacement)
         => (Name, NameOrigin, IsFunctionLike, IsVariadic, Parameters, Replacement) =
@@ -106,7 +111,11 @@ internal sealed class PpToken
 {
     internal TokenKind Kind { get; }
     internal SourceRange Range { get; }
-    internal string Text => Range.Spelling;
+    internal string RawSpelling => Range.Spelling;
+    internal string? EffectiveSpelling { get; }
+    internal string Text => EffectiveSpelling ?? RawSpelling;
+    internal string IdentifierText { get; }
+    internal Diagnostic? ScannedUcnDiagnostic { get; }
     internal TokenOrigin Origin { get; }
     internal bool SpaceBefore { get; }
     internal bool StartsLine { get; }
@@ -116,11 +125,13 @@ internal sealed class PpToken
     internal bool Substituted { get; }
     internal bool PasteOperator { get; }
     internal PpToken(TokenKind kind, SourceRange range, TokenOrigin origin, bool space = false, bool start = false, int line = 0,
-        IEnumerable<string>? unavailable = null, bool placemark = false, bool substituted = false, bool pasteOperator = false)
-        => (Kind, Range, Origin, SpaceBefore, StartsLine, LogicalLine, Unavailable, Placemark, Substituted, PasteOperator) =
-            (kind, range, origin, space, start, line, (unavailable ?? []).ToFrozenSet(StringComparer.Ordinal), placemark, substituted, pasteOperator);
-    internal PpToken Copy(TokenOrigin? origin = null, IEnumerable<string>? unavailable = null, bool? space = null, bool? substituted = null, bool? pasteOperator = null)
-        => new(Kind, Range, origin ?? Origin, space ?? SpaceBefore, StartsLine, LogicalLine, unavailable ?? Unavailable, Placemark, substituted ?? Substituted, pasteOperator ?? PasteOperator);
+        IEnumerable<string>? unavailable = null, bool placemark = false, bool substituted = false, bool pasteOperator = false,
+        Diagnostic? scannedUcnDiagnostic = null, string? effectiveSpelling = null)
+        => (Kind, Range, Origin, SpaceBefore, StartsLine, LogicalLine, Unavailable, Placemark, Substituted, PasteOperator, IdentifierText, ScannedUcnDiagnostic, EffectiveSpelling) =
+            (kind, range, origin, space, start, line, (unavailable ?? []).ToFrozenSet(StringComparer.Ordinal), placemark, substituted, pasteOperator,
+             kind is TokenKind.Identifier or TokenKind.Keyword ? UnicodeIdentifiers.Identity(range.Spelling) : range.Spelling, scannedUcnDiagnostic, effectiveSpelling);
+    internal PpToken Copy(TokenOrigin? origin = null, IEnumerable<string>? unavailable = null, bool? space = null, bool? substituted = null, bool? pasteOperator = null, string? effectiveSpelling = null)
+        => new(Kind, Range, origin ?? Origin, space ?? SpaceBefore, StartsLine, LogicalLine, unavailable ?? Unavailable, Placemark, substituted ?? Substituted, pasteOperator ?? PasteOperator, ScannedUcnDiagnostic, effectiveSpelling ?? EffectiveSpelling);
 }
 
 internal static class LogicalInput
@@ -154,7 +165,7 @@ internal static class LogicalInput
             text.Append(source.Text, runStart, tail);
         }
         maps.Add(new(text.Length, 0, TokenOrigin.Direct(source.Range(source.Text.Length, 0))));
-        SourceFile spliced = changed ? new SourceFile(source.Name + " [logical input]", text.ToString(), SourceFileKind.LogicalInput, maps.ToArray()) : source;
+        SourceFile spliced = changed ? new SourceFile(source.Name + " [logical input]", text.ToString(), SourceFileKind.LogicalInput, maps.ToArray(), source.Encoding) : source;
         return spliced;
     }
     // The real lexer calls this against physical spelling when it recognizes a
@@ -212,6 +223,20 @@ internal sealed partial class Preprocessor(PreprocessingOptions options, Diagnos
         var source = new SourceFile("<generated preprocessing token>", spelling, SourceFileKind.SynthesizedToken);
         return new PpToken(kind, source.Range(0, spelling.Length), origin, placemark: marker);
     }
+    private void DiagnoseIdentifier(PpToken token)
+    {
+        // Identifier-part scans also occur inside pp-numbers and literal
+        // suffixes. Their UCN syntax/scalar errors are active lexical facts,
+        // even if a macro later drops or stringizes the containing token.
+        if (token.ScannedUcnDiagnostic is Diagnostic scanned)
+        {
+            TokenOrigin origin = scanned.Origin.WithContext(
+                new(token.Origin.Presumed.FileName, token.Origin.Presumed.Line, scanned.PrimaryLocation.Column), token.Origin.Include);
+            Error(scanned.Code, scanned.Message, token.Origin.Expansion == null ? origin : token.Origin, scanned.Class);
+        }
+        if (token.Kind == TokenKind.Identifier && UnicodeIdentifiers.Analyze(token.Text, out _) is UnicodeIdentifiers.Problem issue)
+            Error(issue.Code, issue.Message, token.Origin, issue.Unsupported ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
+    }
     private IEnumerable<PpToken> Tokenize(SourceFile physical)
     {
         SourceFile logical = LogicalInput.Normalize(physical);
@@ -230,7 +255,8 @@ internal sealed partial class Preprocessor(PreprocessingOptions options, Diagnos
             if (lineEnd < 0) lineEnd = lexer.Input.Text.Length;
             SourcePosition physicalEnd = lexer.Input.OriginForRange(lexer.Input.Range(lineEnd, 0)).SpellingRanges[^1].EndPosition;
             TokenOrigin origin = token.Origin.WithContext(new(physicalEnd.File.Name, physicalEnd.Line, token.Origin.SpellingRanges[0].StartPosition.Column), null);
-            yield return new PpToken(token.Kind, token.Range, origin, lexer.LastTokenStart != previousEnd, startsLine, line);
+            yield return new PpToken(token.Kind, token.Range, origin, lexer.LastTokenStart != previousEnd, startsLine, line,
+                scannedUcnDiagnostic: token.ScannedUcnDiagnostic);
             previousEnd = lexer.LastTokenEnd;
             previousLine = line;
         }
@@ -251,20 +277,30 @@ internal sealed partial class Preprocessor(PreprocessingOptions options, Diagnos
         {
             var definition = new SourceFile("<predefined " + name + ">", name + " " + value, SourceFileKind.Configuration);
             PpToken[] tokens = Tokenize(definition).ToArray();
-            if (tokens.Length == 0 || tokens[0].Kind != TokenKind.Identifier || tokens[0].Text != name)
+            if (tokens.Length == 0 || tokens[0].Kind != TokenKind.Identifier || tokens[0].Text != name || UnicodeIdentifiers.Analyze(name, out _) != null)
             {
                 Error("PP002", "Invalid configured macro name.", TokenOrigin.Direct(definition.Range(0, definition.Text.Length)));
                 continue;
             }
-            macros[name] = new MacroDefinition(name, tokens[0].Origin, false, false, [], tokens[1..]);
+            string identity = tokens[0].IdentifierText;
+            var macro = new MacroDefinition(identity, tokens[0].Origin, false, false, [], tokens[1..].Select(token =>
+                token.Kind == TokenKind.Identifier ? token.Copy(effectiveSpelling: UnicodeIdentifiers.CanonicalUcnSpelling(token.Text)) : token).ToArray());
+            if (macros.TryGetValue(identity, out MacroDefinition? previous))
+            {
+                if (!EquivalentMacro(previous, macro)) Error("PP044", "Conflicting configured macro redefinition after identifier canonicalization.", tokens[0].Origin);
+            }
+            else macros.Add(identity, macro);
         }
         var output = new List<PpToken>();
         try { output.AddRange(Expand(ReadActive(source, null, 0), 0)); }
         catch (PreprocessingStopped) { }
         foreach (PpToken token in output)
+        {
+            if (token.Kind == TokenKind.Identifier) DiagnoseIdentifier(token);
             if (token.Kind == TokenKind.PreprocessingOther)
                 Error("PP003", "This active preprocessing token has no implemented language token.", token.Origin,
-                    token.Text.Any(c => c > 127 || c == '\\') ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
+                    token.Text.Contains('\\') ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
+        }
         TokenBuffer buffer = Materialize(source, output);
         return new(source, buffer, physicalSources.ToArray(), includes.ToArray(), new Dictionary<string, MacroDefinition>(macros, StringComparer.Ordinal), diagnostics.Snapshot(), timestamp, options.Hosted);
     }
@@ -273,8 +309,8 @@ internal sealed partial class Preprocessor(PreprocessingOptions options, Diagnos
         if (!transformed && output.All(token => token.Origin.SpellingRanges.Count == 1 &&
             ReferenceEquals(token.Origin.SpellingRanges[0].File, primary) && token.Origin.SpellingRanges[0].Spelling == token.Text))
         {
-            Token[] direct = output.Select(token => new Token(token.Kind == TokenKind.Identifier ? Lexer.OperatorOrIdentifier(token.Text) : token.Kind,
-                token.Origin.SpellingRanges[0], token.Origin)).Append(new Token(TokenKind.EndOfSource, primary.Range(primary.Text.Length, 0))).ToArray();
+            Token[] direct = output.Select(token => new Token(token.Kind == TokenKind.Identifier ? Lexer.OperatorOrIdentifier(token.IdentifierText) : token.Kind,
+                token.Origin.SpellingRanges[0], token.Origin, token.ScannedUcnDiagnostic)).Append(new Token(TokenKind.EndOfSource, primary.Range(primary.Text.Length, 0))).ToArray();
             return new TokenBuffer(primary, direct);
         }
         var text = new StringBuilder();
@@ -289,9 +325,9 @@ internal sealed partial class Preprocessor(PreprocessingOptions options, Diagnos
         }
         TokenOrigin eof = TokenOrigin.Direct(primary.Range(primary.Text.Length, 0));
         maps.Add(new(text.Length, 0, eof));
-        var source = new SourceFile(primary.Name + " [preprocessed presentation]", text.ToString(), SourceFileKind.PreprocessedPresentation, maps.ToArray());
-        Token[] tokens = positions.Select(item => new Token(item.Token.Kind == TokenKind.Identifier ? Lexer.OperatorOrIdentifier(item.Token.Text) : item.Token.Kind,
-            source.Range(item.Start, item.Token.Text.Length), item.Token.Origin)).Append(new Token(TokenKind.EndOfSource, source.Range(source.Text.Length, 0), eof)).ToArray();
+        var source = new SourceFile(primary.Name + " [preprocessed presentation]", text.ToString(), SourceFileKind.PreprocessedPresentation, maps.ToArray(), primary.Encoding);
+        Token[] tokens = positions.Select(item => new Token(item.Token.Kind == TokenKind.Identifier ? Lexer.OperatorOrIdentifier(item.Token.IdentifierText) : item.Token.Kind,
+            source.Range(item.Start, item.Token.Text.Length), item.Token.Origin, item.Token.ScannedUcnDiagnostic)).Append(new Token(TokenKind.EndOfSource, source.Range(source.Text.Length, 0), eof)).ToArray();
         return new TokenBuffer(source, tokens);
     }
 }

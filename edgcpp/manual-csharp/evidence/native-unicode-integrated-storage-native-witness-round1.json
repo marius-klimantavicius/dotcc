@@ -1,0 +1,39 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-native-witness.cpp",
+  "source_sha256": "d21a08fcc7c6737e9adbd9080d90cc8349c98544c139cca4f68f1fbe9f1cc889",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-gate.cpp",
+      "sha256": "733fc76bf961059fdce8765cdb86e54ec36e23dc31f76d6c1c9863deeab4bcbe"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-gate.h",
+      "sha256": "884db1427c656ab31899bcc8eb4a532064383dfeb926bbd0589110210d089922"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-native-witness.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-gate.cpp\n          \", line 5: warning: variable \"\\u03b7\\u03c7\\u03ce\" was declared but\n          never referenced\n  constexpr long \u03c4\u03c1\u03ad\u03be\u03b5(){\u03b3\u03c1\u03ac\u03bc\u03bc\u03b1 \u03c4\u03b9\u03bc\u03ae=u'\\u00e9'; const \u03b3\u03c1\u03ac\u03bc\u03bc\u03b1& \u03b4\u03b5\u03c3\u03bc\u03cc\u03c2=\u03c4\u03b9\u03bc\u03ae; int \u03b7\u03c7\u03ce=0; return \\u03b1\u03bd\u03c4\u03af\u03b3\u03c1\u03b1\u03c6\u03bf(\u03b4\u03b5\u03c3\u03bc\u03cc\u03c2)+\u03b1\u03bd\u03c4\u03af\u03b3\u03c1\u03b1\u03c6\u03bf(2L);}\n                                                                               ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

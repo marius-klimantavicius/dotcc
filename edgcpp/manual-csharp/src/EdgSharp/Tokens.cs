@@ -23,8 +23,15 @@ public readonly record struct Token
     public SourceRange Range { get; }
     public TokenOrigin Origin { get; }
     public string Spelling => Range.Spelling;
+    /// <summary>Scalar identifier identity (direct text and UCNs compare equal), without Unicode normalization. Other tokens retain their spelling.</summary>
+    public string IdentifierText { get; }
+    // f_is_identifier_char diagnoses malformed UCNs while collecting pp-number
+    // parts and ud-suffixes, independently of deferred literal conversion.
+    internal Diagnostic? ScannedUcnDiagnostic { get; }
     public Token(TokenKind kind, SourceRange range) : this(kind, range, range.File.OriginForRange(range)) { }
-    internal Token(TokenKind kind, SourceRange range, TokenOrigin origin) => (Kind, Range, Origin) = (kind, range, origin);
+    internal Token(TokenKind kind, SourceRange range, TokenOrigin origin, Diagnostic? scannedUcnDiagnostic = null)
+        => (Kind, Range, Origin, IdentifierText, ScannedUcnDiagnostic) = (kind, range, origin,
+            kind is TokenKind.Identifier or TokenKind.Keyword ? UnicodeIdentifiers.Identity(range.Spelling) : range.Spelling, scannedUcnDiagnostic);
 }
 
 public sealed class TokenBuffer
@@ -93,6 +100,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
 {
     private readonly string text = source.Text;
     private int position;
+    private Diagnostic? scannedUcnDiagnostic;
     private bool ppDirectiveName;
     private int ppLastLine, headerLine;
     private string? ppDirective;
@@ -152,9 +160,9 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
         }
         TokenOrigin eof = tokens[^1].Origin;
         maps.Add(new(text.Length, 0, eof));
-        var presentation = new SourceFile(source.Name + " [lexical presentation]", text.ToString(), SourceFileKind.PreprocessedPresentation, maps.ToArray());
+        var presentation = new SourceFile(source.Name + " [lexical presentation]", text.ToString(), SourceFileKind.PreprocessedPresentation, maps.ToArray(), source.Encoding);
         return new TokenBuffer(presentation, tokens.Take(tokens.Length - 1).Select((token, index) =>
-            new Token(token.Kind, presentation.Range(offsets[index], token.Spelling.Length), token.Origin)).Append(new Token(TokenKind.EndOfSource, presentation.Range(text.Length, 0), eof)).ToArray());
+            new Token(token.Kind, presentation.Range(offsets[index], token.Spelling.Length), token.Origin, token.ScannedUcnDiagnostic)).Append(new Token(TokenKind.EndOfSource, presentation.Range(text.Length, 0), eof)).ToArray());
     }
     internal IEnumerable<Token> ScanTokens()
     {
@@ -228,6 +236,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
     }
     private Token GetToken()
     {
+        scannedUcnDiagnostic = null;
         int start = position;
         char ch = text[position];
         if (preprocessing && headerLine != 0)
@@ -243,10 +252,13 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 return new Token(TokenKind.HeaderName, source.Range(start, position - start));
             }
         }
-        if (IsIdentifierStart(ch))
+        int identifierLength = UnicodeIdentifiers.PartLength(text, position, initial: true);
+        if (identifierLength != 0)
         {
-            ++position;
-            while (position < text.Length && IsIdentifierPart(text[position])) ++position;
+            position += identifierLength;
+            int partLength;
+            while (position < text.Length && (partLength = UnicodeIdentifiers.PartLength(text, position, initial: false)) != 0)
+                position += partLength;
             string spelling = text[start..position];
             // Prefixes/raw strings need preprocessing-phase handling; do not split them into success-shaped identifiers.
             if (position < text.Length && text[position] is '\'' or '"' && spelling is "L" or "u" or "U" or "u8" or "R" or "LR" or "uR" or "UR" or "u8R")
@@ -255,7 +267,8 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 if (spelling.EndsWith('R') && text[position] == '"') return ScanRaw(start);
                 return ScanQuoted(start);
             }
-            TokenKind kind = preprocessing ? TokenKind.Identifier : OperatorOrIdentifier(spelling);
+            if (!preprocessing) UnicodeIdentifiers.Diagnose(spelling, source.Range(start, position - start), diagnostics);
+            TokenKind kind = preprocessing ? TokenKind.Identifier : OperatorOrIdentifier(UnicodeIdentifiers.Identity(spelling));
             return new Token(kind, source.Range(start, position - start));
         }
         if (char.IsAsciiDigit(ch) || ch == '.' && position + 1 < text.Length && char.IsAsciiDigit(text[position + 1]))
@@ -264,7 +277,9 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
             while (position < text.Length)
             {
                 char next = text[position];
-                if (IsIdentifierPart(next) || next is '.' or '\'') ++position;
+                int part = ScanIdentifierPart(initial: false);
+                if (part != 0) position += part;
+                else if (next is '.' or '\'') ++position;
                 else if (next is '+' or '-' && text[position - 1] is 'e' or 'E' or 'p' or 'P') ++position;
                 else break;
             }
@@ -275,7 +290,8 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
             bool floating = number.Contains('.') || (hex ? number.IndexOfAny(['p', 'P']) >= 0 : number.IndexOfAny(['e', 'E']) >= 0);
             if (!preprocessing && floating && !IsValidFloatingSpelling(spelling))
                 diagnostics.Add("LEX011", "Malformed floating literal spelling.", source.Range(start, position - start));
-            return new Token(floating ? TokenKind.FloatingLiteral : TokenKind.IntegerLiteral, source.Range(start, position - start));
+            SourceRange range = source.Range(start, position - start);
+            return new Token(floating ? TokenKind.FloatingLiteral : TokenKind.IntegerLiteral, range, source.OriginForRange(range), scannedUcnDiagnostic);
         }
         if (ch is '\'' or '"') return ScanQuoted(start);
         foreach (var (spelling, kind) in punctuation)
@@ -287,12 +303,13 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
             position += spelling.Length;
             return new Token(kind, source.Range(start, position - start));
         }
-        ++position;
-        if (preprocessing) return new Token(TokenKind.PreprocessingOther, source.Range(start, 1));
-        bool unsupported = ch > 127 || ch == '\\';
-        diagnostics.Add(unsupported ? "UNS003" : "LEX002", unsupported ? "Unicode identifiers and universal character names are not implemented." : "Invalid source character.",
-            source.Range(start, 1), unsupported ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
-        return new Token(TokenKind.Error, source.Range(start, 1));
+        UnicodeIdentifiers.ReadScalar(text, position, out _, out int scalarLength);
+        position += Math.Max(1, scalarLength);
+        if (preprocessing) return new Token(TokenKind.PreprocessingOther, source.Range(start, position - start));
+        bool unsupported = ch == '\\';
+        diagnostics.Add(unsupported ? "UNS003" : "LEX002", unsupported ? "This source escape is not implemented." : "Invalid source character or Unicode identifier start.",
+            source.Range(start, position - start), unsupported ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
+        return new Token(TokenKind.Error, source.Range(start, position - start));
     }
     internal static TokenKind OperatorOrIdentifier(string spelling) => spelling switch
     {
@@ -324,7 +341,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
         if (!valid || hex && point && !exponent) return false;
         string suffix = spelling[index..];
         if (suffix.Length == 0) return point || exponent;
-        return IsIdentifierStart(suffix[0]) && suffix.All(IsIdentifierPart);
+        return UnicodeIdentifiers.Analyze(suffix, out _) == null;
         int Digits(bool hexadecimal)
         {
             int count = 0;
@@ -348,7 +365,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
         int physicalEnd = LogicalInput.RawLiteralEnd(physical.Text, physicalQuote.Start, out bool closed);
         position = source.OffsetFromPhysical(physical, physicalEnd);
         int suffix = position;
-        if (closed && position < text.Length && IsIdentifierStart(text[position])) while (position < text.Length && IsIdentifierPart(text[position])) ++position;
+        if (closed) ScanLiteralSuffix();
         string spelling = text[start..quote] + physical.Text[physicalQuote.Start..physicalEnd] + text[suffix..position];
         TokenOrigin prefix = source.OriginForRange(source.Range(start, quote - start));
         var contributors = prefix.SpellingRanges.Concat(new[] { physical.Range(physicalQuote.Start, physicalEnd - physicalQuote.Start) }).ToList();
@@ -367,7 +384,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 "Deferred raw-literal recognition in a macro definition is not implemented." : "Malformed or unterminated raw string literal.",
                 range, deferredDefinition ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
         }
-        return new Token(closed ? TokenKind.StringLiteral : TokenKind.Error, range, origin);
+        return new Token(closed ? TokenKind.StringLiteral : TokenKind.Error, range, origin, scannedUcnDiagnostic);
     }
     private Token ScanQuoted(int start)
     {
@@ -387,11 +404,33 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 ++position;
             }
         }
-        if (closed && position < text.Length && IsIdentifierStart(text[position])) while (position < text.Length && IsIdentifierPart(text[position])) ++position;
+        if (closed) ScanLiteralSuffix();
         var range = source.Range(start, position - start);
         if (!closed) diagnostics.Add("LEX003", "Unterminated quoted literal.", range);
-        return new Token(closed ? quote == '"' ? TokenKind.StringLiteral : TokenKind.CharacterLiteral : TokenKind.Error, range);
+        return new Token(closed ? quote == '"' ? TokenKind.StringLiteral : TokenKind.CharacterLiteral : TokenKind.Error,
+            range, source.OriginForRange(range), scannedUcnDiagnostic);
     }
-    private static bool IsIdentifierStart(char ch) => char.IsAsciiLetter(ch) || ch == '_';
-    private static bool IsIdentifierPart(char ch) => IsIdentifierStart(ch) || char.IsAsciiDigit(ch);
+    // These are lexical UCN syntax/scalar checks only. In preprocessing mode
+    // retain the first issue for the active/skip boundary; do not diagnose
+    // while a skipped group is merely being tokenized. Literal contents never
+    // call this helper: only pp-number identifier parts and actual ud-suffixes.
+    private int ScanIdentifierPart(bool initial)
+    {
+        int length = UnicodeIdentifiers.PartLength(text, position, initial, out UnicodeIdentifiers.Problem? problem);
+        if (problem is UnicodeIdentifiers.Problem issue)
+        {
+            DiagnosticClass kind = issue.Unsupported ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource;
+            SourceRange range = source.Range(issue.Offset, issue.Length);
+            scannedUcnDiagnostic ??= new Diagnostic(issue.Code, kind, issue.Message, range);
+            if (!preprocessing) diagnostics.Add(issue.Code, issue.Message, range, kind);
+        }
+        return length;
+    }
+    private void ScanLiteralSuffix()
+    {
+        int length = ScanIdentifierPart(initial: true);
+        if (length == 0) return;
+        position += length;
+        while (position < text.Length && (length = ScanIdentifierPart(initial: false)) != 0) position += length;
+    }
 }

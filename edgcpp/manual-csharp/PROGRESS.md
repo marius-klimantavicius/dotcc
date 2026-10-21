@@ -711,8 +711,10 @@ RCE-01 disproved; RCE-02/03/04 high and RCE-05 medium closed. Historical mismatc
 and first101/102 obsolete logical-Unsupported assertion remain retained/excluded.
 Support/correspondence/inventory now describe actual scalar storage while keeping
 full objects/control flow/classes/dependent references and remaining PLAN required.
-Primary remains HOLD until checkpoint commit, then immediately integrates Unicode
-additively, preserving accepted reference/cache/logical/storage hunks.
+Accepted checkpoint committed as `44640803b`; primary is RELEASED and actively
+integrating Unicode additively, preserving accepted reference/cache/logical/storage
+hunks. Three verified output copies are retained under bin/checkpoints/44640803b
+and recorded in evidence/retained-44640803b.json before subsequent builds.
 
 Unicode U1/U2 repaired isolated author is terminal/HOLD; new handoff SHA
 774440b24afaeaaba25db2c6909215435c766f7131119f62913ddc60f31098dc,27 hashes verified.
@@ -722,3 +724,43 @@ New independent Sol/xhigh review round2 task:
 `node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-unicode-isolated-review-r2-20261021`.
 It reviews repaired actual code plus U1/U2 proofs and writes only its main report;
 no implementation/execution/Git. Main merged acceptance is still required.
+
+Parallel required scalar assignment/control-flow implementation launched with
+Sol/xhigh in a separate worktree from accepted44640803b:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m4-scalar-controlflow-isolated-20261021-r1`.
+Owns isolated parser/expression/storage/evaluator/statement graph hunks and new
+control-flow tests/fixtures/handoff; no Unicode/preprocessing/provider ownership.
+Real modifiable scalar stores, if/else/while/break/continue and scope/lifetime/
+resource cleanup are required; optional additional loop/compound forms stay
+explicit. No worker execution/Git. Eventual three-way integration must preserve
+Unicode identity; supervisor validation and independent review remain mandatory.
+
+Isolated Unicode exact gate+header and character values accept0; explicitly
+negative timing fixture rejects2. An accidental accept expectation for that
+documented-negative fixture is retained in round2 and excluded; correct round3
+receipt records expected rejection. Four fresh66-file execution maps and three
+actual output hashes are in isolated unicode-isolated-held-snapshot-round2.json.
+
+Independent isolated Unicode round2 has now accepted the repaired held bytes:
+`evidence/review-unicode-isolated-round2.md`, U1/U2 closed, no unresolved critical/
+high. Four66-file maps,89/89 JIT/AOT and3 actual artifacts independently verified.
+Main primary is actively authoring Unicode+reference+storage combined fixtures
+and graph assertions; main source HOLD/executions/integration review are pending.
+
+Main Unicode primary explicitly reported OWNED-FILES HOLD before all four
+supervisor executions. Separate control-flow worktree is the only active source
+writer and has no main ownership. Integrated Release is warning-free; JIT+AOT
+each pass112/112, zero skips/failures, four identical111-file maps match held
+bytes including data3/tools3. Three actual artifact hashes are retained. Six
+exact native controls match4 accept0/2 reject2 under explicit UTF8 source profile,
+including unchanged coupled source/header type witness and forbidden-load negative.
+Native reviewer independently checked maps and produced code; final audit active.
+Primary uses read-only string/array/storage source analysis during this hold.
+
+Independent final main acceptance: evidence/review-unicode-integration-final.md,
+112/112 JIT/AOT,111-file maps,3 artifacts,14 consulted sources and6 native exact
+controls audited. No open critical/high; earlier in-flight header concern was
+resolved against actual held literal-alias fixture, no source finding. Stale
+current inventory dispatch was replaced; remaining full-plan rows remain required.
+Next primary production assignment is strings/arrays/storage; independent
+control-flow writer continues in isolation. No checkpoint stopping boundary.

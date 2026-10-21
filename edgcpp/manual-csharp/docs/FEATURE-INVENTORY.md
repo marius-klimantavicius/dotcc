@@ -45,10 +45,10 @@ Source guides: `lex_pp.rst`, `includes.rst`; `lexical.c`, `preproc.c`, `macro.c`
 | ID | Required task / current bounds | State | Concrete acceptance / remaining evidence |
 | --- | --- | --- | --- |
 | M1.1 | Owned buffers, physical positions, retained token intervals | accepted slice | Exact ASCII token spelling/kind/UTF-16 range tests, CR/LF/CRLF, stable EOF; preserve these through macros/includes/replay |
-| M1.2 | Encoding and translation phases | partial | 79-group snapshot covers real-context raw phase restoration and strict opt-in UTF-8/BOM UTF-16 input decoding; explicit source/execution encoding metadata, Unicode/UCN identifier rules and other encodings remain required |
-| M1.3 | Full literal lexing and values | partial | Bounded target character types/ASCII/simple/octal/hex/multichar values and diagnostics pass; Unicode/UCN, full string/raw/prefixed value semantics, concatenation, floating and user-defined literals remain required |
-| M1.4 | Object-like macros, suppression and rescanning | partial | ASCII strict-profile nesting/inertness/caller-tail/provenance and isolated state pass; Unicode macro identifiers and broader configured dialect/corpus qualification remain |
-| M1.5 | Function-like/variadic macros and operators | partial | Lazy raw/expanded args, #/##/placemarkers/VA_OPT and full 32-label upstream matrix pass; Unicode/complete dialect/configured branch qualification remains, including explicit native unused malformed-raw laziness bound |
+| M1.2 | Encoding and translation phases | partial | 112-group gate covers real-context raw phase restoration, explicit source/execution metadata, Unicode17 scalar/UCN identity and strict opt-in UTF8/BOM UTF16; legacy/native/dialect encoding branches remain required |
+| M1.3 | Full literal lexing and values | partial | Bounded target character types/ASCII/simple/octal/hex/multichar and Unicode/UCN target units/diagnostics pass; full string/raw/prefixed value semantics, concatenation, floating and user-defined literals remain required |
+| M1.4 | Object-like macros, suppression and rescanning | partial | Strict-profile nesting/inertness/caller-tail/provenance and Unicode canonical macro identity with separate effective/raw spelling pass; broader configured dialect/corpus qualification remains |
+| M1.5 | Function-like/variadic macros and operators | partial | Lazy raw/expanded args, #/##/placemarkers/VA_OPT and full 32-label upstream matrix pass; Unicode argument/replacement/paste timing has exact native controls; complete dialect/configured branch qualification remains, including explicit native unused malformed-raw laziness bound |
 | M1.6 | Include processing and search configuration | partial | Configured in-memory/structured opt-in Linux-x64-glibc provider search, separate probe/read caches/errors, guards/once, limits, strict decoding and retained activation origins pass; other hosts/encodings and real headers remain unqualified |
 | M1.7 | Conditional directives and PP arithmetic | partial | Conditional nesting/defined/alternative operators/short circuit, numeric intmax/uintmax64 shifts, witnessed character/bool32 promotions and expansion-driven __has_include header context pass; remaining special operators/dialects still required |
 | M1.8 | Other directives and predefined macros | partial | define/undef/ordinary line/error/once and line/file/cplusplus/date/time/hosted pass, with immutable configured UTC environment; broader predefs/pragma/extensions remain; nonordinary #line anomaly has exact receipts/explicit bound |
@@ -134,7 +134,7 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | M6.2 | Session lifecycle and concurrency | partial | Existing independent/concurrent sessions; repeated real-header/template analyses with live session and discarded old results, WeakReference/retained-memory checks against dependent-signature scope leaks; cancellation safe points and stress/race checks |
 | M6.3 | Recovery and diagnostic quality | partial | Existing bounded recovery and invalid/Unsupported distinctions; managed extra named-reference hazard warnings are deliberate non-parity. Full recovery, diagnostic compatibility/suppression/speculation, cascade limits, source notes and malformed termination remain required |
 | M6.4 | Explicit resource limits | open | Depth/token/include/expansion/template/constexpr work and memory budgets, cancellation/failure outcomes, bounded adversarial fixtures and cleanup; no process crash counted diagnosis |
-| M6.5 | NativeAOT and platform qualification | partial | Current102-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
+| M6.5 | NativeAOT and platform qualification | partial | Current112-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
 | M6.6 | Performance/resource measurements | open | Reproducible startup/throughput/allocations/retained-memory on representative headers/projects with baseline and profile; optimize only under semantic parity tests |
 | M6.7 | Regression/differential corpus qualification | open | Preserve upstream fp/fn/cp/lp/rp case kinds, per-case //options and TEST_NUMBER; parser acceptance qualifies only frontend fp/fn stages, never compile/link/runtime stages. Explicit expected language exit/status+diagnostics, semantic witnesses, inventory/pass/fail/skip and malformed/adversarial provenance |
 | M6.8 | Upstream update procedure | open | Rehash/diff routine+configuration baseline, identify impacted invariants and fixtures, run actual update rehearsal with regression receipts and reviewed correspondence changes |
@@ -150,25 +150,29 @@ future-standard conditional features must be explicitly classified during the
 pinned-surface audit before any EDG-equivalence claim. This note does not remove
 any stated plan requirement or convert an unsupported branch into completion.
 
-Current primary dispatch: the integrated M1 preprocessing snapshot passes final
-60-group managed/AOT validation and independent `review-m1-final.md` acceptance.
-Current remaining-M1 character/predefined/probe/host-input extension has 79/79
-managed/AOT execution and independent bounded acceptance in
-`review-m1-literals-final.md`. Next is
-pinned Unicode17 XID/UCN canonical identity and explicit source/execution encoding,
-then complete string/floating/UDL semantics. Scalar references are now actually
-integrated with95/95 managed/AOT execution and independent bounded acceptance in
-`review-references-final.md`. Unicode remains separately authored and unintegrated; no Unicode pass
-is inferred. Remaining M1/M2/M3/general
-M4 and M5/M6 rows are burned
-down without stopping at checkpoint commits. Dependencies/order may change based
-on real-header failures, but rows remain visible until validated.
+Current accepted integration is112/112 JIT and Linux-x64 NativeAOT groups,
+111-file matching held maps, warning-free Release and independent
+`review-unicode-integration-final.md`. Unicode17 scalar/UCN identity, source
+metadata and character units coexist with accepted references/logical/storage;
+U1/U2 remain closed. Six exact native fixtures match4 accept0/2 reject2. Earlier
+60/79/95/102 checkpoints retain their separately bounded historical evidence.
+The next actual primary assignment is full string/raw/prefixed target units and
+adjacent concatenation with real array/type/storage dependencies. Independent
+scalar assignment/control flow is being authored in its separate worktree.
+All remaining M1/M2/M3/general M4 and M5/M6 rows, including floating/UDL, classes,
+general templates, realistic headers and product qualification, remain required.
+No Unsupported row or unavailable platform is counted complete; execution
+continues automatically after each verified checkpoint.
 
-Current storage checkpoint:102/102 JIT/AOT,96-file matching held maps,21 exact
-native runs (12 accept0/9 reject2), independent `review-reference-constexpr-final.md`.
-RCE-01 is disproved; RCE-02–05 are closed. Unicode U1/U2 repairs are held in the
-isolated checkout and undergoing fresh qualification; they are not yet main support.
-Next actual primary assignment is additive Unicode integration preserving accepted
-reference/cache/logical/storage code, followed by combined regression qualification.
-All remaining rows above, including full strings/floating/UDL, classes, general
-templates/control flow, realistic headers and M6 product/platform work, stay required.
+Active independent scalar control-flow assignment (isolated accepted44640803b):
+
+| Branch task | Required acceptance | Current state |
+| --- | --- | --- |
+| Scalar stores and assignment | Modifiable lvalue/type/const checks; real local/valueparam/alias cell writes; correct category/order; forbidden global/unknown/expired writes fail in required contexts | isolated authoring |
+| if/else | Both branches semantically checked; selected branch executes; scoped locals and return cleanup; source graph/value/native witness | isolated authoring |
+| while/break/continue | Explicit loop work and jump targets, nested block/full-expression cleanup, finite/infinite limits and reuse/failure controls | isolated authoring |
+| Remaining statement/expression breadth | do/for/range-for/switch/labels/goto, assignment compounds/increments/comma/conditional and unsupported forms split into concrete follow-ups; no unsupported branch counted done | required |
+
+This semantic module must merge additively with Unicode identity and receive actual
+combined held-snapshot validation plus independent review. Isolated authoring is
+not support or a completed inventory row.

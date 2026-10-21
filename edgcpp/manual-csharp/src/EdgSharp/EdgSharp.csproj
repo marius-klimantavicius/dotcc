@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="EdgSharp.Tests" />
+    <EmbeddedResource Include="../../data/unicode/17.0.0/DerivedCoreProperties.txt" LogicalName="EdgSharp.Unicode17.DerivedCoreProperties.txt" />
   </ItemGroup>
 </Project>

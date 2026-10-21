@@ -57,7 +57,7 @@ public sealed class Scope
         Children = children.AsReadOnly();
     }
     /// <summary>Inspects the retained ordered binding, without activating a scope or instantiating anything.</summary>
-    public NameBinding? FindLocalBinding(string name) => bindings.GetValueOrDefault(name);
+    public NameBinding? FindLocalBinding(string name) => bindings.GetValueOrDefault(UnicodeIdentifiers.Identity(name));
     /// <summary>The nearest binding hides every outer binding with the same name.</summary>
     public NameBinding? LookupBinding(string name) => FindLocalBinding(name) ?? Parent?.LookupBinding(name);
     /// <summary>Returns only a sole local entity; null for an absent or overloaded name. Use FindLocalBinding to distinguish them.</summary>
@@ -86,6 +86,7 @@ public sealed class Scope
 public sealed class Symbol
 {
     private readonly List<Declaration> declarations = [];
+    /// <summary>Canonical scalar identifier identity; original spelling is retained in each declaration's NameRange.</summary>
     public string Name { get; }
     public SymbolKind Kind { get; }
     public SemanticType Type { get; }

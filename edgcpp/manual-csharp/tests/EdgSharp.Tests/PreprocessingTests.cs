@@ -59,7 +59,8 @@ internal static partial class Tests
         using var session = new CompilationSession();
         Check(!session.Preprocess("#if 1/0\nx\n#endif").IsSuccess);
         Check(!session.Preprocess("#if 1 || (\nx\n#endif").IsSuccess); // Dead operands must still have valid syntax.
-        foreach (string source in new[] { "#if '\\u0041'\nx\n#endif", "#if __has_cpp_attribute(nodiscard)\nx\n#endif" })
+        Equal("yes", Pp("#if '\\u0041'==65\nyes\n#endif"));
+        foreach (string source in new[] { "#if __has_cpp_attribute(nodiscard)\nx\n#endif" })
             Check(session.Preprocess(source).Diagnostics.Any(d => d.Class == DiagnosticClass.UnsupportedFeature));
         Check(!session.Preprocess("#warning invalid in strict20").IsSuccess);
     }

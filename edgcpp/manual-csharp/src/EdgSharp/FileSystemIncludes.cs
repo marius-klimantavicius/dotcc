@@ -64,14 +64,16 @@ public sealed class IncludeReadResult
     public string? CanonicalPath { get; }
     /// <summary>Immutable decoded contents, non-null only on Found, including an empty file.</summary>
     public string? Text { get; }
+    /// <summary>Retained decoding and source interpretation provenance, non-null only on Found. Legacy string providers explicitly mean managed Unicode text.</summary>
+    public SourceEncodingInfo? Encoding { get; }
     public IncludeInputFailure? Failure { get; }
-    private IncludeReadResult(IncludeInputStatus status, string? path, string? text, IncludeInputFailure? failure)
-        => (Status, CanonicalPath, Text, Failure) = (status, path, text, failure);
-    public static IncludeReadResult Found(string path, string text)
+    private IncludeReadResult(IncludeInputStatus status, string? path, string? text, IncludeInputFailure? failure, SourceEncodingInfo? encoding = null)
+        => (Status, CanonicalPath, Text, Failure, Encoding) = (status, path, text, failure, encoding);
+    public static IncludeReadResult Found(string path, string text, SourceEncodingInfo? encoding = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(path);
         ArgumentNullException.ThrowIfNull(text);
-        return new(IncludeInputStatus.Found, path, text, null);
+        return new(IncludeInputStatus.Found, path, text, null, encoding ?? new SourceEncodingInfo());
     }
     public static IncludeReadResult Missing(string path)
     {
@@ -313,21 +315,22 @@ public sealed class FileSystemIncludeProvider : IStructuredIncludeProvider
              bytes[3] is 0x38 or 0x39 or 0x2b or 0x2f))
             return ReadFailure(canonical, IncludeFailureKind.UnsupportedEncoding, "UTF-32 and UTF-7 input encodings are not supported.");
         Encoding encoding;
+        OriginalSourceEncoding original;
         int bom;
         if (bytes.StartsWith((ReadOnlySpan<byte>)[0xef, 0xbb, 0xbf]))
-            (encoding, bom) = (new UTF8Encoding(false, true), 3);
+            (encoding, bom, original) = (new UTF8Encoding(false, true), 3, OriginalSourceEncoding.Utf8);
         else if (bytes.StartsWith((ReadOnlySpan<byte>)[0xff, 0xfe]))
-            (encoding, bom) = (new UnicodeEncoding(false, false, true), 2);
+            (encoding, bom, original) = (new UnicodeEncoding(false, false, true), 2, OriginalSourceEncoding.Utf16LittleEndian);
         else if (bytes.StartsWith((ReadOnlySpan<byte>)[0xfe, 0xff]))
-            (encoding, bom) = (new UnicodeEncoding(true, false, true), 2);
-        else (encoding, bom) = (new UTF8Encoding(false, true), 0);
+            (encoding, bom, original) = (new UnicodeEncoding(true, false, true), 2, OriginalSourceEncoding.Utf16BigEndian);
+        else (encoding, bom, original) = (new UTF8Encoding(false, true), 0, OriginalSourceEncoding.Utf8);
         try
         {
             ReadOnlySpan<byte> content = bytes[bom..];
             // Strict count validates all bytes and bounds the result before the string allocation.
             if (encoding.GetCharCount(content) > MaxInputCharacters)
                 return ReadFailure(canonical, IncludeFailureKind.LimitExceeded, "Include input exceeds the configured UTF-16 character limit.");
-            return IncludeReadResult.Found(canonical, encoding.GetString(content));
+            return IncludeReadResult.Found(canonical, encoding.GetString(content), new SourceEncodingInfo(original, bom != 0));
         }
         catch (DecoderFallbackException)
         {

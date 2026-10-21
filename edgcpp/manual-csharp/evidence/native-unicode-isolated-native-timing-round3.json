@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-unicode-native-timing.cpp",
+  "source_sha256": "c0dc9c8a08d1b6b0c72335b91ce434be6fbd16a880626ddf3fa1a849919c5c0a",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-unicode-native-timing.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-\n          unicode-native-timing.cpp\", line 15: error: a universal character\n          name cannot designate a surrogate code point\n  int argument=DROP(\\uD800);\n                    ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-\n          unicode-native-timing.cpp\", line 16: error: a universal character\n          name cannot designate a surrogate code point\n  const char* text=STR(\\uD800);\n                       ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-\n          unicode-native-timing.cpp\", line 16: error: a universal character\n          name cannot designate a surrogate code point\n  const char* text=STR(\\uD800);\n                   ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-\n          unicode-native-timing.cpp\", line 16: error: character cannot be\n          represented in the specified character type\n  const char* text=STR(\\uD800);\n                   ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-\n          unicode-native-timing.cpp\", line 19: error: a universal character\n          name cannot designate a surrogate code point\n  #elif \\uD800\n        ^\n\n5 errors detected in the compilation of \"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/fixtures/m1-unicode-native-timing.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

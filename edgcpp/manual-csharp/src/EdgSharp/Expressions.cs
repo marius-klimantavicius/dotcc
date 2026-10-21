@@ -99,11 +99,11 @@ internal sealed partial class Parser
         if (token.Kind == TokenKind.Identifier)
         {
             Take();
-            Symbol[]? symbols = VisibleSymbols(token.Spelling);
+            Symbol[]? symbols = VisibleSymbols(token.IdentifierText);
             if (symbols == null)
             {
                 if (prototypeAnalysis && Is(TokenKind.LeftParen))
-                    return new UnresolvedFunctionExpression(token.Spelling, types.Dependent, token.Range);
+                    return new UnresolvedFunctionExpression(token.IdentifierText, types.Dependent, token.Range);
                 Fail("SEM021", $"Unresolved identifier '{token.Spelling}'.", token.Range);
                 return new ErrorExpression(types.Error, token.Range);
             }

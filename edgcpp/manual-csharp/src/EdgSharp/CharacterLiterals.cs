@@ -43,11 +43,14 @@ internal static class CharacterLiteralDecoder
         }
         if (close + 1 != spelling.Length) { Unsupported("User-defined character literal suffixes are not implemented."); return null; }
         var units = new List<uint>();
+        bool multibyteEntity = false;
+        Span<uint> utf8 = stackalloc uint[4];
         BigInteger mask = (BigInteger.One << bits) - 1;
         for (int index = quote + 1; index < close; ++index)
         {
             char c = spelling[index];
             BigInteger unit;
+            bool scalarEntity = false;
             if (c == '\\')
             {
                 if (++index == close) { Invalid("Incomplete character escape."); return null; }
@@ -57,7 +60,18 @@ internal static class CharacterLiteralDecoder
                 int simple = escapes.IndexOf(c);
                 if (simple >= 0) unit = values[simple];
                 else if (c is 'u' or 'U')
-                { Unsupported("Universal character names in character literals are not implemented yet."); return null; }
+                {
+                    if (!UnicodeIdentifiers.ReadUcn(spelling, index - 1, out int scalar, out int length, out UnicodeIdentifiers.Problem? problem))
+                    {
+                        diagnostics.Add(problem!.Value.Code, problem.Value.Message, range,
+                            problem.Value.Unsupported ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
+                        return null;
+                    }
+                    index += length - 2;
+                    unit = scalar; scalarEntity = true;
+                }
+                else if (c == 'N' && index + 1 < close && spelling[index + 1] == '{')
+                { Unsupported("Named Unicode escapes require an unimplemented language profile."); return null; }
                 else if (c == 'x' || c is >= '0' and <= '7')
                 {
                     bool hexadecimal = c == 'x';
@@ -83,13 +97,34 @@ internal static class CharacterLiteralDecoder
             }
             else
             {
-                if (c > 127) { Unsupported("Source character encoding in non-ASCII character literals is not implemented yet."); return null; }
-                unit = c;
+                if (!UnicodeIdentifiers.ReadScalar(spelling, index, out int scalar, out int length))
+                { Invalid("A character literal contains an unpaired UTF-16 surrogate."); return null; }
+                unit = scalar; scalarEntity = true; index += length - 1;
+            }
+            if (scalarEntity && encoding is LiteralEncoding.Ordinary or LiteralEncoding.Utf8)
+            {
+                int count = UnicodeIdentifiers.EncodeUtf8((int)unit, utf8);
+                multibyteEntity |= count > 1;
+                for (int i = 0; i < count; ++i)
+                {
+                    if (utf8[i] > mask) { Invalid("A UTF-8 execution byte is outside the target character width."); return null; }
+                    units.Add(utf8[i]);
+                }
+                continue;
+            }
+            if (scalarEntity && encoding == LiteralEncoding.Utf16 && unit > 0xffff)
+            {
+                int supplementary = (int)unit - 0x10000;
+                units.Add((uint)(0xd800 | supplementary >> 10));
+                units.Add((uint)(0xdc00 | supplementary & 1023));
+                continue;
             }
             if (unit < 0 || unit > mask) { Invalid("Character escape is outside the target code-unit range."); return null; }
             units.Add((uint)unit);
         }
         if (units.Count == 0) { Invalid("A character literal cannot be empty."); return null; }
+        if (encoding == LiteralEncoding.Ordinary && multibyteEntity)
+        { Invalid("An ordinary character literal cannot contain a scalar requiring multiple UTF-8 execution bytes in the strict profile."); return null; }
         if (units.Count > 1 && encoding != LiteralEncoding.Ordinary)
         { Invalid("A prefixed character literal must contain exactly one code unit."); return null; }
         if (units.Count > target.IntBits / target.CharBits)

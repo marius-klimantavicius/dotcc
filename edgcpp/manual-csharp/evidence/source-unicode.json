@@ -1,0 +1,61 @@
+{
+  "purpose": "Consulted Unicode source provenance only; no whole-file implementation claim",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875"
+    },
+    {
+      "path": "edgcpp/upstream/src/literals.c",
+      "sha256": "de5276f87f073a67bb4b7c6a4cd152a66eab0a155fda84f0d991e3d296213d95"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.c",
+      "sha256": "7089dc53eb8fca9f3c55ed299850914d39a8fdd533937e8809d210a5f6459f2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.h",
+      "sha256": "a8c9c5e79dbdd6be8c82f360c58d8681f91015e5e14e61039076b7f8c3b9c2c1"
+    },
+    {
+      "path": "edgcpp/upstream/src/targ_def.h",
+      "sha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b"
+    },
+    {
+      "path": "edgcpp/upstream/src/cmd_line.c",
+      "sha256": "77ce3949dffb0fd85a8bca85a33ae590fc2c5b7b7f200b47ff672c35cca8bded"
+    },
+    {
+      "path": "edgcpp/upstream/src/macro.c",
+      "sha256": "3cd96e32ba6676fb66b17900922abdc9a33caab5aade78f2046dba0490d996a3"
+    },
+    {
+      "path": "edgcpp/upstream/src/preproc.c",
+      "sha256": "e0927cba0b5ba139152d69063a6ec73114e103be957effd90eec4616438a65af"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.h",
+      "sha256": "805ade6649e8b2e0d2d11c2eaf8364904e51d54bbaa3701d2011f8609e74e8b3"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines.h",
+      "sha256": "4112aa9ba2c076dd9b83877bdfae6f107bd12952b6a12776baa6942ad114f18e"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines_linux.h",
+      "sha256": "64f9c35401c9ab612443d85edd74574881d074a9036cb863cf7fe12c7a3b1948"
+    },
+    {
+      "path": "edgcpp/upstream/src/error_msg.txt",
+      "sha256": "2a138f937994d38e4ec4bed88ceffa7817199752e33aa53a0a58a05153fbb798"
+    },
+    {
+      "path": "edgcpp/upstream/doc/source/lex_pp.rst",
+      "sha256": "fdeea9d1bba1c5f3f89d5fde9596070aa0d5c9aa22927a62756049e29eceb06b"
+    },
+    {
+      "path": "edgcpp/upstream/doc/source/ext_intf.rst",
+      "sha256": "1617b34a82eb53c671ed2b894df8cb793a641c6c75abebc056338d727f104d98"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-invalid-read.cpp",
+  "source_sha256": "efed01fe6428b37ec5553d733c2d2ccc6b957237de402df877445588ba788996",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-gate.h",
+      "sha256": "884db1427c656ab31899bcc8eb4a532064383dfeb926bbd0589110210d089922"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-invalid-read.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-invalid-\n          read.cpp\", line 4: error: expression must have a constant value\n  static_assert(false || \u03ba\u03cc\u03c3\u03bc\u03bf\u03c2==233);\n                ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-invalid-\n          read.cpp\", line 4: note: the value of variable\n          \"\\u03ba\\u03cc\\u03c3\\u03bc\\u03bf\\u03c2\" (declared at line 3) cannot be\n          used as a constant\n  static_assert(false || \u03ba\u03cc\u03c3\u03bc\u03bf\u03c2==233);\n                         ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-unicode-storage-invalid-read.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

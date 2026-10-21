@@ -161,7 +161,7 @@ internal sealed partial class Parser
                 if (Is(TokenKind.Ellipsis)) UnsupportedAndThrow("Template parameter packs are not implemented.");
                 if (!Is(TokenKind.Identifier)) UnsupportedAndThrow("Unnamed template type parameters are not implemented.");
                 Token name = Expect(TokenKind.Identifier, "a template type parameter name");
-                var type = new TemplateParameterType(name.Spelling, typeParameters.Count, templateScope);
+                var type = new TemplateParameterType(name.IdentifierText, typeParameters.Count, templateScope);
                 Symbol symbol = NewLocalSymbol(name, SymbolKind.TemplateParameter, type);
                 var parameter = new TemplateParameterDeclaration(symbol, type, SourceRange.Cover(parameterStart.Range, name.Range), name.Range);
                 state.AddDeclaration(parameter);
@@ -196,9 +196,9 @@ internal sealed partial class Parser
             body = state.Tokens.Retain(bodyStart, state.Tokens.Index - bodyStart);
         }
         finally { state.PopScope(); }
-        if (typeParameters.Any(parameter => parameter.Name == identifier.Spelling))
+        if (typeParameters.Any(parameter => parameter.Name == identifier.IdentifierText))
             Fail("TMP001", "A function template name cannot redeclare its own template parameter.", identifier.Range);
-        if (identifier.Spelling == "main") Unsupported("A global function template named main is outside the implemented main rules.", identifier.Range);
+        if (identifier.IdentifierText == "main") Unsupported("A global function template named main is outside the implemented main rules.", identifier.Range);
         Symbol entity = NewLocalSymbol(identifier, SymbolKind.FunctionTemplate, functionType);
         var pattern = new FunctionDeclaration(entity, functionType, SourceRange.Cover(start.Range, body.Tokens[^2].Range), identifier.Range, parameters, parameterScope)
             { IsConstexpr = isConstexpr };

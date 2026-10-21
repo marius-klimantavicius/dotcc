@@ -17,6 +17,7 @@ internal sealed partial class Preprocessor
     private bool IsDefined(string name) => macros.ContainsKey(name) || name is "__LINE__" or "__FILE__" or "__has_include";
     private IEnumerable<PpToken> ReadActive(SourceFile physical, IncludeFrame? include, int depth)
     {
+        if (!physical.Encoding.Validate(physical, diagnostics)) yield break;
         var lexer = new Lexer(LogicalInput.Normalize(physical), diagnostics, preprocessing: true);
         using IEnumerator<PpToken> raw = Tokenize(lexer).GetEnumerator();
         bool available = raw.MoveNext();
@@ -25,11 +26,13 @@ internal sealed partial class Preprocessor
         int lineBias = 0;
         PpToken Context(PpToken token) => token.Copy(origin: token.Origin.WithContext(
             new PresumedPosition(presumedName, token.Origin.Presumed.Line + lineBias, token.Origin.Presumed.Column), include));
-        IEnumerable<PpToken> LineOperands(int line)
+        IEnumerable<PpToken> LineOperands(int line, bool validateIdentifiers = false)
         {
             while (available && raw.Current.LogicalLine == line)
             {
-                yield return Context(raw.Current);
+                PpToken operand = Context(raw.Current);
+                if (validateIdentifiers) DiagnoseIdentifier(operand);
+                yield return operand;
                 available = raw.MoveNext();
             }
         }
@@ -52,21 +55,25 @@ internal sealed partial class Preprocessor
                     Tick(origin);
                     if (name.Text == "if")
                     {
-                        bool value = active && EvaluateCondition(LineOperands(line), origin, lexer.RequestHeaderName);
-                        foreach (PpToken unused in LineOperands(line)) { }
+                        bool value = active && EvaluateCondition(LineOperands(line, active), origin, lexer.RequestHeaderName);
+                        foreach (PpToken unused in LineOperands(line, active)) { }
                         conditionals.Add(new(active, value, origin));
                     }
                     else if (conditionals.Count == 0)
                     {
                         Error("PP020", "Conditional directive has no matching #if in this physical file.", origin);
-                        foreach (PpToken unused in LineOperands(line)) { }
+                        foreach (PpToken unused in LineOperands(line, active)) { }
                     }
                     else
                     {
                         Conditional conditional = conditionals[^1];
                         if (conditional.ElseSeen) Error("PP022", "Conditional branch follows #else.", origin);
-                        conditional.Active = conditional.ParentActive && !conditional.Taken && EvaluateCondition(LineOperands(line), origin, lexer.RequestHeaderName);
-                        foreach (PpToken unused in LineOperands(line)) { }
+                        // The first #elif leaving a taken active group is
+                        // initially scanned while diagnostics are enabled, even
+                        // though its expression is not subsequently evaluated.
+                        bool scanActive = active || conditional.ParentActive && !conditional.Taken;
+                        conditional.Active = conditional.ParentActive && !conditional.Taken && EvaluateCondition(LineOperands(line, scanActive), origin, lexer.RequestHeaderName);
+                        foreach (PpToken unused in LineOperands(line, scanActive)) { }
                         conditional.Taken |= conditional.Active;
                     }
                     continue;
@@ -78,7 +85,7 @@ internal sealed partial class Preprocessor
             PpToken[] tokens = collected.Select(Context).ToArray();
             if (tokens[0].Kind != TokenKind.Hash || !tokens[0].StartsLine)
             {
-                if (active) foreach (PpToken token in tokens) yield return token;
+                if (active) foreach (PpToken token in tokens) { DiagnoseIdentifier(token); yield return token; }
                 continue;
             }
             transformed = true;
@@ -117,14 +124,15 @@ internal sealed partial class Preprocessor
                 continue;
             }
             if (!active) continue;
+            foreach (PpToken token in tokens) DiagnoseIdentifier(token);
             switch (directive)
             {
                 case "define": Define(operands, tokens[0].Origin); break;
                 case "undef":
                     if (operands.Length != 1 || operands[0].Kind != TokenKind.Identifier)
                         Error("PP024", "#undef requires one macro identifier.", tokens[0].Origin);
-                    else if (ReservedMacro(operands[0].Text)) Error("PP025", "This predefined name cannot be undefined.", operands[0].Origin);
-                    else macros.Remove(operands[0].Text);
+                    else if (ReservedMacro(operands[0].IdentifierText)) Error("PP025", "This predefined name cannot be undefined.", operands[0].Origin);
+                    else { DiagnoseIdentifier(operands[0]); macros.Remove(operands[0].IdentifierText); }
                     break;
                 case "include":
                     PpToken[] header = Expand(operands, 0, headerOperand: true).ToArray();
@@ -187,12 +195,12 @@ internal sealed partial class Preprocessor
                 { ReportIncludeFailure(read.Failure!, origin); failed = true; return null; }
                 string canonical = read.CanonicalPath!;
                 if (files.TryGetValue(canonical, out retained)) { files.TryAdd(path, retained); return retained; }
-                var source = new SourceFile(canonical, read.Text!);
+                var source = new SourceFile(canonical, read.Text!, encoding: read.Encoding);
                 files.Add(canonical, source); files.TryAdd(path, source); physicalSources.Add(source); return source;
             }
             if (ReadIncludeText(path) is string text)
             {
-                var source = new SourceFile(path, text);
+                var source = new SourceFile(path, text, encoding: SourceEncodingInfo.Managed(options.SourceInput));
                 files.Add(path, source); physicalSources.Add(source); return source;
             }
         }
@@ -295,14 +303,16 @@ internal sealed partial class Preprocessor
     {
         if (operands.Length != 1 || operands[0].Kind != TokenKind.Identifier)
         { Error("PP035", "This conditional directive requires one identifier.", origin); return false; }
-        bool defined = IsDefined(operands[0].Text);
+        DiagnoseIdentifier(operands[0]);
+        bool defined = IsDefined(operands[0].IdentifierText);
         return negate ? !defined : defined;
     }
     private void Define(PpToken[] tokens, TokenOrigin origin)
     {
         if (tokens.Length == 0 || tokens[0].Kind != TokenKind.Identifier)
         { Error("PP036", "#define requires a macro identifier.", origin); return; }
-        string name = tokens[0].Text;
+        DiagnoseIdentifier(tokens[0]);
+        string name = tokens[0].IdentifierText;
         if (ReservedMacro(name)) { Error("PP037", "This predefined name cannot be redefined.", tokens[0].Origin); return; }
         bool function = tokens.Length > 1 && tokens[1].Kind == TokenKind.LeftParen && !tokens[1].SpaceBefore;
         bool variadic = false;
@@ -316,10 +326,11 @@ internal sealed partial class Preprocessor
                 {
                     if (tokens[position].Kind == TokenKind.Ellipsis)
                     { variadic = true; parameters.Add("__VA_ARGS__"); ++position; break; }
-                    if (tokens[position].Kind != TokenKind.Identifier || tokens[position].Text is "__VA_ARGS__" or "__VA_OPT__")
+                    if (tokens[position].Kind != TokenKind.Identifier || tokens[position].IdentifierText is "__VA_ARGS__" or "__VA_OPT__")
                     { Error("PP038", "Expected a macro parameter name.", tokens[position].Origin); return; }
-                    if (parameters.Contains(tokens[position].Text)) Error("PP039", "Duplicate macro parameter name.", tokens[position].Origin);
-                    parameters.Add(tokens[position++].Text);
+                    DiagnoseIdentifier(tokens[position]);
+                    if (parameters.Contains(tokens[position].IdentifierText)) Error("PP039", "Duplicate macro parameter name.", tokens[position].Origin);
+                    parameters.Add(tokens[position++].IdentifierText);
                     if (position >= tokens.Length || tokens[position].Kind != TokenKind.Comma) break;
                     ++position;
                 }
@@ -335,18 +346,19 @@ internal sealed partial class Preprocessor
         for (int i = 0; i < replacement.Length; ++i)
         {
             PpToken part = replacement[i];
-            if (!variadic && part.Text is "__VA_ARGS__" or "__VA_OPT__") Error("PP042", "Variadic macro operator outside a variadic macro.", part.Origin);
+            DiagnoseIdentifier(part);
+            if (!variadic && part.IdentifierText is "__VA_ARGS__" or "__VA_OPT__") Error("PP042", "Variadic macro operator outside a variadic macro.", part.Origin);
             if (function && part.Kind == TokenKind.Hash && (i + 1 == replacement.Length ||
-                !parameters.Contains(replacement[i + 1].Text) && replacement[i + 1].Text != "__VA_OPT__"))
+                !parameters.Contains(replacement[i + 1].IdentifierText) && replacement[i + 1].IdentifierText != "__VA_OPT__"))
                 Error("PP043", "# must precede a macro parameter or __VA_OPT__.", part.Origin);
-            if (part.Text == "__VA_OPT__")
+            if (part.IdentifierText == "__VA_OPT__")
             {
                 if (i + 1 >= replacement.Length || replacement[i + 1].Kind != TokenKind.LeftParen)
                 { Error("PP045", "__VA_OPT__ requires a parenthesized operand.", part.Origin); continue; }
                 int nesting = 1, end = i + 2;
                 for (; end < replacement.Length; ++end)
                 {
-                    if (replacement[end].Text == "__VA_OPT__") Error("PP046", "__VA_OPT__ cannot be nested.", replacement[end].Origin);
+                    if (replacement[end].IdentifierText == "__VA_OPT__") Error("PP046", "__VA_OPT__ cannot be nested.", replacement[end].Origin);
                     if (replacement[end].Kind == TokenKind.LeftParen) ++nesting;
                     if (replacement[end].Kind == TokenKind.RightParen && --nesting == 0) break;
                 }
@@ -356,7 +368,9 @@ internal sealed partial class Preprocessor
             }
         }
         var definition = new MacroDefinition(name, tokens[0].Origin, function, variadic, parameters.ToArray(),
-            replacement.Select(token => token.Copy(pasteOperator: token.Kind == TokenKind.HashHash)).ToArray());
+            replacement.Select(token => token.Copy(pasteOperator: token.Kind == TokenKind.HashHash,
+                effectiveSpelling: token.Kind == TokenKind.Identifier && !parameters.Contains(token.IdentifierText)
+                    ? UnicodeIdentifiers.CanonicalUcnSpelling(token.Text) : null)).ToArray());
         if (macros.TryGetValue(name, out MacroDefinition? previous))
         {
             if (!EquivalentMacro(previous, definition)) Error("PP044", "Conflicting macro redefinition.", tokens[0].Origin);
@@ -371,8 +385,8 @@ internal sealed partial class Preprocessor
         for (int i = 0; i < first.Replacement.Length; ++i)
         {
             PpToken left = first.Replacement[i], right = second.Replacement[i];
-            int l = first.Parameters.IndexOf(left.Text), r = second.Parameters.IndexOf(right.Text);
-            if ((l >= 0 || r >= 0) ? l != r : left.Text != right.Text) return false;
+            int l = first.Parameters.IndexOf(left.IdentifierText), r = second.Parameters.IndexOf(right.IdentifierText);
+            if (left.Kind != right.Kind || ((l >= 0 || r >= 0) ? l != r : left.IdentifierText != right.IdentifierText)) return false;
             if (i != 0 && left.SpaceBefore != right.SpaceBefore) return false;
         }
         return true;

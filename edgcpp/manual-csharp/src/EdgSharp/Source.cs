@@ -5,6 +5,66 @@ using System.Collections.ObjectModel;
 namespace EdgSharp;
 
 public enum SourceFileKind { Physical, LogicalInput, PreprocessedPresentation, SynthesizedToken, Configuration }
+public enum OriginalSourceEncoding { ManagedUtf16, Utf8, Utf16LittleEndian, Utf16BigEndian }
+public enum UnicodeSourcePolicy { Unicode, LegacyNonUnicode, NativeMultibyte }
+public enum ExecutionCharacterEncoding { Utf8, LegacyNative }
+
+/// <summary>Immutable interpretation of decoded source scalars, separate from the original file encoding and target character widths.</summary>
+public sealed class SourceInputOptions
+{
+    public UnicodeSourcePolicy UnicodePolicy { get; }
+    /// <summary>The implemented ordinary-character execution encoding; string-literal value conversion remains unsupported.</summary>
+    public ExecutionCharacterEncoding ExecutionEncoding { get; }
+    public SourceInputOptions(UnicodeSourcePolicy unicodePolicy = UnicodeSourcePolicy.Unicode,
+        ExecutionCharacterEncoding executionEncoding = ExecutionCharacterEncoding.Utf8)
+    {
+        if (!Enum.IsDefined(unicodePolicy)) throw new ArgumentOutOfRangeException(nameof(unicodePolicy));
+        if (!Enum.IsDefined(executionEncoding)) throw new ArgumentOutOfRangeException(nameof(executionEncoding));
+        (UnicodePolicy, ExecutionEncoding) = (unicodePolicy, executionEncoding);
+    }
+}
+
+/// <summary>Retained per-source provenance. Managed strings have no original byte encoding or byte-order mark; their UTF-16 storage is decoded Unicode source.</summary>
+public sealed class SourceEncodingInfo
+{
+    public OriginalSourceEncoding OriginalEncoding { get; }
+    public bool HasByteOrderMark { get; }
+    public UnicodeSourcePolicy UnicodePolicy { get; }
+    /// <summary>Configured ordinary-character execution policy, separate from original input encoding. This does not promise string-literal value support.</summary>
+    public ExecutionCharacterEncoding ExecutionEncoding { get; }
+    public SourceEncodingInfo(OriginalSourceEncoding originalEncoding = OriginalSourceEncoding.ManagedUtf16,
+        bool hasByteOrderMark = false, UnicodeSourcePolicy unicodePolicy = UnicodeSourcePolicy.Unicode,
+        ExecutionCharacterEncoding executionEncoding = ExecutionCharacterEncoding.Utf8)
+    {
+        if (!Enum.IsDefined(originalEncoding)) throw new ArgumentOutOfRangeException(nameof(originalEncoding));
+        if (!Enum.IsDefined(unicodePolicy)) throw new ArgumentOutOfRangeException(nameof(unicodePolicy));
+        if (!Enum.IsDefined(executionEncoding)) throw new ArgumentOutOfRangeException(nameof(executionEncoding));
+        if (originalEncoding == OriginalSourceEncoding.ManagedUtf16 && hasByteOrderMark)
+            throw new ArgumentException("Managed strings do not carry a byte-order mark.", nameof(hasByteOrderMark));
+        (OriginalEncoding, HasByteOrderMark, UnicodePolicy, ExecutionEncoding) = (originalEncoding, hasByteOrderMark, unicodePolicy, executionEncoding);
+    }
+    internal static SourceEncodingInfo Managed(SourceInputOptions options)
+        => new(unicodePolicy: options.UnicodePolicy, executionEncoding: options.ExecutionEncoding);
+    internal bool Validate(SourceFile source, DiagnosticBag diagnostics)
+    {
+        if (UnicodePolicy != UnicodeSourcePolicy.Unicode || ExecutionEncoding != ExecutionCharacterEncoding.Utf8)
+        {
+            diagnostics.Add("UNS030", "Legacy non-Unicode/native multibyte source or execution encoding is not implemented.", source.Range(0, 0), DiagnosticClass.UnsupportedFeature);
+            return false;
+        }
+        bool valid = true;
+        for (int offset = 0; offset < source.Text.Length;)
+        {
+            if (!UnicodeIdentifiers.ReadScalar(source.Text, offset, out _, out int length))
+            {
+                diagnostics.Add("SRC001", "Managed source text contains an unpaired UTF-16 surrogate.", source.Range(offset, 1));
+                valid = false;
+            }
+            offset += Math.Max(1, length);
+        }
+        return valid;
+    }
+}
 public readonly record struct PresumedPosition(string FileName, int Line, int Column);
 public enum TokenOriginKind { Direct, MacroReplacement, MacroArgument, TokenPaste, Stringization, Predefined }
 
@@ -109,11 +169,14 @@ public sealed class SourceFile
     public string Name { get; }
     public string Text { get; }
     public SourceFileKind Kind { get; }
-    internal SourceFile(string name, string text, SourceFileKind kind = SourceFileKind.Physical, SourceMapSegment[]? origins = null)
+    public SourceEncodingInfo Encoding { get; }
+    internal SourceFile(string name, string text, SourceFileKind kind = SourceFileKind.Physical, SourceMapSegment[]? origins = null,
+        SourceEncodingInfo? encoding = null)
     {
         Name = name;
         Text = text;
         Kind = kind;
+        Encoding = encoding ?? new SourceEncodingInfo();
         originMap = origins == null ? [] : (SourceMapSegment[])origins.Clone();
         var starts = new List<int> { 0 };
         for (int i = 0; i < text.Length; ++i)

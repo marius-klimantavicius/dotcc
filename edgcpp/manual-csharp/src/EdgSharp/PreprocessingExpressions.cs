@@ -18,12 +18,13 @@ internal sealed partial class Preprocessor
             while (input.MoveNext())
             {
                 PpToken token = input.Current;
-                if (token.Text != "defined") { yield return token; continue; }
+                if (token.IdentifierText != "defined") { yield return token; continue; }
                 if (!input.MoveNext()) { Error("PP050", "defined requires an identifier operand.", token.Origin); yield break; }
                 bool parenthesized = input.Current.Kind == TokenKind.LeftParen;
                 if (parenthesized && !input.MoveNext()) { Error("PP050", "defined requires an identifier operand.", token.Origin); yield break; }
                 if (input.Current.Kind != TokenKind.Identifier) { Error("PP050", "defined requires an identifier operand.", token.Origin); yield break; }
-                string name = input.Current.Text;
+                DiagnoseIdentifier(input.Current);
+                string name = input.Current.IdentifierText;
                 if (parenthesized && (!input.MoveNext() || input.Current.Kind != TokenKind.RightParen))
                 { Error("PP051", "Missing ')' after defined operand.", token.Origin); yield break; }
                 yield return Synthesized(IsDefined(name) ? "1" : "0", TokenKind.IntegerLiteral, token.Origin);
@@ -37,10 +38,11 @@ internal sealed partial class Preprocessor
         {
             PpToken token = expanded[i];
             if (token.Kind != TokenKind.Identifier) continue;
-            TokenKind alternative = Lexer.OperatorOrIdentifier(token.Text);
+            DiagnoseIdentifier(token);
+            TokenKind alternative = Lexer.OperatorOrIdentifier(token.IdentifierText);
             if (alternative is not (TokenKind.Identifier or TokenKind.Keyword))
             { expanded[i] = Synthesized(token.Text, alternative, token.Origin); continue; }
-            if (token.Text is "defined" or "__has_cpp_attribute" or "__has_embed" or "_Pragma")
+            if (token.IdentifierText is "defined" or "__has_cpp_attribute" or "__has_embed" or "_Pragma")
             {
                 Error("PP052", "This preprocessing operator is not implemented in controlling expressions.", token.Origin, DiagnosticClass.UnsupportedFeature);
                 return false;

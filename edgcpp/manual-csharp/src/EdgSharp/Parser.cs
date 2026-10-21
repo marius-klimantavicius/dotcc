@@ -48,7 +48,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         }
     }
     private bool StartsDeclaration() => Is("using") || Is("typedef") || Is("const") || Is("constexpr") || IsIntegerKeyword(Current.Spelling) ||
-        Is("void") || Current.Kind == TokenKind.Identifier && SoleVisibleSymbol(Current.Spelling)?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter;
+        Is("void") || Current.Kind == TokenKind.Identifier && SoleVisibleSymbol(Current.IdentifierText)?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter;
     private static bool IsIntegerKeyword(string spelling) => spelling is "bool" or "char" or "short" or "int" or "long" or "signed" or "unsigned" or "wchar_t" or "char8_t" or "char16_t" or "char32_t";
     private Declaration Declaration(bool allowFunction)
     {
@@ -125,7 +125,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     }
     private AliasDeclaration EnterAlias(Token name, SemanticType type, SourceRange range)
     {
-        Symbol? previous = state.CurrentScope.FindLocal(name.Spelling);
+        Symbol? previous = state.CurrentScope.FindLocal(name.IdentifierText);
         Symbol symbol;
         if (previous != null && previous.Kind == SymbolKind.TypeAlias && ReferenceEquals(previous.Type, type)) symbol = previous;
         else symbol = NewLocalSymbol(name, SymbolKind.TypeAlias, type);
@@ -135,9 +135,9 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     }
     private Symbol NewLocalSymbol(Token identifier, SymbolKind kind, SemanticType type)
     {
-        if (kind == SymbolKind.Variable && state.CurrentScope.Kind == ScopeKind.TranslationUnit && identifier.Spelling == "main")
+        if (kind == SymbolKind.Variable && state.CurrentScope.Kind == ScopeKind.TranslationUnit && identifier.IdentifierText == "main")
             Unsupported("The special global name rules for main are not implemented.", identifier.Range);
-        var symbol = new Symbol(identifier.Spelling, kind, type, state.CurrentScope);
+        var symbol = new Symbol(identifier.IdentifierText, kind, type, state.CurrentScope);
         for (Scope? scope = state.CurrentScope; scope != null; scope = scope.Parent)
             if (scope.Kind == ScopeKind.Template && scope.FindLocal(symbol.Name)?.Kind == SymbolKind.TemplateParameter)
             {
@@ -218,7 +218,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         else if (Current.Kind == TokenKind.Identifier)
         {
             Token identifier = Take();
-            Symbol? alias = SoleVisibleSymbol(identifier.Spelling);
+            Symbol? alias = SoleVisibleSymbol(identifier.IdentifierText);
             if (alias?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter) type = SubstituteActiveType(alias.Type);
             else
             {
@@ -287,12 +287,12 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     }
     private FunctionDeclaration FunctionDeclaration(SourceRange start, Token identifier, SemanticType resultType, bool isConstexpr)
     {
-        if (identifier.Spelling == "main") Unsupported("The special declarations and use rules of global main are not implemented.", identifier.Range);
+        if (identifier.IdentifierText == "main") Unsupported("The special declarations and use rules of global main are not implemented.", identifier.Range);
         if (isConstexpr && resultType.Kind == TypeKind.Void) Unsupported("Constexpr void functions are outside the implemented integer evaluator.", identifier.Range);
         Scope enclosing = state.CurrentScope;
         var (parameterScope, parameters) = FunctionParameters();
         var functionType = types.Function(resultType, parameters.Select(p => p.Type));
-        NameBinding? binding = enclosing.FindLocalBinding(identifier.Spelling);
+        NameBinding? binding = enclosing.FindLocalBinding(identifier.IdentifierText);
         Symbol? previous = binding?.Symbols.FirstOrDefault(s => s.Kind == SymbolKind.Function &&
             ((FunctionType)s.Type).ParameterTypes.SequenceEqual(functionType.ParameterTypes));
         Symbol function;
@@ -302,7 +302,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             else
             {
                 Fail("SEM009", $"Return type conflicts with an earlier declaration of '{identifier.Spelling}'.", identifier.Range);
-                function = new Symbol(identifier.Spelling, SymbolKind.Function, functionType, enclosing);
+                function = new Symbol(identifier.IdentifierText, SymbolKind.Function, functionType, enclosing);
             }
         }
         else function = NewLocalSymbol(identifier, SymbolKind.Function, functionType);

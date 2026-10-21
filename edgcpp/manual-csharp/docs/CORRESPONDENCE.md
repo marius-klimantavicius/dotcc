@@ -140,3 +140,11 @@ storage/address/load/call/cleanup branches, exprutil.c and il.c original-initial
 replay, and expr.c/interpret.c contextual logical execution. Four consulted source
 hashes are in `source-reference-constexpr.json`. General objects/pointers/classes/
 dependent references/control flow and full lifetime/interpreter coverage remain open.
+
+Integrated Unicode now executes112/112 JIT/AOT groups with111-file matching maps.
+`UNICODE.md` maps lexical UAX44/UCN/ppnumber/suffix scanning, macro replacement
+canonical emission versus raw argument stringization, literal target units and
+source encoding metadata.14 consulted source/doc hashes and unmodified Unicode17
+data/license provenance are retained. This extends scalar storage/reference
+coverage without qualifying full strings/floats/UDL or completing M1. Independent
+isolated U1/U2 repair acceptance is separate from main integration review.

@@ -59,8 +59,10 @@ public sealed class CompilationSession : IDisposable
         lock (gate)
         {
             ObjectDisposedException.ThrowIf(disposed, this);
-            var source = new SourceFile(fileName, text);
+            var source = new SourceFile(fileName, text, encoding: SourceEncodingInfo.Managed(Options.Preprocessing.SourceInput));
             var diagnostics = new DiagnosticBag();
+            if (!source.Encoding.Validate(source, diagnostics))
+                return new LexicalResult(new TokenBuffer(source, [new Token(TokenKind.EndOfSource, source.Range(text.Length, 0))]), diagnostics.Snapshot());
             return new LexicalResult(new Lexer(LogicalInput.Normalize(source), diagnostics).Scan(), diagnostics.Snapshot());
         }
     }
@@ -71,7 +73,8 @@ public sealed class CompilationSession : IDisposable
         lock (gate)
         {
             ObjectDisposedException.ThrowIf(disposed, this);
-            return new Preprocessor(Options.Preprocessing, new DiagnosticBag(), Options.Target).Process(new SourceFile(fileName, text));
+            return new Preprocessor(Options.Preprocessing, new DiagnosticBag(), Options.Target).Process(
+                new SourceFile(fileName, text, encoding: SourceEncodingInfo.Managed(Options.Preprocessing.SourceInput)));
         }
     }
     public AnalysisResult Analyze(string text, string fileName = "input.cpp")
@@ -81,7 +84,7 @@ public sealed class CompilationSession : IDisposable
         lock (gate)
         {
             ObjectDisposedException.ThrowIf(disposed, this);
-            var source = new SourceFile(fileName, text);
+            var source = new SourceFile(fileName, text, encoding: SourceEncodingInfo.Managed(Options.Preprocessing.SourceInput));
             var diagnostics = new DiagnosticBag();
             PreprocessingResult preprocessing = new Preprocessor(Options.Preprocessing, diagnostics, Options.Target).Process(source);
             TokenBuffer tokens = preprocessing.Tokens;
