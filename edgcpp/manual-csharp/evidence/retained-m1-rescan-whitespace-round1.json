@@ -1,0 +1,6 @@
+{
+  "reason": "Retain exact initial native whitespace probe before expanding its matrix",
+  "original_receipt": "native-m1-rescan-whitespace-contract-round1.json",
+  "retained_input": "tools/oracle-inputs/history/m1-rescan-whitespace-round1.cpp",
+  "sha256": "9e84a98ec6f09a98620d26ff2ac7a9b2538898181acdca602df049463d9e6109"
+}

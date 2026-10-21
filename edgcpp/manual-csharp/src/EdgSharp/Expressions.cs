@@ -82,6 +82,11 @@ internal sealed partial class Parser
             return new ParenthesizedExpression(operand, SourceRange.Cover(token.Range, end.Range));
         }
         if (token.Kind == TokenKind.IntegerLiteral) { Take(); return IntegerLiteral(token); }
+        if (token.Kind == TokenKind.FloatingLiteral && !Lexer.IsValidFloatingSpelling(token.Spelling))
+        {
+            Take(); Fail("LEX011", "Malformed floating literal spelling.", token.Range);
+            return new ErrorExpression(types.Error, token.Range);
+        }
         if (Is("true") || Is("false")) { Take(); return new LiteralExpression(types.Integer(IntegerKind.Bool), token.Range, token.Spelling == "true" ? BigInteger.One : BigInteger.Zero); }
         if (token.Kind == TokenKind.Identifier)
         {

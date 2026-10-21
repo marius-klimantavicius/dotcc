@@ -1,0 +1,27 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-vaopt-trailing-paste.cpp",
+  "source_sha256": "d8acf040c92a92a508011355de92b08ea0bfefbfadbc478a70e8af350bf29af6",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-vaopt-trailing-paste.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-vaopt-trailin\n          g-paste.cpp\", line 1: error: \"##\" may not be last in a __VA_OPT__\n          operand\n  #define UNUSED(...) __VA_OPT__(a ##)\n                                     ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-vaopt-trailin\n          g-paste.cpp\", line 1: error: \"##\" may not be last in a macro\n          definition\n  #define UNUSED(...) __VA_OPT__(a ##)\n                                      ^\n\n2 errors detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-vaopt-trailing-paste.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

@@ -1,0 +1,36 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-semantic-witness.cpp",
+  "source_sha256": "4e90896a4170887e3b7e34193a83ce9675683911abf2535c2c89f0631dfeb4be",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-integrated.cpp",
+      "sha256": "dbb8fd16d2853ed02950bad1089fab2c7adc0a3b44e4b3c7a0f610c3f2b0ba70"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-integrated.h",
+      "sha256": "0e6eaa15ac88e630344a51b45f85dd34605f093586ea8719ea39fa8a348fc12e"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-semantic-witness.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

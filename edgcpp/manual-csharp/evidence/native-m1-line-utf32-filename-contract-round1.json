@@ -1,0 +1,29 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-line-utf32-filename.cpp",
+  "source_sha256": "784fb9ea8545fa4112a16a2a92e2149528d5a605a1ca4087c3005c1b3c8968c2",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--preprocess",
+    "--no_line_commands",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-line-utf32-filename.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "name \"\\\"utf32.cpp\" line 40\n",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

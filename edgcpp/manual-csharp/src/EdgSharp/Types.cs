@@ -28,6 +28,7 @@ public sealed record AnalysisOptions
     public int ConstantEvaluationStepLimit { get; init; } = 10000;
     public int ConstantEvaluationCallLimit { get; init; } = 128;
     public int TemplateInstantiationDepthLimit { get; init; } = 64;
+    public PreprocessingOptions Preprocessing { get; init; } = new();
 }
 
 public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent }

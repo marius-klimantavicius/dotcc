@@ -1,0 +1,32 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-header-opens-root.cpp",
+  "source_sha256": "0964377536879512b3fa2301f5ac94f8de0e564a45ce04977f686329f9c32e3b",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-header-opens-root.h",
+      "sha256": "36b874e86f907c0d7b42e30d0367d0b99f79396e027ce440a4e08ecca72a0c8a"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-header-opens-root.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-header-opens-\n          root.h\", line 1: error: the #endif for this directive is missing\n  #if 1\n   ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-header-opens-\n          root.cpp\", line 2: error: the #if for this directive is missing\n  #endif\n   ^\n\n2 errors detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-header-opens-root.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

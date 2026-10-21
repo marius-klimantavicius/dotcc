@@ -14,12 +14,17 @@ public enum TokenKind
     Less, Greater, LessEqual, GreaterEqual, Ampersand, Pipe, Caret, AndAnd, OrOr,
     ShiftLeft, ShiftRight, PlusPlus, MinusMinus, Arrow, ArrowStar, DotStar,
     PlusEqual, MinusEqual, StarEqual, SlashEqual, PercentEqual, AmpersandEqual,
-    PipeEqual, CaretEqual, ShiftLeftEqual, ShiftRightEqual, Ellipsis, Spaceship
+    PipeEqual, CaretEqual, ShiftLeftEqual, ShiftRightEqual, Ellipsis, Spaceship, PreprocessingOther, HeaderName
 }
 
-public readonly record struct Token(TokenKind Kind, SourceRange Range)
+public readonly record struct Token
 {
+    public TokenKind Kind { get; }
+    public SourceRange Range { get; }
+    public TokenOrigin Origin { get; }
     public string Spelling => Range.Spelling;
+    public Token(TokenKind kind, SourceRange range) : this(kind, range, range.File.OriginForRange(range)) { }
+    internal Token(TokenKind kind, SourceRange range, TokenOrigin origin) => (Kind, Range, Origin) = (kind, range, origin);
 }
 
 public sealed class TokenBuffer
@@ -84,10 +89,14 @@ public sealed class TokenCursor
     }
 }
 
-internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
+internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool preprocessing = false)
 {
     private readonly string text = source.Text;
     private int position;
+    private bool ppDirectiveName;
+    private int ppLastLine, headerLine;
+    private string? ppDirective;
+    private int ppDirectiveLine;
     private static readonly HashSet<string> keywords = new(StringComparer.Ordinal)
     {
         "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor", "bool", "break", "case", "catch",
@@ -100,6 +109,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
         "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual",
         "void", "volatile", "wchar_t", "while", "xor", "xor_eq"
     };
+    internal static TokenKind ClassifyIdentifier(string spelling) => keywords.Contains(spelling) ? TokenKind.Keyword : TokenKind.Identifier;
     // Longest spelling first, as get_token's punctuation cases require.
     private static readonly (string Spelling, TokenKind Kind)[] punctuation =
     [
@@ -126,7 +136,20 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
         while (position < text.Length)
         {
             if (SkipWhiteSpaceOrComment()) continue;
-            result.Add(GetToken());
+            Token token = GetToken();
+            result.Add(token);
+            if (preprocessing)
+            {
+                int line = source.PositionAt(token.Range.Start).Line;
+                if (ppDirectiveName)
+                {
+                    if (line == ppLastLine && token.Spelling is "include" or "include_next") headerLine = line;
+                    if (line == ppLastLine) { ppDirective = token.Spelling; ppDirectiveLine = line; }
+                    ppDirectiveName = false;
+                }
+                else if (token.Kind == TokenKind.Hash && line != ppLastLine) ppDirectiveName = true;
+                ppLastLine = line;
+            }
         }
         result.Add(new Token(TokenKind.EndOfSource, source.Range(position, 0)));
         return new TokenBuffer(source, result.ToArray());
@@ -170,6 +193,19 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
     {
         int start = position;
         char ch = text[position];
+        if (preprocessing && headerLine != 0)
+        {
+            bool header = source.PositionAt(position).Line == headerLine && ch is '<' or '"';
+            headerLine = 0;
+            if (header)
+            {
+                char close = ch == '<' ? '>' : '"';
+                ++position;
+                while (position < text.Length && text[position] != close && text[position] is not ('\r' or '\n')) ++position;
+                if (position < text.Length && text[position] == close) ++position;
+                return new Token(TokenKind.HeaderName, source.Range(start, position - start));
+            }
+        }
         if (IsIdentifierStart(ch))
         {
             ++position;
@@ -178,16 +214,11 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
             // Prefixes/raw strings need preprocessing-phase handling; do not split them into success-shaped identifiers.
             if (position < text.Length && text[position] is '\'' or '"' && spelling is "L" or "u" or "U" or "u8" or "R" or "LR" or "uR" or "UR" or "u8R")
             {
-                diagnostics.Add("UNS002", "Prefixed and raw literals are not implemented.", source.Range(start, position - start), DiagnosticClass.UnsupportedFeature);
+                if (!preprocessing) diagnostics.Add("UNS002", "Prefixed literal values are not implemented.", source.Range(start, position - start), DiagnosticClass.UnsupportedFeature);
+                if (spelling.EndsWith('R') && text[position] == '"') return ScanRaw(start);
                 return ScanQuoted(start);
             }
-            TokenKind kind = spelling switch
-            {
-                "and" => TokenKind.AndAnd, "or" => TokenKind.OrOr, "not" => TokenKind.Bang,
-                "bitand" => TokenKind.Ampersand, "bitor" => TokenKind.Pipe, "xor" => TokenKind.Caret, "compl" => TokenKind.Tilde,
-                "and_eq" => TokenKind.AmpersandEqual, "or_eq" => TokenKind.PipeEqual, "xor_eq" => TokenKind.CaretEqual, "not_eq" => TokenKind.NotEqual,
-                _ => keywords.Contains(spelling) ? TokenKind.Keyword : TokenKind.Identifier
-            };
+            TokenKind kind = preprocessing ? TokenKind.Identifier : OperatorOrIdentifier(spelling);
             return new Token(kind, source.Range(start, position - start));
         }
         if (char.IsAsciiDigit(ch) || ch == '.' && position + 1 < text.Length && char.IsAsciiDigit(text[position + 1]))
@@ -201,8 +232,12 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
                 else break;
             }
             string spelling = text[start..position];
-            bool hex = spelling.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
-            bool floating = spelling.Contains('.') || (hex ? spelling.IndexOfAny(['p', 'P']) >= 0 : spelling.IndexOfAny(['e', 'E']) >= 0);
+            int suffix = spelling.IndexOf('_');
+            string number = suffix < 0 ? spelling : spelling[..suffix];
+            bool hex = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
+            bool floating = number.Contains('.') || (hex ? number.IndexOfAny(['p', 'P']) >= 0 : number.IndexOfAny(['e', 'E']) >= 0);
+            if (!preprocessing && floating && !IsValidFloatingSpelling(spelling))
+                diagnostics.Add("LEX011", "Malformed floating literal spelling.", source.Range(start, position - start));
             return new Token(floating ? TokenKind.FloatingLiteral : TokenKind.IntegerLiteral, source.Range(start, position - start));
         }
         if (ch is '\'' or '"') return ScanQuoted(start);
@@ -216,10 +251,71 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics)
             return new Token(kind, source.Range(start, position - start));
         }
         ++position;
+        if (preprocessing) return new Token(TokenKind.PreprocessingOther, source.Range(start, 1));
         bool unsupported = ch > 127 || ch == '\\';
-        diagnostics.Add(unsupported ? "UNS003" : "LEX002", unsupported ? "Unicode identifiers, universal character names and line splicing are not implemented." : "Invalid source character.",
+        diagnostics.Add(unsupported ? "UNS003" : "LEX002", unsupported ? "Unicode identifiers and universal character names are not implemented." : "Invalid source character.",
             source.Range(start, 1), unsupported ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
         return new Token(TokenKind.Error, source.Range(start, 1));
+    }
+    internal static TokenKind OperatorOrIdentifier(string spelling) => spelling switch
+    {
+                "and" => TokenKind.AndAnd, "or" => TokenKind.OrOr, "not" => TokenKind.Bang,
+                "bitand" => TokenKind.Ampersand, "bitor" => TokenKind.Pipe, "xor" => TokenKind.Caret, "compl" => TokenKind.Tilde,
+                "and_eq" => TokenKind.AmpersandEqual, "or_eq" => TokenKind.PipeEqual, "xor_eq" => TokenKind.CaretEqual, "not_eq" => TokenKind.NotEqual,
+                _ => ClassifyIdentifier(spelling)
+    };
+    // lexical.c scan_number keeps pp-number collection separate from active
+    // number validation. Values and literal-operator resolution remain semantic
+    // work; this recognizes significand/exponent/suffix boundaries only.
+    internal static bool IsValidFloatingSpelling(string spelling)
+    {
+        bool hex = spelling.StartsWith("0x", StringComparison.OrdinalIgnoreCase), point = false, exponent = false;
+        int index = hex ? 2 : 0, digits = 0;
+        bool valid = true;
+        digits += Digits(hex);
+        if (index < spelling.Length && spelling[index] == '.') { point = true; ++index; digits += Digits(hex); }
+        if (digits == 0 || !valid) return false;
+        if (index < spelling.Length && (hex ? spelling[index] is 'p' or 'P' : spelling[index] is 'e' or 'E'))
+        {
+            int marker = index++;
+            bool sign = index < spelling.Length && spelling[index] is '+' or '-';
+            if (sign) ++index;
+            if (Digits(false) != 0) exponent = true;
+            else if (sign) return false;
+            else index = marker; // Potential user-defined suffix, as in scan_number.
+        }
+        if (!valid || hex && point && !exponent) return false;
+        string suffix = spelling[index..];
+        if (suffix.Length == 0) return point || exponent;
+        return IsIdentifierStart(suffix[0]) && suffix.All(IsIdentifierPart);
+        int Digits(bool hexadecimal)
+        {
+            int count = 0;
+            while (index < spelling.Length)
+            {
+                bool digit = hexadecimal ? char.IsAsciiHexDigit(spelling[index]) : char.IsAsciiDigit(spelling[index]);
+                if (digit) { ++count; ++index; continue; }
+                if (spelling[index] != '\'') break;
+                if (count == 0 || index + 1 == spelling.Length || !(hexadecimal ? char.IsAsciiHexDigit(spelling[index + 1]) : char.IsAsciiDigit(spelling[index + 1])))
+                { valid = false; break; }
+                ++index;
+            }
+            return count;
+        }
+    }
+    private Token ScanRaw(int start)
+    {
+        int quote = position;
+        position = LogicalInput.RawLiteralEnd(text, quote, out bool closed);
+        var range = source.Range(start, position - start);
+        if (!closed)
+        {
+            bool deferredDefinition = preprocessing && ppDirective == "define" && source.PositionAt(start).Line == ppDirectiveLine;
+            diagnostics.Add(deferredDefinition ? "UNS005" : "LEX004", deferredDefinition ?
+                "Deferred raw-literal recognition in a macro definition is not implemented." : "Malformed or unterminated raw string literal.",
+                range, deferredDefinition ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
+        }
+        return new Token(closed ? TokenKind.StringLiteral : TokenKind.Error, range);
     }
     private Token ScanQuoted(int start)
     {

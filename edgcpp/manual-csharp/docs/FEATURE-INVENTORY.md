@@ -45,15 +45,15 @@ Source guides: `lex_pp.rst`, `includes.rst`; `lexical.c`, `preproc.c`, `macro.c`
 | ID | Required task / current bounds | State | Concrete acceptance / remaining evidence |
 | --- | --- | --- | --- |
 | M1.1 | Owned buffers, physical positions, retained token intervals | accepted slice | Exact ASCII token spelling/kind/UTF-16 range tests, CR/LF/CRLF, stable EOF; preserve these through macros/includes/replay |
-| M1.2 | Encoding and translation phases | open | UTF input/UCN identifier rules, phase-2 splicing, physical/logical origin mapping, malformed encoding and end-of-file controls; compare native preprocessing |
+| M1.2 | Encoding and translation phases | partial | Phase-2 splicing/comment/raw boundaries and retained origins pass 60-group snapshot; UTF input/UCN identifier rules and malformed encoding remain required |
 | M1.3 | Full literal lexing and values | partial | Complete numeric validation at promised lexical boundary; escape repertoire, char count/encoding, raw/prefixed strings, concatenation, floating and user-defined suffix tokenization; malformed/adversarial fixtures |
-| M1.4 | Object-like macros, suppression and rescanning | open | Nested/self/mutual expansion and disabled-macro cases with exact tokens/origins vs native; independent session macro state |
-| M1.5 | Function-like/variadic macros and operators | open | Argument prescan/substitution, `#`, `##`, placemarkers, variadics/`__VA_OPT__`, nested expansion and invalid pastes; retain macro provenance |
-| M1.6 | Include processing and search configuration | open | Controlled include trees, quoted/angle search, include guards, missing/cyclic headers, source ownership/origins and target macro profile; then real headers |
-| M1.7 | Conditional directives and PP arithmetic | open | `#if/#ifdef/#elif/#else/#endif`, defined/operator rules and target-width evaluation, skipped branches, malformed nesting and diagnostics vs native |
-| M1.8 | Other directives and predefined macros | open | `#define/#undef/#line/#error`, pragma dispatch, standard predefined source/date/dialect macros, include/remap interactions; extension directives explicitly inventoried |
+| M1.4 | Object-like macros, suppression and rescanning | partial | ASCII strict-profile nesting/inertness/caller-tail/provenance and isolated state pass; Unicode macro identifiers and broader configured dialect/corpus qualification remain |
+| M1.5 | Function-like/variadic macros and operators | partial | Lazy raw/expanded args, #/##/placemarkers/VA_OPT and full 32-label upstream matrix pass; Unicode/complete dialect/configured branch qualification remains, including explicit native unused malformed-raw laziness bound |
+| M1.6 | Include processing and search configuration | partial | Configured in-memory quote/system search, guards/reentry/once, depth and retained activation origins pass; filesystem/encoding provider and real headers remain unqualified |
+| M1.7 | Conditional directives and PP arithmetic | partial | Conditional nesting, defined/alternative operators, short circuit and intmax/uintmax64 including shifts pass; character operands and special builtin operators remain required |
+| M1.8 | Other directives and predefined macros | partial | define/undef/ordinary line/error/once and __LINE__/__FILE__/__cplusplus pass; date/time/hosted/builtin operator and broader pragma/extension branches remain; nonordinary #line anomaly has exact receipts and explicit compatibility bound |
 | M1.9 | Lexical/token-cache state restoration | partial | Cursor and owner-mediated checkpoint foundation tested; nested rescan/suppression/error positions and every production speculative mutation need direct rollback tests |
-| M1.10 | Preprocessing differential suite and provenance API | open | Native token comparisons with identical include/macro configuration, nested include+expansion origins inspectable after analysis/disposal; no native runtime dependency |
+| M1.10 | Preprocessing differential suite and provenance API | partial | Exact copied upstream/native matrix and configured token/graph/provenance/disposal/concurrency/difficult replay checks pass; expand corpus with remaining lexical/builtin/filesystem branches; no native runtime dependency |
 
 ## M2: declarations, fundamental graph and statements
 
@@ -150,7 +150,12 @@ future-standard conditional features must be explicitly classified during the
 pinned-surface audit before any EDG-equivalence claim. This note does not remove
 any stated plan requirement or convert an unsupported branch into completion.
 
-Current primary dispatch: M3.1 and M4.1 checkpoints are accepted; M4.2–M4.9 follow immediately
-to expose semantic coupling, then remaining M1/M2/M3 and M5/M6 rows are burned
+Current primary dispatch: the integrated M1 preprocessing snapshot passes final
+60-group managed/AOT validation and independent `review-m1-final.md` acceptance.
+Next is remaining
+M1 character literals/PP operands, deterministic standard predefined values and
+configured __has_include; Unicode/UCN/full literals remain following required M1
+work, then remaining M1/M2/M3/general
+M4 and M5/M6 rows are burned
 down without stopping at checkpoint commits. Dependencies/order may change based
 on real-header failures, but rows remain visible until validated.

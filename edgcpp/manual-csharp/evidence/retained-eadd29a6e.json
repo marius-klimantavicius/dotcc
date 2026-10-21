@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted early M4 checkpoint artifacts before M1 builds overwrite standard paths",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/eadd29a6e/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "1bfe51e978df952f679763a132b6c6de7641016fb94cd4dbcdd72611b99a4168"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/eadd29a6e/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "2e0f9259bb76b3b59b9f57b47e91f457c05b957bcad9ecaab5c0f178e3015b38"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-m4/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/eadd29a6e/tests/EdgSharp.Tests/bin/aot-m4/EdgSharp.Tests",
+      "sha256": "e57a497b87f473842d57ef2d03a79328ecddc934aa14ec73ef244bd64d9e11e0"
+    }
+  ]
+}

@@ -13,7 +13,11 @@ if (args.Length == 2 && args[0] == "--analyze")
     foreach (Declaration declaration in result.Declarations)
         Console.WriteLine($"declaration={declaration.Name}; type={declaration.Type}; range={declaration.Range.Start}:{declaration.Range.Length}");
     foreach (Diagnostic diagnostic in result.Diagnostics)
-        Console.WriteLine($"{diagnostic.Class} {diagnostic.Code} {diagnostic.Range.StartPosition.Line}:{diagnostic.Range.StartPosition.Column} {diagnostic.Message}");
+    {
+        PresumedPosition location = diagnostic.PrimaryLocation;
+        Console.WriteLine($"{diagnostic.Class} {diagnostic.Code} {location.FileName}:{location.Line}:{location.Column} {diagnostic.Message}");
+        foreach (string note in diagnostic.ExpansionNotes) Console.WriteLine("note: " + note);
+    }
     return result.IsSuccess ? 0 : 1;
 }
 if (args.Length != 0) { Console.Error.WriteLine("Usage: EdgSharp.Tests [--analyze file.cpp]"); return 2; }
@@ -24,6 +28,18 @@ var cases = new (string Name, Action Run)[]
     ("lex maximal punctuation and digraph exception", Tests.Punctuation),
     ("lex malformed comments and strings", Tests.MalformedLexicalInput),
     ("lex cursor checkpoint and retained replay", Tests.TokenReplay),
+    ("M1 macro rescan inertness lazy arguments and authoritative boundaries", Tests.PreprocessingMacros),
+    ("M1 variadic stringize paste and definition validation", Tests.PreprocessingVariadics),
+    ("M1 controlling expressions use C++20 target arithmetic and short circuit", Tests.PreprocessingConditionals),
+    ("M1 configured includes retain physical search and conditional boundaries", Tests.PreprocessingIncludes),
+    ("M1 source maps retain spelling expansion and logical location", Tests.PreprocessingOrigins),
+    ("M1 phase ordering raw literals and directive comments", Tests.PreprocessingPhases),
+    ("M1 preprocessing integrates templates constexpr and retained graphs", Tests.PreprocessingSemantics),
+    ("M1 preprocessing options limits and session state isolation", Tests.PreprocessingState),
+    ("M1 retained upstream VAOPT preprocessing differential", Tests.PreprocessingUpstream),
+    ("M1 origins retain paste stringize and repeated include activations", Tests.PreprocessingContributors),
+    ("M1 independent preprocessing sessions run concurrently", Tests.PreprocessingConcurrency),
+    ("M1 changed token stream preserves difficult M4 behavior", Tests.PreprocessingDifficultGate),
     ("semantic checkpoint restores all mutable state", Tests.SemanticCheckpoint),
     ("semantic checkpoint restores nested definitions and current functions", Tests.DefinitionCheckpoint),
     ("semantic checkpoint invalidates stale branches atomically", Tests.StaleCheckpoint),
@@ -78,7 +94,7 @@ foreach (var test in cases)
 Console.WriteLine($"Tests: {cases.Length}; passed: {cases.Length - failures}; failed: {failures}; skipped: 0");
 return failures == 0 ? 0 : 1;
 
-internal static class Tests
+internal static partial class Tests
 {
     private static void Check(bool condition, string message = "Assertion failed") { if (!condition) throw new Exception(message); }
     private static T As<T>(object? value) where T : class => value as T ?? throw new Exception($"Expected {typeof(T).Name}; got {value?.GetType().Name ?? "null"}.");
@@ -139,7 +155,7 @@ internal static class Tests
         using var session = new CompilationSession();
         foreach (string text in new[] { "/* unterminated", "\"bad\n", "'bad", "@" }) Check(!session.Lex(text).IsSuccess, text);
         Check(session.Lex("// line\n/* block */").IsSuccess);
-        Check(!session.Lex("// splice\\\nint x;").IsSuccess);
+        Check(session.Lex("// splice\\\nint x;").IsSuccess);
         Check(!session.Lex("int \\u0061;").IsSuccess);
         Equal(TokenKind.EndOfSource, session.Lex("").Tokens.Tokens.Single().Kind);
     }
@@ -1083,15 +1099,14 @@ internal static class Tests
     {
         foreach (string source in new[]
         {
-            "#define X 1\nint x=X;", "struct S {int x;};", "float f;",
+            "struct S {int x;};", "float f;",
             "int *p;", "int &r;", "int a[2];", "int f(){return sizeof(int);}", "int f(){return 1.0;}",
             "int f(){return 'a';}", "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
             "int f(){return true && false;}", "int f(){return 1<<2;}", "int f(){return true?1:2;}",
             "int f(){return (1,2);}", "int f(){return (int)1;}", "int f(){return int(1);}", "int a{1};", "const void f();",
             "void main(){}", "bool main(){return true;}", "int main(){return main();}", "int main;", "int main=1;",
             "int f(); bool g(){return f;}", "int f(); bool g(){return !f;}", "bool g(){return 1 and 2;}", "int g(){return 1<=>2;}", "int n=1_custom;"
-            , "int f(){\n#define V 1\nreturn 0;\n}", "int f(){ label: return 1; }", "int f(){return ::f();}",
-            "int\n#define V 1\nx;", "int f(int\n#define V 1\nx);", "int value(1);"
+            , "int f(){ label: return 1; }", "int f(){return ::f();}", "int value(1);"
         })
         {
             AnalysisResult result = Analyze(source);

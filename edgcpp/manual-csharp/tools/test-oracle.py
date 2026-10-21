@@ -37,6 +37,21 @@ class OracleStatusTests(unittest.TestCase):
         self.assertIn("--preprocess", command)
         self.assertEqual(command[command.index("--instantiate") + 1], "used")
 
+    def test_explicit_preprocessor_configuration_preserves_argument_boundaries(self):
+        command = oracle_command("compiler", "source.cpp", preprocess=True,
+                                 include_dirs=["quote path", "next"],
+                                 system_include_dirs=["system"],
+                                 definitions=["VALUE=two tokens", "F(x)=x"],
+                                 undefinitions=["OLD"], no_line_commands=True)
+        expected = ["--no_line_commands",
+                         "--include_directory", "quote path",
+                         "--include_directory", "next",
+                         "--sys_include", "system",
+                         "--define_macro", "VALUE=two tokens",
+                         "--define_macro", "F(x)=x",
+                         "--undefine_macro", "OLD", "source.cpp"]
+        self.assertEqual(command[-len(expected):], expected)
+
 
 if __name__ == "__main__":
     unittest.main()

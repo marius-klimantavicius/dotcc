@@ -19,11 +19,21 @@ def matches_expectation(expected, exit_code):
     return exit_code == (0 if expected == "accept" else 2)
 
 
-def oracle_command(compiler, source, instantiate="used", preprocess=False):
+def oracle_command(compiler, source, instantiate="used", preprocess=False,
+                   include_dirs=(), system_include_dirs=(), definitions=(),
+                   undefinitions=(), no_line_commands=False):
     command = [str(compiler), "--clear_flag", "use_predefined_macro_file",
                "--c++20", "--strict", "--no_code_gen", "--instantiate", instantiate]
     if preprocess:
         command.append("--preprocess")
+    if no_line_commands:
+        command.append("--no_line_commands")
+    for option, values in (("--include_directory", include_dirs),
+                           ("--sys_include", system_include_dirs),
+                           ("--define_macro", definitions),
+                           ("--undefine_macro", undefinitions)):
+        for value in values:
+            command.extend([option, str(value)])
     return command + [str(source)]
 
 
@@ -36,6 +46,12 @@ def main():
     parser.add_argument("--compiler", type=pathlib.Path,
                         default=root.parent / "build/bin/cpfe")
     parser.add_argument("--preprocess", action="store_true")
+    parser.add_argument("--no-line-commands", action="store_true",
+                        help="EDG preprocessing output without line control directives")
+    parser.add_argument("--include-dir", type=pathlib.Path, action="append", default=[])
+    parser.add_argument("--system-include-dir", type=pathlib.Path, action="append", default=[])
+    parser.add_argument("--define", action="append", default=[])
+    parser.add_argument("--undefine", action="append", default=[])
     parser.add_argument("--instantiate", choices=("none", "used"), default="used",
                         help="Explicit EDG external template body policy; default used for semantic comparison")
     parser.add_argument("--input", type=pathlib.Path, action="append", default=[],
@@ -43,7 +59,10 @@ def main():
     args = parser.parse_args()
     source = args.source.resolve()
     compiler = args.compiler.resolve()
-    command = oracle_command(compiler, source, args.instantiate, args.preprocess)
+    command = oracle_command(compiler, source, args.instantiate, args.preprocess,
+                             [path.resolve() for path in args.include_dir],
+                             [path.resolve() for path in args.system_include_dir],
+                             args.define, args.undefine, args.no_line_commands)
     result = subprocess.run(command, cwd=root, text=True, capture_output=True,
                             timeout=30, check=False)
     matched = matches_expectation(args.expect, result.returncode)

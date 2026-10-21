@@ -1,0 +1,20 @@
+{
+  "purpose": "Held integrated preprocessing checkpoint output fingerprints; prior milestone bytes retained separately",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 183808,
+      "sha256": "8e74176c95d416cb63c9e2204b99fe95e582d8d0c0c09789be59f1347e436481"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 111616,
+      "sha256": "67d2b7fa271f58d9cfaccc8aae6153f38f58dd88fc33f7aea365c478b1d7c035"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-m1/EdgSharp.Tests",
+      "bytes": 2842040,
+      "sha256": "2a686f4ecfbb01bf58ea5fa125e4bcadf33a155571457c1b2bdd97dcc83da021"
+    }
+  ]
+}

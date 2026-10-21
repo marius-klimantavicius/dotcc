@@ -1,0 +1,34 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-include-tail.cpp",
+  "source_sha256": "501f25fc7ed3e678033fc6ca5a84bce59c716953b0d759631de0d16d4ba2875e",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-include-tail.h",
+      "sha256": "e2ca2771fc7c542bcdeeb6065a6e872ff2f2d263a19005b55f63311c0a8f1fa9"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--preprocess",
+    "--no_line_commands",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-include-tail.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "F\n(7)\n",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

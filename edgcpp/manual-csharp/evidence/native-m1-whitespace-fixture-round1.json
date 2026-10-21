@@ -1,0 +1,29 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-rescan-whitespace.cpp",
+  "source_sha256": "b894d4a4d1efab1355e8c6a4b84a54495f2635ec8b16a3085863349fb4c4d82e",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--preprocess",
+    "--no_line_commands",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m1-rescan-whitespace.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "object \"a+x\"\nfunction \"a+x\"\nmulti \"a+x+y\"\nspaced \"a+ x\"\nempty_before \"a +b\"\nempty_after \"a+b\"\nempty_adjacent \"a++b\"\n",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

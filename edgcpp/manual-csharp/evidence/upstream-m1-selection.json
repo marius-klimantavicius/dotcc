@@ -1,0 +1,34 @@
+{
+  "purpose": "Selected upstream provenance and execution-stage boundary; not original-test pass credit",
+  "source": "/home/marius/p/dotcc/edgcpp/upstream/tests/tests/imported/clang/cpp/Preprocessor/macro_vaopt_expand.sft.cpp",
+  "sha256": "fd3b0f88387c48b7eedcdb0cf2f4ca23123dbd0c7af183fc996a909ed92b453b",
+  "preserved_directives": {
+    "type": "fp",
+    "options": "  --c++20 -w: --c++11 -w -w"
+  },
+  "original_cases": [
+    {
+      "TEST_NUMBER": 1,
+      "options": "--c++20 -w",
+      "type": "fp",
+      "execution": "unverified"
+    },
+    {
+      "TEST_NUMBER": 2,
+      "options": "--c++11 -w -w",
+      "type": "fp",
+      "execution": "unverified"
+    }
+  ],
+  "executed_control": {
+    "stage": "preprocessing only",
+    "profile": "strict C++20; used external template instantiation; predefined macro file disabled",
+    "receipt": "native-m1-upstream-vaopt-cpp20-preprocess.json",
+    "accepted": true
+  },
+  "limitations": [
+    "Original frontend case was not executed and receives no full-test pass credit",
+    "C++11 variant is unverified",
+    "Imported RUN/FileCheck comments are retained in original input; this receipt uses explicit oracle profile instead of pretending to execute that harness"
+  ]
+}

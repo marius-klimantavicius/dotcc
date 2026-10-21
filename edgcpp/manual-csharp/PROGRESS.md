@@ -2,29 +2,29 @@
 
 ## Campaign state
 
-Resumed 2026-10-21 after accepted checkpoint `f27031ffc`. Implementation and
-independent review agents are running for scalar free-function overloads
-and then the early M4 gate. Prior agents are not running. Supervisor retains
+Active work: remaining M1 character literals/PP character operands and predefined
+operators after accepted integrated preprocessing (`review-m1-final.md`, 60/60
+managed and Linux x64 NativeAOT groups). Implementation and
+independent review agents remain running on this next assignment. Supervisor retains
 validation/Git/ledger ownership; implementation owns `src/EdgSharp/`,
 `tests/EdgSharp.Tests/`, `fixtures/` and standalone manifests. Reviewer owns
-only new `evidence/review-m3-*.md` / `review-m4-*.md` reports and otherwise reads.
+only new `evidence/review-*.md` reports and otherwise reads.
 
-The next binding contract separates an ordered overload binding from canonical
-function entity Symbols; compatible redeclarations still share one entity.
-Candidates retain per-argument conversion descriptors; selection uses EDG's
-pairwise standard-conversion comparison, never a summed score. N1's direct
-definition-link/current-function checkpoint tests must close before activating
-speculative/replay paths. Production remains fully handwritten and in process.
+Accepted scalar overloads separate ordered name bindings from canonical entities;
+early template/constexpr paths preserve cached-token rescanning and explicit
+evaluation. N1 direct definition-link/current-function checkpoint tests are closed.
+Current preprocessing contracts separate physical spelling, expansion/include
+history and presumed locations; native-only controls are not managed acceptance.
+Production remains fully handwritten and in process.
 Per the explicit user instruction and PLAN's continuous execution rule,
 checkpoints never stop the campaign. The complete actionable backlog is
 `docs/FEATURE-INVENTORY.md`.
 
-The first handwritten semantic checkpoint is implemented, independently reviewed
-and accepted: M0 baseline, partial M1 lexical foundation, and a bounded integrated
-M2 slice. R1–R7 are closed. Release build, 25/25 managed groups and 25/25 Linux
-x64 NativeAOT groups pass with no failures or skips. The full frontend roadmap
-remains active; preprocessing, overload/class semantics and templates/constexpr
-are not completed by this checkpoint.
+Earlier accepted checkpoints are initial M0/partial M1/integrated scalar M2
+`f27031ffc` (25 groups) and scalar M3 `8b32f7c60` (35 groups). Their receipts and
+reviews remain retained. General preprocessing, overload/class semantics,
+templates/constexpr and product qualification remain outstanding beyond the
+precise accepted bounds.
 
 The full objective is a handwritten .NET C++ parser and semantic analyzer.
 Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
@@ -79,8 +79,8 @@ Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
 
 - M0: accepted; source/native provenance, session/API contracts, independent
   ownership/concurrency tests, standalone build/harness and native controls.
-- M1: partial accepted lexical/replay foundation; preprocessing and documented
-  lexical-validation gaps remain unsupported/unqualified.
+- M1: active integrated preprocessing/provenance implementation after accepted
+  lexical/replay foundation; all remaining lexical/PP inventory gaps stay required.
 - M2: first bounded integrated semantic slice accepted; typed source graph,
   alias/function identity, scopes/calls/returns/conversions and negative recovery
   checked by 25 named managed+AOT groups, native fixtures and independent review.
@@ -175,7 +175,7 @@ checkpoint closes it with direct managed/AOT nested-definition/function tests.
   a parenthesized integer value is now explicitly unsupported rather than
   diagnosed as a malformed function parameter.
 
-## Next concrete assignment after this checkpoint
+## Historical next assignment after the initial checkpoint
 
 Begin M3 with bounded by-value scalar free-function overload sets. A scope's
 overload binding must be separate from each function entity's canonical Symbol.
@@ -279,7 +279,7 @@ test. Supervisor commits this checkpoint then immediately releases source edits;
 reviewer is reassigned to M4 independently. No user reconfirmation or milestone
 stopping boundary applies.
 
-## Active M4 implementation and review
+## M4 implementation and review history (checkpoint accepted)
 
 Current status: bounded gate accepted in `evidence/review-m4-final.md` after
 48/48 managed and Linux x64 NativeAOT groups, zero failures/skips, and the native
@@ -287,11 +287,12 @@ used-profile controls. Canonical M4-01..13 findings are closed. Older provisiona
 R numbers in the implementation history below map explicitly in
 `docs/TEMPLATES-AND-CONSTANTS.md`; they are not remaining open blockers.
 
-Worker `/root/manual_edg_supervisor/implementation_m3` and independent reviewer
+Historical dispatch: worker `/root/manual_edg_supervisor/implementation_m3` and independent reviewer
 `/root/manual_edg_supervisor/review_m3` remain active at their requested models/
 efforts for the next M4 assignment; the scalar M3 checkpoint commit is
 `8b32f7c60a18184476248e759c085b5a86e4588c`. Actual template/dependent-type/cache/
-constexpr implementation is underway; no M4 acceptance has occurred.
+constexpr implementation was underway at that point; final acceptance and
+canonical finding closure are recorded at the start of this section.
 
 The combined native contract and losing-template-body controls accept under
 strict C++20; unused-template nondependent-name/call errors and crossed
@@ -329,3 +330,111 @@ while unused false assertion and losing-template body accept. The combined gate
 and all nondependent/error controls match under this used profile. Seven adapter
 unit controls plus explicit native integration controls guard the profile; raw
 acceptance with default-none must never prove selected-body semantics.
+
+## Active M1 assignment after accepted M4 checkpoint
+
+M4 commit: `eadd29a6efcb2565ddf359463c387c6d3fa20fb8`. Implementation source holds
+were released immediately after the owned verified commit. The same worker and
+independent reviewer now implement/review integrated source preprocessing; there
+is no milestone stop. Their existing disjoint ownership and no-worker-build/Git
+rules remain in force; reviewer reports are `evidence/review-m1-*.md`.
+
+Architecture contract: SourceRange stays one immutable buffer. Physical spelling
+contributors, macro invocation/argument chains, include activations and presumed
+logical #line locations are separate retained facts. Changed streams use an
+explicit presentation source buffer and origin map; authoritative PP token
+identity is never accidentally retokenized by serialization. AnalysisResult.Source
+remains primary physical source; token/template buffers may be presentation
+sources. Diagnostics expose logical primary location, physical anchors and notes.
+Include search uses physical including directory plus configured ordered roots,
+not presumed #line names; provider/search/state/limits are explicit and per
+analysis. Guarded re-entry is not rejected as a blanket include cycle.
+
+The macro algorithm uses input/replacement frames with caller-tail visibility,
+raw versus expanded arguments and persistent suppression/inertness, following
+EDG's strict branch. Comments/line splicing/logical BOL, keyword-eligible PP
+identifiers, #/##/placemarkers/variadics, short-circuit target-width #if and
+include/#line/predefined origins have direct native/graph acceptance probes.
+Remaining M1/M2/M3/general M4/M5/M6 rows stay visible until actually implemented
+and validated; this assignment cannot be called full-plan completion.
+
+M1 native contracts executed: eight exact source/header inputs with explicit used
+instantiation, strict C++20 and preprocessing-only where needed. Six accept and
+two language-status-2 reject; macro, multiline and include-tail outputs are additionally
+asserted by `tools/test-oracle-preprocessing.py`. Receipts are
+`oracle-m1-pp-control-round3-*.json` and `oracle-m1-preprocessing-controls-round3.json`.
+Eight adapter profile/status/configuration controls pass in
+`oracle-m1-adapter-tests-round1.json`. No managed M1 pass is claimed yet.
+Observed profile facts: include EOF is a macro-lookahead barrier; a spliced
+logical line's `__LINE__` uses its final physical line, and a multiline argument's
+`__LINE__` uses the invocation's closing-parenthesis line, while spelling locations
+remain distinct. Actual consulted source/document hashes are retained in
+`source-m1-preprocessing-round2.json` (including shift-folding correspondence).
+Accepted M4 output bytes are retained and verified
+before M1 rebuilds in `retained-eadd29a6e.json`.
+
+Independent produced-code review is active in `review-m1-round1.md`, canonical
+M1-01..20: half-open/clipped source maps, slash-root include lookup, eager
+variadic prescan, lost nested expansion ancestry, stringized VA_OPT, composite
+range histories, inactive/unused literal diagnostic timing, macro-redefinition
+parameter spelling/original identity, VA_OPT operand paste edges, required
+object-macro whitespace, ordinary #line filename escapes, multiline-comment
+directive grouping, target-width signed shifts, alternative-operator macro
+eligibility before classification, strict-C++20 #warning rejection, replacement
+whitespace, phase-2-created comment delimiters, raw-closure qualification and
+nested VA_OPT substitution/paste ordering. Source repairs
+are under inspection; no finding is closed merely because a patch is visible.
+Direct regressions and serialized managed/AOT/native evidence remain pending.
+
+Pinned native #line anomaly: L-prefixed filenames reject, but u8/u/U/R forms
+accept and retain prefix fragments in the resulting __FILE__ value. Exact
+per-prefix receipts are `native-m1-line-*-filename-contract-round1.json`.
+The earlier combined expected-reject receipt
+`native-m1-line-other-prefixed-filenames-contract-round1.json` returned 0,
+is retained as a disproved expectation and is excluded from pass counts.
+Ordinary escaped filename decoding is required now; nonordinary compatibility
+remains explicitly bounded/unimplemented until deliberately qualified.
+
+Additional native profile correction: an alternative operator spelling can be
+defined as a macro in this pinned EDG and expands before operator classification
+(`native-m1-operator-macro-expansion-contract-round1.json`). The assumed-reject
+unused-definition receipt returned 0 and is retained/excluded from pass counts.
+Strict-C++20 #warning rejects with language status 2, rather than accepting a
+warning. Worker now prioritizes actual session wiring and adversarial/integrated
+test groups, followed by the first serialized managed build/test cycle; oracle
+exploration alone does not advance managed acceptance.
+
+Early integrated execution: `m1-build-round1.json` and `m1-tests-round1.json`
+hold identical 44-file maps; Release has zero warnings/errors and all 56 managed
+groups pass, zero failures/skips. This is early evidence, not final M1 acceptance.
+Exact simple integrated fixture/header, three PP fixtures and a native included
+type/value witness also pass (`native-m1-*-fixture-round1.json`,
+`native-m1-semantic-witness-round1.json`). Source edits are released for the full
+upstream VA_OPT matrix (32 invocation labels, preserving all source/options),
+empty/EOF/splice-boundary maps, paste/stringize contributor assertions, repeated
+include remaps, conflicting concurrent PP sessions and a changed-stream M4
+difficult-path fixture. Final held managed/AOT/native/code review is pending.
+
+Raw-control correction: the no-newline malformed-unused-raw rejection diagnosed
+EOF newline policy only. The newline-terminated unused form is native-accepted;
+its expected-reject receipt is retained/excluded. M1-19 is a local active raw
+closure invariant plus an explicit unused-definition compatibility qualification,
+not proof EDG rejects that unused macro. No stronger claim is accepted.
+
+Final integrated preprocessing acceptance: `review-m1-final.md` independently
+closes M1-01..18/20/21 within tested bounds and explicitly qualifies M1-19's
+native-accepted unused raw Unsupported gap. Four round-3 receipts match identical
+47-file held maps and current bytes; Release zero warnings/errors and 60/60 JIT
+plus Linux x64 NativeAOT groups, zero failures/skips. Three artifact fingerprints,
+17 consulted source hashes, exact fixture/witness inputs, full upstream matrix,
+and final adapter/profile/status controls are independently audited. This is a
+bounded checkpoint, not full M1 or campaign completion.
+
+Next automatic assignment: target-aware character literal decoding/graph values
+and PP character operands (`literals.c:conv_single_char/conv_char_literal`,
+expr/preproc controlling expressions), deterministic standard date/time/hosted
+predefined values and configured `__has_include`. Unicode/UCN, complete
+prefixed/raw/adjacent string/floating/UDL semantics, filesystem encoding/include
+provider, then remaining references/classes/general templates and M5/M6 remain
+required. Supervisor commits this verified checkpoint and immediately releases
+source edits; no root/user approval or stopping boundary applies.

@@ -1,0 +1,29 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-expansion-contract.cpp",
+  "source_sha256": "d503c190991509d259cbd76cb7e1770e471dbc468a19e53c6537c7163412a1a6",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--preprocess",
+    "--no_line_commands",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-expansion-contract.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "\nprescan 7\ninert F(7)\nalias 8\ntail 9\nexpanded_empty \nnonempty 1\npasted token\nempty_paste right left \nstringized \"a + b\"\nadjacent + +\nadjacent_less < <\nspliced 10\ncomment (x) x(11)\nphysical_line 28 + 28\nshort_circuit yes\nconditional yes\n",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

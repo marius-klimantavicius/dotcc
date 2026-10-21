@@ -1,0 +1,46 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-configured.cpp",
+  "source_sha256": "6e318e59102a11c65617e1a9583fdca3225cb85d44bc9a5db6c4c3290fb3e3c3",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-config/quote/m1-configured-quote.h",
+      "sha256": "088bbca22d03e581d969aea6c901be521f9c8d52a366ab4f77b9f70e1a11d0c0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-config/system/m1-configured-system.h",
+      "sha256": "c0ad7858a6ac56ed7320d18703ff0ae42b4a264aaa7b2169eb21cf3b9eabb28f"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--include_directory",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-config/quote",
+    "--sys_include",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-config/system",
+    "--define_macro",
+    "CONFIGURED_VALUE=17",
+    "--define_macro",
+    "REMOVED=1",
+    "--undefine_macro",
+    "REMOVED",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-configured.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

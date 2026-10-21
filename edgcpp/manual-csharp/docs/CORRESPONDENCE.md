@@ -6,7 +6,13 @@ values and source baseline are in `../evidence/source-baseline.json`; reviewer
 source inspections and additional branch references are in the review reports.
 No generated EDG C# implementation is an input to this campaign.
 
-## Accepted foundations, scalar M3 and early M4 extensions
+## Foundation mapping and subsequent extensions
+
+The table below records the initial foundation bounds. Subsequent accepted
+scalar M3/early M4 extensions and the validated integrated preprocessing
+checkpoint expand these rows as described in `OVERLOADS.md`,
+`TEMPLATES-AND-CONSTANTS.md` and `PREPROCESSING.md`; historical exclusions in the
+foundation table do not override those exact later bounds.
 
 | Authored component | EDG source/routines | Preserved invariant and managed adaptation | Outstanding branches |
 | --- | --- | --- | --- |
@@ -71,8 +77,11 @@ The native executable SHA-256, exact arguments, input SHA-256 and output are in
 it does not claim real-header compatibility or a selected external target ABI.
 
 `positive.cpp` and `unresolved.cpp` establish acceptance and a negative control.
-The preprocessing receipt currently covers macro-free input only. It is not
-evidence for macro expansion or includes in the managed frontend.
+The original foundation preprocessing receipt covers macro-free input only.
+The later integrated preprocessing checkpoint has 60-group managed/AOT execution,
+exact native macro/include controls and changed-stream difficult-path graph
+checks. Its routine branches, source/provenance ownership and remaining bounds
+are in `PREPROCESSING.md`; bounded independent acceptance is `review-m1-final.md`.
 
 `semantic-witness.cpp` includes exactly hashed `positive.cpp` and uses native
 static assertions to establish `Number` is `int`, ordinary `add`/`caller` call
@@ -94,7 +103,7 @@ empty parameter declarations, directives within declaration/parameter/body
 positions, and direct initialization. Those unimplemented preprocessing/direct
 initialization branches are diagnosed unsupported by managed analysis.
 
-## Pending integration mapping
+## Accepted foundation integration evidence
 
 The independently accepted stable snapshot has a successful Release build,
 25/25 managed test groups, and 25/25 groups under a published Linux x64 NativeAOT
@@ -102,3 +111,6 @@ executable. Exact commands, output and matching 16-file implementation/test/
 fixture hashes are retained in `evidence/managed-*.json` and
 `evidence/nativeaot-*.json`. The bounded approval is
 `evidence/review-final-m0-m2.md`; no row alone establishes broader compatibility.
+Later accepted scalar M3 and early M4 evidence is recorded above and in their
+subsystem correspondence documents; the 25-group count describes this original
+foundation snapshot only.

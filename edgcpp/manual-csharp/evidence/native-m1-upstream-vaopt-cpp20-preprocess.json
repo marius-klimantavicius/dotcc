@@ -1,0 +1,29 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/upstream/tests/tests/imported/clang/cpp/Preprocessor/macro_vaopt_expand.sft.cpp",
+  "source_sha256": "fd3b0f88387c48b7eedcdb0cf2f4ca23123dbd0c7af183fc996a909ed92b453b",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--preprocess",
+    "--no_line_commands",
+    "/home/marius/p/dotcc/edgcpp/upstream/tests/tests/imported/clang/cpp/Preprocessor/macro_vaopt_expand.sft.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "\n\n\n\n\n\n\n\n\n\n\n1: F, (, 'a', 'b', );\n2: 'a' + 'b';\n\n\n\n\n3: f(0 , a, b, c) \n4: f(0  ) \n\n\n\n\n\n5: f(0, a , b, c) \n6: f(0, a  ) \n7: f(0, a  ) \n7.1: f(0, a , ,)\n\n\n\n\n\n\n\n\n\n8: HT_\n9: TONG C ( ) B ( ) \"A()\"\n\n\n\n\n\n10: \"\"\n11: \"A1 expandedA1 expandedA0 B ( )\"\n\n\n\n\n12.0: \n12: \n13: BB\n\n\n\n\n\n14: \"\" X \"\"\n15: \"\" X \"\"\n\n\n\n\n\n\n16: S foo ; \n17: S bar = { 1, 2 }; \n\n\n\n\n\n18: B ( ) \"\" B ( )\n19: B ( ) \"\" B ( )\n20: B ( ) \"A3 expandedA3 expandedA2 expandedA1 expandedA0 A3C A3\" B ( )\n21: B ( ) \"A3 B ( ),expandedA0 A3A(),A0A3C A3\" B ( )\n\n\n\n\n\n\n\n\n\n22: B ( ) \"\"   B ( )\n23: B ( ) \"\"   B ( )\n24: B ( ) \"A3 expandedA0 A0C A3\"  expandedA0 expandedA0 A0C expandedA0 B ( )\n25: B ( ) \"A3 B ( ),expandedA0 A0A(),A0A0C A3\" expandedA0 expandedA0 C ( ),expandedA0 A0A(),A0A0C expandedA0 B ( )\n\n\n\n\n\n\n\n\n26: B 1\n26_1: B 1\n\n\n\n\n27: B 11\n27_1: BexpandedA0 11\n28: B 11\n\n\n\n\n",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}
