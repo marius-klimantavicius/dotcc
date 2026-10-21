@@ -5,8 +5,13 @@
 // Declaration insertion, name lookup, expressions and conversions run together.
 namespace EdgSharp;
 
-internal sealed partial class Parser(ParseState state, TypeTable types)
+internal sealed partial class Parser(ParseState state, TypeTable types, AnalysisOptions? analysisOptions = null)
 {
+    private readonly AnalysisOptions options = analysisOptions ?? new AnalysisOptions();
+    private FunctionTemplateDeclaration? activeTemplate;
+    private SemanticType[]? activeTemplateArguments;
+    private bool prototypeAnalysis;
+    private int instantiationDepth;
     private Token Current => state.Tokens.Current;
     private Token Take() => state.Tokens.Advance();
     private bool Is(string spelling) => Current.Spelling == spelling;
@@ -35,18 +40,27 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
             int before = state.Tokens.Index;
             try
             {
-                if (!Eat(TokenKind.Semicolon)) Declaration(allowFunction: true);
+                if (Is("static_assert")) StaticAssertion();
+                else if (!Eat(TokenKind.Semicolon)) Declaration(allowFunction: true);
             }
             catch (ParseFailure) { Recover(topLevel: true); }
             if (before == state.Tokens.Index) Take();
         }
     }
-    private bool StartsDeclaration() => Is("using") || Is("typedef") || Is("const") || IsIntegerKeyword(Current.Spelling) ||
-        Is("void") || Current.Kind == TokenKind.Identifier && state.CurrentScope.Lookup(Current.Spelling)?.Kind == SymbolKind.TypeAlias;
+    private bool StartsDeclaration() => Is("using") || Is("typedef") || Is("const") || Is("constexpr") || IsIntegerKeyword(Current.Spelling) ||
+        Is("void") || Current.Kind == TokenKind.Identifier && SoleVisibleSymbol(Current.Spelling)?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter;
     private static bool IsIntegerKeyword(string spelling) => spelling is "bool" or "char" or "short" or "int" or "long" or "signed" or "unsigned";
     private Declaration Declaration(bool allowFunction)
     {
         SourceRange start = Current.Range;
+        if (Is("template"))
+        {
+            if (!allowFunction) UnsupportedAndThrow("Block-scope templates are not implemented.");
+            return TemplateDeclaration();
+        }
+        bool isConstexpr = Eat("constexpr");
+        if (isConstexpr && (Is("using") || Is("typedef")))
+            Fail("CEX004", "constexpr cannot be applied to an alias declaration.", Current.Range);
         if (Eat("using"))
         {
             if (!Is(TokenKind.Identifier)) UnsupportedAndThrow("Only simple alias declarations ('using Name = type;') are implemented.");
@@ -65,7 +79,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         {
             if (typedef) UnsupportedAndThrow("Function typedef declarators are not implemented.");
             if (!allowFunction) UnsupportedAndThrow("Block-scope function declarations and definitions are not implemented.");
-            return FunctionDeclaration(start, identifier, type);
+            return FunctionDeclaration(start, identifier, type, isConstexpr);
         }
         if (typedef)
         {
@@ -73,14 +87,22 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
             return EnterAlias(identifier, type, SourceRange.Cover(start, end.Range));
         }
         if (type.Kind == TypeKind.Void) Fail("SEM001", "A variable cannot have void type.", identifier.Range);
+        if (isConstexpr) type = types.Const(type);
         Symbol variable = NewLocalSymbol(identifier, SymbolKind.Variable, type);
         // The declarator's point of declaration precedes its initializer, as in EDG's id_linkage path.
-        var declaration = new VariableDeclaration(variable, type, SourceRange.Cover(start, identifier.Range), identifier.Range);
+        var declaration = new VariableDeclaration(variable, type, SourceRange.Cover(start, identifier.Range), identifier.Range) { IsConstexpr = isConstexpr };
         state.AddDeclaration(declaration);
-        if (Eat(TokenKind.Equal)) declaration.Initializer = Convert(ScanExprFull(), type);
+        if (Eat(TokenKind.Equal))
+        {
+            bool saved = constantRequiredParsing;
+            constantRequiredParsing = type.Qualifiers.HasFlag(TypeQualifiers.Const);
+            try { declaration.Initializer = Convert(ScanExprFull(), type); }
+            finally { constantRequiredParsing = saved; }
+        }
         else if (type.Qualifiers.HasFlag(TypeQualifiers.Const)) Fail("SEM002", "A const scalar variable requires an initializer.", identifier.Range);
         Token semicolon = ExpectSimpleSemicolon();
         declaration.Range = SourceRange.Cover(start, semicolon.Range);
+        EvaluateVariableInitializer(declaration);
         return declaration;
     }
     private Token ExpectSimpleSemicolon()
@@ -107,8 +129,14 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         if (kind == SymbolKind.Variable && state.CurrentScope.Kind == ScopeKind.TranslationUnit && identifier.Spelling == "main")
             Unsupported("The special global name rules for main are not implemented.", identifier.Range);
         var symbol = new Symbol(identifier.Spelling, kind, type, state.CurrentScope);
+        for (Scope? scope = state.CurrentScope; scope != null; scope = scope.Parent)
+            if (scope.Kind == ScopeKind.Template && scope.FindLocal(symbol.Name)?.Kind == SymbolKind.TemplateParameter)
+            {
+                Fail("TMP001", $"A declaration cannot redeclare template parameter '{symbol.Name}'.", identifier.Range);
+                break;
+            }
         NameBinding? binding = state.CurrentScope.FindLocalBinding(symbol.Name);
-        if (binding != null && (kind != SymbolKind.Function || binding.Symbols.Any(s => s.Kind != SymbolKind.Function)))
+        if (binding != null && (!NameBinding.IsFunction(symbol) || binding.Symbols.Any(s => !NameBinding.IsFunction(s))))
             Fail("SEM003", $"Conflicting declaration of '{symbol.Name}' in this scope.", identifier.Range);
         else state.Enter(symbol);
         return symbol;
@@ -178,8 +206,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         else if (Current.Kind == TokenKind.Identifier)
         {
             Token identifier = Take();
-            Symbol? alias = state.CurrentScope.Lookup(identifier.Spelling);
-            if (alias?.Kind == SymbolKind.TypeAlias) type = alias.Type;
+            Symbol? alias = SoleVisibleSymbol(identifier.Spelling);
+            if (alias?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter) type = SubstituteActiveType(alias.Type);
             else
             {
                 Fail("SEM007", $"'{identifier.Spelling}' does not name a known type.", identifier.Range);
@@ -201,10 +229,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         if (qualifiers > 1) Fail("SEM004", "Repeated const qualifier.", start);
         return type;
     }
-    private FunctionDeclaration FunctionDeclaration(SourceRange start, Token identifier, SemanticType resultType)
+    private (Scope Scope, VariableDeclaration[] Parameters) FunctionParameters()
     {
-        if (identifier.Spelling == "main") Unsupported("The special declarations and use rules of global main are not implemented.", identifier.Range);
-        Scope enclosing = state.CurrentScope;
         Take(); // '('
         Scope parameterScope = state.PushScope(ScopeKind.Function);
         var parameters = new List<VariableDeclaration>();
@@ -243,6 +269,14 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
             Expect(TokenKind.RightParen, "')'");
         }
         finally { state.PopScope(); }
+        return (parameterScope, parameters.ToArray());
+    }
+    private FunctionDeclaration FunctionDeclaration(SourceRange start, Token identifier, SemanticType resultType, bool isConstexpr)
+    {
+        if (identifier.Spelling == "main") Unsupported("The special declarations and use rules of global main are not implemented.", identifier.Range);
+        if (isConstexpr && resultType.Kind == TypeKind.Void) Unsupported("Constexpr void functions are outside the implemented integer evaluator.", identifier.Range);
+        Scope enclosing = state.CurrentScope;
+        var (parameterScope, parameters) = FunctionParameters();
         var functionType = types.Function(resultType, parameters.Select(p => p.Type));
         NameBinding? binding = enclosing.FindLocalBinding(identifier.Spelling);
         Symbol? previous = binding?.Symbols.FirstOrDefault(s => s.Kind == SymbolKind.Function &&
@@ -258,7 +292,9 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
             }
         }
         else function = NewLocalSymbol(identifier, SymbolKind.Function, functionType);
-        var declaration = new FunctionDeclaration(function, functionType, SourceRange.Cover(start, identifier.Range), identifier.Range, parameters.ToArray(), parameterScope);
+        var declaration = new FunctionDeclaration(function, functionType, SourceRange.Cover(start, identifier.Range), identifier.Range, parameters, parameterScope) { IsConstexpr = isConstexpr };
+        if (function.Declarations.OfType<FunctionDeclaration>().Any(d => d.IsConstexpr != isConstexpr))
+            Fail("CEX003", "Function redeclarations must agree on constexpr.", identifier.Range);
         state.AddDeclaration(declaration);
         if (Is(TokenKind.LeftBrace))
         {
@@ -318,6 +354,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         if (Is(TokenKind.LeftBrace)) return CompoundStatement();
         if (Is(TokenKind.Semicolon)) return new EmptyStatement(Take().Range);
         if (Is("return")) return ReturnStatement();
+        if (Is("static_assert")) return new StaticAssertStatement(StaticAssertion());
         if (Current.Kind == TokenKind.Identifier && state.Tokens.Peek().Kind == TokenKind.Colon)
             UnsupportedAndThrow("Labeled statements are not implemented.");
         // EDG checks declaration/expression ambiguity using the currently visible type symbol.

@@ -25,9 +25,12 @@ public sealed record AnalysisOptions
 {
     public LanguageProfile Language { get; init; } = LanguageProfile.Cpp20;
     public TargetInfo Target { get; init; } = TargetInfo.Lp64;
+    public int ConstantEvaluationStepLimit { get; init; } = 10000;
+    public int ConstantEvaluationCallLimit { get; init; } = 128;
+    public int TemplateInstantiationDepthLimit { get; init; } = 64;
 }
 
-public enum TypeKind { Error, Void, Integer, Function, OverloadSet }
+public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent }
 public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong }
 [Flags] public enum TypeQualifiers { None = 0, Const = 1 }
 
@@ -65,6 +68,24 @@ public sealed class FunctionType : SemanticType
         => (ReturnType, ParameterTypes) = (result, Array.AsReadOnly((SemanticType[])parameters.Clone()));
 }
 
+/// <summary>An identity-bearing type parameter, not an error or a concrete scalar type.</summary>
+public sealed class TemplateParameterType : SemanticType
+{
+    public int Index { get; }
+    public Scope ParameterScope { get; }
+    internal TemplateParameterType UnqualifiedType { get; }
+    internal TemplateParameterType ConstType { get; }
+    internal TemplateParameterType(string name, int index, Scope scope)
+        : base(TypeKind.TemplateParameter, name)
+    {
+        (Index, ParameterScope, UnqualifiedType) = (index, scope, this);
+        ConstType = new TemplateParameterType(this);
+    }
+    private TemplateParameterType(TemplateParameterType original)
+        : base(TypeKind.TemplateParameter, "const " + original.DisplayName, TypeQualifiers.Const)
+        => (Index, ParameterScope, UnqualifiedType, ConstType) = (original.Index, original.ParameterScope, original, this);
+}
+
 internal sealed class SpecialType(TypeKind kind, string name) : SemanticType(kind, name);
 
 internal sealed class TypeTable
@@ -74,6 +95,7 @@ internal sealed class TypeTable
     internal SemanticType Void { get; } = new SpecialType(TypeKind.Void, "void");
     internal SemanticType Error { get; } = new SpecialType(TypeKind.Error, "<error>");
     internal SemanticType OverloadSet { get; } = new SpecialType(TypeKind.OverloadSet, "<overload set>");
+    internal SemanticType Dependent { get; } = new SpecialType(TypeKind.Dependent, "<dependent expression type>");
     internal TypeTable(TargetInfo target)
     {
         Add(IntegerKind.Bool, "bool", target.CharBits, 0, false);
@@ -95,17 +117,30 @@ internal sealed class TypeTable
         integers.Add((kind, TypeQualifiers.Const), new IntegerType(kind, name, width, rank, signed, TypeQualifiers.Const));
     }
     internal IntegerType Integer(IntegerKind kind, TypeQualifiers qualifiers = 0) => integers[(kind, qualifiers)];
-    internal SemanticType Unqualified(SemanticType type) => type is IntegerType i ? Integer(i.IntegerKind) : type;
-    internal SemanticType Const(SemanticType type) => type is IntegerType i ? Integer(i.IntegerKind, TypeQualifiers.Const) : type;
+    internal SemanticType Unqualified(SemanticType type) => type switch
+    {
+        IntegerType i => Integer(i.IntegerKind), TemplateParameterType p => p.UnqualifiedType, _ => type
+    };
+    internal SemanticType Const(SemanticType type) => type switch
+    {
+        IntegerType i => Integer(i.IntegerKind, TypeQualifiers.Const), TemplateParameterType p => p.ConstType, _ => type
+    };
     internal FunctionType Function(SemanticType result, IEnumerable<SemanticType> parameters)
     {
         SemanticType[] array = parameters.Select(Unqualified).ToArray();
+        // Dependent types own template scopes and their source graph. Their
+        // signature lifetime is the template's lifetime, never the session's
+        // concrete-type intern table. The template retains this one signature.
+        if (result.Kind is TypeKind.TemplateParameter or TypeKind.Dependent ||
+            array.Any(type => type.Kind is TypeKind.TemplateParameter or TypeKind.Dependent))
+            return new FunctionType(result, array);
         foreach (var existing in functions)
             if (ReferenceEquals(existing.ReturnType, result) && existing.ParameterTypes.SequenceEqual(array)) return existing;
         var created = new FunctionType(result, array);
         functions.Add(created);
         return created;
     }
+    internal int InternedFunctionTypeCount => functions.Count;
     internal IntegerType Promote(IntegerType type) => type.Rank < Integer(IntegerKind.Int).Rank ? Integer(IntegerKind.Int) : Integer(type.IntegerKind);
     internal IntegerType UsualArithmeticConversions(IntegerType left, IntegerType right)
     {

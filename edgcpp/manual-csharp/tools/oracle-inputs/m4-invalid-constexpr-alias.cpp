@@ -1,0 +1,1 @@
+constexpr using Alias = int;

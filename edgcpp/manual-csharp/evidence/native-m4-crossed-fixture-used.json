@@ -1,0 +1,27 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-crossed.cpp",
+  "source_sha256": "b0c980c7304c70ee5835f9bc4c46cfdfecd04357bbbb3415bf8de2dadb6e9bde",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-crossed.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-crossed.cpp\", line 4:\n          error: more than one instance of overloaded function \"cross\" matches\n          the argument list:\n            function \"cross(int, long)\" (declared at line 2)\n            function template \"int cross(long, T)\" (declared at line 3)\n            argument types are: (int, int)\n  int entry() { return cross(1, 1); }\n                       ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-crossed.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

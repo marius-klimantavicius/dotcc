@@ -63,6 +63,7 @@ public sealed class TokenCursor
     public int Index { get; private set; }
     public Token Current => buffer.At(Index);
     internal Token Previous => buffer.At(Math.Max(0, Index - 1));
+    internal TokenBuffer Retain(int startIndex, int count) => buffer.Retain(startIndex, count);
     internal TokenCursor(TokenBuffer buffer, int start, int end) => (this.buffer, Index, this.end) = (buffer, start, end);
     public Token Advance()
     {

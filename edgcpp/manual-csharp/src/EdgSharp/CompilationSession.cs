@@ -19,11 +19,12 @@ public sealed class AnalysisResult
     public Scope GlobalScope { get; }
     public ReadOnlyCollection<Declaration> Declarations => GlobalScope.Declarations;
     public ReadOnlyCollection<Diagnostic> Diagnostics { get; }
+    public ReadOnlyCollection<StaticAssertion> StaticAssertions { get; }
     /// <summary>False on either invalid source or unsupported input. The graph then contains partial, diagnosed facts.</summary>
     public bool IsSuccess => Diagnostics.All(d => d.Severity != DiagnosticSeverity.Error);
     public bool ContainsUnsupportedFeatures => Diagnostics.Any(d => d.Class == DiagnosticClass.UnsupportedFeature);
-    internal AnalysisResult(SourceFile source, TokenBuffer tokens, Scope global, ReadOnlyCollection<Diagnostic> diagnostics)
-        => (Source, Tokens, GlobalScope, Diagnostics) = (source, tokens, global, diagnostics);
+    internal AnalysisResult(SourceFile source, TokenBuffer tokens, Scope global, ReadOnlyCollection<Diagnostic> diagnostics, StaticAssertion[] assertions)
+        => (Source, Tokens, GlobalScope, Diagnostics, StaticAssertions) = (source, tokens, global, diagnostics, Array.AsReadOnly(assertions));
 }
 
 /// <summary>
@@ -42,6 +43,8 @@ public sealed class CompilationSession : IDisposable
         options ??= new AnalysisOptions();
         if (options.Language != LanguageProfile.Cpp20) throw new ArgumentOutOfRangeException(nameof(options), "Only C++20 is implemented as a profile.");
         ArgumentNullException.ThrowIfNull(options.Target);
+        if (options.ConstantEvaluationStepLimit <= 0 || options.ConstantEvaluationCallLimit <= 0 || options.TemplateInstantiationDepthLimit <= 0)
+            throw new ArgumentOutOfRangeException(nameof(options), "Evaluation and instantiation limits must be positive.");
         Options = options;
         types = new TypeTable(options.Target);
     }
@@ -74,8 +77,8 @@ public sealed class CompilationSession : IDisposable
                 if (token.Kind is TokenKind.Hash or TokenKind.HashHash)
                     diagnostics.Add("UNS004", "Preprocessing directives and preprocessing operators are not implemented.", token.Range, DiagnosticClass.UnsupportedFeature);
             var state = new ParseState(tokens.CreateCursor(), diagnostics);
-            new Parser(state, types).TranslationUnit();
-            return new AnalysisResult(source, tokens, state.GlobalScope, diagnostics.Snapshot());
+            new Parser(state, types, Options).TranslationUnit();
+            return new AnalysisResult(source, tokens, state.GlobalScope, diagnostics.Snapshot(), state.Assertions.ToArray());
         }
     }
     public void Dispose() { lock (gate) disposed = true; }

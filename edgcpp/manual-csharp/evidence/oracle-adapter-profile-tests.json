@@ -1,0 +1,39 @@
+{
+  "command": [
+    "python3",
+    "tools/test-oracle.py"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "duration_seconds": 0.036,
+  "stdout": "",
+  "stderr": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n",
+  "source_sha256": {
+    "src/EdgSharp/CompilationSession.cs": "d2aa5b0fd95ec831753aaeaadd1df5a9ca36d9122dc5b8bb56d0a9fd3a83fcc7",
+    "src/EdgSharp/EdgSharp.csproj": "00d8ff77e583f61c6b7fa60010c6fdf2a7d1879ab0575db8f38697222ea0786e",
+    "src/EdgSharp/Expressions.cs": "5ea7f1756e28779ec6abf73ee43fe24706a7d62d0c70d41b67b106294b4bac9f",
+    "src/EdgSharp/OverloadResolution.cs": "b82425351d1d6e80ab2fe9ae49894ba1d0a171f7af71e57899a1ad61412416e9",
+    "src/EdgSharp/ParseState.cs": "b5a408e95e9ea4ca8f35cd3381243bdc629d9b6c8317af52142f9f7a1303a150",
+    "src/EdgSharp/Parser.cs": "05c90fea236e330f3adb10c2fb301ab3c09671982bde6e637aed854dfa35f45c",
+    "src/EdgSharp/SemanticGraph.cs": "f12b84a07e97c86bb306071d862a9987cf60560bd79bb5015a313604347753bb",
+    "src/EdgSharp/Source.cs": "3a43225e6c050ea592f122a6c6139551ab07fc26b6a96308e6d85953ab4d4950",
+    "src/EdgSharp/Templates.cs": "cdcc948f3166d8bfdf2154be4700a82a26a9a33f51ad245ba24a58e351170487",
+    "src/EdgSharp/Tokens.cs": "678fe916086069acbb5d5432d7733a11f329286b689b611a1857dfed871de1b6",
+    "src/EdgSharp/Types.cs": "6544b3c28819fd57b0771f505e41a0c7122e0c28cf694a82151fd0d524693c61",
+    "tests/EdgSharp.Tests/EdgSharp.Tests.csproj": "b393fdd1784f39915fd001d6d89e3c69eb4f772ea47b92924c8bca134db0a1d4",
+    "tests/EdgSharp.Tests/Program.cs": "5dbe25f72ee573e5f62ccdc2d408061bd856c7ce77539f88a7c03c182fc1ce07",
+    "fixtures/m2-conflicting.cpp": "347929ac58733f920d42287ec26675a5c994c71d390d63d87f21c7670570dc9b",
+    "fixtures/m2-parameter-redeclaration.cpp": "2ef16ab886824a23f129062333a66d7cda86ddd8a7b0389847d06193ac5277b5",
+    "fixtures/m2-positive.cpp": "2a3702e7443419d40d60be96dd2439dbdb695d6017bb334e705d4f7158450621",
+    "fixtures/m2-unresolved.cpp": "448b2e018bf14e72ec5f245288d7388966411c216cb34d2b61eb3a4738f131fc",
+    "fixtures/m2-unsupported-statement.cpp": "4529339ae5cf76d30e3b223a3f0069d2bfe1106214edb33c57fb76f43d4f3a82",
+    "fixtures/m3-ambiguous.cpp": "429cbe17f89f1756fb9645ca9721b0084f33161a28ec7d5bf71b9f68895c22f6",
+    "fixtures/m3-crossed.cpp": "970312abf18e9c3d4e56d4a1529ff4c8e3db99fe7a29004de84dff3558ba6b61",
+    "fixtures/m3-hiding.cpp": "097e2ebdecf4ebab5e496fcbcdddc8cdd63c09e97ff608ce0f6c29b3cebcbe76",
+    "fixtures/m3-no-viable.cpp": "ffc2a950f2b92312d702d58a034d6ca717ec621daacc680ccc9aa9aae955ce59",
+    "fixtures/m3-order.cpp": "dcccf8497afdbeba2333f2f591ea8483aa8f3da717443bc83ad5296bf5313866",
+    "fixtures/m3-positive.cpp": "4d1b667d934ec4f89f5dbe4824d3fcbc47624b0241acf157b22fc3a32b052978",
+    "tools/oracle.py": "16130d6234b4480e377bdf93a9e74fd3cc7101dd498688bc8266a36cb852871c",
+    "tools/test-oracle.py": "cc0d145bd311c732567c663ca88c66a22b74e38c512c38eefced703900d763df"
+  }
+}

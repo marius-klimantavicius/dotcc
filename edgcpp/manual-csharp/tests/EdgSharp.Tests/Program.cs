@@ -2,6 +2,7 @@
 // Authored deterministic tests; no generated fixtures or native oracle dependency.
 using System.Collections;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using EdgSharp;
 
 if (args.Length == 2 && args[0] == "--analyze")
@@ -44,6 +45,19 @@ var cases = new (string Name, Action Run)[]
     ("M3 nearest nonfunction bindings hide overloads", Tests.OverloadHiding),
     ("M3 overload binding insertion rolls back in order", Tests.OverloadCheckpoint),
     ("M3 source fixtures inspect selected callees and diagnostics", Tests.OverloadFixtures),
+    ("M4 template dependent graph cache replay and instance reuse", Tests.TemplateGraph),
+    ("M4 by-value deduction consistency and failed candidate viability", Tests.TemplateDeduction),
+    ("M4 template ordinary and direct-pattern overload ordering", Tests.TemplateOverloads),
+    ("M4 combined replay lookup overload and constexpr source gate", Tests.CombinedTemplateGate),
+    ("M4 unused templates diagnose nondependent errors", Tests.TemplatePrototypeErrors),
+    ("M4 static assertions defer template false conditions until instantiation", Tests.TemplateAssertions),
+    ("M4 type and value dependency remain distinct", Tests.TemplateValueDependency),
+    ("M4 constexpr interpreter executes calls locals and early returns", Tests.ConstexprEvaluation),
+    ("M4 constant-required invalid operations have explicit outcomes", Tests.ConstexprFailures),
+    ("M4 constant evaluation and instantiation limits are explicit", Tests.EvaluationLimits),
+    ("M4 repeated template analyses isolate and release source graphs", Tests.TemplateLifetime),
+    ("M4 owner checkpoint rolls back replay and instance mutations", Tests.TemplateRollback),
+    ("M4 excluded template forms diagnose unsupported features", Tests.TemplateBoundaries),
     ("nested scopes permit local shadowing", Tests.Shadowing),
     ("LP64 integer literal type selection", Tests.LiteralTypes),
     ("explicit integer conversion chains", Tests.Conversions),
@@ -619,6 +633,356 @@ internal static class Tests
             Check(invalid.Diagnostics.Any(d => d.Code == code), fixture);
         }
     }
+    private static FunctionTemplateDeclaration Template(AnalysisResult result, string name)
+        => result.GlobalScope.FindLocal(name)!.TemplateDefinition!;
+    internal static void TemplateGraph()
+    {
+        AnalysisResult result = Success("template<class T> T id(const T value){T local=value; return local;} int one(){return id(1);} long two(){return id(2L);} int again(){return id(3);}");
+        FunctionTemplateDeclaration template = Template(result, "id");
+        Equal(SymbolKind.FunctionTemplate, template.Symbol.Kind);
+        Equal(TypeKind.TemplateParameter, template.Type.ReturnType.Kind);
+        Same(template.TypeParameters[0].Type, template.Type.ReturnType);
+        Same(template.TemplateScope, template.TypeParameters[0].Type.ParameterScope);
+        Equal(TypeQualifiers.Const, template.Pattern.Parameters[0].Type.Qualifiers);
+        Equal(TypeQualifiers.None, template.Type.ParameterTypes[0].Qualifiers);
+        Check(template.Pattern.Body != null && template.IsValid);
+        Check(ReturnValue(template.Pattern) is DependentConversionExpression);
+        Same(result.Source, template.BodyTokens.Source);
+        Equal(TokenKind.LeftBrace, template.BodyTokens.Tokens[0].Kind);
+        Equal(TokenKind.RightBrace, template.BodyTokens.Tokens[^2].Kind);
+        Equal(TokenKind.EndOfSource, template.BodyTokens.Tokens[^1].Kind);
+        Equal(2, template.Instances.Count);
+        CallExpression first = ReturnedCall(result, "one"), second = ReturnedCall(result, "two"), again = ReturnedCall(result, "again");
+        Same(first.TemplateInstance!, again.TemplateInstance);
+        Check(!ReferenceEquals(first.TemplateInstance, second.TemplateInstance));
+        Same(first.SelectedFunction, first.TemplateInstance!.Symbol);
+        Same(template, first.SelectedCandidate.Template);
+        Equal(IntegerKind.Int, Kind(first.SelectedCandidate.TemplateArguments[0]));
+        foreach (FunctionTemplateInstance instance in template.Instances)
+        {
+            Equal(TemplateInstanceState.Complete, instance.State);
+            Equal(1, instance.BodyReplayCount);
+            Same(instance.Declaration!, instance.Symbol.Definition);
+            Same(instance, instance.Declaration!.TemplateInstance);
+            Same(template.TemplateScope, instance.Declaration.ParameterScope.Parent);
+            Equal(TypeQualifiers.Const, instance.Declaration.Parameters[0].Type.Qualifiers);
+            Equal(TypeQualifiers.None, instance.Declaration.Type.ParameterTypes[0].Qualifiers);
+            Check(!instance.Declaration.Type.ParameterTypes[0].DisplayName.Contains('T'));
+            Throws<NotSupportedException>(() => ((IList)instance.TypeArguments).Clear());
+        }
+        Throws<NotSupportedException>(() => ((IList)template.Instances).Clear());
+        Throws<NotSupportedException>(() => ((IList)template.TypeParameters).Clear());
+        Throws<NotSupportedException>(() => ((IDictionary)template.DefinitionContext.Bindings).Clear());
+    }
+    internal static void TemplateDeduction()
+    {
+        AnalysisResult result = Success("int same(long,long); template<class T> T same(T a,T b){return a;} int run(){return same(1,2L);}");
+        CallExpression call = ReturnedCall(result, "run");
+        Check(call.TemplateInstance == null);
+        Equal(CandidateRejectionReason.DeductionFailure, call.Candidates[1].RejectionReason);
+        Equal(0, call.Candidates[1].Template!.Instances.Count);
+        AnalysisResult consistent = Success("template<class T> T same(const T a,T b){return a;} int run(const int x){return same(x,2);}");
+        Equal(IntegerKind.Int, Kind(ReturnedCall(consistent, "run").TemplateInstance!.TypeArguments[0]));
+        AnalysisResult shortArgument = Success("template<class T> T id(T value){return value;} short run(short value){return id(value);}");
+        CallExpression shortCall = ReturnedCall(shortArgument, "run");
+        Equal(IntegerKind.Short, Kind(shortCall.TemplateInstance!.TypeArguments[0]));
+        Equal(IntegerKind.Short, SelectedParameter(shortCall));
+        Equal(StandardConversionRank.ExactMatch, shortCall.SelectedCandidate.ArgumentConversions[0].Rank);
+        Equal(ConversionKind.LValueToRValue, As<ConversionExpression>(shortCall.Arguments[0]).Conversion);
+        Equal(IntegerKind.Short, Kind(shortCall.Arguments[0].Type));
+        AnalysisResult pair = Success("template<class A,typename B> A first(A a,B b){return a;} int run(){return first(1,2L);}");
+        Equal(2, Template(pair, "first").Instances[0].TypeArguments.Count);
+        foreach (string source in new[]
+        {
+            "template<class T> T same(T a,T b){return a;} int run(){return same(1,2L);}",
+            "template<class T> T same(T a,T b){return a;} int run(short value){return same(value,1);}",
+            "template<class T> T id(T a){return a;} int run(){return id();}",
+            "template<class T> T unknown(int a){return a;} int run(){return unknown(1);}"
+        })
+        {
+            AnalysisResult invalid = Analyze(source);
+            Check(!invalid.IsSuccess && !invalid.ContainsUnsupportedFeatures, source);
+            Check(invalid.Diagnostics.Any(d => d.Code == "SEM023"));
+        }
+    }
+    internal static void TemplateOverloads()
+    {
+        foreach (string source in new[]
+        {
+            "int pick(int); template<class T> T pick(T x){return x;} int run(){return pick(1);}",
+            "template<class T> T pick(T x){return x;} int pick(int); int run(){return pick(1);}"
+        })
+        {
+            AnalysisResult result = Success(source);
+            Check(ReturnedCall(result, "run").TemplateInstance == null);
+            Equal(SymbolKind.Function, ReturnedCall(result, "run").SelectedFunction.Kind);
+            Equal(0, result.GlobalScope.FindLocalBinding("pick")!.Symbols.Single(s => s.Kind == SymbolKind.FunctionTemplate).TemplateDefinition!.Instances.Count);
+        }
+        AnalysisResult better = Success("int pick(long); template<class T> T pick(T x){return x;} int run(){return pick(1);}");
+        Check(ReturnedCall(better, "run").TemplateInstance != null);
+        AnalysisResult crossed = Analyze(Fixture("m4-crossed.cpp"));
+        Check(!crossed.IsSuccess && crossed.Diagnostics.Any(d => d.Code == "SEM026"));
+        AnalysisResult losing = Success(Fixture("m4-losing-template.cpp"));
+        Check(ReturnedCall(losing, "entry").TemplateInstance == null);
+        FunctionTemplateDeclaration unused = losing.GlobalScope.FindLocalBinding("pick")!.Symbols.Single(s => s.Kind == SymbolKind.FunctionTemplate).TemplateDefinition!;
+        Equal(0, unused.Instances.Count);
+        AnalysisResult selectedBad = Analyze("void sink(int); template<class T> T pick(T x){return sink(x);} int run(){return pick(1);}");
+        Check(!selectedBad.IsSuccess && !selectedBad.ContainsUnsupportedFeatures);
+        Equal(TemplateInstanceState.Failed, Template(selectedBad, "pick").Instances[0].State);
+        AnalysisResult ordered = Success("template<class T,class U> int pair(T a,U b){return 1;} template<class V> int pair(V a,V b){return 2;} int run(){return pair(1,1);}");
+        Equal(1, ReturnedCall(ordered, "run").SelectedCandidate.Template!.TypeParameters.Count);
+        AnalysisResult unordered = Analyze("template<class T> int pair(T a,int b){return 1;} template<class U> int pair(int a,U b){return 2;} int run(){return pair(1,1);}");
+        Check(unordered.Diagnostics.Any(d => d.Code == "SEM026"));
+        AnalysisResult order = Success("template<class T> T pick(T x){return x;} int before(){return pick(1);} int pick(int); int after(){return pick(1);}");
+        Check(ReturnedCall(order, "before").TemplateInstance != null);
+        Check(ReturnedCall(order, "after").TemplateInstance == null);
+        Equal(1, ReturnedCall(order, "before").Candidates.Count);
+    }
+    internal static void CombinedTemplateGate()
+    {
+        AnalysisResult result = Success(Fixture("m4-combined-gate.cpp"));
+        Equal(3, result.StaticAssertions.Count);
+        foreach (StaticAssertion assertion in result.StaticAssertions)
+        {
+            Equal(ConstantEvaluationStatus.Success, assertion.Evaluation.Status);
+            Equal(BigInteger.One, assertion.Evaluation.Value!.Value);
+            Check(assertion.Evaluation.Steps > 10 && assertion.Evaluation.MaximumCallDepth >= 2);
+            Check(!assertion.IsDeferred);
+        }
+        FunctionTemplateDeclaration combine = Template(result, "combine");
+        FunctionTemplateDeclaration identity = Template(result, "identity");
+        Equal(2, combine.Instances.Count);
+        Equal(2, identity.Instances.Count);
+        CallExpression fromRun = ReturnedCall(result, "run");
+        Same(combine.Instances[0], fromRun.TemplateInstance);
+        var third = As<BinaryExpression>(result.StaticAssertions[2].Expression);
+        Same(fromRun.TemplateInstance!, As<CallExpression>(third.Left).TemplateInstance);
+        var prototypeReturn = As<DependentConversionExpression>(ReturnValue(combine.Pattern));
+        var prototypeBinary = As<DependentBinaryExpression>(prototypeReturn.Operand);
+        CallExpression nondependent = As<CallExpression>(prototypeBinary.Left);
+        Equal(IntegerKind.Long, SelectedParameter(nondependent));
+        Equal(1, nondependent.Candidates.Count);
+        Equal(1, combine.DefinitionContext.Bindings["mark"].Count);
+        Equal(2, result.GlobalScope.FindLocalBinding("mark")!.Symbols.Count);
+        foreach (FunctionTemplateInstance instance in combine.Instances)
+        {
+            Equal(1, instance.BodyReplayCount);
+            var binary = As<BinaryExpression>(ReturnValue(instance.Declaration!));
+            CallExpression mark = As<CallExpression>(binary.Left);
+            Same(nondependent.SelectedFunction, mark.SelectedFunction);
+            Equal(IntegerKind.Long, SelectedParameter(mark));
+            Equal(1, mark.Candidates.Count);
+            var copy = As<VariableDeclaration>(As<DeclarationStatement>(instance.Declaration!.Body!.Statements[0]).Declaration);
+            Check(As<CallExpression>(copy.Initializer).TemplateInstance != null);
+        }
+        Throws<NotSupportedException>(() => ((IList)result.StaticAssertions).Clear());
+        AnalysisResult globals = Success("template<class T> constexpr T id(T x){return x;} constexpr long answer=id(6L); static_assert(answer==6);");
+        Equal(ConstantEvaluationStatus.Success, Variable(globals, "answer").ConstantEvaluation!.Status);
+        Equal(new BigInteger(6), Variable(globals, "answer").ConstantEvaluation!.Value!.Value);
+    }
+    internal static void TemplatePrototypeErrors()
+    {
+        foreach (var (source, code) in new[]
+        {
+            (Fixture("m4-unused-name.cpp"), "SEM021"),
+            (Fixture("m4-unused-call.cpp"), "SEM023"),
+            ("template<class T> int unused(T value){return missing();}", "SEM021"),
+            ("template<class T> int unused(int T){return T;}", "TMP001"),
+            ("template<class T> T unused(T value){int T=0; return value;}", "TMP001"),
+            ("template<class T> T unused(T value){{int T=0;} return value;}", "TMP001"),
+            ("template<class T> int T(int value){return value;}", "TMP001")
+        })
+        {
+            AnalysisResult result = Analyze(source);
+            Check(!result.IsSuccess && !result.ContainsUnsupportedFeatures, source);
+            Check(result.Diagnostics.Any(d => d.Code == code), source);
+        }
+        AnalysisResult noLater = Analyze("template<class T> int unused(T x){return later(0);} int later(int);");
+        Check(noLater.Diagnostics.Any(d => d.Code == "SEM021"));
+    }
+    internal static void TemplateAssertions()
+    {
+        AnalysisResult unused = Success(Fixture("m4-false-unused.cpp"));
+        var deferred = As<StaticAssertStatement>(Template(unused, "assertion").Pattern.Body!.Statements[0]).Assertion;
+        Check(deferred.IsDeferred);
+        Equal(ConstantEvaluationStatus.Success, deferred.Evaluation.Status);
+        Equal(BigInteger.Zero, deferred.Evaluation.Value!.Value);
+        AnalysisResult selected = Analyze(Fixture("m4-false-selected.cpp"));
+        Check(!selected.IsSuccess && selected.Diagnostics.Any(d => d.Code == "CEX002"));
+        AnalysisResult nonconstant = Analyze("int value; template<class T> int assertion(T x){static_assert(value); return 1;}");
+        Check(!nonconstant.IsSuccess && nonconstant.Diagnostics.Any(d => d.Code == "CEX001"));
+        AnalysisResult malformed = Analyze("template<class T> int assertion(T x){static_assert(1+); return 1;}");
+        Check(!malformed.IsSuccess);
+    }
+    internal static void TemplateValueDependency()
+    {
+        AnalysisResult unused = Success("template<class T> bool dependent(T x){constexpr bool b=!x; static_assert(!x); return b;}");
+        FunctionTemplateDeclaration template = Template(unused, "dependent");
+        var local = As<VariableDeclaration>(As<DeclarationStatement>(template.Pattern.Body!.Statements[0]).Declaration);
+        Check(!local.Initializer!.IsTypeDependent && local.Initializer.IsValueDependent);
+        Equal(ConstantEvaluationStatus.Dependent, local.ConstantEvaluation!.Status);
+        var assertion = As<StaticAssertStatement>(template.Pattern.Body.Statements[1]).Assertion;
+        Check(assertion.IsDeferred && assertion.Expression.IsValueDependent);
+        Equal(ConstantEvaluationStatus.Dependent, assertion.Evaluation.Status);
+        AnalysisResult instantiated = Analyze("template<class T> bool dependent(T x){constexpr bool b=!x; return b;} bool run(){return dependent(1);}");
+        Check(!instantiated.IsSuccess && instantiated.Diagnostics.Any(d => d.Code == "CEX001"));
+        AnalysisResult knownArity = Analyze("int need(int); template<class T> int bad(T x){const int n=x; need(n,n); return 1;}");
+        Check(!knownArity.IsSuccess && knownArity.Diagnostics.Any(d => d.Code == "SEM023"));
+        foreach (string qualifier in new[] { "constexpr", "const" })
+        {
+            AnalysisResult required = Success("template<class T> constexpr T id(T x){return x;} template<class U> int outer(U x){" + qualifier + " int n=id(1); static_assert(n==1); return n;}");
+            FunctionTemplateDeclaration outer = Template(required, "outer");
+            Equal(0, outer.Instances.Count);
+            FunctionTemplateInstance identity = Template(required, "id").Instances.Single();
+            Equal(TemplateInstanceState.Complete, identity.State);
+            Equal(1, identity.BodyReplayCount);
+            var initialized = As<VariableDeclaration>(As<DeclarationStatement>(outer.Pattern.Body!.Statements[0]).Declaration);
+            Equal(ConstantEvaluationStatus.Success, initialized.ConstantEvaluation!.Status);
+        }
+        const string optionalRuntime = "void sink(int); template<class T> T runtime(T value){return sink(value);} template<class U> int unused(U x){const int n=runtime(1); return n;}";
+        AnalysisResult optional = Success(optionalRuntime);
+        FunctionTemplateInstance deferredRuntime = Template(optional, "runtime").Instances.Single();
+        Equal(TemplateInstanceState.NotInstantiated, deferredRuntime.State);
+        Equal(0, deferredRuntime.BodyReplayCount);
+        Check(!Analyze(optionalRuntime + "int run(){return unused(1);}").IsSuccess);
+    }
+    internal static void ConstexprEvaluation()
+    {
+        AnalysisResult result = Success("constexpr int add(int a,int b){int local=a+b; {int local=9; local+1;} return local;} constexpr int twice(int x){int local=add(x,x); return add(local,1);} constexpr int early(){return 7; int never=1/0;} static_assert(twice(3)==7); static_assert(early()==7); static_assert(4294967295u+1u==0u); static_assert(-7%3==-1);");
+        Equal(4, result.StaticAssertions.Count);
+        Check(result.StaticAssertions.All(a => a.Evaluation.Status == ConstantEvaluationStatus.Success));
+        Equal(2, result.StaticAssertions[0].Evaluation.MaximumCallDepth);
+        AnalysisResult constLocal = Success("constexpr int f(int x){const int local=x+1; return local;} static_assert(f(4)==5); const int n=3; static_assert(n==3);");
+        Check(constLocal.StaticAssertions.All(a => a.Evaluation.Value == 1));
+        AnalysisResult declared = Success("constexpr int f(); constexpr int f(){return 2;} static_assert(f()==2);");
+        Same(declared.Declarations[0].Symbol, declared.Declarations[1].Symbol);
+        AnalysisResult discarded = Success("int h(); constexpr int f(){int x; x; (x); h; return 1;} static_assert(f()==1);");
+        Equal(ConstantEvaluationStatus.Success, discarded.StaticAssertions[0].Evaluation.Status);
+        var interpreter = new ConstantInterpreter(new AnalysisOptions());
+        Expression first = result.StaticAssertions[0].Expression;
+        Equal(ConstantEvaluationStatus.Success, interpreter.Evaluate(first).Status);
+        Equal(ConstantEvaluationStatus.Success, interpreter.Evaluate(discarded.StaticAssertions[0].Expression).Status);
+        AnalysisResult failure = Analyze("constexpr int bad(int x){int y; return y;} constexpr int outer(int x){return bad(x);} static_assert(outer(1));");
+        Equal(ConstantEvaluationStatus.UninitializedRead, interpreter.Evaluate(failure.StaticAssertions[0].Expression).Status);
+        ConstantEvaluationResult reused = interpreter.Evaluate(first);
+        Equal(ConstantEvaluationStatus.Success, reused.Status);
+        Equal(result.StaticAssertions[0].Evaluation.Steps, reused.Steps);
+    }
+    internal static void ConstexprFailures()
+    {
+        foreach (var (source, status) in new[]
+        {
+            (Fixture("m4-mutable-global.cpp"), ConstantEvaluationStatus.NotConstant),
+            ("constexpr int f(){int value; return value;} static_assert(f()==0);", ConstantEvaluationStatus.UninitializedRead),
+            ("constexpr int f(){int value=value; return value;} static_assert(f()==0);", ConstantEvaluationStatus.UninitializedRead),
+            ("int f(){return 1;} static_assert(f()==1);", ConstantEvaluationStatus.NotConstant),
+            ("constexpr int f(); static_assert(f()==1); constexpr int f(){return 1;}", ConstantEvaluationStatus.NotConstant),
+            ("static_assert(2147483647+1==0);", ConstantEvaluationStatus.UndefinedBehavior),
+            ("static_assert((-2147483647-1)/-1==0);", ConstantEvaluationStatus.UndefinedBehavior),
+            ("static_assert((-2147483647-1)%-1==0);", ConstantEvaluationStatus.UndefinedBehavior),
+            ("static_assert(-(-2147483647-1)==0);", ConstantEvaluationStatus.UndefinedBehavior),
+            ("static_assert(1/0==0);", ConstantEvaluationStatus.UndefinedBehavior)
+        })
+        {
+            AnalysisResult invalid = Analyze(source);
+            Check(!invalid.IsSuccess && !invalid.ContainsUnsupportedFeatures, source);
+            Equal(status, invalid.StaticAssertions[0].Evaluation.Status);
+            Check(invalid.Diagnostics.Any(d => d.Code == "CEX001"));
+        }
+        Check(Analyze("static_assert(false);").Diagnostics.Any(d => d.Code == "CEX002"));
+        Check(Analyze("constexpr int value=1/0;").Diagnostics.Any(d => d.Code == "CEX001"));
+        Check(Analyze("constexpr int f(); int f(){return 1;}").Diagnostics.Any(d => d.Code == "CEX003"));
+        foreach (string invalid in new[] { "constexpr using I=int;", "constexpr typedef int I;" })
+            Check(Analyze(invalid).Diagnostics.Any(d => d.Code == "CEX004"));
+        AnalysisResult lateConst = Analyze("constexpr int f(); const int value=f(); constexpr int f(){return 1;} static_assert(value==1);");
+        Check(lateConst.Diagnostics.Any(d => d.Code == "CEX001"));
+    }
+    internal static void EvaluationLimits()
+    {
+        using var shallow = new CompilationSession(new AnalysisOptions { ConstantEvaluationCallLimit = 8 });
+        AnalysisResult recursive = shallow.Analyze("template<class T> constexpr T recur(T x){return recur(x+1);} static_assert(recur(0)==0);");
+        Check(!recursive.IsSuccess && !recursive.ContainsUnsupportedFeatures);
+        Equal(ConstantEvaluationStatus.ResourceLimit, recursive.StaticAssertions[0].Evaluation.Status);
+        Equal(8, recursive.StaticAssertions[0].Evaluation.MaximumCallDepth);
+        Equal(1, Template(recursive, "recur").Instances.Count);
+        Equal(1, Template(recursive, "recur").Instances[0].BodyReplayCount);
+        using var steps = new CompilationSession(new AnalysisOptions { ConstantEvaluationStepLimit = 3 });
+        AnalysisResult costly = steps.Analyze("static_assert(1+2+3==6);");
+        Equal(ConstantEvaluationStatus.ResourceLimit, costly.StaticAssertions[0].Evaluation.Status);
+        using var instantiation = new CompilationSession(new AnalysisOptions { TemplateInstantiationDepthLimit = 1 });
+        AnalysisResult deep = instantiation.Analyze("template<class T> T id(T x){return x;} template<class T> T wrap(T x){return id(x);} int run(){return wrap(1);}");
+        Check(deep.Diagnostics.Any(d => d.Code == "TMP003"));
+        Throws<ArgumentOutOfRangeException>(() => new CompilationSession(new AnalysisOptions { ConstantEvaluationStepLimit = 0 }));
+    }
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference<Scope> DiscardTemplateResult(CompilationSession session)
+    {
+        AnalysisResult result = session.Analyze("template<class T> T id(T x){return x;}");
+        Check(result.IsSuccess);
+        return new WeakReference<Scope>(result.GlobalScope);
+    }
+    internal static void TemplateLifetime()
+    {
+        using var session = new CompilationSession();
+        var weak = DiscardTemplateResult(session);
+        for (int i = 0; i < 3; ++i) { GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect(); }
+        Check(!weak.TryGetTarget(out _), "Session canonical types retained a dropped template translation unit.");
+        AnalysisResult first = session.Analyze("template<class T> T id(T x){return x;} int run(){return id(1);}");
+        AnalysisResult second = session.Analyze("template<class T> T id(T x){return x;} int run(){return id(1);}");
+        Check(first.IsSuccess && second.IsSuccess);
+        Check(!ReferenceEquals(Template(first, "id").Symbol, Template(second, "id").Symbol));
+        Check(!ReferenceEquals(Template(first, "id").TypeParameters[0].Type, Template(second, "id").TypeParameters[0].Type));
+        Check(!ReferenceEquals(Template(first, "id").Instances[0].Symbol, Template(second, "id").Instances[0].Symbol));
+        Same(Template(first, "id").Instances[0].Symbol.Type, Template(second, "id").Instances[0].Symbol.Type);
+        GC.KeepAlive(session);
+    }
+    internal static void TemplateRollback()
+    {
+        using var session = new CompilationSession();
+        var table = new TypeTable(TargetInfo.Lp64);
+        var diagnostics = new DiagnosticBag();
+        var owner = new ParseState(session.Lex("template<class T> T id(T x){return x;}").Tokens.CreateCursor(), diagnostics);
+        new Parser(owner, table).TranslationUnit();
+        FunctionTemplateDeclaration template = owner.GlobalScope.FindLocal("id")!.TemplateDefinition!;
+        int retainedChildren = template.TemplateScope.Children.Count;
+        var checkpoint = owner.Checkpoint();
+        var replay = new ParseState(session.Lex("int run(){return id(1);}").Tokens.CreateCursor(), diagnostics, owner.GlobalScope, owner);
+        Throws<InvalidOperationException>(() => replay.Checkpoint());
+        Throws<InvalidOperationException>(() => replay.Restore(checkpoint));
+        new Parser(replay, table).TranslationUnit();
+        Equal(0, diagnostics.Count);
+        FunctionTemplateInstance instance = template.Instances.Single();
+        Equal(TemplateInstanceState.Complete, instance.State);
+        owner.Restore(checkpoint);
+        Equal(0, template.Instances.Count);
+        Equal(TemplateInstanceState.NotInstantiated, instance.State);
+        Check(instance.Declaration == null && instance.Symbol.Definition == null);
+        Equal(0, instance.BodyReplayCount);
+        Equal(0, instance.Symbol.Declarations.Count);
+        Equal(retainedChildren, template.TemplateScope.Children.Count);
+        Check(owner.GlobalScope.FindLocal("run") == null);
+        Same(template, owner.GlobalScope.FindLocal("id")!.TemplateDefinition);
+    }
+    internal static void TemplateBoundaries()
+    {
+        foreach (string source in new[]
+        {
+            "template<class T> T id(T);", "template<class T=int> T id(T x){return x;}",
+            "template<int N> int value(){return N;}", "template<class... T> int count(){return 0;}",
+            "template<class> int f(int x){return x;}",
+            "template<class T> T* id(T* x){return x;}", "template<class T> T id(T& x){return x;}",
+            "template<class T> T id(T x){return x;} int run(){return id<int>(1);}",
+            "template<class T> T id(T x){return missing(x);}",
+            "template<class T> T id(T x){return x;} template<class U> U id(U x){return x;}",
+            "static_assert(true, \"message\");", "constexpr void empty(){return;}",
+            "template<class T> constexpr void noop(T x){return;} constexpr int f(){noop(1);return 1;} static_assert(f()==1);",
+            "int f(); static_assert(f);", "template<class T> T id(T x){return x;} int f(){id; return 0;}"
+        })
+        {
+            AnalysisResult result = Analyze(source);
+            Check(!result.IsSuccess && result.ContainsUnsupportedFeatures, source);
+        }
+    }
     internal static void Shadowing()
     {
         AnalysisResult result = Success("int f(int x) { { long x = 1; x + 2; } return x; }");
@@ -719,7 +1083,7 @@ internal static class Tests
     {
         foreach (string source in new[]
         {
-            "#define X 1\nint x=X;", "template<class T> T id(T x){return x;}", "struct S {int x;};", "float f;",
+            "#define X 1\nint x=X;", "struct S {int x;};", "float f;",
             "int *p;", "int &r;", "int a[2];", "int f(){return sizeof(int);}", "int f(){return 1.0;}",
             "int f(){return 'a';}", "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
             "int f(){return true && false;}", "int f(){return 1<<2;}", "int f(){return true?1:2;}",

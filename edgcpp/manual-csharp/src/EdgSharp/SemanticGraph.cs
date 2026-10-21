@@ -5,8 +5,8 @@ using System.Numerics;
 
 namespace EdgSharp;
 
-public enum ScopeKind { TranslationUnit, Function, Block }
-public enum SymbolKind { TypeAlias, Variable, Parameter, Function }
+public enum ScopeKind { TranslationUnit, Function, Block, Template }
+public enum SymbolKind { TypeAlias, Variable, Parameter, Function, TemplateParameter, FunctionTemplate }
 
 /// <summary>
 /// One name in one lexical scope. Function entities retain their first-declaration
@@ -28,11 +28,12 @@ public sealed class NameBinding
     }
     internal void Add(Symbol symbol)
     {
-        if (symbol.Kind != SymbolKind.Function || symbols.Any(s => s.Kind != SymbolKind.Function) ||
+        if (!IsFunction(symbol) || symbols.Any(s => !IsFunction(s)) ||
             !ReferenceEquals(symbol.Scope, Scope) || symbol.Name != Name)
             throw new InvalidOperationException("Only function entities can share a name binding.");
         symbols.Add(symbol);
     }
+    internal static bool IsFunction(Symbol symbol) => symbol.Kind is SymbolKind.Function or SymbolKind.FunctionTemplate;
     internal void RemoveLast(Symbol symbol)
     {
         if (!ReferenceEquals(symbols[^1], symbol)) throw new InvalidOperationException("Symbol rollback must follow insertion order.");
@@ -78,6 +79,7 @@ public sealed class Scope
     internal void RemoveLastDeclaration() => declarations.RemoveAt(declarations.Count - 1);
     internal void AddChild(Scope child) => children.Add(child);
     internal void RemoveLastChild() => children.RemoveAt(children.Count - 1);
+    internal IEnumerable<NameBinding> LocalBindings => bindings.Values;
 }
 
 /// <summary>One declared entity. Redeclarations share this object and retain separate declaration nodes.</summary>
@@ -90,6 +92,8 @@ public sealed class Symbol
     public Scope Scope { get; }
     public ReadOnlyCollection<Declaration> Declarations { get; }
     public FunctionDeclaration? Definition { get; internal set; }
+    public FunctionTemplateDeclaration? TemplateDefinition { get; internal set; }
+    public bool HasTemplateDependentValue { get; internal set; }
     internal Symbol(string name, SymbolKind kind, SemanticType type, Scope scope)
     {
         (Name, Kind, Type, Scope) = (name, kind, type, scope);
@@ -119,6 +123,8 @@ public sealed class VariableDeclaration : Declaration
 {
     public Expression? Initializer { get; internal set; }
     public bool IsParameter => Symbol.Kind == SymbolKind.Parameter;
+    public bool IsConstexpr { get; internal set; }
+    public ConstantEvaluationResult? ConstantEvaluation { get; internal set; }
     internal VariableDeclaration(Symbol symbol, SemanticType type, SourceRange range, SourceRange name) : base(symbol, type, range, name) { }
 }
 public sealed class FunctionDeclaration : Declaration
@@ -128,6 +134,8 @@ public sealed class FunctionDeclaration : Declaration
     public Scope ParameterScope { get; }
     public BlockStatement? Body { get; internal set; }
     public bool IsDefinition => Body != null;
+    public bool IsConstexpr { get; internal set; }
+    public FunctionTemplateInstance? TemplateInstance { get; internal set; }
     internal FunctionDeclaration(Symbol symbol, FunctionType type, SourceRange range, SourceRange name, VariableDeclaration[] parameters, Scope parameterScope)
         : base(symbol, type, range, name)
         => (Parameters, ParameterScope) = (Array.AsReadOnly((VariableDeclaration[])parameters.Clone()), parameterScope);
@@ -140,6 +148,8 @@ public abstract class Expression
     public ValueCategory ValueCategory { get; }
     public SourceRange Range { get; }
     public BigInteger? ConstantValue { get; }
+    public bool IsTypeDependent => Type.Kind is TypeKind.TemplateParameter or TypeKind.Dependent;
+    public virtual bool IsValueDependent => IsTypeDependent;
     internal Expression(SemanticType type, ValueCategory category, SourceRange range, BigInteger? constant = null)
         => (Type, ValueCategory, Range, ConstantValue) = (type, category, range, constant);
 }
@@ -154,6 +164,7 @@ public sealed class LiteralExpression : Expression
 public sealed class ReferenceExpression : Expression
 {
     public Symbol ReferencedSymbol { get; }
+    public override bool IsValueDependent => IsTypeDependent || ReferencedSymbol.HasTemplateDependentValue;
     internal ReferenceExpression(Symbol symbol, SourceRange range)
         : base(symbol.Type, ValueCategory.LValue, range) => ReferencedSymbol = symbol;
 }
@@ -171,6 +182,7 @@ public sealed class OverloadSetExpression : Expression
 public sealed class ParenthesizedExpression : Expression
 {
     public Expression Operand { get; }
+    public override bool IsValueDependent => Operand.IsValueDependent;
     internal ParenthesizedExpression(Expression operand, SourceRange range)
         : base(operand.Type, operand.ValueCategory, range, operand.ConstantValue) => Operand = operand;
 }
@@ -179,6 +191,7 @@ public sealed class ConversionExpression : Expression
 {
     public Expression Operand { get; }
     public ConversionKind Conversion { get; }
+    public override bool IsValueDependent => Operand.IsValueDependent;
     internal ConversionExpression(Expression operand, SemanticType target, ConversionKind conversion, BigInteger? constant)
         : base(target, ValueCategory.PRValue, operand.Range, constant) => (Operand, Conversion) = (operand, conversion);
 }
@@ -186,6 +199,7 @@ public sealed class UnaryExpression : Expression
 {
     public TokenKind Operator { get; }
     public Expression Operand { get; }
+    public override bool IsValueDependent => Operand.IsValueDependent;
     internal UnaryExpression(TokenKind op, Expression operand, SemanticType type, SourceRange range, BigInteger? constant)
         : base(type, ValueCategory.PRValue, range, constant) => (Operator, Operand) = (op, operand);
 }
@@ -194,6 +208,7 @@ public sealed class BinaryExpression : Expression
     public TokenKind Operator { get; }
     public Expression Left { get; }
     public Expression Right { get; }
+    public override bool IsValueDependent => Left.IsValueDependent || Right.IsValueDependent;
     internal BinaryExpression(TokenKind op, Expression left, Expression right, SemanticType type, SourceRange range, BigInteger? constant)
         : base(type, ValueCategory.PRValue, range, constant) => (Operator, Left, Right) = (op, left, right);
 }
@@ -204,10 +219,28 @@ public sealed class CallExpression : Expression
     public ReadOnlyCollection<Expression> Arguments { get; }
     public ReadOnlyCollection<OverloadCandidate> Candidates { get; }
     public OverloadCandidate SelectedCandidate { get; }
-    internal CallExpression(OverloadCandidate selected, OverloadCandidate[] candidates, Expression callee, Expression[] arguments, SemanticType resultType, SourceRange range)
+    public FunctionTemplateInstance? TemplateInstance { get; }
+    public override bool IsValueDependent => Arguments.Any(argument => argument.IsValueDependent);
+    internal CallExpression(Symbol function, FunctionTemplateInstance? instance, OverloadCandidate selected, OverloadCandidate[] candidates, Expression callee, Expression[] arguments, SemanticType resultType, SourceRange range)
         : base(resultType, ValueCategory.PRValue, range)
-        => (SelectedFunction, SelectedCandidate, Candidates, Callee, Arguments) =
-            (selected.Function, selected, Array.AsReadOnly((OverloadCandidate[])candidates.Clone()), callee, Array.AsReadOnly((Expression[])arguments.Clone()));
+        => (SelectedFunction, TemplateInstance, SelectedCandidate, Candidates, Callee, Arguments) =
+            (function, instance, selected, Array.AsReadOnly((OverloadCandidate[])candidates.Clone()), callee, Array.AsReadOnly((Expression[])arguments.Clone()));
+}
+
+public sealed class StaticAssertion
+{
+    public Expression Expression { get; }
+    public ConstantEvaluationResult Evaluation { get; }
+    public SourceRange Range { get; }
+    public bool IsDeferred { get; }
+    internal StaticAssertion(Expression expression, ConstantEvaluationResult evaluation, SourceRange range, bool deferred)
+        => (Expression, Evaluation, Range, IsDeferred) = (expression, evaluation, range, deferred);
+}
+
+public sealed class StaticAssertStatement : Statement
+{
+    public StaticAssertion Assertion { get; }
+    internal StaticAssertStatement(StaticAssertion assertion) : base(assertion.Range) => Assertion = assertion;
 }
 
 public abstract class Statement

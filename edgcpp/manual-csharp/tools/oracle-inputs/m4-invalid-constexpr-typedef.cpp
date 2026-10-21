@@ -1,0 +1,1 @@
+constexpr typedef int Alias;

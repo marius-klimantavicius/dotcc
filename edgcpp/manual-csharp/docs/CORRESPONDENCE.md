@@ -6,7 +6,7 @@ values and source baseline are in `../evidence/source-baseline.json`; reviewer
 source inspections and additional branch references are in the review reports.
 No generated EDG C# implementation is an input to this campaign.
 
-## Accepted foundations and scalar M3 extension
+## Accepted foundations, scalar M3 and early M4 extensions
 
 | Authored component | EDG source/routines | Preserved invariant and managed adaptation | Outstanding branches |
 | --- | --- | --- | --- |
@@ -47,6 +47,14 @@ Global `main` function/variable semantics are explicitly excluded with unsupport
 diagnostics rather than accepting them through ordinary declaration paths.
 
 ## Native baseline witnesses
+
+The early M4 extension now implements real cached-token prototype/concrete body
+rescanning, direct scalar deduction/instances, definition-context lookup and
+explicit constexpr work/call/local execution in required contexts. Exact routine
+branches, managed representation/ownership adaptations, canonical review finding
+aliases and current exclusions are in `TEMPLATES-AND-CONSTANTS.md`. The combined
+source gate and 48-group managed/AOT suite pass with explicit used-instantiation
+native controls. This does not complete general templates/constexpr or the plan.
 
 The scalar M3 extension replaces the initial single-function call restriction
 with ordered name bindings and frozen source-visible candidates. Routine-level

@@ -14,6 +14,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--receipt", type=pathlib.Path, required=True)
     parser.add_argument("--timeout", type=int, default=300)
+    parser.add_argument("--source", type=pathlib.Path, action="append", default=[],
+                        help="Additional explicitly checked tool/source path to fingerprint")
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ["--"] else args.command
@@ -24,6 +26,9 @@ def main():
         for path in sorted((root / directory).rglob("*")):
             if path.is_file() and not {"bin", "obj"}.intersection(path.relative_to(root).parts):
                 sources[str(path.relative_to(root))] = hashlib.sha256(path.read_bytes()).hexdigest()
+    for path in args.source:
+        path = (root / path).resolve()
+        sources[str(path.relative_to(root))] = hashlib.sha256(path.read_bytes()).hexdigest()
     started = time.monotonic()
     result = subprocess.run(command, cwd=root, text=True, capture_output=True,
                             timeout=args.timeout, check=False)

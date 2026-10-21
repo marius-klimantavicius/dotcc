@@ -86,8 +86,9 @@ Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
   checked by 25 named managed+AOT groups, native fixtures and independent review.
 - M3: scalar free-function overload checkpoint independently accepted; remaining
   references/classes/advanced-conversion/ADL branches stay open in the inventory.
-- M4: active next assignment; worker reading actual EDG cache/deduction/lookup/
-  interpreter routines before implementation. N1 is closed by executed tests.
+- M4: early coupled gate independently accepted: real token replay/deduction/
+  instances/frozen lookup/overload/constexpr source path. General templates,
+  constraints, compound/dependent forms and full constexpr remain required gaps.
 - M5: not started.
 - M6: not started.
 
@@ -277,3 +278,54 @@ participation, explicit constexpr execution and combined constant-required sourc
 test. Supervisor commits this checkpoint then immediately releases source edits;
 reviewer is reassigned to M4 independently. No user reconfirmation or milestone
 stopping boundary applies.
+
+## Active M4 implementation and review
+
+Current status: bounded gate accepted in `evidence/review-m4-final.md` after
+48/48 managed and Linux x64 NativeAOT groups, zero failures/skips, and the native
+used-profile controls. Canonical M4-01..13 findings are closed. Older provisional
+R numbers in the implementation history below map explicitly in
+`docs/TEMPLATES-AND-CONSTANTS.md`; they are not remaining open blockers.
+
+Worker `/root/manual_edg_supervisor/implementation_m3` and independent reviewer
+`/root/manual_edg_supervisor/review_m3` remain active at their requested models/
+efforts for the next M4 assignment; the scalar M3 checkpoint commit is
+`8b32f7c60a18184476248e759c085b5a86e4588c`. Actual template/dependent-type/cache/
+constexpr implementation is underway; no M4 acceptance has occurred.
+
+The combined native contract and losing-template-body controls accept under
+strict C++20; unused-template nondependent-name/call errors and crossed
+ordinary/template candidates reject with actual language exit 2. Receipts are
+`native-m4-*-contract.json`. They define behavioral controls, not managed passes.
+The native adapter now requires exact normal/error statuses; catastrophe/command
+failure/signal never matches a negative. Four adapter unit controls pass, with
+source mapping/evidence in `evidence/oracle-status-control.md`.
+
+Open M4-R1, high ownership blocker, independently source-confirmed: session-lived
+FunctionType interning captures TemplateParameterType.ParameterScope and thus
+prior TU/source/cache graphs across repeated Analyze calls. Worker must scope
+dependent signature identity/canonicalization to analysis/template lifetime while
+retaining immutable primitive/concrete session canonicalization. Required direct
+non-inlined weak-reference collection and repeated-analysis isolation tests keep
+the session alive; M6 inventory records broader repeated-template memory work.
+
+Worker source fix for M4-R1 now keeps dependent/scope-owning function signatures
+out of session interning; direct collection/isolation tests remain required.
+M4-R2 template-parameter redeclaration checks cover initial signature/body and
+must also cover the function's own name after popping parameter scope.
+M4-R3 separates expression type-dependency from value-dependency: a known bool
+result of `!dependent` or concrete target conversion still cannot be evaluated
+at prototype time. Reviewer also requires shared replay/checkpoint lineage or an
+explicit child-checkpoint exclusion until supported; old N1 does not cover new
+mutation states automatically. These are active produced-code review findings,
+not accepted behavior.
+
+Native profile correction: external template instantiation defaults to none in
+EDG, so the initial selected-false-assert expected-rejection probe returned 0.
+That failed expectation is retained, excluded from pass counts, and explained in
+`oracle-status-control.md`. The adapter now explicitly selects `--instantiate
+used`; selected false assertion and selected invalid dependent return reject,
+while unused false assertion and losing-template body accept. The combined gate
+and all nondependent/error controls match under this used profile. Seven adapter
+unit controls plus explicit native integration controls guard the profile; raw
+acceptance with default-none must never prove selected-body semantics.

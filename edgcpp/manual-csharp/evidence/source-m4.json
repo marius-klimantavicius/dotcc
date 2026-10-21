@@ -1,0 +1,55 @@
+{
+  "purpose": "consulted source provenance, not a claim that complete files are ported",
+  "imported_base": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "repository_head_at_inspection": "8b32f7c60a18184476248e759c085b5a86e4588c",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/templates.c",
+      "sha256": "021bfc8bc1ab9908c3c9e77e7bb3551bc526443bf51e1c5d50b82b2c8b837267"
+    },
+    {
+      "path": "edgcpp/upstream/src/overload.c",
+      "sha256": "62c8b3971d169872985b6855871488690c971455a0ef07773e6f78f335a1c67e"
+    },
+    {
+      "path": "edgcpp/upstream/src/lookup.c",
+      "sha256": "251e21f04cc94b0e8da1c5e1031ca3f832aaf5ec2b19bd6ff4ece4116e543af2"
+    },
+    {
+      "path": "edgcpp/upstream/src/interpret.c",
+      "sha256": "d3f34d737a6690e482942a52a463e406b767a0d5fc06b3609c8cb9c79b27cb4d"
+    },
+    {
+      "path": "edgcpp/upstream/src/decls.c",
+      "sha256": "1b362f931dd532b477c272d4cc4481baa822660ffb278c00475ae2da51b8fdc0"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_spec.c",
+      "sha256": "b7ed79284e50c8418dc68895e6e5e5dfc7328f5837bd71b1ef933e5377cfb6de"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.c",
+      "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.c",
+      "sha256": "535768a37a2bd0f90dd18c41bd867398074289a305c3ff88589da67153514cd0"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_def.h",
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.c",
+      "sha256": "7089dc53eb8fca9f3c55ed299850914d39a8fdd533937e8809d210a5f6459f2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.h",
+      "sha256": "a8c9c5e79dbdd6be8c82f360c58d8681f91015e5e14e61039076b7f8c3b9c2c1"
+    }
+  ]
+}

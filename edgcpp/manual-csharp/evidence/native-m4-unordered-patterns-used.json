@@ -1,0 +1,27 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-unordered-patterns.cpp",
+  "source_sha256": "107db84ad2532670ba76191250e22efbe44510ed915094e4ff741b73fabb99c5",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-unordered-patterns.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-unordered-pat\n          terns.cpp\", line 4: error: more than one instance of overloaded\n          function \"pattern\" matches the argument list:\n            function template \"int pattern(T, int)\" (declared at line 2)\n            function template \"int pattern(int, T)\" (declared at line 3)\n            argument types are: (int, int)\n  int entry() { return pattern(1, 1); }\n                       ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-unordered-patterns.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

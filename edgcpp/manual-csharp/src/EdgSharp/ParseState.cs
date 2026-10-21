@@ -6,19 +6,35 @@ namespace EdgSharp;
 
 internal sealed class ParseState
 {
-    private readonly List<Action> undo = [];
+    private readonly List<Action> undo;
     private readonly List<ParseCheckpoint> checkpoints = [];
+    private readonly bool replayState;
     internal TokenCursor Tokens { get; }
     internal DiagnosticBag Diagnostics { get; }
-    internal Scope GlobalScope { get; } = new(ScopeKind.TranslationUnit, null);
+    internal Scope GlobalScope { get; }
     internal Scope CurrentScope { get; private set; }
     internal FunctionDeclaration? CurrentFunction { get; set; }
     // Explicit retention boundary for later deferred rescanning/instantiation.
     internal List<TokenBuffer> PendingReplays { get; } = [];
-    internal ParseState(TokenCursor tokens, DiagnosticBag diagnostics)
+    private readonly List<StaticAssertion> assertions = [];
+    internal IReadOnlyList<StaticAssertion> Assertions => assertions;
+    internal ParseState(TokenCursor tokens, DiagnosticBag diagnostics, Scope? globalScope = null, ParseState? mutationOwner = null)
     {
         (Tokens, Diagnostics) = (tokens, diagnostics);
+        undo = mutationOwner?.undo ?? [];
+        replayState = mutationOwner != null;
+        GlobalScope = globalScope ?? new Scope(ScopeKind.TranslationUnit, null);
         CurrentScope = GlobalScope;
+    }
+    internal void AddAssertion(StaticAssertion assertion)
+    {
+        assertions.Add(assertion);
+        undo.Add(() => assertions.RemoveAt(assertions.Count - 1));
+    }
+    internal void AddInstanceDeclaration(FunctionDeclaration declaration)
+    {
+        declaration.Symbol.Add(declaration);
+        undo.Add(declaration.Symbol.RemoveLastDeclaration);
     }
     internal Scope PushScope(ScopeKind kind)
     {
@@ -51,14 +67,42 @@ internal sealed class ParseState
         symbol.Definition = declaration;
         undo.Add(() => symbol.Definition = previous);
     }
+    internal void SetTemplateDefinition(Symbol symbol, FunctionTemplateDeclaration declaration)
+    {
+        var previous = symbol.TemplateDefinition;
+        symbol.TemplateDefinition = declaration;
+        undo.Add(() => symbol.TemplateDefinition = previous);
+    }
+    internal void RegisterInstance(FunctionTemplateDeclaration template, FunctionTemplateInstance instance)
+    {
+        template.AddInstance(instance);
+        undo.Add(() => template.RemoveLastInstance(instance));
+    }
+    internal void UpdateInstance(FunctionTemplateInstance instance, TemplateInstanceState status,
+        FunctionDeclaration? declaration = null, bool replay = false)
+    {
+        var previous = (instance.State, instance.Declaration, instance.BodyReplayCount);
+        instance.State = status;
+        if (declaration != null) instance.Declaration = declaration;
+        if (replay) ++instance.BodyReplayCount;
+        undo.Add(() => (instance.State, instance.Declaration, instance.BodyReplayCount) = previous);
+    }
+    internal void SetDependentValue(Symbol symbol, bool dependent)
+    {
+        bool previous = symbol.HasTemplateDependentValue;
+        symbol.HasTemplateDependentValue = dependent;
+        undo.Add(() => symbol.HasTemplateDependentValue = previous);
+    }
     internal ParseCheckpoint Checkpoint()
     {
+        if (replayState) throw new InvalidOperationException("Replay states share mutations with their owner and cannot create independent checkpoints.");
         var checkpoint = new ParseCheckpoint(this, Tokens.Checkpoint(), CurrentScope, CurrentFunction, Diagnostics.Count, undo.Count, PendingReplays.ToArray());
         checkpoints.Add(checkpoint);
         return checkpoint;
     }
     internal void Restore(ParseCheckpoint checkpoint)
     {
+        if (replayState) throw new InvalidOperationException("Only the replay mutation owner can restore checkpoints.");
         if (!ReferenceEquals(checkpoint.Owner, this)) throw new ArgumentException("Checkpoint belongs to another parse state.", nameof(checkpoint));
         int index = checkpoints.FindIndex(c => ReferenceEquals(c, checkpoint));
         // Validate the branch before changing any state. Counts alone cannot identify a parse branch.

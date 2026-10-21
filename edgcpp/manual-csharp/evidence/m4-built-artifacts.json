@@ -1,0 +1,20 @@
+{
+  "purpose": "Held M4 checkpoint output fingerprints; prior milestone bytes retained separately",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 120320,
+      "sha256": "1bfe51e978df952f679763a132b6c6de7641016fb94cd4dbcdd72611b99a4168"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 82944,
+      "sha256": "2e0f9259bb76b3b59b9f57b47e91f457c05b957bcad9ecaab5c0f178e3015b38"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-m4/EdgSharp.Tests",
+      "bytes": 2421544,
+      "sha256": "e57a497b87f473842d57ef2d03a79328ecddc934aa14ec73ef244bd64d9e11e0"
+    }
+  ]
+}

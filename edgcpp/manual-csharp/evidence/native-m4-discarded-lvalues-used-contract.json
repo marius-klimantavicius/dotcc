@@ -1,0 +1,27 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-discarded-lvalues.cpp",
+  "source_sha256": "1f984b79756460bf3c451a3d6b594d8db7680c3e5417d6c7fcf05db553fde5d5",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-discarded-lvalues.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-discarded-lva\n          lues.cpp\", line 3: warning: expression has no effect\n  constexpr int discarded() { int value; value; (value); runtime_only; return 1; }\n                                         ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-discarded-lva\n          lues.cpp\", line 3: warning: expression has no effect\n  constexpr int discarded() { int value; value; (value); runtime_only; return 1; }\n                                                ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-discarded-lva\n          lues.cpp\", line 3: warning: expression has no effect\n  constexpr int discarded() { int value; value; (value); runtime_only; return 1; }\n                                                         ^\n\n",
+  "expected": "accept",
+  "matched": true
+}
