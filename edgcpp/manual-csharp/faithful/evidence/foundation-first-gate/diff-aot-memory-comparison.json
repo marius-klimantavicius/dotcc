@@ -1,0 +1,27 @@
+{
+  "group": "memory",
+  "cases": 2314,
+  "native_rows": 2314,
+  "managed_rows": 2314,
+  "commands": [
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+      "--text"
+    ],
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-FoundationOracleAdapter/FoundationOracleAdapter"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "passed": true,
+  "input_sha256": "c674b8c7db78e9d3a4416bab110591eb30090157b389f4ccb4bd95692b8c62ce",
+  "output_sha256": [
+    "93d7ee8be49db36e77388ecb1382ad1e6c0a9540068b9449dffa0db252218a1e",
+    "93d7ee8be49db36e77388ecb1382ad1e6c0a9540068b9449dffa0db252218a1e"
+  ],
+  "mismatches_first_32": [],
+  "scope": "source-closed leaves and local stable-expression position adapters; no pending code, global retained-pointer or frontend initialization acceptance"
+}

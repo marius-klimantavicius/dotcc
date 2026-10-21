@@ -1,0 +1,543 @@
+{
+  "holds": {
+    "allSharedWritersHeld": true,
+    "authority": "explicit completed/temp HOLD handoffs from every task; no child writes permitted",
+    "tasks": [
+      {
+        "key": "pin",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p0-source-pin-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "integers",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-integer-leaves-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "review",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p0-contract-review-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "arithmetic",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-integer-arithmetic-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "init",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-init-width-investigation-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "review2",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-integer-held-review-20261021-r2",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "runtime_memory",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-memory-text-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "runtime_error",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-checking-diagnostics-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "runtime_host",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-host-runtime-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "positions",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-p1-source-positions-20261021-r1",
+        "status": "completed",
+        "hold": true
+      },
+      {
+        "key": "runtime_review",
+        "taskId": "node:delegated-task:command%3Amcp%3A2a7de3dc-06b6-4cce-9c8e-0254d6faa1b6%3Adelegate-task%3Afaithful-runtime-contract-review-20261021-r1",
+        "status": "completed",
+        "hold": true
+      }
+    ],
+    "qualifiedBeforeGate": 18,
+    "restrictedExcluded": 2
+  },
+  "started_unix": 1792566015.7580554,
+  "steps": [
+    {
+      "name": "capture-snapshot-before",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/capture_snapshot.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/snapshot-before.json"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/capture-snapshot-before.log",
+      "log_sha256": "2530998d21192b4cb1bca6102d33ad7186ddd024fc0076cf066429c5cafbb94c"
+    },
+    {
+      "name": "hashes-mem_manage",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/mem_manage-batch1.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/hashes-mem_manage.log",
+      "log_sha256": "41c3445124b9e592827992e0b2197595b94862701122a0ef40f072a26e68f207"
+    },
+    {
+      "name": "hashes-host_envir",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/host_envir-batch1.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/hashes-host_envir.log",
+      "log_sha256": "bcad24e057a4faea3602c0618a5177db1561447e2e0b9bd23d37f114b375aa7f"
+    },
+    {
+      "name": "hashes-basics-positions",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/basics-positions-batch1.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/hashes-basics-positions.log",
+      "log_sha256": "5c90a33c8ca15df387f824829677b4889ffd3fb7420459641c5959821f0873af"
+    },
+    {
+      "name": "hashes-error",
+      "command": [
+        "sha256sum",
+        "--check",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/ledgers/error-batch1.sha256"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/hashes-error.log",
+      "log_sha256": "ccf9458f2adc781ba043a8236cb080cd9b8c097a1fddc3476540b3f46a2de8ce"
+    },
+    {
+      "name": "native-foundation-abi",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+        "--abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/native-foundation-abi.log",
+      "log_sha256": "61c49b59939d1dc482eeecf950efa408449b509ccf22c78660e7b488ec0c6193"
+    },
+    {
+      "name": "native-position-abi",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/position-oracle",
+        "--abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/native-position-abi.log",
+      "log_sha256": "2cf0ffd4e35899cf9602c9e998e459b6feb40bdd78c4048b63cdec2563f9d2c8"
+    },
+    {
+      "name": "native-sequential-read",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+        "--sequential-read"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/native-sequential-read.log",
+      "log_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "name": "build-MemoryText",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/MemoryText/MemoryText.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/build-MemoryText.log",
+      "log_sha256": "baa23a1a5833599c733db1744f15a6bc6808409ca990e5ee7bf6b60eb9a16124"
+    },
+    {
+      "name": "jit-MemoryText",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/MemoryText/bin/Release/net10.0/MemoryText.dll"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/jit-MemoryText.log",
+      "log_sha256": "213f60aca9d7762f6d96534acf13f9a37fc01c2a2c6be9a494ffd91fe23479c9"
+    },
+    {
+      "name": "build-HostRuntime",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/HostRuntime/HostRuntime.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/build-HostRuntime.log",
+      "log_sha256": "3b2ecf75fc4c1705249a2c6fb33b907d091bacbff206ec584fc6ace73af4aa4d"
+    },
+    {
+      "name": "jit-HostRuntime",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/HostRuntime/bin/Release/net10.0/HostRuntime.dll"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/jit-HostRuntime.log",
+      "log_sha256": "8dbb0b83a916df9713b973dd962a86ae68c5f3f8dcc58cd92bdf35c9d01f2a8c"
+    },
+    {
+      "name": "build-SourcePositions",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/SourcePositions/SourcePositions.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/build-SourcePositions.log",
+      "log_sha256": "eb321e27af4f64f011586566618935487c34ef5d86e596df883ed45e82467ab8"
+    },
+    {
+      "name": "jit-SourcePositions",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/SourcePositions/bin/Release/net10.0/SourcePositions.dll"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/jit-SourcePositions.log",
+      "log_sha256": "90c85e4381ddfa595dc5ea0ef34be396e8e2d21e9a3b9a965d772eb26247ab6d"
+    },
+    {
+      "name": "build-FoundationOracleAdapter",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/FoundationOracleAdapter/FoundationOracleAdapter.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/build-FoundationOracleAdapter.log",
+      "log_sha256": "286a7e212ebfb7cc45a62ad4db95b6e1c1d995b0234a12c712eb507aa47d508b"
+    },
+    {
+      "name": "managed-foundation-abi",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/FoundationOracleAdapter/bin/Release/net10.0/FoundationOracleAdapter.dll",
+        "--abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/managed-foundation-abi.log",
+      "log_sha256": "61c49b59939d1dc482eeecf950efa408449b509ccf22c78660e7b488ec0c6193"
+    },
+    {
+      "name": "managed-position-abi",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/SourcePositions/bin/Release/net10.0/SourcePositions.dll",
+        "--abi"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/managed-position-abi.log",
+      "log_sha256": "2cf0ffd4e35899cf9602c9e998e459b6feb40bdd78c4048b63cdec2563f9d2c8"
+    },
+    {
+      "name": "diff-jit-memory",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+        "--group",
+        "memory",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/FoundationOracleAdapter/bin/Release/net10.0/FoundationOracleAdapter.dll",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-jit-memory"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-jit-memory.log",
+      "log_sha256": "f9e16d0ae59ce4f241fde9fd70182bd20dbd7ae1a2b1d190b0a2c65254c3b636"
+    },
+    {
+      "name": "diff-jit-host",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+        "--group",
+        "host",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/HostRuntime/bin/Release/net10.0/HostRuntime.dll",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-jit-host"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-jit-host.log",
+      "log_sha256": "4054da469313bca19d2d0ed14e52c51aa723f98d319ff5b75dd3557528ee12b5"
+    },
+    {
+      "name": "diff-jit-positions",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+        "--group",
+        "positions",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/position-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/SourcePositions/bin/Release/net10.0/SourcePositions.dll",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-jit-positions"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-jit-positions.log",
+      "log_sha256": "80c9e92901890c3cb90ff2d5cb8e494dce76e29e2fd1a641085de7fce5c0a098"
+    },
+    {
+      "name": "publish-MemoryText",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/MemoryText/MemoryText.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "--nologo",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-MemoryText"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/publish-MemoryText.log",
+      "log_sha256": "aec362073dda4675265b9e11e4c2c75520f3d27103fecc7a3cef1298373b6517"
+    },
+    {
+      "name": "aot-MemoryText",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-MemoryText/MemoryText"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-MemoryText.log",
+      "log_sha256": "213f60aca9d7762f6d96534acf13f9a37fc01c2a2c6be9a494ffd91fe23479c9"
+    },
+    {
+      "name": "publish-HostRuntime",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/HostRuntime/HostRuntime.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "--nologo",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-HostRuntime"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/publish-HostRuntime.log",
+      "log_sha256": "117077c0c2a66f355ae0835cade7c3a389d6b77060b1387c996c0e3b713a9dc0"
+    },
+    {
+      "name": "aot-HostRuntime",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-HostRuntime/HostRuntime"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-HostRuntime.log",
+      "log_sha256": "8dbb0b83a916df9713b973dd962a86ae68c5f3f8dcc58cd92bdf35c9d01f2a8c"
+    },
+    {
+      "name": "publish-SourcePositions",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/SourcePositions/SourcePositions.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "--nologo",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-SourcePositions"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/publish-SourcePositions.log",
+      "log_sha256": "f3890242a78c42fbcbb8ca2c21eae8fe23925f476fcf5376c530fbd74fad67b4"
+    },
+    {
+      "name": "aot-SourcePositions",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-SourcePositions/SourcePositions"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-SourcePositions.log",
+      "log_sha256": "90c85e4381ddfa595dc5ea0ef34be396e8e2d21e9a3b9a965d772eb26247ab6d"
+    },
+    {
+      "name": "publish-FoundationOracleAdapter",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/FoundationOracleAdapter/FoundationOracleAdapter.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "--self-contained",
+        "true",
+        "-p:PublishAot=true",
+        "--nologo",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-FoundationOracleAdapter"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/publish-FoundationOracleAdapter.log",
+      "log_sha256": "e63bf7d3112769a684825f0f04601d3279921aadf0b4c12e50e4df3b1bd740a3"
+    },
+    {
+      "name": "diff-aot-memory",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+        "--group",
+        "memory",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-FoundationOracleAdapter/FoundationOracleAdapter",
+        "--aot",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-aot-memory"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-aot-memory.log",
+      "log_sha256": "f9e16d0ae59ce4f241fde9fd70182bd20dbd7ae1a2b1d190b0a2c65254c3b636"
+    },
+    {
+      "name": "diff-aot-host",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+        "--group",
+        "host",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-HostRuntime/HostRuntime",
+        "--aot",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-aot-host"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-aot-host.log",
+      "log_sha256": "4054da469313bca19d2d0ed14e52c51aa723f98d319ff5b75dd3557528ee12b5"
+    },
+    {
+      "name": "diff-aot-positions",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+        "--group",
+        "positions",
+        "--native",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/position-oracle",
+        "--managed",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-SourcePositions/SourcePositions",
+        "--aot",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-aot-positions"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/diff-aot-positions.log",
+      "log_sha256": "80c9e92901890c3cb90ff2d5cb8e494dce76e29e2fd1a641085de7fce5c0a098"
+    },
+    {
+      "name": "capture-snapshot-after",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tools/capture_snapshot.py",
+        "--output",
+        "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/snapshot-after.json"
+      ],
+      "cwd": "/home/marius/p/dotcc",
+      "exit_code": 0,
+      "log": "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/capture-snapshot-after.log",
+      "log_sha256": "2530998d21192b4cb1bca6102d33ad7186ddd024fc0076cf066429c5cafbb94c"
+    }
+  ],
+  "passed": true,
+  "scope": "Closed host/memory leaves, native position layouts/operators and pure-argument adapters; pending allocation/diagnostics/literals/libc/termination/global-retention remain unqualified",
+  "abi_equal": true,
+  "snapshot_equal": true,
+  "finished_unix": 1792566032.3241801
+}

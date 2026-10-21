@@ -1,0 +1,27 @@
+{
+  "group": "positions",
+  "cases": 17640,
+  "native_rows": 17640,
+  "managed_rows": 17640,
+  "commands": [
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/position-oracle"
+    ],
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-r1/aot-SourcePositions/SourcePositions",
+      "--stream"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "passed": true,
+  "input_sha256": "a5ee7e741626554ca8b71aaea406534a8d108c3db0c3f199f213943cd9507259",
+  "output_sha256": [
+    "9267dcd2fb0c0d43e0daeb0e6d160dede62c7470a53c47d11b7fc224b9986b2c",
+    "9267dcd2fb0c0d43e0daeb0e6d160dede62c7470a53c47d11b7fc224b9986b2c"
+  ],
+  "mismatches_first_32": [],
+  "scope": "source-closed leaves and local stable-expression position adapters; no pending code, global retained-pointer or frontend initialization acceptance"
+}

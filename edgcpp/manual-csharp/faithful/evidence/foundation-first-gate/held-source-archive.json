@@ -1,0 +1,327 @@
+{
+  "scope": "Exact byte archive of80 gate inputs, including hash-frozen but uncompiled/unqualified pending bodies and four contracts; future number-buffer/region files absent",
+  "files": [
+    {
+      "path": "edgcpp/build/compile_commands.json",
+      "sha256": "568c80d00f1887a37a076c35bd8123fd1de1910cbecf73f18151d25bfb86d609"
+    },
+    {
+      "path": "edgcpp/build/src/includes/cmake_defines.h",
+      "sha256": "35c763753d20fe99c59649eb51aafccec7d7d61b6c227824d52d362fcc9e111f"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/Directory.Build.props",
+      "sha256": "cc5b89366aa568c3fd20b237592403d36f816c421364d89d98b97a14b727f617"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/basics-positions-batch1.json",
+      "sha256": "c63e8dde8773a30a352e611c330e0bbecef5eefb29140d7e6929f792f2b3fe2b"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/basics-positions-batch1.md",
+      "sha256": "053f16328ddd2219fe7d15eb8e386ceb3f3956f9fe286225ee238e1a1688707b"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/basics-positions-batch1.sha256",
+      "sha256": "08adc44667a39828040ddb9ae01f9f6e384f9f1c82751bcfb18213fa801e462d"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.json",
+      "sha256": "bec971ee7aa97fc5d1fa85a78b2af126bc9d02933796291f8c3c9d828757de9f"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.md",
+      "sha256": "290f35e287b4d74bdd460f5b0ed2f4ca4e210c3af27336bc331e22ca9dc4ca73"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch1.sha256",
+      "sha256": "c8ce37587df4e2e884e8faab3fa6ed242d74d65abff84cf572c2dc2db25e2893"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.json",
+      "sha256": "fa838d5f03cbdbdfd2793b3574c6fddea23b62fade8bdfd8cf84b9d1f884bcf0"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.md",
+      "sha256": "570421648256626c4a15ca3b61dbc30cd814fddcb59a69afbb4e26a0e6dd9f55"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/const_ints-batch2.sha256",
+      "sha256": "7f7598a832de9d833d6f06583fc119e34a64355dfac9ddc675a99c3072a4d094"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/error-batch1.json",
+      "sha256": "b0a5f82d0b76f44c6e27a90e161a880a502f026e470e6ef96cd7eb1e7a2236cd"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/error-batch1.md",
+      "sha256": "24280d7ea24a2ae4cbdc24ec8d34367381ad0091a9a846bbee90d92affc08c38"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/error-batch1.sha256",
+      "sha256": "247d98662d60a25cc0ba57bf68b3a0aa806dc5445cf97f35690225c8ab474b4c"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/host_envir-batch1.json",
+      "sha256": "bf924d914f60ab3811875cdb56fd4e328efd20dd1262dadf46b553dfd3034c11"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/host_envir-batch1.md",
+      "sha256": "3b4bcf2d9395f790de883a0dfa2b0d8ed64c679b14f85d09994fb1ce481550b6"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/host_envir-batch1.sha256",
+      "sha256": "19e1853a29dc80bf79801d8b7395eb917a7e37a8c82aae7c3547d7b6e136d4e9"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/mem_manage-batch1.json",
+      "sha256": "8775acb590c96cbe2e35d8f0e9e21b42c4b2fe77b0474c9552bff11921239e2a"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/mem_manage-batch1.md",
+      "sha256": "7d94adfdadb14b9ec029910e366de711bcb94e460cef2a28da05dc2ea8fde69f"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/ledgers/mem_manage-batch1.sha256",
+      "sha256": "e45d6546e9763135c05c975eba2653b61476a5427d9d96c1cb6cbd9c78a46684"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/EdgFaithful.csproj",
+      "sha256": "7efcdd8e74be5323363e9ad8a8c719e4a46e384990fb9f9287de41cfd30e96b0"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/IntegerRepresentation.cs",
+      "sha256": "4379a643ecfb4ac1e71f7ba07b5787b3fdc828a60e6c6ea8e94b4b1967ef5dd5"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/basics.positions.cs",
+      "sha256": "723d6e52e7faf1ae5ea6f815018e48e1fdefc2d80426b45db37c6a2cdd452151"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.arithmetic.cs",
+      "sha256": "dfd86a0dc1e39ce2f4796b19edc6b128ef7a65c963e23cd8e599450527e948c5"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/const_ints.cs",
+      "sha256": "cd5132dba30a65020fc4de262b56a32e48189075a0b6c3a8cb3681777374ac98"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/host_envir.cs",
+      "sha256": "73ebe568039c7d4a707e5bf08d8661b1957ebc83330e22c39fafdb6b7c282e62"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/host_envir.types.cs",
+      "sha256": "d90f309e91f83577888f12869d42744e35d4f73b3f1b061dfcb12ca50eb84e64"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/mem_manage.leaves.cs",
+      "sha256": "206401ab9bb60769c8f447c8aa73a4b652913eeedd93f159f3d1d57a87fbcd7c"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/src/EdgFaithful/mem_manage.types.cs",
+      "sha256": "1d2c7979398d5518a29ccd702ee8f343127a32f4e6435d53119f853d5e06b843"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/ErrorRuntime/README.md",
+      "sha256": "6fc5c0c31a9089986e6649c370d9c486fec6e8468c6626aeca41eee59d1eaec3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/ErrorRuntime/assertion-cases.json",
+      "sha256": "39b92a1a869e59d915d6461cdc8264c17b5806a9dc34baff03eef7b0913aea77"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/FoundationOracleAdapter/FoundationOracleAdapter.csproj",
+      "sha256": "339515548ad920752adc32ca8d4dd92de78b162f8759a270f99829332a984eee"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/FoundationOracleAdapter/Program.cs",
+      "sha256": "1d7f2fcb59e14af12f697c139c80a0df4cf157b8d4930f5dcd09f8be25495275"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/HostRuntime/HostRuntime.csproj",
+      "sha256": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/HostRuntime/PendingRuntimeCases.cs",
+      "sha256": "df30dd9b601b987d6660be5853c9f7f2995b1675a987b23800a2ed852f6e96d3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/HostRuntime/Program.cs",
+      "sha256": "c864f0dfb9424d3e8b26bbed5e961d3062c131a0533040199d83c819d1671af4"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/HostRuntime/README.md",
+      "sha256": "12f87029709b116ff8e97cb71dd0c4e044786a1b9de283138b53d14e4c69deb0"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/IntegerArithmetic.csproj",
+      "sha256": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerArithmetic/Program.cs",
+      "sha256": "c3c54f44d872dfddb4ea549126c2572e7e8c72617c273460966747f69c5907c0"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/IntegerLeaves.csproj",
+      "sha256": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/Program.cs",
+      "sha256": "eb98a0c84af711d2e544ab13696223edc94979e5e6d345808690fbff9efea0b3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/IntegerLeaves/README.md",
+      "sha256": "37a215c731ecb35cd3834a84e2e3aa82804a678c1f3f7f80cece59ac29865c00"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/MemoryText/AllocationTextCases.cs.pending",
+      "sha256": "e72220cbed83817322ba3cf754ab308750d4e417de30624432c93dceb34909c3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/MemoryText/MemoryText.csproj",
+      "sha256": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/MemoryText/Program.cs",
+      "sha256": "87f71daac6c739017a9dbd1f7c47214112bb7381e45aafd99d97492e7437de26"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/MemoryText/README.md",
+      "sha256": "c5287e9afc8d016524f601d83fbe42be58bdf25a1280a457652cdaae73b2049a"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/SourcePositions/Program.cs",
+      "sha256": "e7905fe3dabcfc1f694eabee2413d01634b6f2b514eb6a7422f5703d1b9028cf"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/SourcePositions/README.md",
+      "sha256": "d3c67852d92b530d91805604069e97e7df38a45ba6733ecb1514a97a2ff30bd2"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tests/SourcePositions/SourcePositions.csproj",
+      "sha256": "fb0b270b584e1f5462bbc9d6260216975469a353a50100bacb0121ff8b8d8cb2"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/capture_snapshot.py",
+      "sha256": "d206c94369ef9a9f303503a31213272853d3a0eb65235227b78e7ff95638be4f"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/compare_foundation_streams.py",
+      "sha256": "8e2f3a8c5da5c59bb542cfa6cf65a9e41a75344bf6585e02680e377251109925"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/compare_integer_streams.py",
+      "sha256": "8b7baa4dfdd6cf7576e421d92975980b9dd5e3e8e038273657d5b5e67ee73bf3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/foundation_oracle.cpp",
+      "sha256": "8c939dc117aa01bc49a83a6f5e238bce258cd1c5de8888b0efcec5e48c0f1b79"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/integer_oracle.cpp",
+      "sha256": "a1c6095017728a9d3e6ce0e09780a8ee522968143b2a1ce696a5101153b48a94"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/position_oracle.cpp",
+      "sha256": "efb21a83fc66859c925a37aaf128f47abe2c69d7c5534ddbe520cb63908a467c"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/prepare_foundation_oracle.py",
+      "sha256": "7f2fcb444da9d9bd66bab433617c8f0317334d04aa553e819a2cd23912338a4d"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/prepare_integer_oracle.py",
+      "sha256": "93d32d4bc0ef2c01f09651e4ef1d99d9ce76dc20821accea7c00f61a9bcf4cda"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/run_foundation_gate.py",
+      "sha256": "c47dded12412a598365bb67e48ee24422919c414e480fb2ecb3f975aa9635fdd"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/tools/run_integer_gate.py",
+      "sha256": "44947192f35c585b2cea20db5a2c0ea30939b5a0f0558105ee2a9e50109cde69"
+    },
+    {
+      "path": "edgcpp/upstream/src/basics.h",
+      "sha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.c",
+      "sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.h",
+      "sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f"
+    },
+    {
+      "path": "edgcpp/upstream/src/targ_def.h",
+      "sha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.c",
+      "sha256": "7089dc53eb8fca9f3c55ed299850914d39a8fdd533937e8809d210a5f6459f2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/mem_manage.c",
+      "sha256": "4127523bae47ab55d89ed8ed99c067f70081bd44ee7aee3dfa5ea9c643b38305"
+    },
+    {
+      "path": "edgcpp/upstream/src/mem_manage.h",
+      "sha256": "4ca1801049d9ad90b47536dd4c097a0623b589ece80352c2153e28c23a8b50b6"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.h",
+      "sha256": "a8c9c5e79dbdd6be8c82f360c58d8681f91015e5e14e61039076b7f8c3b9c2c1"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/error.cs",
+      "sha256": "c8a80b70eefb462f62d405fc6821cba01e495b260b6d1b0754a2ad3b793f9424"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/mem_manage.cs",
+      "sha256": "44f42a2626bfa384fde30b199d7073f9a09fce664543b33d64e8bb913c9d201f"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/checking.cs",
+      "sha256": "ae596c3327f28f8f98655416f2a04239d1dfbfb04e1c78197b0ff0d8cefb1903"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/error.types.cs",
+      "sha256": "1d153089bcf579b1f429bf198470cc05c7e226e6ad1f7200bc423d448ea383c3"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/basics.positions.cs",
+      "sha256": "f477ca9e0d36ae4493ee78aca8d5a2237709ad1f82884ef269c2864ff9ccb36c"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/README.md",
+      "sha256": "87def6ebfdab63c17322a8f12a3b9dc929fa588b74345ece12cce4a97c1fd10e"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/host_envir.runtime.cs",
+      "sha256": "4f2def847cdca550b7275a107ebccf703d2b756e31ed10e41b11797ee88e002a"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/pending/host_envir.shims.cs",
+      "sha256": "68fc04eebc20e3b17dcd118de7ff1fed32867d5a57f8f490c2e30c478f533a10"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/contracts/error-runtime.md",
+      "sha256": "bc66efef5744ed2d598add98b069a486884a153271ca0e962c6701d46e0b82e6"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/contracts/host-runtime.md",
+      "sha256": "8eae6c914b9e805df2142c1e0fa1c237c8d7f27a7560709c54ef3d8fd4804740"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/contracts/source-positions.md",
+      "sha256": "b8b1e4a37d3f83dea224bc12a69c6b29a12d0f1d6fb3a551505a8193753ce404"
+    },
+    {
+      "path": "edgcpp/manual-csharp/faithful/contracts/mem_manage-batch1.md",
+      "sha256": "456b9d37beef4bda9cd829c669ca4dafbcbb7a074b7d5c13a40c91e1f88fb970"
+    }
+  ],
+  "allMatch": true,
+  "snapshotManifestSha256": "e5d8f857548e0997684188da15fe93ef8654809a944266e7e4df5693ccc5f9f6"
+}

@@ -1,0 +1,29 @@
+{
+  "group": "host",
+  "cases": 67672,
+  "native_rows": 67672,
+  "managed_rows": 67672,
+  "commands": [
+    [
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/artifacts/foundation-native-r1/foundation-oracle",
+      "--host-stream"
+    ],
+    [
+      "dotnet",
+      "/home/marius/p/dotcc/edgcpp/manual-csharp/faithful/tests/HostRuntime/bin/Release/net10.0/HostRuntime.dll",
+      "--stream"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "passed": true,
+  "input_sha256": "2fd439d86a9557e7afddc5e0df7d4df550b1edc20baf7a1339db3525e63a43ec",
+  "output_sha256": [
+    "16afcbeb7b7f7309bcd60b0c373f147ccd943f31bc9f08742377cfabcec9c9fd",
+    "16afcbeb7b7f7309bcd60b0c373f147ccd943f31bc9f08742377cfabcec9c9fd"
+  ],
+  "mismatches_first_32": [],
+  "scope": "source-closed leaves and local stable-expression position adapters; no pending code, global retained-pointer or frontend initialization acceptance"
+}
