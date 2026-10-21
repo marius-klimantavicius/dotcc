@@ -49,7 +49,7 @@ internal sealed partial class Parser
             if (operand.Type.Kind == TypeKind.Error) return operand;
             if (operand.Type is not IntegerType integer)
             {
-                if (operand.Type.Kind == TypeKind.Function) Unsupported("Function-to-pointer decay and conversions of function designators are not implemented.", operand.Range);
+                if (operand.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and conversions of function designators are not implemented.", operand.Range);
                 else Fail("SEM020", "Unary operator requires an integer operand.", token.Range);
                 return new ErrorExpression(types.Error, SourceRange.Cover(token.Range, operand.Range));
             }
@@ -83,12 +83,14 @@ internal sealed partial class Parser
         if (token.Kind == TokenKind.Identifier)
         {
             Take();
-            Symbol? symbol = state.CurrentScope.Lookup(token.Spelling);
-            if (symbol == null)
+            NameBinding? binding = state.CurrentScope.LookupBinding(token.Spelling);
+            if (binding == null)
             {
                 Fail("SEM021", $"Unresolved identifier '{token.Spelling}'.", token.Range);
                 return new ErrorExpression(types.Error, token.Range);
             }
+            if (binding.SingleSymbol is not Symbol symbol)
+                return new OverloadSetExpression(types.OverloadSet, binding.Symbols.ToArray(), token.Range);
             if (symbol.Kind == SymbolKind.TypeAlias)
             {
                 Unsupported("Type names in expression position and functional casts are not implemented.", token.Range);
@@ -119,22 +121,38 @@ internal sealed partial class Parser
         Token closing = Expect(TokenKind.RightParen, "')' after call arguments");
         Expression unwrapped = callee;
         while (unwrapped is ParenthesizedExpression parenthesized) unwrapped = parenthesized.Operand;
-        if (unwrapped is not ReferenceExpression { ReferencedSymbol.Kind: SymbolKind.Function } reference)
+        Symbol[] functions = unwrapped switch
+        {
+            ReferenceExpression { ReferencedSymbol.Kind: SymbolKind.Function } reference => [reference.ReferencedSymbol],
+            OverloadSetExpression overload => overload.Functions.ToArray(),
+            _ => []
+        };
+        SourceRange range = SourceRange.Cover(callee.Range, closing.Range);
+        if (functions.Length == 0)
         {
             if (callee.Type.Kind != TypeKind.Error) Fail("SEM022", "The called expression is not a supported function designator.", callee.Range);
-            return new ErrorExpression(types.Error, SourceRange.Cover(callee.Range, closing.Range));
+            return new ErrorExpression(types.Error, range);
         }
-        Symbol function = reference.ReferencedSymbol;
-        var type = (FunctionType)function.Type;
-        if (arguments.Count != type.ParameterTypes.Count)
+        if (arguments.Any(argument => argument.Type.Kind == TypeKind.Error)) return new ErrorExpression(types.Error, range);
+        if (arguments.Any(argument => argument.Type.Kind is TypeKind.Function or TypeKind.OverloadSet))
         {
-            Fail("SEM023", $"Function '{function.Name}' requires {type.ParameterTypes.Count} arguments; received {arguments.Count}.", callee.Range);
-            return new ErrorExpression(types.Error, SourceRange.Cover(callee.Range, closing.Range));
+            Unsupported("Function-to-pointer decay and function designator arguments are not implemented.", callee.Range);
+            return new ErrorExpression(types.Error, range);
         }
+        OverloadCandidate[] candidates = functions.Select(function => MatchCandidate(function, arguments)).ToArray();
+        OverloadCandidate? selected = SelectBestCandidate(candidates);
+        if (selected == null)
+        {
+            if (candidates.Any(candidate => candidate.IsViable))
+                Fail("SEM026", $"Ambiguous call to '{functions[0].Name}': no candidate is better than every other viable candidate.", callee.Range);
+            else Fail("SEM023", $"No viable function '{functions[0].Name}' for the supplied argument count and types.", callee.Range);
+            return new ErrorExpression(types.Error, range);
+        }
+        var type = (FunctionType)selected.Function.Type;
         for (int i = 0; i < arguments.Count; ++i) arguments[i] = Convert(arguments[i], type.ParameterTypes[i]);
         // EDG il.c prvalue_type/il_return_type_of remove scalar cv from a call's
         // expression type while preserving the declared function return type.
-        return new CallExpression(function, callee, arguments.ToArray(), types.Unqualified(type.ReturnType), SourceRange.Cover(callee.Range, closing.Range));
+        return new CallExpression(selected, candidates, callee, arguments.ToArray(), types.Unqualified(type.ReturnType), range);
     }
     private Expression Convert(Expression expression, SemanticType target)
     {
@@ -142,7 +160,7 @@ internal sealed partial class Parser
         if (target.Kind == TypeKind.Void && expression.Type.Kind == TypeKind.Void) return expression;
         if (expression.Type is not IntegerType source || target is not IntegerType destination)
         {
-            if (expression.Type.Kind == TypeKind.Function) Unsupported("Function-to-pointer decay and conversions of function designators are not implemented.", expression.Range);
+            if (expression.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and conversions of function designators are not implemented.", expression.Range);
             else Fail("SEM024", $"Cannot convert '{expression.Type}' to '{target}' in the implemented scalar subset.", expression.Range);
             return new ErrorExpression(types.Error, expression.Range);
         }
@@ -155,7 +173,7 @@ internal sealed partial class Parser
         IntegerType unqualified = types.Integer(destination.IntegerKind);
         if (ReferenceEquals(types.Unqualified(source), unqualified)) return expression;
         ConversionKind kind = destination.IntegerKind == IntegerKind.Bool ? ConversionKind.BooleanConversion :
-            source.Rank < types.Integer(IntegerKind.Int).Rank && destination.IntegerKind == IntegerKind.Int ? ConversionKind.IntegralPromotion : ConversionKind.IntegralConversion;
+            IntegerConversionRank(source, unqualified) == StandardConversionRank.Promotion ? ConversionKind.IntegralPromotion : ConversionKind.IntegralConversion;
         BigInteger? value = expression.ConstantValue is BigInteger constant ? TypeTable.ConvertInteger(constant, unqualified) : null;
         return new ConversionExpression(expression, unqualified, kind, value);
     }
@@ -165,7 +183,7 @@ internal sealed partial class Parser
         if (left.Type.Kind == TypeKind.Error || right.Type.Kind == TypeKind.Error) return new ErrorExpression(types.Error, range);
         if (left.Type is not IntegerType lhs || right.Type is not IntegerType rhs)
         {
-            if (left.Type.Kind == TypeKind.Function || right.Type.Kind == TypeKind.Function) Unsupported("Function-to-pointer decay and pointer operations are not implemented.", op.Range);
+            if (left.Type.Kind is TypeKind.Function or TypeKind.OverloadSet || right.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and pointer operations are not implemented.", op.Range);
             else Fail("SEM025", "This binary operator requires integer operands.", op.Range);
             return new ErrorExpression(types.Error, range);
         }

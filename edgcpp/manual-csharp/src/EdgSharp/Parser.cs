@@ -107,7 +107,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         if (kind == SymbolKind.Variable && state.CurrentScope.Kind == ScopeKind.TranslationUnit && identifier.Spelling == "main")
             Unsupported("The special global name rules for main are not implemented.", identifier.Range);
         var symbol = new Symbol(identifier.Spelling, kind, type, state.CurrentScope);
-        if (state.CurrentScope.FindLocal(symbol.Name) != null)
+        NameBinding? binding = state.CurrentScope.FindLocalBinding(symbol.Name);
+        if (binding != null && (kind != SymbolKind.Function || binding.Symbols.Any(s => s.Kind != SymbolKind.Function)))
             Fail("SEM003", $"Conflicting declaration of '{symbol.Name}' in this scope.", identifier.Range);
         else state.Enter(symbol);
         return symbol;
@@ -243,17 +244,16 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         }
         finally { state.PopScope(); }
         var functionType = types.Function(resultType, parameters.Select(p => p.Type));
-        Symbol? previous = enclosing.FindLocal(identifier.Spelling);
+        NameBinding? binding = enclosing.FindLocalBinding(identifier.Spelling);
+        Symbol? previous = binding?.Symbols.FirstOrDefault(s => s.Kind == SymbolKind.Function &&
+            ((FunctionType)s.Type).ParameterTypes.SequenceEqual(functionType.ParameterTypes));
         Symbol function;
         if (previous?.Kind == SymbolKind.Function)
         {
             if (ReferenceEquals(previous.Type, functionType)) function = previous;
             else
             {
-                var old = (FunctionType)previous.Type;
-                if (old.ParameterTypes.SequenceEqual(functionType.ParameterTypes))
-                    Fail("SEM009", $"Return type conflicts with an earlier declaration of '{identifier.Spelling}'.", identifier.Range);
-                else Unsupported("Function overload sets are not implemented.", identifier.Range);
+                Fail("SEM009", $"Return type conflicts with an earlier declaration of '{identifier.Spelling}'.", identifier.Range);
                 function = new Symbol(identifier.Spelling, SymbolKind.Function, functionType, enclosing);
             }
         }
@@ -326,6 +326,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types)
         if (Current.Kind == TokenKind.Keyword && !Is("true") && !Is("false")) UnsupportedAndThrow("This statement or expression keyword is not implemented.");
         SourceRange start = Current.Range;
         Expression expression = ScanExprFull();
+        if (expression.Type.Kind == TypeKind.OverloadSet)
+            UnsupportedAndThrow("An overload set is implemented only as the callee of a direct function call.");
         Token end = ExpectExpressionSemicolon();
         return new ExpressionStatement(expression, SourceRange.Cover(start, end.Range));
     }

@@ -1,0 +1,40 @@
+{
+  "command": [
+    "dotnet",
+    "build",
+    "EdgSharp.slnx",
+    "-c",
+    "Release",
+    "--nologo"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "duration_seconds": 3.841,
+  "stdout": "  Determining projects to restore...\n  Restored /home/marius/p/dotcc/edgcpp/manual-csharp/src/EdgSharp/EdgSharp.csproj (in 619 ms).\n  Restored /home/marius/p/dotcc/edgcpp/manual-csharp/tests/EdgSharp.Tests/EdgSharp.Tests.csproj (in 619 ms).\n  EdgSharp -> /home/marius/p/dotcc/edgcpp/manual-csharp/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll\n  EdgSharp.Tests -> /home/marius/p/dotcc/edgcpp/manual-csharp/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll\n\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:03.69\n",
+  "stderr": "",
+  "source_sha256": {
+    "src/EdgSharp/CompilationSession.cs": "d8e13fba703a9a910984d94c0909c4387813e1c5406d8e2ff14e72264c747d12",
+    "src/EdgSharp/EdgSharp.csproj": "00d8ff77e583f61c6b7fa60010c6fdf2a7d1879ab0575db8f38697222ea0786e",
+    "src/EdgSharp/Expressions.cs": "322acddda1a46ac10ae9ce97be4aeb90494047ebb14f49d276accf838ec3fecf",
+    "src/EdgSharp/OverloadResolution.cs": "666817233a85d2b2709f09ff1fe2d028f13e1a88a6f83a58bc0c52e15e67deb9",
+    "src/EdgSharp/ParseState.cs": "f918a8bbd39fecb7950b25974829e172a8179b693422a3bd74ad3243736b3185",
+    "src/EdgSharp/Parser.cs": "0512b0e84acac2fe010c2dd040f700cb8eff88b6154ec54fcfdb020d7d1d92d8",
+    "src/EdgSharp/SemanticGraph.cs": "f7b4607f9d35a8fb14d3fcbf7c83b4efa0cb9a7fd1ea9a8511aa77e3c06c3f26",
+    "src/EdgSharp/Source.cs": "3a43225e6c050ea592f122a6c6139551ab07fc26b6a96308e6d85953ab4d4950",
+    "src/EdgSharp/Tokens.cs": "1b7a7c1939de6cea2a883c92acc52451b3440d81d89dbdef8718553ba5479cd9",
+    "src/EdgSharp/Types.cs": "41b205bb83a1fa37c73811c7de49433976b7aa582ee3124a8ade8880a18cb47e",
+    "tests/EdgSharp.Tests/EdgSharp.Tests.csproj": "b393fdd1784f39915fd001d6d89e3c69eb4f772ea47b92924c8bca134db0a1d4",
+    "tests/EdgSharp.Tests/Program.cs": "5dbe25f72ee573e5f62ccdc2d408061bd856c7ce77539f88a7c03c182fc1ce07",
+    "fixtures/m2-conflicting.cpp": "347929ac58733f920d42287ec26675a5c994c71d390d63d87f21c7670570dc9b",
+    "fixtures/m2-parameter-redeclaration.cpp": "2ef16ab886824a23f129062333a66d7cda86ddd8a7b0389847d06193ac5277b5",
+    "fixtures/m2-positive.cpp": "2a3702e7443419d40d60be96dd2439dbdb695d6017bb334e705d4f7158450621",
+    "fixtures/m2-unresolved.cpp": "448b2e018bf14e72ec5f245288d7388966411c216cb34d2b61eb3a4738f131fc",
+    "fixtures/m2-unsupported-statement.cpp": "4529339ae5cf76d30e3b223a3f0069d2bfe1106214edb33c57fb76f43d4f3a82",
+    "fixtures/m3-ambiguous.cpp": "429cbe17f89f1756fb9645ca9721b0084f33161a28ec7d5bf71b9f68895c22f6",
+    "fixtures/m3-crossed.cpp": "970312abf18e9c3d4e56d4a1529ff4c8e3db99fe7a29004de84dff3558ba6b61",
+    "fixtures/m3-hiding.cpp": "097e2ebdecf4ebab5e496fcbcdddc8cdd63c09e97ff608ce0f6c29b3cebcbe76",
+    "fixtures/m3-no-viable.cpp": "ffc2a950f2b92312d702d58a034d6ca717ec621daacc680ccc9aa9aae955ce59",
+    "fixtures/m3-order.cpp": "dcccf8497afdbeba2333f2f591ea8483aa8f3da717443bc83ad5296bf5313866",
+    "fixtures/m3-positive.cpp": "4d1b667d934ec4f89f5dbe4824d3fcbc47624b0241acf157b22fc3a32b052978"
+  }
+}

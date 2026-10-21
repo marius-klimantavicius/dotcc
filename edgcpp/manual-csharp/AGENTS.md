@@ -18,6 +18,14 @@ review agents are GPT-6.1 Sol xhigh. Supervisor delegates actual implementation,
 assigns disjoint files, serializes builds/tests and Git operations, and requires
 review of produced code before accepting milestones. Respect concurrency limits.
 
+The user requires the full plan to be implemented before stopping. Milestones
+are checkpoints only. Supervisor automatically reassigns workers/reviewer and
+continues through all outstanding PLAN.md requirements; root remains monitoring.
+Do not return a final campaign handoff at a partial milestone or wait for another
+user prompt to resume. Never narrow scope or count unsupported/unverified work
+as complete. Escalate genuine blockers with evidence while progressing independent
+work; an explicit user stop/pause overrides continuation.
+
 Prefer managed ownership and explicit semantic identity. Preserve token replay,
 lookup ordering, target arithmetic and deferred instantiation. Unsupported input
 must be diagnosed; a bounded implemented subset is not full language support.

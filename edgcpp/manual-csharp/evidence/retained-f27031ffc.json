@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted milestone artifacts before subsequent builds overwrite standard output paths",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/f27031ffc/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "616300bb0f106b70f974eda3be4a64219a3cd8c4b5d43f624af74e97fea64d01"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/f27031ffc/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "b11ad7fef9276882bb44fdb30a66dc17391d30a1600413eb7773c1f41a463fbc"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-smoke/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/f27031ffc/tests/EdgSharp.Tests/bin/aot-smoke/EdgSharp.Tests",
+      "sha256": "0664dd993c9bdffddcb117fe97d61ec2154c374c3edbdd869368eaeecc7e80ef"
+    }
+  ]
+}

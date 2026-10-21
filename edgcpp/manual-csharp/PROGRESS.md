@@ -2,6 +2,23 @@
 
 ## Campaign state
 
+Resumed 2026-10-21 after accepted checkpoint `f27031ffc`. Implementation and
+independent review agents are running for scalar free-function overloads
+and then the early M4 gate. Prior agents are not running. Supervisor retains
+validation/Git/ledger ownership; implementation owns `src/EdgSharp/`,
+`tests/EdgSharp.Tests/`, `fixtures/` and standalone manifests. Reviewer owns
+only new `evidence/review-m3-*.md` / `review-m4-*.md` reports and otherwise reads.
+
+The next binding contract separates an ordered overload binding from canonical
+function entity Symbols; compatible redeclarations still share one entity.
+Candidates retain per-argument conversion descriptors; selection uses EDG's
+pairwise standard-conversion comparison, never a summed score. N1's direct
+definition-link/current-function checkpoint tests must close before activating
+speculative/replay paths. Production remains fully handwritten and in process.
+Per the explicit user instruction and PLAN's continuous execution rule,
+checkpoints never stop the campaign. The complete actionable backlog is
+`docs/FEATURE-INVENTORY.md`.
+
 The first handwritten semantic checkpoint is implemented, independently reviewed
 and accepted: M0 baseline, partial M1 lexical foundation, and a bounded integrated
 M2 slice. R1–R7 are closed. Release build, 25/25 managed groups and 25/25 Linux
@@ -19,7 +36,8 @@ Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
 - Working tree was clean before the plan was created.
 - .NET SDK: `10.0.112`
 - Native EDG path exists: `edgcpp/build/bin/cpfe`
-- Native compiler execution/profile validation: pending M0.
+- Native compiler execution/profile validation: accepted M0 receipts retained;
+  resumed checks will record new receipt names rather than overwrite old evidence.
 - Configured model available: `gpt-6.1-sol`, efforts `high` and `xhigh`.
 
 ## Ownership
@@ -35,10 +53,12 @@ Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
   `evidence/review-*.md`; does not edit implementation or run concurrent builds.
 - Supervisor additionally owns `SUPPORT.md`, `docs/`, `tools/`, and validation
   receipts under `evidence/` other than the assigned review reports.
-- Native implementation agent: `/root/manual_edg_supervisor/implementation`,
+- Current implementation agent: `/root/manual_edg_supervisor/implementation_m3`,
   `gpt-6.1-sol` with `xhigh` reasoning, started with a clean-context brief.
-- Native review agent: `/root/manual_edg_supervisor/review`, `gpt-6.1-sol`
+- Current review agent: `/root/manual_edg_supervisor/review_m3`, `gpt-6.1-sol`
   with `xhigh` reasoning, started independently with the full review brief.
+- Prior checkpoint agents `/implementation` and `/review` are historical and
+  not running. Their accepted review/evidence remains retained.
 
 ## Initial interface contract
 
@@ -64,8 +84,10 @@ Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
 - M2: first bounded integrated semantic slice accepted; typed source graph,
   alias/function identity, scopes/calls/returns/conversions and negative recovery
   checked by 25 named managed+AOT groups, native fixtures and independent review.
-- M3: not started.
-- M4: not started.
+- M3: scalar free-function overload checkpoint independently accepted; remaining
+  references/classes/advanced-conversion/ADL branches stay open in the inventory.
+- M4: active next assignment; worker reading actual EDG cache/deduction/lookup/
+  interpreter routines before implementation. N1 is closed by executed tests.
 - M5: not started.
 - M6: not started.
 
@@ -103,7 +125,8 @@ First executed managed results and exact commands are recorded in
 Final status: R1–R7 are closed by produced code, assertions, executed final
 managed/AOT validation and native controls. Details below retain the finding/
 response history. `evidence/review-final-m0-m2.md` is the final acceptance record.
-N1 remains a documented nonblocking medium test-coverage deferral as stated below.
+N1 was the initial nonblocking medium coverage deferral; the resumed M3
+checkpoint closes it with direct managed/AOT nested-definition/function tests.
 
 - R1, high if assignment uses `BinaryExpression`: the initial graph constructor
   makes all binary expressions prvalues, but built-in assignment yields an
@@ -188,7 +211,7 @@ checkpoint restoration are source-inspected but not directly exercised by the
 current helper tests. Add those branch tests before activating speculation or
 template replay; no production parser branch currently uses the helper.
 
-## Final acceptance evidence
+## Initial checkpoint acceptance evidence
 
 - `dotnet build EdgSharp.slnx -c Release --nologo`: exit 0, no warnings/errors.
 - `dotnet run --project tests/EdgSharp.Tests/EdgSharp.Tests.csproj -c Release
@@ -213,3 +236,44 @@ template replay; no production parser branch currently uses the helper.
 Git record: the supervisor's initial handwritten semantic checkpoint commit
 contains this ledger and reviewed snapshot; its exact identifier is reported at
 handoff and is discoverable with `git log --oneline -- edgcpp/manual-csharp`.
+
+## Resumed scalar M3 checkpoint — 2026-10-21
+
+The implementation worker authored ordered NameBinding/entity separation,
+source-visible overload snapshots, viable/rejected candidate facts, scalar
+exact/promotion/conversion descriptors and pairwise selection following the
+named EDG overload routines. No width/distance/signedness/bool/declaration-order
+heuristic is used. Compatible signatures retain canonical Symbol identity;
+nearest nonfunction bindings hide outer overloads. Public single-symbol queries
+never silently choose the first overload. New owner-mediated overload membership
+rollback and N1 preexisting definition/current-function restoration are tested.
+
+Supervisor executed, serially:
+
+- Release solution build: 0 warnings/errors (`m3-build-initial.json`).
+- Managed harness: 35/35 named groups, 0 failures/skips (`m3-tests-initial.json`).
+  Inventory is prior 25 + N1 direct checkpoint group + nine M3 semantic groups.
+- Linux x64 NativeAOT publish to separate retained `bin/aot-m3` output and its
+  executable: 35/35 groups, 0 failures/skips (`m3-nativeaot-*-initial.json`).
+- Six exact M3 fixtures: two native accepts, four actual language rejections;
+  all expectations matched. Distinct-return included-fixture static assertions
+  discriminate exact int/long and short/bool/ushort promotion; separate native
+  staged lookup assertions discriminate before/after visibility.
+- Four build/test receipts have the same 23-file source/test/fixture SHA map,
+  matching held files; eight native receipts and three M3 artifact hashes match.
+  Initial checkpoint artifact bytes were relocated to ignored retained storage
+  before default outputs changed (`retained-f27031ffc.json`).
+
+Independent reviewer `/root/manual_edg_supervisor/review_m3` inspected actual
+production/test code, all assertions/fixtures, EDG algorithm branches and matching
+executed receipts. `evidence/review-m3-final.md` approves only bounded scalar M3,
+closes N1, and records no identified critical/high blocker. Full M3/M4–M6 remain
+outstanding. Source mapping/adaptations are in `docs/OVERLOADS.md`.
+
+Next worker assignment is already active: actual early M4 template declarations,
+dependent representation, definition-time checks (including unused templates),
+body token retention/rescan/deduction/instances, frozen definition lookup, overload
+participation, explicit constexpr execution and combined constant-required source
+test. Supervisor commits this checkpoint then immediately releases source edits;
+reviewer is reassigned to M4 independently. No user reconfirmation or milestone
+stopping boundary applies.

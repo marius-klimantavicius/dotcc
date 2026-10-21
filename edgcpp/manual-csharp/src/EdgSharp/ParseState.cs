@@ -37,7 +37,7 @@ internal sealed class ParseState
     internal void Enter(Symbol symbol)
     {
         symbol.Scope.Enter(symbol);
-        undo.Add(() => symbol.Scope.Remove(symbol.Name));
+        undo.Add(() => symbol.Scope.Remove(symbol));
     }
     internal void AddDeclaration(Declaration declaration)
     {

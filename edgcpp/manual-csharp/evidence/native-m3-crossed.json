@@ -1,0 +1,24 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-crossed.cpp",
+  "source_sha256": "970312abf18e9c3d4e56d4a1529ff4c8e3db99fe7a29004de84dff3558ba6b61",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-crossed.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-crossed.cpp\", line 5:\n          error: more than one instance of overloaded function \"pick\" matches\n          the argument list:\n            function \"pick(int, long, long)\" (declared at line 3)\n            function \"pick(long, int, int)\" (declared at line 4)\n            argument types are: (int, int, int)\n  int entry() { return pick(1, 1, 1); }\n                       ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-crossed.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

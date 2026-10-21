@@ -24,6 +24,7 @@ var cases = new (string Name, Action Run)[]
     ("lex malformed comments and strings", Tests.MalformedLexicalInput),
     ("lex cursor checkpoint and retained replay", Tests.TokenReplay),
     ("semantic checkpoint restores all mutable state", Tests.SemanticCheckpoint),
+    ("semantic checkpoint restores nested definitions and current functions", Tests.DefinitionCheckpoint),
     ("semantic checkpoint invalidates stale branches atomically", Tests.StaleCheckpoint),
     ("session independence lifecycle and canonical identity", Tests.Sessions),
     ("independent sessions support concurrent analysis", Tests.ConcurrentSessions),
@@ -34,6 +35,15 @@ var cases = new (string Name, Action Run)[]
     ("alias redeclaration and hiding", Tests.Aliases),
     ("source ordered declaration insertion and lookup", Tests.SourceOrder),
     ("function identity and const parameter boundary", Tests.FunctionIdentity),
+    ("M3 ordered overload bindings preserve entity identity", Tests.OverloadBindings),
+    ("M3 scalar exact promotion and conversion selection", Tests.OverloadRanking),
+    ("M3 indistinguishable and crossed conversions are ambiguous", Tests.OverloadAmbiguity),
+    ("M3 declaration order does not rank candidates", Tests.OverloadDeclarationOrder),
+    ("M3 candidate viability checks arity and argument types", Tests.OverloadViability),
+    ("M3 calls snapshot source-visible overload candidates", Tests.OverloadSourceOrder),
+    ("M3 nearest nonfunction bindings hide overloads", Tests.OverloadHiding),
+    ("M3 overload binding insertion rolls back in order", Tests.OverloadCheckpoint),
+    ("M3 source fixtures inspect selected callees and diagnostics", Tests.OverloadFixtures),
     ("nested scopes permit local shadowing", Tests.Shadowing),
     ("LP64 integer literal type selection", Tests.LiteralTypes),
     ("explicit integer conversion chains", Tests.Conversions),
@@ -175,6 +185,62 @@ internal static class Tests
         Equal(0, state.GlobalScope.Children.Count);
         Throws<ArgumentException>(() => NewState().Restore(outer));
     }
+    internal static void DefinitionCheckpoint()
+    {
+        ParseState state = NewState();
+        var table = new TypeTable(TargetInfo.Lp64);
+        FunctionType type = table.Function(table.Integer(IntegerKind.Int), []);
+        var function = new Symbol("f", SymbolKind.Function, type, state.GlobalScope);
+        var initiallyUndefined = new Symbol("g", SymbolKind.Function, type, state.GlobalScope);
+        state.Enter(function);
+        state.Enter(initiallyUndefined);
+        FunctionDeclaration Definition(Symbol symbol)
+        {
+            Scope parameters = state.PushScope(ScopeKind.Function);
+            state.PopScope();
+            SourceRange range = state.Tokens.Current.Range;
+            var declaration = new FunctionDeclaration(symbol, type, range, range, [], parameters);
+            declaration.Body = new BlockStatement(parameters, [], range);
+            state.AddDeclaration(declaration);
+            return declaration;
+        }
+        FunctionDeclaration original = Definition(function);
+        FunctionDeclaration middle = Definition(function);
+        FunctionDeclaration latest = Definition(function);
+        FunctionDeclaration gMiddle = Definition(initiallyUndefined);
+        FunctionDeclaration gLatest = Definition(initiallyUndefined);
+        state.SetDefinition(function, original);
+        var baseline = state.Checkpoint();
+        state.CurrentFunction = original;
+        var outer = state.Checkpoint();
+        state.SetDefinition(function, middle);
+        state.SetDefinition(initiallyUndefined, gMiddle);
+        state.CurrentFunction = middle;
+        var inner = state.Checkpoint();
+        state.SetDefinition(function, latest);
+        state.SetDefinition(initiallyUndefined, gLatest);
+        state.CurrentFunction = latest;
+        state.Restore(inner);
+        Same(middle, function.Definition);
+        Same(gMiddle, initiallyUndefined.Definition);
+        Same(middle, state.CurrentFunction);
+        state.SetDefinition(function, latest);
+        state.CurrentFunction = latest;
+        state.Restore(inner);
+        Same(middle, function.Definition);
+        Same(middle, state.CurrentFunction);
+        state.Restore(outer);
+        Same(original, function.Definition);
+        Check(initiallyUndefined.Definition == null);
+        Same(original, state.CurrentFunction);
+        Same(function, state.GlobalScope.FindLocal("f"));
+        Throws<ArgumentException>(() => state.Restore(inner));
+        Same(original, function.Definition);
+        Same(original, state.CurrentFunction);
+        state.Restore(baseline);
+        Same(original, function.Definition);
+        Check(state.CurrentFunction == null);
+    }
     internal static void StaleCheckpoint()
     {
         ParseState state = NewState();
@@ -301,7 +367,7 @@ internal static class Tests
         Equal(TypeQualifiers.None, ReturnValue(Function(cv, "consumer")).Type.Qualifiers);
         Equal(TypeQualifiers.None, As<CallExpression>(ReturnValue(Function(cv, "consumer"))).Type.Qualifiers);
         Check(!Analyze("int f(){return 1;} int f(){return 2;}").IsSuccess);
-        Check(Analyze("int f(int); int f(long);").ContainsUnsupportedFeatures);
+        Check(Success("int f(int); int f(long);").GlobalScope.FindLocalBinding("f")!.Symbols.Count == 2);
         AnalysisResult aliasVoid = Success("using V=void; int f(V); int f(){return 1;}");
         Same(aliasVoid.Declarations[1].Symbol, aliasVoid.Declarations[2].Symbol);
         Equal(0, As<FunctionDeclaration>(aliasVoid.Declarations[1]).Parameters.Count);
@@ -309,6 +375,249 @@ internal static class Tests
         Equal("const unsigned long", As<FunctionDeclaration>(Success("int unnamed(const unsigned long);").Declarations[0]).Parameters[0].Range.Spelling);
         foreach (string invalidVoid in new[] { "using V=void; int f(V named);", "using V=void; int f(V, int);", "using V=void; int f(int, V);" })
             Check(!Analyze(invalidVoid).IsSuccess, invalidVoid);
+    }
+    private static CallExpression ReturnedCall(AnalysisResult result, string function)
+    {
+        Expression expression = ReturnValue(Function(result, function));
+        while (expression is ConversionExpression conversion) expression = conversion.Operand;
+        return As<CallExpression>(expression);
+    }
+    private static IntegerKind SelectedParameter(CallExpression call, int index = 0)
+        => Kind(As<FunctionType>(call.SelectedFunction.Type).ParameterTypes[index]);
+    internal static void OverloadBindings()
+    {
+        AnalysisResult result = Success("int pick(int); long pick(long); int pick(const int x){return x;} long pick(long x){return x;}");
+        NameBinding binding = result.GlobalScope.FindLocalBinding("pick")!;
+        Equal(2, binding.Symbols.Count);
+        Check(binding.SingleSymbol == null);
+        Check(result.GlobalScope.FindLocal("pick") == null);
+        Check(result.GlobalScope.Lookup("pick") == null);
+        Same(result.Declarations[0].Symbol, binding.Symbols[0]);
+        Same(result.Declarations[1].Symbol, binding.Symbols[1]);
+        Same(result.Declarations[0].Symbol, result.Declarations[2].Symbol);
+        Same(result.Declarations[1].Symbol, result.Declarations[3].Symbol);
+        Same(result.Declarations[2], binding.Symbols[0].Definition);
+        Equal(2, binding.Symbols[0].Declarations.Count);
+        Throws<NotSupportedException>(() => ((IList)binding.Symbols).Clear());
+        AnalysisResult alias = Success("using I=int; int pick(I); int pick(long); int pick(const I x){return x;}");
+        Same(alias.Declarations[1].Symbol, alias.Declarations[3].Symbol);
+        Equal(2, alias.GlobalScope.FindLocalBinding("pick")!.Symbols.Count);
+        AnalysisResult returnConflict = Analyze("int pick(int); long pick(long); long pick(int);");
+        Check(!returnConflict.IsSuccess && !returnConflict.ContainsUnsupportedFeatures);
+        Check(returnConflict.Diagnostics.Any(d => d.Code == "SEM009"));
+        Equal(2, returnConflict.GlobalScope.FindLocalBinding("pick")!.Symbols.Count);
+        foreach (string source in new[] { "int pick(int); int pick(long); int pick;", "int pick; int pick(int);", "using pick=int; int pick(int);" })
+        {
+            AnalysisResult conflict = Analyze(source);
+            Check(!conflict.IsSuccess && conflict.Diagnostics.Any(d => d.Code == "SEM003"), source);
+        }
+    }
+    internal static void OverloadRanking()
+    {
+        AnalysisResult result = Success("int choose(long); int choose(int); int exact(int x){return choose(x);} int promoted(short x){return choose(x);} int narrow(unsigned char x){return choose(x);} int unsignedShort(unsigned short x){return choose(x);} int flag(bool x){return choose(x);}");
+        foreach (string name in new[] { "exact", "promoted", "narrow", "unsignedShort", "flag" })
+        {
+            CallExpression call = ReturnedCall(result, name);
+            Equal(IntegerKind.Int, SelectedParameter(call));
+            Equal(2, call.Candidates.Count);
+            Check(call.Candidates.All(c => c.IsViable));
+            Same(call.SelectedFunction, call.SelectedCandidate.Function);
+            Equal(name == "exact" ? StandardConversionRank.ExactMatch : StandardConversionRank.Promotion,
+                call.SelectedCandidate.ArgumentConversions[0].Rank);
+            Check(call.SelectedCandidate.ArgumentConversions[0].RequiresLValueToRValue);
+            Equal(StandardConversionRank.Conversion, call.Candidates[0].ArgumentConversions[0].Rank);
+            var converted = As<ConversionExpression>(call.Arguments[0]);
+            Equal(name == "exact" ? ConversionKind.LValueToRValue : ConversionKind.IntegralPromotion, converted.Conversion);
+            if (name != "exact") Equal(ConversionKind.LValueToRValue, As<ConversionExpression>(converted.Operand).Conversion);
+            Throws<NotSupportedException>(() => ((IList)call.Candidates).Clear());
+            Throws<NotSupportedException>(() => ((IList)call.SelectedCandidate.ArgumentConversions).Clear());
+            Throws<NotSupportedException>(() => ((IList)As<OverloadSetExpression>(call.Callee).Functions).Clear());
+        }
+        AnalysisResult cv = Success("int pick(int); int pick(long); int run(const int x){return (pick)(x);}");
+        CallExpression exact = ReturnedCall(cv, "run");
+        Equal(IntegerKind.Int, SelectedParameter(exact));
+        Equal(TypeQualifiers.Const, exact.SelectedCandidate.ArgumentConversions[0].SourceType.Qualifiers);
+        Equal(TypeQualifiers.None, exact.SelectedCandidate.ArgumentConversions[0].TargetType.Qualifiers);
+        Equal(StandardConversionRank.ExactMatch, exact.SelectedCandidate.ArgumentConversions[0].Rank);
+        AnalysisResult boolean = Success("int one(bool); int run(){return one(256);}");
+        CallExpression toBool = ReturnedCall(boolean, "run");
+        Equal(StandardConversionRank.Conversion, toBool.SelectedCandidate.ArgumentConversions[0].Rank);
+        Equal(ConversionKind.BooleanConversion, As<ConversionExpression>(toBool.Arguments[0]).Conversion);
+        Equal(BigInteger.One, toBool.Arguments[0].ConstantValue!.Value);
+    }
+    internal static void OverloadAmbiguity()
+    {
+        foreach (string source in new[]
+        {
+            "int pick(long); int pick(long long); int run(){return pick(1);}",
+            "int pick(short); int pick(long); int run(){return pick(1);}",
+            "int pick(bool); int pick(long); int run(){return pick(1);}",
+            "int pick(long); int pick(unsigned long); int run(unsigned int x){return pick(x);}",
+            "int pick(int,long); int pick(long,int); int run(){return pick(1,1);}",
+            "int pick(int,long,long); int pick(long,int,int); int run(){return pick(1,1,1);}",
+            "int pick(int,long); int pick(long,int); int pick(long,long); int run(){return pick(1,1);}"
+        })
+        {
+            AnalysisResult result = Analyze(source);
+            Check(!result.IsSuccess && !result.ContainsUnsupportedFeatures, source);
+            Equal(1, result.Diagnostics.Count(d => d.Code == "SEM026"));
+            Check(ReturnValue(Function(result, "run")) is ErrorExpression);
+        }
+        AnalysisResult dominated = Success("int pick(long,long); int pick(int,long); int pick(int,int); int run(){return pick(1,1);}");
+        CallExpression selected = ReturnedCall(dominated, "run");
+        Equal(IntegerKind.Int, SelectedParameter(selected));
+        Equal(IntegerKind.Int, SelectedParameter(selected, 1));
+    }
+    internal static void OverloadDeclarationOrder()
+    {
+        foreach (string declarations in new[] { "int pick(long); int pick(int);", "int pick(int); int pick(long);" })
+        {
+            AnalysisResult result = Success(declarations + "int run(short x){return pick(x);}");
+            CallExpression call = ReturnedCall(result, "run");
+            Equal(IntegerKind.Int, SelectedParameter(call));
+            Equal(StandardConversionRank.Promotion, call.SelectedCandidate.ArgumentConversions[0].Rank);
+        }
+        foreach (string declarations in new[] { "int pick(long); long pick(long long);", "long pick(long long); int pick(long);" })
+        {
+            AnalysisResult result = Analyze(declarations + "int run(){return pick(1);}");
+            Check(result.Diagnostics.Any(d => d.Code == "SEM026"));
+        }
+        string[] signatures = ["int pick(long,long);", "int pick(int,long);", "int pick(int,int);"];
+        int[][] permutations = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]];
+        foreach (int[] order in permutations)
+        {
+            AnalysisResult result = Success(string.Concat(order.Select(index => signatures[index])) + "int run(){return pick(1,1);}");
+            CallExpression call = ReturnedCall(result, "run");
+            Equal(IntegerKind.Int, SelectedParameter(call));
+            Equal(IntegerKind.Int, SelectedParameter(call, 1));
+        }
+    }
+    internal static void OverloadViability()
+    {
+        AnalysisResult result = Success("int pick(); int pick(int); int pick(int,int); int run(){return pick(1);}");
+        CallExpression call = ReturnedCall(result, "run");
+        Equal(3, call.Candidates.Count);
+        Equal(CandidateRejectionReason.ArityMismatch, call.Candidates[0].RejectionReason);
+        Equal(CandidateRejectionReason.None, call.Candidates[1].RejectionReason);
+        Equal(CandidateRejectionReason.ArityMismatch, call.Candidates[2].RejectionReason);
+        Equal(0, call.Candidates[0].ArgumentConversions.Count);
+        Same(call.Candidates[1], call.SelectedCandidate);
+        foreach (string source in new[]
+        {
+            "int pick(int); int pick(int,int); int run(){return pick();}",
+            "int pick(); int pick(int); int run(){return pick(1,2);}",
+            "void nothing(); int pick(int); int pick(long); int run(){return pick(nothing());}"
+        })
+        {
+            AnalysisResult invalid = Analyze(source);
+            Check(!invalid.IsSuccess && !invalid.ContainsUnsupportedFeatures, source);
+            Check(invalid.Diagnostics.Any(d => d.Code == "SEM023"));
+        }
+        AnalysisResult functionArgument = Analyze("int source(); int pick(int); int pick(long); int run(){return pick(source);}");
+        Check(!functionArgument.IsSuccess && functionArgument.ContainsUnsupportedFeatures);
+        AnalysisResult unresolved = Analyze("int pick(int); int pick(long); int run(){return pick(missing);}");
+        Equal(1, unresolved.Diagnostics.Count);
+        Equal("SEM021", unresolved.Diagnostics[0].Code);
+    }
+    internal static void OverloadSourceOrder()
+    {
+        AnalysisResult result = Success("int pick(long); int early(){return pick(1);} int pick(int); int late(){return pick(1);} int pick(const int x){return x;}");
+        CallExpression early = ReturnedCall(result, "early");
+        CallExpression late = ReturnedCall(result, "late");
+        Equal(IntegerKind.Long, SelectedParameter(early));
+        Equal(IntegerKind.Int, SelectedParameter(late));
+        Equal(1, early.Candidates.Count);
+        Equal(2, late.Candidates.Count);
+        Same(result.Declarations[0].Symbol, early.SelectedFunction);
+        Same(result.Declarations[2].Symbol, late.SelectedFunction);
+        Same(result.Declarations[4], late.SelectedFunction.Definition);
+        AnalysisResult three = Success("int pick(long); int pick(unsigned long); int early(){return pick(1L);} int pick(int); int late(){return pick(1);}");
+        CallExpression beforeThird = ReturnedCall(three, "early");
+        Equal(2, beforeThird.Candidates.Count);
+        Equal(2, As<OverloadSetExpression>(beforeThird.Callee).Functions.Count);
+        Equal(3, three.GlobalScope.FindLocalBinding("pick")!.Symbols.Count);
+        Equal(IntegerKind.Long, SelectedParameter(beforeThird));
+        Check(!Analyze("int early(){return pick(1);} int pick(int);").IsSuccess);
+        AnalysisResult noRetroactiveMatch = Analyze("int pick(int,int); int early(){return pick(1);} int pick(int);");
+        Check(noRetroactiveMatch.Diagnostics.Any(d => d.Code == "SEM023"));
+    }
+    internal static void OverloadHiding()
+    {
+        foreach (string source in new[]
+        {
+            "int pick(int); int pick(long); int run(int pick){return pick(1);}",
+            "int pick(int); int pick(long); int run(){int pick=0; return pick(1);}",
+            "int pick(int); int pick(long); int run(){{int pick=0; return pick(1);} return 0;}"
+        })
+        {
+            AnalysisResult result = Analyze(source);
+            Check(!result.IsSuccess && !result.ContainsUnsupportedFeatures, source);
+            Check(result.Diagnostics.Any(d => d.Code == "SEM022"));
+        }
+        AnalysisResult restored = Success("int pick(int); int pick(long); int run(){{int pick=0; pick+1;} return pick(1);}");
+        Equal(IntegerKind.Int, SelectedParameter(ReturnedCall(restored, "run")));
+        foreach (string source in new[]
+        {
+            "int pick(int); int pick(long); int run(){return pick;}",
+            "int pick(int); int pick(long); int run(){pick; return 0;}",
+            "int pick(int); int pick(long); int run(){return !pick;}",
+            "int pick(int); int pick(long); int run(){return pick+1;}"
+        }) Check(Analyze(source).ContainsUnsupportedFeatures, source);
+    }
+    internal static void OverloadCheckpoint()
+    {
+        ParseState state = NewState();
+        var table = new TypeTable(TargetInfo.Lp64);
+        IntegerType integer = table.Integer(IntegerKind.Int);
+        var first = new Symbol("pick", SymbolKind.Function, table.Function(integer, [integer]), state.GlobalScope);
+        state.Enter(first);
+        NameBinding binding = state.GlobalScope.FindLocalBinding("pick")!;
+        var outer = state.Checkpoint();
+        var second = new Symbol("pick", SymbolKind.Function, table.Function(integer, [table.Integer(IntegerKind.Long)]), state.GlobalScope);
+        state.Enter(second);
+        var inner = state.Checkpoint();
+        var third = new Symbol("pick", SymbolKind.Function, table.Function(integer, []), state.GlobalScope);
+        state.Enter(third);
+        Equal(3, binding.Symbols.Count);
+        state.Restore(inner);
+        Same(binding, state.GlobalScope.FindLocalBinding("pick"));
+        Equal(2, binding.Symbols.Count);
+        Same(second, binding.Symbols[1]);
+        state.Restore(outer);
+        Same(binding, state.GlobalScope.FindLocalBinding("pick"));
+        Same(first, state.GlobalScope.FindLocal("pick"));
+        Equal(1, binding.Symbols.Count);
+        Scope child = state.PushScope(ScopeKind.Block);
+        var nonfunction = new Symbol("pick", SymbolKind.Variable, integer, child);
+        state.Enter(nonfunction);
+        Same(nonfunction, child.Lookup("pick"));
+        Same(child.FindLocalBinding("pick")!, child.LookupBinding("pick"));
+        state.Restore(outer);
+        Equal(0, state.GlobalScope.Children.Count);
+        Scope overloadScope = state.PushScope(ScopeKind.Block);
+        state.Enter(new Symbol("pick", SymbolKind.Function, table.Function(integer, [table.Integer(IntegerKind.Long)]), overloadScope));
+        state.Enter(new Symbol("pick", SymbolKind.Function, table.Function(integer, []), overloadScope));
+        Check(overloadScope.Lookup("pick") == null);
+        Same(overloadScope.FindLocalBinding("pick")!, overloadScope.LookupBinding("pick"));
+        state.Restore(outer);
+        Same(first, state.GlobalScope.FindLocal("pick"));
+    }
+    internal static void OverloadFixtures()
+    {
+        AnalysisResult positive = Success(Fixture("m3-positive.cpp"));
+        Equal(IntegerKind.Int, SelectedParameter(ReturnedCall(positive, "exact")));
+        Equal(IntegerKind.Int, SelectedParameter(ReturnedCall(positive, "promotion")));
+        Equal(StandardConversionRank.Promotion, ReturnedCall(positive, "promotion").SelectedCandidate.ArgumentConversions[0].Rank);
+        Same(positive.Declarations[0].Symbol, positive.Declarations[2].Symbol);
+        AnalysisResult order = Success(Fixture("m3-order.cpp"));
+        Equal(IntegerKind.Long, SelectedParameter(ReturnedCall(order, "before")));
+        Equal(IntegerKind.Int, SelectedParameter(ReturnedCall(order, "after")));
+        foreach (var (fixture, code) in new[] { ("m3-ambiguous.cpp", "SEM026"), ("m3-crossed.cpp", "SEM026"), ("m3-no-viable.cpp", "SEM023"), ("m3-hiding.cpp", "SEM022") })
+        {
+            AnalysisResult invalid = Analyze(Fixture(fixture));
+            Check(!invalid.IsSuccess && !invalid.ContainsUnsupportedFeatures, fixture);
+            Check(invalid.Diagnostics.Any(d => d.Code == code), fixture);
+        }
     }
     internal static void Shadowing()
     {

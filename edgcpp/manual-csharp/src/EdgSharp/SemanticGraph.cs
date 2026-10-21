@@ -8,9 +8,41 @@ namespace EdgSharp;
 public enum ScopeKind { TranslationUnit, Function, Block }
 public enum SymbolKind { TypeAlias, Variable, Parameter, Function }
 
+/// <summary>
+/// One name in one lexical scope. Function entities retain their first-declaration
+/// order; redeclarations add declarations to the existing entity, not this list.
+/// </summary>
+public sealed class NameBinding
+{
+    private readonly List<Symbol> symbols = [];
+    public string Name { get; }
+    public Scope Scope { get; }
+    public ReadOnlyCollection<Symbol> Symbols { get; }
+    /// <summary>Null when this name denotes more than one function entity.</summary>
+    public Symbol? SingleSymbol => symbols.Count == 1 ? symbols[0] : null;
+    internal NameBinding(Symbol symbol)
+    {
+        (Name, Scope) = (symbol.Name, symbol.Scope);
+        Symbols = symbols.AsReadOnly();
+        symbols.Add(symbol);
+    }
+    internal void Add(Symbol symbol)
+    {
+        if (symbol.Kind != SymbolKind.Function || symbols.Any(s => s.Kind != SymbolKind.Function) ||
+            !ReferenceEquals(symbol.Scope, Scope) || symbol.Name != Name)
+            throw new InvalidOperationException("Only function entities can share a name binding.");
+        symbols.Add(symbol);
+    }
+    internal void RemoveLast(Symbol symbol)
+    {
+        if (!ReferenceEquals(symbols[^1], symbol)) throw new InvalidOperationException("Symbol rollback must follow insertion order.");
+        symbols.RemoveAt(symbols.Count - 1);
+    }
+}
+
 public sealed class Scope
 {
-    private readonly Dictionary<string, Symbol> symbols = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, NameBinding> bindings = new(StringComparer.Ordinal);
     private readonly List<Declaration> declarations = [];
     private readonly List<Scope> children = [];
     public ScopeKind Kind { get; }
@@ -23,11 +55,25 @@ public sealed class Scope
         Declarations = declarations.AsReadOnly();
         Children = children.AsReadOnly();
     }
-    /// <summary>Inspects retained lexical scope facts without activating a scope or instantiating anything.</summary>
-    public Symbol? FindLocal(string name) => symbols.GetValueOrDefault(name);
-    public Symbol? Lookup(string name) => FindLocal(name) ?? Parent?.Lookup(name);
-    internal void Enter(Symbol symbol) => symbols.Add(symbol.Name, symbol);
-    internal void Remove(string name) => symbols.Remove(name);
+    /// <summary>Inspects the retained ordered binding, without activating a scope or instantiating anything.</summary>
+    public NameBinding? FindLocalBinding(string name) => bindings.GetValueOrDefault(name);
+    /// <summary>The nearest binding hides every outer binding with the same name.</summary>
+    public NameBinding? LookupBinding(string name) => FindLocalBinding(name) ?? Parent?.LookupBinding(name);
+    /// <summary>Returns only a sole local entity; null for an absent or overloaded name. Use FindLocalBinding to distinguish them.</summary>
+    public Symbol? FindLocal(string name) => FindLocalBinding(name)?.SingleSymbol;
+    /// <summary>Returns only a sole entity in the nearest binding; an overload never falls through to an outer scope.</summary>
+    public Symbol? Lookup(string name) => LookupBinding(name)?.SingleSymbol;
+    internal void Enter(Symbol symbol)
+    {
+        if (FindLocalBinding(symbol.Name) is NameBinding existing) existing.Add(symbol);
+        else bindings.Add(symbol.Name, new NameBinding(symbol));
+    }
+    internal void Remove(Symbol symbol)
+    {
+        NameBinding binding = bindings[symbol.Name];
+        binding.RemoveLast(symbol);
+        if (binding.Symbols.Count == 0) bindings.Remove(symbol.Name);
+    }
     internal void Add(Declaration declaration) => declarations.Add(declaration);
     internal void RemoveLastDeclaration() => declarations.RemoveAt(declarations.Count - 1);
     internal void AddChild(Scope child) => children.Add(child);
@@ -111,6 +157,17 @@ public sealed class ReferenceExpression : Expression
     internal ReferenceExpression(Symbol symbol, SourceRange range)
         : base(symbol.Type, ValueCategory.LValue, range) => ReferencedSymbol = symbol;
 }
+/// <summary>
+/// A snapshot of the function entities visible at this source reference. Its
+/// candidate list cannot gain overloads from declarations that occur later.
+/// No single function type is assigned before overload resolution.
+/// </summary>
+public sealed class OverloadSetExpression : Expression
+{
+    public ReadOnlyCollection<Symbol> Functions { get; }
+    internal OverloadSetExpression(SemanticType type, Symbol[] functions, SourceRange range)
+        : base(type, ValueCategory.LValue, range) => Functions = Array.AsReadOnly((Symbol[])functions.Clone());
+}
 public sealed class ParenthesizedExpression : Expression
 {
     public Expression Operand { get; }
@@ -145,9 +202,12 @@ public sealed class CallExpression : Expression
     public Symbol SelectedFunction { get; }
     public Expression Callee { get; }
     public ReadOnlyCollection<Expression> Arguments { get; }
-    internal CallExpression(Symbol function, Expression callee, Expression[] arguments, SemanticType resultType, SourceRange range)
+    public ReadOnlyCollection<OverloadCandidate> Candidates { get; }
+    public OverloadCandidate SelectedCandidate { get; }
+    internal CallExpression(OverloadCandidate selected, OverloadCandidate[] candidates, Expression callee, Expression[] arguments, SemanticType resultType, SourceRange range)
         : base(resultType, ValueCategory.PRValue, range)
-        => (SelectedFunction, Callee, Arguments) = (function, callee, Array.AsReadOnly((Expression[])arguments.Clone()));
+        => (SelectedFunction, SelectedCandidate, Candidates, Callee, Arguments) =
+            (selected.Function, selected, Array.AsReadOnly((OverloadCandidate[])candidates.Clone()), callee, Array.AsReadOnly((Expression[])arguments.Clone()));
 }
 
 public abstract class Statement

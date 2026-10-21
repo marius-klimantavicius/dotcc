@@ -1,0 +1,24 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-hiding.cpp",
+  "source_sha256": "097e2ebdecf4ebab5e496fcbcdddc8cdd63c09e97ff608ce0f6c29b3cebcbe76",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-hiding.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-hiding.cpp\", line 5:\n          error: expression preceding parentheses of apparent call must have\n          (pointer-to-) function type\n  int entry(int pick) { return pick(1); }\n                               ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-hiding.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

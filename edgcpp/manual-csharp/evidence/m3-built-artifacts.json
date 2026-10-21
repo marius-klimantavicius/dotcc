@@ -1,0 +1,20 @@
+{
+  "purpose": "M3 checkpoint build artifacts; prior initial outputs retained separately",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 75264,
+      "sha256": "dca8a8b035778a54458cdc8a41f67d15e98f62df374f2283879bef99347908dc"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 56320,
+      "sha256": "dd50ba97ac17983b6127849b2ee22d15d853f6dd4aef7b7585d46beab4eae559"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-m3/EdgSharp.Tests",
+      "bytes": 2250664,
+      "sha256": "332ca2fec746dd8340734f80fcf73c0495526b05cf27edd3d38a3b5ef11bab6b"
+    }
+  ]
+}

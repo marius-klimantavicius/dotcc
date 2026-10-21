@@ -1,0 +1,31 @@
+{
+  "purpose": "consulted source provenance, not a claim that complete files are ported",
+  "imported_base": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "repository_head_at_inspection": "f27031ffc0db7f060cdd6ac939dfdb7c6dfd1e42",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/overload.c",
+      "sha256": "62c8b3971d169872985b6855871488690c971455a0ef07773e6f78f335a1c67e"
+    },
+    {
+      "path": "edgcpp/upstream/src/overload.h",
+      "sha256": "e70767da9150b2f117f60624800b7dab762237ca085ed65aae3a2fb2da46f6bf"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_tbl.c",
+      "sha256": "ef2fc5af96a478fc1d6cf02927de2845c4f61814e6ddb084d36455baed2c7eff"
+    },
+    {
+      "path": "edgcpp/upstream/src/lookup.c",
+      "sha256": "251e21f04cc94b0e8da1c5e1031ca3f832aaf5ec2b19bd6ff4ece4116e543af2"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.c",
+      "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875"
+    }
+  ]
+}

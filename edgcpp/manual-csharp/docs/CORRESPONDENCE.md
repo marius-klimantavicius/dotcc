@@ -6,7 +6,7 @@ values and source baseline are in `../evidence/source-baseline.json`; reviewer
 source inspections and additional branch references are in the review reports.
 No generated EDG C# implementation is an input to this campaign.
 
-## Produced foundations, awaiting integrated acceptance
+## Accepted foundations and scalar M3 extension
 
 | Authored component | EDG source/routines | Preserved invariant and managed adaptation | Outstanding branches |
 | --- | --- | --- | --- |
@@ -21,9 +21,10 @@ No generated EDG C# implementation is an input to this campaign.
 | `ParseState.cs` checkpoints | `lexical.c:push_lexical_state_stack`, `pop_lexical_state_stack`; `scope_stk.c` scope activation contracts | Managed adaptation journals entered symbols, declaration lists, scope children and definition links; checkpoints save cursor, scope/current function, diagnostics and pending replay queue; registered checkpoint identity invalidates abandoned descendants before mutation | Owner-mediated state only; production speculative parser branches and template instantiation remain outstanding. R2 stale-branch regressions pass final managed/AOT checks; definition-link/current-function branches are source-inspected only |
 
 The lexical scope dictionary is an intentional bounded host-container adaptation.
-It is valid only while one active entity per name per lexical scope is supported.
+Each name maps to one nearest binding, whose ordered entities may be scalar
+function overloads.
 It does not replace EDG's general ordered symbol lists or establish namespace,
-class or overload correctness. No lookup outcome may depend on dictionary
+class or general overload correctness. No lookup outcome may depend on dictionary
 enumeration order. Full parser transactions, when introduced, must restore
 symbol insertion, scope/children, diagnostics, pending work and semantic flags.
 
@@ -46,6 +47,14 @@ Global `main` function/variable semantics are explicitly excluded with unsupport
 diagnostics rather than accepting them through ordinary declaration paths.
 
 ## Native baseline witnesses
+
+The scalar M3 extension replaces the initial single-function call restriction
+with ordered name bindings and frozen source-visible candidates. Routine-level
+mapping, explicit scalar-ranking equivalence, new graph queries and executed
+35-group managed/AOT/native evidence are in `OVERLOADS.md`. Advanced overload,
+reference/class/template branches remain open. N1 direct nested definition-link
+and current-function checkpoint tests now pass; the old foundation table above
+records original bounds, expanded by this accepted extension and its review.
 
 `tools/oracle-inputs/profile.cpp` establishes the native C++20 profile and LP64
 integer/pointer sizes, 8-bit unsigned char, signed plain char and bool size.

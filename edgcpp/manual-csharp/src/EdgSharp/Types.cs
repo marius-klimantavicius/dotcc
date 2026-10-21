@@ -27,7 +27,7 @@ public sealed record AnalysisOptions
     public TargetInfo Target { get; init; } = TargetInfo.Lp64;
 }
 
-public enum TypeKind { Error, Void, Integer, Function }
+public enum TypeKind { Error, Void, Integer, Function, OverloadSet }
 public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong }
 [Flags] public enum TypeQualifiers { None = 0, Const = 1 }
 
@@ -73,6 +73,7 @@ internal sealed class TypeTable
     private readonly List<FunctionType> functions = [];
     internal SemanticType Void { get; } = new SpecialType(TypeKind.Void, "void");
     internal SemanticType Error { get; } = new SpecialType(TypeKind.Error, "<error>");
+    internal SemanticType OverloadSet { get; } = new SpecialType(TypeKind.OverloadSet, "<overload set>");
     internal TypeTable(TargetInfo target)
     {
         Add(IntegerKind.Bool, "bool", target.CharBits, 0, false);

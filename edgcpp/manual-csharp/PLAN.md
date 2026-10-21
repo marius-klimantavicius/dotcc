@@ -298,15 +298,37 @@ milestones. Preserve unrelated work; do not reset the tree, overwrite existing
 campaign files, delete retained evidence, or push/publish without user direction.
 No worker silently changes scope, model, reasoning effort, or manual-only rule.
 
-## Initial execution assignment
+## Continuous execution and completion rule
+
+The user explicitly instructed: "You must make sure that the plan is fully
+implemented before stopping - do not stop on every milestone."
+
+Milestones, reviews and commits are checkpoints, not stopping boundaries. Root
+continues monitoring and the supervisor automatically gives implementation and
+review agents their next ready assignments. Do not wait for the user to ask
+whether agents are running or authorize continuation already covered here.
+When a child finishes a bounded task, reassign it or launch the next required
+child while preserving the requested models and independent review.
+
+Continue until all M0-M6 requirements are implemented and validated against the
+explicit feature inventory. Do not mark a partial milestone, unsupported feature,
+unexecuted platform check or deferred review finding as complete. Maintain a
+coverage inventory that accounts for the full stated plan; do not silently
+reduce scope to make the campaign appear finished. A genuine blocker must be
+reported with evidence and escalated to root while independent work continues.
+Only full completion, an explicit user pause/stop, or an unavoidable external
+blocker ends active campaign work. Progress reports do not end the campaign.
+
+## Execution sequence
 
 Start M0 and M1 immediately, using an implementation worker and independent
 reviewer. Continue to an integrated M2 slice rather than stopping at project
 creation. Advance into M3/M4 as dependencies allow, with reviewed checkpoints and
 specific next assignments. The full roadmap remains active beyond those gates.
 
-At each handoff report: implemented behavior, exact files, source correspondence,
+At each checkpoint report: implemented behavior, exact files, source correspondence,
 executed commands/results, review findings and resolutions, commit if made,
 remaining unsupported cases, and the next concrete task. Report blockers with
 evidence; do not treat the size of the full port as a reason to stop useful work.
-Root may issue subsequent bounded coordinator assignments as milestones finish.
+The supervisor issues the next bounded assignments automatically; root monitors
+the full roadmap and intervenes on scope, correctness or execution failures.

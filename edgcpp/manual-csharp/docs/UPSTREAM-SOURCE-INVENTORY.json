@@ -1,0 +1,1265 @@
+{
+  "purpose": "full live upstream source/header provenance, not implementation coverage",
+  "selection": "recursive .c/.cpp/.h files under edgcpp/upstream/src; ignores are not applied; generated tables/IFC files included",
+  "excluded": "other file extensions, build outputs outside upstream/src; no generated/ignored C/C++ source or header excluded",
+  "repository_head": "f27031ffc0db7f060cdd6ac939dfdb7c6dfd1e42",
+  "whole_file_port_claim": false,
+  "coverage_ledger": "docs/CORRESPONDENCE.md and docs/FEATURE-INVENTORY.md; per-routine/branch evidence required",
+  "counts_by_extension": {
+    ".c": 77,
+    ".cpp": 1,
+    ".h": 172
+  },
+  "files": [
+    {
+      "path": "edgcpp/upstream/src/attribute.c",
+      "bytes": 447899,
+      "sha256": "2f8d8ca144761e1006726169029d98d4186936cc2350531af3b21f4a137c7b24"
+    },
+    {
+      "path": "edgcpp/upstream/src/attribute.h",
+      "bytes": 16210,
+      "sha256": "1ae9b9bc396cadf1c2a21eb20122980cd1e974b94ee629f39e49cee1e7624423"
+    },
+    {
+      "path": "edgcpp/upstream/src/basic_hdrs.h",
+      "bytes": 839,
+      "sha256": "be3354996241679dc89ad58ed66e002c363891ae6132fe205df61d3a2d4df5c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/basics.h",
+      "bytes": 54473,
+      "sha256": "65b5752f8f2e0e1eda6dccb59996bf996452df53b8ebd071dab5cb397918b0e9"
+    },
+    {
+      "path": "edgcpp/upstream/src/builtin_defs.h",
+      "bytes": 23626842,
+      "sha256": "37ad10a3555188020c6750953c6083f7d2131efcc756b4adebe89a476e021a8f"
+    },
+    {
+      "path": "edgcpp/upstream/src/builtin_kinds.h",
+      "bytes": 978574,
+      "sha256": "98d1eb804d03e80734b2aa4ba0a46ed2222bc697297a2880dd0ed58024c82088"
+    },
+    {
+      "path": "edgcpp/upstream/src/c_gen_be.c",
+      "bytes": 496445,
+      "sha256": "eb5e4da875ee4db1376dddb75dbee1f8b04cef328d265c08454e35746f493d29"
+    },
+    {
+      "path": "edgcpp/upstream/src/c_gen_be.h",
+      "bytes": 1261,
+      "sha256": "0239c5ff1db4152e6925a1464de46862b7c7a08874ce6c03a693d21376fce740"
+    },
+    {
+      "path": "edgcpp/upstream/src/cfe.c",
+      "bytes": 8758,
+      "sha256": "85ad71d47918c6686cf44099915ec0e9544b52c8d5c702cf31a4d72a2b9aa140"
+    },
+    {
+      "path": "edgcpp/upstream/src/cfe_daemon.c",
+      "bytes": 17554,
+      "sha256": "f44f2a7cae868663dbf7ed1b167d8ca916d2ce81b5620a65bf47de599e98be31"
+    },
+    {
+      "path": "edgcpp/upstream/src/cfe_daemon_common.h",
+      "bytes": 11197,
+      "sha256": "2d2537846cec602d7a54187b71e5994289bfa52ebd11f117c42f2fc757d1c630"
+    },
+    {
+      "path": "edgcpp/upstream/src/checking.h",
+      "bytes": 4054,
+      "sha256": "27aa5d201622e328f9b543af1e5b664c76777a19aa51b3364b2502dfd1cb874c"
+    },
+    {
+      "path": "edgcpp/upstream/src/class_decl.c",
+      "bytes": 1695906,
+      "sha256": "9a014800a411bc25e6bb2395c3c68b0c61eef1a55ccb5b274dfd323e2d586ce3"
+    },
+    {
+      "path": "edgcpp/upstream/src/class_decl.h",
+      "bytes": 20600,
+      "sha256": "bb800d725194a0bcdb701d719abf47dea1642696b4d4412a5ee2789ed09c15cc"
+    },
+    {
+      "path": "edgcpp/upstream/src/cmd_line.c",
+      "bytes": 653712,
+      "sha256": "77ce3949dffb0fd85a8bca85a33ae590fc2c5b7b7f200b47ff672c35cca8bded"
+    },
+    {
+      "path": "edgcpp/upstream/src/cmd_line.h",
+      "bytes": 104222,
+      "sha256": "b486d5e79e78e9c642d2e8faaa36e9e80be15ae7e766e357e54b5d7001484c85"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.c",
+      "bytes": 100023,
+      "sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.h",
+      "bytes": 21343,
+      "sha256": "23280caa487a713f3b1f382056a57c569c9a8d15ff07a218c47ecdea21158d3f"
+    },
+    {
+      "path": "edgcpp/upstream/src/cp_gen_be.c",
+      "bytes": 1181016,
+      "sha256": "c5b6675cb3413c3f65df331fcf07fff1de058a5c5e3f51c99cb8ab8c3828c931"
+    },
+    {
+      "path": "edgcpp/upstream/src/cp_gen_be.h",
+      "bytes": 1009,
+      "sha256": "4b5cb70540cecb7d7d6f76f9f984add09c301f3f088a309dba734f1091a6e7d7"
+    },
+    {
+      "path": "edgcpp/upstream/src/debug.c",
+      "bytes": 27366,
+      "sha256": "8ccd5fd04ebdfc0b6808d7584e58d0de0aded51694779944d356e21981ecf44a"
+    },
+    {
+      "path": "edgcpp/upstream/src/debug.h",
+      "bytes": 6206,
+      "sha256": "bb4cbda28dff817f8bebf10f6d5d58eda958f5097e0d6614798efc3fe6dd63f8"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_hdrs.h",
+      "bytes": 720,
+      "sha256": "6cf9954a1e6b2c80a877ef43f25d204392e9d2fae8ad1c24d18612a176d88112"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_inits.c",
+      "bytes": 508392,
+      "sha256": "8d66e24839804eb5e636c960fde1598553b646179a199611ee1d38eca8277bc7"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_inits.h",
+      "bytes": 5587,
+      "sha256": "ead2cca61d4166ca32f2455967581b2ed26922a41c0823041c2a575c1cf7e061"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_spec.c",
+      "bytes": 628328,
+      "sha256": "b7ed79284e50c8418dc68895e6e5e5dfc7328f5837bd71b1ef933e5377cfb6de"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_spec.h",
+      "bytes": 21523,
+      "sha256": "073d6589906e236708e0c3f2284a0d7a6c82e353c9b92ea7c63f82cd5f1721fa"
+    },
+    {
+      "path": "edgcpp/upstream/src/declarator.c",
+      "bytes": 438511,
+      "sha256": "26680a8059cb338336b31d68ab40b25e9d1660bb5ba6192aea16ae15a9651552"
+    },
+    {
+      "path": "edgcpp/upstream/src/declarator.h",
+      "bytes": 20870,
+      "sha256": "d49cb03baa92d03a3fe18d8f0ee88d8b60df642cc4f3338e5dbc0a445f283ffa"
+    },
+    {
+      "path": "edgcpp/upstream/src/decls.c",
+      "bytes": 1055522,
+      "sha256": "1b362f931dd532b477c272d4cc4481baa822660ffb278c00475ae2da51b8fdc0"
+    },
+    {
+      "path": "edgcpp/upstream/src/decls.h",
+      "bytes": 86541,
+      "sha256": "0de83fd6ffa064f5ac84e39087ec7ac6a6857b4d5c155dba69fee46fa3f4eb05"
+    },
+    {
+      "path": "edgcpp/upstream/src/def_arg.c",
+      "bytes": 18656,
+      "sha256": "60d796729a04069de6bdffe136c0a7a3fb3b2c68301d93f1f6335f833c64005f"
+    },
+    {
+      "path": "edgcpp/upstream/src/def_arg.h",
+      "bytes": 3451,
+      "sha256": "a3c2b4858df0c8059fbf06f9c1609c99e6b6183c67015fd7a5a5181a58a9582a"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines.h",
+      "bytes": 175775,
+      "sha256": "4112aa9ba2c076dd9b83877bdfae6f107bd12952b6a12776baa6942ad114f18e"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines_linux.h",
+      "bytes": 49576,
+      "sha256": "64f9c35401c9ab612443d85edd74574881d074a9036cb863cf7fe12c7a3b1948"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines_macosx.h",
+      "bytes": 5950,
+      "sha256": "bd1cce00f8fe52ea5773db34af46fa0a7ade9f88e7bec41de5445b7b92e1f3d6"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines_solaris.h",
+      "bytes": 5326,
+      "sha256": "2223ba36bbcd74eaa2a33a7dd732c5cb5ec7b33775a8a396562a6532c10402cd"
+    },
+    {
+      "path": "edgcpp/upstream/src/defines_win32.h",
+      "bytes": 52343,
+      "sha256": "82aca82dfacdaec26636eb6ca58d0d31d8d5da95e1610248d93f6fd4da08400c"
+    },
+    {
+      "path": "edgcpp/upstream/src/direct_allocator.h",
+      "bytes": 4334,
+      "sha256": "477909c104df131c14a5b50dfbd263d5f03441e5e2079594090e27dac6a29cdc"
+    },
+    {
+      "path": "edgcpp/upstream/src/disambig.c",
+      "bytes": 86990,
+      "sha256": "82c86797416e3c4b2202512dd5a91f92732d2047d7fff4379d2bb50b04580113"
+    },
+    {
+      "path": "edgcpp/upstream/src/disambig.h",
+      "bytes": 2878,
+      "sha256": "cd074b273f85d6c9dd13be45fc1bdc641d829691527d062435fdc5a1acf9549d"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_arrays.h",
+      "bytes": 6841,
+      "sha256": "84f23cf4bc66826ac27ac54de7c52812d55280a33491ac60510f783a375634c7"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_atomics.h",
+      "bytes": 6544,
+      "sha256": "637cd553a1b73cfd33c7473ea1bba51ce9357a25a7afcf80337c6aac847a42c0"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_be.c",
+      "bytes": 106599,
+      "sha256": "e23ff1c689c5d04357d79ca1ce0ae2d2cafebba9e367984fa7392c3be2a6c4b0"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_bitfield_properties.h",
+      "bytes": 3467,
+      "sha256": "d54d95be21ec38237a5d5c3bc6fe63ad0658d0faf29a256cf49f2d5c4c52bf1d"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_byte_data.h",
+      "bytes": 3940,
+      "sha256": "d52415c16b07977ae96b54bfefd18b900e37bd618fbb259efb42bfddb9f77856"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_c11_atomics.h",
+      "bytes": 3512,
+      "sha256": "c75dcccf0d265bfec0637bf4e95ce131f7019f3b0c13c9a7ba4f26dbb9af785a"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_cleanup.h",
+      "bytes": 15590,
+      "sha256": "622400d77223160cfc657f7d58f41b45ab86f59c21604a0856e910e6cb69b8e1"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_coroutine.h",
+      "bytes": 5947,
+      "sha256": "75aeb78a745ace606b11a7a8f541a458d78ef459805252528b3fc5aa26b5150a"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_coroutine_cps.h",
+      "bytes": 12838,
+      "sha256": "9dbb77bd90b750107be137dfe9fc9990de197ce4626f337f2736a149a198d232"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_coroutine_emit.h",
+      "bytes": 46069,
+      "sha256": "2eb149bd86e6882ebf4dce4e597312e906741e411d749fea6b93fd8401228bcc"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_coroutine_provenance.h",
+      "bytes": 10652,
+      "sha256": "ff465c016b6577b2b91b48aafcc7a451a1783be6ffb03ff1f6e9e27d1915f805"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_coroutine_view.h",
+      "bytes": 6791,
+      "sha256": "eb2e9011caa1f22334ba623abb178b09f512ddce6d5ab93644946317d9eaee10"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_exception_identity.h",
+      "bytes": 1927,
+      "sha256": "5cd3c2f94cb7d7acc1b01cc1bf2146b8286567e4c0746899e8cd1c52cf43098c"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_exception_ptr.h",
+      "bytes": 8769,
+      "sha256": "4fbea8a23015838c80c9b2691b12448fb862953b3c242a14a0e6827ddba30f74"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_exceptions.h",
+      "bytes": 36728,
+      "sha256": "25ed2f46225f152fa7909290689bb2f5aa680e7340cbaf730ce48dcd45f6879b"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_imports.h",
+      "bytes": 23917,
+      "sha256": "2e58625dd298058f53ee6d179899da383256a2043bf2857e95f980a73eae42d7"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_initializer_identity.h",
+      "bytes": 3364,
+      "sha256": "ca17c7104385ebb368eb473fa471a61177b7e83a89370150d799d3ea6d8b409c"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_integer_intrinsics.h",
+      "bytes": 3050,
+      "sha256": "fdbc220b3063261ee284c998dd228c4bf97dad189600d1cb227a45fc740db105"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_intrinsics.h",
+      "bytes": 7561,
+      "sha256": "e50cd0abe72bfbe5569495cfed994f7bf13b4015e12ef137b7029daff26b8f59"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_ir.h",
+      "bytes": 4804,
+      "sha256": "7ae0c3ad0a61b8b73c5547be76ed638035dcfc8c35126f0422d2ef71feebd0a0"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_ir_adapter.h",
+      "bytes": 3082,
+      "sha256": "be794ee783da3a978fa964e62372533e8a5cdedcc5e881a88d21ed7bfde71807"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_lifecycle.h",
+      "bytes": 16721,
+      "sha256": "049a2abf210a6ccf28f2c44e735c83247292476ed0aa50f8b39241b13af3e6ed"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_main.h",
+      "bytes": 2587,
+      "sha256": "e74edd890b5127929c0ae2c57792b5b25890f30b5d1f783c215e203f94fcd0eb"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_materialize.h",
+      "bytes": 5702,
+      "sha256": "d27b4ecf292399bb3f0d4f37f4ccc38ab7e4d8ae7d28c4db3f9c1dfa6165615b"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_members.h",
+      "bytes": 1625,
+      "sha256": "af86785cd4796df4f444f6b8122455c65e4e95ec810ead13c472aa564c764534"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object.h",
+      "bytes": 386315,
+      "sha256": "cdb92ed9749674788413d74c202afa2424ec51c0e2562ef5e80c6d3a2cf211d8"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_constraints_writer.h",
+      "bytes": 33254,
+      "sha256": "fc6a6aab17d85779d90c4f1e03f906d7985e8422b7dd84e24b6dbb8a93708923"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_field_state.h",
+      "bytes": 1397,
+      "sha256": "bcbbaafac2fdd9304121fed0140b6dd47e466cc719d601a0b6bfb399eff9539e"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_graph.h",
+      "bytes": 44480,
+      "sha256": "355160334d1937c67415408f5f6d805c3806addd3a74182559c6f3fd89bb2f94"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_graph_walk.h",
+      "bytes": 341483,
+      "sha256": "d09dcfc02235030d4e25d99e5c05c456fc056aa725806cbbcbcdb5b3ed3bf4eb"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_macros.h",
+      "bytes": 3703,
+      "sha256": "e3bb3dc37a0f4fd53a75e8e8f9023ac6ebc43dcc5c32e6a5e31ff66583393775"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_namespaces.h",
+      "bytes": 2289,
+      "sha256": "290e0bd4fd05c697c9b666e69c89cfe84f41af7b54612baba4597a8d44003e47"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_source.h",
+      "bytes": 207582,
+      "sha256": "ac45b328b26f2d7d8ecd383b701e22231a1e86551e2101ad1835ac789d2736bc"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_source_constraints.h",
+      "bytes": 62296,
+      "sha256": "f71f6c858268acac8cfb542429f0632017990cbeb53a58619698d4a6bc300a33"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_source_namespaces.h",
+      "bytes": 3204,
+      "sha256": "63dcfb773d311fb85e0f5ca342533300e961d93a9e5490ea6221573ae53d3ba3"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_source_operations.h",
+      "bytes": 16365,
+      "sha256": "9f40da109ea64e884e17bd4e8ad1ec73cc49605e05a96c8e55cb871a102ea4f9"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_source_tls.h",
+      "bytes": 3728,
+      "sha256": "766407bc41e2f28a987350d6de0827e9de64cca48409e4e267126d953cfe7f28"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_object_tls_writer.h",
+      "bytes": 5146,
+      "sha256": "646961fef60df9f478f26ef5d42e5c53b736f3ee17aac3b8daa8d9c9adf707da"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_order.h",
+      "bytes": 3231,
+      "sha256": "8b1bafc5f145858ebdbf1c7746dbd2c1398bf077d711cdc97f9e0cca6c0dd4d3"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_overflow.h",
+      "bytes": 5695,
+      "sha256": "7b688939a3a8916ccffee06b7420fc20bec729892238ca4e9111cab8b492ef0a"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_posix.h",
+      "bytes": 11319,
+      "sha256": "3053e84c078712a7ade06ffd8fe4a7361b1dd1d49ecc54364e67163a300480f1"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_primitive_data.h",
+      "bytes": 4478,
+      "sha256": "2e77d2a856676b3816e68c8d623232e158fb122e5afac8a3708197472e8505e8"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_primitive_views.h",
+      "bytes": 19169,
+      "sha256": "5238173a785af36a28e9edc49f18b23a1d3be8991e28a1459cfeda331f9a347f"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_process.h",
+      "bytes": 5801,
+      "sha256": "48aca3607ca7a17d82d0c88702aa46473ae19f90d9326f25a83d68735d495a2e"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_provider_pruning.h",
+      "bytes": 7235,
+      "sha256": "c658c0d052ced9dffe527d62ce451a1e9d1dcedf01c9c7880eba45542823c31d"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_record_data.h",
+      "bytes": 6314,
+      "sha256": "7410cb25a31545e64b9799f548d3bd2401ca7c154164602b6d06467dc6f0ef68"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_routine_symbols.h",
+      "bytes": 3060,
+      "sha256": "ffdbdd88a87488fe30edfd89a563e6b10f51dc8d9ed1eda14890fa0ba82d8914"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_rtti.h",
+      "bytes": 10076,
+      "sha256": "be20703665ad2704bba34cc42e4fa32131e572eb594f742fc9ce1fc888314f19"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_runtime.h",
+      "bytes": 4185,
+      "sha256": "e36b881f5324e121791d8330f0f69a024652c88dfc17f548941685ab18614b32"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_semantic.h",
+      "bytes": 268560,
+      "sha256": "e2f120b8d2db93796eab9bf97302ddc6849bb07728af76b95570b46b4f08331f"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_semantic_schema.h",
+      "bytes": 24745,
+      "sha256": "3697116e79b9cf603f8526914a8cae7795b64e8205d16b637a6f345aa63274b2"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_semantic_sqlite.h",
+      "bytes": 5190,
+      "sha256": "b89aa4c74746cf96c44fd794f452eaa284f4711eab66c09d16b5d42d8e5db78f"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_semaphore.h",
+      "bytes": 3341,
+      "sha256": "edd6966af28c5849eb92b152d6e9882cc6323b64328aca788154aa4a2c939285"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_sequence.h",
+      "bytes": 6389,
+      "sha256": "8b3fc030254343f6a526fc76c01c0128ac3869bbace415eca756972c0283c2ad"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_setjmp.h",
+      "bytes": 9272,
+      "sha256": "85d4de79e072456c38fea7cd7159577e96db8fb443194db14ee5a0ff80528203"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_source_control.h",
+      "bytes": 8749,
+      "sha256": "b068b710b28481316150f2fc78b59bc72f6607ea7fd439a8f98ddf90e6c4f9cf"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_source_expression_api.h",
+      "bytes": 649,
+      "sha256": "ecfdc4975600b9723283d2930e8fc58851cdda635e6cb135cc139566332302f4"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_source_expressions.h",
+      "bytes": 21325,
+      "sha256": "50623b0cc95a856ff174edf7c394cb811967c9e22823502a30ca07986a6d7155"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_source_names.h",
+      "bytes": 31028,
+      "sha256": "6f9bdd5d2c3cd8209095ff14f255d7b8abf970ef553fe224fb9e4f3782447778"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_source_storage.h",
+      "bytes": 4152,
+      "sha256": "16686c0a990bb2604ac8cc41e499b535b077d80b53b5c9fca5ba36817ac108d8"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_statement_expression.h",
+      "bytes": 5808,
+      "sha256": "10a27f0adcda3db842bbdf71c1e688c7541814094a39301afc5b6c5f0e8d47df"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_storage_types.h",
+      "bytes": 1451,
+      "sha256": "b8873b5e7faf68505167f3da122db45b1c00e84659088230a1aad6a04ce4a13c"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_terminate.h",
+      "bytes": 6086,
+      "sha256": "fce846420d2d59f36ee727e960733195e5f489f9a49038bc67c8a7e5da6d8411"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_threads.h",
+      "bytes": 8895,
+      "sha256": "38f80bab3848ecad5387d46ea07b80d65adc750f543e0c2bfacf4d6e555f087f"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_trace.h",
+      "bytes": 4109,
+      "sha256": "86b4028d9a1c6ff81accad9ee9a27de9b664b1ddcc5e5d1b4653aecf2b72bf28"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_typeinfo.h",
+      "bytes": 9230,
+      "sha256": "d94323bbc488d8340e22d746ddcc7ee81219819d9f7a5c9c59e423af62ec1d95"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_unbound.h",
+      "bytes": 12445,
+      "sha256": "890ccc04ce79951db90a44e2777acaa42e6047521f0e7ea3b6cb0a250d9a86ce"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_unexpected.h",
+      "bytes": 6500,
+      "sha256": "02ed9379b9c8054918821ebcf8ea063284e92d80f72e29df7e1058cc34a9d434"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_varargs.h",
+      "bytes": 5569,
+      "sha256": "f5b298b183933e803517a0596597e3d840e2167bcddb20c38e8074cbb3936cb8"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_variable_aliases.h",
+      "bytes": 6148,
+      "sha256": "71c060cf8be43fae017a15be281d7151e43823c8a6674e1b792e6d4d56d6f4cf"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_virtual.h",
+      "bytes": 4137,
+      "sha256": "c65d36a51f6c534dbfacbed0a03d8f5e95f07e98442f07ed4fc61f6c50abf94f"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_vla.h",
+      "bytes": 1715,
+      "sha256": "de2d176a01bf49f285f01e2a65bd88a431ed58aae0a35378e242cb690d293b33"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_gen_volatile_bits.h",
+      "bytes": 5266,
+      "sha256": "77360e45ca88e960341e62303e42fefbb0c2118d4865dc3eb810cc8f56bfe7a8"
+    },
+    {
+      "path": "edgcpp/upstream/src/dot_sys_predef.c",
+      "bytes": 3591,
+      "sha256": "71a91b65720bf6f0ce12d777bee8e5cbb7eb186e5683b5749f62070e644b2f65"
+    },
+    {
+      "path": "edgcpp/upstream/src/error.c",
+      "bytes": 327598,
+      "sha256": "e9a2fee3c39c8958361236285b57a87a98ceb02592a1de5e1035bd65e7bf3a60"
+    },
+    {
+      "path": "edgcpp/upstream/src/error.h",
+      "bytes": 65541,
+      "sha256": "6611a39baaf1de999aefa446966935878c7786d6fe142240526e830bda32d3e2"
+    },
+    {
+      "path": "edgcpp/upstream/src/expr.c",
+      "bytes": 2722282,
+      "sha256": "056f8e7416d6f948846abbe17c3401e9eb4ca8ed1ce0ae7673cd573b314df3c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/expr.h",
+      "bytes": 50215,
+      "sha256": "4b07be2a03d1f7a9744dc04c2d03a54718ed3d80f9aea6901c1867597b785a17"
+    },
+    {
+      "path": "edgcpp/upstream/src/expr_hdrs.h",
+      "bytes": 630,
+      "sha256": "e6e4a739f92c2f2762f931fde2283fcc8e57c2df4a5516b0172312e4ca1e6812"
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.c",
+      "bytes": 1231551,
+      "sha256": "1b01609700d2a72f64f94e218a3f210e7e9503394bc3cf16168e8a1a50e50812"
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.h",
+      "bytes": 152068,
+      "sha256": "8fcd16c84d6bc159cd80b10fdaa5322bdf3fab06ae0414c98fd877a971690340"
+    },
+    {
+      "path": "edgcpp/upstream/src/extasm.c",
+      "bytes": 54301,
+      "sha256": "c7f0b1ca65c3b7b0cc6a556d9c1895cc710b5423a17f9901dc2edac280cfd53f"
+    },
+    {
+      "path": "edgcpp/upstream/src/extasm.h",
+      "bytes": 1200,
+      "sha256": "138b417c59cc68328128b8455fcbe9286102e77f6f8cc698e448f814685c2ed8"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_common.h",
+      "bytes": 3164,
+      "sha256": "39b80f4d24d5cae46d85230f9bf978d024bc369431336de884f33a54fc62fedb"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_init.c",
+      "bytes": 101651,
+      "sha256": "7224d6888ef3bf52e37019f8554a609dc4521b3cf3685612d4c5f948a31e827f"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_init.h",
+      "bytes": 1256,
+      "sha256": "0158278572e84029bbdb8898f14e3b1fd3214bb5158d4337cd6e930c5fb8df0d"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_wrapup.c",
+      "bytes": 35933,
+      "sha256": "f1313193ae6fe0a9e442c66ace789d304dca574a2e3d4483d0f7fe98ac5576ab"
+    },
+    {
+      "path": "edgcpp/upstream/src/fe_wrapup.h",
+      "bytes": 758,
+      "sha256": "e3b4b6b4b08d49e9463b88a038c0555e9c63ad6f53daf7dd0e027d9f12ed9631"
+    },
+    {
+      "path": "edgcpp/upstream/src/fixed_pt.c",
+      "bytes": 56893,
+      "sha256": "ecc55b4c435bc57943b45d44346a208686e78e3e05c55e51cc3a8e49df5523f0"
+    },
+    {
+      "path": "edgcpp/upstream/src/fixed_pt.h",
+      "bytes": 3977,
+      "sha256": "464ebf89aecc74b63fef56ad08ddc2956b774a3ff2a9c70f98fd42b0baa2f20e"
+    },
+    {
+      "path": "edgcpp/upstream/src/float_pt.c",
+      "bytes": 177471,
+      "sha256": "ac39be169ec49270b762dc03ed6e41087709fde15698434b2c124f5a383c376a"
+    },
+    {
+      "path": "edgcpp/upstream/src/float_pt.h",
+      "bytes": 12373,
+      "sha256": "3ae9427a552c5c0957175f958420d780334466b22672db60ea8b131195e885ba"
+    },
+    {
+      "path": "edgcpp/upstream/src/float_type.h",
+      "bytes": 55986,
+      "sha256": "44b9d368c0f7d3b0d88debe60c95d693154df76837b7786426d5ac4cc2232bfb"
+    },
+    {
+      "path": "edgcpp/upstream/src/floating.c",
+      "bytes": 85899,
+      "sha256": "7f627e2aa3f3c1ee75ee58529eeceb95f1db71caee06ded0cb5615a1bd31b45a"
+    },
+    {
+      "path": "edgcpp/upstream/src/floating.h",
+      "bytes": 30762,
+      "sha256": "cb448268eb224ba4dfa21894d7fa66c4c94c39c94247f13623bb317483160b59"
+    },
+    {
+      "path": "edgcpp/upstream/src/folding.c",
+      "bytes": 528909,
+      "sha256": "91fef22e8578541a8f7211ce401b7f15a3acd55aa42bed2815c254237cf045ff"
+    },
+    {
+      "path": "edgcpp/upstream/src/folding.h",
+      "bytes": 14193,
+      "sha256": "c8f75e256ff27f378472aa05198c0b7403c608d5284e2e61f02d483d886d246f"
+    },
+    {
+      "path": "edgcpp/upstream/src/func_def.c",
+      "bytes": 207902,
+      "sha256": "b2a378a42cbfc99187de5998aa960e1a4c046c56c6cc26f81e53ddf25f4f175f"
+    },
+    {
+      "path": "edgcpp/upstream/src/func_def.h",
+      "bytes": 3941,
+      "sha256": "a0e60575507e7a711b321cd70167fd7df66c8cf27f05da4a8c9c372d8665df0b"
+    },
+    {
+      "path": "edgcpp/upstream/src/header_util.h",
+      "bytes": 14797,
+      "sha256": "448c247c8f71a98a6a2b0a46946e577c49eaef712f81621827fd634f61c03aca"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.c",
+      "bytes": 248476,
+      "sha256": "7089dc53eb8fca9f3c55ed299850914d39a8fdd533937e8809d210a5f6459f2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_envir.h",
+      "bytes": 174006,
+      "sha256": "a8c9c5e79dbdd6be8c82f360c58d8681f91015e5e14e61039076b7f8c3b9c2c1"
+    },
+    {
+      "path": "edgcpp/upstream/src/host_util.h",
+      "bytes": 11713,
+      "sha256": "d7cbc0a5e59e64528707c917ff3976bc44fa516ab26a764f816be83a7acf69af"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map.h",
+      "bytes": 1017721,
+      "sha256": "a747c51fa508d86477b4eb8341b37d89c28e33434791f88d3e7d9e702bea02e8"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map_functions.c",
+      "bytes": 1817809,
+      "sha256": "ed65c94a0c9582f90142b2eaf0943738369f22bc5cb242ade19fbfe40b5404db"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map_functions.h",
+      "bytes": 1239567,
+      "sha256": "d6dd8788d6817feb2cf8f5e4f9e613b400dc7d990cb8a3cd7cbf0394d18fd92f"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map_functions_acc.c",
+      "bytes": 1943846,
+      "sha256": "5b7093540f82173d26fd31734d976f943c7f9e29a488c30c05a894e43f43c3dd"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map_functions_dbg.c",
+      "bytes": 764926,
+      "sha256": "b79096c2e3a634b3d188e24d1f896bc43cedfe72b55cd0b98d39449aab980de4"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map_functions_mut.c",
+      "bytes": 1175073,
+      "sha256": "db525dc2db7285de28998aced98a37c59b0eb2efed32d95c07398d09b11f32e4"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_map_functions_val.c",
+      "bytes": 1400438,
+      "sha256": "6a8cb2f3258e7f651aedeb1d18de273108e8b439bfece93804835adcbad4267e"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules.c",
+      "bytes": 9808,
+      "sha256": "188f7b33e03c381bc153a0e4a84062879d66d10502bd648ecf043b7badf7c043"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules.h",
+      "bytes": 7157,
+      "sha256": "d016a4b90d254f29010eff5321ce428c016e8506e5fbc4d07bf7ee54c93f4dd3"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules_inst.h",
+      "bytes": 65354,
+      "sha256": "e5f29743bdb358d024aa7069f0944573616d9cab97eecf8fecfd6e91bc3127cd"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules_internal.h",
+      "bytes": 17417,
+      "sha256": "459a5a422dcb4aca6ce06fce1c5407e28c3cf50a0659c56af80033452dac9fb0"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules_read.c",
+      "bytes": 1129881,
+      "sha256": "bac32996f44c1f88f4c764b3e30fd80d7a80aaac166d707384203dff1f21d99d"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules_spec.h",
+      "bytes": 3123,
+      "sha256": "103ffe136893fbcb8d4c9fcb8e2bd3f30885a0e1899eb14da544504b98e4fe43"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules_templ.c",
+      "bytes": 23824,
+      "sha256": "b7f7890d59a3e806f1de0c3879106ec37f0ca2d10993680505b8bad1598fb32e"
+    },
+    {
+      "path": "edgcpp/upstream/src/ifc_modules_write.c",
+      "bytes": 221268,
+      "sha256": "b25e2713ce80993e64da949f120782715246d6474ca7b46efb11b023d23c41be"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.c",
+      "bytes": 1401508,
+      "sha256": "535768a37a2bd0f90dd18c41bd867398074289a305c3ff88589da67153514cd0"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.h",
+      "bytes": 186058,
+      "sha256": "6a2125d77c052ee8a98c04d5cb3b6b51ba6abc9220314d273af499c83e334a88"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_alloc.c",
+      "bytes": 211747,
+      "sha256": "aa12a01de83a70158cf2fe377630b850e668e66e81a43fc0136a4334524818fd"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_alloc.h",
+      "bytes": 17274,
+      "sha256": "f2671903e3fb7c900bd5723cbbd9a36af5797b546ac033b94908b78e579e030b"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_def.h",
+      "bytes": 807435,
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_display.c",
+      "bytes": 345599,
+      "sha256": "c26da3e457ca7e01ef116ceb66daba4dc8e7d2beb9285292c278b822d31c1ea0"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_display.h",
+      "bytes": 1013,
+      "sha256": "035790701a49ec2ccf0ee6c2b38ec9c6dde4d577d21f38e942aa7ff2466b7280"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_file.h",
+      "bytes": 4120,
+      "sha256": "69d9a5cd37ac3e1bb1f59b9f93b6ce19587236b7b921a80b7b65114397b07084"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_read.c",
+      "bytes": 44576,
+      "sha256": "0389f4ddcc6e74b1b0a27ce296575589b1b1bbe49ad4d43b0902c465367feb8a"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_read.h",
+      "bytes": 2267,
+      "sha256": "b6b2c07b8879d5ee0c464a336f0eb0f33c5c06b051ae6e7352dba36ec35f493f"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_to_str.c",
+      "bytes": 372328,
+      "sha256": "fc8fea0be06ba51e02e7c84a5e06c36634c4dafe151400d1822e97b19ccf5f5f"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_to_str.h",
+      "bytes": 30898,
+      "sha256": "211f32eeeb95e94a6a80fd226eef656e77e0855756b1686bcfbba2e81810fe45"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_walk.c",
+      "bytes": 173921,
+      "sha256": "affbed6c707ddac1434d9ad8be945ee88d716da0249b1c2625c66b76e858ff0f"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_walk.h",
+      "bytes": 20299,
+      "sha256": "e0fb5f08ea1253bb12ffc7afb5331b8292e6a78c52870e094cf331354c42f5ae"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_write.c",
+      "bytes": 43941,
+      "sha256": "bd37b48b9965387080040c8da5cbd6afd5b68ba64d4fe3fa3d7e5f7ae5369c8d"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_write.h",
+      "bytes": 1768,
+      "sha256": "c47593d2662568a318cbccf1efc4fee8522978fc45199653552c2b98bc9c885d"
+    },
+    {
+      "path": "edgcpp/upstream/src/inline.c",
+      "bytes": 94861,
+      "sha256": "7de2d1199baae23d4decdca953b4228ae966fb49fbbd1adaaa5c1e52f6b45dd7"
+    },
+    {
+      "path": "edgcpp/upstream/src/inline.h",
+      "bytes": 4495,
+      "sha256": "dea54640a16e64bb4d431cfa5b08c640a7301e4f6887fdbb398651c16ad8dbb6"
+    },
+    {
+      "path": "edgcpp/upstream/src/interpret.c",
+      "bytes": 1498174,
+      "sha256": "d3f34d737a6690e482942a52a463e406b767a0d5fc06b3609c8cb9c79b27cb4d"
+    },
+    {
+      "path": "edgcpp/upstream/src/interpret.h",
+      "bytes": 18526,
+      "sha256": "9a5c478d0d08d573f3d6e7014abcb1fb2209088d45742057cadba9edb70c9b14"
+    },
+    {
+      "path": "edgcpp/upstream/src/lang_feat.h",
+      "bytes": 116681,
+      "sha256": "980f0c21dfe065ec0a0b4601ac69d137f18a71754e59ad0cd0c809f65a7e889e"
+    },
+    {
+      "path": "edgcpp/upstream/src/layout.c",
+      "bytes": 231939,
+      "sha256": "f2b0697ca1ed175c4007bd645a3cedd9adbe015784ede81dd733b9ea403201f5"
+    },
+    {
+      "path": "edgcpp/upstream/src/layout.h",
+      "bytes": 2750,
+      "sha256": "59f33ce6f3e47b27f83a97f11ccce17dad120b09ab4b83a885ab95f10bad7641"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "bytes": 1429701,
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.h",
+      "bytes": 452486,
+      "sha256": "805ade6649e8b2e0d2d11c2eaf8364904e51d54bbaa3701d2011f8609e74e8b3"
+    },
+    {
+      "path": "edgcpp/upstream/src/lint.h",
+      "bytes": 65215,
+      "sha256": "6e112b7725beabfd7f74000f415357f9a293f3eebd0b51b5bf3528e16eca2479"
+    },
+    {
+      "path": "edgcpp/upstream/src/literals.c",
+      "bytes": 122991,
+      "sha256": "de5276f87f073a67bb4b7c6a4cd152a66eab0a155fda84f0d991e3d296213d95"
+    },
+    {
+      "path": "edgcpp/upstream/src/literals.h",
+      "bytes": 8384,
+      "sha256": "6a66e58e390fbd6b68da78a0252f18dbc7bdc78f678974285445431ac5eddf7f"
+    },
+    {
+      "path": "edgcpp/upstream/src/lookup.c",
+      "bytes": 345020,
+      "sha256": "251e21f04cc94b0e8da1c5e1031ca3f832aaf5ec2b19bd6ff4ece4116e543af2"
+    },
+    {
+      "path": "edgcpp/upstream/src/lookup.h",
+      "bytes": 15044,
+      "sha256": "aa91e94ebe90650db5a1a8bb2ee4283de67214bf007e523dc508b4ab6862a70c"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_c99.c",
+      "bytes": 218806,
+      "sha256": "16d019ac40f09178ab313c247fb6d376bda21cab69cd8a38d7c3b5c4aa8149f0"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_c99.h",
+      "bytes": 5824,
+      "sha256": "f2971f1131795bdebba31109456b7731a589bd0a77f7d057cf7be50f530a8c54"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_eh.c",
+      "bytes": 286291,
+      "sha256": "a90826759f750899968683ae988db65b44d95f607719ba083299925da8d91789"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_eh.h",
+      "bytes": 5838,
+      "sha256": "a67fb26f775a3e026614fb6d5fe21fc560a3cad9054468787d292a43bbe249b4"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_hdrs.h",
+      "bytes": 683,
+      "sha256": "f56cc926324da75ed6f593b762a51f6e23959388929a3d0627c009f64ee2ce39"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_il.c",
+      "bytes": 1026487,
+      "sha256": "851af24fe0d33bc8a714e9882635a0f701e643333a32939c70a4a515215b10fb"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_il.h",
+      "bytes": 60518,
+      "sha256": "2e135e25b96be880468950c6022e7aa80861874a805a32765448d79d1ef577a2"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_init.c",
+      "bytes": 976136,
+      "sha256": "9c5976cdc0b0ab4d44e3ce7dbeccffdf216bd0d2469fa18742a58066593b6f0b"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_init.h",
+      "bytes": 19407,
+      "sha256": "5ef37092a33ba9d1ed9f1c00a1a03765db04dda851deb4c9e408d3c70da46725"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_name.c",
+      "bytes": 688432,
+      "sha256": "1907e0731c5b442d5f2823896ccd80741f01ec0063c3a0782f2b2c7e75e5b75b"
+    },
+    {
+      "path": "edgcpp/upstream/src/lower_name.h",
+      "bytes": 5558,
+      "sha256": "14211c1c3532ed95d3f4408005f3cc35db81eb3896455c74abba709ba69a9745"
+    },
+    {
+      "path": "edgcpp/upstream/src/macro.c",
+      "bytes": 584307,
+      "sha256": "3cd96e32ba6676fb66b17900922abdc9a33caab5aade78f2046dba0490d996a3"
+    },
+    {
+      "path": "edgcpp/upstream/src/macro.h",
+      "bytes": 8245,
+      "sha256": "1548c08c4a8f193258aa8a5ce9bfb501e09d10e92ee0bf6279a5d1c5be68e5b0"
+    },
+    {
+      "path": "edgcpp/upstream/src/mem_manage.c",
+      "bytes": 81864,
+      "sha256": "4127523bae47ab55d89ed8ed99c067f70081bd44ee7aee3dfa5ea9c643b38305"
+    },
+    {
+      "path": "edgcpp/upstream/src/mem_manage.h",
+      "bytes": 33290,
+      "sha256": "4ca1801049d9ad90b47536dd4c097a0623b589ece80352c2153e28c23a8b50b6"
+    },
+    {
+      "path": "edgcpp/upstream/src/mem_tables.h",
+      "bytes": 19979,
+      "sha256": "59e87adb1b47d456609fbd71c5ae09c33e6cb61f446d803b028c94f910034d15"
+    },
+    {
+      "path": "edgcpp/upstream/src/modules.c",
+      "bytes": 85499,
+      "sha256": "f588eb1a96b4c7b62082a938422245a393f61dc418eb8f13c2c69196ccb5723c"
+    },
+    {
+      "path": "edgcpp/upstream/src/modules.h",
+      "bytes": 33746,
+      "sha256": "5c924b2a6d8bce1e890a9a595021882d2d28ed2e5288c160efe03f0073c072cb"
+    },
+    {
+      "path": "edgcpp/upstream/src/ms_attrib.c",
+      "bytes": 147224,
+      "sha256": "05e16523b22a707308473e2a9262ac2936f778ae9767a7d9dff5e337de02e66c"
+    },
+    {
+      "path": "edgcpp/upstream/src/ms_attrib.h",
+      "bytes": 5067,
+      "sha256": "c872c58f23f5255df7277e31894525e8ff327000f32f8bdcd992cbf34d35ae1a"
+    },
+    {
+      "path": "edgcpp/upstream/src/ms_metadata.cpp",
+      "bytes": 387189,
+      "sha256": "2a9e49b4c2e787da939bc5286f783af849c7a7f22a4b22225dfa72085db8067f"
+    },
+    {
+      "path": "edgcpp/upstream/src/ms_metadata.h",
+      "bytes": 6120,
+      "sha256": "460a1794788c31e7ef74b3a80339fb85343eab8ddc13377f622562ac53001d60"
+    },
+    {
+      "path": "edgcpp/upstream/src/overload.c",
+      "bytes": 1497524,
+      "sha256": "62c8b3971d169872985b6855871488690c971455a0ef07773e6f78f335a1c67e"
+    },
+    {
+      "path": "edgcpp/upstream/src/overload.h",
+      "bytes": 68712,
+      "sha256": "e70767da9150b2f117f60624800b7dab762237ca085ed65aae3a2fb2da46f6bf"
+    },
+    {
+      "path": "edgcpp/upstream/src/pch.c",
+      "bytes": 93177,
+      "sha256": "b9c9d1296d384caadaf8c216a6ca3accfe40135849763ce96a55235d77ea0fb3"
+    },
+    {
+      "path": "edgcpp/upstream/src/pch.h",
+      "bytes": 9227,
+      "sha256": "b4d7eacf67869f08558b43657861c88bf9a389de34238d5b66e48281defd9cbd"
+    },
+    {
+      "path": "edgcpp/upstream/src/pragma.c",
+      "bytes": 98418,
+      "sha256": "0d01b723962ab13b99ac7a8fece6394ca026de1a58dbf0f771eaa8797ddd05e0"
+    },
+    {
+      "path": "edgcpp/upstream/src/pragma.h",
+      "bytes": 17137,
+      "sha256": "a282b11820f688fc2c87806b522ba0e8f4ac402b78d69eaad56d9f336bf43e85"
+    },
+    {
+      "path": "edgcpp/upstream/src/preproc.c",
+      "bytes": 215645,
+      "sha256": "e0927cba0b5ba139152d69063a6ec73114e103be957effd90eec4616438a65af"
+    },
+    {
+      "path": "edgcpp/upstream/src/preproc.h",
+      "bytes": 13104,
+      "sha256": "de5d9fd5e53b09b52b275fd7213545be1b95fd3aaebc7133a70b928325b92861"
+    },
+    {
+      "path": "edgcpp/upstream/src/scope_stk.c",
+      "bytes": 663342,
+      "sha256": "8f781d2ded6e32ec02943ab98a9ffbb1ae800812b8d6eada6484c698c7b682e4"
+    },
+    {
+      "path": "edgcpp/upstream/src/scope_stk.h",
+      "bytes": 115942,
+      "sha256": "7360ee1cfdb4f25d0f47a8cda7a1778cadbb3876ca82f514fe167177233cec2b"
+    },
+    {
+      "path": "edgcpp/upstream/src/src_seq.c",
+      "bytes": 158307,
+      "sha256": "620d79e441451651a90b1a19f35b3e26f892f06dc62c6410b15f3c91c83efb54"
+    },
+    {
+      "path": "edgcpp/upstream/src/src_seq.h",
+      "bytes": 9534,
+      "sha256": "3604b7ba7b6ae1a4f165a81ec4192f1f1722a82fd3ce7e79fd83ee05a9ca8036"
+    },
+    {
+      "path": "edgcpp/upstream/src/statements.c",
+      "bytes": 373595,
+      "sha256": "a4b9476b67189ea0ed2034239f4494bc32a4f50a885bb258ab01eb8e01bac703"
+    },
+    {
+      "path": "edgcpp/upstream/src/statements.h",
+      "bytes": 24100,
+      "sha256": "531db81b067c07f008c2b26a97c7669516f330d002e7ff542d80440553280da1"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_ref.c",
+      "bytes": 144781,
+      "sha256": "a21ad4317c1b64d5c3acebde6314550adb64597ab60b3134394b78cc4b4781fa"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_ref.h",
+      "bytes": 13260,
+      "sha256": "20d0b24ae97f08bbe926d75da10fb9269b9c6a40c78d48e6474623acc3167e0e"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_tbl.c",
+      "bytes": 845951,
+      "sha256": "ef2fc5af96a478fc1d6cf02927de2845c4f61814e6ddb084d36455baed2c7eff"
+    },
+    {
+      "path": "edgcpp/upstream/src/symbol_tbl.h",
+      "bytes": 335330,
+      "sha256": "79db33d95824aace6a634895232ec23b161db302d3d870560386b826084c6377"
+    },
+    {
+      "path": "edgcpp/upstream/src/sys_predef.c",
+      "bytes": 173543,
+      "sha256": "f1bd7aa97008ca55a6975269b6fbc5d536169c549d9152c6e1490155f908dc77"
+    },
+    {
+      "path": "edgcpp/upstream/src/sys_predef.h",
+      "bytes": 42728,
+      "sha256": "afdb1a5dc76edc6535897031101a28e58a2e1e4b42f7f76c365fa55572ad7a47"
+    },
+    {
+      "path": "edgcpp/upstream/src/targ_def.h",
+      "bytes": 264598,
+      "sha256": "e39ed09cdd9d150092231dce1d2b39032ffd442efe57ced0ad7636e12cf1958b"
+    },
+    {
+      "path": "edgcpp/upstream/src/target.c",
+      "bytes": 48328,
+      "sha256": "c9566f5e831009c33946f1a25277dd376606b2a9bc60a21e48011472fa398b67"
+    },
+    {
+      "path": "edgcpp/upstream/src/target.h",
+      "bytes": 63386,
+      "sha256": "b1bdf56f2fa73f1f3fdb62f5bcf296c55a39f4350ad9d80467c6253a2365330e"
+    },
+    {
+      "path": "edgcpp/upstream/src/target_cfg.h",
+      "bytes": 2186,
+      "sha256": "63af3263fe35ac20336506353707f889d7c867f8cee749e9ed9bc966273ae639"
+    },
+    {
+      "path": "edgcpp/upstream/src/target_map.h",
+      "bytes": 22160,
+      "sha256": "60d76a8e67fe309e406ba32cf1e20d1e4014d0a81556086d055fec02db644990"
+    },
+    {
+      "path": "edgcpp/upstream/src/templates.c",
+      "bytes": 2103561,
+      "sha256": "021bfc8bc1ab9908c3c9e77e7bb3551bc526443bf51e1c5d50b82b2c8b837267"
+    },
+    {
+      "path": "edgcpp/upstream/src/templates.h",
+      "bytes": 64962,
+      "sha256": "61bb8c78e13a0c7c6347c5279cec7fccafe58a147ea14ee4dcc968168ad04f53"
+    },
+    {
+      "path": "edgcpp/upstream/src/trans_copy.c",
+      "bytes": 153399,
+      "sha256": "c6f99923cb0fdea4ce8822c74e41e1d50bf086d28c7754d37c4ca03b238b4dba"
+    },
+    {
+      "path": "edgcpp/upstream/src/trans_copy.h",
+      "bytes": 979,
+      "sha256": "437f4e8bee84b93f9c8ec0ecc9675514449e081b308babe00aeaba66082eefd5"
+    },
+    {
+      "path": "edgcpp/upstream/src/trans_corresp.c",
+      "bytes": 348897,
+      "sha256": "40ed693379585349547ccd004459a5f928eea381fed51ae67be306c4dd122bc4"
+    },
+    {
+      "path": "edgcpp/upstream/src/trans_corresp.h",
+      "bytes": 12167,
+      "sha256": "7eb0e4f14e83e58f664235385b50ec8f5c0f90e7ee32173cf2d650c3f73846fb"
+    },
+    {
+      "path": "edgcpp/upstream/src/trans_unit.c",
+      "bytes": 35403,
+      "sha256": "72693d1744a5c0b16e388f3ac5f474baca3a63bdd3064d572822282bfdc73771"
+    },
+    {
+      "path": "edgcpp/upstream/src/trans_unit.h",
+      "bytes": 12970,
+      "sha256": "41233f0b51cf0d0feb484b38ef6a58b5b066125fbef8f3b95266bd01a7c38d54"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.c",
+      "bytes": 799640,
+      "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.h",
+      "bytes": 100827,
+      "sha256": "7bc5d8c9b472a2d72c724b628f384a49fa726f3c8d7406fedaf9107596375495"
+    },
+    {
+      "path": "edgcpp/upstream/src/unicode_name_fsm.c",
+      "bytes": 3505007,
+      "sha256": "713b85624da1004c418b992374b4972e92cdaab99d7f5500cce2f6463aa48ba6"
+    },
+    {
+      "path": "edgcpp/upstream/src/util.h",
+      "bytes": 239477,
+      "sha256": "dfdac880faf2620d6098b570c46021b1bc56bdeac6a0d0ba0ba52a69b404306f"
+    },
+    {
+      "path": "edgcpp/upstream/src/version.h",
+      "bytes": 1644,
+      "sha256": "297fa3d5418f2186c50e5d09d4de3076e948b5ab57f46f4d0a8cc10b9699c091"
+    },
+    {
+      "path": "edgcpp/upstream/src/walk_entry.h",
+      "bytes": 198580,
+      "sha256": "05ab0c1ba3e7240443cb7b2c682937345f72eb0665881e0496b12535c2b2310e"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-positive.cpp",
+  "source_sha256": "4d1b667d934ec4f89f5dbe4824d3fcbc47624b0241acf157b22fc3a32b052978",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-positive.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}
