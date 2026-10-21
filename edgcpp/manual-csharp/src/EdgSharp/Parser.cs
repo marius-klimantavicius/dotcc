@@ -87,8 +87,6 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             return EnterAlias(identifier, type, SourceRange.Cover(start, end.Range));
         }
         if (type.Kind == TypeKind.Void) Fail("SEM001", "A variable cannot have void type.", identifier.Range);
-        if (type is ReferenceType && isConstexpr)
-            Unsupported("Constexpr references require an unimplemented object/referent interpreter.", identifier.Range);
         if (isConstexpr) type = types.Const(type);
         Symbol variable = NewLocalSymbol(identifier, SymbolKind.Variable, type);
         // The declarator's point of declaration precedes its initializer, as in EDG's id_linkage path.
@@ -97,9 +95,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         if (Eat(TokenKind.Equal))
         {
             bool saved = constantRequiredParsing;
-            bool savedOptionalReferenceEvaluation = optionalReferenceEvaluation;
             constantRequiredParsing = isConstexpr || type.Qualifiers.HasFlag(TypeQualifiers.Const);
-            optionalReferenceEvaluation = !isConstexpr;
             try
             {
                 Expression initializer = ScanExprFull();
@@ -109,7 +105,6 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             finally
             {
                 constantRequiredParsing = saved;
-                optionalReferenceEvaluation = savedOptionalReferenceEvaluation;
             }
         }
         else if (type is ReferenceType) Fail("REF004", "A reference variable requires an initializer.", identifier.Range);
@@ -296,8 +291,6 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         if (isConstexpr && resultType.Kind == TypeKind.Void) Unsupported("Constexpr void functions are outside the implemented integer evaluator.", identifier.Range);
         Scope enclosing = state.CurrentScope;
         var (parameterScope, parameters) = FunctionParameters();
-        if (isConstexpr && (resultType is ReferenceType || parameters.Any(p => p.Type is ReferenceType)))
-            Unsupported("Constexpr reference parameters and results require an unimplemented object/referent interpreter.", identifier.Range);
         var functionType = types.Function(resultType, parameters.Select(p => p.Type));
         NameBinding? binding = enclosing.FindLocalBinding(identifier.Spelling);
         Symbol? previous = binding?.Symbols.FirstOrDefault(s => s.Kind == SymbolKind.Function &&
@@ -412,7 +405,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     private bool IsUnsupportedExpressionContinuation() => Current.Kind is TokenKind.Equal or TokenKind.PlusEqual or TokenKind.MinusEqual or
         TokenKind.StarEqual or TokenKind.SlashEqual or TokenKind.PercentEqual or TokenKind.AmpersandEqual or TokenKind.PipeEqual or TokenKind.CaretEqual or
         TokenKind.ShiftLeftEqual or TokenKind.ShiftRightEqual or TokenKind.PlusPlus or TokenKind.MinusMinus or TokenKind.LeftBracket or TokenKind.Question or
-        TokenKind.Dot or TokenKind.Arrow or TokenKind.DotStar or TokenKind.ArrowStar or TokenKind.Scope or TokenKind.Comma or TokenKind.ShiftLeft or TokenKind.ShiftRight or TokenKind.AndAnd or TokenKind.OrOr or TokenKind.Spaceship;
+        TokenKind.Dot or TokenKind.Arrow or TokenKind.DotStar or TokenKind.ArrowStar or TokenKind.Scope or TokenKind.Comma or TokenKind.ShiftLeft or TokenKind.ShiftRight or TokenKind.Spaceship;
     private SourceRange Recover(bool topLevel)
     {
         SourceRange last = Current.Range;

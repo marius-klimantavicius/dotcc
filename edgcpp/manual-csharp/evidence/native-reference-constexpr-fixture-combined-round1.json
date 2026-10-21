@@ -1,0 +1,28 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "unicode_source_kind": null,
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-combined.cpp",
+  "source_sha256": "8cc18a30034560a6a567fa06c70943bfadcd11649659ae931aeb988ce2335ef3",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-combined.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-comb\n          ined.cpp\", line 8: warning: variable \"echo\" was declared but never\n          referenced\n  constexpr long run(){char16_t value=u'A'; const char16_t& alias=value; int echo=0; return copy(alias)+copy(2L);}\n                                                                             ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

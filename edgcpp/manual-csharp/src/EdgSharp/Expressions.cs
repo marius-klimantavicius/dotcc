@@ -30,13 +30,15 @@ internal sealed partial class Parser
     }
     private static int BinaryPrecedence(TokenKind kind) => kind switch
     {
-        TokenKind.Pipe => 1,
-        TokenKind.Caret => 2,
-        TokenKind.Ampersand => 3,
-        TokenKind.EqualEqual or TokenKind.NotEqual => 4,
-        TokenKind.Less or TokenKind.Greater or TokenKind.LessEqual or TokenKind.GreaterEqual => 5,
-        TokenKind.Plus or TokenKind.Minus => 6,
-        TokenKind.Star or TokenKind.Slash or TokenKind.Percent => 7,
+        TokenKind.OrOr => 1,
+        TokenKind.AndAnd => 2,
+        TokenKind.Pipe => 3,
+        TokenKind.Caret => 4,
+        TokenKind.Ampersand => 5,
+        TokenKind.EqualEqual or TokenKind.NotEqual => 6,
+        TokenKind.Less or TokenKind.Greater or TokenKind.LessEqual or TokenKind.GreaterEqual => 7,
+        TokenKind.Plus or TokenKind.Minus => 8,
+        TokenKind.Star or TokenKind.Slash or TokenKind.Percent => 9,
         _ => -1
     };
     private Expression ScanOperand()
@@ -45,7 +47,7 @@ internal sealed partial class Parser
         if (token.Kind is TokenKind.Plus or TokenKind.Minus or TokenKind.Bang or TokenKind.Tilde)
         {
             Take();
-            Expression operand = ScanExprFull(8);
+            Expression operand = ScanExprFull(10);
             if (operand.Type.Kind == TypeKind.Error) return operand;
             if (prototypeAnalysis && TypeDependent(operand))
                 return new DependentUnaryExpression(token.Kind, operand, token.Kind == TokenKind.Bang ? types.Integer(IntegerKind.Bool) : types.Dependent,
@@ -115,8 +117,6 @@ internal sealed partial class Parser
             }
             if (symbol.Name == "main" && symbol.Scope.Kind == ScopeKind.TranslationUnit)
                 Unsupported("The special use rules of global main are not implemented.", token.Range);
-            if (symbol.Type is ReferenceType && ReferenceEvaluationRequired)
-                Unsupported("Reference reads in constant evaluation require an unimplemented object/referent interpreter.", token.Range);
             return new ReferenceExpression(symbol, token.Range);
         }
         if (token.Kind is TokenKind.FloatingLiteral or TokenKind.StringLiteral or TokenKind.CharacterLiteral || token.Kind == TokenKind.Keyword ||
@@ -186,8 +186,6 @@ internal sealed partial class Parser
                 ? BindReference(arguments[i], reference, ReferenceBindingContext.Argument,
                     selectedBinding: selected.ArgumentConversions[i].ReferenceBinding)
                 : Convert(arguments[i], type.ParameterTypes[i]);
-        if (type.ReturnType is ReferenceType && ReferenceEvaluationRequired)
-            Unsupported("Reference results in constant evaluation require an unimplemented object/referent interpreter.", range);
         // EDG il.c prvalue_type/il_return_type_of remove scalar cv from a call's
         // expression type while preserving the declared function return type.
         return new CallExpression(selectedFunction, instance, selected, candidates, callee, arguments.ToArray(), types.Unqualified(type.ReturnType), range);
@@ -222,7 +220,20 @@ internal sealed partial class Parser
         SourceRange range = SourceRange.Cover(left.Range, right.Range);
         if (left.Type.Kind == TypeKind.Error || right.Type.Kind == TypeKind.Error) return new ErrorExpression(types.Error, range);
         if (prototypeAnalysis && (TypeDependent(left) || TypeDependent(right)))
-            return new DependentBinaryExpression(op.Kind, left, right, types.Dependent, range);
+            return new DependentBinaryExpression(op.Kind, left, right, op.Kind is TokenKind.AndAnd or TokenKind.OrOr ? types.Integer(IntegerKind.Bool) : types.Dependent, range);
+        if (op.Kind is TokenKind.AndAnd or TokenKind.OrOr)
+        {
+            IntegerType boolean = types.Integer(IntegerKind.Bool);
+            left = Convert(left, boolean); right = Convert(right, boolean);
+            BigInteger? folded = null;
+            if (left.ConstantValue is BigInteger lhsValue)
+            {
+                bool skip = op.Kind == TokenKind.AndAnd ? lhsValue.IsZero : !lhsValue.IsZero;
+                if (skip) folded = lhsValue.IsZero ? BigInteger.Zero : BigInteger.One;
+                else if (right.ConstantValue is BigInteger rhsValue) folded = rhsValue.IsZero ? BigInteger.Zero : BigInteger.One;
+            }
+            return new BinaryExpression(op.Kind, left, right, boolean, range, folded);
+        }
         if (left.Type is not IntegerType lhs || right.Type is not IntegerType rhs)
         {
             if (left.Type.Kind is TypeKind.Function or TypeKind.OverloadSet || right.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and pointer operations are not implemented.", op.Range);

@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted scalar-reference outputs before later evaluator/Unicode integration builds",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/7c16cf48d/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "e0241b8b151cc12b87318f05affee3c0ba20381c4e4bd7ac85d12a078a0552ec"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/7c16cf48d/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "89c2019552fb9d8d471dce3878606ac7d4b45edaf1c2acd979382cef20804ca6"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-references/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/7c16cf48d/tests/EdgSharp.Tests/bin/aot-references/EdgSharp.Tests",
+      "sha256": "f88135dbe5140a4c567864cbdccf88246890a41f64638f13b13fbe3ad561d0d8"
+    }
+  ]
+}

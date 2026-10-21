@@ -1,0 +1,28 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "unicode_source_kind": null,
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-unknown-reference-constant.cpp",
+  "source_sha256": "57a85567f05e5030c4157bb3c3055fa6303c962f26557216501dbfe19be2bf32",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-unknown-reference-constant.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-unkn\n          own-reference-constant.cpp\", line 1: error: expression must have a\n          constant value\n  constexpr int outer(const int& parameter){constexpr const int& alias=parameter;return 1;}\n                                                                       ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-unkn\n          own-reference-constant.cpp\", line 1: note: a pointer or reference to\n          parameter \"parameter\" (declared at line 1) cannot be used as a\n          constant\n  constexpr int outer(const int& parameter){constexpr const int& alias=parameter;return 1;}\n                                                                       ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-unkn\n          own-reference-constant.cpp\", line 1: warning: variable \"alias\" was\n          declared but never referenced\n  constexpr int outer(const int& parameter){constexpr const int& alias=parameter;return 1;}\n                                                                 ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-unknown-reference-constant.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

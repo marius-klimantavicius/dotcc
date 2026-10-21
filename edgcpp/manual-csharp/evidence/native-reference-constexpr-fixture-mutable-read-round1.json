@@ -1,0 +1,28 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "unicode_source_kind": null,
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-mutable-read.cpp",
+  "source_sha256": "a06afd35d9276c2bc3f3e29a19d0e44f2af0aa74b6d632ed381915b359669f78",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-mutable-read.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-muta\n          ble-read.cpp\", line 3: error: expression must have a constant value\n  static_assert(alias==3);\n                ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-muta\n          ble-read.cpp\", line 3: note: attempt to access run-time storage\n  static_assert(alias==3);\n                ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-mutable-read.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

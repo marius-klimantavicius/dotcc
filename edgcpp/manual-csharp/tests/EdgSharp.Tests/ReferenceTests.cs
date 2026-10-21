@@ -59,7 +59,7 @@ internal static partial class Tests
             Same(variable.Type, binding.Binding.ReferenceType);
             Equal(ReferenceBindingKind.Direct, binding.Binding.Kind);
             Check(!binding.Binding.RequiresLValueToRValue && binding.Temporary == null);
-            Check(binding.ConstantValue == null && variable.ConstantEvaluation == null);
+            Check(binding.ConstantValue == null && variable.ConstantEvaluation is { Status: ConstantEvaluationStatus.Success, Value: null, ReferenceValue: not null });
             Same(binding.Source, binding.Referent);
             Equal(ReferenceReferentOrigin.StaticObject, binding.ReferentOrigin);
         }
@@ -93,7 +93,7 @@ internal static partial class Tests
             Equal(ReferenceTemporaryLifetime.ReferenceVariable, temporary.Lifetime);
             Same(variable.Symbol, temporary.LifetimeOwner);
             Equal(ReferenceReferentOrigin.Temporary, binding.ReferentOrigin);
-            Check(temporary.ConstantValue == null && binding.ConstantValue == null && variable.ConstantEvaluation == null);
+            Check(temporary.ConstantValue == null && binding.ConstantValue == null && variable.ConstantEvaluation != null);
         }
         Equal(ReferenceBindingKind.MaterializedTemporary, Binding(Variable(result, "literal")).Binding.Kind);
         Equal(StandardConversionRank.ExactMatch, Binding(Variable(result, "movable")).Binding.Rank);
@@ -107,7 +107,8 @@ internal static partial class Tests
         Equal(StandardConversionRank.Conversion, Binding(Variable(result, "converted")).Binding.Rank);
         Equal(ConversionKind.IntegralConversion, As<ConversionExpression>(Binding(Variable(result, "wide")).Temporary!.Initializer).Conversion);
         Check(Variable(result, "copy").Initializer!.ConstantValue == null);
-        Equal(ConstantEvaluationStatus.NotConstant, Variable(result, "copy").ConstantEvaluation!.Status);
+        Equal(ConstantEvaluationStatus.Success, Variable(result, "copy").ConstantEvaluation!.Status);
+        Equal(new BigInteger(7), Variable(result, "copy").ConstantEvaluation!.Value!.Value);
         CallExpression call = ReturnedCall(result, "run");
         var argument = As<ReferenceBindingExpression>(call.Arguments[0]);
         Equal(ReferenceBindingContext.Argument, argument.Context);
@@ -482,11 +483,6 @@ internal static partial class Tests
             "template<class T> T f(int& x){return x;}",
             "using R=int&; template<class T> R f(T x){return x;}",
             "template<class T> T f(T x){using R=T&; return x;}",
-            "int object=1; constexpr int& r=object;",
-            "constexpr int f(const int& x){return x;} static_assert(f(1)==1);",
-            "constexpr int f(){const int& r=1; return r;} static_assert(f()==1);",
-            "int object=1; int& r=object; static_assert(r==1);",
-            "int&& get(); constexpr int value=get();",
             "using R=int&; R* pointer;", "int (&parenthesized)=0;", "int& array[2];"
         })
         {

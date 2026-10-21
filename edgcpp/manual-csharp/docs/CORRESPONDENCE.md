@@ -133,3 +133,10 @@ fixture hashes are retained in `evidence/managed-*.json` and
 Later accepted scalar M3 and early M4 evidence is recorded above and in their
 subsystem correspondence documents; the 25-group count describes this original
 foundation snapshot only.
+
+The subsequent102-group scalar constant-storage extension is accepted in
+`review-reference-constexpr-final.md`. `CONSTANT-STORAGE.md` maps interpret.c
+storage/address/load/call/cleanup branches, exprutil.c and il.c original-initializer
+replay, and expr.c/interpret.c contextual logical execution. Four consulted source
+hashes are in `source-reference-constexpr.json`. General objects/pointers/classes/
+dependent references/control flow and full lifetime/interpreter coverage remain open.

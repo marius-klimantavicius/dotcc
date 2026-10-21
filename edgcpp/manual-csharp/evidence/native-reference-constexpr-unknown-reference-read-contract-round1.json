@@ -1,0 +1,28 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "unicode_source_kind": null,
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-reference-constexpr-contracts/unknown-reference-read.cpp",
+  "source_sha256": "46e34fa8063297d3a6f259df7a53a29f2c762737756fc3d9ae5f5af768af1f35",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-reference-constexpr-contracts/unknown-reference-read.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-reference-con\n          stexpr-contracts/unknown-reference-read.cpp\", line 1: error:\n          expression must have a constant value\n  constexpr int outer(const int& reference){static_assert(reference==3);return 1;}\n                                                          ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-reference-con\n          stexpr-contracts/unknown-reference-read.cpp\", line 1: note: attempt\n          to access run-time storage\n  constexpr int outer(const int& reference){static_assert(reference==3);return 1;}\n                                                          ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m4-reference-constexpr-contracts/unknown-reference-read.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

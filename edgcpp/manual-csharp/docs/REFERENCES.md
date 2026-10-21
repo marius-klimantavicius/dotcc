@@ -15,7 +15,7 @@ records exact routines, branches, source hashes and additive integration hunks.
 | `types.c` reference relatedness/compatibility; `il.c` reference creation/collapsing | Distinct canonical lvalue/rvalue ReferenceType over qualified referent; alias collapse and ignored alias-applied cv | Volatile/restrict, pointer/array/function/class and dependent-reference forms |
 | `declarator.c:pointer_declarator`, `decl_inits.c` missing initialization | Interleaved scalar declarator/binding checks, separate invalid versus Unsupported outcomes | Complete compound declarators, storage/linkage and initialization forms |
 | `overload.c` argument match/rank/reference/cv comparison | Viability before ranking; pairwise exact/promotion/conversion then strict Core1374 kind/cv tie breaks; by-value/reference ties remain ambiguous | UDC/classes/pointers/deep qualification/list/implicit object and dialect branches |
-| `overload.c` direct reference/initializer preparation | Compatible glvalues bind without loading; prvalues/materialized or converted temporaries retain rank/cv/context and identity | Complete object cleanup/lifetime and reference constexpr execution |
+| `overload.c` direct reference/initializer preparation | Compatible glvalues bind without loading; prvalues/materialized or converted temporaries retain rank/cv/context and identity | Complete object cleanup/lifetime; scalar constant-storage extension is documented below |
 | `expr.c` identifier/call/return; `exprutil.c` indirection/category | Named references are lvalues; calls expose referent type and LValue/XValue while retaining declared return ReferenceType; value use loads explicitly; returns bind first | Dependent references, general member/cast/object paths |
 | Return-local inspection and managed graph retention | Valid lifetime hazards stay successful with bounded origin/temporary/owner facts; completed bindings propagate facts in constant time through long alias chains | Full dangling-use analysis and exact diagnostic parity |
 
@@ -57,3 +57,9 @@ Evidence is `references-{build,tests,nativeaot-publish,nativeaot-tests}-round2.j
 Round1's single nullable test warning is retained; only its assertion flow was
 corrected. Remaining reference/template/constexpr/class/pointer/lifetime and
 M5/M6 work stays required in FEATURE-INVENTORY.
+
+The subsequent scalar constant-storage extension is independently accepted in
+`review-reference-constexpr-final.md` with102/102 managed/AOT groups and96-file
+maps. The preceding95/73 evidence remains the historical reference checkpoint.
+`CONSTANT-STORAGE.md` records actual locations, loads, lifetime/unknown facts,
+initializer replay and logical short circuit; broader interpreter work remains required.

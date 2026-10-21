@@ -1,0 +1,28 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "unicode_source_kind": null,
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-persistent-temporary.cpp",
+  "source_sha256": "fe2516bdf6c731fd5788e0c01593c619b66bb53c20114309e5fe0a1cb1416df9",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-persistent-temporary.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-pers\n          istent-temporary.cpp\", line 2: error: expression must have a constant\n          value\n  constexpr const int& alias=identity(3);\n                             ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-pers\n          istent-temporary.cpp\", line 2: note: reference or pointer to\n          temporary with limited lifetime\n  constexpr const int& alias=identity(3);\n                             ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-reference-constexpr-persistent-temporary.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

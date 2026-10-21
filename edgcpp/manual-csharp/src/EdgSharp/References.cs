@@ -146,12 +146,6 @@ public sealed class ReferenceBindingExpression : Expression
 
 internal sealed partial class Parser
 {
-    // const scalar initializers request optional folding in the existing M4
-    // parser. That request is not a requirement that a reference read be a
-    // constant expression; a normal runtime initializer remains supported.
-    private bool optionalReferenceEvaluation;
-    private bool ReferenceEvaluationRequired => constantRequiredParsing && !optionalReferenceEvaluation || state.CurrentFunction?.IsConstexpr == true;
-
     private bool InTemplateScope()
     {
         for (Scope? scope = state.CurrentScope; scope != null; scope = scope.Parent)
@@ -219,8 +213,6 @@ internal sealed partial class Parser
         Symbol? owner = null, ReferenceBinding? selectedBinding = null)
     {
         if (source.Type.Kind == TypeKind.Error) return source;
-        if (ReferenceEvaluationRequired)
-            Unsupported("Reference binding in constant evaluation requires an unimplemented object/referent interpreter.", source.Range);
         if (source.IsTypeDependent || TypeTable.ContainsScopedOrDependentType(target))
         {
             Unsupported("Dependent reference initialization is not implemented.", source.Range);

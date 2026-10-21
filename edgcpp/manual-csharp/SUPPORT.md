@@ -7,13 +7,15 @@ and accepted (`evidence/review-m1-final.md`). The subsequent bounded character,
 builtin and filesystem-input extension is independently accepted within its
 executed bounds (`evidence/review-m1-literals-final.md`);
 The following bounded scalar-reference integration is independently accepted
-(`evidence/review-references-final.md`). Release build and all 95 named groups pass in managed
+(`evidence/review-references-final.md`). The following scalar-reference constant-storage
+extension is accepted in `evidence/review-reference-constexpr-final.md`. Release
+build and all 102 named groups pass in managed
 execution and a published Linux x64 NativeAOT
 executable. This inventory does not establish C++20/EDG completeness or broader
 platform/product qualification. See `evidence/review-final-m0-m2.md` and
 `evidence/review-m3-final.md` and `evidence/review-m4-final.md`; preprocessing
 correspondence and exact evidence are in `docs/PREPROCESSING.md` and
-`docs/LITERALS-AND-INPUT.md` and `docs/REFERENCES.md`. The full required backlog is
+`docs/LITERALS-AND-INPUT.md`, `docs/REFERENCES.md` and `docs/CONSTANT-STORAGE.md`. The full required backlog is
 `docs/FEATURE-INVENTORY.md`.
 
 The initial profile is strict C++20 with fixed LP64 integer/pointer widths
@@ -31,8 +33,8 @@ real-header compatibility remain unsupported or unverified.
 | Preprocessing | Object/function/variadic macros, lazy prescan/inertness/caller-tail rescan, #/##/placemarkers/VA_OPT and full32-label upstream matrix; configured includes/guards/once; numeric intmax/uintmax64 plus witnessed character/bool32 PP behavior; #line/error/strict-warning; __LINE__/__FILE__/__cplusplus/date/time/hosted and __has_include | Default/in-memory path has no host fallback. Optional structured provider separates probe/read/failure caches and activation. Unicode/UCN, other special operators, general pragmas/extensions and complete lexical compatibility remain required. Include entry/EOF are lookahead barriers |
 | Types/declarations | Canonical integer/character kinds; const scalars; scalar lvalue/rvalue references, alias collapse and explicit binding/materialization facts; void function results; simple aliases/variables | No pointers/arrays/class or dependent references, complete cv/compound declarators, multiple declarators, direct/list initialization, storage/linkage specifiers; const void unsupported |
 | Functions/scopes | Source-ordered scalar free-function overloads, compatible entity identity, by-value/scalar-reference parameters/results; pairwise rank/kind/cv comparison and nearest lexical hiding | Pointer/class/UDC/ADL overload branches, defaults/variadics/block-scope functions, namespaces/classes and general symbol-state rules remain required. Global `main` special semantics unsupported |
-| Expressions/statements | Direct/parenthesized ordinary calls; explicit scalar conversion nodes; returns; empty/declaration/expression statements; integer `+ - * / %`, comparisons, bitwise operators and unary `+ - ! ~`; implemented alternative operator spellings map to the same token kinds | Assignment, logical binary operations, shifts, comma/conditional, casts, member access, function decay, labels/control flow and other missing forms are explicitly unsupported |
-| Constants | Radix/suffix/rank/width rules; optional folds plus separate constexpr integer work/call/block/local execution; static_assert/constexpr-variable required evaluation; explicit failure/dependency/resource outcomes | Reference/object/lifetime execution remains Unsupported; no fake folds on binding/materialized nodes. Assignment/control flow/void/general interpreter/classification and extended integers remain required |
+| Expressions/statements | Direct/parenthesized ordinary calls; explicit scalar conversion nodes; returns; empty/declaration/expression statements; integer `+ - * / %`, comparisons, bitwise operators and unary `+ - ! ~`; contextual-bool `&&`/`||` with real short circuit; implemented alternative operator spellings map to the same token kinds | Assignment, shifts, comma/conditional, casts, member access, function decay, labels/control flow and other missing forms are explicitly unsupported |
+| Constants | Radix/suffix/rank/width rules; optional folds plus separate constexpr integer work/call/block/local execution; static_assert/constexpr-variable required evaluation; explicit failure/dependency/resource outcomes; scalar locations, reference transport, explicit loads, temporary/frame cleanup and original-initializer replay | General object/class/pointer lifetime execution, assignment/control flow/void/general interpreter/classification and extended integers remain required |
 | Function templates | Named direct type parameters, immediate dependent prototype graph and nondependent checks, actual retained-token replay, by-value scalar deduction without promotions, canonical instances/reuse, frozen ordinary lookup, ordinary-template ties and direct-pattern ordering | No template forward/redeclarations, explicit arguments/specialization, compound/ref/pointer/class/member/ADL templates, packs/defaults/constraints or general partial ordering |
 | State/replay | Independent session state/retained graphs; nested template replay and owner-journaled mutations; recursively scoped reference/function signatures avoid session retention, with valid/invalid/unsupported live-session collection tests | Every future compound must extend recursive ownership guards. Root-owner restores replay; child replay Checkpoint/Restore prohibited. General speculation/resource/cancellation/IDE qualification remains outstanding |
 
@@ -70,5 +72,5 @@ Reference calls expose declared return identity separately from referent type an
 LValue/XValue category; named rvalue references remain lvalues. Known temporary
 identity/owner facts are bounded, not a full lifetime proof. Additional managed
 warnings for named temporary hazards are intentional and are not native warning
-parity; valid binding remains successful. Complete reference constexpr/template
-and object-lifetime behavior remains required.
+parity; valid binding remains successful. Complete reference/template and general object-lifetime behavior remains required;
+the accepted scalar constant-storage bounds are documented separately.

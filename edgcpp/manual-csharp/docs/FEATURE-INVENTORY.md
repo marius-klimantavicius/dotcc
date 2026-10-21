@@ -100,7 +100,7 @@ Source guides: `templates.rst`, `expr.rst`; `templates.c`, `overload.c`,
 | M4.4 | By-value deduction and instance identity | partial | int/long distinct instances, repeated parameter conflicting deduction failure, canonical argument-keyed caching, no arithmetic promotions during deduction |
 | M4.5 | Definition/instantiation lookup contexts | partial | Earlier helper overload set frozen for nondependent calls despite later declarations and caller locals; dependent lookup/ADL exercised as supported forms arrive |
 | M4.6 | Template overload participation | partial | Viability/deduction failure and template-vs-nontemplate tie, ambiguity controls and later template partial ordering; inspect actual selected instance |
-| M4.7 | Real constexpr execution | partial | Explicit evaluator work/call/local state, target arithmetic/invalid operations, call/recursion/cost limits and separate evaluation outcomes; optional folding is not execution |
+| M4.7 | Real constexpr execution | partial | Explicit evaluator work/call/local state plus scalar storage/reference locations, explicit loads, temporary/frame cleanup, original typed initializer replay and unknown-address transport; logical short circuit;102/102 JIT/AOT with independent review. General objects/pointers/classes/control flow and complete interpreter branches remain required; optional folding is not execution |
 | M4.8 | Constant-required contexts | partial | Instantiated constexpr call used in static_assert/constant-required declaration, true/false/nonconstant/invalid controls and actual computed graph fact |
 | M4.9 | Early difficult-path integrated acceptance | accepted slice | Combine declaration/cache/deduction/rescan/overload/definition-context lookup/constexpr in header-free source, distinct instances and failure controls; independent review+native witness |
 | M4.10 | General templates, specialization and constraints | open | Class/variable/alias/member templates, packs, defaults, explicit instantiation/specialization, partial ordering/specialization, SFINAE/constraints/concepts; tracked separately from simple deduction |
@@ -134,7 +134,7 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | M6.2 | Session lifecycle and concurrency | partial | Existing independent/concurrent sessions; repeated real-header/template analyses with live session and discarded old results, WeakReference/retained-memory checks against dependent-signature scope leaks; cancellation safe points and stress/race checks |
 | M6.3 | Recovery and diagnostic quality | partial | Existing bounded recovery and invalid/Unsupported distinctions; managed extra named-reference hazard warnings are deliberate non-parity. Full recovery, diagnostic compatibility/suppression/speculation, cascade limits, source notes and malformed termination remain required |
 | M6.4 | Explicit resource limits | open | Depth/token/include/expansion/template/constexpr work and memory budgets, cancellation/failure outcomes, bounded adversarial fixtures and cleanup; no process crash counted diagnosis |
-| M6.5 | NativeAOT and platform qualification | partial | Current95-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
+| M6.5 | NativeAOT and platform qualification | partial | Current102-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
 | M6.6 | Performance/resource measurements | open | Reproducible startup/throughput/allocations/retained-memory on representative headers/projects with baseline and profile; optimize only under semantic parity tests |
 | M6.7 | Regression/differential corpus qualification | open | Preserve upstream fp/fn/cp/lp/rp case kinds, per-case //options and TEST_NUMBER; parser acceptance qualifies only frontend fp/fn stages, never compile/link/runtime stages. Explicit expected language exit/status+diagnostics, semantic witnesses, inventory/pass/fail/skip and malformed/adversarial provenance |
 | M6.8 | Upstream update procedure | open | Rehash/diff routine+configuration baseline, identify impacted invariants and fixtures, run actual update rehearsal with regression receipts and reviewed correspondence changes |
@@ -163,3 +163,12 @@ is inferred. Remaining M1/M2/M3/general
 M4 and M5/M6 rows are burned
 down without stopping at checkpoint commits. Dependencies/order may change based
 on real-header failures, but rows remain visible until validated.
+
+Current storage checkpoint:102/102 JIT/AOT,96-file matching held maps,21 exact
+native runs (12 accept0/9 reject2), independent `review-reference-constexpr-final.md`.
+RCE-01 is disproved; RCE-02–05 are closed. Unicode U1/U2 repairs are held in the
+isolated checkout and undergoing fresh qualification; they are not yet main support.
+Next actual primary assignment is additive Unicode integration preserving accepted
+reference/cache/logical/storage code, followed by combined regression qualification.
+All remaining rows above, including full strings/floating/UDL, classes, general
+templates/control flow, realistic headers and M6 product/platform work, stay required.

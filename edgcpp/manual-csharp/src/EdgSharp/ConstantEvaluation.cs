@@ -7,55 +7,74 @@ using System.Numerics;
 
 namespace EdgSharp;
 
-public enum ConstantEvaluationStatus { Success, Dependent, NotConstant, InvalidExpression, UninitializedRead, UndefinedBehavior, ResourceLimit }
+public enum ConstantEvaluationStatus { Success, Dependent, NotConstant, InvalidExpression, UninitializedRead, UndefinedBehavior, ResourceLimit, ExpiredObject }
 
 public sealed class ConstantEvaluationResult
 {
     public ConstantEvaluationStatus Status { get; }
     public BigInteger? Value { get; }
+    public ConstantReferenceValue? ReferenceValue { get; }
+    public System.Collections.ObjectModel.ReadOnlyCollection<ConstantStorageObject> StorageObjects { get; }
+    public System.Collections.ObjectModel.ReadOnlyCollection<ConstantReferenceBinding> ReferenceBindings { get; }
     public int Steps { get; }
     public int MaximumCallDepth { get; }
     public string Message { get; }
-    internal ConstantEvaluationResult(ConstantEvaluationStatus status, BigInteger? value, int steps, int depth, string message)
-        => (Status, Value, Steps, MaximumCallDepth, Message) = (status, value, steps, depth, message);
+    internal ConstantEvaluationResult(ConstantEvaluationStatus status, BigInteger? value, int steps, int depth, string message,
+        ConstantReferenceValue? reference = null, ConstantStorageObject[]? storage = null, ConstantReferenceBinding[]? bindings = null)
+        => (Status, Value, Steps, MaximumCallDepth, Message, ReferenceValue, StorageObjects, ReferenceBindings) =
+            (status, value, steps, depth, message, reference, Array.AsReadOnly(storage ?? []), Array.AsReadOnly(bindings ?? []));
 }
 
-internal sealed class ConstantInterpreter(AnalysisOptions options)
+internal sealed partial class ConstantInterpreter(AnalysisOptions options)
 {
     private abstract record Work;
     private sealed record EvaluateExpression(Expression Expression) : Work;
     private sealed record ConvertValue(ConversionExpression Expression) : Work;
     private sealed record UnaryValue(UnaryExpression Expression) : Work;
     private sealed record BinaryValue(BinaryExpression Expression) : Work;
+    private sealed record LogicalLeft(BinaryExpression Expression) : Work;
+    private sealed record LogicalRight : Work;
     private sealed record EnterCall(CallExpression Expression) : Work;
     private sealed record LeaveCall(CallFrame Frame) : Work;
     private sealed record ExecuteBlock(BlockStatement Block, CallFrame Frame) : Work;
     private sealed record LeaveBlock(BlockStatement Block, CallFrame Frame) : Work;
     private sealed record ExecuteStatement(Statement Statement, CallFrame Frame) : Work;
     private sealed record StoreLocal(Symbol Symbol, CallFrame Frame) : Work;
+    private sealed record CompleteMaterialization(MaterializedTemporaryExpression Expression) : Work;
+    private sealed record CompleteBinding(ReferenceBindingExpression Expression) : Work;
+    private sealed record CompleteGlobalReference(ConstantSlot Slot) : Work;
+    private sealed record CompleteGlobalScalar(ConstantCell Cell) : Work;
+    private sealed record ResumeLoad(ConversionExpression Expression, ConstantCell Cell) : Work;
+    private sealed record BeginFullExpression : Work;
+    private sealed record EndFullExpression : Work;
     private sealed record ReturnValue(CallFrame Frame) : Work;
     private sealed record DiscardValue : Work;
-    private sealed class CallFrame(FunctionDeclaration function)
+    private sealed class CallFrame(FunctionDeclaration function, int identity)
     {
         internal FunctionDeclaration Function { get; } = function;
-        internal Dictionary<Symbol, BigInteger?> Locals { get; } = [];
+        internal int Identity { get; } = identity;
+        internal Dictionary<Symbol, ConstantSlot> Locals { get; } = [];
+        internal List<ConstantCell> Owned { get; } = [];
+        internal Dictionary<Symbol, List<ConstantCell>> LifetimeOwners { get; } = [];
         internal bool Returned { get; set; }
-        internal BigInteger Result { get; set; }
+        internal ConstantRuntimeValue Result { get; set; }
     }
     private sealed class EvaluationStopped(ConstantEvaluationStatus status, string message) : Exception(message)
     {
         internal ConstantEvaluationStatus Status { get; } = status;
     }
     private readonly Stack<Work> work = [];
-    private readonly Stack<BigInteger> values = [];
+    private readonly Stack<ConstantRuntimeValue> values = [];
     private readonly Stack<CallFrame> calls = [];
     private int steps, maximumDepth;
     private static void Stop(ConstantEvaluationStatus status, string message) => throw new EvaluationStopped(status, message);
 
     internal ConstantEvaluationResult Evaluate(Expression expression)
     {
-        steps = maximumDepth = 0;
+        steps = maximumDepth = invocationSequence = 0;
+        work.Push(new EndFullExpression());
         work.Push(new EvaluateExpression(expression));
+        work.Push(new BeginFullExpression());
         try
         {
             while (work.Count != 0)
@@ -65,14 +84,35 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
                 {
                     case EvaluateExpression item: EvaluateNode(item.Expression); break;
                     case ConvertValue item:
-                        values.Push(TypeTable.ConvertInteger(values.Pop(), (IntegerType)item.Expression.Type));
+                        ConstantRuntimeValue converted = values.Pop();
+                        if (item.Expression.Conversion == ConversionKind.LValueToRValue && converted.Location is { } pending && !pending.Initialized && pending.DeferredInitializer is { } declaration)
+                        {
+                            EnsureAlive(pending);
+                            if (pending.Initializing) Stop(ConstantEvaluationStatus.UninitializedRead, "The initializer attempts to read the object being initialized.");
+                            pending.Initializing = true;
+                            work.Push(new ResumeLoad(item.Expression, pending));
+                            ScheduleFullExpression(declaration.Initializer!, new CompleteGlobalScalar(pending));
+                            break;
+                        }
+                        BigInteger integer = item.Expression.Conversion == ConversionKind.LValueToRValue ? Load(converted) : Scalar(converted);
+                        values.Push(ConstantRuntimeValue.Scalar(TypeTable.ConvertInteger(integer, (IntegerType)item.Expression.Type)));
                         break;
                     case UnaryValue item: EvaluateUnary(item.Expression); break;
                     case BinaryValue item: EvaluateBinary(item.Expression); break;
+                    case LogicalLeft item:
+                        bool truth = !Scalar(values.Pop()).IsZero;
+                        if (item.Expression.Operator == TokenKind.AndAnd ? !truth : truth)
+                            values.Push(ConstantRuntimeValue.Scalar(truth ? BigInteger.One : BigInteger.Zero));
+                        else { work.Push(new LogicalRight()); work.Push(new EvaluateExpression(item.Expression.Right)); }
+                        break;
+                    case LogicalRight:
+                        values.Push(ConstantRuntimeValue.Scalar(Scalar(values.Pop()).IsZero ? BigInteger.Zero : BigInteger.One));
+                        break;
                     case EnterCall item: StartCall(item.Expression); break;
                     case LeaveCall item:
                         if (!item.Frame.Returned) Stop(ConstantEvaluationStatus.NotConstant, "A constexpr call reaches the end without returning a value.");
                         if (!ReferenceEquals(calls.Pop(), item.Frame)) throw new InvalidOperationException("Interpreter call stack is inconsistent.");
+                        foreach (ConstantCell cell in item.Frame.Owned) cell.Alive = false;
                         values.Push(item.Frame.Result);
                         break;
                     case ExecuteBlock item:
@@ -83,12 +123,39 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
                         break;
                     case LeaveBlock item:
                         foreach (VariableDeclaration local in item.Block.Scope.Declarations.OfType<VariableDeclaration>())
-                            if (!local.IsParameter) item.Frame.Locals.Remove(local.Symbol);
+                            if (!local.IsParameter)
+                            {
+                                if (item.Frame.Locals.Remove(local.Symbol, out ConstantSlot? slot) && slot.Object != null) slot.Object.Alive = false;
+                                if (item.Frame.LifetimeOwners.Remove(local.Symbol, out List<ConstantCell>? owned))
+                                    foreach (ConstantCell cell in owned) cell.Alive = false;
+                            }
                         break;
                     case ExecuteStatement item:
                         if (!item.Frame.Returned) EvaluateStatement(item.Statement, item.Frame);
                         break;
-                    case StoreLocal item: item.Frame.Locals[item.Symbol] = values.Pop(); break;
+                    case StoreLocal item: Store(item.Frame.Locals[item.Symbol], values.Pop()); break;
+                    case CompleteMaterialization item: Materialize(item.Expression); break;
+                    case CompleteBinding item:
+                        ConstantCell target = Location(values.Pop());
+                        EnsureAlive(target);
+                        bindingObservations.Add((item.Expression, target, calls.TryPeek(out CallFrame? current) ? current.Identity : 0));
+                        values.Push(ConstantRuntimeValue.Address(target));
+                        break;
+                    case CompleteGlobalReference item:
+                        ConstantCell global = Location(values.Pop());
+                        item.Slot.Referent = global; item.Slot.Initializing = false;
+                        values.Push(ConstantRuntimeValue.Address(global));
+                        break;
+                    case CompleteGlobalScalar item:
+                        item.Cell.Value = Scalar(values.Pop()); item.Cell.Initialized = true; item.Cell.Initializing = false;
+                        break;
+                    case ResumeLoad item:
+                        values.Push(ConstantRuntimeValue.Scalar(TypeTable.ConvertInteger(Load(ConstantRuntimeValue.Address(item.Cell)), (IntegerType)item.Expression.Type)));
+                        break;
+                    case BeginFullExpression: fullExpressions.Push([]); break;
+                    case EndFullExpression:
+                        foreach (ConstantCell temporary in fullExpressions.Pop()) temporary.Alive = false;
+                        break;
                     case ReturnValue item:
                         item.Frame.Result = values.Pop();
                         item.Frame.Returned = true;
@@ -97,34 +164,38 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
                 }
             }
             if (values.Count != 1 || calls.Count != 0) throw new InvalidOperationException("Interpreter did not finish with one value.");
-            return new(ConstantEvaluationStatus.Success, values.Pop(), steps, maximumDepth, "");
+            ConstantRuntimeValue result = values.Pop();
+            if (result.Location is { } location)
+            {
+                EnsureAlive(location);
+                if (!location.Known) Stop(ConstantEvaluationStatus.NotConstant, "An unknown runtime referent is not a persistent reference constant.");
+                if (location.Lifetime != ConstantStorageLifetime.Static)
+                    Stop(ConstantEvaluationStatus.NotConstant, "A reference constant cannot designate automatic storage outside this evaluation.");
+            }
+            return Result(ConstantEvaluationStatus.Success, result, "");
         }
         catch (EvaluationStopped stopped)
         {
-            return new(stopped.Status, null, steps, maximumDepth, stopped.Message);
+            foreach (ConstantCell cell in storage) if (cell.Lifetime != ConstantStorageLifetime.Static) cell.Alive = false;
+            return Result(stopped.Status, default, stopped.Message);
         }
-        finally { work.Clear(); values.Clear(); calls.Clear(); }
+        finally { work.Clear(); values.Clear(); calls.Clear(); globals.Clear(); storage.Clear(); bindingObservations.Clear(); fullExpressions.Clear(); }
     }
     private void EvaluateNode(Expression expression)
     {
         switch (expression)
         {
-            case LiteralExpression literal: values.Push(literal.ConstantValue!.Value); break;
+            case LiteralExpression literal: values.Push(ConstantRuntimeValue.Scalar(literal.ConstantValue!.Value)); break;
             case ParenthesizedExpression parens: work.Push(new EvaluateExpression(parens.Operand)); break;
             case ReferenceExpression reference:
                 if (reference.IsValueDependent)
                     Stop(ConstantEvaluationStatus.Dependent, "A template-dependent value requires substitution.");
-                if (calls.TryPeek(out CallFrame? frame) && frame.Locals.TryGetValue(reference.ReferencedSymbol, out BigInteger? local))
-                {
-                    if (local == null) Stop(ConstantEvaluationStatus.UninitializedRead, "Read of an uninitialized automatic object.");
-                    values.Push(local!.Value);
-                }
-                else if (reference.ReferencedSymbol.Declarations.FirstOrDefault() is VariableDeclaration variable &&
-                    variable.Type.Qualifiers.HasFlag(TypeQualifiers.Const) &&
-                    variable.ConstantEvaluation is { Status: ConstantEvaluationStatus.Success, Value: BigInteger constant })
-                    values.Push(constant);
-                else Stop(ConstantEvaluationStatus.NotConstant, "The referenced object has no usable constant value in this evaluation.");
+                ResolveReference(reference);
                 break;
+            case ReferenceBindingExpression binding:
+                work.Push(new CompleteBinding(binding)); work.Push(new EvaluateExpression(binding.Referent)); break;
+            case MaterializedTemporaryExpression temporary:
+                work.Push(new CompleteMaterialization(temporary)); work.Push(new EvaluateExpression(temporary.Initializer)); break;
             case ConversionExpression conversion:
                 if (conversion.Type is not IntegerType) Stop(ConstantEvaluationStatus.InvalidExpression, "Only integer value conversions are interpreted.");
                 work.Push(new ConvertValue(conversion));
@@ -133,6 +204,8 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
             case UnaryExpression unary:
                 work.Push(new UnaryValue(unary)); work.Push(new EvaluateExpression(unary.Operand)); break;
             case BinaryExpression binary:
+                if (binary.Operator is TokenKind.AndAnd or TokenKind.OrOr)
+                { work.Push(new LogicalLeft(binary)); work.Push(new EvaluateExpression(binary.Left)); break; }
                 work.Push(new BinaryValue(binary));
                 work.Push(new EvaluateExpression(binary.Right)); work.Push(new EvaluateExpression(binary.Left));
                 break;
@@ -149,11 +222,17 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
     private void StartCall(CallExpression call)
     {
         FunctionDeclaration? function = call.SelectedFunction.Definition;
-        if (function == null || function.Body == null || !function.IsConstexpr || function.Type.ReturnType is not IntegerType)
-            Stop(ConstantEvaluationStatus.NotConstant, "Constant evaluation requires a visible constexpr integer function definition.");
+        if (function == null || function.Body == null || !function.IsConstexpr || function.Type.ReturnType is not (IntegerType or ReferenceType))
+            Stop(ConstantEvaluationStatus.NotConstant, "Constant evaluation requires a visible constexpr scalar function definition.");
         if (calls.Count >= options.ConstantEvaluationCallLimit) Stop(ConstantEvaluationStatus.ResourceLimit, "Constant evaluation call depth limit exceeded.");
-        var frame = new CallFrame(function!);
-        for (int i = function!.Parameters.Count - 1; i >= 0; --i) frame.Locals.Add(function.Parameters[i].Symbol, values.Pop());
+        var frame = new CallFrame(function!, ++invocationSequence);
+        for (int i = function!.Parameters.Count - 1; i >= 0; --i)
+        {
+            VariableDeclaration parameter = function.Parameters[i];
+            ConstantRuntimeValue argument = values.Pop();
+            var slot = new ConstantSlot { Object = parameter.Type is IntegerType type ? Allocate(type, parameter.Symbol, parameter.Symbol, ConstantStorageLifetime.Automatic, true, frame) : null };
+            Store(slot, argument); frame.Locals.Add(parameter.Symbol, slot);
+        }
         calls.Push(frame);
         maximumDepth = Math.Max(maximumDepth, calls.Count);
         work.Push(new LeaveCall(frame));
@@ -165,22 +244,20 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
         {
             case BlockStatement block: work.Push(new ExecuteBlock(block, frame)); break;
             case DeclarationStatement { Declaration: VariableDeclaration variable }:
-                frame.Locals[variable.Symbol] = null;
+                frame.Locals[variable.Symbol] = new ConstantSlot { Object = variable.Type is IntegerType type ? Allocate(type, variable.Symbol, variable.Symbol, ConstantStorageLifetime.Automatic, true, frame) : null };
                 if (variable.Initializer != null)
                 {
-                    work.Push(new StoreLocal(variable.Symbol, frame));
-                    work.Push(new EvaluateExpression(variable.Initializer));
+                    ScheduleFullExpression(variable.Initializer, new StoreLocal(variable.Symbol, frame));
                 }
                 break;
             case DeclarationStatement or EmptyStatement or StaticAssertStatement: break;
             case ReturnStatement { Expression: Expression expression }:
-                work.Push(new ReturnValue(frame)); work.Push(new EvaluateExpression(expression)); break;
+                ScheduleFullExpression(expression, new ReturnValue(frame)); break;
             case ExpressionStatement expression:
-                // In this subset the only glvalues are object/function
-                // references and parentheses around them. Discarding such a
-                // nonvolatile glvalue performs no lvalue-to-rvalue conversion.
-                if (expression.Expression.ValueCategory == ValueCategory.LValue) break;
-                work.Push(new DiscardValue()); work.Push(new EvaluateExpression(expression.Expression)); break;
+                Expression discarded = expression.Expression;
+                while (discarded is ParenthesizedExpression parenthesized) discarded = parenthesized.Operand;
+                if (discarded is ReferenceExpression) break;
+                ScheduleFullExpression(expression.Expression, new DiscardValue()); break;
             default: Stop(ConstantEvaluationStatus.InvalidExpression, "Unsupported or erroneous statement in constant evaluation."); break;
         }
     }
@@ -188,11 +265,11 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
     {
         if (type.IsSigned && (value < type.Minimum || value > type.Maximum))
             Stop(ConstantEvaluationStatus.UndefinedBehavior, "Signed integer overflow in constant evaluation.");
-        values.Push(TypeTable.ConvertInteger(value, type));
+        values.Push(ConstantRuntimeValue.Scalar(TypeTable.ConvertInteger(value, type)));
     }
     private void EvaluateUnary(UnaryExpression expression)
     {
-        BigInteger operand = values.Pop();
+        BigInteger operand = Scalar(values.Pop());
         BigInteger result = expression.Operator switch
         {
             TokenKind.Plus => operand, TokenKind.Minus => -operand,
@@ -203,7 +280,7 @@ internal sealed class ConstantInterpreter(AnalysisOptions options)
     }
     private void EvaluateBinary(BinaryExpression expression)
     {
-        BigInteger right = values.Pop(), left = values.Pop();
+        BigInteger right = Scalar(values.Pop()), left = Scalar(values.Pop());
         var operationType = (IntegerType)expression.Left.Type;
         if ((expression.Operator is TokenKind.Slash or TokenKind.Percent) &&
             (right.IsZero || operationType.IsSigned && left == operationType.Minimum && right == -1))
@@ -230,7 +307,7 @@ internal sealed partial class Parser
     private bool constantRequiredParsing;
     private void EvaluateVariableInitializer(VariableDeclaration declaration)
     {
-        if (!declaration.Type.Qualifiers.HasFlag(TypeQualifiers.Const) || declaration.Initializer == null) return;
+        if ((!declaration.Type.Qualifiers.HasFlag(TypeQualifiers.Const) && !declaration.IsConstexpr && declaration.Type is not ReferenceType) || declaration.Initializer == null) return;
         state.SetDependentValue(declaration.Symbol, prototypeAnalysis && declaration.Initializer.IsValueDependent);
         ConstantEvaluationResult evaluation = new ConstantInterpreter(options).Evaluate(declaration.Initializer);
         declaration.ConstantEvaluation = evaluation;

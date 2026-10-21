@@ -98,7 +98,7 @@ var cases = new (string Name, Action Run)[]
     ("M3 lifetime hazards remain accepted with bounded facts and warnings", Tests.ReferenceLifetimeHazards),
     ("M3 reference graphs and candidates restore through owner replay", Tests.ReferenceRollback),
     ("M3 compound reference signatures release old translation units", Tests.ReferenceOwnership),
-    ("M3 dependent references and constexpr object operations stay unsupported", Tests.ReferenceBoundaries),
+    ("M3 dependent references and compound declarator bounds stay unsupported", Tests.ReferenceBoundaries),
     ("M3 reference fixtures inspect selected types and categories", Tests.ReferenceFixtures),
     ("M3 character references integrate target promotion replay and ownership", Tests.CharacterReferences),
     ("M4 template dependent graph cache replay and instance reuse", Tests.TemplateGraph),
@@ -111,6 +111,13 @@ var cases = new (string Name, Action Run)[]
     ("M4 constexpr interpreter executes calls locals and early returns", Tests.ConstexprEvaluation),
     ("M4 constant-required invalid operations have explicit outcomes", Tests.ConstexprFailures),
     ("M4 constant evaluation and instantiation limits are explicit", Tests.EvaluationLimits),
+    ("M4 reference evaluation distinguishes locations binding and loads", Tests.ConstantReferenceStorage),
+    ("M4 reference argument transport preserves frame and temporary identity", Tests.ConstantReferenceArguments),
+    ("M4 required reference reads validate storage lifetimes", Tests.ConstantReferenceLifetimes),
+    ("M4 optional initializer replay preserves original selected entities", Tests.ConstantReferenceOptionalReplay),
+    ("M4 logical operands have contextual bool and short circuit evaluation", Tests.ConstantReferenceLogical),
+    ("M4 storage execution cleans up failed and repeated evaluations", Tests.ConstantReferenceCleanup),
+    ("M4 reference storage integrates macro characters template lookup and calls", Tests.ConstantReferenceCombined),
     ("M4 repeated template analyses isolate and release source graphs", Tests.TemplateLifetime),
     ("M4 owner checkpoint rolls back replay and instance mutations", Tests.TemplateRollback),
     ("M4 excluded template forms diagnose unsupported features", Tests.TemplateBoundaries),
@@ -950,8 +957,9 @@ internal static partial class Tests
         Check(Analyze("constexpr int f(); int f(){return 1;}").Diagnostics.Any(d => d.Code == "CEX003"));
         foreach (string invalid in new[] { "constexpr using I=int;", "constexpr typedef int I;" })
             Check(Analyze(invalid).Diagnostics.Any(d => d.Code == "CEX004"));
-        AnalysisResult lateConst = Analyze("constexpr int f(); const int value=f(); constexpr int f(){return 1;} static_assert(value==1);");
-        Check(lateConst.Diagnostics.Any(d => d.Code == "CEX001"));
+        AnalysisResult lateConst = Success("constexpr int f(); const int value=f(); constexpr int f(){return 1;} static_assert(value==1);");
+        Equal(ConstantEvaluationStatus.NotConstant, Variable(lateConst, "value").ConstantEvaluation!.Status);
+        Equal(ConstantEvaluationStatus.Success, lateConst.StaticAssertions.Single().Evaluation.Status);
     }
     internal static void EvaluationLimits()
     {
@@ -1142,10 +1150,10 @@ internal static partial class Tests
             "struct S {int x;};", "float f;",
             "int *p;", "int a[2];", "int f(){return sizeof(int);}", "int f(){return 1.0;}",
             "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
-            "int f(){return true && false;}", "int f(){return 1<<2;}", "int f(){return true?1:2;}",
+            "int f(){return 1<<2;}", "int f(){return true?1:2;}",
             "int f(){return (1,2);}", "int f(){return (int)1;}", "int f(){return int(1);}", "int a{1};", "const void f();",
             "void main(){}", "bool main(){return true;}", "int main(){return main();}", "int main;", "int main=1;",
-            "int f(); bool g(){return f;}", "int f(); bool g(){return !f;}", "bool g(){return 1 and 2;}", "int g(){return 1<=>2;}", "int n=1_custom;"
+            "int f(); bool g(){return f;}", "int f(); bool g(){return !f;}", "int g(){return 1<=>2;}", "int n=1_custom;"
             , "int f(){ label: return 1; }", "int f(){return ::f();}", "int value(1);"
         })
         {
@@ -1153,6 +1161,12 @@ internal static partial class Tests
             Check(!result.IsSuccess && result.ContainsUnsupportedFeatures, source);
         }
         Equal(BigInteger.Zero, Variable(Success("int n=1 bitand 2;"), "n").Initializer!.ConstantValue!.Value);
+        AnalysisResult logical = Success("constexpr bool g(){return 1 and 2 or false;} static_assert(g());");
+        BinaryExpression disjunction = As<BinaryExpression>(ReturnValue(Function(logical, "g")));
+        Equal(TokenKind.OrOr, disjunction.Operator);
+        Equal(TokenKind.AndAnd, As<BinaryExpression>(disjunction.Left).Operator);
+        Equal(IntegerKind.Bool, Kind(disjunction.Type));
+        Equal(BigInteger.One, logical.StaticAssertions.Single().Evaluation.Value!.Value);
         Check(Success("int f(){int main=1; return main;}").IsSuccess);
     }
     internal static void InvalidDeclarations()

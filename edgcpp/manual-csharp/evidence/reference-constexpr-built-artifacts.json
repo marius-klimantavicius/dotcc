@@ -1,0 +1,20 @@
+{
+  "purpose": "Held scalar-location/reference constexpr output fingerprints",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 247296,
+      "sha256": "792027d12abd4f5961075213ef4a6bc3ed360b92a6e8a6b4d87026cff16ff015"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 217600,
+      "sha256": "df98a109cece32cf3962a4dd92531b05ddc29344c4fa983e1acda502789df7e9"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-reference-constexpr/EdgSharp.Tests",
+      "bytes": 4278632,
+      "sha256": "cabeaf5f2aa8976e24aee40801119f0cb3a19589034c827caddbfb8a5f8329b5"
+    }
+  ]
+}

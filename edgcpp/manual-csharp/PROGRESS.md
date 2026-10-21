@@ -642,3 +642,83 @@ proposed timing positive was disproved and retained/excluded; split active
 discarded/stringized/taken-elif malformed identifier UCNs reject, while outer
 inactive identifiers and unused/discarded malformed character contents accept.
 These are oracle contracts only, with no Unicode implementation acceptance.
+
+## Active reference constexpr storage and isolated Unicode work
+
+Accepted scalar-reference commit is
+`7c16cf48dbcdb57c070ca90625ebec4b703c66a4`. Three outputs are retained and
+hash-verified before subsequent builds in `evidence/retained-7c16cf48d.json`.
+Primary xhigh implementation and independent xhigh reviewer were immediately
+reassigned to real reference/object-storage constant evaluation. Ownership is
+ConstantEvaluation/new storage module/References hooks and minimal required
+graph/parser/expression/test integration; isolated Unicode owns source/token/
+character/PP/canonical-identifier changes and merges explicitly later.
+
+The evaluator contract separates integer values from identity-bearing locations,
+address transport from loads, copied parameters from aliases, and caller argument
+temporaries from callee local/return temporaries. Work/call stacks and per-evaluation
+limits/cleanup remain explicit. No fake folded reference constants or implicit
+loads may substitute for object semantics. Assignment/control flow/dependent
+templates/classes/pointers remain required beyond the bounded initial storage gate.
+
+Unicode stringization native spelling follows macro.c's token-context rule:
+backslash/quote escaping is applied inside literal tokens; identifier UCN raw
+slashes remain. ASCII stringized-literal value controls accept. Proposed Unicode
+ordinary/stringized string UTF8 value positives reject and are retained/excluded:
+actual literals.c:conv_string_literal_chars strict ordinary/nonraw branch checks
+remaining multibyte entities for width and diagnoses them. This is a specific
+pinned strict branch, not proof of an ASCII execution encoding. Raw/UTF8-prefix
+string branches and all managed full string values remain required/Unsupported.
+
+Isolated Unicode qualification proceeds independently while main storage code
+is actively authored. Source/handoff27 hashes matched its explicit HOLD before
+supervisor copied three accepted oracle/receipt tools. Release zero warnings/
+errors and JIT89/89 (79base+10Unicode), zero failures/skips, execute against that
+separate checkout only; both66-file maps include all three declarative Unicode
+data/license/provenance inputs and three tools. No main integration acceptance
+is inferred. Independent T3 review uses requested Sol/xhigh:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-unicode-isolated-review-r1-20261021`.
+It writes only its main-checkout review report and does no source/execution/Git.
+
+Review identified active malformed UCN loss in dropped pp-number and character/
+string suffix tokens, independently confirmed by three exact nativeUTF8 status2
+controls. Author alone is narrowly released in the isolated checkout for source/
+tests/handoff repair; AOT is deferred until fresh HOLD. Follow-up task:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-unicode-active-token-ucn-fix-20261021-r1`.
+
+Current storage review IDs: RCE-01 disproved optional-reference late-body
+rejection hypothesis (native accepts; mismatched receipt retained/excluded);
+RCE-02 actual optional scalar initializer replay; RCE-03 symbolic unknown-ref
+transport; RCE-04 initializing scalar address versus load; RCE-05 truthful
+unknown lifetime/liveness API facts. Native positives/negative complements
+distinguish these paths. Required constexpr initialization before definition
+rejects; ordinary optional scalar/reference late-body uses accept. Actual
+source exprutil.c potential-variable/var_constant_value and il.c dynamic
+initializer folding supports bounded replay of original typed initializer,
+not later name lookup or stale folds. Source repairs are not acceptance;
+managed storage execution remains pending. Real &&/|| graph/contextual-bool/
+short-circuit behavior is included as a required storage-gate dependency, with
+RHS semantic checking retained and skipped loads not evaluated.
+
+
+## Accepted scalar reference constant-storage checkpoint
+
+Independent `evidence/review-reference-constexpr-final.md` accepts the bounded
+102/102 JIT and Linux-x64 NativeAOT gate, zero failures/skips. Four round2 receipts
+share96 current files including3 tools;3 actual artifacts and4 upstream hashes
+independently match.21 exact native fixture/witness runs match12 accept0/9 reject2.
+RCE-01 disproved; RCE-02/03/04 high and RCE-05 medium closed. Historical mismatches
+and first101/102 obsolete logical-Unsupported assertion remain retained/excluded.
+Support/correspondence/inventory now describe actual scalar storage while keeping
+full objects/control flow/classes/dependent references and remaining PLAN required.
+Primary remains HOLD until checkpoint commit, then immediately integrates Unicode
+additively, preserving accepted reference/cache/logical/storage hunks.
+
+Unicode U1/U2 repaired isolated author is terminal/HOLD; new handoff SHA
+774440b24afaeaaba25db2c6909215435c766f7131119f62913ddc60f31098dc,27 hashes verified.
+Exactly6 prior snapshot files changed; corrected Release/JIT/AOT each pass89/89
+with66-file maps including data3/tools3. These remain isolated-only results.
+New independent Sol/xhigh review round2 task:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-unicode-isolated-review-r2-20261021`.
+It reviews repaired actual code plus U1/U2 proofs and writes only its main report;
+no implementation/execution/Git. Main merged acceptance is still required.
