@@ -37,7 +37,7 @@ public sealed record AnalysisOptions
     public PreprocessingOptions Preprocessing { get; init; } = new();
 }
 
-public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent }
+public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent, Reference }
 public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong, WChar, Char8, Char16, Char32 }
 [Flags] public enum TypeQualifiers { None = 0, Const = 1 }
 
@@ -95,7 +95,7 @@ public sealed class TemplateParameterType : SemanticType
 
 internal sealed class SpecialType(TypeKind kind, string name) : SemanticType(kind, name);
 
-internal sealed class TypeTable
+internal sealed partial class TypeTable
 {
     private readonly Dictionary<(IntegerKind, TypeQualifiers), IntegerType> integers = [];
     private readonly List<FunctionType> functions = [];
@@ -142,8 +142,7 @@ internal sealed class TypeTable
         // Dependent types own template scopes and their source graph. Their
         // signature lifetime is the template's lifetime, never the session's
         // concrete-type intern table. The template retains this one signature.
-        if (result.Kind is TypeKind.TemplateParameter or TypeKind.Dependent ||
-            array.Any(type => type.Kind is TypeKind.TemplateParameter or TypeKind.Dependent))
+        if (ContainsScopedOrDependentType(result) || array.Any(ContainsScopedOrDependentType))
             return new FunctionType(result, array);
         foreach (var existing in functions)
             if (ReferenceEquals(existing.ReturnType, result) && existing.ParameterTypes.SequenceEqual(array)) return existing;

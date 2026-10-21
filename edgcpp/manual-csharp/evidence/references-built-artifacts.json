@@ -1,0 +1,20 @@
+{
+  "purpose": "Held scalar-reference integration output fingerprints",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 227328,
+      "sha256": "e0241b8b151cc12b87318f05affee3c0ba20381c4e4bd7ac85d12a078a0552ec"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 199680,
+      "sha256": "89c2019552fb9d8d471dce3878606ac7d4b45edaf1c2acd979382cef20804ca6"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-references/EdgSharp.Tests",
+      "bytes": 4157704,
+      "sha256": "f88135dbe5140a4c567864cbdccf88246890a41f64638f13b13fbe3ad561d0d8"
+    }
+  ]
+}

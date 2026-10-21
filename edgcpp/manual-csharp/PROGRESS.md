@@ -578,3 +578,67 @@ critical/high finding. Reviewer independently checked all four 53-file maps,
 three artifacts, 16 source hashes, exact included native witnesses and ABI
 correspondence. This is a bounded checkpoint only; supervisor commits now and
 immediately releases the next implementation assignments described above.
+
+## Active reference integration and isolated Unicode implementation
+
+Accepted character/builtin/input checkpoint commit:
+`3b667ce7350337cfff45e2de78d923c42c750274`. Three accepted outputs are copied and
+hash-verified before later builds in `evidence/retained-3b667ce73.json`.
+Primary `implementation_m3` is actively integrating the held reference patch,
+preserving current M1 character/diagnostic/preprocessing APIs and adding a16th
+character/reference integration group. Independent `review_m3` is reassigned to
+actual produced integration and matching executed evidence. Both native workers
+retain GPT-6.1 Sol xhigh settings; supervisor retains all execution/Git control.
+
+Parallel Unicode task uses `codex` / `gpt-6.1-sol` / `reasoningEffort=xhigh`,
+isolated worktree based on accepted3b667ce73; no shared edits or execution:
+
+- TaskId: `node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m1-unicode-isolated-20261021-r1`.
+- ChildThreadId: `thread:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m1-unicode-isolated-20261021-r1`.
+- Scope: pinned declarative Unicode17 XID data with handwritten scanner/search;
+  raw spelling versus canonical identifier identity across PP/semantic lookup;
+  explicit retained source/execution encoding and real target Unicode character
+  conversion. No generated frontend logic, CLR Unicode categories or NFC rewrite.
+- Ownership: isolated source/token/character/preprocessor/encoding integration,
+  new Unicode module/data/tests/fixtures/handoff. No reference/type/overload
+  algorithm edits; central identifier hunks merge explicitly after references.
+- Worktree `/home/marius/.t3/worktrees/dotcc/t3-96dc97a5`, branch
+  `t3/unicode-identifier-frontend`, exact base
+  `3b667ce7350337cfff45e2de78d923c42c750274`. Necessary isolated ownership
+  expansion covers minimal Templates.cs identity hunks and CharacterTests.cs
+  assertions only where actual new literal/encoding semantics replace an old
+  Unsupported boundary; identifier support alone cannot weaken literal controls.
+  The previous
+  isolated reference task and provider follow-ups are completed and held; neither
+  is an active shared writer. Full M1–M6 backlog continues without handoff pauses.
+
+Reference source HOLD received after actual additive integration, cached alias
+origin repair and512-link owner/identity regressions. A narrow final fixture
+addition then re-HOLD gives95 authored groups (79+15+1), including character
+reference coupling and a native-discriminating early-int/later-void frozen
+template lookup control. Provider children remain held/terminal; Unicode edits
+are isolated. Supervisor's optional source-kind oracle/tool controls are frozen
+and explicitly included in the upcoming source fingerprints. No reference
+execution or acceptance is inferred before the serialized gate.
+
+Final reference integration acceptance is `evidence/review-references-final.md`.
+Release zero warnings/errors; direct-dotnet JIT and Linux-x64 NativeAOT each
+95/95, zero failures/skips. Four round2 maps are identical73files including3
+explicit tool sources, all matching disk;3 outputs and7 consulted upstream hashes
+verified. Fifteen native inputs match8accept0/7reject2; the valid dependent-ref
+input remains explicitly managed Unsupported. Ten adapter controls pass.
+REF-01 closes cached immutable origin propagation with executed512-link owner/
+identity tests. Native3warnings versus managed5 is an explicit hazard-diagnostic
+adaptation, not invalid binding or warning parity. Round1's one nullable test
+warning is retained; only its assertion flow changed before the final gate.
+
+Supervisor commits this reviewed checkpoint and immediately releases required
+reference/object-storage constexpr implementation: identity-bearing locations,
+explicit loads/binds, parameter/result transport and lifetimes, following actual
+interpret.c contracts. Unicode remains independently active/isolated; every
+remaining M1–M6 branch stays visible. Preview Unicode native snapshots prove
+gate/value acceptance under explicit UTF-8, versus legacy-none rejection. A
+proposed timing positive was disproved and retained/excluded; split active
+discarded/stringized/taken-elif malformed identifier UCNs reject, while outer
+inactive identifiers and unused/discarded malformed character contents accept.
+These are oracle contracts only, with no Unicode implementation acceptance.

@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default none (per-file BOM overrides)",
+  "unicode_source_kind": "none",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-preview/m1-unicode-native-values.cpp",
+  "source_sha256": "0e75dd098baf861d1bd59d42a84a41c4451e46535777dadb63ef8474305146b2",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "none",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-preview/m1-unicode-native-values.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 11: error: too many characters\n          in character constant\n  static_assert(kind(u'\u00e9')==3 && u'\u00e9'==233);\n                     ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 11: error: too many characters\n          in character constant\n  static_assert(kind(u'\u00e9')==3 && u'\u00e9'==233);\n                                  ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 13: error: too many characters\n          in character constant\n  static_assert(kind(U'\ud801\udc00')==4 && U'\ud801\udc00'==66560);\n                     ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 13: error: too many characters\n          in character constant\n  static_assert(kind(U'\ud801\udc00')==4 && U'\ud801\udc00'==66560);\n                                    ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 15: error: too many characters\n          in character constant\n  static_assert(kind(L'\ud801\udc00')==5 && L'\ud801\udc00'==66560);\n                     ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 15: error: too many characters\n          in character constant\n  static_assert(kind(L'\ud801\udc00')==5 && L'\ud801\udc00'==66560);\n                                    ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 18: error: unrecognized token\n  int \u00e9=1;\n       ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 18: error: expected a \";\"\n  int \u00e9=1;\n       ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/m1-unicode-native-values.cpp\", line 19: error: identifier \"\\u00e9\"\n          is undefined\n  int read(){return \\u00E9;}\n                    ^\n\n9 errors detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-preview/m1-unicode-native-values.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

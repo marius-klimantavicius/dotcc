@@ -11,7 +11,8 @@ No generated EDG C# implementation is an input to this campaign.
 The table below records the initial foundation bounds. Subsequent accepted
 scalar M3/early M4 extensions and the validated integrated preprocessing
 checkpoint expand these rows as described in `OVERLOADS.md`,
-`TEMPLATES-AND-CONSTANTS.md`, `PREPROCESSING.md` and `LITERALS-AND-INPUT.md`; historical exclusions in the
+`TEMPLATES-AND-CONSTANTS.md`, `PREPROCESSING.md`, `LITERALS-AND-INPUT.md` and
+`REFERENCES.md`; historical exclusions in the
 foundation table do not override those exact later bounds.
 
 | Authored component | EDG source/routines | Preserved invariant and managed adaptation | Outstanding branches |
@@ -92,6 +93,14 @@ separate structured probe/read caching. The opt-in host adapter is handwritten
 filesystem I/O only, qualified against actual Linux-x64 GNU-libc ABI; it is no
 native semantic dependency. Source/routine coverage remains bounded and the
 full Unicode/literal/header/class/reference/template/product backlog persists.
+
+The next actual scalar-reference integration has95/95 managed/NativeAOT execution
+and independent bounded acceptance in `review-references-final.md`.
+`REFERENCES.md` and the imported authoring
+handoff map direct/temporary binding, rank/kind/cv comparison, categories,
+recursive ownership and explicit representation/extra-warning adaptations.
+`source-references.json` fingerprints seven consulted files; no class/pointer/
+dependent-reference/reference-constexpr/full-lifetime completion is implied.
 
 `semantic-witness.cpp` includes exactly hashed `positive.cpp` and uses native
 static assertions to establish `Number` is `int`, ordinary `add`/`caller` call

@@ -37,6 +37,18 @@ class OracleStatusTests(unittest.TestCase):
         self.assertIn("--preprocess", command)
         self.assertEqual(command[command.index("--instantiate") + 1], "used")
 
+    def test_unicode_source_profile_is_explicit_and_separate_arguments(self):
+        command = oracle_command("compiler", "source.cpp", unicode_source_kind="UTF-8")
+        index = command.index("--unicode_source_kind")
+        self.assertEqual(command[index:index + 2], ["--unicode_source_kind", "UTF-8"])
+        self.assertEqual(command[command.index("--instantiate") + 1], "used")
+        self.assertEqual(command[-1], "source.cpp")
+
+    def test_legacy_source_profile_and_unspecified_are_distinct(self):
+        self.assertNotIn("--unicode_source_kind", oracle_command("compiler", "source.cpp"))
+        command = oracle_command("compiler", "source.cpp", unicode_source_kind="none")
+        self.assertEqual(command[command.index("--unicode_source_kind") + 1], "none")
+
     def test_explicit_preprocessor_configuration_preserves_argument_boundaries(self):
         command = oracle_command("compiler", "source.cpp", preprocess=True,
                                  include_dirs=["quote path", "next"],

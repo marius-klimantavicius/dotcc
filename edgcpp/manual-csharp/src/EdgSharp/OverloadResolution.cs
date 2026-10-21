@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 // Handwritten scalar subset of EDG overload.c: add_function_to_candidate_functions_list,
 // determine_arg_match_level, compare_standard_conversions, select_best_candidate_functions
-// and match_is_better_on_at_least_one_arg. This does not port their class/reference,
-// pointer, user-defined conversion, template or extension branches.
+// and match_is_better_on_at_least_one_arg. Scalar reference binding is in
+// References.cs; class/pointer/user-defined conversion and extension branches remain.
 using System.Collections.ObjectModel;
 
 namespace EdgSharp;
@@ -11,8 +11,8 @@ public enum StandardConversionRank { ExactMatch, Promotion, Conversion }
 public enum CandidateRejectionReason { None, ArityMismatch, ArgumentConversion, DeductionFailure, InvalidTemplateDefinition }
 
 /// <summary>
-/// One by-value integer argument match. Lvalue transformation and top-level cv
-/// removal do not worsen its rank. Equally ranked integer conversions are tied.
+/// One scalar argument match, including explicit reference binding. Glvalue
+/// transformation and by-value top-level cv removal do not worsen its rank.
 /// </summary>
 public sealed class StandardConversionSequence
 {
@@ -20,8 +20,13 @@ public sealed class StandardConversionSequence
     public IntegerType TargetType { get; }
     public bool RequiresLValueToRValue { get; }
     public StandardConversionRank Rank { get; }
+    public ReferenceBinding? ReferenceBinding { get; }
+    public SemanticType ParameterType => ReferenceBinding is { } binding ? binding.ReferenceType : TargetType;
     internal StandardConversionSequence(IntegerType source, IntegerType target, bool lvalue, StandardConversionRank rank)
         => (SourceType, TargetType, RequiresLValueToRValue, Rank) = (source, target, lvalue, rank);
+    internal StandardConversionSequence(ReferenceBinding binding)
+        => (SourceType, TargetType, RequiresLValueToRValue, Rank, ReferenceBinding) =
+            (binding.SourceType, binding.TargetType, binding.RequiresLValueToRValue, binding.Rank, binding);
 }
 
 /// <summary>A source-visible entity and its viability/matches for one specific call.</summary>
@@ -80,10 +85,17 @@ internal sealed partial class Parser
         for (int i = 0; i < arguments.Count; ++i)
         {
             Expression argument = arguments[i];
+            if (type.ParameterTypes[i] is ReferenceType reference)
+            {
+                ReferenceBinding? binding = MatchReferenceBinding(argument, reference);
+                if (binding == null) return new OverloadCandidate(function, CandidateRejectionReason.ArgumentConversion, []);
+                conversions[i] = new StandardConversionSequence(binding);
+                continue;
+            }
             if (argument.Type is not IntegerType source || type.ParameterTypes[i] is not IntegerType target)
                 return new OverloadCandidate(function, CandidateRejectionReason.ArgumentConversion, []);
             conversions[i] = new StandardConversionSequence(source, target,
-                argument.ValueCategory == ValueCategory.LValue, IntegerConversionRank(source, target));
+                argument.ValueCategory != ValueCategory.PRValue, IntegerConversionRank(source, target));
         }
         return new OverloadCandidate(function, CandidateRejectionReason.None, conversions, type, templateArguments);
     }
@@ -93,16 +105,32 @@ internal sealed partial class Parser
         bool strictlyBetter = false;
         for (int i = 0; i < candidate.ArgumentConversions.Count; ++i)
         {
-            StandardConversionRank left = candidate.ArgumentConversions[i].Rank;
-            StandardConversionRank right = other.ArgumentConversions[i].Rank;
-            if (left > right) return false;
-            if (left < right) strictlyBetter = true;
+            int comparison = CompareStandardConversions(candidate.ArgumentConversions[i], other.ArgumentConversions[i]);
+            if (comparison > 0) return false;
+            if (comparison < 0) strictlyBetter = true;
         }
         if (strictlyBetter) return true;
         if (candidate.Template == null && other.Template != null) return true;
         if (candidate.Template != null && other.Template != null)
             return PatternDeduces(other.Template, candidate.Template) && !PatternDeduces(candidate.Template, other.Template);
         return false;
+    }
+
+    private static int CompareStandardConversions(StandardConversionSequence left, StandardConversionSequence right)
+    {
+        int rank = left.Rank.CompareTo(right.Rank);
+        if (rank != 0) return rank;
+        // Immediate reference cv is not a qualification-conversion subsequence.
+        if (left.ReferenceBinding is not { } l || right.ReferenceBinding is not { } r) return 0;
+        // Strict Core1374 ordering: reference kind/category before immediate cv.
+        if (l.ReferenceType.ReferenceKind != r.ReferenceType.ReferenceKind)
+            return l.ReferenceType.ReferenceKind == ReferenceKind.RValue ? -1 : 1;
+        if (l.TargetType.IntegerKind != r.TargetType.IntegerKind) return 0;
+        TypeQualifiers lq = l.TargetType.Qualifiers, rq = r.TargetType.Qualifiers;
+        if (lq == rq) return 0;
+        if ((lq & ~rq) == 0) return -1;
+        if ((rq & ~lq) == 0) return 1;
+        return 0;
     }
 
     private static bool PatternDeduces(FunctionTemplateDeclaration pattern, FunctionTemplateDeclaration argument)
@@ -128,7 +156,7 @@ internal sealed partial class Parser
     {
         // EDG forms the intersection of per-argument best-match sets and then
         // requires a strictly better argument against every other candidate.
-        // For these totally ordered scalar ranks, checking each pair directly
+        // For this bounded scalar conversion relation, checking each pair
         // preserves that invariant. Do not sum ranks or prefer a declaration's
         // position, integer width, signedness, or return type.
         OverloadCandidate[] viable = candidates.Where(candidate => candidate.IsViable).ToArray();

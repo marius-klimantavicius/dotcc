@@ -115,6 +115,8 @@ internal sealed partial class Parser
             }
             if (symbol.Name == "main" && symbol.Scope.Kind == ScopeKind.TranslationUnit)
                 Unsupported("The special use rules of global main are not implemented.", token.Range);
+            if (symbol.Type is ReferenceType && ReferenceEvaluationRequired)
+                Unsupported("Reference reads in constant evaluation require an unimplemented object/referent interpreter.", token.Range);
             return new ReferenceExpression(symbol, token.Range);
         }
         if (token.Kind is TokenKind.FloatingLiteral or TokenKind.StringLiteral or TokenKind.CharacterLiteral || token.Kind == TokenKind.Keyword ||
@@ -179,7 +181,13 @@ internal sealed partial class Parser
         if (selected.Template != null && instance == null) return new ErrorExpression(types.Error, range);
         Symbol selectedFunction = instance?.Symbol ?? selected.Function;
         FunctionType type = selected.FunctionType;
-        for (int i = 0; i < arguments.Count; ++i) arguments[i] = Convert(arguments[i], type.ParameterTypes[i]);
+        for (int i = 0; i < arguments.Count; ++i)
+            arguments[i] = type.ParameterTypes[i] is ReferenceType reference
+                ? BindReference(arguments[i], reference, ReferenceBindingContext.Argument,
+                    selectedBinding: selected.ArgumentConversions[i].ReferenceBinding)
+                : Convert(arguments[i], type.ParameterTypes[i]);
+        if (type.ReturnType is ReferenceType && ReferenceEvaluationRequired)
+            Unsupported("Reference results in constant evaluation require an unimplemented object/referent interpreter.", range);
         // EDG il.c prvalue_type/il_return_type_of remove scalar cv from a call's
         // expression type while preserving the declared function return type.
         return new CallExpression(selectedFunction, instance, selected, candidates, callee, arguments.ToArray(), types.Unqualified(type.ReturnType), range);
@@ -196,7 +204,7 @@ internal sealed partial class Parser
             else Fail("SEM024", $"Cannot convert '{expression.Type}' to '{target}' in the implemented scalar subset.", expression.Range);
             return new ErrorExpression(types.Error, expression.Range);
         }
-        if (expression.ValueCategory == ValueCategory.LValue)
+        if (expression.ValueCategory != ValueCategory.PRValue)
         {
             // lvalue-to-rvalue drops top-level cv, independently from integral conversion.
             expression = new ConversionExpression(expression, types.Integer(source.IntegerKind), ConversionKind.LValueToRValue, expression.ConstantValue);

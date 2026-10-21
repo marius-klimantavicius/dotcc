@@ -78,8 +78,8 @@ Source guides: `class_decl.rst`, `expr.rst`, `decls.rst`; `overload.c`,
 | ID | Required task / current bounds | State | Concrete acceptance / remaining evidence |
 | --- | --- | --- | --- |
 | M3.1 | Ordered scalar free-function overload sets | accepted slice | Separate binding/entity identity, frozen candidates and scalar comparison pass 35-group suite/native witnesses; full M3 branches remain below |
-| M3.2 | Complete standard conversion sequences | open | Qualification/pointer/member/bool/floating/null conversions, reference binding and rank subsequences with adversarial native witnesses; no summed heuristics |
-| M3.3 | Lvalue/rvalue references and cv binding | open | Reference collapsing as applicable, temporary/qualification binding, selected conversion/category and invalid controls |
+| M3.2 | Complete standard conversion sequences | partial | 95-group integration covers scalar reference viability/rank/kind/cv and ambiguity with exact native witnesses; pointer/member/floating/null/deep qualification/class/UDC branches remain required; no summed heuristics |
+| M3.3 | Lvalue/rvalue references and cv binding | partial | Scalar const/lvalue/rvalue/temporary/alias-collapse/category/owner/invalid controls pass managed+AOT; volatile, compound/class/dependent reference forms and full lifetime semantics remain required |
 | M3.4 | Records/classes/member lookup | open | Class scopes, fields, member functions, access/static members, complete/incomplete types, qualified/hidden members, identity and graph assertions |
 | M3.5 | Constructors and initialization overloads | open | Direct/copy/list/aggregate candidate phases, explicit/deleted/defaulted functions, initializer-list preference and invalid narrowing controls |
 | M3.6 | Operators, conversions and advanced candidates | open | User-defined conversions, operators, ADL, surrogate/builtin candidates, deleted/inaccessible resolution and scoped overload rules |
@@ -132,9 +132,9 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | --- | --- | --- | --- |
 | M6.1 | Stable typed query API and examples | partial | Current read-only graph API; document identity/canonicalization/queries that instantiate vs inspect, complete unsupported-result contracts and runnable examples for every promised subsystem |
 | M6.2 | Session lifecycle and concurrency | partial | Existing independent/concurrent sessions; repeated real-header/template analyses with live session and discarded old results, WeakReference/retained-memory checks against dependent-signature scope leaks; cancellation safe points and stress/race checks |
-| M6.3 | Recovery and diagnostic quality | partial | Existing bounded malformed recovery; full subsystem recovery, suppression/speculation, cascade limits, location/macro notes and malformed corpus termination |
+| M6.3 | Recovery and diagnostic quality | partial | Existing bounded recovery and invalid/Unsupported distinctions; managed extra named-reference hazard warnings are deliberate non-parity. Full recovery, diagnostic compatibility/suppression/speculation, cascade limits, source notes and malformed termination remain required |
 | M6.4 | Explicit resource limits | open | Depth/token/include/expansion/template/constexpr work and memory budgets, cancellation/failure outcomes, bounded adversarial fixtures and cleanup; no process crash counted diagnosis |
-| M6.5 | NativeAOT and platform qualification | partial | Current 79-group suite passes managed and Linux-x64 NativeAOT including isolated glibc host input adapter; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
+| M6.5 | NativeAOT and platform qualification | partial | Current95-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
 | M6.6 | Performance/resource measurements | open | Reproducible startup/throughput/allocations/retained-memory on representative headers/projects with baseline and profile; optimize only under semantic parity tests |
 | M6.7 | Regression/differential corpus qualification | open | Preserve upstream fp/fn/cp/lp/rp case kinds, per-case //options and TEST_NUMBER; parser acceptance qualifies only frontend fp/fn stages, never compile/link/runtime stages. Explicit expected language exit/status+diagnostics, semantic witnesses, inventory/pass/fail/skip and malformed/adversarial provenance |
 | M6.8 | Upstream update procedure | open | Rehash/diff routine+configuration baseline, identify impacted invariants and fixtures, run actual update rehearsal with regression receipts and reviewed correspondence changes |
@@ -156,9 +156,10 @@ Current remaining-M1 character/predefined/probe/host-input extension has 79/79
 managed/AOT execution and independent bounded acceptance in
 `review-m1-literals-final.md`. Next is
 pinned Unicode17 XID/UCN canonical identity and explicit source/execution encoding,
-then complete string/floating/UDL semantics. Scalar reference code is authored
-in a separate worktree and requires explicit integration/review/execution before
-its open M3.2/M3.3 rows gain any acceptance. Remaining M1/M2/M3/general
+then complete string/floating/UDL semantics. Scalar references are now actually
+integrated with95/95 managed/AOT execution and independent bounded acceptance in
+`review-references-final.md`. Unicode remains separately authored and unintegrated; no Unicode pass
+is inferred. Remaining M1/M2/M3/general
 M4 and M5/M6 rows are burned
 down without stopping at checkpoint commits. Dependencies/order may change based
 on real-header failures, but rows remain visible until validated.

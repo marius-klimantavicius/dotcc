@@ -1,0 +1,35 @@
+{
+  "purpose": "consulted source provenance, not a claim that complete files are ported",
+  "imported_base": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "repository_head_at_inspection": "3b667ce7350337cfff45e2de78d923c42c750274",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/types.c",
+      "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.c",
+      "sha256": "535768a37a2bd0f90dd18c41bd867398074289a305c3ff88589da67153514cd0"
+    },
+    {
+      "path": "edgcpp/upstream/src/declarator.c",
+      "sha256": "26680a8059cb338336b31d68ab40b25e9d1660bb5ba6192aea16ae15a9651552"
+    },
+    {
+      "path": "edgcpp/upstream/src/overload.c",
+      "sha256": "62c8b3971d169872985b6855871488690c971455a0ef07773e6f78f335a1c67e"
+    },
+    {
+      "path": "edgcpp/upstream/src/expr.c",
+      "sha256": "056f8e7416d6f948846abbe17c3401e9eb4ca8ed1ce0ae7673cd573b314df3c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.c",
+      "sha256": "1b01609700d2a72f64f94e218a3f210e7e9503394bc3cf16168e8a1a50e50812"
+    },
+    {
+      "path": "edgcpp/upstream/src/decl_inits.c",
+      "sha256": "8d66e24839804eb5e636c960fde1598553b646179a199611ee1d38eca8277bc7"
+    }
+  ]
+}

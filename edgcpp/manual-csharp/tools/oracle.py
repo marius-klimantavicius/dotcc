@@ -21,13 +21,16 @@ def matches_expectation(expected, exit_code):
 
 def oracle_command(compiler, source, instantiate="used", preprocess=False,
                    include_dirs=(), system_include_dirs=(), definitions=(),
-                   undefinitions=(), no_line_commands=False):
+                   undefinitions=(), no_line_commands=False,
+                   unicode_source_kind=None):
     command = [str(compiler), "--clear_flag", "use_predefined_macro_file",
                "--c++20", "--strict", "--no_code_gen", "--instantiate", instantiate]
     if preprocess:
         command.append("--preprocess")
     if no_line_commands:
         command.append("--no_line_commands")
+    if unicode_source_kind is not None:
+        command.extend(["--unicode_source_kind", unicode_source_kind])
     for option, values in (("--include_directory", include_dirs),
                            ("--sys_include", system_include_dirs),
                            ("--define_macro", definitions),
@@ -52,6 +55,8 @@ def main():
     parser.add_argument("--system-include-dir", type=pathlib.Path, action="append", default=[])
     parser.add_argument("--define", action="append", default=[])
     parser.add_argument("--undefine", action="append", default=[])
+    parser.add_argument("--unicode-source-kind", choices=("UTF-8", "UTF-16", "UTF-16LE", "UTF-16BE", "none"),
+                        help="Explicit EDG default source interpretation for BOM-less inputs; per-file BOM overrides it")
     parser.add_argument("--instantiate", choices=("none", "used"), default="used",
                         help="Explicit EDG external template body policy; default used for semantic comparison")
     parser.add_argument("--input", type=pathlib.Path, action="append", default=[],
@@ -62,13 +67,16 @@ def main():
     command = oracle_command(compiler, source, args.instantiate, args.preprocess,
                              [path.resolve() for path in args.include_dir],
                              [path.resolve() for path in args.system_include_dir],
-                             args.define, args.undefine, args.no_line_commands)
+                             args.define, args.undefine, args.no_line_commands,
+                             args.unicode_source_kind)
     result = subprocess.run(command, cwd=root, text=True, capture_output=True,
                             timeout=30, check=False)
     matched = matches_expectation(args.expect, result.returncode)
     receipt = {
         "purpose": "test oracle only; no production runtime dependency",
-        "profile": f"C++20 strict; external template instantiation {args.instantiate}; built-in target witnessed by profile.cpp; predefined macro file disabled",
+        "profile": f"C++20 strict; external template instantiation {args.instantiate}; built-in target witnessed by profile.cpp; predefined macro file disabled" +
+                   (f"; Unicode source default {args.unicode_source_kind} (per-file BOM overrides)" if args.unicode_source_kind is not None else ""),
+        "unicode_source_kind": args.unicode_source_kind,
         "compiler": str(compiler), "compiler_sha256": digest(compiler),
         "source": str(source), "source_sha256": digest(source),
         "additional_inputs": [

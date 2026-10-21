@@ -122,6 +122,7 @@ public sealed class AliasDeclaration : Declaration
 public sealed class VariableDeclaration : Declaration
 {
     public Expression? Initializer { get; internal set; }
+    public ReferenceBindingExpression? ReferenceBinding => Initializer as ReferenceBindingExpression;
     public bool IsParameter => Symbol.Kind == SymbolKind.Parameter;
     public bool IsConstexpr { get; internal set; }
     public ConstantEvaluationResult? ConstantEvaluation { get; internal set; }
@@ -141,7 +142,7 @@ public sealed class FunctionDeclaration : Declaration
         => (Parameters, ParameterScope) = (Array.AsReadOnly((VariableDeclaration[])parameters.Clone()), parameterScope);
 }
 
-public enum ValueCategory { LValue, PRValue }
+public enum ValueCategory { LValue, PRValue, XValue }
 public abstract class Expression
 {
     public SemanticType Type { get; }
@@ -166,7 +167,7 @@ public sealed class ReferenceExpression : Expression
     public Symbol ReferencedSymbol { get; }
     public override bool IsValueDependent => IsTypeDependent || ReferencedSymbol.HasTemplateDependentValue;
     internal ReferenceExpression(Symbol symbol, SourceRange range)
-        : base(symbol.Type, ValueCategory.LValue, range) => ReferencedSymbol = symbol;
+        : base(symbol.Type is ReferenceType reference ? reference.ReferredType : symbol.Type, ValueCategory.LValue, range) => ReferencedSymbol = symbol;
 }
 /// <summary>
 /// A snapshot of the function entities visible at this source reference. Its
@@ -215,6 +216,7 @@ public sealed class BinaryExpression : Expression
 public sealed class CallExpression : Expression
 {
     public Symbol SelectedFunction { get; }
+    public SemanticType DeclaredReturnType => SelectedCandidate.FunctionType.ReturnType;
     public Expression Callee { get; }
     public ReadOnlyCollection<Expression> Arguments { get; }
     public ReadOnlyCollection<OverloadCandidate> Candidates { get; }
@@ -222,7 +224,8 @@ public sealed class CallExpression : Expression
     public FunctionTemplateInstance? TemplateInstance { get; }
     public override bool IsValueDependent => Arguments.Any(argument => argument.IsValueDependent);
     internal CallExpression(Symbol function, FunctionTemplateInstance? instance, OverloadCandidate selected, OverloadCandidate[] candidates, Expression callee, Expression[] arguments, SemanticType resultType, SourceRange range)
-        : base(resultType, ValueCategory.PRValue, range)
+        : base(resultType is ReferenceType reference ? reference.ReferredType : resultType,
+            resultType is ReferenceType r ? r.ReferenceKind == ReferenceKind.LValue ? ValueCategory.LValue : ValueCategory.XValue : ValueCategory.PRValue, range)
         => (SelectedFunction, TemplateInstance, SelectedCandidate, Candidates, Callee, Arguments) =
             (function, instance, selected, Array.AsReadOnly((OverloadCandidate[])candidates.Clone()), callee, Array.AsReadOnly((Expression[])arguments.Clone()));
 }

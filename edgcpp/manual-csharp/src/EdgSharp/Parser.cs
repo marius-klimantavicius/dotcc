@@ -66,14 +66,14 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             if (!Is(TokenKind.Identifier)) UnsupportedAndThrow("Only simple alias declarations ('using Name = type;') are implemented.");
             Token name = Take();
             Expect(TokenKind.Equal, "'=' in alias declaration");
-            SemanticType target = ScanType();
+            SemanticType target = ScanReferenceDeclarator(ScanType());
             Token end = ExpectSimpleSemicolon();
             return EnterAlias(name, target, SourceRange.Cover(start, end.Range));
         }
         bool typedef = Eat("typedef");
-        SemanticType type = ScanType();
-        if (Is(TokenKind.Star) || Is(TokenKind.Ampersand) || Is(TokenKind.AndAnd) || Is(TokenKind.LeftParen))
-            UnsupportedAndThrow("Pointer, reference and parenthesized declarators are not implemented.");
+        SemanticType type = ScanReferenceDeclarator(ScanType());
+        if (Is(TokenKind.Star) || Is(TokenKind.LeftParen))
+            UnsupportedAndThrow("Pointer and parenthesized declarators are not implemented.");
         Token identifier = Expect(TokenKind.Identifier, "a declarator identifier");
         if (Is(TokenKind.LeftParen))
         {
@@ -87,6 +87,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             return EnterAlias(identifier, type, SourceRange.Cover(start, end.Range));
         }
         if (type.Kind == TypeKind.Void) Fail("SEM001", "A variable cannot have void type.", identifier.Range);
+        if (type is ReferenceType && isConstexpr)
+            Unsupported("Constexpr references require an unimplemented object/referent interpreter.", identifier.Range);
         if (isConstexpr) type = types.Const(type);
         Symbol variable = NewLocalSymbol(identifier, SymbolKind.Variable, type);
         // The declarator's point of declaration precedes its initializer, as in EDG's id_linkage path.
@@ -95,10 +97,22 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         if (Eat(TokenKind.Equal))
         {
             bool saved = constantRequiredParsing;
-            constantRequiredParsing = type.Qualifiers.HasFlag(TypeQualifiers.Const);
-            try { declaration.Initializer = Convert(ScanExprFull(), type); }
-            finally { constantRequiredParsing = saved; }
+            bool savedOptionalReferenceEvaluation = optionalReferenceEvaluation;
+            constantRequiredParsing = isConstexpr || type.Qualifiers.HasFlag(TypeQualifiers.Const);
+            optionalReferenceEvaluation = !isConstexpr;
+            try
+            {
+                Expression initializer = ScanExprFull();
+                declaration.Initializer = type is ReferenceType reference
+                    ? BindReference(initializer, reference, ReferenceBindingContext.Variable, variable) : Convert(initializer, type);
+            }
+            finally
+            {
+                constantRequiredParsing = saved;
+                optionalReferenceEvaluation = savedOptionalReferenceEvaluation;
+            }
         }
+        else if (type is ReferenceType) Fail("REF004", "A reference variable requires an initializer.", identifier.Range);
         else if (type.Qualifiers.HasFlag(TypeQualifiers.Const)) Fail("SEM002", "A const scalar variable requires an initializer.", identifier.Range);
         Token semicolon = ExpectSimpleSemicolon();
         declaration.Range = SourceRange.Cover(start, semicolon.Range);
@@ -230,6 +244,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             else type = types.Const(type);
         }
         if (qualifiers > 1) Fail("SEM004", "Repeated const qualifier.", start);
+        if (type is ReferenceType && InTemplateScope())
+            UnsupportedAndThrow("Reference types in template signatures and declarations are not implemented.");
         return type;
     }
     private (Scope Scope, VariableDeclaration[] Parameters) FunctionParameters()
@@ -247,11 +263,11 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                     if (Is(TokenKind.Ellipsis)) UnsupportedAndThrow("Variadic function declarations are not implemented.");
                     if (!StartsDeclaration()) UnsupportedAndThrow("Parenthesized direct initialization and non-scalar parameter declarators are not implemented.");
                     SourceRange parameterStart = Current.Range;
-                    SemanticType type = ScanType();
+                    SemanticType type = ScanReferenceDeclarator(ScanType());
                     SourceRange typeRange = SourceRange.Cover(parameterStart, state.Tokens.Previous.Range);
                     Token? name = Is(TokenKind.Identifier) ? Take() : null;
                     if (Is(TokenKind.Star) || Is(TokenKind.Ampersand) || Is(TokenKind.AndAnd) || Is(TokenKind.LeftBracket) || Is(TokenKind.LeftParen))
-                        UnsupportedAndThrow("Only by-value scalar parameters are implemented.");
+                        UnsupportedAndThrow("Only scalar value and reference parameter declarators are implemented.");
                     if (Is(TokenKind.Equal)) UnsupportedAndThrow("Default function arguments are not implemented.");
                     if (type.Kind == TypeKind.Void)
                     {
@@ -280,6 +296,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         if (isConstexpr && resultType.Kind == TypeKind.Void) Unsupported("Constexpr void functions are outside the implemented integer evaluator.", identifier.Range);
         Scope enclosing = state.CurrentScope;
         var (parameterScope, parameters) = FunctionParameters();
+        if (isConstexpr && (resultType is ReferenceType || parameters.Any(p => p.Type is ReferenceType)))
+            Unsupported("Constexpr reference parameters and results require an unimplemented object/referent interpreter.", identifier.Range);
         var functionType = types.Function(resultType, parameters.Select(p => p.Type));
         NameBinding? binding = enclosing.FindLocalBinding(identifier.Spelling);
         Symbol? previous = binding?.Symbols.FirstOrDefault(s => s.Kind == SymbolKind.Function &&
@@ -376,7 +394,12 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         Token start = Take();
         FunctionDeclaration function = state.CurrentFunction ?? throw new InvalidOperationException("Return parser requires an active function.");
         Expression? expression = null;
-        if (!Is(TokenKind.Semicolon)) expression = Convert(ScanExprFull(), function.Type.ReturnType);
+        if (!Is(TokenKind.Semicolon))
+        {
+            Expression operand = ScanExprFull();
+            expression = function.Type.ReturnType is ReferenceType reference
+                ? BindReference(operand, reference, ReferenceBindingContext.Return) : Convert(operand, function.Type.ReturnType);
+        }
         else if (function.Type.ReturnType.Kind != TypeKind.Void) Fail("SEM011", "A non-void function must return a value.", start.Range);
         Token end = ExpectExpressionSemicolon();
         return new ReturnStatement(expression, SourceRange.Cover(start.Range, end.Range));

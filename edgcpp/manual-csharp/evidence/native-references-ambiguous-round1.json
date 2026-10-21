@@ -1,0 +1,28 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "unicode_source_kind": null,
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-reference-ambiguous.cpp",
+  "source_sha256": "15f6e9902aefbcfe24000318af5ba4a2881c6d5f5d27dc6ebdd799733e5a4600",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-reference-ambiguous.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-reference-ambiguous.cpp\"\n          , line 5: error: more than one instance of overloaded function\n          \"choose\" matches the argument list:\n            function \"choose(int)\" (declared at line 3)\n            function \"choose(const int &)\" (declared at line 4)\n            argument types are: (int)\n  int use() { return choose(1); }\n                     ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m3-reference-ambiguous.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

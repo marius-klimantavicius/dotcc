@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-preview/ucn-stringized.cpp",
+  "source_sha256": "2d306e801a35d1c92ffca506b62561a81708bd9e185bd3ddf43c0d69cae64027",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-preview/ucn-stringized.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/ucn-stringized.cpp\", line 2: error: a universal character name\n          cannot designate a surrogate code point\n  const char* text=STR(\\uD800);\n                       ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/ucn-stringized.cpp\", line 2: error: a universal character name\n          cannot designate a surrogate code point\n  const char* text=STR(\\uD800);\n                   ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-previ\n          ew/ucn-stringized.cpp\", line 2: error: character cannot be\n          represented in the specified character type\n  const char* text=STR(\\uD800);\n                   ^\n\n3 errors detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-unicode-preview/ucn-stringized.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}
