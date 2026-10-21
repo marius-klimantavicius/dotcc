@@ -136,6 +136,16 @@ public sealed class SourceFile
         return new SourcePosition(this, offset, line + 1, offset - lineStarts[line] + 1);
     }
     public SourceRange Range(int start, int length) => new(this, start, length);
+    internal int OffsetFromPhysical(SourceFile physical, int offset)
+    {
+        if (ReferenceEquals(this, physical)) return offset;
+        foreach (SourceMapSegment segment in originMap)
+            foreach (SourceRange contributor in segment.Origin.SpellingRanges)
+                if (ReferenceEquals(contributor.File, physical) && offset >= contributor.Start && offset <= contributor.End && contributor.Length == segment.Length)
+                    return segment.Start + offset - contributor.Start;
+        if (originMap.Length != 0 && offset == physical.Text.Length) return Text.Length;
+        throw new InvalidOperationException("Physical position is not represented in this immutable logical buffer.");
+    }
     /// <summary>Maps a range in this buffer to retained source contributors. A presentation range is never a physical source range.</summary>
     public TokenOrigin OriginForRange(SourceRange range)
     {
@@ -218,7 +228,7 @@ public readonly record struct SourceRange
     }
 }
 
-public enum DiagnosticClass { InvalidSource, UnsupportedFeature, ResourceLimit }
+public enum DiagnosticClass { InvalidSource, UnsupportedFeature, ResourceLimit, InputFailure }
 public enum DiagnosticSeverity { Error, Warning }
 
 public sealed record Diagnostic(string Code, DiagnosticClass Class, string Message, SourceRange Range,
@@ -233,6 +243,7 @@ internal sealed class DiagnosticBag
 {
     private readonly List<Diagnostic> items = [];
     internal int Count => items.Count;
+    internal int ErrorCount => items.Count(item => item.Severity == DiagnosticSeverity.Error);
     internal void Add(string code, string message, SourceRange range, DiagnosticClass kind = DiagnosticClass.InvalidSource, DiagnosticSeverity severity = DiagnosticSeverity.Error)
         => items.Add(new Diagnostic(code, kind, message, range, severity));
     internal void Truncate(int count) => items.RemoveRange(count, items.Count - count);

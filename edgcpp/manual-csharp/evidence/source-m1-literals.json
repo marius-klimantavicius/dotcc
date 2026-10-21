@@ -1,0 +1,63 @@
+{
+  "purpose": "consulted source provenance, not a claim that complete files are ported",
+  "imported_base": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "repository_head_at_inspection": "abb239b200817d3fa9cf32888162cce9ef010271",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875"
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.h",
+      "sha256": "805ade6649e8b2e0d2d11c2eaf8364904e51d54bbaa3701d2011f8609e74e8b3"
+    },
+    {
+      "path": "edgcpp/upstream/src/literals.c",
+      "sha256": "de5276f87f073a67bb4b7c6a4cd152a66eab0a155fda84f0d991e3d296213d95"
+    },
+    {
+      "path": "edgcpp/upstream/src/literals.h",
+      "sha256": "6a66e58e390fbd6b68da78a0252f18dbc7bdc78f678974285445431ac5eddf7f"
+    },
+    {
+      "path": "edgcpp/upstream/src/macro.c",
+      "sha256": "3cd96e32ba6676fb66b17900922abdc9a33caab5aade78f2046dba0490d996a3"
+    },
+    {
+      "path": "edgcpp/upstream/src/preproc.c",
+      "sha256": "e0927cba0b5ba139152d69063a6ec73114e103be957effd90eec4616438a65af"
+    },
+    {
+      "path": "edgcpp/upstream/src/expr.c",
+      "sha256": "056f8e7416d6f948846abbe17c3401e9eb4ca8ed1ce0ae7673cd573b314df3c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/types.c",
+      "sha256": "89e6393ab4109ef3924eb25ca8fe04503e87db8fcd053be559bac52713ba11fc"
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.c",
+      "sha256": "1b01609700d2a72f64f94e218a3f210e7e9503394bc3cf16168e8a1a50e50812"
+    },
+    {
+      "path": "edgcpp/upstream/src/const_ints.c",
+      "sha256": "5a16a2ebd362068f1757cc30f5b4828d67cc1bc16a8e6bfc519e43c0059deb2c"
+    },
+    {
+      "path": "edgcpp/upstream/src/folding.c",
+      "sha256": "91fef22e8578541a8f7211ce401b7f15a3acd55aa42bed2815c254237cf045ff"
+    },
+    {
+      "path": "edgcpp/upstream/src/il_def.h",
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+    },
+    {
+      "path": "edgcpp/upstream/src/../doc/source/lex_pp.rst",
+      "sha256": "fdeea9d1bba1c5f3f89d5fde9596070aa0d5c9aa22927a62756049e29eceb06b"
+    },
+    {
+      "path": "edgcpp/upstream/src/../doc/source/includes.rst",
+      "sha256": "124607c25e2f8ed6d29bec97ca466586279d3df9639d6f770049949dd8ab9dea"
+    }
+  ]
+}

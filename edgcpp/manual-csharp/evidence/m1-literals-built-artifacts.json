@@ -1,0 +1,20 @@
+{
+  "purpose": "Held character/builtin/input checkpoint output fingerprints; prior accepted bytes retained separately",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 217088,
+      "sha256": "39f456356767bf8899ef7296573c4473c2e24ab1d066963e8add61c6c42c1e3b"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 164864,
+      "sha256": "bdd2fea98c23017a9e1061b56dcd79a40a7990c9ae5e632b2c353a2504a0f89d"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-m1-literals/EdgSharp.Tests",
+      "bytes": 4058696,
+      "sha256": "3d92c132f8d9f2dac13f317fe922e92b1b652c7ffecc0ad4f4e8fa193ec5716e"
+    }
+  ]
+}

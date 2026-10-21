@@ -17,6 +17,12 @@ public sealed class TargetInfo
     public int LongLongBits => 64;
     public int PointerBits => 64;
     public bool PlainCharIsSigned => true;
+    public int WCharBits => 32;
+    public bool WCharIsSigned => true;
+    public int Char8Bits => 8;
+    public int Char16Bits => 16;
+    public int Char32Bits => 32;
+    public bool MulticharFirstIsMostSignificant => true;
     private TargetInfo() { }
 }
 
@@ -32,7 +38,7 @@ public sealed record AnalysisOptions
 }
 
 public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent }
-public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong }
+public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong, WChar, Char8, Char16, Char32 }
 [Flags] public enum TypeQualifiers { None = 0, Const = 1 }
 
 /// <summary>Identity-bearing canonical type, owned by one compilation session.</summary>
@@ -111,6 +117,10 @@ internal sealed class TypeTable
         Add(IntegerKind.UnsignedLong, "unsigned long", target.LongBits, 4, false);
         Add(IntegerKind.LongLong, "long long", target.LongLongBits, 5, true);
         Add(IntegerKind.UnsignedLongLong, "unsigned long long", target.LongLongBits, 5, false);
+        Add(IntegerKind.WChar, "wchar_t", target.WCharBits, 3, target.WCharIsSigned);
+        Add(IntegerKind.Char8, "char8_t", target.Char8Bits, 1, false);
+        Add(IntegerKind.Char16, "char16_t", target.Char16Bits, 2, false);
+        Add(IntegerKind.Char32, "char32_t", target.Char32Bits, 3, false);
     }
     private void Add(IntegerKind kind, string name, int width, int rank, bool signed)
     {
@@ -142,7 +152,16 @@ internal sealed class TypeTable
         return created;
     }
     internal int InternedFunctionTypeCount => functions.Count;
-    internal IntegerType Promote(IntegerType type) => type.Rank < Integer(IntegerKind.Int).Rank ? Integer(IntegerKind.Int) : Integer(type.IntegerKind);
+    internal IntegerType Promote(IntegerType type)
+    {
+        if (type.IntegerKind is IntegerKind.WChar or IntegerKind.Char8 or IntegerKind.Char16 or IntegerKind.Char32)
+            foreach (IntegerKind kind in new[] { IntegerKind.Int, IntegerKind.UnsignedInt, IntegerKind.Long, IntegerKind.UnsignedLong, IntegerKind.LongLong, IntegerKind.UnsignedLongLong })
+            {
+                IntegerType candidate = Integer(kind);
+                if (candidate.Minimum <= type.Minimum && candidate.Maximum >= type.Maximum) return candidate;
+            }
+        return type.Rank < Integer(IntegerKind.Int).Rank ? Integer(IntegerKind.Int) : Integer(type.IntegerKind);
+    }
     internal IntegerType UsualArithmeticConversions(IntegerType left, IntegerType right)
     {
         left = Promote(left);

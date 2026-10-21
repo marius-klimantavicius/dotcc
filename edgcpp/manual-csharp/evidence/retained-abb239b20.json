@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted preprocessing checkpoint artifacts before remaining-M1 builds overwrite standard paths",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/abb239b20/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "8e74176c95d416cb63c9e2204b99fe95e582d8d0c0c09789be59f1347e436481"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/abb239b20/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "67d2b7fa271f58d9cfaccc8aae6153f38f58dd88fc33f7aea365c478b1d7c035"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-m1/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/abb239b20/tests/EdgSharp.Tests/bin/aot-m1/EdgSharp.Tests",
+      "sha256": "2a686f4ecfbb01bf58ea5fa125e4bcadf33a155571457c1b2bdd97dcc83da021"
+    }
+  ]
+}

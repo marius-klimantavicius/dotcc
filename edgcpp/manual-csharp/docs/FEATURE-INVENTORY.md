@@ -45,15 +45,15 @@ Source guides: `lex_pp.rst`, `includes.rst`; `lexical.c`, `preproc.c`, `macro.c`
 | ID | Required task / current bounds | State | Concrete acceptance / remaining evidence |
 | --- | --- | --- | --- |
 | M1.1 | Owned buffers, physical positions, retained token intervals | accepted slice | Exact ASCII token spelling/kind/UTF-16 range tests, CR/LF/CRLF, stable EOF; preserve these through macros/includes/replay |
-| M1.2 | Encoding and translation phases | partial | Phase-2 splicing/comment/raw boundaries and retained origins pass 60-group snapshot; UTF input/UCN identifier rules and malformed encoding remain required |
-| M1.3 | Full literal lexing and values | partial | Complete numeric validation at promised lexical boundary; escape repertoire, char count/encoding, raw/prefixed strings, concatenation, floating and user-defined suffix tokenization; malformed/adversarial fixtures |
+| M1.2 | Encoding and translation phases | partial | 79-group snapshot covers real-context raw phase restoration and strict opt-in UTF-8/BOM UTF-16 input decoding; explicit source/execution encoding metadata, Unicode/UCN identifier rules and other encodings remain required |
+| M1.3 | Full literal lexing and values | partial | Bounded target character types/ASCII/simple/octal/hex/multichar values and diagnostics pass; Unicode/UCN, full string/raw/prefixed value semantics, concatenation, floating and user-defined literals remain required |
 | M1.4 | Object-like macros, suppression and rescanning | partial | ASCII strict-profile nesting/inertness/caller-tail/provenance and isolated state pass; Unicode macro identifiers and broader configured dialect/corpus qualification remain |
 | M1.5 | Function-like/variadic macros and operators | partial | Lazy raw/expanded args, #/##/placemarkers/VA_OPT and full 32-label upstream matrix pass; Unicode/complete dialect/configured branch qualification remains, including explicit native unused malformed-raw laziness bound |
-| M1.6 | Include processing and search configuration | partial | Configured in-memory quote/system search, guards/reentry/once, depth and retained activation origins pass; filesystem/encoding provider and real headers remain unqualified |
-| M1.7 | Conditional directives and PP arithmetic | partial | Conditional nesting, defined/alternative operators, short circuit and intmax/uintmax64 including shifts pass; character operands and special builtin operators remain required |
-| M1.8 | Other directives and predefined macros | partial | define/undef/ordinary line/error/once and __LINE__/__FILE__/__cplusplus pass; date/time/hosted/builtin operator and broader pragma/extension branches remain; nonordinary #line anomaly has exact receipts and explicit compatibility bound |
+| M1.6 | Include processing and search configuration | partial | Configured in-memory/structured opt-in Linux-x64-glibc provider search, separate probe/read caches/errors, guards/once, limits, strict decoding and retained activation origins pass; other hosts/encodings and real headers remain unqualified |
+| M1.7 | Conditional directives and PP arithmetic | partial | Conditional nesting/defined/alternative operators/short circuit, numeric intmax/uintmax64 shifts, witnessed character/bool32 promotions and expansion-driven __has_include header context pass; remaining special operators/dialects still required |
+| M1.8 | Other directives and predefined macros | partial | define/undef/ordinary line/error/once and line/file/cplusplus/date/time/hosted pass, with immutable configured UTC environment; broader predefs/pragma/extensions remain; nonordinary #line anomaly has exact receipts/explicit bound |
 | M1.9 | Lexical/token-cache state restoration | partial | Cursor and owner-mediated checkpoint foundation tested; nested rescan/suppression/error positions and every production speculative mutation need direct rollback tests |
-| M1.10 | Preprocessing differential suite and provenance API | partial | Exact copied upstream/native matrix and configured token/graph/provenance/disposal/concurrency/difficult replay checks pass; expand corpus with remaining lexical/builtin/filesystem branches; no native runtime dependency |
+| M1.10 | Preprocessing differential suite and provenance API | partial | 79-group snapshot expands exact upstream/native matrix with character→template→overload→constexpr graph, ABI/error/encoding/search/probe/disposal/concurrency and bounded special-file controls; remaining lexical/header/dialect branches required; native frontend remains oracle only |
 
 ## M2: declarations, fundamental graph and statements
 
@@ -134,7 +134,7 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | M6.2 | Session lifecycle and concurrency | partial | Existing independent/concurrent sessions; repeated real-header/template analyses with live session and discarded old results, WeakReference/retained-memory checks against dependent-signature scope leaks; cancellation safe points and stress/race checks |
 | M6.3 | Recovery and diagnostic quality | partial | Existing bounded malformed recovery; full subsystem recovery, suppression/speculation, cascade limits, location/macro notes and malformed corpus termination |
 | M6.4 | Explicit resource limits | open | Depth/token/include/expansion/template/constexpr work and memory budgets, cancellation/failure outcomes, bounded adversarial fixtures and cleanup; no process crash counted diagnosis |
-| M6.5 | NativeAOT and platform qualification | partial | Linux x64 scalar smoke accepted; full frontend AOT suite and each declared OS/architecture need executed build/run. Unavailable host remains unverified/evidenced blocker |
+| M6.5 | NativeAOT and platform qualification | partial | Current 79-group suite passes managed and Linux-x64 NativeAOT including isolated glibc host input adapter; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
 | M6.6 | Performance/resource measurements | open | Reproducible startup/throughput/allocations/retained-memory on representative headers/projects with baseline and profile; optimize only under semantic parity tests |
 | M6.7 | Regression/differential corpus qualification | open | Preserve upstream fp/fn/cp/lp/rp case kinds, per-case //options and TEST_NUMBER; parser acceptance qualifies only frontend fp/fn stages, never compile/link/runtime stages. Explicit expected language exit/status+diagnostics, semantic witnesses, inventory/pass/fail/skip and malformed/adversarial provenance |
 | M6.8 | Upstream update procedure | open | Rehash/diff routine+configuration baseline, identify impacted invariants and fixtures, run actual update rehearsal with regression receipts and reviewed correspondence changes |
@@ -152,10 +152,13 @@ any stated plan requirement or convert an unsupported branch into completion.
 
 Current primary dispatch: the integrated M1 preprocessing snapshot passes final
 60-group managed/AOT validation and independent `review-m1-final.md` acceptance.
-Next is remaining
-M1 character literals/PP operands, deterministic standard predefined values and
-configured __has_include; Unicode/UCN/full literals remain following required M1
-work, then remaining M1/M2/M3/general
+Current remaining-M1 character/predefined/probe/host-input extension has 79/79
+managed/AOT execution and independent bounded acceptance in
+`review-m1-literals-final.md`. Next is
+pinned Unicode17 XID/UCN canonical identity and explicit source/execution encoding,
+then complete string/floating/UDL semantics. Scalar reference code is authored
+in a separate worktree and requires explicit integration/review/execution before
+its open M3.2/M3.3 rows gain any acceptance. Remaining M1/M2/M3/general
 M4 and M5/M6 rows are burned
 down without stopping at checkpoint commits. Dependencies/order may change based
 on real-header failures, but rows remain visible until validated.

@@ -6,20 +6,25 @@ namespace EdgSharp;
 
 internal sealed partial class Preprocessor
 {
-    private sealed class ExpansionInput(IEnumerable<PpToken> source) : IDisposable
+    private sealed class ExpansionInput(IEnumerable<PpToken> source, Action? requestHeader) : IDisposable
     {
-        private readonly Stack<IEnumerator<PpToken>> frames = new([source.GetEnumerator()]);
+        private sealed class Replacement(PpToken[] tokens) { internal PpToken[] Tokens { get; } = tokens; internal int Index { get; set; } }
+        private readonly IEnumerator<PpToken> reader = source.GetEnumerator();
+        private readonly Stack<Replacement> frames = [];
         private PpToken? lookahead;
         private bool? nextSpace;
         internal PpToken? Take()
         {
             if (lookahead != null) { PpToken result = lookahead; lookahead = null; return WithSpace(result); }
-            while (frames.TryPeek(out IEnumerator<PpToken>? frame))
-            {
-                if (frame.MoveNext()) return WithSpace(frame.Current);
-                frame.Dispose(); frames.Pop();
-            }
-            return null;
+            RemoveFinishedFrames();
+            if (frames.TryPeek(out Replacement? frame)) return WithSpace(frame.Tokens[frame.Index++]);
+            return reader.MoveNext() ? WithSpace(reader.Current) : null;
+        }
+        private void RemoveFinishedFrames() { while (frames.TryPeek(out Replacement? frame) && frame.Index == frame.Tokens.Length) frames.Pop(); }
+        internal void RequestHeaderName()
+        {
+            RemoveFinishedFrames();
+            if (lookahead == null && frames.Count == 0) requestHeader?.Invoke();
         }
         private PpToken WithSpace(PpToken token)
         {
@@ -29,12 +34,12 @@ internal sealed partial class Preprocessor
         }
         internal void CarrySpace(bool space) => nextSpace = space;
         internal PpToken? Peek() => lookahead ??= Take();
-        internal void Push(IEnumerable<PpToken> tokens)
+        internal void Push(PpToken[] tokens)
         {
             if (lookahead != null) throw new InvalidOperationException("Replacement insertion cannot discard a buffered caller token.");
-            frames.Push(tokens.GetEnumerator());
+            frames.Push(new(tokens));
         }
-        public void Dispose() { while (frames.TryPop(out var frame)) frame.Dispose(); }
+        public void Dispose() { frames.Clear(); reader.Dispose(); }
     }
     private static HashSet<string> Union(IEnumerable<string> first, IEnumerable<string> second)
     {
@@ -42,14 +47,60 @@ internal sealed partial class Preprocessor
         result.UnionWith(second);
         return result;
     }
-    private IEnumerable<PpToken> Expand(IEnumerable<PpToken> source, int argumentDepth)
+    private IEnumerable<PpToken> Expand(IEnumerable<PpToken> source, int argumentDepth, bool headerOperand = false, Action? requestHeader = null)
     {
-        using var input = new ExpansionInput(source);
+        using var input = new ExpansionInput(source, requestHeader);
         while (input.Take() is PpToken token)
         {
             Tick(token.Origin);
             if (token.Kind == TokenKind.EndOfSource) continue; // A physical include boundary is not caller-tail text.
+            if (headerOperand && token.Kind is TokenKind.Less or TokenKind.StringLiteral or TokenKind.HeaderName)
+            {
+                // A literal caller opener makes its contents filename data,
+                // including when an alias supplied the builtin's name.
+                if (token.Kind == TokenKind.Less && token.Origin.Expansion != null)
+                {
+                    // preproc.c get_header_name assembles macro-produced
+                    // angles from expanded pp-tokens. Only a literal opener
+                    // in the caller's source starts an opaque header token.
+                    headerOperand = false;
+                    yield return token;
+                    continue;
+                }
+                yield return token;
+                while (input.Take() is PpToken rest) { Tick(rest.Origin); yield return rest; }
+                yield break;
+            }
             if (token.Kind != TokenKind.Identifier || token.Unavailable.Contains(token.Text)) { yield return token; continue; }
+            if (token.Text == "__has_include")
+            {
+                transformed = true;
+                if (controllingExpressionDepth == 0)
+                { Error("PP060", "__has_include is only permitted in a controlling preprocessing expression.", token.Origin); yield return token; continue; }
+                if (input.Peek()?.Kind != TokenKind.LeftParen)
+                { Error("PP061", "__has_include requires '('.", token.Origin); yield return Synthesized("0", TokenKind.IntegerLiteral, token.Origin); continue; }
+                input.Take();
+                input.RequestHeaderName();
+                var operand = new List<PpToken>();
+                int nesting = 0;
+                bool closed = false;
+                while (input.Take() is PpToken next)
+                {
+                    Tick(next.Origin);
+                    if (next.Kind == TokenKind.RightParen && nesting == 0) { closed = true; break; }
+                    if (next.Kind == TokenKind.LeftParen) ++nesting;
+                    if (next.Kind == TokenKind.RightParen) --nesting;
+                    operand.Add(next);
+                }
+                PpToken[] header = Expand(operand, argumentDepth + 1, headerOperand: true).ToArray();
+                bool found = false;
+                if (!closed || !ReadHeaderName(header, out string name, out bool system)) Error("PP062", "__has_include requires a nonempty header name followed by ')'.", token.Origin);
+                else found = ProbeInclude(token.Origin.PrimaryPhysicalRange.File, name, system, token.Origin);
+                var origin = new TokenOrigin(token.Origin.SpellingRanges.Concat(header.SelectMany(part => part.Origin.SpellingRanges)), token.Origin.Presumed,
+                    token.Origin.Include, token.Origin.Expansion, TokenOriginKind.Predefined, new[] { token.Origin }.Concat(header.Select(part => part.Origin)));
+                yield return Synthesized(found ? "1" : "0", TokenKind.IntegerLiteral, origin);
+                continue;
+            }
             if (token.Text is "__LINE__" or "__FILE__")
             {
                 transformed = true;

@@ -59,7 +59,7 @@ internal static partial class Tests
         using var session = new CompilationSession();
         Check(!session.Preprocess("#if 1/0\nx\n#endif").IsSuccess);
         Check(!session.Preprocess("#if 1 || (\nx\n#endif").IsSuccess); // Dead operands must still have valid syntax.
-        foreach (string source in new[] { "#if 'a'\nx\n#endif", "#if __has_include(\"x\")\nx\n#endif" })
+        foreach (string source in new[] { "#if '\\u0041'\nx\n#endif", "#if __has_cpp_attribute(nodiscard)\nx\n#endif" })
             Check(session.Preprocess(source).Diagnostics.Any(d => d.Class == DiagnosticClass.UnsupportedFeature));
         Check(!session.Preprocess("#warning invalid in strict20").IsSuccess);
     }
@@ -95,6 +95,7 @@ internal static partial class Tests
         Equal(1, token.Origin.SpellingRanges[0].StartPosition.Line);
         PreprocessingResult line = Preprocessed("#line 20 \"a\\x62.cpp\"\n__LINE__ __FILE__");
         Equal("20 \"ab.cpp\"", PpText(line));
+        Equal("100", Pp("#line 100 /*a\nb*/\n__LINE__"));
         Equal("direct 6 wrapped 9 nested 7 logical 82", Pp(Fixture("m1-multiline-origin.cpp")));
         SourceFile physical = new("splice.cpp", "ab\\\nc");
         SourceFile logical = LogicalInput.Normalize(physical);

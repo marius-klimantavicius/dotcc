@@ -276,6 +276,14 @@ Respect actual concurrency limits: one implementation worker plus one reviewer
 is sufficient alongside root and supervisor; add workers only when capacity
 and disjoint contracts permit it.
 
+The user explicitly authorizes multiple `gpt-6.1-sol` **xhigh** implementation
+agents when work can run independently. The supervisor should use that capacity
+with explicit file ownership and integration contracts. Native and T3-owned
+children are both supervised work; retain delegated task IDs and do not create
+top-level conversations for these tasks. A shared-checkout validation hold must
+cover every implementation writer before recording hashes or running checks.
+Independent review and serialized builds/tests/Git remain required.
+
 Before implementation, the supervisor records file ownership and interface
 contracts. A reviewer may first examine those contracts and upstream invariants,
 then review the actual diff and executed tests. Every accepted code milestone

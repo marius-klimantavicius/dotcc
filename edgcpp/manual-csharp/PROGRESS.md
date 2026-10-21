@@ -72,7 +72,9 @@ Milestones M0–M6 and acceptance criteria are defined in `PLAN.md`.
 - The first integrated slice covers aliases, scalar declarations, declarations
   followed by definitions, lexical scopes/shadowing, ordinary calls and returns.
   Scalar conversions are explicit and target-aware; other forms are diagnosed.
-- Production code has no native/compiler/generated-code dependencies. Tests
+- Production code has no native frontend/compiler/generated-code dependencies. The
+  opt-in Linux-x64 filesystem provider uses an isolated handwritten libc host-I/O
+  adapter; portable in-memory analysis does not require it. Tests
   run without EDG; the supervisor invokes EDG separately as an explicit oracle.
 
 ## Milestone state
@@ -438,3 +440,141 @@ prefixed/raw/adjacent string/floating/UDL semantics, filesystem encoding/include
 provider, then remaining references/classes/general templates and M5/M6 remain
 required. Supervisor commits this verified checkpoint and immediately releases
 source edits; no root/user approval or stopping boundary applies.
+
+## Active remaining M1 literal/predefined assignment
+
+Accepted preprocessing commit: `abb239b200817d3fa9cf32888162cce9ef010271`.
+Implementation and independent reviewer were immediately reassigned at their
+requested GPT-6.1 Sol xhigh settings, retaining disjoint ownership and supervisor
+execution/Git control. Source edits are released for actual character literal/PP
+operand, deterministic predefined-value and configured `__has_include` work.
+Independent reports are `evidence/review-m1-literals-*.md`. The previous three
+built artifacts are verified/retained in `retained-abb239b20.json` before any new
+build. All remaining feature rows remain required; this is continuous execution.
+
+### Parallel filesystem-provider implementation
+
+The user explicitly authorized multiple implementation agents when independent
+work permits. All four native slots remain occupied; the live T3 catalog confirms
+`codex` / `gpt-6.1-sol` / `reasoningEffort=xhigh` with child delegation available.
+The additional shared-checkout T3 implementation child is completed and held:
+
+- TaskId: `node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m1-filesystem-provider-20261021-r1`.
+- ChildThreadId: `thread:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m1-filesystem-provider-20261021-r1`.
+- Owned new files only: `src/EdgSharp/FileSystemIncludes.cs`,
+  `tests/EdgSharp.Tests/FileSystemIncludeTests.cs`,
+  `evidence/filesystem-provider-handoff.md` (exactly three files).
+- Scope: opt-in filesystem provider, strict explicit encoding/BOM and typed
+  read/probe/failure/resource contracts. No hidden fallback, semantic-query I/O,
+  directive activation during probes or session/TU ownership in provider caches.
+  The explicitly authorized Linux-x64 libc adapter uses nonblocking open and
+  descriptor-based regular-file validation; byte limits do not promise general
+  filesystem latency bounds. Other hosts are explicitly unsupported by this adapter.
+- Primary native worker retains every existing source/test file, integration,
+  search/cache/diagnostic hooks and test registration. The independent reviewer
+  audits both produced implementations and integration. Workers never execute
+  builds/tests/native/Git.
+- Validation hold rule: supervisor must receive explicit edit-hold acknowledgment
+  from **both** implementation workers before source fingerprinting/builds/tests.
+  No current-batch validation has begun. Provider is READY/HOLD and terminal
+  (`result_available`, no pending child runs); primary is actively repairing
+  header-context stream scheduling and raw-string phase restoration and must
+  independently re-acknowledge HOLD before combined validation.
+
+### Parallel isolated scalar-reference implementation
+
+- TaskId: `node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m3-references-isolated-20261021-r1`.
+- ChildThreadId: `thread:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m3-references-isolated-20261021-r1`.
+- Model/effort: `gpt-6.1-sol` / `xhigh`; isolated worktree
+  `/home/marius/.t3/worktrees/dotcc/t3-546893e6`, branch
+  `t3/scalar-reference-semantics`, base `abb239b20`.
+- Scope: scalar reference types, binding/materialization facts, value categories,
+  overload interactions and recursive scoped-owner guards. Invalid bindings are
+  distinct from potential runtime lifetime hazards; dependent reference forms
+  and reference constexpr remain explicitly unsupported in the initial slice.
+- Worker edits only its isolated implementation/test/fixture paths, never this
+  checkout, and performs no builds/tests/Git mutations. Its handoff is
+  `evidence/references-implementation-handoff.md` in that worktree. Integration
+  follows current M1 acceptance and independent produced-code review; isolated
+  edits do not change the shared M1 validation snapshot.
+
+Current literal/builtin review findings are canonical M1L-01..09 in
+`review-m1-literals-round1.md`, `round2.md` and `round3.md`; visible repairs are
+not acceptance. The active source work addresses expansion-driven physical
+header mode, real-context raw phase restoration and trailing-comment #line
+anchoring. Earlier assumed rejection of unknown escapes and assumed acceptance
+of 32-bit character shifts or speculative ID(__has_include) forms were disproved
+by native receipts; those mismatched expectations are retained and excluded.
+Native ordinary frontend raw-value assertions prove backslash/newline
+restoration even though EDG's preprocessing-only printer loses that spelling;
+managed retained raw spelling is intentionally richer query information.
+
+First combined validation source hold: primary explicitly froze all owned
+source/test/fixture edits after the stream/raw/#line repairs; filesystem child
+remains terminal READY/HOLD. Its three files were not modified by primary.
+Isolated references remain outside this checkout and are not integrated.
+Supervisor now runs the serialized Release/JIT gate (79 authored groups), then
+addresses any actual failures before final NativeAOT/native/review acceptance.
+
+First build receipt `m1-literals-build-round1.json` failed with one CS1061 in
+the PP character evaluator's access to a primary-constructor diagnostic
+parameter; no tests ran. Primary alone is narrowly released for that compile
+repair and must re-acknowledge HOLD; provider stays held. Failed evidence is
+retained and does not qualify any test group.
+
+Primary re-acknowledged HOLD after the narrow compile correction. Round2
+Release passes with zero warnings/errors. `m1-literals-tests-round2.json` runs
+79 groups: 67 pass, 12 filesystem groups fail, zero skips. All seven new
+literal/builtin/probe/structured groups and the previous 60 groups pass. Every
+filesystem failure is the adapter's exact `linux-x64` RID guard rejecting this
+actual Linux X64 glibc host's `ubuntu.24.04-x64` RID before I/O. Provider alone
+is released for ABI-aware host qualification and clearer test diagnostics;
+primary remains held. Follow-up TaskId:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-m1-filesystem-rid-fix-20261021-r1`.
+The original provider task remains terminal; this fresh follow-up is active.
+No final gate or filesystem acceptance is inferred from this failed run.
+
+Fresh provider follow-up READY/HOLD received: all three provider-owned files
+are frozen after the actual GNU-libc ABI repair. Primary's explicit HOLD remains
+in force, so both shared writers are held again. The isolated reference task
+still edits only its separate worktree. Supervisor starts the round3 combined
+snapshot/rerun; original RID-failure receipts remain retained.
+
+Round3 build passes zero warnings/errors; JIT runs 79 groups with 78 pass,
+one failure, zero skips. The bounded FIFO/socket child, permission, decoding,
+search, diagnostic and retained-query paths now pass. The sole failure is a
+test expectation of final __LINE__6 in a five-line source. Exact retained native
+root/header control `native-m1-session-probe-line-contract-round1.json` confirms
+output `7 5`; provider worker alone is narrowly released to correct expected6
+to5 and record the historical mismatch, with no production change. Follow-up:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-m1-filesystem-line-expectation-20261021-r1`.
+Primary remains held; a fresh provider HOLD precedes the next combined gate.
+
+Fresh line-fix follow-up is completed/result_available with no pending children,
+and explicitly READY/HOLD; only the expectation and handoff changed. Both shared
+writers are held for round4 Release, direct-dotnet JIT and NativeAOT validation.
+
+Round4 execution is green: Release zero warnings/errors, direct-dotnet managed
+79/79 and Linux-x64 NativeAOT 79/79, zero failures/skips. Four exit-zero receipts
+have identical 53-file source/test/fixture maps matching current held bytes;
+audit/artifact receipts are `m1-literals-held-snapshot.json` and
+`m1-literals-built-artifacts.json`. Exact character gate/header and included
+char/char16_t instance/value witness accept under the pinned native profile.
+The source receipt now covers 16 actual consulted files. Independent final
+finding/evidence closure is active; no full-M1/PLAN acceptance is claimed.
+
+Isolated scalar-reference task is now completed and explicitly HOLD, with 15
+authored groups and 12 fixtures, unexecuted. Root agreed next sequence after
+this checkpoint: primary integrates its additive patch against current M1
+character/diagnostic APIs; a new isolated xhigh implementation task starts
+Unicode17 XID/UCN/canonical identity and explicit source/execution encoding from
+the new accepted commit. No wholesale central-file overwrite from old baseabb
+is allowed. Supervisor keeps builds/reviews/commits serialized and continues
+through every outstanding feature row.
+
+Independent final acceptance is `evidence/review-m1-literals-final.md`:
+canonical M1L-01..10 closed within executed bounds, no known unresolved
+critical/high finding. Reviewer independently checked all four 53-file maps,
+three artifacts, 16 source hashes, exact included native witnesses and ABI
+correspondence. This is a bounded checkpoint only; supervisor commits now and
+immediately releases the next implementation assignments described above.

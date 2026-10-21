@@ -49,7 +49,7 @@ public sealed class CompilationSession : IDisposable
         ArgumentNullException.ThrowIfNull(options.Preprocessing);
         if (options.ConstantEvaluationStepLimit <= 0 || options.ConstantEvaluationCallLimit <= 0 || options.TemplateInstantiationDepthLimit <= 0)
             throw new ArgumentOutOfRangeException(nameof(options), "Evaluation and instantiation limits must be positive.");
-        Options = options;
+        Options = options with { Preprocessing = options.Preprocessing.CaptureTranslationTimestamp() };
         types = new TypeTable(options.Target);
     }
     public LexicalResult Lex(string text, string fileName = "input.cpp")
@@ -61,7 +61,7 @@ public sealed class CompilationSession : IDisposable
             ObjectDisposedException.ThrowIf(disposed, this);
             var source = new SourceFile(fileName, text);
             var diagnostics = new DiagnosticBag();
-            return new LexicalResult(new Lexer(LogicalInput.Normalize(source, removeComments: false), diagnostics).Scan(), diagnostics.Snapshot());
+            return new LexicalResult(new Lexer(LogicalInput.Normalize(source), diagnostics).Scan(), diagnostics.Snapshot());
         }
     }
     public PreprocessingResult Preprocess(string text, string fileName = "input.cpp")
@@ -71,7 +71,7 @@ public sealed class CompilationSession : IDisposable
         lock (gate)
         {
             ObjectDisposedException.ThrowIf(disposed, this);
-            return new Preprocessor(Options.Preprocessing, new DiagnosticBag()).Process(new SourceFile(fileName, text));
+            return new Preprocessor(Options.Preprocessing, new DiagnosticBag(), Options.Target).Process(new SourceFile(fileName, text));
         }
     }
     public AnalysisResult Analyze(string text, string fileName = "input.cpp")
@@ -83,7 +83,7 @@ public sealed class CompilationSession : IDisposable
             ObjectDisposedException.ThrowIf(disposed, this);
             var source = new SourceFile(fileName, text);
             var diagnostics = new DiagnosticBag();
-            PreprocessingResult preprocessing = new Preprocessor(Options.Preprocessing, diagnostics).Process(source);
+            PreprocessingResult preprocessing = new Preprocessor(Options.Preprocessing, diagnostics, Options.Target).Process(source);
             TokenBuffer tokens = preprocessing.Tokens;
             var state = new ParseState(tokens.CreateCursor(), diagnostics);
             new Parser(state, types, Options).TranslationUnit();

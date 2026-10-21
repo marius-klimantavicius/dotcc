@@ -13,25 +13,69 @@ internal sealed partial class Preprocessor
         internal bool ElseSeen { get; set; }
         internal TokenOrigin Origin { get; } = origin;
     }
-    private static bool ReservedMacro(string name) => name is "defined" or "__LINE__" or "__FILE__" or "__cplusplus";
+    private static bool ReservedMacro(string name) => name is "defined" or "__LINE__" or "__FILE__" or "__cplusplus" or "__DATE__" or "__TIME__" or "__STDC_HOSTED__" or "__has_include";
+    private bool IsDefined(string name) => macros.ContainsKey(name) || name is "__LINE__" or "__FILE__" or "__has_include";
     private IEnumerable<PpToken> ReadActive(SourceFile physical, IncludeFrame? include, int depth)
     {
-        PpToken[] raw = Tokenize(physical);
+        var lexer = new Lexer(LogicalInput.Normalize(physical), diagnostics, preprocessing: true);
+        using IEnumerator<PpToken> raw = Tokenize(lexer).GetEnumerator();
+        bool available = raw.MoveNext();
         var conditionals = new List<Conditional>();
         string presumedName = physical.Name;
         int lineBias = 0;
-        for (int index = 0; index < raw.Length;)
+        PpToken Context(PpToken token) => token.Copy(origin: token.Origin.WithContext(
+            new PresumedPosition(presumedName, token.Origin.Presumed.Line + lineBias, token.Origin.Presumed.Column), include));
+        IEnumerable<PpToken> LineOperands(int line)
         {
-            int start = index, line = raw[index].LogicalLine;
-            while (index < raw.Length && raw[index].LogicalLine == line) ++index;
-            PpToken[] tokens = raw[start..index];
-            SourceFile logical = tokens[0].Range.File;
-            int lineEnd = logical.Text.IndexOfAny(['\r', '\n'], tokens[^1].Range.End);
-            if (lineEnd < 0) lineEnd = logical.Text.Length;
-            int physicalLine = logical.OriginForRange(logical.Range(lineEnd, 0)).SpellingRanges[^1].EndPosition.Line;
-            tokens = tokens.Select(token => token.Copy(origin: token.Origin.WithContext(
-                new PresumedPosition(presumedName, physicalLine + lineBias, token.Origin.SpellingRanges[0].StartPosition.Column), include))).ToArray();
+            while (available && raw.Current.LogicalLine == line)
+            {
+                yield return Context(raw.Current);
+                available = raw.MoveNext();
+            }
+        }
+        while (available)
+        {
+            int line = raw.Current.LogicalLine;
+            PpToken first = raw.Current;
+            var collected = new List<PpToken> { first };
+            available = raw.MoveNext();
             bool active = conditionals.Count == 0 || conditionals[^1].Active;
+            if (first.Kind == TokenKind.Hash && first.StartsLine && available && raw.Current.LogicalLine == line)
+            {
+                PpToken name = raw.Current;
+                collected.Add(name);
+                available = raw.MoveNext();
+                if (name.Text is "if" or "elif")
+                {
+                    transformed = true;
+                    TokenOrigin origin = Context(first).Origin;
+                    Tick(origin);
+                    if (name.Text == "if")
+                    {
+                        bool value = active && EvaluateCondition(LineOperands(line), origin, lexer.RequestHeaderName);
+                        foreach (PpToken unused in LineOperands(line)) { }
+                        conditionals.Add(new(active, value, origin));
+                    }
+                    else if (conditionals.Count == 0)
+                    {
+                        Error("PP020", "Conditional directive has no matching #if in this physical file.", origin);
+                        foreach (PpToken unused in LineOperands(line)) { }
+                    }
+                    else
+                    {
+                        Conditional conditional = conditionals[^1];
+                        if (conditional.ElseSeen) Error("PP022", "Conditional branch follows #else.", origin);
+                        conditional.Active = conditional.ParentActive && !conditional.Taken && EvaluateCondition(LineOperands(line), origin, lexer.RequestHeaderName);
+                        foreach (PpToken unused in LineOperands(line)) { }
+                        conditional.Taken |= conditional.Active;
+                    }
+                    continue;
+                }
+            }
+            while (available && raw.Current.LogicalLine == line) { collected.Add(raw.Current); available = raw.MoveNext(); }
+            int directiveEnd = lexer.EndOfLogicalLine(line);
+            int physicalLine = lexer.Input.OriginForRange(lexer.Input.Range(directiveEnd, 0)).SpellingRanges[^1].EndPosition.Line;
+            PpToken[] tokens = collected.Select(Context).ToArray();
             if (tokens[0].Kind != TokenKind.Hash || !tokens[0].StartsLine)
             {
                 if (active) foreach (PpToken token in tokens) yield return token;
@@ -42,18 +86,17 @@ internal sealed partial class Preprocessor
             if (tokens.Length == 1) continue;
             string directive = tokens[1].Text;
             PpToken[] operands = tokens[2..];
-            if (directive is "if" or "ifdef" or "ifndef")
+            if (directive is "ifdef" or "ifndef")
             {
                 bool value = false;
                 if (active)
                 {
-                    if (directive == "if") value = EvaluateCondition(operands, tokens[0].Origin);
-                    else value = DefinedCondition(operands, tokens[0].Origin, directive == "ifndef");
+                    value = DefinedCondition(operands, tokens[0].Origin, directive == "ifndef");
                 }
                 conditionals.Add(new(active, value, tokens[0].Origin));
                 continue;
             }
-            if (directive is "else" or "elif" or "endif")
+            if (directive is "else" or "endif")
             {
                 if (conditionals.Count == 0)
                 { Error("PP020", "Conditional directive has no matching #if in this physical file.", tokens[0].Origin); continue; }
@@ -71,11 +114,6 @@ internal sealed partial class Preprocessor
                     conditional.Taken |= conditional.Active;
                     conditional.ElseSeen = true;
                 }
-                else
-                {
-                    conditional.Active = conditional.ParentActive && !conditional.Taken && EvaluateCondition(operands, tokens[0].Origin);
-                    conditional.Taken |= conditional.Active;
-                }
                 continue;
             }
             if (!active) continue;
@@ -89,27 +127,14 @@ internal sealed partial class Preprocessor
                     else macros.Remove(operands[0].Text);
                     break;
                 case "include":
-                    PpToken[] header = operands.Length == 1 && operands[0].Kind == TokenKind.HeaderName ? operands : Expand(operands, 0).ToArray();
-                    string? name = null;
-                    bool system = false;
-                    if (header.Length == 1 && header[0].Kind is TokenKind.HeaderName or TokenKind.StringLiteral && header[0].Text.Length >= 2)
-                    {
-                        string text = header[0].Text;
-                        system = text[0] == '<';
-                        if (text[^1] == (system ? '>' : '"')) name = text[1..^1];
-                    }
-                    else if (header.Length >= 2 && header[0].Kind == TokenKind.Less && header[^1].Kind == TokenKind.Greater)
-                    {
-                        system = true;
-                        name = string.Concat(header[1..^1].Select((token, i) => (i != 0 && token.SpaceBefore ? " " : "") + token.Text));
-                    }
-                    if (name == null || name.Length == 0)
+                    PpToken[] header = Expand(operands, 0, headerOperand: true).ToArray();
+                    if (!ReadHeaderName(header, out string name, out bool system))
                     { Error("PP026", "#include requires one nonempty quoted or angle header name.", tokens[0].Origin); break; }
                     if (depth >= options.IncludeDepthLimit)
                     { Error("PP027", "Include depth limit exceeded.", tokens[0].Origin, DiagnosticClass.ResourceLimit); break; }
-                    SourceFile? included = ResolveInclude(physical, name, system);
+                    SourceFile? included = ResolveInclude(physical, name, system, tokens[0].Origin, out bool failed);
                     if (included == null)
-                    { Error("PP028", $"Include file '{name}' was not found in the explicitly configured search paths.", tokens[0].Origin); break; }
+                    { if (!failed) Error("PP028", $"Include file '{name}' was not found in the explicitly configured search paths.", tokens[0].Origin); break; }
                     if (once.Contains(IncludePaths.Normalize(included.Name))) break;
                     var frame = new IncludeFrame(included, tokens[0].Origin, include);
                     includes.Add(frame);
@@ -148,21 +173,93 @@ internal sealed partial class Preprocessor
         }
         foreach (Conditional conditional in conditionals) Error("PP034", "Missing #endif before the end of this physical file.", conditional.Origin);
     }
-    private SourceFile? ResolveInclude(SourceFile including, string name, bool system)
+    private SourceFile? ResolveInclude(SourceFile including, string name, bool system, TokenOrigin origin, out bool failed)
     {
-        IEnumerable<string> roots = name.StartsWith('/') ? [""] : system ? options.SystemDirectories :
-            new[] { IncludePaths.Directory(IncludePaths.Normalize(including.Name)) }.Concat(options.QuoteDirectories).Concat(options.SystemDirectories);
-        foreach (string root in roots.Distinct(StringComparer.Ordinal))
+        failed = false;
+        foreach (string path in IncludeSearchPaths(including, name, system))
         {
-            string path = IncludePaths.Combine(root, name);
             if (files.TryGetValue(path, out SourceFile? retained)) return retained;
-            if (options.IncludeProvider?.TryRead(path, out string? text) == true && text != null)
+            if (options.IncludeProvider is IStructuredIncludeProvider structured)
+            {
+                if (!includeReads.TryGetValue(path, out IncludeReadResult? read)) includeReads.Add(path, read = structured.Read(path));
+                if (read.Status == IncludeInputStatus.Missing) continue;
+                if (read.Status == IncludeInputStatus.Failure)
+                { ReportIncludeFailure(read.Failure!, origin); failed = true; return null; }
+                string canonical = read.CanonicalPath!;
+                if (files.TryGetValue(canonical, out retained)) { files.TryAdd(path, retained); return retained; }
+                var source = new SourceFile(canonical, read.Text!);
+                files.Add(canonical, source); files.TryAdd(path, source); physicalSources.Add(source); return source;
+            }
+            if (ReadIncludeText(path) is string text)
             {
                 var source = new SourceFile(path, text);
                 files.Add(path, source); physicalSources.Add(source); return source;
             }
         }
         return null;
+    }
+    private bool ProbeInclude(SourceFile including, string name, bool system, TokenOrigin origin)
+    {
+        foreach (string path in IncludeSearchPaths(including, name, system))
+        {
+            if (files.ContainsKey(path)) return true;
+            if (options.IncludeProvider is IStructuredIncludeProvider structured)
+            {
+                if (!includeProbes.TryGetValue(path, out IncludeProbeResult? probe)) includeProbes.Add(path, probe = structured.Probe(path));
+                if (probe.Status == IncludeInputStatus.Found) return true;
+                if (probe.Status == IncludeInputStatus.Failure) { ReportIncludeFailure(probe.Failure!, origin); return false; }
+            }
+            else if (ReadIncludeText(path) != null) return true;
+        }
+        return false;
+    }
+    private void ReportIncludeFailure(IncludeInputFailure failure, TokenOrigin origin)
+    {
+        DiagnosticClass classification = failure.Kind switch
+        {
+            IncludeFailureKind.InvalidEncoding => DiagnosticClass.InvalidSource,
+            IncludeFailureKind.UnsupportedEncoding => DiagnosticClass.UnsupportedFeature,
+            IncludeFailureKind.UnsupportedHost => DiagnosticClass.UnsupportedFeature,
+            IncludeFailureKind.LimitExceeded => DiagnosticClass.ResourceLimit,
+            _ => DiagnosticClass.InputFailure
+        };
+        Error("PP063", "Include input failure (" + failure.Kind + "): " + failure.Message, origin, classification);
+    }
+    private IEnumerable<string> IncludeSearchPaths(SourceFile including, string name, bool system)
+    {
+        IEnumerable<string> roots = name.StartsWith('/') ? [""] : system ? options.SystemDirectories :
+            new[] { IncludePaths.Directory(IncludePaths.Normalize(including.Name)) }.Concat(options.QuoteDirectories).Concat(options.SystemDirectories);
+        return roots.Select(root => IncludePaths.Combine(root, name)).Distinct(StringComparer.Ordinal);
+    }
+    private string? ReadIncludeText(string path)
+    {
+        if (files.TryGetValue(path, out SourceFile? retained)) return retained.Text;
+        if (includeContents.TryGetValue(path, out string? known)) return known;
+        string? text = null;
+        if (options.IncludeProvider != null && options.IncludeProvider.TryRead(path, out string? value)) text = value;
+        includeContents.Add(path, text); // Cache misses as well as hits for one analysis.
+        return text;
+    }
+    private static bool ReadHeaderName(PpToken[] header, out string name, out bool system)
+    {
+        name = ""; system = false;
+        if (header.Length == 1 && header[0].Kind is TokenKind.HeaderName or TokenKind.StringLiteral && header[0].Text.Length >= 2)
+        {
+            string text = header[0].Text;
+            system = text[0] == '<';
+            if ((system || text[0] == '"') && text[^1] == (system ? '>' : '"')) name = text[1..^1];
+        }
+        else if (header.Length >= 2 && header[0].Kind == TokenKind.Less && Array.FindIndex(header, token => token.Kind == TokenKind.Greater) == header.Length - 1)
+        {
+            system = true;
+            if (header[0].Origin.Expansion == null && header[^1].Origin.Expansion == null && ReferenceEquals(header[0].Range.File, header[^1].Range.File))
+            {
+                string literal = SourceRange.Cover(header[0].Range, header[^1].Range).Spelling;
+                name = literal[1..^1];
+            }
+            else name = string.Concat(header[1..^1].Select((token, i) => (i != 0 && token.SpaceBefore ? " " : "") + token.Text));
+        }
+        return name.Length != 0 && name.IndexOfAny(['\r', '\n']) < 0;
     }
     private string? DecodeLineFilename(PpToken filename)
     {
@@ -198,7 +295,7 @@ internal sealed partial class Preprocessor
     {
         if (operands.Length != 1 || operands[0].Kind != TokenKind.Identifier)
         { Error("PP035", "This conditional directive requires one identifier.", origin); return false; }
-        bool defined = macros.ContainsKey(operands[0].Text) || operands[0].Text is "__LINE__" or "__FILE__";
+        bool defined = IsDefined(operands[0].Text);
         return negate ? !defined : defined;
     }
     private void Define(PpToken[] tokens, TokenOrigin origin)

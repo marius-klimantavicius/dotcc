@@ -140,7 +140,7 @@ internal sealed partial class Parser
 
     private FunctionTemplateDeclaration TemplateDeclaration()
     {
-        int diagnosticStart = state.Diagnostics.Count;
+        int diagnosticStart = state.Diagnostics.ErrorCount;
         Token start = Take();
         Expect(TokenKind.Less, "'<' after template");
         Scope enclosing = state.CurrentScope;
@@ -215,7 +215,7 @@ internal sealed partial class Parser
         var parser = new Parser(replayState, types, options) { activeTemplate = declaration, prototypeAnalysis = true, instantiationDepth = instantiationDepth };
         try { pattern.Body = parser.CompoundStatement(parameterScope); }
         finally { replayState.PendingReplays.Clear(); }
-        declaration.IsValid = state.Diagnostics.Count == diagnosticStart;
+        declaration.IsValid = state.Diagnostics.ErrorCount == diagnosticStart;
         return declaration;
     }
     private static bool EquivalentTemplate(FunctionTemplateDeclaration left, FunctionTemplateDeclaration right)
@@ -266,12 +266,12 @@ internal sealed partial class Parser
         replay.SetDefinition(instance.Symbol, definition);
         replay.CurrentFunction = definition;
         replay.PendingReplays.Add(template.BodyTokens);
-        int before = state.Diagnostics.Count;
+        int before = state.Diagnostics.ErrorCount;
         var parser = new Parser(replay, types, options) { activeTemplate = template, activeTemplateArguments = candidate.TemplateArguments.ToArray(), instantiationDepth = instantiationDepth + 1 };
         try
         {
             definition.Body = parser.CompoundStatement(scope);
-            replay.UpdateInstance(instance, state.Diagnostics.Count == before ? TemplateInstanceState.Complete : TemplateInstanceState.Failed);
+            replay.UpdateInstance(instance, state.Diagnostics.ErrorCount == before ? TemplateInstanceState.Complete : TemplateInstanceState.Failed);
         }
         catch (ParseFailure) { replay.UpdateInstance(instance, TemplateInstanceState.Failed); }
         finally { replay.PendingReplays.Clear(); }

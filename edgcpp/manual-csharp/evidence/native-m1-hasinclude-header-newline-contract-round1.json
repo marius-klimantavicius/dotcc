@@ -1,0 +1,42 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-hasinclude-header-newline.cpp",
+  "source_sha256": "032ee6f22b8aef7c8cf4570b6426b249ec5ff40bd5c6c6cade8fb73985f3002d",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-probe/outer/*unterminated.h",
+      "sha256": "f4cc4db689aacfaecc6b3eba65543ddb3e097f9d903f0c1bf949d018cb0f67a1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-probe/outer/slash.h",
+      "sha256": "f4cc4db689aacfaecc6b3eba65543ddb3e097f9d903f0c1bf949d018cb0f67a1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-probe/outer/*comment*/inner.h",
+      "sha256": "d2edce2c9a063ce524edd60853205c574bd6237db4d9afe94230107d2745bec7"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--sys_include",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-probe",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-hasinclude-header-newline.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-hasinclude-he\n          ader-newline.cpp\", line 2: error: missing closing quote\n  #if HI(<outer/*comment\n         ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-hasinclude-he\n          ader-newline.cpp\", line 2: error: expected a \")\"\n  #if HI(<outer/*comment\n                        ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-hasinclude-he\n          ader-newline.cpp\", line 3: error: expected an expression\n  */inner.h>)\n   ^\n\n3 errors detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/tools/oracle-inputs/m1-hasinclude-header-newline.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

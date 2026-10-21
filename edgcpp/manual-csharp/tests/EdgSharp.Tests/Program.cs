@@ -5,6 +5,11 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using EdgSharp;
 
+if (args.Length == 2 && args[0] == "--filesystem-special-child")
+{
+    Tests.FileSystemSpecialFileChild(args[1]);
+    return 0;
+}
 if (args.Length == 2 && args[0] == "--analyze")
 {
     using var session = new CompilationSession();
@@ -40,6 +45,25 @@ var cases = new (string Name, Action Run)[]
     ("M1 origins retain paste stringize and repeated include activations", Tests.PreprocessingContributors),
     ("M1 independent preprocessing sessions run concurrently", Tests.PreprocessingConcurrency),
     ("M1 changed token stream preserves difficult M4 behavior", Tests.PreprocessingDifficultGate),
+    ("M1 character literal graph uses target values and distinct types", Tests.CharacterValues),
+    ("M1 character promotion overload and template identity", Tests.CharacterConversions),
+    ("M1 character malformed unsupported and warning controls", Tests.CharacterDiagnostics),
+    ("M1 character preprocessing operands and semantic gate", Tests.CharacterPreprocessing),
+    ("M1 standard predefined values are configured and deterministic", Tests.StandardPredefines),
+    ("M1 include existence probes share search without activation", Tests.IncludeProbes),
+    ("M1 structured include probe read failure and cache contracts", Tests.StructuredIncludes),
+    ("M1 filesystem provider has explicit immutable configuration", Tests.FileSystemConfiguration),
+    ("M1 filesystem requested paths and directory fallback", Tests.FileSystemRequestedPaths),
+    ("M1 filesystem decoding recognizes explicit supported encodings", Tests.FileSystemEncodings),
+    ("M1 filesystem failures remain distinct from missing files", Tests.FileSystemFailures),
+    ("M1 filesystem inaccessible inputs have typed failures", Tests.FileSystemAccessFailures),
+    ("M1 filesystem input limits bound bytes and decoded text", Tests.FileSystemLimits),
+    ("M1 filesystem provider supports independent concurrent reads", Tests.FileSystemConcurrency),
+    ("M1 filesystem session includes follow configured search", Tests.FileSystemSessionIncludes),
+    ("M1 filesystem session probes do not activate inputs", Tests.FileSystemSessionProbes),
+    ("M1 filesystem session diagnostics preserve input failure classes", Tests.FileSystemSessionDiagnostics),
+    ("M1 filesystem session caches and retained queries isolate IO", Tests.FileSystemSessionCachingQueries),
+    ("M1 filesystem special-file inputs finish in a bounded subprocess", Tests.FileSystemSpecialFilesBounded),
     ("semantic checkpoint restores all mutable state", Tests.SemanticCheckpoint),
     ("semantic checkpoint restores nested definitions and current functions", Tests.DefinitionCheckpoint),
     ("semantic checkpoint invalidates stale branches atomically", Tests.StaleCheckpoint),
@@ -1101,7 +1125,7 @@ internal static partial class Tests
         {
             "struct S {int x;};", "float f;",
             "int *p;", "int &r;", "int a[2];", "int f(){return sizeof(int);}", "int f(){return 1.0;}",
-            "int f(){return 'a';}", "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
+            "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
             "int f(){return true && false;}", "int f(){return 1<<2;}", "int f(){return true?1:2;}",
             "int f(){return (1,2);}", "int f(){return (int)1;}", "int f(){return int(1);}", "int a{1};", "const void f();",
             "void main(){}", "bool main(){return true;}", "int main(){return main();}", "int main;", "int main=1;",

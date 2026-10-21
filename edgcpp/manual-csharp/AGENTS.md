@@ -17,6 +17,9 @@ Root monitors. Supervisor is GPT-6.1 Sol high. Implementation and independent
 review agents are GPT-6.1 Sol xhigh. Supervisor delegates actual implementation,
 assigns disjoint files, serializes builds/tests and Git operations, and requires
 review of produced code before accepting milestones. Respect concurrency limits.
+The user authorizes multiple xhigh implementation agents for independent work.
+Record ownership and integration contracts, track every native/T3 child, and
+freeze all shared-checkout writers before supervisor-owned validation.
 
 The user requires the full plan to be implemented before stopping. Milestones
 are checkpoints only. Supervisor automatically reassigns workers/reviewer and

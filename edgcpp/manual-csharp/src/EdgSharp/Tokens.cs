@@ -97,6 +97,13 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
     private int ppLastLine, headerLine;
     private string? ppDirective;
     private int ppDirectiveLine;
+    internal int LogicalLine { get; private set; } = 1;
+    internal int LastTokenStart { get; private set; }
+    internal int LastTokenEnd { get; private set; }
+    private readonly Dictionary<int, int> logicalLineEnds = [];
+    internal int EndOfLogicalLine(int line) => logicalLineEnds.TryGetValue(line, out int end) ? end : text.Length;
+    internal SourceFile Input => source;
+    internal void RequestHeaderName() => headerLine = LogicalLine;
     private static readonly HashSet<string> keywords = new(StringComparer.Ordinal)
     {
         "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor", "bool", "break", "case", "catch",
@@ -132,15 +139,34 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
     ];
     internal TokenBuffer Scan()
     {
-        var result = new List<Token>();
+        Token[] tokens = ScanTokens().ToArray();
+        if (tokens.All(token => ReferenceEquals(token.Range.File, source))) return new TokenBuffer(source, tokens);
+        var text = new System.Text.StringBuilder();
+        var maps = new List<SourceMapSegment>();
+        var offsets = new List<int>();
+        foreach (Token token in tokens)
+        {
+            if (token.Kind == TokenKind.EndOfSource) break;
+            if (text.Length != 0) text.Append(' ');
+            offsets.Add(text.Length); maps.Add(new(text.Length, token.Spelling.Length, token.Origin)); text.Append(token.Spelling);
+        }
+        TokenOrigin eof = tokens[^1].Origin;
+        maps.Add(new(text.Length, 0, eof));
+        var presentation = new SourceFile(source.Name + " [lexical presentation]", text.ToString(), SourceFileKind.PreprocessedPresentation, maps.ToArray());
+        return new TokenBuffer(presentation, tokens.Take(tokens.Length - 1).Select((token, index) =>
+            new Token(token.Kind, presentation.Range(offsets[index], token.Spelling.Length), token.Origin)).Append(new Token(TokenKind.EndOfSource, presentation.Range(text.Length, 0), eof)).ToArray());
+    }
+    internal IEnumerable<Token> ScanTokens()
+    {
         while (position < text.Length)
         {
             if (SkipWhiteSpaceOrComment()) continue;
+            LastTokenStart = position;
             Token token = GetToken();
-            result.Add(token);
+            LastTokenEnd = position;
             if (preprocessing)
             {
-                int line = source.PositionAt(token.Range.Start).Line;
+                int line = LogicalLine;
                 if (ppDirectiveName)
                 {
                     if (line == ppLastLine && token.Spelling is "include" or "include_next") headerLine = line;
@@ -150,13 +176,24 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 else if (token.Kind == TokenKind.Hash && line != ppLastLine) ppDirectiveName = true;
                 ppLastLine = line;
             }
+            yield return token;
         }
-        result.Add(new Token(TokenKind.EndOfSource, source.Range(position, 0)));
-        return new TokenBuffer(source, result.ToArray());
+        yield return new Token(TokenKind.EndOfSource, source.Range(position, 0));
     }
     private bool SkipWhiteSpaceOrComment()
     {
-        if (text[position] is ' ' or '\t' or '\r' or '\n' or '\v' or '\f') { ++position; return true; }
+        if (text[position] is ' ' or '\t' or '\r' or '\n' or '\v' or '\f')
+        {
+            int at = position;
+            char c = text[position++];
+            if (c is '\r' or '\n')
+            {
+                logicalLineEnds[LogicalLine] = at;
+                if (c == '\r' && position < text.Length && text[position] == '\n') ++position;
+                ++LogicalLine;
+            }
+            return true;
+        }
         if (position + 1 >= text.Length || text[position] != '/') return false;
         if (text[position + 1] == '/')
         {
@@ -195,7 +232,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
         char ch = text[position];
         if (preprocessing && headerLine != 0)
         {
-            bool header = source.PositionAt(position).Line == headerLine && ch is '<' or '"';
+            bool header = LogicalLine == headerLine && ch is '<' or '"';
             headerLine = 0;
             if (header)
             {
@@ -214,7 +251,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
             // Prefixes/raw strings need preprocessing-phase handling; do not split them into success-shaped identifiers.
             if (position < text.Length && text[position] is '\'' or '"' && spelling is "L" or "u" or "U" or "u8" or "R" or "LR" or "uR" or "UR" or "u8R")
             {
-                if (!preprocessing) diagnostics.Add("UNS002", "Prefixed literal values are not implemented.", source.Range(start, position - start), DiagnosticClass.UnsupportedFeature);
+                if (!preprocessing && text[position] == '"') diagnostics.Add("UNS002", "Prefixed string literal values are not implemented.", source.Range(start, position - start), DiagnosticClass.UnsupportedFeature);
                 if (spelling.EndsWith('R') && text[position] == '"') return ScanRaw(start);
                 return ScanQuoted(start);
             }
@@ -306,16 +343,31 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
     private Token ScanRaw(int start)
     {
         int quote = position;
-        position = LogicalInput.RawLiteralEnd(text, quote, out bool closed);
-        var range = source.Range(start, position - start);
+        SourceRange physicalQuote = source.OriginForRange(source.Range(quote, 1)).SpellingRanges[0];
+        SourceFile physical = physicalQuote.File;
+        int physicalEnd = LogicalInput.RawLiteralEnd(physical.Text, physicalQuote.Start, out bool closed);
+        position = source.OffsetFromPhysical(physical, physicalEnd);
+        int suffix = position;
+        if (closed && position < text.Length && IsIdentifierStart(text[position])) while (position < text.Length && IsIdentifierPart(text[position])) ++position;
+        string spelling = text[start..quote] + physical.Text[physicalQuote.Start..physicalEnd] + text[suffix..position];
+        TokenOrigin prefix = source.OriginForRange(source.Range(start, quote - start));
+        var contributors = prefix.SpellingRanges.Concat(new[] { physical.Range(physicalQuote.Start, physicalEnd - physicalQuote.Start) }).ToList();
+        if (position != suffix) contributors.AddRange(source.OriginForRange(source.Range(suffix, position - suffix)).SpellingRanges);
+        var origin = new TokenOrigin(contributors, prefix.Presumed, related: [prefix]);
+        SourceRange range = source.Range(start, position - start);
+        if (range.Spelling != spelling)
+        {
+            var restored = new SourceFile("<restored raw token>", spelling, SourceFileKind.SynthesizedToken, [new(0, spelling.Length, origin)]);
+            range = restored.Range(0, spelling.Length);
+        }
         if (!closed)
         {
-            bool deferredDefinition = preprocessing && ppDirective == "define" && source.PositionAt(start).Line == ppDirectiveLine;
+            bool deferredDefinition = preprocessing && ppDirective == "define" && LogicalLine == ppDirectiveLine;
             diagnostics.Add(deferredDefinition ? "UNS005" : "LEX004", deferredDefinition ?
                 "Deferred raw-literal recognition in a macro definition is not implemented." : "Malformed or unterminated raw string literal.",
                 range, deferredDefinition ? DiagnosticClass.UnsupportedFeature : DiagnosticClass.InvalidSource);
         }
-        return new Token(closed ? TokenKind.StringLiteral : TokenKind.Error, range);
+        return new Token(closed ? TokenKind.StringLiteral : TokenKind.Error, range, origin);
     }
     private Token ScanQuoted(int start)
     {
@@ -335,6 +387,7 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 ++position;
             }
         }
+        if (closed && position < text.Length && IsIdentifierStart(text[position])) while (position < text.Length && IsIdentifierPart(text[position])) ++position;
         var range = source.Range(start, position - start);
         if (!closed) diagnostics.Add("LEX003", "Unterminated quoted literal.", range);
         return new Token(closed ? quote == '"' ? TokenKind.StringLiteral : TokenKind.CharacterLiteral : TokenKind.Error, range);

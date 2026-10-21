@@ -61,6 +61,12 @@ full literals, extension directives/pragmas/predefs and general lexical/cache
 coverage require their own inventory closure and cannot be inferred from these
 controlled contracts.
 
+The subsequent character/builtin/host-input extension expands these historical
+bounds; its exact current contracts and 79-group execution are recorded in
+`LITERALS-AND-INPUT.md`. The 60-group snapshot above remains the earlier accepted
+checkpoint, not a statement that those subsequently implemented branches are
+still absent. Full Unicode/literal/dialect/header coverage remains outstanding.
+
 The pinned #line implementation has a nonordinary-prefix anomaly: L-prefixed
 filenames reject, while u8/u/U/R forms accept but retain prefix fragments in
 __FILE__. Exact per-prefix receipts are retained. The combined earlier negative

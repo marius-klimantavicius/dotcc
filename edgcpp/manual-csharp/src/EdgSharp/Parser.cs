@@ -49,7 +49,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     }
     private bool StartsDeclaration() => Is("using") || Is("typedef") || Is("const") || Is("constexpr") || IsIntegerKeyword(Current.Spelling) ||
         Is("void") || Current.Kind == TokenKind.Identifier && SoleVisibleSymbol(Current.Spelling)?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter;
-    private static bool IsIntegerKeyword(string spelling) => spelling is "bool" or "char" or "short" or "int" or "long" or "signed" or "unsigned";
+    private static bool IsIntegerKeyword(string spelling) => spelling is "bool" or "char" or "short" or "int" or "long" or "signed" or "unsigned" or "wchar_t" or "char8_t" or "char16_t" or "char32_t";
     private Declaration Declaration(bool allowFunction)
     {
         SourceRange start = Current.Range;
@@ -147,6 +147,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         int qualifiers = 0;
         bool isUnsigned = false, isSigned = false, isShort = false, isInt = false, isChar = false, isBool = false;
         int longs = 0, count = 0;
+        IntegerKind? distinctCharacter = null;
         while (true)
         {
             string s = Current.Spelling;
@@ -169,6 +170,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                 _ => false
             };
             if (repeated) Fail("SEM005", $"Repeated type specifier '{s}'.", Current.Range);
+            if (s is "wchar_t" or "char8_t" or "char16_t" or "char32_t")
+                distinctCharacter = s switch { "wchar_t" => IntegerKind.WChar, "char8_t" => IntegerKind.Char8, "char16_t" => IntegerKind.Char16, _ => IntegerKind.Char32 };
             switch (s)
             {
                 case "unsigned": isUnsigned = true; break;
@@ -186,7 +189,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         if (count != 0)
         {
             bool invalid = isUnsigned && isSigned || isShort && longs != 0 || isChar && (isShort || longs != 0 || isInt || isBool) ||
-                isBool && (count != 1) || longs > 2;
+                isBool && (count != 1) || longs > 2 || distinctCharacter != null && count != 1;
             if (invalid)
             {
                 Fail("SEM006", "Invalid combination of scalar type specifiers.", start);
@@ -194,11 +197,11 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             }
             else
             {
-                IntegerKind kind = isBool ? IntegerKind.Bool : isChar ? isUnsigned ? IntegerKind.UnsignedChar : isSigned ? IntegerKind.SignedChar : IntegerKind.Char :
+                IntegerKind kind = distinctCharacter ?? (isBool ? IntegerKind.Bool : isChar ? isUnsigned ? IntegerKind.UnsignedChar : isSigned ? IntegerKind.SignedChar : IntegerKind.Char :
                     isShort ? isUnsigned ? IntegerKind.UnsignedShort : IntegerKind.Short :
                     longs >= 2 ? isUnsigned ? IntegerKind.UnsignedLongLong : IntegerKind.LongLong :
                     longs == 1 ? isUnsigned ? IntegerKind.UnsignedLong : IntegerKind.Long :
-                    isUnsigned ? IntegerKind.UnsignedInt : IntegerKind.Int;
+                    isUnsigned ? IntegerKind.UnsignedInt : IntegerKind.Int);
                 type = types.Integer(kind);
             }
         }

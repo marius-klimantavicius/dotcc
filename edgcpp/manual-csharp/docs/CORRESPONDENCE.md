@@ -11,7 +11,7 @@ No generated EDG C# implementation is an input to this campaign.
 The table below records the initial foundation bounds. Subsequent accepted
 scalar M3/early M4 extensions and the validated integrated preprocessing
 checkpoint expand these rows as described in `OVERLOADS.md`,
-`TEMPLATES-AND-CONSTANTS.md` and `PREPROCESSING.md`; historical exclusions in the
+`TEMPLATES-AND-CONSTANTS.md`, `PREPROCESSING.md` and `LITERALS-AND-INPUT.md`; historical exclusions in the
 foundation table do not override those exact later bounds.
 
 | Authored component | EDG source/routines | Preserved invariant and managed adaptation | Outstanding branches |
@@ -82,6 +82,16 @@ The later integrated preprocessing checkpoint has 60-group managed/AOT execution
 exact native macro/include controls and changed-stream difficult-path graph
 checks. Its routine branches, source/provenance ownership and remaining bounds
 are in `PREPROCESSING.md`; bounded independent acceptance is `review-m1-final.md`.
+
+The following character/builtin/input extension has 79/79 managed and Linux-x64
+NativeAOT execution and independent bounded acceptance in
+`review-m1-literals-final.md`. `LITERALS-AND-INPUT.md`
+records target character decoding/promotion, expansion-driven physical header
+mode, real-context raw restoration, immutable UTC translation environment and
+separate structured probe/read caching. The opt-in host adapter is handwritten
+filesystem I/O only, qualified against actual Linux-x64 GNU-libc ABI; it is no
+native semantic dependency. Source/routine coverage remains bounded and the
+full Unicode/literal/header/class/reference/template/product backlog persists.
 
 `semantic-witness.cpp` includes exactly hashed `positive.cpp` and uses native
 static assertions to establish `Number` is `int`, ordinary `add`/`caller` call

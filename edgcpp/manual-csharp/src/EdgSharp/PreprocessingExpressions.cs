@@ -8,24 +8,31 @@ namespace EdgSharp;
 
 internal sealed partial class Preprocessor
 {
-    private bool EvaluateCondition(PpToken[] operands, TokenOrigin position)
+    private DecodedCharacterLiteral? DecodeControllingCharacter(PpToken token)
+        => CharacterLiteralDecoder.Decode(token.Text, DiagnosticRange(token.Origin), target, diagnostics);
+    private bool EvaluateCondition(IEnumerable<PpToken> operands, TokenOrigin position, Action? requestHeader = null)
     {
-        var protectedTokens = new List<PpToken>();
-        for (int i = 0; i < operands.Length; ++i)
+        IEnumerable<PpToken> ProtectDefined()
         {
-            PpToken token = operands[i];
-            if (token.Text != "defined") { protectedTokens.Add(token); continue; }
-            bool parenthesized = i + 1 < operands.Length && operands[i + 1].Kind == TokenKind.LeftParen;
-            if (parenthesized) ++i;
-            if (++i >= operands.Length || operands[i].Kind != TokenKind.Identifier)
-            { Error("PP050", "defined requires an identifier operand.", token.Origin); return false; }
-            string name = operands[i].Text;
-            if (parenthesized && (++i >= operands.Length || operands[i].Kind != TokenKind.RightParen))
-            { Error("PP051", "Missing ')' after defined operand.", token.Origin); return false; }
-            bool value = macros.ContainsKey(name) || name is "__LINE__" or "__FILE__";
-            protectedTokens.Add(Synthesized(value ? "1" : "0", TokenKind.IntegerLiteral, token.Origin));
+            using IEnumerator<PpToken> input = operands.GetEnumerator();
+            while (input.MoveNext())
+            {
+                PpToken token = input.Current;
+                if (token.Text != "defined") { yield return token; continue; }
+                if (!input.MoveNext()) { Error("PP050", "defined requires an identifier operand.", token.Origin); yield break; }
+                bool parenthesized = input.Current.Kind == TokenKind.LeftParen;
+                if (parenthesized && !input.MoveNext()) { Error("PP050", "defined requires an identifier operand.", token.Origin); yield break; }
+                if (input.Current.Kind != TokenKind.Identifier) { Error("PP050", "defined requires an identifier operand.", token.Origin); yield break; }
+                string name = input.Current.Text;
+                if (parenthesized && (!input.MoveNext() || input.Current.Kind != TokenKind.RightParen))
+                { Error("PP051", "Missing ')' after defined operand.", token.Origin); yield break; }
+                yield return Synthesized(IsDefined(name) ? "1" : "0", TokenKind.IntegerLiteral, token.Origin);
+            }
         }
-        PpToken[] expanded = Expand(protectedTokens, 0).ToArray();
+        PpToken[] expanded;
+        ++controllingExpressionDepth;
+        try { expanded = Expand(ProtectDefined(), 0, requestHeader: requestHeader).ToArray(); }
+        finally { --controllingExpressionDepth; }
         for (int i = 0; i < expanded.Length; ++i)
         {
             PpToken token = expanded[i];
@@ -33,16 +40,16 @@ internal sealed partial class Preprocessor
             TokenKind alternative = Lexer.OperatorOrIdentifier(token.Text);
             if (alternative is not (TokenKind.Identifier or TokenKind.Keyword))
             { expanded[i] = Synthesized(token.Text, alternative, token.Origin); continue; }
-            if (token.Text is "defined" or "__has_include" or "__has_cpp_attribute" or "__has_embed" or "_Pragma")
+            if (token.Text is "defined" or "__has_cpp_attribute" or "__has_embed" or "_Pragma")
             {
                 Error("PP052", "This preprocessing operator is not implemented in controlling expressions.", token.Origin, DiagnosticClass.UnsupportedFeature);
                 return false;
             }
-            expanded[i] = Synthesized(token.Text == "true" ? "1" : "0", TokenKind.IntegerLiteral, token.Origin);
+            expanded[i] = token.Text is "true" or "false" ? Synthesized(token.Text, TokenKind.Keyword, token.Origin) : Synthesized("0", TokenKind.IntegerLiteral, token.Origin);
         }
         return new PpExpression(this, expanded, position).Evaluate();
     }
-    private readonly record struct PpValue(BigInteger Value, bool Unsigned)
+    private readonly record struct PpValue(BigInteger Value, bool Unsigned, int Width = 64)
     {
         internal bool True => !Value.IsZero;
     }
@@ -91,8 +98,8 @@ internal sealed partial class Preprocessor
                     PpValue yes = Parse(0, evaluate && left.True);
                     if (!Eat(TokenKind.Colon)) Invalid("Expected ':' in preprocessing conditional expression.");
                     PpValue no = Parse(0, evaluate && !left.True);
-                    bool unsigned = yes.Unsigned || no.Unsigned;
-                    left = new(evaluate ? Bits(left.True ? yes.Value : no.Value, unsigned) : 0, unsigned);
+                    (bool unsigned, int width) = CommonType(yes, no);
+                    left = new(evaluate ? Bits(left.True ? yes.Value : no.Value, unsigned, width) : 0, unsigned, width);
                 }
                 return left;
             }
@@ -109,7 +116,7 @@ internal sealed partial class Preprocessor
                 PpValue operand = Parse(11, evaluate);
                 BigInteger value = token.Kind switch { TokenKind.Minus => -operand.Value, TokenKind.Tilde => ~operand.Value,
                     TokenKind.Bang => operand.True ? BigInteger.Zero : BigInteger.One, _ => operand.Value };
-                return Checked(value, token.Kind != TokenKind.Bang && operand.Unsigned, evaluate, token.Origin);
+                return Checked(value, token.Kind != TokenKind.Bang && operand.Unsigned, evaluate, token.Origin, token.Kind == TokenKind.Bang ? 32 : operand.Width);
             }
             if (Eat(TokenKind.LeftParen))
             {
@@ -118,10 +125,15 @@ internal sealed partial class Preprocessor
                 return operand;
             }
             ++index;
+            if (token.Kind == TokenKind.Keyword && token.Text is "true" or "false") return new(token.Text == "true" ? 1 : 0, false, 32);
             if (token.Kind == TokenKind.CharacterLiteral)
             {
-                owner.Error("PP055", "Character operands in preprocessing expressions are not implemented.", token.Origin, DiagnosticClass.UnsupportedFeature);
-                throw new InvalidExpression();
+                DecodedCharacterLiteral? decoded = owner.DecodeControllingCharacter(token);
+                if (decoded == null) throw new InvalidExpression();
+                // EDG's character token retains its target type and undergoes
+                // integral promotion. It is not rescanned as a numeric token:
+                // only numeric pp literals acquire intmax/uintmax widths.
+                return new(decoded.Value, decoded.Kind == IntegerKind.Char32, 32);
             }
             if (token.Kind != TokenKind.IntegerLiteral) Invalid("Only implemented integer operands are accepted in preprocessing expressions.", token.Origin);
             string spelling = token.Text;
@@ -154,26 +166,34 @@ internal sealed partial class Preprocessor
             TokenKind.ShiftLeft or TokenKind.ShiftRight => 8, TokenKind.Plus or TokenKind.Minus => 9,
             TokenKind.Star or TokenKind.Slash or TokenKind.Percent => 10, _ => -1
         };
-        private static BigInteger Bits(BigInteger value, bool unsigned)
+        private static BigInteger Bits(BigInteger value, bool unsigned, int width = 64)
         {
-            BigInteger bits = ((value % Modulus) + Modulus) % Modulus;
-            return unsigned || bits <= SignedMaximum ? bits : bits - Modulus;
+            BigInteger modulus = BigInteger.One << width;
+            BigInteger bits = ((value % modulus) + modulus) % modulus;
+            return unsigned || bits < (modulus >> 1) ? bits : bits - modulus;
         }
-        private PpValue Checked(BigInteger value, bool unsigned, bool evaluate, TokenOrigin origin)
+        private static (bool Unsigned, int Width) CommonType(PpValue left, PpValue right)
         {
-            if (evaluate && !unsigned && (value > SignedMaximum || value < -SignedMaximum - 1)) Invalid("Signed overflow in preprocessing expression.", origin);
-            return new(evaluate ? Bits(value, unsigned) : 0, unsigned);
+            if (left.Unsigned == right.Unsigned) return (left.Unsigned, Math.Max(left.Width, right.Width));
+            PpValue u = left.Unsigned ? left : right, s = left.Unsigned ? right : left;
+            return u.Width >= s.Width ? (true, u.Width) : (false, s.Width);
+        }
+        private PpValue Checked(BigInteger value, bool unsigned, bool evaluate, TokenOrigin origin, int width = 64)
+        {
+            BigInteger maximum = (BigInteger.One << (width - 1)) - 1;
+            if (evaluate && !unsigned && (value > maximum || value < -maximum - 1)) Invalid("Signed overflow in preprocessing expression.", origin);
+            return new(evaluate ? Bits(value, unsigned, width) : 0, unsigned, width);
         }
         private PpValue Binary(PpToken op, PpValue left, PpValue right, bool evaluate)
         {
             bool shift = op.Kind is TokenKind.ShiftLeft or TokenKind.ShiftRight;
-            bool unsigned = shift ? left.Unsigned : left.Unsigned || right.Unsigned;
-            BigInteger l = Bits(left.Value, unsigned), r = shift ? right.Value : Bits(right.Value, unsigned);
+            (bool unsigned, int width) = shift ? (left.Unsigned, left.Width) : CommonType(left, right);
+            BigInteger l = Bits(left.Value, unsigned, width), r = shift ? right.Value : Bits(right.Value, unsigned, width);
             bool boolean = op.Kind is TokenKind.AndAnd or TokenKind.OrOr or TokenKind.EqualEqual or TokenKind.NotEqual or TokenKind.Less or TokenKind.Greater or TokenKind.LessEqual or TokenKind.GreaterEqual;
-            if (!evaluate) return new(0, !boolean && unsigned);
-            if ((op.Kind is TokenKind.Slash or TokenKind.Percent) && (r.IsZero || !unsigned && l == -SignedMaximum - 1 && r == -1))
+            if (!evaluate) return new(0, !boolean && unsigned, boolean ? 32 : width);
+            if ((op.Kind is TokenKind.Slash or TokenKind.Percent) && (r.IsZero || !unsigned && l == -(BigInteger.One << (width - 1)) && r == -1))
                 Invalid("Invalid division in preprocessing expression.", op.Origin);
-            if (shift && (r < 0 || r >= 64)) Invalid("Invalid shift count in preprocessing expression.", op.Origin);
+            if (shift && (r < 0 || r >= width)) Invalid("Invalid shift count in preprocessing expression.", op.Origin);
             BigInteger value = op.Kind switch
             {
                 TokenKind.Plus => l + r, TokenKind.Minus => l - r, TokenKind.Star => l * r, TokenKind.Slash => l / r, TokenKind.Percent => l % r,
@@ -185,7 +205,7 @@ internal sealed partial class Preprocessor
                 TokenKind.LessEqual => l <= r ? 1 : 0, TokenKind.GreaterEqual => l >= r ? 1 : 0,
                 _ => throw new InvalidOperationException("Unexpected preprocessing binary operator.")
             };
-            return shift ? new(Bits(value, unsigned), unsigned) : Checked(value, !boolean && unsigned, true, op.Origin);
+            return shift ? new(Bits(value, unsigned, width), unsigned, width) : Checked(value, !boolean && unsigned, true, op.Origin, boolean ? 32 : width);
         }
     }
 }

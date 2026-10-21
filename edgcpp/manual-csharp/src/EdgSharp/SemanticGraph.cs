@@ -157,7 +157,7 @@ public sealed class ErrorExpression : Expression
 {
     internal ErrorExpression(SemanticType type, SourceRange range) : base(type, ValueCategory.PRValue, range) { }
 }
-public sealed class LiteralExpression : Expression
+public class LiteralExpression : Expression
 {
     internal LiteralExpression(IntegerType type, SourceRange range, BigInteger value) : base(type, ValueCategory.PRValue, range, value) { }
 }
