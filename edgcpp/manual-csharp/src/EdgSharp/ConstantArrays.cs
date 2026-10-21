@@ -83,7 +83,7 @@ internal sealed partial class ConstantInterpreter
         var cells = new ConstantCell[type.Length];
         for (int index = 0; index < cells.Length; ++index)
         {
-            ConstantCell cell = Allocate(element, symbol, symbol, isStatic ? ConstantStorageLifetime.Static : ConstantStorageLifetime.Automatic, readable, frame);
+            ConstantCell cell = Allocate(element, symbol, symbol, isStatic ? ConstantStorageLifetime.Static : ConstantStorageLifetime.Automatic, readable, frame, beganInEvaluation: !isStatic);
             cell.Initialized = units != null || isStatic;
             if (cell.Initialized && readable) cell.Value = TypeTable.ConvertInteger(units != null && index < units.Count ? units[index] : BigInteger.Zero, element);
             cells[index] = cell;

@@ -1,0 +1,39 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-witness.cpp",
+  "source_sha256": "dbe76981e137b8e605fcc9b5b4360eb60027d63e3bf843519d0b7e9f3d7e1d7e",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-gate.h",
+      "sha256": "0df66d21017c66bedde7beecb734abd81b23c3ac8748c2c5c1eba4485acce907"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-gate.cpp",
+      "sha256": "e5cb82a292681da63aca25bd7c952c7b7106620ff8db7b7258cb3a60b7a63134"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-witness.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-gate.c\n          pp\", line 4: warning: variable \"helper\" was declared but never\n          referenced\n  constexpr int run(){int helper=0;return collect(3);}\n                          ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

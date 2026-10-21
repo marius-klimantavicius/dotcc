@@ -156,3 +156,14 @@ sizeof, original-order subscripting and storage/address/reference-indirection
 branches; source-strings.json fingerprints9 consulted files. Separate nonobject
 addresses preserve one-past formation without fakecells. Exact native-crash
 qualification and full remaining language/product requirements stay explicit.
+
+
+The main scalar assignment/control-flow plus array extension is independently
+accepted at136/136 JIT/AOT, four matching145-file maps and23 exact native controls
+(9accept0/14reject2). SCALAR-CONTROL-FLOW.md and controlflow-integrated-handoff.md
+map actual assignment scanning, structured statements, explicit work/transfer
+cleanup and same-cell mutation. source-controlflow.json fingerprints5 consulted
+upstream files; retained source-strings.json has9 (10 distinct files in union).
+CF-R1-01..03 and CFI-01 closure is recorded in the final integration review.
+Finite stricter scalar sequencing is explicitly qualified, not native parity.
+Full control-flow/object/template/language/product coverage remains required.

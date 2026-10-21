@@ -1,0 +1,35 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobject.cpp",
+  "source_sha256": "1d6df62b7a644cebfec8150e428a606ba72520ba75a83298b7b36e6656efc71f",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-gate.h",
+      "sha256": "0df66d21017c66bedde7beecb734abd81b23c3ac8748c2c5c1eba4485acce907"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobject.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobj\n          ect.cpp\", line 2: warning: subscript out of range\n  constexpr int f(){char cells[]=\"ab\";cells[3]='Z';return 1;}\n                                      ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobj\n          ect.cpp\", line 2: warning: variable \"cells\" was set but never used\n  constexpr int f(){char cells[]=\"ab\";cells[3]='Z';return 1;}\n                         ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobj\n          ect.cpp\", line 3: error: expression must have a constant value\n  static_assert(f()==1);\n                ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobj\n          ect.cpp\", line 2: note: attempt to access storage one position past\n          the end of an array of 3 elements\n  constexpr int f(){char cells[]=\"ab\";cells[3]='Z';return 1;}\n                                              ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-array-nonobject.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

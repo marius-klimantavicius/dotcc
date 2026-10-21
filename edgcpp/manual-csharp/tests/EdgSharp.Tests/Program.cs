@@ -90,7 +90,7 @@ var cases = new (string Name, Action Run)[]
     ("API rejects unsupported profile and null target", Tests.Options),
     ("public graph collections cannot mutate state", Tests.ReadOnlyGraph),
     ("M2 positive source fixture resolves complete graph", Tests.PositiveGraph),
-    ("M2 negative and unsupported source fixtures", Tests.FixtureBoundaries),
+    ("M2 negative fixtures and scalar branch implementation", Tests.FixtureBoundaries),
     ("alias redeclaration and hiding", Tests.Aliases),
     ("source ordered declaration insertion and lookup", Tests.SourceOrder),
     ("function identity and const parameter boundary", Tests.FunctionIdentity),
@@ -136,6 +136,22 @@ var cases = new (string Name, Action Run)[]
     ("M4 logical operands have contextual bool and short circuit evaluation", Tests.ConstantReferenceLogical),
     ("M4 storage execution cleans up failed and repeated evaluations", Tests.ConstantReferenceCleanup),
     ("M4 reference storage integrates macro characters template lookup and calls", Tests.ConstantReferenceCombined),
+    ("M4 scalar assignment graph preserves lvalues and explicit loads", Tests.ScalarAssignmentGraph),
+    ("M4 scalar compound assignment uses target arithmetic and conversion", Tests.ScalarAssignmentConversions),
+    ("M4 scalar stores mutate local value parameters and aliases", Tests.ScalarAssignmentCells),
+    ("M4 required scalar stores reject external unknown expired and unread cells", Tests.ScalarAssignmentFailures),
+    ("M4 scalar stores evaluate RHS before the single destination", Tests.ScalarAssignmentOrder),
+    ("M4 scalar sequencing distinguishes unsequenced accesses and function calls", Tests.ScalarAssignmentSequencing),
+    ("M4 if branches are checked and only selected statements execute", Tests.ControlIfSelection),
+    ("M4 if substatements retain lexical scopes and cleanup", Tests.ControlIfScopes),
+    ("M4 while executes conditions mutations and fresh iteration storage", Tests.ControlWhile),
+    ("M4 nested break continue resolve owners and unwind crossed blocks", Tests.ControlTransfers),
+    ("M4 return unwinds loop block and full expression owners", Tests.ControlReturnCleanup),
+    ("M4 do and ordinary for execute increments and cleanup", Tests.ControlDoFor),
+    ("M4 invalid transfers and unimplemented control branches stay explicit", Tests.ControlBoundaries),
+    ("M4 loop work and recursive calls obey limits and recover", Tests.ControlLimits),
+    ("M4 repeated control analyses retain snapshots and release live state", Tests.ControlLifetime),
+    ("M4 control flow couples macro template overload reference and storage", Tests.ControlCombined),
     ("M4 repeated template analyses isolate and release source graphs", Tests.TemplateLifetime),
     ("M4 owner checkpoint rolls back replay and instance mutations", Tests.TemplateRollback),
     ("M4 excluded template forms diagnose unsupported features", Tests.TemplateBoundaries),
@@ -427,9 +443,10 @@ internal static partial class Tests
             Check(!result.IsSuccess, file);
             Check(result.Diagnostics.Any(d => d.Class == DiagnosticClass.InvalidSource), file);
         }
-        AnalysisResult unsupported = Analyze(Fixture("m2-unsupported-statement.cpp"));
-        Check(!unsupported.IsSuccess && unsupported.ContainsUnsupportedFeatures);
-        Check(Function(unsupported, "entry").Body!.Statements.Any(s => s is ErrorStatement));
+        AnalysisResult branch = Success(Fixture("m2-unsupported-statement.cpp"));
+        IfStatement conditional = As<IfStatement>(Function(branch, "entry").Body!.Statements[1]);
+        Equal(ConversionKind.BooleanConversion, As<ConversionExpression>(conditional.Condition).Conversion);
+        Equal(new BigInteger(2), As<ReturnStatement>(conditional.Then.Statements.Single()).Expression!.ConstantValue!.Value);
     }
     internal static void Aliases()
     {
@@ -1130,8 +1147,11 @@ internal static partial class Tests
         Equal(BigInteger.One, Variable(result, "c").Initializer!.ConstantValue!.Value);
         var returned = As<ConversionExpression>(ReturnValue(Function(result, "f")));
         Equal(ValueCategory.LValue, As<ParenthesizedExpression>(returned.Operand).ValueCategory);
-        AnalysisResult assignment = Analyze("int f(){int x; (x=1)=2; return x;}");
-        Check(!assignment.IsSuccess && assignment.ContainsUnsupportedFeatures);
+        AnalysisResult assignment = Success("constexpr int f(){int x; (x=1)=2; return x;} static_assert(f()==2);");
+        AssignmentExpression outer = As<AssignmentExpression>(As<ExpressionStatement>(Function(assignment, "f").Body!.Statements[1]).Expression);
+        Equal(ValueCategory.LValue, outer.ValueCategory);
+        Equal(ValueCategory.LValue, As<ParenthesizedExpression>(outer.Target).Operand.ValueCategory);
+        Equal(ConstantEvaluationStatus.Success, assignment.StaticAssertions.Single().Evaluation.Status);
     }
     internal static void TargetConstants()
     {
@@ -1167,7 +1187,7 @@ internal static partial class Tests
         {
             "struct S {int x;};", "float f;",
             "int **p;", "int a[2][3];", "int f(){return sizeof(float);}", "int f(){return 1.0;}",
-            "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
+            "int f(){int a=1; a<<=2; return a;}", "int f(){int a=1; a++; return a;}",
             "int f(){return 1<<2;}", "int f(){return true?1:2;}",
             "int f(){return (1,2);}", "int f(){return (int)1;}", "int f(){return int(1);}", "int a{1};", "const void f();",
             "void main(){}", "bool main(){return true;}", "int main(){return main();}", "int main;", "int main=1;",

@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-uninitialized-read.cpp",
+  "source_sha256": "e65dfc0afd4269779b498f8ceef2715a14026a7fffc75d06d3d0224c04a0367a",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-uninitialized-read.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-uninitialize\n          d-read.cpp\", line 2: warning: variable \"value\" is used before its\n          value is set\n  constexpr int read(bool run){int value; if(run) value+=1; else value=3; return value;}\n                                                  ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-uninitialize\n          d-read.cpp\", line 3: error: expression must have a constant value\n  static_assert(read(true)==1);\n                ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-uninitialize\n          d-read.cpp\", line 2: note: access to uninitialized object\n  constexpr int read(bool run){int value; if(run) value+=1; else value=3; return value;}\n                                                                                 ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-controlflow-uninitialized-read.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

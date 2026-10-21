@@ -9,7 +9,7 @@ executed bounds (`evidence/review-m1-literals-final.md`);
 The following bounded scalar-reference integration is independently accepted
 (`evidence/review-references-final.md`). The following scalar-reference constant-storage
 extension is accepted in `evidence/review-reference-constexpr-final.md`. Release
-build and all 120 named groups pass in managed
+build and all 136 named groups pass in managed
 execution and a published Linux x64 NativeAOT
 executable. This inventory does not establish C++20/EDG completeness or broader
 platform/product qualification. See `evidence/review-final-m0-m2.md` and
@@ -19,7 +19,9 @@ correspondence and exact evidence are in `docs/PREPROCESSING.md` and
 and `docs/UNICODE.md`. The historical integrated Unicode gate has112/112 JIT/AOT execution;
 it is independently accepted in `evidence/review-unicode-integration-final.md`. The following string/array extension passes120/120 with independent final
 review in `evidence/review-strings-final.md`; exact bounds and oracle gaps are in
-`docs/STRINGS-AND-ARRAYS.md`. The full required backlog is
+`docs/STRINGS-AND-ARRAYS.md`. The subsequent scalar assignment/control-flow and array integration passes136/136 JIT/AOT with145-file matching maps and independent acceptance in
+`evidence/review-controlflow-integration-final.md`; bounds are in
+`docs/SCALAR-CONTROL-FLOW.md`. The full required backlog is
 `docs/FEATURE-INVENTORY.md`.
 
 The initial profile is strict C++20 with fixed LP64 integer/pointer widths
@@ -37,8 +39,8 @@ real-header compatibility remain unsupported or unverified.
 | Preprocessing | Object/function/variadic macros, lazy prescan/inertness/caller-tail rescan, #/##/placemarkers/VA_OPT and full32-label upstream matrix; configured includes/guards/once; numeric intmax/uintmax64 plus witnessed character/bool32 PP behavior; #line/error/strict-warning; __LINE__/__FILE__/__cplusplus/date/time/hosted and __has_include | Default/in-memory path has no host fallback. Optional structured provider separates probe/read/failure caches and activation. Unicode macro identity and context-specific effective replacement spelling are implemented; other special operators, general pragmas/extensions and complete lexical compatibility remain required. Include entry/EOF are lookahead barriers |
 | Types/declarations | Canonical integer/character kinds; const scalars; scalar lvalue/rvalue references, alias collapse and explicit binding/materialization facts; void function results; simple aliases/variables | String/scalar-array copy initialization and scalar pointers/array adjustment are bounded; general pointers/compound/dependent arrays/references, classes, multiple declarators, direct/list initialization and storage/linkage remain required; const void unsupported |
 | Functions/scopes | Source-ordered scalar free-function overloads, compatible entity identity, by-value/scalar-reference parameters/results; pairwise rank/kind/cv comparison and nearest lexical hiding | Pointer/class/UDC/ADL overload branches, defaults/variadics/block-scope functions, namespaces/classes and general symbol-state rules remain required. Global `main` special semantics unsupported |
-| Expressions/statements | Direct/parenthesized ordinary calls; explicit scalar/pointer conversions, array decay/subscript/offsets, sizeof and pointer-to-bool matching; returns; empty/declaration/expression statements; integer `+ - * / %`, comparisons, bitwise operators and unary `+ - ! ~`; contextual-bool `&&`/`||` with real short circuit; implemented alternative operator spellings map to the same token kinds | Assignment, shifts, comma/conditional, casts, member access, function decay, labels/control flow and other missing forms are explicitly unsupported |
-| Constants | Radix/suffix/rank/width rules; optional folds plus separate constexpr integer work/call/block/local execution; static_assert/constexpr-variable required evaluation; explicit failure/dependency/resource outcomes; scalar locations, reference transport, explicit loads, temporary/frame cleanup and original-initializer replay | General object/class/pointer lifetime execution, assignment/control flow/void/general interpreter/classification and extended integers remain required |
+| Expressions/statements | Direct/parenthesized ordinary calls; explicit scalar/pointer conversions, array decay/subscript/offsets, sizeof and pointer-to-bool matching; returns; empty/declaration/expression statements; integer `+ - * / %`, comparisons, bitwise operators and unary `+ - ! ~`; contextual-bool `&&`/`||` with real short circuit; implemented alternative operator spellings map to the same token kinds | Integer simple/arithmetic/bitwise compound assignment and expression-condition if/while/do/ordinary-for/break/continue are implemented; shifts/increments, pointer assignment, comma/conditional, casts, member access, function decay, condition declarations/selection initializers, switch/range-for/if-constexpr/labels/goto and other missing forms remain required |
+| Constants | Radix/suffix/rank/width rules; optional folds plus separate constexpr integer work/call/block/local execution; static_assert/constexpr-variable required evaluation; explicit failure/dependency/resource outcomes; scalar locations, reference transport, explicit loads, temporary/frame cleanup and original-initializer replay | Actual scalar/array cells support implemented assignments and structured loops with origin/readonly checks and scope/frame cleanup; general object/class/pointer lifetime execution, remaining control flow/void/general interpreter/classification and extended integers remain required |
 | Function templates | Named direct type parameters, immediate dependent prototype graph and nondependent checks, actual retained-token replay, by-value scalar deduction without promotions, canonical instances/reuse, frozen ordinary lookup, ordinary-template ties and direct-pattern ordering | By-value pointer deduction and dependent sizeof extend the bounded slice; template forward/redeclarations, explicit arguments/specialization, general compound/ref/class/member/ADL templates, packs/defaults/constraints and full partial ordering remain required |
 | State/replay | Independent session state/retained graphs; nested template replay and owner-journaled mutations; recursively scoped reference/function signatures avoid session retention, with valid/invalid/unsupported live-session collection tests | Every future compound must extend recursive ownership guards. Root-owner restores replay; child replay Checkpoint/Restore prohibited. General speculation/resource/cancellation/IDE qualification remains outstanding |
 
@@ -78,3 +80,10 @@ identity/owner facts are bounded, not a full lifetime proof. Additional managed
 warnings for named temporary hazards are intentional and are not native warning
 parity; valid binding remains successful. Complete reference/template and general object-lifetime behavior remains required;
 the accepted scalar constant-storage bounds are documented separately.
+
+The finite direct-scalar unsequenced-conflict check is a deliberately stricter
+managed adaptation, not native accept/reject parity. Exact native accepts and
+two disproved reject expectations are retained in
+`evidence/sequencing-qualification.md`; false-assertion rejection never proves
+undefined-behavior detection. Floating foundation authoring is separate from
+production floating type/parser/conversion/storage/evaluator support.

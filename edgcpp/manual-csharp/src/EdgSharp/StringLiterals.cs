@@ -100,7 +100,7 @@ public sealed class SubscriptExpression : Expression
     public bool PointerOperandIsSecond { get; }
     public Expression SourceLeft => PointerOperandIsSecond ? Index : ArrayOrPointer;
     public Expression SourceRight => PointerOperandIsSecond ? ArrayOrPointer : Index;
-    public override bool IsValueDependent => ArrayOrPointer.IsValueDependent || Index.IsValueDependent;
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal SubscriptExpression(Expression array, Expression index, SemanticType element, SourceRange range, bool pointerSecond)
         : base(element, ValueCategory.LValue, range) => (ArrayOrPointer, Index, PointerOperandIsSecond) = (array, index, pointerSecond);
 }
@@ -116,7 +116,7 @@ public sealed class PointerArithmeticExpression : Expression
     public Expression Pointer { get; }
     public Expression Offset { get; }
     public TokenKind Operator { get; }
-    public override bool IsValueDependent => Pointer.IsValueDependent || Offset.IsValueDependent;
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal PointerArithmeticExpression(Expression pointer, Expression offset, TokenKind op, PointerType type, SourceRange range)
         : base(type, ValueCategory.PRValue, range) => (Pointer, Offset, Operator) = (pointer, offset, op);
 }
@@ -344,12 +344,14 @@ internal sealed partial class Parser
     private SemanticType ScanArrayDeclarator(SemanticType element)
     {
         if (!Eat(TokenKind.LeftBracket)) return element;
-        if (element is not IntegerType || InTemplateScope())
+        if (element is not IntegerType || InTemplateScope() && activeTemplate == null)
             UnsupportedAndThrow("Only nondependent one-dimensional scalar arrays are implemented.");
         int length = 0;
         if (!Is(TokenKind.RightBracket))
         {
             Expression bound = ScanExprFull();
+            if (prototypeAnalysis && bound.IsValueDependent)
+                UnsupportedAndThrow("Dependent array bounds are not implemented.");
             if (bound.Type is not IntegerType integerBound)
             { Fail("ARR001", "An array bound requires an integer constant expression.", bound.Range); throw new ParseFailure(); }
             ConstantEvaluationResult value = new ConstantInterpreter(options).Evaluate(Convert(bound, types.Integer(integerBound.IntegerKind)));

@@ -148,7 +148,9 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                 break;
             }
         NameBinding? binding = state.CurrentScope.FindLocalBinding(symbol.Name);
-        if (binding != null && (!NameBinding.IsFunction(symbol) || binding.Symbols.Any(s => !NameBinding.IsFunction(s))))
+        if (forBodyParent != null && ReferenceEquals(state.CurrentScope.Parent, forBodyParent) && forBodyParent.FindLocalBinding(symbol.Name) != null)
+            Fail("SEM003", $"The outermost for body cannot redeclare '{symbol.Name}' from its initializer.", identifier.Range);
+        else if (binding != null && (!NameBinding.IsFunction(symbol) || binding.Symbols.Any(s => !NameBinding.IsFunction(s))))
             Fail("SEM003", $"Conflicting declaration of '{symbol.Name}' in this scope.", identifier.Range);
         else state.Enter(symbol);
         return symbol;
@@ -376,13 +378,17 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         if (Is(TokenKind.LeftBrace)) return CompoundStatement();
         if (Is(TokenKind.Semicolon)) return new EmptyStatement(Take().Range);
         if (Is("return")) return ReturnStatement();
+        if (Is("if")) return IfStatement();
+        if (Is("while") || Is("do") || Is("for")) return IterationStatement();
+        if (Is("break") || Is("continue")) return LoopTransferStatement();
+        if (Is("else")) { Fail("CTL003", "else requires a preceding unmatched if.", Current.Range); throw new ParseFailure(); }
         if (Is("static_assert")) return new StaticAssertStatement(StaticAssertion());
         if (Current.Kind == TokenKind.Identifier && state.Tokens.Peek().Kind == TokenKind.Colon)
             UnsupportedAndThrow("Labeled statements are not implemented.");
         // EDG checks declaration/expression ambiguity using the currently visible type symbol.
         // The implemented grammar excludes cast/function-style ambiguities, which are diagnosed.
         if (StartsDeclaration()) return new DeclarationStatement(Declaration(allowFunction: false));
-        if (Current.Kind == TokenKind.Keyword && !Is("true") && !Is("false")) UnsupportedAndThrow("This statement or expression keyword is not implemented.");
+        if (Current.Kind == TokenKind.Keyword && !Is("true") && !Is("false") && !Is("sizeof")) UnsupportedAndThrow("This statement or expression keyword is not implemented.");
         SourceRange start = Current.Range;
         Expression expression = ScanExprFull();
         if (expression.Type.Kind == TypeKind.OverloadSet)

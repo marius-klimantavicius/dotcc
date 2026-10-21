@@ -65,8 +65,8 @@ Source guides: `decls.rst`, `symbol_tbl.rst`, `expr.rst`, `statements.rst`, `il.
 | M2.2 | Complete fundamental type/qualifier/declarator forms | partial | Floating/extended types, volatile/restrict/atomic dialect rules, pointers/references/arrays/function/member types, compound/multiple declarators and invalid forms |
 | M2.3 | Scope/lookup source order | partial | Current lexical nearest binding/shadowing; extend namespaces, using directives, qualified/elaborated lookup, linkage, tags, active/inactive/other symbol distinctions and declaration sequence |
 | M2.4 | Function declarations and parameter forms | partial | Defaults, variadics, storage/linkage/qualifiers, block-scope declaration semantics, `main` special rules, matching redeclarations and source ranges |
-| M2.5 | Expressions, categories and conversion graph | partial | Current integer arithmetic/comparison/bitwise/unary/calls; assignment, logical/shift/conditional/comma, casts, pointers/member access, decay, sizeof/alignof/typeid and every new category/conversion |
-| M2.6 | Statements/control flow | partial | Current blocks/returns/empty/declaration/expression; if/switch/loops/break/continue/labels/goto, scoped conditions, invalid transfers and structured bodies |
+| M2.5 | Expressions, categories and conversion graph | partial | Current integer arithmetic/comparison/bitwise/unary/calls/logical, simple/arithmetic/bitwise assignment, bounded array decay/subscript/pointer offsets and sizeof pass136-group gate; shifts/increments/conditional/comma, general casts/pointers/member access, alignof/typeid and every new category/conversion remain required |
+| M2.6 | Statements/control flow | partial | Expression-condition if/while/do/ordinary-for/break/continue and blocks/returns/empty/declaration/expression pass136-group gate with actual cleanup; condition declarations/selection initializers, switch/range-for/if-constexpr/labels/goto and complete transfers remain required |
 | M2.7 | Initializers and declaration semantics | partial | Current copy-initialized scalar; direct/list/aggregate/designated initialization, deduction, constexpr/storage/linkage/tentative dialect rules and illegal combinations |
 | M2.8 | Source-text graph semantic qualification | accepted slice | Current bounded M2 fixture and negative controls pass under managed/AOT plus native witnesses; broader forms remain rows above |
 
@@ -175,3 +175,19 @@ Active independent scalar control-flow assignment (isolated accepted44640803b):
 This semantic module must merge additively with Unicode identity and receive actual
 combined held-snapshot validation plus independent review. Isolated authoring is
 not support or a completed inventory row.
+
+## Current dispatch after accepted control-flow integration
+
+Main acceptance is136/136 JIT/AOT, four matching145-file maps,23 exact native
+controls (9accept0/14reject2), and independent final main review. Scalar integer
+assignment/structured-loop work and actual array-cell integration are accepted
+only within SCALAR-CONTROL-FLOW.md. The finite stricter scalar sequencing check
+is an explicit adaptation, not native parity. All other partial/open rows above
+remain required, including classes, general templates/constexpr, headers and M6.
+
+Next primary: actual floating types/literals/conversions/overload/storage/evaluator
+integration, preserving all136 groups and requiring a coupled source gate. The
+parallel binary32/64 numerical foundation is actively authored in its isolated
+worktree and is not yet accepted frontend support. Long double remains required.
+Next independent control-flow branch: condition declarations/selection initializers
+with actual activation owners, then switch/range-for/if-constexpr/labels/goto.

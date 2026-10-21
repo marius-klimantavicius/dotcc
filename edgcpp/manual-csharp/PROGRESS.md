@@ -2,13 +2,14 @@
 
 ## Campaign state
 
-Active work: remaining M1 character literals/PP character operands and predefined
-operators after accepted integrated preprocessing (`review-m1-final.md`, 60/60
-managed and Linux x64 NativeAOT groups). Implementation and
-independent review agents remain running on this next assignment. Supervisor retains
-validation/Git/ledger ownership; implementation owns `src/EdgSharp/`,
-`tests/EdgSharp.Tests/`, `fixtures/` and standalone manifests. Reviewer owns
-only new `evidence/review-*.md` reports and otherwise reads.
+Current accepted main gate: scalar assignment/control-flow plus actual array/
+reference integration,136/136 JIT and Linux-x64 NativeAOT,145-file matching maps.
+Independent final review is evidence/review-controlflow-integration-final.md.
+Primary is held through concise checkpoint commit, then immediately advances to
+real floating type/parser/conversion/storage/evaluator integration. Isolated
+floating foundation author and independent reviewer remain active at Sol/xhigh.
+Supervisor owns all validation/Git/ledgers; source writers never build or commit.
+Full PLAN remains ongoing; partial milestones are never stopping boundaries.
 
 Accepted scalar overloads separate ordered name bindings from canonical entities;
 early template/constexpr paths preserve cached-token rescanning and explicit
@@ -890,3 +891,40 @@ Independent final STR closure audit green; report being finalized. Concise
 support/inventory/correspondence/STRINGS-AND-ARRAYS reconciliation is ready for
 final review; next actual production assignment remains accepted CF additive
 merge and combined136 gate, with floating foundation separately active.
+
+Accepted strings committed99643b48e after independent finalreview and current
+doc reconciliation. Followupf6d0e8dc8 scopes -text/CR-at-EOL handling to the exact
+raw-CRLF oracle source; Git index/blob SHA now equals retained native input SHA,
+avoiding automatic LF normalization without changing frontend source. Three
+accepted outputs retained under bin/checkpoints/99643b48e and fingerprinted in
+evidence/retained-99643b48e.json. Primary immediately RELEASED actual accepted
+CF additive integration; native reviewer owns independent main merge review.
+Expected136 groups, with actual array-element stores/loop cleanup/source-order
+combined gate and readonly/expired/nonobject negatives. Floating foundation
+isolated author continues newfile-only work; no conflicting central edits.
+
+Main CF integration primary explicit HOLD received at136 registrations; first
+Release/JIT gate started immediately. evidence/sequencing-qualification.md
+records independent C++20 justification for the finite stricter direct-scalar
+UB check and exact native acceptances; two wrong-reject design expectations
+remain excluded, with no native parity or provisional-pointer finding claimed.
+Floating early contract persisted at /home/marius/.t3/worktrees/dotcc/t3-95580a51
+(base6c3848ca5f50c5e06f0e8a6fbfc07bfbfd5ef685); exact binary32/64 value/decoder
+source and arithmetic are authored, tests pending. Source/active native format
+witnesses distinguish longdouble80 precision/16-byte storage, but actual long
+double implementation and all frontend floating integration remain required.
+
+
+Main integrated CF round1 accepted: warning-free Release,136/136 direct-DLL JIT
+and NativeAOT with no failures/skips, four identical145-file maps/current bytes,
+three output fingerprints and23 exact native controls9accept0/14reject2 verified
+independently. CF01–03 preserved; CFI-01 closed by explicit sequencing adaptation
+qualification, with historical wrong expectations retained/excluded. Scope and
+correspondence reconciled in SCALAR-CONTROL-FLOW/SUPPORT/inventory. Primary stayed
+on explicit source HOLD throughout validation; isolated floating author has no
+shared paths. Commit then automatic release to actual floating integration.
+
+Floating independent reviewer round1 exact task:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-floating-isolated-review-r1-20261021`.
+Provisional FLT-01 decimal exponent/UDL suffix taxonomy routed to active author
+for source-backed repair/direct tests; no held execution or acceptance yet.

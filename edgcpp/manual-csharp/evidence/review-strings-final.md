@@ -38,6 +38,12 @@ frontend/native execution or Git operations were performed by this reviewer.
   The observed escaped-pointer-to-bool accept0 and one-past reference-use reject2
   remain useful explicit corrections to their original expectations.
 
+The reconciled SUPPORT, STRINGS-AND-ARRAYS, current FEATURE-INVENTORY dispatch,
+CORRESPONDENCE and final PROGRESS entry were read after this evidence audit.
+Their120/118 counts, native exclusions and bounded/remaining-scope wording agree
+with the inspected implementation and executed proof; no additional approval
+cycle is needed for those documentation updates.
+
 Failed build round1 and119/120 round2 are retained historical evidence. The
 round2 failure was a test cast beneath two real explicit conversions, repaired
 without changing production conversion semantics. Round3 passed120 but preceded

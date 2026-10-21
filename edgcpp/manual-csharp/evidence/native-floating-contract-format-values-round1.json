@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/format-values.cpp",
+  "source_sha256": "fcd4a64bbb902dcd2704fb8c567e0f987c49c290740d8f053f7931683286b246",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/format-values.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/format-values.cpp\", line 3: warning:\n          floating-point value cannot be represented exactly\n  static_assert(0x1.000001p0f==1.0f);\n                ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/format-values.cpp\", line 4: warning:\n          floating-point value cannot be represented exactly\n  static_assert(0x1.000003p0f==0x1.000004p0f);\n                ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

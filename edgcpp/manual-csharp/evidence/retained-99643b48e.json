@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted strings/arrays output bytes before control-flow integration builds",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/99643b48e/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "07dca33641c9a3f8b3107912b5f8311dda571b87458305288f04a837d46b9986"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/99643b48e/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "7d14a56022d23fe6426e27da14224ac373ea8f2e0930a28756dd2836c256f4e0"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-strings/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/99643b48e/tests/EdgSharp.Tests/bin/aot-strings/EdgSharp.Tests",
+      "sha256": "5bbc8da8a7fd8d7b8219c621a4b8e1a6a1fe818088d22c7f39f2c163631a672d"
+    }
+  ]
+}

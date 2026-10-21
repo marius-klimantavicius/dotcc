@@ -1,0 +1,10 @@
+static_assert(sizeof(float)==4 && sizeof(double)==8 && sizeof(long double)==16);
+static_assert(16777217.0f==16777216.0f);
+static_assert(0x1.000001p0f==1.0f);
+static_assert(0x1.000003p0f==0x1.000004p0f);
+static_assert(9007199254740993.0==9007199254740992.0);
+static_assert(9007199254740995.0==9007199254740996.0);
+static_assert(0x1p-149f>0.0f);
+static_assert(0x1p63L+1.0L!=0x1p63L);
+static_assert(0x1p64L+1.0L==0x1p64L);
+static_assert(0x1p16383L>0x1p1023L);

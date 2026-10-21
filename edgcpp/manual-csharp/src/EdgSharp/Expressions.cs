@@ -10,7 +10,8 @@ internal sealed partial class Parser
 {
     // As in EDG scan_expr_full: dispatch one operand first, then consume postfix
     // and binary operators while their precedence is at least the caller's bound.
-    // Left-associative operators recurse at precedence+1. Semantic actions and
+    // Left-associative operators recurse at precedence+1; assignments at their
+    // own precedence. Semantic actions and
     // target conversions happen immediately, before scanning the next operator.
     private Expression ScanExprFull(int minimumPrecedence = 0)
     {
@@ -22,15 +23,17 @@ internal sealed partial class Parser
             int precedence = BinaryPrecedence(Current.Kind);
             if (precedence < minimumPrecedence || precedence < 0) break;
             Token op = Take();
-            Expression right = ScanExprFull(precedence + 1);
-            left = Binary(op, left, right);
+            Expression right = ScanExprFull(precedence + (IsScalarAssignment(op.Kind) ? 0 : 1));
+            left = IsScalarAssignment(op.Kind) ? Assignment(op, left, right) : Binary(op, left, right);
         }
-        if (IsUnsupportedExpressionContinuation() && !Is(TokenKind.Comma))
+        if (IsUnsupportedExpressionContinuation() && !Is(TokenKind.Comma) && BinaryPrecedence(Current.Kind) < 0)
             UnsupportedAndThrow("This expression operator or expression form is not implemented.");
         return left;
     }
     private static int BinaryPrecedence(TokenKind kind) => kind switch
     {
+        TokenKind.Equal or TokenKind.PlusEqual or TokenKind.MinusEqual or TokenKind.StarEqual or TokenKind.SlashEqual or
+            TokenKind.PercentEqual or TokenKind.AmpersandEqual or TokenKind.PipeEqual or TokenKind.CaretEqual => 0,
         TokenKind.OrOr => 1,
         TokenKind.AndAnd => 2,
         TokenKind.Pipe => 3,
@@ -42,6 +45,37 @@ internal sealed partial class Parser
         TokenKind.Star or TokenKind.Slash or TokenKind.Percent => 9,
         _ => -1
     };
+    private static bool IsScalarAssignment(TokenKind kind) => BinaryPrecedence(kind) == 0;
+    private Expression Assignment(Token op, Expression target, Expression value)
+    {
+        SourceRange range = SourceRange.Cover(target.Range, value.Range);
+        if (target.Type.Kind == TypeKind.Error || value.Type.Kind == TypeKind.Error) return new ErrorExpression(types.Error, range);
+        if (target.ValueCategory != ValueCategory.LValue || target.Type.Qualifiers.HasFlag(TypeQualifiers.Const) ||
+            target.Type.Kind is TypeKind.Void or TypeKind.Function or TypeKind.OverloadSet or TypeKind.Array)
+        {
+            Fail("ASG001", "Assignment requires a modifiable lvalue.", target.Range);
+            return new ErrorExpression(types.Error, range);
+        }
+        if (prototypeAnalysis && (TypeDependent(target) || TypeDependent(value)))
+            return new AssignmentExpression(op.Kind, target, Convert(value, target.Type), null, range);
+        if (target.Type is not IntegerType destination)
+        {
+            Unsupported("Assignment to this non-scalar destination is not implemented.", target.Range);
+            return new ErrorExpression(types.Error, range);
+        }
+        if (op.Kind == TokenKind.Equal)
+            return new AssignmentExpression(op.Kind, target, Convert(value, destination), null, range);
+        if (value.Type is not IntegerType source)
+        {
+            if (value.Type.Kind is TypeKind.Function or TypeKind.OverloadSet)
+                Unsupported("Function-to-pointer conversions in compound assignment are not implemented.", value.Range);
+            else Fail("ASG002", "Integer compound assignment requires an integer source.", value.Range);
+            return new ErrorExpression(types.Error, range);
+        }
+        IntegerType operationType = types.UsualArithmeticConversions(destination, source);
+        value = Convert(Convert(value, types.Promote(source)), operationType);
+        return new AssignmentExpression(op.Kind, target, value, operationType, range);
+    }
     private Expression ScanOperand()
     {
         Token token = Current;

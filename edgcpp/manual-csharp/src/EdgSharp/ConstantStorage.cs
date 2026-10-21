@@ -26,12 +26,14 @@ public sealed class ConstantStorageObject
     public bool? IsInitialized { get; }
     public bool IsConstantReadable { get; }
     public bool? IsReadOnly { get; }
+    public bool? LifetimeBeganInEvaluation { get; }
     public BigInteger? Value { get; }
     internal ConstantStorageObject(ConstantCell cell)
-        => (Identity, IsKnownObject, Invocation, Type, Symbol, UnknownReference, LifetimeOwner, Lifetime, IsAlive, IsInitialized, IsConstantReadable, IsReadOnly, Value) =
+        => (Identity, IsKnownObject, Invocation, Type, Symbol, UnknownReference, LifetimeOwner, Lifetime, IsAlive, IsInitialized, IsConstantReadable, IsReadOnly, Value, LifetimeBeganInEvaluation) =
             (cell.Known ? cell.Identity : null, cell.Known, cell.Invocation, cell.Type,
                 cell.Known ? cell.Symbol : null, cell.Known ? null : cell.Symbol, cell.LifetimeOwner,
-                cell.Lifetime, cell.Known ? cell.Alive : null, cell.Known ? cell.Initialized : null, cell.Readable, cell.Known ? cell.ReadOnly : null, cell.Value);
+                cell.Lifetime, cell.Known ? cell.Alive : null, cell.Known ? cell.Initialized : null, cell.Readable, cell.Known ? cell.ReadOnly : null, cell.Value,
+                cell.Known ? cell.BeganInEvaluation : null);
 }
 
 /// <summary>A reference constant designates an object; it is not that object's integer value.</summary>
@@ -61,6 +63,7 @@ internal sealed class ConstantCell(int identity, int invocation, IntegerType typ
     internal ConstantStorageLifetime Lifetime { get; } = lifetime;
     internal bool Readable { get; } = readable;
     internal bool ReadOnly { get; } = readOnly ?? type.Qualifiers.HasFlag(TypeQualifiers.Const);
+    internal bool BeganInEvaluation { get; init; }
     internal bool Alive { get; set; } = true;
     internal bool Initialized { get; set; }
     internal bool Known { get; init; } = true;
@@ -106,9 +109,10 @@ internal sealed partial class ConstantInterpreter
     }
 
     private ConstantCell Allocate(IntegerType type, Symbol? symbol, Symbol? owner, ConstantStorageLifetime lifetime,
-        bool readable, CallFrame? frame)
+        bool readable, CallFrame? frame, bool? readOnly = null, bool beganInEvaluation = false)
     {
-        var cell = new ConstantCell(storage.Count + 1, frame?.Identity ?? 0, type, symbol, owner, lifetime, readable);
+        var cell = new ConstantCell(storage.Count + 1, frame?.Identity ?? 0, type, symbol, owner, lifetime, readable, readOnly)
+            { BeganInEvaluation = beganInEvaluation };
         storage.Add(cell);
         if ((lifetime is ConstantStorageLifetime.Automatic or ConstantStorageLifetime.ReferenceVariableTemporary) && frame != null)
         {
@@ -142,13 +146,15 @@ internal sealed partial class ConstantInterpreter
         return value.Location!;
     }
 
-    private static BigInteger Load(ConstantRuntimeValue value)
+    private BigInteger Load(ConstantRuntimeValue value)
     {
         ConstantCell cell = Location(value);
         EnsureAlive(cell);
         if (!cell.Known) Stop(ConstantEvaluationStatus.NotConstant, "The reference designates an unknown runtime object whose value is unavailable.");
         if (!cell.Initialized) Stop(ConstantEvaluationStatus.UninitializedRead, "Read of an uninitialized object.");
         if (!cell.Readable) Stop(ConstantEvaluationStatus.NotConstant, "Reading this existing mutable or runtime object is not allowed in a constant expression.");
+        if (!cell.Value.HasValue) Stop(ConstantEvaluationStatus.NotConstant, "The designated object's scalar value is unavailable.");
+        NoteAccess(cell, write: false);
         return cell.Value!.Value;
     }
 
@@ -173,7 +179,7 @@ internal sealed partial class ConstantInterpreter
         ConstantStorageLifetime lifetime = isStatic ? ConstantStorageLifetime.Static : extended
             ? ConstantStorageLifetime.ReferenceVariableTemporary : ConstantStorageLifetime.FullExpressionTemporary;
         var cell = Allocate((IntegerType)expression.Type, null, expression.LifetimeOwner, lifetime,
-            !isStatic || expression.Type.Qualifiers.HasFlag(TypeQualifiers.Const), frame);
+            !isStatic || expression.Type.Qualifiers.HasFlag(TypeQualifiers.Const), frame, beganInEvaluation: !isStatic);
         cell.Value = Scalar(values.Pop()); cell.Initialized = true;
         values.Push(ConstantRuntimeValue.Address(cell));
     }
@@ -253,6 +259,8 @@ internal sealed partial class ConstantInterpreter
             status == ConstantEvaluationStatus.Success && value.Pointer is { } pointer ? new ConstantPointerValue(pointer.Array == null ? null : arrays[pointer.Array], pointer.Index) : null,
             status == ConstantEvaluationStatus.Success && value.NonObjectLocation is { } nonobject ? new ConstantPointerValue(arrays[nonobject.Array!], nonobject.Index) : null,
             nonObjectBindings.Select(binding => new ConstantNonObjectReferenceBinding(binding.Expression,
-                new ConstantPointerValue(arrays[binding.Address.Array!], binding.Address.Index), binding.Invocation)).ToArray());
+                new ConstantPointerValue(arrays[binding.Address.Array!], binding.Address.Index), binding.Invocation)).ToArray(),
+            assignments.Select(assignment => new ConstantAssignmentObservation(assignment.Expression, snapshots[assignment.Cell], assignment.Value, assignment.Invocation)).ToArray(),
+            controlFlow.ToArray());
     }
 }

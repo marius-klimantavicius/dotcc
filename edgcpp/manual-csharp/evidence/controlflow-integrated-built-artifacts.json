@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual combined scalar control/arrays output fingerprints",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 1459200,
+      "sha256": "c558079bfc7f5b537d0dd0dc050c4db73003a62b8c30b0a8b5d1c5c464ec4f80"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 318976,
+      "sha256": "7ec2d007dffaced4ad0e7f8fdbaa8eb89b00dd1af7f5555b23929821f855ee14"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-controlflow-integrated/EdgSharp.Tests",
+      "bytes": 5902472,
+      "sha256": "b56c86ce2df2358fb2db8f6ef1a97f663ba645a3c84e46cde51178daa54e4e0b"
+    }
+  ]
+}

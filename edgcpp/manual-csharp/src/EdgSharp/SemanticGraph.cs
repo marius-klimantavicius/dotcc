@@ -151,6 +151,8 @@ public abstract class Expression
     public ValueCategory ValueCategory { get; }
     public SourceRange Range { get; }
     public BigInteger? ConstantValue { get; }
+    /// <summary>Conservative graph fact, independent of optional folding or the selected evaluation path.</summary>
+    public virtual bool HasSideEffects => ScalarExpressionEffects.HasSideEffects(this);
     public bool IsTypeDependent => Type.Kind is TypeKind.TemplateParameter or TypeKind.Dependent;
     public virtual bool IsValueDependent => IsTypeDependent;
     internal Expression(SemanticType type, ValueCategory category, SourceRange range, BigInteger? constant = null)
@@ -185,7 +187,7 @@ public sealed class OverloadSetExpression : Expression
 public sealed class ParenthesizedExpression : Expression
 {
     public Expression Operand { get; }
-    public override bool IsValueDependent => Operand.IsValueDependent;
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal ParenthesizedExpression(Expression operand, SourceRange range)
         : base(operand.Type, operand.ValueCategory, range, operand.ConstantValue) => Operand = operand;
 }
@@ -194,7 +196,7 @@ public sealed class ConversionExpression : Expression
 {
     public Expression Operand { get; }
     public ConversionKind Conversion { get; }
-    public override bool IsValueDependent => Operand.IsValueDependent;
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal ConversionExpression(Expression operand, SemanticType target, ConversionKind conversion, BigInteger? constant)
         : base(target, ValueCategory.PRValue, operand.Range, constant) => (Operand, Conversion) = (operand, conversion);
 }
@@ -202,7 +204,7 @@ public sealed class UnaryExpression : Expression
 {
     public TokenKind Operator { get; }
     public Expression Operand { get; }
-    public override bool IsValueDependent => Operand.IsValueDependent;
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal UnaryExpression(TokenKind op, Expression operand, SemanticType type, SourceRange range, BigInteger? constant)
         : base(type, ValueCategory.PRValue, range, constant) => (Operator, Operand) = (op, operand);
 }
@@ -211,9 +213,21 @@ public sealed class BinaryExpression : Expression
     public TokenKind Operator { get; }
     public Expression Left { get; }
     public Expression Right { get; }
-    public override bool IsValueDependent => Left.IsValueDependent || Right.IsValueDependent;
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal BinaryExpression(TokenKind op, Expression left, Expression right, SemanticType type, SourceRange range, BigInteger? constant)
         : base(type, ValueCategory.PRValue, range, constant) => (Operator, Left, Right) = (op, left, right);
+}
+/// <summary>A scalar store returning the destination location. It never supplies an optional folded value.</summary>
+public sealed class AssignmentExpression : Expression
+{
+    public TokenKind Operator { get; }
+    public Expression Target { get; }
+    public Expression Value { get; }
+    /// <summary>The promoted arithmetic type for compound assignment; null for simple/dependent assignment.</summary>
+    public IntegerType? OperationType { get; }
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
+    internal AssignmentExpression(TokenKind op, Expression target, Expression value, IntegerType? operationType, SourceRange range)
+        : base(target.Type, ValueCategory.LValue, range) => (Operator, Target, Value, OperationType) = (op, target, value, operationType);
 }
 public sealed class CallExpression : Expression
 {
@@ -224,7 +238,7 @@ public sealed class CallExpression : Expression
     public ReadOnlyCollection<OverloadCandidate> Candidates { get; }
     public OverloadCandidate SelectedCandidate { get; }
     public FunctionTemplateInstance? TemplateInstance { get; }
-    public override bool IsValueDependent => Arguments.Any(argument => argument.IsValueDependent);
+    public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
     internal CallExpression(Symbol function, FunctionTemplateInstance? instance, OverloadCandidate selected, OverloadCandidate[] candidates, Expression callee, Expression[] arguments, SemanticType resultType, SourceRange range)
         : base(resultType is ReferenceType reference ? reference.ReferredType : resultType,
             resultType is ReferenceType r ? r.ReferenceKind == ReferenceKind.LValue ? ValueCategory.LValue : ValueCategory.XValue : ValueCategory.PRValue, range)
@@ -277,3 +291,49 @@ public sealed class ExpressionStatement : Statement
 }
 public sealed class EmptyStatement : Statement { internal EmptyStatement(SourceRange range) : base(range) { } }
 public sealed class ErrorStatement : Statement { internal ErrorStatement(SourceRange range) : base(range) { } }
+
+public sealed class IfStatement : Statement
+{
+    public Expression Condition { get; }
+    public BlockStatement Then { get; }
+    public BlockStatement? Else { get; }
+    internal IfStatement(Expression condition, BlockStatement thenStatement, BlockStatement? elseStatement, SourceRange range) : base(range)
+        => (Condition, Then, Else) = (condition, thenStatement, elseStatement);
+}
+/// <summary>Identity of a resolved structured transfer destination, independent of source spelling or evaluation invocation.</summary>
+public sealed class LoopTarget { internal LoopTarget() { } }
+public abstract class LoopStatement : Statement
+{
+    public LoopTarget Target { get; }
+    public Expression? Condition { get; }
+    public BlockStatement Body { get; }
+    internal LoopStatement(LoopTarget target, Expression? condition, BlockStatement body, SourceRange range) : base(range)
+        => (Target, Condition, Body) = (target, condition, body);
+}
+public sealed class WhileStatement : LoopStatement
+{
+    internal WhileStatement(LoopTarget target, Expression condition, BlockStatement body, SourceRange range) : base(target, condition, body, range) { }
+}
+public sealed class DoStatement : LoopStatement
+{
+    internal DoStatement(LoopTarget target, Expression condition, BlockStatement body, SourceRange range) : base(target, condition, body, range) { }
+}
+public sealed class ForStatement : LoopStatement
+{
+    public Scope Scope { get; }
+    public Statement Initializer { get; }
+    public Expression? Increment { get; }
+    internal ForStatement(LoopTarget target, Scope scope, Statement initializer, Expression? condition, Expression? increment,
+        BlockStatement body, SourceRange range) : base(target, condition, body, range)
+        => (Scope, Initializer, Increment) = (scope, initializer, increment);
+}
+public sealed class BreakStatement : Statement
+{
+    public LoopTarget Target { get; }
+    internal BreakStatement(LoopTarget target, SourceRange range) : base(range) => Target = target;
+}
+public sealed class ContinueStatement : Statement
+{
+    public LoopTarget Target { get; }
+    internal ContinueStatement(LoopTarget target, SourceRange range) : base(range) => Target = target;
+}
