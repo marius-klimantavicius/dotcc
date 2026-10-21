@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-overflow-invalid.cpp",
+  "source_sha256": "08e846df0be5f32fe81e32d92c015ffa80398a49ba3719b9d056607f263cd217",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-overflow-invalid.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-overflow-invalid.cpp\", line 3: error: floating constant is\n          out of range\n  constexpr float overflow = 1e1000f;\n                             ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-overflow-invalid.cpp\", line 3: warning: variable \"overflow\"\n          was declared but never referenced\n  constexpr float overflow = 1e1000f;\n                  ^\n\n1 error detected in the compilation of \"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-overflow-invalid.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

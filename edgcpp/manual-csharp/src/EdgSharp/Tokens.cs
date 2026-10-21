@@ -286,9 +286,8 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
             string spelling = text[start..position];
             int suffix = spelling.IndexOf('_');
             string number = suffix < 0 ? spelling : spelling[..suffix];
-            bool hex = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
-            bool floating = number.Contains('.') || (hex ? number.IndexOfAny(['p', 'P']) >= 0 : number.IndexOfAny(['e', 'E']) >= 0);
-            if (!preprocessing && floating && !IsValidFloatingSpelling(spelling))
+            bool floating = IsFloatingNumberToken(number);
+            if (!preprocessing && floating && FloatingLiterals.Decode(spelling, FloatingLiteralProfile.Binary32Binary64).Status == FloatingDecodeStatus.Malformed)
                 diagnostics.Add("LEX011", "Malformed floating literal spelling.", source.Range(start, position - start));
             SourceRange range = source.Range(start, position - start);
             return new Token(floating ? TokenKind.FloatingLiteral : TokenKind.IntegerLiteral, range, source.OriginForRange(range), scannedUcnDiagnostic);
@@ -318,44 +317,17 @@ internal sealed class Lexer(SourceFile source, DiagnosticBag diagnostics, bool p
                 "and_eq" => TokenKind.AmpersandEqual, "or_eq" => TokenKind.PipeEqual, "xor_eq" => TokenKind.CaretEqual, "not_eq" => TokenKind.NotEqual,
                 _ => ClassifyIdentifier(spelling)
     };
-    // lexical.c scan_number keeps pp-number collection separate from active
-    // number validation. Values and literal-operator resolution remain semantic
-    // work; this recognizes significand/exponent/suffix boundaries only.
-    internal static bool IsValidFloatingSpelling(string spelling)
+    // An e/E without an exponent can start an integer ud-suffix. A signed
+    // missing exponent or leading separator remains malformed. This applies
+    // to both decimal e/E and hexadecimal p/P (lexical.c float_accum_2).
+    private static bool IsFloatingNumberToken(string number)
     {
-        bool hex = spelling.StartsWith("0x", StringComparison.OrdinalIgnoreCase), point = false, exponent = false;
-        int index = hex ? 2 : 0, digits = 0;
-        bool valid = true;
-        digits += Digits(hex);
-        if (index < spelling.Length && spelling[index] == '.') { point = true; ++index; digits += Digits(hex); }
-        if (digits == 0 || !valid) return false;
-        if (index < spelling.Length && (hex ? spelling[index] is 'p' or 'P' : spelling[index] is 'e' or 'E'))
-        {
-            int marker = index++;
-            bool sign = index < spelling.Length && spelling[index] is '+' or '-';
-            if (sign) ++index;
-            if (Digits(false) != 0) exponent = true;
-            else if (sign) return false;
-            else index = marker; // Potential user-defined suffix, as in scan_number.
-        }
-        if (!valid || hex && point && !exponent) return false;
-        string suffix = spelling[index..];
-        if (suffix.Length == 0) return point || exponent;
-        return UnicodeIdentifiers.Analyze(suffix, out _) == null;
-        int Digits(bool hexadecimal)
-        {
-            int count = 0;
-            while (index < spelling.Length)
-            {
-                bool digit = hexadecimal ? char.IsAsciiHexDigit(spelling[index]) : char.IsAsciiDigit(spelling[index]);
-                if (digit) { ++count; ++index; continue; }
-                if (spelling[index] != '\'') break;
-                if (count == 0 || index + 1 == spelling.Length || !(hexadecimal ? char.IsAsciiHexDigit(spelling[index + 1]) : char.IsAsciiDigit(spelling[index + 1])))
-                { valid = false; break; }
-                ++index;
-            }
-            return count;
-        }
+        bool hexadecimal = number.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
+        int index = hexadecimal ? 2 : 0;
+        while (index < number.Length && ((hexadecimal ? char.IsAsciiHexDigit(number[index]) : char.IsAsciiDigit(number[index])) || number[index] == '\'')) ++index;
+        if (index < number.Length && number[index] == '.') return true;
+        if (index == number.Length || !(hexadecimal ? number[index] is 'p' or 'P' : number[index] is 'e' or 'E')) return false;
+        return index + 1 < number.Length && (char.IsAsciiDigit(number[index + 1]) || number[index + 1] is '+' or '-' or '\'');
     }
     private Token ScanRaw(int start)
     {

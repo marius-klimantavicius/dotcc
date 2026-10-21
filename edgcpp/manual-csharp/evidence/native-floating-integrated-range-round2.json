@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-range.cpp",
+  "source_sha256": "c6c489309b01968c019e9ac6df6b936bb9ea7d07dfec86720de18a7b1c6273f5",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-range.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-range.\n          cpp\", line 2: error: floating-point value does not fit in required\n          integral type\n  constexpr unsigned char value = 256.0;\n                                  ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-range.\n          cpp\", line 2: warning: variable \"value\" was declared but never\n          referenced\n  constexpr unsigned char value = 256.0;\n                          ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-range.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

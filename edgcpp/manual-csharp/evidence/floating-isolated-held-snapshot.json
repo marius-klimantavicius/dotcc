@@ -1,0 +1,26 @@
+{
+  "purpose": "Explicit isolated floating source hold before serialized supervisor validation",
+  "base_commit": "6c3848ca5f50c5e06f0e8a6fbfc07bfbfd5ef685",
+  "worktree": "/home/marius/.t3/worktrees/dotcc/t3-95580a51",
+  "task_id": "node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m1-floating-foundation-isolated-20261021-r1",
+  "hold": "Author all16 owned paths frozen after FLT01 repair and FLT02 qualification; terminal task no pending runs",
+  "handoff_sha256": "36f43e26121a0401c06210654e82a14a25d8333be381304faa442d996529f234",
+  "owned_sha256": {
+    "src/EdgSharp/FloatingValues.cs": "95c4815b5e66a6b41dcce7f7477386f18ed2acf6f081f946b6e289d06e472b6b",
+    "src/EdgSharp/FloatingLiterals.cs": "0e185844696a443cf8302122712aa0235853e4a07eca6514b2eeb5735bd35d8a",
+    "tests/EdgSharp.Tests/FloatingValueTests.cs": "d647f501d24831182c2fff9da17562dc6a28e9f4589c105af24ab99d41cc8219",
+    "tests/EdgSharp.Tests/Program.cs": "9fa1bfc6424c85b1cf0aa1216c32ecc1a73cc3b1bcc482c71e19121d041f71e6",
+    "fixtures/m1-floating-conversion-arithmetic.cpp": "558e071fda1268f74f0d206b5c2d687f3a5b5731033e237abff39a3fdfc183ef",
+    "fixtures/m1-floating-direct-rounding.cpp": "ffcf5706219777496270cc99a33c74f68b6b0d9ca9a5001a57125f5f240984a4",
+    "fixtures/m1-floating-exponent-invalid.cpp": "b39138845b4fec5f46ca5eeb8b7ad95de77abab04d4586f1ecfdd0d7e13567e7",
+    "fixtures/m1-floating-format-witness.cpp": "8d24314681345ccda88130c50f4dc6cc0da1e508a037f27de5fe05fe51fb8903",
+    "fixtures/m1-floating-long-double-abi-probe.cpp": "9b5bb2f6adb37297b0bbf09972010a6c1e50d12791f2989bc36e98125223d2d2",
+    "fixtures/m1-floating-overflow-invalid.cpp": "08e846df0be5f32fe81e32d92c015ffa80398a49ba3719b9d056607f263cd217",
+    "fixtures/m1-floating-rounding.cpp": "4f465cf71fe6e111319ec1325a70f910d2ceb8060446d9b8ea1579b5a7f01340",
+    "fixtures/m1-floating-separator-invalid.cpp": "8c2b1c20460ccfe909a73d6ef1f3f48c40754e9cfa71f0fdc714dae68c9ed1a5",
+    "fixtures/m1-floating-signed-zero-bits-probe.cpp": "ec792ded8c9c80d3f87bf2a1e80e69dc6be7afb22d184a748a3cada3d10444ac",
+    "fixtures/m1-floating-subnormal.cpp": "e1b15d6ef1814d67b56769d731992d5367de8a606c56f9635dc6585f1614114f",
+    "fixtures/m1-floating-udl-unresolved.cpp": "5beb97b331a08c53e496ba84e36781daa2dc04a7fa9ce34561f5954a5e567c09"
+  },
+  "expected_groups": 131
+}

@@ -334,7 +334,7 @@ internal sealed partial class Parser
     private SemanticType ScanObjectDeclarator(SemanticType type)
     {
         if (!Eat(TokenKind.Star)) return ScanReferenceDeclarator(type);
-        if (InTemplateScope() || type is not IntegerType)
+        if (InTemplateScope() || !TypeTable.IsArithmetic(type))
             UnsupportedAndThrow("Only nondependent pointers to integer character/scalar types are implemented.");
         TypeQualifiers qualifiers = Eat("const") ? TypeQualifiers.Const : TypeQualifiers.None;
         if (Is(TokenKind.Star) || Is(TokenKind.Ampersand) || Is(TokenKind.AndAnd))
@@ -344,7 +344,7 @@ internal sealed partial class Parser
     private SemanticType ScanArrayDeclarator(SemanticType element)
     {
         if (!Eat(TokenKind.LeftBracket)) return element;
-        if (element is not IntegerType || InTemplateScope() && activeTemplate == null)
+        if (!TypeTable.IsArithmetic(element) || InTemplateScope() && activeTemplate == null)
             UnsupportedAndThrow("Only nondependent one-dimensional scalar arrays are implemented.");
         int length = 0;
         if (!Is(TokenKind.RightBracket))
@@ -397,6 +397,7 @@ internal sealed partial class Parser
     private BigInteger? ObjectSize(SemanticType type) => type switch
     {
         IntegerType integer => integer.Width / options.Target.CharBits,
+        FloatingType floating => floating.Width / options.Target.CharBits,
         PointerType => options.Target.PointerBits / options.Target.CharBits,
         ReferenceType reference => ObjectSize(reference.ReferredType),
         ArrayType { Length: > 0 } array when ObjectSize(array.ElementType) is BigInteger element => element * array.Length,
@@ -412,7 +413,7 @@ internal sealed partial class Parser
         if (pointerSecond) (left, right) = (right, left);
         if (left.Type is ArrayType array)
             left = new ConversionExpression(left, types.Pointer(array.ElementType), ConversionKind.ArrayToPointer, null);
-        if (left.Type is not PointerType pointer || pointer.PointedToType is not IntegerType || right.Type is not IntegerType integer)
+        if (left.Type is not PointerType pointer || !TypeTable.IsArithmetic(pointer.PointedToType) || right.Type is not IntegerType integer)
         {
             if (prototypeAnalysis && (TypeDependent(left) || TypeDependent(right)))
             { Unsupported("Dependent subscripting is not implemented.", left.Range); return new ErrorExpression(types.Error, left.Range); }

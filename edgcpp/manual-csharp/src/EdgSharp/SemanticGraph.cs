@@ -191,7 +191,7 @@ public sealed class ParenthesizedExpression : Expression
     internal ParenthesizedExpression(Expression operand, SourceRange range)
         : base(operand.Type, operand.ValueCategory, range, operand.ConstantValue) => Operand = operand;
 }
-public enum ConversionKind { LValueToRValue, IntegralPromotion, IntegralConversion, BooleanConversion, ArrayToPointer, QualificationConversion, NullPointerConversion }
+public enum ConversionKind { LValueToRValue, IntegralPromotion, IntegralConversion, BooleanConversion, ArrayToPointer, QualificationConversion, NullPointerConversion, FloatingPromotion, FloatingConversion, FloatingIntegralConversion }
 public sealed class ConversionExpression : Expression
 {
     public Expression Operand { get; }
@@ -224,9 +224,9 @@ public sealed class AssignmentExpression : Expression
     public Expression Target { get; }
     public Expression Value { get; }
     /// <summary>The promoted arithmetic type for compound assignment; null for simple/dependent assignment.</summary>
-    public IntegerType? OperationType { get; }
+    public SemanticType? OperationType { get; }
     public override bool IsValueDependent => ScalarExpressionDependencies.IsValueDependent(this);
-    internal AssignmentExpression(TokenKind op, Expression target, Expression value, IntegerType? operationType, SourceRange range)
+    internal AssignmentExpression(TokenKind op, Expression target, Expression value, SemanticType? operationType, SourceRange range)
         : base(target.Type, ValueCategory.LValue, range) => (Operator, Target, Value, OperationType) = (op, target, value, operationType);
 }
 public sealed class CallExpression : Expression

@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-runtime.cpp",
+  "source_sha256": "48ebf8d2853e519c607764d39795b34a528fcd2b20cfccdd33794f9e9a747a95",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-runtime.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-runtim\n          e.cpp\", line 3: warning: floating-point operation result is out of\n          range\n  float tiny = 0x1p-149f / 2.0f;\n                         ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-runtim\n          e.cpp\", line 4: warning: floating-point operation result is out of\n          range\n  float overflow = 0x1p127f * 2.0f;\n                            ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-runtim\n          e.cpp\", line 5: warning: division by zero\n  double divide(double value) { return value / 0.0; }\n                                               ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

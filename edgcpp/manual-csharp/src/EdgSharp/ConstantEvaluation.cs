@@ -13,6 +13,8 @@ public sealed class ConstantEvaluationResult
 {
     public ConstantEvaluationStatus Status { get; }
     public BigInteger? Value { get; }
+    public FloatingConstantValue? FloatingValue { get; }
+    public FloatingEvaluationCondition FloatingConditions { get; }
     public ConstantReferenceValue? ReferenceValue { get; }
     public ConstantArrayObject? ArrayValue { get; }
     public ConstantPointerValue? PointerValue { get; }
@@ -30,9 +32,10 @@ public sealed class ConstantEvaluationResult
         ConstantReferenceValue? reference = null, ConstantStorageObject[]? storage = null, ConstantReferenceBinding[]? bindings = null,
         ConstantArrayObject[]? arrays = null, ConstantArrayObject? array = null, ConstantPointerValue? pointer = null,
         ConstantPointerValue? nonObjectReference = null, ConstantNonObjectReferenceBinding[]? nonObjectBindings = null,
-        ConstantAssignmentObservation[]? assignments = null, ConstantControlFlowObservation[]? controlFlow = null)
-        => (Status, Value, Steps, MaximumCallDepth, Message, ReferenceValue, StorageObjects, ReferenceBindings, Arrays, ArrayValue, PointerValue, NonObjectReferenceValue, NonObjectReferenceBindings, Assignments, ControlFlow) =
-            (status, value, steps, depth, message, reference, Array.AsReadOnly(storage ?? []), Array.AsReadOnly(bindings ?? []), Array.AsReadOnly(arrays ?? []), array, pointer, nonObjectReference, Array.AsReadOnly(nonObjectBindings ?? []),
+        ConstantAssignmentObservation[]? assignments = null, ConstantControlFlowObservation[]? controlFlow = null,
+        FloatingConstantValue? floating = null, FloatingEvaluationCondition floatingConditions = FloatingEvaluationCondition.None)
+        => (FloatingValue, FloatingConditions, Status, Value, Steps, MaximumCallDepth, Message, ReferenceValue, StorageObjects, ReferenceBindings, Arrays, ArrayValue, PointerValue, NonObjectReferenceValue, NonObjectReferenceBindings, Assignments, ControlFlow) =
+            (floating, floatingConditions, status, value, steps, depth, message, reference, Array.AsReadOnly(storage ?? []), Array.AsReadOnly(bindings ?? []), Array.AsReadOnly(arrays ?? []), array, pointer, nonObjectReference, Array.AsReadOnly(nonObjectBindings ?? []),
                 Array.AsReadOnly(assignments ?? []), Array.AsReadOnly(controlFlow ?? []));
 }
 
@@ -84,7 +87,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
 
     internal ConstantEvaluationResult Evaluate(Expression expression)
     {
-        steps = maximumDepth = invocationSequence = 0;
+        steps = maximumDepth = invocationSequence = 0; floatingConditions = FloatingFlags.None;
         work.Push(new EndFullExpression());
         work.Push(new EvaluateExpression(expression));
         work.Push(new BeginFullExpression());
@@ -109,8 +112,8 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                             ScheduleFullExpression(declaration.Initializer!, new CompleteGlobalScalar(pending));
                             break;
                         }
-                        BigInteger integer = item.Expression.Conversion == ConversionKind.LValueToRValue ? Load(converted) : Scalar(converted);
-                        values.Push(ConstantRuntimeValue.Scalar(TypeTable.ConvertInteger(integer, (IntegerType)item.Expression.Type)));
+                        ConstantRuntimeValue loaded = item.Expression.Conversion == ConversionKind.LValueToRValue ? LoadScalar(converted) : converted;
+                        values.Push(ConvertScalar(loaded, item.Expression.Type));
                         break;
                     case UnaryValue item: EvaluateUnary(item.Expression); break;
                     case LogicalLeft item:
@@ -173,10 +176,10 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                         values.Push(ConstantRuntimeValue.Address(global));
                         break;
                     case CompleteGlobalScalar item:
-                        item.Cell.Value = Scalar(values.Pop()); item.Cell.Initialized = true; item.Cell.Initializing = false;
+                        StoreScalar(item.Cell, values.Pop()); item.Cell.Initializing = false;
                         break;
                     case ResumeLoad item:
-                        values.Push(ConstantRuntimeValue.Scalar(TypeTable.ConvertInteger(Load(ConstantRuntimeValue.Address(item.Cell)), (IntegerType)item.Expression.Type)));
+                        values.Push(ConvertScalar(LoadScalar(ConstantRuntimeValue.Address(item.Cell)), item.Expression.Type));
                         break;
                     case BeginFullExpression: fullExpressions.Push([]); break;
                     case EndFullExpression:
@@ -232,6 +235,10 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                 work.Push(new FinishSubscript(subscript)); work.Push(new EvaluateExpression(subscript.SourceRight)); work.Push(new EvaluateExpression(subscript.SourceLeft)); break;
             case PointerArithmeticExpression pointer:
                 work.Push(new FinishPointerArithmetic(pointer)); work.Push(new EvaluateExpression(pointer.Offset)); work.Push(new EvaluateExpression(pointer.Pointer)); break;
+            case NumericalFoldLeaf leaf: values.Push(leaf.Numeric); break;
+            case FloatingLiteralExpression floating:
+                floatingConditions |= (FloatingFlags)floating.Conditions;
+                values.Push(ConstantRuntimeValue.Float(floating.Value.Numeric)); break;
             case LiteralExpression literal: values.Push(ConstantRuntimeValue.Scalar(literal.ConstantValue!.Value)); break;
             case ParenthesizedExpression parens: work.Push(new EvaluateExpression(parens.Operand)); break;
             case ReferenceExpression reference:
@@ -244,7 +251,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
             case MaterializedTemporaryExpression temporary:
                 work.Push(new CompleteMaterialization(temporary)); work.Push(new EvaluateExpression(temporary.Initializer)); break;
             case ConversionExpression conversion:
-                if (conversion.Type is not (IntegerType or PointerType)) Stop(ConstantEvaluationStatus.InvalidExpression, "This conversion is not interpreted.");
+                if (conversion.Type is not (IntegerType or FloatingType or PointerType)) Stop(ConstantEvaluationStatus.InvalidExpression, "This conversion is not interpreted.");
                 work.Push(new ConvertValue(conversion));
                 work.Push(new EvaluateExpression(conversion.Operand));
                 break;
@@ -269,7 +276,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
     private void StartCall(CallExpression call)
     {
         FunctionDeclaration? function = call.SelectedFunction.Definition;
-        if (function == null || function.Body == null || !function.IsConstexpr || function.Type.ReturnType is not (IntegerType or ReferenceType or PointerType))
+        if (function == null || function.Body == null || !function.IsConstexpr || function.Type.ReturnType is not (IntegerType or FloatingType or ReferenceType or PointerType))
             Stop(ConstantEvaluationStatus.NotConstant, "Constant evaluation requires a visible constexpr scalar function definition.");
         if (calls.Count >= options.ConstantEvaluationCallLimit) Stop(ConstantEvaluationStatus.ResourceLimit, "Constant evaluation call depth limit exceeded.");
         var frame = new CallFrame(function!, ++invocationSequence);
@@ -278,7 +285,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
             VariableDeclaration parameter = function.Parameters[i];
             ConstantRuntimeValue argument = values.Pop();
             if (BindAggregateParameter(parameter, argument, frame)) continue;
-            var slot = new ConstantSlot { Object = parameter.Type is IntegerType type ? Allocate(type, parameter.Symbol, parameter.Symbol, ConstantStorageLifetime.Automatic, true, frame, beganInEvaluation: true) : null };
+            var slot = new ConstantSlot { Object = TypeTable.IsArithmetic(parameter.Type) ? Allocate(parameter.Type, parameter.Symbol, parameter.Symbol, ConstantStorageLifetime.Automatic, true, frame, beganInEvaluation: true) : null };
             Store(slot, argument); frame.Locals.Add(parameter.Symbol, slot);
         }
         calls.Push(frame);
@@ -293,7 +300,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
             case BlockStatement block: work.Push(new ExecuteBlock(block, frame)); break;
             case DeclarationStatement { Declaration: VariableDeclaration variable }:
                 if (DeclareAggregate(variable, frame)) break;
-                frame.Locals[variable.Symbol] = new ConstantSlot { Object = variable.Type is IntegerType type ? Allocate(type, variable.Symbol, variable.Symbol, ConstantStorageLifetime.Automatic, true, frame, beganInEvaluation: true) : null };
+                frame.Locals[variable.Symbol] = new ConstantSlot { Object = TypeTable.IsArithmetic(variable.Type) ? Allocate(variable.Type, variable.Symbol, variable.Symbol, ConstantStorageLifetime.Automatic, true, frame, beganInEvaluation: true) : null };
                 if (variable.Initializer != null)
                 {
                     ScheduleFullExpression(variable.Initializer, new StoreLocal(variable.Symbol, frame));
@@ -336,7 +343,14 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
     }
     private void EvaluateUnary(UnaryExpression expression)
     {
-        BigInteger operand = Scalar(values.Pop());
+        ConstantRuntimeValue input = values.Pop();
+        if (expression.Type is FloatingType)
+        {
+            TargetFloatValue floating = FloatingScalar(input);
+            values.Push(ConstantRuntimeValue.Float(expression.Operator == TokenKind.Minus ? floating.Negate() : floating));
+            return;
+        }
+        BigInteger operand = Scalar(input);
         BigInteger result = expression.Operator switch
         {
             TokenKind.Plus => operand, TokenKind.Minus => -operand,
@@ -347,7 +361,12 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
     }
     private void EvaluateBinary(BinaryExpression expression)
     {
-        BigInteger right = Scalar(values.Pop()), left = Scalar(values.Pop());
+        ConstantRuntimeValue rightValue = values.Pop(), leftValue = values.Pop();
+        if (expression.Left.Type is FloatingType)
+        {
+            values.Push(FloatingOperation(expression.Operator, FloatingScalar(leftValue), FloatingScalar(rightValue))); return;
+        }
+        BigInteger right = Scalar(rightValue), left = Scalar(leftValue);
         var operationType = (IntegerType)expression.Left.Type;
         if ((expression.Operator is TokenKind.Slash or TokenKind.Percent) &&
             (right.IsZero || operationType.IsSigned && left == operationType.Minimum && right == -1))

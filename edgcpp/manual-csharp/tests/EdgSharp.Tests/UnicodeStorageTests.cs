@@ -48,7 +48,7 @@ internal static partial class Tests
 
         ConstantEvaluationResult execution = result.StaticAssertions[0].Evaluation;
         ConstantStorageObject local = execution.StorageObjects.Single(storage => storage.Symbol is { Name: "τιμή" } symbol && symbol.Scope.Kind == ScopeKind.Function && storage.Invocation == 1);
-        Equal(IntegerKind.Char16, local.Type.IntegerKind); Equal(new BigInteger(233), local.Value!.Value);
+        Equal(IntegerKind.Char16, As<IntegerType>(local.Type).IntegerKind); Equal(new BigInteger(233), local.Value!.Value);
         Check(local.IsAlive == false);
         ConstantReferenceBinding alias = execution.ReferenceBindings.Single(binding => binding.Expression.Context == ReferenceBindingContext.Variable);
         Same(local, alias.Object);

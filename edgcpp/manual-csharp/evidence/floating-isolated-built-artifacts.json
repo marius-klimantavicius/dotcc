@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual isolated floating131 output fingerprints",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 1416704,
+      "sha256": "1212b13c915c691cc831a17c7284338564de25e64350eec340290d10b609a7d0"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 269824,
+      "sha256": "af913538047f3ffa82deff83c978b90be4a35a5404b6d630098cfa4120be56a0"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-floating-isolated/EdgSharp.Tests",
+      "bytes": 5639960,
+      "sha256": "40f84c049321c8bb97a7542d7b8859e5fb05c236c5035bd035dabb38eaf97f41"
+    }
+  ]
+}

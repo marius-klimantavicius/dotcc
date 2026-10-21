@@ -1,0 +1,8 @@
+{
+  "purpose": "Actual combined float frontend source hold before serialized validation",
+  "base_commit": "764d67a16",
+  "hold": "Native primary all assigned main src/tests/fixtures and handoff OWNED-FILES HOLD; supervisor held foundation14-file import complete; isolated condition writers disjoint; foundation author read-only",
+  "expected_groups": 164,
+  "foundation_handoff_sha256": "36f43e26121a0401c06210654e82a14a25d8333be381304faa442d996529f234",
+  "integration_handoff_sha256": "f577c73fc7695e5c6e4937718a12e224039e7f16ff24243b563149b23f0e9fc9"
+}

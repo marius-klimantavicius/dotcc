@@ -31,7 +31,7 @@ internal static class ScalarExpressionEffects
                 case SubscriptExpression s: pending.Push(s.SourceRight); pending.Push(s.SourceLeft); break;
                 case PointerArithmeticExpression p: pending.Push(p.Offset); pending.Push(p.Pointer); break;
                 case StringLiteralExpression or ArrayInitializationExpression or SizeOfExpression or DependentSizeOfExpression: break;
-                case LiteralExpression or ReferenceExpression or OverloadSetExpression or UnresolvedFunctionExpression or ErrorExpression: break;
+                case FloatingLiteralExpression or LiteralExpression or ReferenceExpression or OverloadSetExpression or UnresolvedFunctionExpression or ErrorExpression: break;
                 default:
                     // Dispatch a new child's override (e.g. unevaluated sizeof).
                     // The base implementation for an unknown root returns true,
@@ -71,7 +71,7 @@ internal static class ScalarExpressionDependencies
                 case SubscriptExpression s: pending.Push(s.SourceRight); pending.Push(s.SourceLeft); break;
                 case PointerArithmeticExpression p: pending.Push(p.Offset); pending.Push(p.Pointer); break;
                 case StringLiteralExpression or ArrayInitializationExpression or SizeOfExpression: break;
-                case LiteralExpression or OverloadSetExpression or UnresolvedFunctionExpression or ErrorExpression: break;
+                case FloatingLiteralExpression or LiteralExpression or OverloadSetExpression or UnresolvedFunctionExpression or ErrorExpression: break;
                 default:
                     if (!ReferenceEquals(current, expression) && current.IsValueDependent) return true;
                     break;
@@ -226,10 +226,13 @@ public sealed class ConstantAssignmentObservation
     public AssignmentExpression Expression { get; }
     public ConstantStorageObject Object { get; }
     /// <summary>The value stored at this operation, independent of subsequent writes to the cell.</summary>
-    public BigInteger Value { get; }
+    public BigInteger? IntegerValue { get; }
+    public FloatingConstantValue? FloatingValue { get; }
+    public BigInteger Value => IntegerValue ?? throw new InvalidOperationException("This assignment stores a floating value; inspect FloatingValue.");
     public int Invocation { get; }
-    internal ConstantAssignmentObservation(AssignmentExpression expression, ConstantStorageObject storage, BigInteger value, int invocation)
-        => (Expression, Object, Value, Invocation) = (expression, storage, value, invocation);
+    internal ConstantAssignmentObservation(AssignmentExpression expression, ConstantStorageObject storage, ConstantRuntimeValue value, int invocation)
+        => (Expression, Object, IntegerValue, FloatingValue, Invocation) = (expression, storage, value.Integer,
+            value.Floating == null ? null : new FloatingConstantValue(value.Floating), invocation);
 }
 
 internal sealed partial class ConstantInterpreter
@@ -250,7 +253,7 @@ internal sealed partial class ConstantInterpreter
     }
     private readonly List<UnsequencedRegion> unsequenced = [];
     private readonly List<ConstantControlFlowObservation> controlFlow = [];
-    private readonly List<(AssignmentExpression Expression, ConstantCell Cell, BigInteger Value, int Invocation)> assignments = [];
+    private readonly List<(AssignmentExpression Expression, ConstantCell Cell, ConstantRuntimeValue Value, int Invocation)> assignments = [];
     private int CurrentInvocation => calls.TryPeek(out CallFrame? frame) ? frame.Identity : 0;
     private void Observe(Statement statement, ConstantControlFlowKind kind, CallFrame frame)
         => controlFlow.Add(new(statement, kind, frame.Identity));
@@ -296,16 +299,24 @@ internal sealed partial class ConstantInterpreter
     private void Assign(AssignmentExpression expression)
     {
         ConstantCell cell = Location(values.Pop());
-        BigInteger value = Scalar(values.Pop());
+        ConstantRuntimeValue input = values.Pop();
         EnsureAlive(cell);
         if (!cell.Known) Stop(ConstantEvaluationStatus.NotConstant, "Cannot modify an unknown runtime object.");
         if (cell.ReadOnly)
             Stop(ConstantEvaluationStatus.UndefinedBehavior, "Cannot modify const storage.");
         if (!cell.BeganInEvaluation)
             Stop(ConstantEvaluationStatus.NotConstant, "Cannot modify an object whose lifetime began outside this constant evaluation.");
-        if (expression.Operator != TokenKind.Equal)
+        if (expression.OperationType is FloatingType floatingType)
         {
-            IntegerType operationType = expression.OperationType!;
+            ConstantRuntimeValue leftValue = ConvertScalar(LoadScalar(ConstantRuntimeValue.Address(cell)), floatingType);
+            TokenKind op = expression.Operator switch { TokenKind.PlusEqual => TokenKind.Plus, TokenKind.MinusEqual => TokenKind.Minus,
+                TokenKind.StarEqual => TokenKind.Star, TokenKind.SlashEqual => TokenKind.Slash, _ => throw new InvalidOperationException() };
+            input = FloatingOperation(op, FloatingScalar(leftValue), FloatingScalar(input));
+        }
+        else if (expression.Operator != TokenKind.Equal)
+        {
+            BigInteger value = Scalar(input);
+            IntegerType operationType = (IntegerType)expression.OperationType!;
             BigInteger left = TypeTable.ConvertInteger(Load(ConstantRuntimeValue.Address(cell)), operationType);
             if ((expression.Operator is TokenKind.SlashEqual or TokenKind.PercentEqual) &&
                 (value.IsZero || operationType.IsSigned && left == operationType.Minimum && value == -1))
@@ -320,12 +331,12 @@ internal sealed partial class ConstantInterpreter
             };
             if (operationType.IsSigned && (value < operationType.Minimum || value > operationType.Maximum))
                 Stop(ConstantEvaluationStatus.UndefinedBehavior, "Signed integer overflow in compound assignment.");
-            value = TypeTable.ConvertInteger(value, operationType);
+            input = ConstantRuntimeValue.Scalar(TypeTable.ConvertInteger(value, operationType));
         }
+        input = ConvertScalar(input, cell.Type);
         NoteAccess(cell, write: true);
-        value = TypeTable.ConvertInteger(value, cell.Type);
-        cell.Value = value; cell.Initialized = true;
-        assignments.Add((expression, cell, value, CurrentInvocation));
+        StoreScalar(cell, input);
+        assignments.Add((expression, cell, input, CurrentInvocation));
         values.Push(ConstantRuntimeValue.Address(cell));
     }
 

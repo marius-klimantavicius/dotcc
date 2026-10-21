@@ -66,13 +66,13 @@ public enum ReferenceReferentOrigin { Unknown, StaticObject, AutomaticObject, Ca
 /// <summary>
 /// Viable scalar reference conversion before committing initialization. Direct
 /// binding never reads the referred object. Temporary conversion records the
-/// ordinary integral rank, independently from reference-kind/cv tie breakers.
+/// ordinary arithmetic conversion rank, independently from reference-kind/cv tie breakers.
 /// </summary>
 public sealed class ReferenceBinding
 {
     public ReferenceType ReferenceType { get; }
-    public IntegerType SourceType { get; }
-    public IntegerType TargetType => (IntegerType)ReferenceType.ReferredType;
+    public SemanticType SourceType { get; }
+    public SemanticType TargetType => ReferenceType.ReferredType;
     public ValueCategory SourceCategory { get; }
     public ReferenceBindingKind Kind { get; }
     public StandardConversionRank Rank { get; }
@@ -80,7 +80,7 @@ public sealed class ReferenceBinding
     public bool RequiresTemporary => Kind != ReferenceBindingKind.Direct;
     public bool IsDirectBinding => Kind != ReferenceBindingKind.ConvertedTemporary;
     public bool RequiresLValueToRValue => Kind == ReferenceBindingKind.ConvertedTemporary && SourceCategory != ValueCategory.PRValue;
-    internal ReferenceBinding(ReferenceType type, IntegerType source, ValueCategory category, ReferenceBindingKind kind,
+    internal ReferenceBinding(ReferenceType type, SemanticType source, ValueCategory category, ReferenceBindingKind kind,
         StandardConversionRank rank, bool addsQualification)
         => (ReferenceType, SourceType, SourceCategory, Kind, Rank, AddsQualification) =
             (type, source, category, kind, rank, addsQualification);
@@ -191,8 +191,9 @@ internal sealed partial class Parser
 
     private ReferenceBinding? MatchReferenceBinding(Expression source, ReferenceType target)
     {
-        if (source.Type is not IntegerType integer || target.ReferredType is not IntegerType referred) return null;
-        bool related = integer.IntegerKind == referred.IntegerKind;
+        if (!TypeTable.IsArithmetic(source.Type) || !TypeTable.IsArithmetic(target.ReferredType)) return null;
+        SemanticType integer = source.Type, referred = target.ReferredType;
+        bool related = SameArithmeticKind(integer, referred);
         bool isConst = referred.Qualifiers.HasFlag(TypeQualifiers.Const);
         if (related)
         {
@@ -205,11 +206,11 @@ internal sealed partial class Parser
                 source.ValueCategory == ValueCategory.PRValue ? ReferenceBindingKind.MaterializedTemporary : ReferenceBindingKind.Direct,
                 StandardConversionRank.ExactMatch, (referred.Qualifiers & ~integer.Qualifiers) != 0);
         }
-        // Unrelated integer types may copy-convert into a temporary for const
+        // Unrelated arithmetic types may copy-convert into a temporary for const
         // lvalue or rvalue references, including an lvalue source for T&&.
         if (target.ReferenceKind == ReferenceKind.LValue && !isConst) return null;
         return new ReferenceBinding(target, integer, source.ValueCategory, ReferenceBindingKind.ConvertedTemporary,
-            IntegerConversionRank(integer, referred), false);
+            ArithmeticConversionRank(integer, referred), false);
     }
 
     private Expression BindReference(Expression source, ReferenceType target, ReferenceBindingContext context,
@@ -226,9 +227,9 @@ internal sealed partial class Parser
             Fail("REF005", "A reference cannot bind to a void expression.", source.Range);
             return new ErrorExpression(types.Error, source.Range);
         }
-        if (source.Type is not IntegerType || target.ReferredType is not IntegerType)
+        if (!TypeTable.IsArithmetic(source.Type) || !TypeTable.IsArithmetic(target.ReferredType))
         {
-            Unsupported("Only scalar integer reference initialization is implemented.", source.Range);
+            Unsupported("Only arithmetic scalar reference initialization is implemented.", source.Range);
             return new ErrorExpression(types.Error, source.Range);
         }
         ReferenceBinding? binding = selectedBinding ?? MatchReferenceBinding(source, target);

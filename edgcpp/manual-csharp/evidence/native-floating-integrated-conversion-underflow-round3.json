@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-conversion-underflow.cpp",
+  "source_sha256": "d285d0cf11eb3b58fe44e2bfec7c65d711ac5a42004261848f4791d2419119ea",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-conversion-underflow.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-conver\n          sion-underflow.cpp\", line 3: error: expression must have a constant\n          value\n  constexpr float lost = narrow(0x1p-150);\n                         ^\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-conver\n          sion-underflow.cpp\", line 2: note: floating-point conversion failed\n  constexpr float narrow(double value) { return value; }\n                                                ^\n\n\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-conver\n          sion-underflow.cpp\", line 3: warning: variable \"lost\" was declared\n          but never referenced\n  constexpr float lost = narrow(0x1p-150);\n                  ^\n\n1 error detected in the compilation of \"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-conversion-underflow.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

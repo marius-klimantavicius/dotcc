@@ -58,22 +58,26 @@ internal sealed partial class Parser
         }
         if (prototypeAnalysis && (TypeDependent(target) || TypeDependent(value)))
             return new AssignmentExpression(op.Kind, target, Convert(value, target.Type), null, range);
-        if (target.Type is not IntegerType destination)
+        if (!TypeTable.IsArithmetic(target.Type))
         {
             Unsupported("Assignment to this non-scalar destination is not implemented.", target.Range);
             return new ErrorExpression(types.Error, range);
         }
         if (op.Kind == TokenKind.Equal)
-            return new AssignmentExpression(op.Kind, target, Convert(value, destination), null, range);
-        if (value.Type is not IntegerType source)
+            return new AssignmentExpression(op.Kind, target, Convert(value, target.Type), null, range);
+        if (!TypeTable.IsArithmetic(value.Type))
         {
             if (value.Type.Kind is TypeKind.Function or TypeKind.OverloadSet)
                 Unsupported("Function-to-pointer conversions in compound assignment are not implemented.", value.Range);
             else Fail("ASG002", "Integer compound assignment requires an integer source.", value.Range);
             return new ErrorExpression(types.Error, range);
         }
-        IntegerType operationType = types.UsualArithmeticConversions(destination, source);
-        value = Convert(Convert(value, types.Promote(source)), operationType);
+        if ((target.Type is FloatingType || value.Type is FloatingType) && op.Kind is not (TokenKind.PlusEqual or TokenKind.MinusEqual or TokenKind.StarEqual or TokenKind.SlashEqual))
+        { Fail("ASG002", "This compound assignment requires integer operands.", op.Range); return new ErrorExpression(types.Error, range); }
+        SemanticType operationType = types.ArithmeticType(target.Type, value.Type);
+        if (operationType is IntegerType && value.Type is IntegerType source) value = Convert(value, types.Promote(source));
+        value = Convert(value, operationType);
+        if (op.Kind == TokenKind.SlashEqual && operationType is FloatingType) DiagnoseFloatingCompoundZero(value);
         return new AssignmentExpression(op.Kind, target, value, operationType, range);
     }
     private Expression ScanOperand()
@@ -95,6 +99,13 @@ internal sealed partial class Parser
             {
                 Unsupported("Unary plus on pointer operands is not implemented.", token.Range);
                 return new ErrorExpression(types.Error, SourceRange.Cover(token.Range, operand.Range));
+            }
+            if (operand.Type is FloatingType floating)
+            {
+                if (token.Kind == TokenKind.Tilde)
+                { Fail("FLT004", "Bitwise complement requires an integer operand.", token.Range); return new ErrorExpression(types.Error, token.Range); }
+                SemanticType floatingTarget = token.Kind == TokenKind.Bang ? types.Integer(IntegerKind.Bool) : types.Unqualified(floating);
+                return new UnaryExpression(token.Kind, Convert(operand, floatingTarget), floatingTarget, SourceRange.Cover(token.Range, operand.Range), null);
             }
             if (operand.Type is not IntegerType integer)
             {
@@ -134,11 +145,7 @@ internal sealed partial class Parser
             DecodedCharacterLiteral? character = CharacterLiteralDecoder.Decode(token.Spelling, token.Range, options.Target, state.Diagnostics);
             return character == null ? new ErrorExpression(types.Error, token.Range) : new CharacterLiteralExpression(types.Integer(character.Kind), token.Range, character);
         }
-        if (token.Kind == TokenKind.FloatingLiteral && !Lexer.IsValidFloatingSpelling(token.Spelling))
-        {
-            Take(); Fail("LEX011", "Malformed floating literal spelling.", token.Range);
-            return new ErrorExpression(types.Error, token.Range);
-        }
+        if (token.Kind == TokenKind.FloatingLiteral) { Take(); return FloatingLiteral(token); }
         if (Is("true") || Is("false")) { Take(); return new LiteralExpression(types.Integer(IntegerKind.Bool), token.Range, token.Spelling == "true" ? BigInteger.One : BigInteger.Zero); }
         if (token.Kind == TokenKind.Identifier)
         {
@@ -261,6 +268,8 @@ internal sealed partial class Parser
             return new ErrorExpression(types.Error, expression.Range);
         }
         if (target.Kind == TypeKind.Void && expression.Type.Kind == TypeKind.Void) return expression;
+        if (TypeTable.IsArithmetic(expression.Type) && TypeTable.IsArithmetic(target) && (expression.Type is FloatingType || target is FloatingType))
+            return ConvertArithmetic(expression, target);
         if (expression.Type is not IntegerType source || target is not IntegerType destination)
         {
             if (expression.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and conversions of function designators are not implemented.", expression.Range);
@@ -281,8 +290,10 @@ internal sealed partial class Parser
         return new ConversionExpression(expression, unqualified, kind, value);
     }
     private static bool PointerCompatible(PointerType source, PointerType target)
-        => source.PointedToType is IntegerType left && target.PointedToType is IntegerType right &&
-            left.IntegerKind == right.IntegerKind && (left.Qualifiers & ~right.Qualifiers) == 0;
+        => TypeTable.IsArithmetic(source.PointedToType) && TypeTable.IsArithmetic(target.PointedToType) &&
+            SameArithmeticKind(source.PointedToType, target.PointedToType) && (source.PointedToType.Qualifiers & ~target.PointedToType.Qualifiers) == 0;
+    private static bool SameArithmeticKind(SemanticType left, SemanticType right) => (left, right) switch
+    { (IntegerType l, IntegerType r) => l.IntegerKind == r.IntegerKind, (FloatingType l, FloatingType r) => l.FloatingKind == r.FloatingKind, _ => false };
     private static bool IsNullPointerConstant(Expression expression)
     {
         while (expression is ParenthesizedExpression parens) expression = parens.Operand;
@@ -332,6 +343,7 @@ internal sealed partial class Parser
             }
             return new BinaryExpression(op.Kind, left, right, boolean, range, folded);
         }
+        if (left.Type is FloatingType || right.Type is FloatingType) return FloatingBinary(op, left, right, range);
         if (left.Type is not IntegerType lhs || right.Type is not IntegerType rhs)
         {
             if (left.Type.Kind is TypeKind.Function or TypeKind.OverloadSet || right.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and pointer operations are not implemented.", op.Range);
@@ -405,14 +417,22 @@ internal sealed partial class Parser
             else break;
         }
         string suffix = spelling[position..];
-        if (haveDigit && !malformed && suffix.StartsWith('_'))
-        {
-            Unsupported("User-defined integer literal suffixes are not implemented.", token.Range);
-            return new ErrorExpression(types.Error, token.Range);
-        }
         string lower = suffix.ToLowerInvariant();
-        if (suffix.Contains("lL", StringComparison.Ordinal) || suffix.Contains("Ll", StringComparison.Ordinal)) malformed = true;
-        if (lower is not ("" or "u" or "l" or "ul" or "lu" or "ll" or "ull" or "llu")) malformed = true;
+        bool builtinSuffix = lower is "" or "u" or "l" or "ul" or "lu" or "ll" or "ull" or "llu";
+        // lexical.c12826 restores the entire identifier when an additional
+        // suffix character makes this a potential UDL. Mixed ll case is an
+        // invalid builtin spelling only while the whole suffix is builtin-
+        // shaped: lL is invalid, but llL requires literal-operator lookup.
+        if (builtinSuffix && (suffix.Contains("lL", StringComparison.Ordinal) || suffix.Contains("Ll", StringComparison.Ordinal))) malformed = true;
+        if (!builtinSuffix)
+        {
+            if (haveDigit && !malformed && (UnicodeIdentifiers.Analyze(suffix, out _) is not UnicodeIdentifiers.Problem suffixIssue || suffixIssue.Unsupported))
+            {
+                Unsupported("User-defined integer literal suffixes require literal-operator lookup.", token.Range);
+                return new ErrorExpression(types.Error, token.Range);
+            }
+            malformed = true;
+        }
         if (!haveDigit || malformed)
         {
             Fail("LEX010", "Malformed or unsupported integer literal suffix/digit sequence.", token.Range);

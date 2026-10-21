@@ -62,11 +62,11 @@ internal static partial class Tests
             "static_assert(narrow()==4); static_assert(signed_narrow()==-32768); static_assert(bits()==4294967295u); static_assert(!boolean());");
         AllControlAssertions(result);
         AssignmentExpression narrowing = As<AssignmentExpression>(As<ExpressionStatement>(Function(result, "narrow").Body!.Statements[1]).Expression);
-        Equal(IntegerKind.Int, narrowing.OperationType!.IntegerKind); Equal(IntegerKind.UnsignedChar, Kind(narrowing.Type));
+        Equal(IntegerKind.Int, As<IntegerType>(narrowing.OperationType).IntegerKind); Equal(IntegerKind.UnsignedChar, Kind(narrowing.Type));
         Check(narrowing.Target is ReferenceExpression); // destination is not replaced by a copied value
         AnalysisResult mixed = Success("constexpr int f(){short value=1; value+=2L; return value;} static_assert(f()==3);");
         AssignmentExpression wide = As<AssignmentExpression>(As<ExpressionStatement>(Function(mixed, "f").Body!.Statements[1]).Expression);
-        Equal(IntegerKind.Long, wide.OperationType!.IntegerKind); Equal(IntegerKind.Long, Kind(wide.Value.Type));
+        Equal(IntegerKind.Long, As<IntegerType>(wide.OperationType).IntegerKind); Equal(IntegerKind.Long, Kind(wide.Value.Type));
         foreach (string operation in new[] { "value+=1", "value*=2", "value/=-1", "value%=-1" })
         {
             string initial = operation == "value+=1" || operation == "value*=2" ? "2147483647" : "(-2147483647-1)";

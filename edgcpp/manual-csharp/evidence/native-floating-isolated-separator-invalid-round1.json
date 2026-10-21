@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-separator-invalid.cpp",
+  "source_sha256": "8c2b1c20460ccfe909a73d6ef1f3f48c40754e9cfa71f0fdc714dae68c9ed1a5",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-separator-invalid.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-separator-invalid.cpp\", line 3: error: digit separator\n          cannot appear here\n  constexpr double malformed = 1.0e+'1;\n                                    ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-separator-invalid.cpp\", line 3: warning: variable\n          \"malformed\" was declared but never referenced\n  constexpr double malformed = 1.0e+'1;\n                   ^\n\n1 error detected in the compilation of \"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-separator-invalid.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

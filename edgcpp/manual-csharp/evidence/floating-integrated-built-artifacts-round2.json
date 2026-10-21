@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual integrated floating164 finalround2 outputs",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 1495040,
+      "sha256": "1bc9ed06210fbcfb9bfa4dea636dbbb951c81be43bff1742807829d9cfa4c937"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 364544,
+      "sha256": "9d9eccb494e5c1c1147c630b67215dfd3a0ae973630c3eb516d72f2993876c85"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-floating-integrated/EdgSharp.Tests",
+      "bytes": 6067592,
+      "sha256": "91c801cbd3b86e9a48f1dc27845ed5a7a45f3c4f6cbe070b2b3771f49a3a7e3f"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/subnormal-classification.cpp",
+  "source_sha256": "41a93ac3f52c133faf723c017f6586d9b979f40ff42f4c37b94d10ad6f0096ce",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/subnormal-classification.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/subnormal-classification.cpp\", line 1:\n          warning: floating-point value cannot be represented exactly\n  constexpr auto x=0x0.fffffeffffffp-126f;\n                   ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/subnormal-classification.cpp\", line 2:\n          warning: floating-point value cannot be represented exactly\n  constexpr auto y=0x0.fffffffffffff7ffffp-1022;\n                   ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/subnormal-classification.cpp\", line 5:\n          error: static assertion failed with \"floatbelowmaxsub\"\n  static_assert(x >= 0x0.fffffep-126f, \"floatbelowmaxsub\");\n  ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/subnormal-classification.cpp\", line 8:\n          error: static assertion failed with \"doublebelowmaxsub\"\n  static_assert(y >= 0x0.fffffffffffffp-1022, \"doublebelowmaxsub\");\n  ^\n\n2 errors detected in the compilation of \"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/subnormal-classification.cpp\".\n",
+  "expected": "accept",
+  "matched": false
+}

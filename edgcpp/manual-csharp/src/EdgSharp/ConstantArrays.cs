@@ -74,7 +74,7 @@ internal sealed partial class ConstantInterpreter
     }
     private ConstantArray MakeArray(ArrayType type, Symbol? symbol, StringLiteralExpression? literal, IReadOnlyList<uint>? units, CallFrame? frame, bool constantReadable = false)
     {
-        if (type.Length <= 0 || type.ElementType is not IntegerType element) { Stop(ConstantEvaluationStatus.InvalidExpression, "Array storage requires a complete scalar element type."); throw new InvalidOperationException(); }
+        if (type.Length <= 0 || !TypeTable.IsArithmetic(type.ElementType)) { Stop(ConstantEvaluationStatus.InvalidExpression, "Array storage requires a complete scalar element type."); throw new InvalidOperationException(); }
         if (type.Length > options.StringLiteralCodeUnitLimit || (long)steps + type.Length > options.ConstantEvaluationStepLimit)
             Stop(ConstantEvaluationStatus.ResourceLimit, "Array materialization exceeds the constant evaluation resource limit.");
         steps += type.Length;
@@ -83,9 +83,9 @@ internal sealed partial class ConstantInterpreter
         var cells = new ConstantCell[type.Length];
         for (int index = 0; index < cells.Length; ++index)
         {
-            ConstantCell cell = Allocate(element, symbol, symbol, isStatic ? ConstantStorageLifetime.Static : ConstantStorageLifetime.Automatic, readable, frame, beganInEvaluation: !isStatic);
+            ConstantCell cell = Allocate(type.ElementType, symbol, symbol, isStatic ? ConstantStorageLifetime.Static : ConstantStorageLifetime.Automatic, readable, frame, beganInEvaluation: !isStatic);
             cell.Initialized = units != null || isStatic;
-            if (cell.Initialized && readable) cell.Value = TypeTable.ConvertInteger(units != null && index < units.Count ? units[index] : BigInteger.Zero, element);
+            if (cell.Initialized && readable) StoreScalar(cell, ConvertScalar(ConstantRuntimeValue.Scalar(units != null && index < units.Count ? units[index] : BigInteger.Zero), type.ElementType));
             cells[index] = cell;
         }
         var array = new ConstantArray(arrayObjects.Count + 1, type, symbol, literal, cells); arrayObjects.Add(array); return array;

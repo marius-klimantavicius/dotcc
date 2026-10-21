@@ -1,0 +1,68 @@
+{
+  "purpose": "Consulted actual EDG floating frontend branches; not whole-file port coverage",
+  "files": [
+    {
+      "path": "edgcpp/upstream/src/literals.c",
+      "sha256": "de5276f87f073a67bb4b7c6a4cd152a66eab0a155fda84f0d991e3d296213d95",
+      "branches": [
+        "conv_float_literal915\u20131140: type/suffix,decimal/hex range versus inexact diagnostics"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/lexical.c",
+      "sha256": "e987ffcb7645931564f3a6f262d089c21524e78ce2c60d5e0e0868a5b4b98875",
+      "branches": [
+        "scan_number12380\u201312505,12720\u201312891: exponent-marker/UDL restoration and suffix classification"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.c",
+      "sha256": "1b01609700d2a72f64f94e218a3f210e7e9503394bc3cf16168e8a1a50e50812",
+      "branches": [
+        "promoted_float_kind/determine_arithmetic_conversions_full11738\u201311898: floating common type before integral promotions"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/overload.c",
+      "sha256": "62c8b3971d169872985b6855871488690c971455a0ef07773e6f78f335a1c67e",
+      "branches": [
+        "determine_arg_match_level3013ff: promotion/conversion ranking and reference candidates"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/interpret.c",
+      "sha256": "d3f34d737a6690e482942a52a463e406b767a0d5fc06b3609c8cb9c79b27cb4d",
+      "branches": [
+        "typed conversions27360ff, arithmetic28825ff, compound assignment30381\u201330460: typed common operation then destination conversion"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/float_pt.c",
+      "sha256": "ac39be169ec49270b762dc03ed6e41087709fde15698434b2c124f5a383c376a",
+      "branches": [
+        "conv_host_fp_to_float759ff907\u2013915: nonzero finite conversion to zero error; store_host_fp_value1338ff and fp_divide3993\u20134030: IEEE nonfinite result versus overflow and rounding modes"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/folding.c",
+      "sha256": "91fef22e8578541a8f7211ce401b7f15a3acd55aa42bed2815c254237cf045ff",
+      "branches": [
+        "do_fdivide4410\u20134465: IEEE exception config guard separate from interpreter outcome"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/cmd_line.c",
+      "sha256": "77ce3949dffb0fd85a8bca85a33ae590fc2c5b7b7f200b47ff672c35cca8bded",
+      "branches": [
+        "13656 IEEE exception default TARG_HAS_IEEE_FLOATING_POINT;2637 Microsoft profile false"
+      ]
+    },
+    {
+      "path": "edgcpp/upstream/src/expr.c",
+      "sha256": "056f8e7416d6f948846abbe17c3401e9eb4ca8ed1ce0ae7673cd573b314df3c2",
+      "branches": [
+        "31755 nonconstant-left/known-zero binary warning;37850 compound warning; unevaluated-context suppression"
+      ]
+    }
+  ]
+}

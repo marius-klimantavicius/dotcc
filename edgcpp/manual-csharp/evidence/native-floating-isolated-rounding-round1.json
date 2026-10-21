@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-rounding.cpp",
+  "source_sha256": "4f465cf71fe6e111319ec1325a70f910d2ceb8060446d9b8ea1579b5a7f01340",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-floating-rounding.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-rounding.cpp\", line 7: warning: floating-point value cannot\n          be represented exactly\n  static_assert(0x1.ffffffp0f == 2.0f);\n                ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-rounding.cpp\", line 8: warning: floating-point value cannot\n          be represented exactly\n  static_assert(0x1.00000000000008p0 == 1.0);\n                ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-rounding.cpp\", line 9: warning: floating-point value cannot\n          be represented exactly\n  static_assert(0x1.00000000000018p0 == 0x1.0000000000002p0);\n                ^\n\n\"/home/marius/.t3/worktrees/dotcc/t3-95580a51/edgcpp/manual-csharp/fixtures/m1-\n          floating-rounding.cpp\", line 10: warning: floating-point value cannot\n          be represented exactly\n  static_assert(0x1.fffffffffffff8p0 == 2.0);\n                ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

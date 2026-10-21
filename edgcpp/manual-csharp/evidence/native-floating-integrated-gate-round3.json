@@ -1,0 +1,35 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-gate.cpp",
+  "source_sha256": "8b80541559fda23d79c68d3020789b527ea2ff606928bed92658c4aa9e2a1f98",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-gate.h",
+      "sha256": "b0a91fe53af36f762922acc9246299d7a8ab79f8472c74aefefa6f4bf5f0eab7"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-gate.cpp"
+  ],
+  "cwd": "/home/marius/p/dotcc/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/p/dotcc/edgcpp/manual-csharp/fixtures/m4-floating-frontend-gate.c\n          pp\", line 16: warning: variable \"echo\" was declared but never\n          referenced\n    int echo = 0;\n        ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

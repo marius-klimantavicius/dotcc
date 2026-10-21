@@ -17,7 +17,7 @@ public sealed class ConstantStorageObject
     public int? Identity { get; }
     public bool IsKnownObject { get; }
     public int Invocation { get; }
-    public IntegerType Type { get; }
+    public SemanticType Type { get; }
     public Symbol? Symbol { get; }
     public Symbol? UnknownReference { get; }
     public Symbol? LifetimeOwner { get; }
@@ -28,12 +28,16 @@ public sealed class ConstantStorageObject
     public bool? IsReadOnly { get; }
     public bool? LifetimeBeganInEvaluation { get; }
     public BigInteger? Value { get; }
+    public FloatingConstantValue? FloatingValue { get; }
     internal ConstantStorageObject(ConstantCell cell)
-        => (Identity, IsKnownObject, Invocation, Type, Symbol, UnknownReference, LifetimeOwner, Lifetime, IsAlive, IsInitialized, IsConstantReadable, IsReadOnly, Value, LifetimeBeganInEvaluation) =
+    {
+        FloatingValue = cell.Floating == null ? null : new(cell.Floating);
+        (Identity, IsKnownObject, Invocation, Type, Symbol, UnknownReference, LifetimeOwner, Lifetime, IsAlive, IsInitialized, IsConstantReadable, IsReadOnly, Value, LifetimeBeganInEvaluation) =
             (cell.Known ? cell.Identity : null, cell.Known, cell.Invocation, cell.Type,
                 cell.Known ? cell.Symbol : null, cell.Known ? null : cell.Symbol, cell.LifetimeOwner,
                 cell.Lifetime, cell.Known ? cell.Alive : null, cell.Known ? cell.Initialized : null, cell.Readable, cell.Known ? cell.ReadOnly : null, cell.Value,
                 cell.Known ? cell.BeganInEvaluation : null);
+    }
 }
 
 /// <summary>A reference constant designates an object; it is not that object's integer value.</summary>
@@ -52,12 +56,12 @@ public sealed class ConstantReferenceBinding
         => (Expression, Object, Invocation) = (expression, storage, invocation);
 }
 
-internal sealed class ConstantCell(int identity, int invocation, IntegerType type, Symbol? symbol,
+internal sealed class ConstantCell(int identity, int invocation, SemanticType type, Symbol? symbol,
     Symbol? lifetimeOwner, ConstantStorageLifetime lifetime, bool readable, bool? readOnly = null)
 {
     internal int Identity { get; } = identity;
     internal int Invocation { get; } = invocation;
-    internal IntegerType Type { get; } = type;
+    internal SemanticType Type { get; } = type;
     internal Symbol? Symbol { get; } = symbol;
     internal Symbol? LifetimeOwner { get; } = lifetimeOwner;
     internal ConstantStorageLifetime Lifetime { get; } = lifetime;
@@ -70,10 +74,13 @@ internal sealed class ConstantCell(int identity, int invocation, IntegerType typ
     internal bool Initializing { get; set; }
     internal VariableDeclaration? DeferredInitializer { get; set; }
     internal BigInteger? Value { get; set; }
+    internal TargetFloatValue? Floating { get; set; }
 }
 
 internal readonly record struct ConstantRuntimeValue(BigInteger? Integer, ConstantCell? Location)
 {
+    internal TargetFloatValue? Floating { get; init; }
+    internal static ConstantRuntimeValue Float(TargetFloatValue value) => new(null, null) { Floating = value };
     internal ConstantArray? Array { get; init; }
     internal ConstantArrayAddress? Pointer { get; init; }
     internal ConstantArrayAddress? NonObjectLocation { get; init; }
@@ -108,7 +115,7 @@ internal sealed partial class ConstantInterpreter
         work.Push(new EvaluateExpression(expression)); work.Push(new BeginFullExpression());
     }
 
-    private ConstantCell Allocate(IntegerType type, Symbol? symbol, Symbol? owner, ConstantStorageLifetime lifetime,
+    private ConstantCell Allocate(SemanticType type, Symbol? symbol, Symbol? owner, ConstantStorageLifetime lifetime,
         bool readable, CallFrame? frame, bool? readOnly = null, bool beganInEvaluation = false)
     {
         var cell = new ConstantCell(storage.Count + 1, frame?.Identity ?? 0, type, symbol, owner, lifetime, readable, readOnly)
@@ -146,23 +153,13 @@ internal sealed partial class ConstantInterpreter
         return value.Location!;
     }
 
-    private BigInteger Load(ConstantRuntimeValue value)
-    {
-        ConstantCell cell = Location(value);
-        EnsureAlive(cell);
-        if (!cell.Known) Stop(ConstantEvaluationStatus.NotConstant, "The reference designates an unknown runtime object whose value is unavailable.");
-        if (!cell.Initialized) Stop(ConstantEvaluationStatus.UninitializedRead, "Read of an uninitialized object.");
-        if (!cell.Readable) Stop(ConstantEvaluationStatus.NotConstant, "Reading this existing mutable or runtime object is not allowed in a constant expression.");
-        if (!cell.Value.HasValue) Stop(ConstantEvaluationStatus.NotConstant, "The designated object's scalar value is unavailable.");
-        NoteAccess(cell, write: false);
-        return cell.Value!.Value;
-    }
+    private BigInteger Load(ConstantRuntimeValue value) => Scalar(LoadScalar(value));
 
     private static void Store(ConstantSlot slot, ConstantRuntimeValue value)
     {
         if (slot.Object is { } cell)
         {
-            cell.Value = Scalar(value); cell.Initialized = true;
+            StoreScalar(cell, value);
         }
         else
         {
@@ -178,9 +175,9 @@ internal sealed partial class ConstantInterpreter
         bool isStatic = extended && expression.LifetimeOwner?.Scope.Kind == ScopeKind.TranslationUnit;
         ConstantStorageLifetime lifetime = isStatic ? ConstantStorageLifetime.Static : extended
             ? ConstantStorageLifetime.ReferenceVariableTemporary : ConstantStorageLifetime.FullExpressionTemporary;
-        var cell = Allocate((IntegerType)expression.Type, null, expression.LifetimeOwner, lifetime,
+        var cell = Allocate(expression.Type, null, expression.LifetimeOwner, lifetime,
             !isStatic || expression.Type.Qualifiers.HasFlag(TypeQualifiers.Const), frame, beganInEvaluation: !isStatic);
-        cell.Value = Scalar(values.Pop()); cell.Initialized = true;
+        StoreScalar(cell, values.Pop());
         values.Push(ConstantRuntimeValue.Address(cell));
     }
 
@@ -212,7 +209,7 @@ internal sealed partial class ConstantInterpreter
         {
             if (variable.IsParameter)
             {
-                var unknown = new ConstantCell(storage.Count + 1, 0, (IntegerType)((ReferenceType)variable.Type).ReferredType,
+                var unknown = new ConstantCell(storage.Count + 1, 0, ((ReferenceType)variable.Type).ReferredType,
                     symbol, null, ConstantStorageLifetime.Unknown, false) { Known = false };
                 storage.Add(unknown); globals.Add(symbol, new ConstantSlot { Referent = unknown });
                 values.Push(ConstantRuntimeValue.Address(unknown)); return;
@@ -223,10 +220,10 @@ internal sealed partial class ConstantInterpreter
             ScheduleFullExpression(variable.Initializer, new CompleteGlobalReference(slot));
             return;
         }
-        if (variable.Type is not IntegerType integer)
+        if (!TypeTable.IsArithmetic(variable.Type))
         { Stop(ConstantEvaluationStatus.NotConstant, "Only scalar storage is implemented."); return; }
-        bool constant = integer.Qualifiers.HasFlag(TypeQualifiers.Const) && variable.Initializer != null;
-        ConstantCell storageCell = Allocate(integer, symbol, symbol,
+        bool constant = (variable.Type is IntegerType && variable.Type.Qualifiers.HasFlag(TypeQualifiers.Const) || variable.IsConstexpr) && variable.Initializer != null;
+        ConstantCell storageCell = Allocate(variable.Type, symbol, symbol,
             symbol.Scope.Kind == ScopeKind.TranslationUnit ? ConstantStorageLifetime.Static : ConstantStorageLifetime.Automatic, constant, null);
         var scalarSlot = new ConstantSlot { Object = storageCell };
         globals.Add(symbol, scalarSlot);
@@ -261,6 +258,7 @@ internal sealed partial class ConstantInterpreter
             nonObjectBindings.Select(binding => new ConstantNonObjectReferenceBinding(binding.Expression,
                 new ConstantPointerValue(arrays[binding.Address.Array!], binding.Address.Index), binding.Invocation)).ToArray(),
             assignments.Select(assignment => new ConstantAssignmentObservation(assignment.Expression, snapshots[assignment.Cell], assignment.Value, assignment.Invocation)).ToArray(),
-            controlFlow.ToArray());
+            controlFlow.ToArray(), status == ConstantEvaluationStatus.Success && value.Floating is { } f ? new FloatingConstantValue(f) : null,
+            (FloatingEvaluationCondition)floatingConditions);
     }
 }

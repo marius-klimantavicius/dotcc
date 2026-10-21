@@ -45,9 +45,11 @@ public sealed class CompilationSession : IDisposable
     {
         options ??= new AnalysisOptions();
         if (options.Language != LanguageProfile.Cpp20) throw new ArgumentOutOfRangeException(nameof(options), "Only C++20 is implemented as a profile.");
+        if (options.FloatingExceptions is not (FloatingExceptionPolicy.Ieee or FloatingExceptionPolicy.Strict))
+            throw new ArgumentOutOfRangeException(nameof(options), "Unknown floating exception policy.");
         ArgumentNullException.ThrowIfNull(options.Target);
         ArgumentNullException.ThrowIfNull(options.Preprocessing);
-        if (options.ConstantEvaluationStepLimit <= 0 || options.ConstantEvaluationCallLimit <= 0 || options.TemplateInstantiationDepthLimit <= 0 || options.StringLiteralCodeUnitLimit <= 0)
+        if (options.ConstantEvaluationStepLimit <= 0 || options.ConstantEvaluationCallLimit <= 0 || options.TemplateInstantiationDepthLimit <= 0 || options.StringLiteralCodeUnitLimit <= 0 || options.FloatingIntermediateBitLimit is < 64 or > 65536)
             throw new ArgumentOutOfRangeException(nameof(options), "Evaluation and instantiation limits must be positive.");
         Options = options with { Preprocessing = options.Preprocessing.CaptureTranslationTimestamp() };
         types = new TypeTable(options.Target);

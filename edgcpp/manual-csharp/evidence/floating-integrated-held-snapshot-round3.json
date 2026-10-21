@@ -1,0 +1,9 @@
+{
+  "purpose": "Fresh combined defaultIEEE/Strict contextual policy and bounded fold resource source hold",
+  "base_commit": "764d67a16",
+  "round": 3,
+  "hold": "Native primary ALL MAIN OWNED-FILES HOLD afterFLI02/03 repairs; all14 importedfoundation source/test/fixtures unchanged; isolatedconditionand80writers disjoint",
+  "expected_groups": 164,
+  "integration_handoff_sha256": "838568e42834c3224754816804a31e40b33b767c6a9b8f5388dfe240b96d50c8",
+  "foundation_handoff_sha256": "36f43e26121a0401c06210654e82a14a25d8333be381304faa442d996529f234"
+}

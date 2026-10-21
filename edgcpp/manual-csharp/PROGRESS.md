@@ -2,14 +2,15 @@
 
 ## Campaign state
 
-Current accepted main gate: scalar assignment/control-flow plus actual array/
-reference integration,136/136 JIT and Linux-x64 NativeAOT,145-file matching maps.
-Independent final review is evidence/review-controlflow-integration-final.md.
-Primary is held through concise checkpoint commit, then immediately advances to
-real floating type/parser/conversion/storage/evaluator integration. Isolated
-floating foundation author and independent reviewer remain active at Sol/xhigh.
-Supervisor owns all validation/Git/ledgers; source writers never build or commit.
-Full PLAN remains ongoing; partial milestones are never stopping boundaries.
+Current accepted main gate: actual float/double frontend integration164/164 JIT
+and Linux-x64 NativeAOT, four matching175-file maps and10exactnativefixtures.
+Independent final review: evidence/review-floating-integration-final.md. Primary
+is held through concise checkpoint, then advances automatically to actual
+condition-header additive integration preserving all164. Isolated condition
+author/reviewer are repairing resource taxonomy after149JIT passes; binary80
+author/reviewer continue independent numerical module qualification. All actual
+implementation/review agents use requested Sol/xhigh. Supervisor owns serialized
+validation/Git/ledgers. Full PLAN remains ongoing; no checkpoint stopping boundary.
 
 Accepted scalar overloads separate ordered name bindings from canonical entities;
 early template/constexpr paths preserve cached-token rescanning and explicit
@@ -928,3 +929,129 @@ Floating independent reviewer round1 exact task:
 `node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-floating-isolated-review-r1-20261021`.
 Provisional FLT-01 decimal exponent/UDL suffix taxonomy routed to active author
 for source-backed repair/direct tests; no held execution or acceptance yet.
+
+Accepted136 checkpoint committed764d67a16; three accepted outputs retained and
+SHA-verified under bin/checkpoints/764d67a16 before later builds. Primary released
+actual floating frontend central integration; native reviewer reassigned actual
+produced-code review, while separate numerical author/reviewer continue isolated.
+
+Independent required condition-header implementation launched Sol/xhigh worktree
+from accepted764d67a16, exact task:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-condition-headers-isolated-20261021-r1`.
+Owns isolated structured-header parser/graph/work/cleanup plus dedicated tests/
+fixtures/handoff; no floating/Unicode/PP/string/provider paths, no execution/Git.
+Selection init and if/while/for condition declarations require actual per-test
+activation cleanup and for-condition survival through increment. Early contract
+and later additive typed-cell-preserving merge required; base136 remains intact.
+
+Condition-header author early path is /home/marius/.t3/worktrees/dotcc/t3-0bfb1fe8,
+branch t3/condition-header-scopes base764d67a16. Early ControlHeader contract
+persisted; no new numeric/store assumptions and no ConstantStorage edits intended.
+Independent actual source reviewer launched Sol/xhigh, exact task:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-condition-headers-isolated-review-20261021-r1`.
+Sole write review-condition-headers-isolated-round1.md; actual held-byte/execution
+audit required later. Main floating central author is active independently.
+
+Floating foundation freshHOLD SHA36f43e26121a0401c06210654e82a14a25d8333be381304faa442d996529f234
+verified15nonselffiles; all16ownedpaths frozen/terminal after actualFLT01repair
+and rootFLT02qualification. Isolated Release0warnings/errors, JIT+AOT131/131,
+four125-file identical/current maps and3 actual output fingerprints executed.
+Eleven authorednativeproposals:9matched (5accept0/4reject2),2excluded native2
+expectedaccept: builtin bit_cast unavailable and subnormal carry-defect fixture.
+Six exploratory subnormal mismatches remain excluded separately. Exact numerical
+nearest exception and rationalproof are in floating-subnormal-qualification.md.
+Independent actual source/evidence closure active; no main frontend acceptance.
+
+Condition-header CHR1-01 actual redeclaration check visible at isolated
+ScalarControlFlow.cs248–249; direct heldexecution stillpending. Four headerref
+expectedaccept/nativeexpiredstorage mismatches plus ordinaryref/existingref
+positivecontrols establish narrow rootauthorized lifetimeexception, documented
+in condition-reference-lifetime-qualification.md with source/N4861 basis. Correct
+pertesttemporaryowner throughbody/increment required, danglingafterexit rejected.
+No native-parity/general lifetime claim; workers still active in isolation.
+
+Floating foundation author retained on READ-ONLY binary80 next-module analysis
+while final review closes; every16held authored path remains unchanged. Exact
+followup task metadata will be retained from orchestration response. Proposed
+next actual work must preserve32/64 contracts and explicit80-bit payload versus
+16-byte target storage; no longdouble=double adaptation or host arithmetic.
+
+Binary80 read-only continuation exact task:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-floating-binary80-readonly-next-20261021`.
+No held source/handoff edits authorized.
+
+Main floating firstheldintegration executes164/164 JIT and NativeAOT with
+warning-free Release, four identical170-file maps. All136 old groups,19 numeric
+and9 actualfrontend groups pass. Finite newly nativeconfirmed FLI01mixedsuffix
+classification requires narrow primaryrelease IntegerLiteral/frontendtests:
+1llL is integerUDL accept0,1lL rejectsinvalidsuffix2 (disprovedacceptprediction
+retained/excluded). No numericalfoundationchange; freshhold+round2required.
+
+Actual isolatedbinary80implementation launched exactfollowup:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-floating80-implementation-20261021-r1`.
+New80value/decoder/test/fixture/handoff paths plusadditiveProgramonly; existing
+32/64numericmodules/tests/handoffstayunchanged. Beforethisreleaseall125accepted
+source/data/tools+handoff+3outputs retained129files (retained-floating-isolated-131).
+Explicit80variant/longdoublefrontendintegration remains required separately.
+
+FLI02 default-policy finding blocks164finalacceptance despite round2allgreen:
+pinnednative divisionzero/NaN operations accept0, prior expectedreject mismatch
+retained. Rootrequires immutableexplicit selectedIEEEprofile default plusstrict
+selectablemode, actualflags/values/warnings/contextseparate; primaryreleasedactual
+repair. Finite arithmeticoverflow/nonfinite→int stillreject; nonzero-underflow
+roundedzero arithmetic/conversionreject2, while nonzero tinyinexactand literal
+underflowzeroaccept. Exactpairednativecontrolsallretained; nativeIEEEpolicyis
+notabug/adaptation. Sourceinventoryexpanded8consultedfiles. Freshround3required.
+
+Binary80 earlyAPIhand-off nowpersisted in sameisolatedt3-95580a51: immutable
+ushortSignExponent/ulongSignificand, canonicalnumericversusrawinvalidencodings,
+independentflags/resource/explicitlayout, Ldecoder; existing32/64modulesunchanged.
+Freshindependentreview actualsource launched exacttask:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-floating80-isolated-review-20261021-r1`.
+Solemainreviewreportwrite, noexecutions/Git; eventualheldsnapshotreceiptsrequired.
+
+Condition author ALL24OWNEDFILES HOLD received;23nonselfhashes verified, final
+handoffSHA f47c9091e0780cc7918aa1331abec879620daaa981f0ccaea0285d0eb41f64d0.
+Isolated expected149 registeredgroups; Releasequalification startedserialized,
+mainFPpolicywriterdisjoint. CHR1-01..05actualsource/testresponses remain pending
+executed closure;16nativeproposals7ordinarypositive/8negative/1knownheaderref
+exception testedlater, no nativeexpectationapproval neededbefore sourcefreeze.
+
+Binary80native boundary9probesrecorded: belowcrossover becomeszero(accept0),
+abovehalfmin becomesminsub(accept0);7disproved equality/classification expectations
+retainedexcluded. ExplicitJbranchdifferentlylosesvalue, notold32/64halfvalue;
+independentreviewertracingsource, no automaticpolicyexception. Numerical80
+correctnearesttests remain required, FP80-01foreignformatbudgettaxonomy actual
+source repair routed, modulewriter active.
+
+ConditionfirstheldReleaseclean/JIT148pass1fail: combined nondependentconstchar16
+referenceheaderinsidefunctiontemplate hit old blanket InTemplateScope guard.
+Historicalreceiptretained; noAOTclaimed. RootauthorizedReferences.cs minimal
+local/headercontextallowance keepingrecursive dependent/signaturerefUnsupported.
+Exactrepairfollowup:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-condition-execution-local-ref-gap-condition_headers_task-20261021`.
+Actualfix+expandedmanifest/freshHOLDrequired, samecombinedfixture preserved.
+
+Separatebinary80numericalexception rootauthorized forpositivelywitnessedbelow
+boundarynativezero versuscorrectlargestsubnormal. qualificationdocpreserves
+exactrationalproofandconditionalrawJ/exponentinference, explicitlyNOTa proved
+SPLITexecutionroute/ordinaryzero classification. Sevenfailednativehypotheses
+excluded; directmanagedbit/flag/rationaltestsrequiredbeforeacceptance.
+
+Final mainfloating round3 independentlyaccepted: Release0warnings/errors,
+JIT+AOT164/164no skips, fouridenticalCURRENT175-file maps,3artifacts/9sourcehashes,
+14unchangedfoundationimports and10native6accept0/4reject2matches verified. FLI01
+suffixsplit, FLI02selectedIEEE/Strict/contextseverity+decimal/hexunderflow and
+FLI03incrementalboundedmemo resource fix closed. Historicalwrongexpectations
+retainedexcluded, no broaderparity. SUPPORT/FLOATING/inventory/correspondence
+reconciled; checkpoint then automaticnextactual work, no extra user/root gate.
+
+Conditionround2 Release/JIT149/149clean with162currentmapfiles afterCHR106.
+Primaryread-only integration review found actual narrowingResourceLimit wrongly
+Unsupported; narrowauthorrepairfollowup nowactive exacttask:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-condition-narrowing-resource-repair-20261021`.
+FreshHOLD/rerun+AOT/nativeclosure required; no isolatedacceptance yet.
+Binary80 familyqualificationrefresh exacttask:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-floating80-family-qualification-repair-20261021`.
+Rootauthorizes conceptual p64conversioncell exception only, no inferredobserved
+rawbits/zero-causalroute. Actualtests/endpoints+freshHOLD required beforeexec.

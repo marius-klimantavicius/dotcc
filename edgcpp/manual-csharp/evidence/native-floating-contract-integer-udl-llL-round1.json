@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/integer-udl-llL.cpp",
+  "source_sha256": "f7c1cf9df30796b42a20f519fdc93edb5dbb68a1b20123cd113d9657be7c0e99",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-floating-contracts/integer-udl-llL.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-floating-contracts/integer-udl-llL.cpp\", line 1: warning:\n          a user-provided literal suffix must begin with \"_\"\n  constexpr unsigned long long operator \"\"llL(unsigned long long){return 7;}\n                                        ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

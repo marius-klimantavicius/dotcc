@@ -25,7 +25,7 @@ public sealed class StandardConversionSequence
     public StandardConversionRank Rank { get; }
     public ReferenceBinding? ReferenceBinding { get; }
     public SemanticType ParameterType => ReferenceBinding is { } binding ? binding.ReferenceType : TargetType;
-    internal StandardConversionSequence(IntegerType source, IntegerType target, bool lvalue, StandardConversionRank rank)
+    internal StandardConversionSequence(SemanticType source, SemanticType target, bool lvalue, StandardConversionRank rank)
         => (SourceType, TargetType, RequiresLValueToRValue, Rank) = (source, target, lvalue, rank);
     internal StandardConversionSequence(ReferenceBinding binding)
         => (SourceType, TargetType, RequiresLValueToRValue, Rank, ReferenceBinding) =
@@ -79,7 +79,7 @@ internal sealed partial class Parser
             {
                 if (type.ParameterTypes[i] is not TemplateParameterType parameter) continue;
                 SemanticType actualType = arguments[i].Type is ArrayType array ? types.Pointer(array.ElementType) : arguments[i].Type;
-                if (actualType is not (IntegerType or PointerType))
+                if (actualType is not (IntegerType or FloatingType or PointerType))
                     return new OverloadCandidate(function, CandidateRejectionReason.DeductionFailure, []);
                 SemanticType actual = types.Unqualified(actualType);
                 if (deduced[parameter.Index] is SemanticType previous && !ReferenceEquals(previous, actual))
@@ -122,10 +122,10 @@ internal sealed partial class Parser
                 conversions[i] = new StandardConversionSequence(binding);
                 continue;
             }
-            if (argument.Type is not IntegerType source || type.ParameterTypes[i] is not IntegerType target)
+            if (!TypeTable.IsArithmetic(argument.Type) || !TypeTable.IsArithmetic(type.ParameterTypes[i]))
                 return new OverloadCandidate(function, CandidateRejectionReason.ArgumentConversion, []);
-            conversions[i] = new StandardConversionSequence(source, target,
-                argument.ValueCategory != ValueCategory.PRValue, IntegerConversionRank(source, target));
+            conversions[i] = new StandardConversionSequence(argument.Type, type.ParameterTypes[i],
+                argument.ValueCategory != ValueCategory.PRValue, ArithmeticConversionRank(argument.Type, type.ParameterTypes[i]));
         }
         return new OverloadCandidate(function, CandidateRejectionReason.None, conversions, type, templateArguments);
     }
@@ -150,18 +150,18 @@ internal sealed partial class Parser
     {
         int rank = left.Rank.CompareTo(right.Rank);
         if (rank != 0) return rank;
-        if (left.TargetType is PointerType lp && right.TargetType is PointerType rp && lp.PointedToType is IntegerType li && rp.PointedToType is IntegerType ri && li.IntegerKind == ri.IntegerKind)
+        if (left.TargetType is PointerType lp && right.TargetType is PointerType rp && SameArithmeticKind(lp.PointedToType, rp.PointedToType))
         {
-            if (li.Qualifiers == ri.Qualifiers) return 0;
-            if ((li.Qualifiers & ~ri.Qualifiers) == 0) return -1;
-            if ((ri.Qualifiers & ~li.Qualifiers) == 0) return 1;
+            if (lp.PointedToType.Qualifiers == rp.PointedToType.Qualifiers) return 0;
+            if ((lp.PointedToType.Qualifiers & ~rp.PointedToType.Qualifiers) == 0) return -1;
+            if ((rp.PointedToType.Qualifiers & ~lp.PointedToType.Qualifiers) == 0) return 1;
         }
         // Immediate reference cv is not a qualification-conversion subsequence.
         if (left.ReferenceBinding is not { } l || right.ReferenceBinding is not { } r) return 0;
         // Strict Core1374 ordering: reference kind/category before immediate cv.
         if (l.ReferenceType.ReferenceKind != r.ReferenceType.ReferenceKind)
             return l.ReferenceType.ReferenceKind == ReferenceKind.RValue ? -1 : 1;
-        if (l.TargetType.IntegerKind != r.TargetType.IntegerKind) return 0;
+        if (!SameArithmeticKind(l.TargetType, r.TargetType)) return 0;
         TypeQualifiers lq = l.TargetType.Qualifiers, rq = r.TargetType.Qualifiers;
         if (lq == rq) return 0;
         if ((lq & ~rq) == 0) return -1;

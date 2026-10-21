@@ -167,3 +167,14 @@ upstream files; retained source-strings.json has9 (10 distinct files in union).
 CF-R1-01..03 and CFI-01 closure is recorded in the final integration review.
 Finite stricter scalar sequencing is explicitly qualified, not native parity.
 Full control-flow/object/template/language/product coverage remains required.
+
+
+Actual float/double frontend integration is independently accepted164/164 JIT/AOT
+with175-file matching maps,3artifacts and10exact native fixtures6accept0/4reject2.
+FLOATING.md maps literals/common arithmetic/ranking/typed storage and selected
+IEEE context policies; source-floating-integration.json fingerprints9consulted
+files, while accepted numerical handoff separately fingerprints13 source/config
+inputs. Explicit rational algorithms and the narrow pinned32/64hexexception
+remain documented adaptations. Bounded optional child-fact memo preserves actual
+interleaved semantic folding without prefix replay or session AST retention.
+Longdouble/other formats, full diagnostics and remaining PLAN branches are open.

@@ -16,6 +16,8 @@ public sealed class TargetInfo
     public int LongBits => 64;
     public int LongLongBits => 64;
     public int PointerBits => 64;
+    public int FloatBits => 32;
+    public int DoubleBits => 64;
     public bool PlainCharIsSigned => true;
     public int WCharBits => 32;
     public bool WCharIsSigned => true;
@@ -27,6 +29,8 @@ public sealed class TargetInfo
 }
 
 public enum LanguageProfile { Cpp20 }
+/// <summary>IEEE exceptional arithmetic follows the pinned target default; Strict rejects invalid/zero-divisor operations during constant evaluation.</summary>
+public enum FloatingExceptionPolicy { Ieee, Strict }
 public sealed record AnalysisOptions
 {
     public LanguageProfile Language { get; init; } = LanguageProfile.Cpp20;
@@ -35,10 +39,12 @@ public sealed record AnalysisOptions
     public int ConstantEvaluationCallLimit { get; init; } = 128;
     public int TemplateInstantiationDepthLimit { get; init; } = 64;
     public int StringLiteralCodeUnitLimit { get; init; } = 1000000;
+    public int FloatingIntermediateBitLimit { get; init; } = 32768;
+    public FloatingExceptionPolicy FloatingExceptions { get; init; } = FloatingExceptionPolicy.Ieee;
     public PreprocessingOptions Preprocessing { get; init; } = new();
 }
 
-public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent, Reference, Array, Pointer }
+public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent, Reference, Array, Pointer, Floating }
 public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong, WChar, Char8, Char16, Char32 }
 [Flags] public enum TypeQualifiers { None = 0, Const = 1 }
 
@@ -131,12 +137,12 @@ internal sealed partial class TypeTable
     internal IntegerType Integer(IntegerKind kind, TypeQualifiers qualifiers = 0) => integers[(kind, qualifiers)];
     internal SemanticType Unqualified(SemanticType type) => type switch
     {
-        IntegerType i => Integer(i.IntegerKind), TemplateParameterType p => p.UnqualifiedType,
+        IntegerType i => Integer(i.IntegerKind), FloatingType f => Floating(f.FloatingKind), TemplateParameterType p => p.UnqualifiedType,
         PointerType p => Pointer(p.PointedToType), ArrayType a => Array(Unqualified(a.ElementType), a.Length), _ => type
     };
     internal SemanticType Const(SemanticType type) => type switch
     {
-        IntegerType i => Integer(i.IntegerKind, TypeQualifiers.Const), TemplateParameterType p => p.ConstType,
+        IntegerType i => Integer(i.IntegerKind, TypeQualifiers.Const), FloatingType f => Floating(f.FloatingKind, TypeQualifiers.Const), TemplateParameterType p => p.ConstType,
         PointerType p => Pointer(p.PointedToType, TypeQualifiers.Const), ArrayType a => Array(Const(a.ElementType), a.Length), _ => type
     };
     internal FunctionType Function(SemanticType result, IEnumerable<SemanticType> parameters)

@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual finalround3 floating164 defaultIEEE/Strict policy and boundedmemo outputs",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 1500160,
+      "sha256": "0bf1679eb777587b1f499f2c55e68847ef6141bbd9dbd3df14dd57f0e10ed79d"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 372224,
+      "sha256": "5ed90d8a281c9bfd92b07c4a8e48ee525897c9430d2c4659bf15ad7c353aa554"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-floating-integrated/EdgSharp.Tests",
+      "bytes": 6117592,
+      "sha256": "2e7182c6955c3907b6797a4762ff392639e8695bcf69e768d08db18d8ef9ba95"
+    }
+  ]
+}

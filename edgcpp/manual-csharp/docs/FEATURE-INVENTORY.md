@@ -46,7 +46,7 @@ Source guides: `lex_pp.rst`, `includes.rst`; `lexical.c`, `preproc.c`, `macro.c`
 | --- | --- | --- | --- |
 | M1.1 | Owned buffers, physical positions, retained token intervals | accepted slice | Exact ASCII token spelling/kind/UTF-16 range tests, CR/LF/CRLF, stable EOF; preserve these through macros/includes/replay |
 | M1.2 | Encoding and translation phases | partial | 112-group gate covers real-context raw phase restoration, explicit source/execution metadata, Unicode17 scalar/UCN identity and strict opt-in UTF8/BOM UTF16; legacy/native/dialect encoding branches remain required |
-| M1.3 | Full literal lexing and values | partial | Bounded character and real string/raw/prefixed target units, post-PP concatenation, terminator/encoding/value diagnostics pass120-group gate; floating/UDL/dialect/legacy branches remain required, including explicit native-crashing ordinary+UTF8 numeric rescan gap |
+| M1.3 | Full literal lexing and values | partial | Bounded character and real string/raw/prefixed target units, post-PP concatenation, terminator/encoding/value diagnostics pass120-group gate; float/double numerical and frontend integration passes164-group gate; longdouble/extended/UDL/dialect/legacy branches remain required, including explicit native-crashing ordinary+UTF8 numeric rescan gap |
 | M1.4 | Object-like macros, suppression and rescanning | partial | Strict-profile nesting/inertness/caller-tail/provenance and Unicode canonical macro identity with separate effective/raw spelling pass; broader configured dialect/corpus qualification remains |
 | M1.5 | Function-like/variadic macros and operators | partial | Lazy raw/expanded args, #/##/placemarkers/VA_OPT and full 32-label upstream matrix pass; Unicode argument/replacement/paste timing has exact native controls; complete dialect/configured branch qualification remains, including explicit native unused malformed-raw laziness bound |
 | M1.6 | Include processing and search configuration | partial | Configured in-memory/structured opt-in Linux-x64-glibc provider search, separate probe/read caches/errors, guards/once, limits, strict decoding and retained activation origins pass; other hosts/encodings and real headers remain unqualified |
@@ -62,7 +62,7 @@ Source guides: `decls.rst`, `symbol_tbl.rst`, `expr.rst`, `statements.rst`, `il.
 | ID | Required task / current bounds | State | Concrete acceptance / remaining evidence |
 | --- | --- | --- | --- |
 | M2.1 | Integer/void/const types and canonical entities | accepted slice | Current aliases, scalar widths/ranks, prototype-definition identity and source declarations pass; preserve identity while expanding types |
-| M2.2 | Complete fundamental type/qualifier/declarator forms | partial | Floating/extended types, volatile/restrict/atomic dialect rules, pointers/references/arrays/function/member types, compound/multiple declarators and invalid forms |
+| M2.2 | Complete fundamental type/qualifier/declarator forms | partial | Float/double types are accepted within164-group bounds; longdouble/extended types, volatile/restrict/atomic dialect rules, pointers/references/arrays/function/member types, compound/multiple declarators and invalid forms |
 | M2.3 | Scope/lookup source order | partial | Current lexical nearest binding/shadowing; extend namespaces, using directives, qualified/elaborated lookup, linkage, tags, active/inactive/other symbol distinctions and declaration sequence |
 | M2.4 | Function declarations and parameter forms | partial | Defaults, variadics, storage/linkage/qualifiers, block-scope declaration semantics, `main` special rules, matching redeclarations and source ranges |
 | M2.5 | Expressions, categories and conversion graph | partial | Current integer arithmetic/comparison/bitwise/unary/calls/logical, simple/arithmetic/bitwise assignment, bounded array decay/subscript/pointer offsets and sizeof pass136-group gate; shifts/increments/conditional/comma, general casts/pointers/member access, alignof/typeid and every new category/conversion remain required |
@@ -78,7 +78,7 @@ Source guides: `class_decl.rst`, `expr.rst`, `decls.rst`; `overload.c`,
 | ID | Required task / current bounds | State | Concrete acceptance / remaining evidence |
 | --- | --- | --- | --- |
 | M3.1 | Ordered scalar free-function overload sets | accepted slice | Separate binding/entity identity, frozen candidates and scalar comparison pass 35-group suite/native witnesses; full M3 branches remain below |
-| M3.2 | Complete standard conversion sequences | partial | 95-group integration covers scalar reference viability/rank/kind/cv and ambiguity with exact native witnesses; pointer/member/floating/null/deep qualification/class/UDC branches remain required; no summed heuristics |
+| M3.2 | Complete standard conversion sequences | partial | 95-group integration covers scalar reference viability/rank/kind/cv and ambiguity with exact native witnesses; float/double promotion/conversion and reference/array/call integration pass164; remaining pointer/member/extended-floating/null/deep qualification/class/UDC branches remain required; no summed heuristics |
 | M3.3 | Lvalue/rvalue references and cv binding | partial | Scalar const/lvalue/rvalue/temporary/alias-collapse/category/owner/invalid controls pass managed+AOT; volatile, compound/class/dependent reference forms and full lifetime semantics remain required |
 | M3.4 | Records/classes/member lookup | open | Class scopes, fields, member functions, access/static members, complete/incomplete types, qualified/hidden members, identity and graph assertions |
 | M3.5 | Constructors and initialization overloads | open | Direct/copy/list/aggregate candidate phases, explicit/deleted/defaulted functions, initializer-list preference and invalid narrowing controls |
@@ -97,10 +97,10 @@ Source guides: `templates.rst`, `expr.rst`; `templates.c`, `overload.c`,
 | M4.1 | N1 direct checkpoint branch regressions | accepted slice | Nested/outer definition links/current function, null/original identities, stale/cross-state paths and overload membership restoration pass managed/AOT; each new replay state needs branch checks |
 | M4.2 | Function template declarations and dependent entities | partial | Real template parameter/type/operand variants, definition-time nondependent analysis including unused-template errors; unsupported recipe forms never success placeholders |
 | M4.3 | Retained token body caches and rescanning | partial | Preserve exact body tokens/source, scope activation/restoration and nested replay EOF; instantiate by rescanning with substitutions, no generated/native frontend |
-| M4.4 | By-value deduction and instance identity | partial | int/long distinct instances, repeated parameter conflicting deduction failure, canonical argument-keyed caching, no arithmetic promotions during deduction |
+| M4.4 | By-value deduction and instance identity | partial | int/long/float/double distinct instances, repeated parameter conflicting deduction failure, canonical argument-keyed caching, no arithmetic promotions during deduction |
 | M4.5 | Definition/instantiation lookup contexts | partial | Earlier helper overload set frozen for nondependent calls despite later declarations and caller locals; dependent lookup/ADL exercised as supported forms arrive |
 | M4.6 | Template overload participation | partial | Viability/deduction failure and template-vs-nontemplate tie, ambiguity controls and later template partial ordering; inspect actual selected instance |
-| M4.7 | Real constexpr execution | partial | Explicit evaluator work/call/local state plus scalar storage/reference locations, explicit loads, temporary/frame cleanup, original typed initializer replay and unknown-address transport; logical short circuit;102/102 JIT/AOT with independent review. General objects/pointers/classes/control flow and complete interpreter branches remain required; optional folding is not execution |
+| M4.7 | Real constexpr execution | partial | Explicit evaluator work/call/local state plus scalar storage/reference locations, explicit loads, temporary/frame cleanup, original typed initializer replay and unknown-address transport; logical short circuit and bounded scalar/array structured control plus typedfloat/double cells/policies pass164/164 JIT/AOT with independent review. General objects/pointers/classes/remaining control flow and complete interpreter branches remain required; optional folding is not execution |
 | M4.8 | Constant-required contexts | partial | Instantiated constexpr call used in static_assert/constant-required declaration, true/false/nonconstant/invalid controls and actual computed graph fact |
 | M4.9 | Early difficult-path integrated acceptance | accepted slice | Combine declaration/cache/deduction/rescan/overload/definition-context lookup/constexpr in header-free source, distinct instances and failure controls; independent review+native witness |
 | M4.10 | General templates, specialization and constraints | open | Class/variable/alias/member templates, packs, defaults, explicit instantiation/specialization, partial ordering/specialization, SFINAE/constraints/concepts; tracked separately from simple deduction |
@@ -117,7 +117,7 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | M5.3 | Lambdas/local classes/captures | open | Capture lookup/lifetimes, generic/mutable/constexpr lambdas, call operators and conversion rules; source and selected entities retained |
 | M5.4 | Templates/constraints/constexpr breadth | open | Complete M4.10 branches, dependent semantic recipes, constant evaluation of objects/control flow/all supported standard contexts, diagnostics/limits |
 | M5.5 | C++ initialization/deduction breadth | open | auto/decltype/CTAD, structured bindings, aggregate/list/designated forms, deduction guides and invalid controls by pinned dialect |
-| M5.6 | Target layout and numerical models | partial | Existing fixed LP64 integer widths only; alignment/layout/bitfields/endian, pointer/member representation, floating formats/rounding/conversions and alternate target fixtures |
+| M5.6 | Target layout and numerical models | partial | Fixed LP64 plus binary32/64 payload/arithmetic/conversion and selected floating exception policies accepted; extended formats, alignment/layout/bitfields/endian, pointer/member representation, alternate rounding/target fixtures remain required |
 | M5.7 | Attributes, pragmas and vendor extensions | open | Inventory each pinned extension/configuration branch; handwritten semantic handling with target/dialect fixture, no silent ignore counted support |
 | M5.8 | Coroutines | open | Promise/await/yield/return lookup, transformation facts/lifetimes and invalid controls as required by pinned C++ surface |
 | M5.9 | Modules/header units/PCH state | open | Module visibility/ownership/import/serialization boundaries, cycles/invalid imports and profile-specific tests; retained caches must not share session mutation |
@@ -134,7 +134,7 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | M6.2 | Session lifecycle and concurrency | partial | Existing independent/concurrent sessions; repeated real-header/template analyses with live session and discarded old results, WeakReference/retained-memory checks against dependent-signature scope leaks; cancellation safe points and stress/race checks |
 | M6.3 | Recovery and diagnostic quality | partial | Existing bounded recovery and invalid/Unsupported distinctions; managed extra named-reference hazard warnings are deliberate non-parity. Full recovery, diagnostic compatibility/suppression/speculation, cascade limits, source notes and malformed termination remain required |
 | M6.4 | Explicit resource limits | open | Depth/token/include/expansion/template/constexpr work and memory budgets, cancellation/failure outcomes, bounded adversarial fixtures and cleanup; no process crash counted diagnosis |
-| M6.5 | NativeAOT and platform qualification | partial | Current120-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
+| M6.5 | NativeAOT and platform qualification | partial | Current164-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
 | M6.6 | Performance/resource measurements | open | Reproducible startup/throughput/allocations/retained-memory on representative headers/projects with baseline and profile; optimize only under semantic parity tests |
 | M6.7 | Regression/differential corpus qualification | open | Preserve upstream fp/fn/cp/lp/rp case kinds, per-case //options and TEST_NUMBER; parser acceptance qualifies only frontend fp/fn stages, never compile/link/runtime stages. Explicit expected language exit/status+diagnostics, semantic witnesses, inventory/pass/fail/skip and malformed/adversarial provenance |
 | M6.8 | Upstream update procedure | open | Rehash/diff routine+configuration baseline, identify impacted invariants and fixtures, run actual update rehearsal with regression receipts and reviewed correspondence changes |
@@ -191,3 +191,21 @@ parallel binary32/64 numerical foundation is actively authored in its isolated
 worktree and is not yet accepted frontend support. Long double remains required.
 Next independent control-flow branch: condition declarations/selection initializers
 with actual activation owners, then switch/range-for/if-constexpr/labels/goto.
+
+## Current dispatch after actual floating integration
+
+Main float/double integration is independently accepted164/164 JIT/AOT, four
+current175-file maps,3artifacts,9consulted-sourcehashes and10nativefixtures
+6accept0/4reject2. FLI01suffix taxonomy, FLI02explicitselectedIEEE/Strict/context
+policy and FLI03boundedchild-factmemo/resourceclosure are reviewed. This does
+not close any remaining full-plan row or promote optional diagnostics to full
+parity. The standalone131 foundation gate remains separate evidence.
+
+Next primary: additive condition-header/scoped-initializer integration preserving
+all164, same-cell floating types, references, cleanup and error provenance.
+Isolated149 gate has template-local ref repair passing JIT; resource classification
+repair and complete AOT/native/independent closure remain required before
+acceptance. Parallel explicit binary80 module is authored/reviewed, not production
+longdouble support; its separate native numerical exception is scoped and pending
+actual held execution. Subsequent real80 frontend integration and every other
+M1–M6 partial/open branch above remain required.

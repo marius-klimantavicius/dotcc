@@ -203,7 +203,7 @@ internal static partial class Tests
             AnalysisResult invalid = Analyze("int value=" + spelling + ";");
             Check(!invalid.IsSuccess && !invalid.ContainsUnsupportedFeatures && invalid.Diagnostics.Any(d => d.Code is "LEX030" or "LEX031"), spelling);
         }
-        foreach (string source in new[] { "int value=U'\\é';", "int value=U'\\N{LATIN CAPITAL LETTER A}';", "int value=u'é'_custom;", "int value=1.5;" })
+        foreach (string source in new[] { "int value=U'\\é';", "int value=U'\\N{LATIN CAPITAL LETTER A}';", "int value=u'é'_custom;" })
             Check(Analyze(source).ContainsUnsupportedFeatures, source);
         Equal("yes", Pp("#if '\\u0041'==65 && u'é'==233 && U'\\U00010400'==66560 && L'𐐀'==66560 && u8'\\xff'==255\nyes\n#endif"));
     }

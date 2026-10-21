@@ -221,7 +221,7 @@ internal static partial class Tests
             Equal(TypeQualifiers.Const, ReferenceParameter(call).ReferredType.Qualifiers);
         }
         ConstantEvaluationResult execution = result.StaticAssertions[0].Evaluation;
-        Check(execution.StorageObjects.Any(storage => storage.Symbol?.Name == "value" && storage.Type.IntegerKind == IntegerKind.Char16 && storage.Value == 65));
+        Check(execution.StorageObjects.Any(storage => storage.Symbol?.Name == "value" && storage.Type is IntegerType { IntegerKind: IntegerKind.Char16 } && storage.Value == 65));
         Check(execution.ReferenceBindings.Any(binding => binding.Expression.Range.File.OriginForRange(binding.Expression.Range).ExpansionHistory.Any(frame => frame.Name == "RET")));
         Check(execution.StorageObjects.All(storage => storage.IsAlive == false));
         Check(copy.BodyTokens.Tokens.Any(token => token.Origin.ExpansionHistory.Any(frame => frame.Name == "RET")));

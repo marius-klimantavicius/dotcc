@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m4-condition-contracts/reference-increment.cpp",
+  "source_sha256": "5fbcd2e61dbe33b5ddfe8a0ac5427aa89979bfefc0671b7d3b1f5640a7f389ad",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m4-condition-contracts/reference-increment.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m4-condition-contracts/reference-increment.cpp\", line 1:\n          error: expression must have a constant value\n  constexpr int f(){int total=0;for(int n=3;const int& v=n+0;n=v-1)total+=v;return total;} static_assert(f()==6);\n                                                                                                         ^\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m4-condition-contracts/reference-increment.cpp\", line 1:\n          note: attempt to access expired storage\n  constexpr int f(){int total=0;for(int n=3;const int& v=n+0;n=v-1)total+=v;return total;} static_assert(f()==6);\n                                                                          ^\n\n1 error detected in the compilation of \"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m4-condition-contracts/reference-increment.cpp\".\n",
+  "expected": "accept",
+  "matched": false
+}

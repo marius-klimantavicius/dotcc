@@ -48,7 +48,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         }
     }
     private bool StartsDeclaration() => Is("using") || Is("typedef") || Is("const") || Is("constexpr") || IsIntegerKeyword(Current.Spelling) ||
-        Is("void") || Current.Kind == TokenKind.Identifier && SoleVisibleSymbol(Current.IdentifierText)?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter;
+        Is("void") || Is("float") || Is("double") || Current.Kind == TokenKind.Identifier && SoleVisibleSymbol(Current.IdentifierText)?.Kind is SymbolKind.TypeAlias or SymbolKind.TemplateParameter;
     private static bool IsIntegerKeyword(string spelling) => spelling is "bool" or "char" or "short" or "int" or "long" or "signed" or "unsigned" or "wchar_t" or "char8_t" or "char16_t" or "char32_t";
     private Declaration Declaration(bool allowFunction)
     {
@@ -160,6 +160,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         SourceRange start = Current.Range;
         int qualifiers = 0;
         bool isUnsigned = false, isSigned = false, isShort = false, isInt = false, isChar = false, isBool = false;
+        bool isFloat = false, isDouble = false;
         int longs = 0, count = 0;
         IntegerKind? distinctCharacter = null;
         while (true)
@@ -171,7 +172,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                 Take();
                 continue;
             }
-            if (!IsIntegerKeyword(s)) break;
+            if (!IsIntegerKeyword(s) && s is not ("float" or "double")) break;
             bool repeated = s switch
             {
                 "unsigned" => isUnsigned,
@@ -180,6 +181,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                 "int" => isInt,
                 "char" => isChar,
                 "bool" => isBool,
+                "float" => isFloat, "double" => isDouble,
                 "long" => longs >= 2,
                 _ => false
             };
@@ -194,13 +196,23 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                 case "int": isInt = true; break;
                 case "char": isChar = true; break;
                 case "bool": isBool = true; break;
+                case "float": isFloat = true; break;
+                case "double": isDouble = true; break;
                 case "long": ++longs; break;
             }
             ++count;
             Take();
         }
         SemanticType type;
-        if (count != 0)
+        if (isFloat || isDouble)
+        {
+            if (isDouble && longs == 1 && count == 2)
+            { Unsupported("Long double requires its distinct target extended format.", start); type = types.Error; }
+            else if (count != 1)
+            { Fail("SEM006", "Invalid combination of floating type specifiers.", start); type = types.Error; }
+            else type = types.Floating(isFloat ? FloatingKind.Float : FloatingKind.Double);
+        }
+        else if (count != 0)
         {
             bool invalid = isUnsigned && isSigned || isShort && longs != 0 || isChar && (isShort || longs != 0 || isInt || isBool) ||
                 isBool && (count != 1) || longs > 2 || distinctCharacter != null && count != 1;

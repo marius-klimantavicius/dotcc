@@ -146,8 +146,9 @@ internal static partial class Tests
             Check(session.Preprocess(raw).Diagnostics.Any(d => d.Code == "LEX004"), raw);
         Equal("R\"tag(embedded \" quote /* comment */ \\\n newline)tag\"", Pp("R\"tag(embedded \" quote /* comment */ \\\n newline)tag\""));
         Equal("\"a\\n\\t.cpp\"", Pp("#line 9 \"a\\n\\t.cpp\"\n__FILE__"));
-        foreach (string number in new[] { "1.5", "1.0_x", "1_x", "1.0_xe" })
+        foreach (string number in new[] { "1.0_x", "1_x", "1.0_xe" })
             Check(Analyze("int value=" + number + ";").ContainsUnsupportedFeatures, number);
+        Check(Success("int value=1.5;").IsSuccess);
         AnalysisResult invalid = Analyze("int value=1e+;");
         Check(!invalid.IsSuccess && !invalid.ContainsUnsupportedFeatures && invalid.Diagnostics.Any(d => d.Code == "LEX011"));
         Check(!session.Lex("1e+").IsSuccess);
