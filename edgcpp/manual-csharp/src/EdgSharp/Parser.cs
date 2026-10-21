@@ -66,12 +66,12 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             if (!Is(TokenKind.Identifier)) UnsupportedAndThrow("Only simple alias declarations ('using Name = type;') are implemented.");
             Token name = Take();
             Expect(TokenKind.Equal, "'=' in alias declaration");
-            SemanticType target = ScanReferenceDeclarator(ScanType());
+            SemanticType target = ScanArrayDeclarator(ScanObjectDeclarator(ScanType()));
             Token end = ExpectSimpleSemicolon();
             return EnterAlias(name, target, SourceRange.Cover(start, end.Range));
         }
         bool typedef = Eat("typedef");
-        SemanticType type = ScanReferenceDeclarator(ScanType());
+        SemanticType type = ScanObjectDeclarator(ScanType());
         if (Is(TokenKind.Star) || Is(TokenKind.LeftParen))
             UnsupportedAndThrow("Pointer and parenthesized declarators are not implemented.");
         Token identifier = Expect(TokenKind.Identifier, "a declarator identifier");
@@ -81,6 +81,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             if (!allowFunction) UnsupportedAndThrow("Block-scope function declarations and definitions are not implemented.");
             return FunctionDeclaration(start, identifier, type, isConstexpr);
         }
+        type = ScanArrayDeclarator(type);
         if (typedef)
         {
             Token end = ExpectSimpleSemicolon();
@@ -100,7 +101,8 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             {
                 Expression initializer = ScanExprFull();
                 declaration.Initializer = type is ReferenceType reference
-                    ? BindReference(initializer, reference, ReferenceBindingContext.Variable, variable) : Convert(initializer, type);
+                    ? BindReference(initializer, reference, ReferenceBindingContext.Variable, variable)
+                    : type is ArrayType array ? ArrayInitializer(initializer, array, declaration) : Convert(initializer, type);
             }
             finally
             {
@@ -108,6 +110,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
             }
         }
         else if (type is ReferenceType) Fail("REF004", "A reference variable requires an initializer.", identifier.Range);
+        else if (type is ArrayType { Length: 0 }) Fail("ARR006", "An omitted array bound requires a supported initializer.", identifier.Range);
         else if (type.Qualifiers.HasFlag(TypeQualifiers.Const)) Fail("SEM002", "A const scalar variable requires an initializer.", identifier.Range);
         Token semicolon = ExpectSimpleSemicolon();
         declaration.Range = SourceRange.Cover(start, semicolon.Range);
@@ -127,7 +130,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     {
         Symbol? previous = state.CurrentScope.FindLocal(name.IdentifierText);
         Symbol symbol;
-        if (previous != null && previous.Kind == SymbolKind.TypeAlias && ReferenceEquals(previous.Type, type)) symbol = previous;
+        if (previous != null && previous.Kind == SymbolKind.TypeAlias && TypeTable.Equivalent(previous.Type, type)) symbol = previous;
         else symbol = NewLocalSymbol(name, SymbolKind.TypeAlias, type);
         var declaration = new AliasDeclaration(symbol, type, range, name.Range);
         state.AddDeclaration(declaration);
@@ -258,9 +261,12 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                     if (Is(TokenKind.Ellipsis)) UnsupportedAndThrow("Variadic function declarations are not implemented.");
                     if (!StartsDeclaration()) UnsupportedAndThrow("Parenthesized direct initialization and non-scalar parameter declarators are not implemented.");
                     SourceRange parameterStart = Current.Range;
-                    SemanticType type = ScanReferenceDeclarator(ScanType());
+                    SemanticType type = ScanObjectDeclarator(ScanType());
                     SourceRange typeRange = SourceRange.Cover(parameterStart, state.Tokens.Previous.Range);
                     Token? name = Is(TokenKind.Identifier) ? Take() : null;
+                    type = ScanArrayDeclarator(type);
+                    SemanticType declaredType = type;
+                    if (type is ArrayType arrayParameter) type = types.Pointer(arrayParameter.ElementType);
                     if (Is(TokenKind.Star) || Is(TokenKind.Ampersand) || Is(TokenKind.AndAnd) || Is(TokenKind.LeftBracket) || Is(TokenKind.LeftParen))
                         UnsupportedAndThrow("Only scalar value and reference parameter declarators are implemented.");
                     if (Is(TokenKind.Equal)) UnsupportedAndThrow("Default function arguments are not implemented.");
@@ -273,7 +279,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
                     }
                     Symbol symbol = name.HasValue ? NewLocalSymbol(name.Value, SymbolKind.Parameter, type) : new Symbol("", SymbolKind.Parameter, type, parameterScope);
                     var parameter = new VariableDeclaration(symbol, type, name.HasValue ? SourceRange.Cover(parameterStart, name.Value.Range) : typeRange,
-                        name?.Range ?? parameterStart.File.Range(typeRange.End, 0));
+                        name?.Range ?? parameterStart.File.Range(typeRange.End, 0)) { ParameterDeclaredType = declaredType };
                     state.AddDeclaration(parameter);
                     parameters.Add(parameter);
                     if (!Eat(TokenKind.Comma)) break;
@@ -287,6 +293,7 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
     }
     private FunctionDeclaration FunctionDeclaration(SourceRange start, Token identifier, SemanticType resultType, bool isConstexpr)
     {
+        if (resultType is ArrayType) Fail("ARR007", "A function cannot return an array type.", identifier.Range);
         if (identifier.IdentifierText == "main") Unsupported("The special declarations and use rules of global main are not implemented.", identifier.Range);
         if (isConstexpr && resultType.Kind == TypeKind.Void) Unsupported("Constexpr void functions are outside the implemented integer evaluator.", identifier.Range);
         Scope enclosing = state.CurrentScope;
@@ -294,11 +301,12 @@ internal sealed partial class Parser(ParseState state, TypeTable types, Analysis
         var functionType = types.Function(resultType, parameters.Select(p => p.Type));
         NameBinding? binding = enclosing.FindLocalBinding(identifier.IdentifierText);
         Symbol? previous = binding?.Symbols.FirstOrDefault(s => s.Kind == SymbolKind.Function &&
-            ((FunctionType)s.Type).ParameterTypes.SequenceEqual(functionType.ParameterTypes));
+            ((FunctionType)s.Type).ParameterTypes.Count == functionType.ParameterTypes.Count &&
+            ((FunctionType)s.Type).ParameterTypes.Zip(functionType.ParameterTypes).All(pair => TypeTable.Equivalent(pair.First, pair.Second)));
         Symbol function;
         if (previous?.Kind == SymbolKind.Function)
         {
-            if (ReferenceEquals(previous.Type, functionType)) function = previous;
+            if (TypeTable.Equivalent(previous.Type, functionType)) function = previous;
             else
             {
                 Fail("SEM009", $"Return type conflicts with an earlier declaration of '{identifier.Spelling}'.", identifier.Range);

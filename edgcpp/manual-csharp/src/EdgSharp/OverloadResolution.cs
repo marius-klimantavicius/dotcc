@@ -16,8 +16,11 @@ public enum CandidateRejectionReason { None, ArityMismatch, ArgumentConversion, 
 /// </summary>
 public sealed class StandardConversionSequence
 {
-    public IntegerType SourceType { get; }
-    public IntegerType TargetType { get; }
+    public SemanticType SourceType { get; }
+    public SemanticType TargetType { get; }
+    public bool RequiresArrayToPointer { get; }
+    public bool AddsQualification { get; }
+    public bool RequiresPointerToBoolean { get; }
     public bool RequiresLValueToRValue { get; }
     public StandardConversionRank Rank { get; }
     public ReferenceBinding? ReferenceBinding { get; }
@@ -27,6 +30,12 @@ public sealed class StandardConversionSequence
     internal StandardConversionSequence(ReferenceBinding binding)
         => (SourceType, TargetType, RequiresLValueToRValue, Rank, ReferenceBinding) =
             (binding.SourceType, binding.TargetType, binding.RequiresLValueToRValue, binding.Rank, binding);
+    internal StandardConversionSequence(SemanticType source, PointerType target, bool lvalue, bool decay, bool qualification, StandardConversionRank rank = StandardConversionRank.ExactMatch)
+        => (SourceType, TargetType, RequiresLValueToRValue, Rank, RequiresArrayToPointer, AddsQualification) =
+            (source, target, lvalue, rank, decay, qualification);
+    internal StandardConversionSequence(SemanticType source, IntegerType boolean, bool lvalue, bool decay)
+        => (SourceType, TargetType, RequiresLValueToRValue, Rank, RequiresArrayToPointer, RequiresPointerToBoolean) =
+            (source, boolean, lvalue, StandardConversionRank.Conversion, decay, true);
 }
 
 /// <summary>A source-visible entity and its viability/matches for one specific call.</summary>
@@ -69,9 +78,10 @@ internal sealed partial class Parser
             for (int i = 0; i < arguments.Count; ++i)
             {
                 if (type.ParameterTypes[i] is not TemplateParameterType parameter) continue;
-                if (arguments[i].Type is not IntegerType integer)
+                SemanticType actualType = arguments[i].Type is ArrayType array ? types.Pointer(array.ElementType) : arguments[i].Type;
+                if (actualType is not (IntegerType or PointerType))
                     return new OverloadCandidate(function, CandidateRejectionReason.DeductionFailure, []);
-                SemanticType actual = types.Unqualified(integer);
+                SemanticType actual = types.Unqualified(actualType);
                 if (deduced[parameter.Index] is SemanticType previous && !ReferenceEquals(previous, actual))
                     return new OverloadCandidate(function, CandidateRejectionReason.DeductionFailure, []);
                 deduced[parameter.Index] = actual;
@@ -85,6 +95,26 @@ internal sealed partial class Parser
         for (int i = 0; i < arguments.Count; ++i)
         {
             Expression argument = arguments[i];
+            if (type.ParameterTypes[i] is IntegerType { IntegerKind: IntegerKind.Bool } boolean && argument.Type is ArrayType or PointerType)
+            {
+                conversions[i] = new StandardConversionSequence(argument.Type, boolean,
+                    argument.Type is PointerType && argument.ValueCategory != ValueCategory.PRValue, argument.Type is ArrayType);
+                continue;
+            }
+            if (type.ParameterTypes[i] is PointerType pointer)
+            {
+                if (IsNullPointerConstant(argument))
+                {
+                    conversions[i] = new StandardConversionSequence(argument.Type, pointer, false, false, false, StandardConversionRank.Conversion);
+                    continue;
+                }
+                PointerType? sourcePointer = argument.Type is ArrayType a ? types.Pointer(a.ElementType) : argument.Type as PointerType;
+                if (sourcePointer == null || !PointerCompatible(sourcePointer, pointer))
+                    return new OverloadCandidate(function, CandidateRejectionReason.ArgumentConversion, []);
+                conversions[i] = new StandardConversionSequence(argument.Type, pointer, argument.ValueCategory != ValueCategory.PRValue && argument.Type is not ArrayType,
+                    argument.Type is ArrayType, sourcePointer.PointedToType.Qualifiers != pointer.PointedToType.Qualifiers);
+                continue;
+            }
             if (type.ParameterTypes[i] is ReferenceType reference)
             {
                 ReferenceBinding? binding = MatchReferenceBinding(argument, reference);
@@ -120,6 +150,12 @@ internal sealed partial class Parser
     {
         int rank = left.Rank.CompareTo(right.Rank);
         if (rank != 0) return rank;
+        if (left.TargetType is PointerType lp && right.TargetType is PointerType rp && lp.PointedToType is IntegerType li && rp.PointedToType is IntegerType ri && li.IntegerKind == ri.IntegerKind)
+        {
+            if (li.Qualifiers == ri.Qualifiers) return 0;
+            if ((li.Qualifiers & ~ri.Qualifiers) == 0) return -1;
+            if ((ri.Qualifiers & ~li.Qualifiers) == 0) return 1;
+        }
         // Immediate reference cv is not a qualification-conversion subsequence.
         if (left.ReferenceBinding is not { } l || right.ReferenceBinding is not { } r) return 0;
         // Strict Core1374 ordering: reference kind/category before immediate cv.

@@ -46,7 +46,7 @@ Source guides: `lex_pp.rst`, `includes.rst`; `lexical.c`, `preproc.c`, `macro.c`
 | --- | --- | --- | --- |
 | M1.1 | Owned buffers, physical positions, retained token intervals | accepted slice | Exact ASCII token spelling/kind/UTF-16 range tests, CR/LF/CRLF, stable EOF; preserve these through macros/includes/replay |
 | M1.2 | Encoding and translation phases | partial | 112-group gate covers real-context raw phase restoration, explicit source/execution metadata, Unicode17 scalar/UCN identity and strict opt-in UTF8/BOM UTF16; legacy/native/dialect encoding branches remain required |
-| M1.3 | Full literal lexing and values | partial | Bounded target character types/ASCII/simple/octal/hex/multichar and Unicode/UCN target units/diagnostics pass; full string/raw/prefixed value semantics, concatenation, floating and user-defined literals remain required |
+| M1.3 | Full literal lexing and values | partial | Bounded character and real string/raw/prefixed target units, post-PP concatenation, terminator/encoding/value diagnostics pass120-group gate; floating/UDL/dialect/legacy branches remain required, including explicit native-crashing ordinary+UTF8 numeric rescan gap |
 | M1.4 | Object-like macros, suppression and rescanning | partial | Strict-profile nesting/inertness/caller-tail/provenance and Unicode canonical macro identity with separate effective/raw spelling pass; broader configured dialect/corpus qualification remains |
 | M1.5 | Function-like/variadic macros and operators | partial | Lazy raw/expanded args, #/##/placemarkers/VA_OPT and full 32-label upstream matrix pass; Unicode argument/replacement/paste timing has exact native controls; complete dialect/configured branch qualification remains, including explicit native unused malformed-raw laziness bound |
 | M1.6 | Include processing and search configuration | partial | Configured in-memory/structured opt-in Linux-x64-glibc provider search, separate probe/read caches/errors, guards/once, limits, strict decoding and retained activation origins pass; other hosts/encodings and real headers remain unqualified |
@@ -134,7 +134,7 @@ Source guides: `class_decl.rst`, `templates.rst`, `exceptions.rst`, `modules.rst
 | M6.2 | Session lifecycle and concurrency | partial | Existing independent/concurrent sessions; repeated real-header/template analyses with live session and discarded old results, WeakReference/retained-memory checks against dependent-signature scope leaks; cancellation safe points and stress/race checks |
 | M6.3 | Recovery and diagnostic quality | partial | Existing bounded recovery and invalid/Unsupported distinctions; managed extra named-reference hazard warnings are deliberate non-parity. Full recovery, diagnostic compatibility/suppression/speculation, cascade limits, source notes and malformed termination remain required |
 | M6.4 | Explicit resource limits | open | Depth/token/include/expansion/template/constexpr work and memory budgets, cancellation/failure outcomes, bounded adversarial fixtures and cleanup; no process crash counted diagnosis |
-| M6.5 | NativeAOT and platform qualification | partial | Current112-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
+| M6.5 | NativeAOT and platform qualification | partial | Current120-group suite passes managed and Linux-x64 NativeAOT including glibc host input and scalar references; broader frontend/OS/architecture/ABI qualification remains required. Unavailable host stays unverified/evidenced blocker |
 | M6.6 | Performance/resource measurements | open | Reproducible startup/throughput/allocations/retained-memory on representative headers/projects with baseline and profile; optimize only under semantic parity tests |
 | M6.7 | Regression/differential corpus qualification | open | Preserve upstream fp/fn/cp/lp/rp case kinds, per-case //options and TEST_NUMBER; parser acceptance qualifies only frontend fp/fn stages, never compile/link/runtime stages. Explicit expected language exit/status+diagnostics, semantic witnesses, inventory/pass/fail/skip and malformed/adversarial provenance |
 | M6.8 | Upstream update procedure | open | Rehash/diff routine+configuration baseline, identify impacted invariants and fixtures, run actual update rehearsal with regression receipts and reviewed correspondence changes |
@@ -150,27 +150,26 @@ future-standard conditional features must be explicitly classified during the
 pinned-surface audit before any EDG-equivalence claim. This note does not remove
 any stated plan requirement or convert an unsupported branch into completion.
 
-Current accepted integration is112/112 JIT and Linux-x64 NativeAOT groups,
-111-file matching held maps, warning-free Release and independent
-`review-unicode-integration-final.md`. Unicode17 scalar/UCN identity, source
-metadata and character units coexist with accepted references/logical/storage;
-U1/U2 remain closed. Six exact native fixtures match4 accept0/2 reject2. Earlier
-60/79/95/102 checkpoints retain their separately bounded historical evidence.
-The next actual primary assignment is full string/raw/prefixed target units and
-adjacent concatenation with real array/type/storage dependencies. Independent
-scalar assignment/control flow is being authored in its separate worktree.
-All remaining M1/M2/M3/general M4 and M5/M6 rows, including floating/UDL, classes,
-general templates, realistic headers and product qualification, remain required.
-No Unsupported row or unavailable platform is counted complete; execution
-continues automatically after each verified checkpoint.
+Current string/array integration passes120/120 JIT and Linux-x64 NativeAOT,
+118-file matching held maps, warning-free Release,3 coupled native controls and
+independent final review in `review-strings-final.md`. Exact bounded units,
+arrays/sizeof/pointers/reference locations and native anomaly are recorded in
+STRINGS-AND-ARRAYS. Earlier checkpoints remain historically bounded.
+The next actual primary assignment is additive integration of independently
+accepted isolated scalar control flow (118 groups at its102 base,16 additions),
+preserving Unicode/string/array/pointer/nonobject/readonly/cleanup semantics and
+executing a new136-group combined gate. Floating target-value/literal foundation
+is independently authored in new isolated files; parser/type/evaluator integration
+remains required. Every other open/partial M1–M6 row remains required; Unsupported
+branches, isolated modules and unavailable platforms are never completion.
 
 Active independent scalar control-flow assignment (isolated accepted44640803b):
 
 | Branch task | Required acceptance | Current state |
 | --- | --- | --- |
-| Scalar stores and assignment | Modifiable lvalue/type/const checks; real local/valueparam/alias cell writes; correct category/order; forbidden global/unknown/expired writes fail in required contexts | isolated authoring |
-| if/else | Both branches semantically checked; selected branch executes; scoped locals and return cleanup; source graph/value/native witness | isolated authoring |
-| while/break/continue | Explicit loop work and jump targets, nested block/full-expression cleanup, finite/infinite limits and reuse/failure controls | isolated authoring |
+| Scalar stores and assignment | Modifiable lvalue/type/const checks; real local/valueparam/alias cell writes; correct category/order; forbidden global/unknown/expired writes fail in required contexts | independently accepted in isolation; main merge pending |
+| if/else | Both branches semantically checked; selected branch executes; scoped locals and return cleanup; source graph/value/native witness | independently accepted in isolation; main merge pending |
+| while/break/continue | Explicit loop work and jump targets, nested block/full-expression cleanup, finite/infinite limits and reuse/failure controls | independently accepted in isolation; main merge pending |
 | Remaining statement/expression breadth | do/for/range-for/switch/labels/goto, assignment compounds/increments/comma/conditional and unsupported forms split into concrete follow-ups; no unsupported branch counted done | required |
 
 This semantic module must merge additively with Unicode identity and receive actual

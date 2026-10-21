@@ -18,6 +18,7 @@ internal sealed partial class Parser
         while (true)
         {
             if (Is(TokenKind.LeftParen)) { left = ScanFunctionCall(left); continue; }
+            if (Is(TokenKind.LeftBracket)) { left = ScanSubscript(left); continue; }
             int precedence = BinaryPrecedence(Current.Kind);
             if (precedence < minimumPrecedence || precedence < 0) break;
             Token op = Take();
@@ -44,6 +45,8 @@ internal sealed partial class Parser
     private Expression ScanOperand()
     {
         Token token = Current;
+        if (Is("sizeof")) return ScanSizeOf();
+        if (token.Kind == TokenKind.StringLiteral) return ScanStringLiteral();
         if (token.Kind is TokenKind.Plus or TokenKind.Minus or TokenKind.Bang or TokenKind.Tilde)
         {
             Take();
@@ -52,6 +55,13 @@ internal sealed partial class Parser
             if (prototypeAnalysis && TypeDependent(operand))
                 return new DependentUnaryExpression(token.Kind, operand, token.Kind == TokenKind.Bang ? types.Integer(IntegerKind.Bool) : types.Dependent,
                     SourceRange.Cover(token.Range, operand.Range));
+            if (token.Kind == TokenKind.Bang && operand.Type is PointerType or ArrayType)
+                operand = Convert(operand, types.Integer(IntegerKind.Bool));
+            if (token.Kind == TokenKind.Plus && operand.Type is PointerType or ArrayType)
+            {
+                Unsupported("Unary plus on pointer operands is not implemented.", token.Range);
+                return new ErrorExpression(types.Error, SourceRange.Cover(token.Range, operand.Range));
+            }
             if (operand.Type is not IntegerType integer)
             {
                 if (operand.Type.Kind is TypeKind.Function or TypeKind.OverloadSet) Unsupported("Function-to-pointer decay and conversions of function designators are not implemented.", operand.Range);
@@ -195,6 +205,27 @@ internal sealed partial class Parser
         if (expression.Type.Kind == TypeKind.Error || target.Kind == TypeKind.Error) return new ErrorExpression(types.Error, expression.Range);
         if (prototypeAnalysis && (TypeDependent(expression) || target.Kind is TypeKind.TemplateParameter or TypeKind.Dependent))
             return new DependentConversionExpression(expression, target);
+        if (expression.Type is ArrayType array)
+            expression = new ConversionExpression(expression, types.Pointer(array.ElementType), ConversionKind.ArrayToPointer, null);
+        if (expression.Type is PointerType pointer)
+        {
+            if (expression.ValueCategory != ValueCategory.PRValue)
+                expression = new ConversionExpression(expression, types.Pointer(pointer.PointedToType), ConversionKind.LValueToRValue, null);
+            if (target is IntegerType { IntegerKind: IntegerKind.Bool })
+                return new ConversionExpression(expression, target, ConversionKind.BooleanConversion, null);
+            if (target is PointerType pointerDestination && PointerCompatible(pointer, pointerDestination))
+                return ReferenceEquals(types.Unqualified(pointer), types.Unqualified(pointerDestination)) ? expression
+                    : new ConversionExpression(expression, types.Unqualified(pointerDestination), ConversionKind.QualificationConversion, null);
+            Fail("PTR001", "Pointer conversion requires compatible pointed-to scalar types without discarding const.", expression.Range);
+            return new ErrorExpression(types.Error, expression.Range);
+        }
+        if (target is PointerType)
+        {
+            if (IsNullPointerConstant(expression))
+                return new ConversionExpression(expression, types.Unqualified(target), ConversionKind.NullPointerConversion, null);
+            Fail("PTR002", "Only a zero integer literal is an implemented null pointer constant.", expression.Range);
+            return new ErrorExpression(types.Error, expression.Range);
+        }
         if (target.Kind == TypeKind.Void && expression.Type.Kind == TypeKind.Void) return expression;
         if (expression.Type is not IntegerType source || target is not IntegerType destination)
         {
@@ -215,12 +246,45 @@ internal sealed partial class Parser
         BigInteger? value = expression.ConstantValue is BigInteger constant ? TypeTable.ConvertInteger(constant, unqualified) : null;
         return new ConversionExpression(expression, unqualified, kind, value);
     }
+    private static bool PointerCompatible(PointerType source, PointerType target)
+        => source.PointedToType is IntegerType left && target.PointedToType is IntegerType right &&
+            left.IntegerKind == right.IntegerKind && (left.Qualifiers & ~right.Qualifiers) == 0;
+    private static bool IsNullPointerConstant(Expression expression)
+    {
+        while (expression is ParenthesizedExpression parens) expression = parens.Operand;
+        return expression is LiteralExpression { Type: IntegerType, ConstantValue: { IsZero: true } };
+    }
     private Expression Binary(Token op, Expression left, Expression right)
     {
         SourceRange range = SourceRange.Cover(left.Range, right.Range);
         if (left.Type.Kind == TypeKind.Error || right.Type.Kind == TypeKind.Error) return new ErrorExpression(types.Error, range);
         if (prototypeAnalysis && (TypeDependent(left) || TypeDependent(right)))
             return new DependentBinaryExpression(op.Kind, left, right, op.Kind is TokenKind.AndAnd or TokenKind.OrOr ? types.Integer(IntegerKind.Bool) : types.Dependent, range);
+        if (op.Kind is TokenKind.Plus or TokenKind.Minus && (left.Type is ArrayType or PointerType || right.Type is ArrayType or PointerType))
+        {
+            if (op.Kind == TokenKind.Plus && left.Type is IntegerType) (left, right) = (right, left);
+            PointerType? pointer = left.Type is ArrayType array ? types.Pointer(array.ElementType) : left.Type as PointerType;
+            if (pointer != null && right.Type is IntegerType offset)
+                return new PointerArithmeticExpression(Convert(left, pointer), Convert(right, types.Promote(offset)), op.Kind, pointer, range);
+            PointerType? other = right.Type is ArrayType otherArray ? types.Pointer(otherArray.ElementType) : right.Type as PointerType;
+            if (op.Kind == TokenKind.Minus && pointer != null && other != null && (PointerCompatible(pointer, other) || PointerCompatible(other, pointer)))
+                Unsupported("Pointer subtraction beyond scalar-offset arithmetic is not implemented.", range);
+            else Fail("SEM025", "This pointer arithmetic requires one pointer and an integer offset, or compatible pointers for subtraction.", range);
+            return new ErrorExpression(types.Error, range);
+        }
+        if (op.Kind is TokenKind.EqualEqual or TokenKind.NotEqual or TokenKind.Less or TokenKind.Greater or TokenKind.LessEqual or TokenKind.GreaterEqual)
+        {
+            PointerType? firstPointer = left.Type is ArrayType firstArray ? types.Pointer(firstArray.ElementType) : left.Type as PointerType;
+            PointerType? secondPointer = right.Type is ArrayType secondArray ? types.Pointer(secondArray.ElementType) : right.Type as PointerType;
+            bool compatible = firstPointer != null && secondPointer != null && (PointerCompatible(firstPointer, secondPointer) || PointerCompatible(secondPointer, firstPointer));
+            bool nullEquality = op.Kind is TokenKind.EqualEqual or TokenKind.NotEqual &&
+                (firstPointer != null && IsNullPointerConstant(right) || secondPointer != null && IsNullPointerConstant(left));
+            if (compatible || nullEquality)
+            {
+                Unsupported("Pointer comparison is not implemented.", range);
+                return new ErrorExpression(types.Error, range);
+            }
+        }
         if (op.Kind is TokenKind.AndAnd or TokenKind.OrOr)
         {
             IntegerType boolean = types.Integer(IntegerKind.Bool);

@@ -25,12 +25,13 @@ public sealed class ConstantStorageObject
     public bool? IsAlive { get; }
     public bool? IsInitialized { get; }
     public bool IsConstantReadable { get; }
+    public bool? IsReadOnly { get; }
     public BigInteger? Value { get; }
     internal ConstantStorageObject(ConstantCell cell)
-        => (Identity, IsKnownObject, Invocation, Type, Symbol, UnknownReference, LifetimeOwner, Lifetime, IsAlive, IsInitialized, IsConstantReadable, Value) =
+        => (Identity, IsKnownObject, Invocation, Type, Symbol, UnknownReference, LifetimeOwner, Lifetime, IsAlive, IsInitialized, IsConstantReadable, IsReadOnly, Value) =
             (cell.Known ? cell.Identity : null, cell.Known, cell.Invocation, cell.Type,
                 cell.Known ? cell.Symbol : null, cell.Known ? null : cell.Symbol, cell.LifetimeOwner,
-                cell.Lifetime, cell.Known ? cell.Alive : null, cell.Known ? cell.Initialized : null, cell.Readable, cell.Value);
+                cell.Lifetime, cell.Known ? cell.Alive : null, cell.Known ? cell.Initialized : null, cell.Readable, cell.Known ? cell.ReadOnly : null, cell.Value);
 }
 
 /// <summary>A reference constant designates an object; it is not that object's integer value.</summary>
@@ -50,7 +51,7 @@ public sealed class ConstantReferenceBinding
 }
 
 internal sealed class ConstantCell(int identity, int invocation, IntegerType type, Symbol? symbol,
-    Symbol? lifetimeOwner, ConstantStorageLifetime lifetime, bool readable)
+    Symbol? lifetimeOwner, ConstantStorageLifetime lifetime, bool readable, bool? readOnly = null)
 {
     internal int Identity { get; } = identity;
     internal int Invocation { get; } = invocation;
@@ -59,6 +60,7 @@ internal sealed class ConstantCell(int identity, int invocation, IntegerType typ
     internal Symbol? LifetimeOwner { get; } = lifetimeOwner;
     internal ConstantStorageLifetime Lifetime { get; } = lifetime;
     internal bool Readable { get; } = readable;
+    internal bool ReadOnly { get; } = readOnly ?? type.Qualifiers.HasFlag(TypeQualifiers.Const);
     internal bool Alive { get; set; } = true;
     internal bool Initialized { get; set; }
     internal bool Known { get; init; } = true;
@@ -69,14 +71,23 @@ internal sealed class ConstantCell(int identity, int invocation, IntegerType typ
 
 internal readonly record struct ConstantRuntimeValue(BigInteger? Integer, ConstantCell? Location)
 {
+    internal ConstantArray? Array { get; init; }
+    internal ConstantArrayAddress? Pointer { get; init; }
+    internal ConstantArrayAddress? NonObjectLocation { get; init; }
+    internal ConstantPointerSlot? PointerLocation { get; init; }
     internal static ConstantRuntimeValue Scalar(BigInteger value) => new(value, null);
     internal static ConstantRuntimeValue Address(ConstantCell location) => new(null, location);
+    internal static ConstantRuntimeValue ArrayAddress(ConstantArray array) => new(null, null) { Array = array };
+    internal static ConstantRuntimeValue PointerValue(ConstantArrayAddress pointer) => new(null, null) { Pointer = pointer };
+    internal static ConstantRuntimeValue PointerAddress(ConstantPointerSlot slot) => new(null, null) { PointerLocation = slot };
+    internal static ConstantRuntimeValue NonObjectAddress(ConstantArrayAddress address) => new(null, null) { NonObjectLocation = address };
 }
 
 internal sealed class ConstantSlot
 {
     internal ConstantCell? Object { get; init; }
     internal ConstantCell? Referent { get; set; }
+    internal ConstantArrayAddress? NonObjectReferent { get; set; }
     internal bool Initializing { get; set; }
 }
 
@@ -126,6 +137,7 @@ internal sealed partial class ConstantInterpreter
 
     private static ConstantCell Location(ConstantRuntimeValue value)
     {
+        if (value.NonObjectLocation != null) Stop(ConstantEvaluationStatus.UndefinedBehavior, "The one-past array location does not designate an object.");
         if (value.Location == null) Stop(ConstantEvaluationStatus.NotConstant, "Reference binding requires an available object location.");
         return value.Location!;
     }
@@ -148,6 +160,7 @@ internal sealed partial class ConstantInterpreter
         }
         else
         {
+            if (value.NonObjectLocation is { } nonobject) { slot.NonObjectReferent = nonobject; return; }
             ConstantCell referent = Location(value); EnsureAlive(referent); slot.Referent = referent;
         }
     }
@@ -167,12 +180,14 @@ internal sealed partial class ConstantInterpreter
 
     private void ResolveReference(ReferenceExpression expression)
     {
+        if (ResolveAggregateReference(expression)) return;
         Symbol symbol = expression.ReferencedSymbol;
         if (calls.TryPeek(out CallFrame? frame) && frame.Locals.TryGetValue(symbol, out ConstantSlot? local))
         {
             if (local.Object is { } cell) values.Push(ConstantRuntimeValue.Address(cell));
             else
             {
+                if (local.NonObjectReferent != null) Stop(ConstantEvaluationStatus.UndefinedBehavior, "Using this reference requires an object at its nonobject array location.");
                 if (local.Referent == null) Stop(ConstantEvaluationStatus.UninitializedRead, "Use of an uninitialized reference.");
                 values.Push(ConstantRuntimeValue.Address(local.Referent!));
             }
@@ -180,6 +195,7 @@ internal sealed partial class ConstantInterpreter
         }
         if (globals.TryGetValue(symbol, out ConstantSlot? retained))
         {
+            if (retained.NonObjectReferent != null) Stop(ConstantEvaluationStatus.UndefinedBehavior, "Using this reference requires an object at its nonobject array location.");
             if (retained.Object == null && (retained.Initializing || retained.Referent == null))
                 Stop(ConstantEvaluationStatus.UninitializedRead, "Use of a reference during its own initialization.");
             values.Push(ConstantRuntimeValue.Address(retained.Object ?? retained.Referent!)); return;
@@ -228,9 +244,15 @@ internal sealed partial class ConstantInterpreter
     private ConstantEvaluationResult Result(ConstantEvaluationStatus status, ConstantRuntimeValue value, string message)
     {
         var snapshots = storage.ToDictionary(cell => cell, cell => new ConstantStorageObject(cell));
+        var arrays = arrayObjects.ToDictionary(array => array, array => new ConstantArrayObject(array, snapshots));
         return new(status, status == ConstantEvaluationStatus.Success ? value.Integer : null, steps, maximumDepth, message,
             status == ConstantEvaluationStatus.Success && value.Location is { } location ? new ConstantReferenceValue(snapshots[location]) : null,
             storage.Select(cell => snapshots[cell]).ToArray(),
-            bindingObservations.Select(binding => new ConstantReferenceBinding(binding.Binding, snapshots[binding.Cell], binding.Invocation)).ToArray());
+            bindingObservations.Select(binding => new ConstantReferenceBinding(binding.Binding, snapshots[binding.Cell], binding.Invocation)).ToArray(),
+            arrays.Values.ToArray(), status == ConstantEvaluationStatus.Success && value.Array is { } arrayValue ? arrays[arrayValue] : null,
+            status == ConstantEvaluationStatus.Success && value.Pointer is { } pointer ? new ConstantPointerValue(pointer.Array == null ? null : arrays[pointer.Array], pointer.Index) : null,
+            status == ConstantEvaluationStatus.Success && value.NonObjectLocation is { } nonobject ? new ConstantPointerValue(arrays[nonobject.Array!], nonobject.Index) : null,
+            nonObjectBindings.Select(binding => new ConstantNonObjectReferenceBinding(binding.Expression,
+                new ConstantPointerValue(arrays[binding.Address.Array!], binding.Address.Index), binding.Invocation)).ToArray());
     }
 }

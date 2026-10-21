@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-string-contracts/one-past-discard.cpp",
+  "source_sha256": "53de1a7f037ff9c10365ed5d53ffa676e760feb5152a19541baaf7d86ef5feec",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-string-contracts/one-past-discard.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-string-contracts/one-past-discard.cpp\", line 1: warning:\n          expression has no effect\n  constexpr int f(){\"ab\"[3];return 1;} static_assert(f()==1);\n                    ^\n\n",
+  "expected": "accept",
+  "matched": true
+}

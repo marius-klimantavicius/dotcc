@@ -764,3 +764,129 @@ resolved against actual held literal-alias fixture, no source finding. Stale
 current inventory dispatch was replaced; remaining full-plan rows remain required.
 Next primary production assignment is strings/arrays/storage; independent
 control-flow writer continues in isolation. No checkpoint stopping boundary.
+
+Unicode checkpoint committed6c3848ca5; main primary immediately RELEASED for
+actual string/raw/prefixed target units and post-PP adjacency with real literal
+array/category/type/sizeof/subscript/decay/storage dependencies. Native reviewer
+assigned independent branch/source and produced-code review. Scalar-controlflow
+isolated author remains separate, no main edits. Three accepted Unicode outputs
+retained with exact hashes under bin/checkpoints/6c3848ca5, recorded in
+evidence/retained-6c3848ca5.json. Full-plan execution remains active.
+
+Control-flow early contract is concrete: isolated
+/home/marius/.t3/worktrees/dotcc/t3-c8f7a1e2, branch
+t3/scalar-assignment-control-flow, base44640803bf5670e332a347a5836567e2be588eec.
+No token expansion needed. New ScalarControlFlow parser; additive assignment/
+if/loop/transfer graphs and evaluator work, scope cleanup, integer-cell
+BeganInEvaluation/store observations; Load becomes instance method for sequencing.
+Existing scalar/address factories/slots/Allocate/import/frame ownership remain.
+Author includes integer arithmetic/bitwise compound assignment, expression if/
+while/do/ordinaryfor/break/continue; shift assignment/condition declarations/
+selection initializers/ifconstexpr remain explicit. Primary strings author has
+this merge contract and preserves separate array/pointer payloads/hooks.
+No worker execution or acceptance is inferred from authored source.
+
+String source review has concrete pre-hold findings STR-01 numeric-byte wide
+rescan fallback (high), STR-02 unknown readonly observation (medium), STR-03 raw
+CRLF value normalization (high), STR-04 incomplete-array factory exception (high),
+STR-05 sizeof reference alias and STR-06 dependent-sizeof taxonomy. Primary is
+actively repairing before hold; no string support acceptance yet. Exact oracle-
+only design probes ran serially in the terminal-held isolated Unicode checkout,
+so active main source was not built/tested/fingerprinted during edits. Retained
+main tools/oracle-inputs/m1-string-contracts and native-string-contract receipts
+prove numeric wide fallback/truncation/rescan, mixed Unicode widening, standalone
+ordinary-width rejection, raw CRLF normalization and directUTF8 numeric byte.
+Ordinary-invalid-UTF8-byte plus UTF8-prefix concatenation aborts pinned native
+with -6/internal assoc_source_line_modif in both orders; three exact catastrophic
+receipts remain retained/excluded, never language accept/reject evidence. Wide
+fallback must not be generalized to that distinct UTF8 result branch silently.
+
+Common readonly default finalized from actual IntegerType qualification: trailing
+ConstantCell/Allocate optional bool? readOnly=null, with ReadOnly derived from
+actual allocated type unless explicitly overridden. This supersedes provisional
+bool=false early brief; CF author notified. Public IsReadOnly remains nullable
+for unknown objects; const-reference transport reuses original mutable cell.
+Store also checks separate BeganInEvaluation. The isolated persisted handoff
+is the stable review/merge reference and will record this refinement.
+
+Independent isolated control-flow review launched at requested Sol/xhigh:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-controlflow-isolated-review-r1-20261021`.
+Sole write main evidence/review-controlflow-isolated-round1.md; no source/
+execution/Git. Actual author is still active, so observations remain provisional
+until owned-files HOLD and matching receipts. Root relays material T3 findings.
+String findings now include STR07 bounded cache/structural compatibility and
+STR08 array-return/parameter rules; exact native large-alias/parameter positives
+and array-return negative agree. Mutable-global array snapshot Value consistency
+is an additional source review target; core forbidden Load already rejects.
+
+STR09 canonical ID is reversed-subscript source order/range (1["ab"]), distinct
+from the earlier unnumbered mutable-global array snapshot Value concern. Keep
+original operands/range and C++17 first-before-second evaluation even when
+pointer operand is second; source-backed reviewer finding routed to primary.
+Final finding ledger will preserve these distinct IDs and actual closure evidence.
+
+First string gate executed under explicit primary HOLD: Release round1 failed
+only a C# pattern-variable name collision; narrow Expressions rename fixed it.
+Release round2 is warning-free; JIT round2 runs120 groups with119 pass/1 fail,
+zero skips. All112 accepted groups and7/8 new groups, including coupled source,
+pass. Remaining test expects Subscript directly instead of required Conversion
+wrapper. Primary narrowly released StringTests graph assertion plus ConstantArrays
+STR13 overflow-safe preallocation budget guard and int.MaxValue resource control.
+The latter regression will execute only after repaired guard inspection; no huge
+allocation repro was run. Other source remains held; fresh HOLD precedes finalgate.
+
+Isolated CF final execution is green:118/118 JIT and NativeAOT, warning-free
+Release, four matching116-file maps including tools3,3 artifacts fingerprinted.
+All18 exact held fixtures match7 accept0/11 reject2; source-controlflow.json
+verifies5 consulted sources. Independent final audit active; no main integration
+acceptance yet. Original author task terminal/HOLD is preserved; a new READ-ONLY
+next-branch analysis continuation is tracked separately:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Athread-send%3Amanual-edg-controlflow-next-readonly-analysis-20261021`.
+All27 held files/handoff hashes stay unchanged while source analysis proceeds.
+
+String STR15 initializer-result concern is retracted for held code: evaluator
+bytes already passed explicit true in both early build maps; added query is
+evidence strengthening only. STR16 is actual one-past address formation versus
+access, with direct-reference argument and bare reference initializer native
+accepts but later ref_indirect/load rejects. STR17 supported pointer/array-to-
+bool candidate viability is native confirmed. Primary actively repairs these
+finite paths before re-HOLD. Dead-pointer-to-bool rejection hypothesis was
+disproved (accept0 warning), while escaped persistent pointer result rejects2;
+historical mismatched receipts remain retained/excluded with split controls.
+
+Independent CF isolated round1 final ACCEPTANCE is recorded in
+evidence/review-controlflow-isolated-round1.md: CF01–03 closed;118/118 JIT/AOT,
+four116-file current maps,18 native7accept/11reject,5 upstream hashes, handoff
+and3 actual artifacts independently verified. Scope is isolated scalar control
+only; main Unicode/array/pointer merge remains required with actual combined
+source gate and independent review. All27 held files stay unchanged.
+
+Main strings fresh HOLD now includes coherent nonobject one-past location,
+reference result/binding variants without fabricated cells, named ref_indirect
+versus direct transport gates, native lifetime splits and STR17 bool candidate
+viability/ranking. Fresh Release/JIT cycle started immediately, expected120.
+No further source changes are authorized during this executed snapshot.
+
+Independent actual floating foundation author launched Sol/xhigh in a new
+isolated worktree from accepted6c3848ca5:
+`node:delegated-task:command%3Amcp%3Ade81650a-bdeb-45b8-baab-d4ba3b1e94cb%3Adelegate-task%3Amanual-edg-m1-floating-foundation-isolated-20261021-r1`.
+Owns NEW FloatingValues.cs/FloatingLiterals.cs/FloatingValueTests.cs, dedicated
+fixtures/handoff and minimal Program registrations only; no central type/parser/
+expression/storage/Unicode/string paths. Actual handwritten target binary32/64
+value/decimal-hex decoding/rounding/resource algorithms and meaningful tests are
+required. Longdouble/targetABI and language integration remain explicit future
+work, never inferred from isolated decoder results. No worker execution/Git.
+
+Main final string round4 is held and builds after the precise reference-call
+ref_indirect and original-negative-array-bound refinements. Reviewer currently
+knows no additional concrete source blocker; final matching executions pending.
+
+Final held strings round4 executes120/120 JIT and NativeAOT, no failures/skips,
+warning-free Release; all four118-file maps match current source/data/tools.
+Three real artifacts/nine consulted sources are fingerprinted. Three exact
+coupled native controls match2accept0/1reject2; design receipts have27 matches
+and5 explicit historical exclusions (2 disproved assumptions,3 native crashes).
+Independent final STR closure audit green; report being finalized. Concise
+support/inventory/correspondence/STRINGS-AND-ARRAYS reconciliation is ready for
+final review; next actual production assignment remains accepted CF additive
+merge and combined136 gate, with floating foundation separately active.

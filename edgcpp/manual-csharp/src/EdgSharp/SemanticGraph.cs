@@ -89,7 +89,7 @@ public sealed class Symbol
     /// <summary>Canonical scalar identifier identity; original spelling is retained in each declaration's NameRange.</summary>
     public string Name { get; }
     public SymbolKind Kind { get; }
-    public SemanticType Type { get; }
+    public SemanticType Type { get; internal set; }
     public Scope Scope { get; }
     public ReadOnlyCollection<Declaration> Declarations { get; }
     public FunctionDeclaration? Definition { get; internal set; }
@@ -108,7 +108,7 @@ public abstract class Declaration
 {
     public Symbol Symbol { get; }
     public string Name => Symbol.Name;
-    public SemanticType Type { get; }
+    public SemanticType Type { get; internal set; }
     public SourceRange Range { get; internal set; }
     public SourceRange NameRange { get; }
     internal Declaration(Symbol symbol, SemanticType type, SourceRange range, SourceRange nameRange)
@@ -125,6 +125,7 @@ public sealed class VariableDeclaration : Declaration
     public Expression? Initializer { get; internal set; }
     public ReferenceBindingExpression? ReferenceBinding => Initializer as ReferenceBindingExpression;
     public bool IsParameter => Symbol.Kind == SymbolKind.Parameter;
+    public SemanticType? ParameterDeclaredType { get; internal set; }
     public bool IsConstexpr { get; internal set; }
     public ConstantEvaluationResult? ConstantEvaluation { get; internal set; }
     internal VariableDeclaration(Symbol symbol, SemanticType type, SourceRange range, SourceRange name) : base(symbol, type, range, name) { }
@@ -188,7 +189,7 @@ public sealed class ParenthesizedExpression : Expression
     internal ParenthesizedExpression(Expression operand, SourceRange range)
         : base(operand.Type, operand.ValueCategory, range, operand.ConstantValue) => Operand = operand;
 }
-public enum ConversionKind { LValueToRValue, IntegralPromotion, IntegralConversion, BooleanConversion }
+public enum ConversionKind { LValueToRValue, IntegralPromotion, IntegralConversion, BooleanConversion, ArrayToPointer, QualificationConversion, NullPointerConversion }
 public sealed class ConversionExpression : Expression
 {
     public Expression Operand { get; }

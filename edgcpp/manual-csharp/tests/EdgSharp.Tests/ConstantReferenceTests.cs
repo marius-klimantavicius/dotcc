@@ -164,7 +164,7 @@ internal static partial class Tests
         Equal(ConstantEvaluationStatus.Success, SingleEvaluation(falseCondition).Status);
         Check(falseCondition.Diagnostics.Any(diagnostic => diagnostic.Code == "CEX002"));
         foreach (string source in new[] { "static_assert(true || missing);", "void nothing(); static_assert(true || nothing());" }) Check(!Analyze(source).IsSuccess);
-        Check(Analyze("static_assert(true || sizeof(int));").ContainsUnsupportedFeatures);
+        Check(Success("static_assert(true || sizeof(int));").StaticAssertions.Single().Evaluation.StorageObjects.Count == 0);
         AnalysisResult live = Analyze("int global=3; static_assert(false || global==1);");
         Equal(ConstantEvaluationStatus.NotConstant, SingleEvaluation(live).Status);
         AnalysisResult typed = Success("bool f(int x,int y){return x && y || 0;}");

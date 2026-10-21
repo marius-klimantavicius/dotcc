@@ -47,7 +47,7 @@ public sealed class CompilationSession : IDisposable
         if (options.Language != LanguageProfile.Cpp20) throw new ArgumentOutOfRangeException(nameof(options), "Only C++20 is implemented as a profile.");
         ArgumentNullException.ThrowIfNull(options.Target);
         ArgumentNullException.ThrowIfNull(options.Preprocessing);
-        if (options.ConstantEvaluationStepLimit <= 0 || options.ConstantEvaluationCallLimit <= 0 || options.TemplateInstantiationDepthLimit <= 0)
+        if (options.ConstantEvaluationStepLimit <= 0 || options.ConstantEvaluationCallLimit <= 0 || options.TemplateInstantiationDepthLimit <= 0 || options.StringLiteralCodeUnitLimit <= 0)
             throw new ArgumentOutOfRangeException(nameof(options), "Evaluation and instantiation limits must be positive.");
         Options = options with { Preprocessing = options.Preprocessing.CaptureTranslationTimestamp() };
         types = new TypeTable(options.Target);

@@ -14,15 +14,22 @@ public sealed class ConstantEvaluationResult
     public ConstantEvaluationStatus Status { get; }
     public BigInteger? Value { get; }
     public ConstantReferenceValue? ReferenceValue { get; }
+    public ConstantArrayObject? ArrayValue { get; }
+    public ConstantPointerValue? PointerValue { get; }
+    public ConstantPointerValue? NonObjectReferenceValue { get; }
+    public System.Collections.ObjectModel.ReadOnlyCollection<ConstantNonObjectReferenceBinding> NonObjectReferenceBindings { get; }
+    public System.Collections.ObjectModel.ReadOnlyCollection<ConstantArrayObject> Arrays { get; }
     public System.Collections.ObjectModel.ReadOnlyCollection<ConstantStorageObject> StorageObjects { get; }
     public System.Collections.ObjectModel.ReadOnlyCollection<ConstantReferenceBinding> ReferenceBindings { get; }
     public int Steps { get; }
     public int MaximumCallDepth { get; }
     public string Message { get; }
     internal ConstantEvaluationResult(ConstantEvaluationStatus status, BigInteger? value, int steps, int depth, string message,
-        ConstantReferenceValue? reference = null, ConstantStorageObject[]? storage = null, ConstantReferenceBinding[]? bindings = null)
-        => (Status, Value, Steps, MaximumCallDepth, Message, ReferenceValue, StorageObjects, ReferenceBindings) =
-            (status, value, steps, depth, message, reference, Array.AsReadOnly(storage ?? []), Array.AsReadOnly(bindings ?? []));
+        ConstantReferenceValue? reference = null, ConstantStorageObject[]? storage = null, ConstantReferenceBinding[]? bindings = null,
+        ConstantArrayObject[]? arrays = null, ConstantArrayObject? array = null, ConstantPointerValue? pointer = null,
+        ConstantPointerValue? nonObjectReference = null, ConstantNonObjectReferenceBinding[]? nonObjectBindings = null)
+        => (Status, Value, Steps, MaximumCallDepth, Message, ReferenceValue, StorageObjects, ReferenceBindings, Arrays, ArrayValue, PointerValue, NonObjectReferenceValue, NonObjectReferenceBindings) =
+            (status, value, steps, depth, message, reference, Array.AsReadOnly(storage ?? []), Array.AsReadOnly(bindings ?? []), Array.AsReadOnly(arrays ?? []), array, pointer, nonObjectReference, Array.AsReadOnly(nonObjectBindings ?? []));
 }
 
 internal sealed partial class ConstantInterpreter(AnalysisOptions options)
@@ -84,6 +91,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                 {
                     case EvaluateExpression item: EvaluateNode(item.Expression); break;
                     case ConvertValue item:
+                        if (EvaluateAggregateConversion(item.Expression)) break;
                         ConstantRuntimeValue converted = values.Pop();
                         if (item.Expression.Conversion == ConversionKind.LValueToRValue && converted.Location is { } pending && !pending.Initialized && pending.DeferredInitializer is { } declaration)
                         {
@@ -113,6 +121,9 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                         if (!item.Frame.Returned) Stop(ConstantEvaluationStatus.NotConstant, "A constexpr call reaches the end without returning a value.");
                         if (!ReferenceEquals(calls.Pop(), item.Frame)) throw new InvalidOperationException("Interpreter call stack is inconsistent.");
                         foreach (ConstantCell cell in item.Frame.Owned) cell.Alive = false;
+                        aggregateLocals.Remove(item.Frame);
+                        if (item.Frame.Function.Type.ReturnType is ReferenceType && item.Frame.Result.NonObjectLocation != null)
+                            Stop(ConstantEvaluationStatus.UndefinedBehavior, "Using this reference-returning call requires an object at its nonobject array location.");
                         values.Push(item.Frame.Result);
                         break;
                     case ExecuteBlock item:
@@ -122,6 +133,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                             work.Push(new ExecuteStatement(item.Block.Statements[i], item.Frame));
                         break;
                     case LeaveBlock item:
+                        LeaveAggregateScope(item.Block.Scope, item.Frame);
                         foreach (VariableDeclaration local in item.Block.Scope.Declarations.OfType<VariableDeclaration>())
                             if (!local.IsParameter)
                             {
@@ -136,12 +148,20 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                     case StoreLocal item: Store(item.Frame.Locals[item.Symbol], values.Pop()); break;
                     case CompleteMaterialization item: Materialize(item.Expression); break;
                     case CompleteBinding item:
-                        ConstantCell target = Location(values.Pop());
+                        ConstantRuntimeValue bound = values.Pop();
+                        if (bound.NonObjectLocation is { } nonobject)
+                        {
+                            nonObjectBindings.Add((item.Expression, nonobject, calls.TryPeek(out CallFrame? markerFrame) ? markerFrame.Identity : 0));
+                            values.Push(bound); break;
+                        }
+                        ConstantCell target = Location(bound);
                         EnsureAlive(target);
                         bindingObservations.Add((item.Expression, target, calls.TryPeek(out CallFrame? current) ? current.Identity : 0));
                         values.Push(ConstantRuntimeValue.Address(target));
                         break;
                     case CompleteGlobalReference item:
+                        if (values.Peek().NonObjectLocation != null)
+                            Stop(ConstantEvaluationStatus.UndefinedBehavior, "Using this reference requires an object at its nonobject array location.");
                         ConstantCell global = Location(values.Pop());
                         item.Slot.Referent = global; item.Slot.Initializing = false;
                         values.Push(ConstantRuntimeValue.Address(global));
@@ -161,10 +181,18 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
                         item.Frame.Returned = true;
                         break;
                     case DiscardValue: values.Pop(); break;
+                    case FinishSubscript item: Subscript(item.Expression); break;
+                    case FinishPointer item: FinishPointerValue(item); break;
+                    case FinishPointerArithmetic item: PointerArithmetic(item.Expression); break;
                 }
             }
             if (values.Count != 1 || calls.Count != 0) throw new InvalidOperationException("Interpreter did not finish with one value.");
             ConstantRuntimeValue result = values.Pop();
+            if (result.NonObjectLocation?.Array is { } nonobjectArray && nonobjectArray.Elements.Any(cell => !cell.Alive))
+                Stop(ConstantEvaluationStatus.ExpiredObject, "The designated array's lifetime has ended.");
+            if (result.Array is { } array && array.Elements.Any(cell => !cell.Alive) ||
+                result.Pointer?.Array is { } pointed && pointed.Elements.Any(cell => !cell.Alive))
+                Stop(ConstantEvaluationStatus.ExpiredObject, "The designated array's lifetime has ended.");
             if (result.Location is { } location)
             {
                 EnsureAlive(location);
@@ -179,12 +207,21 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
             foreach (ConstantCell cell in storage) if (cell.Lifetime != ConstantStorageLifetime.Static) cell.Alive = false;
             return Result(stopped.Status, default, stopped.Message);
         }
-        finally { work.Clear(); values.Clear(); calls.Clear(); globals.Clear(); storage.Clear(); bindingObservations.Clear(); fullExpressions.Clear(); }
+        finally { work.Clear(); values.Clear(); calls.Clear(); globals.Clear(); storage.Clear(); bindingObservations.Clear(); fullExpressions.Clear(); ClearAggregateState(); }
     }
     private void EvaluateNode(Expression expression)
     {
         switch (expression)
         {
+            case StringLiteralExpression stringLiteral: EvaluateString(stringLiteral); break;
+            case ArrayInitializationExpression initialization:
+                values.Push(ConstantRuntimeValue.ArrayAddress(MakeArray((ArrayType)initialization.Type, null, null, initialization.Literal.CodeUnits, null, true))); break;
+            case SizeOfExpression size: values.Push(ConstantRuntimeValue.Scalar(size.ByteSize)); break;
+            case DependentSizeOfExpression: Stop(ConstantEvaluationStatus.Dependent, "Dependent sizeof requires substitution."); break;
+            case SubscriptExpression subscript:
+                work.Push(new FinishSubscript(subscript)); work.Push(new EvaluateExpression(subscript.SourceRight)); work.Push(new EvaluateExpression(subscript.SourceLeft)); break;
+            case PointerArithmeticExpression pointer:
+                work.Push(new FinishPointerArithmetic(pointer)); work.Push(new EvaluateExpression(pointer.Offset)); work.Push(new EvaluateExpression(pointer.Pointer)); break;
             case LiteralExpression literal: values.Push(ConstantRuntimeValue.Scalar(literal.ConstantValue!.Value)); break;
             case ParenthesizedExpression parens: work.Push(new EvaluateExpression(parens.Operand)); break;
             case ReferenceExpression reference:
@@ -197,7 +234,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
             case MaterializedTemporaryExpression temporary:
                 work.Push(new CompleteMaterialization(temporary)); work.Push(new EvaluateExpression(temporary.Initializer)); break;
             case ConversionExpression conversion:
-                if (conversion.Type is not IntegerType) Stop(ConstantEvaluationStatus.InvalidExpression, "Only integer value conversions are interpreted.");
+                if (conversion.Type is not (IntegerType or PointerType)) Stop(ConstantEvaluationStatus.InvalidExpression, "This conversion is not interpreted.");
                 work.Push(new ConvertValue(conversion));
                 work.Push(new EvaluateExpression(conversion.Operand));
                 break;
@@ -222,7 +259,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
     private void StartCall(CallExpression call)
     {
         FunctionDeclaration? function = call.SelectedFunction.Definition;
-        if (function == null || function.Body == null || !function.IsConstexpr || function.Type.ReturnType is not (IntegerType or ReferenceType))
+        if (function == null || function.Body == null || !function.IsConstexpr || function.Type.ReturnType is not (IntegerType or ReferenceType or PointerType))
             Stop(ConstantEvaluationStatus.NotConstant, "Constant evaluation requires a visible constexpr scalar function definition.");
         if (calls.Count >= options.ConstantEvaluationCallLimit) Stop(ConstantEvaluationStatus.ResourceLimit, "Constant evaluation call depth limit exceeded.");
         var frame = new CallFrame(function!, ++invocationSequence);
@@ -230,6 +267,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
         {
             VariableDeclaration parameter = function.Parameters[i];
             ConstantRuntimeValue argument = values.Pop();
+            if (BindAggregateParameter(parameter, argument, frame)) continue;
             var slot = new ConstantSlot { Object = parameter.Type is IntegerType type ? Allocate(type, parameter.Symbol, parameter.Symbol, ConstantStorageLifetime.Automatic, true, frame) : null };
             Store(slot, argument); frame.Locals.Add(parameter.Symbol, slot);
         }
@@ -244,6 +282,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
         {
             case BlockStatement block: work.Push(new ExecuteBlock(block, frame)); break;
             case DeclarationStatement { Declaration: VariableDeclaration variable }:
+                if (DeclareAggregate(variable, frame)) break;
                 frame.Locals[variable.Symbol] = new ConstantSlot { Object = variable.Type is IntegerType type ? Allocate(type, variable.Symbol, variable.Symbol, ConstantStorageLifetime.Automatic, true, frame) : null };
                 if (variable.Initializer != null)
                 {
@@ -256,7 +295,7 @@ internal sealed partial class ConstantInterpreter(AnalysisOptions options)
             case ExpressionStatement expression:
                 Expression discarded = expression.Expression;
                 while (discarded is ParenthesizedExpression parenthesized) discarded = parenthesized.Operand;
-                if (discarded is ReferenceExpression) break;
+                if (discarded is ReferenceExpression reference && reference.ReferencedSymbol.Type is not ReferenceType) break;
                 ScheduleFullExpression(expression.Expression, new DiscardValue()); break;
             default: Stop(ConstantEvaluationStatus.InvalidExpression, "Unsupported or erroneous statement in constant evaluation."); break;
         }

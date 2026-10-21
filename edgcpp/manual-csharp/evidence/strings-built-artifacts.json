@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual main string/array/type/storage output fingerprints",
+  "artifacts": [
+    {
+      "path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "bytes": 1436160,
+      "sha256": "07dca33641c9a3f8b3107912b5f8311dda571b87458305288f04a837d46b9986"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "bytes": 272384,
+      "sha256": "7d14a56022d23fe6426e27da14224ac373ea8f2e0930a28756dd2836c256f4e0"
+    },
+    {
+      "path": "tests/EdgSharp.Tests/bin/aot-strings/EdgSharp.Tests",
+      "bytes": 5719800,
+      "sha256": "5bbc8da8a7fd8d7b8219c621a4b8e1a6a1fe818088d22c7f39f2c163631a672d"
+    }
+  ]
+}

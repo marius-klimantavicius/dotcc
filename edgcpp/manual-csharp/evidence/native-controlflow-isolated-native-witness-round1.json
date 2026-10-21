@@ -1,0 +1,39 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-c8f7a1e2/edgcpp/manual-csharp/fixtures/m4-controlflow-native-witness.cpp",
+  "source_sha256": "35383de5cfd116b847f93cda2083f3ee3aebeef47ac56a57ba5bf61667b994d9",
+  "additional_inputs": [
+    {
+      "path": "/home/marius/.t3/worktrees/dotcc/t3-c8f7a1e2/edgcpp/manual-csharp/fixtures/m4-controlflow-positive.cpp",
+      "sha256": "af13471ff40bad3a26caa42e14f299e55f2c78b5a4cd1799b81b327c654daba1"
+    },
+    {
+      "path": "/home/marius/.t3/worktrees/dotcc/t3-c8f7a1e2/edgcpp/manual-csharp/fixtures/m4-controlflow-combined.cpp",
+      "sha256": "8278a9d5ddc46a72e9dffcf48c317712ea0643c2a80c0d6f07c540e363ef24fa"
+    }
+  ],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-c8f7a1e2/edgcpp/manual-csharp/fixtures/m4-controlflow-native-witness.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-c8f7a1e2/edgcpp/manual-csharp",
+  "exit_code": 0,
+  "stdout": "",
+  "expected_exit_code": 0,
+  "stderr": "",
+  "expected": "accept",
+  "matched": true
+}

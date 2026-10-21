@@ -59,6 +59,14 @@ var cases = new (string Name, Action Run)[]
     ("M1 Unicode source metadata policy provider caches and retained queries", Tests.UnicodeSourceMetadata),
     ("M1 Unicode filesystem BOM encoding provenance and invalid bytes", Tests.UnicodeFileEncodingMetadata),
     ("M1 Unicode independent sessions retain separate identities and instances", Tests.UnicodeIndependentSessions),
+    ("M1 string literal array graph preserves typed units raw spelling and null", Tests.StringGraph),
+    ("M1 adjacent strings decode rescan and widen without repeated escapes", Tests.StringConcatenation),
+    ("M1 sizeof suppresses evaluation decay and unneeded template bodies", Tests.StringSizeOf),
+    ("M1 string array initialization infers bounds pads and retains storage", Tests.StringArrayVariables),
+    ("M1 string pointer transport distinguishes one past from element loads", Tests.StringPointerStorage),
+    ("M1 string element references and pointer overloads retain identities", Tests.StringElementReferences),
+    ("M1 array inference rollback scoped cache ownership and resource limits", Tests.StringOwnershipAndRollback),
+    ("M1 Unicode macro string template lookup and reference storage gate", Tests.StringStorageCombined),
     ("M1 standard predefined values are configured and deterministic", Tests.StandardPredefines),
     ("M1 include existence probes share search without activation", Tests.IncludeProbes),
     ("M1 structured include probe read failure and cache contracts", Tests.StructuredIncludes),
@@ -1158,7 +1166,7 @@ internal static partial class Tests
         foreach (string source in new[]
         {
             "struct S {int x;};", "float f;",
-            "int *p;", "int a[2];", "int f(){return sizeof(int);}", "int f(){return 1.0;}",
+            "int **p;", "int a[2][3];", "int f(){return sizeof(float);}", "int f(){return 1.0;}",
             "int f(){int a=1; a=2; return a;}", "int f(){int a=1; a++; return a;}",
             "int f(){return 1<<2;}", "int f(){return true?1:2;}",
             "int f(){return (1,2);}", "int f(){return (int)1;}", "int f(){return int(1);}", "int a{1};", "const void f();",

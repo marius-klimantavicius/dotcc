@@ -1,0 +1,20 @@
+{
+  "reason": "Preserve accepted integrated Unicode outputs before real string/array implementation builds",
+  "artifacts": [
+    {
+      "original_path": "src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "retained_path": "bin/checkpoints/6c3848ca5/src/EdgSharp/bin/Release/net10.0/EdgSharp.dll",
+      "sha256": "6c135c0f9e104fc3c4519101b0debb6650ec4b1d9a08422ff9afd3fad39cf348"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "retained_path": "bin/checkpoints/6c3848ca5/tests/EdgSharp.Tests/bin/Release/net10.0/EdgSharp.Tests.dll",
+      "sha256": "c9911519d2a9db3c366cc6b35c6c9283e6e3250ccb9a7611370ad2e23cbe6775"
+    },
+    {
+      "original_path": "tests/EdgSharp.Tests/bin/aot-unicode-integrated/EdgSharp.Tests",
+      "retained_path": "bin/checkpoints/6c3848ca5/tests/EdgSharp.Tests/bin/aot-unicode-integrated/EdgSharp.Tests",
+      "sha256": "72acd17987a4d6747851e58358ae0c9eb643fb1964b105dc3c14dd57d871e289"
+    }
+  ]
+}

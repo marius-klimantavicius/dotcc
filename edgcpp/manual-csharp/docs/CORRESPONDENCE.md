@@ -148,3 +148,11 @@ source encoding metadata.14 consulted source/doc hashes and unmodified Unicode17
 data/license provenance are retained. This extends scalar storage/reference
 coverage without qualifying full strings/floats/UDL or completing M1. Independent
 isolated U1/U2 repair acceptance is separate from main integration review.
+
+The string/array extension passes120/120 JIT/AOT with118-file maps and final
+independent review in review-strings-final.md. STRINGS-AND-ARRAYS maps actual
+conversion/rescan, bounded literal types/structural equivalence, initialization,
+sizeof, original-order subscripting and storage/address/reference-indirection
+branches; source-strings.json fingerprints9 consulted files. Separate nonobject
+addresses preserve one-past formation without fakecells. Exact native-crash
+qualification and full remaining language/product requirements stay explicit.

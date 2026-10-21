@@ -234,7 +234,7 @@ internal sealed partial class Parser
             instance = new FunctionTemplateInstance(template, candidate.TemplateArguments.ToArray(), candidate.FunctionType);
             state.RegisterInstance(template, instance);
         }
-        if (prototypeAnalysis && (!constantRequiredParsing || !template.Pattern.IsConstexpr) ||
+        if (unevaluatedParsing || prototypeAnalysis && (!constantRequiredParsing || !template.Pattern.IsConstexpr) ||
             instance.State is TemplateInstanceState.Complete or TemplateInstanceState.Instantiating) return instance;
         if (instance.State == TemplateInstanceState.Failed) return null;
         if (instantiationDepth >= options.TemplateInstantiationDepthLimit)

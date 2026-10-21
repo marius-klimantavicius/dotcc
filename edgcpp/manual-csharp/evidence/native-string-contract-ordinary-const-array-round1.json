@@ -1,0 +1,30 @@
+{
+  "purpose": "test oracle only; no production runtime dependency",
+  "profile": "C++20 strict; external template instantiation used; built-in target witnessed by profile.cpp; predefined macro file disabled; Unicode source default UTF-8 (per-file BOM overrides)",
+  "unicode_source_kind": "UTF-8",
+  "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+  "compiler_sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3",
+  "source": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-string-contracts/ordinary-const-array.cpp",
+  "source_sha256": "dae06185661c44c90415f6ff7b33e05ee680e1736b73819b39842bc38d8c9301",
+  "additional_inputs": [],
+  "command": [
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "--clear_flag",
+    "use_predefined_macro_file",
+    "--c++20",
+    "--strict",
+    "--no_code_gen",
+    "--instantiate",
+    "used",
+    "--unicode_source_kind",
+    "UTF-8",
+    "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-string-contracts/ordinary-const-array.cpp"
+  ],
+  "cwd": "/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp",
+  "exit_code": 2,
+  "stdout": "",
+  "expected_exit_code": 2,
+  "stderr": "\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-string-contracts/ordinary-const-array.cpp\", line 1: error:\n          expression must have a constant value\n  const char a[]=\"x\"; static_assert(a[0]==120);\n                                    ^\n\"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle\n          -inputs/m1-string-contracts/ordinary-const-array.cpp\", line 1: note:\n          attempt to access run-time storage\n  const char a[]=\"x\"; static_assert(a[0]==120);\n                                     ^\n\n1 error detected in the compilation of \"/home/marius/.t3/worktrees/dotcc/t3-96dc97a5/edgcpp/manual-csharp/tools/oracle-inputs/m1-string-contracts/ordinary-const-array.cpp\".\n",
+  "expected": "reject",
+  "matched": true
+}

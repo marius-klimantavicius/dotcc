@@ -1,0 +1,25 @@
+{
+  "purpose": "Consulted control-flow source provenance, no whole-file port claim",
+  "sources": [
+    {
+      "path": "edgcpp/upstream/src/expr.c",
+      "sha256": "056f8e7416d6f948846abbe17c3401e9eb4ca8ed1ce0ae7673cd573b314df3c2"
+    },
+    {
+      "path": "edgcpp/upstream/src/exprutil.c",
+      "sha256": "1b01609700d2a72f64f94e218a3f210e7e9503394bc3cf16168e8a1a50e50812"
+    },
+    {
+      "path": "edgcpp/upstream/src/statements.c",
+      "sha256": "a4b9476b67189ea0ed2034239f4494bc32a4f50a885bb258ab01eb8e01bac703"
+    },
+    {
+      "path": "edgcpp/upstream/src/interpret.c",
+      "sha256": "d3f34d737a6690e482942a52a463e406b767a0d5fc06b3609c8cb9c79b27cb4d"
+    },
+    {
+      "path": "edgcpp/upstream/src/il.c",
+      "sha256": "535768a37a2bd0f90dd18c41bd867398074289a305c3ff88589da67153514cd0"
+    }
+  ]
+}

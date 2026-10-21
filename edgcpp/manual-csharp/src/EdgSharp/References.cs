@@ -29,6 +29,8 @@ internal sealed partial class TypeTable
     {
         TemplateParameterType => true,
         ReferenceType reference => ContainsScopedOrDependentType(reference.ReferredType),
+        ArrayType array => ContainsScopedOrDependentType(array.ElementType),
+        PointerType pointer => ContainsScopedOrDependentType(pointer.PointedToType),
         FunctionType function => ContainsScopedOrDependentType(function.ReturnType) ||
             function.ParameterTypes.Any(ContainsScopedOrDependentType),
         _ => type.Kind == TypeKind.Dependent
@@ -45,7 +47,7 @@ internal sealed partial class TypeTable
         }
         if (referredType.Kind is TypeKind.Void or TypeKind.Error)
             throw new ArgumentException("A reference requires a non-void referred-to type.", nameof(referredType));
-        if (ContainsScopedOrDependentType(referredType)) return new ReferenceType(referredType, kind);
+        if (RequiresOwnerLifetime(referredType)) return new ReferenceType(referredType, kind);
         var key = (referredType, kind);
         if (!references.TryGetValue(key, out ReferenceType? result))
             references.Add(key, result = new ReferenceType(referredType, kind));
@@ -164,6 +166,7 @@ internal sealed partial class Parser
             return type;
         }
         Token reference = Take();
+        if (type is ArrayType) UnsupportedAndThrow("References to arrays require unimplemented compound binding forms.");
         if (InTemplateScope() || TypeTable.ContainsScopedOrDependentType(type))
             UnsupportedAndThrow("Dependent and template reference declarators are not implemented.");
         if (Is("const"))

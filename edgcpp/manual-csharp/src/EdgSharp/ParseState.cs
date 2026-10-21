@@ -93,6 +93,12 @@ internal sealed class ParseState
         symbol.HasTemplateDependentValue = dependent;
         undo.Add(() => symbol.HasTemplateDependentValue = previous);
     }
+    internal void SetVariableType(VariableDeclaration declaration, SemanticType type)
+    {
+        SemanticType previous = declaration.Type;
+        declaration.Type = declaration.Symbol.Type = type;
+        undo.Add(() => declaration.Type = declaration.Symbol.Type = previous);
+    }
     internal ParseCheckpoint Checkpoint()
     {
         if (replayState) throw new InvalidOperationException("Replay states share mutations with their owner and cannot create independent checkpoints.");

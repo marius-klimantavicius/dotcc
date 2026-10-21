@@ -34,10 +34,11 @@ public sealed record AnalysisOptions
     public int ConstantEvaluationStepLimit { get; init; } = 10000;
     public int ConstantEvaluationCallLimit { get; init; } = 128;
     public int TemplateInstantiationDepthLimit { get; init; } = 64;
+    public int StringLiteralCodeUnitLimit { get; init; } = 1000000;
     public PreprocessingOptions Preprocessing { get; init; } = new();
 }
 
-public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent, Reference }
+public enum TypeKind { Error, Void, Integer, Function, OverloadSet, TemplateParameter, Dependent, Reference, Array, Pointer }
 public enum IntegerKind { Bool, Char, SignedChar, UnsignedChar, Short, UnsignedShort, Int, UnsignedInt, Long, UnsignedLong, LongLong, UnsignedLongLong, WChar, Char8, Char16, Char32 }
 [Flags] public enum TypeQualifiers { None = 0, Const = 1 }
 
@@ -130,19 +131,21 @@ internal sealed partial class TypeTable
     internal IntegerType Integer(IntegerKind kind, TypeQualifiers qualifiers = 0) => integers[(kind, qualifiers)];
     internal SemanticType Unqualified(SemanticType type) => type switch
     {
-        IntegerType i => Integer(i.IntegerKind), TemplateParameterType p => p.UnqualifiedType, _ => type
+        IntegerType i => Integer(i.IntegerKind), TemplateParameterType p => p.UnqualifiedType,
+        PointerType p => Pointer(p.PointedToType), ArrayType a => Array(Unqualified(a.ElementType), a.Length), _ => type
     };
     internal SemanticType Const(SemanticType type) => type switch
     {
-        IntegerType i => Integer(i.IntegerKind, TypeQualifiers.Const), TemplateParameterType p => p.ConstType, _ => type
+        IntegerType i => Integer(i.IntegerKind, TypeQualifiers.Const), TemplateParameterType p => p.ConstType,
+        PointerType p => Pointer(p.PointedToType, TypeQualifiers.Const), ArrayType a => Array(Const(a.ElementType), a.Length), _ => type
     };
     internal FunctionType Function(SemanticType result, IEnumerable<SemanticType> parameters)
     {
-        SemanticType[] array = parameters.Select(Unqualified).ToArray();
+        SemanticType[] array = parameters.Select(parameter => parameter is ArrayType a ? Pointer(a.ElementType) : Unqualified(parameter)).ToArray();
         // Dependent types own template scopes and their source graph. Their
         // signature lifetime is the template's lifetime, never the session's
         // concrete-type intern table. The template retains this one signature.
-        if (ContainsScopedOrDependentType(result) || array.Any(ContainsScopedOrDependentType))
+        if (RequiresOwnerLifetime(result) || array.Any(RequiresOwnerLifetime))
             return new FunctionType(result, array);
         foreach (var existing in functions)
             if (ReferenceEquals(existing.ReturnType, result) && existing.ParameterTypes.SequenceEqual(array)) return existing;
