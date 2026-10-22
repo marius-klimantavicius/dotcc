@@ -1,9 +1,10 @@
 #ifndef _DOTCC_PWD_H
 #define _DOTCC_PWD_H
 #include <sys/types.h>
-/* Linux LP64/glibc layout, also the shared runtime's explicit return layout.
-   Callers do not own the record/strings; a later lookup on this thread can
-   overwrite them. Each runtime/thread has separate reusable storage. */
+#include <stddef.h>
+/* Linux LP64/glibc layout. Non-reentrant lookups return runtime/thread-owned
+   record/string storage, overwritten by later lookups. The _r operation uses
+   the caller's record, buffer and result-pointer storage. */
 struct passwd {
     char *pw_name;
     char *pw_passwd;
@@ -15,4 +16,8 @@ struct passwd {
 };
 struct passwd *getpwuid(uid_t uid);
 struct passwd *getpwnam(const char *name);
+/* _r storage belongs to the caller; errors are returned numerically, and a
+   missing entry is success with *result == NULL. */
+int getpwuid_r(uid_t uid, struct passwd *record, char *buffer, size_t length,
+               struct passwd **result);
 #endif

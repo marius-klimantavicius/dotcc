@@ -47,6 +47,21 @@ public static unsafe partial class Libc
     /// resolution uses reentrant calls, so concurrent workers never share libc's
     /// static passwd record. Context disposal releases all worker buffers.</summary>
     public static void* getpwuid(uint uid) => LookupPasswd(uid, null);
+
+    /// <summary>Caller-owned reentrant NSS lookup on Linux LP64. The return
+    /// value is the numeric error, not -1/guest errno. A missing entry returns
+    /// 0 and NULL. Native strings are borrowed according to NSS's contract;
+    /// this function neither copies, frees nor assumes ownership of them.</summary>
+    public static int getpwuid_r(uint uid, void* record, byte* buffer, ulong length, void* result)
+    {
+        // Struct** cannot implicitly convert to void** in emitted C#. Accept
+        // its untyped address and perform the ABI cast only inside the runtime.
+        if (result == null) return EFAULT;
+        *(void**)result = null;
+        if (record == null || buffer == null) return EFAULT;
+        if (!OperatingSystem.IsLinux() || IntPtr.Size != 8) return ENOTSUP;
+        return PosixGetpwuidR(uid, (LinuxPasswd*)record, buffer, length, (LinuxPasswd**)result);
+    }
     public static void* getpwnam(byte* name)
     {
         if (name == null) { errno = EFAULT; return null; }

@@ -1,8 +1,10 @@
 #ifndef _DOTCC_TERMIOS_H
 #define _DOTCC_TERMIOS_H
 
-/* Linux generic termios ABI. Terminal I/O is a host boundary, not provided
-   merely by including these declarations. */
+/* Linux x64 LP64 libc termios ABI: size 60, alignment 4; c_cc at 17 and
+   c_ispeed/c_ospeed at 52/56. The two attribute operations use real owned
+   descriptor/OS terminal services. Other declarations below are separate
+   capability boundaries, not implied implementations. */
 typedef unsigned char cc_t;
 typedef unsigned int speed_t;
 typedef unsigned int tcflag_t;

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="$(PosixHostProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(PosixHostProject)' == '' Or !Exists('$(PosixHostProject)')"
+           Text="Set PosixHostProject to the actual emitted POSIX host fixture project." />
+  </Target>
+</Project>
