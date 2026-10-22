@@ -1804,3 +1804,53 @@ Verification was serial on Linux x64. This does not claim the full upstream Tcl
 suite, other operating systems, or the experimental translated upstream OS VFS
 implementations were requalified. Compiler-wide suites were not rerun because
 there were no compiler changes.
+
+
+## 2026-10-23 — Fresh post-repair verification, generation 2
+
+The current Linux x64 profile passes a clean, complete framework verification
+using compiler source `123b3e76e` and the immutable generation-2 tool closures.
+`DotCC.Lib.dll` SHA-256 is `08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d`;
+`dotcc-postprocess.dll` SHA-256 is `e1867eca1f516ba8a2ea900cbbc378b4d92179ef1b8adf19409dbc7e71c520dc`.
+The shared compiler/framework repair and subsequent nested-aggregate correction
+are supplied by the supervisor; no SQLite implementation or test change was
+needed. The earlier generation-1 run was cancelled for the tool upgrade and is
+not reused as final acceptance evidence.
+
+Actual commands from the private source snapshot:
+
+```sh
+source /tmp/dotcc-four-campaign-20261023/env-v2.sh
+bash sqlite/scripts/verify.sh --tools reuse --fetch never --form all --mode all --rid linux-x64 --jobs 1
+python3 Scripts/production_support.py dotnet build sqlite/ManagedConsumer.slnx -c Release --nologo
+```
+
+All 12 declared verification suites pass, including raw/processed ordinary
+consumers under JIT and normally trimmed NativeAOT; all seven fresh native/C#
+differentials; VFS/WAL/mmap and independent-process recovery/interoperability;
+threading, endian exchange, copied translations, function identity and image
+exchange. The root solution and its consumer also pass. A fresh native layout
+transcript matches the committed expected transcript exactly. The existing P6
+selector additionally passes all 15 targeted raw host/threading and
+raw/processed corpus cells under their selected JIT/AOT modes.
+
+Harness outputs report 12 source-preparation tests, 15 varargs cases per runtime,
+37 upstream JSONB SQL cases, 128 injected allocation failures and 34 explicit
+FTS5 assertions per execution. These are different count units; uninstrumented
+suite assertion totals are `not_reported` in the receipt. Corpus layout checks
+cover 39 offsets, 42 aggregate layouts and eight inline arrays; product checks
+cover 41 offset contracts, 67 actual field offsets, 48 aggregate layouts and
+eight pointer arrays. Tool/source/notices and native-import/ELF audits pass,
+with no native SQLite dependency in either ordinary AOT consumer.
+
+The final framework receipt is
+`artifacts/campaign/20261023-003418-acf3b9fc/receipt.json`; detailed commands, matrix rows,
+stdout, tool closures and SHA-256 evidence are retained in
+`/tmp/dotcc-four-campaign-20261023/evidence/sqlite-report.json` and linked by the
+[aggregate post-repair receipt](../../docs/validation/four-campaign-post-repair-20261023.json).
+There are no failed or skipped required gates. This qualifies Linux x64 on a
+little-endian host, including UTF16LE/BE data, not other host architectures or
+operating systems. The full Tcl/TH3 suite, optional Lua/Chibi/WAT extension,
+experimental upstream OS VFS and separately hosted NativeAOT compiler probes
+remain outside this verification selection; earlier historical sections retain
+their original scope.
