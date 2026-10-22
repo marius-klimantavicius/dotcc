@@ -19,9 +19,9 @@ public static unsafe partial class Libc
     /// sysconf(_SC_PAGESIZE). Successful queries leave errno unchanged.</summary>
     public static int getpagesize() => Environment.SystemPageSize;
 
-    /// <summary>No host process transport is installed in the shared runtime.
-    /// Reject process creation explicitly. Embedders such as PGlite must use
-    /// their reviewed in-process callbacks instead of a native shell/backend.</summary>
+    /// <summary>The exact read-only locale inventory command uses the reviewed
+    /// host utility. Other commands require an embedder's in-process callbacks;
+    /// this surface never starts a shell or a native database backend.</summary>
     public static FILE* popen(byte* command, byte* mode)
     {
         if (command == null || mode == null) { errno = EFAULT; return null; }
@@ -29,16 +29,17 @@ public static unsafe partial class Libc
         if ((*mode != (byte)'r' && *mode != (byte)'w') ||
             (mode[1] != 0 && (mode[1] != (byte)'e' || mode[2] != 0)))
         { errno = EINVAL; return null; }
+        if (*mode == (byte)'r' && LocaleInventoryCommand(command))
+            return OpenLocaleInventory(mode);
         errno = ENOTSUP;
         return null;
     }
 
-    /// <summary>No stream has an associated child process here. Validate the
-    /// FILE ownership without dereferencing a foreign handle, then report that
-    /// there is no child to wait for. Never close an ordinary caller's stream.</summary>
+    /// <summary>Close an owner-local locale inventory stream and return its
+    /// actual POSIX wait status. Never close an ordinary caller's stream.</summary>
     public static int pclose(FILE* stream)
     {
-        errno = Slot(stream) is null ? EBADF : ECHILD;
-        return -1;
+        if (Slot(stream) is null) { errno = EBADF; return -1; }
+        return CloseLocaleInventory(stream);
     }
 }

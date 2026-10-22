@@ -98,6 +98,7 @@ public static unsafe partial class Libc
                 DisposePosixLocales(this);
                 DisposePosixSemaphores(this);
                 DisposeBackendHostServices(this);
+                DisposeLocaleProcesses(this);
                 DisposeFileDescriptors(this);
                 DisposePathState(this);
                 DisposeOwnedMappings(this);
