@@ -256,7 +256,7 @@ symbols:
   - 'volatile'     # 142 type qualifier (C90)
   # Optional for-loop clauses — each may be empty (`for (;;)`). ForCond empty
   # means "always true"; ForPost empty means no update step.
-  - ForCond        # 143 non-terminal: for-condition (E or empty)
+  - ForCond        # 143 non-terminal: for-condition (Expr or empty)
   - ForPost        # 144 non-terminal: for-update (CommaExprList or empty)
   # Initializer-element list with an OPTIONAL TRAILING COMMA (`{1, 2, 3,}` —
   # C90-legal). Separate from the call-argument `ArgList` (right-recursive,
@@ -763,7 +763,7 @@ productions:
       # (C23, message optional). File-scope form. Compile-time only — no
       # observable runtime behaviour — so the visitor lowers it to a comment
       # (see Visit(C.StaticAssert)); valid programs emit nothing.
-      - { lhs: Fn, rhs: ['_Static_assert', '(', E, ',', STRING, ')', ';'], action: staticAssert }
+      - { lhs: Fn, rhs: ['_Static_assert', '(', E, ',', StringSeq, ')', ';'], action: staticAssert }
       - { lhs: Fn, rhs: ['_Static_assert', '(', E, ')', ';'],              action: staticAssertNoMsg }
       # C23 `[[attr]]` prepending any file-scope declaration — ACCEPTED +
       # IGNORED (gated C23 in the lowering). A chain of specifiers
@@ -1082,16 +1082,13 @@ productions:
       - { lhs: Stmt, rhs: ['for', '(', ScopeEnter, Decl, ';', ForCond, ';', ForPost, ')', Stmt], action: stmtForDecl }
       - { lhs: Stmt, rhs: ['for', '(', CommaExprList, ';', ForCond, ';', ForPost, ')', Stmt], action: stmtForExpr }
       - { lhs: Stmt, rhs: ['for', '(', ';', ForCond, ';', ForPost, ')', Stmt], action: stmtForNoInit }
-      - { lhs: ForCond, rhs: [E], action: forCondExpr }
+      - { lhs: ForCond, rhs: [Expr], action: forCondExpr }
       - { lhs: ForCond, rhs: [],  action: forCondEmpty }
       - { lhs: ForPost, rhs: [CommaExprList], action: forPostExprs }
       - { lhs: ForPost, rhs: [],              action: forPostEmpty }
-      # Comma-separated expression list. Used in for-init / for-update so
-      # `for (i=0, j=10; …; i++, j--)` parses. C lets the comma operator
-      # appear in arbitrary expression contexts too; that more general
-      # form isn't supported yet (would need a top-level Expr non-terminal
-      # over E, plus a lowering for the value-of-rhs semantics). The
-      # for-init/update positions cover the dominant use case.
+      # Comma-separated expression list for for-init / for-update. Conditions
+      # use the general Expr tier so each condition evaluation preserves the
+      # comma operands' side effects and takes the value of the last operand.
       - { lhs: CommaExprList, rhs: [E],                        action: commaExprOne }
       - { lhs: CommaExprList, rhs: [CommaExprList, ',', E],    action: commaExprCons }
       - { lhs: Stmt, rhs: ['return', Expr, ';'],          action: stmtReturn }
@@ -1183,7 +1180,7 @@ productions:
       - { lhs: Stmt, rhs: [';'],                           action: stmtEmpty }
       # Block-scope `_Static_assert` — same two arities as the file-scope
       # form above. Lowers to a comment (compile-time only).
-      - { lhs: Stmt, rhs: ['_Static_assert', '(', E, ',', STRING, ')', ';'], action: staticAssertStmt }
+      - { lhs: Stmt, rhs: ['_Static_assert', '(', E, ',', StringSeq, ')', ';'], action: staticAssertStmt }
       - { lhs: Stmt, rhs: ['_Static_assert', '(', E, ')', ';'],              action: staticAssertStmtNoMsg }
       # C23 `[[attr]]` prepending a statement or block-scope declaration —
       # ACCEPTED + IGNORED (gated C23). Also covers the bare

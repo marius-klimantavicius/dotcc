@@ -9,10 +9,12 @@ namespace DotCC.FunctionalTests;
 
 public sealed class StatementExpressionLoopTests
 {
-    [Fact]
-    public void Object_link_keeps_internal_loops_and_conditional_execution()
+    [Theory]
+    [InlineData("gnu-statement-expression-loops")]
+    [InlineData("for-comma-condition")]
+    public void Object_link_keeps_loop_evaluation(string name)
     {
-        var fixture = FixtureRunner.Discover().Single(row => row.name == "gnu-statement-expression-loops");
+        var fixture = FixtureRunner.Discover().Single(row => row.name == name);
         string directory = Path.Combine(Path.GetTempPath(), "dotcc-statement-loops-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
         try

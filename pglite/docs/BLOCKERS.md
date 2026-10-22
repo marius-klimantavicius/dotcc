@@ -2,6 +2,33 @@
 
 Campaign-start ledger, 2026-10-22. Planned checks are not successes.
 
+## PGL-009 — Comma expressions in for conditions (fixed)
+
+Actual `tupdesc.c:1072` expands `forfour` into four assignments and a final
+boolean condition joined with commas. The grammar accepted only the assignment
+tier here, rejecting the first comma. ForCond now uses the existing full Expr
+tier; existing IR preserves sequential side effects and the final value.
+Native/emitted/object fixture `for-comma-condition` checks declaration, expression
+and empty init forms, final false-condition side effects, and continue/update.
+Full-source receipt `20261022-170809-7535d470` emits tupdesc and reaches a
+separate adjacent-string-message failure in gindatapage.
+
+## PGL-010 — Adjacent static-assert message literals (fixed)
+
+Actual `gindatapage.c:501` uses `dlist_container` and PostgreSQL's fallback
+type assertions, whose stringified operand is adjacent to explanatory message
+literals. File/block static assertions previously accepted one STRING token;
+they now accept the existing StringSeq grammar. Failure diagnostics retain all
+original segments. Positive file/block and negative assertion tests pass.
+Actual full gindatapage emits in receipt `20261022-171127-7f751d14`.
+
+Combined control-flow/static-assert syntax regressions: 38 pass, log
+`artifacts/supervisor-portable/control-unit-combined.log`; direct for-comma and
+both loop object fixtures pass. Diagnostic remaining-source receipt
+`20261022-171159-54a6f245` advances beyond 50 backend units and reaches missing
+`locale_t` in actual `utils/pg_locale.h`; POSIX locale implementation is active.
+These diagnostic selections do not replace final complete-source regeneration.
+
 ## PGL-008 — GNU statement-expression local loops (fixed, full retry advanced)
 
 Actual `brin.c` reached a `do ... while (0)` inside PostgreSQL's

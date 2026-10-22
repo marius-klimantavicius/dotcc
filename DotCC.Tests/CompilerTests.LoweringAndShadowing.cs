@@ -36,6 +36,30 @@ public sealed partial class CompilerTests
         finally { File.Delete(src); }
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Static_assert_accepts_adjacent_message_segments(bool blockScope)
+    {
+        string assertion = "_Static_assert(1, \"member\" \" has the expected type\");";
+        var source = WriteTemp(blockScope ? "int main(void) { " + assertion + " return 0; }"
+            : assertion + " int main(void) { return 0; }");
+        try { Compiler.EmitCSharp(new[] { source }).ShouldContain("return 0;"); }
+        finally { File.Delete(source); }
+    }
+
+    [Fact]
+    public void Static_assert_adjacent_message_preserves_failure_and_segments()
+    {
+        var source = WriteTemp("_Static_assert(0, \"bad \" \"member\"); int main(void) { return 0; }");
+        try
+        {
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp(new[] { source }))
+                .Message.ShouldContain("static assertion failed: \"bad \" \"member\"");
+        }
+        finally { File.Delete(source); }
+    }
+
     [Fact]
     public void Static_assert_block_scope_and_message_optional_c23_form()
     {

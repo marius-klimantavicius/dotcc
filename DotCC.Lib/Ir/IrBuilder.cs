@@ -3838,7 +3838,7 @@ internal sealed partial class IrBuilder
                     "expression in static assertion is not constant", pos, _file));
                 break;
             case 0:
-                var suffix = msgItem is { } m ? ": " + Tok(m) : "";
+                var suffix = msgItem is { } m ? ": " + string.Join(" ", CollectStrSegments(m)) : "";
                 Diagnostics.Add(new Diagnostic(Severity.Error,
                     "static assertion failed" + suffix, pos, _file));
                 break;
