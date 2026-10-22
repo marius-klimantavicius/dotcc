@@ -80,6 +80,7 @@ internal sealed partial class CSharpBackend
                 .ToDictionary(name => name, AggregateIdentities.Token, StringComparer.Ordinal) : null) };
         cg._foldConstant = unit.FoldMacroConstant;
         cg._foldFloatingPayloadBits = unit.FoldFloatingPayloadBits;
+        cg._definedFunctionNames.UnionWith(unit.Functions.Select(function => function.Sym.TargetName));
         foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
         cg._initializerNames.UnionWith(unit.Globals.Select(global => global.Sym.TargetName.TrimStart('@')));
         cg._initializerNames.UnionWith(unit.Functions.Select(function => function.Sym.TargetName.TrimStart('@')));
@@ -3351,7 +3352,7 @@ internal sealed partial class CSharpBackend
             // A known parameter coerces the arg to its type; a variadic-tail or
             // unknown-signature arg takes C's default argument promotions — notably
             // an enum decays to its underlying int (C# has no enum→int for `.Arg`).
-            a.Add(c.ParamTypes is { } pts && i < pts.Count
+            a.Add(AllocationSizeArgument(c, i) ?? (c.ParamTypes is { } pts && i < pts.Count
                 ? CoercedArg(c.Args[i], pts[i], bindRuntimeOverload: c.CalleeSym is { FromSystemHeader: true })
                 // VaArg stores pointer bits via its void* conversion. A bare
                 // function address first needs its delegate* signature; an
@@ -3359,7 +3360,7 @@ internal sealed partial class CSharpBackend
                 : c.ParamTypes is not null && c.Args[i].Type.Unqualified is CType.Func
                     ? $"(void*)(({Cs(c.Args[i].Type)})({Expr(c.Args[i])}))"
                 : c.ParamTypes is not null ? DefaultPromotedArgument(c.Args[i])
-                : Sub(DecayEnum(c.Args[i]), PAssign));
+                : Sub(DecayEnum(c.Args[i]), PAssign)));
         }
         if (IsPrintfFamily(c.Callee) || IsScanfFamily(c.Callee))
         {

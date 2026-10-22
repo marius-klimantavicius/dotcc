@@ -5,6 +5,25 @@ namespace DotCC.Backends;
 
 internal sealed partial class CSharpBackend
 {
+    private readonly HashSet<string> _definedFunctionNames = new(StringComparer.Ordinal);
+
+    private string? AllocationSizeArgument(Call call, int index)
+    {
+        // The runtime's int malloc overload has the same allocation contract as
+        // its size_t overload for a single C# sizeof result (always nonnegative
+        // and int-sized). Keep that simple argument bare; array-size products
+        // and all other size_t expressions still require unsigned rendering.
+        // Relocatable calls can still bind to a size_t-only C definition later.
+        if (_relocatable || index != 0 || call.CalleeSym is not { Name: "malloc", FromSystemHeader: true } function
+            || _definedFunctionNames.Contains(function.TargetName)
+            || call.ParamTypes is not { Count: 1 } parameters || parameters[0].Unqualified != CType.SizeT)
+            return null;
+        var argument = call.Args[index];
+        while (argument is Paren parenthesized) argument = parenthesized.Inner;
+        return argument is SizeOfExpr size && size.Of.Unqualified is not CType.Array
+            ? SizeofText(size.Of) : null;
+    }
+
     private static bool IsArrayObject(CExpr expression)
     {
         while (expression is Paren parenthesized) expression = parenthesized.Inner;

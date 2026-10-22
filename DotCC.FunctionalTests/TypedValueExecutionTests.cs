@@ -19,6 +19,10 @@ public sealed class TypedValueExecutionTests
     [InlineData("typed-value-array-address", true, false)]
     [InlineData("typed-value-array-address", false, true)]
     [InlineData("typed-value-array-address", true, true)]
+    [InlineData("canonical-allocation-boundaries", false, false)]
+    [InlineData("canonical-allocation-boundaries", true, false)]
+    [InlineData("canonical-allocation-boundaries", false, true)]
+    [InlineData("canonical-allocation-boundaries", true, true)]
     public void Actual_typed_values_execute_in_source_objects_and_owners(string name, bool objects, bool owners)
     {
         var fixture = FixtureRunner.Discover().Single(f => f.name == name);
@@ -45,8 +49,8 @@ public sealed class TypedValueExecutionTests
                 public static class TypedValueProbe {
                     public static int Main() {
                         using var first = new TypedApi(); using var second = new TypedApi();
-                        if (first.main() != 0) return 101;
-                        if (second.main() != 0) return 102;
+                        using (first.__DotCcEnter()) { if (first.main() != 0) return 101; }
+                        using (second.__DotCcEnter()) { if (second.main() != 0) return 102; }
                         return 0;
                     }
                 }

@@ -12,8 +12,8 @@ public static partial class Compiler
     // selected native import, or the embedded runtime. Let C# perform exactly
     // the lexical lookup used by direct calls, inside the translated owner.
     // A C prototype need not be the CLR service's exact signature (notably a
-    // header-owned T* versus void*). Take the address of one typed forwarding
-    // method per unresolved C symbol, rather than the runtime method group.
+    // header-owned T* versus void*). Retain an exact runtime method's address;
+    // otherwise take the address of one typed forwarding method per C symbol.
     private static (IReadOnlyDictionary<string, string> Types, string Methods) ResolveExternalPointerOwners(
         IReadOnlyDictionary<string, string> declarations, IEnumerable<string> definitions,
         IEnumerable<string> otherNames, bool instanceMethods = false)
@@ -50,10 +50,43 @@ public static partial class Compiler
             while (!occupied.Add(resolver)) resolver += "_";
             var target = "&" + FunctionPointerNames.OwnerAlias(name) + "." + EmitHelpers.Id(name);
             if (!text.Contains(target, StringComparison.Ordinal)) throw new CompileException("invalid function-pointer target record; regenerate objects");
-            types[key] = text.Replace(target, "&DotCcFunctions." + resolver, StringComparison.Ordinal);
-            methods.Append(ExternalPointerAdapter(signature.Groups[1].Value, resolver, EmitHelpers.Id(name)));
+            var pointerType = signature.Groups[1].Value;
+            var method = EmitHelpers.Id(name);
+            if (HasExactRuntimePointerSignature(pointerType, method))
+            {
+                types[key] = text.Replace(target, "DotCcFunctions." + resolver + "()", StringComparison.Ordinal);
+                methods.Append("internal unsafe static ").Append(pointerType).Append(' ').Append(resolver)
+                    .Append("() => &").Append(method).Append(";\n");
+            }
+            else
+            {
+                types[key] = text.Replace(target, "&DotCcFunctions." + resolver, StringComparison.Ordinal);
+                methods.Append(ExternalPointerAdapter(pointerType, resolver, method));
+            }
         }
         return (types, methods.ToString());
+    }
+
+    private static bool HasExactRuntimePointerSignature(string signature, string name)
+    {
+        // Recognize only plain scalar/pointer declarations in the shipped Libc
+        // source. Unknown services, named C records, callbacks and any differing
+        // CLR result type retain the typed forwarding boundary below. Reading
+        // the embedded source keeps this tied to the runtime actually emitted,
+        // without a second hand-maintained ABI table or reflection dependency.
+        var types = signature["delegate*<".Length..^1].Split(',').Select(type => type.Trim()).ToArray();
+        if (types.Any(type => !Regex.IsMatch(type,
+            @"^(?:void|bool|byte|sbyte|short|ushort|int|uint|long|ulong|nint|nuint|float|double|CBool)\**$")))
+            return false;
+        var parameters = string.Join(@"\s*,\s*", types.Take(types.Length - 1)
+            .Select(type => Regex.Escape(type) + @"\s+@?\w+"));
+        var declaration = @"^    public static (?:unsafe )?" + Regex.Escape(types[^1]) + @"\s+"
+            + Regex.Escape(name) + @"\s*\(\s*" + parameters + @"\s*\)";
+        foreach (Match libc in Regex.Matches(_cRuntimeBlock.Value,
+            @"^public static unsafe partial class Libc\s*\{\r?\n(?<body>.*?)^\}",
+            RegexOptions.Multiline | RegexOptions.Singleline))
+            if (Regex.IsMatch(libc.Groups["body"].Value, declaration, RegexOptions.Multiline)) return true;
+        return false;
     }
 
     private static string ExternalPointerAdapter(string signature, string name, string target)
