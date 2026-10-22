@@ -2,10 +2,11 @@
 from pathlib import Path
 import datetime,fcntl,hashlib,json,sys,time,xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT/'Scripts'))
+PROVENANCE = json.loads((ROOT / 'cpython/config/qualification-provenance.json').read_text())['executionStackContractR34']
 from campaigns.process import execute
 ART=ROOT/'cpython/artifacts/owner-b-r34-20261018';WORK=ROOT/'cpython/build/owner-b-r34-20261018';HERE=ROOT/'cpython/tests/ExecutionStackContractR34'
 release=ROOT/'cpython/artifacts/owner-a-r29-20261018/v19/serial-slot-release-to-b34-knownbad.json'
-assert hashlib.sha256(release.read_bytes()).hexdigest()=='32c1bee2e0ea3fa1e6754315294040a2cea1b069d15897a2144648f876dbbcc1'
+assert hashlib.sha256(release.read_bytes()).hexdigest()==PROVENANCE['legacyReleaseSha256']
 r=json.loads(release.read_text())
 # The exact release field names are retained by its owner; all listed terminal
 # PIDs and locks are independently checked before this batch starts.
@@ -23,7 +24,7 @@ def run(argv,label,expected=0,timeout=90):
  print(json.dumps({'label':label,'rawExit':row['exit_code'],'expectedExit':expected,'seconds':row['seconds']}),flush=True)
 common=['-c','Release','-p:NuGetAudit=false','-p:RestoreIgnoreFailedSources=true','-p:UseSharedCompilation=false','-nodeReuse:false']
 old=ROOT/'cpython/build/owner-a-r29-20261018/v19/source-bytes/DotCC.Libc/PthreadLib.cs'
-assert hashlib.sha256(old.read_bytes()).hexdigest()=='d9def099352c26b63573e7069c2c63c5f0794daedae50450313c790aec99bbb9'
+assert hashlib.sha256(old.read_bytes()).hexdigest()==PROVENANCE['legacyPthreadSourceSha256']
 run(['dotnet','test',HERE/'SharedPolicyContracts.csproj',*common,'--artifacts-path',WORK/'legacy-baseline-products',f'-p:SharedLibcProject={HERE/"LegacyBaselineLibc.csproj"}',
  '--filter','FullyQualifiedName~Legacy_binding_stays_null','--logger','trx;LogFileName=legacy-red.trx','--results-directory',ART/'legacy-red-results'],'legacy-held-source-red',expected=1,timeout=120)
 ns={'t':'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}

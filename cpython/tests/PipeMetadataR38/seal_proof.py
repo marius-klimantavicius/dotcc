@@ -7,6 +7,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[3]
+PROVENANCE = json.loads((ROOT / 'cpython/config/qualification-provenance.json').read_text())['pipeMetadataR38']
 sys.path.insert(0, str(ROOT / "Scripts"))
 from campaigns.recipes import helper
 
@@ -52,7 +53,7 @@ emitted = WORK / "v21-red/bin/Release/net10.0/v21-red.dll"
 proof["immutableV21Red"] = {"identity": identity.pe_identity(emitted),
     "sourceBinding": binding.bind(ROOT / "cpython", emitted, WORK / "v21-red/v21-red.csproj", MAPPER),
     "unchangedC": item(ROOT / "cpython/tests/Abi/pipe_metadata_r36.c")}
-assert proof["immutableV21Red"]["unchangedC"]["sha256"] == "df535cae643cc150619749902b835125c16e8666871ab0ff3779c055ad93abd5"
+assert proof["immutableV21Red"]["unchangedC"]["sha256"] == PROVENANCE['unchangedCSha256']
 write("actual-input-proof.json", proof)
 
 before = (ART / "PosixLib.before.cs").read_text()
@@ -83,7 +84,7 @@ for name in ("driver", "compilerLibrary", "postprocessor"):
     assert item(row["path"])["sha256"] == row["sha256"]
     tools[name] = row
 canonical = ROOT / "cpython/generated/profiles/upstream-tests-static/TranslatedCPython.Raw/bin/Release/net10.0/TranslatedCPython.dll"
-assert item(canonical)["sha256"] == "d50031a5c51269bd6f2a7929985b35e196a54094f11b72371f79843bfe7d260e"
+assert item(canonical)["sha256"] == PROVENANCE['canonicalV21Sha256']
 write("preservation.json", {"posixExactlySummaryAndOneFstatBranch": True,
     "linux144ToTarget96FileHandleMappingAndEveryOtherPosixMethodByteIdentical": True,
     "protectedEntryInputsUnchanged": preserved, "immutableV21ToolsUnchanged": tools,

@@ -10,6 +10,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[3]
+PROVENANCE = json.loads((ROOT / 'cpython/config/qualification-provenance.json').read_text())['symlinkR39']
 sys.path.insert(0, str(ROOT / "Scripts"))
 from campaigns.recipes import helper
 
@@ -163,7 +164,7 @@ git_blob = hashlib.sha1(b"blob " + str(upstream.stat().st_size).encode() + b"\0"
 tree = json.loads((upstream.parents[1] / "tree.json").read_text())
 assert any(row["path"] == "DotCC.Libc/PosixFsLib.cs" and row["sha"] == git_blob for row in tree["tree"])
 upstream_path = write("upstream-reference-findings.json", {
-    "revision": "d3678b5c50f86bf65d831ee4efda6134a7894116", "referenceOnly": True,
+    "revision": PROVENANCE['upstreamRevision'], "referenceOnly": True,
     "file": item(upstream), "gitBlob": git_blob, "matchesPinnedTree": True,
     "findings": ["Upstream uses File.CreateSymbolicLink and LinkTarget with the same broad IOException/EIO and missing-LinkTarget/EINVAL behavior; it supplies no faithful errno repair.",
                  "Upstream HostPath maps both target and linkpath and readlink ViewPath rewrites target text; this is incompatible with the already proven local caller-only lexical-target contract.",

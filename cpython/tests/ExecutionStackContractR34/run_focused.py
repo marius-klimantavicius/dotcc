@@ -2,6 +2,7 @@
 from pathlib import Path
 import fcntl, hashlib, json, os, sys, time
 ROOT = Path(__file__).resolve().parents[3]
+PROVENANCE = json.loads((ROOT / 'cpython/config/qualification-provenance.json').read_text())['executionStackContractR34']
 sys.path.insert(0, str(ROOT / 'Scripts'))
 from campaigns.process import execute
 ART = ROOT / 'cpython/artifacts/owner-b-r34-20261018'
@@ -9,7 +10,7 @@ WORK = ROOT / 'cpython/build/owner-b-r34-20261018'
 ART.mkdir(parents=True, exist_ok=True)
 WORK.mkdir(parents=True, exist_ok=True)
 release = ROOT / 'cpython/artifacts/owner-a-r29-20261018/serial-slot-release-all.json'
-assert hashlib.sha256(release.read_bytes()).hexdigest() == 'f522a414ad0e97df7805711a151fe8c0f0ec73e8502fafecadd37264786bb09b'
+assert hashlib.sha256(release.read_bytes()).hexdigest() == PROVENANCE['focusedReleaseSha256']
 for pid in json.loads(release.read_text())['terminalPidsAbsent']:
     assert not Path(f'/proc/{pid}').exists(), pid
 for path in ['/tmp/dotcc-cpython-shared-build.lock','/tmp/dotcc-cpython-native-build.lock',str(ROOT/'cpython/build/campaign/run.lock')]:

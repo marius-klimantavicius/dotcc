@@ -1,6 +1,7 @@
 from pathlib import Path
 import datetime,fcntl,hashlib,json,sys
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT/'Scripts'))
+PROVENANCE = json.loads((ROOT / 'cpython/config/qualification-provenance.json').read_text())['executionStackContractR34']
 from campaigns.recipes import helper
 ART=ROOT/'cpython/artifacts/owner-b-r34-20261018';WORK=ROOT/'cpython/build/owner-b-r34-20261018';products=WORK/'revised-shared-products'
 def item(p):
@@ -17,7 +18,7 @@ proof['ILC']={'rsp':item(rsp),'references':[item(s[3:].strip('"')) for s in rsp.
 actualProof=write('revised-shared-actual-input-proof.json',proof)
 pins=[item(ROOT/p) for p in ['DotCC.Libc/PthreadLib.cs','DotCC.Libc/PthreadAttributesLib.cs','DotCC.Libc/PosixLib.cs']]
 old=ROOT/'cpython/build/owner-a-r29-20261018/v19/source-bytes/DotCC.Libc/PthreadLib.cs'
-assert item(old)['sha256']=='d9def099352c26b63573e7069c2c63c5f0794daedae50450313c790aec99bbb9'
+assert item(old)['sha256']==PROVENANCE['legacyPthreadSourceSha256']
 ready=write('revised-shared-source-ready.json',{'status':'REVISED SOURCE_READY; nullable legacy binding preserved; actual Python qualification OPEN',
  'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sources':pins,
  'supersedes':{'oldSourceReady':item(ART/'shared-source-ready.json'),'reason':'Initial green controls missed legacy Current null semantics; d9 candidate unsuitable, never production-qualified.',

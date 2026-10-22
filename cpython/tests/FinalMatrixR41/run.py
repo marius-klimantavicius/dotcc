@@ -20,6 +20,7 @@ import traceback
 
 ROOT = Path(__file__).resolve().parents[3]
 CPY = ROOT / 'cpython'
+PROVENANCE = json.loads((CPY / 'config/qualification-provenance.json').read_text())['finalMatrixR41']
 HERE = Path(__file__).resolve().parent
 ART = CPY / 'artifacts/owner-b-r41-20261018'
 WORK = CPY / 'build/owner-b-r41-20261018'
@@ -76,7 +77,7 @@ def source_pins():
             assert ref(source['path'])['sha256'] == source['currentSha256'], source['path']
     text = (CPY / 'docs/PLAN.md').read_text()
     d10 = text[text.index('## Generated code simplification and constant data\n'):text.index('## Milestones and evidence\n')]
-    assert hashlib.sha256(d10.encode()).hexdigest() == '30ccf75f558d60ee5060ef6cb1a44edc397d13aa872f68607669a3ebfc44d279'
+    assert hashlib.sha256(d10.encode()).hexdigest() == PROVENANCE['normativeD10Sha256']
     paths = [*HERE.glob('*.py'), *HERE.glob('*.cs'), *HERE.glob('*.csproj'), *HERE.glob('*AotR41.cs.txt'), CPY / 'samples/ManagedConsumer/Program.cs',
              * (CPY / 'tests/Behavior').glob('*.cs'), *(CPY / 'tests/fixtures').glob('*.py'),
              CPY / 'tests/Abi/Program.cs', CPY / 'tests/ExecutionStackContractR34/Program.cs',
@@ -87,7 +88,7 @@ def source_pins():
              CPY / 'tests/ActualQualificationR40/ComplementaryProgram.cs.txt',
              CPY / 'tests/ActualQualificationR40/complementary_probe.py']
     return dict(b40Handoff=ref(B40 / 'final-handoff.json'), sources=[ref(p) for p in sorted(set(paths))],
-                normativeD10Sha256='30ccf75f558d60ee5060ef6cb1a44edc397d13aa872f68607669a3ebfc44d279')
+                normativeD10Sha256=PROVENANCE['normativeD10Sha256'])
 
 
 def authorize(path, profile):
@@ -429,7 +430,7 @@ def locale_preflight_inputs(library):
 
 def feature_native_evidence():
     ready_path = CPY / 'artifacts/owner-b-r42-20261018/source-ready.json'
-    assert ref(ready_path)['sha256'] == '280d97483287c2510fe37369ad44671de327a9903a9412a87f4587d76e847322'
+    assert ref(ready_path)['sha256'] == PROVENANCE['featureNativeSourceReadySha256']
     ready = read(ready_path)
     for item in ready['sourcePins']: verify(item)
     native_ref = ready['controls']['native']; verify(native_ref)

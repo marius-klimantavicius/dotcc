@@ -1,0 +1,18 @@
+{
+  "executionStackContractR34": {
+    "focusedReleaseSha256": "f522a414ad0e97df7805711a151fe8c0f0ec73e8502fafecadd37264786bb09b",
+    "legacyReleaseSha256": "32c1bee2e0ea3fa1e6754315294040a2cea1b069d15897a2144648f876dbbcc1",
+    "legacyPthreadSourceSha256": "d9def099352c26b63573e7069c2c63c5f0794daedae50450313c790aec99bbb9"
+  },
+  "pipeMetadataR38": {
+    "unchangedCSha256": "df535cae643cc150619749902b835125c16e8666871ab0ff3779c055ad93abd5",
+    "canonicalV21Sha256": "d50031a5c51269bd6f2a7929985b35e196a54094f11b72371f79843bfe7d260e"
+  },
+  "symlinkR39": {
+    "upstreamRevision": "d3678b5c50f86bf65d831ee4efda6134a7894116"
+  },
+  "finalMatrixR41": {
+    "normativeD10Sha256": "30ccf75f558d60ee5060ef6cb1a44edc397d13aa872f68607669a3ebfc44d279",
+    "featureNativeSourceReadySha256": "280d97483287c2510fe37369ad44671de327a9903a9412a87f4587d76e847322"
+  }
+}

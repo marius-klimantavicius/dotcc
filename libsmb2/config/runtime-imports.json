@@ -1,0 +1,308 @@
+{
+  "resourceProof": {
+    "path": "/home/marius/p/dotcc/cpython/artifacts/owner-a-r32-20261018/v23/actual-resources.json",
+    "sha256": "baba4f18b3f892275f126a5be04a41477aff707cf772c69b1edf49118fe27f00",
+    "compilerLibrarySha256": "d7caacb16813ab9b1a39ff7745f9404e2f3d2863b674bfbedceab16b5fe17022",
+    "runtimeResourceCount": 84,
+    "headerResourceCount": 68
+  },
+  "imports": {
+    "PosixErf": {
+      "runtimeModule": "MathIeeeLib.cs",
+      "library": "libm.so.6",
+      "symbol": "erf",
+      "declaration": "[DllImport(\"libm.so.6\", EntryPoint = \"erf\", SetLastError = true)] private static extern double PosixErf(double value);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "d42bf73b2455e92c47b0468bedc7ce4a257911bae0923bc1f2ff2903a70c937e",
+      "resourceName": "DotCC.Runtime.MathIeeeLib.cs"
+    },
+    "PosixErfc": {
+      "runtimeModule": "MathIeeeLib.cs",
+      "library": "libm.so.6",
+      "symbol": "erfc",
+      "declaration": "[DllImport(\"libm.so.6\", EntryPoint = \"erfc\", SetLastError = true)] private static extern double PosixErfc(double value);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "d42bf73b2455e92c47b0468bedc7ce4a257911bae0923bc1f2ff2903a70c937e",
+      "resourceName": "DotCC.Runtime.MathIeeeLib.cs"
+    },
+    "PosixMmap": {
+      "runtimeModule": "MemoryMappingLib.cs",
+      "library": "libc",
+      "symbol": "mmap",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"mmap\", SetLastError = true)] private static extern void* PosixMmap(void* address, ulong length, int protection, int flags, int descriptor, long offset);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "230ada9ece2f7cb0f8c7edb4b8c16cab391397d93dbdfd262c4dc34a4f462ca0",
+      "resourceName": "DotCC.Runtime.MemoryMappingLib.cs"
+    },
+    "PosixMunmap": {
+      "runtimeModule": "MemoryMappingLib.cs",
+      "library": "libc",
+      "symbol": "munmap",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"munmap\", SetLastError = true)] private static extern int PosixMunmap(void* address, ulong length);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "230ada9ece2f7cb0f8c7edb4b8c16cab391397d93dbdfd262c4dc34a4f462ca0",
+      "resourceName": "DotCC.Runtime.MemoryMappingLib.cs"
+    },
+    "PosixGetuid": {
+      "runtimeModule": "PasswdLib.cs",
+      "library": "libc",
+      "symbol": "getuid",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getuid\")] private static extern uint PosixGetuid();",
+      "memberRole": "private static extern member",
+      "sourceSha256": "8864c043aba5c426fe0ba3c87cf497a00d69e7b0be86d0eeabff31254ed46647",
+      "resourceName": "DotCC.Runtime.PasswdLib.cs"
+    },
+    "PosixGeteuid": {
+      "runtimeModule": "PasswdLib.cs",
+      "library": "libc",
+      "symbol": "geteuid",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"geteuid\")] private static extern uint PosixGeteuid();",
+      "memberRole": "private static extern member",
+      "sourceSha256": "8864c043aba5c426fe0ba3c87cf497a00d69e7b0be86d0eeabff31254ed46647",
+      "resourceName": "DotCC.Runtime.PasswdLib.cs"
+    },
+    "PosixGetgid": {
+      "runtimeModule": "PasswdLib.cs",
+      "library": "libc",
+      "symbol": "getgid",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getgid\")] private static extern uint PosixGetgid();",
+      "memberRole": "private static extern member",
+      "sourceSha256": "8864c043aba5c426fe0ba3c87cf497a00d69e7b0be86d0eeabff31254ed46647",
+      "resourceName": "DotCC.Runtime.PasswdLib.cs"
+    },
+    "PosixGetegid": {
+      "runtimeModule": "PasswdLib.cs",
+      "library": "libc",
+      "symbol": "getegid",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getegid\")] private static extern uint PosixGetegid();",
+      "memberRole": "private static extern member",
+      "sourceSha256": "8864c043aba5c426fe0ba3c87cf497a00d69e7b0be86d0eeabff31254ed46647",
+      "resourceName": "DotCC.Runtime.PasswdLib.cs"
+    },
+    "PosixGetpwuidR": {
+      "runtimeModule": "PasswdLib.cs",
+      "library": "libc",
+      "symbol": "getpwuid_r",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getpwuid_r\")] private static extern int PosixGetpwuidR(uint uid, LinuxPasswd* record, byte* buffer, ulong length, LinuxPasswd** result);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "8864c043aba5c426fe0ba3c87cf497a00d69e7b0be86d0eeabff31254ed46647",
+      "resourceName": "DotCC.Runtime.PasswdLib.cs"
+    },
+    "PosixGetpwnamR": {
+      "runtimeModule": "PasswdLib.cs",
+      "library": "libc",
+      "symbol": "getpwnam_r",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getpwnam_r\")] private static extern int PosixGetpwnamR(byte* name, LinuxPasswd* record, byte* buffer, ulong length, LinuxPasswd** result);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "8864c043aba5c426fe0ba3c87cf497a00d69e7b0be86d0eeabff31254ed46647",
+      "resourceName": "DotCC.Runtime.PasswdLib.cs"
+    },
+    "HostOpenDirectory": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "opendir",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"opendir\", SetLastError = true)] private static extern nint HostOpenDirectory(byte* path);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "HostReadDirectory": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "readdir",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"readdir\", SetLastError = true)] private static extern byte* HostReadDirectory(nint directory);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "HostCloseDirectory": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "closedir",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"closedir\", SetLastError = true)] private static extern int HostCloseDirectory(nint directory);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "PosixOpenFile": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "open",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"open\", SetLastError = true)] private static extern int PosixOpenFile(byte* path, int flags, int mode);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "PosixSymbolicLink": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "symlink",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"symlink\", SetLastError = true)] private static extern int PosixSymbolicLink(byte* target, byte* linkpath);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "PosixReadLink": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "readlink",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"readlink\", SetLastError = true)] private static extern long PosixReadLink(byte* path, byte* buf, ulong bufsiz);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "ResizeFile": {
+      "runtimeModule": "PosixFsLib.cs",
+      "library": "libc",
+      "symbol": "ftruncate",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"ftruncate\", SetLastError = true)] static extern int ResizeFile(SafeFileHandle handle, long size);",
+      "memberRole": "ftruncate-local static extern (compiler-lowered private static)",
+      "sourceSha256": "4d9c60fa038c96667e3134cf845117758f5bf1b61907a6f707be816ca96d4e24",
+      "resourceName": "DotCC.Runtime.PosixFsLib.cs"
+    },
+    "HostStat": {
+      "runtimeModule": "PosixLib.cs",
+      "library": "libc",
+      "symbol": "stat",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"stat\", SetLastError = true)] private static extern int HostStat(byte* path, LinuxX64Stat* metadata);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "474fa05fc1d921f1737e9d78bfaa7fc843929c2b6df140e2bc5d0e5f35ccde8e",
+      "resourceName": "DotCC.Runtime.PosixLib.cs"
+    },
+    "HostLStat": {
+      "runtimeModule": "PosixLib.cs",
+      "library": "libc",
+      "symbol": "lstat",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"lstat\", SetLastError = true)] private static extern int HostLStat(byte* path, LinuxX64Stat* metadata);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "474fa05fc1d921f1737e9d78bfaa7fc843929c2b6df140e2bc5d0e5f35ccde8e",
+      "resourceName": "DotCC.Runtime.PosixLib.cs"
+    },
+    "HostFStat": {
+      "runtimeModule": "PosixLib.cs",
+      "library": "libc",
+      "symbol": "fstat",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"fstat\", SetLastError = true)] private static extern int HostFStat(int descriptor, LinuxX64Stat* metadata);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "474fa05fc1d921f1737e9d78bfaa7fc843929c2b6df140e2bc5d0e5f35ccde8e",
+      "resourceName": "DotCC.Runtime.PosixLib.cs"
+    },
+    "PosixUtime": {
+      "runtimeModule": "PosixTimestampLib.cs",
+      "library": "libc",
+      "symbol": "utime",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"utime\", SetLastError = true)] private static extern int PosixUtime(byte* path, void* times);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "3da2d24af882153d2ca9673a93dedcdef73dc24e869c336d1f1f4acf7d061307",
+      "resourceName": "DotCC.Runtime.PosixTimestampLib.cs"
+    },
+    "HostSignalAction": {
+      "runtimeModule": "ProcessSignalLib.cs",
+      "library": "libc",
+      "symbol": "sigaction",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"sigaction\", SetLastError = true)] private static extern int HostSignalAction(int sig, LinuxSignalAction* action, LinuxSignalAction* previous);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "d3c45e8358fa76ea62c7087b760b50b47302928fe4500b7dd4e6423587a186c7",
+      "resourceName": "DotCC.Runtime.ProcessSignalLib.cs"
+    },
+    "PosixRaise": {
+      "runtimeModule": "ProcessSignalLib.cs",
+      "library": "libc",
+      "symbol": "raise",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"raise\", SetLastError = true)] private static extern int PosixRaise(int sig);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "d3c45e8358fa76ea62c7087b760b50b47302928fe4500b7dd4e6423587a186c7",
+      "resourceName": "DotCC.Runtime.ProcessSignalLib.cs"
+    },
+    "PosixProcessTimes": {
+      "runtimeModule": "ProcessTimesLib.cs",
+      "library": "libc",
+      "symbol": "times",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"times\", SetLastError = true)] private static extern long PosixProcessTimes(void* buffer);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "d7b12bd840f9ecb457aab2780142d93031022241c2680d42cd24730a46a392a4",
+      "resourceName": "DotCC.Runtime.ProcessTimesLib.cs"
+    },
+    "PosixProcessClockSysconf": {
+      "runtimeModule": "ProcessTimesLib.cs",
+      "library": "libc",
+      "symbol": "sysconf",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"sysconf\", SetLastError = true)] private static extern long PosixProcessClockSysconf(int name);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "d7b12bd840f9ecb457aab2780142d93031022241c2680d42cd24730a46a392a4",
+      "resourceName": "DotCC.Runtime.ProcessTimesLib.cs"
+    },
+    "PosixRecordLock": {
+      "runtimeModule": "RecordLockLib.cs",
+      "library": "libc",
+      "symbol": "fcntl",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"fcntl\", SetLastError = true)] private static extern int PosixRecordLock(int fd, int cmd, void* arg);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "2841074dbff045fb3ad5a66856a8fd623ddab7d09a4b5c163fb065286e8f1655",
+      "resourceName": "DotCC.Runtime.RecordLockLib.cs"
+    },
+    "PosixFlock": {
+      "runtimeModule": "RecordLockLib.cs",
+      "library": "libc",
+      "symbol": "flock",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"flock\", SetLastError = true)] private static extern int PosixFlock(int fd, int operation);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "2841074dbff045fb3ad5a66856a8fd623ddab7d09a4b5c163fb065286e8f1655",
+      "resourceName": "DotCC.Runtime.RecordLockLib.cs"
+    },
+    "RecordLockSeek": {
+      "runtimeModule": "RecordLockLib.cs",
+      "library": "libc",
+      "symbol": "lseek",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"lseek\", SetLastError = true)] private static extern long RecordLockSeek(int fd, long offset, int whence);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "2841074dbff045fb3ad5a66856a8fd623ddab7d09a4b5c163fb065286e8f1655",
+      "resourceName": "DotCC.Runtime.RecordLockLib.cs"
+    },
+    "ResolverHostErrno": {
+      "runtimeModule": "ResolverLib.cs",
+      "library": "libc",
+      "symbol": "__errno_location",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"__errno_location\")] private static extern int* ResolverHostErrno();",
+      "memberRole": "private static extern member",
+      "sourceSha256": "3dd78c66d7f2d4ad5577509f8dc779614946ebb11eb8d7c0f9ed730c52296f3f",
+      "resourceName": "DotCC.Runtime.ResolverLib.cs"
+    },
+    "HostGetNameInfo": {
+      "runtimeModule": "ResolverLib.cs",
+      "library": "libc",
+      "symbol": "getnameinfo",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getnameinfo\")] private static extern int HostGetNameInfo(void* address, uint addressLength, byte* host, uint hostLength, byte* service, uint serviceLength, int flags);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "3dd78c66d7f2d4ad5577509f8dc779614946ebb11eb8d7c0f9ed730c52296f3f",
+      "resourceName": "DotCC.Runtime.ResolverLib.cs"
+    },
+    "HostGetHostByName": {
+      "runtimeModule": "ResolverLib.cs",
+      "library": "libc",
+      "symbol": "gethostbyname_r",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"gethostbyname_r\")] private static extern int HostGetHostByName(byte* name, void* record, byte* buffer, nuint capacity, void** result, int* hostError);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "3dd78c66d7f2d4ad5577509f8dc779614946ebb11eb8d7c0f9ed730c52296f3f",
+      "resourceName": "DotCC.Runtime.ResolverLib.cs"
+    },
+    "HostGetAddrInfo": {
+      "runtimeModule": "ResolverLib.cs",
+      "library": "libc",
+      "symbol": "getaddrinfo",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"getaddrinfo\")] private static extern int HostGetAddrInfo(byte* name, byte* service, ResolverInfo* hints, ResolverInfo** result);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "3dd78c66d7f2d4ad5577509f8dc779614946ebb11eb8d7c0f9ed730c52296f3f",
+      "resourceName": "DotCC.Runtime.ResolverLib.cs"
+    },
+    "HostFreeAddrInfo": {
+      "runtimeModule": "ResolverLib.cs",
+      "library": "libc",
+      "symbol": "freeaddrinfo",
+      "declaration": "[DllImport(\"libc\", EntryPoint = \"freeaddrinfo\")] private static extern void HostFreeAddrInfo(ResolverInfo* result);",
+      "memberRole": "private static extern member",
+      "sourceSha256": "3dd78c66d7f2d4ad5577509f8dc779614946ebb11eb8d7c0f9ed730c52296f3f",
+      "resourceName": "DotCC.Runtime.ResolverLib.cs"
+    }
+  }
+}
