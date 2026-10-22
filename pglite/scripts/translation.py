@@ -3,6 +3,7 @@ from pathlib import Path
 import shutil
 import xml.etree.ElementTree as ET
 from campaigns.model import Translation, Unit
+from campaigns.delivery import ignore_build_caches
 from campaigns.recipes import flags, helper, json_file, link_flags
 
 
@@ -63,7 +64,7 @@ def companions(ctx):
     report = initializer.run(ctx)
     source = Path(report["frontend_project"]).parent
     destination = ctx.work / "raw/TranslatedInitdb"
-    shutil.copytree(source, destination, ignore=shutil.ignore_patterns("bin", "obj"))
+    shutil.copytree(source, destination, ignore=ignore_build_caches)
     (destination / "frontend.csproj").rename(destination / "TranslatedInitdb.csproj")
     # Original catalogs/configuration/timezone data are delivered with each
     # backend form; initialized database contents are never a generated input.
