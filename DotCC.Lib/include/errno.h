@@ -51,6 +51,7 @@
 #define ETIME    62
 #define EPROTO   71
 #define EOVERFLOW 75
+#define EIDRM 43
 #define EPROTOTYPE 91
 #define ENOPROTOOPT 92
 #define ENOTSUP  95
@@ -75,6 +76,7 @@
 #define ENOTCONN         107
 #define ECONNREFUSED     111
 #define EHOSTUNREACH     113
+#define EHOSTDOWN        112
 #define EINPROGRESS      115
 #define EALREADY         114
 #define EBADMSG          74

@@ -70,9 +70,15 @@ int setenv(const char *name, const char *value, int overwrite);
 int unsetenv(const char *name);
 char *realpath(const char *path, char *resolved_path);
 int system(const char *command);
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Noreturn void exit(int code);
+_Noreturn void _Exit(int code);
+_Noreturn void abort(void);
+#else
 void exit(int code);
 void _Exit(int code);
 void abort(void);
+#endif
 
 /* Generic sort / search — comparator is a function pointer. */
 void qsort(void* base, int n, int size, int (*cmp)(const void*, const void*));

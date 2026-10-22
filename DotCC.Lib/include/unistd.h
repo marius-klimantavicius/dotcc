@@ -89,6 +89,13 @@ long readlink(const char *path, char *buf, unsigned long bufsiz);
 int access(const char *path, int mode);
 int chown(const char *path, unsigned int owner, unsigned int group);
 int ftruncate(int fd, off_t length);
+ssize_t pread(int fd, void *buffer, size_t count, off_t offset);
+ssize_t pwrite(int fd, const void *buffer, size_t count, off_t offset);
+int syncfs(int fd);
+int sync_file_range(int fd, off_t offset, off_t count, unsigned int flags);
+#define SYNC_FILE_RANGE_WAIT_BEFORE 1
+#define SYNC_FILE_RANGE_WRITE 2
+#define SYNC_FILE_RANGE_WAIT_AFTER 4
 int fsync(int fd);
 int truncate(const char *path, off_t length);
 int dup(int fd);
