@@ -212,7 +212,7 @@ public static unsafe partial class Libc
         {
             if (*p != '%') continue;
             p++;
-            if (*p == 0 || "YyCmdeHIMSpAaBbhjwuFTRDnt%".IndexOf((char)*p) < 0)
+            if (*p == 0 || "YyCmdeHIMSpAaBbhjwuFTRDntZz%".IndexOf((char)*p) < 0)
             { errno = ENOTSUP; return 0; }
         }
         return strftime(destination, n, format, time);

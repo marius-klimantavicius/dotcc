@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="$(CalendarTimezoneProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(CalendarTimezoneProject)' == '' Or !Exists('$(CalendarTimezoneProject)')"
+           Text="Set CalendarTimezoneProject to the actual emitted calendar fixture project." />
+  </Target>
+</Project>

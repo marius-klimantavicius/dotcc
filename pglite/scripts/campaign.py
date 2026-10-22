@@ -41,6 +41,10 @@ def locale(ctx, suite):
     return helper(ctx.root / "scripts/locale-probe.py").run(ctx, suite)
 
 
+def calendar_timezone(ctx, suite):
+    return helper(ctx.root / "scripts/calendar-timezone-probe.py").run(ctx)
+
+
 def initializer(ctx, suite):
     report = helper(ctx.root / "scripts/initializer.py").run(ctx, suite)
     ctx.receipt["pglite_initializer_validation"] = report
@@ -92,7 +96,7 @@ def consumer(ctx, suite):
 
 
 def before_suite(ctx, suite):
-    if suite.name in ("boundary", "libc-build", "atomics", "portable-codegen", "locale", "initializer", "modules", "backend-host", "semaphore", "posix-host"):
+    if suite.name in ("boundary", "libc-build", "atomics", "portable-codegen", "locale", "calendar-timezone", "initializer", "modules", "backend-host", "semaphore", "posix-host"):
         if not hasattr(ctx, "compiler"):
             ctx.tools()
     if suite.name == "libc-build" and "product" not in ctx.sources:
@@ -140,6 +144,8 @@ recipe = Recipe(
                   scope="original required PL/pgSQL source and static export closure"),
             Suite("locale", (), run=locale, timeout=1800,
                   scope="actual PostgreSQL locale ABI and C/C.UTF-8 host native/JIT/AOT scalar comparison"),
+            Suite("calendar-timezone", (), run=calendar_timezone, timeout=1800,
+                  scope="actual calendar ABI, timezone names/offsets and native/JIT/AOT comparison in five zones"),
             Suite("portable-codegen", (), run=portable_codegen,
                   scope="actual upstream software CRC32C/popcount native/emitted vectors and length/alignment cases"),
             Suite("atomics", (), run=atomics, timeout=1800,
@@ -155,6 +161,6 @@ recipe = Recipe(
             Suite("consumer", (), matrix=True, run=consumer,
                   scope="managed embedded init, SQL, transaction recovery, shutdown and reopen persistence")),
     default_suites=("consumer",),
-    verify_suites=("inventory", "native-control", "libc-build", "initializer", "modules", "boundary", "atomics", "semaphore", "portable-codegen", "locale", "posix-host", "backend-host", "consumer"),
+    verify_suites=("inventory", "native-control", "libc-build", "initializer", "modules", "boundary", "atomics", "semaphore", "portable-codegen", "locale", "calendar-timezone", "posix-host", "backend-host", "consumer"),
     before_suite=before_suite,
 )

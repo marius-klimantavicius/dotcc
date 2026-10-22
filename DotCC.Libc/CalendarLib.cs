@@ -56,8 +56,8 @@ public static unsafe partial class Libc
         public int tm_yday;
         public int tm_isdst;
         // glibc/BSD extensions. tm_gmtoff describes this instant's actual
-        // offset, including daylight saving. tm_zone currently retains the
-        // stable "UTC" placeholder; local zone names are not represented.
+        // offset, including daylight saving. Names returned by calendar
+        // conversions are immutable process-lifetime borrows.
         public long tm_gmtoff;
         public byte* tm_zone;
     }
@@ -95,19 +95,10 @@ public static unsafe partial class Libc
         t->tm_yday = dt.DayOfYear - 1;  // C: 0-based
         t->tm_isdst = isdst;
         t->tm_gmtoff = offsetSeconds;
-        t->tm_zone = _utcZone;
-    }
-
-    // A stable "UTC\0" buffer for tm_zone (allocated once; never freed — process
-    // lifetime). A real timezone abbreviation would vary; dotcc reports UTC.
-    private static byte* _utcZoneBuf;
-    private static byte* _utcZone =>
-        _utcZoneBuf != null ? _utcZoneBuf : (_utcZoneBuf = MakeUtcZone());
-    private static byte* MakeUtcZone()
-    {
-        var p = (byte*)NativeMemory.Alloc(4);
-        p[0] = (byte)'U'; p[1] = (byte)'T'; p[2] = (byte)'C'; p[3] = 0;
-        return p;
+        // BCL TimeZoneInfo names are display names, not C abbreviations.
+        // Only gmtime supplies a known UTC name here; portable local calls
+        // explicitly leave the unavailable abbreviation empty.
+        t->tm_zone = CalendarZoneNames.Intern(dt.Kind == DateTimeKind.Utc ? "UTC" : "");
     }
 
     // Reentrant primitives (POSIX *_r): the caller owns the output buffer, so
@@ -137,6 +128,14 @@ public static unsafe partial class Libc
     public static tm* localtime_r(long* timer, tm* result)
     {
         if (timer == null || result == null) { return null; }
+        if (UseNativeCalendar)
+        {
+            tm value;
+            if (NativeCalendarLocaltime(timer, &value) == null) { return null; }
+            RetainCalendarZone(&value);
+            *result = value;
+            return result;
+        }
         try
         {
             var local = DateTimeOffset.FromUnixTimeSeconds(*timer).ToLocalTime();
@@ -167,6 +166,17 @@ public static unsafe partial class Libc
     public static long mktime(tm* t)
     {
         if (t == null) { return -1; }
+        if (UseNativeCalendar)
+        {
+            long timestamp = NativeCalendarMktime(t);
+            // -1 is also the valid second immediately before the epoch.
+            // A failed native call can leave an uninitialized input tm_zone
+            // untouched. Do not dereference it on failure (errno is captured
+            // by the AOT-safe import, which clears native errno before entry).
+            if (timestamp != -1 || Marshal.GetLastPInvokeError() == 0)
+                RetainCalendarZone(t);
+            return timestamp;
+        }
         try
         {
             // Build from Jan 1 of the year, then add the (possibly out-of-range)
@@ -262,6 +272,19 @@ public static unsafe partial class Libc
                 }
                 case (byte)'M': sb.Append(t->tm_min.ToString("D2", ci)); break;
                 case (byte)'S': sb.Append(t->tm_sec.ToString("D2", ci)); break;
+                case (byte)'Z': sb.Append(CalendarZoneName(t)); break;
+                case (byte)'z':
+                    if (t->tm_isdst >= 0)
+                    {
+                        long offset = t->tm_gmtoff;
+                        // Preserve the sign for negative sub-minute offsets
+                        // and avoid negating long.MinValue.
+                        ulong magnitude = offset < 0 ? (ulong)(-(offset + 1)) + 1 : (ulong)offset;
+                        sb.Append(offset < 0 ? '-' : '+');
+                        sb.Append((magnitude / 3600).ToString("D2", ci));
+                        sb.Append((magnitude / 60 % 60).ToString("D2", ci));
+                    }
+                    break;
                 case (byte)'p': sb.Append(t->tm_hour < 12 ? "AM" : "PM"); break;
                 case (byte)'A': sb.Append(_wdayFull[Wd(t)]); break;
                 case (byte)'a': sb.Append(_wdayAbbr[Wd(t)]); break;
