@@ -12,7 +12,22 @@ policy are owned by the source agent. Detailed incremental evidence lives in
 [`boundary-progress.md`](boundary-progress.md). Shared compiler repairs and
 integration remain the supervisor's responsibility.
 
-## Current owner implementation and integration
+## Current integrated workflow
+
+The actual 928-unit backend now executes original initdb and the canonical SQL
+workflow under raw JIT and normally trimmed Linux x64 NativeAOT. Both modes pass
+36 assertions across three same-process lifetimes and two persistence reopens.
+See `artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log` and the
+current validation ledger. This supplies actual PostgreSQL cleanup/persistence
+evidence beyond the bounded probes below; processed and final P6 gates remain
+open. Signal-aware lexical jumps are implemented and their latest bounded
+controls pass, as recorded in [SIGNAL-JUMPS.md](SIGNAL-JUMPS.md).
+
+## Historical owner implementation and integration
+
+The following investigation retains its snapshot-specific failures and probes;
+current integrated results above supersede its present-tense open-gate statements.
+
 
 The owned runtime now supplies a deliberately scoped exit transport.
 `RuntimeContext.InterceptPgliteExits()` intercepts only `exit(99)` and

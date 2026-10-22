@@ -174,3 +174,16 @@ wrapper is delivered as `TranslatedPGlite`.
 Current commands, case counts and receipt locations are in
 [`source-progress.md`](source-progress.md). The native report is separate from
 the parent campaign's translated-product acceptance gates.
+
+## Redistributed notices
+
+Each delivered backend bootstrap prefix includes upstream `COPYRIGHT`, the
+DotCC MIT license, and `notices/upstream-source.zip` with the complete observed
+upstream source tree, preserving all per-file regex, Snowball and third-party
+terms verbatim. `upstream-source-manifest.json` records every path, size and hash
+and distinguishes the requested revision from observed local input. The archive
+is documentation only; compilation and execution never read it. Notice assets
+are covered by ordinary delivery ownership and output hashes. The separate
+NativeAOT publication must also preserve the actual resolved runtime pack's license
+and third-party notices beside its binary; final publication evidence records
+the selected pack and exact notice hashes.

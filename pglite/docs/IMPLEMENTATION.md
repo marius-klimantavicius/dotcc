@@ -1,37 +1,44 @@
 # PGlite implementation continuation
 
-## Current full-source and managed execution gate, 2026-10-22
+## Current managed execution and delivery, 2026-10-22
 
-Coherent receipt `artifacts/campaign/20261022-194223-e06ea2a0/receipt.json`
-emits and strict-links all 876 selected backend/module/libc/adapter units. The
-complete raw backend C# build passes with zero errors and 12 warnings; the
-separate 73-unit original initdb companion also emits, links and builds. The
-receipt is failed because the explicit publication guard remains enabled, not
-because source emission or the raw build failed. Processed output is still open.
+The coherent 928-unit backend and separate original 73-unit initializer both
+emit, strict-link and build. Original translated initdb completes bootstrap,
+post-bootstrap SQL, required PL/pgSQL/Snowball registration and disk sync.
+The canonical separate consumer passes all 36 assertions under raw JIT and
+normally trimmed Linux x64 NativeAOT. Each mode creates its own cluster and runs
+three clean same-process lifetimes with two persistence reopens. Actual rows,
+UTF-8/NULL values, transaction commit/rollback, ordinary SQL errors and subsequent
+recovery are checked against the shared 21-case inventory.
 
-The actual API and canonical consumer build against these complete libraries
-with zero errors. Two independent, isolated actual initdb invocations both run
-the unchanged 973545-byte BKI bootstrap successfully, then execute the original
-251748-byte post-bootstrap SQL. The first runtime failure is original
-`SELECT pg_import_system_collations('pg_catalog')`: `locale -a` returns
-`Operation not supported`, so single-user mode exits 1. No managed exception or
-consumer SQL success is inferred. The coordinator is repairing real locale
-enumeration; the import and SQL inputs are retained unchanged. Calendar `%Z`
-formatting is an independently observed host defect under repair.
+Evidence: `artifacts/initdb-owner-20261022-r3/actual-initialization-result.json`
+and `artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log`.
+These passes do not complete processed validation or P6.
 
-Evidence: `artifacts/initdb-owner-20261022-r3/actual1942/initialization/execution/`
-and `artifacts/product-owner-r3/raw1942-consumer-{build,run}.log`; original
-backend inputs, outputs and operation/status records are retained in private
-diagnostic directories. All required SQL, shutdown/reopen and four product
-matrix rows remain open. The latest full shared compiler suite has 3398 passes
-and the same 16 failures reproduced in the untouched baseline; current
-comparison is `artifacts/supervisor-portable/regression-comparison-current8.json`.
+Full emission receipt `20261022-203609-4cdd2a15` was cancelled before publication
+to repair packaging: nested bootstrap `bin` assets must survive cache filtering,
+and verbatim upstream/per-file notices must accompany delivery. Receipt
+`20261022-205650-7472ba65` resumes ordinary paired raw/processed delivery from
+those byte-identical emitted sources with identical immutable20 tools. It records
+parent receipt/source hashes, restages data and notices through the authored
+helper, and runs normal semantic processing, builds and transactional promotion.
+No C or emitted C# is manually changed. Current publication, processed behavior,
+final four-row matrix and import/ELF/offline audits remain active.
 
+Current shared compiler regressions pass 3420 tests with the identical 16
+failures reproduced in the untouched baseline; comparison:
+`artifacts/supervisor-portable/regression-comparison-current10.json`.
+The framework cache/asset repair passes 87 of 88 tests, with only the known
+unrelated Blink hash-literal failure. Baseline failures remain separate.
 
-The campaign remains active through P6. This ledger records intermediate repairs;
-none establishes managed SQL acceptance. The coordinator requirements in PLAN.md
+The campaign remains active through P6. The coordinator requirements in PLAN.md
 remain authoritative. The two shared plan files and PLAN.md contain parent-owned
 changes and are excluded from implementation commits.
+
+## Historical implementation rounds
+
+The following entries preserve intermediate observations and their original
+receipts. Their unresolved statements describe those earlier snapshots.
 
 ## Parallel ownership, 2026-10-22
 
