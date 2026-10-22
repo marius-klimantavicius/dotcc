@@ -528,6 +528,7 @@ productions:
       - { lhs: FnSig, rhs: [FnSig, GnuFormatAttr], action: fnSigPostAttributed }
       # Function specifiers may precede the storage class as well as follow it.
       - { lhs: FnSig, rhs: ['_Noreturn', 'static', FnSig], action: fnSigNoreturnStatic }
+      - { lhs: FnSig, rhs: ['_Noreturn', 'extern', FnSig], action: fnSigNoreturnExtern }
       - { lhs: FnSig, rhs: ['inline', 'static', FnSig], action: fnSigInlineStatic }
       # Parenthesized function-name declarator: `T (name)(args)` ≡ `T name(args)`.
       # The parens are pure grouping around the declarator name. Lua wraps every

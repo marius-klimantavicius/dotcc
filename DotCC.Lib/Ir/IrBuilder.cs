@@ -1095,8 +1095,9 @@ internal sealed partial class IrBuilder
         C.FnSigStaticDeclarator n => ExtractFnSig(n.Arg1) with { IsStatic = true },
         C.FnSigAttributed n => ExtractAttributedFunction(n.Arg0, n.Arg1),
         C.FnSigPostAttributed n => ExtractAttributedFunction(n.Arg1, n.Arg0),
-        C.FnSigNoreturnStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: true),
-        C.FnSigInlineStatic n => ExtractSpecifierBeforeStatic(n.Arg2, noreturn: false),
+        C.FnSigNoreturnStatic n => ExtractSpecifierBeforeStorage(n.Arg2, noreturn: true),
+        C.FnSigNoreturnExtern n => ExtractSpecifierBeforeStorage(n.Arg2, noreturn: true, isStatic: false),
+        C.FnSigInlineStatic n => ExtractSpecifierBeforeStorage(n.Arg2, noreturn: false),
         // Parenthesized declarator name `T (name)(args)` — identical to
         // `T name(args)`; the parens are pure grouping around the name (public
         // headers wrap API names so a same-named function-like macro can't expand
@@ -1120,9 +1121,9 @@ internal sealed partial class IrBuilder
         return ExtractFnSig(signature);
     }
 
-    private FnSig ExtractSpecifierBeforeStatic(Item signature, bool noreturn)
+    private FnSig ExtractSpecifierBeforeStorage(Item signature, bool noreturn, bool isStatic = true)
     {
-        var result = ExtractFnSig(signature) with { IsStatic = true };
+        var result = ExtractFnSig(signature) with { IsStatic = isStatic };
         if (noreturn) _sawNoreturnSpec = true;
         else _sawInlineSpec = true;
         return result;

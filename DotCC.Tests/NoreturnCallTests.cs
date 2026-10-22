@@ -52,6 +52,14 @@ public sealed class NoreturnCallTests
         finally { File.Delete(path); }
     }
 
+    [Fact]
+    public void Function_specifier_before_extern_preserves_noreturn_marker()
+    {
+        var path = Write("_Noreturn extern void stop(void); int choose(int x) { if(x) stop(); else return 42; } _Noreturn extern void stop(void) { for (;;) {} } int main(void) { return choose(0)-42; }");
+        try { Compiler.EmitCSharp(new[] { path }).ShouldContain("A noreturn function returned."); }
+        finally { File.Delete(path); }
+    }
+
     private static string Write(string source)
     {
         var path = Path.Combine(Path.GetTempPath(), "dotcc-noreturn-call-" + Guid.NewGuid().ToString("N") + ".c");
