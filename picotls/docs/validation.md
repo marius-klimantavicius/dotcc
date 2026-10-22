@@ -1,5 +1,60 @@
 # Campaign validation record
 
+## Post-repair frozen-tool verification (2026-10-23)
+
+Fresh Linux x64 verification passes with campaign source `ddc9faf08` and frozen
+compiler source `123b3e76e` (generation two). `DotCC.Lib.dll` SHA-256 is
+`08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d`;
+the postprocessor SHA-256 is
+`e1867eca1f516ba8a2ea900cbbc378b4d92179ef1b8adf19409dbc7e71c520dc`.
+The exact commands, recursive tool closures, stdout hashes, exclusions and prior
+failed attempts are indexed by the
+[aggregate validation receipt](../../docs/validation/four-campaign-post-repair-20261023.json).
+Earlier sections below are historical checkpoints.
+
+| Form/runtime | Actual ABI checks | Provider checks | Upstream cases/checks | Explicit TLS assertions | Peer cases |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Raw JIT | 92 | 2962 | 8 / 232 | 9963 | 56 |
+| Raw NativeAOT | 92 | 2962 | 8 / 232 | 9961 | 56 |
+| Processed JIT | 92 | 2962 | 8 / 232 | 9961 | 56 |
+| Processed NativeAOT | 92 | 2962 | 8 / 232 | 9963 | 56 |
+
+The TLS suite reports **39,848 assertions** in total; the peers execute **224
+cases**. ABI, provider and upstream columns retain their harness-reported units
+and are not added to the explicit TLS assertion count. Each provider run includes
+124 measured allocation boundaries and two ticket-clone failure cases within its
+2962 checks. The copied-source consumer and supplemental ordinary consumer pass
+all four forms; neither reports a numeric assertion total (`not_reported`).
+The dependency audit reports zero violations and zero missing prerequisites.
+
+Separate controls pass: the native oracle's two files / 24 top-level TAP groups,
+four native QUIC-ticket-helper cases, and 64 compiler-generated header layout
+contracts. These counts are distinct from the translated matrix. Only the TLS
+summary's incidental fragment/assertion count is normalized by the existing
+comparison; all raw stdout is retained.
+
+MsQuic verification subsequently retranslates picotls. A byte comparison confirms
+that its republished dependency preserves all 11 delivered files in each form,
+64 authored/framework production inputs, and the complete 22-file compiler and
+33-file postprocessor closures. Both distinct receipt identities are retained.
+The earlier full qualification therefore covers the actual MsQuic dependency.
+
+Commands run serially from the private repository after sourcing the frozen
+`env-v2.sh` recorded in the aggregate receipt:
+
+```sh
+bash picotls/scripts/verify.sh --tools reuse --fetch never --form all --mode all --rid linux-x64 --jobs 1
+bash picotls/scripts/test.sh --suite consumer --tools reuse --fetch never --form all --mode all --rid linux-x64 --jobs 1
+bash picotls/scripts/probe-translated-abi.sh --metadata-only
+```
+
+Windows, macOS and arm64 remain unrun. TLS 1.2, early data, additional algorithm
+profiles, ECH, optional public HPKE profiles, certificate compression and async
+signing remain outside the selected profile. No current pass is inferred from
+historical receipts. The invalid initial non-frozen CLI inspection and the
+native-oracle lock collisions are preserved separately and excluded from passes.
+
+
 ## Compiler refresh (2026-09-24)
 
 Fresh translation with dotcc at `1abb6a813ee4a8e8880a103abc8558f3b09dbf85`
