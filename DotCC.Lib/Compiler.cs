@@ -262,8 +262,11 @@ public static partial class Compiler
             owner, TypeScope(namespaceName, owner, nested), NamespacePrefix(namespaceName), outputOptions?.InstanceMethods == true,
             stateContext: outputOptions?.StateContext == true);
         var types = storage.Rewrite(RenderTypeDeclarations(pointerResolvers.Types, owner, emit == EmitMode.ManagedLib, literals, tagLayout));
+        var generatedContextTypes = new Dictionary<string, string>(irBuilder.AnonymousTypedefs, StringComparer.Ordinal);
+        foreach (var (generated, original) in irBuilder.GeneratedAggregateOrigins)
+            generatedContextTypes[generated] = irBuilder.AnonymousTypedefs.GetValueOrDefault(original, original);
         ValidateContextNames(outputOptions, cg.FunctionSources!.Select(f => f.Name).Append(owner),
-            cg.TypeDeclarations!.Keys, irBuilder.AnonymousTypedefs);
+            cg.TypeDeclarations!.Keys, generatedContextTypes);
         var globals = RenderGlobals(cg.Globals, literals, storage);
         if (outputOptions?.StateContext == true || outputOptions?.InstanceMethods == true)
             globals = RenderStateContext(globals, cg.Globals, literals, storage, owner, outputOptions?.InstanceMethods == true);

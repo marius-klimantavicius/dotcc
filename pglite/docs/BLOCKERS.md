@@ -226,3 +226,30 @@ file-scope grammar now accepts union forward declarations through the existing
 tag-forward path. Actual six-unit source retry passes emission. These repairs
 remove local compiler failures; initializer execution and SQL acceptance remain
 open.
+
+## Independent aggregate linkage and original extern-array declarations
+
+The complete 876-unit backend emitted under 1812, then strict linking rejected
+unrelated regex and timezone `struct state` graphs. Aggregate exposure alone
+did not identify the actual external symbol connecting translation units.
+Additive `aggregate-linkage:2` records real external declaration/definition roots
+and their typed graph edges, partitions independent compatible components, and
+keeps conflicting shared-object/function contracts as errors, including unused
+extern declarations. Old/mixed metadata retains its conservative gate.
+
+The first rooted retry emitted all 876 units but rejected `archive_mode_options`: an
+original `extern const struct config_enum_entry archive_mode_options[]` had
+already decayed to a pointer in execution IR. The metadata producer now preserves
+the original omitted-bound declaration before that lowering; explicit zero and
+known bounds stay distinct, and definitions retain their completed bounds.
+No existing emitted object is reinterpreted or edited. Exact relocation origins
+also permit compiler-generated private aggregate names in owning contexts while
+continuing to reject authored reserved names.
+
+Twenty-one focused unit cases and 56 execution cases pass, including direct and
+object routes, both orders, nested owners, transitive callback graphs, unused
+extern conflicts and incompatible pointer/array/bound negatives. Native original
+header/definition controls pass. Snapshot 1852 builds without warnings/errors;
+fresh full regeneration is active. Broad current compiler tests pass 3,387
+cases with exactly the 16 established untouched-baseline failures (comparison:
+`artifacts/supervisor-portable/regression-comparison-current5.json`).

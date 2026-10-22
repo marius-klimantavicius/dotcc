@@ -893,7 +893,10 @@ internal sealed partial class IrBuilder
         // Only the outer dimension is unknown: preserve the complete row type
         // so decay, indexing, and sizeof(row) keep the correct byte stride.
         if (outerIncomplete) type = new CType.Array(type, 0);
-        _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Extern, IsGlobal = true, IsThreadLocal = threadLocal });
+        var symbol = _symbols.Declare(new Symbol { Name = Tok(nameItem), Kind = SymKind.Var, Type = type, Storage = Storage.Extern, IsGlobal = true, IsThreadLocal = threadLocal });
+        _externalArrayLinkageTypes[symbol] = outerIncomplete
+            ? new CType.Array(((CType.Array)type).Element, null)
+            : dims is { Count: >= 1 } ? type : new CType.Array(elem, null);
     }
 
     /// <summary>A block-scope <c>static T a[…]</c> — a pinned global field under a

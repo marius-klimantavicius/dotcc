@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Globalization;
 using DotCC.Ir;
 
 namespace DotCC;
@@ -13,10 +14,27 @@ namespace DotCC;
 internal sealed record AggregateIdentity(string Name, string OriginalName, bool Tagged,
     bool Exposed, string[] Dependencies, ObjectAggregateMetadata Shape);
 
+// Linkage belongs to the ordinary external symbol, never to a tag merely
+// because some external declaration mentions it. References follow the
+// canonical type's traversal order, including pointers and callbacks.
+internal sealed record AggregateLinkageContract(string Symbol, string Type, string[] References, int?[] ArrayBounds);
+
+internal sealed record AggregateIdentitySet(IReadOnlyList<AggregateIdentity> Nodes,
+    IReadOnlyList<AggregateLinkageContract> Linkage) : IReadOnlyList<AggregateIdentity>
+{
+    public int Count => Nodes.Count;
+    public AggregateIdentity this[int index] => Nodes[index];
+    public IEnumerator<AggregateIdentity> GetEnumerator() => Nodes.GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+}
+
 internal static class AggregateIdentities
 {
     internal const string Version = "//!!dotcc-obj aggregate-identities:1";
     internal const string Prefix = "//!!dotcc-obj aggregate-identity:";
+    internal const string LinkageVersion = "//!!dotcc-obj aggregate-linkage:2";
+    private const string LegacyLinkageVersion = "//!!dotcc-obj aggregate-linkage:1";
+    internal const string LinkagePrefix = "//!!dotcc-obj aggregate-linkage-root:";
     private const string TokenPrefix = "__DotCcAggregate_";
     internal static string Hash(string value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)));
     internal static string Token(string name) => TokenPrefix + Hash(name);
@@ -44,7 +62,40 @@ internal static class AggregateIdentities
         graph.OrderBy(n => n.Name, StringComparer.Ordinal).Select(n => Prefix + n.Name + " "
             + Convert.ToBase64String(Encoding.UTF8.GetBytes(n.OriginalName)) + " "
             + (n.Tagged ? "1" : "0") + " " + (n.Exposed ? "1" : "0") + " "
-            + string.Join(",", n.Dependencies) + "\n"));
+            + string.Join(",", n.Dependencies) + "\n")) + (graph is AggregateIdentitySet semantic
+            ? LinkageVersion + "\n" + string.Concat(semantic.Linkage.OrderBy(c => c.Symbol, StringComparer.Ordinal)
+                .Select(c => LinkagePrefix + Encode(c.Symbol) + " " + Encode(c.Type) + " "
+                    + string.Join(",", c.References) + " "
+                    + string.Join(",", c.ArrayBounds.Select(n => n?.ToString(CultureInfo.InvariantCulture) ?? "-")) + "\n"))
+            : "");
+
+    private static string Encode(string value) => Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
+
+    internal static AggregateLinkageContract LinkageContract(string symbol, CType type)
+    {
+        var bounds = new List<int?>();
+        CType Normalize(CType value, bool parameter = false)
+        {
+            if (parameter) value = value.Unqualified;
+            return value switch
+            {
+                CType.Array a => Array(a),
+                CType.Pointer p => p with { Pointee = Normalize(p.Pointee) },
+                CType.Func f => f with { Return = Normalize(f.Return), Params = f.Params.Select(p => Normalize(p, true)).ToArray(), IsNativeCallConv = false },
+                _ => value,
+            };
+        }
+        CType Array(CType.Array value)
+        {
+            bounds.Add(value.Count);
+            return value with { Count = null, Element = Normalize(value.Element) };
+        }
+        // The native/managed call-convention annotation is not a C type
+        // distinction. Top-level parameter qualifiers are likewise ignored.
+        var normalized = Normalize(type);
+        string Key(CType value) => ObjectAggregateMetadata.Describe(value);
+        return new(symbol, Key(normalized), References(type).ToArray(), bounds.ToArray());
+    }
 
     internal static IReadOnlyList<AggregateIdentity>? Read(string source)
     {
@@ -52,7 +103,7 @@ internal static class AggregateIdentities
         if (!lines.Contains(Version, StringComparer.Ordinal))
         {
             if (source.Contains("struct " + TokenPrefix, StringComparison.Ordinal)
-                || lines.Any(l => l.StartsWith(Prefix, StringComparison.Ordinal)))
+                || lines.Any(l => l.StartsWith(Prefix, StringComparison.Ordinal) || l.StartsWith(LinkagePrefix, StringComparison.Ordinal)))
                 throw new CompileException("object lacks aggregate identity metadata; regenerate objects");
             return null;
         }
@@ -84,13 +135,217 @@ internal static class AggregateIdentities
         }
         if (result.Count != shapes.Count || result.Values.Any(n => n.Dependencies.Any(d => !result.ContainsKey(d))))
             throw new CompileException("incomplete aggregate identity graph; regenerate objects");
-        return result.Values.ToArray();
+        bool currentLinkage = lines.Contains(LinkageVersion, StringComparer.Ordinal);
+        if (!currentLinkage && !lines.Contains(LegacyLinkageVersion, StringComparer.Ordinal))
+        {
+            if (lines.Any(l => l.StartsWith(LinkagePrefix, StringComparison.Ordinal)))
+                throw new CompileException("aggregate linkage roots lack version metadata; regenerate objects");
+            return result.Values.ToArray();
+        }
+        var roots = new Dictionary<string, AggregateLinkageContract>(StringComparer.Ordinal);
+        foreach (var line in lines.Where(l => l.StartsWith(LinkagePrefix, StringComparison.Ordinal)))
+        {
+            var p = line[LinkagePrefix.Length..].Split(' ');
+            if (p.Length != 4) throw new CompileException("invalid aggregate linkage metadata; regenerate objects");
+            try
+            {
+                string symbol = Encoding.UTF8.GetString(Convert.FromBase64String(p[0]));
+                string type = Encoding.UTF8.GetString(Convert.FromBase64String(p[1]));
+                var refs = p[2].Split(',', StringSplitOptions.RemoveEmptyEntries);
+                var bounds = p[3].Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(n => n == "-" ? (int?)null : int.Parse(n, CultureInfo.InvariantCulture)).ToArray();
+                if (symbol.Length == 0 || type.Length == 0 || refs.Length == 0 || refs.Any(n => !result.ContainsKey(n))
+                    || bounds.Any(n => n < 0) || !roots.TryAdd(symbol, new(symbol, type, refs, bounds)))
+                    throw new CompileException("invalid aggregate linkage metadata; regenerate objects");
+            }
+            catch (Exception error) when (error is FormatException or OverflowException)
+            { throw new CompileException("invalid aggregate linkage metadata; regenerate objects", error); }
+        }
+        // Version 1 roots were captured after incomplete-extern-array decay and
+        // cannot distinguish an array declaration from a pointer object. Keep
+        // them under the original conservative exposure gate, never infer the
+        // missing declaration fact from another TU or from generated code.
+        return currentLinkage ? new AggregateIdentitySet(result.Values.ToArray(), roots.Values.ToArray()) : result.Values.ToArray();
+    }
+
+    internal static IReadOnlyDictionary<string, string>[] Plan(
+        IReadOnlyList<(string Origin, IReadOnlyList<AggregateIdentity>? Graph)> units)
+    {
+        // Exposure-only objects cannot prove which extern declaration connects
+        // two graphs. Preserve their conservative ABI gate, including mixed
+        // old/new inputs, rather than guessing from emitted C# uses.
+        if (units.Any(u => u.Graph is not AggregateIdentitySet)) return PlanLegacy(units);
+        return PlanLinked(units);
+    }
+
+    private static IReadOnlyDictionary<string, string>[] PlanLinked(
+        IReadOnlyList<(string Origin, IReadOnlyList<AggregateIdentity>? Graph)> units)
+    {
+        var all = units.SelectMany((u, i) => u.Graph!.Select(n => (Node: n, Unit: i))).ToArray();
+        var graphs = units.Select(u => (AggregateIdentitySet)u.Graph!).ToArray();
+        var affected = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var group in all.GroupBy(p => p.Node.Name, StringComparer.Ordinal))
+        {
+            if (group.Select(p => p.Node.Shape.IsUnion).Distinct().Count() <= 1
+                && group.Where(p => !p.Node.Shape.IsIncomplete).Select(p => p.Node.Shape.Signature).Distinct(StringComparer.Ordinal).Count() <= 1)
+                continue;
+            if (group.Any(p => !p.Node.Tagged)) Conflict(group.Key, group.Select(p => p.Unit));
+            affected.Add(group.Key);
+        }
+        bool changed;
+        do
+        {
+            changed = false;
+            foreach (var (node, _) in all)
+                if (node.Dependencies.Any(affected.Contains)) changed |= affected.Add(node.Name);
+        } while (changed);
+
+        var contracts = graphs.SelectMany((g, unit) => g.Linkage.Select(c => (Contract: c, Unit: unit)))
+            .GroupBy(p => p.Contract.Symbol, StringComparer.Ordinal).ToArray();
+        for (int unit = 0; unit < graphs.Length; unit++)
+        {
+            var nodes = graphs[unit].ToDictionary(n => n.Name, StringComparer.Ordinal);
+            var reachable = new HashSet<string>(StringComparer.Ordinal);
+            void Visit(string name)
+            {
+                if (!nodes.TryGetValue(name, out var node))
+                    throw new CompileException("incomplete aggregate linkage graph; regenerate objects");
+                if (reachable.Add(name)) foreach (var dep in node.Dependencies) Visit(dep);
+            }
+            foreach (var root in graphs[unit].Linkage)
+                foreach (var name in root.References) Visit(name);
+            if (nodes.Values.Any(n => n.Exposed != reachable.Contains(n.Name)))
+                throw new CompileException("incomplete aggregate linkage roots in '" + units[unit].Origin + "'; regenerate objects");
+        }
+        foreach (var group in contracts)
+        {
+            var first = group.First();
+            var bounds = first.Contract.ArrayBounds.ToArray();
+            foreach (var item in group.Skip(1))
+            {
+                if (first.Contract.Type != item.Contract.Type
+                    || !first.Contract.References.SequenceEqual(item.Contract.References, StringComparer.Ordinal)
+                    || bounds.Length != item.Contract.ArrayBounds.Length)
+                    ContractConflict(group.Key, first.Unit, item.Unit);
+                for (int i = 0; i < bounds.Length; i++)
+                {
+                    if (bounds[i] is { } known && item.Contract.ArrayBounds[i] is { } other && known != other)
+                        ContractConflict(group.Key, first.Unit, item.Unit);
+                    bounds[i] ??= item.Contract.ArrayBounds[i];
+                }
+            }
+        }
+        if (affected.Count == 0)
+            return units.Select(_ => (IReadOnlyDictionary<string, string>)new Dictionary<string, string>(StringComparer.Ordinal)).ToArray();
+
+        var entries = all.Where(p => affected.Contains(p.Node.Name)).ToArray();
+        var lookup = units.Select(_ => new Dictionary<string, int>(StringComparer.Ordinal)).ToArray();
+        for (int i = 0; i < entries.Length; i++) lookup[entries[i].Unit].Add(entries[i].Node.Name, i);
+        var parents = Enumerable.Range(0, entries.Length).ToArray();
+        var sizes = Enumerable.Repeat(1, entries.Length).ToArray();
+        var complete = entries.Select((p, i) => p.Node.Shape.IsIncomplete ? -1 : i).ToArray();
+        var dependencies = entries.Select(p => p.Node.Dependencies.Where(affected.Contains)
+            .Select(name => lookup[p.Unit][name]).ToArray()).ToArray();
+        var pending = new Queue<(int Left, int Right)>();
+        int Find(int index)
+        {
+            while (parents[index] != index) { parents[index] = parents[parents[index]]; index = parents[index]; }
+            return index;
+        }
+        bool Join(int left, int right)
+        {
+            bool joined = false;
+            pending.Enqueue((left, right));
+            while (pending.TryDequeue(out var pair))
+            {
+                int a = Find(pair.Left), b = Find(pair.Right);
+                if (a == b) continue;
+                var x = entries[a]; var y = entries[b];
+                int ca = complete[a], cb = complete[b];
+                if (x.Node.Name != y.Node.Name || x.Node.Shape.IsUnion != y.Node.Shape.IsUnion)
+                    Conflict(x.Node.Name, new[] { x.Unit, y.Unit });
+                if (ca >= 0 && cb >= 0)
+                {
+                    if (entries[ca].Node.Shape.Signature != entries[cb].Node.Shape.Signature)
+                        Conflict(x.Node.Name, new[] { entries[ca].Unit, entries[cb].Unit });
+                    foreach (var children in dependencies[ca].Zip(dependencies[cb])) pending.Enqueue(children);
+                }
+                if (sizes[a] < sizes[b]) (a, b) = (b, a);
+                parents[b] = a; sizes[a] += sizes[b];
+                complete[a] = ca >= 0 ? ca : cb;
+                joined = true;
+            }
+            return joined;
+        }
+        // Matching external symbol/type positions impose identity, even for
+        // unused declarations. A complete container also constrains every typed
+        // child edge, through callback cycles as well as by-value fields.
+        foreach (var group in contracts)
+        {
+            var first = group.First();
+            foreach (var item in group.Skip(1))
+                foreach (string name in first.Contract.References.Where(affected.Contains))
+                    Join(lookup[first.Unit][name], lookup[item.Unit][name]);
+        }
+
+        Dictionary<int, int> Colors()
+        {
+            var roots = Enumerable.Range(0, entries.Length).Where(i => Find(i) == i).ToArray();
+            Dictionary<int, int> Label(Func<int, string> key) => roots.GroupBy(key, StringComparer.Ordinal)
+                .OrderBy(g => g.Key, StringComparer.Ordinal).SelectMany((g, color) => g.Select(i => (i, color)))
+                .ToDictionary(p => p.i, p => p.color);
+            var colors = Label(i => entries[i].Node.Name + "|" + entries[i].Node.Shape.IsUnion + "|"
+                + (complete[i] < 0 ? "opaque" : entries[complete[i]].Node.Shape.Signature));
+            for (;;)
+            {
+                int count = colors.Values.Distinct().Count();
+                var next = Label(i => colors[i].ToString(CultureInfo.InvariantCulture) + "|"
+                    + (complete[i] < 0 ? "" : string.Join(",", dependencies[complete[i]]
+                        .Select(d => colors[Find(d)].ToString(CultureInfo.InvariantCulture)))));
+                colors = next;
+                // Refinement includes the old color, so classes never merge.
+                // Equal class counts prove a fixed partition without relying
+                // on arbitrary numeric color labels reaching a fixed point.
+                if (colors.Values.Distinct().Count() == count) return colors;
+            }
+        }
+
+        Dictionary<int, int> partition;
+        for (;;)
+        {
+            partition = Colors();
+            bool joined = false;
+            foreach (var group in Enumerable.Range(0, entries.Length).Where(i => Find(i) == i)
+                .GroupBy(i => entries[i].Node.Name, StringComparer.Ordinal).ToArray())
+            {
+                var candidates = group.Where(i => complete[i] >= 0).ToArray();
+                if (candidates.Length == 0 || candidates.Select(i => partition[i]).Distinct().Count() != 1) continue;
+                int target = candidates[0];
+                foreach (int opaque in group.Where(i => complete[i] < 0
+                    && entries[i].Node.Shape.IsUnion == entries[target].Node.Shape.IsUnion).ToArray())
+                    joined |= Join(opaque, target);
+            }
+            if (!joined) break;
+        }
+        var split = entries.Select((p, i) => (p.Node.Name, Color: partition[Find(i)]))
+            .GroupBy(p => p.Name, StringComparer.Ordinal).Where(g => g.Select(p => p.Color).Distinct().Count() > 1)
+            .Select(g => g.Key).ToHashSet(StringComparer.Ordinal);
+        return units.Select((_, unit) => (IReadOnlyDictionary<string, string>)lookup[unit]
+            .Where(p => split.Contains(p.Key)).ToDictionary(p => p.Key,
+                p => "__DotCcPrivate_" + Hash(p.Key + "\0" + partition[Find(p.Value)].ToString(CultureInfo.InvariantCulture)),
+                StringComparer.Ordinal)).ToArray();
+
+        void Conflict(string name, IEnumerable<int> indices) => throw new CompileException(
+            "conflicting aggregate declarations for '" + name + "' in "
+            + string.Join(" and ", indices.Distinct().Select(i => "'" + units[i].Origin + "'")));
+        void ContractConflict(string symbol, int first, int second) => throw new CompileException(
+            "conflicting external type contracts for '" + symbol + "' in '" + units[first].Origin + "' and '" + units[second].Origin + "'");
     }
 
     // Only conflicts trigger partitioning. The reverse closure preserves typed
     // callback cycles and containers instead of substituting a largest layout or
     // erasing a pointer. An exposed complete graph remains a strong ABI check.
-    internal static IReadOnlyDictionary<string, string>[] Plan(
+    private static IReadOnlyDictionary<string, string>[] PlanLegacy(
         IReadOnlyList<(string Origin, IReadOnlyList<AggregateIdentity>? Graph)> units)
     {
         var all = units.SelectMany((u, i) => (u.Graph ?? Array.Empty<AggregateIdentity>()).Select(n => (Node: n, Unit: i))).ToArray();
