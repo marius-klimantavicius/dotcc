@@ -1,22 +1,52 @@
 # PGlite blocker ledger
 
-## Current — required bundled Snowball module
+## Current — original initialization and private raw JIT/AOT pass
 
-The full 876-unit backend raw-builds, and its private processed diagnostic also
-builds. The immutable19 resource retry runs original bootstrap and passes the
-previously failing locale import; timezone logs are now real EEST. The next
-unchanged initialization statement loads `dict_snowball`, absent from the prior
-source closure. Its 51 original sources and forwarding catalog are now selected,
-with a shared two-module static registry used by bootstrap and SQL startup.
+Coherent receipt `20261022-202228-8f7e10f1` emits and strict-links all 928 selected
+backend/module/libc/adapter units and raw-builds with zero errors and 12 warnings.
+The fresh original frontend and original-main controls pass. That receipt's
+explicit publication guard remains a failure; it is not a published-product pass.
 
-All 51 original Snowball units pass native compilation and emission; independent
-original API/stemmer controls pass native/JIT/trimmed-AOT. The coherent 928-unit
-retry `20261022-202228-8f7e10f1` now emits and strict-links, with fresh frontend
-and managed build in progress. Actual SQL and final matrix remain open. This
-required module is not bypassed or loaded from a native library. Older entries
-below retain historical observations. See VALIDATION.md for current evidence.
+Original translated initdb now returns zero, including real bootstrap,
+post-bootstrap SQL and final disk sync. The successful receipt is
+`artifacts/initdb-owner-20261022-r3/actual2020/receipt.json`; complete spools and
+hashes are retained. The fresh cluster contains an 8192-byte `global/pg_control`
+and `PG_VERSION=18`. The canonical consumer separately passes 36 exact SQL/
+ownership assertions in private raw JIT and normally trimmed NativeAOT runs
+against coherent build `20261022-202228-8f7e10f1`. Each runs three clean
+same-process lifetimes and two persistence reopens. Evidence under
+`artifacts/product-owner-r3/raw928/`: `consumer-run.{log,json}` and
+`aot-{publish,run}.log` plus `aot-run.json`. The AOT run exits zero in 29.84 seconds.
+The 21 unchanged native-inventory rows and 15 ownership/recovery checks include
+UTF-8, NULL, transactions, SQL errors/recovery and retained results after reopen.
 
-Campaign-start ledger, 2026-10-22. Planned checks are not successes.
+The locale utility transport, calendar timezone service and required Snowball
+closure resolve the earlier initialization failures. All 51 original Snowball
+sources and both real module catalogs are linked into the backend context through the
+shared PL/pgSQL/Snowball registry. Independent native/JIT/trimmed-AOT stemmer
+controls also pass. Original collation import and SQL are retained; no native
+database engine or native module replaces translated code.
+
+These raw passes are prepublication evidence for 202228, not the resumed 203609
+closure or final promoted assets. All four final canonical raw/processed ×
+JIT/NativeAOT rows, paired delivery and P6 acceptance remain pending. Active receipt
+`artifacts/campaign/20261022-205650-7472ba65/receipt.json` resumes retained raw
+emissions from canceled attempt `20261022-203609-4cdd2a15`. The shared asset-bin
+and source ZIP/verbatim-notice packaging repairs add no new execution claims.
+A further data-only transactional correction `20261022-211008-fe98b7c0` preserves
+168 prepared C/header inputs and generated Bison terms/exceptions plus referenced
+GPL text. Generated raw/processed C# remains byte-identical to the passed205650
+publication. Its final project builds and asset hashes remain required.
+See [VALIDATION.md](VALIDATION.md) for current evidence. The latest compiler
+comparison is
+`artifacts/supervisor-portable/regression-comparison-current10.json`: 3420 passes
+and the same 16 untouched-baseline failures.
+
+## Historical blocker checkpoints
+
+The entries below retain campaign-start and intermediate observations from
+2026-10-22. Their older pending states are superseded by the current gate above;
+planned checks are not successes and every failed receipt remains failed.
 
 ## PGL-011 — Multidimensional array designators (fixed)
 
@@ -34,8 +64,9 @@ Four direct/object control-flow/designator fixture executions pass. Nineteen
 affected aggregate checks pass; an additional new BSD typedef check independently
 reveals existing compile-time unsigned-small-integer cast truncation behavior
 (native unsigned char/short -1 differs from DotCC static assertion folding).
-That new finding remains active; the overall combined unit log is failed, not
-reported as passing. Logs: `artifacts/supervisor-portable/designators-{native,
+That finding was active at this checkpoint and was later repaired by the integer
+width/sign conversion described below. The original combined unit log remains
+failed. Logs: `artifacts/supervisor-portable/designators-{native,
 before,functional,unit}.log`.
 
 ## PGL-009 — Comma expressions in for conditions (fixed)
@@ -78,8 +109,8 @@ three emitted/direct/object fixture executions pass. Logs:
 
 Normal full-source receipt `20261022-170525-3774461c` emits the earlier brin
 units and reaches `tupdesc.c`'s real `forfour` macro. Its comma-separated for
-condition is the next reproduced parser defect, currently under repair. Software
-codegen selection and current continuation are recorded in IMPLEMENTATION.md.
+condition was the next reproduced parser defect; PGL-009 records its repair.
+Software codegen selection and continuation are recorded in IMPLEMENTATION.md.
 
 ## BASE-001 — Existing framework metadata regression
 
@@ -92,15 +123,16 @@ Expected: helpers keep provenance literals in JSON. No PGlite code is involved;
 Blink was not changed. Transcript: `/tmp/pglite-framework-tests.log` (copied into
 campaign artifacts for retained evidence). This does not close PGlite validation.
 
-## PGL-001 — Embedding profile, host and ABI closure
+## PGL-001 — Embedding profile, host and ABI closure (historical feasibility)
 
-Classification: open feasibility, not yet a reproduced compiler defect.
+Classification at campaign start: open feasibility, not a reproduced compiler
+defect.
 The fork's PGlite path uses `__PGLITE__`, Emscripten and intercepted libc. A
 normal x64 PostgreSQL build cannot prove that profile. Experiments: inspect
 pinned build scripts and generated inputs, native-control profile, actual fork
-entrypoint emission and native/emitted ABI checks. Resolution belongs to P1;
-the full embedded workflow and raw/processed JIT/AOT product remain blocked
-until the required host/state/error boundaries work.
+entrypoint emission and native/emitted ABI checks. These were P1 requirements;
+the private raw JIT/AOT workflow now passes its real host/state/error boundaries.
+Remaining product matrix and P6 gates are recorded above.
 
 ## PGL-002 — POSIX declarations and volatile array decay (fixed)
 
@@ -111,8 +143,9 @@ passed. Adding the opaque signal-jump storage alias exposed C# CS0306: a volatil
 array typedef decayed through `Volatile.Read<ulong*>`, an illegal pointer generic
 argument. Array decay computes an address; volatility belongs to the elements.
 The backend now retains that distinction. LP64 `ipc_perm`/`shmid_ds` data records
-are supplied without kernel IPC implementations. Signal-mask operations are
-still unimplemented; the alias does not claim them.
+were supplied by that declaration-only repair without kernel IPC implementations.
+Signal-mask operations were unimplemented at that checkpoint; later owner-scoped
+signal services supersede that limitation, not the opaque storage alias alone.
 
 Regression: `Fixtures/sysv-shm-layout`, `Fixtures/sigjmp-buffer-type`, and
 `ManagedLibraryTests.VolatileArrayDecay` direct/object execution. Native record
@@ -138,17 +171,20 @@ Logs: `artifacts/discovery/{noreturn-before,noreturn-unit,noreturn-functional,
 noreturn-fixture-native,pglz-probe}.log`. Complete diagnostic-set retry and
 actual PostgreSQL layout emission remain tracked separately from this repair.
 
-## PGL-004 — Host resumable exit, signals, timers and state reset (open)
+## PGL-004 — Host resumable exit, signals, timers and state reset (historical failure)
 
-Classification: reproduced host/runtime contract mismatch. PGlite startup yields
-99 and query-error recovery yields 100. The current bound RuntimeContext records
-its first exit as terminal. Reusing that owner after catching the exception is
-not an implemented lifecycle. Minimal translated probes also observe unsupported
-setitimer and sigaction returning success without populating the previous action.
-See boundary suite reports and BOUNDARIES.md. Required next experiment: typed
-PGlite exit interception with owned exception/status handling and no leaked host
+Classification: reproduced host/runtime contract mismatch at campaign start.
+PGlite startup yields 99 and query-error recovery yields 100. The then-current
+bound RuntimeContext recorded its first exit as terminal; reusing that owner
+after catching the exception was not implemented. Minimal translated probes also
+observed unsupported setitimer and sigaction returning success without populating
+the previous action. See the historical boundary reports and BOUNDARIES.md.
+The required implementation was typed PGlite exit interception with owned
+exception/status handling and no leaked host
 exceptions, real signal/error cleanup decisions, and drain/reset at shutdown.
-No hidden subprocess or global lock can prove independent instances.
+No hidden subprocess or global lock can prove independent instances. Subsequent
+owned boundaries now pass raw JIT error/recovery and three clean same-process
+lifetimes; the remaining matrix is still required.
 
 PGL-003 full retry: receipt `20261022-162338-b253238e` emits complete pglitec,
 pg_lzcompress and bitmapset objects. postgres.c stops at PGL-005 below. The full
@@ -157,30 +193,32 @@ repository baseline from `config/campaign.json` reports 3,256 passing and the
 identical 16 failing test names (no new failure). The added noreturn case passes.
 Logs: `artifacts/discovery/dotcc-tests-{all,baseline}.log`.
 
-## PGL-005 — Missing PostgreSQL atomic compiler port (reproduced; work active)
+## PGL-005 — Missing PostgreSQL atomic compiler port (historical; port integrated)
 
 Classification: project platform integration. Receipt
 `20261022-162338-b253238e/003-postgres.log` stops at upstream
 `port/atomics.h`: `#error "could not find an implementation of pg_atomic_uint32"`.
 Native GCC-generated headers advertise GCC builtin capabilities; DotCC does not
 pretend to be GCC. Defining __GNUC__ would select asm/intrinsics that have not
-been proven. The next experiment is an explicit C11 port using the shared
-Interlocked-backed atomics, retaining real PostgreSQL generic wrappers and
-native/emitted widths, CAS expected-value behavior and ordering. See ATOMICS.md
-when the independent experiment is integrated. No synchronization operations
+been proven at that checkpoint. The implemented repair is an explicit C11 port
+using the shared Interlocked-backed atomics, retaining real PostgreSQL generic
+wrappers and native/emitted widths, CAS expected-value behavior and ordering. See ATOMICS.md
+for the integrated native/emitted controls. No synchronization operations
 may be removed or replaced with successful stubs.
 
-## PGL-006 — Full fork libc C# host closure (reproduced)
+## PGL-006 — Full fork libc C# host closure (historical failure; resolved)
 
-Classification: missing host/runtime services, not parser success. The complete
-pglitec object links to a private managed feasibility project, but C# build fails
-on unresolved `popen`, `pclose`, `optind` and `getpagesize`. Reproducer:
+Classification: missing host/runtime services at the recorded checkpoint. The
+complete pglitec object linked to a private managed feasibility project, but C#
+build failed on unresolved `popen`, `pclose`, `optind` and `getpagesize`. Reproducer:
 `bash pglite/scripts/test.sh --suite libc-build --fetch never --tools reuse`.
 Original logs: `artifacts/discovery/full-pglitec-{link,build}.log`.
 No generated C# is repaired. Process fallback must be explicitly rejected or
-served by translated initdb orchestration, never a native backend. Next: define
-reviewed host bindings/state for these services and execute full pglitec tests;
-callback/cleanup slices do not close this whole-unit gate.
+served by translated initdb orchestration, never a native backend. Reviewed host
+bindings and full pglitec controls subsequently passed. Original initdb now uses
+its concrete translated backend transport; the exact locale inventory command
+uses a real OS utility. See INITIALIZATION.md. The original failed build receipt
+is retained; callback/cleanup slices alone did not close that whole-unit gate.
 
 
 ## PGL-007 — Spinlock compiler port (fixed and integrated)
@@ -240,8 +278,8 @@ unsigned truncation and promotion after conversion.
 All six original PL/pgSQL translation units exposed `union YYSTYPE;`. The
 file-scope grammar now accepts union forward declarations through the existing
 tag-forward path. Actual six-unit source retry passes emission. These repairs
-remove local compiler failures; initializer execution and SQL acceptance remain
-open.
+removed local compiler failures; initializer execution and SQL acceptance were
+still open at that checkpoint. The current raw JIT passes are recorded above.
 
 ## Independent aggregate linkage and original extern-array declarations
 
@@ -265,8 +303,8 @@ continuing to reject authored reserved names.
 Twenty-one focused unit cases and 56 execution cases pass, including direct and
 object routes, both orders, nested owners, transitive callback graphs, unused
 extern conflicts and incompatible pointer/array/bound negatives. Native original
-header/definition controls pass. Snapshot 1852 builds without warnings/errors;
-fresh full regeneration is active. Broad current compiler tests pass 3,387
+header/definition controls pass. Snapshot 1852 built without warnings/errors;
+fresh full regeneration was then active. The corresponding compiler tests passed 3,387
 cases with exactly the 16 established untouched-baseline failures (comparison:
 `artifacts/supervisor-portable/regression-comparison-current5.json`).
 
@@ -292,7 +330,7 @@ All six original units compile natively with incompatible-pointer and implicit
 function diagnostics treated as errors. Both unscoped unused extern conflicts
 and scoped execution are checked through direct and object routes. Nine guarded
 initializer/staging checks pass, including missing/duplicate last-header anchors
-and source/output preservation. Fresh full 1908 regeneration is active; previous
+and source/output preservation. Fresh full 1908 regeneration was then active; previous
 objects with the wrong union-kind fact are not reinterpreted.
 
 ## Shared regex compile-error pointers and independent execution state
@@ -312,7 +350,7 @@ The ordinary six-unit scoped probe emits. Its diagnostic replacement in the
 older full closure then fails LocalToUtf: anonymous typedef identities depend
 on the two different private include paths. Metadata is not rewritten or erased
 to permit that mixed closure. A coherent full normal retry under one include
-overlay is active. Current broad compiler tests again pass 3,387 cases and
+overlay was then active. The corresponding compiler tests again passed 3,387 cases and
 reproduce exactly the known 16 baseline failures (current6 comparison retained).
 
 ## Complete raw C# closure: intrinsics, enums and typed values
@@ -347,4 +385,6 @@ The combined broad suite initially exposed one rvalue rendering regression.
 It is repaired by retaining the ordinary rvalue path, with the old test unchanged.
 Current8 passes 3,398 cases and exactly the same 16 baseline failures; current7's
 extra failure remains accurately retained as intermediate evidence. Fresh full
-metadata3 regeneration is active. Actual raw build/init/SQL remain open.
+metadata3 regeneration was then active and raw build/init/SQL were pending.
+The later coherent 928-unit build, original initdb and raw JIT acceptance above
+supersede those pending states; final matrix/P6 acceptance remains open.

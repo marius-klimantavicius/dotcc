@@ -1,44 +1,77 @@
-# PGlite campaign-start validation
+# PGlite validation evidence
 
 ## Current full-source and managed execution gate, 2026-10-22
 
-Coherent receipt `artifacts/campaign/20261022-194223-e06ea2a0/receipt.json`
-emits and strict-links all 876 selected backend/module/libc/adapter units. The
-complete raw backend C# build passes with zero errors and 12 warnings; the
-separate 73-unit original initdb companion also emits, links and builds. The
-receipt is failed because the explicit publication guard remains enabled, not
-because source emission or the raw build failed. A separate private full-backend
-processed diagnostic passes semantic processing and C# build with zero errors
-and 12 warnings (`artifacts/supervisor-processed1942/report.json`). This is
-backend build evidence only; processed initializer and SQL qualification remain open.
+Coherent receipt `artifacts/campaign/20261022-202228-8f7e10f1/receipt.json`
+emits and strict-links all 928 selected backend/module/libc/adapter units. The
+raw backend builds with zero errors and 12 warnings; the fresh original initdb
+companion emits, links, builds and passes its original-main controls. That
+receipt remains failed solely at its explicit publication guard. It is not
+rewritten as a published or fully qualified product.
 
-The actual API and canonical consumer build against these complete libraries
-with zero errors. Two independent, isolated actual initdb invocations both run
-the unchanged 973545-byte BKI bootstrap successfully, then execute the original
-251748-byte post-bootstrap SQL. The first runtime failure is original
-`SELECT pg_import_system_collations('pg_catalog')`: `locale -a` returns
-`Operation not supported`, so single-user mode exits 1. No managed exception or
-consumer SQL success is inferred. The coordinator is repairing real locale
-enumeration; the import and SQL inputs are retained unchanged. Calendar `%Z`
-formatting is an independently observed host defect under repair.
+Original translated initdb now passes: all five backend commands return zero,
+including real bootstrap with 973545 bytes of original BKI and single-user mode
+with 251748 bytes of original initdb-generated SQL. Locale import, original
+Snowball/PLpgSQL setup and final disk sync complete. The fresh cluster contains
+an 8192-byte `global/pg_control` and `PG_VERSION` containing `18` plus newline.
+Receipt: `artifacts/initdb-owner-20261022-r3/actual2020/receipt.json`; exact argv,
+statuses and input/output hashes: `actual-initialization-result.json` in that
+owner's artifact root. No native database engine, replacement bootstrap, SQL
+edits or emitted C# edits are involved.
 
-Evidence: `artifacts/initdb-owner-20261022-r3/actual1942/initialization/execution/`
-and `artifacts/product-owner-r3/raw1942-consumer-{build,run}.log`; original
-backend inputs, outputs and operation/status records are retained in private
-diagnostic directories. All required SQL, shutdown/reopen and four product
-matrix rows remain open. The latest full shared compiler suite has 3420 passes
-and the same 16 failures reproduced in the untouched baseline; current
-comparison is `artifacts/supervisor-portable/regression-comparison-current9.json`.
+The canonical consumer passes all 36 exact SQL/ownership assertions in private
+raw JIT and normally trimmed NativeAOT runs against coherent build
+`20261022-202228-8f7e10f1`: 21 unchanged native-inventory rows and 15 ownership/
+recovery checks, each across three clean same-process lifetimes and two
+persistence reopens. They cover UTF-8, NULL, commit/rollback, SQL errors/recovery
+and retained results after reopen. Evidence under
+`artifacts/product-owner-r3/raw928/`: `consumer-run.{log,json}` and
+`aot-{publish,run}.log` plus `aot-run.json`. The AOT run exits zero in 29.84 seconds.
 
+| Product row | Private coherent 202228 evidence | Final canonical gate |
+| --- | --- | --- |
+| Raw JIT | Passed: 36 assertions, three lifetimes, two reopens. | Pending. |
+| Raw normally trimmed NativeAOT | Passed: 36 assertions, three lifetimes, two reopens. | Pending. |
+| Processed JIT | Pending. | Pending. |
+| Processed normally trimmed NativeAOT | Pending. | Pending. |
 
-## Runtime repair retry, immutable19
+Both raw passes are prepublication evidence. They do not qualify the resumed
+203609 closure or final promoted assets. All four final canonical rows, paired
+delivery and P6 acceptance remain pending.
+
+Ordinary paired delivery passes in
+`artifacts/campaign/20261022-205650-7472ba65/receipt.json`, using the retained
+928-unit raw emissions from canceled attempt `20261022-203609-4cdd2a15`.
+Shared asset-bin preservation (`d1bdf987b`) and full observed upstream source ZIP
+with verbatim notices staging (`1f3adb3d5`) are packaging changes. They do not
+establish new execution or P6 passes. A further data-only transactional notice
+correction is active in `20261022-211008-fe98b7c0`: every raw/processed generated
+source stays byte-identical to the passed publication, while all 168 prepared
+C/header inputs preserve their generated notices and Bison special exceptions
+in a separate ZIP. The referenced GPL text is copied verbatim. Ordinary final
+project builds and full output hashes gate this promotion; final canonical
+execution remains pending. The latest retained shared compiler
+comparison has 3420 passes and the same 16 untouched-baseline failures:
+`artifacts/supervisor-portable/regression-comparison-current10.json`.
+
+## Historical runtime retries and their repairs
+
+The earlier coherent 876-unit receipt `20261022-194223-e06ea2a0` built the raw
+backend and frontend but stopped at its publication guard. Its private processed
+backend-only diagnostic also built (`artifacts/supervisor-processed1942/report.json`);
+that was not processed initializer or SQL acceptance. Two real initdb attempts
+passed bootstrap and failed locale import with `Operation not supported`.
+Their spools and failed receipts remain under
+`artifacts/initdb-owner-20261022-r3/actual1942/` and the product owner's raw1942
+diagnostics. Calendar `%Z` formatting was a separate host defect, now repaired.
 
 The real locale inventory service now launches only the fixed OS locale utility
 with `-a`, using native posix_spawn descriptor actions and real waitpid status.
 It does not launch a shell or database executable, manufacture/filter the locale
 list, or remove original collation import. Owner-local pipes preserve real
 stdout/stderr and are closed/killed/reaped on abandonment. Direct JIT and trimmed
-NativeAOT each pass 53 host process assertions; actual emitted C also compares
+NativeAOT each pass 56 host process assertions, including the final cross-owner
+errno cleanup repair; actual emitted C also compares
 locale bytes to native across three owners in both modes. Evidence:
 `artifacts/initdb-owner-20261022-r3/locale-process-repair.json`.
 
@@ -48,15 +81,19 @@ contains both fixes. The complete coherent1942 object sets (876 backend and 75
 frontend objects) strictly relink with these runtime resources into private
 projects; `artifacts/supervisor-runtime2008/report.json` records original
 commands and object/tool hashes. This is a resource-only diagnostic, not fresh C
-regeneration or publication. Real original initdb and the canonical consumer
-are running against these projects with separate fresh data/output directories.
-No SQL success or final matrix row is inferred before their actual results.
+regeneration or publication. Both actual retries passed locale import and then
+failed at the missing original `dict_snowball` module. The failed initializer
+receipt is `artifacts/initdb-owner-20261022-r3/actual2008/receipt.json`; the
+subsequent coherent 928-unit build includes all 51 original Snowball sources and
+the shared two-module provider. Its successful initialization and raw JIT gate
+are recorded above. Smaller host AOT controls do not qualify the product AOT row.
 
-## Active implementation continuation
+## Historical campaign-start observations
 
-The coordinator continues through the full product and P6; historical baseline
-receipts below are intermediate evidence. Current work is tracked in
-[IMPLEMENTATION.md](IMPLEMENTATION.md).
+The sections below retain intermediate observations at their named checkpoints,
+not current blocker or milestone states. Planned work and present-tense wording
+in those records are superseded by the current gate above; failed receipts
+remain failures. Current work is tracked in [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 Receipt `20261022-170306-5fe5032a` passes the complete real fork libc managed
 build and the native/emitted portable CRC32C/popcount suite (771 length/alignment
@@ -68,10 +105,10 @@ passes native and actual emitted direct/object execution after repair, and
 retains rejection of outward transfers. Eighteen focused syntax checks pass.
 Full-source receipt `20261022-170525-3774461c` advances through the brin units
 and fails at a separate for-condition comma parser gap in actual `tupdesc.c`.
-No complete product or managed SQL acceptance is claimed.
+That checkpoint established no complete product or managed SQL acceptance.
 
-Updated 2026-10-22. This is an implementation start, not acceptance of a complete
-PostgreSQL port. Current evidence uses Linux x64, .NET SDK 10.0.112 and the exact
+Campaign-start checkpoint, 2026-10-22. It was not acceptance of a complete
+PostgreSQL port. The recorded evidence uses Linux x64, .NET SDK 10.0.112 and the exact
 source/configuration pins in `config/`. Logs, private source stages and receipts
 are ignored outputs beneath `artifacts/`, `build/` and `ref/`.
 
@@ -121,21 +158,26 @@ The shared framework suite has 69 passes / one pre-existing failure in Blink's
 checksum-literal metadata check. No Blink files were edited. See
 `artifacts/baseline/pglite-framework-tests.log` and BASE-001 in BLOCKERS.md.
 
-## Required failed, blocked and unrun gates
+## Historical failed, blocked and unrun gates at campaign start
+
+These were the initial failures, not the current pending matrix. Host services,
+resumable ownership, actual initialization and private raw JIT/AOT SQL/reopen
+now pass; the current remaining gates are listed above.
 
 - `postgres.c` initially fails atomic compiler-port selection. The reviewed
   C11 port is integrated and its native/emitted JIT controls pass; the next
   actual full-TU failure is separate spinlock-port selection. See ATOMICS.md. Atomics/fences must remain real operations.
-- Complete pglitec private managed-library build fails on missing host services
+- Complete pglitec private managed-library build failed on missing host services
   `popen`, `pclose`, `optind`, `getpagesize`, despite successful object emission.
-- PGlite synthetic exit 99/100 needs a resumable host boundary. Current owner
-  termination is terminal; tested typed `exit(int)` override is rejected.
+- PGlite synthetic exit 99/100 needed a resumable host boundary. Owner
+  termination was terminal; the tested typed `exit(int)` override was rejected.
 - Signal masks, signal old-action behavior, timers, complete initdb/source/import
-  closure, actual managed startup/SQL/error recovery and same-process reset are
-  incomplete. Required full product raw/processed × JIT/NativeAOT execution,
-  consumer and clean shutdown/reopen remain unrun.
-- Missing-product consumer build fails explicitly. That is expected negative
-  packaging behavior, not a passing useful workflow. No product is published.
+  closure, actual managed startup/SQL/error recovery and same-process reset were
+  incomplete at that checkpoint. Full product raw/processed × JIT/NativeAOT
+  execution, consumer and clean shutdown/reopen were then unrun.
+- Missing-product consumer build failed explicitly. That was expected negative
+  packaging behavior, not a passing useful workflow. No product was published
+  at that checkpoint.
 - Upstream wasm32/Emscripten profile and its builder are investigated/pinned but
   not built. No cross-ABI database-file interchange or profile parity is claimed.
 
@@ -159,7 +201,7 @@ failures preserve receipts and logs. Ordinary test commands snapshot existing
 tools without rebuilding root outputs. Final integrated receipts and exact
 milestone states are recorded below after the combined review run.
 
-## Final integrated receipts and milestone status
+## Historical integrated receipts and milestone status
 
 All paths below are beneath `artifacts/campaign/` and contain `receipt.json`,
 exact command arrays/tool snapshots, and original logs. Overall failed receipts
@@ -201,14 +243,16 @@ pre-existing shared plan files retain their original bytes and are excluded from
 campaign commits. Ref/source stages, tools, generated libraries and all logs
 remain ignored. No push or PR was created.
 
-P0 is complete for the scoped campaign baseline: exact inputs/profile, native
-useful control, actual source/ABI inventory, canonical recipe/consumer, real
-translation attempts and reduced/repaired findings. P1 is **partial**: actual
-PostgreSQL ABI and C11 atomic feasibility pass; spinlocks, host imports,
-resumable exit/signals/timers and init/reset remain blocked. P2–P6 remain open.
-The next concrete step is a reviewed one-byte PostgreSQL spinlock port retaining
+At this campaign-start checkpoint, P0 was complete for the scoped baseline:
+exact inputs/profile, native useful control, actual source/ABI inventory,
+canonical recipe/consumer, real
+translation attempts and reduced/repaired findings. P1 was **partial**: actual
+PostgreSQL ABI and C11 atomic feasibility passed; spinlocks, host imports,
+resumable exit/signals/timers and init/reset were still blocked. P2–P6 were open.
+The next planned step was a reviewed one-byte PostgreSQL spinlock port retaining
 real TAS and S_LOCK contention semantics, followed by full-source retry. Host
-initdb, resumable-yield/error and resource reset remain separate required work.
+initdb, resumable-yield/error and resource reset were separate required work.
+Later raw JIT evidence supersedes those blocker states, without closing P6.
 
 To refresh the observed source selection after an intentional upgrade, run the
 native suite and convert its source manifest with:
@@ -223,7 +267,7 @@ DotCC's declared dialect and include/define selection. It never treats the
 backend closure as complete embedded initialization.
 
 
-## Continuing implementation — compiler and source closure
+## Historical continuation — compiler and source closure
 
 Immutable tools `supervisor-20261022-1735` through `1749` include structural
 repairs discovered in original initdb/getopt and PL/pgSQL inputs: pointer-valued
@@ -234,20 +278,21 @@ cases pass (`artifacts/supervisor-portable/pointer-cast-functional.log`). All si
 original PL/pgSQL units then emit, and original getopt executes in two managed
 state contexts (initializer-owner evidence in INITIALIZATION.md).
 
-Current shared unit run: 3,355 pass, 17 fail in
+The then-current shared unit run had 3,355 passes and 17 failures in
 `artifacts/supervisor-portable/unit-current2.log`. Sixteen failure names exactly
 match the already recorded untouched baseline; the seventeenth is the new
-POSIX-host owner's NSS assertion and remains assigned for repair. No new
+POSIX-host owner's NSS assertion and was assigned for repair. No new
 compiler regression is hidden in the baseline count.
 
 Diagnostic backend suffix receipt `20261022-174825-772d7ead` emits another
 42 units through execExpr.c before execExprInterp.c selects GCC computed goto.
-The profile now disables that unimplemented compiler capability and retains
-PostgreSQL's original switch interpreter. The full current source regeneration,
-managed SQL, persistence and all four product matrix rows remain required.
+The profile disables that unimplemented computed-goto capability and retains
+PostgreSQL's original switch interpreter. At this checkpoint full regeneration,
+managed SQL, persistence and all four product rows were still required; current
+results and final canonical obligations are listed above.
 
 
-Current shared regression run `artifacts/supervisor-portable/unit-current3.log`
+The later historical run `artifacts/supervisor-portable/unit-current3.log`
 has **3,380 passes and exactly the same 16 baseline failures**, with no new
 failure names. The new NSS test now accepts the actual native provider's numeric
 no-entry outcome instead of assuming one universal outcome. Comparison is in
@@ -255,4 +300,4 @@ no-entry outcome instead of assuming one universal outcome. Comparison is in
 Array-member and multiple string-array declaration native/direct/object controls
 pass; existing statement-expression object cases remain passing. Signal and
 structural declaration integration is committed with focused and full-suite
-evidence; complete backend generation and product execution remain active.
+evidence; complete backend generation and product execution were then active.

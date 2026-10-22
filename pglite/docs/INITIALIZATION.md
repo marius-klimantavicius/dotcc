@@ -1,17 +1,29 @@
 # Translated initialization and owning adapters
 
-The complete original frontend and backend now emit, link and build. Original
-initdb executes through the concrete owning adapters: the first real attempt
-completes bootstrap and reaches post-bootstrap SQL. Its initial failure and the
-required locale process service are recorded below. Initialization and SQL
-product qualification remain open. The supervisor owns integration and P6
-acceptance.
+The coherent 928-unit original backend and complete frontend now emit, strictly
+link and build. Original initdb passes bootstrap, post-bootstrap SQL and the
+original final disk sync through the concrete owning adapters. The private
+coherent 202228 product consumer passes 36 SQL/ownership assertions in both raw
+JIT and normally trimmed NativeAOT, each across three clean same-process lifetimes and
+two persistence reopens. These are prepublication passes; all four final
+canonical product rows, paired delivery and P6 acceptance remain pending and
+supervisor-owned. Historical failures and the required host/module repairs
+remain recorded below.
+
+Current evidence: `artifacts/initdb-owner-20261022-r3/actual2020/receipt.json`
+and `artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log`. Both raw
+product passes use `20261022-202228-8f7e10f1`; they do not qualify the resumed
+203609 closure or final promoted assets. Active paired-delivery receipt
+`artifacts/campaign/20261022-205650-7472ba65/receipt.json` reuses retained raw
+emissions from canceled `20261022-203609-4cdd2a15`. Shared asset-bin preservation
+and full upstream source ZIP/verbatim-notice staging are packaging repairs,
+not additional execution passes.
 
 Current initialization evidence uses private ignored
 `build/initdb-owner-20261022-r3/` and `artifacts/initdb-owner-20261022-r3/` paths;
-historical r1/r2 evidence remains preserved separately. References and configured native
-stages are read only. No compiler/root outputs are built by this task, emitted
-C# is never edited, and no native PostgreSQL executable/library is a product
+historical r1/r2 evidence remains preserved separately. References and configured
+native stages are read only. No compiler/root outputs are built by this task,
+emitted C# is never edited, and no native PostgreSQL executable/library is a product
 backend. Parent-owned plans remain untouched by this task.
 
 ## Host services and complete fork libc
@@ -109,8 +121,8 @@ two-object controls establish this configuration mismatch, without a demonstrate
 compiler coercion defect for declared C calls.
 
 `stage_bootstrap_data()` copies only the selected BKI, SQL, sample configuration,
-text-search and timezone files, COPYRIGHT, and an authored static-module
-manifest to a fresh private prefix. It does not initialize PGDATA or copy a
+text-search and timezone files, COPYRIGHT, and both authored static-module
+manifests to a fresh private prefix. It does not initialize PGDATA or copy a
 native library. `initialization/bootstrap-data.json` records the actual selected
 paths, sizes and SHA-256 observations for the run. Files are copied byte-for-byte;
 the original initdb still performs BKI token substitution and all configuration,
@@ -120,7 +132,7 @@ The prefix also contains JSON entrypoint descriptors at bin/initdb and
 bin/postgres, executable on Unix for original find_my_exec/find_other_exec
 regular-file/access checks. They name managed entrypoints and contain no native
 executable or shell implementation. Original exec.c's version request invokes
-the real translated backend through popen. The current r2 standalone prefix has
+the real translated backend through popen. The historical r2 standalone prefix has
 650 declared files plus COPYRIGHT; bootstrap-prefix.json records their bytes.
 
 ## In-process process transport
@@ -152,7 +164,8 @@ environment variables changed by original startup.
 
 `InitializationBackend.Invoke` creates a fresh PGlite.__DotCcContext per command,
 enables its signals, redirects actual stdio using original pgl_freopen and real
-dup2 for merged stderr, registers the static module catalog and calls original
+dup2 for merged stderr, registers both real module catalogs through
+RegisterModules and calls original
 backend main(argv). It catches only matching-owner normal exits, rejects 99/100
 yields, retains argv through original atexit draining and disposes runtime
 storage afterward. Child environment changes are restored before returning to
@@ -177,16 +190,17 @@ plpgsql--1.0.sql, and the six original PL/pgSQL C units, including generated
 pl_gram.c and scanner keyword/error headers. These are recorded in the owned
 metadata; excluding the module would remove required initialization behavior.
 
-`run_modules(ctx)` compiles natively and emits all six original sources plus
-`dotcc_plpgsql_module.c` using private reviewed atomic/spinlock/portable headers.
+`run_modules(ctx)` compiles natively and emits the original module units and
+forwarding catalogs using private reviewed atomic/spinlock/portable headers.
 The handler wrapper changes only the magic-function and _PG_init names so
 their real exported addresses can coexist with statically linked modules.
 Its export catalog retains original magic, initializer, fmgr info and three
 language-handler functions.
 
-`dotcc_static_modules.c` is a bounded host loader provider. It registers one exact
-module path and an explicit rooted symbol catalog, validates handles, tracks
-opens/closes, and reports real errors for unknown modules/symbols. It returns
+`dotcc_static_modules.c` is a bounded host loader provider. It registers the two
+exact PL/pgSQL and Snowball module paths with rooted symbol catalogs, validates
+owner-local handles, tracks separate opens/closes, and reports real errors for
+unknown modules/symbols. It returns
 actual managed function addresses and never invokes a native dynamic loader.
 Remapping the original dfmgr's dlopen/dlsym/dlclose/dlerror to these exported
 services preserves its path/inode checks, ABI magic comparison, _PG_init call,
@@ -199,19 +213,22 @@ translated module. Register that exact expanded path with the original
 `dpg_plpgsql_module()` catalog inside each backend owner before original main.
 Link all six module units/catalog/provider into the same backend program
 context, so memory contexts, executor, fmgr and module globals belong to the
-same lifetime. Do not load the native control's plpgsql.so. Full backend/module
-linking, ABI validation and actual CREATE EXTENSION execution remain required.
+same lifetime. The coherent 928-unit build and original initdb now pass actual
+CREATE EXTENSION execution through this catalog. Native plpgsql.so is not used;
+the final canonical product matrix and P6 still require validation.
 
-`backend_module_units(ctx, info, include)` returns eight Unit entries: six
-original sources, export catalog and static provider. The private handler
+`backend_module_units(ctx, info, include)` returns 60 Unit entries: six original
+PL/pgSQL sources, 51 original Snowball sources, two export catalogs and the
+shared static provider. The private handler
 wrapper guards original magic/initializer declarations.
 `backend_module_configuration(root)` supplies dfmgr-only dl* remaps and exact
-include/path requirements. Register the module in each subsequent fresh SQL
-session context too; initialization's loader cache cannot survive disposal.
+include/path requirements. Call InitializationBackend.RegisterModules(prefix)
+for both modules in each subsequent fresh SQL session context too; initialization's loader cache cannot survive disposal.
 
-## Evidence and remaining work
+## Historical initial evidence
 
-Evidence under this task's artifact root:
+These entries retain their original checkpoint observations and artifact paths.
+They do not describe the current initdb or product status above:
 
 - `host-tests.log`: 19 focused cases pass: eight process services, four strchrnul,
   seven positioned I/O/synchronization. These include 800 concurrent offset
@@ -229,7 +246,8 @@ Evidence under this task's artifact root:
 - `initializer-python-tests.log`: five source/overlay/data-staging contract
   tests pass, including missing/duplicate-anchor and readonly-path rejection.
 - `plpgsql-current/plpgsql/report.json`: all six original PL/pgSQL units plus the
-  export catalog compile natively and emit with zero failures. Execution is unrun.
+  export catalog compile natively and emit with zero failures. Execution was
+  unrun at that checkpoint.
 - `closure-unified/initialization/report.json`: all 69 initial frontend units
   emit/link; C# build fails with 96 diagnostics summarized in
   `closure-unified/build-error-summary.json`. This snapshot predates the new
@@ -246,20 +264,19 @@ emit; the overall attempt fails** on src/common/pg_get_line.c:129:
 if (prompt_ctx && sigsetjmp(*((sigjmp_buf *) prompt_ctx->jmpbuf), 1) != 0)
 ```
 
-The new real signal-jump lowering does not yet support that short-circuit
-expression. `tests/Initialization/short_circuit_sigjmp.c` reduces it; the
+The 1743 signal-jump lowering did not support that short-circuit expression. `tests/Initialization/short_circuit_sigjmp.c` reduces it; the
 native control passes disabled/nonlocal-jump cases, while 1743 reproduces the
 unsupported sigsetjmp shape. Logs are `short-circuit-{native,emission}.log`.
 The shared compiler subsequently repaired conditional arming and the lexical
-jump continuation. Current r2 retries regenerate every object; old objects are
+jump continuation. The subsequent r2 retries regenerated every object; old objects are
 not used to claim this repair. Historical `bootstrap-data.json`
 records 648 selected data/manifest files (about 1.7 MB); COPYRIGHT is also copied.
 Failed historical receipts remain failures after later repairs.
 
-The concrete initialization harness is ready for the supervisor's actual
-backend project. Real catalog startup, SQL error recovery, shutdown/reopen,
-raw/processed and JIT/AOT product gates remain supervisor-owned and open. No SQL
-behavior is inferred from option, byte-I/O, native compile or library controls.
+At that checkpoint the concrete harness awaited the real backend. Original
+initdb and private raw JIT/NativeAOT SQL, error recovery and shutdown/reopen now
+pass on the coherent 928-unit backend. Final canonical matrix/P6 acceptance
+remains supervisor-owned; no SQL behavior is inferred from smaller fixtures.
 
 ## Framework integration
 
@@ -281,7 +298,7 @@ bash pglite/scripts/test.sh --suite libc-build --fetch never --tools reuse
 Use private --artifacts-path for managed harnesses. Do not run shared compiler
 builds concurrently or treat copied native data/setup as translated initialization.
 
-## Current r2 evidence and invocation
+## Historical r2 evidence and current invocation helpers
 
 Paths below are under `artifacts/initdb-owner-20261022-r2/` unless stated
 otherwise. Historical failed receipts above remain failed.
@@ -308,7 +325,7 @@ otherwise. Historical failed receipts above remain failed.
 - `libc-1820/receipt.json`: 37 real-fork/runtime/emitted-I/O assertions pass,
   including flush/close exception draining without executing partial input.
 - `plpgsql-helper-1812/plpgsql/report.json`: eight module/helper units compile
-  natively and emit. Module execution remains unrun.
+  natively and emit. Module execution was unrun at that checkpoint.
 - `initializer-python-tests-current.log`: six readonly source/config/data/
   module-wrapper checks pass. `boundary-dispatch-{build,run}.log` preserves
   the existing ABI/callback/yield/cleanup fixture with the dispatch addition.
@@ -324,14 +341,14 @@ stdout/stderr, argv, exit and host exception. Success requires --boot and
 backend/module closure and authored backend adapter are required at build;
 there is no missing-product or native fallback.
 
-Current standalone staged data: `build/initdb-owner-20261022-r2/bootstrap-prefix`.
+Historical standalone staged data: `build/initdb-owner-20261022-r2/bootstrap-prefix`.
 Its `bootstrap-prefix.json` manifest records 650 files plus separate COPYRIGHT.
 The frontend project from 1820 is
 `build/initdb-owner-20261022-r2/frontend-1820/initialization/frontend/frontend.csproj`.
-The supervisor's newer creation-mode services require frontend regeneration
-with the final compiler before product qualification.
+The later coherent 928-unit attempt regenerated the frontend with the final
+creation-mode services. The old staged prefix is not current product evidence.
 
-## Backend aggregate linkage repair
+## Historical backend aggregate linkage repairs
 
 All 876 actual backend inputs emitted on the supervisor's complete retry, but
 strict linking rejected pg_tz because its state dependency shared a tag with
@@ -367,10 +384,9 @@ control passes (`aggregate-native.json`), as do two native header/definition
 array controls (`aggregate-array-native.json`). The multidimensional probe uses
 an explicitly bounded definition: inferred multidimensional struct-array
 definitions retain their existing unsupported diagnostic. The supervisor owns
-the next immutable compiler snapshot, fresh 876-object regeneration
-and full backend relink/build; that actual-input gate remains open until its
-new receipt passes. Catalog initialization and all campaign acceptance gates
-remain open afterward.
+the subsequent compiler snapshots, full regeneration and relink/build. Those
+checkpoints led to the later coherent 928-unit build and actual initdb passes;
+the final canonical matrix and P6 remain open.
 
 The fresh 1852 retry emitted all 876 units and then exposed a separate false
 kind conflict for YYSTYPE. Both grammar productions for `struct Tag;` and
@@ -398,7 +414,7 @@ and implicit-declaration errors enabled (`parser-type-scoping/report.json`).
 `aggregate-parser-functional-tests.log` has 66 passes, adding direct/object
 union completion, true kind conflicts, unchanged rejection of the unscoped
 unused parser declaration and execution with scoped interfaces. The supervisor
-owns the guarded profile integration and next complete fresh backend retry.
+integrated the guarded profile adaptation in subsequent complete retries.
 
 The fresh 1908 full retry resolved parser/union conflicts and next rejected
 regex vars. The exact shared root is `pg_reg_getcolor -> colormap -> vars`:
@@ -430,10 +446,11 @@ log and receipt are recorded in `regex-type-scoping/repair.json`. No generated
 text or metadata is rewritten and the ABI gate remains strict. The supervisor
 started a normal fresh 876-unit retry with one coherent include overlay and
 compiler 1908 (`artifacts/campaign/20261022-191828-3a8ebaa0`). Its actual link/
-build result and original initialization remain pending; final P6 remains open.
+build result and original initialization were pending at that checkpoint. The
+928-unit result below supersedes those pending states; final P6 remains open.
 
 
-## First actual bootstrap and locale process service
+## Locale process service and historical first bootstrap failure
 
 The coherent 1942 normal build emits all 876 backend units and the complete
 frontend, strictly links them, and builds the real backend with zero errors.
@@ -471,20 +488,20 @@ stale and ordinary handles, command/mode rejection, real ENOENT, binary stdout,
 100000 stderr bytes without pipe deadlock, exit-seven status 1792, native
 SIGTERM status 15, and three abandoned live children killed and reaped without
 zombies. A native host that already reaped a child also cannot cause disposal
-of its old owner to change another currently bound owner's errno. Logs are `locale-process-{build,run,aot-publish,aot-run}.log` under the
-r3 artifact root. The failed 2006 resource probe records a missing qualified
+of its old owner to change another currently bound owner's errno. Logs are
+`locale-process-{build,run,aot-publish,aot-run}.log` under the r3 artifact root. The failed 2006 resource probe records a missing qualified
 DictionaryEntry reference; the authored helper now qualifies that reference
 and Task explicitly for the compiler's stripped-using resource shell. The
-supervisor supplies the next immutable resource snapshot and relinks the
-retained coherent original objects before the next actual initdb attempt.
+supervisor supplied the corrected immutable snapshots and relinked the retained
+objects before the successful fresh 928-unit initialization.
 
 
 ## Required original Snowball module
 
-The next real attempt, `actual2008/receipt.json`, builds the owning graph with
-zero errors and passes locale import. Bootstrap again returns zero, while
-single-user SQL exits one at the original `CREATE FUNCTION dsnowball_init`
-statement because `$libdir/dict_snowball` is not installed. Its complete spools
+The historical attempt `actual2008/receipt.json` built the owning graph with
+zero errors and passed locale import. Bootstrap returned zero, while
+single-user SQL exited one at the original `CREATE FUNCTION dsnowball_init`
+statement because `$libdir/dict_snowball` was not yet installed. Its complete spools
 remain intact. The BKI is identical to the 1942 attempt; the post-bootstrap SQL
 only differs in the original initdb-generated absolute sql_features.txt COPY
 path for the new prefix. Neither input is edited by the transport.
@@ -520,7 +537,41 @@ still cannot answer original PostgreSQL startup commands and never initializes
 a cluster. Exact evidence is snowball-module-repair.json, registry-contracts2020
 and backend-adapter2020 in the r3 artifact root.
 
-The supervisor owns the complete coherent 928-unit normal regeneration and
-actual API/SQL workflow. An independent child owns original Snowball native and
-emitted algorithm controls. Actual module execution and final campaign
-qualification remain open until the corresponding real gates pass.
+The complete coherent 928-unit build now executes both modules during original
+initialization and the private raw JIT/NativeAOT product workload. Independent
+original Snowball native/emitted algorithm controls also pass. These local
+results do not close the final canonical product matrix or P6 acceptance.
+
+
+## Actual coherent initialization passes
+
+`artifacts/initdb-owner-20261022-r3/actual2020/receipt.json` passes. The harness
+builds the actual coherent 928-unit backend and fresh original frontend graph
+with zero errors (14 warnings), then original initdb returns zero. Its five
+original backend commands return zero without managed callback exceptions:
+version, two configuration checks, bootstrap and single-user post-bootstrap.
+The real bootstrap consumes 973545 bytes of original BKI; the real single-user
+backend consumes 251748 bytes of original initdb-generated SQL, including
+unchanged system-collation import, Snowball setup and PL/pgSQL extension setup.
+Original initdb reports final disk sync complete; no no-sync flag is supplied.
+
+The surviving fresh private cluster is
+`build/initdb-owner-20261022-r3/actual2020/initialization/execution/pgdata`.
+Original code creates an 8192-byte global/pg_control and PG_VERSION containing
+18 plus newline, both mode 0600. Full argv, statuses, BKI/SQL and stdio spools
+remain under the attempt's `initialization/execution` artifacts directory.
+`actual-initialization-result.json` records their exact hashes, the compiler
+hash and owning-build provenance. Earlier actual1942 and actual2008 receipts
+remain failed historical evidence; neither is rewritten as a success.
+
+The independent product owner records private raw JIT and normally trimmed
+NativeAOT success for coherent build `20261022-202228-8f7e10f1` in
+`artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log` and matching JSON
+command/exit records. Each passes all 21 unchanged native inventory rows and
+15 ownership/recovery checks, with three clean same-process lifetimes and two
+persistence reopens. The AOT run exits zero in 29.84 seconds. That broader
+consumer is not replaced by the initialization helper or any explicit byte fixture.
+The original engine/modules execute throughout; no native database engine,
+replacement bootstrap, SQL edits or emitted C# edits occur. All four final
+canonical raw/processed JIT/AOT rows, paired delivery and P6 acceptance
+remain pending; private 202228 passes do not qualify the resumed 203609 closure.
