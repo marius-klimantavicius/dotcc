@@ -577,11 +577,12 @@ productions:
       # function emit, which would violate C#'s top-level-statements-before-
       # type-declarations rule.
       - { lhs: Fn, rhs: ['struct', ID, '{', MemberList, '}', ';'], action: structDef }
-      # Forward struct declaration: `struct Node ;` (no body). Required for
+      # Forward struct/union declarations (no body). Required for
       # self-referential types declared across translation-unit boundaries
       # and for circular references between sibling types. Emits nothing
       # in C# (types hoist regardless of declaration order).
       - { lhs: Fn, rhs: ['struct', ID, ';'], action: structFwd }
+      - { lhs: Fn, rhs: ['union', ID, ';'], action: structFwd }
       # Enum declaration: `enum Name { A, B = 5, C } ;`. Lowers to a series
       # of top-level `const int NAME = VAL;` so users can reference the
       # enumerators by their bare name (matching C's int-constant

@@ -505,13 +505,24 @@ internal sealed partial class IrBuilder
         if (c.Target.Unqualified is not CType.Prim p) { return v; }
         if (p.Integer)
         {
-            return new CtInt(v switch
+            if (p.Name == "_Bool") return new CtBool(Truthy(v));
+            var castInteger = v switch
             {
                 CtInt i => i.Value,
                 CtBool b => b.Value ? System.Int128.One : System.Int128.Zero,
                 CtFloat f => (System.Int128)f.Value,
                 _ => System.Int128.Zero,
-            }, c.Target);
+            };
+            // An explicit cast converts now, even when its result is promoted
+            // by a later operation. Wide comptime intermediates must not erase
+            // unsigned wrapping or the target's signed interpretation.
+            if (p.Bytes is > 0 and < 16)
+            {
+                var modulus = System.Int128.One << (p.Bytes * 8);
+                castInteger &= modulus - 1;
+                if (p.Signed && castInteger >= (modulus >> 1)) castInteger -= modulus;
+            }
+            return new CtInt(castInteger, c.Target);
         }
         if (_primitivePayloadPrecision && p.Bytes == 4 && v is CtInt integer)
             return new CtFloat((float)integer.Value, c.Target);

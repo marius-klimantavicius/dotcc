@@ -205,3 +205,24 @@ and rejects any missing input. Integrated native receipt
 `20261022-163944-c778dbf6` passes the 863-unit closure and all 21 SQL controls.
 No references or shared compiler outputs are mutated by collection. This is a
 harness repair, separate from SQL implementation or compiler progress.
+
+
+## Compiler repairs found by initializer closure
+
+Original getopt's `*(place = argv[optind])` exposed a C# nint dereference error.
+The compiler now restores the logical pointer type around nint-backed assignment
+results, including discarded-expression handling. Native/direct/object tests
+exercise dereference, indexing, function pointer invocation and compound storage
+updates. No emitted C# is edited.
+
+Unsigned BSD aliases needed by original inet_net_ntop exposed constant casts
+that retained the unbounded source value: `(unsigned char)-1` incorrectly stayed
+-1. Explicit comptime casts now wrap at the target width and interpret its sign;
+_Bool uses truth conversion. Native/direct/object tests include signed and
+unsigned truncation and promotion after conversion.
+
+All six original PL/pgSQL translation units exposed `union YYSTYPE;`. The
+file-scope grammar now accepts union forward declarations through the existing
+tag-forward path. Actual six-unit source retry passes emission. These repairs
+remove local compiler failures; initializer execution and SQL acceptance remain
+open.

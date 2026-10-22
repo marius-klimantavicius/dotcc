@@ -1,6 +1,12 @@
 #ifndef _SYS_TYPES_H
 #define _SYS_TYPES_H
 
+/* BSD/POSIX implementation aliases used by networking interfaces. */
+typedef unsigned char u_char;
+typedef unsigned short u_short;
+typedef unsigned int u_int;
+typedef unsigned long u_long;
+
 /* dotcc's <sys/types.h> — the POSIX base typedefs portable code spells.
    LP64 widths, matching dotcc's data model. off_t shares its guard with
    <stdio.h> (either may arrive first). */

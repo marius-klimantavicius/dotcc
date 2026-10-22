@@ -8,6 +8,19 @@ namespace DotCC.Tests;
 public sealed class PosixBaseTypeHeaderTests
 {
     [Fact]
+    public void Bsd_network_aliases_preserve_unsigned_LP64_storage()
+    {
+        WithSource("""
+            #include <sys/types.h>
+            _Static_assert(sizeof(u_char) == 1 && (u_char)-1 == 255, "unsigned byte");
+            _Static_assert(sizeof(u_short) == 2 && (u_short)-1 == 65535, "unsigned short");
+            _Static_assert(sizeof(u_int) == 4 && (u_int)-1 > 0, "unsigned int");
+            _Static_assert(sizeof(u_long) == 8 && (u_long)-1 > 0, "unsigned LP64 long");
+            u_long widen(u_char value) { return (u_long)value; }
+            """, output => output.ShouldContain("widen"));
+    }
+
+    [Fact]
     public void Unistd_alone_exposes_POSIX_base_types_in_callback_declarations()
     {
         WithSource("""

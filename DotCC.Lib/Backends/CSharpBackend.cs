@@ -2550,7 +2550,10 @@ internal sealed partial class CSharpBackend
                     var val = a.CompoundOp is { } cop
                         ? $"({pty}){lv} {BinSym(cop)} {Sub(a.Value, Prec(cop) + 1)}"
                         : Coerced(a.Value, a.Target.Type);
-                    return ($"{lv} = (nint)({val})", PAssign);
+                    // C assignment keeps the logical pointer type even though
+                    // this CLR storage field uses nint. Restore it before a
+                    // caller dereferences, indexes or invokes the result.
+                    return ($"({pty})({lv} = (nint)({val}))", PUnary);
                 }
             case Assign { CompoundOp: { } cop } a:
                 {
@@ -3079,6 +3082,7 @@ internal sealed partial class CSharpBackend
         // ZigListCall likewise — deinit/clearRetainingCapacity are void statements.
         StatementExpression { Type.Unqualified: CType.VoidType } => true,
         Assign a when a.Target.Type.IsVolatile && a.Target.Type.IsPointerLowered => false,
+        Assign a when StoredAsNint(a.Target) => false,
         Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec } u
             when u.Operand.Type.IsVolatile && u.Operand.Type.IsPointerLowered => false,
         Assign or Call or IndirectCall or AllocCall or FreeCall or CreateCall or DestroyCall or ReallocCall or ResizeCall or RemapCall or ZigMemCall or ZigListCall => true,

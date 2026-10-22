@@ -169,3 +169,27 @@ python3 -B pglite/scripts/update-manifest.py PATH/native-source-manifest.json \
 The converter retains native codegen flags as evidence and separates them from
 DotCC's declared dialect and include/define selection. It never treats the
 backend closure as complete embedded initialization.
+
+
+## Continuing implementation — compiler and source closure
+
+Immutable tools `supervisor-20261022-1735` through `1749` include structural
+repairs discovered in original initdb/getopt and PL/pgSQL inputs: pointer-valued
+assignments retain their C type despite nint-backed storage; explicit integer
+constant casts apply width/sign conversion before promotion; file-scope union
+forward declarations parse. Native controls and seven direct/object functional
+cases pass (`artifacts/supervisor-portable/pointer-cast-functional.log`). All six
+original PL/pgSQL units then emit, and original getopt executes in two managed
+state contexts (initializer-owner evidence in INITIALIZATION.md).
+
+Current shared unit run: 3,355 pass, 17 fail in
+`artifacts/supervisor-portable/unit-current2.log`. Sixteen failure names exactly
+match the already recorded untouched baseline; the seventeenth is the new
+POSIX-host owner's NSS assertion and remains assigned for repair. No new
+compiler regression is hidden in the baseline count.
+
+Diagnostic backend suffix receipt `20261022-174825-772d7ead` emits another
+42 units through execExpr.c before execExprInterp.c selects GCC computed goto.
+The profile now disables that unimplemented compiler capability and retains
+PostgreSQL's original switch interpreter. The full current source regeneration,
+managed SQL, persistence and all four product matrix rows remain required.
