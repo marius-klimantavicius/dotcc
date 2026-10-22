@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Measure matched public API consumers only after verified payload and clean close."""
+from product_evidence import product_closure
 import argparse
 import hashlib
 import json
@@ -14,6 +15,7 @@ from pathlib import Path as _ProductionPath
 _production_sys.path.insert(0, str(next(parent for parent in _ProductionPath(__file__).resolve().parents
     if (parent / "Scripts/production_support.py").is_file()) / "Scripts"))
 from production_support import subprocess
+from provenance import picotls_provenance
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -191,8 +193,10 @@ def main():
     receipt = dict(passed=False, targeted_passed=False, cases=[], commands=[], cpu_affinity=cpus,
         environment=dict(platform=platform.platform(), processor=platform.processor(), allowed_cpus=available),
         exact_source_metadata_required=complete, performance_threshold=None)
-    inputs = [Path(__file__).resolve(), ROOT / 'config/source.json', ROOT / 'config/api-profile.json', ROOT / 'config/product-closure.json',
-              REPO / 'picotls/artifacts/translation/success.json']
+    closure_path = product_closure(ROOT)
+    inputs = [Path(__file__).resolve(), ROOT / 'scripts/product_evidence.py', ROOT / 'scripts/provenance.py',
+              ROOT / 'config/source.json', ROOT / 'config/api-profile.json', closure_path,
+              REPO / 'picotls/artifacts/campaign/current-default.json']
     inputs += [REPO / name for name in ('Directory.Build.props', 'Directory.Build.targets', 'Directory.Packages.props', 'global.json') if (REPO / name).is_file()]
     for directory in [TEST, ROOT / 'src/ManagedApi', ROOT / 'src/BclHost', REPO / 'picotls/src/BclProvider']:
         inputs += sorted(p for p in directory.rglob('*') if p.is_file() and p.suffix in ('.cs', '.c', '.csproj') and not {'bin', 'obj'}.intersection(p.relative_to(directory).parts))
@@ -260,8 +264,9 @@ def main():
             case['elapsed_seconds'] = time.monotonic() - begin
 
     try:
-        closure = json.loads((ROOT / 'config/product-closure.json').read_text())
-        pico_provenance = json.loads((REPO / 'picotls/artifacts/translation/success.json').read_text())
+        closure = json.loads(closure_path.read_text())
+        pico_provenance = picotls_provenance(REPO / 'picotls')
+        receipt['picotls_current_binding'] = pico_provenance['current_binding']
         receipt['compiler_provenance'] = dict(commit=closure['compiler_commit'], dotcc_lib_sha256=closure['compiler_hashes']['DotCC.Lib.dll'])
         for variant in args.variants:
             generated = ROOT / 'generated' / ('TranslatedMsQuic.Raw' if variant == 'raw' else 'TranslatedMsQuic')

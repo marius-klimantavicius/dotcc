@@ -388,8 +388,8 @@ check(isinstance(versions, dict) and set(versions) == set(assemblies) and
       'Incomplete frozen compiler informational-version metadata')
 verified(host['compiler_hashes'], compiler, 'Frozen emitter after metadata inspection')
 check(len(set(versions.values())) == 1, 'CLI and compiler library build revisions differ')
-revision = next(iter(versions.values())).split('+')[-1]
-check(re.fullmatch(r'[0-9a-f]{40}', revision) is not None, 'Compiler build revision is not an exact commit')
+revision_label = next(iter(versions.values())).split('+')[-1]
+revision = revision_label if re.fullmatch(r'[0-9a-f]{40}', revision_label) else None
 operations = read(ROOT / 'config/managed-host/operations.json')
 evidence = [ROOT / 'artifacts' / name / 'results.json' for name in ['host-contract', 'abi', 'product-build']]
 profile_snapshot = ROOT / 'artifacts/host-contract/dotcc-overrides.json'
@@ -399,6 +399,9 @@ if args.sqlite_receipt is not None:
     evidence += [sqlite_path, normal_path]
 value = dict(schema_version=1, status='Nested MsQuic ABI/build closure passed; dependent runtime and shared regression qualification is separate',
     revision=pin['commit'], compiler_commit=revision, compiler_informational_versions=versions,
+    compiler_commit_status='reported' if revision else 'not_reported',
+    compiler_commit_reason=None if revision else
+        'Frozen assemblies do not report a 40-hex source commit; recursive compiler_hashes establish tool identity.',
     stage_manifest_sha256=sha(stage_path), units=stage['units'],
     host_table_version=operations['version'], host_callback_slots=len(operations['operations']),
     data_model=stage['data_model'], source_files=stage['files'], api_profile_sha256=sha(ROOT / 'config/api-profile.json'),

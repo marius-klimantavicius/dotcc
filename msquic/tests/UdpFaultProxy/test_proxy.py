@@ -17,6 +17,7 @@ import unittest
 from proxy import Proxy, Rules
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 _recovery_spec = importlib.util.spec_from_file_location(
     'proxy_recovery_validation', Path(__file__).resolve().parents[2] / 'scripts/test-recovery.py')
 recovery = importlib.util.module_from_spec(_recovery_spec)

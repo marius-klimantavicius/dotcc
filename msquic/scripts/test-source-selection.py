@@ -29,7 +29,11 @@ class SourceSelectionTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        repository = Path(temporary.name)
+        self.root = repository / 'msquic'
+        (repository / 'Scripts').mkdir()
+        shutil.copy2(ROOT.parent / 'Scripts/production_support.py',
+                     repository / 'Scripts/production_support.py')
         for name in ('scripts', 'config/managed-host', 'src/Host', 'ref'):
             (self.root / name).mkdir(parents=True)
         for name in ('stage-product.py', 'source_inputs.py', 'inventory.py', 'inventory-upstream-tests.py'):
@@ -221,7 +225,8 @@ class SourceSelectionTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             raise Staged()
 
-        with patch.object(subprocess, 'run', side_effect=run), \
+        with patch.object(self.native.subprocess, 'run', side_effect=run), \
+                patch('production_support.selected_tool', return_value=self.root / 'compiler.dll'), \
                 patch.object(sys, 'argv', ['test-host-contract.py', '--no-fetch']), \
                 self.assertRaises(Staged):
             runpy.run_path(str(self.root / 'scripts/test-host-contract.py'), run_name='__main__')
@@ -231,7 +236,7 @@ class SourceSelectionTests(unittest.TestCase):
         pin = self.snapshot('local')
         (self.root / 'ref' / pin['archive']).unlink()
         (self.root / 'config/source.json').write_text(json.dumps(pin))
-        (self.root / 'config/dotcc-overrides.json').write_text('{}')
+        shutil.copy2(ROOT / 'config/dotcc-overrides.json', self.root / 'config/dotcc-overrides.json')
         shutil.copy2(ROOT / 'scripts/test-abi.py', self.root / 'scripts/test-abi.py')
         spec = importlib.util.spec_from_file_location('offline_abi', self.root / 'scripts/test-abi.py')
         abi = importlib.util.module_from_spec(spec)

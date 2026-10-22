@@ -5,10 +5,12 @@ import copy
 import importlib.util
 import io
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
 spec = importlib.util.spec_from_file_location(
     'recovery', Path(__file__).resolve().parents[2] / 'scripts/test-recovery.py')
 recovery = importlib.util.module_from_spec(spec)

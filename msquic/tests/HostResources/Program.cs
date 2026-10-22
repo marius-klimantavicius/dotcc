@@ -85,7 +85,7 @@ public sealed unsafe partial class MsQuicHost : IDisposable
             host.Dispose();
             Check(owner.Disposals == 1 && host.OutstandingResources == 0);
         }
-        Check(contexts.IsEmpty);
+        Check(_contexts.IsEmpty);
         Console.WriteLine(RuntimeFeature.IsDynamicCodeSupported ? "jit: registry passed" : "nativeaot: registry passed");
         return 0;
     }
