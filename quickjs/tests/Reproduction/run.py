@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Disposable offline provenance, guarded staging and publication checks.
 
-Uses the shared framework APIs and the compiler snapshot from a passing receipt.
+Uses the shared framework APIs and the compiler snapshot from a completed translation.
 Never acquires network inputs or writes canonical generated products.
 """
 import argparse
@@ -11,6 +11,7 @@ from pathlib import Path
 import shutil
 import sys
 import tarfile
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT.parent / 'Scripts'))
@@ -35,9 +36,61 @@ def rejects(action, fragment):
     raise RuntimeError('Expected rejection: ' + fragment)
 
 
+def authored_pickup(receipt, output, report):
+    """Rebuild both products with a temporary original-path host edit."""
+    host = ROOT / 'src/Host/QuickJsHost.cs'
+    original = host.read_bytes()
+    generated = {Path(row['project']).parent / name: value
+                 for row in receipt['outputs'].values() for name, value in row['hashes'].items()}
+    probe = b'\npublic static class DotccAuthoredPickupProbe { public static int Value => 42; }\n'
+    observations = []
+    try:
+        host.write_bytes(original + probe)
+        for form in ('raw', 'processed'):
+            product = Path(receipt['outputs'][form]['project'])
+            require(any(node.get('Include') == str(host) for node in ET.parse(product).iter('Compile')),
+                    'Product does not link the original authored host: ' + form)
+            directory = output / 'authored-pickup' / form
+            directory.mkdir(parents=True)
+            project = directory / 'Pickup.csproj'
+            tree = ET.Element('Project', Sdk='Microsoft.NET.Sdk')
+            properties = ET.SubElement(tree, 'PropertyGroup')
+            ET.SubElement(properties, 'OutputType').text = 'Exe'
+            ET.SubElement(properties, 'TargetFramework').text = 'net10.0'
+            ET.SubElement(properties, 'ImplicitUsings').text = 'enable'
+            ET.SubElement(ET.SubElement(tree, 'ItemGroup'), 'ProjectReference', Include=str(product))
+            ET.ElementTree(tree).write(project, encoding='unicode')
+            (directory / 'Program.cs').write_text(
+                'using Managed.Interpreters;\n'
+                'if (DotccAuthoredPickupProbe.Value != 42) return 1;\n'
+                'Console.WriteLine("PASS original-path authored host pickup: 42");\nreturn 0;\n')
+            for label, command in [
+                (form + '-authored-pickup-build', ['dotnet', 'build', str(project), '-c', 'Release', '--nologo', '-m:1',
+                    '--artifacts-path', str(directory / 'managed'), '-o', str(directory / 'app')]),
+                (form + '-authored-pickup-run', ['dotnet', str(directory / 'app/Pickup.dll')]),
+            ]:
+                record = {}
+                log = output / (label + '.log')
+                execute(command, label=label, cwd=ROOT.parent, output=log, record=record, timeout=900)
+                report['commands'].append(record)
+                if label.endswith('-run'):
+                    require(log.read_text().strip() == 'PASS original-path authored host pickup: 42',
+                            'Authored host edit was not observed: ' + form)
+            observations.append(dict(form=form, status='passed', executable=str(directory / 'app/Pickup.dll'),
+                                     executable_sha256=digest(directory / 'app/Pickup.dll')))
+    finally:
+        host.write_bytes(original)
+    require(host.read_bytes() == original, 'Authored pickup did not restore host bytes')
+    require(all(digest(path) == value for path, value in generated.items()), 'Authored pickup changed generated source')
+    return dict(status='passed', host=str(host), restored_sha256=digest(host),
+                generated_sources_unchanged=True, observations=observations)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--receipt', required=True, type=Path)
+    parser.add_argument('--qualification-receipt', type=Path,
+                        help='Passing current-product receipt when a later suite failed in the translation receipt')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     output = args.output.resolve()
@@ -46,7 +99,25 @@ def main():
               'receipt': str(args.receipt.resolve()), 'checks': [], 'commands': []}
     try:
         receipt = json.loads(args.receipt.read_text())
-        require(receipt['status'] == 'passed', 'A passing tool receipt is required')
+        require(any(task['name'] == 'translation' and task['status'] == 'passed'
+                    for task in receipt.get('tasks', [])), 'A completed translation task is required')
+        report['translation_receipt_status'] = receipt['status']
+        if receipt['status'] != 'passed':
+            require(args.qualification_receipt is not None,
+                    'A later passing qualification receipt is required for these products')
+            qualified = json.loads(args.qualification_receipt.read_text())
+            require(qualified['status'] == 'passed', 'Qualification receipt did not pass')
+            require(set(qualified.get('tested_artifacts', {})) == set(receipt['outputs']),
+                    'Qualification receipt did not test both translated product forms')
+            for form, row in receipt['outputs'].items():
+                require(qualified['tested_artifacts'][form] == row['project'],
+                        'Qualification receipt tested another product: ' + form)
+            report['qualification_receipt'] = dict(path=str(args.qualification_receipt.resolve()),
+                                                   sha256=digest(args.qualification_receipt))
+        for row in receipt['outputs'].values():
+            for name, expected in row['hashes'].items():
+                require(digest(Path(row['project']).parent / name) == expected,
+                        'Translated product changed since its recorded emission: ' + name)
         recipe = helper(ROOT / 'scripts/campaign.py')
         staging = helper(ROOT / 'scripts/stage.py')
         pinned = next(recipe.sources(ROOT))
@@ -165,6 +236,7 @@ def main():
         report['rollback'] = rejects(lambda: promote([(failed, target)], journal,
             lambda: require(False, 'deliberate publication failure')), 'deliberate publication failure')
         require(digest(target / 'quickjs.cs') == published_hash and (target / 'user-note.txt').is_file(), 'Rollback lost valid output')
+        report['authored_pickup_evidence'] = authored_pickup(receipt, output, report)
         after = {str(p.relative_to(ROOT)): digest(p) for p in authored}
         require(before == after, 'Authored implementations changed during reproduction')
         require(digest(pinned.directory / 'quickjs.c') == reference_before, 'Canonical acquired reference changed')
@@ -172,7 +244,6 @@ def main():
         report['authored_hashes_after'] = after
         report['reference_preserved'] = True
         report['transactional_publication'] = 'clean destination, repeat preserving unowned file, rejected candidate restored prior output'
-        report['authored_pickup_evidence'] = 'QuickJsHost.NewClassId was added after initial generation and concurrent host-class lifecycle tests passed after ordinary original-path linked-host rebuild; full matrix receipt records executed results.'
         report['status'] = 'passed'
     except BaseException as error:
         report['status'] = 'failed'

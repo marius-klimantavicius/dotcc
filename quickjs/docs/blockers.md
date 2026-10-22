@@ -1,7 +1,9 @@
 # Resolved blocker ledger
 
-All listed defects are resolved. Final full-source, four-cell execution and
-distribution audit pass in `20260927-062444-292bece5`; no required blocker remains.
+All listed defects are resolved. Current post-repair qualification passes all
+four execution cells, native controls and distribution audits; see the
+[2026-10-23 aggregate receipt](../../docs/validation/four-campaign-post-repair-20261023.json)
+and [current validation](validation.md). Earlier receipts below are historical.
 
 | ID | Classification | Reproducer / observed behavior | Repair / regression | Full-source status |
 | --- | --- | --- | --- | --- |
@@ -23,6 +25,8 @@ distribution audit pass in `20260927-062444-292bece5`; no required blocker remai
 | QJS-016 | Recipe configuration | `__js_rc` remained duplicated despite equal supported fingerprints and no address use because the recipe omitted `--deduplicate-inline` | Enable the existing linker option; six managed inline execution/identity cases and 33 inline unit tests pass; no shared compiler change | One `__js_rc` in each product; fresh full matrix and deduplication audit pass in `20260927-062444-292bece5` |
 
 | QJS-017 | Shared atomic lowering | C11 atomic load/store eligibility omitted signed and unsigned 8/16-bit types, producing ordinary accesses despite existing same-width runtime support | Eight new emitter regressions and native/emitted `atomic-narrow` fixture; reuse the shared 1/2-byte primitives and preserve adjacent storage | Full Atomics-enabled native controls and four execution cells pass in `20260927-062444-292bece5`; cross-runtime Int32/BigInt64 wait/notify and cleanup pass |
+| QJS-018 | Preexisting shared compiler precedence defect | Fresh `ddc9faf08` raw build: 105 CS1061 errors on nested zero-sized union members. Reduced native program returns 42/4097; actual `d49fdbbaf` emits the same six reduced C# errors | Parenthesize the zero-sized dereference in `BareLValue`, commit `123b3e76e`; four source/object tests cover native layout/overlap, conditional reads/writes and single base evaluation | Frozen v2 fresh translation and all four ABI/consumer/behavior/lifecycle/upstream cells pass; original failure and baseline evidence retained |
+| QJS-019 | Stale campaign audit policy | Fresh audit rejected shared `Libc.BackendNativeLgamma` / `libm.so.6!lgamma_r`; full import inventory and actual baseline prove the two scalar gamma helpers preexist unchanged | Exact owner/member/symbol/signature/access/PreserveSig/import-flags matching for gamma; original 2 positive/11 negative controls retained, 2 positive/28 negative gamma controls added. No broader module allowance or runtime change | All four current-run ABI/consumer/audit cells pass in `20261023-004200-587edc2b`; unchanged generated hashes, complete PE/ELF/rooted-code evidence retained |
 
 Native baseline has no unexplained failures. The bundled cyclic import passes
 and is retained. The OS-timer-dependent finalization-registry test is a declared

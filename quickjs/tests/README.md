@@ -61,10 +61,17 @@ the pin's `test262.conf` declares Atomics and Atomics.pause, but explicitly skip
 Atomics.waitAsync. The authored native-matched tests above cover the embedded
 engine capability without claiming an OS worker host or a Test262 suite run.
 
-Run the disposable reproduction probe with a passing translation receipt:
+Run the disposable reproduction probe with a completed translation receipt:
 
 ```bash
 python3 quickjs/tests/Reproduction/run.py \
   --receipt quickjs/artifacts/campaign/<run-id>/receipt.json \
   --output quickjs/artifacts/reproduction-local
 ```
+
+If translation passed but a later suite failed, also supply a passing
+`--qualification-receipt` for the same two product forms after that suite is
+repaired. Every recorded generated-file hash must still match. The probe
+rebuilds both forms through ordinary project references after a temporary edit
+to the original linked host, executes the edit, then restores the exact authored
+bytes and verifies generated sources stayed unchanged.

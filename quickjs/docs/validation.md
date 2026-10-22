@@ -1,5 +1,48 @@
 # Validation results
 
+## Current post-repair verification — 2026-10-23
+
+**Passed:** embedded Linux x64, raw/processed × JIT/NativeAOT. The
+[aggregate validation receipt](../../docs/validation/four-campaign-post-repair-20261023.json)
+records exact commands, source/tool closures, matrix rows, exclusions and log
+hashes. Verification started from clean private outputs at `ddc9faf08` and
+finished with frozen v2 compiler source `123b3e76e`, SDK 10.0.112, and
+`DotCC.Lib.dll` SHA256
+`08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d`.
+
+Each cell passed ABI (5 harness cases), behavior (5 harness + 16 JavaScript
+cases), lifecycle (23 harness cases), and upstream (6 file/module harness cases
+and 76 selected function invocations). The ordinary consumer completes two
+fresh-runtime workflows per cell, including normally trimmed NativeAOT. The
+root consumer solution builds and executes. Native controls pass 36/36 records
+and 188 JavaScript case invocations. These are separate count units;
+**individual assertion totals are not reported** by these harnesses.
+
+Fresh translation and behavior/lifecycle/upstream results are in receipt
+`20261023-003436-6f3ef2d6`, including its retained initial audit failure.
+After the campaign audit repair, receipt `20261023-004200-587edc2b` passed ABI,
+consumer and exact artifact audits together in all four cells. Generated product
+hashes and frozen tools stayed unchanged. The final native rerun is receipt
+`20261023-004922-ac81cee1`. Each rooted AOT map contains 1,943 translated
+methods and all required engine/ownership/Atomics representatives.
+
+The initial zero-sized-union member failure was reproduced with actual baseline
+`d49fdbbaf`; compiler repair `123b3e76e` passed 3,436 compiler tests and four
+source/object execution regressions. The audit repair recognizes only the two
+exact existing shared scalar gamma bindings, with owner/signature/access/import
+checks. Original 2 positive/11 negative controls remain, with 2 positive/28
+negative gamma controls added. Shared runtime sources match the actual baseline;
+generic runtime allowances and the JavaScript host surface are unchanged.
+
+Fresh offline reproduction passed edited-source `warn`/`off` emission, strict and
+macro-guard rejection, publication rollback, and actual raw/processed linked-host
+edit/rebuild/execution with exact authored-byte restoration. No required row is
+failed, skipped or unrun. The finalization-registry case still requires the
+excluded OS timer loop; other platforms, external Test262, extended fuzz/stress,
+shell/worker hosts and public bytecode interchange remain outside qualification.
+
+## Historical September 2026 qualification
+
 **P0–P6 passed on Linux x64**, using .NET SDK 10.0.111 and Bellard QuickJS
 2026-06-04. The final [verification receipt](../artifacts/campaign/20260927-062444-292bece5/receipt.json)
 records fresh full-source translation, raw and processed builds, all seven

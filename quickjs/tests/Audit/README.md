@@ -7,10 +7,18 @@ and approved project references; other assembly references must belong to the
 running .NET framework. P/Invoke modules are limited to the shared runtime's
 `libc`, `kernel32.dll` and `psapi.dll`. The product role also permits exactly
 `Managed.Interpreters.QuickJs+Libc.PosixErf` / `PosixErfc` bound to Linux
-`libm.so.6!erf` / `erfc`: private static `double(double)`, PreserveSig,
+`libm.so.6!erf` / `erfc`, plus the shared runtime's `BackendNativeTgamma`
+bound to `tgamma`: private static `double(double)`, PreserveSig,
 SetLastError and the declared default Winapi calling convention (import flags
-`0x140`). Other roles, owners, members, symbols, signatures and import flags
-receive no libm exemption. `--self-test-host-math` checks this predicate without
+`0x140`). `BackendNativeLgamma` bound to `lgamma_r` requires exactly
+`double(double, int*)` with the same owner, access and import flags. These scalar
+host math helpers are byte-identical in the actual pre-repair runtime and are
+included by its ordinary shared runtime embedding; QuickJS's five selected C
+units do not call gamma. The full-library AOT harness roots these generic runtime
+methods along with the engine. No JavaScript `std`/`os` surface is added.
+Other roles, owners, members, symbols, signatures and import flags
+receive no libm exemption. The original 2 positive/11 negative controls remain;
+the gamma shapes add 2 positive/28 negative controls. `--self-test-host-math` checks this predicate without
 loading an inspected assembly. Compiler-emitted native import binding
 tables are rejected independently of ordinary P/Invoke metadata.
 

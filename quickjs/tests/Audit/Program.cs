@@ -38,6 +38,39 @@ if (args is ["--self-test-host-math"])
         HostMath("product", owner, "PosixErf", "libm.so.6", "erf", signature, true, 0x140, false)];
     if (rejected.Any(value => value)) throw new InvalidOperationException("Inexact host math binding accepted");
     Console.WriteLine("PASS exact shared host math policy: 2 positive, 11 negative controls");
+    foreach (var (member, symbol, shape) in new (string, string, byte[])[] {
+        ("BackendNativeLgamma", "lgamma_r", [0x00, 0x02, 0x0d, 0x0d, 0x0f, 0x08]),
+        ("BackendNativeTgamma", "tgamma", [0x00, 0x01, 0x0d, 0x0d]) })
+    {
+        if (!HostMath("product", owner, member, "libm.so.6", symbol, shape, true, 0x140, true))
+            throw new InvalidOperationException("Exact shared gamma binding rejected");
+        byte[] wrongReturn = (byte[])shape.Clone(), wrongParameter = (byte[])shape.Clone(),
+            wrongCount = (byte[])shape.Clone(), instance = (byte[])shape.Clone();
+        wrongReturn[2] = 0x0c;
+        wrongParameter[3] = 0x08;
+        wrongCount[1]++;
+        instance[0] = 0x20;
+        byte[] wrongShape = member == "BackendNativeLgamma"
+            ? [0x00, 0x02, 0x0d, 0x0d, 0x0f, 0x09] // uint*, not int*
+            : [0x00, 0x02, 0x0d, 0x0d, 0x0f, 0x08]; // unexpected second argument
+        bool[] gammaRejected = [
+            HostMath("consumer", owner, member, "libm.so.6", symbol, shape, true, 0x140, true),
+            HostMath("product", owner + "Other", member, "libm.so.6", symbol, shape, true, 0x140, true),
+            HostMath("product", owner, member + "Other", "libm.so.6", symbol, shape, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol + "Other", shape, true, 0x140, true),
+            HostMath("product", owner, member, "other.so", symbol, shape, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, wrongReturn, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, wrongParameter, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, wrongCount, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, instance, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, wrongShape, true, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, shape, false, 0x140, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, shape, true, 0x100, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, shape, true, 0x240, true),
+            HostMath("product", owner, member, "libm.so.6", symbol, shape, true, 0x140, false)];
+        if (gammaRejected.Any(value => value)) throw new InvalidOperationException("Inexact shared gamma binding accepted");
+    }
+    Console.WriteLine("PASS exact shared gamma policy: 2 positive, 28 negative controls");
     return 0;
 }
 var reports = new List<object>();
@@ -115,7 +148,10 @@ static string TypeName(MetadataReader metadata, TypeDefinitionHandle handle)
 static bool HostMath(string role, string owner, string member, string library, string symbol,
     ReadOnlySpan<byte> signature, bool privateStatic, int importAttributes, bool preserveSig) =>
     role == "product" && owner == "Managed.Interpreters.QuickJs+Libc" && library == "libm.so.6"
-    && (member, symbol) is ("PosixErf", "erf") or ("PosixErfc", "erfc")
-    && signature is [0x00, 0x01, 0x0d, 0x0d] && privateStatic && preserveSig
+    && (((member, symbol) is ("PosixErf", "erf") or ("PosixErfc", "erfc") or ("BackendNativeTgamma", "tgamma")
+            && signature is [0x00, 0x01, 0x0d, 0x0d])
+        || ((member, symbol) is ("BackendNativeLgamma", "lgamma_r")
+            && signature is [0x00, 0x02, 0x0d, 0x0d, 0x0f, 0x08]))
+    && privateStatic && preserveSig
     // Exact source DllImport defaults: Winapi (0x100) plus SetLastError (0x40).
     && importAttributes == 0x140;
