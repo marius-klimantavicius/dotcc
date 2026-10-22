@@ -137,10 +137,7 @@ public sealed unsafe class PgliteDatabase : IDisposable
             // native epoll's socketpair requirement belongs to the oracle.
             Redirect(Path.Combine(diagnostics, "backend.stdout"), "wb\0"u8, 1);
             Redirect(Path.Combine(diagnostics, "backend.stderr"), "wb\0"u8, 2);
-            byte[] module = Encoding.UTF8.GetBytes(Path.Combine(options.BootstrapPrefix, "lib/postgresql/plpgsql") + "\0");
-            fixed (byte* p = module)
-                if (Backend.dpg_static_register(p, Backend.dpg_plpgsql_module()) != 0)
-                    throw new IOException($"Cannot register translated PL/pgSQL (errno {Runtime.errno}).");
+            InitializationBackend.RegisterModules(options.BootstrapPrefix);
             Backend.dpg_set_io(&ReadCallback, &WriteCallback);
             Backend.dpg_start(&Backend.main, arguments.Count, arguments.Pointer);
         });

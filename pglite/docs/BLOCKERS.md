@@ -1,17 +1,20 @@
 # PGlite blocker ledger
 
-## Current — real post-bootstrap locale enumeration
+## Current — required bundled Snowball module
 
-The full 876-unit backend emits, strict-links and raw-builds in coherent receipt
-`20261022-194223-e06ea2a0`. Actual original initdb bootstrap completes. Its
-post-bootstrap single-user SQL then exits 1 at system-collation import because
-the runtime cannot execute the host `locale -a` service. Two isolated original
-initdb runs reproduce the same failure. Real host enumeration and independently
-observed calendar `%Z` formatting are implementation work in progress; no SQL
-step is removed or fabricated. Processed output, SQL and final matrix remain
-open. Older entries below retain their historical observations and are not the
-current source/build status. See VALIDATION.md for current evidence.
+The full 876-unit backend raw-builds, and its private processed diagnostic also
+builds. The immutable19 resource retry runs original bootstrap and passes the
+previously failing locale import; timezone logs are now real EEST. The next
+unchanged initialization statement loads `dict_snowball`, absent from the prior
+source closure. Its 51 original sources and forwarding catalog are now selected,
+with a shared two-module static registry used by bootstrap and SQL startup.
 
+All 51 original Snowball units pass native compilation and emission; independent
+original API/stemmer controls pass native/JIT/trimmed-AOT. The coherent 928-unit
+retry `20261022-202228-8f7e10f1` now emits and strict-links, with fresh frontend
+and managed build in progress. Actual SQL and final matrix remain open. This
+required module is not bypassed or loaded from a native library. Older entries
+below retain historical observations. See VALIDATION.md for current evidence.
 
 Campaign-start ledger, 2026-10-22. Planned checks are not successes.
 

@@ -2,7 +2,8 @@
 
 This resolves the provisional test-scope decision before P4. The product remains
 one serialized embedded owner on Linux x64 LP64, using actual translated
-PostgreSQL and in-process initialization. It excludes the full server, extensions,
+PostgreSQL and in-process initialization. Required bundled PL/pgSQL and Snowball modules remain part of initialization.
+It excludes the full server, optional/third-party extensions,
 concurrent instances and cross-profile file interchange as already agreed in
 PLAN.md. No required managed workflow or matrix row is deferred.
 

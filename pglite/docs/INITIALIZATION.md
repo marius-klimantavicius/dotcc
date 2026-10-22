@@ -1,14 +1,15 @@
 # Translated initialization and owning adapters
 
-All 73 original frontend units now emit, link and build. Original initdb option
-entrypoints execute through the concrete owning adapter. Catalog initialization
-still requires the supervisor's complete translated backend; no PostgreSQL
-database initialization or SQL product is qualified yet. The supervisor owns
-integration, the complete backend and P6 acceptance.
+The complete original frontend and backend now emit, link and build. Original
+initdb executes through the concrete owning adapters: the first real attempt
+completes bootstrap and reaches post-bootstrap SQL. Its initial failure and the
+required locale process service are recorded below. Initialization and SQL
+product qualification remain open. The supervisor owns integration and P6
+acceptance.
 
-Current outputs use private ignored `build/initdb-owner-20261022-r2/` and
-`artifacts/initdb-owner-20261022-r2/` paths; historical r1 evidence is preserved
-separately. References and configured native
+Current initialization evidence uses private ignored
+`build/initdb-owner-20261022-r3/` and `artifacts/initdb-owner-20261022-r3/` paths;
+historical r1/r2 evidence remains preserved separately. References and configured native
 stages are read only. No compiler/root outputs are built by this task, emitted
 C# is never edited, and no native PostgreSQL executable/library is a product
 backend. Parent-owned plans remain untouched by this task.
@@ -17,10 +18,12 @@ backend. Parent-owned plans remain untouched by this task.
 
 `DotCC.Libc/PgliteProcessServicesLib.cs` provides owner-scoped, ref-returning
 `optind` storage initially one, and the actual BCL host page-size query.
-It deliberately supplies no replacement getopt algorithm. Unconfigured
-`popen` returns NULL with ENOTSUP for valid modes; invalid/null arguments
-report EINVAL/EFAULT. `pclose` returns -1 with EBADF for unknown handles or
-ECHILD for an ordinary FILE, without closing that FILE. The actual fork's
+It deliberately supplies no replacement getopt algorithm. The exact read-only
+`popen("locale -a", "r")` (also `"re"`) uses the real host locale utility as
+described below. Other commands return NULL with ENOTSUP; invalid/null arguments
+report EINVAL/EFAULT. `pclose` returns the native wait status for an owner-local
+locale process, or -1 with EBADF for unknown handles or ECHILD for an ordinary
+FILE, without closing that FILE. The actual fork's
 `pgl_set_system_fn`, `pgl_set_popen_fn` and `pgl_set_pclose_fn` remain the
 in-process transport extension points.
 
@@ -428,3 +431,96 @@ text or metadata is rewritten and the ABI gate remains strict. The supervisor
 started a normal fresh 876-unit retry with one coherent include overlay and
 compiler 1908 (`artifacts/campaign/20261022-191828-3a8ebaa0`). Its actual link/
 build result and original initialization remain pending; final P6 remains open.
+
+
+## First actual bootstrap and locale process service
+
+The coherent 1942 normal build emits all 876 backend units and the complete
+frontend, strictly links them, and builds the real backend with zero errors.
+`artifacts/initdb-owner-20261022-r3/actual1942/receipt.json` is a failed real
+initialization attempt, not a qualified product. Original initdb dispatches
+version, two checks, bootstrap and single-user commands. Original bootstrap
+returns zero after consuming its unchanged 973545-byte BKI. The unchanged
+251748-byte post-bootstrap SQL reaches `SELECT
+pg_import_system_collations('pg_catalog');` and fails because `locale -a` was
+unsupported. All original input/output/error spools are retained with that
+receipt. The native PostgreSQL engine is never invoked by these adapters.
+
+`DotCC.Libc/LocaleProcessLib.cs` provides the required host service for the exact
+`locale -a` command in read modes only. Linux x64/glibc uses the actual
+`/usr/bin/locale` (or `/bin/locale`) via `posix_spawn`, fixed `-a` argv and a
+snapshot of the real host environment. There is no shell or PATH execution.
+The native stdout pipe backs an ordinary owner-local FILE. A separate worker
+captures native stderr bytes without borrowing a runtime binding or FILE;
+`pclose` forwards those bytes to the calling owner's stderr. Native `waitpid`
+provides the exact wait status, including signal termination. Closing a process
+stream removes its owner registration; disposing an owner closes abandoned
+streams, kills any still-running locale child, waits for it, and releases its
+stderr drain. Other commands and write modes still return ENOTSUP.
+
+The inventory is unfiltered OS output. It does not advertise arbitrary installed
+locales as supported by the managed provider: original PostgreSQL locale checks
+and the provider's existing rejection remain unchanged. No SQL statement or
+collation import is skipped and no catalog entries or locale names are invented.
+
+The private `LocaleProcess.csproj` gate compares output with an independent real
+locale utility invocation. Its explicit native byte/status fixture is a host
+boundary control and cannot execute PostgreSQL. JIT and normally trimmed Linux
+x64 NativeAOT each pass 56 assertions, covering r/re descriptor flags, foreign,
+stale and ordinary handles, command/mode rejection, real ENOENT, binary stdout,
+100000 stderr bytes without pipe deadlock, exit-seven status 1792, native
+SIGTERM status 15, and three abandoned live children killed and reaped without
+zombies. A native host that already reaped a child also cannot cause disposal
+of its old owner to change another currently bound owner's errno. Logs are `locale-process-{build,run,aot-publish,aot-run}.log` under the
+r3 artifact root. The failed 2006 resource probe records a missing qualified
+DictionaryEntry reference; the authored helper now qualifies that reference
+and Task explicitly for the compiler's stripped-using resource shell. The
+supervisor supplies the next immutable resource snapshot and relinks the
+retained coherent original objects before the next actual initdb attempt.
+
+
+## Required original Snowball module
+
+The next real attempt, `actual2008/receipt.json`, builds the owning graph with
+zero errors and passes locale import. Bootstrap again returns zero, while
+single-user SQL exits one at the original `CREATE FUNCTION dsnowball_init`
+statement because `$libdir/dict_snowball` is not installed. Its complete spools
+remain intact. The BKI is identical to the 1942 attempt; the post-bootstrap SQL
+only differs in the original initdb-generated absolute sql_features.txt COPY
+path for the new prefix. Neither input is edited by the transport.
+
+The module inventory now includes the 51 original sources from Snowball's
+Makefile: dict_snowball.c, api.c, utilities.c and all 48 generated stemmer
+algorithms. The handler wrapper includes postgres.h/fmgr.h first, overrides
+only PG_MAGIC_FUNCTION_NAME to dpg_snowball_magic and includes the unchanged
+original source. Snowball has no load-time initializer. Its forwarding catalog
+exports the real module magic, dsnowball_init, dsnowball_lexize and both original
+pg_finfo functions. Its staged ordinary JSON descriptor is
+lib/postgresql/dict_snowball; no native module is copied or loaded.
+
+`backend_module_units` returns 60 units, including both original modules and
+their two catalogs plus shared provider. All units use the same supplied
+backend overlay and state context. Snowball adds its two actual upstream
+include directories. The complete backend selection consequently grows from
+876 to 928 units. `InitializationBackend.RegisterModules(bootstrapPrefix)`
+registers both catalogs in the current fresh backend binding and is shared by
+initdb invocation and API SQL startup. Both descriptors must exist.
+
+The static provider permits two path registrations, with distinct owner-local
+handles and separate reference counts. It rejects duplicate paths, duplicate
+symbol names, full registration storage and unknown/native/foreign handles.
+Unregister checks every module before releasing any path. The native boundary
+control passes all 27 checks. All three authored catalogs/provider units compile
+natively with implicit-declaration and incompatible-pointer errors enabled.
+Ten source/staging checks pass. The original option parser plus emitted
+multi-module registry pass JIT and normally trimmed NativeAOT checks across two
+owners, including foreign-handle rejection. The updated current adapter passes
+18 JIT and 18 NativeAOT assertions using its explicit byte fixture. That fixture
+still cannot answer original PostgreSQL startup commands and never initializes
+a cluster. Exact evidence is snowball-module-repair.json, registry-contracts2020
+and backend-adapter2020 in the r3 artifact root.
+
+The supervisor owns the complete coherent 928-unit normal regeneration and
+actual API/SQL workflow. An independent child owns original Snowball native and
+emitted algorithm controls. Actual module execution and final campaign
+qualification remain open until the corresponding real gates pass.

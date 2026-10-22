@@ -25,7 +25,8 @@ T Reject<T>(Action action, string description) where T : Exception
 string FixturePrefix(string name)
 {
     string prefix = Path.Combine(root, name);
-    foreach (string relative in new[] { "share/postgresql/postgres.bki", "lib/postgresql/plpgsql", "bin/initdb", "bin/postgres" })
+    foreach (string relative in new[] { "share/postgresql/postgres.bki", "lib/postgresql/plpgsql",
+        "lib/postgresql/dict_snowball", "bin/initdb", "bin/postgres" })
     {
         string file = Path.Combine(prefix, relative);
         Directory.CreateDirectory(Path.GetDirectoryName(file)!);
@@ -64,6 +65,11 @@ try
     Reject<ArgumentException>(() => invalid.Normalize(), "mismatching absent backend path");
     invalid = options with { BackendExecutable = Path.Combine(prefix, "bin/POSTGRES") };
     Reject<ArgumentException>(() => invalid.Normalize(), "different spelling from initdb's exact transport path");
+    string snowball = Path.Combine(prefix, "lib/postgresql/dict_snowball");
+    File.Delete(snowball);
+    var missingSnowball = Reject<FileNotFoundException>(() => options.Normalize(), "missing required Snowball descriptor");
+    Check(missingSnowball.FileName == snowball, "Report the exact missing module descriptor before owner acquisition.");
+    File.WriteAllText(snowball, "Path-validation fixture; no database implementation or contents.");
     File.Delete(backend);
     Reject<FileNotFoundException>(() => options.Normalize(), "missing prefix-selected backend descriptor");
 

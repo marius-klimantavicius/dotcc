@@ -5,6 +5,7 @@ using Backend = Managed.PGlite.Translated.PGlite;
 string temporary = Path.Combine(Path.GetTempPath(), "dotcc-backend-adapter-" + Guid.NewGuid().ToString("N"));
 Directory.CreateDirectory(Path.Combine(temporary, "lib/postgresql"));
 File.WriteAllText(Path.Combine(temporary, "lib/postgresql/plpgsql"), "explicit byte-fixture catalog descriptor; not PostgreSQL");
+File.WriteAllText(Path.Combine(temporary, "lib/postgresql/dict_snowball"), "explicit second byte-fixture catalog descriptor; not PostgreSQL");
 try
 {
     int assertions = 0;

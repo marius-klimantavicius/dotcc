@@ -1,0 +1,17 @@
+{
+  "format": "dotcc-static-postgresql-module-v1",
+  "name": "dict_snowball",
+  "revision": "29b6424aa312ec3556247db069939006dd27f878",
+  "version": "18.6",
+  "native_library": false,
+  "symbols": [
+    "Pg_magic_func",
+    "dsnowball_init",
+    "dsnowball_lexize",
+    "pg_finfo_dsnowball_init",
+    "pg_finfo_dsnowball_lexize"
+  ],
+  "provider": "dpg_snowball_module",
+  "registration": "dpg_static_register",
+  "status": "source provider implemented; complete translated backend/module execution unqualified"
+}

@@ -55,6 +55,15 @@ def modules(ctx, suite):
     return helper(ctx.root / "scripts/initializer.py").run_modules(ctx, suite)
 
 
+def snowball(ctx, suite):
+    from pathlib import Path
+    info = helper(ctx.root / "scripts/initializer.py").configured(ctx)
+    artifacts = ctx.artifacts / "snowball-api"
+    artifacts.mkdir()
+    return helper(ctx.root / "scripts/snowball-probe.py").execution(
+        ctx, ctx.compiler, Path(info["source"]), ctx.work / "snowball-api", artifacts)
+
+
 def backend_host(ctx, suite):
     from pathlib import Path
     probe = helper(ctx.root / "scripts/backendhost-probe.py")
@@ -96,7 +105,7 @@ def consumer(ctx, suite):
 
 
 def before_suite(ctx, suite):
-    if suite.name in ("boundary", "libc-build", "atomics", "portable-codegen", "locale", "calendar-timezone", "initializer", "modules", "backend-host", "semaphore", "posix-host"):
+    if suite.name in ("boundary", "libc-build", "atomics", "portable-codegen", "locale", "calendar-timezone", "initializer", "modules", "snowball", "backend-host", "semaphore", "posix-host"):
         if not hasattr(ctx, "compiler"):
             ctx.tools()
     if suite.name == "libc-build" and "product" not in ctx.sources:
@@ -141,7 +150,9 @@ recipe = Recipe(
             Suite("initializer", (), run=initializer, timeout=1800,
                   scope="original initdb/frontend emission, build and translated transport contracts"),
             Suite("modules", (), run=modules, timeout=1800,
-                  scope="original required PL/pgSQL source and static export closure"),
+                  scope="original required PL/pgSQL/Snowball sources and static export closure"),
+            Suite("snowball", (), run=snowball, timeout=1800,
+                  scope="original English/Lithuanian Snowball algorithms and allocation in native/JIT/AOT"),
             Suite("locale", (), run=locale, timeout=1800,
                   scope="actual PostgreSQL locale ABI and C/C.UTF-8 host native/JIT/AOT scalar comparison"),
             Suite("calendar-timezone", (), run=calendar_timezone, timeout=1800,
@@ -161,6 +172,6 @@ recipe = Recipe(
             Suite("consumer", (), matrix=True, run=consumer,
                   scope="managed embedded init, SQL, transaction recovery, shutdown and reopen persistence")),
     default_suites=("consumer",),
-    verify_suites=("inventory", "native-control", "libc-build", "initializer", "modules", "boundary", "atomics", "semaphore", "portable-codegen", "locale", "calendar-timezone", "posix-host", "backend-host", "consumer"),
+    verify_suites=("inventory", "native-control", "libc-build", "initializer", "modules", "snowball", "boundary", "atomics", "semaphore", "portable-codegen", "locale", "calendar-timezone", "posix-host", "backend-host", "consumer"),
     before_suite=before_suite,
 )

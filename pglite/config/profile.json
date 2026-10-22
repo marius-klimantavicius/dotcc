@@ -78,7 +78,7 @@
         "int_bytes": 4
       },
       "excluded": [
-        "extensions",
+        "optional and third-party extensions; required bundled PL/pgSQL and Snowball remain included",
         "ICU collation",
         "compression providers",
         "TLS",

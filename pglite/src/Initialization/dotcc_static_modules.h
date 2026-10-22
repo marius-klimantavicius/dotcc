@@ -14,8 +14,8 @@ typedef struct dpg_static_module
     const dpg_static_symbol *symbols;
 } dpg_static_module;
 
-/* This bounded provider supports the single required PL/pgSQL module. Its
- * actual translated symbols, ABI magic, and _PG_init stay original PG code.
+/* This bounded provider supports the two required PL/pgSQL and Snowball modules.
+ * Actual translated symbols, ABI magic, and initializers stay original PG code.
  * Names/addresses must remain rooted until unregister or program disposal. */
 int dpg_static_register(const char *path, const dpg_static_module *module);
 int dpg_static_unregister(void);
@@ -24,4 +24,5 @@ void *dpg_static_dlsym(void *handle, const char *name);
 int dpg_static_dlclose(void *handle);
 char *dpg_static_dlerror(void);
 const dpg_static_module *dpg_plpgsql_module(void);
+const dpg_static_module *dpg_snowball_module(void);
 #endif

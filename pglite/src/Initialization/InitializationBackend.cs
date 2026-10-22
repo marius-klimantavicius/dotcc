@@ -11,12 +11,38 @@ namespace Managed.PGlite.Initialization;
 /// intercepted and no FILE pointer is imported from the frontend.</summary>
 public sealed unsafe partial class InitializationBackend
 {
-    private readonly string modulePath;
+    private readonly string bootstrapPrefix;
 
     public InitializationBackend(string bootstrapPrefix)
     {
-        modulePath = Path.Combine(Path.GetFullPath(bootstrapPrefix), "lib/postgresql/plpgsql");
-        if (!File.Exists(modulePath)) throw new FileNotFoundException("Translated PL/pgSQL manifest is required.", modulePath);
+        this.bootstrapPrefix = Path.GetFullPath(bootstrapPrefix);
+        ValidateModules(this.bootstrapPrefix);
+    }
+
+    private static void ValidateModules(string prefix)
+    {
+        foreach (string name in new[] { "plpgsql", "dict_snowball" })
+        {
+            string path = Path.Combine(prefix, "lib/postgresql", name);
+            if (!File.Exists(path)) throw new FileNotFoundException("Translated " + name + " manifest is required.", path);
+        }
+    }
+
+    /// <summary>Register both original translated catalogs in the currently
+    /// bound fresh backend context. Shared by initdb commands and SQL sessions.</summary>
+    public static void RegisterModules(string bootstrapPrefix)
+    {
+        if (Runtime.RuntimeContext.Current == null)
+            throw new InvalidOperationException("Static modules require a bound backend context.");
+        string prefix = Path.GetFullPath(bootstrapPrefix);
+        ValidateModules(prefix);
+        foreach (string name in new[] { "plpgsql", "dict_snowball" })
+        {
+            byte[] path = Encoding.UTF8.GetBytes(Path.Combine(prefix, "lib/postgresql", name) + "\0");
+            fixed (byte* p = path)
+                if (Backend.dpg_static_register(p, name == "plpgsql" ? Backend.dpg_plpgsql_module() : Backend.dpg_snowball_module()) != 0)
+                    throw new IOException($"Cannot register original translated {name} (errno {Runtime.errno}).");
+        }
     }
 
     private static void Redirect(string path, ReadOnlySpan<byte> mode, int stream)
@@ -53,10 +79,7 @@ public sealed unsafe partial class InitializationBackend
                     throw new IOException($"Cannot merge translated backend stderr (errno {Runtime.errno}).");
             }
             else Redirect(request.ErrorPath, "wb\0"u8, 2);
-            byte[] path = Encoding.UTF8.GetBytes(modulePath + "\0");
-            fixed (byte* p = path)
-                if (Backend.dpg_static_register(p, Backend.dpg_plpgsql_module()) != 0)
-                    throw new IOException($"Cannot register original translated PL/pgSQL (errno {Runtime.errno}).");
+            RegisterModules(bootstrapPrefix);
             int status;
             try
             {

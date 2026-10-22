@@ -72,9 +72,43 @@ def companions(ctx):
     return {"TranslatedInitdb": destination}
 
 
+def prepare_bootstrap_inputs(ctx, info):
+    """Materialize upstream generated module sources and installed data.
+
+    A configured backend alone lacks PL/pgSQL's parser and initdb's data
+    prefix. Native preparation supplies build inputs/control evidence only;
+    every product C unit is still translated and native libraries are excluded
+    from the delivered bootstrap prefix.
+    """
+    initializer = helper(ctx.root / "scripts/initializer.py")
+    selection = initializer.policy(ctx.root)
+
+    def missing_inputs(current):
+        source, prefix = Path(current["source"]), Path(current["prefix"])
+        inputs = [source / name for name in selection["extra_generated_inputs"]]
+        for module in selection["bootstrap_modules"].values():
+            inputs.extend(source / name for name in module["sources"])
+            inputs.extend(source / name for name in module.get("generated_headers", ()))
+        inputs.extend(prefix / asset["path"] for asset in selection["bootstrap_assets"])
+        return [str(path) for path in inputs if not path.exists()]
+
+    missing = missing_inputs(info)
+    if missing:
+        info = helper(ctx.root / "scripts/prepare.py").build_native(ctx, info)
+    remaining = missing_inputs(info)
+    if remaining:
+        raise RuntimeError("Upstream bootstrap preparation is incomplete: " + repr(remaining))
+    ctx.receipt["pglite_bootstrap_preparation"] = dict(
+        missing_before=missing, native_preparation_needed=bool(missing),
+        product_uses_native_database=False)
+    return info
+
+
 def prepare(ctx):
     policy = json_file(ctx.root / "config/translation.json")
     info = helper(ctx.root / "scripts/prepare.py").prepare(ctx)
+    if ctx.profile == "embedding-native":
+        info = prepare_bootstrap_inputs(ctx, info)
     source = Path(info["source"])
     build = Path(info["build"])
     includes = info.get("include_dirs", info.get("include", [build / "src/include", source / "src/include"]))

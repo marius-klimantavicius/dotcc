@@ -20,7 +20,8 @@ public sealed record PgliteOptions(string DataDirectory, string BootstrapPrefix,
         string work = Path.TrimEndingDirectorySeparator(Path.GetFullPath(WorkDirectory));
         if (data == work || work.StartsWith(data + Path.DirectorySeparatorChar, StringComparison.Ordinal))
             throw new ArgumentException("WorkDirectory must be outside the PostgreSQL data directory.");
-        foreach (string relative in new[] { "share/postgresql/postgres.bki", "lib/postgresql/plpgsql", "bin/initdb", "bin/postgres" })
+        foreach (string relative in new[] { "share/postgresql/postgres.bki", "lib/postgresql/plpgsql",
+            "lib/postgresql/dict_snowball", "bin/initdb", "bin/postgres" })
         {
             string path = Path.Combine(prefix, relative);
             if (!File.Exists(path)) throw new FileNotFoundException("Staged translated bootstrap input is required.", path);

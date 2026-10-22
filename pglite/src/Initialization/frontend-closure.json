@@ -2423,6 +2423,84 @@
         "kind": "dotcc static module manifest; an ordinary file for unchanged dfmgr stat/path/inode checks",
         "native_library": false
       }
+    },
+    "dict_snowball": {
+      "sources": [
+        "src/backend/snowball/dict_snowball.c",
+        "src/backend/snowball/libstemmer/api.c",
+        "src/backend/snowball/libstemmer/utilities.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_basque.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_catalan.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_danish.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_dutch.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_english.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_finnish.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_french.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_german.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_indonesian.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_irish.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_italian.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_norwegian.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_porter.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_portuguese.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_spanish.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_1_swedish.c",
+        "src/backend/snowball/libstemmer/stem_ISO_8859_2_hungarian.c",
+        "src/backend/snowball/libstemmer/stem_KOI8_R_russian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_arabic.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_armenian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_basque.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_catalan.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_danish.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_dutch.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_english.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_estonian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_finnish.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_french.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_german.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_greek.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_hindi.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_hungarian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_indonesian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_irish.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_italian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_lithuanian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_nepali.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_norwegian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_porter.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_portuguese.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_romanian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_russian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_serbian.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_spanish.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_swedish.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_tamil.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_turkish.c",
+        "src/backend/snowball/libstemmer/stem_UTF_8_yiddish.c"
+      ],
+      "generated_headers": [],
+      "required_binding": "Translate all51 original Makefile sources in the same backend context; original dsnowball_init/lexize, finfo and magic. No native dict_snowball library or replacement stemmer.",
+      "authored_export_catalog": "src/Initialization/dotcc_snowball_module.c",
+      "handler_wrapper": {
+        "source": "src/backend/snowball/dict_snowball.c",
+        "include_first": [
+          "postgres.h",
+          "fmgr.h"
+        ],
+        "macro_overrides": {
+          "PG_MAGIC_FUNCTION_NAME": "dpg_snowball_magic"
+        }
+      },
+      "extra_include_paths": [
+        "src/include/snowball",
+        "src/include/snowball/libstemmer"
+      ],
+      "loader": "src/Initialization/dotcc_static_modules.c",
+      "descriptor": {
+        "installed_relative_path": "lib/postgresql/dict_snowball",
+        "kind": "dotcc static module manifest; ordinary file for unchanged dfmgr stat/path/inode checks",
+        "native_library": false
+      }
     }
   },
   "extra_generated_inputs": [

@@ -92,6 +92,11 @@ class InitializerTests(unittest.TestCase):
             module = json.loads((output / "lib/postgresql/plpgsql").read_text())
             self.assertFalse(module["native_library"])
             self.assertIn("Pg_magic_func", module["symbols"])
+            snowball = json.loads((output / "lib/postgresql/dict_snowball").read_text())
+            self.assertFalse(snowball["native_library"])
+            self.assertEqual(snowball["provider"], "dpg_snowball_module")
+            self.assertIn("dsnowball_init", snowball["symbols"])
+            self.assertNotIn("_PG_init", snowball["symbols"])
             for name in ("initdb", "postgres"):
                 descriptor = json.loads((output / "bin" / name).read_text())
                 self.assertFalse(descriptor["native_executable"])
@@ -105,17 +110,32 @@ class InitializerTests(unittest.TestCase):
             original = self.source / "src/pl/plpgsql/src/pl_handler.c"
             before = original.read_bytes()
             units = INITIALIZER.backend_module_units(ctx, self.info, self.source / "src/include")
-            self.assertEqual(len(units), 8)
+            self.assertEqual(len(units), 60)
             wrapper = next(unit for unit in units if unit.path.name == "pl_handler-input.c")
             self.assertIn("#define PG_MAGIC_FUNCTION_NAME dpg_plpgsql_magic", wrapper.path.read_text())
             self.assertIn('#include "' + original.as_posix() + '"', wrapper.path.read_text())
             self.assertEqual(original.read_bytes(), before)
-            self.assertEqual({unit.path.name for unit in units[-2:]},
-                             {"dotcc_plpgsql_module.c", "dotcc_static_modules.c"})
+            self.assertEqual({unit.path.name for unit in units[-3:]},
+                             {"dotcc_plpgsql_module.c", "dotcc_snowball_module.c", "dotcc_static_modules.c"})
             selection = INITIALIZER.backend_module_configuration(ROOT)
             self.assertEqual(len(selection["dfmgr_defines"]), 4)
             self.assertTrue(selection["same_backend_context"])
             self.assertTrue(all(not any("dpg_static_dl" in flag for flag in unit.flags) for unit in units))
+            self.assertEqual([module["name"] for module in selection["modules"]], ["plpgsql", "dict_snowball"])
+            snowball = self.source / "src/backend/snowball/dict_snowball.c"
+            before_snowball = snowball.read_bytes()
+            snowball_wrapper = next(unit for unit in units if unit.path.name == "dict_snowball-input.c")
+            text = snowball_wrapper.path.read_text()
+            self.assertIn("#define PG_MAGIC_FUNCTION_NAME dpg_snowball_magic", text)
+            self.assertNotIn("#define _PG_init", text)
+            self.assertIn('#include "' + snowball.as_posix() + '"', text)
+            self.assertEqual(snowball.read_bytes(), before_snowball)
+            original_stemmers = list((self.source / "src/backend/snowball/libstemmer").glob("*.c"))
+            self.assertEqual(len(original_stemmers), 50)
+            self.assertEqual({unit.path for unit in units if unit.path in original_stemmers}, set(original_stemmers))
+            for unit in units:
+                if unit.path in original_stemmers or unit.path == snowball_wrapper.path:
+                    self.assertIn(str(self.source / "src/include/snowball/libstemmer"), unit.flags)
 
 
 if __name__ == "__main__":

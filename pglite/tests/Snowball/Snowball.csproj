@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="$(SnowballProject)" />
+  </ItemGroup>
+  <Target Name="RequireOriginalSnowballEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(SnowballProject)' == '' Or !Exists('$(SnowballProject)')"
+           Text="Set SnowballProject to the actual emitted original Snowball control project." />
+  </Target>
+</Project>

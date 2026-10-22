@@ -111,38 +111,52 @@ def backend_module_configuration(root):
                                for name in ("dlopen", "dlsym", "dlclose", "dlerror")],
                 register="dpg_static_register(path, dpg_plpgsql_module())",
                 module_relative_path="lib/postgresql/plpgsql",
+                registration_helper="InitializationBackend.RegisterModules(bootstrapPrefix)",
+                modules=[dict(name="plpgsql", provider="dpg_plpgsql_module", path="lib/postgresql/plpgsql"),
+                         dict(name="dict_snowball", provider="dpg_snowball_module", path="lib/postgresql/dict_snowball")],
                 same_backend_context=True)
 
 
 def backend_module_units(ctx, info, include):
-    """Original PL/pgSQL plus its forwarding export catalog/static provider.
+    """Original PL/pgSQL/Snowball plus forwarding catalogs/static provider.
 
     The caller supplies its already reviewed backend include overlay. No
     acquisition, configure/make, compilation or shared-output mutation occurs.
     """
     source, include = Path(info["source"]), Path(include)
-    selection = policy(ctx.root)["bootstrap_modules"]["plpgsql"]
+    modules = policy(ctx.root)["bootstrap_modules"]
     work = ctx.work / "initialization/module-inputs"
     work.mkdir(parents=True, exist_ok=True)
     flags = [*("-D" + item for item in info["defines"]), "-I", str(include),
              "-I", str(source / "src/pl/plpgsql/src"),
              "-I", str(ctx.root / "src/Initialization")]
     units = []
-    for name in selection["sources"]:
-        original = source / name
-        if not original.is_file():
-            raise RuntimeError("Missing original PL/pgSQL source: " + str(original))
-        path = original
-        if original.name == "pl_handler.c":
-            text = original.read_text()
-            if text.count("PG_MODULE_MAGIC_EXT(") != 1 or text.count("_PG_init(void)") != 1:
-                raise RuntimeError("PL/pgSQL export wrapper requires reviewed magic/initializer declarations")
-            path = work / "pl_handler-input.c"
-            path.write_text('#include "postgres.h"\n#include "fmgr.h"\n'
-                            '#undef PG_MAGIC_FUNCTION_NAME\n#define PG_MAGIC_FUNCTION_NAME dpg_plpgsql_magic\n'
-                            '#define _PG_init dpg_plpgsql_init\n#include "' + original.as_posix() + '"\n')
-        units.append(Unit(path, tuple(flags)))
-    for name in ("dotcc_plpgsql_module.c", "dotcc_static_modules.c"):
+    for module_name, selection in modules.items():
+        selected_flags = [*flags, *(part for name in selection.get("extra_include_paths", [])
+                                   for part in ("-I", str(source / name)))]
+        for name in selection["sources"]:
+            original = source / name
+            if not original.is_file():
+                raise RuntimeError("Missing original " + module_name + " source: " + str(original))
+            path = original
+            if original.name == "pl_handler.c":
+                text = original.read_text()
+                if text.count("PG_MODULE_MAGIC_EXT(") != 1 or text.count("_PG_init(void)") != 1:
+                    raise RuntimeError("PL/pgSQL export wrapper requires reviewed magic/initializer declarations")
+                path = work / "pl_handler-input.c"
+                path.write_text('#include "postgres.h"\n#include "fmgr.h"\n'
+                                '#undef PG_MAGIC_FUNCTION_NAME\n#define PG_MAGIC_FUNCTION_NAME dpg_plpgsql_magic\n'
+                                '#define _PG_init dpg_plpgsql_init\n#include "' + original.as_posix() + '"\n')
+            elif original.name == "dict_snowball.c":
+                text = original.read_text()
+                if text.count("PG_MODULE_MAGIC_EXT(") != 1 or "_PG_init(" in text:
+                    raise RuntimeError("Snowball export wrapper requires reviewed original magic and no initializer")
+                path = work / "dict_snowball-input.c"
+                path.write_text('#include "postgres.h"\n#include "fmgr.h"\n'
+                                '#undef PG_MAGIC_FUNCTION_NAME\n#define PG_MAGIC_FUNCTION_NAME dpg_snowball_magic\n'
+                                '#include "' + original.as_posix() + '"\n')
+            units.append(Unit(path, tuple(selected_flags)))
+    for name in ("dotcc_plpgsql_module.c", "dotcc_snowball_module.c", "dotcc_static_modules.c"):
         units.append(Unit(ctx.root / "src/Initialization" / name, tuple(flags)))
     return units
 
@@ -182,12 +196,14 @@ def stage_bootstrap_data(root, info, destination):
                              sha256=hashlib.sha256(output.read_bytes()).hexdigest(), kind="upstream-bootstrap-data"))
     notice = Path(info["source"]) / "COPYRIGHT"
     shutil.copy2(notice, destination / "COPYRIGHT")
-    descriptor = Path(root) / "src/Initialization/plpgsql.module.json"
-    output = destination / "lib/postgresql/plpgsql"
-    output.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(descriptor, output)
-    manifest.append(dict(path="lib/postgresql/plpgsql", bytes=output.stat().st_size,
-                         sha256=hashlib.sha256(output.read_bytes()).hexdigest(), kind="translated-static-module-manifest"))
+    for name, module in policy(root)["bootstrap_modules"].items():
+        descriptor = Path(root) / "src/Initialization" / (name + ".module.json")
+        relative = module["descriptor"]["installed_relative_path"]
+        output = destination / relative
+        output.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(descriptor, output)
+        manifest.append(dict(path=relative, bytes=output.stat().st_size,
+                             sha256=hashlib.sha256(output.read_bytes()).hexdigest(), kind="translated-static-module-manifest"))
     # Original find_my_exec/find_other_exec validate regular executable paths
     # before invoking the fork's in-process version callback. These descriptors
     # identify managed entrypoints; they contain no shell/native executable.
@@ -381,8 +397,8 @@ def _write(path, value):
 
 
 def run_modules(ctx, suite=None):
-    """Native compilation and actual emission of the six original PL/pgSQL
-    units plus its static export catalog. Linking/execution requires the real
+    """Native compilation and actual emission of required PL/pgSQL/Snowball
+    units and their static catalogs/provider. Linking/execution requires the real
     complete backend, owned by the supervisor; a module object is not bootstrap.
     """
     info = configured(ctx)
@@ -392,7 +408,7 @@ def run_modules(ctx, suite=None):
     artifacts.mkdir(parents=True, exist_ok=True)
     port = helper(ctx.root / "scripts/atomics.py").prepare_overlay(source, work / "include")
     shared = helper(ctx.root / "scripts/portability.py").prepare_overlay(ctx.root, port["include"])
-    report = dict(scope="original PL/pgSQL source/static-loader closure; no module execution or bootstrap claim",
+    report = dict(scope="original required PL/pgSQL/Snowball source/static-loader closure; no module execution or bootstrap claim",
                   overlay=port, portability=shared, units=[], status="running")
     compiler = Path(getattr(ctx, "compiler", None) or os.environ["DOTCC_COMPILER"]).resolve()
     try:
@@ -411,7 +427,7 @@ def run_modules(ctx, suite=None):
             observation.update(emission_exit_code=emitted.get("exit_code"), emission_log=emitted.get("stdout"))
             report["units"].append(observation)
         if any(item["native_exit_code"] != 0 or item["emission_exit_code"] != 0 for item in report["units"]):
-            raise RuntimeError("PL/pgSQL source/static export closure remains blocked; see plpgsql/report.json")
+            raise RuntimeError("Required bundled module source/static export closure remains blocked; see plpgsql/report.json")
         report["status"] = "passed-native-compilation-and-emission-only"
         return report
     except BaseException as error:

@@ -7,7 +7,10 @@ emits and strict-links all 876 selected backend/module/libc/adapter units. The
 complete raw backend C# build passes with zero errors and 12 warnings; the
 separate 73-unit original initdb companion also emits, links and builds. The
 receipt is failed because the explicit publication guard remains enabled, not
-because source emission or the raw build failed. Processed output is still open.
+because source emission or the raw build failed. A separate private full-backend
+processed diagnostic passes semantic processing and C# build with zero errors
+and 12 warnings (`artifacts/supervisor-processed1942/report.json`). This is
+backend build evidence only; processed initializer and SQL qualification remain open.
 
 The actual API and canonical consumer build against these complete libraries
 with zero errors. Two independent, isolated actual initdb invocations both run
@@ -23,10 +26,31 @@ Evidence: `artifacts/initdb-owner-20261022-r3/actual1942/initialization/executio
 and `artifacts/product-owner-r3/raw1942-consumer-{build,run}.log`; original
 backend inputs, outputs and operation/status records are retained in private
 diagnostic directories. All required SQL, shutdown/reopen and four product
-matrix rows remain open. The latest full shared compiler suite has 3398 passes
+matrix rows remain open. The latest full shared compiler suite has 3420 passes
 and the same 16 failures reproduced in the untouched baseline; current
-comparison is `artifacts/supervisor-portable/regression-comparison-current8.json`.
+comparison is `artifacts/supervisor-portable/regression-comparison-current9.json`.
 
+
+## Runtime repair retry, immutable19
+
+The real locale inventory service now launches only the fixed OS locale utility
+with `-a`, using native posix_spawn descriptor actions and real waitpid status.
+It does not launch a shell or database executable, manufacture/filter the locale
+list, or remove original collation import. Owner-local pipes preserve real
+stdout/stderr and are closed/killed/reaped on abandonment. Direct JIT and trimmed
+NativeAOT each pass 53 host process assertions; actual emitted C also compares
+locale bytes to native across three owners in both modes. Evidence:
+`artifacts/initdb-owner-20261022-r3/locale-process-repair.json`.
+
+[Calendar timezone](CALENDAR.md) formatting passes native/emitted JIT/AOT in all
+five selected zones. Immutable19 at `build/tools/supervisor-20261022-2008/`
+contains both fixes. The complete coherent1942 object sets (876 backend and 75
+frontend objects) strictly relink with these runtime resources into private
+projects; `artifacts/supervisor-runtime2008/report.json` records original
+commands and object/tool hashes. This is a resource-only diagnostic, not fresh C
+regeneration or publication. Real original initdb and the canonical consumer
+are running against these projects with separate fresh data/output directories.
+No SQL success or final matrix row is inferred before their actual results.
 
 ## Active implementation continuation
 

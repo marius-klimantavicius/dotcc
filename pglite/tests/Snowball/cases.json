@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "scope": "Original Snowball UTF-8 stemmers; expected byte strings checked independently by native and emitted execution",
+  "rounds": 32,
+  "allocation_cycles": 16,
+  "cases": [
+    {"language": "english", "input": "running", "expected": "run"},
+    {"language": "english", "input": "skies", "expected": "sky"},
+    {"language": "english", "input": "ponies", "expected": "poni"},
+    {"language": "english", "input": "relational", "expected": "relat"},
+    {"language": "english", "input": "hopping", "expected": "hop"},
+    {"language": "english", "input": "generously", "expected": "generous"},
+    {"language": "english", "input": "", "expected": ""},
+    {"language": "english", "input": "a", "expected": "a"},
+    {"language": "lithuanian", "input": "žmonėmis", "expected": "žmon"},
+    {"language": "lithuanian", "input": "namuose", "expected": "nam"},
+    {"language": "lithuanian", "input": "katės", "expected": "kat"},
+    {"language": "lithuanian", "input": "ąžuolais", "expected": "ąžuol"},
+    {"language": "lithuanian", "input": "lietuviškas", "expected": "lietuv"},
+    {"language": "lithuanian", "input": "bėgimas", "expected": "bėgim"},
+    {"language": "lithuanian", "input": "gražesnis", "expected": "graž"},
+    {"language": "lithuanian", "input": "šunys", "expected": "šun"},
+    {"language": "lithuanian", "input": "", "expected": ""}
+  ]
+}

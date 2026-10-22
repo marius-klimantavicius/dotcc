@@ -24,8 +24,12 @@ def run(ctx, suite=None):
     if frontend["revision"] != manifest["revision"] or frontend["profile"] != manifest["profile"]:
         raise RuntimeError("Frontend/module inputs differ from the selected backend source/profile")
     frontend_units = [unit["source"] for unit in frontend["units"]]
-    module_units = frontend["bootstrap_modules"]["plpgsql"]["sources"]
-    if len(frontend_units) != len(set(frontend_units)) or len(module_units) != 6:
+    modules = frontend["bootstrap_modules"]
+    module_units = [name for module in modules.values() for name in module["sources"]]
+    if (len(frontend_units) != len(set(frontend_units)) or
+            len(module_units) != len(set(module_units)) or
+            not {"plpgsql", "dict_snowball"}.issubset(modules) or
+            any(not module["sources"] for module in modules.values())):
         raise RuntimeError("Missing or duplicate initializer/module inventory")
     report = dict(status="passed", scope="source inventory; managed behavioral qualification is separate",
                   revision=pin["product"]["revision"], source=str(source),
@@ -33,6 +37,7 @@ def run(ctx, suite=None):
                   frozen_backend_units=len(backend), complete_backend_link_closure=True,
                   generated_backend_inputs=[name for name in backend if name not in paths],
                   frontend_units=frontend_units, required_module_units=module_units,
+                  required_modules=sorted(modules),
                   complete_product_manifest=policy["complete_product_manifest"],
                   notices=pin["product"]["notices"],
                   embedding_guard_files=sorted(path.relative_to(source).as_posix()

@@ -1,11 +1,12 @@
 # Managed embedded PostgreSQL API
 
 The authored API and canonical consumer now compile against the complete
-translated backend and original frontend. The first raw JIT run completes
-original bootstrap but fails post-bootstrap initialization when
-`pg_import_system_collations` requests the unsupported `locale -a` host service.
-No required consumer SQL assertion or successful SQL lifetime has completed.
-The supervisor retains the host repair, full matrix and acceptance through P6.
+translated backend and original frontend. A second raw JIT run with corrected
+locale enumeration and calendar services passes the former `locale -a` failure
+and selects `Europe/Vilnius`, then stops at the required `dict_snowball` module
+during original post-bootstrap SQL. No required consumer SQL assertion or
+successful SQL lifetime has completed. The supervisor retains the module
+closure, full matrix and acceptance through P6.
 
 `src/Api/PGlite.csproj` builds the separate `Managed.PGlite` owning assembly. It
 references the complete backend through `TranslatedProject` and the original
@@ -55,7 +56,9 @@ both causes are retained, with the original backend failure first. A diagnostic
 failure without a backend exception propagates directly.
 
 Open creates a fresh generated `Managed.PGlite.Translated.PGlite` state context.
-Startup binds original stdio, registers the actual translated PL/pgSQL exports,
+Startup binds original stdio, calls the shared
+`InitializationBackend.RegisterModules(bootstrapPrefix)` for the actual translated
+module catalogs in that fresh context,
 installs managed function-pointer callbacks and invokes original single-user
 main. It requires the fork's 99 yield, opens an owned postmaster-liveness pipe,
 attaches the original protocol port and verifies `SELECT 1` before returning a
@@ -123,7 +126,9 @@ and `-p:InitdbTranslatedProject=/absolute/frontend.csproj` to build/run/publish.
 The optional `--backend-executable` must normalize to the selected bootstrap
 prefix's `bin/postgres`. Original initdb discovers that exact sibling path from
 `bin/initdb`; another override is rejected before initialization. `--cases`
-selects the canonical inventory location. NativeAOT
+selects the canonical inventory location. Both `plpgsql` and `dict_snowball`
+translated-module descriptors are required during options normalization, before
+any owner lease or generated context is created. NativeAOT
 publication uses the same consumer with normal trimming and `-p:PublishAot=true`.
 All raw/processed JIT/NativeAOT SQL rows and the root solution remain pending until
 the supervisor supplies and qualifies complete products.
@@ -154,15 +159,19 @@ project graph builds. Actual SQL and the complete product matrix remain open.
 
 `ApiContracts.csproj` compiles the actual options, initialization-observation
 gate and process-transport contracts without an engine dependency. JIT and
-normally trimmed Linux x64 NativeAOT each pass 32 assertions: default/equivalent
+normally trimmed Linux x64 NativeAOT each pass 34 assertions: default/equivalent
 backend paths, mismatched overrides, missing descriptors, command-count false
 positives, missing/failed Bootstrap or SingleUser operations, and exact recorded
 arguments/status/failures, and ordered preservation of simultaneous backend and
 diagnostic errors. Real file/directory collisions exercise record and spool-copy
-failures during exception unwinding. Diagnostic JSON uses explicit writes without
+failures during exception unwinding, plus exact rejection of a missing Snowball
+descriptor before owner acquisition. Diagnostic JSON uses explicit writes without
 reflection serialization. Logs are `api-contracts-{build,run,aot-publish,aot-run}.log`.
 The descriptor and observation fixtures supply no database or SQL behavior;
 all 36 consumer assertions remain required against the complete product.
+The updated 34-assertion logs are under
+`artifacts/product-owner-r3/snowball-options/`; the earlier 32-assertion logs
+remain under `artifacts/product-owner-r2/`.
 
 ## First complete-backend execution
 
@@ -175,6 +184,16 @@ successfully, then exits 1 during original SingleUser post-bootstrap SQL.
 while executing `SELECT pg_import_system_collations('pg_catalog');`. All original
 invocation records and BKI/SQL/stdout/stderr spools remain in the private work
 directory named in `owner-report.json`. No SQL input is skipped or replaced.
+
+The resource-only `supervisor-runtime2008` relink passes the same actual API and
+consumer graph build with zero errors and 14 warnings. Its fresh raw JIT retry
+passes the locale-import step, selects `Europe/Vilnius` and logs the actual EEST
+zone. Original bootstrap again succeeds. Post-bootstrap SingleUser then exits 1
+when `CREATE FUNCTION dsnowball_init` loads the absent `$libdir/dict_snowball`.
+`artifacts/product-owner-r3/raw2008/owner-report.json` records the exact command,
+observations, stderr and private spools. The required original Snowball source,
+static export catalog and per-owner registration remain an integration gate;
+neither bootstrap SQL nor the module algorithms may be replaced to pass it.
 
 `EntryValidation.csproj` references the actual API and both translated projects.
 Its private incremental build and JIT run pass 23 assertions over null/mismatched

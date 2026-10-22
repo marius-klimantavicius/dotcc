@@ -15,6 +15,9 @@ static int fixture_symbol(void) { return 71; }
 static const dpg_static_symbol symbols[] = {{"fixture_symbol", (void *) fixture_symbol}};
 static const dpg_static_module module = {1, symbols};
 const dpg_static_module *dpg_plpgsql_module(void) { return &module; }
+/* Explicit byte-fixture catalogs only, not PostgreSQL module exports. */
+static const dpg_static_module second_module = {1, symbols};
+const dpg_static_module *dpg_snowball_module(void) { return &second_module; }
 
 static void cleanup(void)
 {
