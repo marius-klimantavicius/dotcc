@@ -1,0 +1,505 @@
+{
+  "date": "2026-10-23",
+  "base_commit": "d49fdbbafa2f92ea796556710eba8703fbd52392",
+  "validated_source_commit": "8a577923b9e76645c362a2f77227bdfb7aee50c6",
+  "scope": "Repair all 16 original compiler-output failures and the shared campaign-framework metadata failure; scoped downstream regression validation.",
+  "original_assertions": "All original 16 failing test assertions are unchanged. No comments, strings, unreachable statements or test weakening were used to satisfy output expectations.",
+  "authoritative_example": {
+    "c": "struct P { int x; int y; }; static const struct P origin={3,4}; int main(void){return origin.x+origin.y;}",
+    "real_emitted_initialization": "Globals.origin = new P { x = 3, y = 4 };",
+    "verification": "StaticStructInitTests.file_scope_static_struct_init_lowers_to_global_field passes in the full suite."
+  },
+  "compiler_fixes": {
+    "compact-records": {
+      "cause": "All static aggregates were unconditionally expanded to leaf stores, displacing existing small typed object-initializer contracts.",
+      "fix": "Use bounded typed object initializers for small complete records and selected scalar unions; validate omitted struct fields too. Retain final-address stores for arrays, bitfields, large layouts and effectful payloads. Bound known layouts to 512 bytes, 32 leaves, depth 8 and 4096 source characters; runtime AllocatorVTable is a separately bounded four-pointer model.",
+      "commit": "b2f916a8b",
+      "cases": [
+        "DotCC.Tests.AnonUnionDeclTests.file_scope_static_anon_union_with_brace_init_lowers_to_explicit_synth_type",
+        "DotCC.Tests.StaticStructInitTests.block_scope_static_struct_init_lowers_to_mangled_global_field",
+        "DotCC.Tests.StaticStructInitTests.file_scope_static_struct_init_lowers_to_global_field",
+        "DotCC.Tests.StaticStructInitTests.nested_brace_for_union_member_recurses_into_field_type",
+        "DotCC.Tests.ZigFrontendTests.Lowers_a_user_vtable_literal_to_the_runtime_AllocatorVTable",
+        "DotCC.Tests.ZigFrontendTests.Lowers_an_aggregate_struct_global"
+      ]
+    },
+    "compact-array-rows": {
+      "cause": "Small flat anonymous-record rows always used target-typed multiline initializers.",
+      "fix": "Use explicit short typed rows when safe; preserve bounded multiline and in-place fallback forms.",
+      "commit": "b2f916a8b",
+      "cases": [
+        "DotCC.Tests.AnonStructDeclTests.file_scope_static_anon_struct_array_lowers_to_synth_type"
+      ]
+    },
+    "wide-character-arrays": {
+      "cause": "Uniform integer-backed payload formatting removed the required char/uint literal form.",
+      "fix": "Return bounded typed literals from named ReadOnlySpan getters, then copy into separately allocated writable C storage. IL inspection and repeated getter allocation measurements confirm no temporary managed payload allocation.",
+      "commit": "b2f916a8b",
+      "cases": [
+        "DotCC.Tests.Char16Tests.const_global_char16_array_keeps_declared_object_storage",
+        "DotCC.Tests.Char16Tests.global_char16_array_uses_pinned_GlobalArrayFrom_char",
+        "DotCC.Tests.Char32Tests.const_global_char32_array_keeps_declared_object_storage",
+        "DotCC.Tests.Char32Tests.global_char32_array_uses_pinned_GlobalArrayFrom_uint",
+        "DotCC.Tests.WcharTests.const_global_wchar_array_keeps_declared_object_storage",
+        "DotCC.Tests.WcharTests.global_wchar_array_uses_pinned_GlobalArrayFrom_char"
+      ]
+    },
+    "mixed-embed": {
+      "cause": "Resource-byte expansion lost origin before primitive payload rendering.",
+      "fix": "Retain byte origin in typed IR and render short widened resource lists as named allocation-free typed span payloads; raw byte and large payloads retain the existing representation.",
+      "commit": "b2f916a8b",
+      "cases": [
+        "DotCC.Tests.EmbedTests.embed_splices_into_a_mixed_initializer_list"
+      ]
+    },
+    "malloc": {
+      "cause": "Uniform size_t rendering converted the sizeof argument and displaced the expected simple inserted pointer cast.",
+      "fix": "Render a single non-array sizeof bare only for direct known runtime malloc; keep typed sizes for arithmetic, arrays, relocatable objects, definitions and explicit overrides.",
+      "commit": "642964f66",
+      "cases": [
+        "DotCC.Tests.CompilerTests.Cast_less_malloc_gets_an_inserted_pointer_cast"
+      ]
+    },
+    "canonical-function-pointer": {
+      "cause": "The A21 ABI adapter repair also wrapped exact shipped scalar runtime signatures, replacing the required direct runtime address factory.",
+      "fix": "Recognize exact simple shipped-runtime ABIs and return their method address from the lazy canonical factory. Keep forwarding adapters for mismatched or unknown signatures and retain instance adapters.",
+      "commit": "642964f66",
+      "cases": [
+        "DotCC.Tests.CanonicalFunctionPointerTests.Every_function_designator_reuses_one_typed_static_address"
+      ]
+    }
+  },
+  "framework_fix": {
+    "cause": "The first embedded approval-hash violation in Blink hid seven further scripts with provenance literals in CPython/libsmb2.",
+    "fix": "Moved the exact approval/evidence values into config JSON, leaving validation/authority logic intact. No accepted relinks or runtime imports were broadened.",
+    "commits": [
+      "f72a5c572",
+      "86d23c48f"
+    ],
+    "equivalence": {
+      "blink_approved_relinks_unchanged": true,
+      "RUNTIME_RESOURCE_PROOF_unchanged": true,
+      "RUNTIME_IMPORTS_unchanged": true,
+      "cpython_literal_set_unchanged": true,
+      "cpython_distinct_literals": 8
+    },
+    "focused_checks": {
+      "blink_delivery": 19,
+      "cpython_audit": 163,
+      "cpython_final_matrix": 8,
+      "libsmb2_audit_product": 12,
+      "source": "Delegated implementation validation; supervisor independently checked old AST literals against the new JSON and reran the complete shared framework suite."
+    }
+  },
+  "required_checks": [
+    {
+      "kind": "full DotCC.Tests",
+      "passed": 3436,
+      "failed": 0,
+      "skipped": 0,
+      "path": "pglite/artifacts/compiler-repair/unit-final.log",
+      "sha256": "5ba860583e0c53015d8142ed6a8d46f845b2622f810eaf98a8d9b5d608b981c8",
+      "command": "dotnet test DotCC.Tests/DotCC.Tests.csproj -c Release --artifacts-path /home/marius/p/dotcc/pglite/build/compiler-repair"
+    },
+    {
+      "kind": "full shared campaign framework",
+      "passed": 88,
+      "failed": 0,
+      "skipped": 0,
+      "path": "pglite/artifacts/compiler-repair/framework-final.log",
+      "sha256": "293ce323bf5162fa1d2c33514ee037f9280c9d0eb8d7eca2de673099d3b32c55",
+      "command": "python3 -B -m unittest discover -s Scripts/campaigns/tests -v"
+    },
+    {
+      "kind": "combined relevant functional regressions",
+      "passed": 95,
+      "failed": 0,
+      "skipped": 0,
+      "path": "pglite/artifacts/compiler-repair/functional-final.log",
+      "sha256": "d157db96dccd184285bd47f4617afe0afd8dd769f89fca4bdf78825953b5705e",
+      "coverage": "Small and large static aggregates, partitioned initialization, arrays, source/object routes, by-value records, TLS/owners, self pointers, canonical function identity, ABI adapters, allocator overrides, nint slots and variadic calls."
+    },
+    {
+      "kind": "Zig aggregate/vtable source/object execution",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "path": "pglite/artifacts/compiler-repair/zig-execution-final.log",
+      "sha256": "af148075c20c74eaa05c32de9c5998ff289265c38c6f3fc4ba3660844ba3c189",
+      "command": "dotnet test DotCC.FunctionalTests/DotCC.FunctionalTests.csproj -c Release --artifacts-path /home/marius/p/dotcc/pglite/build/compiler-repair --filter FullyQualifiedName~StaticAggregateExecutionTests"
+    },
+    {
+      "kind": "independent GCC fixture comparisons",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "path": "pglite/artifacts/compiler-repair/pointer-agent/delivery-native.log",
+      "sha256": "21e4665e20c86b6a4f614da1a67ba1cfd21b14ec70d08766de8698bad61eeb04"
+    }
+  ],
+  "toolchain": {
+    "dotnet": "10.0.112",
+    "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiler": {
+      "path": "pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/dotcc.dll",
+      "sha256": "c02fbddadf506e003a6cf9a4fa1bde4b7b460f268e7ebb7c981a8cb2d3a47cdf"
+    },
+    "compiler_library": {
+      "path": "pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/DotCC.Lib.dll",
+      "sha256": "a8c0bea4779fa978d1e3c045af6cbbc7f69580afc8ce6f9446ffd99c89394c79"
+    },
+    "build_log": {
+      "path": "pglite/artifacts/compiler-repair/compiler-final-build.log",
+      "sha256": "c34198e9098268f1d16ae37284e9c7c57bfaa4ff01d1ea355f2bd03e86600124"
+    },
+    "ownership": "Private final-toolchain output was never rebuilt during downstream validation; all verification outputs have private paths."
+  },
+  "downstream": {
+    "native_managed_fixtures": {
+      "report": {
+        "path": "pglite/artifacts/compiler-repair/native-managed/report.json",
+        "sha256": "9cdc8caaea29828a6076e49f8c33b31a965d11b8f8e0998402d55ed7c38b6b77"
+      },
+      "command": "python3 -B pglite/artifacts/compiler-repair/validate-fixtures.py pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/dotcc.dll",
+      "native_cases": 10,
+      "source_object_jit_matches": 20,
+      "source_object_aot_matches": 4,
+      "cases": [
+        {
+          "name": "static-struct-init",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "10 20\n48\n48",
+          "match": true
+        },
+        {
+          "name": "static-struct-init",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "10 20\n48\n48",
+          "match": true
+        },
+        {
+          "name": "anon-struct-decl",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "5\n10 10\n14 13\n2 1\n11",
+          "match": true
+        },
+        {
+          "name": "anon-struct-decl",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "5\n10 10\n14 13\n2 1\n11",
+          "match": true
+        },
+        {
+          "name": "anon-union-decl",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "u.dummy=67305985\nreinterpret=4294967295",
+          "match": true
+        },
+        {
+          "name": "anon-union-decl",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "u.dummy=67305985\nreinterpret=4294967295",
+          "match": true
+        },
+        {
+          "name": "char16-literals",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "p: 104 105 4660\nbuf: 120 121 33 0\ncg: 65 66\nmg: 99 100\nc: 91",
+          "match": true
+        },
+        {
+          "name": "char16-literals",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "p: 104 105 4660\nbuf: 120 121 33 0\ncg: 65 66\nmg: 99 100\nc: 91",
+          "match": true
+        },
+        {
+          "name": "c11-char32",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "sizeof=4\nch=65\ns0=72 s1=105\nlen=2 65 66\nemoji_len=2 first=128512 second=90",
+          "match": true
+        },
+        {
+          "name": "c11-char32",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "sizeof=4\nch=65\ns0=72 s1=105\nlen=2 65 66\nemoji_len=2 first=128512 second=90",
+          "match": true
+        },
+        {
+          "name": "large-static-aggregate",
+          "route": "direct",
+          "modes": [
+            "jit",
+            "aot"
+          ],
+          "native_exit": 0,
+          "stdout": "820 940 99 1 1",
+          "match": true
+        },
+        {
+          "name": "large-static-aggregate",
+          "route": "object",
+          "modes": [
+            "jit",
+            "aot"
+          ],
+          "native_exit": 0,
+          "stdout": "820 940 99 1 1",
+          "match": true
+        },
+        {
+          "name": "partitioned-static-initializers",
+          "route": "direct",
+          "modes": [
+            "jit",
+            "aot"
+          ],
+          "native_exit": 0,
+          "stdout": "51680 19 17 18",
+          "match": true
+        },
+        {
+          "name": "partitioned-static-initializers",
+          "route": "object",
+          "modes": [
+            "jit",
+            "aot"
+          ],
+          "native_exit": 0,
+          "stdout": "51680 19 17 18",
+          "match": true
+        },
+        {
+          "name": "canonical-function-addresses",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "1 42 1 1\n4 6 1",
+          "match": true
+        },
+        {
+          "name": "canonical-function-addresses",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "1 42 1 1\n4 6 1",
+          "match": true
+        },
+        {
+          "name": "canonical-allocation-boundaries",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "canonical allocation 42",
+          "match": true
+        },
+        {
+          "name": "canonical-allocation-boundaries",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "canonical allocation 42",
+          "match": true
+        },
+        {
+          "name": "malloc-no-cast",
+          "route": "direct",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "0 1 4 9\n42",
+          "match": true
+        },
+        {
+          "name": "malloc-no-cast",
+          "route": "object",
+          "modes": [
+            "jit"
+          ],
+          "native_exit": 0,
+          "stdout": "0 1 4 9\n42",
+          "match": true
+        }
+      ]
+    },
+    "cpython": {
+      "report": {
+        "path": "pglite/artifacts/compiler-repair/cpython/report.json",
+        "sha256": "e81398a41ea74b382ad93c1247bcaf887991fe69c048bac0ee88533e235dceed"
+      },
+      "command": "python3 -B pglite/artifacts/compiler-repair/validate-cpython-inputs.py pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/dotcc.dll",
+      "scope": "Actual unmodified CPython initializer-bearing units: fresh object emission and C026 lowering inspection; no CPython whole-product execution claim",
+      "commands": [
+        {
+          "command": [
+            "dotnet",
+            "/home/marius/p/dotcc/pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/dotcc.dll",
+            "-std=c11",
+            "-DPy_BUILD_CORE",
+            "-DUSE_COMPUTED_GOTOS=0",
+            "-D__ORDER_LITTLE_ENDIAN__=1234",
+            "-D__ORDER_BIG_ENDIAN__=4321",
+            "-D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__",
+            "-I",
+            "/home/marius/p/dotcc/pglite/build/compiler-repair-cpython/config",
+            "-I",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete/Include",
+            "-I",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete/Include/internal",
+            "-I",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete/Python/pystate.c",
+            "--emit=obj",
+            "-o",
+            "/home/marius/p/dotcc/pglite/build/compiler-repair-cpython/pystate.object.cs"
+          ],
+          "exit_code": 0,
+          "seconds": 5.731647491455078,
+          "log": "/home/marius/p/dotcc/pglite/artifacts/compiler-repair/cpython/pystate.log",
+          "output": "/home/marius/p/dotcc/pglite/build/compiler-repair-cpython/pystate.object.cs",
+          "large_initializer_in_place": true,
+          "initializer_pin_chunks": 245,
+          "destination_alias": "initial__unit_9D8D49B6970CDF11F09D16309C6D0B1DB82191B7276619BEA644D08B4F26660F_destination"
+        },
+        {
+          "command": [
+            "dotnet",
+            "/home/marius/p/dotcc/pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/dotcc.dll",
+            "-std=c11",
+            "-DPy_BUILD_CORE",
+            "-DUSE_COMPUTED_GOTOS=0",
+            "-D__ORDER_LITTLE_ENDIAN__=1234",
+            "-D__ORDER_BIG_ENDIAN__=4321",
+            "-D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__",
+            "-I",
+            "/home/marius/p/dotcc/pglite/build/compiler-repair-cpython/config",
+            "-I",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete/Include",
+            "-I",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete/Include/internal",
+            "-I",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete",
+            "/home/marius/p/dotcc/cpython/ref/cpython-4061bc4c35f7c26f25264666d4ba083b93d2f6f9-complete/Python/pylifecycle.c",
+            "--emit=obj",
+            "-o",
+            "/home/marius/p/dotcc/pglite/build/compiler-repair-cpython/pylifecycle.object.cs"
+          ],
+          "exit_code": 0,
+          "seconds": 6.257181644439697,
+          "log": "/home/marius/p/dotcc/pglite/artifacts/compiler-repair/cpython/pylifecycle.log",
+          "output": "/home/marius/p/dotcc/pglite/build/compiler-repair-cpython/pylifecycle.object.cs",
+          "large_initializer_in_place": true,
+          "initializer_pin_chunks": 196,
+          "destination_alias": "_PyRuntime_destination"
+        }
+      ],
+      "inputs_unchanged": true,
+      "harness_correction": "Initial inspection assumed an unmangled static symbol; corrected to recognize object-local qualification. Both original emissions succeeded; no compiler or generated-source patch was needed."
+    },
+    "pglite_snowball": {
+      "report": {
+        "path": "pglite/artifacts/compiler-repair/snowball/execution/execution.json",
+        "sha256": "308914c7ca2f6b44d5deb7c8eb237e933fe04ad7c30bb87f9e3bfeee2159c720"
+      },
+      "receipt": {
+        "path": "pglite/artifacts/compiler-repair/snowball/receipt.json",
+        "sha256": "ea00a973003d5343e4208bf6545cd63776313c83de4500891b43a368dcfebd0f"
+      },
+      "command": "python3 -B pglite/artifacts/compiler-repair/validate-snowball.py pglite/build/compiler-repair-final-toolchain/bin/DotCC/release/dotcc.dll",
+      "scope": "four original Snowball sources with upstream allocation interface; no dictionary/SQL execution",
+      "source_files": [
+        "/home/marius/p/dotcc/pglite/build/native-control/d7a6782b0db7f7e7492e/source/src/backend/snowball/libstemmer/api.c",
+        "/home/marius/p/dotcc/pglite/build/native-control/d7a6782b0db7f7e7492e/source/src/backend/snowball/libstemmer/utilities.c",
+        "/home/marius/p/dotcc/pglite/build/native-control/d7a6782b0db7f7e7492e/source/src/backend/snowball/libstemmer/stem_UTF_8_english.c",
+        "/home/marius/p/dotcc/pglite/build/native-control/d7a6782b0db7f7e7492e/source/src/backend/snowball/libstemmer/stem_UTF_8_lithuanian.c"
+      ],
+      "cases": 17,
+      "rounds": 32,
+      "allocation_cycles": 16,
+      "owners": 2,
+      "native": "passed-two-fresh-process-controls",
+      "modes": {
+        "jit": "passed-exact-native-comparison-two-fresh-generated-owners-debug-heap",
+        "aot": "passed-exact-native-comparison-two-fresh-generated-owners-debug-heap"
+      }
+    }
+  },
+  "review": {
+    "finding": "Compact selection initially overlooked omitted inline-array/bitfield members.",
+    "resolution": "Validate the complete ordinary-record layout. Extended existing D10 tests to exercise omitted members; focused138 and combined functional95 pass.",
+    "remaining_objections": []
+  },
+  "commits": [
+    "8a577923b Execute Zig static globals and allocator vtables without an oracle prerequisite",
+    "642964f66 Restore exact runtime function addresses and bounded malloc size emission",
+    "b2f916a8b Restore bounded readable static initializers and literal spans",
+    "86d23c48f Move CPython and libsmb2 provenance literals into config",
+    "f72a5c572 Move Blink relink approval hashes into config metadata"
+  ],
+  "limitations": [
+    "Scoped downstream checks do not requalify all CPython193/PGlite863 product units or their full product matrices. CPython checks emit and inspect the two actual initializer-bearing units; fresh execution is established by the selected native/JIT/AOT fixtures and actual Snowball sources.",
+    "A separate imported-abs lexical-lookup collision was reproduced with the original A21 forwarding adapter too. The diagnostic is outside the original failing-suite repair and was not included in this patch. Existing ImportMode tests pass; private diagnostic evidence is /tmp/dotcc-fp-casts-8786008f/native-import-shadow-probe.cs and native-import-pointer-final.log."
+  ],
+  "workspace": {
+    "protected_edits_untouched": [
+      "docs/plans/translation-baseline.md",
+      "docs/plans/translation-template.md",
+      "pglite/docs/PLAN.md"
+    ],
+    "concurrent_untracked_files_untouched": [
+      "pglite/config/api-source.json",
+      "pglite/docs/API-PORT-PLAN.md"
+    ],
+    "push": false,
+    "pull_request": false
+  }
+}
