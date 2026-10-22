@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <AssemblyName>Managed.PGlite</AssemblyName>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPGlite/TranslatedPGlite.csproj</TranslatedProject>
+    <InitdbTranslatedProject Condition="'$(InitdbTranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedInitdb/TranslatedInitdb.csproj</InitdbTranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(TranslatedProject)" />
+    <ProjectReference Include="$(InitdbTranslatedProject)" />
+    <Compile Include="../Initialization/InitializationFrontend.cs" Link="Initialization/InitializationFrontend.cs" />
+    <Compile Include="../Initialization/InitializationArguments.cs" Link="Initialization/InitializationArguments.cs" />
+  </ItemGroup>
+  <Target Name="RequireTranslatedLibraries" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(TranslatedProject)')" Text="The complete translated PGlite backend project is required: $(TranslatedProject)" />
+    <Error Condition="!Exists('$(InitdbTranslatedProject)')" Text="The original translated initdb frontend project is required: $(InitdbTranslatedProject)" />
+  </Target>
+</Project>

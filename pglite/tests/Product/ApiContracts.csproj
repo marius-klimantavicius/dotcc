@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ApiContractsProgram.cs" />
+    <Compile Include="../../src/Api/PgliteOptions.cs" Link="Api/PgliteOptions.cs" />
+    <Compile Include="../../src/Api/PgliteInitializationTrace.cs" Link="Api/PgliteInitializationTrace.cs" />
+    <Compile Include="../../src/Initialization/InitializationProcessTransport.cs" Link="Initialization/InitializationProcessTransport.cs" />
+  </ItemGroup>
+</Project>

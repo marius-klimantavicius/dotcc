@@ -3,10 +3,12 @@
     <OutputType>Exe</OutputType>
     <IsAotCompatible>true</IsAotCompatible>
     <TranslatedProject Condition="'$(TranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPGlite/TranslatedPGlite.csproj</TranslatedProject>
+    <InitdbTranslatedProject Condition="'$(InitdbTranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedInitdb/TranslatedInitdb.csproj</InitdbTranslatedProject>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(TranslatedProject)" />
-    <Compile Include="../../src/Host/EmbeddingAvailability.cs" Link="Host/EmbeddingAvailability.cs" />
+    <ProjectReference Include="../../src/Api/PGlite.csproj" />
+    <Compile Include="../../tests/Product/SqlCases.cs" Link="SqlCases.cs" />
+    <Content Include="../../tests/native/cases.json" Link="cases.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
   <Target Name="RequireTranslatedPGlite" BeforeTargets="PrepareForBuild">
     <Error Condition="!Exists('$(TranslatedProject)')"

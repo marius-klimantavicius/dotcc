@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ProtocolProgram.cs" />
+    <Compile Include="SqlCases.cs" />
+    <Compile Include="../../src/Api/PgliteProtocol.cs" Link="Api/PgliteProtocol.cs" />
+    <Compile Include="../../src/Api/PgliteQueryResult.cs" Link="Api/PgliteQueryResult.cs" />
+    <Compile Include="../../src/Api/PgliteTransport.cs" Link="Api/PgliteTransport.cs" />
+    <Content Include="../native/cases.json" Link="cases.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
