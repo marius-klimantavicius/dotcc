@@ -16,8 +16,8 @@
   "diagnostic_defines": [
     "_GNU_SOURCE"
   ],
-  "complete_product_manifest": false,
-  "publication_blocker": "PGlite embedding source/host closure is incomplete; diagnostic units cannot be published as the SQL product",
+  "complete_product_manifest": true,
+  "publication_blocker": "Only the complete embedding-native PGlite backend, initializer and bundled module closure may be delivered; diagnostic subsets remain probe-only",
   "link_defaults": {
     "split_size": 262144,
     "literal_pool": true,
@@ -27,7 +27,7 @@
     "selection": "PGLITE_DOTCC_C11_ATOMICS",
     "header": "src/Atomics/generic-dotcc-c11.h",
     "adaptations": "two guarded selection hunks in private port/atomics.h; generic wrappers unchanged",
-    "status": "native-original/native-C11/emitted-JIT controls pass; postgres.c reaches separate spinlock blocker"
+    "status": "native-original/native-C11/emitted-JIT atomic and one-byte spinlock controls pass; whole selected backend emits"
   },
   "backend_manifest": "config/backend-units.json"
 }

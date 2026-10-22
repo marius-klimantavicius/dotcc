@@ -87,6 +87,18 @@ class ProductDeliveryTests(unittest.TestCase):
             self.translation.finish(self.ctx, project, "raw")
         self.assertEqual(project.read_bytes(), before)
 
+    def test_complete_embedding_manifest_never_publishes_diagnostic_subset(self):
+        self.authored_inputs()
+        (self.root / "config/translation.json").write_text(json.dumps(
+            {"complete_product_manifest": True, "publication_blocker": "diagnostic subsets are probe-only"}))
+        self.ctx.profile = "native-diagnostic"
+        project = self.root / "diagnostic.csproj"
+        project.write_text("<Project />")
+        before = project.read_bytes()
+        with self.assertRaisesRegex(RuntimeError, "diagnostic subsets are probe-only"):
+            self.translation.finish(self.ctx, project, "raw")
+        self.assertEqual(project.read_bytes(), before)
+
     def command_context(self, fail=False):
         self.ctx.recipe = self.recipe_module.recipe
         self.ctx.layout = Layout(self.root, "TranslatedPGlite", self.ctx.recipe.default_profile)

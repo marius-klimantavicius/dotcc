@@ -12,7 +12,8 @@ def record_object_scope(ctx, reports):
 
 def reject_incomplete(ctx):
     policy = json_file(ctx.root / "config/translation.json")
-    if ctx.options.action != "probe" and not policy["complete_product_manifest"]:
+    if ctx.options.action != "probe" and (
+            ctx.profile != "embedding-native" or not policy["complete_product_manifest"]):
         raise RuntimeError(policy["publication_blocker"])
 
 
@@ -126,7 +127,8 @@ def prepare(ctx):
     backend_defines = info.get("defines", []) if ctx.profile == "embedding-native" else []
     ctx.receipt["pglite_translation"] = dict(
         profile=ctx.profile, configuration=info,
-        diagnostic_units=policy["diagnostic_units"], complete_product_manifest=policy["complete_product_manifest"],
+        diagnostic_units=policy["diagnostic_units"],
+        complete_product_manifest=ctx.profile == "embedding-native" and policy["complete_product_manifest"],
         embedding_parity=False,
         scope="real fork source diagnostics using native generated headers; not wasm32 profile qualification")
     # Paths in specialist configuration are serialized in the ordinary receipt.
