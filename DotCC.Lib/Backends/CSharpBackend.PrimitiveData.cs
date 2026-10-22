@@ -103,9 +103,38 @@ internal sealed partial class CSharpBackend
         }
     }
 
+    private bool TryReadablePrimitiveProperty(CType element, IReadOnlyList<CExpr> values, out string property)
+    {
+        property = "";
+        // Short wide-character strings and spliced resources keep their typed
+        // literal spelling. The getter's direct ReadOnlySpan<T> return lets
+        // Roslyn use RVA data, just as for a collection expression. Never pass
+        // the array expression through AsSpan or an intermediate T[] local.
+        if (values.Count > 32 || element.Unqualified is not CType.Prim { Integer: true } primitive
+            || primitive.Bytes * values.Count > 512 || values.Any(value => value is not LitInt)
+            || primitive.Name is not ("char16_t" or "wchar_t" or "char32_t")
+                && !(primitive.Bytes > 1 && values.Any(value => value is LitInt { IsEmbeddedByte: true }))
+            || !TryPrimitiveData(element, values, out _)) return false;
+        string type = Cs(element);
+        string expression = "new " + type + "[]{ " + string.Join(", ", values.Select(value => Coerced(value, element))) + " }";
+        if (expression.Length > 4096) return false;
+        string body = "    public static global::System.ReadOnlySpan<" + type + "> Values => " + expression + ";\n";
+        string name = "__DotccPrimitiveView_" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(body)));
+        _aggregateFactories.TryAdd(name, "internal static class " + name + "\n{\n" + body + "}\n");
+        property = name + ".Values";
+        return true;
+    }
+
     private bool EmitPrimitiveCopies(StringBuilder output, string destination, CType element,
         IReadOnlyList<CExpr> values, bool zeroed)
     {
+        if (TryReadablePrimitiveProperty(element, values, out string readable))
+        {
+            output.Append("        ").Append(readable).Append(".CopyTo(new global::System.Span<")
+                .Append(Cs(element)).Append(">((").Append(Cs(element)).Append("*)(").Append(destination)
+                .Append("), ").Append(values.Count).Append("));\n");
+            return true;
+        }
         if (!TryPrimitiveData(element, values, out var data)) return false;
         foreach (var chunk in PrimitiveChunks(data, zeroed))
         {

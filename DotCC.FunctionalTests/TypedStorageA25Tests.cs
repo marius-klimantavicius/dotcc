@@ -115,6 +115,70 @@ public sealed class TypedStorageA25Tests
         finally { Directory.Delete(directory, true); }
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Readable_small_literals_have_nonallocating_payloads_and_distinct_writable_storage(bool link)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "dotcc-readable-payload-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            string input = Path.Combine(directory, "data.c");
+            File.WriteAllBytes(Path.Combine(directory, "one.bin"), [222]);
+            File.WriteAllText(input, """
+                char16_t first[] = u"hi";
+                const char16_t second[] = u"hi";
+                const char32_t wide[] = U"hi";
+                int mixed[] = {17,
+                #embed "one.bin"
+                ,19};
+                struct Point { int x; int y; char16_t tag; struct Point *self; };
+                struct Point origin = {3,4,0x1234,&origin};
+                int check(void) {
+                    if (first == second || first[0] != 104 || second[0] != 104 ||
+                        wide[1] != 105 || wide[2] != 0 || mixed[0] != 17 || mixed[1] != 222 || mixed[2] != 19 ||
+                        origin.x + origin.y != 7 || origin.tag != 0x1234 || origin.self != &origin) return 0;
+                    first[0] = 120;
+                    mixed[1] = 42;
+                    return second[0] == 104 && first[0] == 120 && mixed[1] == 42;
+                }
+                """);
+            if (link)
+            {
+                string obj = Path.Combine(directory, "data.o");
+                File.WriteAllText(obj, Compiler.EmitObject(input));
+                input = obj;
+            }
+            var options = new CSharpOutputOptions(Runtime: RuntimeProfile.C, NestTypes: true);
+            string source = link ? Compiler.LinkObjects([input], emit: EmitMode.ManagedLib, className: "Api", outputOptions: options)
+                : Compiler.EmitCSharp([input], emit: EmitMode.ManagedLib, className: "Api", outputOptions: options);
+            var references = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!).Split(Path.PathSeparator)
+                .Select(path => MetadataReference.CreateFromFile(path));
+            var compilation = CSharpCompilation.Create("Readable" + Guid.NewGuid().ToString("N"),
+                [CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview))], references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true, optimizationLevel: OptimizationLevel.Release));
+            using var stream = new MemoryStream();
+            var result = compilation.Emit(stream, cancellationToken: TestContext.Current.CancellationToken);
+            result.Success.ShouldBeTrue(string.Join("\n", result.Diagnostics));
+            var context = new AssemblyLoadContext("readable-" + Guid.NewGuid(), isCollectible: false);
+            var assembly = context.LoadFromStream(new MemoryStream(stream.ToArray()));
+            assembly.GetType("Api")!.GetMethod("check")!.Invoke(null, null).ShouldBe(1);
+            var getters = assembly.GetTypes().SelectMany(type => type.GetMethods(BindingFlags.Static | BindingFlags.Public))
+                .Where(method => method.Name == "get_Values" && method.DeclaringType!.Name.StartsWith("__DotccPrimitiveView_", StringComparison.Ordinal)).ToArray();
+            getters.Length.ShouldBe(3);
+            foreach (var getter in getters)
+            {
+                Instructions(getter.GetMethodBody()!.GetILAsByteArray()!).ShouldNotContain(instruction => instruction.Code == OpCodes.Newarr);
+                Type element = getter.ReturnType.GenericTypeArguments[0];
+                if (element == typeof(char)) CheckGetter<char>(getter, Convert.FromHexString("680069000000"));
+                else if (element == typeof(uint)) CheckGetter<uint>(getter, Convert.FromHexString("680000006900000000000000"));
+                else { element.ShouldBe(typeof(int)); CheckGetter<int>(getter, Convert.FromHexString("11000000DE00000013000000")); }
+            }
+        }
+        finally { Directory.Delete(directory, true); }
+    }
+
     [Fact]
     public void Integer_backed_float_views_preserve_noncanonical_NaNs_and_signed_zero_bits()
     {
@@ -174,11 +238,11 @@ public sealed class TypedStorageA25Tests
             var instructions = Instructions(method.GetMethodBody()!.GetILAsByteArray()!).ToArray();
             instructions.ShouldNotContain(instruction => instruction.Code == OpCodes.Newarr
                 || instruction.Code.Name!.StartsWith("conv.", StringComparison.Ordinal));
-            if (method.Name.StartsWith("get_B", StringComparison.Ordinal) || method.Name.StartsWith("get_P", StringComparison.Ordinal))
+            var fields = instructions.Where(instruction => instruction.Code == OpCodes.Ldtoken || instruction.Code == OpCodes.Ldsflda)
+                .Where(instruction => (instruction.Token & unchecked((int)0xff000000)) == 0x04000000)
+                .Select(instruction => metadata.GetFieldDefinition(MetadataTokens.FieldDefinitionHandle(instruction.Token & 0x00ffffff))).ToArray();
+            if (fields.Length > 0)
             {
-                var fields = instructions.Where(instruction => instruction.Code == OpCodes.Ldtoken || instruction.Code == OpCodes.Ldsflda)
-                    .Where(instruction => (instruction.Token & unchecked((int)0xff000000)) == 0x04000000)
-                    .Select(instruction => metadata.GetFieldDefinition(MetadataTokens.FieldDefinitionHandle(instruction.Token & 0x00ffffff))).ToArray();
                 fields.ShouldContain(field => field.GetRelativeVirtualAddress() != 0
                     && pe.GetSectionData(field.GetRelativeVirtualAddress()).GetContent(0, bytes.Length).SequenceEqual(bytes));
             }

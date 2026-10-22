@@ -51,6 +51,9 @@ public sealed class D10ReadabilityA25Tests
             struct Buffer { unsigned int data[8201]; long tail; };
             struct Buffer root = {.data={[0]=3,[8200]=91},.tail=19};
             struct Buffer rows[] = {{.data={[0]=7,[8200]=33},.tail=5}};
+            struct SmallBuffer { int value; int unused[4]; } small = {.value=1};
+            struct SmallBuffer smallrows[] = {{.value=2}};
+            struct SmallBits { int value; unsigned int unused:3; } smallbits = {.value=3};
             """, link, source =>
         {
             source.ShouldContain("fixed (Buffer* root_destination");
@@ -60,6 +63,11 @@ public sealed class D10ReadabilityA25Tests
             source.ShouldNotContain("rows_destination[0] = new()");
             source.ShouldNotContain("new Buffer {");
             source.ShouldContain(" + 8200, 1)");
+            source.ShouldContain("fixed (SmallBuffer* small_destination");
+            source.ShouldContain("smallrows_destination[0].value = 2");
+            source.ShouldContain("fixed (SmallBits* smallbits_destination");
+            source.ShouldNotContain("new SmallBuffer {");
+            source.ShouldNotContain("new SmallBits {");
             source.ShouldNotContain("AsSpan(new ");
         });
     }

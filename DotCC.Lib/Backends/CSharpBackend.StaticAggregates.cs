@@ -33,6 +33,12 @@ internal sealed partial class CSharpBackend
     private bool EmitLargeStaticAggregateInitializer(StringBuilder output, GlobalVar global)
     {
         if (global.Init is not StructInit aggregate) return false;
+        if (TryCompactRecord(aggregate, out string expression))
+        {
+            output.Append("        ").Append(GlobalStorageReferences.Emit(global.Sym.TargetName))
+                .Append(" = ").Append(expression).Append(";\n");
+            return true;
+        }
         // Static C storage is already zeroed and its final address is established
         // before these constant stores. Write through that address instead of
         // building enormous by-value object/factory argument temporaries.
@@ -156,6 +162,61 @@ internal sealed partial class CSharpBackend
         output.Append("        ").Append(destination).Append(" = ").Append(Coerced(value, type)).Append(";\n");
     }
 
+    // Small complete values keep ordinary typed object initializers. Bound the
+    // physical copy, expression complexity and emitted source independently;
+    // inline arrays and effectful owned payloads still initialize in place.
+    private bool TryCompactRecord(StructInit value, out string text, int depth = 0)
+    {
+        text = "";
+        if (depth > 8 || value.Type.Unqualified is not CType.Named named
+            || StaticAggregateStores(value) > 32) return false;
+        bool known = _aggregateDefinitions.TryGetValue(named.Name, out var definition);
+        if (known)
+        {
+            if (definition!.IsIncomplete || definition.IsUnion && value.Members.Count > 1) return false;
+            try
+            {
+                if (_offsetModel.Aggregate(named.Name).Size > 512
+                    || !definition.IsUnion && !ReadableRecordLayout(definition, depth)) return false;
+            }
+            catch (DotCC.Layout.OffsetLayoutException) { return false; }
+            // A union may contain an inactive array (e.g. an endian probe).
+            // Only its selected scalar member is initialized below. Ordinary
+            // records validate every field, including omitted inline storage.
+            if (definition.Fields.Any(field => field.IsBitField || field.IsAnonymousAggregate || field.IsFlexibleArray))
+                return false;
+        }
+        else
+        {
+            // Runtime-owned Zig vtables have no emitted C type definition. Their
+            // typed IR supplies only function-pointer fields, so the full value
+            // is bounded by the number of entries without assuming a C layout.
+            if (named.Name != "AllocatorVTable" || value.Members.Count > 4
+                || value.Members.Any(member => member.FieldType.Unqualified is not CType.Func))
+                return false;
+        }
+        var assigned = new HashSet<string>(StringComparer.Ordinal);
+        var members = new List<string>();
+        foreach (var member in value.Members)
+        {
+            if (!assigned.Add(member.Name) || known && !definition!.Fields.Any(field => field.Name == member.Name
+                && !field.IsBitField && !field.IsAnonymousAggregate && !field.IsFlexibleArray)) return false;
+            string expression;
+            if (member.Value is StructInit nested)
+            {
+                if (!TryCompactRecord(nested, out expression, depth + 1)) return false;
+            }
+            else
+            {
+                if (!ReadableRecordScalar(member.Value)) return false;
+                expression = ReadableRecordConversion(member.Value, member.FieldType);
+            }
+            members.Add(EmitHelpers.Id(member.Name) + " = " + expression);
+        }
+        text = "new " + Cs(value.Type) + " { " + string.Join(", ", members) + " }";
+        return text.Length <= 4096;
+    }
+
     // Bounds are deliberately far below C026's 32 KiB aggregate cutoff: at
     // most 512 value bytes, 32 leaf stores and 4 KiB source per complete row.
     // _PyRuntime and records containing inline arrays always stay in place.
@@ -247,7 +308,7 @@ internal sealed partial class CSharpBackend
         {
             long minimum = primitive.Signed ? -(1L << (primitive.Bytes * 8 - 1)) : 0;
             long maximum = primitive.Signed ? (1L << (primitive.Bytes * 8 - 1)) - 1 : (1L << (primitive.Bytes * 8)) - 1;
-            if (number >= minimum && number <= maximum && Cs(target) != "CBool")
+            if (number >= minimum && number <= maximum && Cs(target) is not ("CBool" or "char"))
                 return number.ToString(CultureInfo.InvariantCulture);
         }
         return Coerced(value, target);

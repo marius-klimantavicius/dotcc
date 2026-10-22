@@ -37,7 +37,12 @@ public abstract record CExpr
 /// suffix stripped; the backend re-adds a target suffix from <see cref="CExpr.Type"/>
 /// via <see cref="ITarget.RenderIntLit"/>. <see cref="Value"/> is the folded value
 /// when it fits a long (for const-expression contexts).</summary>
-public sealed record LitInt(string Digits, long? Value) : CExpr;
+public sealed record LitInt(string Digits, long? Value) : CExpr
+{
+    /// <summary>Preserve an embedded resource byte's origin for bounded,
+    /// readable typed initializer payloads after list splicing.</summary>
+    public bool IsEmbeddedByte { get; init; }
+}
 
 /// <summary>A boolean literal — the Zig front-end's <c>true</c>/<c>false</c> (C has no bool
 /// literal node; its <c>true</c>/<c>false</c> are <c>&lt;stdbool.h&gt;</c> macros → 1/0). The

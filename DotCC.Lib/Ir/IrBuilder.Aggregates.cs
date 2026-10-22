@@ -79,7 +79,7 @@ internal sealed partial class IrBuilder
                 var inv = System.Globalization.CultureInfo.InvariantCulture;
                 foreach (var b in ed.Bytes)
                 {
-                    items.Add(new InitVal(new LitInt(b.ToString(inv), b) { Type = CType.Int }));
+                    items.Add(new InitVal(new LitInt(b.ToString(inv), b) { Type = CType.Int, IsEmbeddedByte = true }));
                 }
             }
             else { items.Add(e); }
