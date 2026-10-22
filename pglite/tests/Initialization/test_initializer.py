@@ -91,6 +91,19 @@ class InitializerTests(unittest.TestCase):
                     self.assertEqual(notices.read("upstream/" + name), (observed / name).read_bytes())
             self.assertEqual((output / "notices/DotCC-LICENSE.txt").read_bytes(),
                              (ROOT.parent / "LICENSE").read_bytes())
+            with zipfile.ZipFile(output / "notices/generated-inputs.zip") as generated:
+                index = json.loads((output / "notices/generated-inputs-manifest.json").read_text())
+                self.assertEqual(set(generated.namelist()),
+                                 {"prepared/" + row["path"] for row in index["files"]})
+                for row in index["files"]:
+                    data = generated.read("prepared/" + row["path"])
+                    self.assertEqual(data, (self.source / row["path"]).read_bytes())
+                    self.assertEqual(hashlib.sha256(data).hexdigest(), row["sha256"])
+                for name in ("src/backend/parser/gram.c", "src/pl/plpgsql/src/pl_gram.c"):
+                    self.assertEqual(generated.read("prepared/" + name),
+                                     (self.source / name).read_bytes())
+            self.assertEqual((output / "notices/GPL-3.0.txt").read_bytes(),
+                             (ROOT / "src/Notices/GPL-3.0.txt").read_bytes())
             self.assertGreater(len(report["files"]), 15)
             for entry in report["files"]:
                 self.assertFalse(entry["path"].endswith((".so", ".dll", ".dylib", ".wasm")))
