@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "resolved_at": "2026-10-22",
+  "product": {
+    "repository": "https://github.com/electric-sql/postgres-pglite",
+    "default_branch": "REL_18_6-pglite",
+    "revision": "29b6424aa312ec3556247db069939006dd27f878",
+    "version": "18.6",
+    "url": "https://codeload.github.com/electric-sql/postgres-pglite/tar.gz/29b6424aa312ec3556247db069939006dd27f878",
+    "archive": "postgres-pglite-29b6424aa312ec3556247db069939006dd27f878.tar.gz",
+    "directory": "postgres-pglite-29b6424aa312ec3556247db069939006dd27f878",
+    "prefix": "postgres-pglite-29b6424aa312ec3556247db069939006dd27f878",
+    "required": [
+      "configure",
+      "COPYRIGHT",
+      "README-PGLITE-DEV.md",
+      "build-pglite.sh",
+      "src/backend/tcop/postgres.c",
+      "pglite/src/pglitec/pglitec.c"
+    ],
+    "notices": [
+      "COPYRIGHT",
+      "pglite/static/minimal-icu/76.1/LICENSE"
+    ],
+    "license": "PostgreSQL; preserve COPYRIGHT and per-file notices",
+    "git_submodules": "Archive does not contain git submodule contents; extensions are excluded from first useful workload",
+    "sha256": "175f2e1bbef0b726d7bf18b3533689ca501b738d127d72d917c00fc42c91342b"
+  },
+  "upstream_builder": {
+    "image": "electricsql/pglite-builder:3.1.74-7",
+    "selection_origin": "product/build-with-docker.sh",
+    "status": "OCI manifest/config inspected; image tag names 3.1.74; SDK binary version not executed; layers not acquired; native variant uses host tools",
+    "index_digest": "sha256:9e75d29ed19d651b393bf9462bbe770405bd3b26e57d3b76001ac844539835e1",
+    "linux_amd64_digest": "sha256:bc0e87d5aed82796311ddf8d3126b424892727c424743c09af3754094e2207d1",
+    "dockerfile": "product/pglite/builder/Dockerfile",
+    "config_digest": "sha256:1daaa3316c999f1f9a6f12ad904e63b4ac90f7f87bbed6febdd66fb313c0e58e",
+    "image_created": "2026-06-01T10:40:09.692190315Z",
+    "compressed_layer_bytes": 1051215581,
+    "sdk_environment": [
+      "PATH=/emsdk:/emsdk/upstream/emscripten:/emsdk/node/20.18.0_64bit/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "EMSDK=/emsdk",
+      "LLVM_NM=/emsdk/upstream/bin/llvm-nm"
+    ],
+    "license_notes": "Image components retain their own licenses. Image layers and dependency notices are not redistributed by this native campaign."
+  },
+  "wrapper_research": {
+    "repository": "https://github.com/electric-sql/pglite-build",
+    "default_branch": "portable",
+    "revision": "c195113dbaf09488f8d5eeb2db91dacd123b74d0",
+    "url": "https://codeload.github.com/electric-sql/pglite-build/tar.gz/c195113dbaf09488f8d5eeb2db91dacd123b74d0",
+    "archive": "pglite-build-c195113dbaf09488f8d5eeb2db91dacd123b74d0.tar.gz",
+    "directory": "pglite-build-c195113dbaf09488f8d5eeb2db91dacd123b74d0",
+    "prefix": "pglite-build-c195113dbaf09488f8d5eeb2db91dacd123b74d0",
+    "required": [
+      "README.md",
+      ".buildconfig",
+      "wasm-build/sdk.sh"
+    ],
+    "notices": [],
+    "role": "research only; not required input",
+    "profile": "17.4 .buildconfig / 17.5 wrapper; not matching 18.6 product profile",
+    "sha256": "1fdd39ac1f7ba54f29059187b9c4f3e8434ab137270b59c204cfbad02371019e",
+    "license_notes": "No top-level LICENSE/COPYRIGHT was found in this research-only snapshot; archive and original per-file contents are retained, not redistributed as a product dependency."
+  },
+  "javascript_reference": {
+    "repository": "https://github.com/electric-sql/pglite",
+    "default_branch": "main",
+    "revision": "967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+    "role": "embedding lifecycle documentation only; not a native build dependency",
+    "notices": [
+      "LICENSE",
+      "POSTGRES-LICENSE"
+    ],
+    "directory": "pglite-javascript-967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+    "files": {
+      "LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
+      "POSTGRES-LICENSE": "31ccadc0a70e8e0e8a35c5833567b64388dfe34987d962e1911554e271294105",
+      "packages/pglite/src/pglite.ts": "8b37b2d7cfa8b7a22c919b62adf51de95bf1eb03183e1a69b36b9783754e12d9",
+      "package.json": "4bdd8840e39c472697062fe72d9b952e6cc8cfc1c947131f0ded562b2059e332"
+    },
+    "license": "Apache-2.0 for JavaScript wrapper; PostgreSQL license separately preserved"
+  }
+}

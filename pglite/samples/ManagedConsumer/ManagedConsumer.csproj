@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPGlite/TranslatedPGlite.csproj</TranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(TranslatedProject)" />
+    <Compile Include="../../src/Host/EmbeddingAvailability.cs" Link="Host/EmbeddingAvailability.cs" />
+  </ItemGroup>
+  <Target Name="RequireTranslatedPGlite" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(TranslatedProject)')"
+           Text="Translated PGlite is unavailable. Run the PGlite translation campaign and resolve its complete-core embedding gates before building this consumer. A native PostgreSQL control cannot provide this product." />
+  </Target>
+</Project>

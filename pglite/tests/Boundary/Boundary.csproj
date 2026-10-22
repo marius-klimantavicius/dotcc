@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(BoundaryProject)" />
+  </ItemGroup>
+  <Target Name="RequireBoundaryFixture" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(BoundaryProject)' == '' Or !Exists('$(BoundaryProject)')"
+           Text="Set BoundaryProject to the actual emitted boundary fixture project. This probe cannot substitute for a translated PGlite product." />
+  </Target>
+</Project>

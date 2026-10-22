@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "exit",
+      "signature": {"returnType": "void", "parameterTypes": ["int"], "variadic": false},
+      "target": {"kind": "managedMethod", "method": "global::Managed.PGlite.Hosting.PGliteControlFlow.RequestExit", "doesNotReturn": true},
+      "requireMatch": true
+    }
+  ]
+}

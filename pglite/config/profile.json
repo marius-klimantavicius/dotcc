@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "default": "embedding-native",
+  "profiles": {
+    "embedding-native": {
+      "classification": "native PGlite engine variant; Linux LP64 host, not upstream wasm32 profile equivalence",
+      "configure": [
+        "--without-readline",
+        "--without-zlib",
+        "--without-icu",
+        "--without-libxml",
+        "--without-libxslt",
+        "--without-llvm",
+        "--without-lz4",
+        "--without-zstd",
+        "--disable-nls",
+        "--without-gssapi",
+        "--without-ldap",
+        "--without-pam",
+        "--without-bonjour",
+        "--without-systemd",
+        "--without-selinux",
+        "--without-liburing"
+      ],
+      "cflags": [
+        "-std=gnu11",
+        "-O0",
+        "-g0",
+        "-fPIC",
+        "-D__PGLITE__"
+      ],
+      "overrides": [
+        "system=pgl_system",
+        "popen=pgl_popen",
+        "pclose=pgl_pclose",
+        "geteuid=pgl_geteuid",
+        "getuid=pgl_getuid",
+        "getpwuid=pgl_getpwuid",
+        "exit=pgl_exit",
+        "munmap=pgl_munmap",
+        "fcntl=pgl_fcntl",
+        "atexit=pgl_atexit",
+        "setsockopt=pgl_setsockopt",
+        "getsockopt=pgl_getsockopt",
+        "getsockname=pgl_getsockname",
+        "recv=pgl_recv",
+        "send=pgl_send",
+        "connect=pgl_connect",
+        "poll=pgl_poll",
+        "shmget=pgl_shmget",
+        "shmat=pgl_shmat",
+        "shmdt=pgl_shmdt",
+        "shmctl=pgl_shmctl",
+        "longjmp=pgl_longjmp",
+        "siglongjmp=pgl_siglongjmp"
+      ],
+      "native_libc_flags": [
+        "-std=gnu11",
+        "-O0",
+        "-g0",
+        "-fPIC",
+        "-include",
+        "stdbool.h",
+        "-include",
+        "stdlib.h"
+      ],
+      "native_jobs": 2,
+      "make_variables": [
+        "LN_S=cp -p"
+      ],
+      "abi": {
+        "platform": "linux",
+        "architecture": "x86_64",
+        "data_model": "LP64",
+        "endianness": "little",
+        "pointer_bytes": 8,
+        "long_bytes": 8,
+        "int_bytes": 4
+      },
+      "excluded": [
+        "extensions",
+        "ICU collation",
+        "compression providers",
+        "TLS",
+        "XML/XSLT",
+        "multiple concurrent instances",
+        "cross-profile database-file interchange"
+      ],
+      "native_exit_boundary": "test executable wraps libc exit; 99 and 100 are PGlite keep-alive/error statuses, never a product subprocess API",
+      "dotcc_standard": "gnu11",
+      "upstream_obsolete_option": "18.6 configure ignores --disable-spinlocks; omitted for the native variant"
+    }
+  },
+  "upstream_wasm": {
+    "classification": "documented upstream profile; not built here",
+    "entrypoint": "build-pglite.sh",
+    "host": "wasm32-unknown-emscripten",
+    "abi": "ILP32",
+    "dependencies": [
+      "zlib",
+      "ICU 76.1",
+      "libxml2",
+      "libxslt",
+      "OSSP uuid",
+      "Emscripten filesystem/runtime",
+      "OpenSSL for optional pgcrypto",
+      "additional PostGIS dependencies for optional extensions"
+    ],
+    "features": [
+      "__PGLITE__",
+      "__EMSCRIPTEN__",
+      "unrolled query loop",
+      "callback transport",
+      "emulated libc",
+      "no pthreads",
+      "Emscripten longjmp/ExitStatus handling"
+    ],
+    "configure": [
+      "ac_cv_exeext=.js",
+      "--host=wasm32-unknown-emscripten",
+      "--disable-spinlocks",
+      "--without-llvm",
+      "--without-pam",
+      "--disable-largefile",
+      "--with-openssl=no",
+      "--without-readline",
+      "--with-icu",
+      "--with-uuid=ossp",
+      "--with-zlib",
+      "--with-libxml",
+      "--with-libxslt",
+      "--with-template=emscripten"
+    ],
+    "status": "requires pinned builder/SDK and dependency closure; no matching-profile success claimed"
+  }
+}

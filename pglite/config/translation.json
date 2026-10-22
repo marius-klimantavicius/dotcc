@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "product": "TranslatedPGlite",
+  "class": "PGlite",
+  "namespace": "Managed.PGlite.Translated",
+  "dialect": "c11",
+  "diagnostic_units": [
+    "pglite/src/pglitec/pglitec.c",
+    "src/common/pg_lzcompress.c",
+    "src/backend/nodes/bitmapset.c",
+    "src/backend/tcop/postgres.c"
+  ],
+  "embedding_defines": [
+    "__PGLITE__"
+  ],
+  "diagnostic_defines": [
+    "_GNU_SOURCE"
+  ],
+  "complete_product_manifest": false,
+  "publication_blocker": "PGlite embedding source/host closure is incomplete; diagnostic units cannot be published as the SQL product",
+  "link_defaults": {
+    "split_size": 262144,
+    "literal_pool": true,
+    "deduplicate_inline": true
+  },
+  "atomic_port": {
+    "selection": "PGLITE_DOTCC_C11_ATOMICS",
+    "header": "src/Atomics/generic-dotcc-c11.h",
+    "adaptations": "two guarded selection hunks in private port/atomics.h; generic wrappers unchanged",
+    "status": "native-original/native-C11/emitted-JIT controls pass; postgres.c reaches separate spinlock blocker"
+  },
+  "backend_manifest": "config/backend-units.json"
+}

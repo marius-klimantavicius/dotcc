@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "repository_baseline": "76c30638df4c1e36db39d7b087ce7a267944e194",
+  "baseline_modified_paths": ["docs/plans/translation-baseline.md", "docs/plans/translation-template.md"],
+  "supervisor": {"providerInstanceId":"codex", "model":"gpt-6.1-sol", "reasoningEffort":"high"},
+  "implementation": {"providerInstanceId":"codex", "model":"gpt-6.1-sol", "reasoningEffort":"xhigh"},
+  "first_target": "linux-x64"
+}

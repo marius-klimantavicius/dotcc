@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(AtomicsProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(AtomicsProject)' == '' Or !Exists('$(AtomicsProject)')"
+           Text="Set AtomicsProject to the actual emitted PostgreSQL atomic fixture project." />
+  </Target>
+</Project>

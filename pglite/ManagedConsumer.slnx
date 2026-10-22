@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="generated/TranslatedPGlite/TranslatedPGlite.csproj" />
+  <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+</Solution>
