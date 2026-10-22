@@ -1,0 +1,20 @@
+<Project>
+  <!-- Select data from the same raw/processed product as the backend reference.
+       Copy the complete prefix, including module/entrypoint descriptors and
+       notices, so ordinary IDE runs and published applications are portable. -->
+  <PropertyGroup>
+    <_PgliteBackendDirectory>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetFullPath('$(TranslatedProject)'))))</_PgliteBackendDirectory>
+    <_PgliteBootstrapPrefix>$(_PgliteBackendDirectory)/bootstrap-prefix</_PgliteBootstrapPrefix>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="$(_PgliteBootstrapPrefix)/**/*"
+             Link="bootstrap-prefix/%(RecursiveDir)%(Filename)%(Extension)"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+    <_PgliteRequiredBootstrapAsset Include="share/postgresql/postgres.bki;lib/postgresql/plpgsql;lib/postgresql/dict_snowball;bin/initdb;bin/postgres" />
+  </ItemGroup>
+  <Target Name="RequirePgliteBootstrapAssets" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(_PgliteBootstrapPrefix)/%(_PgliteRequiredBootstrapAsset.Identity)')"
+           Text="The selected translated PGlite product is missing bootstrap input '$(_PgliteBootstrapPrefix)/%(_PgliteRequiredBootstrapAsset.Identity)'. Regenerate the complete product with pglite/scripts/verify.sh before building the consumer." />
+  </Target>
+</Project>

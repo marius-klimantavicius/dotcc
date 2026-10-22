@@ -47,10 +47,14 @@ Build and run the canonical consumer against existing generated products:
 
 ```bash
 dotnet build pglite/ManagedConsumer.slnx -c Release
-dotnet run --project pglite/samples/ManagedConsumer/ManagedConsumer.csproj -c Release -- \
-  --bootstrap-prefix "$PWD/pglite/generated/TranslatedPGlite/bootstrap-prefix" \
-  --work /tmp/pglite-consumer
+dotnet run --project pglite/samples/ManagedConsumer/ManagedConsumer.csproj -c Release
 ```
+
+Ordinary builds and publishes copy the selected backend's complete
+`bootstrap-prefix` into the consumer output, including catalogs, descriptors and
+notices. Debug/IDE runs also work without arguments. The sample creates a fresh
+work directory under `/tmp/dotcc-pglite-consumer`; use `--work PATH` or
+`--bootstrap-prefix PATH` after `--` to override these defaults.
 
 To reproduce translation and the complete selected qualification:
 
