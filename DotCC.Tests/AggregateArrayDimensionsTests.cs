@@ -8,6 +8,23 @@ namespace DotCC.Tests;
 public sealed class AggregateArrayDimensionsTests
 {
     [Theory]
+    [InlineData("[2][0] = 1")]
+    [InlineData("[0][3] = 1")]
+    [InlineData("[0][0][0] = 1")]
+    [InlineData("[-1][0] = 1")]
+    public void Array_designation_checks_every_target_dimension(string initializer)
+    {
+        var path = Path.Combine(Path.GetTempPath(), "dotcc-designator-bounds-" + Guid.NewGuid().ToString("N") + ".c");
+        File.WriteAllText(path, "int table[2][3] = {" + initializer + "};");
+        try
+        {
+            Should.Throw<CompileException>(() => Compiler.EmitCSharp([path]))
+                .Message.ShouldContain("array designator");
+        }
+        finally { File.Delete(path); }
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public void Aggregate_copy_expressions_keep_the_brace_elision_path(bool objects)

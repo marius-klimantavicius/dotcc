@@ -132,12 +132,32 @@ internal sealed partial class IrBuilder
         C.InitElemExpr e => new InitVal(BuildExpr(e.Arg0)),
         C.InitElemNest nest => new InitGroup(ParseInitList(nest.Arg1)),
         C.InitElemMembers members => Gated(1999, "designated aggregate initializers", it, new InitMembers(members.Arg1)),
-        C.InitElemDesignated d => Gated(1999, "array designators", it, new InitAt(
-            ConstEval(BuildExpr(d.Arg1)) is { } ix && ix >= 0 && ix <= int.MaxValue ? (int)ix
-                : throw new IrUnsupportedException("array designator index must be a constant non-negative integer"),
-            ParseInitElem(d.Arg4))),
+        C.InitElemDesignated d => Gated(1999, "array designators", it,
+            ParseArrayDesignation(d.Arg0, ParseInitElem(d.Arg2))),
         _ => new InitVal(BuildExpr(it)),
     };
+
+    private Init ParseArrayDesignation(Item item, Init value)
+    {
+        // The left-recursive path is consumed from its last dimension back to
+        // the first, retaining each bound check until the target array is known.
+        while (true)
+        {
+            Item index;
+            Item? prefix;
+            switch (item.Content)
+            {
+                case C.ArrayDesignatorOne one: index = one.Arg1; prefix = null; break;
+                case C.ArrayDesignatorCons cons: index = cons.Arg2; prefix = cons.Arg0; break;
+                default: throw new IrUnsupportedException("invalid array designation");
+            }
+            int position = ConstEval(BuildExpr(index)) is { } ix && ix >= 0 && ix <= int.MaxValue ? (int)ix
+                : throw new IrUnsupportedException("array designator index must be a constant non-negative integer");
+            value = new InitAt(position, value);
+            if (prefix is not { } previous) return value;
+            item = previous;
+        }
+    }
 
     // ---- struct / union aggregates ---------------------------------------
 
@@ -393,7 +413,7 @@ internal sealed partial class IrBuilder
     {
         if (items.Any(i => i is InitAt))
         {
-            if (dims is { Count: > 1 }) { throw new IrUnsupportedException("array designators on a multi-dimensional array"); }
+            if (dims is { Count: > 1 }) return MultidimensionalDesignatedArrayValues(elem, items, dims);
             return DesignatedArrayValues(elem, items, dims is { Count: 1 } ? dims[0] : -1);
         }
         var elemName = (elem.Unqualified as CType.Named)?.Name;
@@ -468,6 +488,62 @@ internal sealed partial class IrBuilder
         // implicit `[]` scalar array — the values as written.
         return items.Select(it => it is InitVal v ? v.Value
             : throw new IrUnsupportedException("nested brace in an implicitly-sized scalar array")).ToList();
+    }
+
+    private List<CExpr> MultidimensionalDesignatedArrayValues(CType elem, IReadOnlyList<Init> items, IReadOnlyList<int> dims)
+    {
+        var strides = new int[dims.Count];
+        int total = 1;
+        for (int dimension = dims.Count - 1; dimension >= 0; --dimension)
+        {
+            strides[dimension] = total;
+            total = checked(total * dims[dimension]);
+        }
+        CExpr zero = elem.Unqualified is CType.Named named && _structFields.ContainsKey(named.Name)
+            ? new DefaultLit { Type = elem } : Zero;
+        var values = Enumerable.Repeat(zero, total).ToList();
+        int cursor = 0;
+        foreach (var item in items)
+        {
+            int offset = cursor, depth = dims.Count;
+            Init value = item;
+            if (item is InitAt)
+            {
+                offset = 0;
+                depth = 0;
+                while (value is InitAt at)
+                {
+                    if (depth >= dims.Count)
+                        throw new IrUnsupportedException("too many array designators for the target dimensions");
+                    if (at.Index >= dims[depth])
+                        throw new IrUnsupportedException($"array designator index {at.Index} is out of bounds for [{dims[depth]}]");
+                    offset = checked(offset + at.Index * strides[depth++]);
+                    value = at.Value;
+                }
+            }
+            else if (item is InitGroup)
+            {
+                // An undesignated brace group selects the next complete row.
+                // Reject irregular partial-row bracing rather than relocating it.
+                if (cursor % strides[0] != 0)
+                    throw new IrUnsupportedException("array initializer brace group is not at a row boundary");
+                depth = 1;
+            }
+            if (offset >= total)
+                throw new IrUnsupportedException("too many initializers for array");
+            if (depth < dims.Count && value is InitGroup group)
+            {
+                var row = BuildArrayElems(elem, dims.Skip(depth).ToArray(), group.Items);
+                for (int index = 0; index < row.Count; ++index) values[offset + index] = row[index];
+                cursor = offset + row.Count;
+            }
+            else
+            {
+                values[offset] = BuildFieldInitializer(elem, value);
+                cursor = offset + 1;
+            }
+        }
+        return values;
     }
 
     /// <summary>Build the dense, zero-filled value list for a 1-D array with

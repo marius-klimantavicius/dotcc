@@ -2,6 +2,26 @@
 
 Campaign-start ledger, 2026-10-22. Planned checks are not successes.
 
+## PGL-011 — Multidimensional array designators (fixed)
+
+The original common/jsonapi.c parser table initializes struct cells with
+`[nonterminal][terminal] = { ... }`. The grammar previously allowed one index,
+and the array interpreter explicitly rejected multidimensional designation.
+Index chains now retain each target dimension, validate every bound, fill sparse
+scalar/aggregate cells, preserve continuation and later-write replacement, and
+zero-fill explicitly selected rows. Irregular partial-row bracing is rejected
+rather than silently relocated. Native fixture output matches direct/object
+emission, including three dimensions, repeated writes and whole-row replacement.
+Actual complete jsonapi.c emits: receipt `20261022-172314-cb2ce1cd`.
+
+Four direct/object control-flow/designator fixture executions pass. Nineteen
+affected aggregate checks pass; an additional new BSD typedef check independently
+reveals existing compile-time unsigned-small-integer cast truncation behavior
+(native unsigned char/short -1 differs from DotCC static assertion folding).
+That new finding remains active; the overall combined unit log is failed, not
+reported as passing. Logs: `artifacts/supervisor-portable/designators-{native,
+before,functional,unit}.log`.
+
 ## PGL-009 — Comma expressions in for conditions (fixed)
 
 Actual `tupdesc.c:1072` expands `forfour` into four assignments and a final

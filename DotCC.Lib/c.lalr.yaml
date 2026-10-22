@@ -493,6 +493,7 @@ symbols:
   - WStringArrayInitializer
   - U32StringArrayInitializer
   - U8StringArrayInitializer
+  - ArrayDesignators
 
 productions:
   # The parser's augmented start has one production. Put the empty-unit
@@ -1563,7 +1564,12 @@ productions:
       # positional `E` element. The emitter builds a dense, zero-filled array;
       # Retain the initializer tree after the index: the selected array
       # element supplies the scalar/aggregate type during lowering.
-      - { lhs: InitElem, rhs: ['[', E, ']', '=', InitElem], action: initElemDesignated }
+      - { lhs: InitElem, rhs: [ArrayDesignators, '=', InitElem], action: initElemDesignated }
+
+  - derivation: leftmost
+    rules:
+      - { lhs: ArrayDesignators, rhs: ['[', E, ']'], action: arrayDesignatorOne }
+      - { lhs: ArrayDesignators, rhs: [ArrayDesignators, '[', E, ']'], action: arrayDesignatorCons }
 
   - derivation: none
     rules:

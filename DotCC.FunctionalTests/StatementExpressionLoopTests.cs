@@ -12,6 +12,7 @@ public sealed class StatementExpressionLoopTests
     [Theory]
     [InlineData("gnu-statement-expression-loops")]
     [InlineData("for-comma-condition")]
+    [InlineData("multidimensional-designators")]
     public void Object_link_keeps_loop_evaluation(string name)
     {
         var fixture = FixtureRunner.Discover().Single(row => row.name == name);
