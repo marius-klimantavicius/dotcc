@@ -116,9 +116,9 @@ public static unsafe partial class Libc
     /// <inheritdoc cref="execvp(byte*, byte**)"/>
     public static int execv(byte* path, byte** argv) { errno = EPERM; return -1; }
 
-    /// <summary><c>alarm(seconds)</c> — no SIGALRM delivery on .NET; accept and
-    /// report no previously-scheduled alarm (0).</summary>
-    public static uint alarm(uint seconds) => 0;
+    /// <summary>Schedule the explicitly opted-in owner's cooperative SIGALRM
+    /// timer, returning remaining seconds. Unbound use fails with ENOTSUP.</summary>
+    public static uint alarm(uint seconds) => PgliteAlarm(seconds);
 
     /// <summary><c>_exit(status)</c> — immediate termination, no handlers/flush
     /// (POSIX). Same backing as <see cref="_Exit"/>.</summary>
@@ -148,6 +148,13 @@ public static unsafe partial class Libc
     /// unmodeled here).</summary>
     public static int kill(int pid, int sig)
     {
+        if (RuntimeContext.Current?.PgliteSignals != null)
+        {
+            // An embedded backend must never target the containing CLR process
+            // or another backend owner through an OS process signal.
+            if (pid != getpid()) { errno = EPERM; return -1; }
+            return sig == 0 ? 0 : QueuePgliteSignal(sig);
+        }
         if (OperatingSystem.IsWindows()) { return WinKill(pid, sig); }
         int rc = PosixKill(pid, sig);
         // Surface the raw OS errno (our constants are the glibc asm-generic values).
@@ -216,6 +223,7 @@ public static unsafe partial class Libc
     /// abnormal-termination contract.</summary>
     public static int raise(int sig)
     {
+        if (RuntimeContext.Current?.PgliteSignals != null) return QueuePgliteSignal(sig);
         if (sig == 2)
         {
             while (true)
@@ -290,25 +298,23 @@ public static unsafe partial class Libc
         return result;
     }
 
-    /// <summary><c>sigaction(sig, act, oldact)</c> — accepted and ignored: the
-    /// handler can't fire (the .NET runtime owns signals). Returns 0 so module
-    /// init that installs handlers proceeds. <paramref name="act"/>/<paramref
-    /// name="oldact"/> are <c>struct sigaction*</c> (emitted struct; addressed as
-    /// <c>void*</c> here, like <c>stat</c>).</summary>
-    public static int sigaction(int sig, void* act, void* oldact) => 0;
+    /// <summary>Install/query the opted-in owner's guest disposition. Records
+    /// use DotCC's struct sigaction ABI; host OS dispositions remain separate.
+    /// Without an opted-in owner this fails with ENOTSUP.</summary>
+    public static int sigaction(int sig, void* act, void* oldact) => PgliteSigaction(sig, act, oldact);
 
-    /// <summary><c>sigprocmask(how, set, oldset)</c> — no real signal mask;
-    /// accepted and ignored (0).</summary>
-    public static int sigprocmask(int how, ulong* set, ulong* oldset) => 0;
+    /// <summary>Query/change the opted-in owner's guest mask and deliver newly
+    /// unblocked pending signals on that owner thread.</summary>
+    public static int sigprocmask(int how, ulong* set, ulong* oldset) => PgliteSigprocmask(how, set, oldset);
 
     // sigset_t is `unsigned long` (see <signal.h>): a 64-bit bitset, bit (n-1)
     // for signal n. These manipulators ARE faithful — pure bit twiddling.
 
     /// <summary><c>sigemptyset(set)</c> — clear all signals. Always 0.</summary>
-    public static int sigemptyset(ulong* set) { if (set != null) { *set = 0; } return 0; }
+    public static int sigemptyset(ulong* set) { if (set == null) { errno = EINVAL; return -1; } *set = 0; return 0; }
 
     /// <summary><c>sigfillset(set)</c> — include all signals. Always 0.</summary>
-    public static int sigfillset(ulong* set) { if (set != null) { *set = ~0UL; } return 0; }
+    public static int sigfillset(ulong* set) { if (set == null) { errno = EINVAL; return -1; } *set = ~0UL; return 0; }
 
     /// <summary><c>sigaddset(set, signum)</c> — add signal <paramref name="signum"/>.</summary>
     public static int sigaddset(ulong* set, int signum)

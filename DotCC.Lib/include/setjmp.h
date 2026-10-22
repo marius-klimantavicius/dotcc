@@ -33,12 +33,22 @@
    This is the dotcc C ABI, not the native host's register-save record. */
 #include <stdint.h>
 typedef uint64_t jmp_buf[1];
-/* POSIX signal-jump storage uses the same opaque identity representation.
-   This type declaration alone does not implement sigsetjmp/siglongjmp or
-   signal-mask save/restore; those operations need an explicit host boundary. */
+/* POSIX signal jumps use the same lexical patterns and numeric storage.
+   Both arguments are evaluated once when the lexical handler is established.
+   A nonzero savemask captures the opted-in cooperative guest signal mask;
+   the matching handler restores it before recovery. Zero leaves it alone.
+   The mask and owner/thread identity live in the managed lexical activation,
+   not this C slot. Jumps into an expired lexical region are unsupported. */
 typedef jmp_buf sigjmp_buf;
+
+/* `if (prefix && sigsetjmp(env, savemask) != 0)` (also a bare/negated
+   or ==0 terminal jump test) caches prefix once and arms only when true.
+   Its handler covers the rest of that lexical block. Other mixed boolean
+   expressions remain unsupported rather than claiming arbitrary resumption. */
 
 int setjmp(jmp_buf env);
 void longjmp(jmp_buf env, int value);
+int sigsetjmp(sigjmp_buf env, int savemask);
+void siglongjmp(sigjmp_buf env, int value);
 
 #endif

@@ -1336,6 +1336,7 @@ productions:
       # they do not allocate a local callback variable or emit a nested function.
       - { lhs: Decl, rhs: [FnSig], action: declFunctionProto }
       - { lhs: Decl, rhs: ['extern', FnSig], action: declExternFunctionProto }
+      - { lhs: Decl, rhs: ['extern', Type, DeclItemList], action: declExternObject }
       # Block-scoped aliases use the same resolved types as file-scope typedefs.
       - { lhs: Decl, rhs: ['typedef', FnSig], action: declLocalTypedefFunction }
       - { lhs: Decl, rhs: ['typedef', Type, TypedefNameList], action: declLocalTypedefAlias }
@@ -1480,6 +1481,8 @@ productions:
       # comma; a standalone array keeps its existing declaration productions.
       - { lhs: DeclItemList, rhs: [ID, ArrDims, ',', DeclItemTail], action: declItemListArrayHead }
       - { lhs: DeclItemList, rhs: [ID, ArrDims, '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListArrayHeadInit }
+      - { lhs: DeclItemList, rhs: [ID, '[', ']', '=', StringArrayInitializer, ',', DeclItemTail], action: declItemListStringArrayHead }
+      - { lhs: DeclItemList, rhs: [ID, ArrDims, '=', StringArrayInitializer, ',', DeclItemTail], action: declItemListSizedStringArrayHead }
       # A braced first initializer enters the shared list only when followed
       # by a comma, keeping the established standalone productions disjoint.
       - { lhs: DeclItemList, rhs: [ID, '=', '{', InitList, '}', ',', DeclItemTail], action: declItemListBraceHead }
@@ -1519,6 +1522,8 @@ productions:
       - { lhs: DeclItemTail, rhs: [ID, ArrDims],       action: declItemTailArr }
       - { lhs: DeclItemTail, rhs: [ID, '[', ']'], action: declItemTailFlexArr }
       - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', '{', InitList, '}'], action: declItemTailArrInit }
+      - { lhs: DeclItemTail, rhs: [ID, '[', ']', '=', StringArrayInitializer], action: declItemTailStringArray }
+      - { lhs: DeclItemTail, rhs: [ID, ArrDims, '=', StringArrayInitializer], action: declItemTailSizedStringArray }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', InitList, '}'], action: declItemTailBraceInit }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', MemberInitList, '}'], action: declItemTailDesignatedInit }
       - { lhs: DeclItemTail, rhs: [ID, '=', '{', '}'], action: declItemTailEmptyInit }
@@ -1566,6 +1571,7 @@ productions:
       # Retain the initializer tree after the index: the selected array
       # element supplies the scalar/aggregate type during lowering.
       - { lhs: InitElem, rhs: [ArrayDesignators, '=', InitElem], action: initElemDesignated }
+      - { lhs: InitElem, rhs: [ArrayDesignators, MemberInit], action: initElemArrayMembers }
 
   - derivation: leftmost
     rules:
@@ -1703,6 +1709,7 @@ productions:
       - { lhs: Unary, rhs: ['++', Unary], action: preInc }
       - { lhs: Unary, rhs: ['--', Unary], action: preDec }
       - { lhs: Unary, rhs: ['(', Type, ')', Unary], action: cast }
+      - { lhs: Unary, rhs: ['(', Type, '(', '*', ')', ArrDims, ')', Unary], action: castPointerToArray }
       # Compound literal (C99) — `(Type){ init }`. An unnamed object of `Type`
       # initialized by the brace list, usable in any expression position. Lowers
       # to a C# object-creation `new Type { field = val, … }` (struct/union only —

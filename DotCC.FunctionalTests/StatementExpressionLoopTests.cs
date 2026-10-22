@@ -15,6 +15,8 @@ public sealed class StatementExpressionLoopTests
     [InlineData("multidimensional-designators")]
     [InlineData("global-pointer-assignment")]
     [InlineData("integer-constant-cast-width")]
+    [InlineData("array-member-designators")]
+    [InlineData("multiple-string-arrays")]
     public void Object_link_keeps_loop_evaluation(string name)
     {
         var fixture = FixtureRunner.Discover().Single(row => row.name == name);

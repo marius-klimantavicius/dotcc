@@ -1030,14 +1030,15 @@ internal sealed partial class IrBuilder
         // Report the earliest stray for a stable message; positions are line/column.
         SrcPos where = default;
         var first = true;
-        foreach (var pos in _setjmpCalls.Values)
+        string name = "setjmp";
+        foreach (var (call, pos) in _setjmpCalls)
         {
             if (first || pos.Line < where.Line || (pos.Line == where.Line && pos.Column < where.Column))
-            { where = pos; first = false; }
+            { where = pos; name = call.Callee; first = false; }
         }
         _setjmpCalls.Clear();
         throw new DotCC.CompileException(
-            $"setjmp at {where}: this use of setjmp is not supported. dotcc recognises setjmp only as "
+            $"{name} at {where}: this use of {name} is not supported. dotcc recognises setjmp/sigsetjmp only as "
             + "an `if` guard — `if (setjmp(env))` / `if (setjmp(env) == 0)` — as a value capture "
             + "— `T r = setjmp(env);` (or `r = setjmp(env);`) followed by a `switch`/`if` on `r` — "
             + "or a `switch (setjmp(env)) { … }`. Rewrite the call into one of these shapes "
@@ -2600,6 +2601,7 @@ internal sealed partial class IrBuilder
     /// </list></summary>
     private CStmt? SetjmpGuardOf(CExpr cond, CStmt then, CStmt? els, SrcPos pos)
     {
+        if (SignalJumpShortCircuitGuardOf(cond, then, els, pos) is { } conditional) return conditional;
         if (SetjmpNegatedGuardOf(cond, then, els, pos) is { } negated) return negated;
         if (SetjmpAssignmentGuardOf(cond, then, els, pos) is { } capture) return capture;
         // Bare `if (setjmp(env)) …` — truthy only on the longjmp re-entry, so the
@@ -2649,6 +2651,12 @@ internal sealed partial class IrBuilder
         {
             env = a[0];
             call = c;
+            return true;
+        }
+        if (e is Call { Args: { Count: 2 } } signal && IsSignalSetjmpCall(signal))
+        {
+            env = SignalJumpEnvironment(signal);
+            call = signal;
             return true;
         }
         env = null!;
@@ -2748,6 +2756,7 @@ internal sealed partial class IrBuilder
         C.DeclRegisterStorage d => BuildDeclList(d.Arg1, d.Arg2),
         C.DeclFunctionProto d => BuildBlockFunctionPrototype(d.Arg0),
         C.DeclExternFunctionProto d => BuildBlockFunctionPrototype(d.Arg1),
+        C.DeclExternObject d => BuildBlockExternObjects(d.Arg1, d.Arg2),
         C.DeclLocalTypedefFunction d => BuildLocalFunctionTypedef(d.Arg1),
         C.DeclLocalTypedefAlias d => BuildLocalTypedefList(d.Arg1, d.Arg2),
         C.DeclLocalTypedefFnPtr d => BuildLocalTypedef(d.Arg4, FnPtrType(d.Arg1, d.Arg7)),
@@ -2891,6 +2900,54 @@ internal sealed partial class IrBuilder
     private CStmt BuildBlockFunctionPrototype(Item signature)
     {
         RegisterProto(signature, blockScope: true);
+        return new Seq(System.Array.Empty<CStmt>());
+    }
+
+    private CStmt BuildBlockExternObjects(Item typeItem, Item declarators)
+    {
+        _sawConstexprSpec = false;
+        WalkDeclList(typeItem, declarators, (name, initializer, type) =>
+        {
+            if (initializer is not null)
+                throw new IrUnsupportedException("block-scope extern object '" + name + "' cannot have an initializer");
+            if (_sawConstexprSpec)
+                throw new IrUnsupportedException("block-scope extern object cannot be constexpr");
+            if (type.Unqualified is CType.Func { IsFunctionType: true } functionType)
+            {
+                RegisterTypedefFunction(name, functionType, null, typeItem);
+                return;
+            }
+            var visible = _symbols.Resolve(name);
+            if (visible is { Kind: SymKind.Func })
+                throw new IrUnsupportedException("block-scope extern object conflicts with function '" + name + "'");
+            var candidate = new Symbol { Name = name, Kind = SymKind.Var, Type = type,
+                Storage = Storage.Extern, IsGlobal = true, IsThreadLocal = _sawThreadLocalSpec,
+                Alignment = DeclarationAlignment(typeItem, type), TargetName = _symbols.Escape(name) };
+            if (_scalarGlobals.TryGetValue(name, out var declaration))
+            {
+                if (!CompatibleGlobalTypes(declaration.Symbol.Type, type)
+                    || declaration.Symbol.IsThreadLocal != candidate.IsThreadLocal)
+                    throw new IrUnsupportedException("conflicting types or storage for block-scope extern object '" + name + "'");
+                _symbols.DeclareAlias(declaration.Symbol);
+            }
+            else if (visible is { Kind: SymKind.Var, IsGlobal: true })
+            {
+                // Array/other global declarations may use a different storage
+                // registry. Preserve the visible object's identity and linkage.
+                if (!CompatibleGlobalTypes(visible.Type, type))
+                    throw new IrUnsupportedException("conflicting types for block-scope extern object '" + name + "'");
+                _symbols.DeclareAlias(visible);
+            }
+            else
+            {
+                // Register the linkage identity without adding a file-scope name
+                // or defining any storage. DeclareAlias deliberately skips local
+                // shadow renaming, so separate object fragments refer to the same
+                // external name even when an automatic variable hides it here.
+                _scalarGlobals.Add(name, new ScalarGlobalDeclaration(candidate));
+                _symbols.DeclareAlias(candidate);
+            }
+        }, staticLocal: true); // permits explicit extern _Thread_local storage
         return new Seq(System.Array.Empty<CStmt>());
     }
 
@@ -3189,6 +3246,10 @@ internal sealed partial class IrBuilder
                     add(Tok(a.Arg0), a.Arg4, MakeArrayType(tailType,
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator tail")));
                     break;
+                case C.DeclItemTailStringArray a:
+                    AddStringArray(a.Arg0, null, a.Arg4, tailType); break;
+                case C.DeclItemTailSizedStringArray a:
+                    AddStringArray(a.Arg0, a.Arg1, a.Arg3, tailType); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
         }
@@ -3212,6 +3273,10 @@ internal sealed partial class IrBuilder
                         TryConstDims(a.Arg1) ?? throw new IrUnsupportedException("non-constant array bound in a multi-declarator head")));
                     WalkTail(a.Arg7, element);
                     break;
+                case C.DeclItemListStringArrayHead a:
+                    AddStringArray(a.Arg0, null, a.Arg4, baseType); WalkTail(a.Arg6, element); break;
+                case C.DeclItemListSizedStringArrayHead a:
+                    AddStringArray(a.Arg0, a.Arg1, a.Arg3, baseType); WalkTail(a.Arg5, element); break;
                 case C.DeclItem di: add(Tok(di.Arg0), null, baseType); break;
                 case C.DeclItemGrouped or C.DeclItemGroupedArray or C.DeclItemGroupedInit
                     or C.DeclItemGroupedBraceInit or C.DeclItemGroupedArrayInit:
@@ -3222,6 +3287,7 @@ internal sealed partial class IrBuilder
                 case C.DeclItemTailPlain t: WalkTail(t.Arg0, element); break;
                 case C.DeclItemTailPtr or C.DeclItemTailConstPtr: WalkTail(it, element); break;
                 case C.DeclItemTailFlexArr or C.DeclItemTailArr or C.DeclItemTailArrInit: WalkTail(it, element); break;
+                case C.DeclItemTailStringArray or C.DeclItemTailSizedStringArray: WalkTail(it, element); break;
                 case C.DeclItemTailBraceInit or C.DeclItemTailDesignatedInit or C.DeclItemTailEmptyInit: WalkTail(it, element); break;
                 default: throw new IrUnsupportedException(TypeName(it.Content));
             }
@@ -3236,6 +3302,17 @@ internal sealed partial class IrBuilder
                 case C.DeclItemListOne one: pending.Push(one.Arg0); break;
                 default: Walk(declarator); break;
             }
+        }
+
+        void AddStringArray(Item name, Item? dimensions, Item text, CType character)
+        {
+            if (character.Unqualified is not CType.Prim { Name: "char" or "signed char" or "unsigned char" })
+                throw new IrUnsupportedException("narrow string array initializer requires a character element");
+            var shape = dimensions is { } explicitDimensions ? TryConstDims(explicitDimensions)
+                : new List<int> { checked(WideArrValues(character, text, false).Count + 1) };
+            if (shape is not { Count: 1 })
+                throw new IrUnsupportedException("string array declarator requires one constant dimension");
+            add(Tok(name), text, MakeArrayType(character, shape));
         }
     }
 
@@ -3548,6 +3625,7 @@ internal sealed partial class IrBuilder
             C.MemberDot m => BuildMember(m.Arg0, m.Arg2, arrow: false),
             C.MemberArrow m => BuildMember(m.Arg0, m.Arg2, arrow: true),
             C.Cast c => BuildCast(c),
+            C.CastPointerToArray c => BuildPointerToArrayCast(c.Arg1, c.Arg5, c.Arg7),
             C.LitTrue => new LitInt("1", 1) { Type = CType.Int },
             C.LitFalse => new LitInt("0", 0) { Type = CType.Int },
             C.LitNullptr => new NullPtr { Type = new CType.Pointer(CType.Void) },
@@ -3587,7 +3665,9 @@ internal sealed partial class IrBuilder
         // (unsupported shape) rejected by RejectStraySetjmp once the body is built. A `setjmp`
         // SHADOWED by a local (a fn-ptr named `setjmp`) is an ordinary call, not the libc one —
         // excluded here so it neither triggers recognition nor gets rejected.
-        if (result is Call { Callee: "setjmp" } sjCall && !SetjmpShadowed()) { _setjmpCalls[sjCall] = pos; }
+        if (result is Call sjCall &&
+            ((sjCall.Callee == "setjmp" && !SetjmpShadowed()) || IsSignalSetjmpCall(sjCall)))
+            _setjmpCalls[sjCall] = pos;
         return result;
     }
 
@@ -3656,6 +3736,14 @@ internal sealed partial class IrBuilder
     {
         while (t.Unqualified is CType.Pointer p) { t = p.Pointee; }
         return (t.Unqualified as CType.Named)?.Name;
+    }
+
+    private CExpr BuildPointerToArrayCast(Item element, Item dimensions, Item operand)
+    {
+        var bounds = TryConstDims(dimensions)
+            ?? throw new IrUnsupportedException("pointer-to-array cast requires constant bounds");
+        var target = new CType.Pointer(MakeArrayType(ResolveType(element), bounds));
+        return new Cast(target, BuildExpr(operand)) { Type = target };
     }
 
     private CExpr BuildCast(C.Cast c)

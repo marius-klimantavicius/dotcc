@@ -51,6 +51,7 @@ internal sealed partial class IrBuilder
     // Member expressions need the selected aggregate field types, so retain
     // the designators until their containing array/field supplies that type.
     private sealed record InitMembers(Item Members) : Init;
+    private sealed record InitPatchMembers(Item Members) : Init;
     private sealed record InitMember(string Path, Item Value) : Init;
     private sealed record InitAt(int Index, Init Value) : Init;
 
@@ -58,6 +59,12 @@ internal sealed partial class IrBuilder
     /// trailing comma) into the structured init tree.</summary>
     private List<Init> ParseInitList(Item initList)
     {
+        if (initList.Content is C.StrSeqOne or C.StrSeqCons or C.StrArrayInitParens)
+        {
+            var segments = CollectStrSegments(initList);
+            return new List<Init> { new InitVal(new LitStr(segments)
+                { Type = new CType.Array(CType.Char, DotCC.EmitHelpers.StringByteLength(segments)) }) };
+        }
         var items = new List<Init>();
         // A C23 #embed element expands IN PLACE to its file bytes as integer
         // constants — so `{ #embed "f" }` fills a char array, `{ 1, #embed "f", 2 }`
@@ -134,6 +141,8 @@ internal sealed partial class IrBuilder
         C.InitElemMembers members => Gated(1999, "designated aggregate initializers", it, new InitMembers(members.Arg1)),
         C.InitElemDesignated d => Gated(1999, "array designators", it,
             ParseArrayDesignation(d.Arg0, ParseInitElem(d.Arg2))),
+        C.InitElemArrayMembers d => Gated(1999, "array member designators", it,
+            ParseArrayDesignation(d.Arg0, new InitPatchMembers(d.Arg1))),
         _ => new InitVal(BuildExpr(it)),
     };
 
@@ -539,7 +548,7 @@ internal sealed partial class IrBuilder
             }
             else
             {
-                values[offset] = BuildFieldInitializer(elem, value);
+                values[offset] = ApplyArrayInitializer(elem, values[offset], value);
                 cursor = offset + 1;
             }
         }
@@ -559,7 +568,10 @@ internal sealed partial class IrBuilder
         {
             switch (it)
             {
-                case InitAt d: cursor = d.Index; slots[cursor] = BuildFieldInitializer(elem, d.Value); break;
+                case InitAt d:
+                    cursor = d.Index;
+                    slots[cursor] = ApplyArrayInitializer(elem, slots.GetValueOrDefault(cursor), d.Value);
+                    break;
                 default: slots[cursor] = BuildFieldInitializer(elem, it); break;
             }
             if (cursor > maxIndex) { maxIndex = cursor; }
@@ -572,6 +584,20 @@ internal sealed partial class IrBuilder
             : elem.Unqualified is CType.Named named && _structFields.ContainsKey(named.Name)
                 ? new DefaultLit { Type = elem } : Zero); }
         return outp;
+    }
+
+    private CExpr ApplyArrayInitializer(CType type, CExpr? previous, Init initializer)
+    {
+        if (initializer is not InitPatchMembers patch) return BuildFieldInitializer(type, initializer);
+        // [i].field selects only that member. Repeated designators must retain
+        // sibling values already initialized at i, while [i] = {...} replaces
+        // the complete element through the ordinary path above.
+        if (previous is not (null or DefaultLit or StructInit) && previous != Zero)
+            throw new IrUnsupportedException("member designation after a non-braced aggregate value");
+        var members = previous is StructInit aggregate ? aggregate.Members.ToList() : new List<FieldInit>();
+        foreach (var (field, value) in ParseMemberInits(patch.Members))
+            SetDesignatedMember(type, members, field, value);
+        return new StructInit(members) { Type = type };
     }
 
     /// <summary>Flatten a (possibly nested) scalar array initializer against the

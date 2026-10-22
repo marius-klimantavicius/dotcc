@@ -72,6 +72,7 @@ struct sigaction {
 #define SIGTSTP  20
 #define SIGTTIN  21
 #define SIGTTOU  22
+#define SIGSYS   31
 
 #define SI_USER 0
 
@@ -86,6 +87,8 @@ struct sigaction {
 
 int sigaction(int sig, const struct sigaction *act, struct sigaction *oldact);
 int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+int sigpending(sigset_t *set);
+int sigwait(const sigset_t *set, int *signal);
 int pthread_sigmask(int how, const sigset_t *set, sigset_t *oldset);
 int sigemptyset(sigset_t *set);
 int sigfillset(sigset_t *set);

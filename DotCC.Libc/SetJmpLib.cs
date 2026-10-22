@@ -67,11 +67,15 @@ public static unsafe partial class Libc
     {
         public ulong Identity { get; }
         public int Value { get; }
+        internal RuntimeContext? OriginOwner { get; }
+        internal int OriginThread { get; }
         public JumpBufferException(ulong identity, int value)
             : base($"longjmp(value={value})")
         {
             Identity = identity;
             Value = value;
+            OriginOwner = RuntimeContext.Current;
+            OriginThread = Environment.CurrentManagedThreadId;
         }
     }
 
@@ -79,6 +83,14 @@ public static unsafe partial class Libc
     /// runtime call cannot establish a resumable handler and fails explicitly.</summary>
     public static int setjmp(ulong* buffer)
         => throw new InvalidOperationException("setjmp requires compiler control-flow lowering.");
+
+    /// <summary>Only the compiler can establish the lexical returns-twice region.</summary>
+    public static int sigsetjmp(ulong* buffer, int saveMask)
+        => throw new InvalidOperationException("sigsetjmp requires compiler control-flow lowering.");
+
+    /// <summary>The matching lexical activation owns signal-mask restoration.
+    /// Zero is normalized by the same numeric transport as ordinary longjmp.</summary>
+    public static void siglongjmp(ulong* buffer, int value) => longjmp(buffer, value);
 
     public static void longjmp(ulong* buffer, int value)
     {

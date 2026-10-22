@@ -1062,6 +1062,7 @@ internal sealed partial class CSharpBackend
                 break;
             case SetjmpGuard sj:
             {
+                if (TryEmitSignalJumpGuard(sb, sj, ind, pad)) break;
                 // Arm this site with a FRESH token identity so the `when` filter
                 // disambiguates nested setjmps: a longjmp reads the SAME env (matches
                 // here), while one aimed at a different env carries a different token
@@ -1077,6 +1078,7 @@ internal sealed partial class CSharpBackend
             }
             case SetjmpCapture sc:
             {
+                if (TryEmitSignalJumpCapture(sb, sc, ind, pad)) break;
                 // Value-capturing setjmp — real C's "returns twice" via goto-restart. Arm a
                 // fresh token, label the try, and on a matching longjmp write the jump value
                 // into the capture target and re-run the body from the label. The target is
