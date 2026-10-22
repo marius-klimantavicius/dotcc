@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-23",
+  "status": "implementation-integrated-final-matrix-pending",
+  "api_revision": "967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+  "engine_revision": "29b6424aa312ec3556247db069939006dd27f878",
+  "compiler_source_commit": "123b3e76ef5eb1f47f44f5052976bb59c7523db4",
+  "compiler_library_sha256": "08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d",
+  "evidence": {
+    "pglite/artifacts/api-port/consumer-fixed-qualified.log": "3fbd6fff0c79aa66f9998448497bf7012e130aa18eb88d58cac91befa3b9c7c0",
+    "pglite/artifacts/api-port/audit-regressions.log": "29ed39fe5258b055f94750894337391f19c66ff60ef1960c535eb806d5de7048",
+    "pglite/artifacts/api-port/oracle.json": "7979936c11044f20e9cfbab16c252f050eed58b1269896a488844cfdbcd577c6",
+    "pglite/artifacts/campaign/20261023-003454-1ac22a3d/receipt.json": "3d889b28c7bac8f4490642555ec70d735f96af1ab8962c925737a3f1f9a011a0",
+    "pglite/artifacts/campaign/20261023-010551-3c54f321/receipt.json": "2900d8a3e2cf944c443b485199faef4a4345f125035d1f866c5524ccdbadbe7a",
+    "pglite/artifacts/api-port/framework-regressions-final.log": "82747e6873907d27392a4d0e1a4f2e0fdd332b0a80f4801e63453281704df1d1"
+  },
+  "processed_jit": {
+    "exit_code": 0,
+    "original_assertions": 36,
+    "api_assertions": 385
+  },
+  "source_contracts": {
+    "protocol_jit": 183,
+    "protocol_native_aot": 183,
+    "codecs_jit": 237,
+    "codecs_native_aot": 237
+  },
+  "oracle_cases": 22,
+  "audit": {
+    "delegated_task": "stopped by provider filter after three recorded findings",
+    "findings": [
+      "F1 aborted savepoint preflight",
+      "F2 identifier dollar lexical boundary",
+      "F3 CR line comment boundary"
+    ],
+    "resolution": "All three repaired; source regressions and full actual-engine cases pass."
+  },
+  "pending": [
+    "full raw/processed JIT/trimmed NativeAOT consumer matrix",
+    "ordinary build/run including ApiExample",
+    "complete engine/shared regressions and final ledger/evidence review"
+  ]
+}

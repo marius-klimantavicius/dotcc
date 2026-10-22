@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Deliberately isolated: these tests never build shared translated outputs. -->
+    <Compile Include="../../../src/Api/PgliteCodecs.cs" Link="Api/PgliteCodecs.cs" />
+    <Compile Include="../../../src/Api/PgliteQueryOptions.cs" Link="Api/PgliteQueryOptions.cs" />
+    <Compile Include="../../../src/Api/PgliteQueryResult.cs" Link="Api/PgliteQueryResult.cs" />
+    <Compile Include="../../../src/Api/PgliteSql.cs" Link="Api/PgliteSql.cs" />
+    <Compile Include="../../../src/Api/PgliteTemplate.cs" Link="Api/PgliteTemplate.cs" />
+  </ItemGroup>
+</Project>

@@ -9,7 +9,7 @@ namespace Managed.PGlite;
 /// <summary>One serialized, thread-affine embedded PostgreSQL lifetime. The
 /// original translated frontend initializes the cluster; the original backend
 /// parses/executes SQL and owns transactions, storage, recovery and shutdown.</summary>
-public sealed unsafe class PgliteDatabase : IDisposable
+public sealed unsafe partial class PgliteDatabase : IDisposable
 {
     [ThreadStatic] private static PgliteDatabase? callbackOwner;
     private readonly int thread = Environment.CurrentManagedThreadId;
@@ -26,12 +26,9 @@ public sealed unsafe class PgliteDatabase : IDisposable
     private PgliteDatabase(PgliteOptions options, DirectoryLease lease, string diagnostics)
     {
         this.options = options; this.lease = lease; this.diagnostics = diagnostics;
+        sessionCodecs = options.Codecs ?? PgliteCodecs.Default;
         transport = new(options.MaximumResponseBytes);
-        arguments = new([options.BackendExecutable!, "--single", "-D", options.DataDirectory,
-            "-c", "shared_buffers=16MB", "-c", "max_connections=10", "-c", "autovacuum=off",
-            "-c", "client_encoding=UTF8",
-            "-c", "log_min_messages=warning", "-c", "dynamic_library_path=" + Path.Combine(options.BootstrapPrefix, "lib/postgresql"),
-            "template1"]);
+        arguments = new(options.Configuration.BackendArguments(options));
         environment = new();
         try { owner = new(Backend.dpg_recover_query_error, Shutdown, Cleanup); }
         catch { environment.Dispose(); arguments.Dispose(); transport.Dispose(); throw; }
@@ -43,6 +40,7 @@ public sealed unsafe class PgliteDatabase : IDisposable
     public string DataDirectory => options.DataDirectory;
     public string DiagnosticsDirectory => diagnostics;
     public bool IsReady => ready && !faulted && !disposed;
+    public int Debug => options.Configuration.Debug;
 
     /// <summary>Initialize a new empty private cluster using original translated
     /// initdb, then enter the actual embedded backend and verify a SQL round trip.</summary>
@@ -72,8 +70,11 @@ public sealed unsafe class PgliteDatabase : IDisposable
                 !File.Exists(Path.Combine(options.DataDirectory, "global/pg_control")))
                 throw new IOException("Open requires a cluster initialized by original PostgreSQL initdb.");
             database = new(options, lease, diagnostics);
+            // Storage must remain attached if actual backend startup fails and
+            // the generated owner is quarantined. Attaching only after readiness
+            // would let caller disposal erase files still owned by that core.
+            options.Storage?.Attach(database);
             database.StartBackend();
-            return database;
         }
         catch (Exception error)
         {
@@ -81,6 +82,15 @@ public sealed unsafe class PgliteDatabase : IDisposable
             // clean shutdown. Retain its owner, resources and exclusion lease.
             if (database == null) lease.Dispose();
             else { database.faulted = true; database.lifetimeError ??= error; }
+            throw;
+        }
+        // Managed extensions run only after the real readiness probe. A setup
+        // callback failure still permits the ready backend to close normally.
+        try { database.RefreshArrayTypesCore(); database.OnStarted(); return database; }
+        catch (Exception error)
+        {
+            try { database.Dispose(); }
+            catch (Exception cleanupError) { throw new AggregateException(error, cleanupError); }
             throw;
         }
     }
@@ -108,7 +118,7 @@ public sealed unsafe class PgliteDatabase : IDisposable
         });
         int status = frontend.Run([Path.Combine(options.BootstrapPrefix, "bin/initdb"), "-D", options.DataDirectory,
             "-L", Path.Combine(options.BootstrapPrefix, "share/postgresql"), "--locale=C", "--encoding=UTF8",
-            "--username=postgres", "--auth=trust", "--no-instructions"], input, output, error);
+            "--username=" + options.Configuration.Username, "--auth=trust", "--no-instructions"], input, output, error);
         if (frontend.ProcessError != null)
             throw new IOException($"Translated initdb process transport failed; diagnostics: {diagnostics}", frontend.ProcessError);
         if (status != 0) throw new IOException($"Original translated initdb exited {status}; diagnostics: {diagnostics}");
@@ -156,17 +166,19 @@ public sealed unsafe class PgliteDatabase : IDisposable
         ready = true;
     }
 
-    private void RequireOwner()
+    private void RequireOwner(bool allowProtocolExchange = false)
     {
         ObjectDisposedException.ThrowIf(disposed, this);
         if (thread != Environment.CurrentManagedThreadId) throw new InvalidOperationException("PGlite must stay on its owning thread.");
         if (entering || callbackOwner != null) throw new InvalidOperationException("PGlite callback reentry is unsupported.");
         if (faulted) throw new InvalidOperationException("PGlite has a failed host/core lifetime and is quarantined.", lifetimeError);
+        if (!allowProtocolExchange && (pendingFrontend.Length != 0 || protocolExchangePending))
+            throw new InvalidOperationException("Complete the pending raw protocol exchange with Sync before starting a high-level operation.");
     }
 
     private int Dispatch(Action entry)
     {
-        RequireOwner(); entering = true; callbackOwner = this;
+        RequireOwner(allowProtocolExchange: true); entering = true; callbackOwner = this;
         try
         {
             int status = owner.Dispatch(entry);
@@ -182,29 +194,16 @@ public sealed unsafe class PgliteDatabase : IDisposable
     /// Response objects own copies and remain valid after subsequent calls/close.</summary>
     public PgliteQueryResult Query(string sql)
     {
-        RequireOwner();
-        if (!ready) throw new InvalidOperationException("PGlite is not ready.");
-        return QueryCore(sql);
+        RequireQueryEntry();
+        var result = QueryCore(sql);
+        OnResponse(result);
+        return result;
     }
 
     private PgliteQueryResult QueryCore(string sql)
     {
-        // Validate before entry: invalid caller text never quarantines a session.
         byte[] frame = PgliteProtocol.EncodeQuery(sql);
-        transport.Begin(frame);
-        try
-        {
-            int status = Dispatch(Backend.dpg_step);
-            if (status is not (0 or 100)) throw new IOException($"Unexpected query yield {status}.");
-            int flush = Dispatch(() => { Backend.dpg_ready(); Backend.dpg_flush(); });
-            if (flush != 0) throw new IOException($"Unexpected ready/flush yield {flush}.");
-            long buffered = -1;
-            if (Dispatch(() => buffered = Backend.dpg_buffered_input()) != 0 || !transport.InputConsumed || buffered != 0)
-                throw new IOException("Original backend did not consume exactly one complete query frame.");
-            return PgliteProtocol.DecodeResponse(transport.Response);
-        }
-        catch (Exception error) { lifetimeError ??= error; faulted = true; ready = false; throw; }
-        finally { transport.ReleaseRequest(); }
+        return PgliteProtocol.DecodeResponse(ExecuteProtocolCore(frame).Data);
     }
 
     private static long ReadCallback(void* buffer, ulong count)
@@ -246,7 +245,9 @@ public sealed unsafe class PgliteDatabase : IDisposable
     public void Dispose()
     {
         if (disposed) return;
-        RequireOwner(); entering = true; callbackOwner = this;
+        RequireOwner(allowProtocolExchange: true);
+        OnClosing();
+        entering = true; callbackOwner = this;
         try
         {
             owner.Dispose();
@@ -255,6 +256,7 @@ public sealed unsafe class PgliteDatabase : IDisposable
         }
         catch (Exception error) { lifetimeError ??= error; faulted = true; ready = false; throw; }
         finally { entering = false; callbackOwner = null; }
+        OnClosed();
     }
 
     private sealed class DirectoryLease : IDisposable

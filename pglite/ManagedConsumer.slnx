@@ -3,4 +3,5 @@
   <Project Path="generated/TranslatedInitdb/TranslatedInitdb.csproj" />
   <Project Path="src/Api/PGlite.csproj" />
   <Project Path="samples/ManagedConsumer/ManagedConsumer.csproj" />
+  <Project Path="samples/ApiExample/ApiExample.csproj" />
 </Solution>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Source-only review: never references or builds a translated product. -->
+    <Compile Include="../../src/Api/PgliteDatabase.Formatting.cs" Link="Api/Formatting.cs" />
+    <Compile Include="../../src/Api/PgliteTransaction.cs" Link="Api/Transaction.cs" />
+    <Compile Include="../../src/Api/PgliteQueryResult.cs" Link="Api/Result.cs" />
+    <Compile Include="../../src/Api/PgliteQueryOptions.cs" Link="Api/Options.cs" />
+    <Compile Include="../../src/Api/PgliteCodecs.cs" Link="Api/Codecs.cs" />
+    <Compile Include="../../src/Api/PgliteSql.cs" Link="Api/Sql.cs" />
+  </ItemGroup>
+</Project>

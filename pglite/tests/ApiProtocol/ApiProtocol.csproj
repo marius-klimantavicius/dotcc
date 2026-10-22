@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../src/Api/PgliteProtocol.cs" Link="PgliteProtocol.cs" />
+    <Compile Include="../../src/Api/PgliteQueryResult.cs" Link="PgliteQueryResult.cs" />
+    <Compile Include="../../src/Api/PgliteTransport.cs" Link="PgliteTransport.cs" />
+  </ItemGroup>
+</Project>

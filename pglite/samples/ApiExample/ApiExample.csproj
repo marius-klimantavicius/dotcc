@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPGlite/TranslatedPGlite.csproj</TranslatedProject>
+    <InitdbTranslatedProject Condition="'$(InitdbTranslatedProject)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedInitdb/TranslatedInitdb.csproj</InitdbTranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Api/PGlite.csproj" />
+  </ItemGroup>
+  <Import Project="../ManagedConsumer/BootstrapAssets.targets" />
+  <Import Project="../ManagedConsumer/NativeAotNotices.targets" />
+</Project>

@@ -6,8 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApiContractsProgram.cs" />
-    <Compile Include="../../src/Api/PgliteOptions.cs" Link="Api/PgliteOptions.cs" />
-    <Compile Include="../../src/Api/PgliteInitializationTrace.cs" Link="Api/PgliteInitializationTrace.cs" />
-    <Compile Include="../../src/Initialization/InitializationProcessTransport.cs" Link="Initialization/InitializationProcessTransport.cs" />
+    <ProjectReference Include="../../src/Api/PGlite.csproj" />
   </ItemGroup>
 </Project>

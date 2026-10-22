@@ -1,0 +1,28 @@
+{
+  "upstream_tests": ["basic.test.ts", "types.test.ts", "array-types.test.ts", "templating.test.js", "extended-query-error.test.ts"],
+  "comparison": "Exact server text rows, column OIDs and SQLSTATEs. Each case executes against the npm release oracle and actual translated engine. Managed typed shapes have separate assertions.",
+  "cases": [
+    {"name":"integer-parameter", "sql":"SELECT ($1::int + 1)::text AS value", "params":[41], "rows":[["42"]]},
+    {"name":"reordered-repeated-parameters", "sql":"SELECT ($2::int + $1::int + $2)::text AS value", "params":[3,7], "rows":[["17"]]},
+    {"name":"nullable-parameter", "sql":"SELECT $1::int AS value", "params":[null], "rows":[[null]]},
+    {"name":"boolean-parameter", "sql":"SELECT $1::bool::text AS value", "params":[true], "rows":[["true"]]},
+    {"name":"unicode-parameter", "sql":"SELECT $1::text AS value", "params":["Vilnius Žąsis 🦆"], "rows":[["Vilnius Žąsis 🦆"]]},
+    {"name":"injection-is-data", "sql":"SELECT $1::text AS value", "params":["'); DROP TABLE users; --"], "rows":[["'); DROP TABLE users; --"]]},
+    {"name":"bigint-exact", "sql":"SELECT $1::bigint::text AS value", "params":["9223372036854775807"], "rows":[["9223372036854775807"]]},
+    {"name":"numeric-exact", "sql":"SELECT $1::numeric::text AS value", "params":["12345678901234567890.123456789"], "rows":[["12345678901234567890.123456789"]]},
+    {"name":"float-special", "sql":"SELECT $1::float8::text AS value", "params":["Infinity"], "rows":[["Infinity"]]},
+    {"name":"json-parameter", "sql":"SELECT ($1::jsonb ->> 'name') AS value", "params":[{"$json":{"name":"Žąsis","n":42}}], "rows":[["Žąsis"]]},
+    {"name":"binary-parameter", "sql":"SELECT encode($1::bytea,'hex') AS value", "params":[{"$bytes":[0,1,127,128,255]}], "rows":[["00017f80ff"]]},
+    {"name":"date-parameter", "sql":"SELECT $1::date::text AS value", "params":["2024-02-29"], "rows":[["2024-02-29"]]},
+    {"name":"timestamp-parameter", "sql":"SELECT $1::timestamp::text AS value", "params":["2024-02-29 12:34:56.123456"], "rows":[["2024-02-29 12:34:56.123456"]]},
+    {"name":"uuid-parameter", "sql":"SELECT $1::uuid::text AS value", "params":["550e8400-e29b-41d4-a716-446655440000"], "rows":[["550e8400-e29b-41d4-a716-446655440000"]]},
+    {"name":"integer-array", "sql":"SELECT array_to_json($1::int[])::text AS value", "params":[[1,null,-3]], "rows":[["[1,null,-3]"]]},
+    {"name":"escaped-text-array", "sql":"SELECT array_to_json($1::text[])::text AS value", "params":[["a,b","NULL",null,"quote\"","slash\\",""]], "rows":[["[\"a,b\",\"NULL\",null,\"quote\\\"\",\"slash\\\\\",\"\"]"]]},
+    {"name":"multidimensional-array", "sql":"SELECT array_to_json($1::int[][])::text AS value", "params":[[[1,2],[3,4]]], "rows":[["[[1,2],[3,4]]"]]},
+    {"name":"empty-array", "sql":"SELECT cardinality($1::text[])::text AS value", "params":[[]], "rows":[["0"]]},
+    {"name":"parse-error", "sql":"SELECT FROM", "params":[], "sqlstate":"42601"},
+    {"name":"bind-error", "sql":"SELECT $1::int", "params":["not-an-integer"], "sqlstate":"22P02"},
+    {"name":"execute-error", "sql":"SELECT (1 / $1::int)::text AS value", "params":[0], "sqlstate":"22012"},
+    {"name":"post-error-recovery", "sql":"SELECT ($1::int * 2)::text AS value", "params":[21], "rows":[["42"]]}
+  ]
+}

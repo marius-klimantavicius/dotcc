@@ -1,0 +1,13 @@
+Managed.PGlite manually adapts the TypeScript API of Electric DB Limited, @electric-sql/pglite 0.5.11 at 967432ba0e8d2c71e0c9899edc1325bd8d68d6e8.
+Source: https://github.com/electric-sql/pglite
+Apache-2.0 wrapper license, PostgreSQL license and pg-protocol MIT notice are included.
+The protocol package metadata says Apache-2.0; its retained LICENSE grants MIT rights and credits Brian Carlson (2010-2021). Both facts are preserved.
+Upstream types.ts is based on https://github.com/porsager/postgres/blob/master/src/types.js under the Unlicense. Its original attribution header is preserved below.
+
+/*
+Based on postgres.js types.js
+https://github.com/porsager/postgres/blob/master/src/types.js
+Published under the Unlicense:
+https://github.com/porsager/postgres/blob/master/UNLICENSE
+*/
+Manual changes: .NET API, PostgreSQL protocol codecs, thread-bound translated engine, storage and worker adaptations. No upstream JS/WASM runtime is delivered.

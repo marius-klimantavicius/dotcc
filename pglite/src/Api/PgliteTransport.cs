@@ -5,15 +5,18 @@ namespace Managed.PGlite;
 internal sealed unsafe class PgliteTransport(int maximumResponseBytes) : IDisposable
 {
     private readonly MemoryStream response = new();
+    private readonly List<byte[]> chunks = new();
     private byte[] request = [];
     private int offset;
     internal Exception? Error { get; private set; }
     internal bool InputConsumed => offset == request.Length;
+    internal int InputOffset => offset;
+    internal IReadOnlyList<byte[]> Chunks => chunks;
     internal ReadOnlySpan<byte> Response => response.GetBuffer().AsSpan(0, checked((int)response.Length));
 
     internal void Begin(byte[] frame)
     {
-        request = frame; offset = 0; response.SetLength(0); Error = null;
+        request = frame; offset = 0; response.SetLength(0); chunks.Clear(); Error = null;
     }
     internal void ReleaseRequest() { request = []; offset = 0; }
 
@@ -40,7 +43,9 @@ internal sealed unsafe class PgliteTransport(int maximumResponseBytes) : IDispos
             if (count == 0) return 0;
             if (buffer == null || count > int.MaxValue || count > (ulong)(maximumResponseBytes - response.Length))
                 throw new IOException("Invalid or oversized backend response buffer.");
-            response.Write(new ReadOnlySpan<byte>(buffer, (int)count));
+            byte[] copy = new ReadOnlySpan<byte>(buffer, (int)count).ToArray();
+            response.Write(copy);
+            chunks.Add(copy);
             return (long)count;
         }
         catch (Exception error) { Error ??= error; return -1; }

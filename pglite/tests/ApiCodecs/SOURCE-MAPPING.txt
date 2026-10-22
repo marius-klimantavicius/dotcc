@@ -1,0 +1,115 @@
+Manual codec / template port inventory
+====================================
+Source: electric-sql/pglite revision 967432ba0e8d2c71e0c9899edc1325bd8d68d6e8,
+@electric-sql/pglite 0.5.11; immutable local source recorded in config/api-source.json.
+No engine revision changed. Upstream Apache-2.0; src/types.ts also credits the
+Unlicense postgres.js types.js implementation. Authored files retain attribution.
+
+Reviewed in full:
+  packages/pglite/src/{types.ts,parse.ts,templating.ts,utils.ts,index.ts}
+  packages/pglite/tests/{types.test.ts,templating.test.js,utils.test.ts,
+    array-types.test.ts,format.test.js}
+Relevant integration behavior also reviewed in base.ts (_initArrayTypes,
+#runQuery), interface.ts and basic.test.ts (types, nullable arrays, custom
+parsers/serializers, JSON arrays, JSON big integers and parameter fallback).
+
+Exports / observable behavior -> managed mapping
+----------------------------------------------
+types.ts BOOL/BYTEA/CHAR/INT8/INT2/INT4/REGPROC/TEXT/OID/TID/XID/CID/JSON/XML/
+PG_NODE_TREE/SMGR/PATH/POLYGON/CIDR/FLOAT4/FLOAT8/ABSTIME/RELTIME/TINTERVAL/
+CIRCLE/MACADDR8/MONEY/MACADDR/INET/ACLITEM/BPCHAR/VARCHAR/DATE/TIME/TIMESTAMP/
+TIMESTAMPTZ/INTERVAL/TIMETZ/BIT/VARBIT/NUMERIC/REFCURSOR/REGPROCEDURE/REGOPER/
+REGOPERATOR/REGCLASS/REGTYPE/UUID/TXID_SNAPSHOT/PG_LSN/PG_NDISTINCT/
+PG_DEPENDENCIES/TSVECTOR/TSQUERY/GTSVECTOR/REGCONFIG/REGDICTIONARY/JSONB/
+REGNAMESPACE/REGROLE
+  -> PgliteTypeOids with idiomatic PascalCase names, identical numeric OIDs.
+     Adds point/line/box and common array constants for managed use.
+
+types.string, number, bigint, boolean, date, bytea, json parse/serialize;
+types.parsers/types.serializers/parseType/typeHandlers
+  -> PgliteCodecs.Default, Decode, Encode, Register, RegisterParser,
+     RegisterSerializer, Clone; explicit PgliteParameter and QueryOptions OIDs.
+     Default produces a fresh independent registry. Unknown parsers return text.
+     Null bypasses every parser/serializer; DBNull is the managed null equivalent.
+     INT2->short, INT4->int, OID->uint, INT8->long/BigInteger rather than JS
+     number/BigInt switching at 2^53. FLOAT4->float, FLOAT8->double.
+     NUMERIC->PgliteNumeric preserves arbitrary precision, scale and special
+     values; upstream defaults to raw numeric text, custom parsers work in both.
+     Boolean input accepts the exact upstream literal sets and numeric 0/1;
+     invalid values throw. Scalars use invariant explicit formatting only.
+     JSON->owned JsonElement; accepts JsonElement/JsonDocument/PgliteJson and
+     explicit text; dictionary/list/scalar trees serialize without reflection.
+     BigInteger JSON values become strings, matching the upstream replacer.
+     Arbitrary POCO serialization and fallback object.ToString are rejected.
+     BYTEA->byte[], supports hex and legacy PostgreSQL escape output; emits hex.
+     Dates use DateOnly; timestamps use DateTime(Unspecified) or DateTimeOffset.
+     ISO timestamps are independent of machine timezone. DATE/TIMESTAMP/TZ also
+     accept Unix milliseconds for upstream date serializer compatibility.
+     Additional rich TIME/TIMETZ/INTERVAL mappings use TimeOnly,
+     PgliteTimeWithTimeZone, PgliteInterval(months,days,microseconds).
+     PostgreSQL temporal infinities, BC dates and values outside CLR temporal
+     ranges remain text, retaining their exact representation.
+     Unknown scalar OIDs (UUID, XML, geometric and other special types) stay text.
+     Guid is accepted as a parameter and infers UUID, which decodes as text.
+
+types.arraySerializer/arrayParser + base._initArrayTypes/refreshArrayTypes
+  -> Default pg_type mappings, RegisterArray, Encode/Decode array paths.
+     Nested object?[] results; CLR rectangular or nested arrays/lists accepted.
+     Null elements differ from quoted "NULL"; empty text, escaped braces,
+     delimiters, quotes/backslashes, bytea[], multidimensional arrays and box's
+     semicolon delimiter covered. Explicit lower bounds normalize to nested
+     arrays (no CLR metadata for PostgreSQL lower bounds, matching JS shape).
+     Shape is checked independently of custom decoded element CLR types.
+     Custom element codecs are looked up for each element; nested calls have
+     independent parser state. Invalid/ragged arrays and cycles fail explicitly.
+     Array OID refresh against actual pg_type is core agent's database method;
+     engine cases cover custom enum arrays before/after explicit registration.
+
+parse.parseResults, parse.parseDescribeStatementResults
+  -> Core-owned protocol/result implementation. Rows keeps original text;
+     TypedRows uses Decode by field OID. Object row adaptation and command /
+     rowCount / affectedRows / blob parsing belong to the core/services agents.
+     This work does not edit their result/protocol implementation.
+
+templating.sql/query, TemplateContainer/TemplatePart, identifier/raw
+  -> PgliteTemplate.Sql/Query(FormattableString), PgliteSql.Text/Parameters,
+     PgliteTemplate.Identifier(params string[]), Raw(string).
+     Internal immutable parts preserve nesting and assign numbers on composition;
+     no textual parameter-number rewriting. Literal dollar numbers are preserved.
+     Identifiers double embedded quotes (safe correction to upstream's simple
+     quote wrapping) and support separate schema/name components.
+     Arrays/null are individual bound parameters; user text never becomes SQL.
+     Raw is explicitly trusted verbatim SQL. Format/alignment specifiers and NUL
+     in SQL text are rejected. Join and Value are idiomatic additional helpers.
+     Core owns database.Sql(PgliteSql) and its query options integration.
+
+utils.formatQuery
+  -> Reviewed source/tests, including positional/repeated $n fixes. Core owns
+     database.FormatQuery (PgliteDatabase.Formatting.cs); this work provides the
+     parameter codecs/templates it consumes. The template API retains parameters
+     for execution, whereas FormatQuery produces literal SQL for display/export.
+utils.debounceMutex
+  -> Reviewed 3 source-derived cases (first/last execution, order, errors).
+     Scheduling/mutex behavior is services-owned. No standalone debounce helper
+     is implemented or claimed by this bounded codec/template work package.
+
+Tests / evidence
+----------------
+Contracts/ApiCodecs.Contracts.csproj source-links only the four owned API files;
+it has no references to shared compiler/runtime/translated projects. This permits
+isolated JIT/NativeAOT checks without colliding with supervisor builds.
+Contracts/Program.cs covers source-derived scalar/boolean/type tests; exact text
+array vectors and multidimensional/escaped/null/bytea/custom elements; custom
+registry isolation/reentrancy; temporal precision and all four IntervalStyles;
+invariant formatting; safe interpolation/nesting/join/identifiers and malformed
+inputs. Current assertion totals are emitted by the executable.
+
+PgliteCodecCases.cs contains actual-engine cases and can be linked into the
+supervisor's ordinary consumer. Engine/ApiCodecs.Engine.csproj is a separate
+ordinary consumer accepting new-data-directory/bootstrap-prefix/work-directory.
+It references the actual reusable API (ApiProject override supported), including
+RefreshArrayTypes, and exercises exact typed values, custom enums/numeric arrays,
+all IntervalStyles, safe templates and recovery after encoder/decoder exceptions.
+Shared-output builds and actual-engine raw/processed x JIT/AOT execution are
+reserved for the supervisor. Their required results must be recorded separately;
+standalone codec tests do not qualify engine behavior or wrapper API parity.

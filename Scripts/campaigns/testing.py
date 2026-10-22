@@ -55,7 +55,7 @@ def consumer(ctx, suite):
                 command = [output / (assembly + (".exe" if sys.platform == "win32" else ""))]
             command += [argument.format(root=ctx.root, work=ctx.work, label=label)
                         for argument in settings.arguments]
-            ctx.run(command, label + "-run", timeout=120, separate=True)
+            ctx.run(command, label + "-run", timeout=suite.timeout, separate=True)
 
 
 def run_suite(ctx, suite):

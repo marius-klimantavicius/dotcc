@@ -11,6 +11,10 @@ def sources(root):
     yield Source("product", pin["url"], root / "ref" / pin["archive"],
                  root / "ref" / pin["directory"], pin.get("prefix", pin["directory"]),
                  pin.get("sha256"), tuple(pin["required"]))
+    api = json_file(root / "config/api-source.json")
+    yield Source("api", api["url"], root / "ref" / api["archive"],
+                 root / "ref" / api["directory"], api["prefix"],
+                 api.get("sha256"), tuple(api["required"]), group="api")
 
 
 def prepare(ctx):
@@ -137,9 +141,17 @@ def inventory(ctx, suite):
     return helper(ctx.root / "scripts/inventory.py").run(ctx, suite)
 
 
+def api_inventory(ctx, suite):
+    return helper(ctx.root / "scripts/api-inventory.py").run(ctx, suite)
+
+
+def api_contracts(ctx, suite):
+    return helper(ctx.root / "scripts/api-contracts.py").run(ctx, suite)
+
+
 recipe = Recipe(
     "pglite", "TranslatedPGlite", ("embedding-native", "native-diagnostic"),
-    ("samples/ManagedConsumer/ManagedConsumer.csproj", "src/Api/PGlite.csproj"), sources, prepare,
+    ("samples/ManagedConsumer/ManagedConsumer.csproj", "src/Api/PGlite.csproj", "samples/ApiExample/ApiExample.csproj"), sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
     suites=(Suite("backend-host", (), run=backend_host, timeout=1800,
                   scope="real process/filesystem/numeric/network backend host services in native/JIT/AOT"),
@@ -169,9 +181,13 @@ recipe = Recipe(
                   scope="actual-header native/emitted layout and nonlocal-error feasibility; not SQL product qualification"),
             Suite("inventory", (), run=inventory,
                   scope="source/configuration manifest and explicit product completeness checks"),
-            Suite("consumer", (), matrix=True, run=consumer,
+            Suite("api-inventory", (), run=api_inventory,
+                  scope="pinned API source/export inventory and symbol ledger coverage"),
+            Suite("api-contracts", (), run=api_contracts, timeout=1800,
+                  scope="source-only codec/template and wire protocol semantics under JIT/NativeAOT"),
+            Suite("consumer", (), matrix=True, run=consumer, timeout=600,
                   scope="managed embedded init, SQL, transaction recovery, shutdown and reopen persistence")),
     default_suites=("consumer",),
-    verify_suites=("inventory", "native-control", "libc-build", "initializer", "modules", "snowball", "boundary", "atomics", "semaphore", "portable-codegen", "locale", "calendar-timezone", "posix-host", "backend-host", "consumer"),
+    verify_suites=("inventory", "api-inventory", "api-contracts", "native-control", "libc-build", "initializer", "modules", "snowball", "boundary", "atomics", "semaphore", "portable-codegen", "locale", "calendar-timezone", "posix-host", "backend-host", "consumer"),
     before_suite=before_suite,
 )

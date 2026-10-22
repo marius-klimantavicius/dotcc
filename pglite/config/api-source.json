@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/electric-sql/pglite",
+  "revision": "967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+  "resolved_at": "2026-10-23",
+  "package": "@electric-sql/pglite",
+  "package_directory": "packages/pglite",
+  "package_version": "0.5.11",
+  "license": "Apache-2.0",
+  "source_roots": [
+    "packages/pglite/src",
+    "packages/pglite/tests",
+    "packages/pg-protocol",
+    "packages/pglite-utils"
+  ],
+  "status": "Full pinned source acquired; package exports, protocol paths and licenses verified; implementation/qualification in progress",
+  "engine_pin_policy": "Retain config/sources.json product pin; validate wrapper compatibility explicitly before any engine upgrade",
+  "url": "https://codeload.github.com/electric-sql/pglite/tar.gz/967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+  "archive": "pglite-api-967432ba0e8d2c71e0c9899edc1325bd8d68d6e8.tar.gz",
+  "directory": "pglite-967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+  "prefix": "pglite-967432ba0e8d2c71e0c9899edc1325bd8d68d6e8",
+  "sha256": "1a99abcd3950dcb7ad97f7b8dca982bbb7e0fbafccb6bbb178eb1c82ed9a13d3",
+  "required": [
+    "LICENSE",
+    "POSTGRES-LICENSE",
+    "packages/pglite/package.json",
+    "packages/pglite/src/index.ts",
+    "packages/pglite/src/base.ts",
+    "packages/pglite/tests/basic.test.ts",
+    "packages/pg-protocol/package.json",
+    "packages/pg-protocol/src/serializer.ts"
+  ],
+  "protocol": {
+    "package": "@electric-sql/pg-protocol",
+    "version": "0.0.4",
+    "directory": "packages/pg-protocol",
+    "license_metadata": "Apache-2.0",
+    "license_file": "MIT; Brian Carlson 2010-2021"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./template": {
+      "import": {
+        "types": "./dist/templating.d.ts",
+        "default": "./dist/templating.js"
+      },
+      "require": {
+        "types": "./dist/templating.d.cts",
+        "default": "./dist/templating.cjs"
+      }
+    },
+    "./live": {
+      "import": {
+        "types": "./dist/live/index.d.ts",
+        "default": "./dist/live/index.js"
+      },
+      "require": {
+        "types": "./dist/live/index.d.cts",
+        "default": "./dist/live/index.cjs"
+      }
+    },
+    "./worker": {
+      "import": {
+        "types": "./dist/worker/index.d.ts",
+        "default": "./dist/worker/index.js"
+      },
+      "require": {
+        "types": "./dist/worker/index.d.cts",
+        "default": "./dist/worker/index.cjs"
+      }
+    },
+    "./nodefs": {
+      "import": {
+        "types": "./dist/fs/nodefs.d.ts",
+        "default": "./dist/fs/nodefs.js"
+      },
+      "require": {
+        "types": "./dist/fs/nodefs.d.cts",
+        "default": "./dist/fs/nodefs.cjs"
+      }
+    },
+    "./opfs-ahp": {
+      "import": {
+        "types": "./dist/fs/opfs-ahp.d.ts",
+        "default": "./dist/fs/opfs-ahp.js"
+      },
+      "require": {
+        "types": "./dist/fs/opfs-ahp.d.cts",
+        "default": "./dist/fs/opfs-ahp.cjs"
+      }
+    },
+    "./basefs": {
+      "import": {
+        "types": "./dist/fs/base.d.ts",
+        "default": "./dist/fs/base.js"
+      },
+      "require": {
+        "types": "./dist/fs/base.d.cts",
+        "default": "./dist/fs/base.cjs"
+      }
+    },
+    "./contrib/*": {
+      "types": "./dist/contrib/*.d.ts",
+      "import": "./dist/contrib/*.js",
+      "require": "./dist/contrib/*.cjs"
+    }
+  },
+  "notices": [
+    "LICENSE",
+    "POSTGRES-LICENSE",
+    "packages/pg-protocol/LICENSE"
+  ],
+  "type_codec_attribution": "packages/pglite/src/types.ts based on porsager/postgres types.js under the Unlicense; preserve original header",
+  "files": {
+    "packages/pglite/src/argsParser.ts": "303774e90e8fca3cf0f8fdfb1a738956e6f9cc1fd8f60974c2cf64997f4611cf",
+    "packages/pglite/src/base.ts": "5ce9b093894dd75a5cfe53d1a97c3e11d88cb9425d1ea419ae47361598002b45",
+    "packages/pglite/src/contrib/amcheck.ts": "80e7c3165e755bdbb2de52e949983849f7e87481588c8fa9e40322b82e083d24",
+    "packages/pglite/src/contrib/auto_explain.ts": "91c10c9eed9bf5fa35d74d3c99941d6425f4da7f087415d262cbee3f684b5636",
+    "packages/pglite/src/contrib/bloom.ts": "6e454452fa163d054743e568fb53e87fe862db574bc6ab31455a15b3c474ab91",
+    "packages/pglite/src/contrib/btree_gin.ts": "919f636f37e62cfa2b4cfa6ced6284a7523c6c15a048e30668e6a878bdb2171e",
+    "packages/pglite/src/contrib/btree_gist.ts": "f1911364ae22bb8c88fc093fb052da04ab2a5f538a5419232edeacdf31f10632",
+    "packages/pglite/src/contrib/citext.ts": "a8026f4b2635e560a3094e5117affefc538440a7edb8a655792b840f10808d1e",
+    "packages/pglite/src/contrib/cube.ts": "0b8cec04cef8c2561532e98b38e7113111ede9fe077e8c50755c46400634759c",
+    "packages/pglite/src/contrib/dict_int.ts": "3753d6557a6ddde890ff03bf7f13a1bb9d47d052696c73edb41357250d62664d",
+    "packages/pglite/src/contrib/dict_xsyn.ts": "19c64e4c1883bfa648f6f78d1086a1251a44939d17c6c7d0737182642bfafcb2",
+    "packages/pglite/src/contrib/earthdistance.ts": "bd879910ff765fd18f8bdc82577cf0d20a39ac85c2ac16aca1e537f789d1c258",
+    "packages/pglite/src/contrib/file_fdw.ts": "e4edbdb98a5c66b003c8e0be67d2d89b62c2c0134d522404ddd7cae03a00af0e",
+    "packages/pglite/src/contrib/fuzzystrmatch.ts": "8717c3b8d93316a16d21f532ab74e4e30fb481cb556ab4ea1dc829549e7960b5",
+    "packages/pglite/src/contrib/hstore.ts": "b03eb573b0ef7677fd6d81d28e6455748950354f600d66011ee4b979da35c3df",
+    "packages/pglite/src/contrib/intarray.ts": "157679deb9466db99f5ab8c9e52cc7df7ab43540f2677ea9a192697f05ff5a34",
+    "packages/pglite/src/contrib/isn.ts": "fd2124ad3598e63b16206c6adeb3fb8ce66ddb8f1bf887af636e0edfc9b414d5",
+    "packages/pglite/src/contrib/lo.ts": "29c1acd90192640f3b078d9df1cac6254b807a1a3bf0180445cb3a92c9ff6537",
+    "packages/pglite/src/contrib/ltree.ts": "1dbba92bf2c78e4f21e19e63973b9313bd80ce9a2917217a6b21c04abbb939d5",
+    "packages/pglite/src/contrib/moddatetime.ts": "95f624a89c281b72b6cd08d23c3bcbf73d90b2db50b3dc7276e087d62a29a01b",
+    "packages/pglite/src/contrib/pageinspect.ts": "3be42d17c5a0349694ece17d8505fc44a1ec5f95d770142a4c2bd465f4a12121",
+    "packages/pglite/src/contrib/pg_buffercache.ts": "b90f5f116e867cc2b8f979107fe6f65a70ee25cc2641e641687a73a5edd5e6e6",
+    "packages/pglite/src/contrib/pg_freespacemap.ts": "7c2c6fea254ca3f71e46c4e384b7d083fc65c6655d014828a227d0e9a6421303",
+    "packages/pglite/src/contrib/pg_stat_statements.ts": "eea393734f2cb8a670281c79e77c22441144860c19e15ded9496451ad0dd3ef9",
+    "packages/pglite/src/contrib/pg_surgery.ts": "740484a158c39ec02ce6d8043903b852e51cb22c60ec3d74e2ac9671b24701cb",
+    "packages/pglite/src/contrib/pg_trgm.ts": "aecce0eb3509a71fc1a95d4eff078a1b068fdf07d4538bad201c08ed130ec544",
+    "packages/pglite/src/contrib/pg_visibility.ts": "2fa46a5125fe24a6a160726c8e868abff2087bb0403c0a018ceb669a305e38f5",
+    "packages/pglite/src/contrib/pg_walinspect.ts": "54e69f6e2cda86b685cdd097b8ce29c6058ef27836c2601a7ee494a05916e55d",
+    "packages/pglite/src/contrib/pgcrypto.ts": "a8bd9e2c1e91cedf6bf70e07dd839bc46c4657c822e199e222b7b134bcc29e01",
+    "packages/pglite/src/contrib/seg.ts": "a9852bda11946a5b71a5f7c53ff579336371bc1f686c75a55e637cf35dacac15",
+    "packages/pglite/src/contrib/tablefunc.ts": "ed5e1660b7d0e5eeba42d5c947e9a1d485da6ac2e7504feec68639abd54ba9fe",
+    "packages/pglite/src/contrib/tcn.ts": "07d44a1e571d8963c0f81f2263aafdb57baa26f824b31ac5d91b22765e3d197d",
+    "packages/pglite/src/contrib/tsm_system_rows.ts": "860b9644a476c0fb9513f432bb75bfadfe2c09ae9bb43a28104616cc0c835465",
+    "packages/pglite/src/contrib/tsm_system_time.ts": "a3a71e405d4131b1ab1719dc92f61285e82c38b2e0392c0237056948fa16b83b",
+    "packages/pglite/src/contrib/unaccent.ts": "9b64f7835df15bce45ec0a7de2c8a10f8f4b9a01dddc6ec20d847303c3cc9e79",
+    "packages/pglite/src/contrib/uuid_ossp.ts": "8f7a46a07b092bd6abb4eef49e141de39b372287e68a1221dc4ad8307e9a0101",
+    "packages/pglite/src/definitions/tinytar.d.ts": "1e00145d44b926b8a894b14055c0e838c6b1e7725934d497b567eccfed7ceb43",
+    "packages/pglite/src/errors.ts": "c7679fa6844b0f6bee85328183011b1da5c3315e4adbdab155fc03030ed2cf99",
+    "packages/pglite/src/extensionUtils.ts": "4449fc14073bbe2614f027ac31c4d35399de5466716e3e47726b470a35fa9c9b",
+    "packages/pglite/src/fs/base.ts": "5183e8a3586476e87506c7178b5d3964ca48e1d71fb42e229ef691e3592ec8b6",
+    "packages/pglite/src/fs/idbfs.ts": "5359ca0e23ec5054944e54153cd7450a910b227672b4241499399e5abb1e853e",
+    "packages/pglite/src/fs/index.ts": "5c5f237d25883fa2feb01a93d610be67f0f86d47e28b7fe38010a2ef047702a8",
+    "packages/pglite/src/fs/memoryfs.ts": "2b31b7cbd286be5fdb0f4f7899ae8779722978a10511a229092465cc4375816f",
+    "packages/pglite/src/fs/nodefs.ts": "df94e32c85223bac9857e93dfedfbdf9e7d24f57393ae7bddb6ce62c76d39196",
+    "packages/pglite/src/fs/opfs-ahp.ts": "ad535d06966ca685a42ece7a65deb3e6ee7135e3ebdcb80bfede6c80bc52eee4",
+    "packages/pglite/src/fs/tarUtils.ts": "da03af2be4df4ca0af4cf38e5b2500df4301361d2fa01aaedd40c2bdb4d7d433",
+    "packages/pglite/src/index.ts": "70a9e73b27192301d20c1ba5efc23cdeb98e268df753890772f97c6213f561cf",
+    "packages/pglite/src/initdb.ts": "3af0ae4842dbd6f4e75317f3a32e84e8c2c3066b81565a620703908676f722ae",
+    "packages/pglite/src/initdbModFactory.ts": "c726d5ea83a1ea0f639ba11375820b926422efb4b7bcdd4d8ecaf2d59e3c416e",
+    "packages/pglite/src/interface.ts": "938d547569c6ed167054c0dbbbbbdbd5b09cb5e832dfe1a1a41340d89b4c8e3e",
+    "packages/pglite/src/live/index.ts": "8b4e776524bf442851a529d989365eac7a9043e495d742b9062a0aed282049e4",
+    "packages/pglite/src/live/interface.ts": "060f0f094a47569dc860d9f29c0b2b61fe96723921b5bf7efac833e25c2b13eb",
+    "packages/pglite/src/parse.ts": "6e6e23c78e4827d934739e9cd6309d7e3cc9fc1c6fb28fe9601238ffbf6b37e7",
+    "packages/pglite/src/pglite.ts": "8b37b2d7cfa8b7a22c919b62adf51de95bf1eb03183e1a69b36b9783754e12d9",
+    "packages/pglite/src/polyfills/blank.ts": "bc5fd47fccd7381ed96c3246c664af7d698975cef3fe63d63f9f9391512ae5ad",
+    "packages/pglite/src/polyfills/indirectEval.ts": "422272129a41bc2be0f3d84fb8e0d13e0a315809193ad5258a476fdb6c7cdae7",
+    "packages/pglite/src/postgresMod.ts": "667fe1655870b0afcef0ec6ef90a1fb18632c5dc420519a2ce05a741b11b89c0",
+    "packages/pglite/src/templating.ts": "f9d060631933c8abf5f27689b615b74d2ac1b0a3654024249f3b65d42e1cd43c",
+    "packages/pglite/src/types.ts": "618a2496fd987dc6a71138acba27b1bd9175e5d226e1ebc5df52773f34922daa",
+    "packages/pglite/src/utils.ts": "4ec1712507d1f67e46084aab8b9f45c101e5b5697eb45e05646f9b3346179126",
+    "packages/pglite/src/worker/index.ts": "da2e39075eb846db735793c8eceefa31250767ca51187f1a2dc5b6e82002c55c",
+    "packages/pglite/tests/array-types.test.ts": "e2a227e69bc4245057f129c91a239447d788d61ab190e5f8e7d4218cf34ad8b0",
+    "packages/pglite/tests/basic.test.ts": "a5c8038be17a1120bdac18e777869d086cf33e1ba91f4f4609843338bba616e9",
+    "packages/pglite/tests/clone.test.js": "c935ea7c6d14e55e7bf145113f2ed1de11cfa59221cfb6d03dc0b8f7f17577b3",
+    "packages/pglite/tests/contrib/amcheck.test.js": "92136a20d164e2cebe8f2bfc7999dd75e846c80fafc6e44878c4ce5f6d8027da",
+    "packages/pglite/tests/contrib/auto_explain.test.js": "77ceb5ea84a6e5f45d8542b87355601d493982b428b68d7308f8555ebd309095",
+    "packages/pglite/tests/contrib/bloom.test.js": "413e8b6526783d71aaad408b20f12cea7d224e3309f67235d13263f15b106e1e",
+    "packages/pglite/tests/contrib/btree_gin.test.js": "b6cd7ca3fef090a37ff8fedbcb5fdcceaa3a8ce47f20903d0cd1c63b037aef9a",
+    "packages/pglite/tests/contrib/btree_gist.test.js": "4d51a98a49351281640bc1219e287e5f4f3f5916938f7d4829d80249fb20c22a",
+    "packages/pglite/tests/contrib/citext.test.js": "4a037921fc6f760b66acf7fcb6b8647a374e5d3ac5f33bda8920ab3a4a83a3ab",
+    "packages/pglite/tests/contrib/cube.test.js": "f05aee480f805180e962593f8232b2ddd8a078aecadc367fd14de9e1a3b6b54d",
+    "packages/pglite/tests/contrib/dict_int.test.js": "7baf9568fb1fda170ef1cbb6f9509fae1d06b4ea359dc49daf2f7f10bff2f797",
+    "packages/pglite/tests/contrib/dict_xsyn.test.ts": "3aeee114db23c567a405ea2c1c791c3aa25dfbe59203dfac31730c106467fe7c",
+    "packages/pglite/tests/contrib/earthdistance.test.js": "7ca4b4eb9ba10e888125838368e814889360d0e542ba492da1a8081828e05a4f",
+    "packages/pglite/tests/contrib/file_fdw.test.ts": "fa724f3df8af14bd80540afcfca8551bb7b638575779f150d0d836a17a86027d",
+    "packages/pglite/tests/contrib/fuzzystrmatch.test.js": "303c1d7ee2e1d399641c44a787ea1b1d9096196926f8d6d01ae61fc0df0b713f",
+    "packages/pglite/tests/contrib/hstore.test.js": "fe995b679a9daba55ee773c5fdd0f34370ea39cfc30e755337e340b933b8d260",
+    "packages/pglite/tests/contrib/intarray.test.js": "ade12d72283e62c1820f42d10e79a887f34bbfc1480c52e682f979a449eec806",
+    "packages/pglite/tests/contrib/isn.test.js": "87ab105975e3adae27078f7f750269a5a636588e4c5237e9fcbce85f5831a011",
+    "packages/pglite/tests/contrib/lo.test.js": "d7d834015de421126e43bd0c4b41dc8b55730185c7bb187f3c0d9ed1cf682d01",
+    "packages/pglite/tests/contrib/ltree.test.js": "871b369f96db6e1898200625bec9dbcc945c8695b40bbebc7bc8e555acc1a9f4",
+    "packages/pglite/tests/contrib/moddatetime.test.ts": "50ef275ef8407aacda3901e1222c2ced735246aa29f59cf263898caf5125d211",
+    "packages/pglite/tests/contrib/pageinspect.test.js": "94f3658e82b9daf3fa440a7138dce91fdec6588f9af0029c0500e642161549a9",
+    "packages/pglite/tests/contrib/pg_buffercache.test.js": "e042744c073e933f93c3b48afb3939d011cab403e382a2a23a02da9cfb6c6067",
+    "packages/pglite/tests/contrib/pg_freespacemap.test.ts": "e44b6c5d7c33d3e0ed7baf1eb88c4a6c0f9aafb05b7c296afad7def2a02f0e98",
+    "packages/pglite/tests/contrib/pg_stat_statements.test.ts": "e2ed11a866f36930ae3d61b3d555e8974bb46983581c2f0a489246b48d7ca5c3",
+    "packages/pglite/tests/contrib/pg_surgery.test.js": "76334e27cc8f8dcff9996e6006a45593d72e02d77e8a48c06f2f6a83046af090",
+    "packages/pglite/tests/contrib/pg_trgm.test.js": "0843f03a936a3baf5c3664283bf79a96306d35fe46313c3ba37764917b376f80",
+    "packages/pglite/tests/contrib/pg_visibility.test.js": "7b892eecdef96332dfc7271663439b27fc27b8a0e57bda0e5a48c77966ffbcbe",
+    "packages/pglite/tests/contrib/pg_walinspect.test.js": "c9c39738523e9d9f54e6678bc2ed3c3cccf65e1800424ffe03b0eb1d71e1d608",
+    "packages/pglite/tests/contrib/pgcrypto.test.ts": "edc30d416e18e99e9bede83e03c25eac16ba52f05035c566420e7afc6e959941",
+    "packages/pglite/tests/contrib/seg.test.js": "cd0a47ae7c0588bc90174f48a98ae60ce727bc821a96a6a32182c630cbbda63e",
+    "packages/pglite/tests/contrib/tablefunc.test.js": "2d6b297aa4c24f75758697e9e54c3e8e38bb2772138ac5b2fc9543e328601c25",
+    "packages/pglite/tests/contrib/tcn.test.js": "a16043c5ab4756786a20e0eb4e5b87b5c247774f2e434e3ce3e3d0e4aa8eea21",
+    "packages/pglite/tests/contrib/tsm_system_rows.test.js": "92fcc28f473ba989ef5b0b4fb83525121c676f2d3429c2b20e5b0e139d22b7ef",
+    "packages/pglite/tests/contrib/tsm_system_time.test.js": "ae91dd3961431ee6c3c5647b6dddde300d1da3ffb02a8c0d527f1fafc8a8dd3a",
+    "packages/pglite/tests/contrib/unaccent.test.js": "216a385cb5995de6007634e58a8b392bf9d92d459948fc98893b4ac4842f03b9",
+    "packages/pglite/tests/contrib/uuid_ossp.test.ts": "5f684efac03d3c93d56cf88baf693e685c25eeb8d24e732afa852ba319b082f5",
+    "packages/pglite/tests/describe-query.test.ts": "083b6f340bc33397a770dc01819dfe756ef2a6adb5eb49943bf448b56f48a651",
+    "packages/pglite/tests/drop-database.test.ts": "24ca12eee63660b90eda8dfcd31690d78a703dd7e55f01d215465d40ea146f68",
+    "packages/pglite/tests/dump.test.js": "69fff6e18a28511e08dee4e7943c75bce866868b49d4d35d84201e163004b5fc",
+    "packages/pglite/tests/exec-protocol.test.ts": "6bfc5e47b9a0116e3a86ca7437e8dc1709427da487a99861910c8c2ae2e1a633",
+    "packages/pglite/tests/extended-query-error.test.ts": "bccd6d9b75e50570ad7461a3916cf501429a657afa2cfa9ef2b2457784e15921",
+    "packages/pglite/tests/format.test.js": "cd849a6849bf085cfa9d7ee21d2e0fcff2dc06dbaf7c8097eb39f04900481fd4",
+    "packages/pglite/tests/fts.english.test.js": "66e7aaf9634c33c9c55339df49f870b9495fd318a75c3d180dcf6cf76c89311a",
+    "packages/pglite/tests/fts.simple.test.js": "27bca8a6575347f40a94ca0452c0f6a138b7ecebb063ff5fc0c71da9b86b49c0",
+    "packages/pglite/tests/initdb-fs-option.test.ts": "d92a724c101585fafc65d291a496ecdd91d67cdd5759369d1be1df57f22e8454",
+    "packages/pglite/tests/instantiation.test.ts": "4c2491eb8e355ddcc7127d5ab0ab50e593c41458f48cc5a5ae139b32df9dd9ab",
+    "packages/pglite/tests/largeobjects.test.js": "c772b807b160c8197ddcbf301002898524de14a5750d656b809edd5e23117b47",
+    "packages/pglite/tests/live.test.ts": "fe11a46f2eac92a23a467b14c990989210c060fef314e8bea00daeb4105358d5",
+    "packages/pglite/tests/message-context-leak.test.ts": "5c05f70c60634206941c16beb5b650c409f1744bed1207e02fff207fde423f55",
+    "packages/pglite/tests/notify.test.ts": "4f6916e0f4f74d231d3dd0a1001c836dae60c6817aa905e548ce2b6f16650852",
+    "packages/pglite/tests/plpgsql.test.js": "9905a25d79cb2442ac72936a64c34accd064da474ece0cae18e025d1520965b6",
+    "packages/pglite/tests/query-sizes.test.ts": "bfdea0f2e81600b9ec7cd502eaf65eff67b1f4c7ad45d328d32d4853b377cc25",
+    "packages/pglite/tests/targets/deno/.gitignore": "ae8cff376d8113cfb9f324fbedc7b47a9488648f8e9a6e40eade0c3050a84bb5",
+    "packages/pglite/tests/targets/deno/basic.test.deno.js": "56219186ed92b1e44191907dd32794e09c67a7bb664c84f8f547bdcfc43daf3e",
+    "packages/pglite/tests/targets/deno/denoUtils.js": "84a4acb9661f3f91e08cc3db87a6cf007ae3785113e830bbea01232a2b3bba21",
+    "packages/pglite/tests/targets/deno/fs.test.deno.js": "c99d2981a6465dfff3939f028a1bccf1547675f604d6092a16848f08f8142517",
+    "packages/pglite/tests/targets/deno/package.json": "18d65b5b8cd4d1eca20b3fe6d887a8c682055c47090d60b7eb50b3302a0cffb0",
+    "packages/pglite/tests/targets/deno/pgvector.test.deno.js": "f1d835e26b6c8aa4a7fa80743d06b7908fc674edcf96f390462cb0e1843ee8b3",
+    "packages/pglite/tests/targets/deno/runtest.sh": "392db3bdd68e64e7f6278cf32ecdb4aeba458af3ca3933b64d43e4ff88659bfd",
+    "packages/pglite/tests/targets/runtimes/base.js": "cbcd6796480f095200050c4e38800db1e3cf4f0139630cee2fb92ac1b8a1392d",
+    "packages/pglite/tests/targets/runtimes/node-fs.test.js": "d1d0c18f8051b0086b0e945709b6d108bc55decff077728c8fdbf904644725fa",
+    "packages/pglite/tests/targets/runtimes/node-memory.test.js": "d6c03fa72436966e1cd11e6cea1880a7541bcc64642b66b62131ec95d57eb281",
+    "packages/pglite/tests/targets/web/base.js": "27399024432c7cfa4a21eb10d03b203f10bb163f6c43794419f13f36d730426b",
+    "packages/pglite/tests/targets/web/blank.html": "335fca8574f060eea24ebcdae6b78f32414f5de03da1084fd0e73d710768e3a9",
+    "packages/pglite/tests/targets/web/chromium-idb.test.web.js": "89bba26cdf9de09e49a7ee7b81bb5d554d1b139b5eed9d4d08743b458e4e162e",
+    "packages/pglite/tests/targets/web/chromium-memory.test.web.js": "e088fde13c703ff280c5da9b91774d24d085d15ba97e24bcb38e8c33f7002a91",
+    "packages/pglite/tests/targets/web/chromium-opfs-ahp.test.web.js": "9ab14f0b143c127f99982732ffc7c4987cfbe603681378888fd7393a6ffb5926",
+    "packages/pglite/tests/targets/web/firefox-idb.test.web.js": "fd69a1c30b8546b1002a0d5c218c76534e4223e4e56709360124f2807a2c25b5",
+    "packages/pglite/tests/targets/web/firefox-memory.test.web.js": "ea08211ae60af5e613524388aab14cfec882add8d6a869c3f305ee28d3ad3db5",
+    "packages/pglite/tests/targets/web/firefox-opfs-ahp.test.web.js": "ef526674eec9a96df2b082957204fe8eaa585641b05e0a3570bf7de7ccb58b78",
+    "packages/pglite/tests/targets/web/webkit-idb.test.web.js": "8c3b1bf069d21c6b1e0dd16958f452ffc8d5c2f2f1892295e1ad6f62ab04457b",
+    "packages/pglite/tests/targets/web/webkit-memory.test.web.js": "a81c214894cd483c758a1e8a72d74c08d4feaef142c8c87d4738805d02a4be18",
+    "packages/pglite/tests/targets/web/webkit-opfs-ahp.test.web.js": "317282aa05d952f227e028c4b35cadd07be9cd6b8df65bea580bf323e7df90ee",
+    "packages/pglite/tests/targets/web/worker.js": "e5e0e2443eb7e0edf5e568a24bb2ddfcb74719fe33171c29560aa266475f9749",
+    "packages/pglite/tests/templating.test.js": "5a6ff5d0d17a052db2323299a619917c79ba68cfb67f407664fd4819695a81d1",
+    "packages/pglite/tests/test-utils.ts": "ea7d182ff9ddc74fdd7b3a5dd991cb223cb0a2c9e0b5f147952649bf777959d1",
+    "packages/pglite/tests/triggers.test.js": "51f1ca3a89cb8ac3263f5a1a21daf4ff1b3281623271b6e5163dea95c8c3460a",
+    "packages/pglite/tests/types.test.ts": "894e5946c82cdbe55e06f0ec194ba916302d8ef157c36c2eabfe43bf8d729787",
+    "packages/pglite/tests/user.test.ts": "41a930df726661480209d94c8ab1b59ee064ce15f710edaccf0bfc88e1589e49",
+    "packages/pglite/tests/utils.test.ts": "193db4bb035024bcda3951c79d716e05fd8f2c0f66da908c9e997f4cb9f885de",
+    "packages/pglite/tests/xml.test.ts": "3806a4f640deaf62f4cf9a0cfae1e0ea8a7a04841deebc7ee6b20e7312623ce8",
+    "packages/pg-protocol/src/buffer-reader.ts": "94be92bc9ccf7860171a889d3cc719b725a7bbbe48949faeb6f74384157e1a88",
+    "packages/pg-protocol/src/buffer-writer.ts": "db4811276e5c2a93fa094e5ecfc77599dc55e8239e0e6b1364d251ff0a7eb08f",
+    "packages/pg-protocol/src/index.ts": "a6b84a33f5d83dd6c65bbf3aa2d208feb8dc775a872629a63d7fe81902390a57",
+    "packages/pg-protocol/src/messages.ts": "cff42404a9d3767ae426090c5f5f273c23b64b8f7d02f832728e66131e4b5a9d",
+    "packages/pg-protocol/src/parser.ts": "96a4948e072f928b7e56103c5904a2bc52e011af8d26cd97e0e40eec79096337",
+    "packages/pg-protocol/src/serializer.ts": "19e34611ce15d75c0dbbff930e4a8c2b1bdaaee6fd9b9a5049cde936808dc03e",
+    "packages/pg-protocol/src/string-utils.ts": "435bc9719e9b7fbebe7b69ff992d4bad9f1fd0ba09b667170d9ce62f284c943f",
+    "packages/pg-protocol/src/types.ts": "bb57aeb351d1c645d02b99bbb89dac79552d7c86a0995a36573ec4996478b266",
+    "packages/pg-protocol/test/inbound-parser.test.ts": "883ff02daaa32e60fd3efd27168fc4a281988f7483feeb9937cf57c90c42d6e0",
+    "packages/pg-protocol/test/outbound-serializer.test.ts": "587403f9697ec652544c8978a86bbb562a13fae00d53986ce6616eb9705fb012",
+    "packages/pg-protocol/test/string-utils.test.ts": "12465e3c91688b9c7d40651b14e38f9f7fc33d33d2b306d3dfbe608335828711",
+    "packages/pg-protocol/test/testing/buffer-list.ts": "ed00ba0ba16403804a7dfe6714264284e9d5249dd97863bc33f89a9035a5d27d",
+    "packages/pg-protocol/test/testing/test-buffers.ts": "4501a7896677127bb8a0a4182f0d41b5f37c5039f3aa3a0a2860e9372b450432",
+    "pnpm-lock.yaml": "fde41399049d5c9b7b798f2bfc56e1007f218842fa8d3f0fe63f734372d0dac3",
+    "packages/pglite/package.json": "1956c613b408f6b9046050db3be425950946eff758ba1a2e8d70446221388246",
+    "packages/pg-protocol/package.json": "a8d41e14812cb6ade3bb97755474d6570869dfa791ac41220b791c312e01b5dd",
+    "packages/pglite-utils/package.json": "873635b6cfe9af97e7507c4ec9723e6ae393b93d07bea9c201960a7240a28719",
+    "packages/pglite-utils/LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
+    "LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
+    "POSTGRES-LICENSE": "31ccadc0a70e8e0e8a35c5833567b64388dfe34987d962e1911554e271294105",
+    "packages/pg-protocol/LICENSE": "a66a0335a42bfcb53bf1534bfdc3bac940b0d2cb0f1e9c92e56e24b412768f3a",
+    "packages/pglite-utils/src/utils.ts": "725108c326e106ee2756c6ff3eaec23f8b78094bf08a91b67d2c55ded1384290",
+    "packages/pglite-utils/src/index.ts": "59fa7a69caa7a614de6c4d94ccf90e13603a8f731f03c2e9abc369859c95b404"
+  },
+  "oracle": {
+    "package": "@electric-sql/pglite",
+    "version": "0.5.11",
+    "url": "https://registry.npmjs.org/@electric-sql/pglite/-/pglite-0.5.11.tgz",
+    "integrity": "sha512-SWuqsTjA4DDWqgZ05PC1RJaq8e00p5KACxbqaikDFQ8dIGA0SLRzuPniky7IW+q/c5RDNMdEXwv7mFBWIx9Hxw==",
+    "archive": "pglite-oracle-0.5.11.tgz",
+    "directory": "pglite-oracle-0.5.11",
+    "role": "Differential test oracle only; npm release version matches pinned source package; engine/runtime is not delivered",
+    "sha256": "8d0d60091cd0630df4247c0e84d496fe6adb93f4b272a1ee395e9b78dc253e95"
+  },
+  "dependencies": [
+    {
+      "package": "@electric-sql/pg-protocol",
+      "version": "0.0.4",
+      "path": "packages/pg-protocol",
+      "managed_equivalent": "PgliteProtocol/PgliteProtocolDecoder; network handshake excluded from embedded delivery"
+    },
+    {
+      "package": "@electric-sql/pglite-utils",
+      "version": "0.0.4",
+      "path": "packages/pglite-utils",
+      "license": "Apache-2.0",
+      "managed_equivalent": "Guid, System.IO, selected native bootstrap assets; browser downloads and worker election replaced"
+    },
+    {
+      "package": "async-mutex",
+      "version": "0.4.1",
+      "pin": "pnpm-lock.yaml",
+      "managed_equivalent": "thread-affine callback ownership, dedicated Thread queue and BCL locks; no copied JS implementation"
+    },
+    {
+      "package": "tinytar",
+      "version": "0.1.0",
+      "pin": "pnpm-lock.yaml",
+      "managed_equivalent": "System.Formats.Tar and System.IO.Compression; no copied JS implementation"
+    },
+    {
+      "package": "buffer",
+      "version": "6.0.3",
+      "pin": "pnpm-lock.yaml",
+      "managed_equivalent": "byte[], Span and BinaryPrimitives; no JS buffer dependency"
+    }
+  ]
+}

@@ -8,7 +8,12 @@
   <ItemGroup>
     <ProjectReference Include="../../src/Api/PGlite.csproj" />
     <Compile Include="../../tests/Product/SqlCases.cs" Link="SqlCases.cs" />
+    <Compile Include="../../tests/ApiAcceptance/*.cs" Link="ApiAcceptance/%(Filename)%(Extension)" />
+    <Compile Include="../../tests/ApiServices/ApiServicesCases.cs" Link="ApiAcceptance/ApiServicesCases.cs" />
+    <Compile Include="../../tests/ApiCodecs/PgliteCodecCases.cs" Link="ApiAcceptance/PgliteCodecCases.cs" />
+    <Compile Include="../../tests/ApiProtocolEngine/CoreProtocolCases.cs" Link="ApiAcceptance/CoreProtocolCases.cs" />
     <Content Include="../../tests/native/cases.json" Link="cases.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../tests/ApiAcceptance/oracle-cases.json" Link="api-oracle-cases.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
   <Target Name="RequireTranslatedPGlite" BeforeTargets="PrepareForBuild">
     <Error Condition="!Exists('$(TranslatedProject)')"

@@ -68,6 +68,7 @@ try
     }
     if (assertions != 36 || lifetimes != 3) throw new InvalidOperationException("The required 21 cases and 15 owner/recovery checks did not all execute.");
     Console.WriteLine($"PASS {assertions} exact SQL/ownership assertions; translated initdb; three clean same-process lifetimes; two persistence reopens.");
+    PgliteApiCases.Run(options);
     return 0;
 }
 catch (Exception error)

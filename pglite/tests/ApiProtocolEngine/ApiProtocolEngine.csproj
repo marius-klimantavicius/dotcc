@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Early integration only: never build the supervisor's generated projects. -->
+    <BackendAssembly Condition="'$(BackendAssembly)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedPGlite/bin/Release/net10.0/TranslatedPGlite.dll</BackendAssembly>
+    <FrontendAssembly Condition="'$(FrontendAssembly)' == ''">$(MSBuildThisFileDirectory)../../generated/TranslatedInitdb/bin/Release/net10.0/frontend.dll</FrontendAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="*.cs" />
+    <Compile Include="../../src/Api/*.cs" Link="Api/%(Filename)%(Extension)" />
+    <Compile Include="../../src/Initialization/InitializationFrontend.cs" Link="Initialization/InitializationFrontend.cs" />
+    <Compile Include="../../src/Initialization/InitializationArguments.cs" Link="Initialization/InitializationArguments.cs" />
+    <Compile Include="../ApiAcceptance/PgliteApiCases.cs" Link="PgliteApiCases.cs" />
+    <Compile Include="../ApiCodecs/PgliteCodecCases.cs" Link="PgliteCodecCases.cs" />
+    <Content Include="../ApiAcceptance/oracle-cases.json" Link="api-oracle-cases.json" CopyToOutputDirectory="PreserveNewest" />
+    <Reference Include="TranslatedPGlite"><HintPath>$(BackendAssembly)</HintPath></Reference>
+    <Reference Include="frontend"><HintPath>$(FrontendAssembly)</HintPath></Reference>
+  </ItemGroup>
+  <Target Name="RequirePrebuiltEngine" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(BackendAssembly)')" Text="Prebuilt translated backend required: $(BackendAssembly)" />
+    <Error Condition="!Exists('$(FrontendAssembly)')" Text="Prebuilt translated frontend required: $(FrontendAssembly)" />
+  </Target>
+</Project>

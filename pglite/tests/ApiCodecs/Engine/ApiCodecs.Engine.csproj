@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAotCompatible>true</IsAotCompatible>
+    <ApiProject Condition="'$(ApiProject)' == ''">$(MSBuildThisFileDirectory)../../../src/Api/PGlite.csproj</ApiProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(ApiProject)" />
+    <Compile Include="../PgliteCodecCases.cs" Link="PgliteCodecCases.cs" />
+  </ItemGroup>
+</Project>
