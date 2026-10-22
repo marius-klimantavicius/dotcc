@@ -253,3 +253,28 @@ header/definition controls pass. Snapshot 1852 builds without warnings/errors;
 fresh full regeneration is active. Broad current compiler tests pass 3,387
 cases with exactly the 16 established untouched-baseline failures (comparison:
 `artifacts/supervisor-portable/regression-comparison-current5.json`).
+
+## Forward union kinds and exported parser semantic tags
+
+The fresh 876-object 1852 attempt rejected `YYSTYPE` between twophase and the
+replication parser. Its first cause was incorrect forward-kind metadata: the
+shared struct/union-forward syntax node always lowered as a struct. The lowering
+now preserves the keyword. Sixty-six affected execution controls pass, including
+forward completion in both orders and genuine union/struct conflicts.
+
+The original bootstrap, replication and synchronous-replication interfaces also
+export generic `union YYSTYPE` declarations that can bind to another parser's
+complete union in an importing translation unit. Private type namespace
+adaptations retain every original parser/scanner C byte and member layout.
+Three public headers use distinct tags in exactly two token positions each;
+three copied Bison headers use corresponding distinct names in four identifier
+positions each. The per-pair YYSTYPE define applies only to the six matching
+original sources. Merely defining YYSTYPE without adapting Bison's generated
+guard would suppress its actual union declaration and is not used.
+
+All six original units compile natively with incompatible-pointer and implicit
+function diagnostics treated as errors. Both unscoped unused extern conflicts
+and scoped execution are checked through direct and object routes. Nine guarded
+initializer/staging checks pass, including missing/duplicate last-header anchors
+and source/output preservation. Fresh full 1908 regeneration is active; previous
+objects with the wrong union-kind fact are not reinterpreted.

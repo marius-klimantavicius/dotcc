@@ -507,8 +507,10 @@ internal sealed partial class IrBuilder
             case C.TypedefUnion s: BuildAggregateTypedef(Tok(s.Arg2), s.Arg4, s.Arg6, true, pack: SourcePacking.Of(fn)); break;
             case C.TypedefStructAnon s: BuildAggregateTypedef(null, s.Arg3, s.Arg5, false, pack: SourcePacking.Of(fn)); break;
             case C.TypedefUnionAnon s: BuildAggregateTypedef(null, s.Arg3, s.Arg5, true, pack: SourcePacking.Of(fn)); break;
-            // `struct Tag;` forward declaration — C# resolves order-independently.
-            case C.StructFwd s: ReferenceAggregate(s.Arg1, isUnion: false); break;
+            // Both forward-declaration productions share this syntax node.
+            // Preserve the keyword: an opaque union still has a distinct C
+            // identity/kind even though its managed placeholder has no fields.
+            case C.StructFwd s: ReferenceAggregate(s.Arg1, isUnion: Tok(s.Arg0) == "union"); break;
             // `_Static_assert(expr[, "msg"]);` at file scope — a compile-time-only
             // assertion, EVALUATED here (C11 §6.7.10) via the unified comptime
             // interpreter. A holding assertion emits nothing; a zero or non-constant

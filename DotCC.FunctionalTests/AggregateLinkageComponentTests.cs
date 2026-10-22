@@ -9,6 +9,83 @@ namespace DotCC.FunctionalTests;
 public sealed class AggregateLinkageComponentTests
 {
     [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Forward_union_keeps_its_kind_and_completes_across_units(bool objects, bool reverse)
+    {
+        WithDirectory(directory =>
+        {
+            var paths = Sources(directory,
+                "union Value; union Value *make(void); int read(union Value *); int main(void) { return read(make()) == 37 ? 0 : 1; }",
+                "union Value { long value; char bytes[8]; }; static union Value value = {37}; union Value *make(void) { return &value; } int read(union Value *p) { return (int)p->value; }");
+            if (objects)
+            {
+                paths = Objects(paths);
+                var shape = AggregateIdentities.Read(File.ReadAllText(paths[0]))!.Single(n => n.Name == "Value").Shape;
+                shape.IsIncomplete.ShouldBeTrue();
+                shape.IsUnion.ShouldBeTrue();
+            }
+            if (reverse) Array.Reverse(paths);
+            string code = objects ? Compiler.LinkObjects(paths) : Compiler.EmitCSharp(paths);
+            FixtureRunner.CompileAndRunCapturingExit(code, Array.Empty<string>()).exit.ShouldBe(0);
+        });
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Forward_union_cannot_complete_as_struct_in_a_shared_contract(bool objects)
+    {
+        WithDirectory(directory =>
+        {
+            var paths = Sources(directory,
+                "union Value; int shared(union Value *); int main(void) { return 0; }",
+                "struct Value { long value; }; int shared(struct Value *);");
+            if (objects) paths = Objects(paths);
+            Should.Throw<CompileException>(() => { if (objects) Compiler.LinkObjects(paths); else Compiler.EmitCSharp(paths); })
+                .Message.ShouldContain("conflicting aggregate declarations for 'Value'");
+        });
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public void Parser_semantic_namespace_preserves_real_unused_external_contract_checks(bool objects, bool scoped)
+    {
+        WithDirectory(directory =>
+        {
+            string sync = scoped ? "SyncRepYYSTYPE" : "YYSTYPE";
+            string replication = scoped ? "ReplicationYYSTYPE" : "YYSTYPE";
+            // The real replication interface includes the synchronous parser
+            // interface before completing its own generated semantic union.
+            // An unused declaration is still a shared C contract.
+            string api = "union " + sync + "; int syncrep_yylex(union " + sync + " *);\n";
+            string generated(string tag, string fields) =>
+                "#if !defined " + tag + " && !defined YYSTYPE_IS_DECLARED\nunion " + tag + " { " + fields + " }; typedef union " + tag + " " + tag + ";\n#define YYSTYPE_IS_DECLARED 1\n#endif\n";
+            var paths = Sources(directory,
+                api + generated(replication, "long recptr; void *node;") +
+                    "int main(void) { " + replication + " v = {37}; return v.recptr == 37 ? 0 : 1; }",
+                api + generated(sync, "char *str; void *config;") +
+                    "int syncrep_yylex(union " + sync + " *p) { return p == 0; }");
+            if (objects) paths = Objects(paths);
+            if (!scoped)
+            {
+                Should.Throw<CompileException>(() => { if (objects) Compiler.LinkObjects(paths); else Compiler.EmitCSharp(paths); })
+                    .Message.ShouldContain("conflicting aggregate declarations for 'YYSTYPE'");
+            }
+            else
+            {
+                string code = objects ? Compiler.LinkObjects(paths) : Compiler.EmitCSharp(paths);
+                FixtureRunner.CompileAndRunCapturingExit(code, Array.Empty<string>()).exit.ShouldBe(0);
+            }
+        });
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public void Private_tag_variant_and_exposed_opaque_parent_work_in_nested_owned_libraries(bool objects)

@@ -43,5 +43,40 @@
   "excluded_native_codegen_units": {
     "src/port/pg_crc32c_sse42.c": "Unconditional SSE4.2 intrinsic implementation; software pg_crc32c_sb8.c retained",
     "src/port/pg_crc32c_sse42_choose.c": "Hardware dispatch is absent when USE_SLICING_BY_8_CRC32C is selected"
-  }
+  },
+  "parser_semantic_types": [
+    {
+      "tag": "BootYYSTYPE",
+      "public_header": "bootstrap/bootstrap.h",
+      "public_occurrences": 2,
+      "generated_header": "src/backend/bootstrap/bootparse.h",
+      "generated_occurrences": 4,
+      "units": [
+        "src/backend/bootstrap/bootparse.c",
+        "src/backend/bootstrap/bootscanner.c"
+      ]
+    },
+    {
+      "tag": "ReplicationYYSTYPE",
+      "public_header": "replication/walsender_private.h",
+      "public_occurrences": 2,
+      "generated_header": "src/backend/replication/repl_gram.h",
+      "generated_occurrences": 4,
+      "units": [
+        "src/backend/replication/repl_gram.c",
+        "src/backend/replication/repl_scanner.c"
+      ]
+    },
+    {
+      "tag": "SyncRepYYSTYPE",
+      "public_header": "replication/syncrep.h",
+      "public_occurrences": 2,
+      "generated_header": "src/backend/replication/syncrep_gram.h",
+      "generated_occurrences": 4,
+      "units": [
+        "src/backend/replication/syncrep_gram.c",
+        "src/backend/replication/syncrep_scanner.c"
+      ]
+    }
+  ]
 }

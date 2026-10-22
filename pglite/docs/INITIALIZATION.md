@@ -368,3 +368,31 @@ the next immutable compiler snapshot, fresh 876-object regeneration
 and full backend relink/build; that actual-input gate remains open until its
 new receipt passes. Catalog initialization and all campaign acceptance gates
 remain open afterward.
+
+The fresh 1852 retry emitted all 876 units and then exposed a separate false
+kind conflict for YYSTYPE. Both grammar productions for `struct Tag;` and
+`union Tag;` use the same syntax node; its IR case always recorded a struct.
+The repaired case preserves the actual keyword. The native two-TU union
+control exits zero, while immutable 1852 reproduces the false link failure
+(`union-forward-native.json`). Existing incorrect object metadata is never
+reinterpreted; affected inputs require re-emission.
+
+There is also a real source-level namespace collision: the replication grammar
+includes the synchronous parser's `syncrep_yylex(union YYSTYPE *)` declaration
+and then completes YYSTYPE with its different generated semantic union. The
+shared unused-extern ABI gate continues to reject that incompatible contract.
+The profile adaptation assigns BootYYSTYPE, ReplicationYYSTYPE and SyncRepYYSTYPE
+to the three exported parser interfaces. Each private common API header has
+two exact identifier replacements. Private copies of the six original C units
+are byte-identical; their three copied generated grammar headers each replace
+four YYSTYPE identifier tokens, retaining original include and declaration
+guards. The matching per-pair `-DYYSTYPE=Tag` changes references without defining
+Tag as a macro, so the renamed generated union/typedef is still declared.
+This also covers the direct union reference in syncrep_scanner.c's YY_DECL.
+
+All six actual parser/scanner copies compile natively with incompatible-pointer
+and implicit-declaration errors enabled (`parser-type-scoping/report.json`).
+`aggregate-parser-functional-tests.log` has 66 passes, adding direct/object
+union completion, true kind conflicts, unchanged rejection of the unscoped
+unused parser declaration and execution with scoped interfaces. The supervisor
+owns the guarded profile integration and next complete fresh backend retry.
