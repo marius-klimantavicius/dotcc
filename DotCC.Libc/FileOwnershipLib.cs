@@ -56,7 +56,7 @@ public static unsafe partial class Libc
                 slot.UserBuffer = null;
                 slot.OutputBuffer = null;
                 try { slot.Writer?.Flush(); } catch (IOException) { }
-                try { slot.Stream?.Dispose(); } catch (IOException) { }
+                try { ReleaseFileBacking(slot); } catch (IOException) { }
                 slot.Socket?.Dispose();
             }
             state.Files.Clear();

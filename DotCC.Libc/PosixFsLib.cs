@@ -657,21 +657,12 @@ public static unsafe partial class Libc
     [DllImport("libc", EntryPoint = "mkfifo", SetLastError = true)]
     private static extern int PosixMkfifo(byte* path, uint mode);
 
-    /// <summary><c>dup(fd)</c> — fd duplication isn't modeled (a dotcc fd owns its
-    /// backing stream; two fds sharing one stream has no clean close semantics);
-    /// fail with EPERM. Defined so the module links; unused by the R7RS suite.</summary>
-    public static int dup(int fd)
-    {
-        errno = EPERM;
-        return -1;
-    }
+    /// <summary>Duplicate an owned file/console descriptor with a shared open
+    /// file description and independent descriptor close lifetime.</summary>
+    public static int dup(int fd) => DuplicateDescriptor(fd, null);
 
     /// <inheritdoc cref="dup(int)"/>
-    public static int dup2(int oldfd, int newfd)
-    {
-        errno = EPERM;
-        return -1;
-    }
+    public static int dup2(int oldfd, int newfd) => DuplicateDescriptor(oldfd, newfd);
 
     // ---- helpers -----------------------------------------------------------
 

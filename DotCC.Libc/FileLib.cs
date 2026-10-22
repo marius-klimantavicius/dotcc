@@ -60,7 +60,13 @@ public static unsafe partial class Libc
         public Stream? Stream;          // null for the console + socket kinds
         public ManagedPipe? Pipe;
         public Socket? Socket;          // socket kind only (BSD sockets, SocketLib)
-        public int StatusFlags;         // Linux O_ACCMODE/O_APPEND/O_NONBLOCK
+        private int statusFlags;
+        public SharedFileDescription? Description;
+        public int StatusFlags
+        {
+            get => Description?.StatusFlags ?? statusFlags;
+            set { if (Description is { } shared) shared.StatusFlags = value; else statusFlags = value; }
+        }
         public int DescriptorFlags;     // FD_CLOEXEC (dotcc has no managed exec)
         public bool Listening;
         public bool Connecting;
@@ -382,7 +388,7 @@ public static unsafe partial class Libc
         try { FlushStdioBuffer(slot); slot.Writer?.Flush(); }
         catch (IOException) { }
         catch (ObjectDisposedException) { }
-        try { slot.Stream?.Dispose(); }
+        try { ReleaseFileBacking(slot); }
         catch (IOException) { }
         catch (ObjectDisposedException) { }
         slot.Stream = null;
@@ -569,7 +575,7 @@ public static unsafe partial class Libc
             try { slot.Writer?.Flush(); }
             finally
             {
-                try { slot.Stream?.Dispose(); }
+                try { ReleaseFileBacking(slot); }
                 finally
                 {
                     slot.Stream = null;
@@ -588,6 +594,11 @@ public static unsafe partial class Libc
         {
             // Std stream: flush, keep usable.
             (slot.Kind == FileSlot.K.Err ? Console.Error : Console.Out).Flush();
+            lock (_filesLock)
+            {
+                int index = _files.IndexOf(slot);
+                if (index >= 3) _files[index] = null;
+            }
         }
     }
 

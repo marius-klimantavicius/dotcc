@@ -96,6 +96,7 @@ public static unsafe partial class Libc
                 disposed = true;
                 StopPgliteSignals();
                 DisposePosixLocales(this);
+                DisposePosixSemaphores(this);
                 DisposeFileDescriptors(this);
                 DisposePathState(this);
                 DisposeOwnedMappings(this);
