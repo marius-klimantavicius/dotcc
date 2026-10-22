@@ -23,6 +23,8 @@ def prepare(ctx):
         includes = [port["include"], *includes]
         defines.extend(port["defines"])
         ctx.receipt["pglite_atomics_overlay"] = port
+        ctx.receipt["pglite_portable_codegen"] = helper(
+            ctx.root / "scripts/portability.py").prepare_overlay(ctx.root, port["include"])
     backend_defines = info.get("defines", []) if ctx.profile == "embedding-native" else []
     ctx.receipt["pglite_translation"] = dict(
         profile=ctx.profile, configuration=info,
@@ -45,20 +47,25 @@ def prepare(ctx):
     libc_wrapper = ctx.work / "pglitec-input.c"
     libc_wrapper.write_text('#include <stdbool.h>\n#include <stdlib.h>\n#include "'
                             + (source / policy["diagnostic_units"][0]).as_posix() + '"\n')
-    if ctx.options.action != "probe" and ctx.profile == "embedding-native":
+    if ctx.profile == "embedding-native" and (ctx.options.action != "probe" or ctx.options.unit):
         manifest = json_file(ctx.root / policy["backend_manifest"])
         pin = json_file(ctx.root / "config/sources.json")["product"]
         if manifest["revision"] != pin["revision"] or manifest["profile"] != ctx.profile:
             raise RuntimeError("Backend source selection needs an explicit source/profile upgrade")
         units = [Unit(libc_wrapper)]
+        excluded = ctx.receipt["pglite_portable_codegen"]["excluded_native_codegen_units"]
         for context in manifest["contexts"]:
             for name in context["units"]:
+                if name in excluded:
+                    continue
                 path = source / name
                 unit_flags = [value.replace("{native_base}", str(source.parent))
                               for value in context["defines"]]
                 unit_flags.extend(flags(includes=[path.parent if item == "{cwd}" else source / item
                                                   for item in context["includes"]]))
                 units.append(Unit(path, tuple(unit_flags)))
+        for name in ctx.receipt["pglite_portable_codegen"]["portable_sources"]:
+            units.append(Unit(source / name, tuple(flags(backend_defines))))
         bridge = ctx.root / "src/Host/dotcc_pglite_boundary.c"
         units.append(Unit(bridge))
         ctx.receipt["pglite_translation"].update(

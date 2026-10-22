@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "reason": "DotCC translates PostgreSQL's portable software CRC32C and popcount implementations; GCC-selected inline assembly and target intrinsics are not compiler capabilities",
+  "configuration": {
+    "HAVE_X86_64_POPCNTQ": ["1", null],
+    "HAVE__GET_CPUID": ["1", null],
+    "HAVE__GET_CPUID_COUNT": ["1", null],
+    "HAVE__BUILTIN_TYPES_COMPATIBLE_P": ["1", null],
+    "HAVE__BUILTIN_CONSTANT_P": ["1", null],
+    "HAVE_GETOPT_H": ["1", null],
+    "HAVE_GETOPT": ["1", null],
+    "HAVE_GETOPT_LONG": ["1", null],
+    "HAVE_STRUCT_OPTION": ["1", null],
+    "HAVE_INT_OPTERR": ["1", null],
+    "HAVE_SYS_PRCTL_H": ["1", null],
+    "USE_AVX512_CRC32C_WITH_RUNTIME_CHECK": ["1", null],
+    "USE_AVX512_POPCNT_WITH_RUNTIME_CHECK": ["1", null],
+    "USE_SSE42_CRC32C_WITH_RUNTIME_CHECK": ["1", null],
+    "USE_SLICING_BY_8_CRC32C": [null, "1"]
+  },
+  "portable_sources": ["src/port/getopt.c", "src/port/getopt_long.c"],
+  "header_adaptations": [
+    {
+      "path": "regex/regex.h",
+      "before": "#ifndef _WIN32\n#include <regex.h>\n#endif",
+      "after": "/* DotCC: the system regex collision check is inapplicable. PostgreSQL's complete replacement interfaces and algorithms follow unchanged. */",
+      "reason": "This include only forces collisions with the system regex interfaces before PostgreSQL undefines/replaces them. No system regex operation is used by the translated replacement."
+    }
+  ],
+  "excluded_native_codegen_units": {
+    "src/port/pg_crc32c_sse42.c": "Unconditional SSE4.2 intrinsic implementation; software pg_crc32c_sb8.c retained",
+    "src/port/pg_crc32c_sse42_choose.c": "Hardware dispatch is absent when USE_SLICING_BY_8_CRC32C is selected"
+  }
+}

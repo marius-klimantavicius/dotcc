@@ -32,8 +32,12 @@ def libc_build(ctx, suite):
     return helper(ctx.root / "scripts/libc-build.py").run(ctx, suite)
 
 
+def portable_codegen(ctx, suite):
+    return helper(ctx.root / "scripts/portability.py").run(ctx, suite)
+
+
 def before_suite(ctx, suite):
-    if suite.name in ("boundary", "libc-build", "atomics"):
+    if suite.name in ("boundary", "libc-build", "atomics", "portable-codegen"):
         if not hasattr(ctx, "compiler"):
             ctx.tools()
     if suite.name == "boundary" and os.environ.get("PGLITE_BOUNDARY_PREPARATION"):
@@ -52,7 +56,9 @@ recipe = Recipe(
     "pglite", "TranslatedPGlite", ("embedding-native", "native-diagnostic"),
     ("samples/ManagedConsumer/ManagedConsumer.csproj",), sources, prepare,
     consumer=Consumer(property="TranslatedProject"),
-    suites=(Suite("atomics", (), run=atomics, timeout=1800,
+    suites=(Suite("portable-codegen", (), run=portable_codegen,
+                  scope="actual upstream software CRC32C/popcount native/emitted vectors and length/alignment cases"),
+            Suite("atomics", (), run=atomics, timeout=1800,
                   scope="actual native/emitted PG C11 atomic port, bounded concurrency and full query-loop retry"),
             Suite("libc-build", (), run=libc_build,
                   scope="complete actual fork libc unit: private emission and C# build, required host closure"),
@@ -65,6 +71,6 @@ recipe = Recipe(
             Suite("consumer", ("consumer",), matrix=True,
                   scope="managed embedded init, SQL, transaction recovery, shutdown and reopen persistence")),
     default_suites=("consumer",),
-    verify_suites=("inventory", "native-control", "libc-build", "boundary", "atomics", "consumer"),
+    verify_suites=("inventory", "native-control", "libc-build", "boundary", "atomics", "portable-codegen", "consumer"),
     before_suite=before_suite,
 )
