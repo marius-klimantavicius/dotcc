@@ -210,6 +210,15 @@ copied for semantic postprocessing and linked from their original locations in
 the delivered projects. Keep private work directories when upstream harnesses
 need their object fragments, especially libsmb2's legacy tests.
 
+`Translation.companions(context)` may return a mapping from additional product
+names to independently emitted raw directories. Each directory must contain its
+named project and emission manifest. The framework builds and processes each
+requested form and promotes all related libraries in one transaction, including
+rollback of every directory and the receipt if any final build fails. Main
+configure/finish hooks apply only to the main product. Per-form receipts include
+companion projects and hashes, checked alongside the main library. PGlite uses
+this for its original initdb frontend and embedded backend.
+
 Receipts record effective selection, commands/logs, input paths, optional hashes,
 warnings and task outcomes. A failed later behavioral gate does not turn a
 successfully built product into qualified output. Read the attempt status and

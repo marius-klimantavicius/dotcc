@@ -35,6 +35,7 @@ class Translation:
     configure: Callable | None = None
     validate_objects: Callable | None = None
     finish: Callable | None = None
+    companions: Callable | None = None
 
 
 @dataclass(frozen=True)
