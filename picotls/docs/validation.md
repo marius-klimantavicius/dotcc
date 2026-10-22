@@ -23,8 +23,11 @@ The TLS suite reports **39,848 assertions** in total; the peers execute **224
 cases**. ABI, provider and upstream columns retain their harness-reported units
 and are not added to the explicit TLS assertion count. Each provider run includes
 124 measured allocation boundaries and two ticket-clone failure cases within its
-2962 checks. The copied-source consumer and supplemental ordinary consumer pass
-all four forms; neither reports a numeric assertion total (`not_reported`).
+2962 checks. The copied-source consumer passes all four forms in both the full
+driver and supplemental framework consumer workflow. The ordinary
+`samples/ManagedConsumer` ProjectReference path passes all four peer matrices
+(56 cases each); the framework `consumer` suite itself selects `CopiedConsumer`.
+Consumer workflows report no numeric assertion total (`not_reported`).
 The dependency audit reports zero violations and zero missing prerequisites.
 
 Separate controls pass: the native oracle's two files / 24 top-level TAP groups,
@@ -32,6 +35,11 @@ four native QUIC-ticket-helper cases, and 64 compiler-generated header layout
 contracts. These counts are distinct from the translated matrix. Only the TLS
 summary's incidental fragment/assertion count is normalized by the existing
 comparison; all raw stdout is retained.
+
+Three native `hrr-cipher-suite-mismatch` backend subcases emit an empty TAP plan
+because those backends lack both SHA384 and SHA256 suites, as documented in
+[configuration](configuration.md). These capability exclusions are inventoried
+separately; both AES/SHA suites execute in all four translated forms.
 
 MsQuic verification subsequently retranslates picotls. A byte comparison confirms
 that its republished dependency preserves all 11 delivered files in each form,
