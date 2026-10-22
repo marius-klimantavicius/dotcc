@@ -2,6 +2,7 @@
 #define _FCNTL_H
 
 #include <sys/types.h>
+int posix_fallocate(int fd, off_t offset, off_t len);
 
 /* Linux descriptor/status flag values. F_SETFL controls socket blocking and
    file append behavior; unsupported nonblocking console input returns ENOTSUP. */

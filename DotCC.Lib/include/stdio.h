@@ -58,6 +58,7 @@ typedef long off_t;
    as a variadic argument. */
 #include <stdarg.h>
 #include <stddef.h>
+int fseeko(FILE *stream, long offset, int whence);
 int vsnprintf(char* dst, size_t n, const char* fmt, va_list args);
 int vsprintf(char* dst, const char* fmt, va_list args);
 int vfprintf(FILE* stream, const char* fmt, va_list args);

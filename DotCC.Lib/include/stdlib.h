@@ -1,5 +1,6 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
+float strtof(const char *text, char **end);
 
 #include <stddef.h>
 

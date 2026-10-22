@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(BackendHostProject)" />
+    <Compile Include="EmittedProgram.cs" />
+  </ItemGroup>
+  <Target Name="RequireEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(BackendHostProject)' == '' Or !Exists('$(BackendHostProject)')"
+           Text="Set BackendHostProject to the actual emitted backend host fixture project." />
+  </Target>
+</Project>

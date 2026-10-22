@@ -195,16 +195,13 @@ public static unsafe partial class Libc
         if (path == null) { errno = ENOENT; return -1; }
         var p = ResolvePath(path);
         if ((flags & 0x20000) != 0) return OpenLinuxFile(p, flags, mode);
-        // FileStream cannot own directory handles. Report that capability
-        // boundary explicitly instead of misclassifying it as a permission
-        // failure; callers may support platforms without directory fsync.
-        if (Directory.Exists(p)) { errno = EISDIR; return -1; }
         // A path-based FileStream silently takes an flock share lock. POSIX
         // open must not acquire an application advisory lock, or fail merely
         // because another process holds one. Reuse the existing native-open
         // owning-handle path on its supported ABI, also when O_NOFOLLOW is off.
         if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
             return OpenLinuxFile(p, flags, mode);
+        if (Directory.Exists(p)) { errno = EISDIR; return -1; }
         const int oCreat = 0x40, oExcl = 0x80, oTrunc = 0x200, oAppend = 0x400;
         var access = (flags & 0x3) switch
         {
@@ -259,23 +256,11 @@ public static unsafe partial class Libc
     // Shared by POSIX open, stdio opens and exclusive temporary creation.
     // SafeFileHandle owns the original descriptor; FileStream never reopens the
     // path or acquires a .NET sharing flock. No synthetic fd reaches the OS.
-    private static FileStream? OpenLinuxStream(string path, int flags, int mode)
+    private static Stream? OpenLinuxStream(string path, int flags, int mode)
     {
-        int descriptor;
-        fixed (byte* name = Encoding.UTF8.GetBytes(path + "\0")) descriptor = PosixOpenFile(name, flags, mode);
-        if (descriptor < 0) { errno = Marshal.GetLastPInvokeError(); return null; }
-        var handle = new SafeFileHandle((IntPtr)descriptor, ownsHandle: true);
-        try
-        {
-            var access = (flags & 3) == 2 ? FileAccess.ReadWrite : (flags & 3) == 1 ? FileAccess.Write : FileAccess.Read;
-            return new FileStream(handle, access, bufferSize: 1);
-        }
-        catch (Exception error) when (error is IOException or ArgumentException or UnauthorizedAccessException or OutOfMemoryException)
-        {
-            handle.Dispose();
-            errno = error is UnauthorizedAccessException ? EACCES : error is ArgumentException ? EINVAL : error is OutOfMemoryException ? ENOMEM : EIO;
-            return null;
-        }
+        int descriptor = OpenLinuxCreatedDescriptor(path, flags, (uint)mode);
+        if (descriptor < 0) return null;
+        return AdoptBackendLinuxStream(descriptor, flags);
     }
 
     [DllImport("libc", EntryPoint = "open", SetLastError = true)]
@@ -288,6 +273,8 @@ public static unsafe partial class Libc
     /// is applied best-effort.</summary>
     public static int mkdir(byte* path, uint mode)
     {
+        if (OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            return PgliteBackendMkdir(path, mode);
         var p = ResolvePath(path);
         if (Directory.Exists(p) || File.Exists(p)) { errno = EEXIST; return -1; }
         try { Directory.CreateDirectory(p); TrySetUnixMode(p, (int)mode); return 0; }

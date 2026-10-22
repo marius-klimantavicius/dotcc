@@ -34,7 +34,7 @@ public static unsafe partial class Libc
         lock (_filesLock)
         {
             var source = SlotByFd(oldfd);
-            if (source is null || source.Kind == FileSlot.K.File && source.Stream == null)
+            if (source is null || source.Kind is FileSlot.K.File or FileSlot.K.Directory && source.Stream == null)
             { errno = EBADF; return -1; }
             if (requested is < 0 or >= 1048576) { errno = EBADF; return -1; }
             if (requested == oldfd) return oldfd;

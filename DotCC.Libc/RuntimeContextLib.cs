@@ -97,6 +97,7 @@ public static unsafe partial class Libc
                 StopPgliteSignals();
                 DisposePosixLocales(this);
                 DisposePosixSemaphores(this);
+                DisposeBackendHostServices(this);
                 DisposeFileDescriptors(this);
                 DisposePathState(this);
                 DisposeOwnedMappings(this);

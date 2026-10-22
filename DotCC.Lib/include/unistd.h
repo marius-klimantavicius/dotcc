@@ -2,6 +2,9 @@
 #define _UNISTD_H
 
 #include <sys/types.h>
+int fdatasync(int fd);
+ssize_t copy_file_range(int input_fd, off_t *input_offset, int output_fd,
+                       off_t *output_offset, size_t count, unsigned int flags);
 
 #define _SC_PAGESIZE 30
 #define _SC_PAGE_SIZE _SC_PAGESIZE

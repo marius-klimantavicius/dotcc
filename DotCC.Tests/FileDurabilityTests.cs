@@ -13,7 +13,7 @@ public sealed unsafe class FileDurabilityTests
     private static byte[] CString(string text) => Encoding.UTF8.GetBytes(text + '\0');
 
     [Fact]
-    public void Directory_open_reports_unsupported_handle_kind_in_the_owners_directory()
+    public void Directory_open_sync_and_native_identity_follow_the_owners_directory()
     {
         string root = Directory.CreateTempSubdirectory("dotcc-directory-sync-").FullName;
         using var owner = new RuntimeContext();
@@ -25,7 +25,34 @@ public sealed unsafe class FileDurabilityTests
             fixed (byte* missing = CString("missing"))
             {
                 chdir(directory).ShouldBe(0);
-                foreach (int flags in new[] { 0, 1, 2, 0x10000 })
+                if (OperatingSystem.IsLinux() && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture == System.Runtime.InteropServices.Architecture.X64)
+                {
+                    byte* metadata = stackalloc byte[96];
+                    byte* identity = stackalloc byte[96];
+                    stat(directory, identity).ShouldBe(0);
+                    foreach (int flags in new[] { 0, 0x10000 })
+                    {
+                        int descriptor = open(relative, flags);
+                        descriptor.ShouldBeGreaterThanOrEqualTo(3);
+                        try
+                        {
+                            fsync(descriptor).ShouldBe(0);
+                            fstat(descriptor, metadata).ShouldBe(0);
+                            (*(ulong*)metadata).ShouldBe(*(ulong*)identity);
+                            (*(ulong*)(metadata + 8)).ShouldBe(*(ulong*)(identity + 8));
+                            (*(uint*)(metadata + 16) & 0xf000u).ShouldBe(0x4000u);
+                            byte value = 0;
+                            read(descriptor, &value, 1).ShouldBe(-1); errno.ShouldBe(EISDIR);
+                        }
+                        finally { close(descriptor).ShouldBe(0); }
+                    }
+                }
+                else foreach (int flags in new[] { 0, 0x10000 })
+                {
+                    open(relative, flags).ShouldBe(-1);
+                    errno.ShouldBe(EISDIR);
+                }
+                foreach (int flags in new[] { 1, 2 })
                 {
                     open(relative, flags).ShouldBe(-1);
                     errno.ShouldBe(EISDIR);

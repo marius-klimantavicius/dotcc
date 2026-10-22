@@ -70,8 +70,6 @@ public sealed unsafe class PosixQueryTests
             errno = EIO;
             using (second.Enter())
             {
-                getrlimit(7, record).ShouldBe(-1); errno.ShouldBe(ENOTSUP);
-                record[0].ShouldBe(31); record[1].ShouldBe(42);
                 setrlimit(7, record).ShouldBe(-1);
                 setitimer(0, record, record).ShouldBe(-1);
                 execve(null, null, null).ShouldBe(-1);
@@ -88,5 +86,27 @@ public sealed unsafe class PosixQueryTests
             }
             errno.ShouldBe(EIO);
         }
+    }
+
+    [Fact]
+    public void Resource_limit_query_is_readonly_and_preserves_buffer_boundaries()
+    {
+        using var owner = new RuntimeContext(); using var binding = owner.Enter();
+        ulong* record = stackalloc ulong[4] { 31, 0, 0, 42 };
+        errno = EIO;
+        if (OperatingSystem.IsLinux() && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture ==
+            System.Runtime.InteropServices.Architecture.X64)
+        {
+            getrlimit(7, record + 1).ShouldBe(0);
+            record[1].ShouldBeGreaterThan(0UL);
+            record[2].ShouldBeGreaterThanOrEqualTo(record[1]);
+            errno.ShouldBe(EIO);
+        }
+        else
+        {
+            getrlimit(7, record + 1).ShouldBe(-1); errno.ShouldBe(ENOTSUP);
+            record[1].ShouldBe(0UL); record[2].ShouldBe(0UL);
+        }
+        record[0].ShouldBe(31UL); record[3].ShouldBe(42UL);
     }
 }

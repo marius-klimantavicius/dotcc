@@ -16,6 +16,7 @@ public static unsafe partial class Libc
     {
         var slot = SlotByFd(descriptor);
         if (slot is null) { errno = EBADF; return -1; }
+        if (slot.Stream is BackendDirectoryStream directory) return BackendDirectoryFsync(directory);
         if (slot.Stream is not FileStream file) { errno = EINVAL; return -1; }
         try { slot.Writer?.Flush(); file.Flush(flushToDisk: true); return 0; }
         catch (ObjectDisposedException) { errno = EBADF; return -1; }

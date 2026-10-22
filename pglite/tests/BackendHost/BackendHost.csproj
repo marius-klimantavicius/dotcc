@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Compile runtime sources privately; never build the shared compiler. -->
+    <Compile Include="../../../DotCC.Libc/*.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+</Project>

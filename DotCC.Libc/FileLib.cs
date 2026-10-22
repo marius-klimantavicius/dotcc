@@ -55,7 +55,7 @@ public static unsafe partial class Libc
     /// <summary>Managed backing for one open <see cref="FILE"/>.</summary>
     private sealed class FileSlot
     {
-        public enum K { In, Out, Err, File, Socket, Pipe }
+        public enum K { In, Out, Err, File, Socket, Pipe, Directory }
         public K Kind;
         public Stream? Stream;          // null for the console + socket kinds
         public ManagedPipe? Pipe;
@@ -229,6 +229,7 @@ public static unsafe partial class Libc
     private static int ReadByteSlot(FileSlot s, bool stdio = true)
     {
         if (stdio && s.StdioAccess == 2) { errno = EBADF; s.Err = true; return -1; }
+        if (s.Kind == FileSlot.K.Directory) { errno = EISDIR; s.Err = true; return -1; }
         // A byte pushed back by ungetc is returned before touching the stream
         // (covers fgetc / getc / getchar / fgets — the common ungetc consumers).
         if (s.Pushback >= 0) { int p = s.Pushback; s.Pushback = -1; return p; }
@@ -405,7 +406,7 @@ public static unsafe partial class Libc
             return null;
         }
         // Adopt in place, retaining FILE identity and caller-owned buffering.
-        slot.Kind = FileSlot.K.File;
+        slot.Kind = newStream is BackendDirectoryStream ? FileSlot.K.Directory : FileSlot.K.File;
         slot.Stream = newStream;
         ConfigureStdioSlot(slot, mode, access);
         slot.Pushback = slot.PendingWide = -1;
@@ -468,6 +469,7 @@ public static unsafe partial class Libc
     {
         var s = SlotByFd(fd);
         if (s == null) { errno = EBADF; return -1; }
+        if (s.Kind == FileSlot.K.Directory) { errno = EISDIR; return -1; }
         // A socket fd must return whatever is available NOW (up to count), not block
         // for the full count like the file byte-loop below would — one Receive.
         if (s.Kind == FileSlot.K.Pipe) return PipeRead(s, buf, count);
@@ -489,6 +491,7 @@ public static unsafe partial class Libc
     {
         var s = SlotByFd(fd);
         if (s == null) { errno = EBADF; return -1; }
+        if (s.Kind == FileSlot.K.Directory) { errno = EBADF; return -1; }
         // Socket fd: one Send of the whole buffer (the byte-loop below is for the
         // file/console kinds whose backing has no bulk write).
         if (s.Kind == FileSlot.K.Pipe) return PipeWrite(s, buf, count);
@@ -509,6 +512,7 @@ public static unsafe partial class Libc
     public static long lseek(int fd, long offset, int whence)
     {
         var s = SlotByFd(fd);
+        if (s?.Stream is BackendDirectoryStream directory) return BackendDirectorySeek(directory, offset, whence);
         if (s == null || s.Kind != FileSlot.K.File || s.Stream is not { CanSeek: true } st)
         {
             errno = ESPIPE;
@@ -570,7 +574,7 @@ public static unsafe partial class Libc
             }
             return;
         }
-        if (slot.Kind == FileSlot.K.File)
+        if (slot.Kind is FileSlot.K.File or FileSlot.K.Directory)
         {
             try { slot.Writer?.Flush(); }
             finally
@@ -585,7 +589,7 @@ public static unsafe partial class Libc
                     lock (_filesLock)
                     {
                         int idx = _files.IndexOf(slot);
-                        if (idx >= 3) { _files[idx] = null; }
+                        if (idx >= 3 || idx >= 0 && slot.Kind == FileSlot.K.Directory) { _files[idx] = null; }
                     }
                 }
             }
@@ -604,7 +608,7 @@ public static unsafe partial class Libc
 
     private static int RegisterFileSlot(Stream stream)
     {
-        var slot = new FileSlot { Kind = FileSlot.K.File, Stream = stream,
+        var slot = new FileSlot { Kind = stream is BackendDirectoryStream ? FileSlot.K.Directory : FileSlot.K.File, Stream = stream,
             StatusFlags = stream.CanRead ? (stream.CanWrite ? 2 : 0) : 1 };
         lock (_filesLock)
         {

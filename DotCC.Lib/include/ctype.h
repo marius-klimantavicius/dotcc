@@ -1,5 +1,6 @@
 #ifndef _CTYPE_H
 #define _CTYPE_H
+int isascii(int value);
 
 /* dotcc's <ctype.h> — C99 7.4. Character classification and case
    conversion. Each function takes an `int` (the byte value or EOF)

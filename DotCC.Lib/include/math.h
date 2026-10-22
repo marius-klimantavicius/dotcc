@@ -1,5 +1,7 @@
 #ifndef _MATH_H
 #define _MATH_H
+double lgamma(double value);
+double tgamma(double value);
 
 /* dotcc's <math.h> — declares the standard double-precision and explicit
    single-precision ("…f" suffix) function families. The actual

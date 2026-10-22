@@ -91,6 +91,9 @@ public static unsafe partial class Libc
     public static int fstat(int fd, void* buf)
     {
         if (buf == null) { errno = EFAULT; return -1; }
+        var current = SlotByFd(fd);
+        if (current is null) { errno = EBADF; return -1; }
+        if (current.Stream is BackendDirectoryStream directory) return BackendDirectoryFstat(directory, buf);
         var len = 0L;
         if (fd is 0 or 1 or 2)
         {
