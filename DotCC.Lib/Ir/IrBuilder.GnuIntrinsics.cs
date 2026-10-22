@@ -8,6 +8,14 @@ internal sealed partial class IrBuilder
 {
     private CExpr? TryBuildGnuIntrinsic(string name, List<CExpr> args)
     {
+        if (name == "__builtin_unreachable" && _symbols.Resolve(name) is null)
+        {
+            RequireCount(0);
+            // Reuse the C23 unreachable operation, including its explicit
+            // statement terminator and defined trap if an impossible path runs.
+            // A source function or shadowing callback keeps ordinary binding.
+            return new Call("__dotcc_unreachable", args) { Type = CType.Void };
+        }
         if (name is "alloca" or "__builtin_alloca")
         {
             RequireCount(1);

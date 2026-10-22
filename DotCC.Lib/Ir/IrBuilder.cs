@@ -1254,7 +1254,9 @@ internal sealed partial class IrBuilder
         if (baseType is { } baseItem) { Gate(2023, "enum with a fixed underlying type", baseItem); }
         // The C# enum name: the tag, else the typedef alias; anonymous + un-typedef'd
         // ⇒ null ⇒ plain int constants.
-        var enumName = tag ?? typedefName;
+        var enumName = tag is not null ? AggregateName(tag)
+            : typedefName is not null && StableAnonymousNames ? AnonymousTypedefName(enumList, typedefName) : typedefName;
+        if (tag is not null) _taggedAggregates.Add(enumName!);
         CType.Enum? enumType = enumName is null ? null : new CType.Enum(enumName, underlying);
         var members = new List<EnumMember>();
         long next = 0;
@@ -3635,7 +3637,7 @@ internal sealed partial class IrBuilder
             C.SizeofArrayType s => BuildSizeOf(MakeArrayType(ResolveType(s.Arg2),
                 TryConstDims(s.Arg3) ?? throw new IrUnsupportedException("sizeof array type requires constant bounds"))),
             // `sizeof expr` — the operand isn't evaluated, only its type measured.
-            C.SizeofExpr s => BuildSizeOf(BuildExpr(s.Arg1).Type),
+            C.SizeofExpr s => BuildSizeOf(SourceObjectType(BuildExpr(s.Arg1))),
             // `_Alignof(Type)` (C11 §6.5.3.4) — folds immediately to the layout
             // model's alignment (an integer constant expression, `size_t`-typed
             // like sizeof), so it composes with _Static_assert / array bounds /
@@ -3985,7 +3987,7 @@ internal sealed partial class IrBuilder
             // its cast. inc/dec below keep the lvalue's own type.
             UnOp.Plus or UnOp.Neg or UnOp.BitNot => CType.IntegerPromote(oe.Type),
             UnOp.AddrOf when Unparen(oe) is VarRef { Sym.Kind: SymKind.Func } => oe.Type,
-            UnOp.AddrOf => new CType.Pointer(oe.Type),
+            UnOp.AddrOf => new CType.Pointer(SourceObjectType(oe)),
             // *p → pointee; *arr (incl. a string literal, typed char[]) → its element
             // (the array decays to a pointer first). *ptr-to-array stays the array,
             // which codegen treats as a no-op decay back to the row pointer.

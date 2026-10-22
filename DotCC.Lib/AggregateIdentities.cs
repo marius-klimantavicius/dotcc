@@ -12,7 +12,7 @@ namespace DotCC;
 // unrelated private definitions must not acquire linkage merely from their tag.
 // Pointer and callback edges matter even though they do not affect sizeof.
 internal sealed record AggregateIdentity(string Name, string OriginalName, bool Tagged,
-    bool Exposed, string[] Dependencies, ObjectAggregateMetadata Shape);
+    bool Exposed, string[] Dependencies, ObjectAggregateMetadata Shape, bool IsEnum = false);
 
 // Linkage belongs to the ordinary external symbol, never to a tag merely
 // because some external declaration mentions it. References follow the
@@ -32,7 +32,8 @@ internal static class AggregateIdentities
 {
     internal const string Version = "//!!dotcc-obj aggregate-identities:1";
     internal const string Prefix = "//!!dotcc-obj aggregate-identity:";
-    internal const string LinkageVersion = "//!!dotcc-obj aggregate-linkage:2";
+    internal const string LinkageVersion = "//!!dotcc-obj aggregate-linkage:3";
+    private const string ArrayLinkageVersion = "//!!dotcc-obj aggregate-linkage:2";
     private const string LegacyLinkageVersion = "//!!dotcc-obj aggregate-linkage:1";
     internal const string LinkagePrefix = "//!!dotcc-obj aggregate-linkage-root:";
     private const string TokenPrefix = "__DotCcAggregate_";
@@ -44,6 +45,7 @@ internal static class AggregateIdentities
         switch (type)
         {
             case CType.Named n when !n.IsExternal: yield return n.Name; break;
+            case CType.Enum e: yield return e.Name; break;
             case CType.Pointer p:
                 foreach (var name in References(p.Pointee)) yield return name;
                 break;
@@ -58,11 +60,16 @@ internal static class AggregateIdentities
         }
     }
 
+    internal static ObjectAggregateMetadata EnumShape(EnumTypeDef type) => new(false, false,
+        Hash("enum|" + ObjectAggregateMetadata.Describe(type.Underlying) + "|"
+            + string.Join("|", type.Members.OrderBy(m => m.Name, StringComparer.Ordinal)
+                .Select(m => Encode(m.Name) + ":" + m.Value.ToString(CultureInfo.InvariantCulture)))));
+
     internal static string Serialize(IReadOnlyList<AggregateIdentity> graph) => Version + "\n" + string.Concat(
         graph.OrderBy(n => n.Name, StringComparer.Ordinal).Select(n => Prefix + n.Name + " "
             + Convert.ToBase64String(Encoding.UTF8.GetBytes(n.OriginalName)) + " "
             + (n.Tagged ? "1" : "0") + " " + (n.Exposed ? "1" : "0") + " "
-            + string.Join(",", n.Dependencies) + "\n")) + (graph is AggregateIdentitySet semantic
+            + string.Join(",", n.Dependencies) + (n.IsEnum ? " 1" : "") + "\n")) + (graph is AggregateIdentitySet semantic
             ? LinkageVersion + "\n" + string.Concat(semantic.Linkage.OrderBy(c => c.Symbol, StringComparer.Ordinal)
                 .Select(c => LinkagePrefix + Encode(c.Symbol) + " " + Encode(c.Type) + " "
                     + string.Join(",", c.References) + " "
@@ -121,7 +128,8 @@ internal static class AggregateIdentities
         foreach (var line in lines.Where(l => l.StartsWith(Prefix, StringComparison.Ordinal)))
         {
             var p = line[Prefix.Length..].Split(' ');
-            if (p.Length != 5 || !Identifier(p[0]) || p[2] is not ("0" or "1") || p[3] is not ("0" or "1"))
+            if (p.Length is not (5 or 6) || !Identifier(p[0]) || p[2] is not ("0" or "1") || p[3] is not ("0" or "1")
+                || p.Length == 6 && p[5] is not ("0" or "1"))
                 throw new CompileException("invalid aggregate identity metadata; regenerate objects");
             if (!shapes.TryGetValue(p[0], out var shape))
                 throw new CompileException("aggregate metadata missing for '" + p[0] + "'; regenerate older objects before linking");
@@ -130,13 +138,17 @@ internal static class AggregateIdentities
             catch (FormatException) { throw new CompileException("invalid aggregate identity name; regenerate objects"); }
             var deps = p[4].Split(',', StringSplitOptions.RemoveEmptyEntries);
             if (!Identifier(original) || deps.Any(n => !Identifier(n))
-                || !result.TryAdd(p[0], new(p[0], original, p[2] == "1", p[3] == "1", deps, shape)))
+                || !result.TryAdd(p[0], new(p[0], original, p[2] == "1", p[3] == "1", deps, shape, p.Length == 6 && p[5] == "1")))
                 throw new CompileException("invalid aggregate identity graph; regenerate objects");
         }
         if (result.Count != shapes.Count || result.Values.Any(n => n.Dependencies.Any(d => !result.ContainsKey(d))))
             throw new CompileException("incomplete aggregate identity graph; regenerate objects");
         bool currentLinkage = lines.Contains(LinkageVersion, StringComparer.Ordinal);
-        if (!currentLinkage && !lines.Contains(LegacyLinkageVersion, StringComparer.Ordinal))
+        if (!currentLinkage && lines.Any(line => line.StartsWith("public enum ", StringComparison.Ordinal)
+            || line.StartsWith("enum ", StringComparison.Ordinal)))
+            throw new CompileException("object lacks enum identity metadata; regenerate older objects before linking");
+        if (!currentLinkage && !lines.Contains(ArrayLinkageVersion, StringComparer.Ordinal)
+            && !lines.Contains(LegacyLinkageVersion, StringComparer.Ordinal))
         {
             if (lines.Any(l => l.StartsWith(LinkagePrefix, StringComparison.Ordinal)))
                 throw new CompileException("aggregate linkage roots lack version metadata; regenerate objects");
@@ -161,10 +173,10 @@ internal static class AggregateIdentities
             catch (Exception error) when (error is FormatException or OverflowException)
             { throw new CompileException("invalid aggregate linkage metadata; regenerate objects", error); }
         }
-        // Version 1 roots were captured after incomplete-extern-array decay and
-        // cannot distinguish an array declaration from a pointer object. Keep
-        // them under the original conservative exposure gate, never infer the
-        // missing declaration fact from another TU or from generated code.
+        // Version 1 loses incomplete-array declaration provenance; version 2
+        // omits enum identities and their external/field edges. Keep both under
+        // the conservative exposure gate, never infer missing semantic facts
+        // from another TU or from generated code.
         return currentLinkage ? new AggregateIdentitySet(result.Values.ToArray(), roots.Values.ToArray()) : result.Values.ToArray();
     }
 
@@ -186,7 +198,7 @@ internal static class AggregateIdentities
         var affected = new HashSet<string>(StringComparer.Ordinal);
         foreach (var group in all.GroupBy(p => p.Node.Name, StringComparer.Ordinal))
         {
-            if (group.Select(p => p.Node.Shape.IsUnion).Distinct().Count() <= 1
+            if (group.Select(p => (p.Node.Shape.IsUnion, p.Node.IsEnum)).Distinct().Count() <= 1
                 && group.Where(p => !p.Node.Shape.IsIncomplete).Select(p => p.Node.Shape.Signature).Distinct(StringComparer.Ordinal).Count() <= 1)
                 continue;
             if (group.Any(p => !p.Node.Tagged)) Conflict(group.Key, group.Select(p => p.Unit));
@@ -262,7 +274,7 @@ internal static class AggregateIdentities
                 if (a == b) continue;
                 var x = entries[a]; var y = entries[b];
                 int ca = complete[a], cb = complete[b];
-                if (x.Node.Name != y.Node.Name || x.Node.Shape.IsUnion != y.Node.Shape.IsUnion)
+                if (x.Node.Name != y.Node.Name || x.Node.Shape.IsUnion != y.Node.Shape.IsUnion || x.Node.IsEnum != y.Node.IsEnum)
                     Conflict(x.Node.Name, new[] { x.Unit, y.Unit });
                 if (ca >= 0 && cb >= 0)
                 {
@@ -294,7 +306,7 @@ internal static class AggregateIdentities
             Dictionary<int, int> Label(Func<int, string> key) => roots.GroupBy(key, StringComparer.Ordinal)
                 .OrderBy(g => g.Key, StringComparer.Ordinal).SelectMany((g, color) => g.Select(i => (i, color)))
                 .ToDictionary(p => p.i, p => p.color);
-            var colors = Label(i => entries[i].Node.Name + "|" + entries[i].Node.Shape.IsUnion + "|"
+            var colors = Label(i => entries[i].Node.Name + "|" + entries[i].Node.Shape.IsUnion + "|" + entries[i].Node.IsEnum + "|"
                 + (complete[i] < 0 ? "opaque" : entries[complete[i]].Node.Shape.Signature));
             for (;;)
             {
@@ -322,7 +334,8 @@ internal static class AggregateIdentities
                 if (candidates.Length == 0 || candidates.Select(i => partition[i]).Distinct().Count() != 1) continue;
                 int target = candidates[0];
                 foreach (int opaque in group.Where(i => complete[i] < 0
-                    && entries[i].Node.Shape.IsUnion == entries[target].Node.Shape.IsUnion).ToArray())
+                    && entries[i].Node.Shape.IsUnion == entries[target].Node.Shape.IsUnion
+                    && entries[i].Node.IsEnum == entries[target].Node.IsEnum).ToArray())
                     joined |= Join(opaque, target);
             }
             if (!joined) break;
@@ -353,7 +366,7 @@ internal static class AggregateIdentities
         foreach (var group in all.GroupBy(p => p.Node.Name, StringComparer.Ordinal))
         {
             var complete = group.Where(p => !p.Node.Shape.IsIncomplete).ToArray();
-            var conflict = group.Select(p => p.Node.Shape.IsUnion).Distinct().Count() > 1
+            var conflict = group.Select(p => (p.Node.Shape.IsUnion, p.Node.IsEnum)).Distinct().Count() > 1
                 || complete.Select(p => p.Node.Shape.Signature).Distinct(StringComparer.Ordinal).Count() > 1;
             if (!conflict) continue;
             if (group.Any(p => !p.Node.Tagged)) Conflict(group.Key, group.Select(p => p.Unit));
@@ -384,7 +397,19 @@ internal static class AggregateIdentities
     internal static string Relocate(string source, IReadOnlyList<AggregateIdentity> graph,
         IReadOnlyDictionary<string, string> variants)
     {
-        var names = graph.ToDictionary(n => Token(n.Name), n => variants.GetValueOrDefault(n.Name, n.Name), StringComparer.Ordinal);
+        var names = graph.ToDictionary(n => Token(n.Name), n => n.IsEnum
+            ? EmitHelpers.Id(variants.GetValueOrDefault(n.Name, n.Name)) : variants.GetValueOrDefault(n.Name, n.Name), StringComparer.Ordinal);
+        // Enum references use type-only aliases to survive C tag/ordinary-name
+        // shadowing. Their exact encoded aliases and semantic marker payloads
+        // must follow the same validated identity plan as the type tokens.
+        foreach (var line in source.Split('\n'))
+        {
+            if (!line.StartsWith(Compiler.EnumAliasMarker, StringComparison.Ordinal)) continue;
+            string token = line[Compiler.EnumAliasMarker.Length..];
+            if (!names.TryGetValue(token, out var relocated)) continue;
+            names[Compiler.EnumAliasName(token)] = Compiler.EnumAliasName(relocated);
+            source = source.Replace(line + "\n", Compiler.EnumAliasMarker + relocated + "\n", StringComparison.Ordinal);
+        }
         if (variants.Count != 0)
         {
             var partition = Hash(string.Join("\0", variants.OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => p.Value)));

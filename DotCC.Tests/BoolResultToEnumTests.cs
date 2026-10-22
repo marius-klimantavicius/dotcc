@@ -33,7 +33,12 @@ public sealed class BoolResultToEnumTests
         var value = explicitCast ? "(enum Choice)(" + expression + ")" : expression;
         File.WriteAllText(path, "enum Choice { No, Yes }; enum Choice read(int x) { "
             + "_Bool boolean = x; enum Choice result = " + value + "; return result; }");
-        try { Compiler.EmitObject(path).ShouldContain("(Choice)(int)"); }
-        finally { File.Delete(path); }
+        string obj = path + ".cs";
+        try
+        {
+            File.WriteAllText(obj, Compiler.EmitObject(path));
+            Compiler.LinkObjects(new[] { obj }, emit: EmitMode.ManagedLib).ShouldContain("(Choice)(int)");
+        }
+        finally { File.Delete(obj); File.Delete(path); }
     }
 }

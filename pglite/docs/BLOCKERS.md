@@ -298,3 +298,37 @@ on the two different private include paths. Metadata is not rewritten or erased
 to permit that mixed closure. A coherent full normal retry under one include
 overlay is active. Current broad compiler tests again pass 3,387 cases and
 reproduce exactly the known 16 baseline failures (current6 comparison retained).
+
+## Complete raw C# closure: intrinsics, enums and typed values
+
+The first coherent 876-unit backend strict-links, then raw build reports 10,959
+unique diagnostics. GNU unreachable accounts for 10,568; its unbound builtin
+now lowers to the existing void unreachable operation, preserving explicit
+termination/trap behavior and ordinary shadowed callback binding. Discarded
+for-clause pointer assignments/comma values retain their effects, and addressed
+file-scope struct literals now use stable owner storage instead of `&new`
+expressions. Ten direct/object/lifetime execution controls and four native
+programs pass, including independent live/fresh contexts and GC.
+
+Parser enum collisions account for 337 missing-member diagnostics. Enums now
+participate in semantic identity graph metadata3 with explicit kind, exact
+member/value/underlying-type shape, and typed edges through external symbols
+and container/callback fields. Private enums partition; incompatible shared
+contracts remain errors. Fifty-six unit and 78 execution checks pass; thirteen
+actual parser/scanner units emit/link with zero enum-member diagnostics in the
+explicitly incomplete subset build. Old metadata is not reinterpreted.
+
+Typed volatile CBool/enums/aggregates use actual unmanaged volatile operations;
+member selection addresses volatile storage instead of loading a parent value.
+Larger aggregate copies preserve every byte via volatile accesses without an
+atomicity claim. Scalar conversions retain C integer promotions, CBool numeric
+values and cast precedence. Exact original extern-array declaration facts
+distinguish array storage from pointer slots for `&array`, sizeof and address
+caching; invalid incomplete-array sizes/arithmetic stay rejected. Twenty
+execution controls and 21 focused units plus three native programs pass.
+
+The combined broad suite initially exposed one rvalue rendering regression.
+It is repaired by retaining the ordinary rvalue path, with the old test unchanged.
+Current8 passes 3,398 cases and exactly the same 16 baseline failures; current7's
+extra failure remains accurately retained as intermediate evidence. Fresh full
+metadata3 regeneration is active. Actual raw build/init/SQL remain open.

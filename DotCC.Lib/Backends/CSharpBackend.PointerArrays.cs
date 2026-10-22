@@ -71,6 +71,12 @@ internal sealed partial class CSharpBackend
         while (value is Paren parenthesized) value = parenthesized.Inner;
         if (RequiresIntrinsicDiscard(value))
             return IntrinsicForPart(value);
+        if (value is CommaOp comma)
+            return string.Join(", ", comma.Items.Select(ForPost));
+        if (value is CommaSeq sequence)
+            return string.Join(", ", sequence.Items.Select(ForPost));
+        if (!IsStmtExpr(value))
+            return $"_ = {Expr(value)}";
         if (value is Assign { Target.Type.IsVolatile: true, Target.Type.IsPointerLowered: true }
             or Unary { Op: UnOp.PreInc or UnOp.PreDec or UnOp.PostInc or UnOp.PostDec,
                 Operand.Type.IsVolatile: true, Operand.Type.IsPointerLowered: true })

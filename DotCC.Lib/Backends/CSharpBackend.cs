@@ -76,7 +76,8 @@ internal sealed partial class CSharpBackend
     {
         VaListLifetimeValidator.Validate(unit);
         var cg = new CSharpBackend { _convGate = convGate, _publicTypes = publicTypes, _relocatable = relocatable, _pointerClass = pointerClass, _inlineMetadata = inlineMetadata, _instanceMethods = instanceMethods, _target = new CSharpTarget(instanceMethods,
-            aggregateTokens ? unit.Types.ToDictionary(t => t.Name, t => AggregateIdentities.Token(t.Name), StringComparer.Ordinal) : null) };
+            aggregateTokens ? unit.Types.Select(t => t.Name).Concat(unit.Enums.Select(e => e.Name))
+                .ToDictionary(name => name, AggregateIdentities.Token, StringComparer.Ordinal) : null) };
         cg._foldConstant = unit.FoldMacroConstant;
         cg._foldFloatingPayloadBits = unit.FoldFloatingPayloadBits;
         foreach (var type in unit.Types) cg._aggregateDefinitions.Add(type.Name, type);
@@ -279,7 +280,7 @@ internal sealed partial class CSharpBackend
             ? unit.Tests.Select(t => (t.Name, t.Sym.TargetName)).ToList()
             : null;
 
-        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals, mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.Types.ToDictionary(t => t.Name, ObjectAggregateMetadata.From),
+        return new CSharpBackendResult(fns.ToString(), structs.ToString(), Aliases: string.Concat(cg._enumAliases.Order(StringComparer.Ordinal).Select(name => Compiler.EnumAliasMarker + name + "\n")), globals, mainArity, exports, mainReturnsVoid, mainReturnsErrUnion, mainErrPayloadIsVoid, tests, typeDeclarations, functionSources, unit.IdentityMetadata(),
             inlineMetadata ? unit.Functions.Where(f => f.Sym.IsInline || f.Sym.Storage == Storage.Static).ToDictionary(f => f.Sym.TargetName,
                 f => InlineFunctionMetadata.From(f, unit, cg._usedFunctionAddresses.Contains(f.Sym.TargetName))) : null, cg._usedFunctionAddresses);
     }
@@ -447,7 +448,7 @@ internal sealed partial class CSharpBackend
     private string EnumText(EnumTypeDef e)
     {
         var sb = new StringBuilder();
-        sb.Append(_publicTypes ? "public enum " : "enum ").Append(DotCC.EmitHelpers.Id(e.Name)).Append(" : ").Append(Cs(e.Underlying)).Append("\n{\n");
+        sb.Append(_publicTypes ? "public enum " : "enum ").Append(Cs(new CType.Enum(e.Name, e.Underlying))).Append(" : ").Append(Cs(e.Underlying)).Append("\n{\n");
         foreach (var m in e.Members)
         {
             sb.Append("    ").Append(DotCC.EmitHelpers.Id(m.Name)).Append(" = ")
@@ -1136,7 +1137,7 @@ internal sealed partial class CSharpBackend
                 var init = fr.Init switch
                 {
                     DeclStmt d => DeclInline(d),
-                    ExprStmt e => RequiresIntrinsicDiscard(e.Expr) ? ForPost(e.Expr) : Expr(e.Expr),
+                    ExprStmt e => ForPost(e.Expr),
                     _ => "",
                 };
                 var cond = fr.Cond is null ? "" : LoopCondition(fr.Cond);
@@ -1507,8 +1508,7 @@ internal sealed partial class CSharpBackend
         // (CS0306): reinterpret its slot as `nint` through its address, cast back.
         : lv.Type.IsVolatile && lv.Type.IsPointerLowered
             ? ($"({Cs(lv.Type.Unqualified)}){VolatileRead(QualifiedPointerSlot(lv, bare))}", PUnary)
-        : lv.Type.IsVolatile && lv.Type.Unqualified is CType.Enum ? ($"Libc.VolatileValue.Load(ref {bare})", PPrimary)
-        : lv.Type.IsVolatile ? (VolatileRead(bare), PPrimary)
+        : lv.Type.IsVolatile ? (TypedVolatileRead(lv.Type, bare), PPrimary)
         : (bare, barePrec);
 
     /// <summary>The <c>Atomic.*Fetch</c> helper for a compound assignment / step
@@ -1615,8 +1615,7 @@ internal sealed partial class CSharpBackend
 
     // Selecting a member designates its storage, without loading an intermediate
     // volatile aggregate. The selected scalar inherits the qualifiers.
-    private string MemberBase(Member member) => Sub(member.Arrow ? member.Base
-        : member.Base with { Type = member.Base.Type.Unqualified }, PPostfix);
+    private string MemberBase(Member member) => TypedMemberBase(member);
 
     // Global field names shadowed by an emitted TYPE name — C keeps tags and
     // ordinary identifiers in separate namespaces (`enum sexp_number_types` +
@@ -1693,7 +1692,7 @@ internal sealed partial class CSharpBackend
     {
         text = "";
         var tgt = target.Unqualified;
-        var src = value.Type.Unqualified;
+        var src = RenderedScalarType(value);
 
         // Authored external scalar wrappers can deliberately expose only an
         // explicit conversion back to C's integer ABI. C still converts at
@@ -2659,7 +2658,7 @@ internal sealed partial class CSharpBackend
             // another C# address can address a pointer temporary instead, and a
             // global pointer must not become Unsafe.AsPointer<T*>'s argument.
             // Keep the IR pointer-to-array type for element-stride semantics.
-            case UnOp.AddrOf when u.Operand.Type.Unqualified is CType.Array: return Render(u.Operand);
+            case UnOp.AddrOf when IsArrayObject(u.Operand): return Render(u.Operand);
             case UnOp.AddrOf when u.Operand is Member zero && IsZeroSizedAggregate(zero.Type):
                 return (ZeroSizedMemberAddress(zero), PPrimary);
             // &global — a file-scope global / static local lowers to a field of the
@@ -2680,6 +2679,9 @@ internal sealed partial class CSharpBackend
             // take ITS address (a stack local is non-moveable, so `&local` needs no `fixed`).
             // Hoistable contexts only; elsewhere fall through (a non-hoistable `&literal` is
             // rare and unsupported, same leniency as the StackArray case).
+            case UnOp.AddrOf when _renderingStaticStorage && u.Operand is StructInit aggregate:
+                return (PinnedArrayText(new PinnedArray(aggregate.Type, new[] { aggregate }, null)
+                    { Type = u.Type }), PPrimary);
             case UnOp.AddrOf when !u.Operand.IsLValue && _canHoist:
             {
                 var name = $"__cl{_clCounter++}";
@@ -2867,7 +2869,7 @@ internal sealed partial class CSharpBackend
     /// must be wrapped in <c>unchecked</c>. Cast binds at PUnary — no outer parens.</summary>
     private string CoercionCast(CExpr e, string to)
     {
-        var text = $"({to})({Sub(e, PUnary)})";
+        var text = $"({to})({TypedNumericCastOperand(e, to)})";
         return IsIntegerCs(to) && IsConstExpr(e) && !(TryConstInt(e, out var v) && ConstFitsTarget(v, to))
             ? $"unchecked({text})"
             : text;
@@ -2896,10 +2898,7 @@ internal sealed partial class CSharpBackend
         // C# parses (EnumName)-value as subtraction unless the signed operand
         // is parenthesized. This also applies to folded enum flag constants
         // whose high bit makes the underlying signed value negative.
-        var operand = c.Target.Unqualified is CType.Enum && IsBooleanRendered(c.Operand)
-            ? $"(int)({Expr(c.Operand)})"
-            : c.Target.Unqualified is CType.Enum && c.Operand is Unary { Op: UnOp.Neg or UnOp.Plus }
-            ? $"({Expr(c.Operand)})" : Sub(c.Operand, PUnary);
+        var operand = TypedCastOperand(c.Operand, c.Target);
         var text = $"({Cs(c.Target)}){operand}";
         var integerTarget = c.Target.Unqualified is CType.Enum enumeration
             ? enumeration.Underlying : c.Target.Unqualified;
@@ -3037,6 +3036,8 @@ internal sealed partial class CSharpBackend
     /// the binder re-typed to void) is consumed by a discard so C# accepts it.</summary>
     private string RenderStmtExpr(CExpr e)
     {
+        if (IsUnreachableCall(CFlowFacts.StatementValue(e)))
+            return "throw new global::System.Diagnostics.UnreachableException(\"unreachable() reached\")";
         // Outer parens never matter for a statement-expression (a macro body like
         // `((c) ? a() : b())` arrives parenthesized) — strip them to see the shape.
         while (e is Paren p) { e = p.Inner; }

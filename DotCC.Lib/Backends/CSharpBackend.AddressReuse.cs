@@ -45,7 +45,7 @@ internal sealed partial class CSharpBackend
         Paren p => AddressRoot(p.Inner),
         Member { Arrow: false } member => AddressRoot(member.Base),
         VarRef { Sym: { IsGlobal: true, Kind: SymKind.Var, IsThreadLocal: false, FromSystemHeader: false } symbol }
-            when symbol.Type.Unqualified is CType.Named or CType.Prim or CType.Enum or CType.Pointer or CType.Func => symbol,
+            when symbol.DeclaredArrayType is null && symbol.Type.Unqualified is CType.Named or CType.Prim or CType.Enum or CType.Pointer or CType.Func => symbol,
         // A pointer value, call, index, TLS accessor or runtime-owned property is
         // not the address of an invariant C storage object. Never cache it here.
         _ => null,

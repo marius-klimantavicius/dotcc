@@ -21,13 +21,20 @@ internal sealed partial class IrBuilder
         return relocated;
     }
 
+    internal Dictionary<string, ObjectAggregateMetadata> IdentityMetadata() => Types
+        .Select(t => (t.Name, Shape: ObjectAggregateMetadata.From(t)))
+        .Concat(Enums.Select(e => (e.Name, Shape: AggregateIdentities.EnumShape(e))))
+        .ToDictionary(p => p.Name, p => p.Shape, StringComparer.Ordinal);
+
     internal IReadOnlyList<AggregateIdentity> AggregateIdentityGraph()
     {
         var definitions = Types.ToDictionary(t => t.Name, StringComparer.Ordinal);
+        var enums = Enums.ToDictionary(e => e.Name, StringComparer.Ordinal);
+        bool Defined(string name) => definitions.ContainsKey(name) || enums.ContainsKey(name);
         var exposed = new HashSet<string>(StringComparer.Ordinal);
         void Expose(string name)
         {
-            if (!definitions.TryGetValue(name, out var type) || !exposed.Add(name)) return;
+            if (!Defined(name) || !exposed.Add(name) || !definitions.TryGetValue(name, out var type)) return;
             foreach (var field in type.Fields)
                 foreach (var dependency in AggregateIdentities.References(field.Type)) Expose(dependency);
         }
@@ -42,13 +49,15 @@ internal sealed partial class IrBuilder
             foreach (var name in AggregateIdentities.References(symbol.Type)) Expose(name);
         var nodes = Types.Select(t => new AggregateIdentity(t.Name, GeneratedAggregateOrigins.GetValueOrDefault(t.Name, t.Name), _taggedAggregates.Contains(t.Name),
             exposed.Contains(t.Name), t.Fields.SelectMany(f => AggregateIdentities.References(f.Type))
-                .Where(definitions.ContainsKey).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
-            ObjectAggregateMetadata.From(t))).ToArray();
+                .Where(Defined).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray(),
+            ObjectAggregateMetadata.From(t)))
+            .Concat(Enums.Select(e => new AggregateIdentity(e.Name, GeneratedAggregateOrigins.GetValueOrDefault(e.Name, e.Name),
+                _taggedAggregates.Contains(e.Name), exposed.Contains(e.Name), [], AggregateIdentities.EnumShape(e), IsEnum: true))).ToArray();
         var roots = symbols.Select(s =>
         {
             var contract = AggregateIdentities.LinkageContract(s.TargetName, _externalArrayLinkageTypes.GetValueOrDefault(s, s.Type));
             return contract with { Type = (s.Kind == SymKind.Func ? "function|" : "object|") + contract.Type,
-                References = contract.References.Where(definitions.ContainsKey).ToArray() };
+                References = contract.References.Where(Defined).ToArray() };
         }).Where(c => c.References.Length != 0).ToArray();
         return new AggregateIdentitySet(nodes, roots);
     }

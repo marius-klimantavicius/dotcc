@@ -67,6 +67,10 @@ public sealed class Symbol
     /// symbol — the malloc→stack-value peephole demotes a <c>T*</c> local to the
     /// value type <c>T</c> in place, so every shared <see cref="VarRef"/> sees it.</summary>
     public required CType Type { get; set; }
+    /// <summary>The source array declaration, when execution lowering uses a
+    /// decayed pointer for an extern array with an incomplete outer bound.
+    /// Address-taking still designates that array object, not pointer storage.</summary>
+    public CType.Array? DeclaredArrayType { get; set; }
     public Storage Storage { get; init; } = Storage.None;
     /// <summary>For an <see cref="SymKind.EnumConst"/> or a C23 <c>constexpr</c>
     /// object (<see cref="IsConstexpr"/>): its integer value. C enums lower to plain

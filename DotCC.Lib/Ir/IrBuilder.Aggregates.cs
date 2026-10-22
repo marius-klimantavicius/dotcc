@@ -897,6 +897,7 @@ internal sealed partial class IrBuilder
         _externalArrayLinkageTypes[symbol] = outerIncomplete
             ? new CType.Array(((CType.Array)type).Element, null)
             : dims is { Count: >= 1 } ? type : new CType.Array(elem, null);
+        symbol.DeclaredArrayType = (CType.Array)_externalArrayLinkageTypes[symbol];
     }
 
     /// <summary>A block-scope <c>static T a[…]</c> — a pinned global field under a
