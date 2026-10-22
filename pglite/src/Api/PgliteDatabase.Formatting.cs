@@ -43,7 +43,7 @@ public sealed unsafe partial class PgliteDatabase
             else if (c is '\'' or '"')
             {
                 bool escape = c == '\'' && (!standardStrings || start > 0 && (sql[start - 1] is 'E' or 'e') &&
-                    (start < 2 || !(char.IsLetterOrDigit(sql[start - 2]) || sql[start - 2] == '_')));
+                    (start < 2 || !(char.IsLetterOrDigit(sql[start - 2]) || sql[start - 2] is '_' or '$' || sql[start - 2] >= 128)));
                 while (i < sql.Length)
                 {
                     char next = sql[i++];
@@ -80,8 +80,8 @@ public sealed unsafe partial class PgliteDatabase
                     continue;
                 }
                 int tag = i;
-                if (tag < sql.Length && (sql[tag] == '_' || char.IsLetter(sql[tag])))
-                    while (tag < sql.Length && (sql[tag] == '_' || char.IsLetterOrDigit(sql[tag]))) tag++;
+                if (tag < sql.Length && (sql[tag] == '_' || char.IsLetter(sql[tag]) || sql[tag] >= 128))
+                    while (tag < sql.Length && (sql[tag] == '_' || char.IsLetterOrDigit(sql[tag]) || sql[tag] >= 128)) tag++;
                 if (tag < sql.Length && sql[tag] == '$')
                 {
                     string delimiter = sql[start..(tag + 1)];

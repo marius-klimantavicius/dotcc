@@ -54,7 +54,7 @@ public sealed class PgliteTransaction
             {
                 bool escape = c == '\'' && (!standardStrings ||
                     i > 0 && sql[i - 1] is 'e' or 'E' &&
-                    (i < 2 || !char.IsLetterOrDigit(sql[i - 2]) && sql[i - 2] != '_'));
+                    (i < 2 || !char.IsLetterOrDigit(sql[i - 2]) && sql[i - 2] is not ('_' or '$') && sql[i - 2] < 128));
                 i++;
                 while (i < sql.Length)
                 {
@@ -68,8 +68,8 @@ public sealed class PgliteTransaction
             if (c == '$')
             {
                 int end = i + 1;
-                while (end < sql.Length && (char.IsLetterOrDigit(sql[end]) || sql[end] == '_')) end++;
-                if (end < sql.Length && sql[end] == '$' && (end == i + 1 || !char.IsDigit(sql[i + 1])))
+                while (end < sql.Length && (char.IsLetterOrDigit(sql[end]) || sql[end] == '_' || sql[end] >= 128)) end++;
+                if (end < sql.Length && sql[end] == '$' && (end == i + 1 || !char.IsAsciiDigit(sql[i + 1])))
                 {
                     string delimiter = sql[i..(end + 1)];
                     int close = sql.IndexOf(delimiter, end + 1, StringComparison.Ordinal);

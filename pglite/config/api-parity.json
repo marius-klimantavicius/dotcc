@@ -7718,7 +7718,13 @@
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
         "tests/ApiServices/ApiServicesCases.cs#transaction-sql-error-rollback",
-        "tests/ApiServices/ApiServicesCases.cs#transaction-closed-query"
+        "tests/ApiServices/ApiServicesCases.cs#transaction-closed-query",
+        "tests/ApiServices/ApiServicesCases.cs#transaction-savepoint-recovers-aborted-state",
+        "tests/ApiServices/ApiServicesCases.cs#transaction-hidden-commit-left-no-row",
+        "tests/ApiServices/ApiServicesCases.cs#transaction-type-name-suffix-is-not-escape-prefix",
+        "tests/ApiServices/ApiServicesCases.cs#transaction-type-name-commit-left-no-row",
+        "tests/ApiServices/ApiServicesCases.cs#transaction-unicode-dollar-tag-control-rejected",
+        "tests/ApiServices/ApiServicesCases.cs#transaction-unicode-tag-left-no-row"
       ],
       "upstream_tests": [
         "packages/pglite/tests/basic.test.ts"
@@ -10106,7 +10112,10 @@
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#format/reordered-repeated-and-escaped",
         "tests/ApiAcceptance/PgliteApiCases.cs#format/literals-identifiers-comments",
-        "tests/ApiAcceptance/PgliteApiCases.cs#format/session-string-escape-rules"
+        "tests/ApiAcceptance/PgliteApiCases.cs#format/session-string-escape-rules",
+        "tests/ApiAcceptance/PgliteApiCases.cs#format/carriage-return-ends-comment",
+        "tests/ApiAcceptance/PgliteApiCases.cs#format/type-name-suffix-is-not-escape-prefix",
+        "tests/ApiAcceptance/PgliteApiCases.cs#format/unicode-dollar-tag-retained"
       ],
       "upstream_tests": [
         "packages/pglite/tests/format.test.js"
@@ -10114,7 +10123,7 @@
       "evidence_refs": [
         "API-MATRIX"
       ],
-      "review_notes": "Parent now reads actual standard_conforming_strings; setting-off source regression format/session-string-escape-rules exists. Final matrix remains to qualify it. See build/api-parity-review-notes.txt."
+      "review_notes": "Server GUC is read in its bound generated owner, including aborted transactions. Actual lexer boundaries retain CR/LF line endings and identifier suffixes. Qualification evidence below distinguishes source checks from engine matrix execution."
     },
     {
       "id": ".:messages",

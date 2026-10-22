@@ -15,6 +15,20 @@ try { escapeToken.Exec(escapingSql); }
 catch (InvalidOperationException) { rejected = true; }
 Check(rejected && !escape.Calls.Contains(escapingSql), "F2 identifier dollar signs cannot hide outer COMMIT");
 
+const string typedLiteralSql = "INSERT INTO saved VALUES(1); SELECT text$e'\\'; COMMIT; --'";
+rejected = false;
+try { escapeToken.Exec(typedLiteralSql); }
+catch (InvalidOperationException) { rejected = true; }
+Check(rejected && !escape.Calls.Contains(typedLiteralSql), "F4 identifier suffix cannot introduce an escape-string prefix");
+
+const string unicodeTagSql = "INSERT INTO saved VALUES(1); CREATE FUNCTION guard_unicode() RETURNS text AS $a\u0301$' $a\u0301$ LANGUAGE sql; COMMIT; --'";
+rejected = false;
+try { escapeToken.Exec(unicodeTagSql); }
+catch (InvalidOperationException) { rejected = true; }
+Check(rejected && !escape.Calls.Contains(unicodeTagSql), "F5 Unicode dollar-quote tags preserve statement boundaries");
+Check(PgliteDatabase.ReviewSubstitute("SELECT $a\u0301$ $1 $a\u0301$, $1::int", ["7"], true) ==
+    "SELECT $a\u0301$ $1 $a\u0301$, 7::int", "F5 Unicode dollar-quoted text is retained");
+
 const string crSql = "SELECT $1::int AS a --comment\r, $2::int AS b";
 string formatted = PgliteDatabase.ReviewSubstitute(crSql, ["1", "2"], true);
 Check(formatted == "SELECT 1::int AS a --comment\r, 2::int AS b", "F3 CR ends line comment for parameter formatting");

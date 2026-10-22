@@ -46,6 +46,20 @@ public static class ApiServicesCases
             throw new ApplicationException("This callback must not commit.");
         }));
         cases.Check("transaction-hidden-commit-left-no-row", Scalar(db, "SELECT count(*) FROM api_guard$tag$") == "0");
+        db.Exec("CREATE DOMAIN api_guard$e AS text");
+        cases.Throws<InvalidOperationException>("transaction-type-name-suffix-is-not-escape-prefix", () => db.Transaction(tx =>
+        {
+            tx.Exec("INSERT INTO api_guard$tag$ VALUES(1); SELECT api_guard$e'\\'; COMMIT; --'");
+            throw new ApplicationException("A type-name suffix must not hide COMMIT.");
+        }));
+        cases.Check("transaction-type-name-commit-left-no-row", Scalar(db, "SELECT count(*) FROM api_guard$tag$") == "0");
+        cases.Throws<InvalidOperationException>("transaction-unicode-dollar-tag-control-rejected", () => db.Transaction(tx =>
+        {
+            tx.Exec("SET LOCAL check_function_bodies=off");
+            tx.Exec("INSERT INTO api_guard$tag$ VALUES(1); CREATE FUNCTION api_guard_unicode() RETURNS text AS $a\u0301$' $a\u0301$ LANGUAGE sql; COMMIT; --'");
+            throw new ApplicationException("A Unicode dollar tag must not hide COMMIT.");
+        }));
+        cases.Check("transaction-unicode-tag-left-no-row", Scalar(db, "SELECT count(*) FROM api_guard$tag$") == "0");
         cases.Check("transaction-token-closed-after-commit", retained!.Closed && !db.IsInTransaction);
         cases.Throws<InvalidOperationException>("transaction-closed-query", () => retained.Query("SELECT 1"));
         cases.Throws<InvalidOperationException>("transaction-closed-exec", () => retained.Exec("SELECT 1"));

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-23",
+  "status": "bounded-fixes-validated-full-matrix-in-progress",
+  "scope": "PostgreSQL lexical boundaries in scoped transaction control and parameter formatting",
+  "findings": {
+    "F1": "Read lexer GUC from bound owner rather than SHOW inside aborted savepoint.",
+    "F2": "Consume complete ordinary identifiers including dollars and Unicode before recognizing dollar quotes.",
+    "F3": "Recognize both CR and LF as line-comment terminators.",
+    "F4": "An e suffix in an identifier is not an escape-string prefix.",
+    "F5": "Dollar-quote tags accept PostgreSQL non-ASCII identifier bytes, including combining characters; only ASCII leading digits are excluded."
+  },
+  "delegated_audit": "Provider stopped the original task after F1/F2/F3. Supervisor independently completed the bounded lexical review and found/fixed F4/F5. No claim of a completed independent final audit.",
+  "regression_source_checks": 6,
+  "actual_engine": {
+    "form": "raw",
+    "mode": "JIT",
+    "original_assertions": 36,
+    "api_assertions": 391,
+    "exit_code": 0,
+    "command": [
+      "dotnet",
+      "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-raw-jit/ManagedConsumer.dll",
+      "--bootstrap-prefix",
+      "/home/marius/p/dotcc/pglite/generated/TranslatedPGlite.Raw/bootstrap-prefix",
+      "--work",
+      "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-raw-jit-database"
+    ]
+  },
+  "evidence": {
+    "pglite/artifacts/api-port/audit-regressions-complete.log": "366bd4e77d3bb5d3af9b375e6984e4730067d7d8e57e6a131e376d1deb5c3a04",
+    "pglite/artifacts/api-port/literal-boundary-before.log": "6438f23f85b209546503866a1236ac46e37b08660907228d47e5fd207b418430",
+    "pglite/artifacts/api-port/literal-boundary-oracle.log": "cfbd6ae37bb591e8f8dc696d48fa6fa0238d171d5ce880b52c7fedf14718d410",
+    "pglite/artifacts/api-port/unicode-boundary-before.log": "871a8d6dd5ad9dd6f169464ac6154cc5048a453dd44e1ac756fe47aada368591",
+    "pglite/artifacts/api-port/unicode-boundary-oracle.log": "115775259685d2e7439064c4f38b31263e628e92f292cf00982718bc229fb29c",
+    "pglite/artifacts/campaign/20261023-011914-08221e49/consumer-raw-jit-run.log": "5c8deddadde361f086da12b1fb54889fc5812a4c6ac033e2c764989a7d51dfcc"
+  },
+  "source_hashes": {
+    "pglite/src/Api/PgliteDatabase.Formatting.cs": "8500d0733b7645103d7fdad55f8fb58425dc162aa53029c0474e8627ede6e1b4",
+    "pglite/src/Api/PgliteTransaction.cs": "f0409cb7c9492ed02a4b03a2391d12c28e7ab559a0eb876e3e37a33a913895dc",
+    "pglite/tests/ApiReview/Program.cs": "442197e068aed1ef0cba0cec7d858242bba67584ce003d1be5de9e7a0c50ddcd",
+    "pglite/tests/ApiAcceptance/PgliteApiCases.cs": "f38b457de97296aad5c4bd8ac346f82d8ba0211837b39f0d483eb857804c48e7",
+    "pglite/tests/ApiServices/ApiServicesCases.cs": "45977ffce7bea0e01c652e7afa62efe3be6a46294a3ee7047aa454bd0a4dc6a2"
+  }
+}

@@ -122,6 +122,11 @@ internal static partial class PgliteApiCases
             "SELECT '7'::int, '$1', $$ $1 $$ AS foo$1 /* $1 */ -- $1", "format/literals-identifiers-comments");
         Check(database.FormatQuery("SELECT $1::int AS a --comment\r, $2::int AS b", new object?[] { 1, 2 }) ==
             "SELECT '1'::int AS a --comment\r, '2'::int AS b", "format/carriage-return-ends-comment");
+        database.Exec("CREATE DOMAIN api_format$e AS text");
+        Check(database.FormatQuery("SELECT api_format$e'\\' AS preserved, $1::int", new object?[] { 7 }) ==
+            "SELECT api_format$e'\\' AS preserved, '7'::int", "format/type-name-suffix-is-not-escape-prefix");
+        Check(database.FormatQuery("SELECT $a\u0301$ $1 $a\u0301$, $1::int", new object?[] { 7 }) ==
+            "SELECT $a\u0301$ $1 $a\u0301$, '7'::int", "format/unicode-dollar-tag-retained");
         database.Exec("SET standard_conforming_strings=off");
         try
         {
