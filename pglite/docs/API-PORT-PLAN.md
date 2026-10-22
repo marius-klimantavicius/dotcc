@@ -1,6 +1,6 @@
 # Manual port of the PGlite TypeScript API
 
-Status: implementation integrated; repaired-tool real-engine JIT acceptance passed; full qualification in progress. Updated 2026-10-23.
+Status: implementation and selected Linux x64 qualification complete. Updated 2026-10-23.
 
 The user requested the TypeScript API be manually ported into the managed API
 libraries after the compiler failures are fixed. This extends the previously
@@ -108,17 +108,35 @@ Parent bootstrap staging fix `8e8bb390a` is preserved, including ordinary Debug
 build/run and publish behavior.
 
 The npm 0.5.11 differential oracle passes 22 upstream-derived parameter/type/array/
-error/recovery cases. It is test-only and not the delivered implementation.
-183 new protocol assertions and 1,833 retained native-transcript assertions pass.
-A freshly built isolated compiler suite passes 3,436 tests; framework passes 89 after the consumer deadline regression was added.
-These checks do not replace the required real-engine consumer matrix.
+error/recovery cases. It is test-only. Final protocol contracts pass 185 assertions
+under JIT and NativeAOT; codec contracts pass 237 in each mode. Retained actual
+native transcripts pass 1,833 assertions. Current shared gates pass 3,436 compiler,
+39 affected functional and 89 framework tests; API host contracts pass 34.
 
-Full regeneration passed after accepted compiler fix `123b3e76e` using
-its immutable frozen-v2 closure (receipt `20261023-003454-1ac22a3d`): all 928
-backend and 73 initializer units emitted and linked. The integrated processed JIT
-consumer then passed the original 36 and 385 new real-engine API assertions.
-Both JIT and NativeAOT wire/codec contracts also pass (183/237 assertions each). The superseded pre-fix run is retained as
-cancelled evidence. Current API qualification remains incomplete until every
-required raw/processed JIT/trimmed NativeAOT row, ordinary workflow and current
-source/export/license audits pass. Existing engine P6 receipts qualify only the
-earlier engine product.
+Full regeneration passed with accepted compiler fix `123b3e76e` using its
+immutable frozen-v2 closure (receipt `20261023-003454-1ac22a3d`): all 928 selected
+backend/module/libc/bridge units and 73 initializer/frontend units emitted and
+linked. All 14 engine suites pass again (`20261023-010738-3673914b`).
+
+All four current consumer rows pass the original 36 and 391 API assertions each
+(`20261023-011914-08221e49`). Normally trimmed NativeAOT succeeds without new
+native/trimming diagnostics; both executables depend only on libc, libm and the
+Linux loader. Ordinary five-project Release build, no-argument Debug consumer,
+normal/published JIT example execution from `/tmp`, layout check and offline
+inventory with hashes warn/off pass. Every delivery checked contains 659 matching
+bootstrap assets, descriptor mode 0700, and matching API notices.
+
+Implementation commit `5c49e6924` and lexical review/fix commit `2c6471c7e` are
+followed by final qualification evidence. Five bounded review findings have
+real-engine regressions. The delegated final auditor was stopped by its provider;
+no completed independent final audit is claimed. Supervisor review and the actual
+matrix remain explicit. The strict UTF-8 encoder already rejects malformed
+UTF-16 SQL; a fixture bypassing that encoder was a rejected hypothesis, and two
+additional wire tests preserve the guarantee.
+
+[API-PARITY.md](API-PARITY.md), [API-PLATFORMS.md](API-PLATFORMS.md) and
+[API-USAGE.md](API-USAGE.md) describe the stated adapted contract, including the
+conservative transaction-token guard, buffered protocol streams, host storage,
+local live refresh and unavailable browser/contrib mechanisms. The
+[final receipt](../../docs/validation/pglite-api-port-20261023.json) is authoritative.
+Earlier failed/cancelled runs and engine-only P6 evidence remain historical.

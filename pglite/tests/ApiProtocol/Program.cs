@@ -50,6 +50,8 @@ Check(PgliteProtocol.EncodeCopyFail("cancelled").SequenceEqual(Frame('f', Text("
 Reject<ArgumentException>(() => PgliteProtocol.EncodeParse("a\0b"), "SQL NUL");
 Reject<ArgumentException>(() => PgliteProtocol.EncodeParse("a", statement: "a\0b"), "statement-name NUL");
 Reject<EncoderFallbackException>(() => PgliteProtocol.EncodeBind(["\ud800"]), "invalid UTF-16 parameter");
+Reject<EncoderFallbackException>(() => PgliteProtocol.EncodeQuery("SELECT $x\ud800$' $x\ud801$; COMMIT; --'"), "invalid UTF-16 SQL cannot change dollar tags on the wire");
+Reject<EncoderFallbackException>(() => PgliteProtocol.EncodeParse("SELECT '\ud800'"), "invalid UTF-16 extended-query SQL");
 Reject<ArgumentOutOfRangeException>(() => PgliteProtocol.EncodeExecute(maximumRows: -1), "negative Execute limit");
 Reject<ArgumentOutOfRangeException>(() => PgliteProtocol.EncodeDescribe('x'), "invalid Describe target");
 Reject<ArgumentOutOfRangeException>(() => PgliteProtocol.EncodeParse("a", new uint[65536]), "OID count overflow");

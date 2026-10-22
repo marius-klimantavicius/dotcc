@@ -3,16 +3,15 @@
 Reference [PGlite.csproj](../src/Api/PGlite.csproj) from an ordinary .NET 10
 application. Build the translated backend/initdb and stage their bootstrap assets
 through the campaign first. The public namespace is `Managed.PGlite`.
-The current qualification target is Linux x64; the new API matrix is still
-pending as recorded in [API-PARITY.md](API-PARITY.md).
+The qualified target is Linux x64 LP64. Current four-row API matrix and ordinary
+workflow evidence are recorded in [API-PARITY.md](API-PARITY.md).
 
 ## Run the separate example
 
 [ApiExample](../samples/ApiExample/Program.cs) demonstrates a dedicated worker,
 safe interpolation, a callback transaction and a parameterized typed query.
 It has a normal `ProjectReference` to the reusable API and no acceptance sources.
-Run from the repository root after the supervisor's translated products are
-available:
+Run from the repository root after the translated products are available:
 
 ```bash
 dotnet build pglite/samples/ApiExample/ApiExample.csproj -c Release
@@ -47,7 +46,10 @@ dotnet publish pglite/samples/ApiExample/ApiExample.csproj -c Release \
 pglite/build/api-example-publish/ApiExample
 ```
 
-These commands describe usage, not completed final qualification.
+The example is qualified through ordinary JIT build/run and framework-dependent
+publish/run from `/tmp`. The complete API is qualified under both NativeAOT
+consumer rows; this optional example-specific NativeAOT command was not a
+separate qualification row.
 
 ## Async application ownership
 

@@ -1,6 +1,60 @@
 # PGlite validation evidence
 
-## Final selected acceptance — passed, 2026-10-22
+## Current managed API acceptance — passed, 2026-10-23
+
+The pinned TypeScript API port is implemented in the reusable `Managed.PGlite`
+library and qualified for its documented Linux x64 LP64 adaptations. The current
+[receipt](../../docs/validation/pglite-api-port-20261023.json),
+[parity ledger](API-PARITY.md) and [usage](API-USAGE.md) are authoritative.
+
+| Current product | Execution | Original assertions | API assertions |
+| --- | --- | --- | --- |
+| Raw | JIT | 36 | 391 |
+| Raw | Normally trimmed NativeAOT | 36 | 391 |
+| Processed | JIT | 36 | 391 |
+| Processed | Normally trimmed NativeAOT | 36 | 391 |
+
+Regeneration `20261023-003454-1ac22a3d` emits/links 928 selected backend/module/
+libc/bridge and 73 initializer/frontend units using accepted compiler fix
+`123b3e76e` and frozen-v2 `DotCC.Lib.dll` SHA256
+`08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d`.
+Engine pin `29b6424aa312ec3556247db069939006dd27f878` is unchanged. Wrapper pin
+is `967432ba0e8d2c71e0c9899edc1325bd8d68d6e8`, package 0.5.11.
+The matrix receipt is `20261023-011914-08221e49`; all four real build/publish and
+run commands pass. The original three lifetimes/two reopens remain in every row.
+
+All 14 engine suites pass again (`20261023-010738-3673914b`, 472 commands including
+expected negative controls). API inventory, codec/wire contracts and the consumer
+complete the 17-suite selection. Wire contracts pass 185 under JIT and NativeAOT;
+codec contracts pass 237 in each. Actual native transcripts pass 1,833 checks,
+the pinned upstream JS/WASM oracle passes 22 cases, compiler tests pass 3,436,
+affected functional tests pass 39, framework tests pass 89 and API host contracts
+pass 34. The original compiler assertions were preserved. The separately
+recorded imported-abs diagnostic is outside this campaign; no claim about all
+possible compiler defects is made.
+
+The ordinary five-project Release solution builds with zero errors and 16
+C# generated-field/legacy-descriptor warnings. The no-argument Debug consumer
+also passes 36 + 391. Normal and published framework-dependent example runs from
+`/tmp` print `id=7, name=Žąsis`. All eight checked matrix/ordinary output trees
+contain 659 matching bootstrap assets, executable descriptor mode 0700 and
+matching API notices. NativeAOT runtime notices match the resolved 10.0.12 pack.
+Both current native executables depend only on libc, libm and the Linux loader.
+
+The ledger accounts for 537 current symbols and retains 71 original scanner
+artifacts separately: 341 stated managed contracts qualified, 162 explicit
+platform choices and 34 unavailable contrib modules. The transaction token has
+a conservative lexical guard; streams buffer protocol responses, live refresh
+is local full-result comparison, physical archives require the same engine/disk
+format, and the worker owns one dedicated thread. Browser/WASM mechanisms and
+full server/multiprocess delivery are not qualified. The locale inventory still
+uses the real bounded `locale -a` helper; no PostgreSQL subprocess is an engine.
+
+The remaining sections preserve the 2026-10-22 engine-only history. Their old
+publication pointer and compiler/framework failures are superseded for the
+current API product by the receipts above; historical failed evidence is retained.
+
+## Historical engine-only acceptance — passed, 2026-10-22
 
 The agreed Linux x64 LP64 `embedding-native` campaign is implemented and
 qualified through P6. The authoritative combined record is

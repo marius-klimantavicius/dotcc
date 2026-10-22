@@ -5,8 +5,9 @@ The manual API port follows `@electric-sql/pglite` 0.5.11 at the revision in
 original translated initdb. It does not change the engine pin or execute a
 JavaScript, Wasm, native PostgreSQL, or subprocess database engine.
 
-These are .NET adaptations of the upstream services. Runtime qualification is
-owned by the supervisor's API matrix; implementation alone is not parity evidence.
+These are .NET adaptations of the upstream services. All four current Linux x64
+raw/processed JIT/NativeAOT API rows pass; exact evidence and limitations are in
+[API-PARITY.md](API-PARITY.md). Implementation alone is not parity evidence.
 
 `PgliteDatabase.Create/Open` are synchronous. They return after an actual SQL
 readiness round trip and managed extension initialization. `Ready`, `Closed`,
@@ -24,10 +25,17 @@ listen, unlisten and rollback. SQL failures throw; a caught failure cannot silen
 commit an aborted transaction. Callback failure rolls back. Explicit rollback
 allows the callback to return a value. The token closes on every scope exit and
 rejects later calls, nested ownership and direct database access during its
-callback. Transaction-control SQL belongs to the wrapper and is rejected in token
-query/exec/template text; token rollback uses `Rollback()`. The preflight scanner
-handles comments, quoted text, dollar quoting and the actual
-`standard_conforming_strings` setting; PostgreSQL remains the SQL parser.
+callback. Outer transaction-control SQL belongs to the wrapper and is rejected in
+token query/exec/template text; token rollback uses `Rollback()`. Ordinary PREPARE,
+SAVEPOINT and ROLLBACK TO remain available. The preflight scanner handles comments,
+quoted text, Unicode dollar tags and the actual `standard_conforming_strings`
+setting, including recovery from an aborted savepoint. PostgreSQL remains the SQL
+parser.
+
+The token guard is deliberately lexical and conservative. Dollar-quote compound
+routine bodies in token SQL: SQL-standard `BEGIN ATOMIC ... END` bodies can be
+rejected when an internal statement starts with a transaction-control keyword.
+Root `Exec`/`Query` forward the engine's SQL grammar without this token guard.
 
 Callbacks must be synchronous. Task/ValueTask-returning and async state-machine
 delegates are rejected before invocation. `RunExclusive` executes a synchronous
@@ -179,5 +187,6 @@ no .NET process equivalents here.
 `RunLifetimes(seedOptions, report)` must run after all other owners have closed;
 it exercises extension setup/init/close, temporary cleanup, checkpointed tar/gzip
 restore through the actual engine, invalid archive handling and worker lifetimes.
-The supervisor owns builds and raw/processed × JIT/NativeAOT execution. An isolated
-source-contract compilation does not qualify runtime archive recovery or workers.
+These cases execute against the real engine in every current raw/processed ×
+JIT/NativeAOT row, including archive recovery and dedicated-worker lifetimes.
+An isolated source-contract compilation alone does not qualify those behaviors.

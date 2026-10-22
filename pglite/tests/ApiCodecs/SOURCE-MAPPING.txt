@@ -95,7 +95,7 @@ utils.debounceMutex
 
 Tests / evidence
 ----------------
-Contracts/ApiCodecs.Contracts.csproj source-links only the four owned API files;
+Contracts/ApiCodecs.Contracts.csproj source-links codec/template and result/option contracts;
 it has no references to shared compiler/runtime/translated projects. This permits
 isolated JIT/NativeAOT checks without colliding with supervisor builds.
 Contracts/Program.cs covers source-derived scalar/boolean/type tests; exact text
@@ -110,6 +110,8 @@ ordinary consumer accepting new-data-directory/bootstrap-prefix/work-directory.
 It references the actual reusable API (ApiProject override supported), including
 RefreshArrayTypes, and exercises exact typed values, custom enums/numeric arrays,
 all IntervalStyles, safe templates and recovery after encoder/decoder exceptions.
-Shared-output builds and actual-engine raw/processed x JIT/AOT execution are
-reserved for the supervisor. Their required results must be recorded separately;
-standalone codec tests do not qualify engine behavior or wrapper API parity.
+Current codec contracts pass 237 assertions in both JIT and NativeAOT. The
+actual-engine cases execute in every raw/processed x JIT/NativeAOT consumer row
+(36 original + 391 API assertions each). Exact evidence is linked by
+docs/validation/pglite-api-port-20261023.json at the repository root. Standalone
+codec tests alone do not qualify engine behavior or unrestricted upstream parity.

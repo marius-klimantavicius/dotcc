@@ -7,11 +7,19 @@ the translated backend and original translated initdb in process. JavaScript,
 Wasm and native PostgreSQL are not delivered execution engines; the upstream
 Wasm package is a test oracle only.
 
-**API qualification remains incomplete.** Implemented runtime rows retain
-`implementation-complete-pending-matrix` until the supervisor records current
-Linux x64 raw/processed × JIT/trimmed NativeAOT receipts. Earlier engine P6
-evidence does not qualify these new API methods. Other OS/architecture targets
-are unqualified.
+**The stated .NET API contract is qualified on Linux x64 LP64.** All current
+raw/processed × JIT/normally trimmed NativeAOT rows pass the original 36 and 391
+new real-engine API assertions each. The authoritative
+[qualification receipt](../../docs/validation/pglite-api-port-20261023.json)
+links exact tools, source hashes, commands and logs. Other OS/architecture targets
+and omitted upstream mechanisms remain unqualified.
+
+| Product | Execution | Original checks | API checks |
+| --- | --- | --- | --- |
+| Raw | JIT | 36 | 391 |
+| Raw | Normally trimmed NativeAOT | 36 | 391 |
+| Processed | JIT | 36 | 391 |
+| Processed | Normally trimmed NativeAOT | 36 | 391 |
 
 ## Ledger and evidence
 
@@ -24,17 +32,21 @@ in `inventory_artifacts`. No managed member is invented to match those artifacts
 Constructor properties and exported object children not individually emitted by
 the scanner are described in their owning type mappings.
 
-`tests` references source checks, not passing receipts. Empty tests and explicit
-`test_gap` values remain visible. `API-MATRIX`, `API-CONFIGURATION`,
-`API-EXAMPLE` and `API-INVENTORY` are symbolic evidence labels awaiting final
-receipts. Source inventory establishes coverage only. `platform-specific`
-records a deliberate .NET choice; `platform-unavailable` means an absent module.
-Neither status proves the omitted upstream behavior.
+`tests` references source checks; resolved evidence labels in the ledger point to
+passing receipts. Empty tests mean no applicable behavioral check is recorded,
+not an implicit pass. Source inventory establishes coverage only. The 341
+`qualified-adaptation` rows qualify their stated managed contracts; 162
+`platform-specific` rows record deliberate host/runtime choices, and 34
+`platform-unavailable` rows identify absent contrib modules. Those statuses do
+not prove omitted upstream behavior or every variant of a referenced type.
 
-Prior checks reported 183 protocol assertions, 1,833 retained native transcript
-assertions, 237 codec contract assertions per JIT/AOT run, 22 upstream oracle
-cases and 95 early actual-engine core assertions. These intermediate results
-do not replace the final full API/services/configuration matrix.
+Current gates pass 185 wire/transport assertions and 237 codec assertions under
+both JIT and NativeAOT, 1,833 assertions against 21 actual native transcripts,
+22 pinned upstream oracle cases, 3,436 compiler tests, 39 affected functional
+tests, 89 campaign framework tests and 34 API host-contract checks. All 14 engine
+suites pass again. Ordinary Release solution build and no-argument Debug run
+pass; the Debug run repeats all 36 + 391 checks. The separate example runs both
+normally and from its framework-dependent publish output in `/tmp`.
 
 ## Export mappings
 
@@ -170,8 +182,8 @@ The reusable actual-engine cases are
 [PgliteCodecCases](../tests/ApiCodecs/PgliteCodecCases.cs) and
 [ApiServicesCases](../tests/ApiServices/ApiServicesCases.cs). Protocol/codec
 contract programs and the upstream differential oracle establish narrower
-boundaries. The supervisor owns integration, ordinary example execution and
-fresh matrix receipts. Code presence and source-only example compilation are
+boundaries. Current acceptance and ordinary example execution are linked in the
+qualification receipt. Code presence and source-only compilation alone are
 not runtime acceptance.
 
 The reusable API copies [upstream notices](../src/Api/Notices/ATTRIBUTION.txt),

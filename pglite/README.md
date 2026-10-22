@@ -6,11 +6,19 @@ transactions, recovers from ordinary SQL errors, shuts down cleanly and reopens
 persisted data in the same process. Initialization includes original PL/pgSQL
 and Snowball modules through a translated static registry.
 
-Paired raw and processed libraries are published and qualified through P6.
-All four canonical JIT/NativeAOT rows pass 36 assertions, three clean same-process
-lifetimes and two persistence reopens each. All 14 non-consumer suites and the
-ordinary solution build pass. [VALIDATION.md](docs/VALIDATION.md) records exact
-evidence and separately identifies unchanged repository baseline failures.
+The reusable API manually adapts `@electric-sql/pglite` 0.5.11 at the separate
+[wrapper pin](config/api-source.json). It includes parameterized queries, typed
+results/codecs/arrays, safe SQL templates, transactions, protocol access,
+notifications, COPY, physical archives, managed extensions, local live queries
+and a dedicated-thread async worker. [API-USAGE.md](docs/API-USAGE.md) provides
+examples; [API-PARITY.md](docs/API-PARITY.md) maps every exported surface and
+records platform adaptations, including unavailable contrib modules.
+
+The repaired compiler regenerated all 928 selected backend and 73 initializer
+units. All four raw/processed JIT/normally trimmed NativeAOT rows pass the original
+36 plus 391 API assertions each. All 17 selected suites, the ordinary five-project
+solution build, no-argument Debug run, and normal/published API example pass.
+[VALIDATION.md](docs/VALIDATION.md) links current evidence and historical lineage.
 
 The public owning API is [src/Api/PGlite.csproj](src/Api/PGlite.csproj).
 Reference that project from a separate application. It references both generated
@@ -48,6 +56,7 @@ Build and run the canonical consumer against existing generated products:
 ```bash
 dotnet build pglite/ManagedConsumer.slnx -c Release
 dotnet run --project pglite/samples/ManagedConsumer/ManagedConsumer.csproj -c Release
+dotnet run --project pglite/samples/ApiExample/ApiExample.csproj -c Release
 ```
 
 Ordinary builds and publishes copy the selected backend's complete

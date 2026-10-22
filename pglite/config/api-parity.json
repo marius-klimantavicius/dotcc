@@ -1830,7 +1830,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -1856,7 +1856,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -1882,7 +1882,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -1908,7 +1908,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -1934,7 +1934,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -1960,7 +1960,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -1986,7 +1986,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2013,7 +2013,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2040,7 +2040,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2066,7 +2066,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2093,7 +2093,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-resubscribe-after-dispose-rejected"
       ],
@@ -2118,7 +2118,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2144,7 +2144,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2170,7 +2170,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2196,7 +2196,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2222,7 +2222,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2248,7 +2248,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-cancellation-observed-on-owner"
       ],
@@ -2273,7 +2273,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2299,7 +2299,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2325,7 +2325,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2351,7 +2351,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2377,7 +2377,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2403,7 +2403,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-cancellation-observed-on-owner"
       ],
@@ -2428,7 +2428,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2454,7 +2454,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2481,7 +2481,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2508,7 +2508,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2535,7 +2535,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2561,7 +2561,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2588,7 +2588,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2614,7 +2614,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2641,7 +2641,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-resubscribe-after-dispose-rejected"
       ],
@@ -2666,7 +2666,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2692,7 +2692,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2718,7 +2718,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2743,7 +2743,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2768,7 +2768,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2794,7 +2794,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2820,7 +2820,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-cancellation-observed-on-owner"
       ],
@@ -2845,7 +2845,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2871,7 +2871,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2897,7 +2897,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2923,7 +2923,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-window",
         "tests/ApiServices/ApiServicesCases.cs#live-window-refresh"
@@ -2949,7 +2949,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -2975,7 +2975,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -3002,7 +3002,7 @@
         "src/Api/PgliteLive.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#live-auto-refresh-at-commit",
         "tests/ApiServices/ApiServicesCases.cs#live-no-rollback-result-change",
@@ -4187,7 +4187,7 @@
         "src/Api/PgliteSql.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream template values",
         "tests/ApiCodecs/Contracts/Program.cs#upstream nested template renumbering",
@@ -4214,7 +4214,7 @@
         "src/Api/PgliteSql.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream template values",
         "tests/ApiCodecs/Contracts/Program.cs#upstream nested template renumbering",
@@ -4241,7 +4241,7 @@
         "src/Api/PgliteSql.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream template values",
         "tests/ApiCodecs/Contracts/Program.cs#upstream nested template renumbering",
@@ -4268,7 +4268,7 @@
         "src/Api/PgliteSql.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream template values",
         "tests/ApiCodecs/Contracts/Program.cs#upstream nested template renumbering",
@@ -4312,7 +4312,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4337,7 +4337,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4362,7 +4362,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4387,7 +4387,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4414,7 +4414,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4439,7 +4439,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -4467,7 +4467,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4494,7 +4494,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4521,7 +4521,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4548,7 +4548,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4594,7 +4594,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4640,7 +4640,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4686,7 +4686,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4711,7 +4711,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4736,7 +4736,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4763,7 +4763,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4788,7 +4788,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4813,7 +4813,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4838,7 +4838,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4863,7 +4863,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4888,7 +4888,7 @@
       "implementation_files": [
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#worker-concurrent-callers-serialized",
         "tests/ApiServices/ApiServicesCases.cs#worker-owner-thread",
@@ -4913,7 +4913,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -4939,7 +4939,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -4965,7 +4965,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -4991,7 +4991,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5017,7 +5017,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5043,7 +5043,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5069,7 +5069,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5095,7 +5095,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5121,7 +5121,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5147,7 +5147,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5173,7 +5173,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -5201,7 +5201,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -5232,7 +5232,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -5258,7 +5258,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -5284,7 +5284,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -5308,7 +5308,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -5334,7 +5334,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -5360,7 +5360,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -5386,7 +5386,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -5415,7 +5415,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5444,7 +5444,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#notice/per-query-callback",
         "tests/ApiAcceptance/PgliteApiCases.cs#notice/per-query-error-preserves-core"
@@ -5468,7 +5468,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-active-dispose-rejected",
         "tests/ApiServices/ApiServicesCases.cs#storage-ephemeral-delete-after-close",
@@ -5497,7 +5497,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5526,7 +5526,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5555,7 +5555,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5581,7 +5581,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-active-dispose-rejected",
         "tests/ApiServices/ApiServicesCases.cs#storage-ephemeral-delete-after-close",
@@ -5610,7 +5610,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5639,7 +5639,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5668,7 +5668,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -5696,7 +5696,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5724,7 +5724,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5752,7 +5752,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5780,7 +5780,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5808,7 +5808,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5836,7 +5836,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5883,7 +5883,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5930,7 +5930,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -5958,7 +5958,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -6005,7 +6005,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -6031,7 +6031,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6057,7 +6057,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6102,7 +6102,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6128,7 +6128,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6154,7 +6154,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6180,7 +6180,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6206,7 +6206,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6232,7 +6232,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6355,7 +6355,7 @@
         "src/Api/PgliteExtensions.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -6381,7 +6381,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6407,7 +6407,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6433,7 +6433,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6459,7 +6459,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6485,7 +6485,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6568,7 +6568,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6594,7 +6594,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6620,7 +6620,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6646,7 +6646,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6672,7 +6672,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6698,7 +6698,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6724,7 +6724,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -6755,7 +6755,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -6874,7 +6874,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -6906,7 +6906,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -6935,7 +6935,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -6983,7 +6983,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -7007,7 +7007,7 @@
       "implementation_files": [
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-active-dispose-rejected",
         "tests/ApiServices/ApiServicesCases.cs#storage-ephemeral-delete-after-close",
@@ -7035,7 +7035,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -7085,7 +7085,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -7109,7 +7109,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -7137,7 +7137,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -7165,7 +7165,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -7194,7 +7194,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -7223,7 +7223,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -7252,7 +7252,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -7281,7 +7281,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -7366,7 +7366,7 @@
         "src/Api/PgliteTransaction.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -7395,7 +7395,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -7422,7 +7422,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -7449,7 +7449,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -7475,7 +7475,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -7525,7 +7525,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -7556,7 +7556,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -7581,7 +7581,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream NULL and complex text array round trip",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/dynamic-enum-array"
@@ -7607,7 +7607,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteWorker.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#exclusive-result",
         "tests/ApiServices/ApiServicesCases.cs#exclusive-async-rejected"
@@ -7633,7 +7633,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -7660,7 +7660,7 @@
         "src/Api/PgliteTemplate.cs",
         "src/Api/PgliteSql.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream template values",
         "tests/ApiCodecs/Contracts/Program.cs#upstream nested template renumbering",
@@ -7685,7 +7685,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-active-dispose-rejected",
         "tests/ApiServices/ApiServicesCases.cs#storage-ephemeral-delete-after-close",
@@ -7713,7 +7713,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -7731,7 +7731,8 @@
       ],
       "evidence_refs": [
         "API-MATRIX"
-      ]
+      ],
+      "notes": "The scoped token uses a conservative lexical transaction-control guard, not a full PostgreSQL grammar parser. Dollar-quote compound routine bodies; SQL-standard BEGIN ATOMIC bodies with internal statement-start control keywords can be rejected. Root Exec/Query have no token guard. This is a documented stricter .NET ownership contract, not unrestricted upstream SQL parity."
     },
     {
       "id": ".:PGlite.unlisten",
@@ -7748,7 +7749,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -7777,7 +7778,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -7806,7 +7807,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -7832,7 +7833,7 @@
         "src/Api/PgliteExtensions.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -7863,7 +7864,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -7887,7 +7888,7 @@
       "implementation_files": [
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-active-dispose-rejected",
         "tests/ApiServices/ApiServicesCases.cs#storage-ephemeral-delete-after-close",
@@ -7915,7 +7916,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -7946,7 +7947,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -7977,7 +7978,7 @@
         "src/Api/PgliteDatabase.Services.cs",
         "src/Api/PgliteOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#extension-managed-namespace",
         "tests/ApiServices/ApiServicesCases.cs#extension-init-failure-unwinds",
@@ -8117,7 +8118,7 @@
       "implementation_files": [
         "src/Api/PgliteStorage.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#storage-gzip-restore-query",
         "tests/ApiServices/ApiServicesCases.cs#storage-uncompressed-restore-query",
@@ -8148,7 +8149,7 @@
         "src/Host/PgliteOwner.cs",
         "src/Initialization/InitializationFrontend.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-ready",
         "tests/ApiServices/ApiServicesCases.cs#lifecycle-foreign-thread-dispose-rejected"
@@ -8211,7 +8212,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -8257,7 +8258,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -8289,7 +8290,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -8319,7 +8320,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -8346,7 +8347,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -8378,7 +8379,7 @@
         "src/Api/PgliteOptions.cs",
         "src/Api/PgliteDatabase.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/user-database-settings-debug-durability",
         "tests/ApiAcceptance/PgliteApiCases.Services.cs#configuration/explicit-durability-fence",
@@ -8407,7 +8408,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8434,7 +8435,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -8460,7 +8461,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -8491,7 +8492,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8518,7 +8519,7 @@
         "src/Api/PgliteStorage.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#copy-csv-bytes",
         "tests/ApiServices/ApiServicesCases.cs#copy-binary-stream-roundtrip",
@@ -8546,7 +8547,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#notice/per-query-callback",
         "tests/ApiAcceptance/PgliteApiCases.cs#notice/per-query-error-preserves-core"
@@ -8576,7 +8577,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8603,7 +8604,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -8630,7 +8631,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -8656,7 +8657,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -8681,7 +8682,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8707,7 +8708,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8733,7 +8734,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8759,7 +8760,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8785,7 +8786,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8811,7 +8812,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8837,7 +8838,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8863,7 +8864,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8889,7 +8890,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8915,7 +8916,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8941,7 +8942,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8967,7 +8968,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -8995,7 +8996,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9022,7 +9023,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9048,7 +9049,7 @@
         "src/Api/PgliteStorage.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#copy-csv-bytes",
         "tests/ApiServices/ApiServicesCases.cs#copy-binary-stream-roundtrip",
@@ -9075,7 +9076,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9102,7 +9103,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9129,7 +9130,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9156,7 +9157,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9183,7 +9184,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9210,7 +9211,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -9235,7 +9236,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9262,7 +9263,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9288,7 +9289,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9313,7 +9314,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9339,7 +9340,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9365,7 +9366,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9391,7 +9392,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9417,7 +9418,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9443,7 +9444,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9469,7 +9470,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9495,7 +9496,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9521,7 +9522,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9547,7 +9548,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9575,7 +9576,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -9603,7 +9604,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -9631,7 +9632,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -9660,7 +9661,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -9686,7 +9687,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -9714,7 +9715,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -9742,7 +9743,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteDatabase.Services.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#transaction-generic-return",
         "tests/ApiServices/ApiServicesCases.cs#transaction-explicit-rollback",
@@ -9769,7 +9770,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9795,7 +9796,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9821,7 +9822,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9847,7 +9848,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9873,7 +9874,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9899,7 +9900,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -9924,7 +9925,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9950,7 +9951,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -9976,7 +9977,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -10002,7 +10003,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -10028,7 +10029,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -10055,7 +10056,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream NULL and complex text array round trip",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/dynamic-enum-array"
@@ -10081,7 +10082,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteDatabase.Query.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream NULL and complex text array round trip",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/dynamic-enum-array"
@@ -10108,7 +10109,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#format/reordered-repeated-and-escaped",
         "tests/ApiAcceptance/PgliteApiCases.cs#format/literals-identifiers-comments",
@@ -10140,7 +10141,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10169,7 +10170,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10197,7 +10198,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -10223,7 +10224,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -10248,7 +10249,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -10274,7 +10275,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -10302,7 +10303,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10329,7 +10330,7 @@
         "src/Api/PgliteCodecs.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs#upstream custom numeric parser",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/custom-codec"
@@ -10354,7 +10355,7 @@
       "implementation_files": [
         "src/Api/PgliteCodecs.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiCodecs/Contracts/Program.cs",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -10642,7 +10643,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10671,7 +10672,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10700,7 +10701,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10729,7 +10730,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10758,7 +10759,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10786,7 +10787,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -10813,7 +10814,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -10841,7 +10842,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10870,7 +10871,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10899,7 +10900,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10928,7 +10929,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10957,7 +10958,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -10986,7 +10987,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -11015,7 +11016,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -11047,7 +11048,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11079,7 +11080,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11111,7 +11112,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11143,7 +11144,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11175,7 +11176,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11207,7 +11208,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11239,7 +11240,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11271,7 +11272,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11303,7 +11304,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11335,7 +11336,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11367,7 +11368,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11399,7 +11400,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11431,7 +11432,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11463,7 +11464,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11495,7 +11496,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11527,7 +11528,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11559,7 +11560,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#Differential",
         "tests/ApiCodecs/PgliteCodecCases.cs"
@@ -11587,7 +11588,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocolEngine/CoreProtocolCases.cs#Metadata",
         "tests/ApiAcceptance/PgliteApiCases.cs#typed/object-row-mode"
@@ -11615,7 +11616,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -11644,7 +11645,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11671,7 +11672,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11698,7 +11699,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11725,7 +11726,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11752,7 +11753,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11779,7 +11780,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11806,7 +11807,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11833,7 +11834,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11860,7 +11861,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11887,7 +11888,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11914,7 +11915,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11942,7 +11943,7 @@
         "src/Api/PgliteQueryOptions.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11969,7 +11970,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -11996,7 +11997,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -12023,7 +12024,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -12050,7 +12051,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -12077,7 +12078,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -12104,7 +12105,7 @@
         "src/Api/PgliteDatabase.QueryOptions.cs",
         "src/Api/PgliteQueryOptions.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notice-after-core-no-reentry",
         "tests/ApiServices/ApiServicesCases.cs#notice-callback-error-not-quarantined"
@@ -12131,7 +12132,7 @@
         "src/Api/PgliteTransaction.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -12158,7 +12159,7 @@
         "src/Api/PgliteTransaction.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiServices/ApiServicesCases.cs#notifications-two-listeners-and-global",
         "tests/ApiServices/ApiServicesCases.cs#notifications-discarded-after-rollback"
@@ -12184,7 +12185,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -12210,7 +12211,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -12236,7 +12237,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -12263,7 +12264,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12292,7 +12293,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12321,7 +12322,7 @@
         "src/Api/PgliteProtocol.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12350,7 +12351,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12378,7 +12379,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -12404,7 +12405,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteProtocol.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -12430,7 +12431,7 @@
         "src/Api/PgliteDatabase.Query.cs",
         "src/Api/PgliteQueryResult.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/parameters-and-fields",
         "tests/ApiAcceptance/PgliteApiCases.cs#describe/no-side-effects"
@@ -12457,7 +12458,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12486,7 +12487,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12515,7 +12516,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12544,7 +12545,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12573,7 +12574,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12602,7 +12603,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12631,7 +12632,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12660,7 +12661,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12690,7 +12691,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12719,7 +12720,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12748,7 +12749,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12777,7 +12778,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12806,7 +12807,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12835,7 +12836,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12864,7 +12865,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12893,7 +12894,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12922,7 +12923,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12970,7 +12971,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -12999,7 +13000,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13028,7 +13029,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13057,7 +13058,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13086,7 +13087,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13115,7 +13116,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13144,7 +13145,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13173,7 +13174,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13202,7 +13203,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13250,7 +13251,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13355,7 +13356,7 @@
         "src/Api/PgliteQueryResult.cs",
         "src/Api/PgliteTransport.cs"
       ],
-      "status": "implementation-complete-pending-matrix",
+      "status": "qualified-adaptation",
       "tests": [
         "tests/ApiProtocol/Program.cs",
         "tests/ApiAcceptance/PgliteApiCases.cs#RawProtocol",
@@ -13370,19 +13371,19 @@
       ]
     }
   ],
-  "status": "Incomplete qualification: reviewed mappings and explicit platform choices; executable paths await final raw/processed JIT/NativeAOT matrix",
+  "status": "Qualified stated .NET adaptations on Linux x64 LP64: current raw/processed JIT and normally trimmed NativeAOT, ordinary delivery and required shared gates pass. This is not unrestricted browser/WASM/upstream mechanism parity.",
   "reviewed_date": "2026-10-23",
   "path_base": "pglite/; upstream_tests/source are relative to the pinned ref directory from config/api-source.json",
   "status_definitions": {
-    "implementation-complete-pending-matrix": "A concrete implementation exists for the stated adapted contract, not evidence of full upstream parity. Final current engine matrix remains required.",
     "platform-specific": "Documented .NET host/storage/runtime/ownership choice; upstream browser/WASM or public surface is not reproduced. Runtime evidence for equivalent operations does not establish omitted mechanism parity.",
     "platform-unavailable": "Individually unavailable contrib module in unchanged statically translated engine; not implemented or qualified.",
     "implementation-gap": "Required observable upstream behavior has no implementation/equivalent yet; resolution remains with supervisor.",
-    "inventory-artifact": "Scanner attributed a private helper/member/type continuation to the preceding export. ID retained; mapping identifies its actual scope and claims no phantom .NET member."
+    "inventory-artifact": "Scanner attributed a private helper/member/type continuation to the preceding export. ID retained; mapping identifies its actual scope and claims no phantom .NET member.",
+    "qualified-adaptation": "Concrete implementation of the stated .NET contract with current source contracts and real-engine matrix evidence. Tests do not exhaust every SQL form or variant; row limitations/platform differences remain part of the contract."
   },
   "test_reference_semantics": "tests are existing source files with optional literal case/method selectors, not pass receipts. A referenced shared suite need not exercise every variant of the row. Empty tests means no applicable behavioral check is recorded, never a pass. upstream_tests identify source-derived behavior/original cases; platform omissions are not claimed executed.",
   "qualification": {
-    "complete": false,
+    "complete": true,
     "required_matrix": [
       "linux-x64/raw/JIT",
       "linux-x64/processed/JIT",
@@ -13390,10 +13391,10 @@
       "linux-x64/processed/trimmed-NativeAOT"
     ],
     "evidence_labels": {
-      "API-MATRIX": "Supervisor: current actual-engine API assertions and exact generated products in all four rows; unresolved symbolic label",
-      "API-CONFIGURATION": "Supervisor: qualify new username/database/debug/durability/settings cases; unresolved symbolic label",
-      "API-EXAMPLE": "Supervisor: ordinary samples/ApiExample build/run (and selected publish) with copied bootstrap assets; unresolved symbolic label",
-      "API-INVENTORY": "Supervisor: source/export/implementation-path/notice audit; source coverage only, unresolved final receipt"
+      "API-MATRIX": "artifacts/campaign/20261023-011914-08221e49/receipt.json; artifacts/api-port/consumer-matrix-final.json (all four rows, 36 original + 391 API assertions each)",
+      "API-CONFIGURATION": "Same four-row matrix; api/configuration/* cases cover username, existing database, debug, settings and durability",
+      "API-EXAMPLE": "artifacts/api-port/ordinary-workflow.json (ordinary Release solution, no-argument Debug consumer, normal and published JIT example runs from /tmp)",
+      "API-INVENTORY": "artifacts/campaign/20261023-021712-051856fb/receipt.json (offline warn); artifacts/campaign/20261023-021712-6559a827/receipt.json (off); artifacts/import-audit-owner/api-port-final-source.json; artifacts/import-audit-owner/api-port-v2-delivery.json"
     },
     "prior_checks": {
       "protocol_assertions": 183,
@@ -13402,12 +13403,95 @@
       "upstream_WASM_oracle_cases": 22,
       "early_actual_engine_core_assertions": 95
     },
-    "prior_check_limit": "Historical intermediate checks only; not final qualification for the fresh frozen-v2 complete API/services/configuration products."
+    "prior_check_limit": "Historical intermediate checks are retained as history; final_checks, matrix and resolved evidence_labels record the current qualification.",
+    "receipt": "../docs/validation/pglite-api-port-20261023.json",
+    "matrix": {
+      "consumer-raw-jit": {
+        "status": "passed",
+        "exit_code": 0,
+        "original_assertions": 36,
+        "api_assertions": 391,
+        "original_same_process_lifetimes": 3,
+        "original_persistence_reopens": 2,
+        "bootstrap_files": 659,
+        "bootstrap_hashes_match": true,
+        "postgres_mode": "0o700",
+        "initdb_mode": "0o700",
+        "logical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-raw-jit",
+        "physical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-raw-jit",
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/campaign/20261023-011914-08221e49/consumer-raw-jit-run.log",
+        "run_log_sha256": "5c8deddadde361f086da12b1fb54889fc5812a4c6ac033e2c764989a7d51dfcc",
+        "api_notices_match_authored": true
+      },
+      "consumer-raw-aot": {
+        "status": "passed",
+        "exit_code": 0,
+        "original_assertions": 36,
+        "api_assertions": 391,
+        "original_same_process_lifetimes": 3,
+        "original_persistence_reopens": 2,
+        "bootstrap_files": 659,
+        "bootstrap_hashes_match": true,
+        "postgres_mode": "0o700",
+        "initdb_mode": "0o700",
+        "logical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-raw-aot",
+        "physical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-raw-aot",
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/campaign/20261023-011914-08221e49/consumer-raw-aot-run.log",
+        "run_log_sha256": "6d298a61f490ee1bbb2ae2385f674746dc9c5c58da8faef5c6bbf1f6b2117fc9",
+        "api_notices_match_authored": true
+      },
+      "consumer-processed-jit": {
+        "status": "passed",
+        "exit_code": 0,
+        "original_assertions": 36,
+        "api_assertions": 391,
+        "original_same_process_lifetimes": 3,
+        "original_persistence_reopens": 2,
+        "bootstrap_files": 659,
+        "bootstrap_hashes_match": true,
+        "postgres_mode": "0o700",
+        "initdb_mode": "0o700",
+        "logical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-processed-jit",
+        "physical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-processed-jit",
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/campaign/20261023-011914-08221e49/consumer-processed-jit-run.log",
+        "run_log_sha256": "a5bed93dafa909d74c04d34b18c8f7ff18f6d3d4b02d07f7e1d36ce6b7dae533",
+        "api_notices_match_authored": true
+      },
+      "consumer-processed-aot": {
+        "status": "passed",
+        "exit_code": 0,
+        "original_assertions": 36,
+        "api_assertions": 391,
+        "original_same_process_lifetimes": 3,
+        "original_persistence_reopens": 2,
+        "bootstrap_files": 659,
+        "bootstrap_hashes_match": true,
+        "postgres_mode": "0o700",
+        "initdb_mode": "0o700",
+        "logical_output": "/home/marius/p/dotcc/pglite/build/campaign/20261023-011914-08221e49/consumer-processed-aot",
+        "physical_output": "/mnt/secondary/dotcc-pglite-api-completed-20261023-rr_tbd81/new-matrix-outputs/consumer-processed-aot",
+        "run_log": "/home/marius/p/dotcc/pglite/artifacts/campaign/20261023-011914-08221e49/consumer-processed-aot-run.log",
+        "run_log_sha256": "811f1cf3a6caced0b7ad248b2ffcbc1b71d2407ba23d8a185a5019de8b2b8879",
+        "api_notices_match_authored": true
+      }
+    },
+    "final_checks": {
+      "protocol_contracts_per_JIT_and_NativeAOT": 185,
+      "codec_contracts_per_JIT_and_NativeAOT": 237,
+      "native_transcript_assertions": 1833,
+      "upstream_oracle_cases": 22,
+      "compiler_tests": 3436,
+      "affected_functional_tests": 39,
+      "framework_tests": 89,
+      "API_host_contracts": 34,
+      "ordinary_Debug_original_assertions": 36,
+      "ordinary_Debug_API_assertions": 391
+    }
   },
   "coverage_notes": [
     "All 608 original rows reviewed; current symbols match repaired supervisor inventory and removed scanner artifacts retain their full mapping in inventory_artifacts.",
-    "Inventory scanner crosses declaration boundaries; artifact rows retain exact source locations and identify the actual private scope.",
-    "Constructor parameter properties (e.g. Field metadata), generic/index signatures and exported object children are not all separate rows in this inventory; owner mappings describe them and inventory hardening remains supervisor-owned.",
+    "The original scanner crossed declaration boundaries; its 71 artifacts remain separate. The repaired scanner matches all 537 current symbol IDs.",
+    "Constructor parameter properties, generic/index signatures and exported object children are covered in their owning mappings rather than all being separate scanner rows.",
     "No JavaScript/WASM runtime/native PostgreSQL subprocess is a delivered engine; the upstream oracle is test-only. Engine pin remains separate and unchanged."
   ],
   "documentation": [
