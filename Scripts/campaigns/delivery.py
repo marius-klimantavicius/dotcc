@@ -37,17 +37,38 @@ def lock(path):
                 fcntl.flock(stream, fcntl.LOCK_UN)
 
 
+def ignore_build_caches(directory, names):
+    """copytree callback: only bin/obj beside C#, F# or VB projects are caches."""
+    directory = Path(directory)
+    if not any(Path(name).suffix.lower() in (".csproj", ".fsproj", ".vbproj")
+               and (directory / name).is_file() for name in names):
+        return set()
+    return {name for name in names if name in ("bin", "obj")
+            and (directory / name).is_dir() and not (directory / name).is_symlink()}
+
+
+def prune_build_caches(directory):
+    """Remove managed project caches without descending into them or symlinks."""
+    for parent, directories, files in os.walk(directory):
+        ignored = ignore_build_caches(parent, [*directories, *files])
+        directories[:] = [name for name in directories if name not in ignored]
+        for name in ignored:
+            shutil.rmtree(Path(parent) / name)
+
+
 def source_files(directory):
     """All delivered files, excluding build caches; never follow symlinks."""
     result = []
-    for path in sorted(Path(directory).rglob("*")):
-        if {"bin", "obj"}.intersection(path.relative_to(directory).parts):
-            continue
-        if path.is_symlink():
-            raise RuntimeError(f"Symlink in generated project: {path}")
-        if path.is_file():
-            result.append(path)
-    return result
+    for parent, directories, files in os.walk(directory):
+        ignored = ignore_build_caches(parent, [*directories, *files])
+        directories[:] = [name for name in directories if name not in ignored]
+        for name in [*directories, *files]:
+            path = Path(parent) / name
+            if path.is_symlink():
+                raise RuntimeError(f"Symlink in generated project: {path}")
+            if path.is_file():
+                result.append(path)
+    return sorted(result)
 
 
 def validate_emission(directory, product):

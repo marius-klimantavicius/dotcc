@@ -12,7 +12,7 @@ from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from campaigns.delivery import source_files
+from campaigns.delivery import prune_build_caches, source_files
 from campaigns.identity import HashPolicy, digest, write_json
 from campaigns.layout import Layout
 from campaigns.model import Recipe
@@ -67,8 +67,10 @@ class CompanionDeliveryTests(unittest.TestCase):
         if label == self.fail_build:
             raise RuntimeError("last companion build failed")
         # Build caches must not become delivered inputs or output hashes.
-        for directory in ("bin", "obj"):
-            self.write(str(Path(project).parent.relative_to(self.root) / directory / "cache.txt"), label)
+        projects = [Path(project), *(Path(project).parent / "managed").glob("*/*proj")]
+        for project in projects:
+            for directory in ("bin", "obj"):
+                self.write(str(project.parent.relative_to(self.root) / directory / "cache.txt"), label)
 
     def restore(self, project, label):
         self.calls.append((label, Path(project)))
@@ -126,6 +128,139 @@ class CompanionDeliveryTests(unittest.TestCase):
         return {str(path.relative_to(directory)): path.read_bytes()
                 for path in directory.rglob("*") if path.is_file()}
 
+    def packaged_assets(self, directory, value="new"):
+        assets = {
+            "bootstrap-prefix/bin/postgres": json.dumps({"kind": "managed-entrypoint", "product": self.main, "value": value}),
+            "bootstrap-prefix/bin/initdb": json.dumps({"kind": "managed-entrypoint", "product": self.companion, "value": value}),
+            "bootstrap-prefix/obj/catalog.json": json.dumps({"catalog": value}),
+            "assets/bin/obj/data.txt": value,
+            "assets/obj/bin/data.txt": value,
+            "assets/not-project.csproj/bin/data.txt": value,
+            "managed/csharp/Helper.csproj": "<Project />",
+            "managed/fsharp/Helper.fsproj": "<Project />",
+            "managed/visualbasic/Helper.vbproj": "<Project />",
+            "managed/csharp/resources/bin/data.txt": value,
+            "managed/fsharp/resources/obj/data.txt": value,
+        }
+        for relative, content in assets.items():
+            self.write(str(directory.relative_to(self.root) / relative), content)
+        return assets
+
+    def assert_no_build_caches(self, directory):
+        for relative in (".", "managed/csharp", "managed/fsharp", "managed/visualbasic"):
+            for cache in ("bin", "obj"):
+                self.assertFalse((directory / relative / cache).exists(), str(directory / relative / cache))
+
+    def check_packaged_delivery(self, companions):
+        assets = self.packaged_assets(self.raw)
+        if companions:
+            self.packaged_assets(self.frontend)
+
+        def restore(project, label):
+            self.restore(project, label)
+            self.assert_no_build_caches(project.parent)
+            for relative, content in assets.items():
+                self.assertEqual((project.parent / relative).read_text(), content)
+
+        def build(action, project, label):
+            if label.startswith("final-"):
+                # Final validation recreates caches, so inspect pruning before
+                # that build and then verify its new caches stay out of hashes.
+                self.assert_no_build_caches(project.parent)
+            self.managed(action, project, label)
+
+        with patch.object(self.ctx, "restore", restore), patch.object(self.ctx, "managed", build):
+            self.deliver(None if companions else {})
+        current = json.loads(self.pointer.read_text())
+        for form in ("raw", "processed"):
+            record = current["outputs"][form]
+            products = [(self.main, record)]
+            if companions:
+                products.append((self.companion, record["companions"][self.companion]))
+            else:
+                self.assertNotIn("companions", record)
+            for name, record in products:
+                directory = self.layout(name).directory(self.ctx.profile, form)
+                owned = json.loads((directory / ".campaign-files.json").read_text())
+                delivered = {str(path.relative_to(directory)) for path in source_files(directory)}
+                self.assertEqual(set(record["hashes"]), delivered)
+                for relative, content in assets.items():
+                    key = str(Path(relative))
+                    self.assertEqual((directory / relative).read_text(), content)
+                    self.assertIn(key, owned)
+                    self.assertEqual(record["hashes"][key], digest(directory / relative))
+                for relative in (".", "managed/csharp", "managed/fsharp", "managed/visualbasic"):
+                    for cache in ("bin", "obj"):
+                        path = directory / relative / cache / "cache.txt"
+                        self.assertTrue(path.is_file())
+                        self.assertNotIn(str(path.relative_to(directory)), owned)
+                        self.assertNotIn(str(path.relative_to(directory)), record["hashes"])
+            self.assertEqual(check_product(self.ctx, form), self.ctx.layout.project(self.ctx.profile, form))
+        self.assertFalse((self.root / "build/campaign/promotion.json").exists())
+
+    def test_packaged_assets_and_nested_caches_in_companion_publication(self):
+        self.check_packaged_delivery(companions=True)
+
+    def test_packaged_assets_and_nested_caches_in_single_publication(self):
+        self.check_packaged_delivery(companions=False)
+
+    def test_pruning_does_not_follow_asset_or_cache_symlinks_and_provenance_rejects_them(self):
+        outside = self.write("outside/Helper.csproj", "<Project />").parent
+        sentinel = self.write("outside/bin/keep.txt", "outside asset")
+        for relative in ("bootstrap-prefix/bin", "bootstrap-prefix/obj", "bin", "obj"):
+            with self.subTest(relative=relative):
+                link = self.raw / relative
+                link.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    link.symlink_to(outside, target_is_directory=True)
+                except (OSError, NotImplementedError) as error:
+                    self.skipTest(f"Directory symlinks unavailable: {error}")
+                try:
+                    prune_build_caches(self.raw)
+                    self.assertTrue(link.is_symlink())
+                    self.assertEqual(sentinel.read_text(), "outside asset")
+                    with self.assertRaisesRegex(RuntimeError, "Symlink in generated project"):
+                        source_files(self.raw)
+                finally:
+                    link.unlink()
+
+    def test_packaged_descriptor_tamper_fails_strict_for_both_products_and_forms(self):
+        self.packaged_assets(self.raw)
+        self.packaged_assets(self.frontend)
+        self.deliver()
+        for name in (self.main, self.companion):
+            for form in ("raw", "processed"):
+                for entrypoint in ("postgres", "initdb"):
+                    with self.subTest(name=name, form=form, entrypoint=entrypoint):
+                        descriptor = self.layout(name).directory(self.ctx.profile, form) / "bootstrap-prefix/bin" / entrypoint
+                        before = descriptor.read_bytes()
+                        descriptor.write_text('{"kind": "managed-entrypoint", "product": "tampered"}')
+                        with self.assertRaisesRegex(RuntimeError, "Hash differs"):
+                            check_product(self.ctx, form)
+                        descriptor.write_bytes(before)
+                        check_product(self.ctx, form)
+
+    def test_prior_unowned_assets_preserved_and_obsolete_owned_assets_removed(self):
+        for name in (self.main, self.companion):
+            for form in ("raw", "processed"):
+                directory = self.output(self.layout(name).directory(form=form), name, "old")
+                self.write(str(directory.relative_to(self.root) / "bootstrap-prefix/bin/obsolete"), "old descriptor")
+                write_json(directory / ".campaign-files.json",
+                           [str(path.relative_to(directory)) for path in source_files(directory)])
+                for cache in ("bin", "obj"):
+                    self.write(str(directory.relative_to(self.root) / "caller" / cache / "notes.txt"), "caller asset")
+        self.deliver()
+        for form, record in self.ctx.receipt["outputs"].items():
+            for name, output in ((self.main, record), (self.companion, record["companions"][self.companion])):
+                directory = self.layout(name).directory(form=form)
+                self.assertFalse((directory / "bootstrap-prefix/bin/obsolete").exists())
+                owned = json.loads((directory / ".campaign-files.json").read_text())
+                for cache in ("bin", "obj"):
+                    relative = str(Path("caller") / cache / "notes.txt")
+                    self.assertEqual((directory / relative).read_text(), "caller asset")
+                    self.assertEqual(output["hashes"][relative], digest(directory / relative))
+                    self.assertNotIn(relative, owned)
+
     def test_four_products_processed_and_published_with_current_hashes(self):
         self.deliver()
         current = json.loads(self.pointer.read_text())
@@ -148,11 +283,17 @@ class CompanionDeliveryTests(unittest.TestCase):
         self.assertFalse((self.root / "build/campaign/promotion.json").exists())
 
     def test_last_companion_validation_rolls_back_all_four_and_prior_receipt(self):
+        self.packaged_assets(self.raw)
+        self.packaged_assets(self.frontend)
         previous = {}
         for name in (self.main, self.companion):
             for form in ("raw", "processed"):
                 directory = self.output(self.layout(name).directory(self.ctx.profile, form), name, "old " + name + form)
+                self.packaged_assets(directory, "old")
+                write_json(directory / ".campaign-files.json",
+                           [str(path.relative_to(directory)) for path in source_files(directory)])
                 self.write(str(directory.relative_to(self.root) / "caller-notes.txt"), "preserve caller file")
+                self.write(str(directory.relative_to(self.root) / "caller/bin/notes.txt"), "preserve caller asset")
                 previous[directory] = self.snapshot(directory)
         write_json(self.pointer, {"receipt": "prior successful receipt", "outputs": {"old": True}})
         pointer = self.pointer.read_bytes()

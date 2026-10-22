@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import shutil
 import xml.etree.ElementTree as ET
-from .delivery import promote, source_files, validate_emission
+from .delivery import ignore_build_caches, promote, prune_build_caches, source_files, validate_emission
 from .identity import write_json
 from .layout import Layout
 
@@ -114,7 +114,7 @@ def deliver(ctx, raw, configure=None, finish=None, companions=None):
     forms = ["raw"] if ctx.options.form == "raw" else ["raw", "processed"]
     trees = {"raw": raw}
     if "processed" in forms:
-        shutil.copytree(raw, product, ignore=shutil.ignore_patterns("bin", "obj"))
+        shutil.copytree(raw, product, ignore=ignore_build_caches)
         relocate_project(product / project_name, raw)
         if configure:
             configure(ctx, product / project_name, "processed")
@@ -130,9 +130,7 @@ def deliver(ctx, raw, configure=None, finish=None, companions=None):
         finish(ctx, raw / project_name, "raw")
     pairs = []
     for form, directory in trees.items():
-        for path in sorted(directory.rglob("*"), key=lambda p: len(p.parts), reverse=True):
-            if path.is_dir() and path.name in ("bin", "obj"):
-                shutil.rmtree(path)
+        prune_build_caches(directory)
         names = [str(p.relative_to(directory)) for p in source_files(directory)]
         write_json(directory / ".campaign-files.json", names)
         pairs.append((directory, ctx.layout.directory(ctx.profile, form)))
@@ -195,7 +193,7 @@ def deliver_companions(ctx, raw, configure, finish, companions):
         trees[(name, "raw")] = directory
         if "processed" in forms:
             processed = ctx.work / "processed" / name
-            shutil.copytree(directory, processed, ignore=shutil.ignore_patterns("bin", "obj"))
+            shutil.copytree(directory, processed, ignore=ignore_build_caches)
             processed_project = processed / project.name
             relocate_project(processed_project, directory)
             if main and configure:
@@ -211,9 +209,7 @@ def deliver_companions(ctx, raw, configure, finish, companions):
             finish(ctx, project, "raw")
     pairs = []
     for (name, form), directory in trees.items():
-        for path in sorted(directory.rglob("*"), key=lambda p: len(p.parts), reverse=True):
-            if path.is_dir() and path.name in ("bin", "obj"):
-                shutil.rmtree(path)
+        prune_build_caches(directory)
         write_json(directory / ".campaign-files.json", [str(p.relative_to(directory)) for p in source_files(directory)])
         pairs.append((directory, layouts[name].directory(ctx.profile, form)))
 
