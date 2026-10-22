@@ -1,0 +1,45 @@
+<Project>
+  <!-- Resolve the same target runtime pack used by NativeAOT, never a pack
+       selected by searching the machine's installed versions. This target
+       can also accompany an already completed native publish directly. -->
+  <Target Name="CopyPgliteNativeAotNotices" AfterTargets="Publish"
+          DependsOnTargets="ResolveFrameworkReferences;SetupProperties"
+          Condition="'$(PublishAot)' == 'true'">
+    <ItemGroup>
+      <_PgliteNativeAotRuntimePack Include="@(ResolvedRuntimePack)"
+          Condition="'$(PublishAotUsingRuntimePack)' == 'true' and '%(ResolvedRuntimePack.NuGetPackageId)' == 'Microsoft.NETCore.App.Runtime.NativeAOT.$(RuntimeIdentifier)'" />
+      <_PgliteNativeAotRuntimePack Include="@(ResolvedTargetILCompilerPack)"
+          Condition="'$(PublishAotUsingRuntimePack)' != 'true' and '%(ResolvedTargetILCompilerPack.NuGetPackageId)' == 'Microsoft.NETCore.App.Runtime.NativeAOT.$(RuntimeIdentifier)' and '%(ResolvedTargetILCompilerPack.PackageDirectory)' == '$(RuntimePackagePath)'" />
+    </ItemGroup>
+    <Error Condition="'@(_PgliteNativeAotRuntimePack->Count())' != '1'"
+           Text="PGlite NativeAOT notices require exactly one resolved target NativeAOT runtime pack." />
+    <Error Condition="'%(_PgliteNativeAotRuntimePack.NuGetPackageVersion)' == '' or '%(_PgliteNativeAotRuntimePack.PackageDirectory)' == ''"
+           Text="The resolved NativeAOT runtime pack must identify its package directory and version." />
+    <Error Condition="!Exists('%(_PgliteNativeAotRuntimePack.PackageDirectory)/LICENSE.TXT')"
+           Text="The resolved NativeAOT runtime pack is missing LICENSE.TXT." />
+    <Error Condition="!Exists('%(_PgliteNativeAotRuntimePack.PackageDirectory)/THIRD-PARTY-NOTICES.TXT')"
+           Text="The resolved NativeAOT runtime pack is missing THIRD-PARTY-NOTICES.TXT." />
+    <Error Condition="'$(PublishDir)' == ''" Text="PGlite NativeAOT notices require a publish directory." />
+    <ItemGroup>
+      <_PgliteNativeAotNotice Include="@(_PgliteNativeAotRuntimePack->'%(PackageDirectory)/LICENSE.TXT')" />
+      <_PgliteNativeAotNotice Include="@(_PgliteNativeAotRuntimePack->'%(PackageDirectory)/THIRD-PARTY-NOTICES.TXT')" />
+    </ItemGroup>
+    <GetFileHash Files="@(_PgliteNativeAotNotice)" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="_PgliteHashedNativeAotNotice" />
+    </GetFileHash>
+    <MakeDir Directories="$(PublishDir)/notices" />
+    <Copy SourceFiles="@(_PgliteHashedNativeAotNotice)" DestinationFolder="$(PublishDir)/notices" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <_PgliteNativeAotAttribution Include=".NET NativeAOT runtime" />
+      <_PgliteNativeAotAttribution Include="Copyright (c) .NET Foundation and Contributors" />
+      <_PgliteNativeAotAttribution Include="Source: https://github.com/dotnet/runtime" />
+      <_PgliteNativeAotAttribution Include="@(_PgliteNativeAotRuntimePack->'Package: %(NuGetPackageId)')" />
+      <_PgliteNativeAotAttribution Include="@(_PgliteNativeAotRuntimePack->'Version: %(NuGetPackageVersion)')" />
+      <_PgliteNativeAotAttribution Include="Runtime identifier: $(RuntimeIdentifier)" />
+      <_PgliteNativeAotAttribution Include="@(_PgliteHashedNativeAotNotice->'%(Filename)%(Extension) SHA256: %(FileHash)')" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(PublishDir)/notices/DOTNET-NATIVEAOT.txt"
+                      Lines="@(_PgliteNativeAotAttribution)" Overwrite="true"
+                      Encoding="UTF-8" WriteOnlyWhenDifferent="true" />
+  </Target>
+</Project>
