@@ -278,7 +278,10 @@ def check_product(ctx, form):
             raise RuntimeError("Companion receipt project differs from selected layout")
         if not companion_project.is_file():
             raise RuntimeError(f"Missing related library {companion_project}; run translate first")
-        for relative, expected in companion.get("hashes", {}).items():
+        companion_hashes = companion.get("hashes", {})
+        if not companion_hashes:
+            ctx.policy.issue(f"No recorded output hashes for related library {companion_project}")
+        for relative, expected in companion_hashes.items():
             path = companion_project.parent / relative
             if not path.resolve().is_relative_to(companion_project.parent.resolve()):
                 raise RuntimeError(f"Unsafe companion receipt path: {relative}")

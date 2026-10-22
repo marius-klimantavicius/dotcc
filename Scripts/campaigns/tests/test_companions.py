@@ -262,6 +262,23 @@ class CompanionDeliveryTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "Missing related library"):
             check_product(self.ctx, "processed")
 
+    def test_missing_companion_hash_evidence_obeys_provenance_policy(self):
+        self.deliver()
+        current = json.loads(self.pointer.read_text())
+        current["outputs"]["processed"]["companions"][self.companion]["hashes"] = {}
+        write_json(self.pointer, current)
+        self.ctx.policy = HashPolicy("strict")
+        with self.assertRaisesRegex(RuntimeError, "No recorded.*hashes"):
+            check_product(self.ctx, "processed")
+        self.ctx.policy = HashPolicy("warn")
+        with redirect_stderr(io.StringIO()):
+            self.assertEqual(check_product(self.ctx, "processed"), self.ctx.layout.project())
+        self.assertEqual(len(self.ctx.policy.warnings), 1)
+        self.assertIn(str(self.layout(self.companion).project()), self.ctx.policy.warnings[0])
+        self.ctx.policy = HashPolicy("off")
+        self.assertEqual(check_product(self.ctx, "processed"), self.ctx.layout.project())
+        self.assertEqual(self.ctx.policy.warnings, [])
+
     def test_companion_receipt_rejects_path_or_identity_tamper(self):
         self.deliver()
         original = self.pointer.read_text()
