@@ -1,11 +1,16 @@
 # Actual backend host services
 
 This owner implements missing host contracts observed in the complete 876-object
-backend selection. The current bounded host gate, including directory durability,
+backend selection. The bounded host gate, including directory durability,
 passes native, emitted JIT and normally trimmed Linux x64 NativeAOT on immutable
 1852. Complete backend linking/building, initialization,
 SQL/error recovery, persistence and the product matrix remain supervisor-owned
 acceptance work. No SQL product completion is inferred from this host fixture.
+
+The subsequent coherent `20261022-191828-3a8ebaa0` campaign emitted all 876
+objects and passed strict linking. Its first raw build exposed missing header
+declarations and compiler errors; it did not expose another missing OS service
+method. The focused header fixes below supplement the frozen host runtime.
 
 ## Selection and ownership
 
@@ -106,6 +111,53 @@ closelog retains the shared syslog service's explicit ENOTSUP contract; this
 profile supplies no fake host logging registration.
 
 ## Evidence and reproduction
+
+### First complete raw-build header closure
+
+The first complete raw build's five non-`__builtin_unreachable` missing-name
+occurrences were two `SIGURG` uses, one `IN6_IS_ADDR_UNSPECIFIED` use and two
+`__builtin_frame_address` uses. Only one signal constant was missing. Native
+Linux compilation confirms `SIGURG == 23`; its declaration is now in signal.h.
+The supervisor supplied an IPv6 unspecified-address macro backed by a real
+16-byte, single-evaluation inline predicate. The supervisor owns the reviewed
+stack capability fallback and the remaining compiler diagnostics.
+
+Five shmctl signature errors were calls with NULL: the original pgl_shmctl
+definition takes `struct shmid_ds *`, but the synthetic sys/shm.h lacked a
+prototype, leaving the calling translation units with implicit function typing.
+The same missing shmat prototype caused an implicit return-type mismatch in
+the original DSM caller's `char *` assignment. Supervisor-added declarations
+guarded by `__PGLITE__` and the corresponding remap macro bind these calls to
+the existing original C functions. They add no native System V IPC import.
+
+`artifacts/backendhost-owner-20261022-193521-12c105c0/receipt.json` passes all nine
+commands: native C, two actual object emissions, strict link, JIT and normally
+trimmed Linux x64 NativeAOT. It uses immutable 1908 with copied, hashed current
+signal.h, netinet/in.h and sys/shm.h headers, and records fixture and compiler
+closure hashes. The fixture compares signal number
+and native shmid_ds size/alignment/offsets, exercises signal-set operations,
+checks zero IPv6 addresses and every byte's low/high bit, and verifies that the
+macro evaluates its operand once. Separate test-only remapped shmctl/shmat
+definitions exercise NULL, a void-pointer variable, typed structure storage and
+implicit void-pointer return conversion through two fresh generated owners.
+Those definitions are fixture callees, never production host services.
+
+Focused original `387-pg_shmem` and `449-dsm_impl` emissions also pass using the
+exact 191828 receipt flags with only the current sys/shm.h overlay and private
+outputs. Their report is
+`artifacts/backendhost-owner-actual-shm-20261022-193251-3c00c368/report.json`.
+All five original NULL calls now emit typed null arguments; the DSM shmat
+assignment emits its required byte-pointer cast. No full backend build or
+whole-frontend emission was repeated. The runtime remains frozen at 43ff500f5;
+full backend build/execution and SQL acceptance remain open.
+
+`run_header_compat(ctx, suite=None)` runs this focused gate independently:
+
+```bash
+python3 -B pglite/scripts/backendhost-probe.py \
+  --compiler /home/marius/p/dotcc/pglite/build/tools/supervisor-20261022-1908/dotcc.dll \
+  --headers-only --mode all
+```
 
 ### Directory durability extension
 

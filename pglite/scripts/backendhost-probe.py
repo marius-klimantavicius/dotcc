@@ -79,6 +79,69 @@ def run_durable_rename(ctx, objects, source, mode="all"):
         _write(artifacts / "report.json", report)
 
 
+def run_header_compat(ctx, suite=None):
+    """Qualify raw-build header gaps without repeating the existing host gate."""
+    from campaigns.recipes import link_flags
+
+    mode = getattr(ctx.options, "mode", "all")
+    work, artifacts = ctx.work / "backendhost-header", ctx.artifacts / "backendhost-header"
+    work.mkdir(); artifacts.mkdir()
+    fixtures = ctx.root / "tests/BackendHost"
+    headers = work / "include"
+    report = dict(status="running", compiler=str(ctx.compiler), mode=mode,
+                  scope="raw191828 missing header declarations and remapped C prototypes; no backend execution claim",
+                  headers_sha256={}, fixture_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                  for p in [fixtures / name for name in ("header_compat.c", "header_compat_impl.c", "HeaderCompatProgram.cs", "HeaderCompat.csproj")]},
+                  compiler_closure_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                  for p in sorted(Path(ctx.compiler).parent.iterdir()) if p.suffix in (".dll", ".json")})
+    try:
+        for name in ("signal.h", "netinet/in.h", "sys/shm.h"):
+            source, target = ctx.repo / "DotCC.Lib/include" / name, headers / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            report["headers_sha256"][name] = hashlib.sha256(source.read_bytes()).hexdigest()
+        native = work / "native"
+        sources = [fixtures / name for name in ("header_compat.c", "header_compat_impl.c")]
+        flags = ["-std=c11", "-D__PGLITE__", "-Dshmctl=pgl_shmctl", "-Dshmat=pgl_shmat"]
+        ctx.run([os.environ.get("CC", "cc"), *flags, "-Wall", "-Wextra", "-Werror", "-DDPH_NATIVE_MAIN",
+                 *sources, "-o", native], "backendhost-header-native-build", 120)
+        observations = ctx.run([native], "backendhost-header-native-run", 60)
+        expected = artifacts / "native-observations.txt"
+        expected.write_text(observations)
+        report["native_observations"] = [int(value) for value in observations.split()]
+        if len(report["native_observations"]) != 5:
+            raise RuntimeError("Incomplete native header observation list")
+        objects = []
+        for index, source in enumerate(sources):
+            output = work / ("unit-" + str(index) + ".cs")
+            ctx.run(["dotnet", ctx.compiler, source, *flags, "-I", headers, "--emit=obj", "-o", output],
+                    "backendhost-header-emission-" + str(index), 120)
+            objects.append(output)
+        emitted = work / "fixture"
+        ctx.run(["dotnet", ctx.compiler, *objects, "--emit=managedlib", "--state-context",
+                 *link_flags("BackendHostHeaderFixture", "Managed.PGlite.Probes"), "-o", emitted],
+                "backendhost-header-link", 120)
+        project = fixtures / "HeaderCompat.csproj"
+        setting = "-p:BackendHostHeaderProject=" + str(emitted / "fixture.csproj")
+        for flavor in (("jit", "aot") if mode == "all" else (mode,)):
+            if flavor == "jit":
+                ctx.managed("build", project, "backendhost-header-jit-build", "-m:1", setting, "--artifacts-path", work / "jit")
+                command = ["dotnet", work / "jit/bin/HeaderCompat/release/HeaderCompat.dll"]
+            else:
+                ctx.managed("publish", project, "backendhost-header-aot-build", "-m:1", setting, "-r", "linux-x64", "-p:PublishAot=true",
+                            "-o", work / "aot", "--artifacts-path", work / "aot-artifacts")
+                command = [work / "aot/HeaderCompat"]
+            ctx.run([*command, expected], "backendhost-header-" + flavor + "-run", 120)
+        report["status"] = "passed-native-emitted-" + mode
+        ctx.receipt.setdefault("outputs", {})["backendhost_header"] = str(artifacts / "report.json")
+        return report
+    except BaseException as error:
+        report.update(status="failed", error=str(error))
+        raise
+    finally:
+        _write(artifacts / "report.json", report)
+
+
 def run(ctx, suite=None):
     from campaigns.recipes import link_flags
 
@@ -153,6 +216,7 @@ def main():
     parser.add_argument("--mode", choices=("jit", "aot", "all"), default="all")
     parser.add_argument("--frontend-objects", type=Path, help="Existing complete frontend object closure for original durable-rename gate")
     parser.add_argument("--source", type=Path, help="Readonly configured source containing native control archives")
+    parser.add_argument("--headers-only", action="store_true", help="Run only the focused raw-build header compatibility gate")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(root.parent / "Scripts"))
@@ -170,7 +234,7 @@ def main():
     ctx.compiler = args.compiler.resolve()
     ctx.start()
     try:
-        run(ctx)
+        (run_header_compat if args.headers_only else run)(ctx)
         ctx.receipt["status"] = "passed"
     except BaseException as error:
         ctx.receipt.update(status="failed", error=str(error))

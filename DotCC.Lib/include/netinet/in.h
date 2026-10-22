@@ -39,6 +39,15 @@ struct in6_addr {
 #define s6_addr16 __in6_u.__u6_addr16
 #define s6_addr32 __in6_u.__u6_addr32
 
+static inline int __dotcc_in6_is_addr_unspecified(const struct in6_addr *address)
+{
+    unsigned int any = 0;
+    for (int index = 0; index < 16; ++index)
+        any |= address->s6_addr[index];
+    return any == 0;
+}
+#define IN6_IS_ADDR_UNSPECIFIED(address) __dotcc_in6_is_addr_unspecified(address)
+
 /* Standard IPv6 constant initializers and externally linked objects. DotCC
    coalesces these identical header definitions into one module object. They
    must not be static: C internal linkage would give each translation unit a

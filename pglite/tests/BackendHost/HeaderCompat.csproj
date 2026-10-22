@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(BackendHostHeaderProject)" />
+    <Compile Include="HeaderCompatProgram.cs" />
+  </ItemGroup>
+  <Target Name="RequireEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(BackendHostHeaderProject)' == '' Or !Exists('$(BackendHostHeaderProject)')"
+           Text="Set BackendHostHeaderProject to the emitted two-unit header fixture project." />
+  </Target>
+</Project>

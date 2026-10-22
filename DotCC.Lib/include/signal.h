@@ -72,6 +72,7 @@ struct sigaction {
 #define SIGTSTP  20
 #define SIGTTIN  21
 #define SIGTTOU  22
+#define SIGURG   23
 #define SIGSYS   31
 
 #define SI_USER 0

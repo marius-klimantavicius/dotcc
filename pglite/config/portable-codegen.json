@@ -8,6 +8,7 @@
     "HAVE__BUILTIN_TYPES_COMPATIBLE_P": ["1", null],
     "HAVE__BUILTIN_CONSTANT_P": ["1", null],
     "HAVE__BUILTIN_OP_OVERFLOW": ["1", null],
+    "HAVE__BUILTIN_FRAME_ADDRESS": ["1", null],
     "HAVE_COMPUTED_GOTO": ["1", null],
     "HAVE_STRLCPY": ["1", null],
     "HAVE_STRLCAT": ["1", null],

@@ -22,4 +22,12 @@ struct shmid_ds {
 #define SHM_RND 020000
 #define SHM_REMAP 040000
 #define SHM_EXEC 0100000
+/* The embedding profile remaps this name before including system headers.
+   Bind calls to its real typed wrapper without advertising a kernel service. */
+#if defined(__PGLITE__) && defined(shmctl)
+int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+#endif
+#if defined(__PGLITE__) && defined(shmat)
+void *shmat(int shmid, const void *shmaddr, int shmflg);
+#endif
 #endif
