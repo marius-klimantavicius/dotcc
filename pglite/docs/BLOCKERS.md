@@ -278,3 +278,23 @@ and scoped execution are checked through direct and object routes. Nine guarded
 initializer/staging checks pass, including missing/duplicate last-header anchors
 and source/output preservation. Fresh full 1908 regeneration is active; previous
 objects with the wrong union-kind fact are not reinterpreted.
+
+## Shared regex compile-error pointers and independent execution state
+
+The coherent 1908 backend emits all 876 units and next rejects regex `vars`.
+Tracing the exact constraint gives pg_reg_getcolor -> colormap -> vars. The
+header's colormap.v and nfa.v are compile-error pointers, while regexec completes
+the same generic tag with unrelated execution scratch state. This is a genuine
+transitive source contract conflict; the compiler's strong check stays intact.
+A guarded private regguts header names both compile-error pointees RegCompVars;
+only regcomp defines vars=RegCompVars and regexec defines vars=RegExecVars. The
+other four regex units retain the opaque compiler state. Fields, layouts and
+algorithms remain unchanged. Six actual native units compile with strict pointer
+and implicit-declaration diagnostics; 74 affected execution controls pass.
+
+The ordinary six-unit scoped probe emits. Its diagnostic replacement in the
+older full closure then fails LocalToUtf: anonymous typedef identities depend
+on the two different private include paths. Metadata is not rewritten or erased
+to permit that mixed closure. A coherent full normal retry under one include
+overlay is active. Current broad compiler tests again pass 3,387 cases and
+reproduce exactly the known 16 baseline failures (current6 comparison retained).

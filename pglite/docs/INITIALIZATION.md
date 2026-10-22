@@ -396,3 +396,35 @@ and implicit-declaration errors enabled (`parser-type-scoping/report.json`).
 union completion, true kind conflicts, unchanged rejection of the unscoped
 unused parser declaration and execution with scoped interfaces. The supervisor
 owns the guarded profile integration and next complete fresh backend retry.
+
+The fresh 1908 full retry resolved parser/union conflicts and next rejected
+regex vars. The exact shared root is `pg_reg_getcolor -> colormap -> vars`:
+regguts.h's compile-error pointer binds to the compiler's complete vars type in
+regcomp.c and the executor's different complete type in regexec.c. This is a
+real transitive source contract conflict; the linker remains unchanged.
+The private header names both compile-only pointers (colormap.v and nfa.v)
+RegCompVars. Only regcomp.c defines vars=RegCompVars; only regexec.c defines
+vars=RegExecVars. Original algorithms and pointer types remain intact.
+
+Exactly six backend units include the affected header and contain those graph
+edges: regex/regcomp.c, regerror.c, regexec.c, regexport.c, regfree.c and
+regprefix.c. All six compile natively with strict pointer/declaration diagnostics
+(`regex-type-scoping/report.json`), and a three-TU shared-container control
+executes (`regex-type-scoping/shared-container-native.json`).
+`aggregate-regex-functional-tests.log` has 74 passes. The added direct/object,
+both-order cases preserve rejection of the unscoped transitive child conflict
+and execute a real shared-container call chain with scoped types. No compiler
+or metadata-format change is involved.
+
+The supervisor's diagnostic hybrid relink (six fresh whole objects plus 870
+retained 1908 objects) passed the regex vars conflict but failed LocalToUtf's
+external type contract. Independently staged include-overlay paths gave its
+anonymous typedefs different identities. The old printsimple and old regcomp
+contracts match exactly; the new probe regcomp contract names the other
+overlay's identities. This hybrid is a failed diagnostic, not a coherent full
+closure or a new demonstrated compiler defect. Exact contracts, object hashes,
+log and receipt are recorded in `regex-type-scoping/repair.json`. No generated
+text or metadata is rewritten and the ABI gate remains strict. The supervisor
+started a normal fresh 876-unit retry with one coherent include overlay and
+compiler 1908 (`artifacts/campaign/20261022-191828-3a8ebaa0`). Its actual link/
+build result and original initialization remain pending; final P6 remains open.

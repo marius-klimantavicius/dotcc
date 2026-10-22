@@ -31,6 +31,13 @@ def prepare_overlay(root, include):
         if count != parser["public_occurrences"]:
             raise RuntimeError("Parser interface adaptation needs exact YYSTYPE occurrences in " + str(path))
         updates[path] = text
+    for adaptation in policy.get("header_identifiers", []):
+        path = Path(include) / adaptation["path"]
+        text, count = re.subn(r"\b" + re.escape(adaptation["before"]) + r"\b",
+                              adaptation["after"], updates.get(path, path.read_text()))
+        if count != adaptation["occurrences"]:
+            raise RuntimeError("Header identifier adaptation needs exact occurrences in " + str(path))
+        updates[path] = text
     # Validate all anchors before writing; acquired/configured inputs are never edited.
     for path, text in updates.items():
         path.write_text(text)
@@ -39,6 +46,8 @@ def prepare_overlay(root, include):
             "portable_sources": policy["portable_sources"],
             "header_adaptations": policy.get("header_adaptations", []),
             "parser_semantic_types": policy.get("parser_semantic_types", []),
+            "header_identifiers": policy.get("header_identifiers", []),
+            "unit_defines": policy.get("unit_defines", {}),
             "excluded_native_codegen_units": policy["excluded_native_codegen_units"]}
 
 

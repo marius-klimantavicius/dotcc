@@ -78,5 +78,22 @@
         "src/backend/replication/syncrep_scanner.c"
       ]
     }
-  ]
+  ],
+  "header_identifiers": [
+    {
+      "path": "regex/regguts.h",
+      "before": "vars",
+      "after": "RegCompVars",
+      "occurrences": 2,
+      "reason": "Both shared pointers belong to regex compilation error reporting; executor scratch state has a distinct tag."
+    }
+  ],
+  "unit_defines": {
+    "src/backend/regex/regcomp.c": [
+      "vars=RegCompVars"
+    ],
+    "src/backend/regex/regexec.c": [
+      "vars=RegExecVars"
+    ]
+  }
 }

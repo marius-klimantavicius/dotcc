@@ -9,6 +9,40 @@ namespace DotCC.FunctionalTests;
 public sealed class AggregateLinkageComponentTests
 {
     [Theory]
+    [InlineData(false, false, false)]
+    [InlineData(true, false, false)]
+    [InlineData(false, true, false)]
+    [InlineData(true, true, false)]
+    [InlineData(false, false, true)]
+    [InlineData(true, false, true)]
+    [InlineData(false, true, true)]
+    [InlineData(true, true, true)]
+    public void Shared_container_retains_compiler_state_identity_separate_from_executor_state(bool objects, bool scoped, bool reverse)
+    {
+        WithDirectory(directory =>
+        {
+            string compile = scoped ? "RegCompVars" : "vars", execute = scoped ? "RegExecVars" : "vars";
+            string header = "struct Map { struct " + compile + " *v; int value; }; struct Map *make(void); int color(struct Map *); int consume(struct Map *);\n";
+            var paths = Sources(directory,
+                header + "int main(void) { return consume(make()) == 42 ? 0 : 1; }",
+                header + "struct " + compile + " { int error; }; static struct " + compile + " state = {19}; static struct Map map = {&state,23}; struct Map *make(void) { return &map; } int color(struct Map *p) { return p->v->error+p->value; }",
+                header + "struct " + execute + " { long inputs[3]; }; int consume(struct Map *p) { struct " + execute + " local = {{1,2,3}}; return color(p)+(int)(local.inputs[0]+local.inputs[1]+local.inputs[2])-6; }");
+            if (objects) paths = Objects(paths);
+            if (reverse) Array.Reverse(paths);
+            if (!scoped)
+            {
+                Should.Throw<CompileException>(() => { if (objects) Compiler.LinkObjects(paths); else Compiler.EmitCSharp(paths); })
+                    .Message.ShouldContain("conflicting aggregate declarations for 'vars'");
+            }
+            else
+            {
+                string code = objects ? Compiler.LinkObjects(paths) : Compiler.EmitCSharp(paths);
+                FixtureRunner.CompileAndRunCapturingExit(code, Array.Empty<string>()).exit.ShouldBe(0);
+            }
+        });
+    }
+
+    [Theory]
     [InlineData(false, false)]
     [InlineData(true, false)]
     [InlineData(false, true)]

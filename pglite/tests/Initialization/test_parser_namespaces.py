@@ -61,3 +61,13 @@ class ParserNamespaceTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "already exists"):
                 PORTABILITY.prepare_parser_units(ROOT, self.source, destination)
             self.assertEqual(marker.read_text(), "preserve")
+
+    def test_actual_shared_regex_header_keeps_compile_error_pointer_types(self):
+        original = (self.source / "src/include/regex/regguts.h").read_bytes()
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "include"
+            INITIALIZER.prepare_frontend_overlay(ROOT, self.source, destination)
+            staged = (destination / "regex/regguts.h").read_text()
+            self.assertEqual(len(re.findall(r"\bRegCompVars\b", staged)), 2)
+            self.assertNotRegex(staged, r"\bvars\b")
+            self.assertEqual((self.source / "src/include/regex/regguts.h").read_bytes(), original)
