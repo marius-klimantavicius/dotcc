@@ -141,9 +141,9 @@ public static unsafe partial class Libc
             return bytes.ToArray();
         });
 
-        internal int Wait(bool terminate)
+        internal int Wait(bool terminate, bool reportError = true)
         {
-            if (pid == 0) { errno = ECHILD; return -1; }
+            if (pid == 0) { if (reportError) errno = ECHILD; return -1; }
             int status;
             int result;
             do { result = LocaleWaitPid(pid, &status, terminate ? 1 : 0); }
@@ -156,7 +156,7 @@ public static unsafe partial class Libc
             }
             int error = result < 0 ? Marshal.GetLastPInvokeError() : 0;
             if (result > 0 || error == ECHILD) pid = 0;
-            if (result < 0) { errno = error; return -1; }
+            if (result < 0) { if (reportError) errno = error; return -1; }
             return status;
         }
 
@@ -165,7 +165,7 @@ public static unsafe partial class Libc
         internal void Abandon()
         {
             try { Output.Dispose(); } catch (IOException) { }
-            Wait(terminate: true);
+            Wait(terminate: true, reportError: false);
             try { ReadErrors(); } catch (IOException) { }
             DisposeErrorStream();
         }
