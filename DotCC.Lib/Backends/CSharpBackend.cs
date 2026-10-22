@@ -1496,7 +1496,11 @@ internal sealed partial class CSharpBackend
     /// qualified: atomic → seq-cst <c>Atomic.Load</c>, volatile →
     /// <c>Volatile.Read</c>, neither → the bare text at its natural precedence.</summary>
     private (string, int) QualifiedRead(CExpr lv, string bare, int barePrec) =>
-        lv.Type.IsAtomic ? ($"Atomic.Load(ref {bare})", PPrimary)
+        // Array-to-pointer conversion computes an address; it does not read
+        // the array's storage. In particular a volatile array typedef qualifies
+        // the elements, not the synthesized pointer field holding its address.
+        lv.Type.Unqualified is CType.Array ? (bare, barePrec)
+        : lv.Type.IsAtomic ? ($"Atomic.Load(ref {bare})", PPrimary)
         // A pointer/fn-ptr volatile lvalue can't be a Volatile.Read<T> type arg
         // (CS0306): reinterpret its slot as `nint` through its address, cast back.
         : lv.Type.IsVolatile && lv.Type.IsPointerLowered

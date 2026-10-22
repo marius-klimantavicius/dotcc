@@ -1,0 +1,2 @@
+ipc=48 shm=112 size=48 atime=56 pid=80 nattch=88
+key=-17 wide=1 time=1 attach=7 commands=1 flags=1

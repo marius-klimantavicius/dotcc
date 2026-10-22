@@ -1,0 +1,1 @@
+System V IPC types follow the selected Linux x64 LP64 ABI; MSVC has no sys/shm.h.

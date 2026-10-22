@@ -33,6 +33,10 @@
    This is the dotcc C ABI, not the native host's register-save record. */
 #include <stdint.h>
 typedef uint64_t jmp_buf[1];
+/* POSIX signal-jump storage uses the same opaque identity representation.
+   This type declaration alone does not implement sigsetjmp/siglongjmp or
+   signal-mask save/restore; those operations need an explicit host boundary. */
+typedef jmp_buf sigjmp_buf;
 
 int setjmp(jmp_buf env);
 void longjmp(jmp_buf env, int value);
