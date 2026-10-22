@@ -1,5 +1,18 @@
 # PGlite blocker ledger
 
+## Current — real post-bootstrap locale enumeration
+
+The full 876-unit backend emits, strict-links and raw-builds in coherent receipt
+`20261022-194223-e06ea2a0`. Actual original initdb bootstrap completes. Its
+post-bootstrap single-user SQL then exits 1 at system-collation import because
+the runtime cannot execute the host `locale -a` service. Two isolated original
+initdb runs reproduce the same failure. Real host enumeration and independently
+observed calendar `%Z` formatting are implementation work in progress; no SQL
+step is removed or fabricated. Processed output, SQL and final matrix remain
+open. Older entries below retain their historical observations and are not the
+current source/build status. See VALIDATION.md for current evidence.
+
+
 Campaign-start ledger, 2026-10-22. Planned checks are not successes.
 
 ## PGL-011 — Multidimensional array designators (fixed)

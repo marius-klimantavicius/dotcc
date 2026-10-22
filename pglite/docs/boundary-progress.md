@@ -174,3 +174,79 @@ No files have been staged or committed by this owner. Shared planning edits,
 recipe/config/root solution, source refs and compiler outputs remain outside
 owned edits. Final parent reruns and raw/processed JIT/AOT product qualification
 are still required.
+
+
+## Owner-scoped runtime implementation (2026-10-22 follow-up)
+
+Read baseline v4, campaigns, PLAN/VALIDATION/BLOCKERS/BOUNDARIES/ATOMICS/SOURCE
+and the supervisor's QUALIFICATION.md. Current ownership is limited to the
+assigned runtime context/termination files, actual ProcessSignalLib.cs (no
+SignalLib.cs exists), new PgliteSignalTimerLib.cs and PgliteLifecycleTests.cs,
+Host, Boundary, boundary.py and the two boundary documents. Prior broad ownership
+statements in this historical ledger do not apply to this follow-up. No new
+delegation, ref/prepared-source mutation, shared compiler build, emitted-C# edit,
+staging, commit, push or PR was performed. The three parent-owned planning files
+were not edited. Private outputs use boundary-owner-20261022.
+
+Implemented matching-owner/binding/thread-scoped repeatable exit(99/100),
+retaining true terminal exit/immediate exit/abort/worker-fault behavior. The
+authored PgliteOwner uses --state-context, holds callback roots through normal
+shutdown and fork cleanup, quarantines failed lifetimes, and recreates generated
+globals through their original initialization recipes on reopen. The C forwarder
+still calls real PostgresMainLongJmp; no transaction/error cleanup is implemented
+in the host. The diagnostic recovery delegate only observes ownership/counts
+and is explicitly not full PostgreSQL recovery evidence.
+
+Implemented explicit guest signal opt-in, oldact output, masks and pending
+coalescing, handler mask/errno restoration, SIG_IGN/default dispositions,
+SA_RESETHAND, local raise/self-kill, ITIMER_REAL interval/remaining values,
+cancellation and terminal/disposal cleanup. Unsupported flags/signals/timers
+fail explicitly. Existing standalone OS/SIGINT behavior stays outside opt-in.
+The locale owner's helper appeared with private static signature
+DisposePosixLocales(RuntimeContext); RuntimeContext.Dispose now calls it before
+heap/descriptors. The focused disposal test creates a real locale token and
+asserts that this hook clears its owner table.
+
+prepare_signal_overlay(include, workspace) guards real miscadmin.h and inserts
+only a typed dpg_host_poll_signals call before original CHECK_FOR_INTERRUPTS
+logic. src/Host/signal-overrides.json routes that hook and setitimer. This is a
+supported ordinary typed override; the rejected typed exit override remains
+only an alternate-capability diagnostic. The native/emitted safe-point probe
+uses the actual adapted macro, a real timer, and a clearly labeled test observer
+for the macro's ProcessInterrupts callee. The product adaptation retains the
+real ProcessInterrupts call and condition. Emitted delivery happens inside the C
+loop, without returning to an entry-point-only host pump.
+
+Actual evidence:
+
+- artifacts/boundary-owner-20261022/runtime-tests.log: 38 passing current
+  runtime tests, comprising 12 owned lifecycle cases plus existing terminal,
+  binding and process-signal regressions; all managed outputs private.
+- suite-1713/commands.json in that artifacts directory records the entire
+  boundary adapter run using immutable build/tools/supervisor-20261022-1713.
+  Native/emitted actual-header ABI, full pglitec object emission, source callback/
+  cleanup bodies, repeated yields, owner propagation, two fresh-context cycles,
+  timer delivery/cancellation and the actual safe-point macro loop pass.
+- aot-publish.log and aot-run.log: normal trimmed Linux x64 NativeAOT boundary
+  fixture passes; aot-managed.json exactly matches suite-1713/boundary/managed.json.
+  This is diagnostic JIT/AOT proof only, not a raw/processed PostgreSQL matrix.
+- overlay-checks.json: four real-source mutation guards pass; only the two
+  intended additions occur and the configured source remains unchanged.
+
+The complete boundary report remains BLOCKED on a genuine next failure:
+sigjmp_mask.c passes native save=0/save=1 behavior, but emitted C# fails CS0103
+for sigsetjmp and siglongjmp (boundary-sigjmp-mask-managed-build.log). Existing
+setjmp lexical lowering and opaque sigjmp_buf storage do not implement these
+operations. CaptureGuestSignalMask(save) / RestoreGuestSignalMask(snapshot) now
+provide tested owner/thread-aware runtime helpers for the supervisor's compiler
+repair; restoration does not run pending callbacks during unwind. Headers and
+IR/backend recognition remain supervisor-owned. Evaluate the mask argument once
+at initial arm and restore inside the matching lexical catch. Do not alias the
+signal-aware operations to setjmp/longjmp while discarding save-mask.
+
+Exact recipe actions and the shared repair are documented in BOUNDARIES.md.
+The final runtime signal refinements, mask helpers and locale-disposal hook
+postdate immutable 1713 and require the supervisor's next compiler snapshot.
+No full backend init, real SQL error/transaction cleanup, persistence/reopen
+workflow or product matrix row is claimed. Supervisor retains P6 completion and
+continues full-input integration.

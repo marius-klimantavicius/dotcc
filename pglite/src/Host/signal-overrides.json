@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "functionOverrides": [
+    {
+      "name": "setitimer",
+      "signature": {
+        "returnType": "int",
+        "parameterTypes": ["int", "const struct itimerval *", "struct itimerval *"],
+        "variadic": false
+      },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.PGlite.Translated.PGlite.Libc.PgliteSetitimer"
+      },
+      "requireMatch": false
+    },
+    {
+      "name": "dpg_host_poll_signals",
+      "signature": { "returnType": "void", "parameterTypes": [], "variadic": false },
+      "target": {
+        "kind": "managedMethod",
+        "method": "global::Managed.PGlite.Hosting.PgliteOwner.PollSignals"
+      },
+      "requireMatch": false
+    }
+  ]
+}

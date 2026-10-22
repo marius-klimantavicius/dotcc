@@ -17,13 +17,16 @@ void dpg_set_io(dpg_io_callback read_callback, dpg_io_callback write_callback);
 
 /* Requires generated catalogs, configured data/locale paths, and argv/strings
  * that remain alive across startup. Expected fork yield: exit 99, not a normal
- * C return. It is currently blocked by the host's terminal-exit semantics.
+ * C return. The managed owner explicitly scopes repeatable exit interception.
  * This cannot initialize a new cluster: upstream initdb has a separate closure.
  */
 int dpg_start(dpg_postgres_main entry, int argc, char **argv);
 
 /* Only after main has initialized and yielded 99. Sets dummy protocol port. */
 void dpg_attach_protocol(void);
+/* Supply the actual postmaster-death poll descriptor before attaching the
+ * dummy port. The generated runtime owns both pipe descriptors until close. */
+int dpg_open_liveness(void);
 
 /* The read callback supplies PostgreSQL protocol frames, not SQL C strings.
  * Simple Query (Q) frames are the initial host target. The writer receives
@@ -33,11 +36,14 @@ void dpg_attach_protocol(void);
 void dpg_step(void);
 void dpg_recover_query_error(void);
 void dpg_flush(void);
+void dpg_ready(void);
 ssize_t dpg_buffered_input(void);
 
 /* First disable embedding, then feed Terminate (X) and call dpg_step. The real
  * core's proc_exit must finish before cleanup callbacks are drained. These two
- * operations alone do not establish shutdown, durability, reset or reopen.
+ * operations alone do not establish shutdown or durability. After real shutdown,
+ * dispose the generated state context; reopen uses a fresh generated context,
+ * preserving upstream global initializers instead of resetting globals by hand.
  * Never release callback buffers/roots before all cleanup has completed.
  */
 void dpg_begin_shutdown(void);

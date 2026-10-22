@@ -22,7 +22,7 @@ def _write(path, value):
 def run(ctx, suite=None):
     from campaigns.recipes import helper, link_flags
     compiler = Path(ctx.compiler).resolve()
-    source = Path(os.environ["PGLITE_POSIXHOST_SOURCE"]).resolve()
+    source = Path(ctx.env.get("PGLITE_POSIXHOST_SOURCE") or os.environ["PGLITE_POSIXHOST_SOURCE"]).resolve()
     if not compiler.is_file() or not (source / "src/include/pg_config.h").is_file():
         raise RuntimeError("Select an existing immutable compiler and readonly configured source")
     work, artifacts = ctx.work / "posixhost", ctx.artifacts / "posixhost"

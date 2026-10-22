@@ -6,11 +6,121 @@ query execution, shutdown or reopen. The ordinary consumer fails clearly until a
 complete translated product supports that lifecycle. No native database import,
 subprocess engine, JavaScript/Wasm backend or replacement SQL engine is delivered.
 
-This investigation follows baseline v3. The source selection is owned by
+This implementation follows baseline v4. The source selection is owned by
 [`config/sources.json`](../config/sources.json); native preparation and profile
 policy are owned by the source agent. Detailed incremental evidence lives in
 [`boundary-progress.md`](boundary-progress.md). Shared compiler repairs and
 integration remain the supervisor's responsibility.
+
+## Current owner implementation and integration
+
+The owned runtime now supplies a deliberately scoped exit transport.
+`RuntimeContext.InterceptPgliteExits()` intercepts only `exit(99)` and
+`exit(100)` in its original thread/binding and throws `PgliteYieldException`
+with that owner. It leaves `Termination` and `TerminationTask` unset. Ordinary
+exit codes, unscoped 99/100, `_exit`/`_Exit`, abort and worker failures retain
+terminal semantics. Real terminal requests and runtime disposal cancel owned
+timers, pending signals and handler references. Runtime disposal also calls the
+locale owner's existing `DisposePosixLocales(this)` before heap/descriptor release. The rejected typed exit override
+is retained as an unsupported-alternative diagnostic, not a required route.
+
+`src/Host/PgliteOwner.cs` uses the actual `--state-context` factory
+`PGlite.__DotCcCreateContext()`. Every entry binds that generated context;
+callbacks, error-recovery calls and cleanup use the same runtime identity. The
+host permits one owner on its creating thread and rejects reentry. It scopes
+yields only around startup/query dispatch; after 100 it calls the supplied real
+`dpg_recover_query_error` delegate, which must still execute upstream
+`PostgresMainLongJmp`. It does not implement transaction cleanup. Shutdown runs
+without yield interception, requires a real normal `exit(0)`, then drains the
+real fork callbacks before disposing storage and releasing callback roots. A
+failed shutdown quarantines the owner and prevents reopen.
+
+Reopen creates a fresh generated state context, preserving the compiler's
+original global and function-static initializer recipes. It never calls main
+again against retired globals or resets PostgreSQL fields by hand. Two emitted
+probe lifetimes now prove that mechanism (including globals initialized to 37
+and 71, repeated 99/100 yields and actual fork atexit draining). This is **not**
+proof of PostgreSQL backend shutdown, persisted rows or successful full-backend
+reopen; those remain required in QUALIFICATION.md.
+
+The real signal implementation file is `DotCC.Libc/ProcessSignalLib.cs` (there
+is no SignalLib.cs). `PgliteSignalTimerLib.cs` implements an explicit opt-in,
+single-thread guest service. It supplies old-action writes, masks, pending
+coalescing, ignored/default dispositions, handler masks and restoration, one-shot
+SA_RESETHAND, owner-local raise/self-kill, ITIMER_REAL remaining/interval values,
+cancellation and cooperative delivery. SIGKILL/SIGSTOP registration,
+SA_SIGINFO/SA_NODEFER, CPU timers and process stop operations fail explicitly.
+No host process disposition is installed. Without opt-in, sigaction/mask/timer
+requests fail instead of returning a successful no-op. The existing standalone
+SIGINT backend remains separate. An expired blocked timer remains pending, as
+on POSIX; cancellation prevents future expirations rather than erasing already
+pending delivery.
+
+For product integration, the supervisor owns these recipe changes:
+
+1. Link with `--state-context` and include authored `src/Host/PgliteOwner.cs`
+   at its original location in the generated project. The diagnostic
+   `tests/Boundary/BoundaryProduct.csproj` demonstrates compiling untouched
+   emitted files alongside that authored source; no emitted C# is edited.
+2. After the existing atomic/CPU private include overlays, call
+   `boundary.prepare_signal_overlay(Path(port["include"]), ctx.work)`. This
+   guards the exact selected `miscadmin.h` macro and inserts only
+   `dpg_host_poll_signals()` before the original
+   `INTERRUPTS_PENDING_CONDITION()`/`ProcessInterrupts()` logic. Reference and
+   configured stages are rejected as destinations.
+3. Pass `--overrides-file src/Host/signal-overrides.json` for every object
+   translation. It binds the poll hook to `PgliteOwner.PollSignals` and the
+   real declared `setitimer` to `PGlite.Libc.PgliteSetitimer`. The generated
+   wrapper keeps the declared signature; this ordinary typed override is
+   accepted by the real compiler. No shared timer-file edit is needed for this
+   profile. If another override profile is needed, merge its function rules
+   explicitly; do not silently drop these bindings.
+4. Supply actual recovery, shutdown/Terminate input and cleanup exports to the
+   owner, retaining callback roots, argv and buffers through cleanup. Entry-point
+   host pumps supplement the real translated safe points; they do not replace
+   them.
+
+The native and emitted diagnostic now exercise an actual copied/adapted
+`CHECK_FOR_INTERRUPTS` macro inside a bounded C loop with a real timer. Managed
+delivery occurs before that C call returns, through the typed owner poll hook.
+Its ProcessInterrupts callee is explicitly a **test event observer**, not a
+product implementation. The product overlay retains the upstream callee and
+condition unchanged. Full-backend startup/query timer coverage and the complete
+SQL workflow remain unrun; this experiment does not qualify missing safe-point
+coverage in other required backend paths. Blocking-query cancellation is outside
+the selected first workflow.
+
+`CaptureGuestSignalMask(save)` and `RestoreGuestSignalMask(snapshot)` supply the
+runtime half of signal-aware lexical jumps. A saved snapshot belongs to its
+capturing owner/thread; restoration does not execute pending callbacks during
+unwind. Save=0 intentionally does nothing. The compiler still needs actual
+sigsetjmp/siglongjmp declaration and lowering support: the new native probe
+passes both mask modes, while emitted C# fails CS0103 on these unresolved names.
+Required shared repair: add the POSIX declarations to setjmp.h, recognize
+sigsetjmp in all supported lexical guard/capture shapes, evaluate both arguments
+once, capture the mask at initial arm, and restore it inside the matching catch
+before recovery/goto. Map siglongjmp to the existing tagged jump transport and
+retain 0-to-1 conversion. Do not replace it with a macro that ignores save-mask.
+No jump into an expired frame is promised.
+
+Current evidence: `artifacts/boundary-owner-20261022/runtime-tests.log` reports
+38 passing focused tests (owned lifecycle plus existing termination/binding/
+process-signal regressions). The immutable supervisor 1713 snapshot ran the
+entire boundary adapter under private `build/boundary-owner-20261022/suite-1713`.
+Commands and original logs are in
+`artifacts/boundary-owner-20261022/suite-1713/commands.json` and its sibling logs;
+`boundary/report.json` is **blocked** solely on the lexical sigjmp C# build.
+The actual-header ABI, complete pglitec object emission, scoped repeated yields,
+real fork callback/cleanup slices, timers/cancellation and emitted safe-point
+loop pass. A normally trimmed Linux x64 NativeAOT publication of that same
+boundary fixture also runs successfully; its observations match JIT exactly.
+Logs are `artifacts/boundary-owner-20261022/aot-{publish,run}.log` and
+`aot-managed.json`. This is an unprocessed diagnostic fixture, not a completed
+raw/processed product matrix. Four real-source overlay checks reject changed
+and duplicate contexts and configured-stage destinations without mutation;
+`overlay-checks.json` records them. The SQL/backend/matrix gates remain unrun. The source snapshot
+predates the final snapshot-helper additions, which pass the separate current
+runtime tests and need the supervisor's next compiler rebuild.
 
 ## Actual fork entrypoints
 
@@ -48,8 +158,9 @@ C implementation are forwarding-only proposed adapters. `dpg_start` accepts an
 actual `int (*)(int, char **)` backend entrypoint rather than assuming a generated
 rename for main. Native compilation and DotCC object emission have succeeded.
 The adapter is excluded from product publication while the complete closure and
-host lifecycle remain unproved. Its shutdown functions expose distinct upstream
-steps; they do not promise a reset or reopen operation.
+host lifecycle remain unproved. Its C shutdown functions expose distinct upstream
+steps. The authored managed owner supplies context retirement/recreation; a full
+backend reopen is still unqualified.
 
 Some client-facing startup behavior is additionally conditional on Emscripten.
 For example, `ProcessStartupPacket` in `backend_startup.c` is static in a native
@@ -88,7 +199,8 @@ static globals do not gain that reset by disposing a managed object. The fork's
 `pgl_munmap` deliberately returns success without freeing a mapping because Wasm
 instance termination reclaims memory. Its use in a static managed process needs
 an explicit ownership/unmapping decision and leak/close tests. Reinitializing
-main after shutdown remains unqualified even with one owner at a time.
+main against the same retired state remains unsupported. Fresh generated state
+is the implemented transport strategy; full backend qualification is pending.
 
 ## ABI separation and measured layouts
 
@@ -142,24 +254,12 @@ must own its paths/descriptors and propagate errno/short I/O correctly. Catalog
 and timezone data plus initdb's generated files are product inputs. No cache or
 successful native workflow can replace emitted persistence testing.
 
-Time/signals: wall/monotonic clock helpers exist, but `setitimer` returns -1 and
-ENOTSUP, including the all-zero shutdown request. Actual managed `sigaction`
-queries return success without writing oldact; `sigprocmask` is also currently
-accepted and ignored. PostgreSQL timeout and error code relies on those services.
-Neither a timer no-op nor a plain sigsetjmp-to-setjmp alias is an acceptable
-success claim. The initial profile must either implement needed owner-aware
-services or prove a reviewed reduced contract against real source paths.
-
-Termination: unbound shared `exit` terminates the containing managed process.
-With an explicit Libc owner it records the first termination permanently and
-throws `RuntimeTerminationException`. The fixture confirms exit 99 sets that
-terminal status. Catching it and resuming the same context is outside that
-contract. A proposed typed `exit(int)` managed-method override was tested, but
-the compiler rejects special system termination overrides. The small
-[`exit_fixture.c`](../tests/Boundary/exit_fixture.c) and its JSON override retain
-that exact capability reproducer. No implementation using an unsupported
-binding is delivered. A reviewed host transport must distinguish repeated
-99/100 yields from real close/fatal exits without dropping cleanup.
+Time/signals and termination: the former successful no-op action/mask stubs,
+unsupported timer route and permanently terminal synthetic yields are replaced
+for the explicit PGlite profile by the owned services and integration above.
+The guest ABI is distinct from native sigaction. Required actual-backend timer
+paths, signal-aware error jumps, SQL cleanup and full lifecycle execution remain
+unqualified. Unbound exit still has standalone process semantics.
 
 Entropy/providers: without OpenSSL the selected `pg_strong_random` opens and
 reads `/dev/urandom`; its exact-length/EINTR/error behavior needs host testing.
@@ -202,7 +302,8 @@ reported full pglitec object-emission success; old missing-header/type/parser
 failures are retained historical evidence, not assertions about current tools.
 The actual-header retry reached a missing fixture global; the fixture now
 supplies its pointer storage for a fresh retry, which now passes under final tools. `sigsetjmp` mask behavior,
-repeatable exit and real shutdown/reopen remain open.
+repeatable exits are now covered by the current owned implementation above;
+real backend shutdown/reopen remains open.
 
 The suite adapter is `scripts/boundary.py:run(ctx, suite=None)`. A standalone
 framework test requires existing immutable `DOTCC_COMPILER` and configured-header
@@ -222,7 +323,7 @@ shutdown/reopen with persisted rows; required raw/processed JIT/NativeAOT produc
 matrix; instance reset/leak/lifetime tests. Adapter syntax, native controls and
 negative consumer packaging checks close none of those workflow gates.
 
-## Final supervisor integration
+## Historical supervisor integration before owned runtime implementation
 
 Receipt `artifacts/campaign/20261022-163657-6b1f4069/receipt.json` passes the
 actual native/emitted PostgreSQL-header layout comparison, including all 13

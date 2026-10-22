@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(BoundarySource)/*.cs" />
+    <Compile Include="../../src/Host/PgliteOwner.cs" />
+    <Compile Include="../../src/Initialization/InitializationBackend.Signals.cs" />
+  </ItemGroup>
+  <Target Name="RequireEmittedSources" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(BoundarySource)' == '' Or !Exists('$(BoundarySource)/PGlite.cs')"
+           Text="BoundarySource must select the actual untouched emitted source directory." />
+  </Target>
+</Project>

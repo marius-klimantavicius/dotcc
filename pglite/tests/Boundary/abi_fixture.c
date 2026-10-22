@@ -96,6 +96,31 @@ int dpg_fixture_signal_query(void) {
     return memcmp(before, &old_action, sizeof(old_action)) == 0 ? 1 : 0;
 }
 
+static int initialized_global = 37;
+int dpg_fixture_next_global(void) {
+    static int initialized_local = 71;
+    return initialized_global++ * 100 + initialized_local++;
+}
+
+static volatile sig_atomic_t timer_calls;
+static void timer_handler(int signal_number) {
+    if (signal_number == SIGALRM) timer_calls++;
+}
+int dpg_fixture_install_alarm(void) {
+    struct sigaction action;
+    memset(&action, 0, sizeof(action));
+    action.sa_handler = timer_handler;
+    sigemptyset(&action.sa_mask);
+    timer_calls = 0;
+    return sigaction(SIGALRM, &action, NULL);
+}
+int dpg_fixture_arm_timer(long microseconds, long interval) {
+    struct itimerval timer = {{0, interval}, {0, microseconds}};
+    return setitimer(ITIMER_REAL, &timer, NULL);
+}
+int dpg_fixture_timer_calls(void) { return timer_calls; }
+
+
 #ifdef DPG_NATIVE_MAIN
 #include <stdio.h>
 static ssize_t native_callback(void *buffer, size_t length) {

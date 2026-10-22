@@ -1,5 +1,33 @@
 # PGlite campaign-start validation
 
+## Current full-source and managed execution gate, 2026-10-22
+
+Coherent receipt `artifacts/campaign/20261022-194223-e06ea2a0/receipt.json`
+emits and strict-links all 876 selected backend/module/libc/adapter units. The
+complete raw backend C# build passes with zero errors and 12 warnings; the
+separate 73-unit original initdb companion also emits, links and builds. The
+receipt is failed because the explicit publication guard remains enabled, not
+because source emission or the raw build failed. Processed output is still open.
+
+The actual API and canonical consumer build against these complete libraries
+with zero errors. Two independent, isolated actual initdb invocations both run
+the unchanged 973545-byte BKI bootstrap successfully, then execute the original
+251748-byte post-bootstrap SQL. The first runtime failure is original
+`SELECT pg_import_system_collations('pg_catalog')`: `locale -a` returns
+`Operation not supported`, so single-user mode exits 1. No managed exception or
+consumer SQL success is inferred. The coordinator is repairing real locale
+enumeration; the import and SQL inputs are retained unchanged. Calendar `%Z`
+formatting is an independently observed host defect under repair.
+
+Evidence: `artifacts/initdb-owner-20261022-r3/actual1942/initialization/execution/`
+and `artifacts/product-owner-r3/raw1942-consumer-{build,run}.log`; original
+backend inputs, outputs and operation/status records are retained in private
+diagnostic directories. All required SQL, shutdown/reopen and four product
+matrix rows remain open. The latest full shared compiler suite has 3398 passes
+and the same 16 failures reproduced in the untouched baseline; current
+comparison is `artifacts/supervisor-portable/regression-comparison-current8.json`.
+
+
 ## Active implementation continuation
 
 The coordinator continues through the full product and P6; historical baseline
@@ -193,3 +221,14 @@ Diagnostic backend suffix receipt `20261022-174825-772d7ead` emits another
 The profile now disables that unimplemented compiler capability and retains
 PostgreSQL's original switch interpreter. The full current source regeneration,
 managed SQL, persistence and all four product matrix rows remain required.
+
+
+Current shared regression run `artifacts/supervisor-portable/unit-current3.log`
+has **3,380 passes and exactly the same 16 baseline failures**, with no new
+failure names. The new NSS test now accepts the actual native provider's numeric
+no-entry outcome instead of assuming one universal outcome. Comparison is in
+`regression-comparison-current3.json`; no baseline reinvestigation was repeated.
+Array-member and multiple string-array declaration native/direct/object controls
+pass; existing statement-expression object cases remain passing. Signal and
+structural declaration integration is committed with focused and full-suite
+evidence; complete backend generation and product execution remain active.

@@ -5,6 +5,7 @@
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="SigjmpProgram.cs" />
     <ProjectReference Include="$(BoundaryProject)" />
   </ItemGroup>
   <Target Name="RequireBoundaryFixture" BeforeTargets="PrepareForBuild">
