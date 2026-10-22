@@ -191,6 +191,32 @@ class CampaignDeliveryTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'root-accepted sealed'):
                 self.load()
 
+    def test_unapproved_handoff_hash_rejected(self):
+        manifest_path, manifest, _ = self.relink()
+        handoff = self.write('a32-handoff.json', {'sealed-capture': 'unapproved'})
+        manifest['handoff']['sha256'] = delivery.sha(handoff)
+        self.write('relink.json', manifest)
+        self.receipt['object_relink']['sha256'] = delivery.sha(manifest_path)
+        with self.assertRaisesRegex(RuntimeError, 'root-accepted sealed'):
+            self.load()
+
+    def test_approved_handoff_at_unapproved_path_rejected(self):
+        manifest_path, manifest, _ = self.relink()
+        handoff = self.write('caller-handoff.json', Path(manifest['handoff']['path']).read_text())
+        manifest['handoff']['path'] = str(handoff)
+        self.write('relink.json', manifest)
+        self.receipt['object_relink']['sha256'] = delivery.sha(manifest_path)
+        with self.assertRaisesRegex(RuntimeError, 'root-accepted sealed'):
+            self.load()
+
+    def test_relink_requires_strict_hash_policy(self):
+        for policy in ('warn', 'off'):
+            with self.subTest(policy=policy):
+                self.relink()
+                self.receipt['hash_policy'] = policy
+                with self.assertRaisesRegex(RuntimeError, 'strict owning delivery receipt'):
+                    self.load()
+
     def test_changed_sealed_evidence_rejected(self):
         self.relink(); self.write('runtime_identity.json', {'changed': True})
         with self.assertRaisesRegex(RuntimeError, 'evidence changed'):

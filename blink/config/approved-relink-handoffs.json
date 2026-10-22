@@ -1,0 +1,30 @@
+{
+  "76c548145dfa0f64fe4f9234dc209d1fcc8ef204842a0ca7ed7a06633b51c633": {
+    "path": "/home/marius/p/dotcc/cpython/artifacts/owner-a-r32-20261018/v23/tool-handoff.json",
+    "object_producer": "abdc2623dea3e47b91f9ef5fb74742b5e8bc09236eecbd9ede008f5783662267",
+    "linker": "69b4c972011806d7112c20e22c9f49066dcb72d9ae6d3f7dd12b8b61eb5c596f",
+    "postprocessor": "e76313aa6b45e9a79172d3ac872bc5fd63abe021d8cfb77cf2ce66a14a40e497",
+    "original_assembly": {
+      "path": "/home/marius/p/dotcc/blink/artifacts/core/objects/bbaa1755c9dbfcf34e0755d28c5c9211d3c435b88d6acff417ee3bf8e36621b4/receipt.json",
+      "sha256": "f849eedeccfd93c57545b8889839d889ba2fd35bc6856ee7e32654c1231a3e60"
+    },
+    "profile_inputs": {
+      "path": "/home/marius/p/dotcc/blink/generated/threaded-core/20261018-201805-c885351e/inputs.json",
+      "sha256": "402fc0de615f08576b2e1234235c4da448fdb0fc80065a3d258bd1a3cd69ae21"
+    },
+    "evidence": {
+      "validation_only_source": {
+        "path": "/home/marius/p/dotcc/cpython/artifacts/owner-a-r32-20261018/v23/focused-results.json",
+        "sha256": "700e977d0c23b53b4e052a319641f025e9c400d144373b63a9b9f6fde9de9994"
+      },
+      "object_format_identity": {
+        "path": "/home/marius/p/dotcc/cpython/artifacts/owner-a-r32-20261018/v23/compatibility-result.json",
+        "sha256": "1c4510e339b2fb3172c5d2405bfad69e60aabbb70e498ec83d3fe5f8179ccd9a"
+      },
+      "runtime_identity": {
+        "path": "/home/marius/p/dotcc/cpython/artifacts/owner-a-r32-20261018/v23/capture-sealed.json",
+        "sha256": "db22527cd78ed5341dde44ae8f70fe843512da96ecab7baa82bf9e5b0e640ca6"
+      }
+    }
+  }
+}
