@@ -126,7 +126,7 @@ public static unsafe partial class Libc
     public static byte* setlocale(int category, byte* locale)
     {
         bool ctype = category == 0 || category == 6;
-        if (locale == null) return ctype && Utf8MultibyteLocale ? Utf8LocaleName : LiteralPool.Pointer + LiteralPool.LocaleC;
+        if (locale == null) return ctype && Volatile.Read(ref RuntimeState.Utf8MultibyteLocale) ? Utf8LocaleName : LiteralPool.Pointer + LiteralPool.LocaleC;
         var name = Encoding.UTF8.GetString(locale, (int)strlen(locale));
         if (name is "" or "C" or "POSIX")
         {

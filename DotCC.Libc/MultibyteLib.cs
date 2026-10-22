@@ -8,7 +8,7 @@ namespace DotCC.Libc;
 
 public static unsafe partial class Libc
 {
-    private static bool Utf8MultibyteLocale => Volatile.Read(ref RuntimeState.Utf8MultibyteLocale);
+    private static bool Utf8MultibyteLocale => EffectivePosixUtf8Locale;
     // Immutable, process-lifetime borrowed strings, independent of worker TLS.
     private static readonly nint utf8LocaleStorage = Marshal.StringToCoTaskMemUTF8("C.UTF-8");
     private static readonly nint utf8CodesetStorage = Marshal.StringToCoTaskMemUTF8("UTF-8");

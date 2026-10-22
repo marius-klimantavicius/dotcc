@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="$(LocaleProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(LocaleProject)' == '' Or !Exists('$(LocaleProject)')"
+           Text="Set LocaleProject to the actual emitted PostgreSQL locale fixture project." />
+  </Target>
+</Project>
