@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <InitdbProject Condition="'$(InitdbProject)' == ''">$(MSBuildThisFileDirectory)missing-initdb.csproj</InitdbProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(InitdbProject)" />
+    <Compile Include="FrontendProgram.cs" />
+    <Compile Include="../../src/Initialization/InitializationFrontend.cs" Link="InitializationFrontend.cs" />
+    <Compile Include="../../src/Initialization/InitializationArguments.cs" Link="InitializationArguments.cs" />
+    <Compile Include="../../src/Initialization/InitializationProcessTransport.cs" Link="InitializationProcessTransport.cs" />
+  </ItemGroup>
+</Project>

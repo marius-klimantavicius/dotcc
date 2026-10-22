@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(BackendFixtureDirectory)/*.cs" />
+    <Compile Include="BackendAdapterProgram.cs" />
+    <Compile Include="../../src/Host/PgliteOwner.cs" Link="PgliteOwner.cs" />
+    <Compile Include="../../src/Initialization/InitializationBackend*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="../../src/Initialization/InitializationArguments.cs" Link="InitializationArguments.cs" />
+    <Compile Include="../../src/Initialization/InitializationProcessTransport.cs" Link="InitializationProcessTransport.cs" />
+  </ItemGroup>
+  <Target Name="RequireEmittedFixture" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(BackendFixtureDirectory)' == '' Or !Exists('$(BackendFixtureDirectory)/PGlite.cs')" Text="Select the freshly emitted byte/exit fixture. This test does not initialize a PostgreSQL cluster." />
+  </Target>
+</Project>

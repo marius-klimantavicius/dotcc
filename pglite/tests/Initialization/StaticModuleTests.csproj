@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <StaticModuleProject Condition="'$(StaticModuleProject)' == ''">$(MSBuildThisFileDirectory)missing-static-module.csproj</StaticModuleProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(StaticModuleProject)" />
+    <Compile Include="StaticModuleTests.cs" />
+  </ItemGroup>
+</Project>

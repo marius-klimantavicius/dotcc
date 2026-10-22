@@ -1,0 +1,20 @@
+{
+  "format": "dotcc-static-postgresql-module-v1",
+  "name": "plpgsql",
+  "revision": "29b6424aa312ec3556247db069939006dd27f878",
+  "version": "18.6",
+  "native_library": false,
+  "symbols": [
+    "Pg_magic_func",
+    "_PG_init",
+    "plpgsql_call_handler",
+    "plpgsql_inline_handler",
+    "plpgsql_validator",
+    "pg_finfo_plpgsql_call_handler",
+    "pg_finfo_plpgsql_inline_handler",
+    "pg_finfo_plpgsql_validator"
+  ],
+  "provider": "dpg_plpgsql_module",
+  "registration": "dpg_static_register",
+  "status": "source provider implemented; complete translated backend/module execution unqualified"
+}

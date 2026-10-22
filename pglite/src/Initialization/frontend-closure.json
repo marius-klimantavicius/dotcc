@@ -1,0 +1,2440 @@
+{
+  "schema": 1,
+  "revision": "29b6424aa312ec3556247db069939006dd27f878",
+  "version": "18.6",
+  "profile": "embedding-native",
+  "complete_product_manifest": false,
+  "native_evidence": {
+    "initdb_archive_members": 32,
+    "initdb_direct_units": 3,
+    "libpq_direct_units": 15,
+    "libpq_archive_members": 25,
+    "logs": "artifacts/initdb-owner-20261022-r1/{initdb,libpq}-link.map",
+    "link_command_contract": "actual readonly objects/archives relinked privately using native linker maps; C compile contexts below are reconstructed from owning Makefiles, not claimed as captured compiler argv",
+    "global_flags": "prepared.json defines, native Makefile.global CFLAGS/CPPFLAGS; snapshots recorded in per-attempt frontend-units.json/receipt.json"
+  },
+  "native_frontend": [
+    {
+      "source": "src/bin/initdb/findtimezone.c",
+      "role": "initdb",
+      "defines": [
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/timezone",
+        "src/include"
+      ],
+      "native_cwd": "src/bin/initdb"
+    },
+    {
+      "source": "src/bin/initdb/initdb.c",
+      "role": "initdb",
+      "defines": [
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/timezone",
+        "src/include"
+      ],
+      "native_cwd": "src/bin/initdb"
+    },
+    {
+      "source": "src/timezone/localtime.c",
+      "role": "initdb",
+      "defines": [
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/timezone",
+        "src/include"
+      ],
+      "native_cwd": "src/bin/initdb"
+    },
+    {
+      "source": "src/fe_utils/option_utils.c",
+      "role": "frontend-archive",
+      "native_object": "src/fe_utils/libpgfeutils.a(option_utils.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/include"
+      ],
+      "native_cwd": "src/fe_utils"
+    },
+    {
+      "source": "src/fe_utils/string_utils.c",
+      "role": "frontend-archive",
+      "native_object": "src/fe_utils/libpgfeutils.a(string_utils.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/include"
+      ],
+      "native_cwd": "src/fe_utils"
+    },
+    {
+      "source": "src/common/encnames.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(encnames.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/exec.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(exec.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/file_perm.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(file_perm.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/file_utils.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(file_utils.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/keywords.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(keywords.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/kwlookup.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(kwlookup.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/pg_get_line.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(pg_get_line.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/pg_prng.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(pg_prng.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/pgfnames.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(pgfnames.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/psprintf.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(psprintf.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/rmtree.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(rmtree.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/string.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(string.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/stringinfo.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(stringinfo.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/username.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(username.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/wait_error.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(wait_error.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/wchar.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(wchar.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/restricted_token.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(restricted_token.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/sprompt.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(sprompt.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/fe_memutils.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(fe_memutils.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/logging.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(logging.o)",
+      "defines": [
+        "FRONTEND",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/port/chklocale.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(chklocale.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/path.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(path.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pgcheckdir.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgcheckdir.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pgmkdirp.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgmkdirp.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pgstrcasecmp.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgstrcasecmp.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pgstrsignal.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgstrsignal.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pqsignal.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pqsignal.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/quotes.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(quotes.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/snprintf.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(snprintf.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/strerror.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(strerror.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    }
+  ],
+  "native_libpq": [
+    {
+      "source": "src/interfaces/libpq/fe-auth-scram.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-auth-scram.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-cancel.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-cancel.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-connect.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-connect.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-exec.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-exec.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-lobj.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-lobj.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-misc.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-misc.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-print.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-print.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-protocol3.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-protocol3.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-secure.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-secure.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-trace.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-trace.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/legacy-pqsignal.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(legacy-pqsignal.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/libpq-events.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(libpq-events.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/pqexpbuffer.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(pqexpbuffer.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-auth.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-auth.o)",
+      "defines": [],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/interfaces/libpq/fe-auth-oauth.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-auth-oauth.o)",
+      "defines": [
+        "USE_DYNAMIC_OAUTH"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/port",
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/interfaces/libpq"
+    },
+    {
+      "source": "src/common/base64.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(base64_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/encnames.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(encnames_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/ip.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(ip_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/jsonapi.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(jsonapi_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER"
+      ],
+      "includes": [
+        "src/interfaces/libpq",
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/link-canary.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(link-canary_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/md5_common.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(md5_common_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/pg_prng.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(pg_prng_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/saslprep.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(saslprep_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/scram-common.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(scram-common_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/string.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(string_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/unicode_norm.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(unicode_norm_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/wchar.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(wchar_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/cryptohash.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(cryptohash_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/hmac.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(hmac_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/md5.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(md5_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/sha1.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(sha1_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/common/sha2.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(sha2_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/common",
+        "src/common",
+        "src/include"
+      ],
+      "native_cwd": "src/common"
+    },
+    {
+      "source": "src/port/getpeereid.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(getpeereid_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/timingsafe_bcmp.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(timingsafe_bcmp_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/chklocale.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(chklocale_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/inet_net_ntop.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(inet_net_ntop_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pg_strong_random.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(pg_strong_random_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/pgstrcasecmp.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(pgstrcasecmp_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/snprintf.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(snprintf_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    },
+    {
+      "source": "src/port/strerror.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(strerror_shlib.o)",
+      "defines": [
+        "FRONTEND"
+      ],
+      "includes": [
+        "src/port",
+        "src/include"
+      ],
+      "native_cwd": "src/port"
+    }
+  ],
+  "translation_decisions": [
+    "Separate frontend class/assembly from backend; never link frontend common variants into backend.",
+    "Select original PostgreSQL getopt/getopt_long with frontend-only guarded capability corrections.",
+    "Unify frontend libpq callers on USE_PRIVATE_ENCODING_FUNCS; coalesce otherwise identical common/port source variants in this assembly. Review with native control before product integration.",
+    "Select original static fe-auth-oauth.c variant; no dynamic libpq-oauth provider required by initdb.",
+    "Select JSONAPI_USE_PQEXPBUFFER uniformly in this frontend assembly, including libpq OAuth callers; the native shared JSON implementation already uses this representation. Otherwise strict object linking rejects incompatible JsonLexContext pointer-field declarations across shared-library contexts."
+  ],
+  "frontend_configuration": {
+    "HAVE_GETOPT": [
+      "1",
+      null
+    ],
+    "HAVE_GETOPT_H": [
+      "1",
+      null
+    ],
+    "HAVE_GETOPT_LONG": [
+      "1",
+      null
+    ],
+    "HAVE_STRUCT_OPTION": [
+      "1",
+      null
+    ],
+    "HAVE_INT_OPTERR": [
+      "1",
+      null
+    ]
+  },
+  "units": [
+    {
+      "source": "src/bin/initdb/findtimezone.c",
+      "role": "initdb",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/bin/initdb/initdb.c",
+      "role": "initdb",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/timezone/localtime.c",
+      "role": "initdb",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/fe_utils/option_utils.c",
+      "role": "frontend-archive",
+      "native_object": "src/fe_utils/libpgfeutils.a(option_utils.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/fe_utils/string_utils.c",
+      "role": "frontend-archive",
+      "native_object": "src/fe_utils/libpgfeutils.a(string_utils.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/encnames.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(encnames.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/exec.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(exec.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/file_perm.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(file_perm.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/file_utils.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(file_utils.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/keywords.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(keywords.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/kwlookup.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(kwlookup.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/pg_get_line.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(pg_get_line.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/pg_prng.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(pg_prng.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/pgfnames.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(pgfnames.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/psprintf.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(psprintf.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/rmtree.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(rmtree.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/string.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(string.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/stringinfo.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(stringinfo.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/username.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(username.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/wait_error.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(wait_error.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/wchar.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(wchar.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/restricted_token.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(restricted_token.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/sprompt.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(sprompt.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/fe_memutils.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(fe_memutils.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/logging.c",
+      "role": "frontend-archive",
+      "native_object": "src/common/libpgcommon.a(logging.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/chklocale.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(chklocale.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/path.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(path.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/pgcheckdir.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgcheckdir.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/pgmkdirp.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgmkdirp.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/pgstrcasecmp.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgstrcasecmp.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/pgstrsignal.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pgstrsignal.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/pqsignal.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(pqsignal.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/quotes.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(quotes.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/snprintf.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(snprintf.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/strerror.c",
+      "role": "frontend-archive",
+      "native_object": "src/port/libpgport.a(strerror.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-auth-scram.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-auth-scram.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-cancel.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-cancel.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-connect.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-connect.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-exec.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-exec.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-lobj.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-lobj.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-misc.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-misc.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-print.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-print.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-protocol3.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-protocol3.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-secure.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-secure.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-trace.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-trace.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/legacy-pqsignal.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(legacy-pqsignal.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/libpq-events.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(libpq-events.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/pqexpbuffer.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(pqexpbuffer.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-auth.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-auth.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/interfaces/libpq/fe-auth-oauth.c",
+      "role": "libpq",
+      "native_object": "src/interfaces/libpq/libpq.a(fe-auth-oauth.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/base64.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(base64_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/ip.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(ip_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/jsonapi.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(jsonapi_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/link-canary.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(link-canary_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/md5_common.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(md5_common_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/saslprep.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(saslprep_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/scram-common.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(scram-common_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/unicode_norm.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(unicode_norm_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/cryptohash.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(cryptohash_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/hmac.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(hmac_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/md5.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(md5_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/sha1.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(sha1_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/common/sha2.c",
+      "role": "libpq-archive",
+      "native_object": "src/common/libpgcommon_shlib.a(sha2_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/getpeereid.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(getpeereid_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/timingsafe_bcmp.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(timingsafe_bcmp_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/inet_net_ntop.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(inet_net_ntop_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/pg_strong_random.c",
+      "role": "libpq-archive",
+      "native_object": "src/port/libpgport_shlib.a(pg_strong_random_shlib.o)",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/getopt.c",
+      "role": "upstream-getopt-fallback",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    },
+    {
+      "source": "src/port/getopt_long.c",
+      "role": "upstream-getopt-fallback",
+      "defines": [
+        "FRONTEND",
+        "JSONAPI_USE_PQEXPBUFFER",
+        "USE_PRIVATE_ENCODING_FUNCS"
+      ],
+      "includes": [
+        "{cwd}",
+        "src/include",
+        "src/interfaces/libpq",
+        "src/port",
+        "src/common",
+        "src/timezone"
+      ]
+    }
+  ],
+  "bootstrap_assets": [
+    {
+      "path": "share/postgresql/postgres.bki",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/pg_hba.conf.sample",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/pg_ident.conf.sample",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/postgresql.conf.sample",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/snowball_create.sql",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/information_schema.sql",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/sql_features.txt",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/system_constraints.sql",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/system_functions.sql",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/system_views.sql",
+      "required_by": "initdb setup_data_file_paths/check_input"
+    },
+    {
+      "path": "share/postgresql/extension/plpgsql.control",
+      "required_by": "unchanged load_plpgsql CREATE EXTENSION"
+    },
+    {
+      "path": "share/postgresql/extension/plpgsql--1.0.sql",
+      "required_by": "unchanged load_plpgsql CREATE EXTENSION"
+    },
+    {
+      "path": "share/postgresql/timezone/",
+      "required_by": "findtimezone/localtime and backend timezone lookup"
+    },
+    {
+      "path": "share/postgresql/timezonesets/",
+      "required_by": "backend timezone abbreviations"
+    },
+    {
+      "path": "share/postgresql/tsearch_data/",
+      "required_by": "unchanged snowball/text-search bootstrap"
+    }
+  ],
+  "bootstrap_modules": {
+    "plpgsql": {
+      "sources": [
+        "src/pl/plpgsql/src/pl_comp.c",
+        "src/pl/plpgsql/src/pl_exec.c",
+        "src/pl/plpgsql/src/pl_funcs.c",
+        "src/pl/plpgsql/src/pl_gram.c",
+        "src/pl/plpgsql/src/pl_handler.c",
+        "src/pl/plpgsql/src/pl_scanner.c"
+      ],
+      "generated_headers": [
+        "src/pl/plpgsql/src/pl_gram.h",
+        "src/pl/plpgsql/src/plerrcodes.h",
+        "src/pl/plpgsql/src/pl_reserved_kwlist_d.h",
+        "src/pl/plpgsql/src/pl_unreserved_kwlist_d.h"
+      ],
+      "required_binding": "Translate and statically register the original handler/validator/inline handler and module magic; native plpgsql.so is forbidden.",
+      "authored_export_catalog": "src/Initialization/dotcc_plpgsql_module.c",
+      "handler_wrapper": {
+        "include_first": [
+          "postgres.h",
+          "fmgr.h"
+        ],
+        "macro_overrides": {
+          "PG_MAGIC_FUNCTION_NAME": "dpg_plpgsql_magic",
+          "_PG_init": "dpg_plpgsql_init"
+        }
+      },
+      "loader": "src/Initialization/dotcc_static_modules.c",
+      "loader_remaps": {
+        "dlopen": "dpg_static_dlopen",
+        "dlsym": "dpg_static_dlsym",
+        "dlclose": "dpg_static_dlclose",
+        "dlerror": "dpg_static_dlerror"
+      },
+      "descriptor": {
+        "installed_relative_path": "lib/postgresql/plpgsql",
+        "kind": "dotcc static module manifest; an ordinary file for unchanged dfmgr stat/path/inode checks",
+        "native_library": false
+      }
+    }
+  },
+  "extra_generated_inputs": [
+    "src/include/pg_config.h",
+    "src/include/pg_config_os.h",
+    "src/port/pg_config_paths.h",
+    "src/common/kwlist_d.h"
+  ],
+  "unqualified": [
+    "Actual complete frontend managed build",
+    "Translated bootstrap and post-bootstrap SQL",
+    "PL/pgSQL static module registration",
+    "Initdb frontend/backend reset, env, locale, filesystem and signal qualification"
+  ]
+}

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GetoptProject Condition="'$(GetoptProject)' == ''">$(MSBuildThisFileDirectory)missing-getopt.csproj</GetoptProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(GetoptProject)" />
+    <Compile Include="GetoptTests.cs" />
+  </ItemGroup>
+</Project>

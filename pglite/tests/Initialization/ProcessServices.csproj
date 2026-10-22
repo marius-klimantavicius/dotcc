@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <FullLibcProject Condition="'$(FullLibcProject)' == ''">$(MSBuildThisFileDirectory)missing-full-pglitec.csproj</FullLibcProject>
+    <BootstrapFixtureProject Condition="'$(BootstrapFixtureProject)' == ''">$(MSBuildThisFileDirectory)missing-bootstrap-fixture.csproj</BootstrapFixtureProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(FullLibcProject)" />
+    <ProjectReference Include="$(BootstrapFixtureProject)" />
+    <Compile Include="ProcessServices.cs" />
+    <Compile Include="../../src/Initialization/InitializationProcessTransport.cs" Link="InitializationProcessTransport.cs" />
+  </ItemGroup>
+</Project>

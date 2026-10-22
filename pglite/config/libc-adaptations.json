@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "source": "pglite/src/pglitec/pglitec.c",
+  "adaptations": [
+    {
+      "before": "int EMSCRIPTEN_KEEPALIVE pgl_poll(struct pollfd fds[], ssize_t nfds, int timeout)",
+      "after": "int EMSCRIPTEN_KEEPALIVE pgl_poll(struct pollfd fds[], unsigned long nfds, int timeout)",
+      "reason": "The fork defines the poll count as signed ssize_t while poll.h callers declare unsigned-long nfds_t. Use that exact underlying type: this standalone libc source declares its own pollfd and does not include poll.h. The LP64 storage width and original function body remain unchanged."
+    }
+  ]
+}
