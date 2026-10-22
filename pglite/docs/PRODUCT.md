@@ -1,12 +1,20 @@
 # Managed embedded PostgreSQL API
 
-The authored API and canonical consumer now compile against the complete
-translated backend and original frontend. A second raw JIT run with corrected
-locale enumeration and calendar services passes the former `locale -a` failure
-and selects `Europe/Vilnius`, then stops at the required `dict_snowball` module
-during original post-bootstrap SQL. No required consumer SQL assertion or
-successful SQL lifetime has completed. The supervisor retains the module
-closure, full matrix and acceptance through P6.
+The authored owning API and canonical consumer execute the complete translated
+backend and original in-process initializer, including required PL/pgSQL and
+Snowball modules. Private raw JIT and normally trimmed Linux x64 NativeAOT each
+pass all 36 SQL/ownership assertions across three clean same-process lifetimes
+and two persistence reopens against receipt `20261022-202228-8f7e10f1`.
+
+Final paired publication `20261022-211008-fe98b7c0` supplies both canonical
+backend/frontend forms and their bootstrap assets and notices. All four
+canonical raw/processed × JIT/normally trimmed NativeAOT rows pass all 36
+assertions, three lifetimes and two reopens each. The ordinary four-project
+solution also builds with its default processed backend/frontend references.
+All 1,900 published-output hashes and 57 authored-source hashes remain unchanged.
+The supervisor combines this product qualification with the passing boundary,
+import and provenance ledgers in `artifacts/final-qualification.json`; selected
+acceptance through P6 is complete.
 
 `src/Api/PGlite.csproj` builds the separate `Managed.PGlite` owning assembly. It
 references the complete backend through `TranslatedProject` and the original
@@ -40,9 +48,9 @@ using (var reopened = PgliteDatabase.Open(options))
 
 Create requires a new or empty data directory. It invokes original translated
 initdb, preserving its original BKI processing, bootstrap, post-bootstrap SQL,
-PL/pgSQL loading and synchronization. The staged prefix contains copied upstream
-data, translated-entrypoint descriptors and the static translated PL/pgSQL
-manifest. Those descriptors are paths for the original executable-discovery
+PL/pgSQL and Snowball loading, and synchronization. The staged prefix contains
+copied upstream data, translated-entrypoint descriptors and both static
+translated-module manifests. Those descriptors are paths for the original executable-discovery
 checks; all actual backend invocations call the original translated entrypoint
 in process. No shell or native database executable is launched. Initializer
 stdout/stderr and actual backend command spools remain in the session diagnostics
@@ -57,8 +65,10 @@ failure without a backend exception propagates directly.
 
 Open creates a fresh generated `Managed.PGlite.Translated.PGlite` state context.
 Startup binds original stdio, calls the shared
-`InitializationBackend.RegisterModules(bootstrapPrefix)` for the actual translated
-module catalogs in that fresh context,
+`InitializationBackend.RegisterModules(bootstrapPrefix)` for both original
+translated module catalogs in that fresh context. The PL/pgSQL catalog and the
+Snowball catalog, including the original Snowball algorithms, are shared with
+initializer invocations. Startup then
 installs managed function-pointer callbacks and invokes original single-user
 main. It requires the fork's 99 yield, opens an owned postmaster-liveness pipe,
 attaches the original protocol port and verifies `SELECT 1` before returning a
@@ -130,12 +140,62 @@ selects the canonical inventory location. Both `plpgsql` and `dict_snowball`
 translated-module descriptors are required during options normalization, before
 any owner lease or generated context is created. NativeAOT
 publication uses the same consumer with normal trimming and `-p:PublishAot=true`.
-All raw/processed JIT/NativeAOT SQL rows and the root solution remain pending until
-the supervisor supplies and qualifies complete products.
+Its authored `NativeAotNotices.targets` copies exact `LICENSE.TXT` and
+`THIRD-PARTY-NOTICES.TXT` files from the SDK's resolved target NativeAOT runtime
+pack into `notices/` beside the published executable. `DOTNET-NATIVEAOT.txt`
+records .NET attribution, the selected package/version/RID and both SHA-256
+hashes. Missing or ambiguous resolved-pack evidence fails publication.
+
+## Product execution evidence
+
+| Products | Execution | Result |
+| --- | --- | --- |
+| Private coherent928, `202228-8f7e10f1` | Raw JIT | Passed: 36 assertions, three lifetimes, two reopens. |
+| Same private products | Raw normally trimmed NativeAOT | Passed: 36 assertions, three lifetimes, two reopens. |
+| Canonical publication, `211008-fe98b7c0` | Raw JIT | Passed: 36 assertions, three lifetimes, two reopens. |
+| Same canonical publication | Raw normally trimmed NativeAOT | Passed: 36 assertions, three lifetimes, two reopens; observer correction below. |
+| Same canonical publication | Processed JIT | Passed: 36 assertions, three lifetimes, two reopens. |
+| Same canonical publication | Processed normally trimmed NativeAOT | Passed: 36 assertions, three lifetimes, two reopens; observer correction below. |
+| Same canonical publication | Ordinary solution, default references | Passed; exact API/sample/backend/frontend graph, no duplicate SQL run. |
+
+Private execution commands, actual logs, session diagnostics and exact project
+identities are recorded in `artifacts/product-owner-r3/raw928/owner-report.json`.
+That NativeAOT publish has 14 C# warnings, zero errors and no native/trimming
+warnings; its run exits zero. These passes qualify that private source receipt.
+
+The final canonical matrix uses the actual campaign recipe, shared consumer
+hooks and `Context` runner, invoked from `/tmp` with `--fetch never` and warn
+provenance. Each row has a separate private whole-graph `--artifacts-path`, fresh
+data and the selected form's backend, original frontend and bootstrap prefix.
+All four actual compile/publish and execution commands, the solution build and
+two default-reference evaluations pass with exit zero. Each build/publish has
+14 C# warnings and zero errors; neither NativeAOT publish reports native/trimming
+warnings. Commands, source/publication hashes before and after execution, and
+the original observer results are retained in
+`artifacts/product-owner-r3/canonical-final/20261022-211359-8ba5a1f9/receipt.json`.
+The passed translation receipt is
+`artifacts/campaign/20261022-211008-fe98b7c0/receipt.json`. Historical private
+passes remain separate from these newly executed canonical rows.
+
+The original private observer incorrectly expected CoreLib under `lib/net10.0`;
+both actual NativeAOT responses reference
+`runtimes/linux-x64/native/System.Private.CoreLib.dll`. The completed original
+Context receipt remains **failed** with those two observer errors and is
+preserved byte-for-byte as `receipt.initial-observer-failure.json`. Its eleven
+actual command records all remain passed; it has not been rewritten as a
+successful attempt.
+
+The separate `qualification-revalidation.json` beside that receipt passes a
+read-only check of the retained four actual 36/3/2 executions, ordinary default
+solution graph, exact canonical case inventories, compiled-pack notices and
+all published/authored hashes. It records the corrected observer SHA-256,
+original failed receipt SHA-256 and complete error history. No build, publish
+or SQL execution is repeated for this correction. `owner-report.json` in the
+same directory summarizes the verified results and evidence paths.
 
 ## Related-library delivery controls
 
-Current continuation evidence is under `artifacts/product-owner-r2/`.
+Earlier isolated delivery evidence is retained under `artifacts/product-owner-r2/`.
 `framework-companions.log` passes 13 isolated framework tests: transactional
 publication of both backend and frontend forms, final-companion rollback of all
 four prior trees and the current receipt, preflight rejection without mutation,
@@ -143,19 +203,20 @@ main-only authored hooks, semantic-copy isolation, and warn/strict/off companion
 provenance behavior, including missing companion hash evidence. The runner
 fixtures supply no SQL responses.
 
-`product-delivery-tests.log` passes four checks against the actual PGlite recipe
+The actual PGlite delivery checks now pass five tests against the recipe
 and configuration hooks. Raw/processed host copies remain separate, original
 authored bytes survive simulated semantic rewrites, original source links are
 restored, and all four consumer command rows select matching backend/frontend
 projects and the backend form's bootstrap prefix. Recipe/form state is restored
-after a failed build.
+after a failed build. A complete manifest still cannot publish the four-unit
+`native-diagnostic` subset; that profile remains probe-only.
 
 `msbuild-graph-evaluation.json` records six successful real MSBuild evaluations
 from `/tmp`, covering the default, explicit raw and private-frontend selections
 for both API and consumer. It checks original compile links, the canonical case
 file's build/publish copy settings, and all four required solution projects.
-These evaluations do not compile the API or establish that the complete static
-project graph builds. Actual SQL and the complete product matrix remain open.
+These evaluations are graph controls; the actual API/consumer builds, SQL
+passes and complete canonical product qualification are recorded above.
 
 `ApiContracts.csproj` compiles the actual options, initialization-observation
 gate and process-transport contracts without an engine dependency. JIT and
@@ -173,7 +234,11 @@ The updated 34-assertion logs are under
 `artifacts/product-owner-r3/snowball-options/`; the earlier 32-assertion logs
 remain under `artifacts/product-owner-r2/`.
 
-## First complete-backend execution
+## Historical complete-backend retries
+
+The failures below retain the first actual backend errors and their diagnostics.
+The complete 928-unit module closure subsequently resolved both initialization
+failures; they are not current SQL blockers.
 
 `artifacts/product-owner-r3/` records the actual `194223-e06ea2a0` backend and
 fresh frontend. The canonical consumer's private build passes with zero errors
@@ -191,17 +256,18 @@ passes the locale-import step, selects `Europe/Vilnius` and logs the actual EEST
 zone. Original bootstrap again succeeds. Post-bootstrap SingleUser then exits 1
 when `CREATE FUNCTION dsnowball_init` loads the absent `$libdir/dict_snowball`.
 `artifacts/product-owner-r3/raw2008/owner-report.json` records the exact command,
-observations, stderr and private spools. The required original Snowball source,
-static export catalog and per-owner registration remain an integration gate;
-neither bootstrap SQL nor the module algorithms may be replaced to pass it.
+observations, stderr and private spools. At that checkpoint the required original
+Snowball sources, static export catalog and per-owner registration were missing.
+The later coherent928 product includes all 51 original Snowball sources and
+registers both required catalogs without replacing bootstrap SQL or algorithms.
 
 `EntryValidation.csproj` references the actual API and both translated projects.
 Its private incremental build and JIT run pass 23 assertions over null/mismatched
 inputs, missing-cluster Open, nonempty-directory Create, exact preservation of
 caller data, real exclusive-file lease release and repeated rejected entries in
 one process. It supplies no cluster or SQL substitute. These negative entries
-do not establish clean shutdown/reopen of a successful SQL owner. The required
-36-assertion, three-lifetime workload and all four product rows remain open.
+are separate from the successful 36-assertion, three-lifetime SQL workloads and
+complete canonical matrix recorded above.
 
 ## Current codec evidence
 

@@ -1,29 +1,78 @@
-# PGlite translation campaign
+# Managed embedded PGlite
 
-The P0 campaign baseline is established for `TranslatedPGlite`. Native embedded
-SQL controls pass 21 assertions; the managed SQL product does not yet work. [PLAN.md](docs/PLAN.md) defines the first useful workflow and open
-milestones; [VALIDATION.md](docs/VALIDATION.md) records current results and
-[BLOCKERS.md](docs/BLOCKERS.md) retains reproducible failures.
+This ports the pinned PostgreSQL 18.6 PGlite fork through DotCC for Linux x64
+LP64. The actual translated backend initializes a database, executes SQL and
+transactions, recovers from ordinary SQL errors, shuts down cleanly and reopens
+persisted data in the same process. Initialization includes original PL/pgSQL
+and Snowball modules through a translated static registry.
 
-The fork is pinned in `config/sources.json`. Use the shared campaign runner:
+Paired raw and processed libraries are published and qualified through P6.
+All four canonical JIT/NativeAOT rows pass 36 assertions, three clean same-process
+lifetimes and two persistence reopens each. All 14 non-consumer suites and the
+ordinary solution build pass. [VALIDATION.md](docs/VALIDATION.md) records exact
+evidence and separately identifies unchanged repository baseline failures.
+
+The public owning API is [src/Api/PGlite.csproj](src/Api/PGlite.csproj).
+Reference that project from a separate application. It references both generated
+libraries through ordinary project references. For example, using a fresh data
+directory and a separate work directory:
+
+```csharp
+using Managed.PGlite;
+
+var options = new PgliteOptions(
+    "/tmp/my-pglite-data",
+    Path.GetFullPath("pglite/generated/TranslatedPGlite/bootstrap-prefix"),
+    "/tmp/my-pglite-work");
+
+using (var database = PgliteDatabase.Create(options))
+{
+    database.Query("CREATE TABLE items(id integer PRIMARY KEY, note text)").EnsureSuccess();
+    database.Query("INSERT INTO items VALUES (1, 'Vilnius Žąsis')").EnsureSuccess();
+}
+using (var database = PgliteDatabase.Open(options))
+{
+    var result = database.Query("SELECT note FROM items WHERE id = 1").EnsureSuccess();
+    Console.WriteLine(result.ResultSets[0].Rows[0][0]);
+}
+```
+
+Use one owner on its creating thread, with serialized calls and no callback
+reentry. Results own managed copies. SQL errors are returned in `Errors` after
+real core recovery; `EnsureSuccess()` optionally throws `PgliteSqlException`.
+`Dispose()` performs real backend shutdown and preserves caller-owned data and
+diagnostics. See [PRODUCT.md](docs/PRODUCT.md) for lifetime and failure contracts.
+
+Build and run the canonical consumer against existing generated products:
+
+```bash
+dotnet build pglite/ManagedConsumer.slnx -c Release
+dotnet run --project pglite/samples/ManagedConsumer/ManagedConsumer.csproj -c Release -- \
+  --bootstrap-prefix "$PWD/pglite/generated/TranslatedPGlite/bootstrap-prefix" \
+  --work /tmp/pglite-consumer
+```
+
+To reproduce translation and the complete selected qualification:
 
 ```bash
 bash Scripts/campaign.sh layout pglite --check
-bash pglite/scripts/fetch.sh
-bash pglite/scripts/test.sh --suite native-control --fetch never
-bash pglite/scripts/probe.sh --profile native-diagnostic --fetch never --tools reuse --jobs 1
+bash pglite/scripts/verify.sh --fetch missing --tools build --form all --mode all --rid linux-x64 --jobs 4
 ```
 
-`native-diagnostic` is a host configuration for feasibility evidence. It does
-not prove PGlite's Emscripten embedding profile or produce the delivered engine.
-Native database executables are controls only. Generated libraries, sources,
-build work and receipts/logs remain ignored beneath this campaign directory.
-The default `embedding-native` profile and consumer remain required gates.
+The source pin and configuration are in `config/`. Preparation needs Linux x64,
+.NET SDK 10, Python 3.11+, a C toolchain, make, Bison, Flex, Perl and binutils.
+Native database executables are controls only. The product uses in-process
+callbacks and OS primitives; its narrowly bounded locale inventory service runs
+the system `locale -a` utility. No native PostgreSQL engine is loaded or spawned.
 
-The selected default profile is the real fork's `__PGLITE__` native LP64 variant,
-pinned to `29b6424aa312ec3556247db069939006dd27f878`. Normal translation selects
-865 units: the complete observed 863-unit native backend closure, original
-PGlite libc unit, and forwarding adapter. A separate initdb/initialization closure
-and required host services remain incomplete; publication is blocked. The C11
-atomic port passes native/emitted JIT layout and concurrency controls; spinlock
-selection is the next complete-input blocker. Native reopens use fresh processes.
+This target is the Linux LP64 `__PGLITE__` variant. It does not claim upstream
+Wasm32/Emscripten equivalence, server/multiprocess delivery or broad extension
+qualification. Selected boundaries and exclusions are in
+[QUALIFICATION.md](docs/QUALIFICATION.md).
+
+Each backend's bootstrap prefix contains the exact upstream data, JSON
+entrypoint/module descriptors and complete upstream/generated notice archives.
+NativeAOT publish also copies the resolved runtime pack's license and third-party
+notices beside the executable. Keep these notice assets when redistributing.
+Generated libraries, acquired sources, build outputs and receipts remain ignored
+beneath `generated/`, `ref/`, `build/` and `artifacts/`.

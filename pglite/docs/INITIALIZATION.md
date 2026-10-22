@@ -1,30 +1,26 @@
 # Translated initialization and owning adapters
 
-The coherent 928-unit original backend and complete frontend now emit, strictly
-link and build. Original initdb passes bootstrap, post-bootstrap SQL and the
-original final disk sync through the concrete owning adapters. The private
-coherent 202228 product consumer passes 36 SQL/ownership assertions in both raw
-JIT and normally trimmed NativeAOT, each across three clean same-process lifetimes and
-two persistence reopens. These are prepublication passes; all four final
-canonical product rows, paired delivery and P6 acceptance remain pending and
-supervisor-owned. Historical failures and the required host/module repairs
-remain recorded below.
+The coherent 928-unit backend and complete original frontend emit, strict-link,
+process and build. Original initdb passes BKI/bootstrap, post-bootstrap SQL,
+required PL/pgSQL/Snowball setup and final disk sync through the concrete owning
+adapters. All four final canonical raw/processed × JIT/normally trimmed NativeAOT
+rows pass 36 assertions, three clean same-process lifetimes and two persistence
+reopens each. The ordinary solution, selected boundary suites and final P6 audits
+also pass. Combined selected acceptance: `artifacts/final-qualification.json`.
 
-Current evidence: `artifacts/initdb-owner-20261022-r3/actual2020/receipt.json`
-and `artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log`. Both raw
-product passes use `20261022-202228-8f7e10f1`; they do not qualify the resumed
-203609 closure or final promoted assets. Active paired-delivery receipt
-`artifacts/campaign/20261022-205650-7472ba65/receipt.json` reuses retained raw
-emissions from canceled `20261022-203609-4cdd2a15`. Shared asset-bin preservation
-and full upstream source ZIP/verbatim-notice staging are packaging repairs,
-not additional execution passes.
+Current publication is `artifacts/campaign/20261022-211008-fe98b7c0/receipt.json`.
+Actual canonical executions and the separately corrected read-only evidence
+qualification are in
+`artifacts/product-owner-r3/canonical-final/20261022-211359-8ba5a1f9/`.
+The original observer-failed Context remains failed and byte-identical; all four
+actual execution commands exit zero. [VALIDATION.md](VALIDATION.md) explains the
+preserved failed observer and corrected runtime-pack check.
 
-Current initialization evidence uses private ignored
-`build/initdb-owner-20261022-r3/` and `artifacts/initdb-owner-20261022-r3/` paths;
-historical r1/r2 evidence remains preserved separately. References and configured
-native stages are read only. No compiler/root outputs are built by this task,
-emitted C# is never edited, and no native PostgreSQL executable/library is a product
-backend. Parent-owned plans remain untouched by this task.
+Earlier private initialization/raw-mode passes and the 1942/2008 failures remain
+historical evidence. Pending/open language in intermediate checkpoints below
+is superseded by final selected acceptance above; no failed receipt is rewritten.
+References and configured native stages remain preserved. No emitted C# is
+manually edited, and no native PostgreSQL engine is a product backend.
 
 ## Host services and complete fork libc
 
@@ -447,7 +443,7 @@ text or metadata is rewritten and the ABI gate remains strict. The supervisor
 started a normal fresh 876-unit retry with one coherent include overlay and
 compiler 1908 (`artifacts/campaign/20261022-191828-3a8ebaa0`). Its actual link/
 build result and original initialization were pending at that checkpoint. The
-928-unit result below supersedes those pending states; final P6 remains open.
+928-unit result below supersedes those pending states; final selected P6 now passes as recorded above.
 
 
 ## Locale process service and historical first bootstrap failure

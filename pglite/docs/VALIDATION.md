@@ -1,58 +1,82 @@
 # PGlite validation evidence
 
-## Current full-source and managed execution gate, 2026-10-22
+## Final selected acceptance — passed, 2026-10-22
 
-Coherent receipt `artifacts/campaign/20261022-202228-8f7e10f1/receipt.json`
-emits and strict-links all 928 selected backend/module/libc/adapter units. The
-raw backend builds with zero errors and 12 warnings; the fresh original initdb
-companion emits, links, builds and passes its original-main controls. That
-receipt remains failed solely at its explicit publication guard. It is not
-rewritten as a published or fully qualified product.
+The agreed Linux x64 LP64 `embedding-native` campaign is implemented and
+qualified through P6. The authoritative combined record is
+`artifacts/final-qualification.json`. This acceptance does not claim upstream
+Wasm32/server equivalence or the excluded full upstream regression qualification.
 
-Original translated initdb now passes: all five backend commands return zero,
-including real bootstrap with 973545 bytes of original BKI and single-user mode
-with 251748 bytes of original initdb-generated SQL. Locale import, original
-Snowball/PLpgSQL setup and final disk sync complete. The fresh cluster contains
-an 8192-byte `global/pg_control` and `PG_VERSION` containing `18` plus newline.
-Receipt: `artifacts/initdb-owner-20261022-r3/actual2020/receipt.json`; exact argv,
-statuses and input/output hashes: `actual-initialization-result.json` in that
-owner's artifact root. No native database engine, replacement bootstrap, SQL
-edits or emitted C# edits are involved.
+| Canonical product | Execution | Assertions | Same-process lifetimes | Persistence reopens |
+| --- | --- | --- | --- | --- |
+| Raw | JIT | 36 passed | 3 clean | 2 |
+| Raw | Normally trimmed NativeAOT | 36 passed | 3 clean | 2 |
+| Processed | JIT | 36 passed | 3 clean | 2 |
+| Processed | Normally trimmed NativeAOT | 36 passed | 3 clean | 2 |
 
-The canonical consumer passes all 36 exact SQL/ownership assertions in private
-raw JIT and normally trimmed NativeAOT runs against coherent build
-`20261022-202228-8f7e10f1`: 21 unchanged native-inventory rows and 15 ownership/
-recovery checks, each across three clean same-process lifetimes and two
-persistence reopens. They cover UTF-8, NULL, commit/rollback, SQL errors/recovery
-and retained results after reopen. Evidence under
-`artifacts/product-owner-r3/raw928/`: `consumer-run.{log,json}` and
-`aot-{publish,run}.log` plus `aot-run.json`. The AOT run exits zero in 29.84 seconds.
+Every row invokes original translated initdb, including complete BKI/bootstrap,
+post-bootstrap SQL, PL/pgSQL/Snowball setup and disk synchronization. The shared
+21-case inventory checks exact UTF-8/NULL rows, command completions, transaction
+commit/rollback, SQLSTATEs/errors and subsequent recovery. Fifteen additional
+ownership/recovery assertions run in every row. No native database engine,
+replacement SQL algorithm, fake response or manual emitted C# edit supplies this
+workflow. The ordinary four-project `ManagedConsumer.slnx` build passes with
+zero errors and 14 existing C# diagnostics; actual MSBuild evaluation confirms
+default API → processed backend/frontend and sample → API references.
 
-| Product row | Private coherent 202228 evidence | Final canonical gate |
-| --- | --- | --- |
-| Raw JIT | Passed: 36 assertions, three lifetimes, two reopens. | Pending. |
-| Raw normally trimmed NativeAOT | Passed: 36 assertions, three lifetimes, two reopens. | Pending. |
-| Processed JIT | Pending. | Pending. |
-| Processed normally trimmed NativeAOT | Pending. | Pending. |
+Canonical matrix evidence:
+`artifacts/product-owner-r3/canonical-final/20261022-211359-8ba5a1f9/qualification-revalidation.json`.
+All four real build/publish and run commands exit zero. Both AOT publications use
+normal trimming, with no native/trimming diagnostics or custom root directives.
+The original Context receipt remains **failed** because its private evidence
+checker assumed CoreLib lived below `lib/net10.0`; the actual SDK uses `native/`.
+That receipt and its initial failures remain byte-identical. A corrected,
+separate read-only qualification validates the retained real executions,
+runtime-pack notices, copied cases, default solution graph and unchanged source
+hashes. It runs no new SQL/build and does not rewrite the failed receipt.
 
-Both raw passes are prepublication evidence. They do not qualify the resumed
-203609 closure or final promoted assets. All four final canonical rows, paired
-delivery and P6 acceptance remain pending.
+## Final source and publication lineage
 
-Ordinary paired delivery passes in
-`artifacts/campaign/20261022-205650-7472ba65/receipt.json`, using the retained
-928-unit raw emissions from canceled attempt `20261022-203609-4cdd2a15`.
-Shared asset-bin preservation (`d1bdf987b`) and full observed upstream source ZIP
-with verbatim notices staging (`1f3adb3d5`) are packaging changes. They do not
-establish new execution or P6 passes. A further data-only transactional notice
-correction is active in `20261022-211008-fe98b7c0`: every raw/processed generated
-source stays byte-identical to the passed publication, while all 168 prepared
-C/header inputs preserve their generated notices and Bison special exceptions
-in a separate ZIP. The referenced GPL text is copied verbatim. Ordinary final
-project builds and full output hashes gate this promotion; final canonical
-execution remains pending. The latest retained shared compiler
-comparison has 3420 passes and the same 16 untouched-baseline failures:
-`artifacts/supervisor-portable/regression-comparison-current10.json`.
+Immutable20 emits and strict-links all 928 selected backend/module/libc/bridge
+units and the separate original 73-unit frontend. Complete emission is retained
+in `20261022-203609-4cdd2a15`, cancelled before promotion for packaging fixes.
+Ordinary paired raw/processed processing, builds and publication pass in
+`20261022-205650-7472ba65`. Data-only transactional notice correction
+`20261022-211008-fe98b7c0` passes all four final project builds and is the current
+published receipt. Every generated source remains byte-identical to the passed
+paired publication; inherited tool/source hashes are explicit. Both forms are
+qualified against these exact final canonical projects.
+
+The independent final audit checks all 1,900 delivered hashes/ownership entries,
+659 bootstrap files per backend, original authored links, all 7,309 upstream
+source/notice files and all 168 prepared C/header inputs with generated Bison
+notices/exceptions. MIT/GPL and actual NativeAOT runtime-pack notices are
+preserved verbatim. All 175 embedded compiler header/runtime resources match
+current authored files. Both final native executables depend only on libc,
+libm and the Linux loader, with no database-library imports. Generic shared
+runtime shell/native-loading capabilities are disclosed separately from the
+reviewed product routes. Evidence: `artifacts/import-audit-owner/REPORT.json`.
+
+## Final selected suites and reproduction
+
+Receipt `artifacts/campaign/20261022-211346-e4effa11/receipt.json` passes all 14
+non-consumer verification suites in their declared order and both execution
+modes: inventory, native-control, libc-build, initializer, modules, snowball,
+boundary, atomics, semaphore, portable-codegen, locale, calendar-timezone,
+posix-host and backend-host. Its 472 commands include deliberate negative
+controls; all suite tasks pass with no behavioral warnings. The final consumer
+matrix above supplies the fifteenth selected verification suite.
+
+Current `/tmp` invocation, offline acquisition, ordinary library build and
+inventory checks pass with `--fetch never`, hashing off and default warn.
+`artifacts/supervisor-portable/p6-offline-reproduction.json` records the exact
+receipts and layout check. Full current compiler regressions have **3420 passes
+and the identical 16 untouched-baseline failures**, with no new failing names
+(`regression-comparison-current10.json`). The shared framework has **87 passes
+and one pre-existing Blink hash-literal metadata failure**; 18 affected companion
+tests pass. These repository baseline failures remain separate from the passing
+selected campaign gates. No required selected implementation or acceptance gate
+remains open.
 
 ## Historical runtime retries and their repairs
 

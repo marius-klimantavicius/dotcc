@@ -1,46 +1,26 @@
 # PGlite blocker ledger
 
-## Current — original initialization and private raw JIT/AOT pass
+## Current — no required campaign blocker remains
 
-Coherent receipt `20261022-202228-8f7e10f1` emits and strict-links all 928 selected
-backend/module/libc/adapter units and raw-builds with zero errors and 12 warnings.
-The fresh original frontend and original-main controls pass. That receipt's
-explicit publication guard remains a failure; it is not a published-product pass.
+The selected Linux x64 LP64 campaign passes through P6. All four final canonical
+raw/processed × JIT/normally trimmed NativeAOT rows execute original initialization
+and pass 36 assertions, three clean same-process lifetimes and two persistence
+reopens each. The ordinary solution/default project graph and all 14 selected
+non-consumer suites pass. Publication, imports/ELF, notice/ownership/resource
+hashes and offline warn/off reproduction checks pass.
 
-Original translated initdb now returns zero, including real bootstrap,
-post-bootstrap SQL and final disk sync. The successful receipt is
-`artifacts/initdb-owner-20261022-r3/actual2020/receipt.json`; complete spools and
-hashes are retained. The fresh cluster contains an 8192-byte `global/pg_control`
-and `PG_VERSION=18`. The canonical consumer separately passes 36 exact SQL/
-ownership assertions in private raw JIT and normally trimmed NativeAOT runs
-against coherent build `20261022-202228-8f7e10f1`. Each runs three clean
-same-process lifetimes and two persistence reopens. Evidence under
-`artifacts/product-owner-r3/raw928/`: `consumer-run.{log,json}` and
-`aot-{publish,run}.log` plus `aot-run.json`. The AOT run exits zero in 29.84 seconds.
-The 21 unchanged native-inventory rows and 15 ownership/recovery checks include
-UTF-8, NULL, transactions, SQL errors/recovery and retained results after reopen.
+Combined acceptance: `artifacts/final-qualification.json`.
+[VALIDATION.md](VALIDATION.md) records exact receipts, retained failed attempts,
+the private CoreLib-path evidence-checker correction and unchanged baseline
+failures. The original observer-failed execution Context remains failed; its
+actual four zero-exit executions are qualified by a separate read-only report.
+No native engine, fake SQL, skipped initialization or manually edited emitted C#
+replaces the implemented workflow.
 
-The locale utility transport, calendar timezone service and required Snowball
-closure resolve the earlier initialization failures. All 51 original Snowball
-sources and both real module catalogs are linked into the backend context through the
-shared PL/pgSQL/Snowball registry. Independent native/JIT/trimmed-AOT stemmer
-controls also pass. Original collation import and SQL are retained; no native
-database engine or native module replaces translated code.
-
-These raw passes are prepublication evidence for 202228, not the resumed 203609
-closure or final promoted assets. All four final canonical raw/processed ×
-JIT/NativeAOT rows, paired delivery and P6 acceptance remain pending. Active receipt
-`artifacts/campaign/20261022-205650-7472ba65/receipt.json` resumes retained raw
-emissions from canceled attempt `20261022-203609-4cdd2a15`. The shared asset-bin
-and source ZIP/verbatim-notice packaging repairs add no new execution claims.
-A further data-only transactional correction `20261022-211008-fe98b7c0` preserves
-168 prepared C/header inputs and generated Bison terms/exceptions plus referenced
-GPL text. Generated raw/processed C# remains byte-identical to the passed205650
-publication. Its final project builds and asset hashes remain required.
-See [VALIDATION.md](VALIDATION.md) for current evidence. The latest compiler
-comparison is
-`artifacts/supervisor-portable/regression-comparison-current10.json`: 3420 passes
-and the same 16 untouched-baseline failures.
+The 16 pre-existing compiler failures and one pre-existing Blink framework
+metadata failure remain unrelated repository baseline observations. Upstream
+Wasm/server delivery, broad extensions and full upstream regression qualification
+remain outside the agreed first-target scope rather than open campaign gates.
 
 ## Historical blocker checkpoints
 

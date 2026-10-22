@@ -1,39 +1,27 @@
 # PGlite implementation continuation
 
-## Current managed execution and delivery, 2026-10-22
+## Final implementation and qualification
 
-The coherent 928-unit backend and separate original 73-unit initializer both
-emit, strict-link and build. Original translated initdb completes bootstrap,
-post-bootstrap SQL, required PL/pgSQL/Snowball registration and disk sync.
-The canonical separate consumer passes all 36 assertions under raw JIT and
-normally trimmed Linux x64 NativeAOT. Each mode creates its own cluster and runs
-three clean same-process lifetimes with two persistence reopens. Actual rows,
-UTF-8/NULL values, transaction commit/rollback, ordinary SQL errors and subsequent
-recovery are checked against the shared 21-case inventory.
+The selected Linux x64 LP64 campaign is complete through P6. All 928 selected
+backend/module/libc/bridge units and the separate 73-unit original initializer
+emit and strict-link. Paired raw/processed products build and publish through
+the shared transactional framework. Original initdb runs BKI, post-bootstrap SQL,
+required PL/pgSQL/Snowball modules and disk sync; no native database substitutes
+for the translated core.
 
-Evidence: `artifacts/initdb-owner-20261022-r3/actual-initialization-result.json`
-and `artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log`.
-These passes do not complete processed validation or P6.
+Every final raw/processed × JIT/normally trimmed NativeAOT consumer row passes
+36 assertions, three clean same-process lifetimes and two persistence reopens.
+The ordinary solution/default graph, all 14 non-consumer suites, current source/
+import/ELF/notice/resource audits and offline warn/off reproduction pass. See
+`artifacts/final-qualification.json` and [VALIDATION.md](VALIDATION.md).
 
-Full emission receipt `20261022-203609-4cdd2a15` was cancelled before publication
-to repair packaging: nested bootstrap `bin` assets must survive cache filtering,
-and verbatim upstream/per-file notices must accompany delivery. Receipt
-`20261022-205650-7472ba65` resumes ordinary paired raw/processed delivery from
-those byte-identical emitted sources with identical immutable20 tools. It records
-parent receipt/source hashes, restages data and notices through the authored
-helper, and runs normal semantic processing, builds and transactional promotion.
-No C or emitted C# is manually changed. Current publication, processed behavior,
-final four-row matrix and import/ELF/offline audits remain active.
+Current compiler regressions retain only the identical 16 baseline failures
+(3420 passes); framework checks retain only the known Blink metadata failure
+(87 passes). The private CoreLib-path observer failure is preserved separately
+from its corrected read-only qualification of all four actual successful runs.
+All historical failed receipts below remain failures.
 
-Current shared compiler regressions pass 3420 tests with the identical 16
-failures reproduced in the untouched baseline; comparison:
-`artifacts/supervisor-portable/regression-comparison-current10.json`.
-The framework cache/asset repair passes 87 of 88 tests, with only the known
-unrelated Blink hash-literal failure. Baseline failures remain separate.
-
-The campaign remains active through P6. The coordinator requirements in PLAN.md
-remain authoritative. The two shared plan files and PLAN.md contain parent-owned
-changes and are excluded from implementation commits.
+The three parent-owned plan documents remain unstaged. No push or PR is made.
 
 ## Historical implementation rounds
 

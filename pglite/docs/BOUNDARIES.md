@@ -12,16 +12,16 @@ policy are owned by the source agent. Detailed incremental evidence lives in
 [`boundary-progress.md`](boundary-progress.md). Shared compiler repairs and
 integration remain the supervisor's responsibility.
 
-## Current integrated workflow
+## Final integrated workflow
 
-The actual 928-unit backend now executes original initdb and the canonical SQL
-workflow under raw JIT and normally trimmed Linux x64 NativeAOT. Both modes pass
-36 assertions across three same-process lifetimes and two persistence reopens.
-See `artifacts/product-owner-r3/raw928/{consumer-run,aot-run}.log` and the
-current validation ledger. This supplies actual PostgreSQL cleanup/persistence
-evidence beyond the bounded probes below; processed and final P6 gates remain
-open. Signal-aware lexical jumps are implemented and their latest bounded
-controls pass, as recorded in [SIGNAL-JUMPS.md](SIGNAL-JUMPS.md).
+The actual 928-unit backend executes original initdb and the canonical SQL
+workflow under raw/processed JIT and normally trimmed Linux x64 NativeAOT.
+Every row passes 36 assertions across three same-process lifetimes and two
+persistence reopens. Original error/transaction cleanup and shutdown are exercised
+by the translated core. Current boundary suites and import/resource/ELF audits
+pass; `artifacts/final-qualification.json` and [VALIDATION.md](VALIDATION.md)
+record final selected acceptance through P6. Signal-aware lexical jumps and their
+bounded controls are documented in [SIGNAL-JUMPS.md](SIGNAL-JUMPS.md).
 
 ## Historical owner implementation and integration
 
