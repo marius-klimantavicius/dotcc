@@ -1,5 +1,87 @@
 # Linux x64 qualification
 
+## Post-repair verification, 2026-10-23
+
+Verification work is complete, with **stronger recovery and observation
+qualification failed**. The [aggregate validation receipt](../../docs/validation/four-campaign-post-repair-20261023.json)
+indexes the exact commands, matrix rows, source overlays, hashes and retained
+failures. The private campaign source starts at `ddc9faf08`; frozen generation 2
+uses compiler source `123b3e76e`. `DotCC.Lib.dll` SHA-256 is
+`08a0ecd70213b342bb763a8bd381de64387953a8ba1c587fd8451d8d505d298d`;
+the postprocessor SHA-256 is
+`e1867eca1f516ba8a2ea900cbbc378b4d92179ef1b8adf19409dbc7e71c520dc`.
+The full 22-file compiler and 33-file postprocessor closures remain unchanged.
+Both compiler assemblies report informational version `1.0.0`; the qualified
+closure records `compiler_commit=null` / `not_reported`, and the external frozen
+tool receipt supplies source identity.
+
+Fresh full framework verification completed all 14 suites and exited 0 under
+its existing warning policy. Recovery executed all 576 configured cases:
+489 passed, 87 warned and none were unexpected. All 480 positive cases passed.
+The 87 warning rows retain strict failure: 39 dual-live rebinding failures and
+48 decreasing-ceiling failures. `verification_passed=true` does not qualify them.
+
+| Recovery form/runtime | Cases passed | Strict failures retained |
+| --- | ---: | ---: |
+| Raw JIT | 120 / 144 | 24 |
+| Raw NativeAOT | 125 / 144 | 19 |
+| Processed JIT | 120 / 144 | 24 |
+| Processed NativeAOT | 124 / 144 | 20 |
+
+The fixed observation campaign retained five rebinding attempts per role/profile,
+one decreasing-ceiling attempt, and three positive controls. Its 288 relevant
+observations comprise 80 rows from the full matrix and 208 fresh executions.
+Rebinding retained managed 12 successes / 68 failures and native 11 / 69;
+all 32 decreasing-ceiling observations failed. All 48 additional native positive
+controls passed. These counts do not establish equal frequency or common cause.
+
+The unchanged official classifier exited 1 before emitting any comparisons;
+`complete_evidence_validated=false` and `observation_validated=false`. A fresh
+native/native control labelled `raw/aot/ipv6/128` ended with client terminal
+0/0/0 and server 62/1/0. That label selects its matching managed profile; both
+executed peers are native C. The client log has no explicit deadline marker,
+so elapsed time does not establish a deadline cause. This is an unsupported
+native terminal of unknown cause. A read-only inventory retained all 288 rows:
+287 pass the unchanged per-case validators, and 79 logical groups have matching
+shapes/configurations; the remaining group lacks a validated exact native
+witness. This diagnostic inventory receives no qualification credit. No extra
+sampling, classifier expansion or baseline compiler rerun was used.
+
+The other fresh suite results include 167 packet checks per cell, 20 TLS-adapter
+cases per cell, 80 transport pairs, 68 API mode executions, 32 public-consumer
+cases, 368 facade case executions, 300 native-matched malformed cases,
+64 endpoint profiles, 40 injected failures, 88 independent-peer cases and
+152 CID cases. The 60 host/core and 29 public ABI observations match native,
+JIT and NativeAOT. All 47 units link and pass whole-assembly-rooted boundaries.
+Ordinary sample consumption and the focused real registry regression pass all
+four cells; the latter also rejects all 12 invalid-token probes. UDP feasibility
+passes 14 cases in each runtime; QUIC-TLS feasibility passes 11 in each cell.
+All 48 targeted keepalive controls pass. Cases, checks, observations and explicit
+assertions are separate units; these MsQuic harnesses do not report an overall
+assertion total.
+
+The full 20-pair benchmark passed its unchanged 16 MiB per direction, warmup,
+three measurements, payload/FIN, source metadata, shutdown and drain checks.
+Client-interval rates were native 9,115–9,587 Mbit/s, raw/processed JIT
+410–556 / 357–480, and raw/processed NativeAOT 795–941 / 754–956.
+These small sequential measurements compare whole implementations, with different
+TLS, buffering and runtime costs; they do not isolate compiler overhead or prove
+a performance regression. The 47-unit native symbol audit passed, and the
+product audit reported zero violations and missing prerequisites. The latest
+MsQuic picotls republish has byte-identical generated/project/host inputs and
+frozen tools to the independently qualified picotls product.
+
+Campaign-only repairs update stale fixture imports/project references and
+current provenance selection; the informational commit label is nullable without
+relaxing binary/source checks. No compiler, runtime or production host behavior
+changed. Other platform rows and the PLAN's excluded native/API capabilities
+remain unqualified. The full upstream test suite was not executed.
+
+## Historical checkpoint
+
+The remainder records earlier checkpoints and their original inputs and outcomes;
+it does not establish passes for the post-repair source above.
+
 The subsequent [nested-layout regeneration](nested-layout.md) has its own refreshed
 ABI, consumer and service evidence. The compiler hashes and full campaign ledger
 below describe the preceding checkpoint; they are historical evidence, not a
