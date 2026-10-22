@@ -4,6 +4,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Spinlocks.cs" />
     <ProjectReference Include="$(AtomicsProject)" />
   </ItemGroup>
   <Target Name="RequireActualEmission" BeforeTargets="PrepareForBuild">

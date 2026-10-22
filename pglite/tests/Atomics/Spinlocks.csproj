@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Spinlocks.cs" />
+    <ProjectReference Include="$(SpinlocksProject)" />
+  </ItemGroup>
+  <Target Name="RequireActualEmission" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(SpinlocksProject)' == '' Or !Exists('$(SpinlocksProject)')"
+           Text="Set SpinlocksProject to the actual emitted PostgreSQL spinlock fixture project." />
+  </Target>
+</Project>

@@ -147,7 +147,7 @@ reviewed host bindings/state for these services and execute full pglitec tests;
 callback/cleanup slices do not close this whole-unit gate.
 
 
-## PGL-007 — Spinlock compiler port (reproduced; next implementation)
+## PGL-007 — Spinlock compiler port (fixed and integrated)
 
 The integrated C11 atomic port resolves PGL-005 for the actual PostgreSQL
 wrappers. Original native, C11 native and emitted JIT layout/behavior/concurrency
@@ -164,6 +164,15 @@ Setting HAS_TEST_AND_SET without an implementation or bypassing the error is
 invalid. This is a project port boundary, not an established compiler defect.
 After a real port passes native/emitted probes, retry the whole backend and
 continue the independent libc/initdb/exit/signal closure work.
+
+Continuation: the real one-byte C11 port now preserves TAS/acquire/release and
+the unchanged upstream S_LOCK contention, sleep/backoff and stuck-lock paths.
+Integrated receipt `20261022-171904-fa0d4751` passes original-native/C11-native/
+emitted-JIT controls, 20,000 protected increments, 64 forced sleeping contentions,
+byte canaries/layout and seeded delay/timeout checks, plus existing atomic and
+four overlay controls. Full postgres.c emits without unresolved include reports.
+The complete backend still has other actionable source/compiler failures;
+spinlock completion does not close P1–P6. See ATOMICS.md and IMPLEMENTATION.md.
 
 ## HAR-001 — Native manifest collection (fixed)
 

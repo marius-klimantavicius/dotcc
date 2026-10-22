@@ -1,4 +1,4 @@
-/* Reduction of the next full-postgres.c failure; no alternate lock port here. */
+/* Actual-header slock_t selection/layout reduction, shared with full input. */
 #include "c.h"
 #include "storage/s_lock.h"
 

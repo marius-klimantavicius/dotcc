@@ -1,18 +1,21 @@
-# Independent PostgreSQL atomic compiler port
+# PostgreSQL C11 atomic and spinlock compiler ports
 
-The private C11 port passes actual native and emitted C# JIT controls. It is
-reviewed and integrated into the default `embedding-native` recipe through a
-private header overlay. The complete `postgres.c` retry remains blocked by the separate
-spinlock compiler-port selection in `storage/s_lock.h`. No translated SQL,
-product library, or broader delivery milestone is claimed.
+The guarded private overlay passes actual native and emitted C# JIT controls
+for PostgreSQL atomics and one-byte spinlocks. It retains upstream generic
+wrappers and the complete `s_lock.c` contention/delay algorithms. The actual
+`postgres.c` object now emits successfully, while required include closure
+remains blocked. No translated SQL or product qualification is claimed.
 
-Progress and supervisor handoff are in [atomics-progress.md](atomics-progress.md).
-
-Evidence is retained under
-`artifacts/atomics/20261022-163610-583fad2c/` and the matching private
-`build/atomics/20261022-163610-583fad2c/`. The overall receipt intentionally fails
-because complete `postgres.c` still fails; `atomics/report.json` separately
-records `atomic_status: passed-native-and-emitted-jit`.
+Current evidence is under
+`artifacts/atomics-spin-final-20261022-170928-69b2be/` with matching private
+`build/atomics-spin-final-20261022-170928-69b2be/` outputs. The receipt deliberately
+fails because DotCC reports three unresolved headers despite returning exit 0.
+`atomics/report.json` separately records both `atomic_status` and
+`spinlock_status` as `passed-native-and-emitted-jit`, plus the actual object
+emission exit code. Tool selection is the immutable
+`build/tools/supervisor-20261022-1710/dotcc.dll`; its DLL/JSON hashes are recorded.
+Earlier atomic-only evidence remains in VALIDATION.md and
+[atomics-progress.md](atomics-progress.md).
 
 ## Scope and implementation
 
@@ -50,8 +53,26 @@ Initialization remains a store before publication to other threads.
 Compile-time assertions fail closed on unsupported LP64/type size/alignment or
 non-lock-free native representations. No compiler identity is invented, no
 GCC configure feature is redefined, and no atomic or barrier is removed.
-PostgreSQL's existing generic empty spin-delay hint is retained; it is not an
-atomic operation. No spinlock implementation is supplied by this experiment.
+PostgreSQL's portable empty processor-delay hint is retained. The actual
+spin-count, sleep, backoff and timeout algorithms remain active.
+
+`src/Atomics/s_lock-dotcc-c11.h` supplies only spinlock compiler primitives:
+
+- `_Atomic unsigned char slock_t`, with compile-time one-byte size/alignment,
+  LP64 and lock-free byte assertions.
+- TAS exchanges 1 with acquire ordering and returns the previous byte: zero
+  means acquired, the opposite convention to `pg_atomic_flag`.
+- TAS_SPIN first loads the byte with relaxed ordering, exchanging only when
+  apparently free, as the original x64 implementation does.
+- Initialization uses `atomic_init`; unlock stores zero with release ordering;
+  lock-state observation is a relaxed load.
+
+The overlay does not define `S_LOCK`. The original header's `S_LOCK` calls the
+original out-of-line `s_lock` on contention. Its `SpinDelayStatus`, adaptive
+spins-per-delay, randomized delays, wait-event reporting and stuck-lock handling
+are unchanged. The existing shared runtime lowers the byte operations to
+same-width Interlocked primitives and conservatively strengthens memory orders.
+No native synchronization import or alternate database algorithm is added.
 
 ## Staging and parent integration
 
@@ -60,11 +81,14 @@ atomic operation. No spinlock implementation is supplied by this experiment.
 independent of the source tree. A complete include copy matters: quoted includes
 inside an original `postgres.h` or `c.h` could bypass a partial include overlay.
 
-Two exact, unique local guards in staged `port/atomics.h` insert selection by
+Two exact, unique local guards in staged `port/atomics.h` insert atomic selection by
 `PGLITE_DOTCC_C11_ATOMICS`. The architecture block selects the authored header;
 the compiler block skips GCC/MSVC/SunPro only when that explicit port is selected.
-Otherwise upstream selection remains available. No upstream implementation text
-or public wrapper is replaced. The helper returns include/define paths plus
+A third unique guard in staged `storage/s_lock.h` selects the authored spinlock
+header with `PGLITE_DOTCC_C11_SPINLOCKS` ahead of GCC/ICC. Both explicit defines
+are returned automatically. Otherwise upstream selection remains available.
+No upstream implementation text or public wrapper is replaced. The helper
+returns include/define paths plus
 source/staged hashes and a generic-header preservation check. It never writes to
 the source or invokes native preparation.
 
@@ -78,8 +102,12 @@ includes = [Path(port["include"]), *original_includes]
 defines = [*original_defines, *port["defines"]]
 ```
 
-Keep the existing embedding remaps and profile flags. The recipe owns this
-integration in translation preparation. The adapter `run(ctx, suite=None)` is
+Keep the existing embedding remaps and profile flags. The recipe already
+consumes the returned include and defines, so this spinlock addition needs no
+change to `translation.py` or `campaign.py`. Apply the supervisor's separate
+`portability.prepare_overlay(root, port["include"])` after this helper to select
+upstream software CRC/popcount and non-GCC checks in the private `pg_config.h`.
+The atomics suite uses that same preparation order. The adapter `run(ctx, suite=None)` is
 registered as the `atomics` framework suite. It uses only `ctx.work/atomics`, `ctx.artifacts/atomics`, and the shared
 `ctx.run` command logger/cancellation support; it never builds shared tools or
 creates another campaign runner.
@@ -120,40 +148,83 @@ zero, and the aggregate fixture size/alignment 48/8. Aggregate u32/u64/flag
 offsets are 4/8/17, the following canary is at 18, and the protected u64 is at
 24. All three executions match exactly.
 
-Overlay review receipt `artifacts/atomics/20261022-163336-ffe80722/receipt.json`
-confirms that only `port/atomics.h` changes among 940 copied upstream files and
-that the sole added include file is the authored C11 port. Missing architecture
-context, duplicate compiler context, and source/destination overlap are
-rejected. Context failures create no destination. Python syntax validation
-passed in that same framework-logged review.
+The new spinlock fixture includes the complete actual upstream
+`src/backend/storage/lmgr/s_lock.c`, `src/common/pg_prng.c`,
+`src/port/pg_bitutils.c` and `src/port/pgsleep.c`. It uses upstream `S_LOCK_TEST`
+mode, renames only that test's `main`, and observes `pg_usleep` calls before
+calling the real sleep function. Test I/O uses the standard host functions.
+An otherwise-unused inline requires storage for the actual declared
+`CurrentMemoryContext` pointer; the fixture provides no memory-context behavior.
+The original native control links the existing `libpgport.a` for its selected
+platform helpers; no native archive is used by emitted execution.
 
-## Remaining blockers and retry requirements
+Original native, C11 native and emitted JIT agree on eight spinlock layout
+fields and five seeded backoff values. `slock_t` is 1/1 size/alignment, the
+aggregate is 32/8, and lock/following canary/value/phase offsets are 1/2/8/24.
+The managed harness also measures the actual generated CLR lock field width,
+aggregate size and field addresses independently of emitted layout metadata.
 
-The complete actual `src/backend/tcop/postgres.c` command includes the new
-private headers plus the original profile's embedding remaps. It now passes the
-`pg_atomic_uint32` selection failure and stops with:
+Four workers perform exactly 20,000 TAS-protected increments. A separate holder
+and waiter force 64 `S_LOCK` contentions: the holder retains ownership until the
+waiter has entered the original sleeping path, then releases it. Every acquisition
+returns a positive delay count, checks protected 64-bit payloads in both
+directions and leaves both byte canaries intact. The coordination phase uses
+relaxed C11 operations so native payload visibility relies on the spinlock.
+Only one slow-path waiter uses PostgreSQL's process-local adaptive/PRNG state;
+this avoids pretending that those upstream globals are a thread-local API.
+
+Direct checks of the original delay functions cover the initial spin count,
+increase/decrease of adaptive estimates, wait-event start/end, seeded randomized
+backoff and wrap at the maximum delay. The observed backoff sequence is
+`[1414, 1744, 2168, 2307, 1000]`. Separate native-original, native-C11 and emitted
+processes initialize a delay status at the final timeout attempt: all execute
+the original `s_lock_stuck`, diagnose the stuck lock and exit 1. This is a bounded
+check of the real timeout branch, not a minute-long stuck-lock stress test.
+The product's normal PANIC path is unchanged by test-only `S_LOCK_TEST` mode.
+
+Four overlay tests pass, including six missing/duplicate context cases,
+source/destination overlap rejection, preservation of an existing destination,
+and a hash comparison of the real copied closure. Before the separate portable
+configuration selection, only `port/atomics.h` and `storage/s_lock.h` differ
+among the original include files; exactly the two authored port headers are
+added. Generic atomic wrappers and the generic spinlock suffix are unchanged.
+
+## Actual full-input retry and next work
+
+With final tools and both private overlays, the real complete
+`src/backend/tcop/postgres.c` object emits with exit 0. The former spinlock
+`#error` is resolved. DotCC still reports:
 
 ```text
-dotcc: #error: PostgreSQL does not have spinlock support on this platform . Please report this to pgsql - bugs @ lists . postgresql . org .
+#include 'regex.h' not resolvable (not in -I dirs or system headers)
+#include 'getopt.h' not resolvable (not in -I dirs or system headers)
+#include 'sys/prctl.h' not resolvable (not in -I dirs or system headers)
 ```
 
-The reduction `tests/Atomics/pg_spinlock_selection.c` includes the actual
-`c.h`/`storage/s_lock.h` and returns `sizeof(slock_t)`. Native compilation and
-execution pass and report one byte. The same staged DotCC input fails with the
-same preprocessor error. Original logs are
-`atomics-postgres-full-emission.log`, `atomics-spinlock-native-build.log`,
-`atomics-spinlock-native-run.log`, and `atomics-spinlock-reduction.log`.
-This is a missing separate compiler-port selection, not evidence of a broken
-C11 CAS or an established compiler defect.
+These are required system-header closure diagnostics; successful object emission
+is recorded separately from complete input qualification. The suite remains
+blocked while they occur. The supervisor owns shared header/runtime coverage and
+whole-backend integration. `regex/regex.h` deliberately includes the system
+`<regex.h>` before defining PostgreSQL's replacement interfaces; `pg_getopt.h`
+selects `<getopt.h>` from native configuration; `storage/pmsignal.h` selects
+`<sys/prctl.h>`. Supply reviewed shared declarations/host behavior or a proven
+upstream profile selection, then retry actual source. No missing header is
+silently replaced by an empty port header.
 
-Although the native profile records `--disable-spinlocks`, the selected fork's
-`storage/s_lock.h` still unconditionally requires `HAS_TEST_AND_SET`. Do not
-define that macro alone or bypass its error. A further reviewed spinlock port
-would have to preserve the one-byte `slock_t`, TAS return convention, acquire/
-release semantics and actual generic `S_LOCK`/`s_lock` contention behavior. It
-needs its own real native/emitted probes, followed by another complete
-`postgres.c` emission and build/closure investigation. The supervisor owns that
-scope decision and any compiler repairs.
+Earlier snapshots rejected PostgreSQL's `StaticAssertExpr` because its GNU
+statement expression contains `do { _Static_assert(...); } while (0)`.
+`tests/Atomics/pg_static_assert_expr.c` preserves the actual macro: native returns
+42 and old snapshots reject it. Diagnostic receipt
+`artifacts/atomics-spin-reduction-20261022-170700-623867/receipt.json` retains the
+native/old-compiler evidence. The final supervisor snapshot contains the shared
+loop fix; this is historical, rather than the current full-TU failure.
+The same actual-header reduction emits successfully with the final snapshot;
+`static-assert-current.log` records that retry. Python syntax and owned-path
+diff whitespace checks also pass in the final receipt.
+
+The historical upstream `--disable-spinlocks` argument is unrecognized by this
+fork's configure. It is not used as a synchronization bypass. This port supplies
+real TAS/acquire/release regardless of that obsolete argument.
 
 No shared-memory cross-process atomics, alternate architecture/ABI, processed
 output, NativeAOT, complete backend closure, SQL execution, or useful workflow
@@ -170,9 +241,13 @@ bash pglite/scripts/test.sh --suite atomics --fetch never --tools reuse
 bash pglite/scripts/probe.sh --unit postgres.c --fetch never --tools reuse --jobs 1
 ```
 
-The framework snapshots existing tools and prepares the configured native headers;
-`PGLITE_ATOMICS_SOURCE` may explicitly select an existing configured source for
-independent controls. Expected result: atomic tests pass and the overall suite
-fails on the real full-input spinlock blocker. Original experiment receipts are
-retained above; final integrated receipts are in VALIDATION.md. No blocked
-receipt is counted as a successful SQL product.
+Use explicit `DOTCC_COMPILER` and `PGLITE_ATOMICS_SOURCE` to select an existing
+immutable compiler and a read-only configured/built native stage; doing so avoids
+native preparation for this suite. Every managed build uses a private
+`--artifacts-path`. The framework adapter logs native/emitted controls, negative
+stuck-lock processes and the complete `postgres.c` command in one receipt.
+Expected current result: atomics and spinlocks pass, the object emits, and the
+suite fails its unresolved-include gate. No blocked receipt qualifies SQL.
+The supervisor retains P6 completion, full backend retry and integration.
+This bounded work does not build shared compiler outputs, fetch sources,
+commit, push, publish, or change the parent-owned plan files.
