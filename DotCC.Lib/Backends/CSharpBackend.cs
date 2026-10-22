@@ -1606,7 +1606,7 @@ internal sealed partial class CSharpBackend
     {
         Paren p => BareLValue(p.Inner),
         VarRef v => GlobalName(v.Sym),
-        Member m when IsZeroSizedAggregate(m.Type) => $"*{ZeroSizedMemberAddress(m)}",
+        Member m when IsZeroSizedAggregate(m.Type) => $"(*{ZeroSizedMemberAddress(m)})",
         Member m => $"{MemberBase(m)}{(m.Arrow ? "->" : ".")}{DotCC.EmitHelpers.Id(m.Field)}",
         Index ix => $"{Sub(ix.Base, PPostfix)}[{Expr(DecayEnum(ix.Idx))}]",
         Unary { Op: UnOp.Deref } u when VaListLifetimeValidator.IsVaList(u.Type) => Expr(u.Operand),
