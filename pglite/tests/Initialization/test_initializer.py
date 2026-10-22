@@ -10,6 +10,7 @@ from pathlib import Path
 import tempfile
 from types import SimpleNamespace
 import unittest
+import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -82,6 +83,14 @@ class InitializerTests(unittest.TestCase):
             self.assertFalse(report["native_libraries_copied"])
             self.assertFalse(report["module_execution_qualified"])
             self.assertTrue((output / "COPYRIGHT").is_file())
+            observed = Path(self.info["observed_source"])
+            with zipfile.ZipFile(output / "notices/upstream-source.zip") as notices:
+                for name in ("src/backend/regex/COPYRIGHT", "src/backend/regex/regcomp.c",
+                             "src/backend/regex/regexec.c", "src/backend/regex/regc_locale.c",
+                             "src/backend/snowball/README", "pglite/static/minimal-icu/76.1/LICENSE"):
+                    self.assertEqual(notices.read("upstream/" + name), (observed / name).read_bytes())
+            self.assertEqual((output / "notices/DotCC-LICENSE.txt").read_bytes(),
+                             (ROOT.parent / "LICENSE").read_bytes())
             self.assertGreater(len(report["files"]), 15)
             for entry in report["files"]:
                 self.assertFalse(entry["path"].endswith((".so", ".dll", ".dylib", ".wasm")))

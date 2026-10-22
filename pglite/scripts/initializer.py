@@ -194,8 +194,7 @@ def stage_bootstrap_data(root, info, destination):
         shutil.copy2(item, output)
         manifest.append(dict(path=relative.as_posix(), bytes=output.stat().st_size,
                              sha256=hashlib.sha256(output.read_bytes()).hexdigest(), kind="upstream-bootstrap-data"))
-    notice = Path(info["source"]) / "COPYRIGHT"
-    shutil.copy2(notice, destination / "COPYRIGHT")
+    manifest.extend(helper(Path(root) / "scripts/notices.py").stage(root, info, destination))
     for name, module in policy(root)["bootstrap_modules"].items():
         descriptor = Path(root) / "src/Initialization" / (name + ".module.json")
         relative = module["descriptor"]["installed_relative_path"]
