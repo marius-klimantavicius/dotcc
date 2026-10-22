@@ -1,5 +1,23 @@
 # PGlite campaign-start validation
 
+## Active implementation continuation
+
+The coordinator continues through the full product and P6; historical baseline
+receipts below are intermediate evidence. Current work is tracked in
+[IMPLEMENTATION.md](IMPLEMENTATION.md).
+
+Receipt `20261022-170306-5fe5032a` passes the complete real fork libc managed
+build and the native/emitted portable CRC32C/popcount suite (771 length/alignment
+cases plus known vectors). This removes the four unresolved libc host names;
+process fallback returns documented errors and is not an embedded initializer.
+
+The shared GNU statement-expression loop reduction fails on previous tools,
+passes native and actual emitted direct/object execution after repair, and
+retains rejection of outward transfers. Eighteen focused syntax checks pass.
+Full-source receipt `20261022-170525-3774461c` advances through the brin units
+and fails at a separate for-condition comma parser gap in actual `tupdesc.c`.
+No complete product or managed SQL acceptance is claimed.
+
 Updated 2026-10-22. This is an implementation start, not acceptance of a complete
 PostgreSQL port. Current evidence uses Linux x64, .NET SDK 10.0.112 and the exact
 source/configuration pins in `config/`. Logs, private source stages and receipts

@@ -39,19 +39,24 @@ internal sealed partial class IrBuilder
     private CExpr BuildStatementExpression(Item item)
     {
         var body = BuildBlock(item);
-        // Keep control transfers in the enclosing C function from accidentally
-        // becoming returns/breaks inside a generated delegate. Structured
-        // conditionals stay inside that delegate and need no transfer lowering.
-        bool Supported(CStmt statement) => statement switch
+        // Returns and transfers targeting an enclosing function/loop cannot
+        // cross a deferred delegate. Loops wholly inside this expression keep
+        // their own break/continue targets in both eager and deferred lowering.
+        bool Supported(CStmt statement, int loops = 0) => statement switch
         {
             DeclStmt or ExprStmt => true,
-            Block block => block.Stmts.All(Supported),
-            If conditional => Supported(conditional.Then) &&
-                (conditional.Else is null || Supported(conditional.Else)),
+            Block block => block.Stmts.All(child => Supported(child, loops)),
+            Seq sequence => sequence.Stmts.All(child => Supported(child, loops)),
+            If conditional => Supported(conditional.Then, loops) &&
+                (conditional.Else is null || Supported(conditional.Else, loops)),
+            While loop => Supported(loop.Body, loops + 1),
+            DoWhile loop => Supported(loop.Body, loops + 1),
+            For loop => (loop.Init is null || Supported(loop.Init, loops)) && Supported(loop.Body, loops + 1),
+            Break or Continue => loops > 0,
             _ => false,
         };
-        if (!body.Stmts.All(Supported))
-            throw new IrUnsupportedException("statement expression with control flow or non-scalar declarations");
+        if (body.Stmts.FirstOrDefault(statement => !Supported(statement)) is { } unsupported)
+            throw new IrUnsupportedException($"statement expression with control flow or non-scalar declarations: {unsupported.GetType().Name} at {unsupported.Pos}");
         var value = (body.Stmts.LastOrDefault() as ExprStmt)?.Expr;
         var statements = value is null ? body.Stmts : body.Stmts.Take(body.Stmts.Count - 1).ToArray();
         return new StatementExpression(new Block(statements), value)

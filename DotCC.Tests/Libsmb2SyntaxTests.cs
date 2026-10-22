@@ -61,10 +61,20 @@ public sealed class Libsmb2SyntaxTests
     [Theory]
     [InlineData("return 7;")]
     [InlineData("break;")]
+    [InlineData("continue;")]
+    [InlineData("if (1) break;")]
+    [InlineData("while (1) { return 7; }")]
     public void Unsupported_statement_expression_control_transfer_is_rejected(string body)
     {
         Should.Throw<CompileException>(() => Emit("int main(void) { return ({ " + body + " 2; }); }"))
             .Message.ShouldContain("statement expression");
+    }
+
+    [Fact]
+    public void Statement_expression_supports_internal_loop_control()
+    {
+        Emit("int main(void) { return ({ int value = 0; do { ++value; if (value == 2) continue; if (value == 4) break; } while (value < 10); value; }); }")
+            .ShouldContain("break;");
     }
 
     [Fact]

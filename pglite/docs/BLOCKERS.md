@@ -2,6 +2,22 @@
 
 Campaign-start ledger, 2026-10-22. Planned checks are not successes.
 
+## PGL-008 — GNU statement-expression local loops (fixed, full retry advanced)
+
+Actual `brin.c` reached a `do ... while (0)` inside PostgreSQL's
+`StaticAssertExpr` after real spinlock selection. The shared builder rejected
+every loop in a statement expression. Internal structured loops now keep their
+own break/continue targets, including deferred conditional evaluation; returns
+and transfers to enclosing scopes remain rejected. The native reduction prints
+`4 3 1 0`; prior immutable tools reject its DoWhile. Eighteen syntax checks and
+three emitted/direct/object fixture executions pass. Logs:
+`artifacts/supervisor-portable/statement-{before,native,unit2,functional,object}.log`.
+
+Normal full-source receipt `20261022-170525-3774461c` emits the earlier brin
+units and reaches `tupdesc.c`'s real `forfour` macro. Its comma-separated for
+condition is the next reproduced parser defect, currently under repair. Software
+codegen selection and current continuation are recorded in IMPLEMENTATION.md.
+
 ## BASE-001 — Existing framework metadata regression
 
 Classification: unrelated repository baseline. Command:
