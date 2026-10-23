@@ -158,6 +158,7 @@ public static partial class Compiler
         var globalByName = new Dictionary<string, Backends.CSharpGlobalSource>(StringComparer.Ordinal);
         var functions = new StringBuilder();
         var functionSources = new List<CSharpFunctionSource>();
+        var functionOrigins = new Dictionary<string, string>(StringComparer.Ordinal);
         var functionContracts = new Dictionary<string, (FunctionOverrideMetadata Contract, string Path)>(StringComparer.Ordinal);
         var externalTypeContracts = new Dictionary<string, ExternalTypeLayout?>(StringComparer.Ordinal);
         var inlineMetadata = new Dictionary<string, InlineFunctionMetadata>(StringComparer.Ordinal);
@@ -259,7 +260,12 @@ public static partial class Compiler
             {
                 if (functionName != null && !discardedWeakFunctions.Contains((objectIndex, functionName))
                     && !(replacedFunctions.Contains(functionName) && functionSources.Any(f => f.Name == functionName)))
+                {
+                    if (!functionOrigins.TryAdd(functionName, path))
+                        throw new CompileException("duplicate definition of function '" + functionName
+                            + "' in linked objects '" + functionOrigins[functionName] + "' and '" + path + "'");
                     functionSources.Add(new(functionName, functionBody.ToString()));
+                }
                 functionBody.Clear();
             }
             void FlushType()
