@@ -8,11 +8,48 @@ Do not pre-mark milestones complete based on another project's results. -->
 Status: planning; no implementation or qualification claimed.
 Campaign: `{{project}}/`. Updated: {{date}}.
 
-This plan adopts [translation baseline v2](../../docs/plans/translation-baseline.md)
+This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
 and the [shared framework](../../docs/campaigns.md). It records this project's
 decisions and gates; common execution and repair methodology stays in the
 baseline. Current user instructions govern implementation, commits, branch work,
 and delegation; this template grants none of those permissions.
+
+## Agent orchestration
+
+For an authorized campaign, run the supervisor on `gpt-6.1-sol` with `high`
+reasoning effort and implementation agents on `gpt-6.1-sol` with `xhigh`
+reasoning effort. Set the model and effort explicitly at launch; report any
+unavailable setting rather than silently substituting one.
+
+The supervisor owns planning, dependencies, integration, review and final
+validation. Whenever work can be divided into independent parts, the supervisor
+must launch multiple implementation agents in parallel with bounded scopes,
+clear file ownership and acceptance checks. Serialize dependent work, coordinate
+shared edits/build outputs, and validate the integrated result before closing
+the milestone.
+
+The coordinator (supervisor) owns completion of this entire authorized campaign
+through P6 and every required acceptance gate. Unless the user explicitly limits
+the work, a request to start the campaign means continue through implementation
+and qualification. Scaffolding, native controls, diagnostic probes, milestone
+commits and blocker reports are intermediate results, not stopping points.
+
+After each implementation-agent result, review and integrate it, update evidence
+and immediately launch or perform the next required task. The parent coordinator
+retains responsibility when a delegated supervisor or implementation agent ends;
+it must arrange continuation until campaign acceptance. Keep independent work
+running in parallel. Repair and retry compiler/runtime failures, missing host
+services and incomplete source closure. Do not require repeated user prompts to
+continue, narrow required scope, or weaken gates to manufacture completion.
+
+Stop only when all required gates pass, the user explicitly pauses/limits work,
+or an external dependency, missing authority or necessary user decision prevents
+all further useful progress. For an unavoidable interruption, record the exact
+impediment, attempted resolutions and minimum input needed; keep the campaign
+incomplete and resume when resolved. Exhaust independent work before waiting.
+
+Independent work packages and dependencies: {{parts that can run in parallel,
+their owned files and acceptance checks; or why the current work is sequential}}.
 
 ## Outcome and scope
 

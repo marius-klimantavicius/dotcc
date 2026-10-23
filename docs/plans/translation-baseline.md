@@ -1,6 +1,6 @@
 # Baseline for translating an upstream project
 
-Baseline version: 2 (2026-09-27).
+Baseline version: 4 (2026-10-22).
 
 Use this baseline for a new DotCC translation campaign. Copy the
 [project template](translation-template.md) to `<project>/docs/PLAN.md`, then fill
@@ -24,6 +24,48 @@ It does not transfer completion claims, branch choices, commit/push permissions,
 or delegation instructions from an older campaign. Current user instructions
 control the work. Record project-specific departures and their reasons explicitly;
 an unresolved decision blocks only the work that depends on it.
+
+## Agent orchestration
+
+When carrying out an authorized translation campaign, run the supervisor on
+`gpt-6.1-sol` with `high` reasoning effort and implementation agents on
+`gpt-6.1-sol` with `xhigh` reasoning effort. Configure these settings explicitly
+when launching agents. If the requested model or effort is unavailable, report
+the limitation rather than silently substituting another setting.
+
+The supervisor owns planning, task dependencies, integration, review and final
+validation. Whenever work can be split into independent parts, the supervisor
+must start multiple implementation agents in parallel. Give each agent a bounded
+scope, clear file ownership, dependencies and acceptance checks. Serialize
+dependent work and coordinate edits or builds that share files or output
+directories. Review and integrate each agent's results, then run the required
+combined validation before closing a milestone.
+
+The coordinator (supervisor) is accountable for fully implementing the authorized
+campaign through P6 and passing every required acceptance gate. Starting a
+campaign authorizes pursuing that outcome unless the user explicitly limits the
+work to planning or a particular milestone. Do not redefine the task as a
+"campaign start" deliverable or stop after scaffolding, native controls, probes,
+a first translation attempt, a milestone commit, or a blocker report.
+
+After each agent result, review and integrate the work, update the plan and
+evidence, and immediately assign or perform the next required work. A child task
+finishing does not finish the campaign; the parent coordinator retains ownership
+and must arrange continuation. Keep independent implementation agents working
+whenever possible. Compiler/runtime defects, missing host services, failed tests
+and incomplete source closure are work to investigate, repair and retry, not
+automatic stopping conditions. Progress reports must not become handoffs that
+require the user to say "continue".
+
+Continue until the complete agreed product, consumer, required execution matrix
+and reproduction gates pass with current evidence. Do not shrink required scope,
+defer required features or weaken acceptance gates to declare completion. Stop
+early only for an explicit user pause/scope limit or a demonstrated external
+dependency, missing authority or user decision that prevents further progress.
+First exhaust useful independent work; then record the exact impediment, attempts
+and minimum input needed, and leave the campaign explicitly incomplete. Resume
+when the impediment is resolved. Difficulty, elapsed effort and successful
+intermediate milestones alone do not justify stopping.
 
 ## 1. Define a useful product and its boundaries
 
