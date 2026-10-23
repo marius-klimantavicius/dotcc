@@ -3,9 +3,9 @@ from campaigns.testing import forms, modes
 from campaigns.translation import check_product
 
 
-def run(ctx, suite):
+def run(ctx, suite, native=None):
     project = ctx.root / "tests/CoreAbi/Product/ProductAbi.csproj"
-    native = ctx.root / "artifacts/core-abi/native.log"
+    native = native or ctx.root / "artifacts/core-abi/native.log"
     if not native.is_file():
         raise RuntimeError("Matching native layout observations missing")
     for form in forms(ctx):

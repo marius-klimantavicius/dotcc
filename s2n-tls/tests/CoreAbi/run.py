@@ -13,9 +13,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--compiler", type=Path, required=True)
     parser.add_argument("--mode", choices=("jit", "aot", "all"), default="all")
+    parser.add_argument("--work", type=Path, default=ROOT / "build/core-abi")
+    parser.add_argument("--artifacts", type=Path, default=ROOT / "artifacts/core-abi")
     args = parser.parse_args()
     compiler = args.compiler.resolve()
-    work, artifacts = ROOT / "build/core-abi", ROOT / "artifacts/core-abi"
+    work, artifacts = args.work.resolve(), args.artifacts.resolve()
     work.mkdir(parents=True, exist_ok=True)
     artifacts.mkdir(parents=True, exist_ok=True)
     report = {"scope": "Actual upstream C type/offset/bitfield native-emitted probe; not whole-library product qualification", "commands": [],
@@ -47,10 +49,13 @@ def main():
     run([work / "native-layout"], "native")
     run(["dotnet", compiler, "-std=c11", *flags, source, "--emit=managedlib", "--class-name", "S2nLayout", "--namespace", "Managed.Security.S2n",
          "--nest-types", "--runtime=c", "--literal-pool", "--deduplicate-inline", "--prune-unused-inline", "-o", work / "Emitted"], "emit")
+    reference = "-p:CoreAbiProject=" + str(work / "Emitted/Emitted.csproj")
     if args.mode in ("jit", "all"):
-        run(["dotnet", "run", "--project", ROOT / "tests/CoreAbi/CoreAbi.csproj", "-c", "Release", "--", artifacts / "native.log", artifacts / "jit.json"], "jit")
+        run(["dotnet", "run", "--project", ROOT / "tests/CoreAbi/CoreAbi.csproj", "-c", "Release", reference,
+             "--artifacts-path", work / "dotnet/jit", "--", artifacts / "native.log", artifacts / "jit.json"], "jit")
     if args.mode in ("aot", "all"):
-        run(["dotnet", "publish", ROOT / "tests/CoreAbi/CoreAbi.csproj", "-c", "Release", "-r", "linux-x64", "-p:PublishAot=true", "-m:1", "-o", work / "aot"], "aot-build")
+        run(["dotnet", "publish", ROOT / "tests/CoreAbi/CoreAbi.csproj", "-c", "Release", "-r", "linux-x64", "-p:PublishAot=true", reference,
+             "--artifacts-path", work / "dotnet/aot", "-m:1", "-o", work / "aot"], "aot-build")
         run([work / "aot/CoreAbi", artifacts / "native.log", artifacts / "aot.json"], "aot")
     save("passed", mode=args.mode)
     print("Core ABI probe passed: " + str(artifacts / "receipt.json"))

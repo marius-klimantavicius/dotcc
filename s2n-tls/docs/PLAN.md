@@ -1,6 +1,6 @@
 # Translate s2n-tls to C# with DotCC
 
-Status: implementation authorized; P0 and P2 passed; P1/P3–P6 remain in progress. Product acceptance remains incomplete.
+Status: implementation authorized; P0/P1/P2/P3/P5 have scoped passing evidence; P4/P6 remain in progress. Product acceptance remains incomplete.
 Campaign: `s2n-tls/`. Updated: 2026-10-23.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
@@ -71,7 +71,7 @@ The broader qualification matrix covers every applicable suite/version pair.
 | Required managed delivery | Owning configuration/credential/connection API; low-level translated API; ordinary project references; concurrent independent connections; raw/processed JIT/NativeAOT on Linux x64. |
 | Outside this first product | Full SSLv2 handshakes/records and cipher suites absent from the pinned implementation; resurrection of removed policy implementations; QUIC transport, kTLS/offload, PQ/ML-DSA features, 0-RTT, Rust bindings, native command-line applications and FIPS qualification. These are distinct from the required legacy features. |
 | Later qualification | Additional execution targets, optional upstream features above, extended fuzz/stress and performance campaigns. |
-| Baseline departures | None in required execution forms or completion gates. Crypto dependency choice remains open under D4; no BCL-only restriction is inherited from picotls. |
+| Baseline departures | None in required execution forms or completion gates. D4 selects BCL plus pinned BouncyCastle.Cryptography2.7.0; no BCL-only restriction is inherited from picotls. |
 
 ### Default compatibility policy
 
@@ -108,13 +108,13 @@ choice; only dependent work waits for it.
 
 | ID | Decision | Choice and reason | Status and resolving gate |
 | --- | --- | --- | --- |
-| D1 | Source version and inputs | Start from release `v1.7.12`, commit `6459002cd61e4bf3bbc53db23f068b21da9ff6bd`, published 2026-10-16. Keep s2n product, provider/header dependencies, native oracle and independent peers separately identified in `config/inputs.json`. | Provisional source selection; resolve exact provider/peer pins, licenses and archive layouts at P0. |
-| D2 | Source/configuration closure | Select all 174 C files in the pinned upstream library build groups, retaining every required legacy branch. Explicit manifests, ordered include/define lists and per-unit flags; C99 plus the actual required GNU extensions. Default `compat`, non-FIPS, no native autodetection deciding managed capabilities. | Provisional; compare staged manifest to CMake and record feature probes/compiled branches at P0. |
+| D1 | Source version and inputs | Start from release `v1.7.12`, commit `6459002cd61e4bf3bbc53db23f068b21da9ff6bd`, published 2026-10-16. Keep s2n product, provider/header dependencies, native oracle and independent peers separately identified in `config/inputs.json`. | Selected and acquired through framework JSON metadata; native/header, independent peers and managed dependency have separate pins/roles. |
+| D2 | Source/configuration closure | Select all 174 C files in the pinned upstream library build groups, retaining every required legacy branch. Explicit manifests, ordered include/define lists and per-unit flags; C99 plus the actual required GNU extensions. Default `compat`, non-FIPS, no native autodetection deciding managed capabilities. | Selected: actual CMake174-unit manifest plus authored adapter; final183-binding profile includes proved SHAKE and retains all36 suites. |
 | D3 | ABI and encodings | Linux x64 LP64 first: 64-bit pointers/long/size_t, little endian; preserve wire network byte order, byte-oriented PEM/DER and upstream text contracts. Measure layouts, unions, bitfields, callbacks and thread-local errors against the selected native build. | Provisional until actual native/emitted probes at P1. |
-| D4 | Host/provider and dependencies | Reuse DotCC runtime/libc and BCL execution services. Prefer BCL crypto where it satisfies the exact operation; allow a deliberately selected managed or translated crypto dependency for missing legacy operations. No native s2n/libcrypto wrapper in the proposed managed product. | Open: inventory libcrypto entry points and prove legacy capabilities at P1; select and pin missing-provider implementations before broad host work. Do not remove a required suite to close this decision. |
+| D4 | Host/provider and dependencies | Reuse DotCC runtime/libc and BCL execution services. Prefer BCL crypto where it satisfies the exact operation; allow a deliberately selected managed or translated crypto dependency for missing legacy operations. No native s2n/libcrypto wrapper in the proposed managed product. | Selected BCL plus pinned BC2.7.0,183 exact typed entries covering178 selected native imports. Legacy provider/emitted probes pass both runtimes. Observed Base64 semantic gap is active P1 work; no required suite removed. |
 | D5 | State and lifetime | One explicitly owned library initialization domain, shared immutable configurations after setup, separate connections; serialize entry per connection while allowing parallel connections. Final cleanup follows draining all users. No independent library-global isolation claim. | Provisional; audit init/cleanup, globals, TLS and reentrancy at P1/P3. |
 | D6 | Translation/delivery | Multi-unit object emission/linking into class `S2nTls`, namespace `Managed.Security.S2n`; .NET 10/C# 14. Shared `link_flags` with 256 KB splitting, literal pool and inline deduplication. Original authored host/API references. | Provisional route; complete raw and processed products at P2, including address identity checks. No default exceptions proposed. |
-| D7 | Native and independent controls | Same-pin native s2n using a legacy-capable non-FIPS libcrypto. OpenSSL 1.1.1 is a candidate oracle backend; a separately pinned SSLv3/RC4-capable OpenSSL build is a candidate independent peer. Modern peers may supplement coverage. | Open exact pins/builds at P0/P1; capability must be demonstrated with successful forced handshakes, not command-line cipher listings. |
+| D7 | Native and independent controls | Same-pin native s2n using a legacy-capable non-FIPS libcrypto. OpenSSL 1.1.1 is a candidate oracle backend; a separately pinned SSLv3/RC4-capable OpenSSL build is a candidate independent peer. Modern peers may supplement coverage. | Selected OpenSSL1.1.1w backend, separately pinned1.1.1v and1.0.2u independent peers. All78pair/role native exchanges and214654 managed matrix execute; additional Python test peers are separately recorded. |
 | D8 | Execution matrix | `compat` × raw/processed × JIT/NativeAOT × Linux x64, both roles and every protocol-applicable suite. Whole-library-rooted AOT and a separately trimmed ordinary consumer. | Decided proposed acceptance target; P4/P6 execution evidence required. Windows/macOS/arm64 are unqualified until separately executed. |
 | D9 | Test scope | Applicable upstream cases, exhaustive required suite negotiation, native differential checks, independent peers, authentication/error/lifetime cases and bounded allocation/I/O failures. No long-running custom fuzz, saturation stress or performance threshold in this campaign. | Decided selection; freeze case inventory and explicit exclusions at P0/P1. |
 
@@ -254,19 +254,19 @@ Use shared Python resolution and preserve invocation from unrelated directories.
 
 ## Milestones and evidence
 
-P0 passed its source/native/discovery gate; P1/P2 are in progress. Commit coherent
+P0/P1/P2 passed source/native/build/boundary gates; P3/P5 scoped execution/delivery evidence also passes. P4/P6 remain open. Commit coherent
 milestones after required validation, respecting current user prerequisites.
 Do not push without authorization.
 
 | Phase | Concrete exit gate | Status | Planned evidence and remaining work |
 | --- | --- | --- | --- |
 | P0 — Scope/native baseline | Exact pins, 174-unit manifest reconciled to build, complete legacy inventory, recipe/layout, working native SSLv3/RC4 + TLS 1.3 controls and first full-source translation attempt. | Passed | Framework acquisition `20261023-200313-154db7b3`; source inventory 174/36/14/78; native `20261023T171931Z` passes 238 cases and 590,537 upstream assertions; full-source attempts have concrete compiler findings. |
-| P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | In progress | Native/emitted core and provider ABI probes pass JIT/AOT;38 provider groups pass both modes.176 actual crypto imports are covered by181 declarations. Complete linked-product ABI/operations, CRL validation audit/capabilities and managed ownership execution remain open. |
-| P2 — Complete translation | All selected units emit/link; raw and processed libraries build at canonical paths; no unresolved required imports or manual output repair. | Passed | Full175-unit attempt20261023-210200-74eee32f emitted/linked, built raw/processed, postprocessed and transactionally published both canonical projects.181 exact typed bindings compile. Behavioral/provider capability gates remain open. |
-| P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | In progress | First raw JIT consumer passes all three forced exchanges, exact IDs/versions, binary payloads and close_notify/final cleanup. Remaining forms/modes and lifecycle matrix are running. |
-| P4 — Behavioral qualification | Every required suite/version/role row, applicable upstream cases, compatibility controls, errors and independent interop pass. | Planned | Case inventory and matrix reports; all 14 SSLv3 suite rows and all 36 negotiable suites accounted for. |
-| P5 — Consumer delivery | Root solution builds; separate ordinary consumer runs JIT and trimmed AOT; whole-library AOT and package/import/notices audits pass. | Planned | Consumer, copied-consumer, rooted-AOT and audit receipts. |
-| P6 — Reproduction/acceptance | Final-tool regeneration, complete verification matrix, affected shared regressions and reproduction checks pass. | Planned | `docs/validation.md` and current receipts; no required skipped/blocked row. |
+| P1 — Boundary feasibility | Real emitted/native ABI checks; legacy provider operations and truthful capability configuration; default compatibility policy; ownership and peer capability probes. | Passed scoped boundary | Capability255, all47 native differential groups in JIT/AOT and current223542 canonical ABI all4 pass.178 selected crypto imports are covered by183 declarations. Base64 repair08796c070 matches1,659 native vectors per runtime. Full upstream caller qualification remains P4. |
+| P2 — Complete translation | All selected units emit/link; raw and processed libraries build at canonical paths; no unresolved required imports or manual output repair. | Passed | Full175-unit raw/processed publication223542 passes with183 exact bindings/SHAKE/correct DHE callers and array-lifetime compiler repair. No generated edits. Behavioral gates remain separate. |
+| P3 — Useful execution | Managed client/server execute forced SSLv3 RC4, SSLv3 3DES and TLS 1.3 round trips through translated code, with clean lifecycle. | Passed scoped214654 | All4 ordinary consumer variants execute all3 forced exchanges with exact IDs/versions/binary payloads/shutdown;30 lifecycle cases pass pervariant. New compiler/provider output will be requalified. |
+| P4 — Behavioral qualification | Every required suite/version/role row, applicable upstream cases, compatibility controls, errors and independent interop pass. | In progress | Prior214654 matrix1076/1076 passes; fresh223542/base64 matrix runs separately. Matching-profile native257/257 and selected16 managedall4 pass. Fresh223542257 emissions pass and all257C×4 controller runs. Original buffered-send overflow node now passes all4. Complete18Python×4 remains open; skipped, rerun and failed executions are preserved. |
+| P5 — Consumer delivery | Root solution builds; separate ordinary consumer runs JIT and trimmed AOT; whole-library AOT and package/import/notices audits pass. | Passed scoped223542/base64 delivery | Current delivery12/12 covers copied ordinary consumer all4variants plus whole-library TrimmerRootAssembly AOT bothforms, actual3roundtrips and notices/import/original-reference/runtime identity audits. Deep audit verifies1,682 files and exact rooted XML derivation. Prior locked root solution build passes. |
+| P6 — Reproduction/acceptance | Final-tool regeneration, complete verification matrix, affected shared regressions and reproduction checks pass. | In progress | Final-tool223542 publication, current ABI and affected shared regressions pass. Full upstream/current-output matrix and reproduction remain open; `docs/validation.md` records exact passed/failed/unrun receipts. No required skip is counted passed. |
 
 Dependency order is P0 → P1 → P2 → P3 → P4 → P5 → P6, with independent input,
 provider, API and harness design work as described above. Split implementation
@@ -344,9 +344,9 @@ to declared groups, not hidden downloads. Verify edited usable inputs under
 directory, and authored files surviving regeneration. Strict hashes are optional.
 
 Final evidence belongs in `docs/validation.md`, with links to framework receipts
-and specialist case reports. Currently all implementation gates, native controls,
-translations, provider probes and execution targets are unrun. Exact provider and
-peer selections are open and are part of P0/P1 implementation work.
+and specialist case reports. The current scoped native, translation, provider,
+ABI and delivery gates have passing receipts. Exact provider and peer selections
+are recorded in config JSON; full qualification and reproduction remain P4/P6 work.
 Completion of the campaign requires the full specified legacy and modern
 profile, consumer and reproduction gates. A working TLS 1.3 subset, a passing
 build or an SSLv3 test that skips RC4 cannot close acceptance.

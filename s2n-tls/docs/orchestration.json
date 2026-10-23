@@ -17,15 +17,25 @@
     },
     {
       "package": "api-qualification",
-      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r2-20261023"
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r4-20261023"
     }
   ],
   "shared_build_owner": "supervisor",
-  "next": "P1 provider semantic/capability completion, P3 owning consumer actual TLS, full P4\u2013P6 qualification",
+  "next": "Finish257originalC\u00d74+18Python\u00d74, currentprotocol/lifecyclematrix, finalABI/sharedregressions/reproduction; repairobservedfailureswithoutreducinglegacy",
   "completed_tasks": [
     {
       "package": "inputs-native",
       "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-inputs-native-r1-20261023"
+    },
+    {
+      "package": "api-qualification",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r2-20261023",
+      "terminal_status": "failed-content-flag"
+    },
+    {
+      "package": "api-qualification",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r3-20261023",
+      "terminal_status": "failed-content-flag-cancelled-queued-turns"
     }
   ],
   "commits": [
@@ -33,14 +43,51 @@
     "72011ea54",
     "bbe0217d8",
     "7aa3f97de",
-    "27c3194dc"
+    "27c3194dc",
+    "3291fd981",
+    "d9ffe1a3c",
+    "d75255530",
+    "70d61f9b7",
+    "d0f0146de",
+    "08796c070",
+    "3a850635c"
   ],
-  "current_attempt": null,
-  "last_complete_link": "20261023-205255-fc99db78",
-  "last_raw_build_failure": {
-    "missing_crypto_imports": 9,
-    "va_list_initializer_errors": 3,
-    "repairs": "181-entry validated profile and27c3194dc"
+  "current_attempt": "20261023-223542-f7e7054e (passed175/raw+processed; new actual qualification with base64 repair08796c070)",
+  "last_complete_link": "20261023-223542-f7e7054e",
+  "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json",
+  "workloads": {
+    "provider_selected16": "build/provider/original16-retry/executables.json",
+    "final_current_matrix": "artifacts/managed/final-current-product-223542-base64",
+    "current_delivery": "artifacts/managed/final-delivery-223542-base64/report.json",
+    "native_profile_all257": "artifacts/native-profile-upstream/all-required-214654-ktls-guards/report.json",
+    "native_python18": "artifacts/native-python/remaining14-policy-v2/report.json",
+    "translated_python17": "artifacts/managed-upstream/python-current-223542-base64/controller-progress.json",
+    "provider_selected16_all4": "artifacts/provider/original16-expanded/20261023T191422Z-2c6e0696/all4.json",
+    "fresh_c_emission": "build/managed-upstream/all-required-257-emission-223542.json",
+    "provider_required_c": "build/provider/required257-223542/progress.json",
+    "native_psk_peer_proof": "artifacts/native-peer-psk/proof-v3/report.json",
+    "native_equivalence": "artifacts/provider/native-equivalence/214654-to-223542.json"
   },
-  "p2_receipt": "artifacts/campaign/20261023-210200-74eee32f/receipt.json"
+  "discovery_correction": {
+    "original": "artifacts/managed/full-owning-matrix/report.json",
+    "original_counts": {
+      "passed": 443,
+      "failed": 629
+    },
+    "interop_revalidation": "artifacts/managed-contract/discovery-interop-observation-audit.json",
+    "lifecycle_rerun": "artifacts/managed/lifecycle-corrected-raw-jit/report.json"
+  },
+  "orchestration_recovery": "r2 original failed with pending follow-up run; task_cancel stops all later turns after r3 recovery, preserving authored files/receipts.",
+  "passed_scoped_gates": {
+    "P0": "174upstream+1adapter/36suites/14SSLv3/78pairs",
+    "P2": "223542raw+processed175/183bindings",
+    "P3": "2146541076rowmatrixall4variants",
+    "P5": "223542base64delivery12/12+deep1682fileaudit",
+    "P1": "47providerJIT+AOT/currentABI4variants"
+  },
+  "open_gates": [
+    "P4full257Cplus18Pythonall4variants",
+    "P6newoutputreproduction/integratedfinalreceipts"
+  ],
+  "native_python_gate": "14 disjoint families have strictly passed native views; PSK/HRR/happy/version require fresh qualifying receipts; original skips/retries remain failed"
 }
