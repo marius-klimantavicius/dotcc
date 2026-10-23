@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/Managed.S2nTls/Managed.S2nTls.csproj" />
     <Compile Include="../../samples/ManagedConsumer/Exchange.cs" Link="Exchange.cs" />
+    <Compile Include="../../samples/ManagedConsumer/ExecutionIdentity.cs" Link="ExecutionIdentity.cs" />
     <Compile Include="../Lifecycle/*.cs" Link="Lifecycle/%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

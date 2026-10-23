@@ -10,6 +10,7 @@ internal static unsafe class AllocationCases
 {
     private static int _fail;
     private static long _live;
+    private static long _injectedFailures;
     private static int Init() => 0;
     private static int Cleanup() => 0;
     private static int Allocate(void** output, uint requested, uint* allocated)
@@ -18,7 +19,7 @@ internal static unsafe class AllocationCases
         try
         {
             if (Interlocked.Exchange(ref _fail, 0) != 0)
-            { *Raw.s2n_errno_location() = (int)Raw.s2n_error.S2N_ERR_ALLOC; return -1; }
+            { Interlocked.Increment(ref _injectedFailures); *Raw.s2n_errno_location() = (int)Raw.s2n_error.S2N_ERR_ALLOC; return -1; }
             void* pointer = NativeMemory.Alloc(requested);
             if (pointer == null) { *Raw.s2n_errno_location() = (int)Raw.s2n_error.S2N_ERR_ALLOC; return -1; }
             *output = pointer; *allocated = requested; Interlocked.Increment(ref _live); return 0;
@@ -38,8 +39,16 @@ internal static unsafe class AllocationCases
     private static void ExpectAllocationFailure(Action operation)
     {
         Interlocked.Exchange(ref _fail, 1);
+        long baseline = Interlocked.Read(ref _injectedFailures);
         try { operation(); }
-        catch (S2nException error) when (error.ErrorName == "S2N_ERR_ALLOC") { return; }
+        // Upstream pointer constructors may replace ALLOC with NULL while
+        // propagating failure. Require proof the real allocator rejected once.
+        catch (S2nException error) when (error.ErrorName is "S2N_ERR_ALLOC" or "S2N_ERR_NULL")
+        {
+            if (Interlocked.Read(ref _injectedFailures) != baseline + 1)
+                throw new InvalidOperationException("Failure did not originate at the injected allocator.", error);
+            return;
+        }
         finally { Interlocked.Exchange(ref _fail, 0); }
         throw new InvalidOperationException("Expected a real translated allocation failure.");
     }

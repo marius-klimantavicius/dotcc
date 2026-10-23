@@ -186,6 +186,8 @@ public static class LifecycleCases
             try { await serverHandshake; }
             catch (OperationCanceledException) { }
             catch (S2nException error) when (error.ErrorType is 1 or 2) { }
+            catch (System.Net.Sockets.SocketException error) when
+                (error.SocketErrorCode is System.Net.Sockets.SocketError.ConnectionReset or System.Net.Sockets.SocketError.ConnectionAborted) { }
         }
     }
     private static async Task RejectedRecordAsync(S2nProtocol protocol, ushort suite, string fixtures, string source, bool eof = false)
@@ -204,7 +206,8 @@ public static class LifecycleCases
         if (eof) clientSocket.Shutdown(System.Net.Sockets.SocketShutdown.Send);
         else { tamper.Corrupt = true; await client.SendAsync(Exchange.Payload(0), timeout.Token); }
         await ExpectAsync<S2nException>(async () => { await server.ReceiveAsync(new byte[2048], timeout.Token); },
-            e => eof ? e.ErrorName == "S2N_ERR_CLOSED" : e.ErrorName == "S2N_ERR_DECRYPT");
+            e => e.ErrorName == (eof ? "S2N_ERR_CLOSED" : suite == 0x0004 ? "S2N_ERR_BAD_MESSAGE" :
+                suite == 0x000a ? "S2N_ERR_INTEGER_OVERFLOW" : "S2N_ERR_DECRYPT"));
     }
 
     private static async Task StateAsync(string name, string fixtures, string source)
@@ -266,7 +269,12 @@ public static class LifecycleCases
         }
         byte[] session = name == "session-resumption" ? client.ExportSession() : [];
         if (name == "alpn") Require(client.Negotiated.ApplicationProtocol == "test/1" && server.Negotiated.ApplicationProtocol == "test/1", "ALPN did not negotiate.");
-        if (name == "tls13-key-update") client.RequestKeyUpdate(requestPeerUpdate: true);
+        if (name == "tls13-key-update")
+        {
+            try { client.RequestKeyUpdate(requestPeerUpdate: true); throw new InvalidOperationException("Unsupported peer key-update request was accepted."); }
+            catch (S2nException error) when (error.ErrorName == "S2N_ERR_INVALID_ARGUMENT") { }
+            client.RequestKeyUpdate(); server.RequestKeyUpdate();
+        }
         await Transfer(client, server);
         if (name == "tls13-key-update") Require(client.KeyUpdates.Sent > 0 && client.KeyUpdates.Received > 0 && server.KeyUpdates.Sent > 0 && server.KeyUpdates.Received > 0, "Key update was not performed in both directions.");
         await Shutdown(client, server);

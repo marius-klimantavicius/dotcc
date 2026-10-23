@@ -1,6 +1,7 @@
 using ManagedTests;
 using Managed.Security.S2n;
 
+if (args is ["--identity"]) { ManagedConsumer.ExecutionIdentity.Print(); return 0; }
 if (args.Length != 6 || args[0] != "--case" || args[2] != "--fixtures" || args[4] != "--source")
 {
     Console.Error.WriteLine("ManagedTests --case <name> --fixtures <credentials> --source <s2n-source>");

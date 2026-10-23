@@ -1,16 +1,23 @@
 """Ordinary copied consumer, trimmed/rooted AOT and native-crypto dependency audit."""
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import uuid
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT.parent / 'Scripts'))
+from campaigns.delivery import ignore_build_caches, source_files
+from campaigns.translation import relocate_project
+sys.path.insert(0, str(ROOT / 'tests/Managed'))
+from execution_identity import authored_sources, capture, hashes, tree_hashes, verify
 
 
 def audit_notices(directory):
@@ -93,6 +100,20 @@ def main():
     try:
         product = args.product.resolve()
         if not product.is_file(): raise RuntimeError('Actual translated product missing: ' + str(product))
+        original = {p.relative_to(product.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                    for p in source_files(product.parent)}
+        private = work / 'product' / product.parent.name
+        shutil.copytree(product.parent, private, ignore=ignore_build_caches)
+        copied = {p.relative_to(private).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files(private)}
+        current = {p.relative_to(product.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in source_files(product.parent)}
+        if original != copied or current != original: raise RuntimeError('Product changed during delivery snapshot creation')
+        upstream_product = product
+        product = private / product.name
+        relocate_project(product, upstream_product.parent)
+        snapshot = {'canonical_project': str(upstream_product), 'private_project': str(product),
+                    'canonical_sha256': original, 'relocated_project_sha256': hashlib.sha256(product.read_bytes()).hexdigest()}
+        report['product_snapshot'] = snapshot
         report['original_authored_references'] = audit_authored_references(product)
         report['product_notice_files'] = audit_notices(product.parent)
         if args.rooted and args.mode != 'aot': raise RuntimeError('Whole-library rooting requires an actual NativeAOT execution')
@@ -108,15 +129,30 @@ def main():
                 assembly = next((p.text for p in product_tree.iter('AssemblyName') if p.text), product.stem)
                 ET.SubElement(group, 'TrimmerRootAssembly', Include=assembly)
                 ET.indent(tree); tree.write(project, encoding='unicode')
+            authored = authored_sources(ROOT)
+            external_sources = tree_hashes(external)
             argv = ['dotnet', 'publish' if args.mode == 'aot' else 'build', project, '-c', 'Release',
                     '--artifacts-path', work / 'artifacts', '-m:1', '-p:UseSharedCompilation=false',
                     '-p:S2nTlsProject=' + str(product),
                     '-p:S2nManagedProject=' + str(ROOT / 'src/Managed.S2nTls/Managed.S2nTls.csproj')]
             if args.mode == 'aot': argv += ['-r', 'linux-x64', '--self-contained', 'true', '-p:PublishAot=true', '-o', work / 'publish']
             command(argv, cwd=external)
+            if authored_sources(ROOT) != authored or tree_hashes(external) != external_sources:
+                raise RuntimeError('Authored consumer/provider sources changed during delivery build')
             executable = work / 'publish/ManagedConsumer' if args.mode == 'aot' else work / 'artifacts/bin/ManagedConsumer/release/ManagedConsumer.dll'
             launch = [str(executable)] if args.mode == 'aot' else ['dotnet', str(executable)]
+            identity_log = command([*launch, '--identity'], timeout=120, cwd=external)
+            execution = capture(launch, work / 'artifacts', json.loads(identity_log.read_text()), authored, snapshot)
+            execution['copied_consumer_source_sha256'] = external_sources
+            execution_path = args.output.with_name(args.output.stem + '-execution.json')
+            execution_path.write_text(json.dumps(execution, indent=2) + '\n')
+            report['application_execution'] = {'receipt': str(execution_path), 'sha256': hashlib.sha256(execution_path.read_bytes()).hexdigest()}
+            row['application_execution_receipt'] = str(execution_path)
+            verify(execution)
+            fixture_paths = [p for p in args.fixtures.resolve().rglob('*') if p.is_file()] + [args.source.resolve() / 'tests/pems/dhparams_2048.pem']
+            row['fixture_sha256'] = hashes(fixture_paths)
             log = command([*launch, '--fixtures', args.fixtures.resolve(), '--source', args.source.resolve()], timeout=120, cwd=external)
+            if hashes(fixture_paths) != row['fixture_sha256']: raise RuntimeError('Fixtures changed during copied consumer execution')
             if 'PASS: SSLv3/RC4, SSLv3/3DES, TLS1.3' not in log.read_text(): raise RuntimeError('Missing complete real TLS consumer result')
             report['delivered_notice_files'] = audit_notices(executable.parent)
             row.update(status='passed', log=str(log))

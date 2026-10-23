@@ -6,6 +6,7 @@ using ManagedConsumer;
 
 try
 {
+    if (args is ["--identity"]) { ExecutionIdentity.Print(); return 0; }
     if (args.Length == 9 && args[0] == "--endpoint")
     {
         using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
