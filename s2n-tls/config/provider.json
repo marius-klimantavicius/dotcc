@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "identity": "DotCC managed s2n crypto provider",
+  "macro": "S2N_DOTCC_MANAGED_PROVIDER",
+  "abi": "linux-x64-lp64",
+  "header_source": "openssl-legacy (config/inputs.json)",
+  "header_api": "OpenSSL 1.1.1w declarations; not a native runtime/version claim",
+  "native_product_imports": [],
+  "managed_dependency": {
+    "package_id": "BouncyCastle.Cryptography",
+    "package_version": "2.7.0",
+    "repository": "https://github.com/bcgit/bc-csharp",
+    "revision": "4007498b13582d90ee1eda5d9920c324428b98b3",
+    "url": "https://codeload.github.com/bcgit/bc-csharp/tar.gz/4007498b13582d90ee1eda5d9920c324428b98b3",
+    "prefix": "bc-csharp-4007498b13582d90ee1eda5d9920c324428b98b3",
+    "archive": "bouncycastle.tar.gz",
+    "directory": "bouncycastle",
+    "license": "MIT",
+    "license_path": "LICENSE.md",
+    "package_url": "https://api.nuget.org/v3-flatcontainer/bouncycastle.cryptography/2.7.0/bouncycastle.cryptography.2.7.0.nupkg",
+    "use": "SHA224, RC4, unrestricted 3DES keys, legacy raw RSA PKCS1 signatures, finite-field DH, X25519, DER/PEM parsing; no TLS engine use"
+  },
+  "bcl_operations": [
+    "entropy",
+    "MD5/SHA1/SHA256/SHA384/SHA512 cloneable digests",
+    "AES-CBC without padding",
+    "AES-GCM",
+    "ChaCha20-Poly1305",
+    "RSA PKCS1 encryption/decryption and standard signatures",
+    "RSA-PSS",
+    "NIST ECDH/ECDSA",
+    "certificate chain validation"
+  ],
+  "required_legacy": [
+    "MD5",
+    "SHA1",
+    "MD5_SHA1",
+    "RC4",
+    "3DES_CBC",
+    "RSA_PKCS1_RAW",
+    "DH"
+  ],
+  "binding_status": "managed capability implementation; exact emitted ABI integration pending supervisor output",
+  "compiler_definitions": [
+    "S2N_DOTCC_MANAGED_PROVIDER=1",
+    "S2N_LIBCRYPTO_SUPPORTS_PRIVATE_RAND=1",
+    "S2N_LIBCRYPTO_SUPPORTS_EVP_RC4=1",
+    "S2N_LIBCRYPTO_SUPPORTS_EVP_MD5_SHA1_HASH=1",
+    "S2N_LIBCRYPTO_SUPPORTS_RSA_PSS_SIGNING=1",
+    "S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA=1",
+    "S2N_LIBCRYPTO_SUPPORTS_FLAG_NO_CHECK_TIME=1",
+    "S2N_LIBCRYPTO_SUPPORTS_GET0_CHAIN=1",
+    "S2N_LIBCRYPTO_SUPPORTS_X509_STORE_LIST=1"
+  ],
+  "undefined_features": [
+    "S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS",
+    "S2N_LIBCRYPTO_SUPPORTS_PUBLIC_RAND",
+    "S2N_LIBCRYPTO_SUPPORTS_EVP_MD_CTX_SET_PKEY_CTX",
+    "S2N_LIBCRYPTO_SUPPORTS_ENGINE",
+    "S2N_LIBCRYPTO_SUPPORTS_PROVIDERS",
+    "S2N_LIBCRYPTO_SUPPORTS_EVP_AEAD_TLS",
+    "S2N_LIBCRYPTO_SUPPORTS_HKDF",
+    "S2N_LIBCRYPTO_SUPPORTS_SHAKE",
+    "S2N_LIBCRYPTO_SUPPORTS_EVP_KEM",
+    "S2N_LIBCRYPTO_SUPPORTS_MLKEM",
+    "S2N_LIBCRYPTO_SUPPORTS_MLDSA",
+    "S2N_LIBCRYPTO_SUPPORTS_CUSTOM_OID",
+    "S2N_LIBCRYPTO_SUPPORTS_EC_KEY_CHECK_FIPS"
+  ],
+  "include_directories": [
+    "src/CryptoProvider/include"
+  ],
+  "forced_include": "src/CryptoProvider/include/dotcc_provider.h",
+  "override_file": "src/CryptoProvider/provider-overrides.json",
+  "authored_bindings": [
+    "src/CryptoProvider/Bindings/S2nProviderBindings.cs"
+  ],
+  "project_reference": "src/CryptoProvider/CryptoProvider.csproj",
+  "native_version_prefix": "OpenSSL 1.1.1w "
+}

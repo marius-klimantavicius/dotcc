@@ -1,0 +1,30 @@
+{
+  "profile": "compat",
+  "dialect": "c99",
+  "abi": "linux-x64-lp64-little-endian",
+  "required_upstream_units": 174,
+  "defines": [
+    "S2N_BUILD_RELEASE=1",
+    "S2N_BLOCK_NONPORTABLE_OPTIMIZATIONS=1"
+  ],
+  "include_directories": [
+    "ref/openssl-legacy/include"
+  ],
+  "feature_status": "Provider features remain unqualified; initial full-source discovery only",
+  "emit_defines": [
+    "S2N_SSLv3",
+    "S2N_TLS10",
+    "S2N_TLS11",
+    "S2N_TLS12",
+    "S2N_TLS13"
+  ],
+  "staged_headers": [
+    {
+      "source": "config/headers/openssl/opensslconf.h",
+      "destination": "openssl/opensslconf.h",
+      "origin": "openssl-legacy/include/openssl/opensslconf.h.in",
+      "generated_by": "perl Configure linux-x86_64 no-shared no-tests enable-ssl3 enable-ssl3-method enable-weak-ssl-ciphers; make -j2 build_generated",
+      "purpose": "Fixed LP64 declaration configuration, no native product backend or host feature autodetection"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "status": "implementation-authorized-in-progress",
+  "supervisor": {
+    "providerInstanceId": "codex",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high"
+  },
+  "implementation_options": {
+    "providerInstanceId": "codex",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "xhigh"
+  },
+  "active_tasks": [
+    {
+      "package": "provider",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-provider-r1-20261023"
+    },
+    {
+      "package": "api-qualification",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-api-qualification-r2-20261023"
+    }
+  ],
+  "shared_build_owner": "supervisor",
+  "next": "Finish complete-source translation, integrate provider ABI and owning API, then execute all planned suites/matrix throughP6",
+  "completed_tasks": [
+    {
+      "package": "inputs-native",
+      "taskId": "node:delegated-task:command%3Amcp%3A2cf19ed1-533d-4c8e-85e5-adddaee73132%3Adelegate-task%3As2n-inputs-native-r1-20261023"
+    }
+  ],
+  "commits": [
+    "f5b36fc6a"
+  ]
+}

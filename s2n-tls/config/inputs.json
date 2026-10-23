@@ -1,0 +1,109 @@
+{
+  "s2n-tls": {
+    "url": "https://codeload.github.com/aws/s2n-tls/tar.gz/6459002cd61e4bf3bbc53db23f068b21da9ff6bd",
+    "revision": "6459002cd61e4bf3bbc53db23f068b21da9ff6bd",
+    "release": "v1.7.12",
+    "directory": "s2n-tls",
+    "prefix": "s2n-tls-6459002cd61e4bf3bbc53db23f068b21da9ff6bd",
+    "archive": "s2n-tls.tar.gz",
+    "required": [
+      "CMakeLists.txt",
+      "api/s2n.h",
+      "tls/s2n_cipher_suites.c",
+      "crypto/s2n_stream_cipher_rc4.c",
+      "LICENSE"
+    ],
+    "group": "product",
+    "license": "Apache-2.0",
+    "use": "Actual translated product source and same-pin native oracle",
+    "archive_paths": [
+      "CMakeLists.txt",
+      "LICENSE",
+      "NOTICE",
+      "api/",
+      "bin/",
+      "cmake/",
+      "codebuild/",
+      "crypto/",
+      "docs/",
+      "error/",
+      "stuffer/",
+      "tests/",
+      "tls/",
+      "utils/"
+    ],
+    "sha256": "94a57c4f4713cc20088b723bcdf0bb254e32a559ffcbed583e67fe3d8ddec442"
+  },
+  "openssl-legacy": {
+    "url": "https://codeload.github.com/openssl/openssl/tar.gz/e04bd3433fd84e1861bf258ea37928d9845e6a86",
+    "revision": "e04bd3433fd84e1861bf258ea37928d9845e6a86",
+    "release": "OpenSSL_1_1_1w",
+    "directory": "openssl-legacy",
+    "prefix": "openssl-e04bd3433fd84e1861bf258ea37928d9845e6a86",
+    "archive": "openssl-legacy.tar.gz",
+    "required": [
+      "Configure",
+      "include/openssl/opensslv.h",
+      "crypto/rc4/rc4_enc.c",
+      "LICENSE"
+    ],
+    "group": "product",
+    "license": "OpenSSL and SSLeay dual license",
+    "use": "Product reference headers and separate native oracle backend; never a native managed-product runtime dependency",
+    "sha256": "23c52cc22a7455b7fb260efa0804f4584ebbe08b66da231e22afbb026ea67b7c"
+  },
+  "openssl-peer": {
+    "url": "https://codeload.github.com/openssl/openssl/tar.gz/9398e4038c27d5ef15111c61e984d4d2be8a52a8",
+    "revision": "9398e4038c27d5ef15111c61e984d4d2be8a52a8",
+    "release": "OpenSSL_1_1_1v",
+    "directory": "openssl-peer",
+    "prefix": "openssl-9398e4038c27d5ef15111c61e984d4d2be8a52a8",
+    "archive": "openssl-peer.tar.gz",
+    "required": [
+      "Configure",
+      "include/openssl/opensslv.h",
+      "ssl/ssl_lib.c",
+      "LICENSE"
+    ],
+    "group": "tests",
+    "license": "OpenSSL and SSLeay dual license",
+    "use": "Separately pinned independent TLS engine peer; SSLv3 through TLS1.3, RC4/3DES capability requires successful forced exchange",
+    "sha256": "7c0c2ef8524642db4ce4d39fd5dabcb42997bd60b68fc8847370487732031b82"
+  },
+  "openssl-peer-sslv3": {
+    "url": "https://codeload.github.com/openssl/openssl/tar.gz/e818b74be2170fbe957a07b0da4401c2b694b3b8",
+    "revision": "e818b74be2170fbe957a07b0da4401c2b694b3b8",
+    "release": "OpenSSL_1_0_2u",
+    "directory": "openssl-peer-sslv3",
+    "prefix": "openssl-e818b74be2170fbe957a07b0da4401c2b694b3b8",
+    "archive": "openssl-peer-sslv3.tar.gz",
+    "required": [
+      "Configure",
+      "ssl/s3_lib.c",
+      "LICENSE"
+    ],
+    "group": "tests",
+    "license": "OpenSSL and SSLeay dual license",
+    "use": "Independent legacy SSLv3 peer including ECDHE combinations excluded by OpenSSL1.1.1 cipher-version table",
+    "sha256": "ae081a5fb5f1a42a6e95815b642eddcb24fc0b0f67b17e524492c05cca797a82"
+  },
+  "provider-managed": {
+    "url": "https://codeload.github.com/bcgit/bc-csharp/tar.gz/4007498b13582d90ee1eda5d9920c324428b98b3",
+    "revision": "4007498b13582d90ee1eda5d9920c324428b98b3",
+    "directory": "bouncycastle",
+    "prefix": "bc-csharp-4007498b13582d90ee1eda5d9920c324428b98b3",
+    "archive": "bouncycastle.tar.gz",
+    "license": "MIT",
+    "package_id": "BouncyCastle.Cryptography",
+    "package_version": "2.7.0",
+    "use": "SHA224, RC4, unrestricted 3DES keys, legacy raw RSA PKCS1 signatures, finite-field DH, X25519, DER/PEM parsing; no TLS engine use",
+    "metadata_source": "config/provider.json#managed_dependency",
+    "required": [
+      "LICENSE.md",
+      "crypto/src/crypto/engines/RC4Engine.cs",
+      "crypto/src/BouncyCastle.Crypto.csproj"
+    ],
+    "group": "product",
+    "sha256": "6bd6a66f06b29d19b2a171ead2010735e58ea24b5efbdc9551d5ec06eaec8337"
+  }
+}

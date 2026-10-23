@@ -1,0 +1,762 @@
+{
+  "default_profile": "compat",
+  "required_versions": [
+    "S2N_SSLv3",
+    "S2N_TLS10",
+    "S2N_TLS11",
+    "S2N_TLS12",
+    "S2N_TLS13"
+  ],
+  "suite_count": 36,
+  "sslv3_suite_count": 14,
+  "suites": [
+    {
+      "symbol": "s2n_rsa_with_rc4_128_md5",
+      "name": "RC4-MD5",
+      "iana_name": "TLS_RSA_WITH_RC4_128_MD5",
+      "iana_id": "0x0004",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_rc4_sslv3_md5",
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_rc4_128_sha",
+      "name": "RC4-SHA",
+      "iana_name": "TLS_RSA_WITH_RC4_128_SHA",
+      "iana_id": "0x0005",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_rc4_sslv3_sha",
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_3des_ede_cbc_sha",
+      "name": "DES-CBC3-SHA",
+      "iana_name": "TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "iana_id": "0x000A",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_3des_sslv3_sha",
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_3des_ede_cbc_sha",
+      "name": "DHE-RSA-DES-CBC3-SHA",
+      "iana_name": "TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "iana_id": "0x0016",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_3des_sslv3_sha",
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_aes_128_cbc_sha",
+      "name": "AES128-SHA",
+      "iana_name": "TLS_RSA_WITH_AES_128_CBC_SHA",
+      "iana_id": "0x002F",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes128_sslv3_sha",
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_aes_128_cbc_sha",
+      "name": "DHE-RSA-AES128-SHA",
+      "iana_name": "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+      "iana_id": "0x0033",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes128_sslv3_sha",
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_aes_256_cbc_sha",
+      "name": "AES256-SHA",
+      "iana_name": "TLS_RSA_WITH_AES_256_CBC_SHA",
+      "iana_id": "0x0035",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes256_sslv3_sha",
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_aes_256_cbc_sha",
+      "name": "DHE-RSA-AES256-SHA",
+      "iana_name": "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+      "iana_id": "0x0039",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes256_sslv3_sha",
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_aes_128_cbc_sha256",
+      "name": "AES128-SHA256",
+      "iana_name": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+      "iana_id": "0x003C",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_aes_256_cbc_sha256",
+      "name": "AES256-SHA256",
+      "iana_name": "TLS_RSA_WITH_AES_256_CBC_SHA256",
+      "iana_id": "0x003D",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_aes_128_cbc_sha256",
+      "name": "DHE-RSA-AES128-SHA256",
+      "iana_name": "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
+      "iana_id": "0x0067",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_aes_256_cbc_sha256",
+      "name": "DHE-RSA-AES256-SHA256",
+      "iana_name": "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256",
+      "iana_id": "0x006B",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_aes_128_gcm_sha256",
+      "name": "AES128-GCM-SHA256",
+      "iana_name": "TLS_RSA_WITH_AES_128_GCM_SHA256",
+      "iana_id": "0x009C",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_rsa_with_aes_256_gcm_sha384",
+      "name": "AES256-GCM-SHA384",
+      "iana_name": "TLS_RSA_WITH_AES_256_GCM_SHA384",
+      "iana_id": "0x009D",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_rsa",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_aes_128_gcm_sha256",
+      "name": "DHE-RSA-AES128-GCM-SHA256",
+      "iana_name": "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+      "iana_id": "0x009E",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_aes_256_gcm_sha384",
+      "name": "DHE-RSA-AES256-GCM-SHA384",
+      "iana_name": "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+      "iana_id": "0x009F",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_tls13_aes_128_gcm_sha256",
+      "name": "TLS_AES_128_GCM_SHA256",
+      "iana_name": "TLS_AES_128_GCM_SHA256",
+      "iana_id": "0x1301",
+      "minimum_version": "S2N_TLS13",
+      "versions": [
+        "S2N_TLS13"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_tls13_kex",
+      "authentication": "S2N_AUTHENTICATION_METHOD_TLS13",
+      "required": true
+    },
+    {
+      "symbol": "s2n_tls13_aes_256_gcm_sha384",
+      "name": "TLS_AES_256_GCM_SHA384",
+      "iana_name": "TLS_AES_256_GCM_SHA384",
+      "iana_id": "0x1302",
+      "minimum_version": "S2N_TLS13",
+      "versions": [
+        "S2N_TLS13"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_tls13_kex",
+      "authentication": "S2N_AUTHENTICATION_METHOD_TLS13",
+      "required": true
+    },
+    {
+      "symbol": "s2n_tls13_chacha20_poly1305_sha256",
+      "name": "TLS_CHACHA20_POLY1305_SHA256",
+      "iana_name": "TLS_CHACHA20_POLY1305_SHA256",
+      "iana_id": "0x1303",
+      "minimum_version": "S2N_TLS13",
+      "versions": [
+        "S2N_TLS13"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_tls13_kex",
+      "authentication": "S2N_AUTHENTICATION_METHOD_TLS13",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_aes_128_cbc_sha",
+      "name": "ECDHE-ECDSA-AES128-SHA",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+      "iana_id": "0xC009",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes128_sslv3_sha",
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_aes_256_cbc_sha",
+      "name": "ECDHE-ECDSA-AES256-SHA",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+      "iana_id": "0xC00A",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes256_sslv3_sha",
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_rc4_128_sha",
+      "name": "ECDHE-RSA-RC4-SHA",
+      "iana_name": "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+      "iana_id": "0xC011",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_rc4_sslv3_sha",
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_3des_ede_cbc_sha",
+      "name": "ECDHE-RSA-DES-CBC3-SHA",
+      "iana_name": "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "iana_id": "0xC012",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_3des_sslv3_sha",
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_aes_128_cbc_sha",
+      "name": "ECDHE-RSA-AES128-SHA",
+      "iana_name": "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+      "iana_id": "0xC013",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes128_sslv3_sha",
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_aes_256_cbc_sha",
+      "name": "ECDHE-RSA-AES256-SHA",
+      "iana_name": "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "iana_id": "0xC014",
+      "minimum_version": "S2N_SSLv3",
+      "versions": [
+        "S2N_SSLv3",
+        "S2N_TLS10",
+        "S2N_TLS11",
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": "s2n_record_alg_aes256_sslv3_sha",
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_aes_128_cbc_sha256",
+      "name": "ECDHE-ECDSA-AES128-SHA256",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+      "iana_id": "0xC023",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_aes_256_cbc_sha384",
+      "name": "ECDHE-ECDSA-AES256-SHA384",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+      "iana_id": "0xC024",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_aes_128_cbc_sha256",
+      "name": "ECDHE-RSA-AES128-SHA256",
+      "iana_name": "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+      "iana_id": "0xC027",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_aes_256_cbc_sha384",
+      "name": "ECDHE-RSA-AES256-SHA384",
+      "iana_name": "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+      "iana_id": "0xC028",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_aes_128_gcm_sha256",
+      "name": "ECDHE-ECDSA-AES128-GCM-SHA256",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+      "iana_id": "0xC02B",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_aes_256_gcm_sha384",
+      "name": "ECDHE-ECDSA-AES256-GCM-SHA384",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+      "iana_id": "0xC02C",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_aes_128_gcm_sha256",
+      "name": "ECDHE-RSA-AES128-GCM-SHA256",
+      "iana_name": "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+      "iana_id": "0xC02F",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_aes_256_gcm_sha384",
+      "name": "ECDHE-RSA-AES256-GCM-SHA384",
+      "iana_name": "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+      "iana_id": "0xC030",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_rsa_with_chacha20_poly1305_sha256",
+      "name": "ECDHE-RSA-CHACHA20-POLY1305",
+      "iana_name": "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+      "iana_id": "0xCCA8",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_ecdhe_ecdsa_with_chacha20_poly1305_sha256",
+      "name": "ECDHE-ECDSA-CHACHA20-POLY1305",
+      "iana_name": "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+      "iana_id": "0xCCA9",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_ecdhe",
+      "authentication": "S2N_AUTHENTICATION_ECDSA",
+      "required": true
+    },
+    {
+      "symbol": "s2n_dhe_rsa_with_chacha20_poly1305_sha256",
+      "name": "DHE-RSA-CHACHA20-POLY1305",
+      "iana_name": "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+      "iana_id": "0xCCAA",
+      "minimum_version": "S2N_TLS12",
+      "versions": [
+        "S2N_TLS12"
+      ],
+      "sslv3_record_alg": null,
+      "key_exchange": "s2n_dhe",
+      "authentication": "S2N_AUTHENTICATION_RSA",
+      "required": true
+    }
+  ],
+  "suite_version_pairs": 78,
+  "internal_null_suite": "TLS_NULL_WITH_NULL_NULL is initialization state, never negotiable.",
+  "controls": [
+    {
+      "api": "s2n_config_disable_x509_verification",
+      "header": "api/s2n.h",
+      "behavior": "Explicit bypass of certificate chain/identity validation; test validating and bypassed outcomes.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_disable_x509_time_verification",
+      "header": "api/s2n.h",
+      "behavior": "Permit expired/not-yet-valid certificates while retaining other validation.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_disable_x509_intent_verification",
+      "header": "api/s2n.h",
+      "behavior": "Permit mismatched KeyUsage/ExtendedKeyUsage while retaining other validation.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_allow_ip_in_cn",
+      "header": "api/unstable/allow_ip_in_cn.h",
+      "behavior": "Explicit legacy hostname workaround: permit IP address Common Name fallback only with no SAN extension.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_check_stapled_ocsp_response",
+      "header": "api/s2n.h",
+      "behavior": "Toggle validation of received stapled OCSP response.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_verify_host_callback",
+      "header": "api/s2n.h",
+      "behavior": "Custom hostname acceptance callback; callback rejection must fail.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_connection_set_verify_host_callback",
+      "header": "api/s2n.h",
+      "behavior": "Per-connection hostname acceptance override.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_max_cert_chain_depth",
+      "header": "api/s2n.h",
+      "behavior": "Change certificate chain-depth limit; over-limit validation rejects.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_cipher_preferences",
+      "header": "api/s2n.h",
+      "behavior": "Select upstream named security policy without changing named-policy semantics.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_connection_set_cipher_preferences",
+      "header": "api/s2n.h",
+      "behavior": "Per-connection named security policy override.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_connection_set_blinding",
+      "header": "api/s2n.h",
+      "behavior": "Select built-in delay or self-service delay; self-service caller must honor s2n_connection_get_delay.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_max_blinding_delay",
+      "header": "api/s2n.h",
+      "behavior": "Configure maximum error blinding delay; lower delay is an explicit caller choice.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_enable_cert_req_dss_legacy_compat",
+      "header": "api/s2n.h",
+      "behavior": "Include legacy DSS certificate type in server CertificateRequest; no DSA cipher-suite promise.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_client_auth_type",
+      "header": "api/s2n.h",
+      "behavior": "Choose no/optional/required client-certificate authentication.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_connection_set_client_auth_type",
+      "header": "api/s2n.h",
+      "behavior": "Per-connection client-certificate authentication override.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_alert_behavior",
+      "header": "api/s2n.h",
+      "behavior": "Select behavior for received warning alerts; preserve fatal alert rejection.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_verify_after_sign",
+      "header": "api/s2n.h",
+      "behavior": "Control optional self-verification of newly generated signatures.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_key_log_cb",
+      "header": "api/s2n.h",
+      "behavior": "Explicit optional callback exports session secrets; preserve opt-in callback and lifetime semantics.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_npn",
+      "header": "api/unstable/npn.h",
+      "behavior": "Explicit legacy NPN enablement; preserve upstream protocol applicability and ALPN interaction.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_serialization_version",
+      "header": "api/s2n.h",
+      "behavior": "Explicit connection-state serialization enablement; default is off.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_connection_serialize",
+      "header": "api/s2n.h",
+      "behavior": "Exports plaintext key material without integrity protection; retain upstream buffered-I/O and RC4 rejection constraints.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_connection_deserialize",
+      "header": "api/s2n.h",
+      "behavior": "Imports caller-protected connection state without intrinsic integrity verification; config must be reapplied.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_cert_validation_cb",
+      "header": "api/unstable/crl.h",
+      "behavior": "Additional application certificate validation callback, including asynchronous accept/reject; does not bypass preceding validation.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_crypto_disable_init",
+      "header": "api/s2n.h",
+      "behavior": "Caller owns crypto library initialization when automatic initialization is disabled.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_disable_atexit",
+      "header": "api/s2n.h",
+      "behavior": "Caller explicitly owns final library cleanup; do not imply independent global domains.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_cleanup_final",
+      "header": "api/s2n.h",
+      "behavior": "Actual global library cleanup after all connections/configs/credentials drain; s2n_cleanup is a retained no-op.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_rand_set_callbacks",
+      "header": "api/s2n.h",
+      "behavior": "Retained no-op. Cannot substitute for actual libcrypto/RAND or OS entropy ownership.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_set_renegotiate_request_cb",
+      "header": "api/unstable/renegotiate.h",
+      "behavior": "Client-side renegotiation request callback; preserve secure renegotiation rules.",
+      "status": "required-unrun"
+    },
+    {
+      "api": "s2n_config_ktls_enable_unsafe_tls13",
+      "header": "api/unstable/ktls.h",
+      "behavior": "Outside selected product: kTLS/offload explicitly excluded by PLAN.",
+      "status": "excluded"
+    }
+  ],
+  "legacy_contracts": [
+    "SSLv2-format ClientHello compatibility only; full SSLv2 excluded.",
+    "Static RSA, finite-field DHE, ECDHE and ECDSA; no replacement TLS core.",
+    "SSLv3 MAC/PRF, combined MD5/SHA1, RC4 state across records, 3DES/CBC chaining.",
+    "Unsafe controls are selectable; compat does not implicitly bypass certificate validation."
+  ],
+  "skip_policy": "Every required unavailable capability or conditional skip remains failed/unrun, never a pass.",
+  "environment_controls": [
+    {
+      "name": "S2N_DONT_MLOCK",
+      "source": "utils/s2n_mem.c",
+      "behavior": "Disables memory locking; native harness prerequisite, not a legacy algorithm switch."
+    },
+    {
+      "name": "S2N_INTEG_TEST",
+      "source": "utils/s2n_init.c",
+      "behavior": "Integration-test mode; must not be required for default compat product."
+    },
+    {
+      "name": "S2N_PRINT_STACKTRACE",
+      "source": "utils/s2n_init.c",
+      "behavior": "Diagnostic stacktrace enablement."
+    }
+  ]
+}
