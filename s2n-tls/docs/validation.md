@@ -4,7 +4,8 @@ Implementation remains in progress through P6. Boundary, translation and current
 delivery, native and reproduction gates pass for the recorded provider snapshot.
 The complete upstream C/Python gates remain open. Original certificate assertions
 exposed an ASN.1 conversion defect; the reviewed repair and48-group provider
-qualification now pass, while fresh final-runtime application qualification runs. No build-only, emission-only,
+qualification now pass for captured0158 bytes. A later private-RSA mismatch
+requires another provider freeze and fresh downstream qualification. No build-only, emission-only,
 skipped, retried or interrupted workload is counted as a strict protocol pass.
 Paths below are relative to this campaign.
 
@@ -42,9 +43,9 @@ variant at `artifacts/provider/original16-expanded/20261023T211832Z-6c2a4f05/all
 The old required-C cases must also execute against this freeze; their earlier application outputs are not reused. No C regeneration is
 needed: the183 typed declarations and175 emitted engine objects are unchanged.
 
-The persistent final-provider C campaign has24/257 cases qualified in all four
-variants at the recorded checkpoint (96 original executions), with233 cases
-remaining. Its live progress is `build/provider/required257-223542/progress.json`;
+The persistent0158-provider C campaign has46 passed cases qualified in all four
+variants,2 raw-build failures and209 unrun at the recorded checkpoint. Batch006
+is naturally draining before the reviewed RSA repair. Its live progress is `build/provider/required257-223542/progress.json`;
 earlier30/2 counts belong to the archived old-provider run. Closed cases retain
 their executable/runtime bytes while identical pinned BC dependency files may
 share a private immutable inode. The bounded three-case storage proof is
@@ -112,10 +113,10 @@ python3 s2n-tls/scripts/managed-qualification.py --suite delivery --suite rooted
 - Actual original SSLv2-format ClientHello case passes with65,519-byte binary echo and original assertions; `artifacts/managed-contract/python-frozen-identity-214654.json`. Focused receipts are not accepted as a whole family run.
 - Test-only GNU getopt174scenarios/518observations and real binary stdfd/poll/FIONREAD/EINTR probes pass (`artifacts/managed-contract/{getopt,stdfd}.json`). Fragmented readiness markers are matched over actual adjacent pipe bytes without altering upstream assertions.
 - Host GnuTLS configuration disabledTLS1.0/1.1 before networking. Explicit isolated test-only policy preserves original argv; native priority probes and actual original TLS1.0 payload replay pass. SSLv3Provider also requires a truthful1.0.2 installation prefix; exact focused native replay passes after setting it. Historical failures/interruption receipts remain. Reproduce isolated prerequisites with `python3 s2n-tls/scripts/test-prerequisites.py --fetch never` only when peer execution is drained (package extraction owns those binaries).
-- Current native18 and translated17 non-Apache broad Python trials remain incomplete. Native externalPSK549 failures are an authored provenance probe treating long command arguments as paths (ENAMETOOLONG); new adapter preserves argv and focused original long-PSK cases pass.351 original OpenSSL/SHA384 unconditional skips remain explicitly open, not counted as passes or algorithm omissions. Their S2N/S2N SHA384 counterparts remain required.
+- Historical native/translated Python trials exposed549 authored provenance errors treating long command arguments as paths (ENAMETOOLONG), plus351 original OpenSSL/SHA384 unconditional skips. Those failed/skipped receipts remain unchanged. The repaired adapter preserves argv; the measured app-only PSK peer enables actual execution of all351 original cases. The complete strict native18 comparator now passes22,186 applicable cases; complete translated all4 remains open.
 - A genuine translated original CLI buffered-send stack overflow is preserved in `artifacts/managed-upstream/python-final-214654-legacy-policy/sslv3-buffered-replay/`. Fixed automatic arrays inside loops were emitted as cumulative CLR stackalloc. `d0f0146de` reuses one lazy fixed allocation per lexical declaration/invocation while re-running every initializer; no recursion or provider substitute. Reduced old compiler reproduces stack overflow; new JIT/AOT and native produce identical output: `artifacts/compiler-discovery/automatic-array-runtime-v2/receipt.json`. Full175 retry223542 and the actual original replay in all four modes pass; broad original-family qualification continues.
 - EVP_DecodeBlock repair08796c070 passes1,659 native vectors per runtime and the full47-group JIT/AOT suite. The original failure remains preserved.
-- Original certificate test currently fails assertion482 versus native488 because production ASN1_STRING_to_UTF8 accepts invalid universal tag29. The test-only X509_NAME mutation native comparator is exact; the failure is in production conversion. All four failed original executions are retained in `artifacts/provider/original16-expanded/20261023T205925Z-71055145/`. The production repair now passes the native differential suite above. The unchanged original all4 refresh now passes488 assertions per variant; its policy entry was added only afterward.
+- Original certificate test historically failed assertion482 versus native488 because production ASN1_STRING_to_UTF8 accepts invalid universal tag29. The test-only X509_NAME mutation native comparator is exact; the failure is in production conversion. All four failed original executions are retained in `artifacts/provider/original16-expanded/20261023T205925Z-71055145/`. The production repair now passes the native differential suite above. The unchanged original all4 refresh now passes488 assertions per variant; its policy entry was added only afterward.
 
 ## Shared changes and remaining gates
 
@@ -127,12 +128,12 @@ Reproduction passes in `artifacts/campaign/20261023-233001-6f4afff7/reproduction
 
 Still required: finish all257 original C cases and18 Python families across raw/processed×JIT/AOT; matching native Python families without required skips or retry events; finish application/upstream requalification of the repaired final ASN.1 provider snapshot; and integrated recipe acceptance. The default preparation/immutable translation-closure plumbing has focused contract checks but has not yet completed its full automatic upstream pipeline. These are ongoing authorized work, not unavoidable external blockers, and P6 is not claimed.
 
-Current native Python strict retries include externalPSK1,999/1,999 at
+Completed native Python strict families include externalPSK1,999/1,999 at
 `artifacts/native-python/psk-measured-v3/full-family.json`, version1,525/1,525 at
 `artifacts/native-python/retry-investigation-r4/version-full-strict.json`, and
 HRR118 applicable original cases plus9 explicitly inapplicable nodes with separate
 9 no-HRR controls under `artifacts/native-python/hrr-no-retry-r4/`. Full strict
-happy-path retry remains running; prior failures/reruns stay failed. Measured
+happy-path8,840 now passes in the retained complete18 comparator; prior failures/reruns stay failed. Measured
 same-stderr fragment joins explain all10 old strict happy failures in
 `artifacts/managed-contract/native-happy-marker-cause-r4.json`.
 
